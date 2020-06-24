@@ -1,0 +1,11 @@
+{
+  "support": "Support",
+  "plant_trees": "Plant Trees",
+  "read_more": "Read More",
+  "contributor": "Contributor",
+  "planted_trees": "Planted Trees",
+  "target": "Target",
+  "support_trees_to": "Support trees to {{user}}",
+  "shareuserprofile": "Meet {{displayName}} on Plant-for-the-Planet App https://www.trilliontreecampaign.org/t/{{slug}}",
+  "supportUser": "Donate trees to support {{displayName}}"
+}
