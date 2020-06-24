@@ -1,0 +1,9 @@
+.section{
+    height: 100vh;
+    background-color: #ecf0f1;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    text-align: center;
+}
