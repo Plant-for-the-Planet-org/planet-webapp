@@ -1,0 +1,83 @@
+.hr{
+    height: 1px;
+    background-color: #2F3336;
+    width: 100%;
+    margin-top: 100px;
+}
+.footer_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.footer_links_container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.footer_links{
+    font-family: 'Raleway';
+    font-weight: bold;
+    font-size: 14px;
+    color: #2F3336;
+    margin-right: 16px;
+    margin-top: 22.2px;
+}
+
+.footer_button_container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.footer_button{
+    border:1px solid #2F3336;
+    border-radius: 7px;
+    height: 46px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 16px;
+    margin-top: 18.8px;
+
+}
+
+.selected_language{
+    font-family: 'Raleway';
+    font-size: 14px;
+    margin: 0px!important;
+    margin-left: 8px!important;
+}
+
+.selected_language_bold{
+    font-family: 'Raleway';
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0px!important;
+    margin-left: 8px!important;
+}
+
+.logo_container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 16.8px;
+    margin-bottom: 80px;
+}
+
+.pfp_logo{
+    margin-right: 30px;
+    height: 69px;
+    width: 69px;
+}
+.unep_logo_text{
+    font-family: "Raleway";
+    font-size: 9px;
+    font-weight: normal;
+    letter-spacing: 0.18px;
+    color: #2f3336;
+    margin-bottom: 10px;
+}

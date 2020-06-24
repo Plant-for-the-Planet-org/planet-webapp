@@ -23,7 +23,7 @@ export default function NavbarComponent() {
     ]
     return (
         <>
-        <Navbar className={styles.top_nav} bg="light" expand="lg">
+        <Navbar className={styles.top_nav} bg="white">
             <Navbar.Brand href="/">
                <div style={{width:50,height:43}}>
                     <LOGO/>
@@ -47,7 +47,7 @@ export default function NavbarComponent() {
                     })}
                 </Nav>
                 <Nav className={styles.nav_container}>
-                <Nav.Link>
+                    <Nav.Link>
                         <Link href={'/me'} >
                             <div className={styles.link_container}>
                                 <div className={styles.link_icon}>
@@ -58,12 +58,10 @@ export default function NavbarComponent() {
                         </Link>
                     </Nav.Link>
                 </Nav>
-                    
-                
         </Navbar>
 
-        <Navbar  fixed="bottom" className="d-md-none" bg="light" expand="lg">
-                <Nav className={["mr-auto d-md-none d-flex flex-row",styles.mobile_nav]}>
+        <Navbar fixed="bottom" className="d-md-none" bg="light" expand="lg">
+                <Nav className={["d-flex flex-row",styles.mobile_nav]}>
                     {menuItems.map(item=>{
                         return(
                         <Nav.Link key={item.id}>
