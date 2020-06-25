@@ -1,6 +1,14 @@
+# Trillion Tree Campaign Web App
+
+Welcome to this repository which contains the code of the new web client of the Trillion Tree Campaign at https://www.trilliontreecampaign.org/ written in NextJS. For contributions please read our [contribution guide](https://github.com/enrootmumbai/planet-web/blob/develop/CONTRIBUTING.md) as well as our [code of conduct](https://github.com/enrootmumbai/planet-web/blob/develop/CODE_OF_CONDUCT.md)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Directory Structure
+
+## Configuration
+
+## Development
 
 First, run the development server:
 
@@ -10,9 +18,29 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. The page auto-updates as you edit the file.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Development Process
+
+This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel BOT to the production system. There are currently some more protected branches and one tag (`staging` with mockup data, `test` with test data and a the tag `devel` also with test data) also build by Vercel BOT automatically and mapped to test backends using the branch/tag name as subdomain.
+
+## Versioning
+
+*App Versioning Guide*
+
+eg: Version M.F.B
+V 1.1.10
+
+M = Major Changes
+F = Feature Addition
+B = Critical Bug Fixes and Additions
+
+Release candidate can have the target version number
+V 1.1.`11` RC `1`
+
+Beta and Alpha builds can also have target version number
+V 1.1.`11` B `12`
+V 1.1.`11` A `12` [increment per release]
 
 ## Learn More
 
@@ -25,6 +53,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy this Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Supporters
+
+## License
