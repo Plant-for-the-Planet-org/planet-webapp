@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 
 import Link from 'next/link'
 import styles from './Navbar.module.css'
-export default function NavbarComponent() {
+export default function NavbarComponent(props) {
     const router = useRouter()
     let menuItems = [
         {id:1,name:'World',path:'/',icon:<Globe color={router.pathname === '/' ?'#89b35a' :'#2f3336'} />},
@@ -23,7 +23,7 @@ export default function NavbarComponent() {
     ]
     return (
         <>
-        <Navbar className={styles.top_nav} bg="white">
+        <Navbar className={styles.top_nav} bg={props.theme === 'theme-light' ? 'light' : 'dark' } variant={props.theme === 'theme-light' ? 'light' : 'dark' }>
             <Navbar.Brand href="/">
                <div style={{width:50,height:43}}>
                     <LOGO/>
