@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ThemeProvider from "./../src/utils/themeContext";
+import ThemeProvider from "../src/utils/themeContext";
 
-function PlanetWeb({Component, pageProps}) {
+function PlanetWeb({Component, pageProps}:any) {
     return (
       <ThemeProvider>
          <Component {...pageProps} />

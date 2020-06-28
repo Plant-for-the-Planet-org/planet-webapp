@@ -1,4 +1,4 @@
-import Layout from './../src/features/common/Layout'
+import Layout from '../src/features/common/Layout'
 
 export default function Compete() {
   return (
