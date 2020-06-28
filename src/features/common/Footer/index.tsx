@@ -1,16 +1,16 @@
-import styles from './Footer.module.css'
 import Link from 'next/link'
-import World from './../../../assets/images/footer/World'
-import GooglePlay from './../../../assets/images/footer/GooglePlay'
-import AppStore from './../../../assets/images/footer/AppStore'
-import UNEPLogo from './../../../assets/images/footer/UNEPLogo'
-import PlanetLogo from './../../../assets/images/PlanetLogo'
+import World from '../../../assets/images/footer/World'
+import GooglePlay from '../../../assets/images/footer/GooglePlay'
+import AppStore from '../../../assets/images/footer/AppStore'
+import UNEPLogo from '../../../assets/images/footer/UNEPLogo'
+import PlanetLogo from '../../../assets/images/PlanetLogo'
 
+let styles = require('./Footer.module.css');
 export default function Footer() {
     return (
         <footer>
             <div className="container">
-                <div className={[styles.hr]}/>
+                <div className={styles.hr}/>
             
 
                 <div className={styles.footer_container}>

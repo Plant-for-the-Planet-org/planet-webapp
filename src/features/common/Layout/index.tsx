@@ -1,9 +1,9 @@
-import Footer from './../Footer'
-import Header from './../Header'
-import Navbar from './../Navbar'
+import Footer from '../Footer'
+import Header from '../Header'
+import Navbar from '../Navbar'
 import { useTheme } from "../../../utils/themeContext";
 
-export default function Layout(props) {
+export default function Layout(props:any) {
     const { theme } = useTheme();
     console.log(theme)
     return (

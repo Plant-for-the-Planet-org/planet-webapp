@@ -1,18 +1,18 @@
 import React from 'react'
 import {Navbar,Nav} from 'react-bootstrap'
-import LOGO from './../../../assets/images/PlanetLogo'
-import Gift from './../../../assets/images/navigation/Gift'
-import Compete from './../../../assets/images/navigation/Compete'
-import Globe from './../../../assets/images/navigation/Globe'
-import Map from './../../../assets/images/navigation/Map'
-import Donate from './../../../assets/images/navigation/Donate'
-import Me from './../../../assets/images/navigation/Me'
+import LOGO from '../../../assets/images/PlanetLogo'
+import Gift from '../../../assets/images/navigation/Gift'
+import Compete from '../../../assets/images/navigation/Compete'
+import Globe from '../../../assets/images/navigation/Globe'
+import Map from '../../../assets/images/navigation/Map'
+import Donate from '../../../assets/images/navigation/Donate'
+import Me from '../../../assets/images/navigation/Me'
 
 import { useRouter } from 'next/router'
 
 import Link from 'next/link'
 import styles from './Navbar.module.css'
-export default function NavbarComponent(props) {
+export default function NavbarComponent(props:any) {
     const router = useRouter()
     let menuItems = [
         {id:1,name:'World',path:'/',icon:<Globe color={router.pathname === '/' ?'#89b35a' :'#2f3336'} />},
@@ -30,7 +30,7 @@ export default function NavbarComponent(props) {
                </div>   
             </Navbar.Brand>
 
-                <Nav className={["d-none d-md-flex flex-row",styles.nav_container]}>
+                <Nav className={"d-none d-md-flex flex-row "+styles.nav_container}>
                     {menuItems.map(item=>{
                         return(
                         <Nav.Link key={item.id}>
@@ -61,7 +61,7 @@ export default function NavbarComponent(props) {
         </Navbar>
 
         <Navbar fixed="bottom" className="d-md-none" bg="light" expand="lg">
-                <Nav className={["d-flex flex-row",styles.mobile_nav]}>
+                <Nav className={"d-flex flex-row "+styles.mobile_nav}>
                     {menuItems.map(item=>{
                         return(
                         <Nav.Link key={item.id}>

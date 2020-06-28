@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-export default function Layout(props) {
+export default function Layout() {
     return (
       <Head>
         <title>Trillion Tree Campaign</title>

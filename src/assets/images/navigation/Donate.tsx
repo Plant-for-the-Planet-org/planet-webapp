@@ -1,6 +1,6 @@
 import React from "react";
 
-function Donate(props) {
+function Donate(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
