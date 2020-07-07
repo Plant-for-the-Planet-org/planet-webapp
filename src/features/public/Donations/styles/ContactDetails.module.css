@@ -1,0 +1,28 @@
+.container{
+    background-color: white;
+    border-radius: 7px;
+    padding: 20px;
+    max-width: 412px;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.headerCloseIcon{
+    height: 32px;
+    width: 32px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.headerTitle{
+    font-family: 'Raleway';
+    font-weight: bold;
+    font-size: 27px;
+    color: #2F3336;
+    margin-left: 20px;
+}
