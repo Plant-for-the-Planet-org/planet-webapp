@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import styles from './../styles/TreeDonation.module.css'
 import Close from './../../../../assets/images/icons/headerIcons/close'
 import DownArrow from './../../../../assets/images/icons/DownArrow'
-import GpayBlack from './../../../../assets/images/icons/GpayBlack'
+import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack'
 import Switch from '@material-ui/core/Switch';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild'
 

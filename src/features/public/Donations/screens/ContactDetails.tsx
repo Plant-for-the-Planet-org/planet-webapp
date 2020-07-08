@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import styles from './../styles/ContactDetails.module.css'
-import BackArrow from '../../../../assets/images/icons/BackArrow'
+import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow'
 import Switch from '@material-ui/core/Switch';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild'
 interface Props {
@@ -18,8 +18,6 @@ function ContactDetails({}: Props): ReactElement {
                 </div>
                 <div className={styles.headerTitle}>Contact Details</div>
             </div>
-
-
             <form>
                 <div className={styles.formRow}>
                     <MaterialTextFeild
@@ -93,9 +91,6 @@ function ContactDetails({}: Props): ReactElement {
                     <div className={styles.continueButton}>Continue</div>
                 </div>
             </form>
-
-
-
         </div>
     )
 }
