@@ -18,7 +18,9 @@
     align-items: center;
     display: flex;
 }
-
+.headerCloseIcon:hover{
+    cursor: pointer;
+}
 .headerTitle{
     font-family: 'Raleway';
     font-weight: bold;

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import TreeDonation from './screens/TreeDonation'
 import ContactDetails from './screens/ContactDetails'
 import PaymentDetails from './screens/PaymentDetails'
+import ThankYou from './screens/ThankYou'
 
 interface Props {
     
@@ -9,11 +10,20 @@ interface Props {
 
 function Donate({}: Props): ReactElement {
     return (
-        <div style={{backgroundColor:'#2F3336',padding:'24px',display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
-            {/* <TreeDonation/>
-            <ContactDetails/> */}
+        <>
+        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
+            <TreeDonation/>
+        </div>
+        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
+            <ContactDetails/> 
+        </div>
+        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
             <PaymentDetails/>
         </div>
+        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
+            <ThankYou/>
+        </div>
+        </>
     )
 }
 
