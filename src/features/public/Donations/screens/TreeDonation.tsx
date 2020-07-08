@@ -4,6 +4,7 @@ import Close from './../../../../assets/images/icons/headerIcons/close'
 import DownArrow from './../../../../assets/images/icons/DownArrow'
 import GpayBlack from './../../../../assets/images/icons/GpayBlack'
 import Switch from '@material-ui/core/Switch';
+import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild'
 
 interface Props {
     
@@ -53,9 +54,40 @@ function TreeDonation({}: Props): ReactElement {
                 />
             </div>
 
+            <div className={styles.giftsContainer}>
+                <div className={styles.singleGiftContainer}>
+                    <div className={styles.singleGiftTitle}>Gift Recepient</div>
+                    <div className={styles.formRow}>
+                        <MaterialTextFeild
+                            label="First Name"
+                            variant="outlined"
+                        />
+                        <div style={{width:'20px'}}></div>
+                        <MaterialTextFeild
+                            label="Last Name"
+                            variant="outlined"
+                        />
+                    </div>
+                    <div className={styles.formRow}>
+                        <MaterialTextFeild
+                            label="Email"
+                            variant="outlined"
+                        />
+                    </div>
+                    <div className={styles.formRow}>
+                        <MaterialTextFeild
+                            label="Gift Message"
+                            variant="outlined"
+                        />
+                    </div>
+
+                    
+                </div>
+            </div>
+
             <div className={styles.selectTreeCount}>
                 {treeCountOptions.map(option =>(
-                    <div className={treeCount === option ? styles.treeCountOptionSelected  : styles.treeCountOption}>
+                    <div key={option} className={treeCount === option ? styles.treeCountOptionSelected  : styles.treeCountOption}>
                         <div className={ styles.treeCountOptionTrees}>
                             {option}
                         </div>

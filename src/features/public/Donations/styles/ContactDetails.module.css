@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-.headerCloseIcon{
+.headerBackIcon{
     height: 32px;
     width: 32px;
     justify-content: center;
@@ -25,4 +25,82 @@
     font-size: 27px;
     color: #2F3336;
     margin-left: 20px;
+}
+
+.formRow{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Is Company */
+.isCompany{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.isCompanyText{
+    font-family: 'Raleway';
+    font-size: 14px;
+    color: #2F3336;
+}
+
+ /* Tree Count and Cost  */
+
+.finalTreeCount{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.totalCost{
+    font-family: 'Raleway';
+    font-weight: bold;
+    font-size: 16px;
+    color: #87B738;
+}
+
+.totalCostText{
+    font-family: 'Raleway';
+    font-weight: bold;
+    font-size: 16px;
+    color: #2F3336;
+    margin-left: 6px;
+}
+
+.actionButtonsContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.actionButtonsText{
+    font-family: 'Raleway';
+    font-size: 14px;
+    color: #2F3336;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+.continueButton{
+    background-color: #87B738;
+    border-radius: 6px;
+    padding: 8px 40px;
+    color: white;
+    font-family: 'Raleway';
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.horizontalLine{
+    height: 1px;
+    background-color: #D5D5D5;
+    margin-top: 20px;
 }

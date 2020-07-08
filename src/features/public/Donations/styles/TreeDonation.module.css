@@ -119,6 +119,7 @@
     border-bottom: 1px solid #87B738;
 }
 
+/* Tax Deductible */
 .isTaxDeductible{
     display: flex;
     flex-direction: row;
@@ -201,5 +202,22 @@
 .horizontalLine{
     height: 1px;
     background-color: #D5D5D5;
+    margin-top: 20px;
+}
+
+/* Gift Trees Styles */
+
+.singleGiftTitle{
+    font-family: 'Raleway';
+    font-size: 14px;
+    color: #2F3336;
+    text-transform: uppercase;
+    margin-top: 20px;
+    font-weight: 600;
+}
+.formRow{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     margin-top: 20px;
 }

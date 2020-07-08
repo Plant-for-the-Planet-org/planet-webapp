@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 const MaterialTextFeild = withStyles({
     root: {
+      width:'100%',
       '& label.Mui-focused': {
         color: '#2F3336',
         fontFamily:'Raleway'
@@ -23,7 +24,8 @@ const MaterialTextFeild = withStyles({
         backgroundColor: '#F2F2F7',
         border:'0px!important',
         borderRadius:'10px',
-        fontFamily:'Raleway'
+        fontFamily:'Raleway',
+        
       },
     },
   })(TextField);
