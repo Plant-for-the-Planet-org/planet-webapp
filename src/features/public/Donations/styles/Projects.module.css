@@ -1,0 +1,168 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    border-radius: 13px 13px 0px 0px;
+    width: 320px;
+    height: 50px;
+}
+
+.tabButtonContainer{
+    flex-grow: 1;
+    display: flex;
+}
+
+.tabButton{
+    background-color: transparent;
+    border:none;
+    margin-left: 16px;
+    margin-top: 18px;
+}
+.tabButton:hover{
+    cursor: pointer;
+}
+.tabButtonText{
+    font-family: 'Raleway';
+    font-size: 13px;
+    font-weight: bold;
+    color: #2F3336;
+    margin-bottom: 10px;
+}
+
+.tabButtonSelected{
+    color:#ECB641;
+    font-family: 'Raleway';
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tabButtonSelectedIndicator{
+    height: 3px ;
+    background-color:  #ECB641;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    align-self: flex-end;
+}
+
+.searchIcon{
+    margin-right: 20px;
+}
+
+
+/* Projects */
+.projectsContainer{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-top: 5px;
+    width: 320px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    max-height: 100vh;
+    overflow: scroll;
+}
+
+.singleProject{
+    margin-top: 16px;
+}
+
+.targetLocation{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.projectInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.target{
+    font-family: 'Raleway';
+    font-size: 12px;
+    color: #2F3336;
+    font-weight: bold;
+    margin-right: 4px;
+}
+.projectTPOName, .location {
+    font-family: 'Raleway';
+    font-size: 12px;
+    color: #2F3336;
+    margin-top: 10px;
+}
+
+.costButton{
+    background-color: #F2F2F7;
+    width: 72px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 11px;
+    color: #87B738;
+    font-weight: bold;
+    font-family: 'Raleway';
+    font-size: 14px;
+}
+
+.perTree{
+    font-family: 'Raleway';
+    font-size: 9px;
+    color: #2F3336;
+    margin-top: 5px;
+}
+
+.projectCost{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Progress Bar */
+.progressBar{
+    height: 4px;
+    width: 100%;
+    background-color: #D5D5D5;
+}
+
+.progressBarHighlight{
+    height: 4px;
+    background-color: #87B738;
+    width: 30%;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.projectImage{
+    height: 160px;
+    width: 100%;
+    background-color: #ECB641;
+    position: relative;
+    background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
+}
+
+.projectType{
+    font-family: 'Raleway';
+    font-size: 7px;
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    bottom: 36px;
+    left: 7px;
+    text-transform: uppercase;
+}
+
+.projectName{
+    font-family: 'Raleway';
+    font-size: 18px;
+    color: #fff;
+    position: absolute;
+    bottom: 12px;
+    left: 7px;
+}
