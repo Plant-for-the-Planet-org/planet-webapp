@@ -1,5 +1,7 @@
+@import './../../../../theme/theme';
+
 .container{
-    background-color: white;
+    background-color: $white;
     border-radius: 7px;
     padding: 20px;
     max-width: 412px;
@@ -23,10 +25,10 @@
 }
 
 .headerTitle{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
     font-size: 27px;
-    color: #2F3336;
+    color: $primaryFontColor;
     margin-left: 20px;
 }
 
@@ -47,9 +49,9 @@
 }
 
 .isCompanyText{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
 }
 
  /* Tree Count and Cost  */
@@ -63,17 +65,17 @@
 }
 
 .totalCost{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
     font-size: 16px;
-    color: #87B738;
+    color: $primaryColor;
 }
 
 .totalCostText{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
     font-size: 16px;
-    color: #2F3336;
+    color: $primaryFontColor;
     margin-left: 6px;
 }
 
@@ -86,24 +88,24 @@
 }
 
 .actionButtonsText{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
     margin-left: 24px;
     margin-right: 24px;
 }
 .continueButton{
-    background-color: #87B738;
+    background-color: $primaryColor;
     border-radius: 6px;
     padding: 8px 40px;
-    color: white;
-    font-family: 'Raleway';
-    font-size: 14px;
+    color: $white;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
     font-weight: 600;
 }
 
 .horizontalLine{
     height: 1px;
-    background-color: #D5D5D5;
+    background-color: $dividerColor;
     margin-top: 20px;
 }

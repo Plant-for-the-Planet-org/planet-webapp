@@ -1,7 +1,7 @@
-
+@import './../../../../theme/theme';
 
 .container{
-    background-color: white;
+    background-color:$white;
     border-radius: 7px;
     padding: 20px;
     max-width: 412px;
@@ -24,17 +24,17 @@
     cursor: pointer;
 }
 .headerTitle{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
     font-size: 27px;
-    color: #2F3336;
+    color: $primaryFontColor;
     margin-left: 20px;
 }
 
 .plantProjectName{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
     margin-top: 20px;
 }
 
@@ -46,10 +46,10 @@
 }
 
 .currency{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
-    font-size: 14px;
-    color: #87B738;
+    font-size: $fontSubTitleSize;
+    color: $primaryColor;
 }
 
 .downArrow{
@@ -58,9 +58,9 @@
 
 .rate{
     margin-left: 9px;
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
 }
 
 .isGiftDonation{
@@ -72,9 +72,9 @@
 }
 
 .isGiftDonationText{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #4D5153;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $highlightBackground;
 }
 
 .selectTreeCount{
@@ -100,27 +100,27 @@
 }
 
 .treeCountOptionSelected{
-    border: 1px solid #87B738;
+    border: 1px solid $primaryColor;
 }
 .treeCountOption:hover, .treeCountOptionSelected:hover {
     cursor: pointer;
 }
 .treeCountOption > .treeCountOptionTrees{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
 }
 
 .treeCountOptionSelected > .treeCountOptionTrees{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
-    font-size: 14px;
-    color: #87B738;
+    font-size: $fontSubTitleSize;
+    color: $primaryColor;
 }
 
 .customTreeInput{
     border:0px;
-    border-bottom: 1px solid #87B738;
+    border-bottom: 1px solid $primaryColor;
 }
 
 /* Tax Deductible */
@@ -133,9 +133,9 @@
 }
 
 .isTaxDeductibleText{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
 }
 
 
@@ -146,9 +146,9 @@
 }
 
 .taxDeductibleCountry{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
 }
 
 .downArrow{
@@ -164,17 +164,17 @@
 }
 
 .totalCost{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
     font-size: 16px;
-    color: #87B738;
+    color: $primaryColor;
 }
 
 .totalCostText{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-weight: bold;
     font-size: 16px;
-    color: #2F3336;
+    color: $primaryFontColor;
     margin-left: 6px;
 }
 
@@ -187,19 +187,19 @@
 }
 
 .actionButtonsText{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
     margin-left: 24px;
     margin-right: 24px;
 }
 .continueButton{
-    background-color: #87B738;
+    background-color: $primaryColor;
     border-radius: 6px;
     padding: 8px 40px;
-    color: white;
-    font-family: 'Raleway';
-    font-size: 14px;
+    color: $white;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
     font-weight: 600;
 }
 
@@ -212,9 +212,9 @@
 /* Gift Trees Styles */
 
 .singleGiftTitle{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color: #2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color: $primaryFontColor;
     text-transform: uppercase;
     margin-top: 20px;
     font-weight: 600;

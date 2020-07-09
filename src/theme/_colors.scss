@@ -1,21 +1,12 @@
+$darkmode:'false';
 
-@if $darkmode {
-    $primaryColor:#87B738;
-    $primaryFontColor:#2F3336;
-    $dividerColor:#D5D5D5;
-    $secondaryColor:#ECB641;
-    $blueishGrey:#F2F2F7;
-    $backgroundColor:#fff;
-    $highlightBackground:#4D5153;
-}@else{
-    $primaryColor:#87B738;
-    $primaryFontColor:#2F3336;
-    $dividerColor:#D5D5D5;
-    $secondaryColor:#ECB641;
-    $blueishGrey:#F2F2F7;
-    $backgroundColor:#fff;
-    $highlightBackground:#4D5153;
-}
+$primaryColor:#87B738;
+$primaryFontColor:#2F3336;
+$dividerColor:#D5D5D5;
+$secondaryColor:#ECB641;
+$blueishGrey:#F2F2F7;
+$backgroundColor:#fff;
+$highlightBackground:#4D5153;
 
 $white:#fff;
 $black:#000;

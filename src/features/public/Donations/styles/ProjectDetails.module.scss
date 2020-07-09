@@ -1,10 +1,10 @@
-
+@import './../../../../theme/theme';
 
 /* Projects */
 .projectContainer{
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: $white;
     width: 320px;
     padding-bottom: 16px;
     max-height: 86vh;
@@ -31,37 +31,37 @@
 }
 
 .target{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-size: 12px;
-    color: #2F3336;
+    color: $primaryFontColor;
     font-weight: bold;
     margin-right: 4px;
 }
 .projectTPOName, .location {
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-size: 12px;
-    color: #2F3336;
+    color: $primaryFontColor;
     margin-top: 10px;
 }
 
 .costButton{
-    background-color: #F2F2F7;
+    background-color: $blueishGrey;
     width: 72px;
     height: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 11px;
-    color: #87B738;
+    color: $primaryColor;
     font-weight: bold;
-    font-family: 'Raleway';
-    font-size: 14px;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
 }
 
 .perTree{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-size: 9px;
-    color: #2F3336;
+    color: $primaryFontColor;
     margin-top: 5px;
 }
 
@@ -75,12 +75,12 @@
 .progressBar{
     height: 4px;
     width: 100%;
-    background-color: #D5D5D5;
+    background-color: $dividerColor;
 }
 
 .progressBarHighlight{
     height: 4px;
-    background-color: #87B738;
+    background-color: $primaryColor;
     width: 30%;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -89,7 +89,7 @@
 .projectImage{
     height: 160px;
     width: 100%;
-    background-color: #ECB641;
+    background-color: $secondaryColor;
     position: relative;
     border-top-right-radius: 13px;
     border-top-left-radius: 13px;
@@ -98,9 +98,9 @@
 
 
 .projectName{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-size: 18px;
-    color: #fff;
+    color: $white;
     position: absolute;
     bottom: 12px;
     left: 16px;
@@ -112,10 +112,10 @@
     margin-top: 10px;
 }
 .calculatedRating{
-    font-family: 'Raleway';
-    font-size: 14px;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
     font-weight: bold;
-    color:#2F3336;
+    color:$primaryFontColor;
 }
 
 .ratingButton{
@@ -123,9 +123,9 @@
 }
 
 .projectDescription{
-    font-family: 'Raleway';
-    font-size: 14px;
-    color:#2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color:$primaryFontColor;
     line-height: 21px;
 }
 
@@ -147,36 +147,36 @@
     margin-top: 35px;
 }
 .infoTitle{
-    font-family: 'Raleway';
+    font-family: $primaryFontFamily;
     font-size: 10px;
-    color:#2F3336;
+    color:$primaryFontColor;
     font-weight: bold;
     text-transform: uppercase;
 }
 .infoText{
     margin-top: 9px;
-    font-family: 'Raleway';
-    font-size: 14px;
-    color:#2F3336;
+    font-family: $primaryFontFamily;
+    font-size: $fontSubTitleSize;
+    color:$primaryFontColor;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .infoTextButton{
-    color:#87B738;
+    color:$primaryColor;
 }
 .infoTextButton:hover{
     cursor: pointer;
 }
 
 .speciesProgress{
-    background-color: #87B738;
+    background-color: $primaryColor;
     height: 2px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     margin-bottom: -6px;
-    margin-top: 14px;
+    margin-top: $fontSubTitleSize;
 }
 
 .contactDetailsRow{

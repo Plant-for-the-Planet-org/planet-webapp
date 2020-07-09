@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styles from './../styles/Projects.module.css'
+import styles from './../styles/Projects.module.scss'
 import SearchIcon from './../../../../assets/images/icons/SearchIcon'
 import AllProjects from '../components/AllProjects'
 import FeaturedProjects from '../components/FeaturedProjects'

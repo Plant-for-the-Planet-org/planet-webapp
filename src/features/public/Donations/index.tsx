@@ -14,10 +14,10 @@ function Donate({}: Props): ReactElement {
     return (
         <>
         <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <ProjectDetails/>
+            {/* <ProjectDetails/> */}
         </div>
         <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <Projects/>
+            {/* <Projects/> */}
         </div>
         <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
             <TreeDonation/>

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styles from './../styles/ProjectDetails.module.css'
+import styles from './../styles/ProjectDetails.module.scss'
 import MaterialRatings from '../../../common/InputTypes/Ratings';
 import Plane from '../../../../assets/images/icons/project/Plane';
 import Car from '../../../../assets/images/icons/project/Car';

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styles from './../styles/ContactDetails.module.css'
+import styles from './../styles/ContactDetails.module.scss'
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow'
 import Switch from '@material-ui/core/Switch';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild'
