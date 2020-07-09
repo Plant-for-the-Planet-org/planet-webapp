@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styles from './../styles/TreeDonation.module.css'
+import styles from './../styles/TreeDonation.module.scss'
 import Close from './../../../../assets/images/icons/headerIcons/close'
 import DownArrow from './../../../../assets/images/icons/DownArrow'
 import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack'
