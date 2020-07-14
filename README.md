@@ -22,7 +22,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Development Process
 
-This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel BOT to the production system. There are currently some more protected branches and one tag (`staging` with mockup data, `test` with test data and a the tag `devel` also with test data) also build by Vercel BOT automatically and mapped to test backends using the branch/tag name as subdomain.
+This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel BOT to the production system. There are currently some more protected branches also build by Vercel BOT automatically and mapped to test backends using the branch name as subdomain.
 
 ## Versioning
 
