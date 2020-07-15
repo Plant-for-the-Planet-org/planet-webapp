@@ -7,30 +7,18 @@ import Projects from './screens/Projects'
 import ProjectDetails from './screens/ProjectDetails'
 
 interface Props {
-    
+    projects:any
 }
 
-function Donate({}: Props): ReactElement {
+function Donate({projects}: Props): ReactElement {
+    const ProjectsProps = {
+        projects : projects
+      }
     return (
         <>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            {/* <ProjectDetails/> */}
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            {/* <Projects/> */}
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <TreeDonation/>
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <ContactDetails/> 
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <PaymentDetails/>
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <ThankYou/>
-        </div>
+            <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
+            <Projects {...ProjectsProps} />
+            </div>
         </>
     )
 }

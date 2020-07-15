@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react'
 import styles from './../styles/Projects.module.scss'
 
 interface Props {
-    
+    project:any
 }
 
-export default function ProjectSnippet({}: Props): ReactElement {
+export default function ProjectSnippet({project}: Props): ReactElement {
     return (
         <div className={styles.singleProject}>
                     <div className={styles.projectImage}>
@@ -13,7 +13,7 @@ export default function ProjectSnippet({}: Props): ReactElement {
                             Tree Planting
                         </div>
                         <div className={styles.projectName}>
-                            Acción Andina
+                            {project.properties.name}
                         </div>
                     </div>
                     <div className={styles.progressBar}>
@@ -23,19 +23,19 @@ export default function ProjectSnippet({}: Props): ReactElement {
                         <div className={styles.projectData}>
                             <div className={styles.targetLocation}>
                                 <div className={styles.target}>
-                                    102K planted •
+                                    {project.properties.countPlanted} planted •
                                 </div>
                                 <div className={styles.location}>
                                     Chile
                                 </div>   
                             </div>
                             <div className={styles.projectTPOName}>
-                                By Global Forest Generation
+                                By {project.properties.tpoName}
                             </div>
                         </div>
                         <div className={styles.projectCost}>
                             <div className={styles.costButton}>
-                                    $1.78
+                                    $ {project.properties.treeCost}
                             </div>
                             <div className={styles.perTree}>
                                 per tree
