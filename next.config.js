@@ -6,7 +6,10 @@ module.exports ={
   },
   serverRuntimeConfig: {
     // Will only be available on the server side
-    API_ENDPOINT: 'https://app-development.plant-for-the-planet.org'
+    API_ENDPOINT: 'https://app-development.plant-for-the-planet.org',
+    OAUTH0_DOMAIN: "",
+    CLIENT_SECRET: "",
+    CLIENT_ID: "",
   },
   publicRuntimeConfig: {
     // Will be available on both server and client

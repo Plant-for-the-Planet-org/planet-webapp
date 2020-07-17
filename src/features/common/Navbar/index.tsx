@@ -9,11 +9,15 @@ import Donate from '../../../assets/images/navigation/Donate'
 import Me from '../../../assets/images/navigation/Me'
 
 import { useRouter } from 'next/router'
+import { useSession, getSession, signin, signout } from 'next-auth/client'
 
 import Link from 'next/link'
 import styles from './Navbar.module.css'
 export default function NavbarComponent(props:any) {
     const router = useRouter()
+    const session = useSession()[0]
+    console.log(session)
+
     let menuItems = [
         {id:1,name:'World',path:'/',icon:<Globe color={router.pathname === '/' ?'#89b35a' :'#2f3336'} />},
         {id:2,name:'Gift Trees',path:'/gift',icon:<Gift color={router.pathname === '/gift' ?'#89b35a' :'#2f3336'}/>},
@@ -51,7 +55,7 @@ export default function NavbarComponent(props:any) {
                         <Link href={'/me'} >
                             <div className={styles.link_container}>
                                 <div className={styles.link_icon}>
-                                    <Me/>
+                                    <Me src={session ? session.user.image : session}/>
                                 </div>
                                 <p>Me</p>
                             </div>

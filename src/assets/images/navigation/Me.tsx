@@ -1,7 +1,11 @@
 import React from "react";
 
 function Me(props:any) {
-  return (
+  const source = props.src;
+  if (props.src) {
+    return (<img width="24" height="24" src={props.src}/>);
+  } else {
+    return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -16,7 +20,8 @@ function Me(props:any) {
         data-name="Ellipse 120"
       ></circle>
     </svg>
-  );
+    );
+  }
 }
 
 export default Me;

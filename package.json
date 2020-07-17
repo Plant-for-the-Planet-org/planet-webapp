@@ -10,9 +10,11 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "@types/react-redux": "^7.1.9",
     "@zeit/next-sass": "^1.0.1",
     "bootstrap": "^4.5.0",
     "next": "9.4.4",
+    "next-auth": "^2.2.0",
     "next-i18next": "^4.5.0",
     "next-redux-wrapper": "^6.0.2",
     "node-sass": "^4.14.1",
