@@ -7,6 +7,7 @@ import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import InfoIcon from '../../../../assets/images/icons/donation/InfoIcon';
 import SepaIcon from '../../../../assets/images/icons/donation/SepaIcon';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
+import PaypalButton from '../components/PaypalButton';
 interface Props {
     
 }
@@ -14,6 +15,8 @@ interface Props {
 function PaymentDetails({}: Props): ReactElement {
 
     const [saveCardDetails,setSaveCardDetails] = React.useState(false);
+    const [paypalEnabled, setPaypalEnabled] = React.useState(false);
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -67,7 +70,7 @@ function PaymentDetails({}: Props): ReactElement {
 
             <div className={styles.paymentModeContainer}>
                 <div className={styles.paymentModeHeader}>
-                    <PaypalIcon/>
+                    <PaypalButton/>
                     <div className={styles.paymentModeTitle}>Paypal</div>
                     <div className={styles.paymentModeFee}>
                         <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
