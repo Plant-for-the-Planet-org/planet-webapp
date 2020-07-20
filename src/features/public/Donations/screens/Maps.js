@@ -1,31 +1,39 @@
-import React from 'react'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import React, { Component } from 'react'
+import * as esri from 'esri-leaflet';
+import { Map, TileLayer, addTo } from 'react-leaflet';
+export default function Mappage() {
+  const mapRef = React.useRef(null);
+  const [map,setMap] = React.useState(null)
+  
 
+  React.useEffect(() => {
+    if(mapRef.current !== null){
+      setMap(mapRef.current.leafletElement)
+    }
+    if(map !== undefined && map !== null){
+      esri.basemapLayer('Gray').addTo(map);
+      esri.tiledMapLayer({
+        url: 'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer',
+         maxZoom: 7,
+        minZoom: 1
+      }).addTo(map);
+  
+      esri.tiledMapLayer({
+        url: 'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V2/MapServer',
+        minZoom: 1
+      }).addTo(map);
+    }
 
-export default function SimpleExample ()  {
-  let state = {
-    lat: 51.505,
-    lng: -0.09,
-    zoom: 13,
-  }
-    const position = [state.lat, state.lng]
+  },[map]);
+  
 
-   
-
-
-    return (
-      <Map style={{height:'300px',width:'80%'}} center={position} zoom={state.zoom} zoomControl={false}>
-        <TileLayer
-          url="https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer"
-          attribution="Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012"
-          tms={true}
-        />
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-      </Map>
-    )
-
+const center = [37.7833, -122.4167];
+  return (
+    <Map
+        style={{height: '90vh'}}
+        center={center}
+        zoom="2"
+        ref={mapRef}>
+    </Map>
+  )
 }
