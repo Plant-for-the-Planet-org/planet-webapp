@@ -34,12 +34,16 @@ export default function ProjectSnippet({project}: Props): ReactElement {
                             </div>
                         </div>
                         <div className={styles.projectCost}>
-                            <div className={styles.costButton}>
-                                    $ {project.properties.treeCost}
-                            </div>
-                            <div className={styles.perTree}>
-                                per tree
-                            </div>
+                            {project.properties.treeCost ? (
+                                <>
+                                    <div className={styles.costButton}>
+                                            {project.properties.currency === 'usd' ? '$' : project.properties.currency === 'eur' ? '€' : project.properties.currency} {project.properties.treeCost.toFixed(2)}
+                                    </div>
+                                    <div className={styles.perTree}>
+                                        per tree
+                                    </div>
+                                </>
+                            ) : null}
                         </div>
                     </div>
                 </div>
