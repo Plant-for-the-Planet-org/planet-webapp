@@ -7,12 +7,11 @@ interface Props {
 }
 
 export default function ProjectSnippet({project}: Props): ReactElement {
-    console.log(project.properties.image);
     return (
         <div className={styles.singleProject}>
                     <div className={styles.projectImage}>
-                      { project.properties.image ?
-                        <img className={styles.projectImageFile} src={getImageUrl('project', 'large',project.properties.image)} />
+                        {project.properties.image ?
+                            <img className={styles.projectImageFile} src={getImageUrl('project', 'large',project.properties.image)} />
                         : null }
                         <div className={styles.projectType}>
                             Tree Planting
