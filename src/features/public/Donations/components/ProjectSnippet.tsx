@@ -2,16 +2,18 @@ import React, { ReactElement } from 'react'
 import styles from './../styles/Projects.module.scss'
 import { getImageUrl } from '../../../../utils/getImageURL'
 
+
 interface Props {
     project:any
 }
 
 export default function ProjectSnippet({project}: Props): ReactElement {
+    const ImageSource = project.properties.image ? getImageUrl('project', 'large',project.properties.image) : ''; 
     return (
         <div className={styles.singleProject}>
                     <div className={styles.projectImage}>
                         {project.properties.image ?
-                            <img className={styles.projectImageFile} src={getImageUrl('project', 'large',project.properties.image)} />
+                            <img alt={project.properties.name} className={styles.projectImageFile} src={ImageSource} />
                         : null }
                         <div className={styles.projectType}>
                             Tree Planting
