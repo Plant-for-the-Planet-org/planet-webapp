@@ -1,19 +1,25 @@
 import React, { ReactElement } from 'react'
 import styles from './../styles/Projects.module.scss'
+import { getImageUrl } from '../../../../utils/getImageURL'
+
 
 interface Props {
-    
+    project:any
 }
 
-export default function ProjectSnippet({}: Props): ReactElement {
+export default function ProjectSnippet({project}: Props): ReactElement {
+    const ImageSource = project.properties.image ? getImageUrl('project', 'large',project.properties.image) : ''; 
     return (
         <div className={styles.singleProject}>
                     <div className={styles.projectImage}>
+                        {project.properties.image ?
+                            <img alt={project.properties.name} className={styles.projectImageFile} src={ImageSource} />
+                        : null }
                         <div className={styles.projectType}>
                             Tree Planting
                         </div>
                         <div className={styles.projectName}>
-                            Acción Andina
+                            {project.properties.name}
                         </div>
                     </div>
                     <div className={styles.progressBar}>
@@ -23,23 +29,27 @@ export default function ProjectSnippet({}: Props): ReactElement {
                         <div className={styles.projectData}>
                             <div className={styles.targetLocation}>
                                 <div className={styles.target}>
-                                    102K planted •
+                                    {project.properties.countPlanted} planted •
                                 </div>
                                 <div className={styles.location}>
                                     Chile
                                 </div>   
                             </div>
                             <div className={styles.projectTPOName}>
-                                By Global Forest Generation
+                                By {project.properties.tpoName}
                             </div>
                         </div>
                         <div className={styles.projectCost}>
-                            <div className={styles.costButton}>
-                                    $1.78
-                            </div>
-                            <div className={styles.perTree}>
-                                per tree
-                            </div>
+                            {project.properties.treeCost ? (
+                                <>
+                                    <div className={styles.costButton}>
+                                            {project.properties.currency === 'usd' ? '$' : project.properties.currency === 'eur' ? '€' : project.properties.currency} {project.properties.treeCost.toFixed(2)}
+                                    </div>
+                                    <div className={styles.perTree}>
+                                        per tree
+                                    </div>
+                                </>
+                            ) : null}
                         </div>
                     </div>
                 </div>

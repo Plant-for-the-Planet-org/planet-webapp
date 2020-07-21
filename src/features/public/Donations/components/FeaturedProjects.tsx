@@ -2,15 +2,20 @@ import React, { ReactElement } from 'react'
 import ProjectSnippet from './ProjectSnippet'
 
 interface Props {
-    
+    projects:any
 }
 
-function FeaturedProjects({}: Props): ReactElement {
+function FeaturedProjects({projects}: Props): ReactElement {
     return (
         <div>
-            <ProjectSnippet/>
-            <ProjectSnippet/>
-            <ProjectSnippet/>
+            {
+                projects.map((project: any) => {
+                    return(
+                        <ProjectSnippet key={project.properties.id} project={project} />
+                    )
+                })
+            }
+            
         </div>
     )
 }

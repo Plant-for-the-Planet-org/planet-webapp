@@ -2,9 +2,6 @@
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
-// This is just to test the env vairables
-console.log('API ENDPOINT',publicRuntimeConfig.API_ENDPOINT);
-
 export const initialProps = {
   mediaPath: publicRuntimeConfig.mediaPath // relative URI on server, where images are located (further sub-paths must be specified in application)
 };

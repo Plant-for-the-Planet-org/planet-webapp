@@ -5,11 +5,29 @@ import AllProjects from '../components/AllProjects'
 import FeaturedProjects from '../components/FeaturedProjects'
 
 interface Props {
-    
+    projects:any
 }
 
-function Projects({}: Props): ReactElement {
+function Projects({projects}: Props): ReactElement {
     const [selectedTab,setSelectedTab] = React.useState('featured')
+
+    function getProjects (projects: any[],type: string){
+        if(type==='featured'){
+           return projects.filter((project: { properties: { isFeatured: boolean } }) => project.properties.isFeatured === true);
+        }else if (type==='all'){
+            return projects
+        }
+    }
+
+    const allProjects = React.useMemo(() => getProjects(projects,'all'), [projects]);
+    const featuredProjects = React.useMemo(() => getProjects(projects,'featured'), [projects]);
+    
+    const AllProjectsProps = {
+        projects : allProjects
+      }
+      const FeaturedProjectsProps = {
+        projects : featuredProjects
+      }
     return (
         <div className={styles.container}>
             
@@ -32,7 +50,7 @@ function Projects({}: Props): ReactElement {
 
 
             <div className={styles.projectsContainer}>
-                {selectedTab === 'featured' ? <AllProjects/> :<FeaturedProjects/>}
+                {selectedTab === 'all' ? <AllProjects {...AllProjectsProps}/> :<FeaturedProjects {...FeaturedProjectsProps}/>}
             </div>
 
         </div>
