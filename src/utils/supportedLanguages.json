@@ -1,0 +1,30 @@
+[
+  {
+    "langCode": "en",
+    "languageName": "English"
+  },
+  {
+    "langCode": "es",
+    "languageName": "Spanish"
+  },
+  {
+    "langCode": "fr",
+    "languageName": "French"
+  },
+  {
+    "langCode": "it",
+    "languageName": "Italia"
+  },
+  {
+    "langCode": "pt-br",
+    "languageName": "Brazilian Portuguese"
+  },
+  {
+    "langCode": "de",
+    "languageName": "German"
+  },
+  {
+    "langCode": "sv",
+    "languageName": "Swedish"
+  }
+]

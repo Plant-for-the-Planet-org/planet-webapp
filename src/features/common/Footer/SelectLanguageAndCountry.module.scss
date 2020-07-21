@@ -1,0 +1,44 @@
+@import '../../../theme/theme';
+
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.modal {
+  background-color: #ffffff;
+  border: 0px;
+  border-radius: 8px;
+  max-height: 90vh;
+  overflow-y: scroll;
+}
+
+.sectionHead {
+  font-family: $primaryFontFamily;
+  font-size: 14px;
+  font-weight: bold;
+  color: $primaryFontColor;
+  margin: 0px;
+}
+
+.buttonContainer {
+  border-top: 1px solid $dividerColor;
+  padding: 6px 0px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonContainer > p {
+  color: $primaryColor;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 14px;
+  cursor: pointer;
+  margin: 0px;
+}
+
+.buttonContainer > p:first-child {
+  margin-right: 20px;
+}
