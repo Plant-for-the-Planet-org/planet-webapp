@@ -12,6 +12,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@types/esri-leaflet": "^2.1.6",
     "@types/react-leaflet": "^2.5.2",
+    "@types/react-redux": "^7.1.9",
     "@zeit/next-sass": "^1.0.1",
     "bootstrap": "^4.5.0",
     "esri-leaflet": "^2.4.1",

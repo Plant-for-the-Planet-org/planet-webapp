@@ -5,7 +5,6 @@ import { useTheme } from "../../../utils/themeContext";
 
 export default function Layout(props:any) {
     const { theme } = useTheme();
-    console.log(theme)
     return (
         <>
             <Header/>

@@ -12,7 +12,7 @@ function AllProjects({projects}: Props): ReactElement {
              {
                 projects.map((project: any) => {
                     return(
-                        <ProjectSnippet project={project} />
+                        <ProjectSnippet key={project.properties.id} project={project} />
                     )
                 })
             }

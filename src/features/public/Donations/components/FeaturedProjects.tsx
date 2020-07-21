@@ -6,13 +6,12 @@ interface Props {
 }
 
 function FeaturedProjects({projects}: Props): ReactElement {
-
     return (
         <div>
             {
                 projects.map((project: any) => {
                     return(
-                        <ProjectSnippet project={project} />
+                        <ProjectSnippet key={project.properties.id} project={project} />
                     )
                 })
             }

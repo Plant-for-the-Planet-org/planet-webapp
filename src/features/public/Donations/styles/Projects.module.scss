@@ -150,6 +150,12 @@
     background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
 }
 
+.projectImageFile{
+    height: 160px;
+    width: 100%;
+    position: relative;
+}
+
 .projectType{
     font-family: $primaryFontFamily;
     font-size: 7px;

@@ -17,7 +17,7 @@ function Donate({projects}: Props): ReactElement {
     return (
         <>
             <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <Projects {...ProjectsProps} />
+                <Projects {...ProjectsProps} />
             </div>
         </>
     )
