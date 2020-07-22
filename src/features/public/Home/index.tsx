@@ -3,6 +3,8 @@ import styles from './Home.module.scss'
 import LazyLoad from 'react-lazyload';
 import Youtube from './../../../assets/images/home/Youtube'
 import { Container,Row,Col } from 'react-bootstrap';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 
 import MaterialTextFeild from './../../common/InputTypes/MaterialTextFeild'
 import MaterialTextFeildButton from './../../common/InputTypes/MaterialTextFieldButton'
@@ -165,9 +167,24 @@ export default function Home() {
         </Row>
         <Row>
           <Col className={styles.subscribeForm} lg={12}>
-          <MaterialTextFeildButton
-                label="Email"
-                variant="outlined"
+            <MaterialTextFeild
+              label="Email"
+              variant="outlined"
+              InputProps={{
+                  endAdornment:
+                  <InputAdornment position="end">
+                      <IconButton
+                      aria-label="toggle password visibility"
+                      //   onClick={handleClickShowPassword}
+                      // onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      >
+                      <div style={{backgroundColor:'#87B738',fontFamily:'Raleway',fontSize:'14px',color:'white',borderRadius:'9px',textAlign:'center',padding:'9px 30px'}}>
+                          Subscribe
+                      </div> 
+                      </IconButton>
+                  </InputAdornment>
+              }}
             />
             <p className={styles.subscribePara}>You’ll hear from us once or twice a month.</p>
           </Col>
