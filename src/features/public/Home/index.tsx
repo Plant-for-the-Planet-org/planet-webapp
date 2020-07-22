@@ -174,8 +174,8 @@ export default function Home() {
                   endAdornment:
                   <InputAdornment position="end">
                       <IconButton
-                      aria-label="toggle password visibility"
-                      //   onClick={handleClickShowPassword}
+                      aria-label="subscribe"
+                      // onClick={handleClickShowPassword}
                       // onMouseDown={handleMouseDownPassword}
                       edge="end"
                       >
