@@ -30,11 +30,12 @@ function Projects({projects}: Props): ReactElement {
       }
     return (
         <div className={styles.container}>
+            <div className={styles.cardContainer}>
             
             <div className={styles.header}>
                 <div className={styles.tabButtonContainer}>
                     <div className={styles.tabButton} onClick={()=>setSelectedTab('featured')}>
-                        <div className={selectedTab === 'featured' ? styles.tabButtonSelected : styles.tabButtonText}>Featured</div>
+                        <div className={selectedTab === 'featured' ? styles.tabButtonSelected : styles.tabButtonText}>Transparent Projects</div>
                         {selectedTab === 'featured' ? <div className={styles.tabButtonSelectedIndicator} /> : null}    
                     </div>
 
@@ -51,6 +52,7 @@ function Projects({projects}: Props): ReactElement {
 
             <div className={styles.projectsContainer}>
                 {selectedTab === 'all' ? <AllProjects {...AllProjectsProps}/> :<FeaturedProjects {...FeaturedProjectsProps}/>}
+            </div>
             </div>
 
         </div>
