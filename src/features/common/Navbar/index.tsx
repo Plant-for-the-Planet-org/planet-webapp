@@ -1,30 +1,25 @@
 import React from 'react'
 import {Navbar,Nav} from 'react-bootstrap'
 import LOGO from '../../../assets/images/PlanetLogo'
-import Globe from '../../../assets/images/navigation/Globe'
-import Map from '../../../assets/images/navigation/Map'
+import Leaderboard from '../../../assets/images/navigation/Leaderboard'
 import Donate from '../../../assets/images/navigation/Donate'
 import Me from '../../../assets/images/navigation/Me'
 
 import { useRouter } from 'next/router'
 
 import Link from 'next/link'
-import styles from './Navbar.module.css'
+import styles from './Navbar.module.scss'
 export default function NavbarComponent(props:any) {
     const router = useRouter()
     let menuItems = [
-        {id:1,name:'World',path:'/',icon:<Globe color={router.pathname === '/' ?'#89b35a' :'#2f3336'} />},
-        {id:3,name:'Donate',path:'/donate',icon:<Donate color={router.pathname === '/donate' ?'#89b35a' :'#2f3336'} />},
-        {id:5,name:'Map',path:'/map',icon:<Map color={router.pathname === '/map' ?'#89b35a' :'#2f3336'} />},
+        {id:1,name:'About us',path:'/',icon:<LOGO color={router.pathname === '/' ?'#89b35a' :'#2f3336'} />},
+        {id:2,name:'Donate',path:'/donate',icon:<Donate color={router.pathname === '/donate' ?'#89b35a' :'#2f3336'} />},
+        {id:3,name:'Leaderboard',path:'/leaderboard',icon:<Leaderboard color={router.pathname === '/leaderboard' ?'#89b35a' :'#2f3336'} />},
+        {id:4,name:'Me',path:'/me',icon:<Me color={router.pathname === '/me' ?'#89b35a' :'#2f3336'} />}
     ]
     return (
         <>
-        <Navbar className={styles.top_nav} bg={props.theme === 'theme-light' ? 'light' : 'dark' } variant={props.theme === 'theme-light' ? 'light' : 'dark' }>
-            <Navbar.Brand href="/">
-               <div style={{width:50,height:43}}>
-                    <LOGO/>
-               </div>   
-            </Navbar.Brand>
+        <Navbar fixed="top" className={styles.top_nav} bg={props.theme === 'theme-light' ? 'light' : 'dark' } variant={props.theme === 'theme-light' ? 'light' : 'dark' }>
 
                 <Nav className={"d-none d-md-flex flex-row "+styles.nav_container}>
                     {menuItems.map(item=>{
@@ -41,19 +36,9 @@ export default function NavbarComponent(props:any) {
                         </Nav.Link>
                         )
                     })}
+                    
                 </Nav>
-                <Nav className={styles.nav_container}>
-                    <Nav.Link>
-                        <Link href={'/me'} >
-                            <div className={styles.link_container}>
-                                <div className={styles.link_icon}>
-                                    <Me/>
-                                </div>
-                                <p>Me</p>
-                            </div>
-                        </Link>
-                    </Nav.Link>
-                </Nav>
+                
         </Navbar>
 
         <Navbar fixed="bottom" className="d-md-none" bg="light" expand="lg">
