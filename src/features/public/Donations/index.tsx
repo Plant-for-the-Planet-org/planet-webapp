@@ -5,7 +5,13 @@ import PaymentDetails from './screens/PaymentDetails'
 import ThankYou from './screens/ThankYou'
 import Projects from './screens/Projects'
 import ProjectDetails from './screens/ProjectDetails'
+import dynamic from 'next/dynamic'
 
+
+const MapLayout = dynamic(
+    () => import('./screens/Maps'),
+    { ssr: false }
+  )
 interface Props {
     projects:any
 }
@@ -16,6 +22,7 @@ function Donate({projects}: Props): ReactElement {
       }
     return (
         <>
+            <MapLayout/>
             <Projects {...ProjectsProps} />
         </>
     )

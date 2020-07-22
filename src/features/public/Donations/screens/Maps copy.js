@@ -22,7 +22,6 @@ export default function Mappage() {
         url: 'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V2/MapServer',
         minZoom: 1
       }).addTo(map);
-
     }
 
   },[map]);
@@ -31,7 +30,7 @@ export default function Mappage() {
 const center = [37.7833, -122.4167];
   return (
     <Map
-        style={{height: '100vh',position:'absolute',top:'0px',right:'0px',bottom:'0px',left:'0px',width:'100%',zIndex:'4'}}
+        style={{height: '90vh'}}
         center={center}
         zoom="2"
         ref={mapRef}>
