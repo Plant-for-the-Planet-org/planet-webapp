@@ -20,13 +20,17 @@ function ProjectDetails({project}: Props): ReactElement {
 
     const progressPercentage = (project.countPlanted / project.countTarget)*100+'%';
     const ImageSource = project.image ? getImageUrl('project', 'large',project.image) : '';
-    console.log(project)
     const contactDetails = [
         {id:1,icon:<BlackTree/>,text:'View Profile',link:''},
         {id:2,icon:<WorldWeb/>,text:'edenprojects.org',link:''},
         {id:3,icon:<Location/>,text:'303 W Foothill Blvd, Unit 13 Glendora, CA 91741, USA',link:''},
         {id:4,icon:<Email/>,text:'projects@edenprojects.org',link:''},
     ]
+
+    const loadImageSource = (image:any)=>{
+        const ImageSource = getImageUrl('project', 'large',image);
+        return ImageSource;
+    }
     return (
         <div className={styles.container}>
         
@@ -96,11 +100,14 @@ function ProjectDetails({project}: Props): ReactElement {
                         </div>
                         
                         <div className={styles.projectInfoProperties}>
+                            <div className={styles.projectImageSliderContainer}>
                             {project.images ? project.images.map((image: { image: React.ReactNode; id: any; description:any })=>{
                                 return(
-                                    <img key={image.id} src={getImageUrl('project', 'large',image.image)} alt={image.description} />
+                                    <img className={styles.projectImages} key={image.id} src={loadImageSource(image.image)} alt={image.description} />
                                 )
                             }) : null}
+                            </div>
+                            
                             {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }

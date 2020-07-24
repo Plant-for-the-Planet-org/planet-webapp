@@ -11,10 +11,6 @@ interface Props {
 export default function ProjectSnippet({project}: Props): ReactElement {
     const ImageSource = project.properties.image ? getImageUrl('project', 'large',project.properties.image) : '';
     const progressPercentage = (project.properties.countPlanted / project.properties.countTarget)*100+'%';
-
-    const loadProject = ()=>{
-
-    }
     return (
         <div className={styles.singleProject}>
             <Link prefetch={false} href="/donate/[id]" as={`/donate/${project.properties.id}`}>
