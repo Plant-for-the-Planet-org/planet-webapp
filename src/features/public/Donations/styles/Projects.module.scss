@@ -161,6 +161,10 @@
     position: relative;
 }
 
+.projectImage:hover{
+    cursor: pointer;
+}
+
 .projectImageFile{
     height: 160px;
     width: 100%;

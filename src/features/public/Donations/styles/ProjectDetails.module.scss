@@ -1,5 +1,12 @@
 @import './../../../../theme/theme';
 
+.container{
+    height: 100vh;
+    width: 100vw;
+    margin-top: 60px;
+    position: relative;
+    z-index: 6;
+}
 /* Projects */
 .projectContainer{
     display: flex;
@@ -11,6 +18,9 @@
     overflow: scroll;
     border-top-right-radius: 13px;
     border-top-left-radius: 13px;
+    position: absolute;
+    top:30px;
+    left:24px;
 }
 
 .targetLocation{
@@ -81,7 +91,6 @@
 .progressBarHighlight{
     height: 4px;
     background-color: $primaryColor;
-    width: 30%;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
@@ -93,9 +102,24 @@
     position: relative;
     border-top-right-radius: 13px;
     border-top-left-radius: 13px;
-    background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
 }
 
+.projectImageFile{
+    height: 160px;
+    width: 100%;
+    position: relative;
+}
+
+.projectType{
+    font-family: $primaryFontFamily;
+    font-size: 7px;
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    bottom: 36px;
+    left: 16px;
+    text-transform: uppercase;
+}
 
 .projectName{
     font-family: $primaryFontFamily;

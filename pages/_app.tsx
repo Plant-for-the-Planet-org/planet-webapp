@@ -12,7 +12,8 @@ function PlanetWeb({Component, pageProps,config}:any) {
   const [configStore, setConfig] = useLocalStorage('config', {});
 
   React.useEffect(()=>{
-    setConfig(config)
+    // setConfig(config)
+    localStorage.setItem('config',JSON.stringify(config))
   },[config])
 
   React.useEffect(() => {
