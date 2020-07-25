@@ -18,6 +18,9 @@ function TreeDonation({}: Props): ReactElement {
     const [isTaxDeductible,setIsTaxDeductible] = React.useState(false)
     return (
         <div className={styles.container}>
+            <div className={styles.cardContainer}>
+
+           
             <div className={styles.header}>
                 <div className={styles.headerCloseIcon}>
                     <Close/> 
@@ -142,7 +145,7 @@ function TreeDonation({}: Props): ReactElement {
                 <div className={styles.actionButtonsText}>OR</div>
                 <div className={styles.continueButton}>Continue</div>
             </div>
-
+            </div>
         </div>
     )
 }

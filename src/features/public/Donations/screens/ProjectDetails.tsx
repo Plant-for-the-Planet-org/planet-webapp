@@ -12,6 +12,7 @@ import Sugar from 'sugar'
 import { getImageUrl } from '../../../../utils/getImageURL'
 
 import LazyLoad from 'react-lazyload';
+import Link from 'next/link'
 
 interface Props {
     project:any
@@ -74,10 +75,15 @@ function ProjectDetails({project}: Props): ReactElement {
                                     By Global Forest Generation
                                 </div> */}
                             </div>
+
                             <div className={styles.projectCost}>
-                                <div className={styles.costButton}>
-                                    {project.currency === 'USD' ? '$' : project.currency === 'EUR' ? '€' : project.currency} {project.treeCost.toFixed(2)}
-                                </div>
+                                <Link prefetch={false} href="/donate/[id]/pay" as={`/donate/${project.id}/pay`}>
+                                    <a>
+                                        <div className={styles.costButton}>
+                                            {project.currency === 'USD' ? '$' : project.currency === 'EUR' ? '€' : project.currency} {project.treeCost.toFixed(2)}
+                                        </div>
+                                    </a>
+                                </Link>
                                 <div className={styles.perTree}>
                                     per tree
                                 </div>

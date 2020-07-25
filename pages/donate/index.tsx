@@ -1,6 +1,6 @@
-import Layout from '../src/features/common/Layout'
-import DonateComponent from './../src/features/public/Donations'
-import { context } from '../src/utils/config';
+import Layout from '../../src/features/common/Layout'
+import DonateComponent from '../../src/features/public/Donations'
+import { context } from '../../src/utils/config';
 
 export default function Donate({projects}:any) {
   const DonateProps = {

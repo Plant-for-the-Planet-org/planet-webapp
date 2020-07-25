@@ -1,6 +1,15 @@
 @import './../../../../theme/theme';
 
 .container{
+    padding-top: 120px;
+    padding-bottom: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $black;
+}
+
+.cardContainer{
     background-color:$white;
     border-radius: 7px;
     padding: 20px;
