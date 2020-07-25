@@ -20,7 +20,13 @@ function PlanetWeb({Component, pageProps,config}:any) {
       jssStyles!.parentElement!.removeChild(jssStyles);
     }
   }, []);
-  return (
+
+  let storedConfig;
+  if(typeof(Storage) !== "undefined"){
+    storedConfig = localStorage.getItem('config');
+  }
+  return storedConfig ? (
+    
     <Provider store={store}>
       <ThemeProvider>
       <CssBaseline />
@@ -28,7 +34,7 @@ function PlanetWeb({Component, pageProps,config}:any) {
       </ThemeProvider> 
     </Provider>
     
-  );
+  ) : null ;
 }
 
 PlanetWeb.getInitialProps = async () => {
