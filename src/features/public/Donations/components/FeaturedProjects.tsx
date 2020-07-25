@@ -1,6 +1,10 @@
 import React, { ReactElement } from 'react'
-import ProjectSnippet from './ProjectSnippet'
+import dynamic from 'next/dynamic'
 
+const ProjectSnippet = dynamic(
+  () => import('./ProjectSnippet'),
+  { loading: () => <p>Loading...</p> }
+)
 interface Props {
     projects:any
 }

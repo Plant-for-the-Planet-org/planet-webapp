@@ -16,7 +16,7 @@ export default function ProjectSnippet({project}: Props): ReactElement {
             <Link prefetch={false} href="/donate/[id]" as={`/donate/${project.properties.id}`}>
                 <a>
                     <div className={styles.projectImage}>
-                        {project.properties.image ?
+                        {project.properties.image && typeof(project.properties.image) !== "undefined" ?
                             <div className={styles.projectImageFile} style={{backgroundImage:`linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`}}></div>
                         : null }
                         {project.properties.classification ? 
