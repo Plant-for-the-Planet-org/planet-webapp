@@ -1,0 +1,28 @@
+{
+    "type":"Feature",
+    "geometry":{
+        "type":"Point",
+        "coordinates":[
+            -90.117655,
+            18.639256
+        ]
+    },
+    "properties":{
+        "id":"proj_iFn4148Ppp3h8ihvzYLEqx12",
+        "_scope":"map",
+        "allowDonations":true,
+        "classification":"natural_regeneration",
+        "countPlanted":"174",
+        "countTarget":"100000",
+        "country":"MX",
+        "currency":"EUR",
+        "image":"5ea184ca77735426645370.jpg",
+        "isFeatured":true,
+        "location":"Yucat\u00e1n, Mexico",
+        "name":"Science Forest PlanBe",
+        "reviewScore":0,
+        "tpoId":"tpo_TbVbWMcUmjJr",
+        "tpoName":"Plant-for-the-Planet",
+        "treeCost":9
+    }
+}

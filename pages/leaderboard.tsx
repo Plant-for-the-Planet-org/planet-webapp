@@ -1,9 +1,9 @@
 import Layout from '../src/features/common/Layout'
 
-export default function Compete() {
+export default function Me() {
   return (
     <Layout>
-      <p>Compete</p>
+      <p>LeaderBoard</p>
     </Layout>
   )
 }

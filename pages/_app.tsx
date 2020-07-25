@@ -5,14 +5,12 @@ import {Provider} from 'react-redux'
 import {createWrapper} from 'next-redux-wrapper'
 import store from './../src/store/store'
 import { context } from '../src/utils/config';
-import useLocalStorage from '../src/utils/useLocalStorage';
 import React from 'react';
 function PlanetWeb({Component, pageProps,config}:any) {
 
-  const [configStore, setConfig] = useLocalStorage('config', {});
-
   React.useEffect(()=>{
-    setConfig(config)
+    // setConfig(config)
+    localStorage.setItem('config',JSON.stringify(config))
   },[config])
 
   React.useEffect(() => {
@@ -22,7 +20,13 @@ function PlanetWeb({Component, pageProps,config}:any) {
       jssStyles!.parentElement!.removeChild(jssStyles);
     }
   }, []);
-  return (
+
+  let storedConfig;
+  if(typeof(Storage) !== "undefined"){
+    storedConfig = localStorage.getItem('config');
+  }
+  return storedConfig ? (
+    
     <Provider store={store}>
       <ThemeProvider>
       <CssBaseline />
@@ -30,7 +34,7 @@ function PlanetWeb({Component, pageProps,config}:any) {
       </ThemeProvider> 
     </Provider>
     
-  );
+  ) : null ;
 }
 
 PlanetWeb.getInitialProps = async () => {

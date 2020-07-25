@@ -7,19 +7,26 @@ import Switch from '@material-ui/core/Switch';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild'
 
 interface Props {
-    
+    onClose:any,
+    project:any
 }
 
-function TreeDonation({}: Props): ReactElement {
+function TreeDonation({onClose,project}: Props): ReactElement {
     const treeCountOptions = [10,20,50,150]
     const [customTreeCount, setCustomTreeCountLocal] = React.useState();
     const [treeCount, setTreeCount] = React.useState(50);
     const [isGift,setIsGift] = React.useState(false);
     const [isTaxDeductible,setIsTaxDeductible] = React.useState(false)
+
+    const [currency,setCurrency] = React.useState(project.currency)
+    const [treeCost,setTreeCost] = React.useState(project.treeCost)
     return (
-        <div className={styles.container}>
+        <div className={styles.treeDonationcontainer}>
+            <div className={styles.cardContainer}>
+
+           
             <div className={styles.header}>
-                <div className={styles.headerCloseIcon}>
+                <div onClick={()=>onClose()} className={styles.headerCloseIcon}>
                     <Close/> 
                 </div>
                 <div className={styles.headerTitle}>Tree Donation</div>
@@ -32,13 +39,13 @@ function TreeDonation({}: Props): ReactElement {
 
             <div className={styles.currencyRate}>
                 <div className={styles.currency}>
-                    EUR
+                    {currency} 
                 </div>
                 <div className={styles.downArrow}>
                     <DownArrow color={"#87B738"} />
                 </div>
                 <div className={styles.rate}>
-                    1,00 per tree
+                {project.treeCost.toFixed(2)} per tree
                 </div>
             </div>
             
@@ -54,40 +61,41 @@ function TreeDonation({}: Props): ReactElement {
                 />
             </div>
 
+        {isGift ? (
             <div className={styles.giftsContainer}>
-                <div className={styles.singleGiftContainer}>
-                    <div className={styles.singleGiftTitle}>Gift Recepient</div>
-                    <div className={styles.formRow}>
-                        <MaterialTextFeild
-                            label="First Name"
-                            variant="outlined"
-                        />
-                        <div style={{width:'20px'}}></div>
-                        <MaterialTextFeild
-                            label="Last Name"
-                            variant="outlined"
-                        />
-                    </div>
-                    <div className={styles.formRow}>
-                        <MaterialTextFeild
-                            label="Email"
-                            variant="outlined"
-                        />
-                    </div>
-                    <div className={styles.formRow}>
-                        <MaterialTextFeild
-                            label="Gift Message"
-                            variant="outlined"
-                        />
-                    </div>
-
-                    
+            <div className={styles.singleGiftContainer}>
+                <div className={styles.singleGiftTitle}>Gift Recepient</div>
+                <div className={styles.formRow}>
+                    <MaterialTextFeild
+                        label="First Name"
+                        variant="outlined"
+                    />
+                    <div style={{width:'20px'}}></div>
+                    <MaterialTextFeild
+                        label="Last Name"
+                        variant="outlined"
+                    />
+                </div>
+                <div className={styles.formRow}>
+                    <MaterialTextFeild
+                        label="Email"
+                        variant="outlined"
+                    />
+                </div>
+                <div className={styles.formRow}>
+                    <MaterialTextFeild
+                        label="Gift Message"
+                        variant="outlined"
+                    />
                 </div>
             </div>
+            </div>
+        ) : null}
+           
 
             <div className={styles.selectTreeCount}>
                 {treeCountOptions.map(option =>(
-                    <div key={option} className={treeCount === option ? styles.treeCountOptionSelected  : styles.treeCountOption}>
+                    <div onClick={()=>setTreeCount(option)} key={option} className={treeCount === option ? styles.treeCountOptionSelected  : styles.treeCountOption}>
                         <div className={ styles.treeCountOptionTrees}>
                             {option}
                         </div>
@@ -129,9 +137,9 @@ function TreeDonation({}: Props): ReactElement {
             <div className={styles.horizontalLine} />
 
             <div className={styles.finalTreeCount}>
-                <div className={styles.totalCost}>€ 50,76</div>
+                <div className={styles.totalCost}>{currency} {treeCount * treeCost.toFixed(2)} </div>
                 <div className={styles.totalCostText}>
-                for 50 Trees
+                for {treeCount} Trees
                 </div>
             </div>
 
@@ -142,7 +150,7 @@ function TreeDonation({}: Props): ReactElement {
                 <div className={styles.actionButtonsText}>OR</div>
                 <div className={styles.continueButton}>Continue</div>
             </div>
-
+            </div>
         </div>
     )
 }

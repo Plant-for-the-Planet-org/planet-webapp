@@ -1,3 +1,4 @@
+@import './../../../theme/theme';
 .link_container{
     display:flex;
     flex-direction:column;
@@ -11,7 +12,7 @@
 }
 .top_nav{
     height: 60px;
-    justify-content: space-around!important;
+    justify-content: center!important;
     padding: 0px!important;
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
     width: 100%;
@@ -20,6 +21,7 @@
 .link_container > p {
     font-size: 12px;
     margin-top: 4px;
+    font-family: $primaryFontFamily;
 }
 .nav_container{
     height: 60px;
@@ -30,4 +32,21 @@
     height: 60px;
 }
 
-
+.logoContainer{
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:0px 12px;
+}
+.logoText{
+    font-size: 12px;
+    margin-top: 4px;
+    font-family: $primaryFontFamily;
+    margin-bottom: 0px;
+}
+.logoImage{
+    height: 27px;
+    width: 27px;
+}

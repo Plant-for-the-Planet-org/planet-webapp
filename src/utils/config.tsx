@@ -1,6 +1,8 @@
 /* processing values from environment */
-import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
+// import getConfig from 'next/config';
+import {publicRuntimeConfig} from './../../next.config'
+
+// const { publicRuntimeConfig } = getConfig();
 
 export const initialProps = {
   mediaPath: publicRuntimeConfig.mediaPath // relative URI on server, where images are located (further sub-paths must be specified in application)
