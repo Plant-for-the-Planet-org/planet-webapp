@@ -1,9 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ThemeProvider from "../src/utils/themeContext";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {Provider} from 'react-redux'
-import {createWrapper} from 'next-redux-wrapper'
-import store from './../src/store/store'
 import { context } from '../src/utils/config';
 import React from 'react';
 function PlanetWeb({Component, pageProps,config}:any) {
@@ -27,12 +24,10 @@ function PlanetWeb({Component, pageProps,config}:any) {
   }
   return storedConfig ? (
     
-    <Provider store={store}>
       <ThemeProvider>
       <CssBaseline />
         <Component {...pageProps} config={config} />
       </ThemeProvider> 
-    </Provider>
     
   ) : null ;
 }
@@ -42,7 +37,7 @@ PlanetWeb.getInitialProps = async () => {
   const config =await res.json()
   return { config:config }
 }
-const makestore =()=>store;
-const wrapper = createWrapper(makestore)
 
-export default wrapper.withRedux(PlanetWeb);
+
+
+export default PlanetWeb;
