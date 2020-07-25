@@ -1,12 +1,11 @@
 @import './../../../../theme/theme';
 
-.container{
+.treeDonationcontainer{
     padding-top: 120px;
-    padding-bottom: 120px;
+    // padding-bottom: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $black;
 }
 
 .cardContainer{
@@ -14,6 +13,8 @@
     border-radius: 7px;
     padding: 20px;
     max-width: 412px;
+    max-height: 520px;
+    overflow-y: scroll;
 }
 
 .header{

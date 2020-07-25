@@ -10,9 +10,10 @@ import ProjectContactDetails from '../components/projectDetails/ProjectContactDe
 
 import Sugar from 'sugar'
 import { getImageUrl } from '../../../../utils/getImageURL'
-
 import LazyLoad from 'react-lazyload';
 import Link from 'next/link'
+import TreeDonation from './TreeDonation'
+import Modal from '@material-ui/core/Modal';
 
 interface Props {
     project:any
@@ -34,9 +35,26 @@ function ProjectDetails({project}: Props): ReactElement {
         const ImageSource = getImageUrl('project', 'large',image);
         return ImageSource;
     }
+
+
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleOpen = () => {
+        setOpen(true);
+      };
+    
     return (
         <div className={styles.container}>
-        
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+          <TreeDonation project={project} onClose={handleClose} />
+      </Modal>
         <div className={styles.projectContainer}>
             <div className={styles.singleProject}>
 
@@ -77,13 +95,12 @@ function ProjectDetails({project}: Props): ReactElement {
                             </div>
 
                             <div className={styles.projectCost}>
-                                <Link prefetch={false} href="/donate/[id]/pay" as={`/donate/${project.id}/pay`}>
-                                    <a>
-                                        <div className={styles.costButton}>
-                                            {project.currency === 'USD' ? '$' : project.currency === 'EUR' ? '€' : project.currency} {project.treeCost.toFixed(2)}
-                                        </div>
-                                    </a>
-                                </Link>
+                               
+                               
+                                <div onClick={handleOpen} className={styles.costButton}>
+                                    {project.currency === 'USD' ? '$' : project.currency === 'EUR' ? '€' : project.currency} {project.treeCost.toFixed(2)}
+                                </div>
+                                
                                 <div className={styles.perTree}>
                                     per tree
                                 </div>
