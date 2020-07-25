@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 
 const MapLayout = dynamic(
     () => import('./screens/Maps'),
-    { ssr: false }
+    { ssr: false,loading: () => <p>Loading...</p> }
   )
 interface Props {
     projects:any

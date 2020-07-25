@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import styles from './../styles/Projects.module.scss'
 import SearchIcon from './../../../../assets/images/icons/SearchIcon'
 import AllProjects from '../components/AllProjects'
-import FeaturedProjects from '../components/FeaturedProjects'
 
 interface Props {
     projects:any
@@ -50,9 +49,11 @@ function Projects({projects}: Props): ReactElement {
             </div>
 
 
-            <div className={styles.projectsContainer}>
-                {selectedTab === 'all' ? <AllProjects {...AllProjectsProps}/> :<FeaturedProjects {...FeaturedProjectsProps}/>}
-            </div>
+                <div className={styles.projectsContainer}>
+                    {selectedTab === 'all' ? <AllProjects {...AllProjectsProps}/> :<AllProjects {...FeaturedProjectsProps}/>}
+                </div>
+
+           
             </div>
 
         </div>

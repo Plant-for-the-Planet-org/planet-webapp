@@ -155,11 +155,6 @@
 
 /* Additional Information */
 
-.projectInfoProperties{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
 
 .projectMoreInfoHalf{
     width: 50%;
@@ -235,4 +230,8 @@
 .projectImages:nth-child(3n-1),.projectImages:nth-child(3n) {
     height: 70px;
     grid-area: span 1/ span 1;
+}
+
+.projectImages:nth-child(3n){
+    margin-top: 4px;
 }

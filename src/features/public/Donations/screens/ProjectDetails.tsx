@@ -11,6 +11,8 @@ import ProjectContactDetails from '../components/projectDetails/ProjectContactDe
 import Sugar from 'sugar'
 import { getImageUrl } from '../../../../utils/getImageURL'
 
+import LazyLoad from 'react-lazyload';
+
 interface Props {
     project:any
 }
@@ -39,7 +41,9 @@ function ProjectDetails({project}: Props): ReactElement {
 
                     <div className={styles.projectImage}>
                         {project.image ?
+                        <LazyLoad>
                             <div className={styles.projectImageFile} style={{backgroundImage:`linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`}}></div>
+                        </LazyLoad>
                         : null }
                         {project.classification ? 
                             <div className={styles.projectType}>
@@ -100,14 +104,15 @@ function ProjectDetails({project}: Props): ReactElement {
                         </div>
                         
                         <div className={styles.projectInfoProperties}>
-                            <div className={styles.projectImageSliderContainer}>
-                            {project.images ? project.images.map((image: { image: React.ReactNode; id: any; description:any })=>{
-                                return(
-                                    <img className={styles.projectImages} key={image.id} src={loadImageSource(image.image)} alt={image.description} />
-                                )
-                            }) : null}
-                            </div>
-                            
+                            <LazyLoad>
+                                <div className={styles.projectImageSliderContainer}>
+                                {project.images ? project.images.map((image: { image: React.ReactNode; id: any; description:any })=>{
+                                    return(
+                                            <img className={styles.projectImages} key={image.id} src={loadImageSource(image.image)} alt={image.description} />   
+                                    )
+                                }) : null}
+                                </div>
+                            </LazyLoad>
                             {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
