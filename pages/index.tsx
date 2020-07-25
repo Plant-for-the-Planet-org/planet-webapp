@@ -1,13 +1,10 @@
-import Layout from '../src/features/common/Layout'
-import HomePage from '../src/features/public/Home'
-import {useDispatch} from 'react-redux'
+import Layout from '../src/features/common/Layout';
+import HomePage from '../src/features/public/Home';
 
 export default function Home() {
-
-  const dispatch = useDispatch()
   return (
     <Layout>
-      <HomePage/>
+      <HomePage />
     </Layout>
-  )
+  );
 }

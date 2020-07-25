@@ -6,9 +6,9 @@ import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
 import World from '../../../assets/images/footer/World';
 import PlanetLogo from '../../../assets/images/PlanetLogo';
 import getLanguageName from '../../../utils/getLanguageName';
+import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
-
-let styles = require('./Footer.module.css');
+// let styles = require('./Footer.module.css');
 export default function Footer() {
   const [openModal, setOpenModal] = React.useState(false);
   const [language, setLanguage] = React.useState('en');
@@ -43,12 +43,9 @@ export default function Footer() {
         <div className={styles.footer_container}>
           <div>
             <div className={styles.footer_button_container}>
-              <div className={styles.footer_button}>
+              <div onClick={handleModalOpen} className={styles.footer_button}>
                 <World />
-                <p
-                  className={styles.selected_language}
-                  onClick={handleModalOpen}
-                >
+                <p className={styles.selected_language}>
                   {`${language} (${selectedCountry})`}
                 </p>
               </div>
