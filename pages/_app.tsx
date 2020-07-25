@@ -1,18 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ThemeProvider from "../src/utils/themeContext";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {Provider} from 'react-redux'
-import {createWrapper} from 'next-redux-wrapper'
-import store from './../src/store/store'
 import { context } from '../src/utils/config';
-import useLocalStorage from '../src/utils/useLocalStorage';
 import React from 'react';
 function PlanetWeb({Component, pageProps,config}:any) {
 
-  const [configStore, setConfig] = useLocalStorage('config', {});
-
   React.useEffect(()=>{
-    setConfig(config)
+    // setConfig(config)
+    localStorage.setItem('config',JSON.stringify(config))
   },[config])
 
   React.useEffect(() => {
@@ -22,15 +17,19 @@ function PlanetWeb({Component, pageProps,config}:any) {
       jssStyles!.parentElement!.removeChild(jssStyles);
     }
   }, []);
-  return (
-    <Provider store={store}>
+
+  let storedConfig;
+  if(typeof(Storage) !== "undefined"){
+    storedConfig = localStorage.getItem('config');
+  }
+  return storedConfig ? (
+    
       <ThemeProvider>
       <CssBaseline />
         <Component {...pageProps} config={config} />
       </ThemeProvider> 
-    </Provider>
     
-  );
+  ) : null ;
 }
 
 PlanetWeb.getInitialProps = async () => {
@@ -38,7 +37,7 @@ PlanetWeb.getInitialProps = async () => {
   const config =await res.json()
   return { config:config }
 }
-const makestore =()=>store;
-const wrapper = createWrapper(makestore)
 
-export default wrapper.withRedux(PlanetWeb);
+
+
+export default PlanetWeb;

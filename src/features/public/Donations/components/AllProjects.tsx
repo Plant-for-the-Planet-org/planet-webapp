@@ -1,6 +1,11 @@
 import React, { ReactElement } from 'react'
-import ProjectSnippet from './ProjectSnippet'
+import dynamic from 'next/dynamic'
+import LazyLoad from 'react-lazyload';
 
+const ProjectSnippet = dynamic(
+  () => import('./ProjectSnippet'),
+  { loading: () => <p>Loading...</p> }
+)
 interface Props {
     projects:any
 }
@@ -9,6 +14,7 @@ function AllProjects({projects}: Props): ReactElement {
 
     return (
         <div>
+            <LazyLoad>
              {
                 projects.map((project: any) => {
                     return(
@@ -16,6 +22,7 @@ function AllProjects({projects}: Props): ReactElement {
                     )
                 })
             }
+            </LazyLoad>
         </div>
     )
 }
