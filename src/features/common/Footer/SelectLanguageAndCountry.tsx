@@ -92,7 +92,7 @@ export default function TransitionsModal(props) {
       >
         <Fade in={openModal}>
           <div className={styles.modal}>
-            <div style={{ padding: '20px' }}>
+            <div className={styles.radioButtonsContainer}>
               <p className={styles.sectionHead}>Select a Language</p>
               {/* maps the radio button for languages */}
               <MapLanguage
@@ -109,8 +109,14 @@ export default function TransitionsModal(props) {
             </div>
             {/* modal buttons */}
             <div className={styles.buttonContainer}>
-              <p onClick={handleModalClose}>Cancel</p>
-              <p onClick={handleOKClick}>OK</p>
+              <div className={styles.button} onClick={handleModalClose}>
+                <div></div>
+                <p>Cancel</p>
+              </div>
+              <div className={styles.button} onClick={handleOKClick}>
+                <div></div>
+                <p>OK</p>
+              </div>
             </div>
           </div>
         </Fade>
