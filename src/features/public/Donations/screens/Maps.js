@@ -1,9 +1,11 @@
 import * as esri from 'esri-leaflet';
 import React from 'react';
-import { Map } from 'react-leaflet';
-export default function Mappage() {
+import { Map, Marker, Popup } from 'react-leaflet';
+
+export default function Mappage(props) {
   const mapRef = React.useRef(null);
   const [map, setMap] = React.useState(null);
+  const [markersData, setMarkersData] = React.useState([]);
 
   React.useEffect(() => {
     if (mapRef.current !== null) {
@@ -24,6 +26,22 @@ export default function Mappage() {
     }
   }, [map]);
 
+  // adds marker data of coordinate and type to markersData state
+  React.useEffect(() => {
+    const { projects } = props;
+    let markers = [];
+    for (let i = 0; i < projects.length; i++) {
+      markers.push({
+        position: [
+          projects[i].geometry.coordinates[1],
+          projects[i].geometry.coordinates[0],
+        ],
+        type: projects[i].type,
+      });
+    }
+    setMarkersData(markers);
+  }, [props.projects]);
+
   const center = [37.7833, -122.4167];
   return (
     <Map
@@ -40,6 +58,14 @@ export default function Mappage() {
       center={center}
       zoom="2"
       ref={mapRef}
-    ></Map>
+    >
+      {markersData.map((item, index) => (
+        <Marker key={index} position={item.position}>
+          <Popup>
+            <span>Popup</span>
+          </Popup>
+        </Marker>
+      ))}
+    </Map>
   );
 }
