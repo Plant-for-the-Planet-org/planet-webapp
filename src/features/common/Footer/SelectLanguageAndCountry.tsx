@@ -21,11 +21,12 @@ export default function TransitionsModal(props) {
     handleModalClose,
     setLanguage,
     language,
-    selectedCurrency,
     setSelectedCurrency,
+    selectedCountry,
+    setSelectedCountry,
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
-  const [selectedCountry, setSelectedCountry] = useState('AF');
+  const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
 
   // changes the language in when a language is selected
@@ -35,7 +36,7 @@ export default function TransitionsModal(props) {
 
   // changes the country code in when a country is selected
   const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
+    setSelectedModalCountry(event.target.value);
   };
 
   // changes the language and currency code in footer state and local storage
@@ -43,7 +44,9 @@ export default function TransitionsModal(props) {
   function handleOKClick() {
     window.localStorage.setItem('language', modalLanguage);
     setLanguage(modalLanguage);
-    let currencyCode = getCountryDataBy('countryCode', selectedCountry)
+    window.localStorage.setItem('countryCode', selectedModalCountry);
+    setSelectedCountry(selectedModalCountry);
+    let currencyCode = getCountryDataBy('countryCode', selectedModalCountry)
       .currencyCode;
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
@@ -63,12 +66,10 @@ export default function TransitionsModal(props) {
   // changes the selected country in local state whenever the currency changes
   // in Footer state
   useEffect(() => {
-    if (selectedCurrency) {
-      setSelectedCountry(
-        getCountryDataBy('currencyCode', selectedCurrency).countryCode
-      );
+    if (selectedCountry) {
+      setSelectedModalCountry(selectedCountry);
     }
-  }, [selectedCurrency]);
+  }, [selectedCountry]);
 
   // sorts the country data by country name as soon as the page loads
   useEffect(() => {
@@ -102,7 +103,7 @@ export default function TransitionsModal(props) {
               {/* maps the radio button for countries */}
               <MapCountry
                 sortedCountriesData={sortedCountriesData}
-                value={selectedCountry}
+                value={selectedModalCountry}
                 handleChange={handleCountryChange}
               />
             </div>

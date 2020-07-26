@@ -13,6 +13,7 @@ export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState('en');
   const [selectedCurrency, setSelectedCurrency] = useState('AFN');
+  const [selectedCountry, setSelectedCountry] = useState('AF');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -26,14 +27,19 @@ export default function Footer() {
   useEffect(() => {
     let langCode = 'en';
     let currencyCode = 'AFN';
+    let countryCode = 'AF';
     if (localStorage.getItem('currencyCode')) {
       currencyCode = localStorage.getItem('currencyCode');
     }
     if (localStorage.getItem('language')) {
       langCode = localStorage.getItem('language');
     }
-    setSelectedCurrency(currencyCode);
+    if (localStorage.getItem('countryCode')) {
+      countryCode = localStorage.getItem('countryCode');
+    }
     setLanguage(langCode);
+    setSelectedCurrency(currencyCode);
+    setSelectedCountry(countryCode);
   }, []);
 
   return (
@@ -92,8 +98,9 @@ export default function Footer() {
           handleModalClose={handleModalClose}
           language={language}
           setLanguage={setLanguage}
-          selectedCurrency={selectedCurrency}
           setSelectedCurrency={setSelectedCurrency}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
         />
       </div>
     </footer>

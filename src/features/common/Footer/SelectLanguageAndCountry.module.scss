@@ -11,8 +11,11 @@
   background-color: #ffffff;
   border: 0px;
   border-radius: 8px;
-  max-height: 90vh;
+  max-height: 80vh;
+  height: 100%;
+  width: 80vw;
   overflow-y: scroll;
+  outline: none;
 }
 
 .sectionHead {
