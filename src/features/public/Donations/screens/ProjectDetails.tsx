@@ -8,7 +8,7 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-import MaterialRatings from '../../../common/InputTypes/Ratings';
+import GetProjectClassification from '../components/projectDetails/getProjectClassification';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
@@ -74,7 +74,9 @@ function ProjectDetails({ project }: Props): ReactElement {
               </LazyLoad>
             ) : null}
             {project.classification ? (
-              <div className={styles.projectType}>{project.classification}</div>
+              <div className={styles.projectType}>
+                {GetProjectClassification(project.classification)}
+              </div>
             ) : null}
             <div className={styles.projectName}>
               {Sugar.String.truncate(project.name, 34)}
@@ -116,12 +118,11 @@ function ProjectDetails({ project }: Props): ReactElement {
                     : project.currency}
                   {project.treeCost.toFixed(2)}
                 </div>
-
                 <div className={styles.perTree}>per tree</div>
               </div>
             </div>
 
-            <div className={styles.ratings}>
+            {/* <div className={styles.ratings}>
               <div className={styles.calculatedRating}>{rating}</div>
               <div className={styles.ratingButton}>
                 <MaterialRatings
@@ -131,7 +132,7 @@ function ProjectDetails({ project }: Props): ReactElement {
                   readOnly
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className={styles.projectDescription}>
               {project.description}

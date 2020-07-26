@@ -4,6 +4,7 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import styles from './../styles/Projects.module.scss';
+import GetProjectClassification from './projectDetails/getProjectClassification';
 
 interface Props {
   project: any;
@@ -36,7 +37,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
             ) : null}
             {project.properties.classification ? (
               <div className={styles.projectType}>
-                {project.properties.classification}
+                {GetProjectClassification(project.properties.classification)}
               </div>
             ) : null}
 
@@ -67,7 +68,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpoName}
+            By {project.properties.tpo.name}
           </div>
         </div>
         <div className={styles.projectCost}>
