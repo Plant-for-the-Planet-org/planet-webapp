@@ -8,38 +8,72 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import countriesData from '../../../utils/countriesData.json';
-import { sortCountriesData } from '../../../utils/countryUtils';
+import {
+  getCountryDataBy,
+  sortCountriesData,
+} from '../../../utils/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
 let styles = require('./SelectLanguageAndCountry.module.scss');
 
 export default function TransitionsModal(props) {
-  const { openModal, handleModalClose } = props;
-  const [language, setLanguage] = useState('en');
+  const {
+    openModal,
+    handleModalClose,
+    setLanguage,
+    language,
+    selectedCurrency,
+    setSelectedCurrency,
+  } = props;
+  const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedCountry, setSelectedCountry] = useState('AF');
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
 
+  // changes the language in when a language is selected
   const handleLanguageChange = (event) => {
-    setLanguage(event.target.value);
+    setModalLanguage(event.target.value);
   };
+
+  // changes the country code in when a country is selected
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
   };
 
-  useEffect(() => {
-    setSortedCountriesData(sortCountriesData('countryName'));
-    if (localStorage.getItem('countryCode')) {
-      setSelectedCountry(localStorage.getItem('countryCode'));
-    }
-    if (localStorage.getItem('language')) {
-      setLanguage(localStorage.getItem('language'));
-    }
-  }, []);
-
+  // changes the language and currency code in footer state and local storage
+  // when user clicks on OK
   function handleOKClick() {
-    window.localStorage.setItem('language', language);
-    window.localStorage.setItem('countryCode', selectedCountry);
+    window.localStorage.setItem('language', modalLanguage);
+    setLanguage(modalLanguage);
+    let currencyCode = getCountryDataBy('countryCode', selectedCountry)
+      .currencyCode;
+    if (currencyCode) {
+      window.localStorage.setItem('currencyCode', currencyCode);
+      setSelectedCurrency(currencyCode);
+    }
     handleModalClose();
   }
+
+  // changes the language in local state whenever the language changes in Footer state
+  useEffect(() => {
+    if (language) {
+      console.log('language', language);
+      setModalLanguage(language);
+    }
+  }, [language]);
+
+  // changes the selected country in local state whenever the currency changes
+  // in Footer state
+  useEffect(() => {
+    if (selectedCurrency) {
+      setSelectedCountry(
+        getCountryDataBy('currencyCode', selectedCurrency).countryCode
+      );
+    }
+  }, [selectedCurrency]);
+
+  // sorts the country data by country name as soon as the page loads
+  useEffect(() => {
+    setSortedCountriesData(sortCountriesData('countryName'));
+  }, []);
 
   return (
     <div>
@@ -59,11 +93,13 @@ export default function TransitionsModal(props) {
           <div className={styles.modal}>
             <div style={{ padding: '20px' }}>
               <p className={styles.sectionHead}>Select a Language</p>
+              {/* maps the radio button for languages */}
               <MapLanguage
-                value={language}
+                value={modalLanguage}
                 handleChange={handleLanguageChange}
               />
               <p className={styles.sectionHead}>Select your Country</p>
+              {/* maps the radio button for countries */}
               <MapCountry
                 sortedCountriesData={sortedCountriesData}
                 value={selectedCountry}

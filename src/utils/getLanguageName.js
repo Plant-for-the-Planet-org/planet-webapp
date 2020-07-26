@@ -8,6 +8,7 @@ import supportedLanguages from './supportedLanguages.json';
  */
 export default function getLanguageName(code) {
   // Finds required language name from the code
+  console.log('getLanguageName', code);
   for (let i = 0; i < supportedLanguages.length; i++) {
     if (supportedLanguages[i].langCode === code) {
       return supportedLanguages[i].languageName;

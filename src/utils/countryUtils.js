@@ -2,16 +2,20 @@ import countriesData from './countriesData.json';
 
 /**
  * * Returns country details by searching country data json file and options
- * @param {String} countryCode - Country Code
+ * @param {String} key - deciding factor to find country data from can hold values
+ *        countryCode || countryName || currencyName || currencyCode || currencyCountryFlag
+ *
+ * @param {String} value - value of the key to compare with
  *
  * @returns {Object} contains
- *  - {countryName, currencyName, currencyCode, currencyCountryFlag}
+ *  - {countryCode, countryName, currencyName, currencyCode, currencyCountryFlag}
  */
-export function getCountryData(countryCode) {
-  // Finds required country data from the country data array and return the
-  // required value from options
+export function getCountryDataBy(key, value) {
+  // Finds required country data from the country data array and returns the
+  // matched country result
+  console.log('getCountryDataBy', key, value);
   for (let i = 0; i < countriesData.length; i++) {
-    if (countriesData[i].countryCode === countryCode) {
+    if (countriesData[i][key] === value) {
       return countriesData[i];
     }
   }

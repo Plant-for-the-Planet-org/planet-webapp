@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppStore from '../../../assets/images/footer/AppStore';
 import GooglePlay from '../../../assets/images/footer/GooglePlay';
 import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
@@ -10,9 +10,9 @@ import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 // let styles = require('./Footer.module.css');
 export default function Footer() {
-  const [openModal, setOpenModal] = React.useState(false);
-  const [language, setLanguage] = React.useState('en');
-  const [selectedCountry, setSelectedCountry] = React.useState('AF');
+  const [openModal, setOpenModal] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [selectedCurrency, setSelectedCurrency] = useState('AFN');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -22,17 +22,18 @@ export default function Footer() {
     setOpenModal(false);
   };
 
-  React.useEffect(() => {
-    let langName = 'en';
-    let countryCode = 'AF';
-    if (localStorage.getItem('countryCode')) {
-      countryCode = localStorage.getItem('countryCode');
+  // changes the language and selected currency id found in local storage
+  useEffect(() => {
+    let langCode = 'en';
+    let currencyCode = 'AFN';
+    if (localStorage.getItem('currencyCode')) {
+      currencyCode = localStorage.getItem('currencyCode');
     }
     if (localStorage.getItem('language')) {
-      langName = getLanguageName(localStorage.getItem('language'));
+      langCode = localStorage.getItem('language');
     }
-    setSelectedCountry(countryCode);
-    setLanguage(langName);
+    setSelectedCurrency(currencyCode);
+    setLanguage(langCode);
   }, []);
 
   return (
@@ -46,7 +47,7 @@ export default function Footer() {
               <div onClick={handleModalOpen} className={styles.footer_button}>
                 <World />
                 <p className={styles.selected_language}>
-                  {`${language} (${selectedCountry})`}
+                  {`${getLanguageName(language)} (${selectedCurrency})`}
                 </p>
               </div>
               <div className={styles.footer_button}>
@@ -89,6 +90,10 @@ export default function Footer() {
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}
+          language={language}
+          setLanguage={setLanguage}
+          selectedCurrency={selectedCurrency}
+          setSelectedCurrency={setSelectedCurrency}
         />
       </div>
     </footer>
