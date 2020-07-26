@@ -1,164 +1,187 @@
-import React, { ReactElement } from 'react'
-import styles from './../styles/ProjectDetails.module.scss'
-import MaterialRatings from '../../../common/InputTypes/Ratings';
-
+import Modal from '@material-ui/core/Modal';
+import React, { ReactElement } from 'react';
+import LazyLoad from 'react-lazyload';
+import Sugar from 'sugar';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
+import Email from '../../../../assets/images/icons/project/Email';
 import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
-import Email from '../../../../assets/images/icons/project/Email';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
+import { getImageUrl } from '../../../../utils/getImageURL';
+import GetProjectClassification from '../components/projectDetails/getProjectClassification';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-
-import Sugar from 'sugar'
-import { getImageUrl } from '../../../../utils/getImageURL'
-import LazyLoad from 'react-lazyload';
-import Link from 'next/link'
-import TreeDonation from './TreeDonation'
-import Modal from '@material-ui/core/Modal';
+import styles from './../styles/ProjectDetails.module.scss';
+import TreeDonation from './TreeDonation';
 
 interface Props {
-    project:any
+  project: any;
 }
 
-function ProjectDetails({project}: Props): ReactElement {
-    const [rating, setRating] = React.useState<number | null>(2);
+function ProjectDetails({ project }: Props): ReactElement {
+  const [rating, setRating] = React.useState<number | null>(2);
 
-    const progressPercentage = (project.countPlanted / project.countTarget)*100+'%';
-    const ImageSource = project.image ? getImageUrl('project', 'large',project.image) : '';
-    const contactDetails = [
-        {id:1,icon:<BlackTree/>,text:'View Profile',link:''},
-        {id:2,icon:<WorldWeb/>,text:'edenprojects.org',link:''},
-        {id:3,icon:<Location/>,text:'303 W Foothill Blvd, Unit 13 Glendora, CA 91741, USA',link:''},
-        {id:4,icon:<Email/>,text:'projects@edenprojects.org',link:''},
-    ]
+  const progressPercentage =
+    (project.countPlanted / project.countTarget) * 100 + '%';
+  const ImageSource = project.image
+    ? getImageUrl('project', 'large', project.image)
+    : '';
+  const contactDetails = [
+    { id: 1, icon: <BlackTree />, text: 'View Profile', link: '' },
+    { id: 2, icon: <WorldWeb />, text: 'edenprojects.org', link: '' },
+    {
+      id: 3,
+      icon: <Location />,
+      text: '303 W Foothill Blvd, Unit 13 Glendora, CA 91741, USA',
+      link: '',
+    },
+    { id: 4, icon: <Email />, text: 'projects@edenprojects.org', link: '' },
+  ];
 
-    const loadImageSource = (image:any)=>{
-        const ImageSource = getImageUrl('project', 'large',image);
-        return ImageSource;
-    }
+  const loadImageSource = (image: any) => {
+    const ImageSource = getImageUrl('project', 'large', image);
+    return ImageSource;
+  };
 
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-    const [open, setOpen] = React.useState(false);
-    const handleClose = () => {
-        setOpen(false);
-    };
-    const handleOpen = () => {
-        setOpen(true);
-      };
-    
-    return (
-        <div className={styles.container}>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-          <TreeDonation project={project} onClose={handleClose} />
+  return (
+    <div className={styles.container}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <TreeDonation project={project} onClose={handleClose} />
       </Modal>
-        <div className={styles.projectContainer}>
-            <div className={styles.singleProject}>
+      <div className={styles.projectContainer}>
+        <div className={styles.singleProject}>
+          <div className={styles.projectImage}>
+            {project.image ? (
+              <LazyLoad>
+                <div
+                  className={styles.projectImageFile}
+                  style={{
+                    backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  }}
+                ></div>
+              </LazyLoad>
+            ) : null}
 
-                    <div className={styles.projectImage}>
-                        {project.image ?
-                        <LazyLoad>
-                            <div className={styles.projectImageFile} style={{backgroundImage:`linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`}}></div>
-                        </LazyLoad>
-                        : null }
-                        {project.classification ? 
-                            <div className={styles.projectType}>
-                                {project.classification}
-                            </div>:null
+            <div className={styles.projectImageBlock}>
+              <div className={styles.projectType}>
+                {GetProjectClassification(project.classification)}
+              </div>
+
+              <div className={styles.projectName}>
+                {Sugar.String.truncate(project.name, 60)}
+              </div>
+            </div>
+          </div>
+          <div className={styles.progressBar}>
+            <div
+              className={styles.progressBarHighlight}
+              style={{ width: progressPercentage }}
+            />
+          </div>
+
+          <div className={styles.projectCompleteInfo}>
+            <div className={styles.projectInfo}>
+              <div className={styles.projectData}>
+                <div className={styles.targetLocation}>
+                  <div className={styles.target}>
+                    {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted
+                    •
+                  </div>
+                  <div className={styles.location}>
+                    {
+                      getCountryDataBy('countryCode', project.country)
+                        .countryName
+                    }
+                  </div>
+                </div>
+                <div className={styles.projectTPOName}>
+                  By {project.tpo.name}
+                </div>
+              </div>
+
+              <div className={styles.projectCost}>
+                <div onClick={handleOpen} className={styles.costButton}>
+                  {project.currency === 'USD'
+                    ? '$'
+                    : project.currency === 'EUR'
+                    ? '€'
+                    : project.currency}
+                  {project.treeCost.toFixed(2)}
+                </div>
+                <div className={styles.perTree}>per tree</div>
+              </div>
+            </div>
+
+            {/* <div className={styles.ratings}>
+              <div className={styles.calculatedRating}>{rating}</div>
+              <div className={styles.ratingButton}>
+                <MaterialRatings
+                  name="simple-controlled"
+                  value={rating}
+                  size="small"
+                  readOnly
+                />
+              </div>
+            </div> */}
+
+            <div className={styles.projectDescription}>
+              {project.description}
+            </div>
+
+            <div className={styles.projectInfoProperties}>
+              <LazyLoad>
+                <div className={styles.projectImageSliderContainer}>
+                  {project.images
+                    ? project.images.map(
+                        (image: {
+                          image: React.ReactNode;
+                          id: any;
+                          description: any;
+                        }) => {
+                          return (
+                            <img
+                              className={styles.projectImages}
+                              key={image.id}
+                              src={loadImageSource(image.image)}
+                              alt={image.description}
+                            />
+                          );
                         }
-                        <div className={styles.projectName}>
-                            {Sugar.String.truncate(project.name,34)}
-                        </div>
-                    </div>
-                    <div className={styles.progressBar}>
-                        <div className={styles.progressBarHighlight} style={{width:progressPercentage}} />
-                    </div>
-                    
-                    <div className={styles.projectCompleteInfo}>
-
-                        <div className={styles.projectInfo}>
-                            <div className={styles.projectData}>
-                                <div className={styles.targetLocation}>
-                                    <div className={styles.target}>
-                                        {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted •
-                                    </div>
-                                    <div className={styles.location}>
-                                        {project.location}
-                                    </div>   
-                                </div>
-                                {/* <div className={styles.projectTPOName}>
-                                    By Global Forest Generation
-                                </div> */}
-                            </div>
-
-                            <div className={styles.projectCost}>
-                               
-                               
-                                <div onClick={handleOpen} className={styles.costButton}>
-                                    {project.currency === 'USD' ? '$' : project.currency === 'EUR' ? '€' : project.currency} {project.treeCost.toFixed(2)}
-                                </div>
-                                
-                                <div className={styles.perTree}>
-                                    per tree
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div className={styles.ratings}>
-                            <div className={styles.calculatedRating}>
-                                {rating}
-                            </div>
-                            <div className={styles.ratingButton}>
-                                <MaterialRatings
-                                    name="simple-controlled"
-                                    value={rating}
-                                    size="small"
-                                    readOnly
-                                    />
-                            </div>
-                        </div>
-
-                        <div className={styles.projectDescription}>
-                            {project.description}
-                        </div>
-                        
-                        <div className={styles.projectInfoProperties}>
-                            <LazyLoad>
-                                <div className={styles.projectImageSliderContainer}>
-                                {project.images ? project.images.map((image: { image: React.ReactNode; id: any; description:any })=>{
-                                    return(
-                                            <img className={styles.projectImages} key={image.id} src={loadImageSource(image.image)} alt={image.description} />   
-                                    )
-                                }) : null}
-                                </div>
-                            </LazyLoad>
-                            {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
+                      )
+                    : null}
+                </div>
+              </LazyLoad>
+              {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
                             {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
-                            
-                            {contactDetails?(<ProjectContactDetails contactDetails={contactDetails} />) :null}
 
-                        </div>
-                        
-
-                    </div>
-                    
-                </div>
+              {contactDetails ? (
+                <ProjectContactDetails contactDetails={contactDetails} />
+              ) : null}
+            </div>
+          </div>
         </div>
-        </div>
-        
-    )
+      </div>
+    </div>
+  );
 }
 
-export default ProjectDetails
+export default ProjectDetails;
 
-// Sample Code for future - 
-
+// Sample Code for future -
 
 // import Plane from '../../../../assets/images/icons/project/Plane';
 // import Car from '../../../../assets/images/icons/project/Car';
