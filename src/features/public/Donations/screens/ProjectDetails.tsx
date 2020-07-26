@@ -73,13 +73,15 @@ function ProjectDetails({ project }: Props): ReactElement {
                 ></div>
               </LazyLoad>
             ) : null}
-            {project.classification ? (
+
+            <div className={styles.projectImageBlock}>
               <div className={styles.projectType}>
                 {GetProjectClassification(project.classification)}
               </div>
-            ) : null}
-            <div className={styles.projectName}>
-              {Sugar.String.truncate(project.name, 34)}
+
+              <div className={styles.projectName}>
+                {Sugar.String.truncate(project.name, 60)}
+              </div>
             </div>
           </div>
           <div className={styles.progressBar}>
@@ -104,9 +106,9 @@ function ProjectDetails({ project }: Props): ReactElement {
                     }
                   </div>
                 </div>
-                {/* <div className={styles.projectTPOName}>
-                                    By Global Forest Generation
-                                </div> */}
+                <div className={styles.projectTPOName}>
+                  By {project.tpo.name}
+                </div>
               </div>
 
               <div className={styles.projectCost}>
