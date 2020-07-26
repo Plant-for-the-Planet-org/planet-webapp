@@ -13,7 +13,6 @@ import countriesData from './countriesData.json';
 export function getCountryDataBy(key, value) {
   // Finds required country data from the country data array and returns the
   // matched country result
-  console.log('getCountryDataBy', key, value);
   for (let i = 0; i < countriesData.length; i++) {
     if (countriesData[i][key] === value) {
       return countriesData[i];

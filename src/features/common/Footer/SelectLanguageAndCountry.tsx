@@ -58,7 +58,6 @@ export default function TransitionsModal(props) {
   // changes the language in local state whenever the language changes in Footer state
   useEffect(() => {
     if (language) {
-      console.log('language', language);
       setModalLanguage(language);
     }
   }, [language]);

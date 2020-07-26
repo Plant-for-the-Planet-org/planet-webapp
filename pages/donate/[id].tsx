@@ -1,6 +1,6 @@
-import Layout from '../../src/features/common/Layout'
+import dynamic from 'next/dynamic';
+import Layout from '../../src/features/common/Layout';
 import { context } from '../../src/utils/config';
-import dynamic from 'next/dynamic'
 
 const MapLayout = dynamic(
     () => import('./../../src/features/public/Donations/screens/Maps'),
@@ -15,8 +15,6 @@ export default function Donate({project}:any) {
   const DonateProps = {
     project : project,
   }
-
-  console.log(project);
   return (
     <Layout>
       <MapLayout/>
