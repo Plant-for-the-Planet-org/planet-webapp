@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import styles from './../styles/Projects.module.scss';
 
@@ -58,7 +59,12 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
             <div className={styles.target}>
               {project.properties.countPlanted} planted •
             </div>
-            <div className={styles.location}>{project.properties.location}</div>
+            <div className={styles.location}>
+              {
+                getCountryDataBy('countryCode', project.properties.country)
+                  .countryName
+              }
+            </div>
           </div>
           <div className={styles.projectTPOName}>
             By {project.properties.tpoName}
@@ -72,7 +78,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
                   ? '$'
                   : project.properties.currency === 'EUR'
                   ? '€'
-                  : project.properties.currency}{' '}
+                  : project.properties.currency}
                 {project.properties.treeCost.toFixed(2)}
               </div>
               <div className={styles.perTree}>per tree</div>
