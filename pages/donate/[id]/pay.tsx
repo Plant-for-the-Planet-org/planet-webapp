@@ -1,3 +1,17 @@
+import React, { ReactElement } from 'react';
+
+interface Props {}
+
+function Pay({}: Props): ReactElement {
+  return (
+    <div>
+      <h2>Pay</h2>
+    </div>
+  );
+}
+
+export default Pay;
+
 // import dynamic from 'next/dynamic';
 // import Layout from '../../../src/features/common/Layout';
 // import { context } from '../../../src/utils/config';
