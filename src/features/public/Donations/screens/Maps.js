@@ -1,11 +1,13 @@
 import * as esri from 'esri-leaflet';
 import React from 'react';
 import { Map, Marker, Popup } from 'react-leaflet';
+import ProjectSnippet from '../components/ProjectSnippet';
 
 export default function Mappage(props) {
   const mapRef = React.useRef(null);
   const [map, setMap] = React.useState(null);
-  const [markersData, setMarkersData] = React.useState([]);
+
+  const { projects } = props;
 
   React.useEffect(() => {
     if (mapRef.current !== null) {
@@ -26,22 +28,6 @@ export default function Mappage(props) {
     }
   }, [map]);
 
-  // adds marker data of coordinate and type to markersData state
-  React.useEffect(() => {
-    const { projects } = props;
-    let markers = [];
-    for (let i = 0; i < projects.length; i++) {
-      markers.push({
-        position: [
-          projects[i].geometry.coordinates[1],
-          projects[i].geometry.coordinates[0],
-        ],
-        type: projects[i].type,
-      });
-    }
-    setMarkersData(markers);
-  }, [props.projects]);
-
   const center = [37.7833, -122.4167];
   return (
     <Map
@@ -59,10 +45,16 @@ export default function Mappage(props) {
       zoom="2"
       ref={mapRef}
     >
-      {markersData.map((item, index) => (
-        <Marker key={index} position={item.position}>
+      {projects.map((project, index) => (
+        <Marker
+          key={index}
+          position={[
+            project.geometry.coordinates[1],
+            project.geometry.coordinates[0],
+          ]}
+        >
           <Popup>
-            <span>Popup</span>
+            <ProjectSnippet key={project.properties.id} project={project} />
           </Popup>
         </Marker>
       ))}
