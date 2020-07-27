@@ -35,14 +35,15 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
                 }}
               ></div>
             ) : null}
-            {project.properties.classification ? (
+
+            <div className={styles.projectImageBlock}>
               <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div>
-            ) : null}
 
-            <div className={styles.projectName}>
-              {Sugar.String.truncate(project.properties.name, 34)}
+              <div className={styles.projectName}>
+                {Sugar.String.truncate(project.properties.name, 54)}
+              </div>
             </div>
           </div>
         </a>
@@ -58,7 +59,8 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
         <div className={styles.projectData}>
           <div className={styles.targetLocation}>
             <div className={styles.target}>
-              {project.properties.countPlanted} planted •
+              {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
+              planted •
             </div>
             <div className={styles.location}>
               {

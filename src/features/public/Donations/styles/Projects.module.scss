@@ -170,14 +170,17 @@
   position: relative;
 }
 
+.projectImageBlock {
+  position: absolute;
+  bottom: 12px;
+  left: 7px;
+}
+
 .projectType {
   font-family: $primaryFontFamily;
   font-size: 10px;
   color: #fff;
   font-weight: bold;
-  position: absolute;
-  bottom: 36px;
-  left: 7px;
   text-transform: uppercase;
 }
 
@@ -185,7 +188,4 @@
   font-family: $primaryFontFamily;
   font-size: 18px;
   color: #fff;
-  position: absolute;
-  bottom: 12px;
-  left: 7px;
 }
