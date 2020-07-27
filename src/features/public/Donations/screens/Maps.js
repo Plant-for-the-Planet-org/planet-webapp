@@ -52,8 +52,14 @@ export default function Mappage(props) {
             project.geometry.coordinates[1],
             project.geometry.coordinates[0],
           ]}
+          onMouseOver={(e) => {
+            e.target.openPopup();
+          }}
+          // onMouseOut={(e) => {
+          //   e.target.closePopup();
+          // }}
         >
-          <Popup>
+          <Popup className="project-popup" minWidth="300">
             <ProjectSnippet key={project.properties.id} project={project} />
           </Popup>
         </Marker>
