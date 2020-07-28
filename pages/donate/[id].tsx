@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import Layout from '../../src/features/common/Layout';
 import { context } from '../../src/utils/config';
-
+import ProjectLoaderDetails from './../../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
 const MapLayout = dynamic(
   () => import('./../../src/features/public/Donations/screens/Maps'),
   { ssr: false, loading: () => <p>Loading...</p> }
@@ -9,7 +9,7 @@ const MapLayout = dynamic(
 
 const ProjectDetails = dynamic(
   () => import('./../../src/features/public/Donations/screens/ProjectDetails'),
-  { ssr: false, loading: () => <p>Loading...</p> }
+  { ssr: false, loading: () => <ProjectLoaderDetails /> }
 );
 export default function Donate({ project }: any) {
   const DonateProps = {
