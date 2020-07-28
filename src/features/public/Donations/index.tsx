@@ -1,31 +1,25 @@
-import React, { ReactElement } from 'react'
-import TreeDonation from './screens/TreeDonation'
-import ContactDetails from './screens/ContactDetails'
-import PaymentDetails from './screens/PaymentDetails'
-import ThankYou from './screens/ThankYou'
-import Projects from './screens/Projects'
-import ProjectDetails from './screens/ProjectDetails'
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
+import React, { ReactElement } from 'react';
+import Projects from './screens/Projects';
 
-
-const MapLayout = dynamic(
-    () => import('./screens/Maps'),
-    { ssr: false,loading: () => <p>Loading...</p> }
-  )
+const MapLayout = dynamic(() => import('./screens/Maps'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 interface Props {
-    projects:any
+  projects: any;
 }
 
-function Donate({projects}: Props): ReactElement {
-    const ProjectsProps = {
-        projects : projects
-      }
-    return (
-        <>
-            <MapLayout/>
-            <Projects {...ProjectsProps} />
-        </>
-    )
+function Donate({ projects }: Props): ReactElement {
+  const ProjectsProps = {
+    projects: projects,
+  };
+  return (
+    <>
+      <MapLayout {...ProjectsProps} />
+      <Projects {...ProjectsProps} />
+    </>
+  );
 }
 
-export default Donate
+export default Donate;

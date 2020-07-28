@@ -1,9 +1,13 @@
 import * as esri from 'esri-leaflet';
 import React from 'react';
-import { Map } from 'react-leaflet';
-export default function Mappage() {
+import { Map, Marker, Popup } from 'react-leaflet';
+import ProjectSnippet from '../components/ProjectSnippet';
+
+export default function Mappage(props) {
   const mapRef = React.useRef(null);
   const [map, setMap] = React.useState(null);
+
+  const { projects } = props;
 
   React.useEffect(() => {
     if (mapRef.current !== null) {
@@ -40,6 +44,26 @@ export default function Mappage() {
       center={center}
       zoom="2"
       ref={mapRef}
-    ></Map>
+    >
+      {projects.map((project, index) => (
+        <Marker
+          key={index}
+          position={[
+            project.geometry.coordinates[1],
+            project.geometry.coordinates[0],
+          ]}
+          onMouseOver={(e) => {
+            e.target.openPopup();
+          }}
+          // onMouseOut={(e) => {
+          //   e.target.closePopup();
+          // }}
+        >
+          <Popup className="project-popup" minWidth="300">
+            <ProjectSnippet key={project.properties.id} project={project} />
+          </Popup>
+        </Marker>
+      ))}
+    </Map>
   );
 }
