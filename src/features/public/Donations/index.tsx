@@ -20,7 +20,7 @@ function Donate({ projects }: Props): ReactElement {
   };
   return (
     <>
-      <MapLayout />
+      <MapLayout {...ProjectsProps} />
       <Projects {...ProjectsProps} />
     </>
   );
