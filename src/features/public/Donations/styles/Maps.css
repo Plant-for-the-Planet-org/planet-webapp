@@ -21,19 +21,18 @@
   background-size: cover;
 }
 
-.project-popup .leaflet-popup-content > div > div:last-child {
-  padding: 6px 12px 12px 12px;
-  margin-top: 0px;
-}
-
 .project-popup
   .leaflet-popup-content
   > div
-  > div:last-child
-  > div:last-child
-  > div:first-child {
-  background-color: #f2f2f7;
-  color: #89b53a;
+  > a:first-child
+  > div
+  > div:last-child {
+  padding: 0px 8px 0px 8px;
+}
+
+.project-popup .leaflet-popup-content > div > div:last-child {
+  padding: 2px 16px 12px 16px;
+  margin-top: 0px;
 }
 
 .project-popup .leaflet-popup-close-button,
