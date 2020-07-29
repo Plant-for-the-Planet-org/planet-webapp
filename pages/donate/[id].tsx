@@ -3,7 +3,7 @@ import Layout from '../../src/features/common/Layout';
 import { context } from '../../src/utils/config';
 import ProjectLoaderDetails from './../../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
 const MapLayout = dynamic(
-  () => import('./../../src/features/public/Donations/screens/Maps'),
+  () => import('./../../src/features/public/Donations/screens/ExtendedMap'),
   { ssr: false, loading: () => <p>Loading...</p> }
 );
 
@@ -17,7 +17,7 @@ export default function Donate({ project }: any) {
   };
   return (
     <Layout>
-      {/* <MapLayout /> */}
+      <MapLayout {...DonateProps} />
       <ProjectDetails {...DonateProps} />
     </Layout>
   );
