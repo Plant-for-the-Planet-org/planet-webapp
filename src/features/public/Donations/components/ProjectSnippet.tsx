@@ -1,8 +1,10 @@
+import Modal from '@material-ui/core/Modal';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
+import TreeDonation from './../screens/TreeDonation';
 import styles from './../styles/Projects.module.scss';
 import GetProjectClassification from './projectDetails/getProjectClassification';
 
@@ -17,8 +19,26 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
   const progressPercentage =
     (project.properties.countPlanted / project.properties.countTarget) * 100 +
     '%';
+
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const projectDetails = project.properties;
   return (
     <div className={styles.singleProject}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <TreeDonation project={projectDetails} onClose={handleClose} />
+      </Modal>
       <Link
         prefetch={false}
         href="/donate/[id]"
@@ -76,7 +96,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
         <div className={styles.projectCost}>
           {project.properties.treeCost ? (
             <>
-              <div className={styles.costButton}>
+              <div onClick={handleOpen} className={styles.costButton}>
                 {project.properties.currency === 'USD'
                   ? '$'
                   : project.properties.currency === 'EUR'
