@@ -14,7 +14,7 @@ export default function Mappage(props) {
       setMap(mapRef.current.leafletElement);
     }
     if (map !== undefined && map !== null) {
-      esri.basemapLayer('Gray').addTo(map);
+      esri.basemapLayer('Streets').addTo(map);
       // esri.tiledMapLayer({
       //   url: 'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer',
       //    maxZoom: 7,
