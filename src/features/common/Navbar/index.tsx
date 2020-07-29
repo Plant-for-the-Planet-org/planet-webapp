@@ -14,16 +14,16 @@ export default function NavbarComponent(props: any) {
     {
       id: 1,
       name: 'About us',
-      path: '/',
-      icon: <LOGO color={router.pathname === '/' ? '#89b35a' : '#2f3336'} />,
+      path: '/about',
+      icon: (
+        <LOGO color={router.pathname === '/about' ? '#89b35a' : '#2f3336'} />
+      ),
     },
     {
       id: 2,
       name: 'Donate/Gift',
-      path: '/donate',
-      icon: (
-        <Donate color={router.pathname === '/donate' ? '#89b35a' : '#2f3336'} />
-      ),
+      path: '/',
+      icon: <Donate color={router.pathname === `/` ? '#89b35a' : '#2f3336'} />,
     },
     {
       id: 3,
