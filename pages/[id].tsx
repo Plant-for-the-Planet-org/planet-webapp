@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
-import Layout from '../../src/features/common/Layout';
-import { context } from '../../src/utils/config';
-import ProjectLoaderDetails from './../../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
+import ProjectLoaderDetails from '../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
+import Layout from '../src/features/common/Layout';
+import { context } from '../src/utils/config';
 const MapLayout = dynamic(
-  () => import('./../../src/features/public/Donations/screens/ExtendedMap'),
+  () => import('../src/features/public/Donations/screens/ExtendedMap'),
   { ssr: false, loading: () => <p>Loading...</p> }
 );
 
 const ProjectDetails = dynamic(
-  () => import('./../../src/features/public/Donations/screens/ProjectDetails'),
+  () => import('../src/features/public/Donations/screens/ProjectDetails'),
   { ssr: false, loading: () => <ProjectLoaderDetails /> }
 );
 export default function Donate({ project }: any) {
