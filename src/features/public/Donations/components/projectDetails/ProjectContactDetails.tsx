@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import Link from 'next/link';
 
 interface Props {
   contactDetails: Array<{
@@ -12,10 +11,6 @@ interface Props {
 }
 
 function ProjectContactDetails({ contactDetails }: Props): ReactElement {
-  React.useEffect(() => {
-    console.log('heree', contactDetails);
-  });
-
   return (
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>Contact Details</div>
