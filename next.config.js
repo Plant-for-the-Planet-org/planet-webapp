@@ -11,6 +11,9 @@ module.exports = {
     // Will be available on both server and client
     API_ENDPOINT: 'https://app-development.plant-for-the-planet.org',
   },
+  env: {
+    MAPBOXGL_ACCCESS_TOKEN: process.env.MAPBOXGL_ACCCESS_TOKEN,
+  },
   trailingSlash: true,
   reactStrictMode: true,
   poweredByHeader: false,
