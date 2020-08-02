@@ -20,7 +20,7 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
             {contactDetails.icon}
 
             {contactDetails.link ? (
-              <span style={{ marginLeft: '20px', flexGrow: 1 }}>
+              <span style={{ marginLeft: '16px', flexGrow: 1 }}>
                 <a href={contactDetails.link} target="_blank">
                   {contactDetails.text}
                 </a>

@@ -37,11 +37,11 @@ function ProjectDetails({ project }: Props): ReactElement {
       text: project.tpo.address ? project.tpo.address: 'unavailable',
       link: project.coordinates ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}` : null,
     },
-    { id: 4, icon: <Email />, text: project.tpo.email ? project.tpo.email : 'unavailable', link: project.tpo.email ? `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${project.tpo.email}` : null },
+    { id: 4, icon: <Email />, text: project.tpo.email ? project.tpo.email : 'unavailable', link: project.tpo.email ? `mailto:${project.tpo.email}` : null },
   ];
 
   const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'large', image);
+    const ImageSource = getImageUrl('project', 'medium', image);
     return ImageSource;
   };
 
