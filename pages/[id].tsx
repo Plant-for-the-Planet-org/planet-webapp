@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import ProjectLoaderDetails from '../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
 import Layout from '../src/features/common/Layout';
-import { context } from '../src/utils/config';
 const MapLayout = dynamic(
   () => import('../src/features/public/Donations/screens/ExtendedMap'),
   { ssr: false, loading: () => <p>Loading...</p> }
@@ -25,7 +24,7 @@ export default function Donate({ project }: any) {
 
 export async function getStaticProps({ params }: any) {
   const res = await fetch(
-    `${context.api_url}/app/projects/${params.id}?_scope=extended`
+    `${process.env.API_ENDPOINT}/app/projects/${params.id}?_scope=extended`
   );
   const project = await res.json();
   return {
@@ -35,7 +34,9 @@ export async function getStaticProps({ params }: any) {
 
 // This function gets called at build time
 export async function getStaticPaths() {
-  const res = await fetch(`${context.api_url}/app/projects?_scope=extended`);
+  const res = await fetch(
+    `${process.env.API_ENDPOINT}/app/projects?_scope=extended`
+  );
   const projects = await res.json();
   const paths = projects.map((project: any) => ({
     params: { id: project.id },
