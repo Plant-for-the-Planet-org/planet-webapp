@@ -12,7 +12,7 @@ module.exports = {
     API_ENDPOINT: 'https://app-development.plant-for-the-planet.org',
   },
   env: {
-    MAPBOXGL_ACCCESS_TOKEN: process.env.MAPBOXGL_ACCCESS_TOKEN,
+    MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
   },
   trailingSlash: true,
   reactStrictMode: true,

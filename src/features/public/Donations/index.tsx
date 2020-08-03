@@ -20,7 +20,10 @@ function Donate({ projects }: Props): ReactElement {
   };
   return (
     <>
-      <MapLayout {...ProjectsProps} mapboxToken={process.env.MAPBOXGL_ACCCESS_TOKEN} />
+      <MapLayout
+        {...ProjectsProps}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+      />
       <Projects {...ProjectsProps} />
     </>
   );
