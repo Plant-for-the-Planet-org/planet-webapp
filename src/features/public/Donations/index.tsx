@@ -1,8 +1,12 @@
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
-import Projects from './screens/Projects';
 
 const MapLayout = dynamic(() => import('./screens/MapboxMap'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
+
+const Projects = dynamic(() => import('./screens/Projects'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });

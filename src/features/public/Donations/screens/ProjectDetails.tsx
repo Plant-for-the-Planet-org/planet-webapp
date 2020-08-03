@@ -8,7 +8,6 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-import GetProjectClassification from '../components/projectDetails/getProjectClassification';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
@@ -18,27 +17,30 @@ interface Props {
 }
 
 function ProjectDetails({ project }: Props): ReactElement {
+
+
   const [rating, setRating] = React.useState<number | null>(2);
 
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
   const ImageSource = project.image
     ? getImageUrl('project', 'large', project.image)
-    : '';
+    : ''
+
   const contactDetails = [
-    { id: 1, icon: <BlackTree />, text: 'View Profile', link: '' },
-    { id: 2, icon: <WorldWeb />, text: 'edenprojects.org', link: '' },
+    { id: 1, icon: <BlackTree />, text: 'View Profile', link: null },
+    { id: 2, icon: <WorldWeb />, text: project.website ?  project.website : 'unavailable', link: project.website },
     {
       id: 3,
       icon: <Location />,
-      text: '303 W Foothill Blvd, Unit 13 Glendora, CA 91741, USA',
-      link: '',
+      text: project.tpo.address ? project.tpo.address: 'unavailable',
+      link: project.coordinates ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}` : null,
     },
-    { id: 4, icon: <Email />, text: 'projects@edenprojects.org', link: '' },
+    { id: 4, icon: <Email />, text: project.tpo.email ? project.tpo.email : 'unavailable', link: project.tpo.email ? `mailto:${project.tpo.email}` : null },
   ];
 
   const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'large', image);
+    const ImageSource = getImageUrl('project', 'medium', image);
     return ImageSource;
   };
 
@@ -75,9 +77,9 @@ function ProjectDetails({ project }: Props): ReactElement {
             ) : null}
 
             <div className={styles.projectImageBlock}>
-              <div className={styles.projectType}>
+              {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.classification)}
-              </div>
+              </div> */}
 
               <div className={styles.projectName}>
                 {Sugar.String.truncate(project.name, 60)}
