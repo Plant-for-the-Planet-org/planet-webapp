@@ -125,7 +125,10 @@
   font-size: $fontSubTitleSize;
   text-transform: uppercase;
 }
-
+.costButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
 .perTree {
   font-family: $primaryFontFamily;
   font-size: 9px;
