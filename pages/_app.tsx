@@ -1,8 +1,8 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import '../src/features/public/Donations/styles/Maps.css';
-import { context } from '../src/utils/config';
 import ThemeProvider from '../src/utils/themeContext';
 function PlanetWeb({ Component, pageProps, config }: any) {
   React.useEffect(() => {
@@ -30,7 +30,7 @@ function PlanetWeb({ Component, pageProps, config }: any) {
   );
 }
 PlanetWeb.getInitialProps = async () => {
-  const res = await fetch(`${context.api_url}/public/v1.2/en/config`);
+  const res = await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`);
   const config = await res.json();
   return { config: config };
 };

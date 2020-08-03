@@ -1,6 +1,5 @@
 import Layout from '../src/features/common/Layout';
 import DonateComponent from '../src/features/public/Donations';
-import { context } from '../src/utils/config';
 
 export default function Donate({ projects }: any) {
   const DonateProps = {
@@ -14,7 +13,9 @@ export default function Donate({ projects }: any) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${context.api_url}/app/projects?_scope=map`);
+  const res = await fetch(
+    `${process.env.API_ENDPOINT}/app/projects?_scope=map`
+  );
   const projects = await res.json();
   return {
     props: { projects }, // will be passed to the page component as props
