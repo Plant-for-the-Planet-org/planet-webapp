@@ -6,7 +6,6 @@ import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import TreeDonation from './../screens/TreeDonation';
 import styles from './../styles/Projects.module.scss';
-import GetProjectClassification from './projectDetails/getProjectClassification';
 
 interface Props {
   project: any;
@@ -48,14 +47,15 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
                 className={styles.projectImageFile}
                 style={{
                   backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  backgroundPosition: 'center',
                 }}
               ></div>
             ) : null}
 
             <div className={styles.projectImageBlock}>
-              <div className={styles.projectType}>
+              {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
-              </div>
+              </div> */}
 
               <div className={styles.projectName}>
                 {Sugar.String.truncate(project.properties.name, 54)}

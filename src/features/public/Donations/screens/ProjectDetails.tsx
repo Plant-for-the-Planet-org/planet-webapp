@@ -8,7 +8,6 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-import GetProjectClassification from '../components/projectDetails/getProjectClassification';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
@@ -75,9 +74,9 @@ function ProjectDetails({ project }: Props): ReactElement {
             ) : null}
 
             <div className={styles.projectImageBlock}>
-              <div className={styles.projectType}>
+              {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.classification)}
-              </div>
+              </div> */}
 
               <div className={styles.projectName}>
                 {Sugar.String.truncate(project.name, 60)}

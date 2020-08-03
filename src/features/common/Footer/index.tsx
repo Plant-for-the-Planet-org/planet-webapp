@@ -23,6 +23,9 @@ export default function Footer() {
     setOpenModal(false);
   };
 
+  // const FooterLinks =[
+  //   {id:1,}
+  // ]
   // changes the language and selected currency id found in local storage
   useEffect(() => {
     let langCode = 'en';
@@ -66,7 +69,7 @@ export default function Footer() {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p>
+              {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               <Link href="/">
                 <p className={styles.footer_links}>Privacy & Terms</p>
               </Link>
@@ -75,6 +78,15 @@ export default function Footer() {
               </Link>
               <Link href="/">
                 <p className={styles.footer_links}>Contact</p>
+              </Link>
+              <Link href="/">
+                <p className={styles.footer_links}>Press Releases</p>
+              </Link>
+              <Link href="/">
+                <p className={styles.footer_links}>Report a project</p>
+              </Link>
+              <Link href="/">
+                <p className={styles.footer_links}>Support Us</p>
               </Link>
               <Link href="/">
                 <p className={styles.footer_links}>FAQs</p>
