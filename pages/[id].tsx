@@ -16,7 +16,7 @@ export default function Donate({ project }: any) {
   };
   return (
     <Layout>
-      <MapLayout {...DonateProps} />
+      {/* <MapLayout {...DonateProps} /> */}
       <ProjectDetails {...DonateProps} />
     </Layout>
   );

@@ -12,8 +12,8 @@ import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState('en');
-  const [selectedCurrency, setSelectedCurrency] = useState('AFN');
-  const [selectedCountry, setSelectedCountry] = useState('AF');
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -28,21 +28,24 @@ export default function Footer() {
   // ]
   // changes the language and selected currency id found in local storage
   useEffect(() => {
-    let langCode = 'en';
-    let currencyCode = 'AFN';
-    let countryCode = 'AF';
-    if (localStorage.getItem('currencyCode')) {
-      currencyCode = localStorage.getItem('currencyCode');
+    let langCode;
+    let currencyCode;
+    let countryCode;
+
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
+      }
     }
-    if (localStorage.getItem('language')) {
-      langCode = localStorage.getItem('language');
-    }
-    if (localStorage.getItem('countryCode')) {
-      countryCode = localStorage.getItem('countryCode');
-    }
-    setLanguage(langCode);
-    setSelectedCurrency(currencyCode);
-    setSelectedCountry(countryCode);
   }, []);
 
   return (
