@@ -15,6 +15,8 @@ function PlanetWeb({ Component, pageProps, config }: any) {
 
   React.useEffect(() => {
     localStorage.setItem('config', JSON.stringify(config));
+    localStorage.setItem('countryCode', config.country);
+    localStorage.setItem('currencyCode', config.currency);
   }, [config]);
 
   let storedConfig;
