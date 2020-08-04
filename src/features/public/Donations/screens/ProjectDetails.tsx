@@ -17,26 +17,41 @@ interface Props {
 }
 
 function ProjectDetails({ project }: Props): ReactElement {
-
-
   const [rating, setRating] = React.useState<number | null>(2);
 
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
   const ImageSource = project.image
     ? getImageUrl('project', 'large', project.image)
-    : ''
+    : '';
 
   const contactDetails = [
     { id: 1, icon: <BlackTree />, text: 'View Profile', link: null },
-    { id: 2, icon: <WorldWeb />, text: project.website ?  project.website : 'unavailable', link: project.website },
+    {
+      id: 2,
+      icon: <WorldWeb />,
+      text: project.website ? project.website : 'unavailable',
+      link: project.website,
+    },
     {
       id: 3,
       icon: <Location />,
-      text: project.tpo.address ? project.tpo.address: 'unavailable',
-      link: project.coordinates ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}` : null,
+      text:
+        project.tpo && project.tpo.address
+          ? project.tpo.address
+          : 'unavailable',
+      link: project.coordinates
+        ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}`
+        : null,
     },
-    { id: 4, icon: <Email />, text: project.tpo.email ? project.tpo.email : 'unavailable', link: project.tpo.email ? `mailto:${project.tpo.email}` : null },
+    {
+      id: 4,
+      icon: <Email />,
+      text:
+        project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
+      link:
+        project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
+    },
   ];
 
   const loadImageSource = (image: any) => {

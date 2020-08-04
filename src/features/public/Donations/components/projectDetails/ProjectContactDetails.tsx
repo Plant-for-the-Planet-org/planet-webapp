@@ -16,21 +16,23 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
       <div className={styles.infoTitle}>Contact Details</div>
       {contactDetails.map((contactDetails) => (
         <div key={contactDetails.id}>
-          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-            {contactDetails.icon}
-
-            {contactDetails.link ? (
-              <span style={{ marginLeft: '16px', flexGrow: 1 }}>
-                <a href={contactDetails.link} target="_blank">
+          {contactDetails.link ? (
+            <a href={contactDetails.link} target="_blank">
+              <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+                {contactDetails.icon}
+                <span style={{ marginLeft: '16px', flexGrow: 1 }}>
                   {contactDetails.text}
-                </a>
-              </span>
-            ) : (
-              <span style={{ marginLeft: '20px', flexGrow: 1 }}>
+                </span>
+              </div>
+            </a>
+          ) : (
+            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+              {contactDetails.icon}
+              <span style={{ marginLeft: '16px', flexGrow: 1 }}>
                 {contactDetails.text}
               </span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
