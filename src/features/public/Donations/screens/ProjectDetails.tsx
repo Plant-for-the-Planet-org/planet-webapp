@@ -122,14 +122,17 @@ function ProjectDetails({ project }: Props): ReactElement {
                 <div className={styles.targetLocation}>
                   <div className={styles.target}>
                     {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted
-                    •
+                    •{' '}
+                    <span style={{ fontWeight: 400 }}>
+                      {
+                        getCountryDataBy('countryCode', project.country)
+                          .countryName
+                      }
+                    </span>
                   </div>
-                  <div className={styles.location}>
-                    {
-                      getCountryDataBy('countryCode', project.country)
-                        .countryName
-                    }
-                  </div>
+                  {/* <div className={styles.location}>
+                    
+                  </div> */}
                 </div>
                 <div className={styles.projectTPOName}>
                   By {project.tpo.name}
