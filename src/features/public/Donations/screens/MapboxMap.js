@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import MapGL, { Marker, Popup } from 'react-map-gl';
+import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
 import ProjectSnippet from '../components/ProjectSnippet';
 import styles from '../styles/MapboxMap.module.scss';
 
@@ -27,6 +27,7 @@ export default function MapboxMap(props) {
         mapboxApiAccessToken={props.mapboxToken}
         mapStyle="mapbox://styles/mapbox/light-v10"
         onViewportChange={_onViewportChange}
+        scrollZoom={false}
         style={{
           position: 'absolute',
           top: '60px',
@@ -78,6 +79,9 @@ export default function MapboxMap(props) {
             />
           </Popup>
         )}
+        <div className={styles.mapNavigation}>
+          <NavigationControl />
+        </div>
       </MapGL>
     </div>
   );
