@@ -1,6 +1,6 @@
 import React from "react";
 
-function BackButton(props) {
+function BackButton(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
