@@ -1,7 +1,9 @@
 import Modal from '@material-ui/core/Modal';
+import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
+import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
 import Email from '../../../../assets/images/icons/project/Email';
 import Location from '../../../../assets/images/icons/project/Location';
@@ -17,26 +19,36 @@ interface Props {
 }
 
 function ProjectDetails({ project }: Props): ReactElement {
-
-
   const [rating, setRating] = React.useState<number | null>(2);
 
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
   const ImageSource = project.image
     ? getImageUrl('project', 'large', project.image)
-    : ''
+    : '';
 
   const contactDetails = [
     { id: 1, icon: <BlackTree />, text: 'View Profile', link: null },
-    { id: 2, icon: <WorldWeb />, text: project.website ?  project.website : 'unavailable', link: project.website },
+    {
+      id: 2,
+      icon: <WorldWeb />,
+      text: project.website ? project.website : 'unavailable',
+      link: project.website,
+    },
     {
       id: 3,
       icon: <Location />,
-      text: project.tpo.address ? project.tpo.address: 'unavailable',
-      link: project.coordinates ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}` : null,
+      text: project.tpo.address ? project.tpo.address : 'unavailable',
+      link: project.coordinates
+        ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}`
+        : null,
     },
-    { id: 4, icon: <Email />, text: project.tpo.email ? project.tpo.email : 'unavailable', link: project.tpo.email ? `mailto:${project.tpo.email}` : null },
+    {
+      id: 4,
+      icon: <Email />,
+      text: project.tpo.email ? project.tpo.email : 'unavailable',
+      link: project.tpo.email ? `mailto:${project.tpo.email}` : null,
+    },
   ];
 
   const loadImageSource = (image: any) => {
@@ -72,7 +84,15 @@ function ProjectDetails({ project }: Props): ReactElement {
                   style={{
                     backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
                   }}
-                ></div>
+                >
+                  <Link prefetch={false} href="/" as={`/`}>
+                    <a>
+                      
+                        <BackButton />
+                      
+                    </a>
+                  </Link>
+                </div>
               </LazyLoad>
             ) : null}
 
