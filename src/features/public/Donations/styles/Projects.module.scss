@@ -75,7 +75,6 @@
   padding: 10px;
 }
 
-
 .searchIcon:hover {
   cursor: pointer;
 }
@@ -92,8 +91,6 @@
 .cancelIcon:hover {
   cursor: pointer;
 }
-
-
 
 /* Projects */
 .projectsContainer {
@@ -215,7 +212,7 @@
 .projectImage {
   height: 160px;
   width: 100%;
-  background-color: $secondaryColor;
+  background-color: $primaryColor;
   position: relative;
 }
 
