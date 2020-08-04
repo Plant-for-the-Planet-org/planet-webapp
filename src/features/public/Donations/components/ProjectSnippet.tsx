@@ -46,7 +46,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
               <div
                 className={styles.projectImageFile}
                 style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
                   backgroundPosition: 'center',
                 }}
               ></div>
@@ -98,7 +98,9 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
                   : project.properties.currency === 'EUR'
                   ? '€'
                   : project.properties.currency}
-                {project.properties.treeCost.toFixed(2)}
+                {project.properties.treeCost % 1 !== 0
+                  ? project.properties.treeCost.toFixed(2)
+                  : project.properties.treeCost}
               </div>
               <div className={styles.perTree}>per tree</div>
             </>

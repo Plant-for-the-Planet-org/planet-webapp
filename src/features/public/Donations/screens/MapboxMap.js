@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import MapGL, { Marker, Popup } from 'react-map-gl';
+import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
 import ProjectSnippet from '../components/ProjectSnippet';
 import styles from '../styles/MapboxMap.module.scss';
 
@@ -11,12 +11,10 @@ export default function MapboxMap(props) {
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: 'calc(100% - 60px)',
-    latitude: 40.4381311,
-    longitude: -3.8196233,
+    latitude: -28.5,
+    longitude: 36.96,
     zoom: 2,
   });
-
-  const center = [40.4381311, -3.8196233];
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -25,8 +23,9 @@ export default function MapboxMap(props) {
       <MapGL
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
-        mapStyle="mapbox://styles/mapbox/light-v10"
+        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
         onViewportChange={_onViewportChange}
+        scrollZoom={false}
         style={{
           position: 'absolute',
           top: '60px',
@@ -69,7 +68,7 @@ export default function MapboxMap(props) {
             onClose={() => setPopupData({ ...popupData, show: false })}
             anchor="bottom"
             dynamicPosition={false}
-            offsetTop={-40}
+            offsetTop={20}
             tipSize={0}
           >
             <ProjectSnippet
@@ -78,6 +77,9 @@ export default function MapboxMap(props) {
             />
           </Popup>
         )}
+        <div className={styles.mapNavigation}>
+          <NavigationControl />
+        </div>
       </MapGL>
     </div>
   );
