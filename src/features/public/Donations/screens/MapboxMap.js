@@ -13,7 +13,7 @@ export default function MapboxMap(props) {
     height: 'calc(100% - 60px)',
     latitude: 36.96,
     longitude: -28.5,
-    zoom: 2,
+    zoom: 1.4,
   });
 
   const _onViewportChange = (view) => setViewPort({ ...view });

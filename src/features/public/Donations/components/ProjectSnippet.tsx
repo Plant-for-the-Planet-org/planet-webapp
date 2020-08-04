@@ -38,11 +38,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
       >
         <TreeDonation project={projectDetails} onClose={handleClose} />
       </Modal>
-      <Link
-        prefetch={false}
-        href="/[id]"
-        as={`/${project.properties.id}?currency=${projectDetails.currency}`}
-      >
+      <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
         <a>
           <div className={styles.projectImage}>
             {project.properties.image &&
@@ -80,13 +76,13 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •
-            </div>
-            <div className={styles.location}>
-              {
-                getCountryDataBy('countryCode', project.properties.country)
-                  .countryName
-              }
+              planted •{' '}
+              <span style={{ fontWeight: 400 }}>
+                {
+                  getCountryDataBy('countryCode', project.properties.country)
+                    .countryName
+                }
+              </span>
             </div>
           </div>
           <div className={styles.projectTPOName}>

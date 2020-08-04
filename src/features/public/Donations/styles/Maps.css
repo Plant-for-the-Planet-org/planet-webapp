@@ -77,3 +77,8 @@
   padding: 2px 16px 12px 16px;
   margin-top: 0px;
 }
+
+/* hides Improve this map footer from the map */
+.mapbox-improve-map{
+  display:none;
+}

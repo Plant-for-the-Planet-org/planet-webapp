@@ -75,7 +75,6 @@
   padding: 10px;
 }
 
-
 .searchIcon:hover {
   cursor: pointer;
 }
@@ -92,8 +91,6 @@
 .cancelIcon:hover {
   cursor: pointer;
 }
-
-
 
 /* Projects */
 .projectsContainer {
@@ -124,7 +121,7 @@
 .projectsContainer::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #555;
+  background-color: $dividerColor;
 }
 
 .singleProject {
@@ -215,7 +212,7 @@
 .projectImage {
   height: 160px;
   width: 100%;
-  background-color: $secondaryColor;
+  background-color: $primaryColor;
   position: relative;
 }
 

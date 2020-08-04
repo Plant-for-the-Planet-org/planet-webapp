@@ -21,8 +21,17 @@ export default function Donate() {
 
   useEffect(() => {
     async function loadProject() {
+      let currencyCode;
+      if (typeof Storage !== 'undefined') {
+        if (localStorage.getItem('currencyCode')) {
+          // currencyCode = localStorage.getItem('currencyCode');
+          currencyCode = 'EUR';
+        } else {
+          currencyCode = 'EUR';
+        }
+      }
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/projects/${router.query.id}?_scope=extended&currency=${router.query.currency}`
+        `${process.env.API_ENDPOINT}/app/projects/${router.query.id}?_scope=extended&currency=${currencyCode}`
       );
 
       const project = await res.json();
