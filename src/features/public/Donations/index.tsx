@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 
-const MapLayout = dynamic(() => import('./screens/Maps'), {
+const MapLayout = dynamic(() => import('./screens/MapboxMap'), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
@@ -20,7 +20,10 @@ function Donate({ projects }: Props): ReactElement {
   };
   return (
     <>
-      <MapLayout {...ProjectsProps} />
+      <MapLayout
+        {...ProjectsProps}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+      />
       <Projects {...ProjectsProps} />
     </>
   );

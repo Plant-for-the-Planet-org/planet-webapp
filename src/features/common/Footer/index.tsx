@@ -12,8 +12,8 @@ import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState('en');
-  const [selectedCurrency, setSelectedCurrency] = useState('AFN');
-  const [selectedCountry, setSelectedCountry] = useState('AF');
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -23,26 +23,35 @@ export default function Footer() {
     setOpenModal(false);
   };
 
-  // const FooterLinks =[
-  //   {id:1,}
-  // ]
+  const FooterLinks = [
+    { id: 1, title: 'Privacy & Terms', link: '/' },
+    { id: 2, title: 'Imprint', link: '/' },
+    { id: 3, title: 'Contact', link: '/' },
+    { id: 4, title: 'Press Releases', link: '/' },
+    { id: 5, title: 'Report a project', link: '/' },
+    { id: 6, title: 'Support Us', link: '/' },
+    { id: 7, title: 'FAQs', link: '/' },
+  ];
   // changes the language and selected currency id found in local storage
   useEffect(() => {
-    let langCode = 'en';
-    let currencyCode = 'AFN';
-    let countryCode = 'AF';
-    if (localStorage.getItem('currencyCode')) {
-      currencyCode = localStorage.getItem('currencyCode');
+    let langCode;
+    let currencyCode;
+    let countryCode;
+
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
+      }
     }
-    if (localStorage.getItem('language')) {
-      langCode = localStorage.getItem('language');
-    }
-    if (localStorage.getItem('countryCode')) {
-      countryCode = localStorage.getItem('countryCode');
-    }
-    setLanguage(langCode);
-    setSelectedCurrency(currencyCode);
-    setSelectedCountry(countryCode);
   }, []);
 
   return (
@@ -70,27 +79,13 @@ export default function Footer() {
             </div>
             <div className={styles.footer_links_container}>
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              <Link href="/">
-                <p className={styles.footer_links}>Privacy & Terms</p>
-              </Link>
-              <Link href="/">
-                <p className={styles.footer_links}>Imprint</p>
-              </Link>
-              <Link href="/">
-                <p className={styles.footer_links}>Contact</p>
-              </Link>
-              <Link href="/">
-                <p className={styles.footer_links}>Press Releases</p>
-              </Link>
-              <Link href="/">
-                <p className={styles.footer_links}>Report a project</p>
-              </Link>
-              <Link href="/">
-                <p className={styles.footer_links}>Support Us</p>
-              </Link>
-              <Link href="/">
-                <p className={styles.footer_links}>FAQs</p>
-              </Link>
+              {FooterLinks.map((link) => {
+                return (
+                  <Link key={link.id} href={link.link}>
+                    <p className={styles.footer_links}>{link.title}</p>
+                  </Link>
+                );
+              })}
             </div>
           </div>
           <div className={styles.logo_container}>
