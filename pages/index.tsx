@@ -9,7 +9,6 @@ export default function Donate() {
   };
 
   useEffect(() => {
-    loadProjects();
     async function loadProjects() {
       let currencyCode;
       if (typeof Storage !== 'undefined') {
@@ -27,6 +26,7 @@ export default function Donate() {
         setProjects(projects);
       });
     }
+    loadProjects();
   }, []);
   return (
     <Layout>

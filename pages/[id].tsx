@@ -1,4 +1,6 @@
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import ProjectLoaderDetails from '../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
 import Layout from '../src/features/common/Layout';
 const MapLayout = dynamic(
@@ -10,36 +12,29 @@ const ProjectDetails = dynamic(
   () => import('../src/features/public/Donations/screens/ProjectDetails'),
   { ssr: false, loading: () => <ProjectLoaderDetails /> }
 );
-export default function Donate({ project }: any) {
+export default function Donate() {
+  const [project, setProject] = React.useState();
   const DonateProps = {
     project: project,
   };
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadProject() {
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/app/projects/${router.query.id}?_scope=extended&currency=${router.query.currency}`
+      );
+
+      const project = await res.json();
+      setProject(project);
+    }
+    loadProject();
+  }, []);
+
   return (
     <Layout>
       {/* <MapLayout {...DonateProps} /> */}
-      <ProjectDetails {...DonateProps} />
+      {project ? <ProjectDetails {...DonateProps} /> : null}
     </Layout>
   );
-}
-
-export async function getStaticProps({ params }: any) {
-  const res = await fetch(
-    `${process.env.API_ENDPOINT}/app/projects/${params.id}?_scope=extended`
-  );
-  const project = await res.json();
-  return {
-    props: { project }, // will be passed to the page component as props
-  };
-}
-
-// This function gets called at build time
-export async function getStaticPaths() {
-  const res = await fetch(
-    `${process.env.API_ENDPOINT}/app/projects?_scope=extended`
-  );
-  const projects = await res.json();
-  const paths = projects.map((project: any) => ({
-    params: { id: project.id },
-  }));
-  return { paths, fallback: false };
 }

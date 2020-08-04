@@ -11,8 +11,8 @@ export default function MapboxMap(props) {
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: 'calc(100% - 60px)',
-    latitude: -28.5,
-    longitude: 36.96,
+    latitude: 36.96,
+    longitude: -28.5,
     zoom: 2,
   });
 
@@ -44,12 +44,14 @@ export default function MapboxMap(props) {
             <div
               className={styles.marker}
               onMouseOver={(e) => {
-                setPopupData({
-                  show: true,
-                  lat: project.geometry.coordinates[1],
-                  long: project.geometry.coordinates[0],
-                  project: project,
-                });
+                setTimeout(function () {
+                  setPopupData({
+                    show: true,
+                    lat: project.geometry.coordinates[1],
+                    long: project.geometry.coordinates[0],
+                    project: project,
+                  });
+                }, 300);
               }}
             >
               {/* <img

@@ -38,7 +38,10 @@ function ProjectDetails({ project }: Props): ReactElement {
     {
       id: 3,
       icon: <Location />,
-      text: project.tpo.address ? project.tpo.address : 'unavailable',
+      text:
+        project.tpo && project.tpo.address
+          ? project.tpo.address
+          : 'unavailable',
       link: project.coordinates
         ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}`
         : null,
@@ -46,8 +49,10 @@ function ProjectDetails({ project }: Props): ReactElement {
     {
       id: 4,
       icon: <Email />,
-      text: project.tpo.email ? project.tpo.email : 'unavailable',
-      link: project.tpo.email ? `mailto:${project.tpo.email}` : null,
+      text:
+        project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
+      link:
+        project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
 
@@ -87,9 +92,7 @@ function ProjectDetails({ project }: Props): ReactElement {
                 >
                   <Link prefetch={false} href="/" as={`/`}>
                     <a>
-                      
-                        <BackButton />
-                      
+                      <BackButton />
                     </a>
                   </Link>
                 </div>
