@@ -1,7 +1,9 @@
 import Modal from '@material-ui/core/Modal';
+import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
+import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
 import Email from '../../../../assets/images/icons/project/Email';
 import Location from '../../../../assets/images/icons/project/Location';
@@ -87,7 +89,13 @@ function ProjectDetails({ project }: Props): ReactElement {
                   style={{
                     backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
                   }}
-                ></div>
+                >
+                  <Link prefetch={false} href="/" as={`/`}>
+                    <a>
+                      <BackButton />
+                    </a>
+                  </Link>
+                </div>
               </LazyLoad>
             ) : null}
 
