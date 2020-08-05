@@ -23,9 +23,8 @@ const options = {
     //   }
     // }),
     Providers.Auth0({
-      clientId: serverRuntimeConfig.CLIENT_ID,
-      clientSecret: serverRuntimeConfig.CLIENT_SECRET,
-      domain: serverRuntimeConfig.OAUTH0_DOMAIN
+      clientId: serverRuntimeConfig.AUTH0_CLIENT_ID,
+      domain: serverRuntimeConfig.AUTH0_CUSTOM_DOMAIN
     }),
     // Providers.Facebook({
     //   clientId: process.env.FACEBOOK_ID,

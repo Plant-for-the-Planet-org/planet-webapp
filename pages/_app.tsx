@@ -11,7 +11,7 @@ function PlanetWeb({Component, pageProps}:any) {
 
   return (
     <Provider store={store}>
-      <AuthProvider options={{site: process.env.SITE ?? 'http://localhost:3000'}} session={session}>
+      <AuthProvider options={{site: process.env.SITE}} session={session}>
         <ThemeProvider>
           <Component {...pageProps} />
         </ThemeProvider> 
