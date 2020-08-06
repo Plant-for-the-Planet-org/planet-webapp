@@ -53,9 +53,9 @@ export default function TpoProfile(props: any) {
     }
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
-        prevProgress >= percentage ? percentage : prevProgress + 2
+        prevProgress >= percentage ? percentage : prevProgress + 5
       );
-    }, 50);
+    }, 100);
 
     return () => {
       clearInterval(timer);
