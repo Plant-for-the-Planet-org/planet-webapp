@@ -1,111 +1,111 @@
 @import './../../../../theme/theme';
 
-.container{
-    background-color: $white;
-    border-radius: 7px;
-    padding: 20px;
-    max-width: 412px;
+.container {
+  background-color: $light;
+  border-radius: 7px;
+  padding: 20px;
+  max-width: 412px;
 }
 
-.header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.headerBackIcon{
-    height: 32px;
-    width: 32px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
-.headerBackIcon:hover{
-    cursor: pointer;
-}
-
-.headerTitle{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 27px;
-    color: $primaryFontColor;
-    margin-left: 20px;
+.headerBackIcon:hover {
+  cursor: pointer;
 }
 
-.formRow{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 20px;
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 20px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
 }
 
 /* Is Company */
-.isCompany{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
+.isCompany {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.isCompanyText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
+.isCompanyText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
 }
 
- /* Tree Count and Cost  */
+/* Tree Count and Cost  */
 
-.finalTreeCount{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
+.finalTreeCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.totalCost{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 16px;
-    color: $primaryColor;
+.totalCost {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryColor;
 }
 
-.totalCostText{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 16px;
-    color: $primaryFontColor;
-    margin-left: 6px;
+.totalCostText {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryFontColor;
+  margin-left: 6px;
 }
 
-.actionButtonsContainer{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
+.actionButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.actionButtonsText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    margin-left: 24px;
-    margin-right: 24px;
+.actionButtonsText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-left: 24px;
+  margin-right: 24px;
 }
-.continueButton{
-    background-color: $primaryColor;
-    border-radius: 6px;
-    padding: 8px 40px;
-    color: $white;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    font-weight: 600;
+.continueButton {
+  background-color: $primaryColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
 }
 
-.horizontalLine{
-    height: 1px;
-    background-color: $dividerColor;
-    margin-top: 20px;
+.horizontalLine {
+  height: 1px;
+  background-color: $dividerColor;
+  margin-top: 20px;
 }

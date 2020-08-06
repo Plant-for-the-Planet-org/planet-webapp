@@ -16,7 +16,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: $white;
+  background-color: $light;
   border-radius: 13px 13px 0px 0px;
   width: 100%;
   height: 50px;
@@ -64,7 +64,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: $white;
+  background-color: $light;
   border-radius: 13px 13px 0px 0px;
   width: 100%;
   height: 50px;
@@ -96,7 +96,7 @@
 .projectsContainer {
   display: flex;
   flex-direction: column;
-  background-color: $white;
+  background-color: $light;
   margin-top: 5px;
   width: 360px;
   padding-left: 16px;
@@ -172,7 +172,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 11px;
-  color: $white;
+  color: $light;
   font-weight: bold;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
