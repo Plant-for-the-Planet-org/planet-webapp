@@ -1,31 +1,5 @@
 @import './../../../theme/theme';
 
-.landingSection {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 60px;
-}
-
-.backgroundImage {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 100vh;
-}
-
-.landingContent {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 440px;
-}
-
 .treeCounterName {
   font-family: $primaryFontFamily;
   font-weight: bold;
@@ -33,12 +7,4 @@
   color: white;
   margin-top: 48px;
   margin-bottom: 0px;
-}
-
-.treeCounterAbout {
-  font-family: $primaryFontFamily;
-  font-size: 16px;
-  color: white;
-  margin-top: 30px;
-  text-align: center;
 }
