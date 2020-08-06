@@ -46,7 +46,8 @@ export default function TpoProfile(props: any) {
 
   React.useEffect(() => {
     let percentage = (props.planted / props.target) * 100;
-    if (props.target === 0) {
+    if (props.planted === 0) percentage = 0.1;
+    else if (props.target === 0) {
       if (props.planted === 0) percentage = 0.1;
       else percentage = 100;
     }
