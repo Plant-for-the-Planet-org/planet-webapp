@@ -29,7 +29,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
 
   const projectDetails = project.properties;
   return (
-    <div className={styles.singleProject}>
+    <>
       <Modal
         open={open}
         onClose={handleClose}
@@ -107,6 +107,6 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
           ) : null}
         </div>
       </div>
-    </div>
+    </>
   );
 }

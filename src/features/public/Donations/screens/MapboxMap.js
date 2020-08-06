@@ -5,6 +5,7 @@ import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
   let mapContainer = useRef(null);
+  var timer;
   const { projects } = props;
   const [popupData, setPopupData] = useState({ show: false });
 
@@ -44,7 +45,7 @@ export default function MapboxMap(props) {
             <div
               className={styles.marker}
               onMouseOver={(e) => {
-                setTimeout(function () {
+                timer = setTimeout(function () {
                   setPopupData({
                     show: true,
                     lat: project.geometry.coordinates[1],
@@ -52,6 +53,9 @@ export default function MapboxMap(props) {
                     project: project,
                   });
                 }, 300);
+              }}
+              onMouseLeave={(e) => {
+                clearTimeout(timer);
               }}
             >
               {/* <img
@@ -73,10 +77,19 @@ export default function MapboxMap(props) {
             offsetTop={20}
             tipSize={0}
           >
-            <ProjectSnippet
-              key={popupData.project.properties.id}
-              project={popupData.project}
-            />
+            <div
+              className={styles.singleProject}
+              onMouseLeave={(e) => {
+                setTimeout(function () {
+                  setPopupData({ ...popupData, show: false });
+                }, 300);
+              }}
+            >
+              <ProjectSnippet
+                key={popupData.project.properties.id}
+                project={popupData.project}
+              />
+            </div>
           </Popup>
         )}
         <div className={styles.mapNavigation}>
