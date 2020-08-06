@@ -17,6 +17,10 @@
   max-width: 100vw;
 }
 
+.backgroundImage > img {
+  height: 100%;
+}
+
 .landingContent {
   position: absolute;
   display: flex;
