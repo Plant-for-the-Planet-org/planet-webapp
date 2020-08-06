@@ -3,6 +3,7 @@ import CircularProgress, {
 } from '@material-ui/core/CircularProgress';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
+import Sugar from 'sugar';
 import treeCounterStyles from './TreeCounter.module.scss';
 
 const useStylesFacebook = makeStyles((theme: Theme) =>
@@ -44,7 +45,11 @@ export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
-    const percentage = (props.planted / props.target) * 100;
+    let percentage = (props.planted / props.target) * 100;
+    if (props.target === 0) {
+      if (props.planted === 0) percentage = 0.1;
+      else percentage = 100;
+    }
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
         prevProgress >= percentage ? percentage : prevProgress + 2
@@ -61,11 +66,11 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.backgroundCircle}></div>
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
-          <h1>{props.planted}</h1>
+          <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
           <h2>Trees Planted</h2>
         </div>
         <div className={treeCounterStyles.treeCounterDataField}>
-          <h1>{props.target}</h1>
+          <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
           <h2>Target</h2>
         </div>
       </div>

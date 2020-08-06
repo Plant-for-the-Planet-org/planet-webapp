@@ -23,10 +23,10 @@ export default function Tpo() {
     loadTpoData();
   }, []);
 
-  return (
+  return tpoprofile ? (
     <Layout>
       <TpoPage {...TpoProps} />
       <Footer />
     </Layout>
-  );
+  ) : null;
 }
