@@ -1,6 +1,7 @@
-# Trillion Tree Campaign Web App
+# Plant-for-the-Planet App
 
-Welcome to this repository which contains the code of the new web client of the Trillion Tree Campaign at https://www.trilliontreecampaign.org/ written in NextJS. For contributions please read our [contribution guide](https://github.com/Plant-for-the-Planet-org/planet-webapp/blob/develop/CONTRIBUTING.md) as well as our [code of conduct](https://github.com/Plant-for-the-Planet-org/planet-webapp/blob/develop/CODE_OF_CONDUCT.md)
+This repo contains web app of Plant-for-the-Planet.
+For contributions please read our [contribution guide](https://github.com/Plant-for-the-Planet-org/planet-webapp/blob/develop/CONTRIBUTING.md) as well as our [code of conduct](https://github.com/Plant-for-the-Planet-org/planet-webapp/blob/develop/CODE_OF_CONDUCT.md)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
@@ -22,25 +23,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Development Process
 
-This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel BOT to the production system. There are currently some more protected branches also build by Vercel BOT automatically and mapped to test backends using the branch name as subdomain.
+This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel bot to the production system. There are currently some more protected branches also build by Vercel bot automatically and mapped to test backends using the branch name as subdomain.
 
-## Versioning
-
-*App Versioning Guide*
-
-eg: Version M.F.B
-V 1.1.10
-
-M = Major Changes
-F = Feature Addition
-B = Critical Bug Fixes and Additions
-
-Release candidate can have the target version number
-V 1.1.`11` RC `1`
-
-Beta and Alpha builds can also have target version number
-V 1.1.`11` B `12`
-V 1.1.`11` A `12` [increment per release]
 
 ## Learn More
 
@@ -56,10 +40,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy this Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-## Supporters
-
-## License
-
-Trillion Tree Campaign Web App is free software, and is released under the terms of the <abbr title="GNU General Public License">GPL</abbr> version 3 or (at your option) any later version. See <a href="license.txt">license.txt</a>.</p>

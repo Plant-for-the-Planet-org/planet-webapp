@@ -1,185 +1,244 @@
 @import './../../../../theme/theme';
 
+.container {
+  width: 100vw;
+  margin-top: 60px;
+  position: relative;
+  z-index: 6;
+}
 /* Projects */
-.projectContainer{
-    display: flex;
-    flex-direction: column;
-    background-color: $white;
-    width: 320px;
-    padding-bottom: 16px;
-    max-height: 86vh;
-    overflow: scroll;
-    border-top-right-radius: 13px;
-    border-top-left-radius: 13px;
+.projectContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  width: 360px;
+  padding-bottom: 16px;
+  max-height: 86vh;
+  overflow: scroll;
+  border-top-right-radius: 13px;
+  border-top-left-radius: 13px;
+  position: absolute;
+  top: 30px;
+  left: 24px;
 }
 
-.targetLocation{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
+.targetLocation {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
 }
-.projectCompleteInfo{
-    margin-top: 10px;
-    margin-left: 16px;
-    margin-right: 16px;
+.projectCompleteInfo {
+  margin-top: 10px;
+  margin-left: 16px;
+  margin-right: 16px;
 }
-.projectInfo{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-}
-
-.target{
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: $primaryFontColor;
-    font-weight: bold;
-    margin-right: 4px;
-}
-.projectTPOName, .location {
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: $primaryFontColor;
-    margin-top: 10px;
+.projectInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
-.costButton{
-    background-color: $blueishGrey;
-    width: 72px;
-    height: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 11px;
-    color: $primaryColor;
-    font-weight: bold;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
+.target {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-right: 4px;
+}
+.projectTPOName,
+.location {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  margin-top: 10px;
 }
 
-.perTree{
-    font-family: $primaryFontFamily;
-    font-size: 9px;
-    color: $primaryFontColor;
-    margin-top: 5px;
+.costButton {
+  background-color: $primaryColor;
+  width: 72px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  color: $white;
+  font-weight: bold;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  text-transform: uppercase;
 }
 
-.projectCost{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.costButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.perTree {
+  font-family: $primaryFontFamily;
+  font-size: 9px;
+  color: $primaryFontColor;
+  margin-top: 5px;
+}
+
+.projectCost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Progress Bar */
-.progressBar{
-    height: 4px;
-    width: 100%;
-    background-color: $dividerColor;
+.progressBar {
+  height: 4px;
+  width: 100%;
+  background-color: $dividerColor;
 }
 
-.progressBarHighlight{
-    height: 4px;
-    background-color: $primaryColor;
-    width: 30%;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+.progressBarHighlight {
+  height: 4px;
+  background-color: $primaryColor;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
-.projectImage{
-    height: 160px;
-    width: 100%;
-    background-color: $secondaryColor;
-    position: relative;
-    border-top-right-radius: 13px;
-    border-top-left-radius: 13px;
-    background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
+.projectImage {
+  height: 160px;
+  width: 100%;
+  background-color: $primaryColor;
+  position: relative;
+  border-top-right-radius: 13px;
+  border-top-left-radius: 13px;
 }
 
-
-.projectName{
-    font-family: $primaryFontFamily;
-    font-size: 18px;
-    color: $white;
-    position: absolute;
-    bottom: 12px;
-    left: 16px;
+.projectImageFile {
+  height: 160px;
+  width: 100%;
+  position: relative;
 }
 
-.ratings{
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-}
-.calculatedRating{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    font-weight: bold;
-    color:$primaryFontColor;
+.projectImageBlock {
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
 }
 
-.ratingButton{
-    margin-left: 5px;
+.projectType {
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.projectDescription{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color:$primaryFontColor;
-    line-height: 21px;
+.projectName {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: $white;
+}
+
+.ratings {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.calculatedRating {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: bold;
+  color: $primaryFontColor;
+}
+
+.ratingButton {
+  margin-left: 5px;
+}
+
+.projectDescription {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  line-height: 21px;
+  margin-top: 24px;
 }
 
 /* Additional Information */
 
-.projectInfoProperties{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+.projectMoreInfoHalf {
+  width: 50%;
+  margin-top: 35px;
 }
 
-.projectMoreInfoHalf{
-    width: 50%;
-    margin-top: 35px;
+.projectMoreInfo {
+  width: 100%;
+  margin-top: 35px;
+}
+.infoTitle {
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+  color: $primaryFontColor;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.infoText {
+  margin-top: 9px;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.projectMoreInfo{
-    width: 100%;
-    margin-top: 35px;
+.infoTextButton {
+  color: $primaryColor;
 }
-.infoTitle{
-    font-family: $primaryFontFamily;
-    font-size: 10px;
-    color:$primaryFontColor;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-.infoText{
-    margin-top: 9px;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color:$primaryFontColor;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.infoTextButton:hover {
+  cursor: pointer;
 }
 
-.infoTextButton{
-    color:$primaryColor;
-}
-.infoTextButton:hover{
-    cursor: pointer;
-}
-
-.speciesProgress{
-    background-color: $primaryColor;
-    height: 2px;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-    margin-bottom: -6px;
-    margin-top: $fontSubTitleSize;
+.speciesProgress {
+  background-color: $primaryColor;
+  height: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  margin-bottom: -6px;
+  margin-top: $fontSubTitleSize;
 }
 
-.contactDetailsRow{
-    display: flex;
-    align-items: center;
+.contactDetailsRow {
+  display: flex;
+  align-items: center;
+}
+
+.projectImageSliderContainer {
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: nowrap;
+  display: grid;
+  margin-top: 24px;
+  scroll-behavior: smooth;
+  max-width: 328px;
+  overflow: scroll;
+  overflow-x: auto;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: repeat(2, 50%);
+  grid-auto-columns: 50%;
+  grid-auto-flow: column;
+}
+
+.projectImages {
+  height: 148px;
+  width: 132px;
+  border-radius: 7px;
+  margin-right: 6px;
+  grid-area: span 2 / span 1;
+}
+
+.projectImages:nth-child(3n-1),
+.projectImages:nth-child(3n) {
+  height: 70px;
+  grid-area: span 1 / span 1;
+}
+
+.projectImages:nth-child(3n) {
+  margin-top: 4px;
 }

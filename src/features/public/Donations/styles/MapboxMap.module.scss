@@ -1,0 +1,48 @@
+@import './BounceAnimation.module.scss';
+@import '../../../../theme/theme';
+
+.mapContainer {
+  position: absolute;
+  top: 60px;
+  height: calc(100vh - 60px);
+  width: 100%;
+}
+
+.marker {
+  border-radius: 50%;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.markerType {
+  transform: rotate(45deg);
+  width: 60px;
+  height: 40px;
+  margin-left: -6px;
+  margin-top: -4px;
+}
+
+.mapNavigation {
+  position: absolute;
+  right: 20px;
+  bottom: 50px;
+}

@@ -1,170 +1,247 @@
 @import './../../../../theme/theme';
 
-.header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: $white;
-    border-radius: 13px 13px 0px 0px;
-    width: 320px;
-    height: 50px;
+.container {
+  width: 100vw;
+  margin-top: 60px;
+  position: relative;
+  z-index: 6;
 }
 
-.tabButtonContainer{
-    flex-grow: 1;
-    display: flex;
+.cardContainer {
+  position: absolute;
+  top: 30px;
+  left: 24px;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: $white;
+  border-radius: 13px 13px 0px 0px;
+  width: 100%;
+  height: 50px;
 }
 
-.tabButton{
-    background-color: transparent;
-    border:none;
-    margin-left: 16px;
-    margin-top: 18px;
-}
-.tabButton:hover{
-    cursor: pointer;
-}
-.tabButtonText{
-    font-family: $primaryFontFamily;
-    font-size: 13px;
-    font-weight: bold;
-    color: $primaryFontColor;
-    margin-bottom: 10px;
+.tabButtonContainer {
+  flex-grow: 1;
+  display: flex;
 }
 
-.tabButtonSelected{
-    color:$secondaryColor;
-    font-family: $primaryFontFamily;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 10px;
+.tabButton {
+  background-color: transparent;
+  border: none;
+  margin-left: 16px;
+  margin-top: 18px;
+}
+.tabButton:hover {
+  cursor: pointer;
+}
+.tabButtonText {
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  color: $primaryFontColor;
+  margin-bottom: 10px;
 }
 
-.tabButtonSelectedIndicator{
-    height: 3px ;
-    background-color:  $secondaryColor;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    align-self: flex-end;
+.tabButtonSelected {
+  color: $primaryColor;
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.searchIcon{
-    margin-right: 20px;
+.tabButtonSelectedIndicator {
+  height: 3px;
+  background-color: $primaryColor;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  align-self: flex-end;
 }
 
+.headerSearchMode {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: $white;
+  border-radius: 13px 13px 0px 0px;
+  width: 100%;
+  height: 50px;
+}
+
+.searchIcon {
+  margin-left: 10px;
+  padding: 10px;
+}
+
+.searchIcon:hover {
+  cursor: pointer;
+}
+
+.searchInput {
+  flex-grow: 3;
+}
+
+.cancelIcon {
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.cancelIcon:hover {
+  cursor: pointer;
+}
 
 /* Projects */
-.projectsContainer{
-    display: flex;
-    flex-direction: column;
-    background-color: $white;
-    margin-top: 5px;
-    width: 320px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    max-height: 100vh;
-    overflow: scroll;
+.projectsContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  margin-top: 5px;
+  width: 360px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  max-height: 82vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
-.singleProject{
-    margin-top: 16px;
+.projectsContainer::-webkit-scrollbar-track {
+  // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
 }
 
-.targetLocation{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
+.projectsContainer::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f5f5f5;
 }
 
-.projectInfo{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-top: 10px;
+.projectsContainer::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: $dividerColor;
 }
 
-.target{
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: $primaryFontColor;
-    font-weight: bold;
-    margin-right: 4px;
-}
-.projectTPOName, .location {
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: $primaryFontColor;
-    margin-top: 10px;
+.singleProject {
+  margin-top: 20px;
 }
 
-.costButton{
-    background-color: $blueishGrey;
-    width: 72px;
-    height: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 11px;
-    color: $primaryColor;
-    font-weight: bold;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
+.targetLocation {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
 }
 
-.perTree{
-    font-family: $primaryFontFamily;
-    font-size: 9px;
-    color: $primaryFontColor;
-    margin-top: 5px;
+.projectInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
-.projectCost{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.target {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-right: 4px;
+}
+.projectTPOName {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  margin-top: 10px;
+  line-height: 14px;
+}
+
+.location {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  line-height: 14px;
+}
+
+.costButton {
+  background-color: $primaryColor;
+  width: 72px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  color: $white;
+  font-weight: bold;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  text-transform: uppercase;
+}
+.costButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+.perTree {
+  font-family: $primaryFontFamily;
+  font-size: 9px;
+  color: $primaryFontColor;
+  margin-top: 5px;
+}
+
+.projectCost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Progress Bar */
-.progressBar{
-    height: 4px;
-    width: 100%;
-    background-color: $dividerColor;
+.progressBar {
+  height: 4px;
+  width: 100%;
+  background-color: $dividerColor;
 }
 
-.progressBarHighlight{
-    height: 4px;
-    background-color: $primaryColor;
-    width: 30%;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+.progressBarHighlight {
+  height: 4px;
+  background-color: $primaryColor;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
-.projectImage{
-    height: 160px;
-    width: 100%;
-    background-color: $secondaryColor;
-    position: relative;
-    background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
+.projectImage {
+  height: 160px;
+  width: 100%;
+  background-color: $primaryColor;
+  position: relative;
 }
 
-.projectType{
-    font-family: $primaryFontFamily;
-    font-size: 7px;
-    color: #fff;
-    font-weight: bold;
-    position: absolute;
-    bottom: 36px;
-    left: 7px;
-    text-transform: uppercase;
+.projectImage:hover {
+  cursor: pointer;
 }
 
-.projectName{
-    font-family: $primaryFontFamily;
-    font-size: 18px;
-    color: #fff;
-    position: absolute;
-    bottom: 12px;
-    left: 7px;
+.projectImageFile {
+  height: 160px;
+  width: 100%;
+  position: relative;
+}
+
+.projectImageBlock {
+  position: absolute;
+  bottom: 12px;
+  left: 7px;
+}
+
+.projectType {
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.projectName {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: #fff;
 }

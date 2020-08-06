@@ -1,38 +1,32 @@
-import React, { ReactElement } from 'react'
-import TreeDonation from './screens/TreeDonation'
-import ContactDetails from './screens/ContactDetails'
-import PaymentDetails from './screens/PaymentDetails'
-import ThankYou from './screens/ThankYou'
-import Projects from './screens/Projects'
-import ProjectDetails from './screens/ProjectDetails'
+import dynamic from 'next/dynamic';
+import React, { ReactElement } from 'react';
 
+const MapLayout = dynamic(() => import('./screens/MapboxMap'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
+
+const Projects = dynamic(() => import('./screens/Projects'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 interface Props {
-    
+  projects: any;
 }
 
-function Donate({}: Props): ReactElement {
-    return (
-        <>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            {/* <ProjectDetails/> */}
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            {/* <Projects/> */}
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <TreeDonation/>
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <ContactDetails/> 
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <PaymentDetails/>
-        </div>
-        <div style={{backgroundColor:'#2F3336',display:'flex',justifyContent:'center',padding:'2em'}}>
-            <ThankYou/>
-        </div>
-        </>
-    )
+function Donate({ projects }: Props): ReactElement {
+  const ProjectsProps = {
+    projects: projects,
+  };
+  return (
+    <>
+      <MapLayout
+        {...ProjectsProps}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+      />
+      <Projects {...ProjectsProps} />
+    </>
+  );
 }
 
-export default Donate
+export default Donate;

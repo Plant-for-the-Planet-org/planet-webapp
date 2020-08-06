@@ -7,31 +7,34 @@ import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import InfoIcon from '../../../../assets/images/icons/donation/InfoIcon';
 import SepaIcon from '../../../../assets/images/icons/donation/SepaIcon';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
+import PaypalButton from '../components/PaypalButton';
 interface Props {
-    
+
 }
 
-function PaymentDetails({}: Props): ReactElement {
+function PaymentDetails({ }: Props): ReactElement {
 
-    const [saveCardDetails,setSaveCardDetails] = React.useState(false);
+    const [saveCardDetails, setSaveCardDetails] = React.useState(false);
+    const [paypalEnabled, setPaypalEnabled] = React.useState(false);
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.headerBackIcon}>
-                    <BackArrow/> 
+                    <BackArrow />
                 </div>
                 <div className={styles.headerTitle}>Payment Details</div>
             </div>
-            <div className={styles.paymentError}>Error, Payment failed. Please try again.</div>                
+            <div className={styles.paymentError}>Error, Payment failed. Please try again.</div>
 
 
             <div className={styles.paymentModeContainer}>
                 <div className={styles.paymentModeHeader}>
-                    <CreditCard/>
+                    <CreditCard />
                     <div className={styles.paymentModeTitle}>Credit Card</div>
                     <div className={styles.paymentModeFee}>
                         <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
-                        <InfoIcon/>
+                        <InfoIcon />
                     </div>
                 </div>
 
@@ -46,7 +49,7 @@ function PaymentDetails({}: Props): ReactElement {
                         label="Exp. Date"
                         variant="outlined"
                     />
-                    <div style={{width:'20px'}}></div>
+                    <div style={{ width: '20px' }}></div>
                     <MaterialTextFeild
                         label="CVV"
                         variant="outlined"
@@ -58,7 +61,7 @@ function PaymentDetails({}: Props): ReactElement {
                     </div>
                     <Switch
                         checked={saveCardDetails}
-                        onChange={()=>setSaveCardDetails(!saveCardDetails)}
+                        onChange={() => setSaveCardDetails(!saveCardDetails)}
                         name="checkedB"
                         inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
@@ -67,39 +70,40 @@ function PaymentDetails({}: Props): ReactElement {
 
             <div className={styles.paymentModeContainer}>
                 <div className={styles.paymentModeHeader}>
-                    <PaypalIcon/>
+                    <PaypalButton />
+                    {/* <PaypalIcon/> */}
                     <div className={styles.paymentModeTitle}>Paypal</div>
                     <div className={styles.paymentModeFee}>
                         <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
-                        <InfoIcon/>
+                        <InfoIcon />
                     </div>
                 </div>
             </div>
 
             <div className={styles.paymentModeContainer}>
                 <div className={styles.paymentModeHeader}>
-                    <SepaIcon/>
+                    <SepaIcon />
                     <div className={styles.paymentModeTitle}>SEPA Direct Debit</div>
                     <div className={styles.paymentModeFee}>
                         <div className={styles.paymentModeFeeAmount}>€ 0,35 fee</div>
-                        <InfoIcon/>
+                        <InfoIcon />
                     </div>
                 </div>
             </div>
 
 
-                <div className={styles.horizontalLine} />
+            <div className={styles.horizontalLine} />
 
-                <div className={styles.finalTreeCount}>
-                    <div className={styles.totalCost}>€ 50,76</div>
-                    <div className={styles.totalCostText}>
+            <div className={styles.finalTreeCount}>
+                <div className={styles.totalCost}>€ 50,76</div>
+                <div className={styles.totalCostText}>
                     for 50 Trees
                     </div>
-                </div>
+            </div>
 
-                <div className={styles.actionButtonsContainer}>
-                    <div className={styles.continueButton}>Continue</div>
-                </div>
+            <div className={styles.actionButtonsContainer}>
+                <div className={styles.continueButton}>Continue</div>
+            </div>
         </div>
     )
 }

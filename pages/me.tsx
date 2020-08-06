@@ -1,21 +1,23 @@
-import Layout from '../src/features/common/Layout'
-import { useSession, getSession, signin, signout } from 'next-auth/client'
+import { signin, signout, useSession } from 'next-auth/client';
+import Layout from '../src/features/common/Layout';
 
-const Me = ({ session }) => {
-  if (!session) {
+const Me = () => {
+  const [session, loading] = useSession();
+  if (!session && !loading) {
     signin('auth0');
-    return (<p></p>);
+    return <p></p>;
   }
-  return (<Layout>
-    Signed in as {JSON.stringify(session)} <br/>
-    <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
-  </Layout>)
-}
+  return (
+    <Layout>
+      {/* These BR's put the page content below the nav bar. */}
+      {/* Other pages (like leaderboard) seem to have a similar problem. */}
+      <br />
+      <br />
+      <br />
+      Signed in as {JSON.stringify(session)} <br />
+      <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
+    </Layout>
+  );
+};
 
-Me.getInitialProps = async (context) => {
-  return {
-    session: await getSession(context)
-  }
-}
-
-export default Me
+export default Me;

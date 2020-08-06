@@ -1,27 +1,41 @@
+import CssBaseline from '@material-ui/core/CssBaseline';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ThemeProvider from "../src/utils/themeContext";
-import {Provider} from 'react-redux'
-import {createWrapper} from 'next-redux-wrapper'
-import store from './../src/store/store'
+import 'mapbox-gl/dist/mapbox-gl.css';
+import React from 'react';
+import '../src/features/public/Donations/styles/Maps.css';
+import ThemeProvider from '../src/utils/themeContext';
 
-import { getSession, Provider as AuthProvider } from 'next-auth/client'
+function PlanetWeb({ Component, pageProps, config }: any) {
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles!.parentElement!.removeChild(jssStyles);
+    }
+  }, []);
 
-function PlanetWeb({Component, pageProps}:any) {
-  const { session } = pageProps
+  React.useEffect(() => {
+    localStorage.setItem('config', JSON.stringify(config));
+    localStorage.setItem('countryCode', config.country);
+    localStorage.setItem('currencyCode', config.currency);
+  }, [config]);
+
+  let storedConfig;
+  if (typeof Storage !== 'undefined') {
+    storedConfig = localStorage.getItem('config');
+  }
 
   return (
-    <Provider store={store}>
-      <AuthProvider options={{site: process.env.SITE}} session={session}>
-        <ThemeProvider>
-          <Component {...pageProps} />
-        </ThemeProvider> 
-      </AuthProvider>
-    </Provider>
-    
+    <ThemeProvider>
+      <CssBaseline />
+      <Component {...pageProps} />
+    </ThemeProvider>
   );
 }
-  
-const makestore =()=>store;
-const wrapper = createWrapper(makestore)
+PlanetWeb.getInitialProps = async () => {
+  const res = await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`);
+  const config = await res.json();
 
-export default wrapper.withRedux(PlanetWeb);
+  return { config: config };
+};
+export default PlanetWeb;
