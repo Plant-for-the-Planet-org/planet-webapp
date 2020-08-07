@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
-import ProjectSnippet from '../components/ProjectSnippet';
+import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
@@ -78,14 +78,14 @@ export default function MapboxMap(props) {
             tipSize={0}
           >
             <div
-              className={styles.singleProject}
+              className={styles.popupProject}
               onMouseLeave={(e) => {
                 setTimeout(function () {
                   setPopupData({ ...popupData, show: false });
                 }, 300);
               }}
             >
-              <ProjectSnippet
+              <PopupProject
                 key={popupData.project.properties.id}
                 project={popupData.project}
               />
