@@ -1,11 +1,17 @@
-import { signin, signout, useSession } from 'next-auth/client';
+import { signIn, signout, useSession } from 'next-auth/client';
 import Layout from '../src/features/common/Layout';
 
 const Me = () => {
   const [session, loading] = useSession();
   if (!session && !loading) {
-    signin('auth0');
-    return <p>Redirecting to sign in page...</p>;
+    return (
+      <Layout>
+        <br />
+        <br />
+        <br />
+        <button onClick={() => signIn('auth0')}>Sign In</button>{' '}
+      </Layout>
+    );
   }
   return (
     <Layout>

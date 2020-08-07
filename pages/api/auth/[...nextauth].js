@@ -22,7 +22,6 @@ const options = {
     Providers.Auth0({
       clientId: process.env.AUTH0_CLIENT_ID,
       domain: process.env.AUTH0_CUSTOM_DOMAIN,
-      signinUrl: '/',
     }),
     // Providers.Facebook({
     //   clientId: process.env.FACEBOOK_ID,
