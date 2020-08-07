@@ -12,11 +12,13 @@ interface Props {
 
 function AllProjects({ projects }: Props): ReactElement {
   if (projects.length < 1) {
-    return (<div>
-      <LazyLoad>
-        <h3> No projects found </h3>
-      </LazyLoad>
-    </div>)
+    return (
+      <div>
+        <LazyLoad>
+          <h3> No projects found </h3>
+        </LazyLoad>
+      </div>
+    );
   } else {
     return (
       <div>

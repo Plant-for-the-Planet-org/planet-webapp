@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
-import ProjectSnippet from '../components/ProjectSnippet';
+import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
   let mapContainer = useRef(null);
+  var timer;
   const { projects } = props;
   const [popupData, setPopupData] = useState({ show: false });
 
@@ -40,7 +41,7 @@ export default function MapboxMap(props) {
             <div
               className={styles.marker}
               onMouseOver={(e) => {
-                setTimeout(function () {
+                timer = setTimeout(function () {
                   setPopupData({
                     show: true,
                     lat: project.geometry.coordinates[1],
@@ -48,6 +49,9 @@ export default function MapboxMap(props) {
                     project: project,
                   });
                 }, 300);
+              }}
+              onMouseLeave={(e) => {
+                clearTimeout(timer);
               }}
             >
               {/* <img
@@ -69,10 +73,19 @@ export default function MapboxMap(props) {
             offsetTop={20}
             tipSize={0}
           >
-            <ProjectSnippet
-              key={popupData.project.properties.id}
-              project={popupData.project}
-            />
+            <div
+              className={styles.popupProject}
+              onMouseLeave={(e) => {
+                setTimeout(function () {
+                  setPopupData({ ...popupData, show: false });
+                }, 300);
+              }}
+            >
+              <PopupProject
+                key={popupData.project.properties.id}
+                project={popupData.project}
+              />
+            </div>
           </Popup>
         )}
         <div className={styles.mapNavigation}>
