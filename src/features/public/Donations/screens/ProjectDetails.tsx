@@ -28,7 +28,7 @@ function ProjectDetails({ project }: Props): ReactElement {
     : '';
 
   const contactDetails = [
-    { id: 1, icon: <BlackTree />, text: 'View Profile', link: null },
+    { id: 1, icon: <BlackTree />, text: 'View Profile', link: project.slug },
     {
       id: 2,
       icon: <WorldWeb />,
