@@ -8,6 +8,7 @@ module.exports = {
     API_ENDPOINT: process.env.API_ENDPOINT,
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+    VERCEL_URL: process.env.VERCEL_URL,
   },
   trailingSlash: true,
   reactStrictMode: true,
