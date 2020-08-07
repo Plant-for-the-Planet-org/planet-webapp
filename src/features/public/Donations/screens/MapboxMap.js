@@ -10,7 +10,7 @@ export default function MapboxMap(props) {
 
   const [viewport, setViewPort] = useState({
     width: '100%',
-    height: 'calc(100% - 60px)',
+    height: '100%',
     latitude: 36.96,
     longitude: -28.5,
     zoom: 1.4,
@@ -19,17 +19,13 @@ export default function MapboxMap(props) {
   const _onViewportChange = (view) => setViewPort({ ...view });
 
   return (
-    <div>
+    <div className={styles.mapContainer}>
       <MapGL
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
         mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
         onViewportChange={_onViewportChange}
         scrollZoom={false}
-        style={{
-          position: 'absolute',
-          top: '60px',
-        }}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
         {projects.map((project, index) => (
