@@ -1,0 +1,261 @@
+@import './../../../src/theme/theme';
+
+.landingSection {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  padding-top: 48vh;
+  border-bottom-left-radius: 90%;
+  border-bottom-right-radius: 90%;
+  overflow: hidden;
+  width: 100vw;
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    #ffffff 34.56%,
+    #c0ddf2 87.7%,
+    #1da0da 100.46%
+  );
+}
+
+.landingContent {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 70vw;
+}
+
+.landingContent > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 60px;
+  text-align: center;
+  letter-spacing: -0.006em;
+  color: #080707;
+}
+
+.landingContent > p {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #080707;
+  max-width: 500px;
+}
+
+.buttonStyle {
+  height: 32px;
+  left: calc(50% - 192px / 2 + 0.4px);
+  top: calc(50% - 32px / 2 - 1893.8px);
+  background: #005fb2;
+  border: 0px;
+  color: white;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  width: fit-content;
+}
+// Tree Counter Section
+
+.treeCounterSectionRow {
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.treeCounterSectionText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.treeCounterSectionTextHeader {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.4px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+}
+
+.treeCounterSectionTextPara {
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.treeCounterSectionTextLink {
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.treeCounterSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.treeCounter {
+  position: absolute;
+  right: 0px;
+  z-index: 1;
+}
+.treeCounterImage {
+  height: 280px;
+  width: 288px;
+  position: absolute;
+  left: 0px;
+  bottom: 40px;
+}
+
+// Learn More section
+
+.learnMoreSectionRow {
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  overflow: hidden;
+}
+
+.learnMoreSectionText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 464px;
+}
+
+.learnMoreSectionTextHeader {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.4px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+}
+
+.learnMoreSectionTextPara {
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.learnMoreSectionTextLink {
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.learnMoreSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.learnMoreTreeImage {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 250px;
+  width: 250px;
+}
+.learnMoreImage {
+  height: 100vh;
+  width: auto;
+  position: absolute;
+  top: 0px;
+  left: 40px;
+}
+// blogSection
+
+.blogSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.blogSectionHeader {
+  font-size: 50px;
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-weight: bold;
+}
+.blogLocation {
+  font-size: 10px;
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.blogTitle {
+  font-size: 20px;
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.blogLink {
+  font-size: 20px;
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  font-weight: bold;
+  margin-top: 16px;
+}
+
+.blogContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 80%;
+  align-self: center;
+  margin-top: 54px;
+}
+
+.blogImage {
+  max-height: 210px;
+  width: 100%;
+}
+
+.subscribeForm {
+  margin-top: 68px;
+}
+.subscribePara {
+  font-size: 16px;
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  margin-top: 24px;
+  text-align: center;
+}
