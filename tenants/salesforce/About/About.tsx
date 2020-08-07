@@ -1,3 +1,4 @@
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
 import TreeCounter from './../TreeCounter/TreeCounter';
@@ -6,26 +7,47 @@ export default function About() {
   const blogs = [
     {
       id: 1,
-      location: 'Mexico',
-      name: 'Reforestation in Tough Times',
-      imagePath: '/static/images/home/Blog1.jpg',
+      treeCount: '1000000',
+      name:
+        'Public policy and advocacy work - CA Climate Justice Corps proposal',
+      imagePath: '/tenants/salesforce/images/Blog/1.png',
       link: '',
     },
     {
       id: 2,
-      location: 'Italy',
-      name: 'Climate Justice Ambassador Receives Environmental Award',
-      imagePath: '/static/images/home/Blog1.jpg',
+      treeCount: '500000',
+      name: 'Planting trees in the Andes with Accion Andina ',
+      imagePath: '/tenants/salesforce/images/Blog/1.png',
       link: '',
     },
     {
       id: 3,
-      location: 'Germany',
-      name: 'In Memoriam of Wangari Maathai',
-      imagePath: '/static/images/home/Blog1.jpg',
+      treeCount: '500000',
+      name: 'Youth education and engagement',
+      imagePath: '/tenants/salesforce/images/Blog/1.png',
       link: '',
     },
   ];
+
+  const articles = [
+    {
+      id: 1,
+      treeCount: '1000000',
+      name:
+        'Public policy and advocacy work - CA Climate Justice Corps proposal',
+      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      link: '',
+    },
+    {
+      id: 2,
+      treeCount: '500000',
+      name: 'Planting trees in the Andes with Accion Andina ',
+      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      link: '',
+    },
+  ];
+
+  const [selectedTab, setSelectedTab] = React.useState('recent');
   return (
     <main>
       <section className={styles.landingSection}>
@@ -98,17 +120,136 @@ export default function About() {
         </Col>
       </Row>
 
+      <section className={styles.leaderBoardSection}>
+        <div className={styles.leaderBoard}>
+          <h3>Salesforce</h3>
+          <h2>Forest Frontrunners</h2>
+          <div className={styles.leaderBoardTable}>
+            <div className={styles.leaderBoardTableHeader}>
+              <div
+                onClick={() => setSelectedTab('recent')}
+                className={
+                  selectedTab === 'recent'
+                    ? styles.leaderBoardTableHeaderTitleSelected
+                    : styles.leaderBoardTableHeaderTitle
+                }
+              >
+                Most Recent
+              </div>
+              <div
+                onClick={() => setSelectedTab('highest')}
+                className={
+                  selectedTab === 'highest'
+                    ? styles.leaderBoardTableHeaderTitleSelected
+                    : styles.leaderBoardTableHeaderTitle
+                }
+              >
+                Most Trees
+              </div>
+            </div>
+            <div className={styles.leaderBoardBody}>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+              <div className={styles.leaderBoardBodyRow}>
+                <p className={styles.leaderBoardDonorName}>Tin Lee</p>
+                <p className={styles.leaderBoardDonorTrees}>5,000 Trees</p>
+                <p className={styles.leaderBoardDonorTime}>30m ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <img
+          className={styles.leaderBoardBushImage}
+          src={'/tenants/salesforce/images/Bush.png'}
+        />
+      </section>
+
+      <section className={styles.articleSection}>
+        <Row className={styles.articleContainer}>
+          {articles.map((article) => {
+            return (
+              <Col key={article.id} sm={10} lg={6}>
+                <div className={styles.articleSingleContainer}>
+                  <img
+                    className={styles.articleImage}
+                    src={article.imagePath}
+                  />
+                  <div className={styles.articleImageOverlay}></div>
+                  <div className={styles.articleInfoSection}>
+                    <p className={styles.articletreeCount}>
+                      {article.treeCount}
+                    </p>
+                    <p className={styles.articleTitle}>{article.name}</p>
+                    <p className={styles.articleLink}>Learn More</p>
+                  </div>
+                </div>
+              </Col>
+            );
+          })}
+        </Row>
+      </section>
+
       <section className={styles.blogSection}>
-        <p className={styles.blogSectionHeader}>What’s new?</p>
+        <p className={styles.blogSectionHeader}>
+          Get involved and start planting
+        </p>
         <Row className={styles.blogContainer}>
           {blogs.map((blog) => {
             return (
               <Col key={blog.id} sm={10} lg={4}>
-                <div className={styles.blogSingelContainer}>
+                <div className={styles.blogSingleContainer}>
                   <img className={styles.blogImage} src={blog.imagePath} />
-                  <p className={styles.blogLocation}>{blog.location}</p>
-                  <p className={styles.blogTitle}>{blog.name}</p>
-                  <p className={styles.blogLink}>Read</p>
+                  <div className={styles.blogImageOverlay}></div>
+                  <div className={styles.blogInfoSection}>
+                    <p className={styles.blogtreeCount}>{blog.treeCount}</p>
+                    <p className={styles.blogTitle}>{blog.name}</p>
+                    <p className={styles.blogLink}>Learn More</p>
+                  </div>
                 </div>
               </Col>
             );

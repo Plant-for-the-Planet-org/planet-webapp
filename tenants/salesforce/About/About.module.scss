@@ -200,39 +200,21 @@
 
 .blogSection {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  min-height: 100vh;
 }
 
 .blogSectionHeader {
-  font-size: 50px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #00396b;
   font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  font-weight: bold;
-}
-.blogLocation {
-  font-size: 10px;
-  font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.blogTitle {
-  font-size: 20px;
-  font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.blogLink {
-  font-size: 20px;
-  font-family: $primaryFontFamily;
-  color: $primaryColor;
-  font-weight: bold;
-  margin-top: 16px;
 }
 
 .blogContainer {
@@ -240,22 +222,290 @@
   flex-direction: row;
   justify-content: space-between;
   max-width: 80%;
-  align-self: center;
   margin-top: 54px;
+}
+.blogSingleContainer {
+  position: relative;
+
+  height: 300px;
+  width: 300px;
 }
 
 .blogImage {
-  max-height: 210px;
   width: 100%;
 }
 
-.subscribeForm {
-  margin-top: 68px;
+.blogImageOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 36%,
+    rgba(0, 0, 0, 0.502) 55.7%,
+    #000000 100%
+  );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  z-index: 2;
 }
-.subscribePara {
-  font-size: 16px;
+.blogInfoSection {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 3;
+}
+.blogtreeCount {
   font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  margin-top: 24px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.blogTitle {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: #ffffff;
+}
+
+.blogLink {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  color: #0070d2;
+  flex: none;
+  order: 0;
+  align-self: center;
+  padding: 6px 16px;
+  background-color: white;
+  width: fit-content;
+  border-radius: 4px;
+}
+
+// Leaderboard Section
+.leaderBoardSection {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  position: relative;
+}
+
+.leaderBoard {
+  align-self: center;
   text-align: center;
+}
+
+.leaderBoard > h3 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #080707;
+}
+
+.leaderBoard > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #080707;
+}
+
+.leaderBoardTableHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaderBoardTableHeaderTitle {
+  padding: 8px;
+  border-bottom: 1px solid #dddbda;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitleSelected {
+  padding: 8px;
+  border-bottom: 2px solid #005fb2;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitle:hover {
+  cursor: pointer;
+}
+.leaderBoardBody {
+  width: 528px;
+  margin-top: 60px;
+}
+.leaderBoardBodyRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 0px;
+  border-bottom: 1px solid #dddbda;
+}
+
+.leaderBoardDonorName {
+  flex-grow: 1;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+.leaderBoardDonorTrees {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  color: #3e3e3c;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardDonorTime {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: #706e6b;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardBushImage {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+// articleSection
+
+.articleSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.articleSectionHeader {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #00396b;
+  font-family: $primaryFontFamily;
+}
+
+.articleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 54px;
+  width: 100vw;
+}
+.articleSingleContainer {
+  position: relative;
+  width: 100%;
+}
+
+.articleImage {
+  width: 100%;
+}
+
+.articleImageOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 36%,
+    rgba(0, 0, 0, 0.502) 55.7%,
+    #000000 100%
+  );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  z-index: 2;
+}
+.articleInfoSection {
+  position: absolute;
+  bottom: 70px;
+  left: 40px;
+  z-index: 3;
+}
+.articletreeCount {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.articleTitle {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: #ffffff;
+}
+
+.articleLink {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  color: #0070d2;
+  flex: none;
+  order: 0;
+  align-self: center;
+  padding: 6px 16px;
+  background-color: white;
+  width: fit-content;
+  border-radius: 4px;
+  margin-top: 44px;
 }
