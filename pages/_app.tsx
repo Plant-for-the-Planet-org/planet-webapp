@@ -6,7 +6,7 @@ import '../src/features/public/Donations/styles/Maps.css';
 import ThemeProvider from '../src/utils/themeContext';
 
 function PlanetWeb({ Component, pageProps, config }: any) {
-  console.log('TEST ' + process.env.VERCEL_URL);
+  console.log('TEST ' + process.env.NEXTAUTH_URL);
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
