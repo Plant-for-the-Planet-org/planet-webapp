@@ -5,7 +5,7 @@ const Me = () => {
   const [session, loading] = useSession();
   if (!session && !loading) {
     signin('auth0');
-    return <p></p>;
+    return <p>Redirecting to sign in page...</p>;
   }
   return (
     <Layout>
