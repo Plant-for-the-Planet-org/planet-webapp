@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Layout from '../src/features/common/Layout';
-import DonateComponent from '../src/features/public/Donations';
+import ProjectsList from '../src/features/public/Donations/screens/Projects';
 
 export default function Donate() {
   const [projects, setProjects] = React.useState();
@@ -30,19 +30,7 @@ export default function Donate() {
   }, []);
   return (
     <Layout>
-      {projects ? <DonateComponent {...DonateProps} /> : <h2>Loading</h2>}
+      {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading</h2>}
     </Layout>
   );
 }
-
-// export async function getStaticProps() {
-
-//   const res = await fetch(
-//     `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`
-//   );
-//   console.log('REs', res);
-//   const projects = await res.json();
-//   return {
-//     props: { projects }, // will be passed to the page component as props
-//   };
-// }
