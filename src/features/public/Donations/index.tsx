@@ -15,17 +15,34 @@ interface Props {
 }
 
 function Donate({ projects }: Props): ReactElement {
+  const [isScrolling, setIsScrolling] = React.useState(false);
+  const [clientY, setClientY] = React.useState(
+    window.innerWidth >= 768 ? 60 : 0
+  );
+
   const ProjectsProps = {
     projects: projects,
   };
+
+  function onMouseMove(e) {
+    console.log('onMouseMove', e.clientY);
+    if (isScrolling) {
+      setClientY(e.clientY);
+    }
+  }
   return (
-    <>
+    <div onMouseMove={onMouseMove}>
       <MapLayout
         {...ProjectsProps}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-      <Projects {...ProjectsProps} />
-    </>
+      <Projects
+        {...ProjectsProps}
+        setIsScrolling={setIsScrolling}
+        clientY={clientY}
+        setClientY={setClientY}
+      />
+    </div>
   );
 }
 

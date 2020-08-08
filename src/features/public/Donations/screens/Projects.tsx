@@ -1,9 +1,9 @@
+import { TextField } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import SearchIcon from './../../../../assets/images/icons/SearchIcon';
 import CancelIcon from './../../../../assets/images/icons/CancelIcon';
-import { TextField } from '@material-ui/core';
+import SearchIcon from './../../../../assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -12,12 +12,23 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 });
 interface Props {
   projects: Array<any>;
+  setIsScrolling: any;
+  clientY: number;
+  setClientY: any;
 }
 
-function Projects({ projects }: Props): ReactElement {
+function Projects({
+  projects,
+  setIsScrolling,
+  clientY,
+  setClientY,
+}: Props): ReactElement {
   const [selectedTab, setSelectedTab] = React.useState('featured');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
+  const [scrollMargin, setScrollMargin] = React.useState(200);
+
+  const projectContainer = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
     if (type === 'featured') {
@@ -64,9 +75,34 @@ function Projects({ projects }: Props): ReactElement {
   const FeaturedProjectsProps = {
     projects: featuredProjects,
   };
+
+  function onMouseDown(e) {
+    console.log('onMouseDown', e);
+    if (window.innerWidth <= 768) {
+      setIsScrolling(true);
+      setClientY(e.clientY);
+    }
+  }
+
+  function onMouseUp() {
+    console.log('onMouseUp');
+    if (window.innerWidth <= 768) {
+      setIsScrolling(false);
+    }
+  }
+
+  React.useEffect(() => {
+    setScrollMargin(clientY <= 10 ? 0 : clientY);
+  }, [clientY]);
+
   return (
-    <div className={styles.container}>
-      <div className={styles.cardContainer}>
+    <div className={styles.container} style={{ marginTop: scrollMargin }}>
+      <div
+        className={styles.cardContainer}
+        ref={projectContainer}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+      >
         {searchMode ? (
           <div className={styles.headerSearchMode}>
             <div className={styles.searchIcon}>
@@ -140,7 +176,10 @@ function Projects({ projects }: Props): ReactElement {
           </div>
         )}
         {/* till here is header */}
-        <div className={styles.projectsContainer}>
+        <div
+          className={styles.projectsContainer}
+          onMouseDown={() => setIsScrolling(false)}
+        >
           {searchValue !== '' ? (
             <AllProjects {...SearchResultProjectsProps} />
           ) : selectedTab === 'all' ? (
