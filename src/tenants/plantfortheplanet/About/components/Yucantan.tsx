@@ -1,9 +1,9 @@
-import Image from 'react-bootstrap/Image';
+import LandingSection from './../../../../features/common/Layout/LandingSection';
 import styles from './../About.module.scss';
+
 export default function Yucantan() {
   return (
-    <section className={styles.YucantanSection}>
-      <Image fluid src={'/static/images/home/Yucantan.jpg'} />
+    <LandingSection imageSrc={'/static/images/home/Yucantan.jpg'}>
       <div className={styles.YucantanSectionText}>
         <p className={styles.YucantanSectionTextHeader}>
           Yucatan Reforestation
@@ -17,6 +17,6 @@ export default function Yucantan() {
           <p className={styles.YucantanSectionTextLink}>Donate</p>
         </div>
       </div>
-    </section>
+    </LandingSection>
   );
 }

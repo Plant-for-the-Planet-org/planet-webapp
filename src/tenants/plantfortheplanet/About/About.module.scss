@@ -46,29 +46,14 @@
   color: $light;
 }
 
-.landingSection {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.backgroundImage {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 100vh;
-}
+// Landing
 
 .landingContent {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 57.34vw;
+  position: absolute;
 }
 
 .landingContent > p {

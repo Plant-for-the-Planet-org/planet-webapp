@@ -1,9 +1,9 @@
-import Image from 'react-bootstrap/Image';
+import LandingSection from './../../../../features/common/Layout/LandingSection';
 import styles from './../About.module.scss';
+
 export default function ClimateNeutrality() {
   return (
-    <section className={styles.YucantanSection}>
-      <Image fluid src={'/static/images/home/ClimageNeutrality.jpg'} />
+    <LandingSection imageSrc={'/static/images/home/ClimageNeutrality.jpg'}>
       <div className={styles.YucantanSectionText}>
         <p className={styles.YucantanSectionTextHeader}>
           Double Climate Neutrality
@@ -15,6 +15,6 @@ export default function ClimateNeutrality() {
           <p className={styles.YucantanSectionTextLink}>Learn More</p>
         </div>
       </div>
-    </section>
+    </LandingSection>
   );
 }

@@ -1,9 +1,9 @@
-import Image from 'react-bootstrap/Image';
+import LandingSection from './../../../../features/common/Layout/LandingSection';
 import styles from './../About.module.scss';
+
 export default function WhyTrees() {
   return (
-    <section className={styles.YucantanSection}>
-      <Image fluid src={'/static/images/home/WhyTrees.jpg'} />
+    <LandingSection imageSrc={'/static/images/home/WhyTrees.jpg'}>
       <div className={styles.YucantanSectionText}>
         <p className={styles.YucantanSectionTextHeader}>Why Trees?</p>
         <p className={styles.YucantanSectionTextPara}>
@@ -14,6 +14,6 @@ export default function WhyTrees() {
           <p className={styles.YucantanSectionTextLink}>Learn More</p>
         </div>
       </div>
-    </section>
+    </LandingSection>
   );
 }

@@ -1,16 +1,9 @@
-import Image from 'react-bootstrap/Image';
-import LazyLoad from 'react-lazyload';
 import Youtube from '../../../../assets/images/home/Youtube';
+import LandingSection from './../../../../features/common/Layout/LandingSection';
 import styles from './../About.module.scss';
 export default function Landing() {
   return (
-    <section className={styles.landingSection}>
-      <div className={styles.backgroundImage}>
-        <LazyLoad>
-          <Image fluid src={'/static/images/home/BGHome.jpg'} />
-        </LazyLoad>
-      </div>
-
+    <LandingSection>
       <div className={styles.landingContent}>
         <Youtube />
         <p>
@@ -18,6 +11,6 @@ export default function Landing() {
           mobilizing the world to plant a trillion!
         </p>
       </div>
-    </section>
+    </LandingSection>
   );
 }
