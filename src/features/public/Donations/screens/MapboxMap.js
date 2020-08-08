@@ -1,16 +1,17 @@
 import React, { useRef, useState } from 'react';
 import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
-import ProjectSnippet from '../components/ProjectSnippet';
+import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
   let mapContainer = useRef(null);
+  var timer;
   const { projects } = props;
   const [popupData, setPopupData] = useState({ show: false });
 
   const [viewport, setViewPort] = useState({
     width: '100%',
-    height: 'calc(100% - 60px)',
+    height: '100%',
     latitude: 36.96,
     longitude: -28.5,
     zoom: 1.4,
@@ -19,17 +20,13 @@ export default function MapboxMap(props) {
   const _onViewportChange = (view) => setViewPort({ ...view });
 
   return (
-    <div>
+    <div className={styles.mapContainer}>
       <MapGL
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
         mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
         onViewportChange={_onViewportChange}
         scrollZoom={false}
-        style={{
-          position: 'absolute',
-          top: '60px',
-        }}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
         {projects.map((project, index) => (
@@ -44,7 +41,7 @@ export default function MapboxMap(props) {
             <div
               className={styles.marker}
               onMouseOver={(e) => {
-                setTimeout(function () {
+                timer = setTimeout(function () {
                   setPopupData({
                     show: true,
                     lat: project.geometry.coordinates[1],
@@ -52,6 +49,9 @@ export default function MapboxMap(props) {
                     project: project,
                   });
                 }, 300);
+              }}
+              onMouseLeave={(e) => {
+                clearTimeout(timer);
               }}
             >
               {/* <img
@@ -73,10 +73,19 @@ export default function MapboxMap(props) {
             offsetTop={20}
             tipSize={0}
           >
-            <ProjectSnippet
-              key={popupData.project.properties.id}
-              project={popupData.project}
-            />
+            <div
+              className={styles.popupProject}
+              onMouseLeave={(e) => {
+                setTimeout(function () {
+                  setPopupData({ ...popupData, show: false });
+                }, 300);
+              }}
+            >
+              <PopupProject
+                key={popupData.project.properties.id}
+                project={popupData.project}
+              />
+            </div>
           </Popup>
         )}
         <div className={styles.mapNavigation}>

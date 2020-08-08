@@ -46,3 +46,10 @@
   right: 20px;
   bottom: 50px;
 }
+
+@media only screen and (max-width: 768px) {
+  .mapContainer {
+    top: 0px;
+    height: calc(100vh - 76px);
+  }
+}
