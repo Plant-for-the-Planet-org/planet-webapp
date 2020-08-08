@@ -1,11 +1,16 @@
+// import AboutPage from '../src/tenants/plantfortheplanet/About/About';
+// import AboutPage from '../src/tenants/salesforce/About/About';
+import dynamic from 'next/dynamic';
 import Footer from '../src/features/common/Footer';
 import Layout from '../src/features/common/Layout';
-import HomePage from '../src/tenants/plantfortheplanet/About/About';
-// import HomePage from '../src/tenants/salesforce/About/About';
-export default function Home() {
+
+const AboutPage = dynamic(() =>
+  import(`../src/tenants/${process.env.Tenant}/About/About`)
+);
+export default function About() {
   return (
     <Layout>
-      <HomePage />
+      <AboutPage />
       <Footer />
     </Layout>
   );
