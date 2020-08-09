@@ -1,2 +1,18 @@
-@import "./fonts";
-@import "./colors";
+@import './fonts';
+@import './colors';
+
+@mixin tabletView {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+@mixin laptopView {
+  @media screen and (min-width: 1024px) {
+    @content;
+  }
+}
+@mixin laptop-xlView {
+  @media screen and (min-width: 1600px) {
+    @content;
+  }
+}
