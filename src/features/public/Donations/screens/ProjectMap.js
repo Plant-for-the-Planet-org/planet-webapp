@@ -11,27 +11,18 @@ export default function ProjectMap(props) {
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: '100%',
-    latitude: project.coordinates.lat,
-    longitude: project.coordinates.lon,
-    zoom: 5,
+    latitude: project.geometry.coordinates[0][0][0][1],
+    longitude: project.geometry.coordinates[0][0][0][0],
+    zoom: 14,
   });
 
-  // const [viewport, setViewPort] = useState({
-  //   width: '100%',
-  //   height: '100%',
-  //   latitude: 45.137451890638886,
-  //   longitude: -68.13734351262877,
-  //   zoom: 5,
-  // });
-
-  // Ideally should work like this
-  console.log(project.geometry);
   const geojson = {
     type: 'FeatureCollection',
     features: [
       {
         type: 'Feature',
-        geometry: project.geometry
+        properties: { name: 'Project Name' },
+        geometry: project.geometry,
       },
     ],
   };
@@ -48,14 +39,23 @@ export default function ProjectMap(props) {
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
-        <Source id="maine" type="geojson" data={geojson}>
+        <Source id="singleProject" type="geojson" data={geojson}>
           <Layer
-            id="maine"
+            id="ploygonLayer"
             type="fill"
-            source="maine"
+            source="singleProject"
             paint={{
-              'fill-color': '#088',
-              'fill-opacity': 0.8,
+              'fill-color': '#fff',
+              'fill-opacity': 0.2,
+            }}
+          />
+          <Layer
+            id="ploygonOutline"
+            type="line"
+            source="singleProject"
+            paint={{
+              'line-color': '#89b54a',
+              'line-width': 2,
             }}
           />
         </Source>
