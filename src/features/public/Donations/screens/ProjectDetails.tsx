@@ -139,17 +139,19 @@ function ProjectDetails({ project }: Props): ReactElement {
                 </div>
               </div>
 
-              <div className={styles.projectCost}>
-                <div onClick={handleOpen} className={styles.costButton}>
-                  {project.currency === 'USD'
-                    ? '$'
-                    : project.currency === 'EUR'
-                    ? '€'
-                    : project.currency}
-                  {project.treeCost.toFixed(2)}
+              { project.allowDonations && (
+                <div className={styles.projectCost}>
+                  <div onClick={handleOpen} className={styles.costButton}>
+                    {project.currency === 'USD'
+                      ? '$'
+                      : project.currency === 'EUR'
+                      ? '€'
+                      : project.currency}
+                    {project.treeCost.toFixed(2)}
+                  </div>
+                  <div className={styles.perTree}>per tree</div>
                 </div>
-                <div className={styles.perTree}>per tree</div>
-              </div>
+              )}
             </div>
 
             {/* <div className={styles.ratings}>
