@@ -21,11 +21,6 @@ function PlanetWeb({ Component, pageProps, config }: any) {
     localStorage.setItem('currencyCode', config.currency);
   }, [config]);
 
-  let storedConfig;
-  if (typeof Storage !== 'undefined') {
-    storedConfig = localStorage.getItem('config');
-  }
-
   return (
     <Provider session={pageProps.session}>
       <ThemeProvider>
@@ -41,4 +36,5 @@ PlanetWeb.getInitialProps = async () => {
 
   return { config: config, pageProps: {} };
 };
+
 export default PlanetWeb;

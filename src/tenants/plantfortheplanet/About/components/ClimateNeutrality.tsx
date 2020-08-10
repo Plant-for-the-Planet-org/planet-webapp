@@ -3,7 +3,9 @@ import styles from './../About.module.scss';
 
 export default function ClimateNeutrality() {
   return (
-    <LandingSection imageSrc={'/static/images/home/ClimageNeutrality.jpg'}>
+    <LandingSection
+      imageSrc={'/tenants/plantfortheplanet/images/home/ClimageNeutrality.jpg'}
+    >
       <div className={styles.YucantanSectionText}>
         <p className={styles.YucantanSectionTextHeader}>
           Double Climate Neutrality

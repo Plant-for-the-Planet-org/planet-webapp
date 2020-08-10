@@ -1,4 +1,5 @@
 import Modal from '@material-ui/core/Modal';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
@@ -13,6 +14,11 @@ import { getImageUrl } from '../../../../utils/getImageURL';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
+
+const ProjectMap = dynamic(() => import('./ProjectMap'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 interface Props {
   project: any;
@@ -69,90 +75,99 @@ function ProjectDetails({ project }: Props): ReactElement {
     setOpen(true);
   };
 
-  return (
-    <div className={styles.container}>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <TreeDonation project={project} onClose={handleClose} />
-      </Modal>
-      <div className={styles.projectContainer}>
-        <div className={styles.singleProject}>
-          <div className={styles.projectImage}>
-            {project.image ? (
-              <LazyLoad>
-                <div
-                  className={styles.projectImageFile}
-                  style={{
-                    backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                  }}
-                >
-                  <Link prefetch={false} href="/" as={`/`}>
-                    <a>
-                      <BackButton />
-                    </a>
-                  </Link>
-                </div>
-              </LazyLoad>
-            ) : null}
+  const ProjectProps = {
+    project: project,
+  };
 
-            <div className={styles.projectImageBlock}>
-              {/* <div className={styles.projectType}>
+  return (
+    <>
+      <ProjectMap
+        {...ProjectProps}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+      />
+      <div className={styles.container}>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <TreeDonation project={project} onClose={handleClose} />
+        </Modal>
+        <div className={styles.projectContainer}>
+          <div className={styles.singleProject}>
+            <div className={styles.projectImage}>
+              {project.image ? (
+                <LazyLoad>
+                  <div
+                    className={styles.projectImageFile}
+                    style={{
+                      backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                    }}
+                  >
+                    <Link prefetch={false} href="/" as={`/`}>
+                      <a>
+                        <BackButton />
+                      </a>
+                    </Link>
+                  </div>
+                </LazyLoad>
+              ) : null}
+
+              <div className={styles.projectImageBlock}>
+                {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.classification)}
               </div> */}
 
-              <div className={styles.projectName}>
-                {Sugar.String.truncate(project.name, 60)}
+                <div className={styles.projectName}>
+                  {Sugar.String.truncate(project.name, 60)}
+                </div>
               </div>
             </div>
-          </div>
-          <div className={styles.progressBar}>
-            <div
-              className={styles.progressBarHighlight}
-              style={{ width: progressPercentage }}
-            />
-          </div>
+            <div className={styles.progressBar}>
+              <div
+                className={styles.progressBarHighlight}
+                style={{ width: progressPercentage }}
+              />
+            </div>
 
-          <div className={styles.projectCompleteInfo}>
-            <div className={styles.projectInfo}>
-              <div className={styles.projectData}>
-                <div className={styles.targetLocation}>
-                  <div className={styles.target}>
-                    {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted
-                    •{' '}
-                    <span style={{ fontWeight: 400 }}>
-                      {
-                        getCountryDataBy('countryCode', project.country)
-                          .countryName
-                      }
-                    </span>
-                  </div>
-                  {/* <div className={styles.location}>
+            <div className={styles.projectCompleteInfo}>
+              <div className={styles.projectInfo}>
+                <div className={styles.projectData}>
+                  <div className={styles.targetLocation}>
+                    <div className={styles.target}>
+                      {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
+                      planted •{' '}
+                      <span style={{ fontWeight: 400 }}>
+                        {
+                          getCountryDataBy('countryCode', project.country)
+                            .countryName
+                        }
+                      </span>
+                    </div>
+                    {/* <div className={styles.location}>
                     
                   </div> */}
+                  </div>
+                  <div className={styles.projectTPOName}>
+                    By {project.tpo.name}
+                  </div>
                 </div>
-                <div className={styles.projectTPOName}>
-                  By {project.tpo.name}
+
+                <div className={styles.projectCost}>
+                  <div onClick={handleOpen} className={styles.costButton}>
+                    {project.currency === 'USD'
+                      ? '$'
+                      : project.currency === 'EUR'
+                      ? '€'
+                      : project.currency}
+                    {project.treeCost.toFixed(2)}
+                  </div>
+                  <div className={styles.perTree}>per tree</div>
                 </div>
               </div>
 
-              <div className={styles.projectCost}>
-                <div onClick={handleOpen} className={styles.costButton}>
-                  {project.currency === 'USD'
-                    ? '$'
-                    : project.currency === 'EUR'
-                    ? '€'
-                    : project.currency}
-                  {project.treeCost.toFixed(2)}
-                </div>
-                <div className={styles.perTree}>per tree</div>
-              </div>
-            </div>
-
-            {/* <div className={styles.ratings}>
+              {/* <div className={styles.ratings}>
               <div className={styles.calculatedRating}>{rating}</div>
               <div className={styles.ratingButton}>
                 <MaterialRatings
@@ -164,46 +179,47 @@ function ProjectDetails({ project }: Props): ReactElement {
               </div>
             </div> */}
 
-            <div className={styles.projectDescription}>
-              {project.description}
-            </div>
+              <div className={styles.projectDescription}>
+                {project.description}
+              </div>
 
-            <div className={styles.projectInfoProperties}>
-              <LazyLoad>
-                <div className={styles.projectImageSliderContainer}>
-                  {project.images
-                    ? project.images.map(
-                        (image: {
-                          image: React.ReactNode;
-                          id: any;
-                          description: any;
-                        }) => {
-                          return (
-                            <img
-                              className={styles.projectImages}
-                              key={image.id}
-                              src={loadImageSource(image.image)}
-                              alt={image.description}
-                            />
-                          );
-                        }
-                      )
-                    : null}
-                </div>
-              </LazyLoad>
-              {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
+              <div className={styles.projectInfoProperties}>
+                <LazyLoad>
+                  <div className={styles.projectImageSliderContainer}>
+                    {project.images
+                      ? project.images.map(
+                          (image: {
+                            image: React.ReactNode;
+                            id: any;
+                            description: any;
+                          }) => {
+                            return (
+                              <img
+                                className={styles.projectImages}
+                                key={image.id}
+                                src={loadImageSource(image.image)}
+                                alt={image.description}
+                              />
+                            );
+                          }
+                        )
+                      : null}
+                  </div>
+                </LazyLoad>
+                {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
                             {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
 
-              {contactDetails ? (
-                <ProjectContactDetails contactDetails={contactDetails} />
-              ) : null}
+                {contactDetails ? (
+                  <ProjectContactDetails contactDetails={contactDetails} />
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

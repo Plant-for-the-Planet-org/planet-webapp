@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import Link from 'next/link';
 
 interface Props {
   contactDetails: Array<{
@@ -15,7 +15,6 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
   return (
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>Contact Details</div>
-
       {/* contactDetails tpo profile page link */}
       <div key={contactDetails[0].id}>
         <Link
@@ -34,8 +33,7 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
         </Link>
       </div>
 
-
-    {/* contactDetails website, maps, mail links */}
+      {/* contactDetails website, maps, mail links */}
       {contactDetails.slice(1).map((contactDetails) => (
         <div key={contactDetails.id}>
           {contactDetails.link ? (

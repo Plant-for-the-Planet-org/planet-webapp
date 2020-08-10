@@ -3,7 +3,9 @@ import styles from './../About.module.scss';
 
 export default function WhyTrees() {
   return (
-    <LandingSection imageSrc={'/static/images/home/WhyTrees.jpg'}>
+    <LandingSection
+      imageSrc={'/tenants/plantfortheplanet/images/home/WhyTrees.jpg'}
+    >
       <div className={styles.YucantanSectionText}>
         <p className={styles.YucantanSectionTextHeader}>Why Trees?</p>
         <p className={styles.YucantanSectionTextPara}>
