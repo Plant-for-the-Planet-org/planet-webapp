@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Layout from '../src/features/common/Layout';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
 
@@ -8,7 +8,7 @@ export default function Donate() {
     projects: projects,
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function loadProjects() {
       let currencyCode;
       if (typeof Storage !== 'undefined') {
@@ -30,7 +30,7 @@ export default function Donate() {
   }, []);
   return (
     <Layout>
-      {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading</h2>}
+      {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading...</h2>}
     </Layout>
   );
 }
