@@ -34,6 +34,14 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   }, [project]);
   console.log('payment SetupData', paymentSetup);
 
+  const setCustomTreeValue = (e:any) => {
+    if (e.target.value === ""){
+      setTreeCount(0)
+    } else {
+      setTreeCount(e.target.value)
+    }
+  }
+
   return (
     <div className={styles.treeDonationcontainer}>
       <div className={styles.cardContainer}>
@@ -113,8 +121,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.treeCountOptionTrees}>Trees</div>
             </div>
           ) : (
-            <div className={styles.treeCountOption} style={{ minWidth: '65%' }}>
-              <div className={styles.treeCountOptionTrees}>____ Trees</div>
+            <div className={styles.treeCountOption} style={{ minWidth: '65%', flexDirection:'row' }} >
+              <input className={styles.customTreeInput} type="text" onChange={(e)=> setCustomTreeValue(e)} />
+              <div className={styles.treeCountOptionTrees}>Trees</div>
             </div>
           )}
         </div>
