@@ -42,8 +42,9 @@ function ProjectDetails({ project }: Props): ReactElement {
         project.tpo && project.tpo.address
           ? project.tpo.address
           : 'unavailable',
-      link: project.coordinates
-        ? `https://maps.google.com/?q=${project.coordinates.lat},${project.coordinates.lon}`
+
+      link: project.coordinates 
+        ? `https://maps.google.com/?q=${project.tpo.address}`
         : null,
     },
     {
