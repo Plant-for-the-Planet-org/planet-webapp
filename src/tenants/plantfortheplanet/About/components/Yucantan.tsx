@@ -3,7 +3,9 @@ import styles from './../About.module.scss';
 
 export default function Yucantan() {
   return (
-    <LandingSection imageSrc={'/static/images/home/Yucantan.jpg'}>
+    <LandingSection
+      imageSrc={'/tenants/plantfortheplanet/images/home/Yucantan.jpg'}
+    >
       <div className={styles.YucantanSectionText}>
         <p className={styles.YucantanSectionTextHeader}>
           Yucatan Reforestation
