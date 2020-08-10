@@ -19,19 +19,25 @@ function Donate({ projects }: Props): ReactElement {
   const [clientY, setClientY] = React.useState(
     window.innerWidth >= 768 ? 60 : 0
   );
+  const [top, setTop] = React.useState(window.innerWidth >= 768 ? 60 : 200);
+  const projectContainer = React.useRef(null);
 
   const ProjectsProps = {
     projects: projects,
   };
 
-  function onMouseMove(e) {
-    console.log('onMouseMove', e.clientY);
+  function onTouchMove(e: any) {
+    console.log('onTouchMove');
     if (isScrolling) {
-      setClientY(e.clientY);
+      let newTop = top + (e.touches[0].clientY - clientY);
+      if (newTop >= 0 && newTop <= window.innerHeight - 100) {
+        setTop(newTop);
+        setClientY(e.touches[0].clientY);
+      }
     }
   }
   return (
-    <div onMouseMove={onMouseMove}>
+    <div onTouchMove={onTouchMove}>
       <MapLayout
         {...ProjectsProps}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
@@ -39,8 +45,9 @@ function Donate({ projects }: Props): ReactElement {
       <Projects
         {...ProjectsProps}
         setIsScrolling={setIsScrolling}
-        clientY={clientY}
+        top={top}
         setClientY={setClientY}
+        projectContainer={projectContainer}
       />
     </div>
   );

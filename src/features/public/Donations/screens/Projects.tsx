@@ -13,22 +13,22 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 interface Props {
   projects: Array<any>;
   setIsScrolling: any;
-  clientY: number;
+  top: number;
   setClientY: any;
+  projectContainer: any;
 }
 
 function Projects({
   projects,
   setIsScrolling,
-  clientY,
+  top,
   setClientY,
+  projectContainer,
 }: Props): ReactElement {
   const [selectedTab, setSelectedTab] = React.useState('featured');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
   const [scrollMargin, setScrollMargin] = React.useState(200);
-
-  const projectContainer = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
     if (type === 'featured') {
@@ -76,32 +76,42 @@ function Projects({
     projects: featuredProjects,
   };
 
-  function onMouseDown(e) {
-    console.log('onMouseDown', e);
+  function onTouchStart(e: any) {
+    console.log('onTouchStart', e.touches[0].clientY);
     if (window.innerWidth <= 768) {
       setIsScrolling(true);
-      setClientY(e.clientY);
+      setClientY(e.touches[0].clientY);
     }
   }
 
-  function onMouseUp() {
-    console.log('onMouseUp');
+  function onTouchEnd() {
+    console.log('onTouchEnd');
     if (window.innerWidth <= 768) {
       setIsScrolling(false);
     }
   }
 
-  React.useEffect(() => {
-    setScrollMargin(clientY <= 10 ? 0 : clientY);
-  }, [clientY]);
+  // React.useEffect(() => {
+  //   setScrollMargin(clientY <= 10 ? 0 : clientY);
+  // }, [clientY]);
 
   return (
-    <div className={styles.container} style={{ marginTop: scrollMargin }}>
+    <div
+      className={styles.container}
+      style={{
+        marginTop: top,
+        height:
+          window.innerWidth <= 768
+            ? window.innerHeight - 76 - top
+            : window.innerHeight - 76,
+      }}
+    >
       <div
         className={styles.cardContainer}
         ref={projectContainer}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onTouchCancel={onTouchEnd}
       >
         {searchMode ? (
           <div className={styles.headerSearchMode}>
@@ -178,7 +188,12 @@ function Projects({
         {/* till here is header */}
         <div
           className={styles.projectsContainer}
-          onMouseDown={() => setIsScrolling(false)}
+          style={{
+            height:
+              window.innerWidth <= 768
+                ? window.innerHeight - 126 - top
+                : window.innerHeight - 126,
+          }}
         >
           {searchValue !== '' ? (
             <AllProjects {...SearchResultProjectsProps} />
