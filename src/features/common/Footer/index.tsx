@@ -51,6 +51,7 @@ export default function Footer() {
         langCode = localStorage.getItem('language');
         if (langCode) setLanguage(langCode);
       }
+      // console.log('in footer', langCode, currencyCode, countryCode)
     }
   }, []);
 
