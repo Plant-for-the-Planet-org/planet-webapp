@@ -1,11 +1,10 @@
-@import './BounceAnimation.module.scss';
 @import '../../../../theme/theme';
 
 .mapContainer {
   position: absolute;
   top: 60px;
   height: calc(100vh - 60px);
-  width: 100%;
+  width: 100vw;
 }
 
 .marker {
