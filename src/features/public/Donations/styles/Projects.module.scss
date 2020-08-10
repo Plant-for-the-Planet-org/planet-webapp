@@ -8,7 +8,7 @@
 }
 
 .cardContainer {
-  position: absolute;
+  position: relative;
   top: 30px;
   left: 24px;
 }
@@ -18,7 +18,7 @@
   align-items: center;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
-  width: 100%;
+  width: 360px;
   height: 50px;
 }
 
@@ -102,7 +102,7 @@
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: 82vh;
+  max-height: calc(100vh - 155px);
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -126,6 +126,10 @@
 
 .singleProject {
   margin-top: 20px;
+}
+
+.popupProject {
+  margin-top: 0px;
 }
 
 .targetLocation {
@@ -244,4 +248,31 @@
   font-family: $primaryFontFamily;
   font-size: 18px;
   color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    margin-top: 0px;
+    height: calc(100vh -76px);
+    overflow: hidden;
+  }
+
+  .cardContainer {
+    top: 50vh;
+    left: 0;
+    right: 0;
+  }
+
+  .header {
+    width: 100%;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+  }
+  /* Projects */
+  .projectsContainer {
+    margin-top: 0px;
+    width: 100%;
+    max-height: calc(100vh - 126px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
 }

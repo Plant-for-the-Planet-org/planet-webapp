@@ -74,7 +74,12 @@ export default function NavbarComponent(props: any) {
         </Nav>
       </Navbar>
 
-      <Navbar fixed="bottom" className="d-md-none" bg="light" expand="lg">
+      <Navbar
+        fixed="bottom"
+        className={`d-md-none ${styles.bottom_nav}`}
+        bg="light"
+        expand="lg"
+      >
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
           {menuItems.map((item) => {
             return (
