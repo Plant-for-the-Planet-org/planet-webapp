@@ -1,0 +1,511 @@
+@import '../../../theme/theme';
+
+.landingSection {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  padding-top: 48vh;
+  border-bottom-left-radius: 90%;
+  border-bottom-right-radius: 90%;
+  overflow: hidden;
+  width: 100vw;
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    #ffffff 34.56%,
+    #c0ddf2 87.7%,
+    #1da0da 100.46%
+  );
+}
+
+.landingContent {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 70vw;
+}
+
+.landingContent > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 60px;
+  text-align: center;
+  letter-spacing: -0.006em;
+  color: #080707;
+}
+
+.landingContent > p {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #080707;
+  max-width: 500px;
+}
+
+.buttonStyle {
+  height: 32px;
+  left: calc(50% - 192px / 2 + 0.4px);
+  top: calc(50% - 32px / 2 - 1893.8px);
+  background: #005fb2;
+  border: 0px;
+  color: white;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  width: fit-content;
+}
+// Tree Counter Section
+
+.treeCounterSectionRow {
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.treeCounterSectionText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.treeCounterSectionTextHeader {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.4px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+}
+
+.treeCounterSectionTextPara {
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.treeCounterSectionTextLink {
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.treeCounterSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.treeCounter {
+  position: absolute;
+  right: 0px;
+  z-index: 1;
+}
+.treeCounterImage {
+  height: 280px;
+  width: 288px;
+  position: absolute;
+  left: 0px;
+  bottom: 40px;
+}
+
+// Learn More section
+
+.learnMoreSectionRow {
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  overflow: hidden;
+}
+
+.learnMoreSectionText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 464px;
+}
+
+.learnMoreSectionTextHeader {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.4px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+}
+
+.learnMoreSectionTextPara {
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.learnMoreSectionTextLink {
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.learnMoreSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.learnMoreTreeImage {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 250px;
+  width: 250px;
+}
+.learnMoreImage {
+  height: 100vh;
+  width: auto;
+  position: absolute;
+  top: 0px;
+  left: 40px;
+}
+// blogSection
+
+.blogSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.blogSectionHeader {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #00396b;
+  font-family: $primaryFontFamily;
+}
+
+.blogContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 80%;
+  margin-top: 54px;
+}
+.blogSingleContainer {
+  position: relative;
+
+  height: 300px;
+  width: 300px;
+}
+
+.blogImage {
+  width: 100%;
+}
+
+.blogImageOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 36%,
+    rgba(0, 0, 0, 0.502) 55.7%,
+    #000000 100%
+  );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  z-index: 2;
+}
+.blogInfoSection {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 3;
+}
+.blogtreeCount {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.blogTitle {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: #ffffff;
+}
+
+.blogLink {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  color: #0070d2;
+  flex: none;
+  order: 0;
+  align-self: center;
+  padding: 6px 16px;
+  background-color: white;
+  width: fit-content;
+  border-radius: 4px;
+}
+
+// Leaderboard Section
+.leaderBoardSection {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  position: relative;
+}
+
+.leaderBoard {
+  align-self: center;
+  text-align: center;
+}
+
+.leaderBoard > h3 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #080707;
+}
+
+.leaderBoard > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #080707;
+}
+
+.leaderBoardTableHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaderBoardTableHeaderTitle {
+  padding: 8px;
+  border-bottom: 1px solid #dddbda;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitleSelected {
+  padding: 8px;
+  border-bottom: 2px solid #005fb2;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitle:hover {
+  cursor: pointer;
+}
+.leaderBoardBody {
+  width: 528px;
+  margin-top: 60px;
+}
+.leaderBoardBodyRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 0px;
+  border-bottom: 1px solid #dddbda;
+}
+
+.leaderBoardDonorName {
+  flex-grow: 1;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+.leaderBoardDonorTrees {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  color: #3e3e3c;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardDonorTime {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: #706e6b;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardBushImage {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+// articleSection
+
+.articleSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.articleSectionHeader {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #00396b;
+  font-family: $primaryFontFamily;
+}
+
+.articleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 54px;
+  width: 100vw;
+}
+.articleSingleContainer {
+  position: relative;
+  width: 100%;
+}
+
+.articleImage {
+  width: 100%;
+}
+
+.articleImageOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 36%,
+    rgba(0, 0, 0, 0.502) 55.7%,
+    #000000 100%
+  );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  z-index: 2;
+}
+.articleInfoSection {
+  position: absolute;
+  bottom: 70px;
+  left: 40px;
+  z-index: 3;
+}
+.articletreeCount {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.articleTitle {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: #ffffff;
+}
+
+.articleLink {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  color: #0070d2;
+  flex: none;
+  order: 0;
+  align-self: center;
+  padding: 6px 16px;
+  background-color: white;
+  width: fit-content;
+  border-radius: 4px;
+  margin-top: 44px;
+}

@@ -9,12 +9,16 @@ export default function LandingSection(props: any) {
         <LazyLoad>
           <img
             style={{ maxHeight: '100vh', minWidth: '100vw' }}
-            src={'/static/images/home/BackgroundImage.png'}
+            src={
+              props.imageSrc
+                ? props.imageSrc
+                : '/tenants/plantfortheplanet/images/home/BackgroundImage.png'
+            }
           />
         </LazyLoad>
       </div>
 
-      <div className={styles.landingContent}>{props.children}</div>
+      {props.children}
     </section>
   );
 }

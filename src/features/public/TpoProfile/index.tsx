@@ -8,11 +8,13 @@ export default function TpoProfile({ tpoprofile }: any) {
   return (
     <main>
       <LandingSection>
-        <TreeCounter
-          target={tpoprofile.countTarget}
-          planted={tpoprofile.countPlanted}
-        />
-        <h2 className={styles.treeCounterName}>{tpoprofile.displayName}</h2>
+        <div className={styles.landingContent}>
+          <TreeCounter
+            target={tpoprofile.countTarget}
+            planted={tpoprofile.countPlanted}
+          />
+          <h2 className={styles.treeCounterName}>{tpoprofile.displayName}</h2>
+        </div>
       </LandingSection>
 
       <Container fluid="md">

@@ -1,11 +1,13 @@
+import dynamic from 'next/dynamic';
 import Footer from '../src/features/common/Footer';
 import Layout from '../src/features/common/Layout';
-import HomePage from '../src/features/public/Home';
 
-export default function Home() {
+const Tenant = process.env.Tenant ? process.env.Tenant : 'plantfortheplanet';
+const AboutPage = dynamic(() => import(`../src/tenants/${Tenant}/About/About`));
+export default function About() {
   return (
     <Layout>
-      <HomePage />
+      <AboutPage />
       <Footer />
     </Layout>
   );

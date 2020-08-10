@@ -6,29 +6,30 @@ import CancelIcon from './../../../../assets/images/icons/CancelIcon';
 import SearchIcon from './../../../../assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
 
+const MapLayout = dynamic(() => import('./MapboxMap'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
+
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
   ssr: false,
   loading: () => <ProjectLoader />,
 });
 interface Props {
-  projects: Array<any>;
-  setIsScrolling: any;
-  top: number;
-  setClientY: any;
-  projectContainer: any;
+  projects: any;
 }
 
-function Projects({
-  projects,
-  setIsScrolling,
-  top,
-  setClientY,
-  projectContainer,
-}: Props): ReactElement {
+function ProjectsList({ projects }: Props): ReactElement {
   const [selectedTab, setSelectedTab] = React.useState('featured');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
-  const [scrollMargin, setScrollMargin] = React.useState(200);
+
+  const [isScrolling, setIsScrolling] = React.useState(false);
+  const [clientY, setClientY] = React.useState(
+    window.innerWidth >= 768 ? 60 : 0
+  );
+  const [top, setTop] = React.useState(window.innerWidth >= 768 ? 60 : 200);
+  const projectContainer = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
     if (type === 'featured') {
@@ -75,137 +76,153 @@ function Projects({
   const FeaturedProjectsProps = {
     projects: featuredProjects,
   };
+  const ProjectsProps = {
+    projects: projects,
+  };
 
+  // when touched on the project list container enables scrolling of list and
+  // sets the current y-axis touch position in clientY
   function onTouchStart(e: any) {
-    console.log('onTouchStart', e.touches[0].clientY);
     if (window.innerWidth <= 768) {
       setIsScrolling(true);
       setClientY(e.touches[0].clientY);
     }
   }
 
+  // when finger is dragged new on the list it adjusts the margin of the container accordingly
+  function onTouchMove(e: any) {
+    if (isScrolling) {
+      let newTop = top + (e.touches[0].clientY - clientY);
+      if (newTop >= 0 && newTop <= window.innerHeight - 100) {
+        setTop(newTop);
+        setClientY(e.touches[0].clientY);
+      }
+    }
+  }
+
+  // when finger is removed from the surface or interupted then stops the scrolling of list
   function onTouchEnd() {
-    console.log('onTouchEnd');
     if (window.innerWidth <= 768) {
       setIsScrolling(false);
     }
   }
-
-  // React.useEffect(() => {
-  //   setScrollMargin(clientY <= 10 ? 0 : clientY);
-  // }, [clientY]);
-
   return (
-    <div
-      className={styles.container}
-      style={{
-        marginTop: top,
-        height:
-          window.innerWidth <= 768
-            ? window.innerHeight - 76 - top
-            : window.innerHeight - 76,
-      }}
-    >
+    <div onTouchMove={onTouchMove}>
+      <MapLayout
+        {...ProjectsProps}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+      />
       <div
-        className={styles.cardContainer}
-        ref={projectContainer}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
+        className={styles.container}
+        style={{
+          marginTop: top,
+          height:
+            window.innerWidth <= 768
+              ? window.innerHeight - 76 - top
+              : window.innerHeight - 76,
+        }}
       >
-        {searchMode ? (
-          <div className={styles.headerSearchMode}>
-            <div className={styles.searchIcon}>
-              <SearchIcon />
-            </div>
-
-            <div className={styles.searchInput}>
-              <TextField
-                fullWidth={true}
-                autoFocus={true}
-                placeholder="Search Projects"
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </div>
-            <div
-              className={styles.cancelIcon}
-              onClick={() => {
-                setSearchMode(false);
-                setSearchValue('');
-              }}
-            >
-              <CancelIcon />
-            </div>
-          </div>
-        ) : (
-          <div className={styles.header}>
-            <div className={styles.tabButtonContainer}>
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('featured')}
-              >
-                <div
-                  className={
-                    selectedTab === 'featured'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
-                >
-                  Transparent Projects
-                </div>
-                {selectedTab === 'featured' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
-              </div>
-
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('all')}
-              >
-                <div
-                  className={
-                    selectedTab === 'all'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
-                >
-                  All {projects.length} Projects
-                </div>
-                {selectedTab === 'all' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
-              </div>
-            </div>
-
-            <div
-              className={styles.searchIcon}
-              onClick={() => setSearchMode(true)}
-            >
-              <SearchIcon />
-            </div>
-          </div>
-        )}
-        {/* till here is header */}
         <div
-          className={styles.projectsContainer}
-          style={{
-            height:
-              window.innerWidth <= 768
-                ? window.innerHeight - 126 - top
-                : window.innerHeight - 126,
-          }}
+          className={styles.cardContainer}
+          ref={projectContainer}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onTouchCancel={onTouchEnd}
         >
-          {searchValue !== '' ? (
-            <AllProjects {...SearchResultProjectsProps} />
-          ) : selectedTab === 'all' ? (
-            <AllProjects {...AllProjectsProps} />
+          {searchMode ? (
+            <div className={styles.headerSearchMode}>
+              <div className={styles.searchIcon}>
+                <SearchIcon />
+              </div>
+
+              <div className={styles.searchInput}>
+                <TextField
+                  fullWidth={true}
+                  autoFocus={true}
+                  placeholder="Search Projects"
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+              </div>
+              <div
+                className={styles.cancelIcon}
+                onClick={() => {
+                  setSearchMode(false);
+                  setSearchValue('');
+                }}
+              >
+                <CancelIcon />
+              </div>
+            </div>
           ) : (
-            <AllProjects {...FeaturedProjectsProps} />
+            <div className={styles.header}>
+              <div className={styles.tabButtonContainer}>
+                <div
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('featured')}
+                >
+                  <div
+                    className={
+                      selectedTab === 'featured'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    Transparent Projects
+                  </div>
+                  {selectedTab === 'featured' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
+                </div>
+
+                <div
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('all')}
+                >
+                  <div
+                    className={
+                      selectedTab === 'all'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    All {projects.length} Projects
+                  </div>
+                  {selectedTab === 'all' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
+                </div>
+              </div>
+
+              <div
+                className={styles.searchIcon}
+                onClick={() => setSearchMode(true)}
+              >
+                <SearchIcon />
+              </div>
+            </div>
           )}
+          {/* till here is header */}
+          <div
+            className={styles.projectsContainer}
+            style={{
+              height:
+                window.innerWidth <= 768
+                  ? window.innerHeight - 126 - top
+                  : window.innerHeight - 126,
+            }}
+          >
+            {searchValue !== '' ? (
+              <AllProjects {...SearchResultProjectsProps} />
+            ) : selectedTab === 'all' ? (
+              <AllProjects {...AllProjectsProps} />
+            ) : (
+              <AllProjects {...FeaturedProjectsProps} />
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default Projects;
+export default ProjectsList;

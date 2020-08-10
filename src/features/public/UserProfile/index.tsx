@@ -8,11 +8,13 @@ export default function UserProfile({ userprofile }: any) {
   return (
     <main>
       <LandingSection>
-        <TreeCounter
-          target={userprofile.countTarget}
-          planted={userprofile.countPlanted}
-        />
-        <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
+        <div className={styles.landingContent}>
+          <TreeCounter
+            target={userprofile.countTarget}
+            planted={userprofile.countPlanted}
+          />
+          <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
+        </div>
       </LandingSection>
       <Container fluid="md">
         <Row className={styles.aboutSection}>
