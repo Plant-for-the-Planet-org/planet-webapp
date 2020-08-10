@@ -6,7 +6,8 @@ module.exports = {
   env: {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     API_ENDPOINT: process.env.API_ENDPOINT,
-    Tenant: process.env.Tenant,
+    CDN_URL: process.env.CDN_URL,
+    TENANT: process.env.TENANT,
   },
   trailingSlash: true,
   reactStrictMode: true,
