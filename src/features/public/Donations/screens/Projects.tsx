@@ -20,15 +20,20 @@ interface Props {
 }
 
 function ProjectsList({ projects }: Props): ReactElement {
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const isMobile = screenWidth <= 768;
+
+  // subtract screen height with bottom nav
+  const containerHeight = screenHeight - 76;
+
   const [selectedTab, setSelectedTab] = React.useState('featured');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
 
   const [isScrolling, setIsScrolling] = React.useState(false);
-  const [clientY, setClientY] = React.useState(
-    window.innerWidth >= 768 ? 60 : 0
-  );
-  const [top, setTop] = React.useState(window.innerWidth >= 768 ? 60 : 200);
+  const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
+  const [top, setTop] = React.useState(!isMobile ? 60 : 200);
   const projectContainer = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
@@ -83,7 +88,7 @@ function ProjectsList({ projects }: Props): ReactElement {
   // when touched on the project list container enables scrolling of list and
   // sets the current y-axis touch position in clientY
   function onTouchStart(e: any) {
-    if (window.innerWidth <= 768) {
+    if (isMobile) {
       setIsScrolling(true);
       setClientY(e.touches[0].clientY);
     }
@@ -93,7 +98,7 @@ function ProjectsList({ projects }: Props): ReactElement {
   function onTouchMove(e: any) {
     if (isScrolling) {
       let newTop = top + (e.touches[0].clientY - clientY);
-      if (newTop >= 0 && newTop <= window.innerHeight - 100) {
+      if (newTop >= 0 && newTop <= screenHeight - 100) {
         setTop(newTop);
         setClientY(e.touches[0].clientY);
       }
@@ -102,7 +107,7 @@ function ProjectsList({ projects }: Props): ReactElement {
 
   // when finger is removed from the surface or interupted then stops the scrolling of list
   function onTouchEnd() {
-    if (window.innerWidth <= 768) {
+    if (isMobile) {
       setIsScrolling(false);
     }
   }
@@ -116,10 +121,7 @@ function ProjectsList({ projects }: Props): ReactElement {
         className={styles.container}
         style={{
           marginTop: top,
-          height:
-            window.innerWidth <= 768
-              ? window.innerHeight - 76 - top
-              : window.innerHeight - 76,
+          height: isMobile ? containerHeight - top : containerHeight,
         }}
       >
         <div
