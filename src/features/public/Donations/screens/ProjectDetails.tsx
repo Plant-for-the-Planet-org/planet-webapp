@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
-import Sugar from 'sugar';
+import Sugar, { Number } from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
 import Email from '../../../../assets/images/icons/project/Email';
