@@ -59,7 +59,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       }
       if (localStorage.getItem('currencyCode')) {
         if (
-          project.taxDeductionCountries.includes(localStorage.getItem('currencyCode'))
+          project.taxDeductionCountries.includes(
+            localStorage.getItem('currencyCode')
+          )
         ) {
           setCurrency(localStorage.getItem('currencyCode')); // Use this currency only if it exists in the array
         }
@@ -74,8 +76,14 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         const res = await fetch(
           `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
         );
+
         const paymentSetupData = await res.json();
+        // console.log(`endpoint ${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`)
+        // console.log(paymentSetupData)
         setPaymentSetup(paymentSetupData);
+        if (paymentSetupData.treeCost) {
+          setTreeCost(paymentSetupData.treeCost);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -230,8 +238,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
                 <div className={styles.taxDeductibleCountry}>
                   {project.taxDeductionCountries.includes(country)
                     ? getCountryDataBy('countryCode', country).countryName
-                    : getCountryDataBy('countryCode', project.taxDeductionCountries[0])
-                        .countryName}
+                    : getCountryDataBy(
+                        'countryCode',
+                        project.taxDeductionCountries[0]
+                      ).countryName}
                 </div>
                 <div className={styles.downArrow}>
                   <DownArrow color={'#87B738'} />
@@ -243,8 +253,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
                 <div className={styles.taxDeductibleCountryDisabled}>
                   {project.taxDeductionCountries.includes(country)
                     ? getCountryDataBy('countryCode', country).countryName
-                    : getCountryDataBy('countryCode', project.taxDeductionCountries[0])
-                        .countryName}
+                    : getCountryDataBy(
+                        'countryCode',
+                        project.taxDeductionCountries[0]
+                      ).countryName}
                 </div>
                 <div className={styles.downArrow}>
                   <DownArrow color={'grey'} />
@@ -255,7 +267,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         )}
 
         <div className={styles.horizontalLine} />
-
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
             {currency} {(treeCount * treeCost).toFixed(2)}{' '}
