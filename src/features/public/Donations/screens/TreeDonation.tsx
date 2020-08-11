@@ -7,6 +7,7 @@ import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 
 interface Props {
   onClose: any;
@@ -35,7 +36,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     false
   );
 
-  
   console.log(
     'in tree donation component, currency-',
     currency,
@@ -43,7 +43,16 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     country
   );
 
-
+  const taxDeductSwitchOn = () => {
+    setIsTaxDeductible(!isTaxDeductible);
+    if (!taxDeductionCountries.includes(country)) {
+      const displayedCountry = taxDeductionCountries[0];
+      const respCurrency = getCountryDataBy('countryCode', displayedCountry)
+        .currencyCode;
+      setCountry(taxDeductionCountries[0]);
+      setCurrency(respCurrency);
+    }
+  };
 
   // to get country and currency from local storage
   React.useEffect(() => {
@@ -205,7 +214,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               </div>
               <Switch
                 checked={isTaxDeductible}
-                onChange={() => setIsTaxDeductible(!isTaxDeductible)}
+                onChange={taxDeductSwitchOn}
                 name="checkedB"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
@@ -219,8 +228,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               >
                 <div className={styles.taxDeductibleCountry}>
                   {taxDeductionCountries.includes(country)
-                    ? country
-                    : taxDeductionCountries[0]}
+                    ? getCountryDataBy('countryCode', country).countryName
+                    : getCountryDataBy('countryCode', taxDeductionCountries[0])
+                        .countryName}
                 </div>
                 <div className={styles.downArrow}>
                   <DownArrow color={'#87B738'} />
@@ -231,8 +241,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.taxDeductibleDisabled}>
                 <div className={styles.taxDeductibleCountryDisabled}>
                   {taxDeductionCountries.includes(country)
-                    ? country
-                    : taxDeductionCountries[0]}
+                    ? getCountryDataBy('countryCode', country).countryName
+                    : getCountryDataBy('countryCode', taxDeductionCountries[0])
+                        .countryName}
                 </div>
                 <div className={styles.downArrow}>
                   <DownArrow color={'grey'} />

@@ -21,9 +21,11 @@ export default function TransitionsModal(props:any) {
     currency
   } = props;
 
-  const [selectedModalValue, setSelectedModalValue] = useState('')
+  
   const [countriesData, setCountriesData] = useState([])
+  const [selectedModalValue, setSelectedModalValue] = useState(``)
 
+  
   // changes the currency in when a currency is selected
   const handleCountryChange = (event:any) => {
       setSelectedModalValue(event.target.value);
@@ -32,7 +34,7 @@ export default function TransitionsModal(props:any) {
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-      const selectedData = selectedModalValue.split(",")
+    const selectedData = selectedModalValue.split(",")
     setCountry(selectedData[0])
     setCurrency(selectedData[1])
     handleModalClose();
@@ -104,7 +106,8 @@ function MapCountry(props:any) {
           <FormControlLabel
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={`${country.countryName} - (${country.countryCode})`}
+            // label={`${country.countryName} - (${country.countryCode})`}
+            label={`${country.countryCode},${country.currencyCode}`}
           />
         ))}
       </RadioGroup>
