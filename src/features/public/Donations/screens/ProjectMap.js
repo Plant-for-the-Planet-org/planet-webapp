@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf';
 import React, { useRef, useState } from 'react';
 import MapGL, { Layer, NavigationControl, Source } from 'react-map-gl';
 import styles from '../styles/MapboxMap.module.scss';
@@ -8,12 +9,22 @@ export default function ProjectMap(props) {
   const { project } = props;
   const [popupData, setPopupData] = useState({ show: false });
 
+  let lat = project.coordinates.lat;
+  let lon = project.coordinates.lon;
+
+  if (project.geometry !== null) {
+    var centroid = turf.centroid(project.geometry);
+    console.log(centroid);
+    lat = centroid.geometry.coordinates[1];
+    lon = centroid.geometry.coordinates[0];
+  }
+
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: '100%',
-    latitude: project.geometry.coordinates[0][0][0][1],
-    longitude: project.geometry.coordinates[0][0][0][0],
-    zoom: 14,
+    latitude: lat,
+    longitude: lon,
+    zoom: 13,
   });
 
   const geojson = {
