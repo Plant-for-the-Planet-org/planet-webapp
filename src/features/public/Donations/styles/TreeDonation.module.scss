@@ -133,6 +133,12 @@
 .customTreeInput {
   border: 0px;
   border-bottom: 1px solid $primaryColor;
+  margin: 0px 10px;
+  width: 40px;
+}
+
+.customTreeInput:focus {
+  outline: none;
 }
 
 /* Tax Deductible */

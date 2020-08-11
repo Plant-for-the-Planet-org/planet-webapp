@@ -5,6 +5,7 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
+import SelectCurrencyModal from '../components/SelectCurrencyModal'
 
 interface Props {
   onClose: any;
@@ -18,21 +19,47 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [isGift, setIsGift] = React.useState(false);
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
 
-  const [currency, setCurrency] = React.useState(project.currency);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
 
   const [paymentSetup, setPaymentSetup] = React.useState();
+
+  // modal for selecting currency
+  const [currency, setCurrency] = React.useState(project.currency);
+  const [country, setCountry] = React.useState(project.country);
+  const [openModal, setOpenModal] = React.useState(false);
+  console.log('in tree donation component, currency', currency, 'country', country)
+
   React.useEffect(() => {
     async function loadPaymentSetup() {
-      const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/paymentOptions/${project.id}`
-      );
-      const paymentSetupData = await res.json();
-      setPaymentSetup(paymentSetupData);
+      try{
+        const res = await fetch(
+          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
+        );
+        const paymentSetupData = await res.json();
+        setPaymentSetup(paymentSetupData);
+      } catch(err){
+        console.log(err)
+      }
     }
     loadPaymentSetup();
   }, [project]);
   console.log('payment SetupData', paymentSetup);
+  
+  const setCustomTreeValue = (e:any) => {
+    if (e.target.value === ""){
+      setTreeCount(0)
+    } else {
+      setTreeCount(e.target.value)
+    }
+  }
+
+  const handleModalOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+  };
 
   return (
     <div className={styles.treeDonationcontainer}>
@@ -48,7 +75,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           To Yucatan Reforestation by Plant-for-the-Planet
         </div>
 
-        <div className={styles.currencyRate}>
+        <div className={styles.currencyRate} onClick={handleModalOpen} >
           <div className={styles.currency}>{currency}</div>
           <div className={styles.downArrow}>
             <DownArrow color={'#87B738'} />
@@ -113,8 +140,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.treeCountOptionTrees}>Trees</div>
             </div>
           ) : (
-            <div className={styles.treeCountOption} style={{ minWidth: '65%' }}>
-              <div className={styles.treeCountOptionTrees}>____ Trees</div>
+            <div className={styles.treeCountOption} style={{ minWidth: '65%', flexDirection:'row' }} >
+              <input className={styles.customTreeInput} type="text" onChange={(e)=> setCustomTreeValue(e)} />
+              <div className={styles.treeCountOptionTrees}>Trees</div>
             </div>
           )}
         </div>
@@ -154,6 +182,14 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           <div className={styles.continueButton}>Continue</div>
         </div>
       </div>
+      <SelectCurrencyModal
+          openModal={openModal}
+          handleModalClose={handleModalClose}
+          setCurrency={setCurrency}
+          currency={currency}
+          setCountry={setCountry}
+          country={country}
+        />
     </div>
   );
 }
