@@ -7,16 +7,22 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import  { getCountryDataBy } from '../../../../utils/countryUtils'
 let styles = require('./../styles/SelectCurrencyModal.module.scss');
 
 export default function TransitionsModal(props:any) {
   const {
     openModal,
     handleModalClose,
-    taxDeductionCountries
+    taxDeductionCountries,
+    setCountry,
+    country,
+    setCurrency,
+    currency
   } = props;
 
   const [selectedModalValue, setSelectedModalValue] = useState('')
+  const [countriesData, setCountriesData] = useState([])
 
   // changes the currency in when a currency is selected
   const handleCountryChange = (event:any) => {
@@ -26,8 +32,17 @@ export default function TransitionsModal(props:any) {
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
+      const selectedData = selectedModalValue.split(",")
+    setCountry(selectedData[0])
+    setCurrency(selectedData[1])
     handleModalClose();
   }
+
+  React.useEffect(()=> {
+    const tempCountriesData:any = []
+    taxDeductionCountries.forEach(countryCode => tempCountriesData.push(getCountryDataBy('countryCode', countryCode)))
+    setCountriesData(tempCountriesData)
+  }, [])
 
   return (
     <div>
@@ -49,7 +64,7 @@ export default function TransitionsModal(props:any) {
               <p className={styles.sectionHead}>Select Country</p>
               {/* maps the radio button for country */}
               <MapCountry
-                sortedCountriesData={taxDeductionCountries}
+                countriesData={countriesData}
                 // this is selectedValue,
                 value={selectedModalValue}
                 handleChange={handleCountryChange}
@@ -76,7 +91,7 @@ export default function TransitionsModal(props:any) {
 
 // Maps the radio buttons for currency
 function MapCountry(props:any) {
-  const { sortedCountriesData, value, handleChange } = props;
+  const { countriesData, value, handleChange } = props;
   return (
     <FormControl component="fieldset">
       <RadioGroup
@@ -85,11 +100,11 @@ function MapCountry(props:any) {
         value={value}
         onChange={handleChange}
       >
-        {sortedCountriesData.map((country:any) => (
+        {countriesData.map((country:any) => (
           <FormControlLabel
-            value={country} // need both info
+            value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={country}
+            label={`${country.countryName} - (${country.countryCode})`}
           />
         ))}
       </RadioGroup>

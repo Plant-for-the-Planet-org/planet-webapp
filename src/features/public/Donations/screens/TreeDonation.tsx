@@ -35,16 +35,15 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     false
   );
 
-  /*
+  
   console.log(
-    'in tree donation component, currency',
+    'in tree donation component, currency-',
     currency,
-    'country',
+    'country-',
     country
   );
 
-  console.log('project', project);
-  */
+
 
   // to get country and currency from local storage
   React.useEffect(() => {
@@ -219,7 +218,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
                 onClick={handleTaxDeductionModalOpen}
               >
                 <div className={styles.taxDeductibleCountry}>
-                  {country in taxDeductionCountries
+                  {taxDeductionCountries.includes(country)
                     ? country
                     : taxDeductionCountries[0]}
                 </div>
@@ -231,7 +230,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               // disabled modal if taxDeductible switch OFF
               <div className={styles.taxDeductibleDisabled}>
                 <div className={styles.taxDeductibleCountryDisabled}>
-                  {country in taxDeductionCountries
+                  {taxDeductionCountries.includes(country)
                     ? country
                     : taxDeductionCountries[0]}
                 </div>
@@ -264,6 +263,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         openModal={openTaxDeductionModal}
         handleModalClose={handleTaxDeductionModalClose}
         taxDeductionCountries={taxDeductionCountries}
+        setCountry={setCountry}
+        country={country}
+        setCurrency={setCurrency}
+        currency={currency}
       />
       <SelectCurrencyModal
         openModal={openCurrencyModal}
