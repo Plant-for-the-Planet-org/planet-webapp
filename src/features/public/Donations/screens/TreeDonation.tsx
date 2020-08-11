@@ -24,10 +24,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
-  const [taxDeductionCountries, setTaxDeductionCountries] = React.useState(
-    project.taxDeductionCountries
-  );
-  // ANCHOR  Why is this added in the State ?
 
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
@@ -46,11 +42,11 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
   const taxDeductSwitchOn = () => {
     setIsTaxDeductible(!isTaxDeductible);
-    if (!taxDeductionCountries.includes(country)) {
-      const displayedCountry = taxDeductionCountries[0];
+    if (!project.taxDeductionCountries.includes(country)) {
+      const displayedCountry = project.taxDeductionCountries[0];
       const respCurrency = getCountryDataBy('countryCode', displayedCountry)
         .currencyCode;
-      setCountry(taxDeductionCountries[0]);
+      setCountry(project.taxDeductionCountries[0]);
       setCurrency(respCurrency);
     }
   };
@@ -63,7 +59,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       }
       if (localStorage.getItem('currencyCode')) {
         if (
-          taxDeductionCountries.includes(localStorage.getItem('currencyCode'))
+          project.taxDeductionCountries.includes(localStorage.getItem('currencyCode'))
         ) {
           setCurrency(localStorage.getItem('currencyCode')); // Use this currency only if it exists in the array
         }
@@ -85,7 +81,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       }
     }
     loadPaymentSetup();
-  }, [project]);
+  }, [project, country]);
   console.log('payment SetupData', paymentSetup);
 
   const setCustomTreeValue = (e: any) => {
@@ -211,7 +207,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           </div>
         </div>
 
-        {taxDeductionCountries.length > 0 && (
+        {project.taxDeductionCountries.length > 0 && (
           <React.Fragment>
             <div className={styles.isTaxDeductible}>
               <div className={styles.isTaxDeductibleText}>
@@ -232,9 +228,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
                 onClick={handleTaxDeductionModalOpen}
               >
                 <div className={styles.taxDeductibleCountry}>
-                  {taxDeductionCountries.includes(country)
+                  {project.taxDeductionCountries.includes(country)
                     ? getCountryDataBy('countryCode', country).countryName
-                    : getCountryDataBy('countryCode', taxDeductionCountries[0])
+                    : getCountryDataBy('countryCode', project.taxDeductionCountries[0])
                         .countryName}
                 </div>
                 <div className={styles.downArrow}>
@@ -245,9 +241,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               // disabled modal if taxDeductible switch OFF
               <div className={styles.taxDeductibleDisabled}>
                 <div className={styles.taxDeductibleCountryDisabled}>
-                  {taxDeductionCountries.includes(country)
+                  {project.taxDeductionCountries.includes(country)
                     ? getCountryDataBy('countryCode', country).countryName
-                    : getCountryDataBy('countryCode', taxDeductionCountries[0])
+                    : getCountryDataBy('countryCode', project.taxDeductionCountries[0])
                         .countryName}
                 </div>
                 <div className={styles.downArrow}>
@@ -278,7 +274,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}
         handleModalClose={handleTaxDeductionModalClose}
-        taxDeductionCountries={taxDeductionCountries}
+        taxDeductionCountries={project.taxDeductionCountries}
         setCountry={setCountry}
         country={country}
         setCurrency={setCurrency}

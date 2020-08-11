@@ -6,11 +6,11 @@ import Modal from '@material-ui/core/Modal';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { withStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
-import  { getCountryDataBy } from '../../../../utils/countryUtils'
+import React, { useState } from 'react';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 let styles = require('./../styles/SelectCurrencyModal.module.scss');
 
-export default function TransitionsModal(props:any) {
+export default function TransitionsModal(props: any) {
   const {
     openModal,
     handleModalClose,
@@ -18,33 +18,39 @@ export default function TransitionsModal(props:any) {
     setCountry,
     country,
     setCurrency,
-    currency
+    currency,
   } = props;
 
-  
-  const [countriesData, setCountriesData] = useState([])
-  const [selectedModalValue, setSelectedModalValue] = useState(``)
-
+  const [countriesData, setCountriesData] = useState([]);
+  const [selectedModalValue, setSelectedModalValue] = useState(
+    `${country},${currency}`
+  );
 
   // changes the currency in when a currency is selected
-  const handleCountryChange = (event:any) => {
-      setSelectedModalValue(event.target.value);
+  const handleCountryChange = (event: any) => {
+    setSelectedModalValue(event.target.value);
   };
 
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-    const selectedData = selectedModalValue.split(",")
-    setCountry(selectedData[0])
-    setCurrency(selectedData[1])
+    const selectedData = selectedModalValue.split(',');
+    setCountry(selectedData[0]);
+    setCurrency(selectedData[1]);
     handleModalClose();
   }
 
-  React.useEffect(()=> {
-    const tempCountriesData:any = []
-    taxDeductionCountries.forEach(countryCode => tempCountriesData.push(getCountryDataBy('countryCode', countryCode)))
-    setCountriesData(tempCountriesData)
-  }, [])
+  React.useEffect(() => {
+    setSelectedModalValue(`${country},${currency}`);
+  }, [country, currency]);
+
+  React.useEffect(() => {
+    const tempCountriesData: any = [];
+    taxDeductionCountries.forEach((countryCode) =>
+      tempCountriesData.push(getCountryDataBy('countryCode', countryCode))
+    );
+    setCountriesData(tempCountriesData);
+  }, []);
 
   return (
     <div>
@@ -92,7 +98,7 @@ export default function TransitionsModal(props:any) {
 }
 
 // Maps the radio buttons for currency
-function MapCountry(props:any) {
+function MapCountry(props: any) {
   const { countriesData, value, handleChange } = props;
   return (
     <FormControl component="fieldset">
@@ -102,7 +108,7 @@ function MapCountry(props:any) {
         value={value}
         onChange={handleChange}
       >
-        {countriesData.map((country:any) => (
+        {countriesData.map((country: any) => (
           <FormControlLabel
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
@@ -114,7 +120,6 @@ function MapCountry(props:any) {
     </FormControl>
   );
 }
-
 
 // styles the radio button to green color for selected state
 const GreenRadio = withStyles({
