@@ -55,11 +55,29 @@
   margin-top: 10px;
 }
 
+.currencyRateDisabled {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.currencyRate:hover {
+  cursor: pointer;
+}
+
 .currency {
   font-family: $primaryFontFamily;
   font-weight: bold;
   font-size: $fontSubTitleSize;
   color: $primaryColor;
+}
+
+.currencyDisabled {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color:$highlightBackground;
 }
 
 .downArrow {
@@ -162,10 +180,26 @@
   align-items: center;
 }
 
+.taxDeductibleDisabled {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.taxDeductible:hover {
+  cursor: pointer;
+}
+
 .taxDeductibleCountry {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  color: $primaryFontColor;
+  color:$primaryColor;
+}
+
+.taxDeductibleCountryDisabled {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color:$highlightBackground;
 }
 
 .downArrow {
