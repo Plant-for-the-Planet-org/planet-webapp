@@ -1,13 +1,13 @@
 import Switch from '@material-ui/core/Switch';
 import React, { ReactElement } from 'react';
 import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
+import SelectCurrencyModal from '../components/SelectCurrencyModal';
+import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
-import SelectCurrencyModal from '../components/SelectCurrencyModal';
-import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
 
 interface Props {
   onClose: any;
@@ -27,6 +27,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [taxDeductionCountries, setTaxDeductionCountries] = React.useState(
     project.taxDeductionCountries
   );
+  // ANCHOR  Why is this added in the State ?
 
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
@@ -57,11 +58,15 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   // to get country and currency from local storage
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('currencyCode')) {
-        setCurrency(localStorage.getItem('currencyCode'));
-      }
       if (localStorage.getItem('countryCode')) {
         setCountry(localStorage.getItem('countryCode'));
+      }
+      if (localStorage.getItem('currencyCode')) {
+        if (
+          taxDeductionCountries.includes(localStorage.getItem('currencyCode'))
+        ) {
+          setCurrency(localStorage.getItem('currencyCode')); // Use this currency only if it exists in the array
+        }
       }
     }
   }, []);
