@@ -5,7 +5,8 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
-import SelectCurrencyModal from '../components/SelectCurrencyModal'
+import SelectCurrencyModal from '../components/SelectCurrencyModal';
+import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
 
 interface Props {
   onClose: any;
@@ -14,51 +15,90 @@ interface Props {
 
 function TreeDonation({ onClose, project }: Props): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
-  const [customTreeCount, setCustomTreeCountLocal] = React.useState();
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
-  const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
-
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
 
   const [paymentSetup, setPaymentSetup] = React.useState();
 
+  // for tax deduction part
+  const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
+  const [taxDeductionCountries, setTaxDeductionCountries] = React.useState(
+    project.taxDeductionCountries
+  );
+
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
   const [country, setCountry] = React.useState(project.country);
-  const [openModal, setOpenModal] = React.useState(false);
-  console.log('in tree donation component, currency', currency, 'country', country)
+  const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
+  const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
+    false
+  );
 
+  /*
+  console.log(
+    'in tree donation component, currency',
+    currency,
+    'country',
+    country
+  );
+
+  console.log('project', project);
+  */
+
+  // to get country and currency from local storage
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        setCurrency(localStorage.getItem('currencyCode'));
+      }
+      if (localStorage.getItem('countryCode')) {
+        setCountry(localStorage.getItem('countryCode'));
+      }
+    }
+  }, []);
+
+  //  to load payment data
   React.useEffect(() => {
     async function loadPaymentSetup() {
-      try{
+      try {
         const res = await fetch(
           `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
         );
         const paymentSetupData = await res.json();
         setPaymentSetup(paymentSetupData);
-      } catch(err){
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
     }
     loadPaymentSetup();
   }, [project]);
   console.log('payment SetupData', paymentSetup);
-  
-  const setCustomTreeValue = (e:any) => {
-    if (e.target.value === ""){
-      setTreeCount(0)
-    } else {
-      setTreeCount(e.target.value)
-    }
-  }
 
+  const setCustomTreeValue = (e: any) => {
+    if (e.target.value === '') {
+      setTreeCount(0);
+    } else {
+      setTreeCount(e.target.value);
+    }
+  };
+
+  // for currency modal
   const handleModalOpen = () => {
-    setOpenModal(true);
+    setOpenCurrencyModal(true);
   };
 
   const handleModalClose = () => {
-    setOpenModal(false);
+    setOpenCurrencyModal(false);
+  };
+
+  // for tax deduction modal
+  const handleTaxDeductionModalOpen = () => {
+    setOpenTaxDeductionModal(true);
+  };
+
+  const handleTaxDeductionModalClose = () => {
+    setOpenTaxDeductionModal(false);
   };
 
   return (
@@ -72,18 +112,32 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
 
         <div className={styles.plantProjectName}>
-          To Yucatan Reforestation by Plant-for-the-Planet
+          To {project.name} by {project.tpo.name}
         </div>
 
-        <div className={styles.currencyRate} onClick={handleModalOpen} >
-          <div className={styles.currency}>{currency}</div>
-          <div className={styles.downArrow}>
-            <DownArrow color={'#87B738'} />
+        {isTaxDeductible ? (
+          // disabled if taxDeduction switch ON
+          <div className={styles.currencyRateDisabled}>
+            <div className={styles.currencyDisabled}>{currency}</div>
+            <div className={styles.downArrow}>
+              <DownArrow color={'grey'} />
+            </div>
+            <div className={styles.rate}>
+              {project.treeCost.toFixed(2)} per tree
+            </div>
           </div>
-          <div className={styles.rate}>
-            {project.treeCost.toFixed(2)} per tree
+        ) : (
+          // enabled if taxDeduction switch OFF
+          <div className={styles.currencyRate} onClick={handleModalOpen}>
+            <div className={styles.currency}>{currency}</div>
+            <div className={styles.downArrow}>
+              <DownArrow color={'#87B738'} />
+            </div>
+            <div className={styles.rate}>
+              {project.treeCost.toFixed(2)} per tree
+            </div>
           </div>
-        </div>
+        )}
 
         <div className={styles.isGiftDonation}>
           <div className={styles.isGiftDonationText}>
@@ -131,45 +185,69 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.treeCountOptionTrees}>Trees</div>
             </div>
           ))}
-          {customTreeCount ? (
-            <div
-              className={styles.treeCountOptionSelected}
-              style={{ minWidth: '65%', flexDirection: 'row' }}
-            >
-              <input className={styles.customTreeInput} type="text" />
-              <div className={styles.treeCountOptionTrees}>Trees</div>
-            </div>
-          ) : (
-            <div className={styles.treeCountOption} style={{ minWidth: '65%', flexDirection:'row' }} >
-              <input className={styles.customTreeInput} type="text" onChange={(e)=> setCustomTreeValue(e)} />
-              <div className={styles.treeCountOptionTrees}>Trees</div>
-            </div>
-          )}
+          <div
+            className={styles.treeCountOption}
+            style={{ minWidth: '65%', flexDirection: 'row' }}
+          >
+            <input
+              className={styles.customTreeInput}
+              type="text"
+              onChange={(e) => setCustomTreeValue(e)}
+            />
+            <div className={styles.treeCountOptionTrees}>Trees</div>
+          </div>
         </div>
 
-        <div className={styles.isTaxDeductible}>
-          <div className={styles.isTaxDeductibleText}>
-            Send me a tax deduction receipt for
-          </div>
-          <Switch
-            checked={isTaxDeductible}
-            onChange={() => setIsTaxDeductible(!isTaxDeductible)}
-            name="checkedB"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-        </div>
-        <div className={styles.taxDeductible}>
-          <div className={styles.taxDeductibleCountry}>Germany</div>
-          <div className={styles.downArrow}>
-            <DownArrow color={'#2F3336'} />
-          </div>
-        </div>
+        {taxDeductionCountries.length > 0 && (
+          <React.Fragment>
+            <div className={styles.isTaxDeductible}>
+              <div className={styles.isTaxDeductibleText}>
+                Send me a tax deduction receipt for
+              </div>
+              <Switch
+                checked={isTaxDeductible}
+                onChange={() => setIsTaxDeductible(!isTaxDeductible)}
+                name="checkedB"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </div>
+
+            {isTaxDeductible ? (
+              // enabled modal if taxDeductible switch ON
+              <div
+                className={styles.taxDeductible}
+                onClick={handleTaxDeductionModalOpen}
+              >
+                <div className={styles.taxDeductibleCountry}>
+                  {country in taxDeductionCountries
+                    ? country
+                    : taxDeductionCountries[0]}
+                </div>
+                <div className={styles.downArrow}>
+                  <DownArrow color={'#87B738'} />
+                </div>
+              </div>
+            ) : (
+              // disabled modal if taxDeductible switch OFF
+              <div className={styles.taxDeductibleDisabled}>
+                <div className={styles.taxDeductibleCountryDisabled}>
+                  {country in taxDeductionCountries
+                    ? country
+                    : taxDeductionCountries[0]}
+                </div>
+                <div className={styles.downArrow}>
+                  <DownArrow color={'grey'} />
+                </div>
+              </div>
+            )}
+          </React.Fragment>
+        )}
 
         <div className={styles.horizontalLine} />
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {treeCount * treeCost.toFixed(2)}{' '}
+            {currency} {(treeCount * treeCost).toFixed(2)}{' '}
           </div>
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
@@ -182,14 +260,19 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           <div className={styles.continueButton}>Continue</div>
         </div>
       </div>
+      <SelectTaxDeductionCountryModal
+        openModal={openTaxDeductionModal}
+        handleModalClose={handleTaxDeductionModalClose}
+        taxDeductionCountries={taxDeductionCountries}
+      />
       <SelectCurrencyModal
-          openModal={openModal}
-          handleModalClose={handleModalClose}
-          setCurrency={setCurrency}
-          currency={currency}
-          setCountry={setCountry}
-          country={country}
-        />
+        openModal={openCurrencyModal}
+        handleModalClose={handleModalClose}
+        setCurrency={setCurrency}
+        currency={currency}
+        setCountry={setCountry}
+        country={country}
+      />
     </div>
   );
 }
