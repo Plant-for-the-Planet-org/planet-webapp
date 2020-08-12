@@ -4,8 +4,9 @@ export const getImageUrl = (
   imageName: any
 ) => {
   if (process.env.CDN_URL) {
-    const cacheURl = process.env.CDN_URL;
-    return `${cacheURl}/${category}/${variant}/${imageName}`;
+    const cdnURl = process.env.CDN_URL;
+    const cacheURl = "media/cache";
+    return `${cdnURl}/${cacheURl}/${category}/${variant}/${imageName}`;
   } else if (typeof Storage !== 'undefined') {
     let configStore;
     configStore = localStorage.getItem('config');
