@@ -49,7 +49,7 @@ function ProjectDetails({ project }: Props): ReactElement {
           ? project.tpo.address
           : 'unavailable',
 
-      link: project.coordinates 
+      link: project.coordinates
         ? `https://maps.google.com/?q=${project.tpo.address}`
         : null,
     },
@@ -155,23 +155,22 @@ function ProjectDetails({ project }: Props): ReactElement {
                   </div>
                 </div>
 
-
-              { project.allowDonations && (
-
-                <div className={styles.projectCost}>
-                  <div onClick={handleOpen} className={styles.costButton}>
-                    {project.currency === 'USD'
-                      ? '$'
-                      : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
-                    {project.treeCost.toFixed(2)}
+                {project.allowDonations && (
+                  <div className={styles.projectCost}>
+                    <div onClick={handleOpen} className={styles.costButton}>
+                      {project.currency === 'USD'
+                        ? '$'
+                        : project.currency === 'EUR'
+                        ? '€'
+                        : project.currency}
+                      {project.properties.treeCost % 1 !== 0
+                        ? project.properties.treeCost.toFixed(2)
+                        : project.properties.treeCost}
+                    </div>
+                    <div className={styles.perTree}>per tree</div>
                   </div>
-                  <div className={styles.perTree}>per tree</div>
-                </div>
-              )}
-            </div>
-
+                )}
+              </div>
 
               {/* <div className={styles.ratings}>
               <div className={styles.calculatedRating}>{rating}</div>

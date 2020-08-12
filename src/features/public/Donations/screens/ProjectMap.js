@@ -11,12 +11,15 @@ export default function ProjectMap(props) {
 
   let lat = project.coordinates.lat;
   let lon = project.coordinates.lon;
-
+  let geometry = project.geometry;
+  console.log(project);
   if (project.geometry !== null) {
     var centroid = turf.centroid(project.geometry);
-    console.log(centroid);
     lat = centroid.geometry.coordinates[1];
     lon = centroid.geometry.coordinates[0];
+  } else {
+    var point = turf.point([lat, lon]);
+    geometry = point;
   }
 
   const [viewport, setViewPort] = useState({
@@ -33,7 +36,7 @@ export default function ProjectMap(props) {
       {
         type: 'Feature',
         properties: { name: 'Project Name' },
-        geometry: project.geometry,
+        geometry: geometry,
       },
     ],
   };

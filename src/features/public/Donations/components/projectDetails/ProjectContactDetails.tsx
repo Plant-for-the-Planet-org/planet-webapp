@@ -41,7 +41,12 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
               <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
                 {contactDetails.icon}
                 <span style={{ marginLeft: '16px', flexGrow: 1 }}>
-                  {contactDetails.text.replace(/^https?:\/\//i, '')}
+                  {
+                    contactDetails.text
+                      .replace('http://', '')
+                      .replace('https://', '')
+                      .split(/[/?#]/)[0]
+                  }
                 </span>
               </div>
             </a>
