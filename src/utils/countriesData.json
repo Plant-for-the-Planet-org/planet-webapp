@@ -35,7 +35,7 @@
     "currencyCountryFlag": "NZ"
   },
   {
-    "countryName": "Australian",
+    "countryName": "Australia",
     "countryCode": "AU",
     "currencyName": "Australian Dollars",
     "currencyCode": "AUD",
@@ -1015,7 +1015,7 @@
     "currencyCountryFlag": "IS"
   },
   {
-    "countryName": "Iran (Islamic Republic of)",
+    "countryName": "Iran",
     "countryCode": "IR",
     "currencyName": "Iranian Rial",
     "currencyCode": "IRR",
@@ -1092,9 +1092,9 @@
     "currencyCountryFlag": "KG"
   },
   {
-    "countryName": "Lao PeopleÕs Democratic Republic",
+    "countryName": "Laos",
     "countryCode": "LA",
-    "currencyName": "Kip",
+    "currencyName": "Lao kip",
     "currencyCode": "LAK",
     "currencyCountryFlag": "LA"
   },
@@ -1225,7 +1225,7 @@
     "currencyCountryFlag": "MX"
   },
   {
-    "countryName": "Moldova Republic of",
+    "countryName": "Moldova",
     "countryCode": "MD",
     "currencyName": "Leu",
     "currencyCode": "MDL",
@@ -1379,7 +1379,7 @@
     "currencyCountryFlag": "RW"
   },
   {
-    "countryName": "Sao Tome and Principe",
+    "countryName": "São Tomé and Príncipe",
     "countryCode": "ST",
     "currencyName": "Dobra",
     "currencyCode": "STD",
@@ -1414,7 +1414,7 @@
     "currencyCountryFlag": "SG"
   },
   {
-    "countryName": "Slovakia (Slovak Republic)",
+    "countryName": "Slovakia",
     "countryCode": "SK",
     "currencyName": "Koruna",
     "currencyCode": "SKK",
@@ -1477,7 +1477,7 @@
     "currencyCountryFlag": "SE"
   },
   {
-    "countryName": "Syrian Arab Republic",
+    "countryName": "Syria",
     "countryCode": "SY",
     "currencyName": "Syrian Pound",
     "currencyCode": "SYP",
@@ -1652,7 +1652,7 @@
     "currencyCountryFlag": "BA"
   },
   {
-    "countryName": "Congo (Kinshasa)",
+    "countryName": "Congo",
     "countryCode": "CD",
     "currencyName": "Congolese Frank",
     "currencyCode": "CDF",
@@ -1678,13 +1678,6 @@
     "currencyName": "Manx pound",
     "currencyCode": "GBP",
     "currencyCountryFlag": "GB"
-  },
-  {
-    "countryName": "Laos",
-    "countryCode": "LA",
-    "currencyName": "Lao kip",
-    "currencyCode": "LAK",
-    "currencyCountryFlag": "LA"
   },
   {
     "countryName": "Macao S.A.R.",
