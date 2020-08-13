@@ -7,6 +7,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 <img src="./documentation/screenshots/PFP.png" alt="PFP Page." align="center">
 
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plant-for-the-Planet&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
+
 ---
 
 ## Directory Structure
@@ -122,7 +124,44 @@ This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-wor
 
 <details><summary>Donations</summary>
 <ul>
-    <li></li></br>
+    <table border="1">
+        <tr>
+            <td>#</td>
+            <td><b>Feature</b></td>
+            <td><b>Issue</b></td>
+            <td><b>Status</b></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Projects Page</td>
+            <td>-</td>
+            <td> - [x]</td>
+        </tr>
+        <tr>
+            <td>#</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>#</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>#</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>#</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
 </ul>
 </details>
 
