@@ -129,6 +129,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ---
 
+## Important Links
+
+[Develop branch Deployment](https://planet-app-sf.herokuapp.com/)
+
+[Designs & Prototype](https://xd.adobe.com/view/8f1c5110-4d7d-445d-8283-8eb1674ce2e4-da4f/)
+
+[Backend APIs](https://stoplight.io/p/docs/gh/plant-for-the-planet-org/treecounter-platform?group=api-docs&utm_campaign=publish_dialog&utm_source=studio)
+
+---
+
 ## Deploy on Vercel
 
 The easiest way to deploy this Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
