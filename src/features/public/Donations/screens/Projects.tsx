@@ -20,9 +20,21 @@ interface Props {
 }
 
 function ProjectsList({ projects }: Props): ReactElement {
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const isMobile = screenWidth <= 768;
+
+  // subtract screen height with bottom nav
+  const containerHeight = screenHeight - 76;
+
   const [selectedTab, setSelectedTab] = React.useState('featured');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
+
+  const [isScrolling, setIsScrolling] = React.useState(false);
+  const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
+  const [top, setTop] = React.useState(!isMobile ? 60 : 200);
+  const projectContainer = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
     if (type === 'featured') {
@@ -69,18 +81,56 @@ function ProjectsList({ projects }: Props): ReactElement {
   const FeaturedProjectsProps = {
     projects: featuredProjects,
   };
-
   const ProjectsProps = {
     projects: projects,
   };
+
+  // when touched on the project list container enables scrolling of list and
+  // sets the current y-axis touch position in clientY
+  function onTouchStart(e: any) {
+    if (isMobile) {
+      setIsScrolling(true);
+      setClientY(e.touches[0].clientY);
+    }
+  }
+
+  // when finger is dragged new on the list it adjusts the margin of the container accordingly
+  function onTouchMove(e: any) {
+    if (isScrolling) {
+      let newTop = top + (e.touches[0].clientY - clientY);
+      if (newTop >= 0 && newTop <= screenHeight - 100) {
+        setTop(newTop);
+        setClientY(e.touches[0].clientY);
+      }
+    }
+  }
+
+  // when finger is removed from the surface or interupted then stops the scrolling of list
+  function onTouchEnd() {
+    if (isMobile) {
+      setIsScrolling(false);
+    }
+  }
   return (
-    <>
+    <div onTouchMove={onTouchMove}>
       <MapLayout
         {...ProjectsProps}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-      <div className={styles.container}>
-        <div className={styles.cardContainer}>
+      <div
+        className={styles.container}
+        style={{
+          marginTop: top,
+          height: isMobile ? containerHeight - top : containerHeight,
+        }}
+      >
+        <div
+          className={styles.cardContainer}
+          ref={projectContainer}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onTouchCancel={onTouchEnd}
+        >
           {searchMode ? (
             <div className={styles.headerSearchMode}>
               <div className={styles.searchIcon}>
@@ -154,7 +204,15 @@ function ProjectsList({ projects }: Props): ReactElement {
             </div>
           )}
           {/* till here is header */}
-          <div className={styles.projectsContainer}>
+          <div
+            className={styles.projectsContainer}
+            style={{
+              height:
+                window.innerWidth <= 768
+                  ? window.innerHeight - 126 - top
+                  : window.innerHeight - 126,
+            }}
+          >
             {searchValue !== '' ? (
               <AllProjects {...SearchResultProjectsProps} />
             ) : selectedTab === 'all' ? (
@@ -165,7 +223,7 @@ function ProjectsList({ projects }: Props): ReactElement {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

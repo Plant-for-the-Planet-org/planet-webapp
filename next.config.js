@@ -6,10 +6,11 @@ module.exports = {
   env: {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     API_ENDPOINT: process.env.API_ENDPOINT,
-    Tenant: process.env.Tenant,
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
     VERCEL_URL: process.env.VERCEL_URL,
+    CDN_URL: process.env.CDN_URL,
+    TENANT: process.env.TENANT,
   },
   trailingSlash: true,
   reactStrictMode: true,

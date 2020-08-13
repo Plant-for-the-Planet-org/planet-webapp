@@ -26,7 +26,6 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-
   const projectDetails = project.properties;
   return (
     <div className={styles.singleProject}>
@@ -89,23 +88,26 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
             By {project.properties.tpo.name}
           </div>
         </div>
-        <div className={styles.projectCost}>
-          {project.properties.treeCost ? (
-            <>
-              <div onClick={handleOpen} className={styles.costButton}>
-                {project.properties.currency === 'USD'
-                  ? '$'
-                  : project.properties.currency === 'EUR'
-                  ? '€'
-                  : project.properties.currency}
-                {project.properties.treeCost % 1 !== 0
-                  ? project.properties.treeCost.toFixed(2)
-                  : project.properties.treeCost}
-              </div>
-              <div className={styles.perTree}>per tree</div>
-            </>
-          ) : null}
-        </div>
+
+        {project.properties.allowDonations && (
+          <div className={styles.projectCost}>
+            {project.properties.treeCost ? (
+              <>
+                <div onClick={handleOpen} className={styles.costButton}>
+                  {project.properties.currency === 'USD'
+                    ? '$'
+                    : project.properties.currency === 'EUR'
+                    ? '€'
+                    : project.properties.currency}
+                  {project.properties.treeCost % 1 !== 0
+                    ? project.properties.treeCost.toFixed(2)
+                    : project.properties.treeCost}
+                </div>
+                <div className={styles.perTree}>per tree</div>
+              </>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );
