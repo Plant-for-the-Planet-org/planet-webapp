@@ -11,20 +11,20 @@
     <img src="http://img.shields.io/badge/Demo-%23141619?style=for-the-badge&logo=next.js" />
 </a>
 <a href="./documentation/CODE_OF_CONDUCT.md">
-    <img src="http://img.shields.io/badge/Code%20Of%20Conduct-%23141619?style=for-the-badge" />
+    <img src="http://img.shields.io/badge/Code%20Of%20Conduct-%231dd1a1?style=for-the-badge" />
 </a>
 
 <a href="./documentation/CONTRIBUTING.md">
-    <img src="http://img.shields.io/badge/CONTRIBUTING%20Guidelines-%23141619?style=for-the-badge" />
+    <img src="http://img.shields.io/badge/CONTRIBUTING%20Guidelines-%235f27cd?style=for-the-badge" />
 </a>
 <a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
-    <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack" />
+    <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack&labelColor=4B124C" />
 </a>
 
 <br/>
 <br/>
 
-<img src="https://img.shields.io/github/package-json/dependency-version/Plant-for-the-Planet/planet-webapp/next?color=%23141619&logo=next.svg&logoColor=%23141619&style=for-the-badge" />
+<img src="https://img.shields.io/github/package-json/dependency-version/Plant-for-the-Planet/planet-webapp/next?color=%23141619&logo=next.js&style=for-the-badge" />
 
 <img src="https://img.shields.io/github/contributors/Plant-for-the-Planet/planet-webapp?color=%23141619&logoColor=%23141619&style=for-the-badge" />
 
