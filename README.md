@@ -11,7 +11,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Development
 
-First, run the development server:
+### Environment Setup
+
+Rename `env.local.sample` to `env.sample` and add the necessary keys
+
+### Run the development server
 
 ```bash
 npm run dev
