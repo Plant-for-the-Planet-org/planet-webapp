@@ -5,13 +5,32 @@
 <br/>
 <br/>
 
-<p align="center">
+<p style="align:center;">
 
-[![Next JS](./documentation/screenshots/BuildWithNext.svg)](https://nextjs.org/)
-[![DEMO](./documentation/screenshots/Demo.svg)](https://planet-app-sf.herokuapp.com/)
-[![code of conduct](./documentation/screenshots/COC.svg)](./documentation/CODE_OF_CONDUCT.md)
-[![contribution guidelines](./documentation/screenshots/CG.svg)](./documentation/CONTRIBUTING.md)
-[![join us](./documentation/screenshots/Slack.svg)](https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ)
+<a href="https://planet-app-sf.herokuapp.com/">
+    <img src="http://img.shields.io/badge/Demo-%23141619?style=for-the-badge&logo=next.js" />
+</a>
+<a href="./documentation/CODE_OF_CONDUCT.md">
+    <img src="http://img.shields.io/badge/Code%20Of%20Conduct-%23141619?style=for-the-badge" />
+</a>
+
+<a href="./documentation/CONTRIBUTING.md">
+    <img src="http://img.shields.io/badge/CONTRIBUTING%20Guidelines-%23141619?style=for-the-badge" />
+</a>
+<a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
+    <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack" />
+</a>
+
+<br/>
+<br/>
+
+<img src="https://img.shields.io/github/package-json/dependency-version/Plant-for-the-Planet/planet-webapp/next?color=%23141619&logo=next.svg&logoColor=%23141619&style=for-the-badge" />
+
+<img src="https://img.shields.io/github/contributors/Plant-for-the-Planet/planet-webapp?color=%23141619&logoColor=%23141619&style=for-the-badge" />
+
+<img src="https://img.shields.io/github/commit-activity/w/Plant-for-the-Planet/planet-webapp?color=%23141619&style=for-the-badge" />
+
+<img src="https://img.shields.io/github/issues/Plant-for-the-Planet/planet-webapp?color=%23141619&style=for-the-badge" />
 
 </p>
 
