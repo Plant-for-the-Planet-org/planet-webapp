@@ -150,8 +150,7 @@ This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-wor
 ## Project Road Map
 
 <details><summary>Donations</summary>
-<ul>
-    <table border="1">
+    <table>
         <tr>
             <td>#</td>
             <td><b>Feature</b></td>
@@ -198,11 +197,21 @@ This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-wor
             <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/66">#66</a></td>
         </tr>
     </table>
-</ul>
 </details>
 
 <details><summary>Tenant Configurations</summary>
-
+    <table>
+        <tr>
+            <td>#</td>
+            <td><b>Feature</b></td>
+            <td><b>Issue</b></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Create Tenant Based Headers</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/67">#67</a> </td>
+        </tr>
+    </table>
 </details>
 
 <details><summary>Maps</summary>
