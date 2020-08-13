@@ -156,58 +156,61 @@ This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-wor
             <td>#</td>
             <td><b>Feature</b></td>
             <td><b>Issue</b></td>
-            <td><b>Status</b></td>
         </tr>
         <tr>
             <td>1</td>
-            <td>Projects Page</td>
-            <td>-</td>
-            <td> - [x]</td>
+            <td>Integrate Stripe</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/47">#47</a> </td>
         </tr>
         <tr>
-            <td>#</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>2</td>
+            <td>Create Payment Method</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/63">#63</a> </td>
         </tr>
         <tr>
-            <td>#</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>3</td>
+            <td>Create Donation</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/60">#60</a></td>
         </tr>
         <tr>
-            <td>#</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>4</td>
+            <td>Pay Donation</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/62">#62</a></td>
         </tr>
         <tr>
-            <td>#</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>5</td>
+            <td>Load Contact details</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/61">#61</a></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Store Contact details</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/64">#64</a></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Implement Credit Card Payment</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/65">#65</a></td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Implement Paypal Payment</td>
+            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/66">#66</a></td>
         </tr>
     </table>
 </ul>
 </details>
 
 <details><summary>Tenant Configurations</summary>
-<ul>
-    <li></li></br>
-</ul>
+
 </details>
 
 <details><summary>Maps</summary>
-<ul>
-    <li></li></br>
-</ul>
+
 </details>
 
 <details><summary>Designs</summary>
-<ul>
-    <li></li></br>
-</ul>
+
 </details>
 
 ---
