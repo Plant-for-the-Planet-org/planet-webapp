@@ -94,7 +94,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Environment Setup
 
-Rename `env.local.sample` to `env.sample` and add the necessary keys
+Rename `env.local.sample` to `env.local` and add the necessary keys
 
 ---
 
@@ -115,6 +115,34 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Development Process
 
 This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel bot to the production system. There are currently some more protected branches also build by Vercel bot automatically and mapped to test backends using the branch name as subdomain.
+
+---
+
+## Project Road Map
+
+<details><summary>Donations</summary>
+<ul>
+    <li></li></br>
+</ul>
+</details>
+
+<details><summary>Tenant Configurations</summary>
+<ul>
+    <li></li></br>
+</ul>
+</details>
+
+<details><summary>Maps</summary>
+<ul>
+    <li></li></br>
+</ul>
+</details>
+
+<details><summary>Designs</summary>
+<ul>
+    <li></li></br>
+</ul>
+</details>
 
 ---
 
