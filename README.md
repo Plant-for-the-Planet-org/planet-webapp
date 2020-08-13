@@ -1,11 +1,19 @@
-# Plant-for-the-Planet App
-
-This repo contains web app of Plant-for-the-Planet.
-For contributions please read our [contribution guide](./documentation/CONTRIBUTING.md) as well as our [code of conduct](./documentation/CODE_OF_CONDUCT.md)
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+<br/>
+<br/>
 <img src="./documentation/screenshots/PFP.png" alt="PFP Page." align="center">
+
+<br/>
+<br/>
+
+<p align="center">
+
+[![Next JS](./documentation/screenshots/BuildWithNext.svg)](https://nextjs.org/)
+[![DEMO](./documentation/screenshots/Demo.svg)](https://planet-app-sf.herokuapp.com/)
+[![code of conduct](./documentation/screenshots/COC.svg)](./documentation/CODE_OF_CONDUCT.md)
+[![contribution guidelines](./documentation/screenshots/CG.svg)](./documentation/CONTRIBUTING.md)
+[![join us](./documentation/screenshots/Slack.svg)](https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ)
+
+</p>
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plant-for-the-Planet&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
@@ -187,7 +195,7 @@ This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-wor
 
 ## Important Links
 
-[Develop branch Deployment](https://planet-app-sf.herokuapp.com/)
+[Demo Deployment](https://planet-app-sf.herokuapp.com/)
 
 [Designs & Prototype](https://xd.adobe.com/view/8f1c5110-4d7d-445d-8283-8eb1674ce2e4-da4f/)
 
