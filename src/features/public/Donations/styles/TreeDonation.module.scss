@@ -163,8 +163,7 @@
   border: 0px;
   border-bottom: 1px solid $primaryColor;
   margin: 0px 10px;
-  min-width: 40px;
-  max-width: fit-content;
+  width: 40px;
 }
 
 .customTreeInput:focus {
