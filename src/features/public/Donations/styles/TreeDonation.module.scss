@@ -1,14 +1,12 @@
 @import './../../../../theme/theme';
 
 .treeDonationcontainer {
-  padding-top: 120px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow-y: scroll;
+  // height: 100vh;
+  overflow: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  height: 100vh;
 }
 
 .treeDonationcontainer::-webkit-scrollbar {
@@ -16,10 +14,17 @@
 }
 
 .cardContainer {
+  margin: 100px 0px 70px 0px;
   background-color: $light;
   border-radius: 7px;
   padding: 26px;
   max-width: 412px;
+  height: calc(100vh - 170px);
+  overflow-y: scroll;
+}
+
+.cardContainer::-webkit-scrollbar {
+  width: 0px;
 }
 
 .header {
@@ -158,7 +163,8 @@
   border: 0px;
   border-bottom: 1px solid $primaryColor;
   margin: 0px 10px;
-  width: 40px;
+  min-width: 40px;
+  max-width: fit-content;
 }
 
 .customTreeInput:focus {

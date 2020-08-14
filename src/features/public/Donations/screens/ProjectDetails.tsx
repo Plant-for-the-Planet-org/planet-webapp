@@ -49,7 +49,7 @@ function ProjectDetails({ project }: Props): ReactElement {
           ? project.tpo.address
           : 'unavailable',
 
-      link: project.coordinates 
+      link: project.coordinates
         ? `https://maps.google.com/?q=${project.tpo.address}`
         : null,
     },
@@ -88,8 +88,10 @@ function ProjectDetails({ project }: Props): ReactElement {
       />
       <div className={styles.container}>
         <Modal
+          className={styles.treeDonationcontainer}
           open={open}
           onClose={handleClose}
+          closeAfterTransition
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
@@ -155,23 +157,20 @@ function ProjectDetails({ project }: Props): ReactElement {
                   </div>
                 </div>
 
-
-              { project.allowDonations && (
-
-                <div className={styles.projectCost}>
-                  <div onClick={handleOpen} className={styles.costButton}>
-                    {project.currency === 'USD'
-                      ? '$'
-                      : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
-                    {project.treeCost.toFixed(2)}
+                {project.allowDonations && (
+                  <div className={styles.projectCost}>
+                    <div onClick={handleOpen} className={styles.costButton}>
+                      {project.currency === 'USD'
+                        ? '$'
+                        : project.currency === 'EUR'
+                        ? '€'
+                        : project.currency}
+                      {project.treeCost.toFixed(2)}
+                    </div>
+                    <div className={styles.perTree}>per tree</div>
                   </div>
-                  <div className={styles.perTree}>per tree</div>
-                </div>
-              )}
-            </div>
-
+                )}
+              </div>
 
               {/* <div className={styles.ratings}>
               <div className={styles.calculatedRating}>{rating}</div>

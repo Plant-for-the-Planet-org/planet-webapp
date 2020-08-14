@@ -142,10 +142,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   };
 
   return (
-    <div className={styles.treeDonationcontainer}>
+    <>
       <div className={styles.cardContainer}>
         <div className={styles.header}>
-          <div onClick={() => onClose()} className={styles.headerCloseIcon}>
+          <div onClick={onClose} className={styles.headerCloseIcon}>
             <Close />
           </div>
           <div className={styles.headerTitle}>Tree Donation</div>
@@ -192,7 +192,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
 
         {isGift ? (
-          <div className={styles.giftsContainer}>
+          <div className={styles.giftContainer}>
             <div className={styles.singleGiftContainer}>
               <div className={styles.singleGiftTitle}>Gift Recepient</div>
               <div className={styles.formRow}>
@@ -236,6 +236,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           >
             <input
               className={styles.customTreeInput}
+              onInput={(e) => {
+                // replaces any character other than number to blank
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
               type="text"
               onChange={(e) => setCustomTreeValue(e)}
             />
@@ -327,7 +331,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         setCountry={setCountry}
         country={country}
       />
-    </div>
+    </>
   );
 }
 
