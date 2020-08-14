@@ -13,7 +13,7 @@
   background-color: $light;
   width: 360px;
   padding-bottom: 16px;
-  max-height: 86vh;
+  max-height: calc(100vh - 95px);
   border-top-right-radius: 13px;
   border-top-left-radius: 13px;
   position: absolute;
@@ -133,6 +133,9 @@
   height: 160px;
   width: 100%;
   position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .projectImageBlock {

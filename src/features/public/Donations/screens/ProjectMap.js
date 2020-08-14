@@ -1,6 +1,6 @@
 import * as turf from '@turf/turf';
 import React, { useRef, useState } from 'react';
-import MapGL, { Layer, NavigationControl, Source } from 'react-map-gl';
+import MapGL, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 import styles from '../styles/MapboxMap.module.scss';
 
 export default function ProjectMap(props) {
@@ -12,14 +12,11 @@ export default function ProjectMap(props) {
   let lat = project.coordinates.lat;
   let lon = project.coordinates.lon;
   let geometry = project.geometry;
-  console.log(project);
+
   if (project.geometry !== null) {
     var centroid = turf.centroid(project.geometry);
     lat = centroid.geometry.coordinates[1];
     lon = centroid.geometry.coordinates[0];
-  } else {
-    var point = turf.point([lat, lon]);
-    geometry = point;
   }
 
   const [viewport, setViewPort] = useState({
@@ -53,26 +50,39 @@ export default function ProjectMap(props) {
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
-        <Source id="singleProject" type="geojson" data={geojson}>
-          <Layer
-            id="ploygonLayer"
-            type="fill"
-            source="singleProject"
-            paint={{
-              'fill-color': '#fff',
-              'fill-opacity': 0.2,
-            }}
-          />
-          <Layer
-            id="ploygonOutline"
-            type="line"
-            source="singleProject"
-            paint={{
-              'line-color': '#89b54a',
-              'line-width': 2,
-            }}
-          />
-        </Source>
+        {project.geometry === null ? (
+          <Marker
+            latitude={lat}
+            longitude={lon}
+            offsetLeft={5}
+            offsetTop={-16}
+            style={{ left: '28px' }}
+          >
+            <div className={styles.marker}></div>
+          </Marker>
+        ) : (
+          <Source id="singleProject" type="geojson" data={geojson}>
+            <Layer
+              id="ploygonLayer"
+              type="fill"
+              source="singleProject"
+              paint={{
+                'fill-color': '#fff',
+                'fill-opacity': 0.2,
+              }}
+            />
+            <Layer
+              id="ploygonOutline"
+              type="line"
+              source="singleProject"
+              paint={{
+                'line-color': '#89b54a',
+                'line-width': 2,
+              }}
+            />
+          </Source>
+        )}
+
         <div className={styles.mapNavigation}>
           <NavigationControl />
         </div>

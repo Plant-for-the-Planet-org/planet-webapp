@@ -40,7 +40,13 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
             <a href={contactDetails.link} target="_blank">
               <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
                 {contactDetails.icon}
-                <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+                <span
+                  style={{
+                    marginLeft: '16px',
+                    flexGrow: 1,
+                    wordWrap: 'break-word',
+                  }}
+                >
                   {
                     contactDetails.text
                       .replace('http://', '')
