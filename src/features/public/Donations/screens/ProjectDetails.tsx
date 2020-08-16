@@ -88,7 +88,7 @@ function ProjectDetails({ project }: Props): ReactElement {
       />
       <div className={styles.container}>
         <Modal
-          className={styles.treeDonationcontainer}
+          className={styles.modal}
           open={open}
           onClose={handleClose}
           closeAfterTransition

@@ -1,30 +1,11 @@
 @import './../../../../theme/theme';
 
-.treeDonationcontainer {
-  display: flex;
-  justify-content: center;
-  // height: 100vh;
-  overflow: hidden;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.treeDonationcontainer::-webkit-scrollbar {
-  display: none;
-}
-
 .cardContainer {
-  margin: 100px 0px 70px 0px;
   background-color: $light;
   border-radius: 7px;
   padding: 26px;
   max-width: 412px;
-  height: calc(100vh - 170px);
-  overflow-y: scroll;
-}
-
-.cardContainer::-webkit-scrollbar {
-  width: 0px;
+  height: max-content;
 }
 
 .header {

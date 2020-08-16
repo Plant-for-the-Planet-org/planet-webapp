@@ -143,7 +143,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
   return (
     <>
-      <div className={styles.cardContainer}>
+      <div
+        className={styles.cardContainer}
+        style={{ alignSelf: isGift ? 'start' : 'center' }}
+      >
         <div className={styles.header}>
           <div onClick={onClose} className={styles.headerCloseIcon}>
             <Close />

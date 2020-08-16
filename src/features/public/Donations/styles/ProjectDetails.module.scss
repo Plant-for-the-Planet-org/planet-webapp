@@ -7,13 +7,17 @@
   z-index: 6;
 }
 
-.treeDonationcontainer {
+.modal {
   display: flex;
   justify-content: center;
-  // height: 100vh;
-  overflow: hidden;
+  align-items: center;
+  overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
 }
 
 /* Projects */

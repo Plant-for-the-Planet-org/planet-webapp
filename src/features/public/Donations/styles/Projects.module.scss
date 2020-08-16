@@ -128,6 +128,19 @@
   margin-top: 20px;
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
+}
+
 .popupProject {
   margin-top: 0px;
 }
