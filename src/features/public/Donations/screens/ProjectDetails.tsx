@@ -88,8 +88,10 @@ function ProjectDetails({ project }: Props): ReactElement {
       />
       <div className={styles.container}>
         <Modal
+          className={styles.modal}
           open={open}
           onClose={handleClose}
+          closeAfterTransition
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
