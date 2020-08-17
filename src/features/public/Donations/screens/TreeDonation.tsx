@@ -1,5 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import React, { ReactElement } from 'react';
 import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
@@ -9,6 +11,14 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
+
+// const stripe = await loadStripe(
+//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+// );
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 interface Props {
   onClose: any;
@@ -142,7 +152,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   };
 
   return (
-    <>
+    <Elements stripe={stripePromise}>
       <div
         className={styles.cardContainer}
         style={{ alignSelf: isGift ? 'start' : 'center' }}
@@ -334,7 +344,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         setCountry={setCountry}
         country={country}
       />
-    </>
+    </Elements>
   );
 }
 
