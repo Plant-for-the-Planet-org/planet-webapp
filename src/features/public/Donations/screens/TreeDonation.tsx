@@ -1,8 +1,10 @@
 import { withStyles } from '@material-ui/core/styles';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import React, { ReactElement } from 'react';
+import {
+  PaymentRequestButtonElement,
+  useStripe,
+} from '@stripe/react-stripe-js';
+import React, { ReactElement, useState } from 'react';
 import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
@@ -11,14 +13,6 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
-
-// const stripe = await loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-// );
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
 
 interface Props {
   onClose: any;
@@ -53,6 +47,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
 
+  const stripe = useStripe();
+  const [paymentRequest, setPaymentRequest] = useState(null);
+
   const [paymentSetup, setPaymentSetup] = React.useState();
 
   // for tax deduction part
@@ -83,6 +80,36 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       setCurrency(respCurrency);
     }
   };
+
+  React.useEffect(() => {
+    if (stripe) {
+      const pr = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: {
+          label: 'Demo total',
+          amount: 1350,
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+        requestShipping: true,
+        shippingOptions: [
+          {
+            id: 'standard-global',
+            label: 'Global shipping',
+            detail: 'Arrives in 5 to 7 days',
+            amount: 350,
+          },
+        ],
+      });
+      pr.canMakePayment().then((result) => {
+        if (result) {
+          pr.on('paymentmethod', handlePaymentMethodReceived);
+          setPaymentRequest(pr);
+        }
+      });
+    }
+  }, [stripe]);
 
   // to get country and currency from local storage
   React.useEffect(() => {
@@ -152,7 +179,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   };
 
   return (
-    <Elements stripe={stripePromise}>
+    <>
       <div
         className={styles.cardContainer}
         style={{ alignSelf: isGift ? 'start' : 'center' }}
@@ -321,6 +348,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
         <div className={styles.actionButtonsContainer}>
           <div>
+            {/* {paymentRequest ? ( */}
+            <PaymentRequestButtonElement options={{ paymentRequest }} />
+            {/* ) : null} */}
             <GpayBlack />
           </div>
           <div className={styles.actionButtonsText}>OR</div>
@@ -344,7 +374,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         setCountry={setCountry}
         country={country}
       />
-    </Elements>
+    </>
   );
 }
 

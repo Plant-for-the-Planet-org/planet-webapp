@@ -1,11 +1,17 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { Elements } from '@stripe/react-stripe-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import '../src/features/public/Donations/styles/Maps.scss';
 import ThemeProvider from '../src/utils/themeContext';
+import { loadStripe } from '@stripe/stripe-js';
 
 export default function PlanetWeb({ Component, pageProps, config }: any) {
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  );
+
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -23,7 +29,9 @@ export default function PlanetWeb({ Component, pageProps, config }: any) {
   return (
     <ThemeProvider>
       <CssBaseline />
-      <Component {...pageProps} />
+      <Elements stripe={stripePromise}>
+        <Component {...pageProps} />
+      </Elements>
     </ThemeProvider>
   );
 }
