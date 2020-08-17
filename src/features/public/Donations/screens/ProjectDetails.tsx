@@ -165,7 +165,9 @@ function ProjectDetails({ project }: Props): ReactElement {
                         : project.currency === 'EUR'
                         ? '€'
                         : project.currency}
-                      {project.treeCost.toFixed(2)}
+                      {project.treeCost % 1 !== 0
+                        ? project.treeCost.toFixed(2)
+                        : project.treeCost}
                     </div>
                     <div className={styles.perTree}>per tree</div>
                   </div>
