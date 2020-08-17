@@ -1,20 +1,11 @@
 @import './../../../../theme/theme';
 
-.treeDonationcontainer {
-  padding-top: 120px;
-  // padding-bottom: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .cardContainer {
   background-color: $light;
   border-radius: 7px;
-  padding: 20px;
+  padding: 26px;
   max-width: 412px;
-  max-height: 520px;
-  overflow-y: scroll;
+  height: max-content;
 }
 
 .header {
@@ -46,6 +37,7 @@
   font-size: $fontSubTitleSize;
   color: $primaryFontColor;
   margin-top: 20px;
+  width: 100%;
 }
 
 .currencyRate {
@@ -77,7 +69,7 @@
   font-family: $primaryFontFamily;
   font-weight: bold;
   font-size: $fontSubTitleSize;
-  color:$highlightBackground;
+  color: $highlightBackground;
 }
 
 .downArrow {
@@ -193,13 +185,13 @@
 .taxDeductibleCountry {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  color:$primaryColor;
+  color: $primaryColor;
 }
 
 .taxDeductibleCountryDisabled {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  color:$highlightBackground;
+  color: $highlightBackground;
 }
 
 .downArrow {
