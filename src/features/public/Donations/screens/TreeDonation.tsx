@@ -1,9 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
-import {
-  PaymentRequestButtonElement,
-  useStripe,
-} from '@stripe/react-stripe-js';
+
 import React, { ReactElement, useState } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
@@ -132,34 +129,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const handleTaxDeductionModalClose = () => {
     setOpenTaxDeductionModal(false);
   };
-
-  // Stripe Functionalities
-
-  const stripe = useStripe();
-  const [paymentRequest, setPaymentRequest] = useState(null);
-
-  React.useEffect(() => {
-    if (stripe) {
-      const pr = stripe.paymentRequest({
-        country: 'DE',
-        currency: 'eur',
-        total: {
-          label: 'Demo total',
-          amount: 1099,
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-      });
-      // Check the availability of the Payment Request API.
-
-      pr.canMakePayment().then((result) => {
-        setPaymentRequest(pr);
-        // if (result) {
-        //   setPaymentRequest(pr);
-        // }
-      });
-    }
-  }, [stripe]);
 
   return (
     <>

@@ -11,7 +11,7 @@ const useOptions = (paymentRequest) => {
       style: {
         paymentRequestButton: {
           theme: 'dark',
-          height: '60px',
+          height: '36px',
           type: 'donate',
         },
       },
