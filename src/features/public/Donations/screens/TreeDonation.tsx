@@ -46,11 +46,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
-
-  const stripe = useStripe();
-  console.log('Stripe', stripe);
-  const [paymentRequest, setPaymentRequest] = useState(null);
-
   const [paymentSetup, setPaymentSetup] = React.useState();
 
   // for tax deduction part
@@ -74,37 +69,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       setCurrency(respCurrency);
     }
   };
-
-  // React.useEffect(() => {
-  //   if (stripe) {
-  //     const pr = stripe.paymentRequest({
-  //       country: 'US',
-  //       currency: 'usd',
-  //       total: {
-  //         label: 'Demo total',
-  //         amount: 1350,
-  //       },
-  //       requestPayerName: true,
-  //       requestPayerEmail: true,
-  //       requestShipping: true,
-  //       shippingOptions: [
-  //         {
-  //           id: 'standard-global',
-  //           label: 'Global shipping',
-  //           detail: 'Arrives in 5 to 7 days',
-  //           amount: 350,
-  //         },
-  //       ],
-  //     });
-  //     pr.canMakePayment().then((result) => {
-  //       if (result) {
-  //         pr.on('paymentmethod', handlePaymentMethodReceived);
-  //         setPaymentRequest(pr);
-  //       }
-  //     });
-  //   }
-  // }, [stripe]);
-
   // to get country and currency from local storage
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -132,8 +96,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         );
 
         const paymentSetupData = await res.json();
-        // console.log(`endpoint ${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`)
-        // console.log(paymentSetupData)
         setPaymentSetup(paymentSetupData);
         if (paymentSetupData.treeCost) {
           setTreeCost(paymentSetupData.treeCost);
@@ -170,6 +132,33 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const handleTaxDeductionModalClose = () => {
     setOpenTaxDeductionModal(false);
   };
+
+  // Stripe Functionalities
+
+  const stripe = useStripe();
+  console.log('Stripe', stripe);
+  const [paymentRequest, setPaymentRequest] = useState(null);
+
+  React.useEffect(() => {
+    if (stripe) {
+      const pr = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: {
+          label: 'Demo total',
+          amount: 1099,
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+      });
+      // Check the availability of the Payment Request API.
+      pr.canMakePayment().then((result) => {
+        if (result) {
+          setPaymentRequest(pr);
+        }
+      });
+    }
+  }, [stripe]);
 
   return (
     <>
@@ -341,9 +330,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
         <div className={styles.actionButtonsContainer}>
           <div>
-            {/* {paymentRequest ? ( */}
-            {/* <PaymentRequestButtonElement options={{ paymentRequest }} /> */}
-            {/* ) : null} */}
+            {paymentRequest ? (
+              <PaymentRequestButtonElement options={{ paymentRequest }} />
+            ) : null}
             <GpayBlack />
           </div>
           <div className={styles.actionButtonsText}>OR</div>
