@@ -198,7 +198,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.formRow}>
                 <MaterialTextFeild
                   multiline
-                  rows="4"
                   label="Gift Message"
                   variant="outlined"
                 />
