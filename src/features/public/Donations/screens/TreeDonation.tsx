@@ -300,9 +300,11 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
         {paymentButtonExists ? (
           <div className={styles.actionButtonsContainer}>
-            <PaymentRequestForm
-              setPaymentButtonExists={setPaymentButtonExists}
-            />
+            <div style={{ width: '150px' }}>
+              <PaymentRequestForm
+                setPaymentButtonExists={setPaymentButtonExists}
+              />
+            </div>
             <div className={styles.actionButtonsText}>OR</div>
             <div className={styles.continueButton}>Continue</div>
           </div>
