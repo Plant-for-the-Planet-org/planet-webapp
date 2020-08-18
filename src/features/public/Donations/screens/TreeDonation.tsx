@@ -142,8 +142,8 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   React.useEffect(() => {
     if (stripe) {
       const pr = stripe.paymentRequest({
-        country: 'US',
-        currency: 'usd',
+        country: 'DE',
+        currency: 'eur',
         total: {
           label: 'Demo total',
           amount: 1099,
