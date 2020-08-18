@@ -229,6 +229,14 @@
   margin-top: 20px;
 }
 
+.actionButtonsContainerCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .actionButtonsText {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;

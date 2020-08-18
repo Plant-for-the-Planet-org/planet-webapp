@@ -298,15 +298,19 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           </div>
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
-
-        <div className={styles.actionButtonsContainer}>
-          <PaymentRequestForm setPaymentButtonExists={setPaymentButtonExists} />
-          {paymentButtonExists ? (
+        {paymentButtonExists ? (
+          <div className={styles.actionButtonsContainer}>
+            <PaymentRequestForm
+              setPaymentButtonExists={setPaymentButtonExists}
+            />
             <div className={styles.actionButtonsText}>OR</div>
-          ) : null}
-
-          <div className={styles.continueButton}>Continue</div>
-        </div>
+            <div className={styles.continueButton}>Continue</div>
+          </div>
+        ) : (
+          <div className={styles.actionButtonsContainerCenter}>
+            <div className={styles.continueButton}>Continue</div>
+          </div>
+        )}
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}
