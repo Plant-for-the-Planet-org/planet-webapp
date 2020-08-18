@@ -138,7 +138,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const stripe = useStripe();
   console.log('Stripe', stripe);
   const [paymentRequest, setPaymentRequest] = useState(null);
-
+  console.log('Payment Request', paymentRequest);
   React.useEffect(() => {
     if (stripe) {
       const pr = stripe.paymentRequest({
