@@ -330,7 +330,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
 
         <div className={styles.actionButtonsContainer}>
-          <div>
+          <div style={{ width: 150 }}>
             {paymentRequest ? (
               <PaymentRequestButtonElement options={{ paymentRequest }} />
             ) : null}
