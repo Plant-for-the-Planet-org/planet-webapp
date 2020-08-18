@@ -152,10 +152,12 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         requestPayerEmail: true,
       });
       // Check the availability of the Payment Request API.
+
       pr.canMakePayment().then((result) => {
-        if (result) {
-          setPaymentRequest(pr);
-        }
+        setPaymentRequest(pr);
+        // if (result) {
+        //   setPaymentRequest(pr);
+        // }
       });
     }
   }, [stripe]);
