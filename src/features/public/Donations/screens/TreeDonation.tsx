@@ -23,7 +23,7 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
   focusVisible?: string;
 }
 
-interface Props extends SwitchProps {
+interface Props2 extends SwitchProps {
   classes: Styles;
 }
 
@@ -48,6 +48,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
 
   const stripe = useStripe();
+  console.log('Stripe', stripe);
   const [paymentRequest, setPaymentRequest] = useState(null);
 
   const [paymentSetup, setPaymentSetup] = React.useState();
@@ -63,13 +64,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     false
   );
 
-  console.log(
-    'in tree donation component, currency-',
-    currency,
-    'country-',
-    country
-  );
-
   const taxDeductSwitchOn = () => {
     setIsTaxDeductible(!isTaxDeductible);
     if (!project.taxDeductionCountries.includes(country)) {
@@ -81,53 +75,53 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     }
   };
 
-  React.useEffect(() => {
-    if (stripe) {
-      const pr = stripe.paymentRequest({
-        country: 'US',
-        currency: 'usd',
-        total: {
-          label: 'Demo total',
-          amount: 1350,
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-        requestShipping: true,
-        shippingOptions: [
-          {
-            id: 'standard-global',
-            label: 'Global shipping',
-            detail: 'Arrives in 5 to 7 days',
-            amount: 350,
-          },
-        ],
-      });
-      pr.canMakePayment().then((result) => {
-        if (result) {
-          pr.on('paymentmethod', handlePaymentMethodReceived);
-          setPaymentRequest(pr);
-        }
-      });
-    }
-  }, [stripe]);
+  // React.useEffect(() => {
+  //   if (stripe) {
+  //     const pr = stripe.paymentRequest({
+  //       country: 'US',
+  //       currency: 'usd',
+  //       total: {
+  //         label: 'Demo total',
+  //         amount: 1350,
+  //       },
+  //       requestPayerName: true,
+  //       requestPayerEmail: true,
+  //       requestShipping: true,
+  //       shippingOptions: [
+  //         {
+  //           id: 'standard-global',
+  //           label: 'Global shipping',
+  //           detail: 'Arrives in 5 to 7 days',
+  //           amount: 350,
+  //         },
+  //       ],
+  //     });
+  //     pr.canMakePayment().then((result) => {
+  //       if (result) {
+  //         pr.on('paymentmethod', handlePaymentMethodReceived);
+  //         setPaymentRequest(pr);
+  //       }
+  //     });
+  //   }
+  // }, [stripe]);
 
   // to get country and currency from local storage
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('countryCode')) {
-        setCountry(localStorage.getItem('countryCode'));
-      }
-      if (localStorage.getItem('currencyCode')) {
         if (
           project.taxDeductionCountries.includes(
-            localStorage.getItem('currencyCode')
+            localStorage.getItem('countryCode') // Use this currency only if it exists in the array
           )
         ) {
-          setCurrency(localStorage.getItem('currencyCode')); // Use this currency only if it exists in the array
+          setCountry(localStorage.getItem('countryCode'));
+          if (localStorage.getItem('currencyCode')) {
+            setCurrency(localStorage.getItem('currencyCode'));
+          }
         }
       }
     }
-  }, []);
+  }, [project]);
 
   //  to load payment data
   React.useEffect(() => {
@@ -150,7 +144,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     }
     loadPaymentSetup();
   }, [project, country]);
-  console.log('payment SetupData', paymentSetup);
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '') {
@@ -349,7 +342,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         <div className={styles.actionButtonsContainer}>
           <div>
             {/* {paymentRequest ? ( */}
-            <PaymentRequestButtonElement options={{ paymentRequest }} />
+            {/* <PaymentRequestButtonElement options={{ paymentRequest }} /> */}
             {/* ) : null} */}
             <GpayBlack />
           </div>
