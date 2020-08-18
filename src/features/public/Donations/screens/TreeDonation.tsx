@@ -5,7 +5,6 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import React, { ReactElement, useState } from 'react';
-import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
@@ -335,7 +334,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
             {paymentRequest ? (
               <PaymentRequestButtonElement options={{ paymentRequest }} />
             ) : null}
-            <GpayBlack />
           </div>
           <div className={styles.actionButtonsText}>OR</div>
           <div className={styles.continueButton}>Continue</div>
