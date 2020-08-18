@@ -130,7 +130,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     setOpenTaxDeductionModal(false);
   };
 
-  const [paymentButtonExists, setPaymentButtonExists] = React.useState(false);
+  const [paymentButtonExists, setPaymentButtonExists] = React.useState(true);
 
   return (
     <>
