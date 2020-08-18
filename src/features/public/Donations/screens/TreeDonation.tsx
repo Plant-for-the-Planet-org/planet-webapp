@@ -12,6 +12,7 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
+import PaymentRequestForm from '../components/PaymentRequestForm';
 
 interface Props {
   onClose: any;
@@ -135,9 +136,8 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   // Stripe Functionalities
 
   const stripe = useStripe();
-  console.log('Stripe', stripe);
   const [paymentRequest, setPaymentRequest] = useState(null);
-  console.log('Payment Request', paymentRequest);
+
   React.useEffect(() => {
     if (stripe) {
       const pr = stripe.paymentRequest({
@@ -331,9 +331,11 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: 150 }}>
-            {paymentRequest ? (
+            {/* {paymentRequest ? (
               <PaymentRequestButtonElement options={{ paymentRequest }} />
-            ) : null}
+            ) : null} */}
+
+            <PaymentRequestForm />
           </div>
           <div className={styles.actionButtonsText}>OR</div>
           <div className={styles.continueButton}>Continue</div>
