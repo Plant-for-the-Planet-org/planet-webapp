@@ -205,7 +205,7 @@ function ProjectDetails({ project }: Props): ReactElement {
                         stories={projectImages}
                         defaultInterval={3500}
                         width={325}
-                        height={300}
+                        height={245}
                         loop={true}
                       />
                     ) : null}
