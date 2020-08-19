@@ -253,8 +253,8 @@
   margin-top: 24px;
   scroll-behavior: smooth;
   max-width: 328px;
-  overflow: scroll;
-  overflow-x: auto;
+  overflow: hidden;
+  overflow-x: hidden;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: repeat(2, 50%);
   grid-auto-columns: 50%;

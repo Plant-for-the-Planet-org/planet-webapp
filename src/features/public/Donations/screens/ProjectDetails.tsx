@@ -1,7 +1,7 @@
 import Modal from '@material-ui/core/Modal';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
+import Stories from 'react-insta-stories';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
@@ -15,10 +15,10 @@ import ProjectContactDetails from '../components/projectDetails/ProjectContactDe
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
 
-const ProjectMap = dynamic(() => import('./ProjectMap'), {
-  ssr: false,
-  loading: () => <p>Loading...</p>,
-});
+// const ProjectMap = dynamic(() => import('./ProjectMap'), {
+//   ssr: false,
+//   loading: () => <p>Loading...</p>,
+// });
 
 interface Props {
   project: any;
@@ -80,12 +80,19 @@ function ProjectDetails({ project }: Props): ReactElement {
     project: project,
   };
 
+  var projectImages = [];
+
+  project.images.forEach((image: any) => {
+    let imageURL = loadImageSource(image.image);
+    projectImages.push(imageURL);
+  });
+
   return (
     <>
-      <ProjectMap
+      {/* <ProjectMap
         {...ProjectProps}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-      />
+      /> */}
       <div className={styles.container}>
         <Modal
           className={styles.modal}
@@ -193,24 +200,15 @@ function ProjectDetails({ project }: Props): ReactElement {
               <div className={styles.projectInfoProperties}>
                 <LazyLoad>
                   <div className={styles.projectImageSliderContainer}>
-                    {project.images
-                      ? project.images.map(
-                          (image: {
-                            image: React.ReactNode;
-                            id: any;
-                            description: any;
-                          }) => {
-                            return (
-                              <img
-                                className={styles.projectImages}
-                                key={image.id}
-                                src={loadImageSource(image.image)}
-                                alt={image.description}
-                              />
-                            );
-                          }
-                        )
-                      : null}
+                    {project.images.length > 0 ? (
+                      <Stories
+                        stories={projectImages}
+                        defaultInterval={3500}
+                        width={325}
+                        height={300}
+                        loop={true}
+                      />
+                    ) : null}
                   </div>
                 </LazyLoad>
                 {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}

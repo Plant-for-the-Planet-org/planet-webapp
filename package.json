@@ -28,6 +28,7 @@
     "react-content-loader": "^5.1.0",
     "react-dom": "16.13.1",
     "react-indiana-drag-scroll": "^1.6.1",
+    "react-insta-stories": "^2.0.4",
     "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",
     "react-map-gl": "^5.2.7",
