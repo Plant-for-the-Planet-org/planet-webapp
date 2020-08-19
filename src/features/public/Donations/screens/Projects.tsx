@@ -34,6 +34,9 @@ function ProjectsList({ projects }: Props): ReactElement {
   const [isScrolling, setIsScrolling] = React.useState(false);
   const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
   const [top, setTop] = React.useState(!isMobile ? 60 : 200);
+  const [allowScroll, setAllowScroll] = React.useState(!isMobile);
+  const [canChangeTopValue, setCanChangeTopValue] = React.useState(true);
+
   const projectContainer = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
@@ -98,9 +101,17 @@ function ProjectsList({ projects }: Props): ReactElement {
   function onTouchMove(e: any) {
     if (isScrolling) {
       let newTop = top + (e.touches[0].clientY - clientY);
-      if (newTop >= 0 && newTop <= screenHeight - 100) {
+      // if change of top value is allowed and the current top value is below the
+      // top of the screen then replaces the state top value with current top value
+      if (canChangeTopValue && newTop >= 0 && newTop <= screenHeight - 100) {
         setTop(newTop);
         setClientY(e.touches[0].clientY);
+      }
+      // checks if top value is less than 20px then allows the list to scroll else not
+      if (top <= 20) {
+        setAllowScroll(true);
+      } else {
+        setAllowScroll(false);
       }
     }
   }
@@ -109,6 +120,18 @@ function ProjectsList({ projects }: Props): ReactElement {
   function onTouchEnd() {
     if (isMobile) {
       setIsScrolling(false);
+    }
+  }
+
+  // handles the scroll of the project list
+  function handleScroll(e: any) {
+    // toggles the permission for changing the top value while the list is being scrolled
+    // if list is scrolled to top then then allows the value of top to be changed
+    // else disallows the top value to be changed
+    if (e.target.scrollTop === 0) {
+      setCanChangeTopValue(true);
+    } else if (e.target.scrollTop > 0 && canChangeTopValue) {
+      setCanChangeTopValue(false);
     }
   }
   return (
@@ -205,12 +228,14 @@ function ProjectsList({ projects }: Props): ReactElement {
           )}
           {/* till here is header */}
           <div
+            onScroll={handleScroll}
             className={styles.projectsContainer}
             style={{
               height:
                 window.innerWidth <= 768
                   ? window.innerHeight - 126 - top
                   : window.innerHeight - 126,
+              overflowY: allowScroll ? 'scroll' : 'hidden',
             }}
           >
             {searchValue !== '' ? (
