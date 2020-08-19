@@ -63,7 +63,7 @@ const usePaymentRequest = ({ options, onPaymentMethod }) => {
   return canMakePayment ? paymentRequest : null;
 };
 
-const PaymentRequestForm = (props) => {
+const PaymentRequestForm = () => {
   const paymentRequest = usePaymentRequest({
     options: {
       country: 'DE',
@@ -82,15 +82,9 @@ const PaymentRequestForm = (props) => {
   const options = useOptions(paymentRequest);
 
   if (!paymentRequest) {
-    props.setPaymentButtonExists(false);
     return null;
   }
 
-  if (paymentRequest) {
-    props.setPaymentButtonExists(true);
-  }
-
-  console.log('setPaymentButtonExists', setPaymentButtonExists);
   return (
     <PaymentRequestButtonElement
       className="PaymentRequestButton"

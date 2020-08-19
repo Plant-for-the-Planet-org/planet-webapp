@@ -130,7 +130,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     setOpenTaxDeductionModal(false);
   };
 
-  const [paymentButtonExists, setPaymentButtonExists] = React.useState(true);
   return (
     <>
       <div
@@ -297,21 +296,13 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           </div>
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
-        {paymentButtonExists ? (
-          <div className={styles.actionButtonsContainer}>
-            <div style={{ width: '150px' }}>
-              <PaymentRequestForm
-                setPaymentButtonExists={setPaymentButtonExists}
-              />
-            </div>
-            <div className={styles.actionButtonsText}>OR</div>
-            <div className={styles.continueButton}>Continue</div>
+        <div className={styles.actionButtonsContainer}>
+          <div style={{ width: '150px' }}>
+            <PaymentRequestForm />
           </div>
-        ) : (
-          <div className={styles.actionButtonsContainerCenter}>
-            <div className={styles.continueButton}>Continue</div>
-          </div>
-        )}
+          <div className={styles.actionButtonsText}>OR</div>
+          <div className={styles.continueButton}>Continue</div>
+        </div>
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}
