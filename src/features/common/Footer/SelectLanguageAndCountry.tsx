@@ -3,9 +3,7 @@ import Fade from '@material-ui/core/Fade';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Modal from '@material-ui/core/Modal';
-import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import countriesData from '../../../utils/countriesData.json';
 import {
@@ -13,6 +11,7 @@ import {
   sortCountriesData,
 } from '../../../utils/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
+import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
 
 export default function TransitionsModal(props) {
@@ -169,14 +168,3 @@ function MapLanguage(props) {
     </FormControl>
   );
 }
-
-// styles the radio button to green color for selected state
-const GreenRadio = withStyles({
-  root: {
-    color: '#000000',
-    '&$checked': {
-      color: '#89B53A',
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />);

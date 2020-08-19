@@ -2,8 +2,8 @@ import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import SelectCurrencyModal from '../components/SelectCurrencyModal';
-import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
+import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
+import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
@@ -12,6 +12,7 @@ import {
   usePaymentRequest,
 } from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
+
 interface Props {
   onClose: any;
   project: any;
