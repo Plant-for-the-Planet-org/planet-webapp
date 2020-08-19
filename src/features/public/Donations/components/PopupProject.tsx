@@ -1,9 +1,11 @@
 import Modal from '@material-ui/core/Modal';
+import { Elements } from '@stripe/react-stripe-js';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
+import getStripe from '../../../../utils/getStripe';
 import TreeDonation from './../screens/TreeDonation';
 import styles from './../styles/Projects.module.scss';
 
@@ -37,7 +39,9 @@ export default function PopupProject({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <TreeDonation project={projectDetails} onClose={handleClose} />
+        <Elements stripe={getStripe()}>
+          <TreeDonation project={projectDetails} onClose={handleClose} />
+        </Elements>
       </Modal>
       <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
         <a>
