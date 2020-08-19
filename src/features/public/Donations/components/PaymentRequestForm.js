@@ -13,7 +13,6 @@ const useOptions = (paymentRequest) => {
           theme: 'dark',
           height: '36px',
           type: 'donate',
-          width: '150px',
         },
       },
     }),
@@ -64,7 +63,7 @@ const usePaymentRequest = ({ options, onPaymentMethod }) => {
   return canMakePayment ? paymentRequest : null;
 };
 
-const PaymentRequestForm = ({ setPaymentButtonExists }) => {
+const PaymentRequestForm = (props) => {
   const paymentRequest = usePaymentRequest({
     options: {
       country: 'DE',
@@ -83,13 +82,15 @@ const PaymentRequestForm = ({ setPaymentButtonExists }) => {
   const options = useOptions(paymentRequest);
 
   if (!paymentRequest) {
+    props.setPaymentButtonExists(false);
     return null;
   }
 
   if (paymentRequest) {
-    setPaymentButtonExists(true);
+    props.setPaymentButtonExists(true);
   }
 
+  console.log('setPaymentButtonExists', setPaymentButtonExists);
   return (
     <PaymentRequestButtonElement
       className="PaymentRequestButton"

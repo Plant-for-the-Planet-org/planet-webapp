@@ -131,7 +131,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   };
 
   const [paymentButtonExists, setPaymentButtonExists] = React.useState(true);
-
   return (
     <>
       <div
