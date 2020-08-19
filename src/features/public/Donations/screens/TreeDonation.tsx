@@ -117,11 +117,11 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
   const paymentRequest = usePaymentRequest({
     options: {
-      country: 'DE',
-      currency: 'eur',
+      country: country,
+      currency: currency.toLowerCase(),
       total: {
-        label: 'Demo total',
-        amount: 1000,
+        label: 'Trees donated to Plant for the Planet',
+        amount: treeCost * treeCount,
       },
     },
     onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
