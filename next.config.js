@@ -9,7 +9,7 @@ module.exports = {
     CDN_URL: process.env.CDN_URL,
     TENANT: process.env.TENANT,
   },
-  trailingSlash: true,
+  trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,
   typescript: {
