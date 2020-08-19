@@ -1,8 +1,7 @@
-import { withStyles } from '@material-ui/core/styles';
-import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
+import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
@@ -17,28 +16,6 @@ interface Props {
   onClose: any;
   project: any;
 }
-
-interface Styles extends Partial<Record<SwitchClassKey, string>> {
-  focusVisible?: string;
-}
-
-interface Props2 extends SwitchProps {
-  classes: Styles;
-}
-
-const ToggleSwitch = withStyles({
-  switchBase: {
-    color: '#fff',
-    '&$checked': {
-      color: '#89B53A',
-    },
-    '&$checked + $track': {
-      backgroundColor: '#89B53A',
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
 
 function TreeDonation({ onClose, project }: Props): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
@@ -275,7 +252,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.isTaxDeductibleText}>
                 Send me a tax deduction receipt for
               </div>
-              <Switch
+              <ToggleSwitch
                 checked={isTaxDeductible}
                 onChange={taxDeductSwitchOn}
                 name="checkedB"
