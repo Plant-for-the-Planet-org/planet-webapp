@@ -105,7 +105,7 @@ function MapCurrency(props: any) {
           <FormControlLabel
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={`(${country.currencyCode}) - ${country.countryName} `}
+            label={`${country.countryName} · ${country.currencyCode}`}
           />
         ))}
       </RadioGroup>
