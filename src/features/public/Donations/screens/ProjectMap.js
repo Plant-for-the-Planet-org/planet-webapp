@@ -11,32 +11,38 @@ export default function ProjectMap(props) {
 
   let lat = project.coordinates.lat;
   let lon = project.coordinates.lon;
-  let geometry = project.geometry;
+  let geometryExists = false;
+  const geojson = {
+    type: 'FeatureCollection',
+    features: project.sites,
+  };
 
-  if (project.geometry !== null) {
-    var centroid = turf.centroid(project.geometry);
-    lat = centroid.geometry.coordinates[1];
-    lon = centroid.geometry.coordinates[0];
+  var zoomLevel = 15;
+  if (typeof geojson.features !== 'undefined' && geojson.features.length > 0) {
+    if (geojson.features[0].geometry !== null) {
+      geometryExists = true;
+      var centroid = turf.centroid(geojson);
+      lat = centroid.geometry.coordinates[1];
+      lon = centroid.geometry.coordinates[0];
+      var bbox = turf.bbox(geojson);
+      var bboxPolygon = turf.bboxPolygon(bbox);
+      var area = turf.area(bboxPolygon);
+      if (area > 2000000000) {
+        zoomLevel = 10;
+      } else if (area > 600000) {
+        zoomLevel = 12;
+      } else if (area > 200000) {
+        zoomLevel = 14;
+      }
+    }
   }
-
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: '100%',
     latitude: lat,
     longitude: lon,
-    zoom: 13,
+    zoom: zoomLevel,
   });
-
-  const geojson = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        properties: { name: 'Project Name' },
-        geometry: geometry,
-      },
-    ],
-  };
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -50,7 +56,7 @@ export default function ProjectMap(props) {
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
-        {project.geometry === null ? (
+        {geometryExists === false ? (
           <Marker
             latitude={lat}
             longitude={lon}

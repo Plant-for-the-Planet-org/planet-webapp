@@ -74,6 +74,12 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     }
   };
 
+  const [isActive, setActive] = React.useState(false);
+
+  const selectCustomTrees = () => {
+    setActive(!isActive);
+  };
+
   // to get country and currency from local storage
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -209,7 +215,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.formRow}>
                 <MaterialTextFeild
                   multiline
-                  rows="4"
+                  rowsMax="4"
                   label="Gift Message"
                   variant="outlined"
                 />
@@ -234,6 +240,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
             </div>
           ))}
           <div
+            // onClick={selectCustomTrees}
+            // className={
+            //   isActive ? styles.treeCountOptionSelected : styles.treeCountOption
+            // }
             className={styles.treeCountOption}
             style={{ minWidth: '65%', flexDirection: 'row' }}
           >
