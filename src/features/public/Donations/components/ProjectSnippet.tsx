@@ -9,9 +9,10 @@ import styles from './../styles/Projects.module.scss';
 
 interface Props {
   project: any;
+  key: number;
 }
 
-export default function ProjectSnippet({ project }: Props): ReactElement {
+export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -28,7 +29,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
   };
   const projectDetails = project.properties;
   return (
-    <div className={styles.singleProject}>
+    <div className={styles.singleProject} key={key}>
       <Modal
         className={styles.modal}
         open={open}

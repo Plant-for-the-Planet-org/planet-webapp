@@ -9,9 +9,17 @@ import styles from './../styles/Projects.module.scss';
 
 interface Props {
   project: any;
+  open: boolean;
+  handleOpen: Function;
+  handleClose: Function;
 }
 
-export default function PopupProject({ project }: Props): ReactElement {
+export default function PopupProject({
+  project,
+  open,
+  handleOpen,
+  handleClose,
+}: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -19,18 +27,11 @@ export default function PopupProject({ project }: Props): ReactElement {
     (project.properties.countPlanted / project.properties.countTarget) * 100 +
     '%';
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   const projectDetails = project.properties;
   return (
     <>
       <Modal
+        className={styles.modal}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"

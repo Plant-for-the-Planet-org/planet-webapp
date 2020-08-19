@@ -8,6 +8,7 @@ export default function MapboxMap(props) {
   var timer;
   const { projects } = props;
   const [popupData, setPopupData] = useState({ show: false });
+  const [open, setOpen] = React.useState(false);
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -18,6 +19,13 @@ export default function MapboxMap(props) {
   });
 
   const _onViewportChange = (view) => setViewPort({ ...view });
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <div className={styles.mapContainer}>
@@ -76,14 +84,20 @@ export default function MapboxMap(props) {
             <div
               className={styles.popupProject}
               onMouseLeave={(e) => {
-                setTimeout(function () {
-                  setPopupData({ ...popupData, show: false });
-                }, 300);
+                if (!open) {
+                  setTimeout(function () {
+                    setPopupData({ ...popupData, show: false });
+                  }, 300);
+                  handleClose();
+                }
               }}
             >
               <PopupProject
                 key={popupData.project.properties.id}
                 project={popupData.project}
+                open={open}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
               />
             </div>
           </Popup>
