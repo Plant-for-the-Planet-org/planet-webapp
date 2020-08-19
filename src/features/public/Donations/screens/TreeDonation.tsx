@@ -311,7 +311,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           <div style={{ width: '150px' }}>
             <PaymentRequestForm />
           </div>
-          <div className={styles.actionButtonsText}>OR</div>
+          {/* <div className={styles.actionButtonsText}>OR</div> */}
           <div className={styles.continueButton}>Continue</div>
         </div>
       </div>

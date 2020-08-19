@@ -41,7 +41,7 @@ export default function TransitionsModal(props: any) {
 
   // sorts the country data by country name as soon as the page loads
   useEffect(() => {
-    setSortedCountriesData(sortCountriesData('currencyCode'));
+    setSortedCountriesData(sortCountriesData('countryName'));
   }, []);
 
   return (
