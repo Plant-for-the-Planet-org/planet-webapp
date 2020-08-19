@@ -1,15 +1,18 @@
 import { withStyles } from '@material-ui/core/styles';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
+import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import PaymentRequestForm from '../components/PaymentRequestForm';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
+import {
+  useOptions,
+  usePaymentRequest,
+} from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
-
 interface Props {
   onClose: any;
   project: any;
@@ -82,9 +85,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           )
         ) {
           setCountry(localStorage.getItem('countryCode'));
-          if (localStorage.getItem('currencyCode')) {
-            setCurrency(localStorage.getItem('currencyCode'));
-          }
+          setCurrency(
+            getCountryDataBy('countryCode', localStorage.getItem('countryCode'))
+          );
         }
       }
     }
@@ -135,6 +138,23 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const handleTaxDeductionModalClose = () => {
     setOpenTaxDeductionModal(false);
   };
+
+  const paymentRequest = usePaymentRequest({
+    options: {
+      country: 'DE',
+      currency: 'eur',
+      total: {
+        label: 'Demo total',
+        amount: 1000,
+      },
+    },
+    onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
+      console.log('[PaymentMethod]', paymentMethod);
+      console.log('[Customer Data]', data);
+      complete('success');
+    },
+  });
+  const options = useOptions(paymentRequest);
 
   return (
     <>
@@ -309,7 +329,25 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
-            <PaymentRequestForm />
+            {/* <PaymentRequestForm /> */}
+            {paymentRequest ? (
+              <PaymentRequestButtonElement
+                className="PaymentRequestButton"
+                options={options}
+                onReady={() => {
+                  console.log('PaymentRequestButton [ready]');
+                }}
+                onClick={(event) => {
+                  console.log('PaymentRequestButton [click]', event);
+                }}
+                onBlur={() => {
+                  console.log('PaymentRequestButton [blur]');
+                }}
+                onFocus={() => {
+                  console.log('PaymentRequestButton [focus]');
+                }}
+              />
+            ) : null}
           </div>
           {/* <div className={styles.actionButtonsText}>OR</div> */}
           <div className={styles.continueButton}>Continue</div>
