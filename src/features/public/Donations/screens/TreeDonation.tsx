@@ -148,10 +148,23 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           country: paymentMethod.billing_details.address.country,
         },
       };
-      // console.log(createDonationData);
-      creatDonation(JSON.stringify(createDonationData)).then((res) => {
+
+      createDonation(JSON.stringify(createDonationData)).then((res) => {
         // Code for Payment API
-        console.log('createDonationData', res);
+        // console.log('createDonationData', res.id);
+
+        const payDonationData = {
+          paymentProviderRequest: {
+            account: paymentSetup.gateways.stripe.account,
+            gateway: 'stripe',
+            source: {
+              id: paymentMethod.id,
+              object: 'payment_method',
+            },
+          },
+        };
+
+        payDonation(payDonationData, res.id);
       });
       console.log('[PaymentMethod]', paymentMethod);
       console.log('[Customer Data]', data);
@@ -159,7 +172,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     },
   });
 
-  async function creatDonation(data: any) {
+  async function createDonation(data: any) {
     // const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/`, {
     //   method: 'POST',
     //   body: JSON.stringify(data),
@@ -171,6 +184,18 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     // const donation = await res.json();
     // return donation;
     return { id: 'don_2Hu3V6Yxr0W27d3VMfuitdHM' };
+  }
+
+  async function payDonation(data: any, id: any) {
+    // const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    // const contribution = await res.json();
+    // return contribution;
   }
 
   const options = useOptions(paymentRequest);
