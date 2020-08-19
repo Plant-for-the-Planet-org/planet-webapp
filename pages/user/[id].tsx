@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
-import UserPage from '../../src/features/public/UserProfile';
+import UserPage from '../../src/features/user/UserProfile';
 
 export default function UserProfile() {
   const [userprofile, setUserprofile] = React.useState();
