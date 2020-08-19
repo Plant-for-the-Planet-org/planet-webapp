@@ -1,6 +1,7 @@
 import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
+import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import GiftForm from '../components/treeDonation/GiftForm';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
@@ -121,15 +122,57 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       currency: currency.toLowerCase(),
       total: {
         label: 'Trees donated to Plant for the Planet',
-        amount: treeCost * treeCount,
+        amount: formatAmountForStripe(
+          treeCost * treeCount,
+          currency.toLowerCase()
+        ),
       },
+      requestPayerName: true,
+      requestPayerEmail: true,
     },
     onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
+      const createDonationData = {
+        type: 'trees',
+        project: project.id,
+        treeCount: treeCount,
+        amount: treeCost * treeCount,
+        currency: currency,
+        donor: {
+          firstname: paymentMethod.billing_details.name,
+          lastname: paymentMethod.billing_details.name,
+          companyname: '',
+          email: paymentMethod.billing_details.email,
+          address: paymentMethod.billing_details.address.line1,
+          zipCode: paymentMethod.billing_details.address.postal_code,
+          city: paymentMethod.billing_details.address.city,
+          country: paymentMethod.billing_details.address.country,
+        },
+      };
+      // console.log(createDonationData);
+      creatDonation(JSON.stringify(createDonationData)).then((res) => {
+        // Code for Payment API
+        console.log('createDonationData', res);
+      });
       console.log('[PaymentMethod]', paymentMethod);
       console.log('[Customer Data]', data);
       complete('success');
     },
   });
+
+  async function creatDonation(data: any) {
+    // const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/`, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+
+    // const donation = await res.json();
+    // return donation;
+    return { id: 'don_2Hu3V6Yxr0W27d3VMfuitdHM' };
+  }
+
   const options = useOptions(paymentRequest);
 
   return (
@@ -325,3 +368,59 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 }
 
 export default TreeDonation;
+
+// {
+//   "id": "pm_1HHyyuGhHD5xN1UqP0Yju0NL",
+//   "object": "payment_method",
+//   "billing_details": {
+//     "address": {
+//       "city": "Thane",
+//       "country": "IN",
+//       "line1": "B-108 Bhairav Shrusti, Bhayandar",
+//       "line2": "",
+//       "postal_code": "401101",
+//       "state": "Maharashtra"
+//     },
+//     "email": null,
+//     "name": "Harsh Vitra",
+//     "phone": null
+//   },
+//   "card": {
+//     "brand": "visa",
+//     "checks": {
+//       "address_line1_check": null,
+//       "address_postal_code_check": null,
+//       "cvc_check": null
+//     },
+//     "country": "US",
+//     "exp_month": 9,
+//     "exp_year": 2023,
+//     "funding": "credit",
+//     "generated_from": null,
+//     "last4": "4242",
+//     "networks": {
+//       "available": [
+//         "visa"
+//       ],
+//       "preferred": null
+//     },
+//     "three_d_secure_usage": {
+//       "supported": true
+//     },
+//     "wallet": null
+//   },
+//   "created": 1597873085,
+//   "customer": null,
+//   "livemode": false,
+//   "metadata": {},
+//   "type": "card"
+// }
+
+// {
+//   "shippingOption": null,
+//   "shippingAddress": null,
+//   "payerEmail": null,
+//   "payerPhone": null,
+//   "payerName": null,
+//   "methodName": "basic-card"
+// }
