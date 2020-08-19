@@ -1,8 +1,8 @@
 import { withStyles } from '@material-ui/core/styles';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import React, { ReactElement } from 'react';
-import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
+import PaymentRequestForm from '../components/PaymentRequestForm';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
@@ -19,7 +19,7 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
   focusVisible?: string;
 }
 
-interface Props extends SwitchProps {
+interface Props2 extends SwitchProps {
   classes: Styles;
 }
 
@@ -42,7 +42,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
-
   const [paymentSetup, setPaymentSetup] = React.useState();
 
   // for tax deduction part
@@ -54,13 +53,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
     false
-  );
-
-  console.log(
-    'in tree donation component, currency-',
-    currency,
-    'country-',
-    country
   );
 
   const taxDeductSwitchOn = () => {
@@ -84,19 +76,19 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('countryCode')) {
-        setCountry(localStorage.getItem('countryCode'));
-      }
-      if (localStorage.getItem('currencyCode')) {
         if (
           project.taxDeductionCountries.includes(
-            localStorage.getItem('currencyCode')
+            localStorage.getItem('countryCode') // Use this currency only if it exists in the array
           )
         ) {
-          setCurrency(localStorage.getItem('currencyCode')); // Use this currency only if it exists in the array
+          setCountry(localStorage.getItem('countryCode'));
+          if (localStorage.getItem('currencyCode')) {
+            setCurrency(localStorage.getItem('currencyCode'));
+          }
         }
       }
     }
-  }, []);
+  }, [project]);
 
   //  to load payment data
   React.useEffect(() => {
@@ -107,8 +99,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         );
 
         const paymentSetupData = await res.json();
-        // console.log(`endpoint ${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`)
-        // console.log(paymentSetupData)
         setPaymentSetup(paymentSetupData);
         if (paymentSetupData.treeCost) {
           setTreeCost(paymentSetupData.treeCost);
@@ -119,7 +109,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     }
     loadPaymentSetup();
   }, [project, country]);
-  console.log('payment SetupData', paymentSetup);
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '') {
@@ -318,12 +307,11 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           </div>
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
-
         <div className={styles.actionButtonsContainer}>
-          <div>
-            <GpayBlack />
+          <div style={{ width: '150px' }}>
+            <PaymentRequestForm />
           </div>
-          <div className={styles.actionButtonsText}>OR</div>
+          {/* <div className={styles.actionButtonsText}>OR</div> */}
           <div className={styles.continueButton}>Continue</div>
         </div>
       </div>
