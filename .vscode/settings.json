@@ -3,6 +3,9 @@
   // auto-saved, and editor must not be shutting down.
   "editor.formatOnSave": true,
   "javascript.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
   "css.lint.duplicateProperties": "warning",
   "editor.rulers": [80]
 }
