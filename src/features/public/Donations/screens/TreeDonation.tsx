@@ -2,11 +2,11 @@ import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import GiftForm from '../components/treeDonation/GiftForm';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
-import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import {
   useOptions,
   usePaymentRequest,
@@ -63,9 +63,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           )
         ) {
           setCountry(localStorage.getItem('countryCode'));
-          setCurrency(
-            getCountryDataBy('countryCode', localStorage.getItem('countryCode'))
-          );
         }
       }
     }
@@ -78,11 +75,12 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         const res = await fetch(
           `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
         );
-
         const paymentSetupData = await res.json();
-        setPaymentSetup(paymentSetupData);
-        if (paymentSetupData.treeCost) {
+        if (paymentSetupData) {
+          setPaymentSetup(paymentSetupData);
           setTreeCost(paymentSetupData.treeCost);
+          setCurrency(paymentSetupData.currency);
+          setCountry(paymentSetupData.country);
         }
       } catch (err) {
         console.log(err);
@@ -159,7 +157,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <DownArrow color={'grey'} />
             </div>
             <div className={styles.rate}>
-              {project.treeCost.toFixed(2)} per tree
+              {Number(treeCost).toFixed(2)} per tree
             </div>
           </div>
         ) : (
@@ -170,7 +168,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <DownArrow color={'#87B738'} />
             </div>
             <div className={styles.rate}>
-              {project.treeCost.toFixed(2)} per tree
+              {Number(treeCost).toFixed(2)} per tree
             </div>
           </div>
         )}
@@ -187,29 +185,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           />
         </div>
 
-        {isGift ? (
-          <div className={styles.giftContainer}>
-            <div className={styles.singleGiftContainer}>
-              <div className={styles.singleGiftTitle}>Gift Recepient</div>
-              <div className={styles.formRow}>
-                <MaterialTextFeild label="First Name" variant="outlined" />
-                <div style={{ width: '20px' }}></div>
-                <MaterialTextFeild label="Last Name" variant="outlined" />
-              </div>
-              <div className={styles.formRow}>
-                <MaterialTextFeild label="Email" variant="outlined" />
-              </div>
-              <div className={styles.formRow}>
-                <MaterialTextFeild
-                  multiline
-                  rowsMax="4"
-                  label="Gift Message"
-                  variant="outlined"
-                />
-              </div>
-            </div>
-          </div>
-        ) : null}
+        {isGift ? <GiftForm /> : null}
 
         <div className={styles.selectTreeCount}>
           {treeCountOptions.map((option) => (
@@ -227,10 +203,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
             </div>
           ))}
           <div
-            // onClick={selectCustomTrees}
-            // className={
-            //   isActive ? styles.treeCountOptionSelected : styles.treeCountOption
-            // }
             className={styles.treeCountOption}
             style={{ minWidth: '65%', flexDirection: 'row' }}
           >
@@ -299,15 +271,16 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         )}
 
         <div className={styles.horizontalLine} />
+
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
             {currency} {(treeCount * treeCost).toFixed(2)}{' '}
           </div>
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
+
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
-            {/* <PaymentRequestForm /> */}
             {paymentRequest ? (
               <PaymentRequestButtonElement
                 className="PaymentRequestButton"
@@ -327,8 +300,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               />
             ) : null}
           </div>
-          {/* <div className={styles.actionButtonsText}>OR</div> */}
-          <div className={styles.continueButton}>Continue</div>
+          <div className={styles.continueButton}>Or Continue</div>
         </div>
       </div>
       <SelectTaxDeductionCountryModal
