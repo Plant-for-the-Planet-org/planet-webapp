@@ -1,15 +1,14 @@
 import { withStyles } from '@material-ui/core/styles';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
-
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
+import PaymentRequestForm from '../components/PaymentRequestForm';
 import SelectCurrencyModal from '../components/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
 import styles from './../styles/TreeDonation.module.scss';
-import PaymentRequestForm from '../components/PaymentRequestForm';
 
 interface Props {
   onClose: any;
@@ -66,6 +65,13 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       setCurrency(respCurrency);
     }
   };
+
+  const [isActive, setActive] = React.useState(false);
+
+  const selectCustomTrees = () => {
+    setActive(!isActive);
+  };
+
   // to get country and currency from local storage
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -198,6 +204,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.formRow}>
                 <MaterialTextFeild
                   multiline
+                  rowsMax="4"
                   label="Gift Message"
                   variant="outlined"
                 />
@@ -222,6 +229,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
             </div>
           ))}
           <div
+            // onClick={selectCustomTrees}
+            // className={
+            //   isActive ? styles.treeCountOptionSelected : styles.treeCountOption
+            // }
             className={styles.treeCountOption}
             style={{ minWidth: '65%', flexDirection: 'row' }}
           >

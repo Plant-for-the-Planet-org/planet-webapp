@@ -147,7 +147,9 @@
   width: 40px;
 }
 
-.customTreeInput:focus {
+.treeCountOption > .customTreeInput:focus {
+  display: block;
+  width: 70%;
   outline: none;
 }
 
