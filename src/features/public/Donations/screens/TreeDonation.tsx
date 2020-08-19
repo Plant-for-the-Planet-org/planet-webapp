@@ -1,4 +1,5 @@
-import Switch from '@material-ui/core/Switch';
+import { withStyles } from '@material-ui/core/styles';
+import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import React, { ReactElement } from 'react';
 import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
@@ -13,6 +14,28 @@ interface Props {
   onClose: any;
   project: any;
 }
+
+interface Styles extends Partial<Record<SwitchClassKey, string>> {
+  focusVisible?: string;
+}
+
+interface Props extends SwitchProps {
+  classes: Styles;
+}
+
+const ToggleSwitch = withStyles({
+  switchBase: {
+    color: '#fff',
+    '&$checked': {
+      color: '#89B53A',
+    },
+    '&$checked + $track': {
+      backgroundColor: '#89B53A',
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 
 function TreeDonation({ onClose, project }: Props): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
@@ -49,6 +72,12 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       setCountry(project.taxDeductionCountries[0]);
       setCurrency(respCurrency);
     }
+  };
+
+  const [isActive, setActive] = React.useState(false);
+
+  const selectCustomTrees = () => {
+    setActive(!isActive);
   };
 
   // to get country and currency from local storage
@@ -119,10 +148,13 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
   };
 
   return (
-    <div className={styles.treeDonationcontainer}>
-      <div className={styles.cardContainer}>
+    <>
+      <div
+        className={styles.cardContainer}
+        style={{ alignSelf: isGift ? 'start' : 'center' }}
+      >
         <div className={styles.header}>
-          <div onClick={() => onClose()} className={styles.headerCloseIcon}>
+          <div onClick={onClose} className={styles.headerCloseIcon}>
             <Close />
           </div>
           <div className={styles.headerTitle}>Tree Donation</div>
@@ -160,7 +192,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           <div className={styles.isGiftDonationText}>
             My Donation is a gift to someone
           </div>
-          <Switch
+          <ToggleSwitch
             checked={isGift}
             onChange={() => setIsGift(!isGift)}
             name="checkedA"
@@ -169,7 +201,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
 
         {isGift ? (
-          <div className={styles.giftsContainer}>
+          <div className={styles.giftContainer}>
             <div className={styles.singleGiftContainer}>
               <div className={styles.singleGiftTitle}>Gift Recepient</div>
               <div className={styles.formRow}>
@@ -181,7 +213,12 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
                 <MaterialTextFeild label="Email" variant="outlined" />
               </div>
               <div className={styles.formRow}>
-                <MaterialTextFeild label="Gift Message" variant="outlined" />
+                <MaterialTextFeild
+                  multiline
+                  rowsMax="4"
+                  label="Gift Message"
+                  variant="outlined"
+                />
               </div>
             </div>
           </div>
@@ -203,11 +240,19 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
             </div>
           ))}
           <div
+            // onClick={selectCustomTrees}
+            // className={
+            //   isActive ? styles.treeCountOptionSelected : styles.treeCountOption
+            // }
             className={styles.treeCountOption}
             style={{ minWidth: '65%', flexDirection: 'row' }}
           >
             <input
               className={styles.customTreeInput}
+              onInput={(e) => {
+                // replaces any character other than number to blank
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
               type="text"
               onChange={(e) => setCustomTreeValue(e)}
             />
@@ -299,7 +344,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         setCountry={setCountry}
         country={country}
       />
-    </div>
+    </>
   );
 }
 
