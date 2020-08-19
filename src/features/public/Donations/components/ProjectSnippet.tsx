@@ -1,18 +1,20 @@
 import Modal from '@material-ui/core/Modal';
+import { Elements } from '@stripe/react-stripe-js';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
+import getStripe from '../../../../utils/getStripe';
 import TreeDonation from './../screens/TreeDonation';
 import styles from './../styles/Projects.module.scss';
-import { Elements } from '@stripe/react-stripe-js';
-import getStripe from '../../../../utils/getStripe';
 
 interface Props {
   project: any;
+  key: number;
 }
-export default function ProjectSnippet({ project }: Props): ReactElement {
+
+export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -29,7 +31,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
   };
   const projectDetails = project.properties;
   return (
-    <div className={styles.singleProject}>
+    <div className={styles.singleProject} key={key}>
       <Modal
         className={styles.modal}
         open={open}
