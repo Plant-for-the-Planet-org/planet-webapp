@@ -24,9 +24,7 @@ function AllProjects({ projects }: Props): ReactElement {
       <div>
         <LazyLoad>
           {projects.map((project: any) => {
-            return (
-              <ProjectSnippet key={project.properties.id} project={project} />
-            );
+            return <ProjectSnippet key={project.id} project={project} />;
           })}
         </LazyLoad>
       </div>

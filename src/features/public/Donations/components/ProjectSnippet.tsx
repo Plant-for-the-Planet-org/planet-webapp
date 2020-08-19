@@ -30,6 +30,7 @@ export default function ProjectSnippet({ project }: Props): ReactElement {
   return (
     <div className={styles.singleProject}>
       <Modal
+        className={styles.modal}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"

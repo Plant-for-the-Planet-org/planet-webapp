@@ -39,6 +39,7 @@ export default function Donate() {
     }
     loadProject();
   }, []);
+  // console.log(project);
 
   return (
     <Layout>

@@ -101,7 +101,7 @@
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: calc(100vh - 155px);
+  max-height: calc(100vh - 150px);
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -126,6 +126,19 @@
 
 .singleProject {
   margin-top: 20px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
 }
 
 .popupProject {

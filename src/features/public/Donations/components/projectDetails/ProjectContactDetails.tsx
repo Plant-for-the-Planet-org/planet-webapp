@@ -40,8 +40,19 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
             <a href={contactDetails.link} target="_blank">
               <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
                 {contactDetails.icon}
-                <span style={{ marginLeft: '16px', flexGrow: 1 }}>
-                  {contactDetails.text}
+                <span
+                  style={{
+                    marginLeft: '16px',
+                    flexGrow: 1,
+                    wordWrap: 'break-word',
+                  }}
+                >
+                  {
+                    contactDetails.text
+                      .replace('http://', '')
+                      .replace('https://', '')
+                      .split(/[/?#]/)[0]
+                  }
                 </span>
               </div>
             </a>
