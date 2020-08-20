@@ -10,10 +10,19 @@
 }
 
 .backgroundImage {
-  position: fixed;
+  position: absolute;
   top: 0px;
   left: 0px;
   height: 100vh;
+  max-width: 100vw;
+}
+
+// when background image is fixed wrt viewport
+.backgroundImageFixed {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  min-height: 100vh;
   max-width: 100vw;
 }
 
