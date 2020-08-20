@@ -209,7 +209,7 @@ function ProjectDetails({ project }: Props): ReactElement {
                   {project.images.length > 0 ? (
                     <Stories
                       stories={projectImages}
-                      defaultInterval={3500}
+                      defaultInterval={7000}
                       width={325}
                       height={244}
                       loop={true}
