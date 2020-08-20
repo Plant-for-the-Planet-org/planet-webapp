@@ -47,15 +47,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       const displayedCountry = project.taxDeductionCountries[0];
       const respCurrency = getCountryDataBy('countryCode', displayedCountry)
         .currencyCode;
-      setCountry(project.taxDeductionCountries[0]);
+      setCountry(displayedCountry);
       setCurrency(respCurrency);
     }
-  };
-
-  const [isActive, setActive] = React.useState(false);
-
-  const selectCustomTrees = () => {
-    setActive(!isActive);
   };
 
   // to get country and currency from local storage
@@ -100,24 +94,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     } else {
       setTreeCount(e.target.value);
     }
-  };
-
-  // for currency modal
-  const handleModalOpen = () => {
-    setOpenCurrencyModal(true);
-  };
-
-  const handleModalClose = () => {
-    setOpenCurrencyModal(false);
-  };
-
-  // for tax deduction modal
-  const handleTaxDeductionModalOpen = () => {
-    setOpenTaxDeductionModal(true);
-  };
-
-  const handleTaxDeductionModalClose = () => {
-    setOpenTaxDeductionModal(false);
   };
 
   const paymentRequest = usePaymentRequest({
@@ -204,7 +180,10 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           </div>
         ) : (
           // enabled if taxDeduction switch OFF
-          <div className={styles.currencyRate} onClick={handleModalOpen}>
+          <div
+            className={styles.currencyRate}
+            onClick={() => setOpenCurrencyModal(true)}
+          >
             <div className={styles.currency}>{currency}</div>
             <div className={styles.downArrow}>
               <DownArrow color={'#87B738'} />
@@ -279,7 +258,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               // enabled modal if taxDeductible switch ON
               <div
                 className={styles.taxDeductible}
-                onClick={handleTaxDeductionModalOpen}
+                onClick={() => setOpenTaxDeductionModal(true)}
               >
                 <div className={styles.taxDeductibleCountry}>
                   {project.taxDeductionCountries.includes(country)
@@ -347,7 +326,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}
-        handleModalClose={handleTaxDeductionModalClose}
+        handleModalClose={() => setOpenTaxDeductionModal(false)}
         taxDeductionCountries={project.taxDeductionCountries}
         setCountry={setCountry}
         country={country}
@@ -356,7 +335,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
       />
       <SelectCurrencyModal
         openModal={openCurrencyModal}
-        handleModalClose={handleModalClose}
+        handleModalClose={() => setOpenCurrencyModal(false)}
         setCurrency={setCurrency}
         currency={currency}
         setCountry={setCountry}

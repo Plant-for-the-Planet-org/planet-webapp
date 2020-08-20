@@ -15,7 +15,7 @@ import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import styles from './../styles/ProjectDetails.module.scss';
-import TreeDonation from './TreeDonation';
+import DonationsPopup from './DonationsPopup';
 
 const ProjectMap = dynamic(() => import('./ProjectMap'), {
   ssr: false,
@@ -98,7 +98,7 @@ function ProjectDetails({ project }: Props): ReactElement {
           aria-describedby="simple-modal-description"
         >
           <Elements stripe={getStripe()}>
-            <TreeDonation project={project} onClose={handleClose} />
+            <DonationsPopup project={project} onClose={handleClose} />
           </Elements>
         </Modal>
         <div className={styles.projectContainer}>
