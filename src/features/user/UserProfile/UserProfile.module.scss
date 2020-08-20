@@ -1,0 +1,182 @@
+@import './../../../theme/theme';
+
+.landingContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 280px;
+  z-index: 2;
+}
+
+.treeCounterName {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 40px;
+  color: $light;
+  margin-top: 16px;
+  margin-bottom: 0px;
+}
+
+// for ME page only
+.treeCounterDescription {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: $light;
+  margin-top: 24px;
+  margin-bottom: 0px;
+  max-width: 500px;
+  margin-left: 26px;
+  margin-right: 26px;
+}
+
+.bottomIconsRow {
+  margin-bottom: 20px;
+  margin-top: 36px;
+}
+
+.iconTextColumn {
+  margin: 0px 0px;
+  max-width: 160px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bottomIconBg {
+  background-color: rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 70px;
+}
+
+.bottomIconBg:hover {
+  cursor: pointer;
+}
+
+.bottomRowText{
+  color: $light;
+  font-size: 16px;
+  font-family: $primaryFontFamily;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.settingsIcon {
+  display: flex;
+  position: absolute;
+  right: 30px;
+  top: 60px;
+  z-index: 2;
+  // background-color: black;
+  padding: 20px;
+}
+
+.settingsIcon:hover {
+  cursor: pointer;
+}
+
+.downIcon {
+  display: flex;
+  position: fixed;
+  right: 30px;
+  bottom: 60px;
+  z-index: 2;
+}
+
+.downIcon:hover {
+  cursor: pointer;
+}
+
+// mobile view
+@media only screen and (max-width: 768px) {
+  .settingsIcon {
+    top: 10px;
+  }
+  .downIcon {
+    display: none;
+  }
+  .landingContent {
+    margin-top: 200px;
+  }
+}
+
+
+/* My Forest Section - for ME Page*/
+
+// the outer white background
+.myForestContainer {
+  background-color: $light;
+  display: flex;
+  position: relative;
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: 5;
+  top: 200px;
+  // align-items: center;  >>>  for vertically centre
+  justify-content: center;   // >>>  for horizontally center
+}
+
+// desktop view= > float: row => (list beside maps)
+.outerMyForestContainer {
+  display: flex;
+  float: right;
+  flex-direction: row-reverse; 
+  margin-top: 60px;
+  
+}
+
+.forestListSection {
+  width: 40vw;
+  height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.mapSection {
+  width: 40vw;
+  height: 70vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.forestItem {
+  font-family: $primaryFontFamily;
+  padding: 10px 10px;
+  border-color: rgba(200,200,200,0.7);
+  border-width: 0.1px;
+  width: 40vw;
+  border-style: solid;
+  background-color: $light;
+}
+
+// mobile view (list below map)
+@media only screen and (max-width: 768px) {
+  .outerMyForestContainer {
+    display: block;
+    float:none;
+  }
+  .mapSection {
+    width: 100vw;   
+    height: 50vh;   //only cover half screen
+    overflow-y: visible;
+  }
+  .forestListSection {
+    width: 100vw;
+    min-height: 50vh;  //list can overflow
+    overflow-y: visible;    // all list items to be displayed 
+    margin-bottom: 100px;
+  }
+  .forestItem {
+    width: 100vw;
+  }
+}
+
+/* Footer */
+.footerDiv {
+  z-index: 20; //more than myForestContainer
+  position: relative;
+  background-color: $light;
+}

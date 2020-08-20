@@ -46,6 +46,8 @@
     "eslint-plugin-react": "^7.20.4",
     "eslint-plugin-react-hooks": "^4.0.8",
     "prettier": "^2.0.5",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "@stripe/react-stripe-js": "1.1.2",
+    "@stripe/stripe-js": "1.5.0"
   }
 }

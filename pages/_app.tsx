@@ -23,6 +23,7 @@ export default function PlanetWeb({ Component, pageProps, config }: any) {
   return (
     <ThemeProvider>
       <CssBaseline />
+
       <Component {...pageProps} />
     </ThemeProvider>
   );

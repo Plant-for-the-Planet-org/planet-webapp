@@ -3,12 +3,11 @@ import Fade from '@material-ui/core/Fade';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Modal from '@material-ui/core/Modal';
-import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { withStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
-let styles = require('./../styles/SelectCurrencyModal.module.scss');
+import { getCountryDataBy } from '../../../../../utils/countryUtils';
+import GreenRadio from '../../../../common/InputTypes/GreenRadio';
+let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
 export default function TransitionsModal(props: any) {
   const {
@@ -112,7 +111,7 @@ function MapCountry(props: any) {
           <FormControlLabel
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={`${country.countryName} - (${country.countryCode})`}
+            label={`${country.countryName} · (${country.countryCode})`}
             // label={`${country.countryCode},${country.currencyCode}`}
           />
         ))}
@@ -120,14 +119,3 @@ function MapCountry(props: any) {
     </FormControl>
   );
 }
-
-// styles the radio button to green color for selected state
-const GreenRadio = withStyles({
-  root: {
-    color: '#000000',
-    '&$checked': {
-      color: '#89B53A',
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />);
