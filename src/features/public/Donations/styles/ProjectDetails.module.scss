@@ -246,19 +246,32 @@
 }
 
 .projectImageSliderContainer {
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: nowrap;
-  display: grid;
+  display: flex;
   margin-top: 24px;
-  scroll-behavior: smooth;
   max-width: 328px;
   overflow: hidden;
   overflow-x: hidden;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: repeat(2, 50%);
-  grid-auto-columns: 50%;
-  grid-auto-flow: column;
+  border-radius: 0.6em;
+}
+
+.projectImageSliderContainer:first-child > div:first-child > div:first-child {
+  bottom: 2px;
+}
+
+.projectImageSliderContainer:first-child
+  > div:first-child
+  > div:first-child
+  > div {
+  background: rgba(0, 0, 0, 0.4) !important;
+  height: 4px !important;
+}
+
+.projectImageSliderContainer:first-child
+  > div:first-child
+  > div:first-child
+  > div
+  > div {
+  background: rgba(255, 255, 255, 0.8) !important;
 }
 
 .projectImages {

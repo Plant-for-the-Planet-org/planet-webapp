@@ -198,19 +198,17 @@ function ProjectDetails({ project }: Props): ReactElement {
               </div>
 
               <div className={styles.projectInfoProperties}>
-                <LazyLoad>
-                  <div className={styles.projectImageSliderContainer}>
-                    {project.images.length > 0 ? (
-                      <Stories
-                        stories={projectImages}
-                        defaultInterval={3500}
-                        width={325}
-                        height={245}
-                        loop={true}
-                      />
-                    ) : null}
-                  </div>
-                </LazyLoad>
+                <div className={styles.projectImageSliderContainer}>
+                  {project.images.length > 0 ? (
+                    <Stories
+                      stories={projectImages}
+                      defaultInterval={3500}
+                      width={325}
+                      height={244}
+                      loop={true}
+                    />
+                  ) : null}
+                </div>
                 {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
