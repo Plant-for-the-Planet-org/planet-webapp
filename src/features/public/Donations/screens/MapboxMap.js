@@ -78,7 +78,7 @@ export default function MapboxMap(props) {
             onClose={() => setPopupData({ ...popupData, show: false })}
             anchor="bottom"
             dynamicPosition={false}
-            offsetTop={20}
+            offsetTop={-15}
             tipSize={0}
           >
             <div
