@@ -1,10 +1,7 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import {
-  useStripe,
-  PaymentRequestButtonElement,
-} from '@stripe/react-stripe-js';
+import { useStripe } from '@stripe/react-stripe-js';
+import { useEffect, useMemo, useState } from 'react';
 
-const useOptions = (paymentRequest) => {
+export const useOptions = (paymentRequest) => {
   const options = useMemo(
     () => ({
       paymentRequest,
@@ -22,7 +19,7 @@ const useOptions = (paymentRequest) => {
   return options;
 };
 
-const usePaymentRequest = ({ options, onPaymentMethod }) => {
+export const usePaymentRequest = ({ options, onPaymentMethod }) => {
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
@@ -62,47 +59,3 @@ const usePaymentRequest = ({ options, onPaymentMethod }) => {
 
   return canMakePayment ? paymentRequest : null;
 };
-
-const PaymentRequestForm = () => {
-  const paymentRequest = usePaymentRequest({
-    options: {
-      country: 'DE',
-      currency: 'eur',
-      total: {
-        label: 'Demo total',
-        amount: 1000,
-      },
-    },
-    onPaymentMethod: ({ complete, paymentMethod, ...data }) => {
-      console.log('[PaymentMethod]', paymentMethod);
-      console.log('[Customer Data]', data);
-      complete('success');
-    },
-  });
-  const options = useOptions(paymentRequest);
-
-  if (!paymentRequest) {
-    return null;
-  }
-
-  return (
-    <PaymentRequestButtonElement
-      className="PaymentRequestButton"
-      options={options}
-      onReady={() => {
-        console.log('PaymentRequestButton [ready]');
-      }}
-      onClick={(event) => {
-        console.log('PaymentRequestButton [click]', event);
-      }}
-      onBlur={() => {
-        console.log('PaymentRequestButton [blur]');
-      }}
-      onFocus={() => {
-        console.log('PaymentRequestButton [focus]');
-      }}
-    />
-  );
-};
-
-export default PaymentRequestForm;
