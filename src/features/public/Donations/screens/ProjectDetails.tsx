@@ -1,4 +1,6 @@
 import Modal from '@material-ui/core/Modal';
+import { Elements } from '@stripe/react-stripe-js';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Stories from 'react-insta-stories';
@@ -11,6 +13,7 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
+import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
@@ -105,7 +108,9 @@ function ProjectDetails({ project }: Props): ReactElement {
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          <TreeDonation project={project} onClose={handleClose} />
+          <Elements stripe={getStripe()}>
+            <TreeDonation project={project} onClose={handleClose} />
+          </Elements>
         </Modal>
         <div className={styles.projectContainer}>
           <div className={styles.singleProject}>

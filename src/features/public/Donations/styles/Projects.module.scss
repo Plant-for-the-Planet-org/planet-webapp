@@ -101,7 +101,7 @@
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 145px);
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -133,6 +133,8 @@
   justify-content: center;
   align-items: center;
   overflow-y: scroll;
+  width: 100%;
+  height: 100%;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

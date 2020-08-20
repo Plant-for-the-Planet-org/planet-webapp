@@ -112,7 +112,7 @@ function MapCountry(props: any) {
           <FormControlLabel
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={`${country.countryName} - (${country.countryCode})`}
+            label={`${country.countryName} · (${country.countryCode})`}
             // label={`${country.countryCode},${country.currencyCode}`}
           />
         ))}
