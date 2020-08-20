@@ -18,10 +18,10 @@ import ProjectContactDetails from '../components/projectDetails/ProjectContactDe
 import styles from './../styles/ProjectDetails.module.scss';
 import TreeDonation from './TreeDonation';
 
-// const ProjectMap = dynamic(() => import('./ProjectMap'), {
-//   ssr: false,
-//   loading: () => <p>Loading...</p>,
-// });
+const ProjectMap = dynamic(() => import('./ProjectMap'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 interface Props {
   project: any;
@@ -92,13 +92,12 @@ function ProjectDetails({ project }: Props): ReactElement {
       header: { heading: image.description },
     });
   });
-  console.log(projectImages);
   return (
     <>
-      {/* <ProjectMap
+      <ProjectMap
         {...ProjectProps}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-      /> */}
+      />
       <div className={styles.container}>
         <Modal
           className={styles.modal}
