@@ -3,19 +3,14 @@ import Fade from '@material-ui/core/Fade';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Modal from '@material-ui/core/Modal';
-import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import countriesData from '../../../../utils/countriesData.json';
-import {
-  getCountryDataBy,
-  sortCountriesData,
-} from '../../../../utils/countryUtils';
-import supportedLanguages from '../../../../utils/supportedLanguages.json';
-let styles = require('./../styles/SelectCurrencyModal.module.scss');
+import countriesData from '../../../../../utils/countriesData.json';
+import { sortCountriesData } from '../../../../../utils/countryUtils';
+import GreenRadio from '../../../../common/InputTypes/GreenRadio';
+let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
-export default function TransitionsModal(props:any) {
+export default function TransitionsModal(props: any) {
   const {
     openModal,
     handleModalClose,
@@ -26,27 +21,26 @@ export default function TransitionsModal(props:any) {
   } = props;
 
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
-//   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
-  const [selectedModalValue, setSelectedModalValue] = useState(`${currency}`)
+  //   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
+  const [selectedModalValue, setSelectedModalValue] = useState(`${currency}`);
 
   // changes the currency in when a currency is selected
-  const handleCurrencyChange = (event:any) => {
-      setSelectedModalValue(event.target.value);
+  const handleCurrencyChange = (event: any) => {
+    setSelectedModalValue(event.target.value);
   };
 
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-
-    const selectedInfo = selectedModalValue.split(",")
-    setCurrency(selectedInfo[1])
-    setCountry(selectedInfo[0])
+    const selectedInfo = selectedModalValue.split(',');
+    setCurrency(selectedInfo[1]);
+    setCountry(selectedInfo[0]);
     handleModalClose();
   }
 
   // sorts the country data by country name as soon as the page loads
   useEffect(() => {
-    setSortedCountriesData(sortCountriesData('currencyCode'));
+    setSortedCountriesData(sortCountriesData('countryName'));
   }, []);
 
   return (
@@ -95,7 +89,7 @@ export default function TransitionsModal(props:any) {
 }
 
 // Maps the radio buttons for currency
-function MapCurrency(props:any) {
+function MapCurrency(props: any) {
   const { sortedCountriesData, value, handleChange } = props;
   return (
     <FormControl component="fieldset">
@@ -104,27 +98,16 @@ function MapCurrency(props:any) {
         name="language"
         value={value}
         onChange={handleChange}
+        className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country:any) => (
+        {sortedCountriesData.map((country: any) => (
           <FormControlLabel
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={`(${country.currencyCode}) - ${country.countryName} `}
+            label={`${country.countryName} · ${country.currencyCode}`}
           />
         ))}
       </RadioGroup>
     </FormControl>
   );
 }
-
-
-// styles the radio button to green color for selected state
-const GreenRadio = withStyles({
-  root: {
-    color: '#000000',
-    '&$checked': {
-      color: '#89B53A',
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />);

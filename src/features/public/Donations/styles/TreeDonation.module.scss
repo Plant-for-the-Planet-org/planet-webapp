@@ -4,7 +4,7 @@
   background-color: $light;
   border-radius: 7px;
   padding: 26px;
-  max-width: 412px;
+  width: 412px;
   height: max-content;
 }
 
@@ -147,7 +147,9 @@
   width: 40px;
 }
 
-.customTreeInput:focus {
+.treeCountOption > .customTreeInput:focus {
+  display: block;
+  width: 70%;
   outline: none;
 }
 
@@ -226,6 +228,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
+}
+
+.actionButtonsContainerCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
 }
 

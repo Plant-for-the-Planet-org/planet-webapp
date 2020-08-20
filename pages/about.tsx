@@ -2,8 +2,9 @@ import dynamic from 'next/dynamic';
 import Footer from '../src/features/common/Footer';
 import Layout from '../src/features/common/Layout';
 
-const Tenant = process.env.TENANT ? process.env.TENANT : 'plantfortheplanet';
-const AboutPage = dynamic(() => import(`../src/tenants/${Tenant}/About/About`));
+const AboutPage = dynamic(() =>
+  import(`../src/tenants/plantfortheplanet/About/About`)
+);
 export default function About() {
   return (
     <Layout>

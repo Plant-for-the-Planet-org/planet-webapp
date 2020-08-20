@@ -1,13 +1,21 @@
-import { withStyles } from '@material-ui/core/styles';
-import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
+import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
-import GpayBlack from '../../../../assets/images/icons/donation/GpayBlack';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import SelectCurrencyModal from '../components/SelectCurrencyModal';
-import SelectTaxDeductionCountryModal from '../components/SelectTaxDeductionCountryModal';
+import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
+import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import GiftForm from '../components/treeDonation/GiftForm';
+import {
+  createDonation,
+  payDonation,
+} from '../components/treeDonation/PaymentFunctions';
+import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
+import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
-import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
+import {
+  useOptions,
+  usePaymentRequest,
+} from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
 
 interface Props {
@@ -15,34 +23,11 @@ interface Props {
   project: any;
 }
 
-interface Styles extends Partial<Record<SwitchClassKey, string>> {
-  focusVisible?: string;
-}
-
-interface Props extends SwitchProps {
-  classes: Styles;
-}
-
-const ToggleSwitch = withStyles({
-  switchBase: {
-    color: '#fff',
-    '&$checked': {
-      color: '#89B53A',
-    },
-    '&$checked + $track': {
-      backgroundColor: '#89B53A',
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-
 function TreeDonation({ onClose, project }: Props): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
-
   const [paymentSetup, setPaymentSetup] = React.useState();
 
   // for tax deduction part
@@ -56,13 +41,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     false
   );
 
-  console.log(
-    'in tree donation component, currency-',
-    currency,
-    'country-',
-    country
-  );
-
   const taxDeductSwitchOn = () => {
     setIsTaxDeductible(!isTaxDeductible);
     if (!project.taxDeductionCountries.includes(country)) {
@@ -74,23 +52,26 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     }
   };
 
+  const [isActive, setActive] = React.useState(false);
+
+  const selectCustomTrees = () => {
+    setActive(!isActive);
+  };
+
   // to get country and currency from local storage
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('countryCode')) {
-        setCountry(localStorage.getItem('countryCode'));
-      }
-      if (localStorage.getItem('currencyCode')) {
         if (
           project.taxDeductionCountries.includes(
-            localStorage.getItem('currencyCode')
+            localStorage.getItem('countryCode') // Use this currency only if it exists in the array
           )
         ) {
-          setCurrency(localStorage.getItem('currencyCode')); // Use this currency only if it exists in the array
+          setCountry(localStorage.getItem('countryCode'));
         }
       }
     }
-  }, []);
+  }, [project]);
 
   //  to load payment data
   React.useEffect(() => {
@@ -99,13 +80,12 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         const res = await fetch(
           `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
         );
-
         const paymentSetupData = await res.json();
-        // console.log(`endpoint ${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`)
-        // console.log(paymentSetupData)
-        setPaymentSetup(paymentSetupData);
-        if (paymentSetupData.treeCost) {
+        if (paymentSetupData) {
+          setPaymentSetup(paymentSetupData);
           setTreeCost(paymentSetupData.treeCost);
+          setCurrency(paymentSetupData.currency);
+          setCountry(paymentSetupData.country);
         }
       } catch (err) {
         console.log(err);
@@ -113,7 +93,6 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     }
     loadPaymentSetup();
   }, [project, country]);
-  console.log('payment SetupData', paymentSetup);
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '') {
@@ -141,6 +120,60 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     setOpenTaxDeductionModal(false);
   };
 
+  const paymentRequest = usePaymentRequest({
+    options: {
+      country: country,
+      currency: currency.toLowerCase(),
+      total: {
+        label: 'Trees donated to Plant for the Planet',
+        amount: formatAmountForStripe(
+          treeCost * treeCount,
+          currency.toLowerCase()
+        ),
+      },
+      requestPayerName: true,
+      requestPayerEmail: true,
+    },
+    onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
+      const createDonationData = {
+        type: 'trees',
+        project: project.id,
+        treeCount: treeCount,
+        amount: treeCost * treeCount,
+        currency: currency,
+        donor: {
+          firstname: paymentMethod.billing_details.name,
+          lastname: paymentMethod.billing_details.name,
+          companyname: '',
+          email: paymentMethod.billing_details.email,
+          address: paymentMethod.billing_details.address.line1,
+          zipCode: paymentMethod.billing_details.address.postal_code,
+          city: paymentMethod.billing_details.address.city,
+          country: paymentMethod.billing_details.address.country,
+        },
+      };
+
+      createDonation(JSON.stringify(createDonationData)).then((res) => {
+        // Code for Payment API
+        const payDonationData = {
+          paymentProviderRequest: {
+            account: paymentSetup.gateways.stripe.account,
+            gateway: 'stripe',
+            source: {
+              id: paymentMethod.id,
+              object: 'payment_method',
+            },
+          },
+        };
+
+        payDonation(payDonationData, res.id);
+      });
+      complete('success');
+    },
+  });
+
+  const options = useOptions(paymentRequest);
+
   return (
     <>
       <div
@@ -166,7 +199,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <DownArrow color={'grey'} />
             </div>
             <div className={styles.rate}>
-              {project.treeCost.toFixed(2)} per tree
+              {Number(treeCost).toFixed(2)} per tree
             </div>
           </div>
         ) : (
@@ -177,7 +210,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <DownArrow color={'#87B738'} />
             </div>
             <div className={styles.rate}>
-              {project.treeCost.toFixed(2)} per tree
+              {Number(treeCost).toFixed(2)} per tree
             </div>
           </div>
         )}
@@ -194,29 +227,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
           />
         </div>
 
-        {isGift ? (
-          <div className={styles.giftContainer}>
-            <div className={styles.singleGiftContainer}>
-              <div className={styles.singleGiftTitle}>Gift Recepient</div>
-              <div className={styles.formRow}>
-                <MaterialTextFeild label="First Name" variant="outlined" />
-                <div style={{ width: '20px' }}></div>
-                <MaterialTextFeild label="Last Name" variant="outlined" />
-              </div>
-              <div className={styles.formRow}>
-                <MaterialTextFeild label="Email" variant="outlined" />
-              </div>
-              <div className={styles.formRow}>
-                <MaterialTextFeild
-                  multiline
-                  rows="4"
-                  label="Gift Message"
-                  variant="outlined"
-                />
-              </div>
-            </div>
-          </div>
-        ) : null}
+        {isGift ? <GiftForm /> : null}
 
         <div className={styles.selectTreeCount}>
           {treeCountOptions.map((option) => (
@@ -256,7 +267,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
               <div className={styles.isTaxDeductibleText}>
                 Send me a tax deduction receipt for
               </div>
-              <Switch
+              <ToggleSwitch
                 checked={isTaxDeductible}
                 onChange={taxDeductSwitchOn}
                 name="checkedB"
@@ -302,6 +313,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         )}
 
         <div className={styles.horizontalLine} />
+
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
             {currency} {(treeCount * treeCost).toFixed(2)}{' '}
@@ -310,11 +322,27 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
         </div>
 
         <div className={styles.actionButtonsContainer}>
-          <div>
-            <GpayBlack />
+          <div style={{ width: '150px' }}>
+            {paymentRequest ? (
+              <PaymentRequestButtonElement
+                className="PaymentRequestButton"
+                options={options}
+                onReady={() => {
+                  console.log('PaymentRequestButton [ready]');
+                }}
+                onClick={(event) => {
+                  console.log('PaymentRequestButton [click]', event);
+                }}
+                onBlur={() => {
+                  console.log('PaymentRequestButton [blur]');
+                }}
+                onFocus={() => {
+                  console.log('PaymentRequestButton [focus]');
+                }}
+              />
+            ) : null}
           </div>
-          <div className={styles.actionButtonsText}>OR</div>
-          <div className={styles.continueButton}>Continue</div>
+          <div className={styles.continueButton}>Or Continue</div>
         </div>
       </div>
       <SelectTaxDeductionCountryModal

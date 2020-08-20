@@ -42,22 +42,32 @@ export default function NavbarComponent(props: any) {
       icon: <Me color={router.pathname === '/me' ? '#89b35a' : '#2f3336'} />,
     },
   ];
+
   return (
     <>
       <Navbar
         fixed="top"
         className={styles.top_nav}
-        bg={props.theme === 'theme-light' ? 'light' : 'dark'}
+        bg={props.theme === 'theme-light' ? '' : 'dark'}
         variant={props.theme === 'theme-light' ? 'light' : 'dark'}
       >
         <Nav className={'d-none d-md-flex flex-row ' + styles.nav_container}>
           {menuItems.map((item) => {
             return (
-              <Nav.Link key={item.id}>
+              <Nav.Link
+                key={item.id}
+                className={item.id === 1 ? styles.first_icon : ''}
+              >
                 <Link href={item.path}>
                   <div className={styles.link_container}>
                     <div className={styles.link_icon}>{item.icon}</div>
-                    <p>{item.name}</p>
+                    <p
+                      className={
+                        router.pathname === item.path ? styles.active_icon : ''
+                      }
+                    >
+                      {item.name}
+                    </p>
                   </div>
                 </Link>
               </Nav.Link>
