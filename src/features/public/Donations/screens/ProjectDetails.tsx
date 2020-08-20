@@ -84,9 +84,12 @@ function ProjectDetails({ project }: Props): ReactElement {
 
   project.images.forEach((image: any) => {
     let imageURL = loadImageSource(image.image);
-    projectImages.push(imageURL);
+    projectImages.push({
+      url: imageURL,
+      header: { heading: image.description },
+    });
   });
-
+  console.log(projectImages);
   return (
     <>
       {/* <ProjectMap

@@ -274,6 +274,35 @@
   background: rgba(255, 255, 255, 0.8) !important;
 }
 
+.projectImageSliderContainer:first-child
+  > div:first-child
+  > div:nth-child(2)
+  > div {
+  top: auto !important;
+  left: 10px !important;
+  right: 10px;
+  bottom: 20px;
+}
+
+.projectImageSliderContainer:first-child
+  > div:first-child
+  > div:nth-child(2)
+  > div
+  > div
+  > span {
+  filter: none !important;
+}
+
+.projectImageSliderContainer:first-child
+  > div:first-child
+  > div:nth-child(2)
+  > div
+  > div
+  > span
+  > p {
+  font-size: 12pt !important;
+}
+
 .projectImages {
   height: 148px;
   width: 132px;
