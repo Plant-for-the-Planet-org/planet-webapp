@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
+import ContactDetails from './ContactDetails';
+import PaymentDetails from './PaymentDetails';
 import TreeDonation from './TreeDonation';
 
 interface Props {
@@ -8,7 +9,6 @@ interface Props {
 }
 
 function DonationsPopup({ onClose, project }: Props): ReactElement {
-  const treeCountOptions = [10, 20, 50, 150];
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
@@ -20,21 +20,6 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
   const [country, setCountry] = React.useState(project.country);
-  const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
-  const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
-    false
-  );
-
-  const taxDeductSwitchOn = () => {
-    setIsTaxDeductible(!isTaxDeductible);
-    if (!project.taxDeductionCountries.includes(country)) {
-      const displayedCountry = project.taxDeductionCountries[0];
-      const respCurrency = getCountryDataBy('countryCode', displayedCountry)
-        .currencyCode;
-      setCountry(displayedCountry);
-      setCurrency(respCurrency);
-    }
-  };
 
   // to get country and currency from local storage
   React.useEffect(() => {
@@ -63,7 +48,6 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
           setPaymentSetup(paymentSetupData);
           setTreeCost(paymentSetupData.treeCost);
           setCurrency(paymentSetupData.currency);
-          setCountry(paymentSetupData.country);
         }
       } catch (err) {
         console.log(err);
@@ -72,11 +56,50 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     loadPaymentSetup();
   }, [project, country]);
 
-  return (
-    <>
-      <TreeDonation project={project} onClose={onClose} />
-    </>
-  );
+  const [donationStep, setDonationStep] = React.useState(1);
+
+  const TreeDonationProps = {
+    project,
+    onClose,
+    treeCount,
+    setTreeCount,
+    isGift,
+    setIsGift,
+    treeCost,
+    paymentSetup,
+    isTaxDeductible,
+    setIsTaxDeductible,
+    currency,
+    setCurrency,
+    country,
+    setCountry,
+    setDonationStep,
+  };
+
+  const ContactDetailsProps = {
+    treeCount,
+    treeCost,
+    currency,
+    setDonationStep,
+  };
+
+  const PaymentDetailsProps = {
+    treeCount,
+    treeCost,
+    currency,
+    setDonationStep,
+  };
+
+  switch (donationStep) {
+    case 1:
+      return <TreeDonation {...TreeDonationProps} />;
+    case 2:
+      return <ContactDetails {...ContactDetailsProps} />;
+    case 3:
+      return <PaymentDetails {...PaymentDetailsProps} />;
+    default:
+      return <TreeDonation {...TreeDonationProps} />;
+  }
 }
 
 export default DonationsPopup;

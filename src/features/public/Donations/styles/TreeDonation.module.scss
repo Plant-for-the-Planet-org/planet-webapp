@@ -254,6 +254,9 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .horizontalLine {
