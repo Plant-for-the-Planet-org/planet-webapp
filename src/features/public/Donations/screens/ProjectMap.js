@@ -39,9 +39,12 @@ export default function ProjectMap(props) {
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: '100%',
-    latitude: lat,
-    longitude: lon,
-    zoom: zoomLevel,
+    // latitude: lat,
+    // longitude: lon,
+    latitude: 40.6892,
+    longitude: -74.5447,
+    // zoom: zoomLevel,
+    zoom: 6,
   });
 
   const _onViewportChange = (view) => setViewPort({ ...view });
@@ -67,17 +70,25 @@ export default function ProjectMap(props) {
             <div className={styles.marker}></div>
           </Marker>
         ) : (
-          <Source id="singleProject" type="geojson" data={geojson}>
-            <Layer
-              id="ploygonLayer"
-              type="fill"
-              source="singleProject"
-              paint={{
-                'fill-color': '#fff',
-                'fill-opacity': 0.2,
-              }}
-            />
-            <Layer
+          <Source
+            id="singleProject"
+            type="raster"
+            tiles={[
+              'https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015',
+            ]}
+            // tiles={[
+            //   'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/geojson(' +
+            //     encodeURI(JSON.stringify(geojson)) +
+            //     ')/' +
+            //     lat +
+            //     ',' +
+            //     lon +
+            //     '/500x300?access_token=' +
+            //     props.mapboxToken,
+            // ]}
+          >
+            <Layer id="ploygonLayer" type="raster" source="singleProject" />
+            {/* <Layer
               id="ploygonOutline"
               type="line"
               source="singleProject"
@@ -85,7 +96,7 @@ export default function ProjectMap(props) {
                 'line-color': '#89b54a',
                 'line-width': 2,
               }}
-            />
+            /> */}
           </Source>
         )}
 
