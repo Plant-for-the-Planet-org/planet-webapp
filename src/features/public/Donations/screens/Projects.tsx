@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
+import ProjectLoaderDetails from '../../../../../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import CancelIcon from './../../../../assets/images/icons/CancelIcon';
 import SearchIcon from './../../../../assets/images/icons/SearchIcon';
@@ -15,15 +16,25 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
   ssr: false,
   loading: () => <ProjectLoader />,
 });
+
+const ProjectDetails = dynamic(
+  () =>
+    import(
+      '../../../../../src/features/public/Donations/screens/ProjectDetails'
+    ),
+  { ssr: false, loading: () => <ProjectLoaderDetails /> }
+);
+
 interface Props {
-  projects: any;
+  props: any;
 }
 
-function ProjectsList({ projects }: Props): ReactElement {
+function Projects({ props }: Props): ReactElement {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
-
+  const project = props.project;
+  const projects = props.projects;
   // subtract screen height with bottom nav
   const containerHeight = screenHeight - 76;
 
@@ -85,7 +96,7 @@ function ProjectsList({ projects }: Props): ReactElement {
     projects: featuredProjects,
   };
   const ProjectsProps = {
-    projects: projects,
+    props: props,
   };
 
   // when touched on the project list container enables scrolling of list and
@@ -252,4 +263,4 @@ function ProjectsList({ projects }: Props): ReactElement {
   );
 }
 
-export default ProjectsList;
+export default Projects;

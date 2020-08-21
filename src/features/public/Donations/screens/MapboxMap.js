@@ -1,14 +1,58 @@
+import * as turf from '@turf/turf';
+import * as d3 from 'd3-ease';
 import React, { useRef, useState } from 'react';
-import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
+import MapGL, {
+  FlyToInterpolator,
+  Marker,
+  NavigationControl,
+  Popup,
+} from 'react-map-gl';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
   let mapContainer = useRef(null);
   var timer;
-  const { projects } = props;
+  console.log(props);
+  const projects = props.props.projects;
+  const project = props.props.project;
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
+
+  console.log(project);
+  if (project !== null) {
+    let lat = project.coordinates.lat;
+    let lon = project.coordinates.lon;
+    let geometryExists = false;
+    const geojson = {
+      type: 'FeatureCollection',
+      features: project.sites,
+    };
+
+    var zoomLevel = 15;
+    if (
+      typeof geojson.features !== 'undefined' &&
+      geojson.features.length > 0
+    ) {
+      if (geojson.features[0].geometry !== null) {
+        geometryExists = true;
+        var centroid = turf.centroid(geojson);
+        lat = centroid.geometry.coordinates[1];
+        lon = centroid.geometry.coordinates[0];
+        var bbox = turf.bbox(geojson);
+        var bboxPolygon = turf.bboxPolygon(bbox);
+        var area = turf.area(bboxPolygon);
+        if (area > 2000000000) {
+          zoomLevel = 10;
+        } else if (area > 600000) {
+          zoomLevel = 12;
+        } else if (area > 200000) {
+          zoomLevel = 14;
+        }
+      }
+    }
+    // _flyToProject();
+  }
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -18,7 +62,22 @@ export default function MapboxMap(props) {
     zoom: 1.4,
   });
 
-  const _onViewportChange = (view) => setViewPort({ ...view });
+  const _onViewportChange = (view) => {
+    setViewPort({ ...view });
+  };
+
+  const _flyToProject = () => {
+    const view = {
+      ...viewport,
+      longitude: lat,
+      latitude: lon,
+      zoom: zoomLevel,
+      transitionDuration: 5000,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionEasing: d3.easeCubic,
+    };
+    _onViewportChange(view);
+  };
 
   const handleClose = () => {
     setOpen(false);

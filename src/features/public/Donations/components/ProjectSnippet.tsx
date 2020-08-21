@@ -43,7 +43,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <TreeDonation project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
+      <Link prefetch={false} href={'/?id=' + project.properties.id}>
         <a>
           <div className={styles.projectImage}>
             {project.properties.image &&
