@@ -1,8 +1,8 @@
-import Switch from '@material-ui/core/Switch';
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
-import MaterialTextFeild from './../../../common/InputTypes/MaterialTextFeild';
+import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';
+import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/ContactDetails.module.scss';
 
 interface Props {
@@ -19,11 +19,12 @@ function ContactDetails({
   setDonationStep,
 }: Props): ReactElement {
   const [isCompany, setIsCompany] = React.useState(false);
-  const continueNext = () => {
+
+  const { register, handleSubmit, errors } = useForm();
+  const onSubmit = (data: any) => {
+    console.log(data);
     setDonationStep(3);
   };
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
 
   return (
     <div className={styles.container}>
@@ -140,7 +141,7 @@ function ContactDetails({
 
         <div className={styles.isCompany}>
           <div className={styles.isCompanyText}>This is a Company Donation</div>
-          <Switch
+          <ToggleSwitch
             checked={isCompany}
             onChange={() => setIsCompany(!isCompany)}
             name="checkedB"
@@ -154,7 +155,9 @@ function ContactDetails({
                 label="Company Name"
                 name="companyName"
                 variant="outlined"
-                inputRef={register({ required: true })}
+                inputRef={
+                  isCompany ? register({ required: true }) : register({})
+                }
               />
               {errors.companyName && (
                 <span className={styles.formErrors}>

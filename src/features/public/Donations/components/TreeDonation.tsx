@@ -3,7 +3,6 @@ import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import GiftForm from '../components/treeDonation/GiftForm';
 import {
   createDonation,
   payDonation,
@@ -17,6 +16,7 @@ import {
   usePaymentRequest,
 } from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
+import GiftForm from './treeDonation/GiftForm';
 
 interface Props {
   onClose: any;
@@ -34,6 +34,8 @@ interface Props {
   country: String;
   setCountry: Function;
   setDonationStep: Function;
+  giftDetails: Object;
+  setGiftDetails: Function;
 }
 
 function TreeDonation({
@@ -52,6 +54,8 @@ function TreeDonation({
   country,
   setCountry,
   setDonationStep,
+  giftDetails,
+  setGiftDetails,
 }: Props): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
@@ -135,6 +139,12 @@ function TreeDonation({
 
   const options = useOptions(paymentRequest);
 
+  const changeGiftDetails = (e: any) => {
+    setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
+
+    console.log(giftDetails);
+  };
+
   return (
     <>
       <div
@@ -187,7 +197,9 @@ function TreeDonation({
           />
         </div>
 
-        {isGift ? <GiftForm /> : null}
+        {isGift ? (
+          <GiftForm isGift={isGift} changeGiftDetails={changeGiftDetails} />
+        ) : null}
 
         <div className={styles.selectTreeCount}>
           {treeCountOptions.map((option) => (

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import ContactDetails from './ContactDetails';
-import PaymentDetails from './PaymentDetails';
-import TreeDonation from './TreeDonation';
+import ContactDetails from '../components/ContactDetails';
+import PaymentDetails from '../components/PaymentDetails';
+import TreeDonation from '../components/TreeDonation';
 
 interface Props {
   onClose: any;
@@ -58,6 +58,13 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
 
   const [donationStep, setDonationStep] = React.useState(1);
 
+  const [giftDetails, setGiftDetails] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    giftMessage: '',
+  });
+
   const TreeDonationProps = {
     project,
     onClose,
@@ -74,6 +81,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     country,
     setCountry,
     setDonationStep,
+    giftDetails,
+    setGiftDetails,
   };
 
   const ContactDetailsProps = {
