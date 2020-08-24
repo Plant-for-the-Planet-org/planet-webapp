@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   CardCvcElement,
   CardExpiryElement,
-  CardNumberElement, useElements, useStripe
+  CardNumberElement, IbanElement, useElements, useStripe
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
@@ -23,7 +23,22 @@ const FormControlNew = withStyles({
     padding: '18.5px',
   },
 })(FormControl);
-
+const ELEMENT_OPTIONS = {
+  supportedCountries: ['SEPA'],
+  style: {
+    base: {
+      fontSize: '18px',
+      color: '#424770',
+      letterSpacing: '0.025em',
+      '::placeholder': {
+        color: '#aab7c4',
+      },
+    },
+    invalid: {
+      color: '#9e2146',
+    },
+  },
+};
 const getInputOptions = (placeholder: String) => {
   const ObjectM = {
     style: {
@@ -48,7 +63,7 @@ const getInputOptions = (placeholder: String) => {
 }
 interface Props {
   project: Object;
-  paymentSetup: Object;
+  paymentSetup: any;
   treeCount: number;
   treeCost: number;
   currency: String;
@@ -75,65 +90,146 @@ function PaymentDetails({
   const elements = useElements();
 
   const [paymentError, setPaymentError] = React.useState(null);
+  // const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  //   event.preventDefault();
+  //   const { error, paymentMethod } = await stripe.createPaymentMethod({
+  //     type: 'card',
+  //     card: elements.getElement(CardNumberElement),
+  //   });
+
+  //   let createDonationData = {
+  //     type: 'trees',
+  //     project: project.id,
+  //     treeCount: treeCount,
+  //     amount: treeCost * treeCount,
+  //     currency: currency,
+  //     donor: {
+  //       firstname: contactDetails.firstName,
+  //       lastname: contactDetails.lastName,
+  //       email: contactDetails.email,
+  //       address: contactDetails.address,
+  //       zipCode: contactDetails.zipCode,
+  //       city: contactDetails.city,
+  //       country: contactDetails.country,
+  //     },
+  //   }
+  //   let gift = {
+  //     gift: {
+  //       type: 'invitation',
+  //       recipientName: giftDetails.firstName,
+  //       recipientEmail: giftDetails.email,
+  //       message: giftDetails.giftMessage
+  //     }
+  //   }
+  //   if (isGift) {
+  //     createDonationData = {
+  //       ...createDonationData,
+  //       ...gift
+  //     }
+  //   }
+
+
+  //   createDonation(createDonationData).then((res) => {
+  //     // Code for Payment API
+  //     const payDonationData = {
+  //       paymentProviderRequest: {
+  //         account: paymentSetup.gateways.stripe.account,
+  //         gateway: 'stripe_pi',
+  //         source: {
+  //           id: paymentMethod.id,
+  //           object: 'payment_method',
+  //         },
+  //       },
+  //     };
+
+  //     payDonation(payDonationData, res.id);
+  //   });
+  //   console.log('PM', paymentMethod)
+  //   // if(error){
+  //   //   setPaymentError(error)
+  //   // }
+  // };
+
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardNumberElement),
-    });
 
-    let createDonationData = {
-      type: 'trees',
-      project: project.id,
-      treeCount: treeCount,
-      amount: treeCost * treeCount,
-      currency: currency,
-      donor: {
-        firstname: contactDetails.firstName,
-        lastname: contactDetails.lastName,
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet. Make sure to disable
+      // form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const ibanElement = elements.getElement(IbanElement);
+
+    const payload = await stripe.createPaymentMethod({
+      type: 'sepa_debit',
+      sepa_debit: ibanElement,
+      billing_details: {
+        name: contactDetails.firstName,
         email: contactDetails.email,
-        address: contactDetails.address,
-        zipCode: contactDetails.zipCode,
-        city: contactDetails.city,
-        country: contactDetails.country,
       },
-    }
-    let gift = {
-      gift: {
-        type: 'invitation',
-        recipientName: giftDetails.firstName,
-        recipientEmail: giftDetails.email,
-        message: giftDetails.giftMessage
-      }
-    }
-    if (isGift) {
-      createDonationData = {
-        ...createDonationData,
-        ...gift
-      }
-    }
-
-
-    createDonation(createDonationData).then((res) => {
-      // Code for Payment API
-      const payDonationData = {
-        paymentProviderRequest: {
-          account: paymentSetup.gateways.stripe.account,
-          gateway: 'stripe_pi',
-          source: {
-            id: paymentMethod.id,
-            object: 'payment_method',
-          },
-        },
-      };
-
-      payDonation(payDonationData, res.id);
     });
-    console.log('PM', paymentMethod)
-    // if(error){
-    //   setPaymentError(error)
-    // }
+
+    if (payload.error) {
+      console.log('[error]', payload.error);
+      setPaymentError(payload.error.message);
+      // setPaymentMethod(null);
+    } else {
+      console.log('[PaymentMethod]', payload.paymentMethod);
+      // setPaymentMethod(payload.paymentMethod);
+      setPaymentError(null);
+      const paymentMethod = payload.paymentMethod
+
+      let createDonationData = {
+        type: 'trees',
+        project: project.id,
+        treeCount: treeCount,
+        amount: treeCost * treeCount,
+        currency: currency,
+        donor: {
+          firstname: contactDetails.firstName,
+          lastname: contactDetails.lastName,
+          email: contactDetails.email,
+          address: contactDetails.address,
+          zipCode: contactDetails.zipCode,
+          city: contactDetails.city,
+          country: contactDetails.country,
+        },
+      }
+      let gift = {
+        gift: {
+          type: 'invitation',
+          recipientName: giftDetails.firstName,
+          recipientEmail: giftDetails.email,
+          message: giftDetails.giftMessage
+        }
+      }
+      if (isGift) {
+        createDonationData = {
+          ...createDonationData,
+          ...gift
+        }
+      }
+
+
+      createDonation(createDonationData).then((res) => {
+        // Code for Payment API
+        const payDonationData = {
+          paymentProviderRequest: {
+            account: paymentSetup.gateways.stripe.account,
+            gateway: 'stripe_pi',
+            source: {
+              id: paymentMethod.id,
+              object: 'payment_method',
+            },
+          },
+        };
+
+        payDonation(payDonationData, res.id);
+      });
+    }
   };
+
 
   return (
     <div className={styles.container}>
@@ -223,7 +319,22 @@ function PaymentDetails({
           </div>
         </div>
       </div> */}
+      <FormControlNew variant="outlined">
+        <IbanElement
+          id="iban"
+          options={ELEMENT_OPTIONS}
+        />
+      </FormControlNew>
 
+      <div className="mandate-acceptance">
+        By providing your IBAN and confirming this payment, you authorise
+        (A) Rocketship Inc and Stripe, our payment service provider, to send
+        instructions to your bank to debit your account and (B) your bank to
+        debit your account in accordance with those instructions. You are
+        entitled to a refund from your bank under the terms and conditions of
+        your agreement with your bank. A refund must be claimed within 8 weeks
+        starting from the date on which your account was debited.
+      </div>
       <div className={styles.horizontalLine} />
 
       <div className={styles.finalTreeCount}>
