@@ -70,7 +70,7 @@ export default function MapboxMap(props) {
           latitude: 36.96,
           longitude: -28.5,
           zoom: 1.4,
-          transitionDuration: 5000,
+          transitionDuration: 2400,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
@@ -97,7 +97,7 @@ export default function MapboxMap(props) {
           longitude,
           latitude,
           zoom,
-          transitionDuration: 5000,
+          transitionDuration: 2400,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
@@ -108,7 +108,7 @@ export default function MapboxMap(props) {
           longitude: singleProjectLatLong[1],
           latitude: singleProjectLatLong[0],
           zoom: 13,
-          transitionDuration: 5000,
+          transitionDuration: 2400,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
