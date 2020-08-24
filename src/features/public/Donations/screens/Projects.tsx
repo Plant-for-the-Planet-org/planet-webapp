@@ -32,8 +32,6 @@ function ProjectsList({ projects }: Props): ReactElement {
   };
 
   async function fetchSingleProject(id: any) {
-    // setProjectId(id);
-    console.log('Project ID Changed in Index', id);
     let currencyCode;
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {

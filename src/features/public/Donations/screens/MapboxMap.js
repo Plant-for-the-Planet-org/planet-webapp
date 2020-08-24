@@ -38,14 +38,8 @@ export default function MapboxMap(props) {
     zoom: 1.4,
   });
 
-  // React.useEffect(() => {
-  //   console.log('props.showSingleProject effect', props.showSingleProject);
-  // }, [props.showSingleProject]);
-
   React.useEffect(() => {
-    console.log('project change useEffect', props.showSingleProject);
     if (props.showSingleProject) {
-      console.log('project change useEffect show single project');
       setSingleProjectLatLong([
         project.coordinates.lat,
         project.coordinates.lon,
@@ -97,7 +91,6 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
-        console.log('done');
       } else {
         const newViewport = {
           ...viewport,
@@ -109,7 +102,6 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
-        console.log(singleProjectLatLong);
       }
     }
   }, [project, geometryExists, geojson]);
@@ -137,6 +129,10 @@ export default function MapboxMap(props) {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  function goToNextProject() {
+    console.log('clicked');
+  }
 
   return (
     <div className={styles.mapContainer}>
@@ -258,6 +254,7 @@ export default function MapboxMap(props) {
         <div className={styles.mapNavigation}>
           <NavigationControl />
         </div>
+        {/* <div className={styles.projectControls} onClick={goToNextProject}></div> */}
       </MapGL>
     </div>
   );

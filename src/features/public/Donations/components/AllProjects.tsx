@@ -37,10 +37,6 @@ function AllProjects({
                 setShowSingleProject={setShowSingleProject}
                 fetchProject={async () => {
                   await fetchSingleProject(project.properties.id);
-                  console.log(
-                    'Project ID Changed in All Projects',
-                    project.properties.id
-                  );
                 }}
               />
             );
