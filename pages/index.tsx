@@ -28,6 +28,10 @@ export default function Donate() {
     }
     loadProjects();
   }, []);
+
+  // React.useEffect(() => {
+  //   fetchSingleProject(projectId);
+  // }, [projectId]);
   return (
     <Layout>
       {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading...</h2>}

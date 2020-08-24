@@ -1,6 +1,5 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
-import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
@@ -12,9 +11,16 @@ import styles from './../styles/Projects.module.scss';
 interface Props {
   project: any;
   key: number;
+  setShowSingleProject: Function;
+  fetchProject: Function;
 }
 
-export default function ProjectSnippet({ project, key }: Props): ReactElement {
+export default function ProjectSnippet({
+  project,
+  key,
+  setShowSingleProject,
+  fetchProject,
+}: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -28,6 +34,11 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   };
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleOpenProject = async () => {
+    await fetchProject();
+    setShowSingleProject(true);
   };
   const projectDetails = project.properties;
   return (
@@ -43,32 +54,32 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <TreeDonation project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
-        <a>
-          <div className={styles.projectImage}>
-            {project.properties.image &&
-            typeof project.properties.image !== 'undefined' ? (
-              <div
-                className={styles.projectImageFile}
-                style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                  backgroundPosition: 'center',
-                }}
-              ></div>
-            ) : null}
+      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}> */}
+      <a>
+        <div onClick={handleOpenProject} className={styles.projectImage}>
+          {project.properties.image &&
+          typeof project.properties.image !== 'undefined' ? (
+            <div
+              className={styles.projectImageFile}
+              style={{
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                backgroundPosition: 'center',
+              }}
+            ></div>
+          ) : null}
 
-            <div className={styles.projectImageBlock}>
-              {/* <div className={styles.projectType}>
+          <div className={styles.projectImageBlock}>
+            {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-              <div className={styles.projectName}>
-                {Sugar.String.truncate(project.properties.name, 54)}
-              </div>
+            <div className={styles.projectName}>
+              {Sugar.String.truncate(project.properties.name, 54)}
             </div>
           </div>
-        </a>
-      </Link>
+        </div>
+      </a>
+      {/* </Link> */}
 
       <div className={styles.progressBar}>
         <div
