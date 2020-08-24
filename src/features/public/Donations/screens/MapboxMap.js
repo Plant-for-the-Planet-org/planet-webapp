@@ -114,6 +114,21 @@ export default function MapboxMap(props) {
     }
   }, [project, geometryExists, geojson]);
 
+  React.useEffect(() => {
+    if (!props.showSingleProject) {
+      const newViewport = {
+        ...viewport,
+        longitude: -28.5,
+        latitude: 36.96,
+        zoom: 1.4,
+        transitionDuration: 5000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setViewPort(newViewport);
+    }
+  }, [props.showSingleProject]);
+
   const _onViewportChange = (view) => setViewPort({ ...view });
 
   const handleClose = () => {
