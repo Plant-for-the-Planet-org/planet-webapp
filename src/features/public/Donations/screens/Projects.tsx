@@ -23,7 +23,7 @@ function ProjectsList({ projects }: Props): ReactElement {
   const [top, setTop] = React.useState(!isMobile ? 60 : 200);
   const [canChangeTopValue, setCanChangeTopValue] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
-  const [project, setProject] = React.useState();
+  const [project, setProject] = React.useState(null);
   const ProjectsProps = {
     projects: projects,
     project: project,

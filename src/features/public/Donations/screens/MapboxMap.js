@@ -65,6 +65,19 @@ export default function MapboxMap(props) {
       } else {
         setGeometryExists(false);
       }
+    } else {
+      if (project !== null) {
+        const newViewport = {
+          ...viewport,
+          latitude: 36.96,
+          longitude: -28.5,
+          zoom: 1.4,
+          transitionDuration: 5000,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+        setViewPort(newViewport);
+      }
     }
   }, [project, props.showSingleProject]);
 
@@ -106,20 +119,11 @@ export default function MapboxMap(props) {
     }
   }, [project, geometryExists, geojson]);
 
-  React.useEffect(() => {
-    if (!props.showSingleProject) {
-      const newViewport = {
-        ...viewport,
-        longitude: -28.5,
-        latitude: 36.96,
-        zoom: 1.4,
-        transitionDuration: 5000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
-      };
-      setViewPort(newViewport);
-    }
-  }, [props.showSingleProject]);
+  // React.useEffect(() => {
+  //   if (!props.showSingleProject) {
+
+  //   }
+  // }, [props.showSingleProject]);
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
