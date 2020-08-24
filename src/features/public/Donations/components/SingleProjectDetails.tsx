@@ -1,5 +1,6 @@
 import Modal from '@material-ui/core/Modal';
 import React from 'react';
+import Stories from 'react-insta-stories';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
@@ -72,6 +73,40 @@ export default function SingleProjectDetails({
   const handleOpen = () => {
     setOpen(true);
   };
+
+  var projectImages = [];
+
+  project.images.forEach((image: any) => {
+    let imageURL = loadImageSource(image.image);
+    projectImages.push({
+      url: imageURL,
+      content: () => (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            background: 'url(' + imageURL + ')',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'bottom',
+          }}
+        >
+          <h1
+            style={{
+              bottom: 10,
+              color: 'white',
+              fontSize: 12,
+              fontFamily: 'Raleway, sans-serif',
+              padding: '20px 12px',
+            }}
+          >
+            {image.description}
+          </h1>
+        </div>
+      ),
+    });
+  });
 
   const ProjectProps = {
     project: project,
@@ -185,28 +220,17 @@ export default function SingleProjectDetails({
             </div>
 
             <div className={styles.projectInfoProperties}>
-              <LazyLoad>
-                <div className={styles.projectImageSliderContainer}>
-                  {project.images
-                    ? project.images.map(
-                        (image: {
-                          image: React.ReactNode;
-                          id: any;
-                          description: any;
-                        }) => {
-                          return (
-                            <img
-                              className={styles.projectImages}
-                              key={image.id}
-                              src={loadImageSource(image.image)}
-                              alt={image.description}
-                            />
-                          );
-                        }
-                      )
-                    : null}
-                </div>
-              </LazyLoad>
+              <div className={styles.projectImageSliderContainer}>
+                {project.images.length > 0 ? (
+                  <Stories
+                    stories={projectImages}
+                    defaultInterval={7000}
+                    width={325}
+                    height={244}
+                    loop={true}
+                  />
+                ) : null}
+              </div>
               {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
