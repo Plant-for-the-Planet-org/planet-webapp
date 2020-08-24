@@ -1,4 +1,5 @@
-// import d3 from 'd3';
+import * as turf from '@turf/turf';
+import * as d3 from 'd3-ease';
 import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
@@ -20,7 +21,8 @@ export default function MapboxMap(props) {
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const mapRef = React.useRef(null);
-  const sourceRef = React.useRef(null);
+  const sourceRef = React.createRef();
+  const layerRef = React.useRef(null);
   const [geometryExists, setGeometryExists] = React.useState(false);
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
     -28.5,
@@ -44,8 +46,6 @@ export default function MapboxMap(props) {
     console.log('project change useEffect', props.showSingleProject);
     if (props.showSingleProject) {
       console.log('project change useEffect show single project');
-      let lat = project.coordinates.lat;
-      let lon = project.coordinates.lon;
       setSingleProjectLatLong([
         project.coordinates.lat,
         project.coordinates.lon,
@@ -71,30 +71,48 @@ export default function MapboxMap(props) {
       } else {
         setGeometryExists(false);
       }
-      if (sourceRef.current !== null) {
-        // let sourceBound = sourceRef.current.getMap().getBounds();
-        console.log('SourceRef', sourceRef);
-        // mapRef.current.getMap().fitBounds(sourceBound);
+    }
+  }, [project, props.showSingleProject]);
+
+  React.useEffect(() => {
+    if (props.showSingleProject) {
+      if (geometryExists) {
+        var bbox = turf.bbox(geojson);
+        bbox = [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ];
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
-        ).fitBounds(sourceRef.current.getMap().getBounds(), {
-          padding: 20,
-          offset: [0, -100],
+        ).fitBounds(bbox, {
+          padding: 100,
         });
         const newViewport = {
           ...viewport,
           longitude,
           latitude,
           zoom,
-          transitionDuration: 200,
+          transitionDuration: 5000,
           transitionInterpolator: new FlyToInterpolator(),
-          // transitionEasing: d3.easeCubic,
+          transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
         console.log('done');
+      } else {
+        const newViewport = {
+          ...viewport,
+          longitude: singleProjectLatLong[1],
+          latitude: singleProjectLatLong[0],
+          zoom: 13,
+          transitionDuration: 5000,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+        setViewPort(newViewport);
+        console.log(singleProjectLatLong);
       }
     }
-  }, [project, props.showSingleProject]);
+  }, [project, geometryExists, geojson]);
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -135,6 +153,7 @@ export default function MapboxMap(props) {
               data={geojson}
             >
               <Layer
+                ref={layerRef}
                 id="ploygonLayer"
                 type="fill"
                 source="singleProject"
