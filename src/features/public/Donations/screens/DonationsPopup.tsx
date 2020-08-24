@@ -65,6 +65,19 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     giftMessage: '',
   });
 
+
+  const [contactDetails, setContactDetails] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    city: '',
+    zipCode: '',
+    country: '',
+    companyName: '',
+  });
+
+
   const TreeDonationProps = {
     project,
     onClose,
@@ -90,13 +103,20 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     treeCost,
     currency,
     setDonationStep,
+    contactDetails,
+    setContactDetails
   };
 
   const PaymentDetailsProps = {
+    project,
     treeCount,
     treeCost,
     currency,
     setDonationStep,
+    contactDetails,
+    isGift,
+    giftDetails,
+    paymentSetup
   };
 
   switch (donationStep) {

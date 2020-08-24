@@ -17,7 +17,6 @@ export default function GiftForm({
   const { register, handleSubmit, errors } = useForm();
   const changeGiftDetails = (e: any) => {
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
-    console.log(giftDetails)
   };
   return (
     <div className={styles.giftContainer}>
@@ -27,7 +26,7 @@ export default function GiftForm({
           <div>
             <MaterialTextFeild
               name={'firstName'}
-              onChange={() => changeGiftDetails}
+              onChange={changeGiftDetails}
               label="First Name"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
@@ -43,7 +42,7 @@ export default function GiftForm({
           <div>
             <MaterialTextFeild
               name={'lastName'}
-              onChange={() => changeGiftDetails}
+              onChange={changeGiftDetails}
               label="Last Name"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
@@ -59,7 +58,7 @@ export default function GiftForm({
           <div style={{ width: '100%' }}>
             <MaterialTextFeild
               name={'email'}
-              onChange={() => changeGiftDetails}
+              onChange={changeGiftDetails}
               label="Email"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
@@ -76,7 +75,7 @@ export default function GiftForm({
             label="Gift Message"
             variant="outlined"
             name={'giftMessage'}
-            onChange={() => changeGiftDetails}
+            onChange={changeGiftDetails}
           />
         </div>
       </div>

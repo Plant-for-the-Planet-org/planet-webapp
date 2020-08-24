@@ -10,6 +10,8 @@ interface Props {
   treeCost: number;
   currency: String;
   setDonationStep: Function;
+  contactDetails: Object;
+  setContactDetails: Function;
 }
 
 function ContactDetails({
@@ -17,15 +19,18 @@ function ContactDetails({
   treeCost,
   currency,
   setDonationStep,
+  contactDetails,
+  setContactDetails
 }: Props): ReactElement {
   const [isCompany, setIsCompany] = React.useState(false);
 
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
-    console.log(data);
     setDonationStep(3);
   };
-
+  const changeContactDetails = (e: any) => {
+    setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
+  };
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -45,6 +50,7 @@ function ContactDetails({
               label="First Name"
               variant="outlined"
               name="firstName"
+              onChange={changeContactDetails}
             />
             {errors.firstName && (
               <span className={styles.formErrors}>
@@ -60,6 +66,7 @@ function ContactDetails({
               label="Last Name"
               variant="outlined"
               name="lastName"
+              onChange={changeContactDetails}
             />
             {errors.lastName && (
               <span className={styles.formErrors}>
@@ -78,6 +85,7 @@ function ContactDetails({
               label="Email"
               variant="outlined"
               name="email"
+              onChange={changeContactDetails}
             />
             {errors.email && (
               <span className={styles.formErrors}>Email is required</span>
@@ -91,6 +99,7 @@ function ContactDetails({
               label="Address Line 1"
               variant="outlined"
               name="address"
+              onChange={changeContactDetails}
             />
             {errors.address && (
               <span className={styles.formErrors}>Address is required</span>
@@ -104,6 +113,7 @@ function ContactDetails({
               label="City"
               variant="outlined"
               name="city"
+              onChange={changeContactDetails}
             />
             {errors.city && (
               <span className={styles.formErrors}>City is required</span>
@@ -117,6 +127,7 @@ function ContactDetails({
               label="Zip Code"
               variant="outlined"
               name="zipCode"
+              onChange={changeContactDetails}
             />
             {errors.zipCode && (
               <span className={styles.formErrors}>
@@ -132,6 +143,7 @@ function ContactDetails({
               label="Country"
               variant="outlined"
               name="country"
+              onChange={changeContactDetails}
             />
             {errors.country && (
               <span className={styles.formErrors}>Country is required</span>
@@ -158,6 +170,7 @@ function ContactDetails({
                 inputRef={
                   isCompany ? register({ required: true }) : register({})
                 }
+                onChange={changeContactDetails}
               />
               {errors.companyName && (
                 <span className={styles.formErrors}>

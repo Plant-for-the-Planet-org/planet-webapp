@@ -106,47 +106,35 @@ function TreeDonation({
       requestPayerEmail: true,
     },
     onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
-      let createDonationData;
+      let createDonationData = {
+        type: 'trees',
+        project: project.id,
+        treeCount: treeCount,
+        amount: treeCost * treeCount,
+        currency: currency,
+        donor: {
+          firstname: paymentMethod.billing_details.name,
+          lastname: paymentMethod.billing_details.name,
+          email: paymentMethod.billing_details.email,
+          address: paymentMethod.billing_details.address.line1,
+          zipCode: paymentMethod.billing_details.address.postal_code,
+          city: paymentMethod.billing_details.address.city,
+          country: paymentMethod.billing_details.address.country,
+        },
+      }
+      let gift = {
+        gift: {
+          type: 'invitation',
+          recipientName: giftDetails.firstName,
+          recipientEmail: giftDetails.email,
+          message: giftDetails.giftMessage
+        }
+      }
       if (isGift) {
         createDonationData = {
-          type: 'trees',
-          project: project.id,
-          treeCount: treeCount,
-          amount: treeCost * treeCount,
-          currency: currency,
-          donor: {
-            firstname: paymentMethod.billing_details.name,
-            lastname: paymentMethod.billing_details.name,
-            email: paymentMethod.billing_details.email,
-            address: paymentMethod.billing_details.address.line1,
-            zipCode: paymentMethod.billing_details.address.postal_code,
-            city: paymentMethod.billing_details.address.city,
-            country: paymentMethod.billing_details.address.country,
-          },
-          gift: {
-            type: 'invitation',
-            recipientName: giftDetails.firstName,
-            recipientEmail: giftDetails.email,
-            message: giftDetails.giftMessage
-          }
+          ...createDonationData,
+          ...gift
         }
-      } else {
-        createDonationData = {
-          type: 'trees',
-          project: project.id,
-          treeCount: treeCount,
-          amount: treeCost * treeCount,
-          currency: currency,
-          donor: {
-            firstname: paymentMethod.billing_details.name,
-            lastname: paymentMethod.billing_details.name,
-            email: paymentMethod.billing_details.email,
-            address: paymentMethod.billing_details.address.line1,
-            zipCode: paymentMethod.billing_details.address.postal_code,
-            city: paymentMethod.billing_details.address.city,
-            country: paymentMethod.billing_details.address.country,
-          }
-        };
       }
 
 
@@ -170,9 +158,6 @@ function TreeDonation({
   });
 
   const options = useOptions(paymentRequest);
-
-
-
   return (
     <>
       <div
