@@ -89,7 +89,31 @@ function ProjectDetails({ project }: Props): ReactElement {
     let imageURL = loadImageSource(image.image);
     projectImages.push({
       url: imageURL,
-      header: { heading: image.description },
+      content: () => (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            background: 'url(' + imageURL + ')',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'bottom',
+          }}
+        >
+          <h1
+            style={{
+              bottom: 10,
+              color: 'white',
+              fontSize: 12,
+              fontFamily: 'Raleway, sans-serif',
+              padding: '20px 12px',
+            }}
+          >
+            {image.description}
+          </h1>
+        </div>
+      ),
     });
   });
   return (
