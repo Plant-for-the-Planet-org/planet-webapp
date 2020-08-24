@@ -4,16 +4,21 @@ import MaterialTextFeild from './../../../../common/InputTypes/MaterialTextFeild
 import styles from './../../styles/TreeDonation.module.scss';
 
 interface Props {
-  changeGiftDetails: Function;
+  setGiftDetails: Function;
   isGift: Boolean;
+  giftDetails: Object;
 }
 
 export default function GiftForm({
-  changeGiftDetails,
+  setGiftDetails,
+  giftDetails,
   isGift,
 }: Props): ReactElement {
   const { register, handleSubmit, errors } = useForm();
-
+  const changeGiftDetails = (e: any) => {
+    setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
+    console.log(giftDetails)
+  };
   return (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
@@ -22,7 +27,7 @@ export default function GiftForm({
           <div>
             <MaterialTextFeild
               name={'firstName'}
-              onChange={() => changeGiftDetails()}
+              onChange={() => changeGiftDetails}
               label="First Name"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
@@ -38,7 +43,7 @@ export default function GiftForm({
           <div>
             <MaterialTextFeild
               name={'lastName'}
-              onChange={() => changeGiftDetails()}
+              onChange={() => changeGiftDetails}
               label="Last Name"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
@@ -54,7 +59,7 @@ export default function GiftForm({
           <div style={{ width: '100%' }}>
             <MaterialTextFeild
               name={'email'}
-              onChange={() => changeGiftDetails()}
+              onChange={() => changeGiftDetails}
               label="Email"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
@@ -71,7 +76,7 @@ export default function GiftForm({
             label="Gift Message"
             variant="outlined"
             name={'giftMessage'}
-            onChange={() => changeGiftDetails()}
+            onChange={() => changeGiftDetails}
           />
         </div>
       </div>

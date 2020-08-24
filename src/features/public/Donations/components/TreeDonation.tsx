@@ -5,7 +5,7 @@ import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import {
   createDonation,
-  payDonation,
+  payDonation
 } from '../components/treeDonation/PaymentFunctions';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
@@ -13,11 +13,17 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import {
   useOptions,
-  usePaymentRequest,
+  usePaymentRequest
 } from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
 import GiftForm from './treeDonation/GiftForm';
 
+interface giftDetails {
+  firstName: String;
+  lastName: String;
+  email: String;
+  giftMessage: String;
+}
 interface Props {
   onClose: any;
   project: any;
@@ -34,7 +40,7 @@ interface Props {
   country: String;
   setCountry: Function;
   setDonationStep: Function;
-  giftDetails: Object;
+  giftDetails: giftDetails;
   setGiftDetails: Function;
 }
 
@@ -100,30 +106,56 @@ function TreeDonation({
       requestPayerEmail: true,
     },
     onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
-      const createDonationData = {
-        type: 'trees',
-        project: project.id,
-        treeCount: treeCount,
-        amount: treeCost * treeCount,
-        currency: currency,
-        donor: {
-          firstname: paymentMethod.billing_details.name,
-          lastname: paymentMethod.billing_details.name,
-          companyname: '',
-          email: paymentMethod.billing_details.email,
-          address: paymentMethod.billing_details.address.line1,
-          zipCode: paymentMethod.billing_details.address.postal_code,
-          city: paymentMethod.billing_details.address.city,
-          country: paymentMethod.billing_details.address.country,
-        },
-      };
+      let createDonationData;
+      if (isGift) {
+        createDonationData = {
+          type: 'trees',
+          project: project.id,
+          treeCount: treeCount,
+          amount: treeCost * treeCount,
+          currency: currency,
+          donor: {
+            firstname: paymentMethod.billing_details.name,
+            lastname: paymentMethod.billing_details.name,
+            email: paymentMethod.billing_details.email,
+            address: paymentMethod.billing_details.address.line1,
+            zipCode: paymentMethod.billing_details.address.postal_code,
+            city: paymentMethod.billing_details.address.city,
+            country: paymentMethod.billing_details.address.country,
+          },
+          gift: {
+            type: 'invitation',
+            recipientName: giftDetails.firstName,
+            recipientEmail: giftDetails.email,
+            message: giftDetails.giftMessage
+          }
+        }
+      } else {
+        createDonationData = {
+          type: 'trees',
+          project: project.id,
+          treeCount: treeCount,
+          amount: treeCost * treeCount,
+          currency: currency,
+          donor: {
+            firstname: paymentMethod.billing_details.name,
+            lastname: paymentMethod.billing_details.name,
+            email: paymentMethod.billing_details.email,
+            address: paymentMethod.billing_details.address.line1,
+            zipCode: paymentMethod.billing_details.address.postal_code,
+            city: paymentMethod.billing_details.address.city,
+            country: paymentMethod.billing_details.address.country,
+          }
+        };
+      }
 
-      createDonation(JSON.stringify(createDonationData)).then((res) => {
+
+      createDonation(createDonationData).then((res) => {
         // Code for Payment API
         const payDonationData = {
           paymentProviderRequest: {
             account: paymentSetup.gateways.stripe.account,
-            gateway: 'stripe',
+            gateway: 'stripe_pi',
             source: {
               id: paymentMethod.id,
               object: 'payment_method',
@@ -139,11 +171,7 @@ function TreeDonation({
 
   const options = useOptions(paymentRequest);
 
-  const changeGiftDetails = (e: any) => {
-    setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
 
-    console.log(giftDetails);
-  };
 
   return (
     <>
@@ -167,7 +195,7 @@ function TreeDonation({
             isTaxDeductible ? styles.currencyRateDisabled : styles.currencyRate
           }
           onClick={
-            !isTaxDeductible ? () => setOpenCurrencyModal(true) : () => {}
+            !isTaxDeductible ? () => setOpenCurrencyModal(true) : () => { }
           }
         >
           <div
@@ -198,7 +226,7 @@ function TreeDonation({
         </div>
 
         {isGift ? (
-          <GiftForm isGift={isGift} changeGiftDetails={changeGiftDetails} />
+          <GiftForm isGift={isGift} giftDetails={giftDetails} setGiftDetails={setGiftDetails} />
         ) : null}
 
         <div className={styles.selectTreeCount}>
@@ -256,7 +284,7 @@ function TreeDonation({
               onClick={
                 isTaxDeductible
                   ? () => setOpenTaxDeductionModal(true)
-                  : () => {}
+                  : () => { }
               }
             >
               <div
@@ -269,9 +297,9 @@ function TreeDonation({
                 {project.taxDeductionCountries.includes(country)
                   ? getCountryDataBy('countryCode', country).countryName
                   : getCountryDataBy(
-                      'countryCode',
-                      project.taxDeductionCountries[0]
-                    ).countryName}
+                    'countryCode',
+                    project.taxDeductionCountries[0]
+                  ).countryName}
               </div>
               <div className={styles.downArrow}>
                 <DownArrow color={isTaxDeductible ? '#87B738' : 'grey'} />
