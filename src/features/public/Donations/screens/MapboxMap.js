@@ -1,6 +1,6 @@
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
   Layer,
@@ -14,15 +14,11 @@ import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
-  let mapContainer = useRef(null);
   var timer;
   const projects = props.projects;
   const project = props.project;
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
-  const mapRef = React.useRef(null);
-  const sourceRef = React.createRef();
-  const layerRef = React.useRef(null);
   const [geometryExists, setGeometryExists] = React.useState(false);
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
     -28.5,
@@ -61,6 +57,8 @@ export default function MapboxMap(props) {
       ) {
         if (newGeojson.features[0].geometry !== null) {
           setGeometryExists(true);
+        } else {
+          setGeometryExists(false);
         }
       } else {
         setGeometryExists(false);
@@ -142,7 +140,6 @@ export default function MapboxMap(props) {
     <div className={styles.mapContainer}>
       <MapGL
         {...viewport}
-        ref={mapRef}
         mapboxApiAccessToken={props.mapboxToken}
         mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
         onViewportChange={_onViewportChange}
@@ -161,14 +158,8 @@ export default function MapboxMap(props) {
               <div className={styles.marker}></div>
             </Marker>
           ) : (
-            <Source
-              id="singleProject"
-              ref={sourceRef}
-              type="geojson"
-              data={geojson}
-            >
+            <Source id="singleProject" type="geojson" data={geojson}>
               <Layer
-                ref={layerRef}
                 id="ploygonLayer"
                 type="fill"
                 source="singleProject"
