@@ -8,6 +8,7 @@ export default function ProjectMap(props) {
   var timer;
   const { project } = props;
   const [popupData, setPopupData] = useState({ show: false });
+  const sourceRef = React.useRef(null);
 
   let lat = project.coordinates.lat;
   let lon = project.coordinates.lon;
@@ -67,7 +68,12 @@ export default function ProjectMap(props) {
             <div className={styles.marker}></div>
           </Marker>
         ) : (
-          <Source id="singleProject" type="geojson" data={geojson}>
+          <Source
+            id="singleProject"
+            ref={sourceRef}
+            type="geojson"
+            data={geojson}
+          >
             <Layer
               id="ploygonLayer"
               type="fill"
