@@ -104,7 +104,7 @@ function SingleProjectDetails({
               color: 'white',
               fontSize: 14,
               fontFamily: styles.primaryFontFamily,
-              padding: '16px 12px',
+              padding: '14px 12px',
             }}
           >
             {image.description}

@@ -3,7 +3,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
-import Stories from 'react-insta-stories';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
@@ -236,14 +235,7 @@ function ProjectDetails({ project }: Props): ReactElement {
               <div className={styles.projectInfoProperties}>
                 <div className={styles.projectImageSliderContainer}>
                   {project.images.length > 0 ? (
-                    // <ImageSlider project={projectImages} />
-                    <Stories
-                      stories={projectImages}
-                      defaultInterval={7000}
-                      width={325}
-                      height={244}
-                      loop={true}
-                    />
+                    <ImageSlider project={projectImages} />
                   ) : null}
                 </div>
                 {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
