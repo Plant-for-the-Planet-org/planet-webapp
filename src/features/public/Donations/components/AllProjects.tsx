@@ -8,9 +8,15 @@ const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
 });
 interface Props {
   projects: any;
+  setShowSingleProject: Function;
+  fetchSingleProject: Function;
 }
 
-function AllProjects({ projects }: Props): ReactElement {
+function AllProjects({
+  projects,
+  setShowSingleProject,
+  fetchSingleProject,
+}: Props): ReactElement {
   if (projects.length < 1) {
     return (
       <div>
@@ -24,7 +30,16 @@ function AllProjects({ projects }: Props): ReactElement {
       <div>
         <LazyLoad>
           {projects.map((project: any) => {
-            return <ProjectSnippet key={project.id} project={project} />;
+            return (
+              <ProjectSnippet
+                key={project.properties.id}
+                project={project}
+                setShowSingleProject={setShowSingleProject}
+                fetchProject={async () => {
+                  await fetchSingleProject(project.properties.id);
+                }}
+              />
+            );
           })}
         </LazyLoad>
       </div>
