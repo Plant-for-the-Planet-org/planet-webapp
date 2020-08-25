@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .backgroundImage {
@@ -34,15 +33,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 70vw;
+  justify-content: center;
+  max-width: 80vw;
+  height: calc(100vh - 76px);
 }
 
 .landingContent > h2 {
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: 600;
-  font-size: 56px;
-  line-height: 60px;
+  font-size: 30px;
+  line-height: 40px;
   text-align: center;
   letter-spacing: -0.006em;
   color: #080707;
@@ -83,6 +84,7 @@
   min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 40px;
+  display: flex;
 }
 
 .treeCounterSectionText {
@@ -120,6 +122,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  order: -1;
 }
 
 .treeCounter {
@@ -127,9 +130,10 @@
   right: 0px;
   z-index: 1;
 }
+
 .treeCounterImage {
-  height: 280px;
-  width: 288px;
+  height: 120px;
+  width: 128px;
   position: absolute;
   left: 0px;
   bottom: 40px;
@@ -508,4 +512,31 @@
   width: fit-content;
   border-radius: 4px;
   margin-top: 44px;
+}
+
+@include tabletView {
+  .landingSection {
+    justify-content: center;
+  }
+
+  .landingContent {
+    max-width: 70vw;
+  }
+
+  .landingContent > h2 {
+    font-size: 56px;
+    line-height: 60px;
+  }
+
+  .treeCounterSection {
+    order: 0;
+  }
+
+  .treeCounterImage {
+    height: 280px;
+    width: 288px;
+    position: absolute;
+    left: 0px;
+    bottom: 40px;
+  }
 }

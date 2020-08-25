@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './../About.module.scss';
-export default function LeaderBoard() {
+import styles from './../LeaderBoard.module.scss';
+export default function LeaderBoardSection() {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   return (
     <section className={styles.leaderBoardSection}>

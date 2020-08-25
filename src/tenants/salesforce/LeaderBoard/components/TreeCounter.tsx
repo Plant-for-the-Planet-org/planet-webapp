@@ -1,6 +1,6 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import TreeCounter from '../../TreeCounter/TreeCounter';
-import styles from './../About.module.scss';
+import styles from './../LeaderBoard.module.scss';
 
 export default function TreeCounterSection() {
   return (

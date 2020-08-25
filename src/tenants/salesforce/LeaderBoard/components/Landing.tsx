@@ -1,5 +1,5 @@
 import LazyLoad from 'react-lazyload';
-import styles from './../About.module.scss';
+import styles from './../LeaderBoard.module.scss';
 
 export default function Landing() {
   return (

@@ -1,12 +1,18 @@
-import Layout from '../src/features/common/Layout';
 import dynamic from 'next/dynamic';
+import Layout from '../src/features/common/Layout';
 
 const Tenant = process.env.TENANT ? process.env.TENANT : 'plantfortheplanet';
-const AboutPage = dynamic(() => import(`../src/tenants/${Tenant}/About/About`));
+const LeaderBoardPage = dynamic(() =>
+  import(
+    `../src/tenants/${Tenant}/${
+      Tenant !== 'plantfortheplanet' ? 'LeaderBoard' : 'About/About'
+    }`
+  )
+);
 export default function LeaderBoard() {
   return (
     <Layout>
-      <AboutPage />
+      <LeaderBoardPage />
     </Layout>
   );
 }
