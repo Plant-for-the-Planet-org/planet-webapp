@@ -1,6 +1,7 @@
 import Modal from '@material-ui/core/Modal';
-import React from 'react';
-import Stories from 'react-insta-stories';
+import { Elements } from '@stripe/react-stripe-js';
+import dynamic from 'next/dynamic';
+import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
@@ -10,9 +11,9 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-// import getStripe from '../../../../utils/getStripe';
+import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-// import TreeDonation from '../screens/TreeDonation';
+import TreeDonation from '../screens/TreeDonation';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
@@ -20,10 +21,15 @@ interface Props {
   setShowSingleProject: Function;
 }
 
-export default function SingleProjectDetails({
+const ImageSlider = dynamic(() => import('../components/ImageSlider'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
+
+function SingleProjectDetails({
   project,
   setShowSingleProject,
-}: Props) {
+}: Props): ReactElement {
   const [rating, setRating] = React.useState<number | null>(2);
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
@@ -85,24 +91,24 @@ export default function SingleProjectDetails({
           style={{
             height: '100%',
             width: '100%',
-            background: 'url(' + imageURL + ')',
+            background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-end',
             alignItems: 'bottom',
           }}
         >
-          <h1
+          <p
             style={{
               bottom: 10,
               color: 'white',
-              fontSize: 12,
-              fontFamily: 'Raleway, sans-serif',
-              padding: '20px 12px',
+              fontSize: 14,
+              fontFamily: styles.primaryFontFamily,
+              padding: '16px 12px',
             }}
           >
             {image.description}
-          </h1>
+          </p>
         </div>
       ),
     });
@@ -121,9 +127,9 @@ export default function SingleProjectDetails({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {/* <Elements stripe={getStripe()}>
+        <Elements stripe={getStripe()}>
           <TreeDonation project={project} onClose={handleClose} />
-        </Elements> */}
+        </Elements>
       </Modal>
       <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
@@ -222,13 +228,7 @@ export default function SingleProjectDetails({
             <div className={styles.projectInfoProperties}>
               <div className={styles.projectImageSliderContainer}>
                 {project.images.length > 0 ? (
-                  <Stories
-                    stories={projectImages}
-                    defaultInterval={7000}
-                    width={325}
-                    height={244}
-                    loop={true}
-                  />
+                  <ImageSlider project={projectImages} />
                 ) : null}
               </div>
               {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
@@ -246,3 +246,5 @@ export default function SingleProjectDetails({
     </div>
   );
 }
+
+export default SingleProjectDetails;

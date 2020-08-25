@@ -23,6 +23,11 @@ const ProjectMap = dynamic(() => import('./ProjectMap'), {
   loading: () => <p>Loading...</p>,
 });
 
+const ImageSlider = dynamic(() => import('../components/ImageSlider'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
+
 interface Props {
   project: any;
 }
@@ -94,24 +99,24 @@ function ProjectDetails({ project }: Props): ReactElement {
           style={{
             height: '100%',
             width: '100%',
-            background: 'url(' + imageURL + ')',
+            background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-end',
             alignItems: 'bottom',
           }}
         >
-          <h1
+          <p
             style={{
               bottom: 10,
               color: 'white',
-              fontSize: 12,
-              fontFamily: 'Raleway, sans-serif',
-              padding: '20px 12px',
+              fontSize: 14,
+              fontFamily: styles.primaryFontFamily,
+              padding: '14px 12px',
             }}
           >
             {image.description}
-          </h1>
+          </p>
         </div>
       ),
     });
@@ -231,6 +236,7 @@ function ProjectDetails({ project }: Props): ReactElement {
               <div className={styles.projectInfoProperties}>
                 <div className={styles.projectImageSliderContainer}>
                   {project.images.length > 0 ? (
+                    // <ImageSlider project={projectImages} />
                     <Stories
                       stories={projectImages}
                       defaultInterval={7000}
