@@ -42,6 +42,8 @@ interface Props {
   setDonationStep: Function;
   giftDetails: giftDetails;
   setGiftDetails: Function;
+  paymentType: String;
+  setPaymentType: Function;
 }
 
 function TreeDonation({
@@ -62,6 +64,7 @@ function TreeDonation({
   setDonationStep,
   giftDetails,
   setGiftDetails,
+  paymentType, setPaymentType
 }: Props): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
@@ -90,6 +93,7 @@ function TreeDonation({
   const continueNext = () => {
     setDonationStep(2);
   };
+
 
   const paymentRequest = usePaymentRequest({
     options: {
@@ -137,7 +141,7 @@ function TreeDonation({
         }
       }
 
-
+      setPaymentType(paymentRequest._activeBackingLibraryName);
       createDonation(createDonationData).then((res) => {
         // Code for Payment API
         const payDonationData = {
@@ -151,11 +155,16 @@ function TreeDonation({
           },
         };
 
-        payDonation(payDonationData, res.id);
+        payDonation(payDonationData, res.id).then((res) => {
+          if (res.paymentStatus === 'success') {
+            setDonationStep(4);
+          }
+        });
       });
       complete('success');
     },
   });
+
 
   const options = useOptions(paymentRequest);
   return (

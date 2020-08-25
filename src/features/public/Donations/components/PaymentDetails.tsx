@@ -9,6 +9,7 @@ import React, { ReactElement } from 'react';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import InfoIcon from '../../../../assets/images/icons/donation/InfoIcon';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
+import SepaIcon from '../../../../assets/images/icons/donation/SepaIcon';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/PaymentDetails.module.scss';
@@ -19,7 +20,7 @@ const FormControlNew = withStyles({
     backgroundColor: '#F2F2F7',
     border: '0px!important',
     borderRadius: '10px',
-    fontFamily: 'Raleway',
+    fontFamily: 'Raleway, sans-serif',
     padding: '18.5px',
   },
 })(FormControl);
@@ -27,11 +28,13 @@ const ELEMENT_OPTIONS = {
   supportedCountries: ['SEPA'],
   style: {
     base: {
-      fontSize: '18px',
+      fontSize: '14px',
       color: '#424770',
       letterSpacing: '0.025em',
+      fontFamily: 'Raleway, sans-serif',
       '::placeholder': {
         color: '#aab7c4',
+        fontFamily: 'Raleway, sans-serif',
       },
     },
     invalid: {
@@ -44,11 +47,11 @@ const getInputOptions = (placeholder: String) => {
     style: {
       base: {
         color: "#32325d",
-        fontFamily: 'Raleway',
+        fontFamily: 'Raleway, sans-serif',
         fontSize: "16px",
         "::placeholder": {
           color: '#2F3336',
-          fontFamily: 'Raleway',
+          fontFamily: 'Raleway, sans-serif',
           fontSize: '14px',
         },
       },
@@ -71,6 +74,8 @@ interface Props {
   contactDetails: Object;
   isGift: Boolean;
   giftDetails: Object;
+  paymentType: String;
+  setPaymentType: Function;
 }
 
 function PaymentDetails({
@@ -82,154 +87,100 @@ function PaymentDetails({
   setDonationStep,
   contactDetails,
   isGift,
-  giftDetails
+  giftDetails,
+  paymentType, setPaymentType
 }: Props): ReactElement {
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
   const elements = useElements();
 
+  React.useEffect(() => {
+    setPaymentType('CARD')
+  }, [])
+
+  const [isSepa, setIsSepa] = React.useState(false)
+
   const [paymentError, setPaymentError] = React.useState(null);
-  // const handleSubmit = async (event: { preventDefault: () => void; }) => {
-  //   event.preventDefault();
-  //   const { error, paymentMethod } = await stripe.createPaymentMethod({
-  //     type: 'card',
-  //     card: elements.getElement(CardNumberElement),
-  //   });
-
-  //   let createDonationData = {
-  //     type: 'trees',
-  //     project: project.id,
-  //     treeCount: treeCount,
-  //     amount: treeCost * treeCount,
-  //     currency: currency,
-  //     donor: {
-  //       firstname: contactDetails.firstName,
-  //       lastname: contactDetails.lastName,
-  //       email: contactDetails.email,
-  //       address: contactDetails.address,
-  //       zipCode: contactDetails.zipCode,
-  //       city: contactDetails.city,
-  //       country: contactDetails.country,
-  //     },
-  //   }
-  //   let gift = {
-  //     gift: {
-  //       type: 'invitation',
-  //       recipientName: giftDetails.firstName,
-  //       recipientEmail: giftDetails.email,
-  //       message: giftDetails.giftMessage
-  //     }
-  //   }
-  //   if (isGift) {
-  //     createDonationData = {
-  //       ...createDonationData,
-  //       ...gift
-  //     }
-  //   }
-
-
-  //   createDonation(createDonationData).then((res) => {
-  //     // Code for Payment API
-  //     const payDonationData = {
-  //       paymentProviderRequest: {
-  //         account: paymentSetup.gateways.stripe.account,
-  //         gateway: 'stripe_pi',
-  //         source: {
-  //           id: paymentMethod.id,
-  //           object: 'payment_method',
-  //         },
-  //       },
-  //     };
-
-  //     payDonation(payDonationData, res.id);
-  //   });
-  //   console.log('PM', paymentMethod)
-  //   // if(error){
-  //   //   setPaymentError(error)
-  //   // }
-  // };
-
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
       return;
     }
 
-    const ibanElement = elements.getElement(IbanElement);
+    let paymentMethod: { id: any; };
+    let error;
 
-    const payload = await stripe.createPaymentMethod({
-      type: 'sepa_debit',
-      sepa_debit: ibanElement,
-      billing_details: {
-        name: contactDetails.firstName,
-        email: contactDetails.email,
-      },
-    });
-
-    if (payload.error) {
-      console.log('[error]', payload.error);
-      setPaymentError(payload.error.message);
-      // setPaymentMethod(null);
-    } else {
-      console.log('[PaymentMethod]', payload.paymentMethod);
-      // setPaymentMethod(payload.paymentMethod);
-      setPaymentError(null);
-      const paymentMethod = payload.paymentMethod
-
-      let createDonationData = {
-        type: 'trees',
-        project: project.id,
-        treeCount: treeCount,
-        amount: treeCost * treeCount,
-        currency: currency,
-        donor: {
-          firstname: contactDetails.firstName,
-          lastname: contactDetails.lastName,
-          email: contactDetails.email,
-          address: contactDetails.address,
-          zipCode: contactDetails.zipCode,
-          city: contactDetails.city,
-          country: contactDetails.country,
-        },
-      }
-      let gift = {
-        gift: {
-          type: 'invitation',
-          recipientName: giftDetails.firstName,
-          recipientEmail: giftDetails.email,
-          message: giftDetails.giftMessage
-        }
-      }
-      if (isGift) {
-        createDonationData = {
-          ...createDonationData,
-          ...gift
-        }
-      }
-
-
-      createDonation(createDonationData).then((res) => {
-        // Code for Payment API
-        const payDonationData = {
-          paymentProviderRequest: {
-            account: paymentSetup.gateways.stripe.account,
-            gateway: 'stripe_pi',
-            source: {
-              id: paymentMethod.id,
-              object: 'payment_method',
-            },
-          },
-        };
-
-        payDonation(payDonationData, res.id);
+    if (paymentType === 'CARD') {
+      const payload = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardNumberElement),
       });
+      paymentMethod = payload.paymentMethod;
+    } else if (paymentType === 'SEPA') {
+      const payload = await stripe.createPaymentMethod({
+        type: 'sepa_debit',
+        sepa_debit: elements.getElement(IbanElement),
+        billing_details: {
+          name: contactDetails.firstName,
+          email: contactDetails.email,
+        },
+      });
+      paymentMethod = payload.paymentMethod;
     }
-  };
+    let createDonationData = {
+      type: 'trees',
+      project: project.id,
+      treeCount: treeCount,
+      amount: treeCost * treeCount,
+      currency: currency,
+      donor: {
+        firstname: contactDetails.firstName,
+        lastname: contactDetails.lastName,
+        email: contactDetails.email,
+        address: contactDetails.address,
+        zipCode: contactDetails.zipCode,
+        city: contactDetails.city,
+        country: contactDetails.country,
+      },
+    }
+    let gift = {
+      gift: {
+        type: 'invitation',
+        recipientName: giftDetails.firstName,
+        recipientEmail: giftDetails.email,
+        message: giftDetails.giftMessage
+      }
+    }
+    if (isGift) {
+      createDonationData = {
+        ...createDonationData,
+        ...gift
+      }
+    }
+    createDonation(createDonationData).then((res) => {
+      // Code for Payment API
+      const payDonationData = {
+        paymentProviderRequest: {
+          account: paymentSetup.gateways.stripe.account,
+          gateway: 'stripe_pi',
+          source: {
+            id: paymentMethod.id,
+            object: 'payment_method',
+          },
+        },
+      };
 
+      payDonation(payDonationData, res.id).then((res) => {
+        if (res.paymentStatus === 'success') {
+          setDonationStep(4);
+        }
+      });
+    });
+    // if(error){
+    //   setPaymentError(error)
+    // }
+  };
 
   return (
     <div className={styles.container}>
@@ -309,8 +260,10 @@ function PaymentDetails({
         </div>
       </div>
 
-      {/* <div className={styles.paymentModeContainer}>
-        <div className={styles.paymentModeHeader}>
+      <div className={styles.paymentModeContainer}>
+        <div onClick={() => {
+          setIsSepa(!isSepa), setPaymentType('SEPA')
+        }} className={styles.paymentModeHeader}>
           <SepaIcon />
           <div className={styles.paymentModeTitle}>SEPA Direct Debit</div>
           <div className={styles.paymentModeFee}>
@@ -318,32 +271,32 @@ function PaymentDetails({
             <InfoIcon />
           </div>
         </div>
-      </div> */}
-      <FormControlNew variant="outlined">
-        <IbanElement
-          id="iban"
-          options={ELEMENT_OPTIONS}
-        />
-      </FormControlNew>
 
-      <div className="mandate-acceptance">
-        By providing your IBAN and confirming this payment, you authorise
-        (A) Rocketship Inc and Stripe, our payment service provider, to send
-        instructions to your bank to debit your account and (B) your bank to
-        debit your account in accordance with those instructions. You are
-        entitled to a refund from your bank under the terms and conditions of
-        your agreement with your bank. A refund must be claimed within 8 weeks
-        starting from the date on which your account was debited.
+        {isSepa && (<div>
+          <div className={styles.mandateAcceptance}>
+            By providing your IBAN and confirming this payment, you authorise
+            (A) Rocketship Inc and Stripe, our payment service provider, to send
+            instructions to your bank to debit your account and (B) your bank to
+            debit your account in accordance with those instructions. You are
+            entitled to a refund from your bank under the terms and conditions of
+            your agreement with your bank. A refund must be claimed within 8 weeks
+            starting from the date on which your account was debited.
+      </div>
+          <FormControlNew variant="outlined">
+            <IbanElement
+              id="iban"
+              options={ELEMENT_OPTIONS}
+            />
+          </FormControlNew>
+        </div>)}
       </div>
       <div className={styles.horizontalLine} />
-
       <div className={styles.finalTreeCount}>
         <div className={styles.totalCost}>
           {currency} {(treeCount * treeCost).toFixed(2)}{' '}
         </div>
         <div className={styles.totalCostText}>for {treeCount} Trees</div>
       </div>
-
       <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
         <div className={styles.continueButton}>Continue</div>
       </div>

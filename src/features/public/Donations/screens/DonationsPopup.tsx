@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import ContactDetails from '../components/ContactDetails';
 import PaymentDetails from '../components/PaymentDetails';
+import ThankYou from '../components/ThankYou';
 import TreeDonation from '../components/TreeDonation';
 
 interface Props {
@@ -20,6 +21,9 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
   const [country, setCountry] = React.useState(project.country);
+
+  const [paymentType, setPaymentType] = React.useState('');
+
 
   // to get country and currency from local storage
   React.useEffect(() => {
@@ -96,6 +100,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setDonationStep,
     giftDetails,
     setGiftDetails,
+    paymentType, setPaymentType
   };
 
   const ContactDetailsProps = {
@@ -116,9 +121,21 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     contactDetails,
     isGift,
     giftDetails,
-    paymentSetup
+    paymentSetup,
+    paymentType, setPaymentType
   };
 
+  const ThankYouProps = {
+    project,
+    treeCount,
+    treeCost,
+    currency,
+    setDonationStep,
+    contactDetails,
+    isGift,
+    giftDetails,
+    onClose, paymentType
+  };
   switch (donationStep) {
     case 1:
       return <TreeDonation {...TreeDonationProps} />;
@@ -126,6 +143,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
       return <ContactDetails {...ContactDetailsProps} />;
     case 3:
       return <PaymentDetails {...PaymentDetailsProps} />;
+    case 4:
+      return <ThankYou {...ThankYouProps} />;
     default:
       return <TreeDonation {...TreeDonationProps} />;
   }

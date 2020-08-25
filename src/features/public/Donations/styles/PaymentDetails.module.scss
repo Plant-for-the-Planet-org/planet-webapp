@@ -163,3 +163,11 @@
   font-size: $fontSubTitleSize;
   color: $primaryFontColor;
 }
+
+.mandateAcceptance{
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize - 2;
+  color: $primaryFontColor;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
