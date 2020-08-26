@@ -1,20 +1,10 @@
 import React, { ReactElement } from 'react';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import PlanetLogo from '../../../../assets/images/PlanetLogo';
+import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 
-interface Props {
-    project: Object;
-    treeCount: number;
-    treeCost: number;
-    currency: String;
-    setDonationStep: Function;
-    contactDetails: Object;
-    isGift: Boolean;
-    giftDetails: Object;
-    onClose: any;
-    paymentType: String;
-}
+
 
 function ThankYou({ project,
     treeCount,
@@ -22,7 +12,7 @@ function ThankYou({ project,
     currency,
     contactDetails,
     isGift,
-    giftDetails, onClose, paymentType }: Props): ReactElement {
+    giftDetails, onClose, paymentType }: ThankYouProps): ReactElement {
 
     let paymentTypeUsed;
     switch (paymentType) {

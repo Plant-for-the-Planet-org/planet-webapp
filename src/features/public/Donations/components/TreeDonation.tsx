@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import { TreeDonationProps } from '../../../common/types/donations';
 import {
   createDonation,
   payDonation
@@ -13,34 +14,6 @@ import Close from './../../../../assets/images/icons/headerIcons/close';
 import styles from './../styles/TreeDonation.module.scss';
 import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
-
-interface giftDetails {
-  firstName: String;
-  lastName: String;
-  email: String;
-  giftMessage: String;
-}
-interface Props {
-  onClose: any;
-  project: any;
-  treeCount: number;
-  setTreeCount: Function;
-  isGift: Boolean;
-  setIsGift: Function;
-  treeCost: number;
-  paymentSetup: any;
-  isTaxDeductible: Boolean;
-  setIsTaxDeductible: Function;
-  currency: String;
-  setCurrency: Function;
-  country: String;
-  setCountry: Function;
-  setDonationStep: Function;
-  giftDetails: giftDetails;
-  setGiftDetails: Function;
-  paymentType: String;
-  setPaymentType: Function;
-}
 
 function TreeDonation({
   project,
@@ -61,7 +34,7 @@ function TreeDonation({
   giftDetails,
   setGiftDetails,
   paymentType, setPaymentType
-}: Props): ReactElement {
+}: TreeDonationProps): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
@@ -290,10 +263,15 @@ function TreeDonation({
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
 
-            <PaymentRequestCustomButton country={country} currency={currency} amount={formatAmountForStripe(
-              treeCost * treeCount,
-              currency.toLowerCase()
-            )} onPaymentFunction={onPaymentFunction} />
+            <PaymentRequestCustomButton
+
+              country={country}
+              currency={currency}
+              amount={formatAmountForStripe(
+                treeCost * treeCount,
+                currency.toLowerCase()
+              )}
+              onPaymentFunction={onPaymentFunction} />
             {/* {paymentRequest ? 'Or' : null} */}
           </div>
           <div onClick={() => continueNext()} className={styles.continueButton}>

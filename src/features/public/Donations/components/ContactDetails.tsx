@@ -4,15 +4,8 @@ import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import { ContactDetailsPageProps } from './../../../common/types/donations';
 import styles from './../styles/ContactDetails.module.scss';
-interface Props {
-  treeCount: number;
-  treeCost: number;
-  currency: String;
-  setDonationStep: Function;
-  contactDetails: Object;
-  setContactDetails: Function;
-}
 
 function ContactDetails({
   treeCount,
@@ -21,7 +14,7 @@ function ContactDetails({
   setDonationStep,
   contactDetails,
   setContactDetails
-}: Props): ReactElement {
+}: ContactDetailsPageProps): ReactElement {
   const [isCompany, setIsCompany] = React.useState(false);
 
   const { register, handleSubmit, errors } = useForm();
@@ -148,7 +141,6 @@ function ContactDetails({
 
             <AutoCompleteCountry inputRef={register({ required: true })}
               label="Country"
-              variant="outlined"
               name="country"
               onChange={changeContactDetails} />
             {errors.country && (

@@ -9,8 +9,10 @@ import React, { ReactElement } from 'react';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import { PaymentDetailsProps } from './../../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation } from './treeDonation/PaymentFunctions';
+
 const FormControlNew = withStyles({
   root: {
     width: '100%',
@@ -39,7 +41,7 @@ const ELEMENT_OPTIONS = {
     },
   },
 };
-const getInputOptions = (placeholder: String) => {
+const getInputOptions = (placeholder: string) => {
   const ObjectM = {
     style: {
       base: {
@@ -61,19 +63,7 @@ const getInputOptions = (placeholder: String) => {
   };
   return ObjectM;
 }
-interface Props {
-  project: Object;
-  paymentSetup: any;
-  treeCount: number;
-  treeCost: number;
-  currency: String;
-  setDonationStep: Function;
-  contactDetails: Object;
-  isGift: Boolean;
-  giftDetails: Object;
-  paymentType: String;
-  setPaymentType: Function;
-}
+
 
 function PaymentDetails({
   paymentSetup,
@@ -86,7 +76,7 @@ function PaymentDetails({
   isGift,
   giftDetails,
   paymentType, setPaymentType
-}: Props): ReactElement {
+}: PaymentDetailsProps): ReactElement {
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
@@ -105,19 +95,20 @@ function PaymentDetails({
       return;
     }
 
-    let paymentMethod: { id: any; };
+    let paymentMethod: any;
     let error;
 
     if (paymentType === 'CARD') {
+      const cardElement = elements!.getElement(CardNumberElement);
       const payload = await stripe.createPaymentMethod({
         type: 'card',
-        card: elements.getElement(CardNumberElement),
+        card: cardElement!,
       });
       paymentMethod = payload.paymentMethod;
     } else if (paymentType === 'SEPA') {
       const payload = await stripe.createPaymentMethod({
         type: 'sepa_debit',
-        sepa_debit: elements.getElement(IbanElement),
+        sepa_debit: elements.getElement(IbanElement)!,
         billing_details: {
           name: contactDetails.firstName,
           email: contactDetails.email,

@@ -1,7 +1,8 @@
 import { PaymentRequestButtonElement, useStripe } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
 
-export const useOptions = (paymentRequest) => {
+export const useOptions = (paymentRequest: null) => {
+  const typeOfButton = "donate";
   const options = useMemo(
     () => ({
       paymentRequest,
@@ -9,7 +10,7 @@ export const useOptions = (paymentRequest) => {
         paymentRequestButton: {
           theme: 'dark',
           height: '36px',
-          type: 'donate',
+          type: typeOfButton,
         },
       },
     }),
@@ -19,9 +20,12 @@ export const useOptions = (paymentRequest) => {
   return options;
 };
 
-export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymentFunction }) => {
+interface PaymentButtonProps {
+  country: string; currency: String; amount: number; onPaymentFunction: Function;
+}
+export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymentFunction }: PaymentButtonProps) => {
   const stripe = useStripe();
-  const [paymentRequest, setPaymentRequest] = useState(null)
+  const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
   useEffect(() => {
     let subscribed = true;
     if (paymentRequest) {
-      paymentRequest.canMakePayment().then((res) => {
+      paymentRequest?.canMakePayment().then((res: any) => {
         if (res && subscribed) {
           setCanMakePayment(true);
         }
@@ -65,16 +69,16 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
 
   useEffect(() => {
     if (paymentRequest) {
-      paymentRequest.on('paymentmethod',
-        ({ complete, paymentMethod, ...data }) => {
+      paymentRequest?.on('paymentmethod',
+        ({ complete, paymentMethod, ...data }: any) => {
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
         });
     }
     return () => {
       if (paymentRequest) {
-        paymentRequest.off('paymentmethod',
-          ({ complete, paymentMethod, ...data }) => {
+        paymentRequest?.off('paymentmethod',
+          ({ complete, paymentMethod, ...data }: any) => {
             onPaymentFunction(paymentMethod, paymentRequest);
             complete('success');
           });
