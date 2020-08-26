@@ -25,6 +25,8 @@ export default function MapboxMap(props) {
     36.96,
   ]);
   const [geojson, setGeojson] = React.useState({});
+  const [maxSites, setMaxSites] = React.useState();
+  const [currentSite, setCurrentSite] = React.useState();
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -57,6 +59,8 @@ export default function MapboxMap(props) {
       ) {
         if (newGeojson.features[0].geometry !== null) {
           setGeometryExists(true);
+          setCurrentSite(0);
+          setMaxSites(newGeojson.features.length);
         } else {
           setGeometryExists(false);
         }
@@ -82,7 +86,7 @@ export default function MapboxMap(props) {
   React.useEffect(() => {
     if (props.showSingleProject) {
       if (geometryExists) {
-        var bbox = turf.bbox(geojson);
+        var bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
           [bbox[0], bbox[1]],
           [bbox[2], bbox[3]],
@@ -117,11 +121,32 @@ export default function MapboxMap(props) {
     }
   }, [project, geometryExists, geojson]);
 
-  // React.useEffect(() => {
-  //   if (!props.showSingleProject) {
-
-  //   }
-  // }, [props.showSingleProject]);
+  React.useEffect(() => {
+    if (props.showSingleProject && geometryExists) {
+      if (currentSite < maxSites) {
+        var bbox = turf.bbox(geojson.features[currentSite]);
+        bbox = [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ];
+        const { longitude, latitude, zoom } = new WebMercatorViewport(
+          viewport
+        ).fitBounds(bbox, {
+          padding: 100,
+        });
+        const newViewport = {
+          ...viewport,
+          longitude,
+          latitude,
+          zoom,
+          transitionDuration: 2400,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+        setViewPort(newViewport);
+      }
+    }
+  }, [currentSite]);
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -133,7 +158,19 @@ export default function MapboxMap(props) {
   };
 
   function goToNextProject() {
-    console.log('clicked');
+    if (currentSite < maxSites - 1) {
+      setCurrentSite(currentSite + 1);
+    } else {
+      setCurrentSite(0);
+    }
+  }
+
+  function goToPrevProject() {
+    if (currentSite > 0) {
+      setCurrentSite(currentSite - 1);
+    } else {
+      setCurrentSite(maxSites - 1);
+    }
   }
 
   return (
@@ -249,7 +286,21 @@ export default function MapboxMap(props) {
         <div className={styles.mapNavigation}>
           <NavigationControl />
         </div>
-        {/* <div className={styles.projectControls} onClick={goToNextProject}></div> */}
+        {geometryExists ? (
+          maxSites > 1 ? (
+            <div className={styles.projectControls}>
+              <p onClick={goToPrevProject}>Prev</p>
+              <p>
+                &nbsp;&nbsp;
+                {geometryExists
+                  ? project.sites[currentSite].properties.name
+                  : null}
+                &nbsp;&nbsp;
+              </p>
+              <p onClick={goToNextProject}>Next</p>
+            </div>
+          ) : null
+        ) : null}
       </MapGL>
     </div>
   );
