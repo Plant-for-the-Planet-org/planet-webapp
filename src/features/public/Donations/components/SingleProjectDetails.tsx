@@ -2,6 +2,7 @@ import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
+import ReactPlayer from 'react-player/lazy';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
@@ -186,6 +187,15 @@ export default function SingleProjectDetails({
             </div>
 
             <div className={styles.projectInfoProperties}>
+              {ReactPlayer.canPlay(project.videoUrl) ? (
+                <ReactPlayer
+                  width="312px"
+                  height="180px"
+                  loop={true}
+                  light={true}
+                  url={project.videoUrl}
+                />
+              ) : null}
               <LazyLoad>
                 <div className={styles.projectImageSliderContainer}>
                   {project.images
