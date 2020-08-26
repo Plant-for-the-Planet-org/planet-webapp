@@ -1,4 +1,3 @@
-import { PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
@@ -11,11 +10,8 @@ import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal'
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
-import {
-  useOptions,
-  usePaymentRequest
-} from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
+import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
 
 interface giftDetails {
@@ -94,79 +90,60 @@ function TreeDonation({
     setDonationStep(2);
   };
 
-
-  const paymentRequest = usePaymentRequest({
-    options: {
-      country: country,
-      currency: currency.toLowerCase(),
-      total: {
-        label: 'Trees donated to Plant for the Planet',
-        amount: formatAmountForStripe(
-          treeCost * treeCount,
-          currency.toLowerCase()
-        ),
+  const onPaymentFunction = (paymentMethod: any) => {
+    let createDonationData = {
+      type: 'trees',
+      project: project.id,
+      treeCount: treeCount,
+      amount: treeCost * treeCount,
+      currency: currency,
+      donor: {
+        firstname: paymentMethod.billing_details.name,
+        lastname: paymentMethod.billing_details.name,
+        email: paymentMethod.billing_details.email,
+        address: paymentMethod.billing_details.address.line1,
+        zipCode: paymentMethod.billing_details.address.postal_code,
+        city: paymentMethod.billing_details.address.city,
+        country: paymentMethod.billing_details.address.country,
       },
-      requestPayerName: true,
-      requestPayerEmail: true,
-    },
-    onPaymentMethod: ({ complete, paymentMethod, ...data }: any) => {
-      let createDonationData = {
-        type: 'trees',
-        project: project.id,
-        treeCount: treeCount,
-        amount: treeCost * treeCount,
-        currency: currency,
-        donor: {
-          firstname: paymentMethod.billing_details.name,
-          lastname: paymentMethod.billing_details.name,
-          email: paymentMethod.billing_details.email,
-          address: paymentMethod.billing_details.address.line1,
-          zipCode: paymentMethod.billing_details.address.postal_code,
-          city: paymentMethod.billing_details.address.city,
-          country: paymentMethod.billing_details.address.country,
-        },
+    }
+    let gift = {
+      gift: {
+        type: 'invitation',
+        recipientName: giftDetails.firstName,
+        recipientEmail: giftDetails.email,
+        message: giftDetails.giftMessage
       }
-      let gift = {
-        gift: {
-          type: 'invitation',
-          recipientName: giftDetails.firstName,
-          recipientEmail: giftDetails.email,
-          message: giftDetails.giftMessage
-        }
+    }
+    if (isGift) {
+      createDonationData = {
+        ...createDonationData,
+        ...gift
       }
-      if (isGift) {
-        createDonationData = {
-          ...createDonationData,
-          ...gift
-        }
-      }
+    }
 
-      setPaymentType(paymentRequest._activeBackingLibraryName);
-      createDonation(createDonationData).then((res) => {
-        // Code for Payment API
-        const payDonationData = {
-          paymentProviderRequest: {
-            account: paymentSetup.gateways.stripe.account,
-            gateway: 'stripe_pi',
-            source: {
-              id: paymentMethod.id,
-              object: 'payment_method',
-            },
+    setPaymentType(paymentRequest._activeBackingLibraryName);
+    createDonation(createDonationData).then((res) => {
+      // Code for Payment API
+      const payDonationData = {
+        paymentProviderRequest: {
+          account: paymentSetup.gateways.stripe.account,
+          gateway: 'stripe_pi',
+          source: {
+            id: paymentMethod.id,
+            object: 'payment_method',
           },
-        };
+        },
+      };
 
-        payDonation(payDonationData, res.id).then((res) => {
-          if (res.paymentStatus === 'success') {
-            setDonationStep(4);
-          }
-        });
+      payDonation(payDonationData, res.id).then((res) => {
+        if (res.paymentStatus === 'success') {
+          setDonationStep(4);
+        }
       });
-      complete('success');
-    },
-  });
 
-
-  const options = useOptions(paymentRequest);
+    });
+  }
   return (
     <>
       <div
@@ -313,27 +290,13 @@ function TreeDonation({
 
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
-            {paymentRequest ? (
-              <PaymentRequestButtonElement
-                className="PaymentRequestButton"
-                options={options}
-                onReady={() => {
-                  console.log('PaymentRequestButton [ready]');
-                }}
-                onClick={(event) => {
-                  console.log('PaymentRequestButton [click]', event);
-                }}
-                onBlur={() => {
-                  console.log('PaymentRequestButton [blur]');
-                }}
-                onFocus={() => {
-                  console.log('PaymentRequestButton [focus]');
-                }}
-              />
-            ) : null}
-          </div>
-          {paymentRequest ? 'Or' : null}
 
+            <PaymentRequestCustomButton country={country} currency={currency} amount={formatAmountForStripe(
+              treeCost * treeCount,
+              currency.toLowerCase()
+            )} onPaymentFunction={onPaymentFunction} />
+            {/* {paymentRequest ? 'Or' : null} */}
+          </div>
           <div onClick={() => continueNext()} className={styles.continueButton}>
             Continue
           </div>
