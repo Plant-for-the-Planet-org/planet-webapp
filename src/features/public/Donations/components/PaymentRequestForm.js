@@ -67,7 +67,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
     if (paymentRequest) {
       paymentRequest.on('paymentmethod',
         ({ complete, paymentMethod, ...data }) => {
-          onPaymentFunction(paymentMethod);
+          onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
         });
     }
@@ -75,7 +75,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
       if (paymentRequest) {
         paymentRequest.off('paymentmethod',
           ({ complete, paymentMethod, ...data }) => {
-            onPaymentFunction(paymentMethod);
+            onPaymentFunction(paymentMethod, paymentRequest);
             complete('success');
           });
       }

@@ -30,7 +30,7 @@ function ThankYou({ project,
         case 'SEPA': paymentTypeUsed = 'SEPA DBIT CARD'; break;
         case 'GOOGLE_PAY': paymentTypeUsed = 'Google Pay'; break;
         case 'APPLE_PAY': paymentTypeUsed = 'Apple Pay'; break;
-        case 'Browser': paymentTypeUsed = 'Browser'; break;
+        case 'BROWSER': paymentTypeUsed = 'Browser'; break;
         default: paymentTypeUsed = 'Credit Card';
     }
     return (

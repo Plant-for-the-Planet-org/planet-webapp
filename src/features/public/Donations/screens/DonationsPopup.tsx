@@ -85,6 +85,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     companyName: '',
   });
 
+  console.log(contactDetails)
 
   const TreeDonationProps = {
     project,

@@ -90,7 +90,7 @@ function TreeDonation({
     setDonationStep(2);
   };
 
-  const onPaymentFunction = (paymentMethod: any) => {
+  const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
     let createDonationData = {
       type: 'trees',
       project: project.id,
@@ -121,7 +121,6 @@ function TreeDonation({
         ...gift
       }
     }
-
     setPaymentType(paymentRequest._activeBackingLibraryName);
     createDonation(createDonationData).then((res) => {
       // Code for Payment API

@@ -7,11 +7,8 @@ import {
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
-import InfoIcon from '../../../../assets/images/icons/donation/InfoIcon';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
-import SepaIcon from '../../../../assets/images/icons/donation/SepaIcon';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation } from './treeDonation/PaymentFunctions';
 const FormControlNew = withStyles({
@@ -201,18 +198,18 @@ function PaymentDetails({
       <div className={styles.paymentModeContainer}>
         <div className={styles.paymentModeHeader}>
           <CreditCard />
-          <div className={styles.paymentModeTitle}>Credit Card</div>
-          <div className={styles.paymentModeFee}>
+          <div className={styles.paymentModeTitle}>Credit/Debit Card</div>
+          {/* <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
             <InfoIcon />
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.formRow}>
           <FormControlNew variant="outlined">
             <CardNumberElement
               id="cardNumber"
-              options={getInputOptions('Credit Card Number')}
+              options={getInputOptions('Card Number')}
             />
 
           </FormControlNew>
@@ -222,7 +219,7 @@ function PaymentDetails({
           <FormControlNew variant="outlined">
             <CardExpiryElement
               id="expiry"
-              options={getInputOptions('Exp. Date')}
+              options={getInputOptions('Exp. Date (MM/YY)')}
             />
 
           </FormControlNew>
@@ -235,7 +232,7 @@ function PaymentDetails({
 
           </FormControlNew>
         </div>
-        <div className={styles.saveCard}>
+        {/* <div className={styles.saveCard}>
           <div className={styles.saveCardText}>
             Save card for future Donations
           </div>
@@ -245,7 +242,7 @@ function PaymentDetails({
             name="checkedB"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.paymentModeContainer}>
@@ -253,14 +250,14 @@ function PaymentDetails({
           {/* <PaypalButton /> */}
           <PaypalIcon />
           <div className={styles.paymentModeTitle}>Paypal</div>
-          <div className={styles.paymentModeFee}>
+          {/* <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
             <InfoIcon />
-          </div>
+          </div> */}
         </div>
       </div>
 
-      <div className={styles.paymentModeContainer}>
+      {/* <div className={styles.paymentModeContainer}>
         <div onClick={() => {
           setIsSepa(!isSepa), setPaymentType('SEPA')
         }} className={styles.paymentModeHeader}>
@@ -289,7 +286,9 @@ function PaymentDetails({
             />
           </FormControlNew>
         </div>)}
-      </div>
+      </div> */}
+
+
       <div className={styles.horizontalLine} />
       <div className={styles.finalTreeCount}>
         <div className={styles.totalCost}>

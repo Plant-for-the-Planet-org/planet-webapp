@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/ContactDetails.module.scss';
-
 interface Props {
   treeCount: number;
   treeCost: number;
@@ -30,6 +30,7 @@ function ContactDetails({
   };
   const changeContactDetails = (e: any) => {
     setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
+    console.log(contactDetails)
   };
   return (
     <div className={styles.container}>
@@ -51,6 +52,7 @@ function ContactDetails({
               variant="outlined"
               name="firstName"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.firstName}
             />
             {errors.firstName && (
               <span className={styles.formErrors}>
@@ -67,6 +69,7 @@ function ContactDetails({
               variant="outlined"
               name="lastName"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.lastName}
             />
             {errors.lastName && (
               <span className={styles.formErrors}>
@@ -86,6 +89,7 @@ function ContactDetails({
               variant="outlined"
               name="email"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.email}
             />
             {errors.email && (
               <span className={styles.formErrors}>Email is required</span>
@@ -96,10 +100,11 @@ function ContactDetails({
           <div style={{ width: '100%' }}>
             <MaterialTextFeild
               inputRef={register({ required: true })}
-              label="Address Line 1"
+              label="Address"
               variant="outlined"
               name="address"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.address}
             />
             {errors.address && (
               <span className={styles.formErrors}>Address is required</span>
@@ -114,6 +119,7 @@ function ContactDetails({
               variant="outlined"
               name="city"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.city}
             />
             {errors.city && (
               <span className={styles.formErrors}>City is required</span>
@@ -128,6 +134,7 @@ function ContactDetails({
               variant="outlined"
               name="zipCode"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.zipCode}
             />
             {errors.zipCode && (
               <span className={styles.formErrors}>
@@ -138,13 +145,12 @@ function ContactDetails({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
-              inputRef={register({ required: true })}
+
+            <AutoCompleteCountry inputRef={register({ required: true })}
               label="Country"
               variant="outlined"
               name="country"
-              onChange={changeContactDetails}
-            />
+              onChange={changeContactDetails} />
             {errors.country && (
               <span className={styles.formErrors}>Country is required</span>
             )}
@@ -171,6 +177,7 @@ function ContactDetails({
                   isCompany ? register({ required: true }) : register({})
                 }
                 onChange={changeContactDetails}
+                defaultValue={contactDetails.companyName}
               />
               {errors.companyName && (
                 <span className={styles.formErrors}>
