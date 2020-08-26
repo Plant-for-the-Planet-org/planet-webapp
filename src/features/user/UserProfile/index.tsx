@@ -7,6 +7,8 @@ import MyForestContainer from './components/MyForestContainer';
 import Footer from '../../common/Footer';
 import UserInfo from './components/UserInfo';
 
+import SettingsModal from './components/SettingsModal';
+
 export default function UserProfile({ userprofile }: any) {
   const scrollRef = useRef(null);
 
@@ -19,14 +21,34 @@ export default function UserProfile({ userprofile }: any) {
     }
   }
 
+  // settings modal
+  const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
+  const handleSettingsModalClose = () => {
+    setSettingsModalOpen(false);
+  };
+  const handleSettingsModalOpen = () => {
+    setSettingsModalOpen(true);
+  };
+
+   
+
   return (
     <React.Fragment>
       <main>
         {/* will render only if it is ME page */}
         {userprofile.isMe && (
-          <div className={styles.settingsIcon}>
-            <Settings color="white" />
-          </div>
+          <>
+            <div
+              className={styles.settingsIcon}
+              onClick={handleSettingsModalOpen}
+            >
+              <Settings color="white" />
+            </div>
+            <SettingsModal
+              settingsModalOpen={settingsModalOpen}
+              handleSettingsModalClose={handleSettingsModalClose}
+            />
+          </>
         )}
         {userprofile.isMe && (
           <div className={styles.downIcon} onClick={handleClick}>
@@ -39,8 +61,8 @@ export default function UserProfile({ userprofile }: any) {
           <UserInfo userprofile={userprofile} />
         </LandingSection>
 
-          {/* my forest section */}
-          {userprofile.isMe && (
+        {/* my forest section */}
+        {userprofile.isMe && (
           <div ref={scrollRef} className={styles.myForestContainer}>
             <MyForestContainer userprofile={userprofile} />
           </div>
@@ -50,9 +72,6 @@ export default function UserProfile({ userprofile }: any) {
         <div className={styles.footerDiv}>
           <Footer />
         </div>
-        
-
-        
       </main>
     </React.Fragment>
   );

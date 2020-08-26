@@ -7,35 +7,26 @@ import UserProfileOptions from './UserProfileOptions';
 
 export default function MyForestItem({ userprofile }: any) {
   return (
-
-    
-
-
     <div className={styles.landingContent}>
-        
-            <TreeCounter
-              target={userprofile.countTarget}
-              planted={userprofile.countPlanted}
-            />
+      <TreeCounter
+        target={userprofile.countTarget}
+        planted={userprofile.countPlanted}
+      />
 
-            <h2 className={styles.treeCounterName}>
-              {userprofile.displayName}
-            </h2>
+      <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
 
-            {/* will render only if it is ME page */}
-            {userprofile.isMe && (
-              <React.Fragment>
-                {/* user description */}
-                <p className={styles.treeCounterDescription}>
-                  {userprofile.description}{' '}
-                </p>
+      {/* will render only if it is ME page */}
+      {userprofile.isMe && (
+        <React.Fragment>
+          {/* user description */}
+          <p className={styles.treeCounterDescription}>
+            {userprofile.description}{' '}
+          </p>
 
-                {/* three icons in a row */}
-                <UserProfileOptions userprofile={userprofile} />
-              </React.Fragment>
-            )}
-          </div>
+          {/* three icons in a row */}
+          <UserProfileOptions userprofile={userprofile} />
+        </React.Fragment>
+      )}
+    </div>
   );
 }
-
-

@@ -104,7 +104,6 @@
   }
 }
 
-
 /* My Forest Section - for ME Page*/
 
 // the outer white background
@@ -118,80 +117,11 @@
   z-index: 5;
   top: 180px;
   flex-direction: column;
-  align-items: center;  //>>>  for vertically centre
-  justify-content: center;   // >>>  for horizontally center
+  align-items: center; //>>>  for vertically centre
+  justify-content: center; // >>>  for horizontally center
 }
 
-// heading and two boxes
-.outerMyForestContainer {
-  display: flex;
-  flex-direction: column; 
-}
 
-.myForestTitleText {
-  font-family: $primaryFontFamily;
-  text-align: left;
-  padding: 0px 0px 0px 8px;
-  width: 100%;
-}
-
-// desktop view= > float: row => (list beside maps)
-.innerMyForestContainer {
-  display: flex;
-  float: right;
-  flex-direction: row-reverse; 
-}
-
-.forestListSection {
-  width: 30vw;
-  height: 70vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.mapSection {
-  width: 50vw;
-  height: 70vh;
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-
-.forestItem {
-  font-family: $primaryFontFamily;
-  padding: 10px 10px;
-  border-color: rgba(29, 15, 15, 0.2);
-  border-width: 1px 0px 0px 0px;
-  width: 40vw;
-  border-style: solid;
-  background-color: $light;
-}
-
-// mobile view (list below map)
-@media only screen and (max-width: 768px) {
-  .myForestContainer{
-    padding-top: 0px;
-  }
-  .innerMyForestContainer {
-    display: block;
-    float:none;
-  }
-  .mapSection {
-    width: 100vw;   
-    height: 50vh;   //only cover half screen
-    overflow-y: visible;
-  }
-  .forestListSection {
-    width: 100vw;
-    min-height: 50vh;  //list can overflow
-    overflow-y: visible;    // all list items to be displayed 
-    margin-bottom: 100px;
-  }
-  .myForestTitleText{
-    display: none;
-  }
-  .forestItem {
-    width: 100vw;
-  }
-}
 
 /* Footer */
 .footerDiv {

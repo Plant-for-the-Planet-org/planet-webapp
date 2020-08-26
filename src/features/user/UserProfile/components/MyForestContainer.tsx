@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import styles from '../UserProfile.module.scss';
+import styles from '../styles/MyForestContainer.module.scss';
 import Layout from '../../../common/Layout';
 import MyForestItem from '../components/MyForestItem';
 import LazyLoad from 'react-lazyload';
