@@ -1,6 +1,4 @@
-import CircularProgress, {
-  CircularProgressProps,
-} from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
 import Sugar from 'sugar';
@@ -21,8 +19,9 @@ const useStylesFacebook = makeStyles((theme: Theme) =>
   })
 );
 
-function FacebookCircularProgress(props: CircularProgressProps) {
+function FacebookCircularProgress(props: any) {
   const classes = useStylesFacebook();
+  const { isMobile } = props;
 
   return (
     <div className={classes.root}>
@@ -33,8 +32,8 @@ function FacebookCircularProgress(props: CircularProgressProps) {
         classes={{
           circle: classes.circle,
         }}
-        size={340}
-        thickness={4.6}
+        size={isMobile ? 206 : 340}
+        thickness={isMobile ? 3.6 : 4.6}
         {...props}
       />
     </div>
@@ -43,6 +42,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
 
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
+  const isMobile = window.innerWidth <= 768;
 
   React.useEffect(() => {
     let percentage = (props.planted / props.target) * 100;
@@ -74,7 +74,7 @@ export default function TpoProfile(props: any) {
           <h2>Target</h2>
         </div>
       </div>
-      <FacebookCircularProgress value={progress} />
+      <FacebookCircularProgress value={50} isMobile={isMobile} />
     </div>
   );
 }

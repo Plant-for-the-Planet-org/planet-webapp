@@ -2,7 +2,7 @@
 
 .landingSection {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 76px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -13,10 +13,8 @@
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 100vh;
+  height: 100%;
   padding-top: 48vh;
-  border-bottom-left-radius: 90%;
-  border-bottom-right-radius: 90%;
   overflow: hidden;
   width: 100vw;
   position: absolute;
@@ -33,7 +31,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  margin-top: 60px;
   max-width: 80vw;
   height: calc(100vh - 76px);
 }
@@ -53,7 +51,7 @@
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   text-align: center;
   color: #080707;
@@ -95,8 +93,8 @@
 
 .treeCounterSectionTextHeader {
   font-weight: 600;
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 24px;
+  line-height: 28px;
   letter-spacing: -0.4px;
   color: #080707;
   font-family: $primaryFontFamily;
@@ -105,8 +103,8 @@
 .treeCounterSectionTextPara {
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .treeCounterSectionTextLink {
@@ -146,6 +144,7 @@
   padding-top: 40px;
   padding-bottom: 40px;
   overflow: hidden;
+  margin: 0px;
 }
 
 .learnMoreSectionText {
@@ -365,7 +364,7 @@
   cursor: pointer;
 }
 .leaderBoardBody {
-  width: 528px;
+  width: 100%;
   margin-top: 60px;
 }
 .leaderBoardBodyRow {
@@ -519,7 +518,14 @@
     justify-content: center;
   }
 
+  .backgroundImage {
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+
   .landingContent {
+    justify-content: center;
+    margin-top: 0px;
     max-width: 70vw;
   }
 
@@ -538,5 +544,19 @@
     position: absolute;
     left: 0px;
     bottom: 40px;
+  }
+
+  .leaderBoardBody {
+    width: 528px;
+    margin-top: 60px;
+  }
+
+  .treeCounterSectionTextHeader {
+    font-size: 36px;
+    line-height: 40px;
+  }
+  .treeCounterSectionTextPara {
+    font-size: 16px;
+    line-height: 24px;
   }
 }
