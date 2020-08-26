@@ -23,7 +23,6 @@ function ContactDetails({
   };
   const changeContactDetails = (e: any) => {
     setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
-    console.log(contactDetails)
   };
   return (
     <div className={styles.container}>
