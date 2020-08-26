@@ -1,3 +1,5 @@
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
 import React, { useState } from 'react';
@@ -289,15 +291,15 @@ export default function MapboxMap(props) {
         {props.showSingleProject && geometryExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
-              <p onClick={goToPrevProject}>Prev</p>
-              <p>
-                &nbsp;&nbsp;
-                {geometryExists
-                  ? project.sites[currentSite].properties.name
-                  : null}
-                &nbsp;&nbsp;
-              </p>
-              <p onClick={goToNextProject}>Next</p>
+              <ChevronLeftIcon onClick={goToPrevProject} />
+              {/* <p> */}
+              &nbsp;&nbsp;
+              {geometryExists
+                ? project.sites[currentSite].properties.name
+                : null}
+              &nbsp;&nbsp;
+              {/* </p> */}
+              <ChevronRightIcon onClick={goToNextProject} />
             </div>
           ) : null
         ) : null}

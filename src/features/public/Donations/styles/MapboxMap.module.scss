@@ -64,6 +64,9 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
+  font-family: $primaryFontFamily;
+  font-size: 14px;
 }
 
 @media only screen and (max-width: 768px) {
