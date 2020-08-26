@@ -1,4 +1,5 @@
 import Modal from '@material-ui/core/Modal';
+import { Elements } from '@stripe/react-stripe-js';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 import Sugar from 'sugar';
@@ -9,9 +10,9 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-// import getStripe from '../../../../utils/getStripe';
+import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-// import TreeDonation from '../screens/TreeDonation';
+import TreeDonation from '../screens/TreeDonation';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
@@ -86,9 +87,9 @@ export default function SingleProjectDetails({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {/* <Elements stripe={getStripe()}>
+        <Elements stripe={getStripe()}>
           <TreeDonation project={project} onClose={handleClose} />
-        </Elements> */}
+        </Elements>
       </Modal>
       <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
