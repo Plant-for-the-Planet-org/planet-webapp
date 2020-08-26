@@ -286,7 +286,7 @@ export default function MapboxMap(props) {
         <div className={styles.mapNavigation}>
           <NavigationControl />
         </div>
-        {geometryExists ? (
+        {props.showSingleProject && geometryExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
               <p onClick={goToPrevProject}>Prev</p>
