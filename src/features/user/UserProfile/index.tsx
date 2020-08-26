@@ -1,16 +1,15 @@
 import React, { useRef } from 'react';
 import LandingSection from '../../common/Layout/LandingSection';
-import TreeCounter from './../../common/TreeCounter/TreeCounter';
 import styles from './UserProfile.module.scss';
 import Settings from '../../../assets/images/icons/userProfileIcons/Settings';
 import ScrollDown from '../../../assets/images/icons/userProfileIcons/ScrollDown';
-import UserProfileOptions from './components/UserProfileOptions';
 import MyForestContainer from './components/MyForestContainer';
 import Footer from '../../common/Footer';
+import UserInfo from './components/UserInfo';
 
 export default function UserProfile({ userprofile }: any) {
   const scrollRef = useRef(null);
-  
+
   function handleClick() {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({
@@ -35,42 +34,26 @@ export default function UserProfile({ userprofile }: any) {
           </div>
         )}
 
-        <LandingSection>
-          <div className={styles.landingContent}>
-            <TreeCounter
-              target={userprofile.countTarget}
-              planted={userprofile.countPlanted}
-            />
-
-            <h2 className={styles.treeCounterName}>
-              {userprofile.displayName}
-            </h2>
-
-            {/* will render only if it is ME page */}
-            {userprofile.isMe && (
-              <React.Fragment>
-                {/* user description */}
-                <p className={styles.treeCounterDescription}>
-                  {userprofile.description}{' '}
-                </p>
-
-                {/* three icons in a row */}
-                <UserProfileOptions userprofile={userprofile} />
-              </React.Fragment>
-            )}
-          </div>
+        {/* userinfo section */}
+        <LandingSection fixedBg>
+          <UserInfo userprofile={userprofile} />
         </LandingSection>
 
-        {/* my forest section */}
-        {userprofile.isMe && (
+          {/* my forest section */}
+          {userprofile.isMe && (
           <div ref={scrollRef} className={styles.myForestContainer}>
             <MyForestContainer userprofile={userprofile} />
           </div>
         )}
+
+        {/* footer */}
+        <div className={styles.footerDiv}>
+          <Footer />
+        </div>
+        
+
+        
       </main>
-      {/* <div className={styles.footerDiv}>
-        <Footer />
-      </div> */}
     </React.Fragment>
   );
 }

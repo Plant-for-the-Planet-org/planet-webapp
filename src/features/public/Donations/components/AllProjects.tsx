@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
+import styles from './../styles/AllProjects.module.scss';
 
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
   loading: () => <ProjectLoader />,
@@ -27,7 +28,7 @@ function AllProjects({
     );
   } else {
     return (
-      <div>
+      <div className={styles.allProjectsContainer}>
         <LazyLoad>
           {projects.map((project: any) => {
             return (
