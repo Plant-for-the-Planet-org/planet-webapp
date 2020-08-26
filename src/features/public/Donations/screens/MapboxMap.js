@@ -292,13 +292,13 @@ export default function MapboxMap(props) {
           maxSites > 1 ? (
             <div className={styles.projectControls}>
               <ChevronLeftIcon onClick={goToPrevProject} />
-              {/* <p> */}
-              &nbsp;&nbsp;
-              {geometryExists
-                ? project.sites[currentSite].properties.name
-                : null}
-              &nbsp;&nbsp;
-              {/* </p> */}
+              <p className={styles.projectControlText}>
+                &nbsp;&nbsp;
+                {geometryExists
+                  ? project.sites[currentSite].properties.name
+                  : null}
+                &nbsp;&nbsp;
+              </p>
               <ChevronRightIcon onClick={goToNextProject} />
             </div>
           ) : null
