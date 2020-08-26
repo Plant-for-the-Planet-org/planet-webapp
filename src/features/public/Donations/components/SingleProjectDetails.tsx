@@ -189,10 +189,12 @@ export default function SingleProjectDetails({
             <div className={styles.projectInfoProperties}>
               {ReactPlayer.canPlay(project.videoUrl) ? (
                 <ReactPlayer
+                  className={styles.projectVideoContainer}
                   width="312px"
-                  height="180px"
+                  height="220px"
                   loop={true}
                   light={true}
+                  controls={true}
                   config={{
                     youtube: {
                       playerVars: { autoplay: 1 },
