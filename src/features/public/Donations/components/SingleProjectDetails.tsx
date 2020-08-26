@@ -13,7 +13,7 @@ import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import TreeDonation from '../screens/TreeDonation';
+import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
@@ -89,7 +89,7 @@ export default function SingleProjectDetails({
         aria-describedby="simple-modal-description"
       >
         <Elements stripe={getStripe()}>
-          <TreeDonation project={project} onClose={handleClose} />
+          <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
       <div className={styles.projectContainer}>
@@ -159,8 +159,8 @@ export default function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
+                        ? '€'
+                        : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
@@ -207,21 +207,21 @@ export default function SingleProjectDetails({
                 <div className={styles.projectImageSliderContainer}>
                   {project.images
                     ? project.images.map(
-                        (image: {
-                          image: React.ReactNode;
-                          id: any;
-                          description: any;
-                        }) => {
-                          return (
-                            <img
-                              className={styles.projectImages}
-                              key={image.id}
-                              src={loadImageSource(image.image)}
-                              alt={image.description}
-                            />
-                          );
-                        }
-                      )
+                      (image: {
+                        image: React.ReactNode;
+                        id: any;
+                        description: any;
+                      }) => {
+                        return (
+                          <img
+                            className={styles.projectImages}
+                            key={image.id}
+                            src={loadImageSource(image.image)}
+                            alt={image.description}
+                          />
+                        );
+                      }
+                    )
                     : null}
                 </div>
               </LazyLoad>

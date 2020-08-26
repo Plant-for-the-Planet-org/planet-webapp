@@ -29,11 +29,15 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('countryCode')) {
-        if (
-          project.taxDeductionCountries.includes(
-            localStorage.getItem('countryCode') // Use this currency only if it exists in the array
-          )
-        ) {
+        if (isTaxDeductible) {
+          if (
+            project.taxDeductionCountries.includes(
+              localStorage.getItem('countryCode') // Use this currency only if it exists in the array
+            )
+          ) {
+            setCountry(localStorage.getItem('countryCode'));
+          }
+        } else {
           setCountry(localStorage.getItem('countryCode'));
         }
       }
