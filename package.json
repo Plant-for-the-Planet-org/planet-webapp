@@ -33,6 +33,7 @@
     "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",
     "react-map-gl": "^5.2.7",
+    "react-player": "^2.6.1",
     "sugar": "^2.0.6"
   },
   "devDependencies": {
