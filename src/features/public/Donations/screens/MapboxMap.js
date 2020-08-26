@@ -294,7 +294,9 @@ export default function MapboxMap(props) {
               <ChevronLeftIcon onClick={goToPrevProject} />
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {siteExists ? project.sites[currentSite].properties.name : null}
+                {siteExists && project.sites.length != 0
+                  ? project.sites[currentSite].properties.name
+                  : null}
                 &nbsp;&nbsp;
               </p>
               <ChevronRightIcon onClick={goToNextProject} />
