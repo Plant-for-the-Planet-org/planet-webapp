@@ -193,6 +193,11 @@ export default function SingleProjectDetails({
                   height="180px"
                   loop={true}
                   light={true}
+                  config={{
+                    youtube: {
+                      playerVars: { autoplay: 1 },
+                    },
+                  }}
                   url={project.videoUrl}
                 />
               ) : null}
