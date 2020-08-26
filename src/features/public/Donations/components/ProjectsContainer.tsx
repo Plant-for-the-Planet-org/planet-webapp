@@ -191,7 +191,7 @@ export default function ProjectsContainer({
                       : styles.tabButtonText
                   }
                 >
-                  Transparent Projects
+                  Top Projects
                 </div>
                 {selectedTab === 'featured' ? (
                   <div className={styles.tabButtonSelectedIndicator} />

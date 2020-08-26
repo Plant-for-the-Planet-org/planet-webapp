@@ -21,7 +21,7 @@ export default function MapboxMap(props) {
   const project = props.project;
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
-  const [geometryExists, setGeometryExists] = React.useState(false);
+  const [siteExists, setsiteExists] = React.useState(false);
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
     -28.5,
     36.96,
@@ -60,14 +60,14 @@ export default function MapboxMap(props) {
         newGeojson.features.length > 0
       ) {
         if (newGeojson.features[0].geometry !== null) {
-          setGeometryExists(true);
+          setsiteExists(true);
           setCurrentSite(0);
           setMaxSites(newGeojson.features.length);
         } else {
-          setGeometryExists(false);
+          setsiteExists(false);
         }
       } else {
-        setGeometryExists(false);
+        setsiteExists(false);
       }
     } else {
       if (project !== null) {
@@ -87,7 +87,7 @@ export default function MapboxMap(props) {
 
   React.useEffect(() => {
     if (props.showSingleProject) {
-      if (geometryExists) {
+      if (siteExists) {
         var bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
           [bbox[0], bbox[1]],
@@ -121,10 +121,10 @@ export default function MapboxMap(props) {
         setViewPort(newViewport);
       }
     }
-  }, [project, geometryExists, geojson]);
+  }, [project, siteExists, geojson]);
 
   React.useEffect(() => {
-    if (props.showSingleProject && geometryExists) {
+    if (props.showSingleProject && siteExists) {
       if (currentSite < maxSites) {
         var bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
@@ -186,7 +186,7 @@ export default function MapboxMap(props) {
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
         {props.showSingleProject ? (
-          !geometryExists ? (
+          !siteExists ? (
             <Marker
               latitude={singleProjectLatLong[0]}
               longitude={singleProjectLatLong[1]}
@@ -288,15 +288,13 @@ export default function MapboxMap(props) {
         <div className={styles.mapNavigation}>
           <NavigationControl />
         </div>
-        {props.showSingleProject && geometryExists ? (
+        {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
               <ChevronLeftIcon onClick={goToPrevProject} />
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {geometryExists
-                  ? project.sites[currentSite].properties.name
-                  : null}
+                {siteExists ? project.sites[currentSite].properties.name : null}
                 &nbsp;&nbsp;
               </p>
               <ChevronRightIcon onClick={goToNextProject} />
