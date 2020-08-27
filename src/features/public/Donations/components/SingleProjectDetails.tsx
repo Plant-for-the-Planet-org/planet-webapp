@@ -3,6 +3,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 import ReactPlayer from 'react-player/lazy';
+import ReadMoreReact from 'read-more-react';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
@@ -183,7 +184,13 @@ export default function SingleProjectDetails({
             </div> */}
 
             <div className={styles.projectDescription}>
-              {project.description}
+              <ReadMoreReact
+                min={300}
+                ideal={350}
+                max={400}
+                readMoreText="read more"
+                text={project.description}
+              />
             </div>
 
             <div className={styles.projectInfoProperties}>

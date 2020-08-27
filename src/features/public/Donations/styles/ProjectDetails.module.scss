@@ -282,3 +282,7 @@
 .projectImages:nth-child(3n) {
   margin-top: 4px;
 }
+
+.projectDescription > div > span > div {
+  color: $primaryColor;
+}
