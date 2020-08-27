@@ -100,7 +100,7 @@
     display: none;
   }
   .landingContent {
-    margin-top: 200px;
+    margin-top: 240px;
   }
 }
 
@@ -109,34 +109,47 @@
 
 // the outer white background
 .myForestContainer {
+  padding: 24px;
   background-color: $light;
   display: flex;
   position: relative;
   min-width: 100vw;
   min-height: 100vh;
   z-index: 5;
-  top: 200px;
-  // align-items: center;  >>>  for vertically centre
+  top: 180px;
+  flex-direction: column;
+  align-items: center;  //>>>  for vertically centre
   justify-content: center;   // >>>  for horizontally center
 }
 
-// desktop view= > float: row => (list beside maps)
+// heading and two boxes
 .outerMyForestContainer {
+  display: flex;
+  flex-direction: column; 
+}
+
+.myForestTitleText {
+  font-family: $primaryFontFamily;
+  text-align: left;
+  padding: 0px 0px 0px 8px;
+  width: 100%;
+}
+
+// desktop view= > float: row => (list beside maps)
+.innerMyForestContainer {
   display: flex;
   float: right;
   flex-direction: row-reverse; 
-  margin-top: 60px;
-  
 }
 
 .forestListSection {
-  width: 40vw;
+  width: 30vw;
   height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
 .mapSection {
-  width: 40vw;
+  width: 50vw;
   height: 70vh;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -145,8 +158,8 @@
 .forestItem {
   font-family: $primaryFontFamily;
   padding: 10px 10px;
-  border-color: rgba(200,200,200,0.7);
-  border-width: 0.1px;
+  border-color: rgba(29, 15, 15, 0.2);
+  border-width: 1px 0px 0px 0px;
   width: 40vw;
   border-style: solid;
   background-color: $light;
@@ -154,7 +167,10 @@
 
 // mobile view (list below map)
 @media only screen and (max-width: 768px) {
-  .outerMyForestContainer {
+  .myForestContainer{
+    padding-top: 0px;
+  }
+  .innerMyForestContainer {
     display: block;
     float:none;
   }
@@ -169,6 +185,9 @@
     overflow-y: visible;    // all list items to be displayed 
     margin-bottom: 100px;
   }
+  .myForestTitleText{
+    display: none;
+  }
   .forestItem {
     width: 100vw;
   }
@@ -176,7 +195,16 @@
 
 /* Footer */
 .footerDiv {
-  z-index: 20; //more than myForestContainer
+  z-index: 2; //more than myForestContainer
   position: relative;
+  padding: 1px;
+  width: 100vw;
   background-color: $light;
+  top: 180px;
+}
+
+@media only screen and (max-width: 768px) {
+  .footerDiv {
+    display: none;
+  }
 }

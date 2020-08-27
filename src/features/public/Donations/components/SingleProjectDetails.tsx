@@ -3,6 +3,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
+import ReactPlayer from 'react-player/lazy';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
@@ -226,7 +227,23 @@ function SingleProjectDetails({
             </div>
 
             <div className={styles.projectInfoProperties}>
-              <div className={styles.projectImageSliderContainer}>
+              {ReactPlayer.canPlay(project.videoUrl) ? (
+                <ReactPlayer
+                  className={styles.projectVideoContainer}
+                  width="312px"
+                  height="220px"
+                  loop={true}
+                  light={true}
+                  controls={true}
+                  config={{
+                    youtube: {
+                      playerVars: { autoplay: 1 },
+                    },
+                  }}
+                  url={project.videoUrl}
+                />
+              ) : null}
+                            <div className={styles.projectImageSliderContainer}>
                 {project.images.length > 0 ? (
                   <ImageSlider project={projectImages} />
                 ) : null}
