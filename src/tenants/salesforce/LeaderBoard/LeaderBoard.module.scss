@@ -224,9 +224,20 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-width: 80%;
+  max-width: 90%;
   margin-top: 54px;
 }
+
+.blogContainer > div {
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.blogContainer > div:not(:first-of-type) {
+  margin-top: 30px;
+}
+
 .blogSingleContainer {
   position: relative;
 
@@ -444,8 +455,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 54px;
+  margin: 54px 0px;
   width: 100vw;
+}
+.articleContainer > div:not(:first-of-type) {
+  margin-top: 30px;
 }
 .articleSingleContainer {
   position: relative;
@@ -460,8 +474,7 @@
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0) 36%,
-    rgba(0, 0, 0, 0.502) 55.7%,
+    rgba(0, 0, 0, 0.3) 40%,
     #000000 100%
   );
   position: absolute;
@@ -472,8 +485,9 @@
 }
 .articleInfoSection {
   position: absolute;
-  bottom: 70px;
-  left: 40px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
   z-index: 3;
 }
 .articletreeCount {
@@ -491,7 +505,7 @@
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 29px;
   color: #ffffff;
 }
@@ -510,7 +524,8 @@
   background-color: white;
   width: fit-content;
   border-radius: 4px;
-  margin-top: 44px;
+  margin-top: 30px;
+  margin-bottom: 0px;
 }
 
 @include tabletView {
@@ -558,5 +573,49 @@
   .treeCounterSectionTextPara {
     font-size: 16px;
     line-height: 24px;
+  }
+
+  .articleContainer {
+    margin-bottom: 0px;
+  }
+
+  .articleContainer > div:not(:first-of-type) {
+    margin-top: 0px;
+  }
+
+  .articleInfoSection {
+    bottom: 70px;
+    left: 40px;
+    z-index: 3;
+  }
+
+  .articleTitle {
+    font-size: 24px;
+  }
+
+  .articleLink {
+    margin-top: 44px;
+    margin-bottom: 16px;
+  }
+
+  .articleImageOverlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 36%,
+      rgba(0, 0, 0, 0.502) 55.7%,
+      #000000 100%
+    );
+  }
+
+  .blogContainer {
+    max-width: 80%;
+  }
+  .blogContainer > div:not(:first-of-type) {
+    margin-top: 0px;
+  }
+
+  .blogContainer > div {
+    padding: 0px 15px;
   }
 }

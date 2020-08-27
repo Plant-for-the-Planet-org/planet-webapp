@@ -42,7 +42,8 @@ function FacebookCircularProgress(props: any) {
 
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
-  const isMobile = window.innerWidth <= 768;
+  // const screenWidth = window.innerWidth;
+  const isMobile = true;
 
   React.useEffect(() => {
     let percentage = (props.planted / props.target) * 100;
