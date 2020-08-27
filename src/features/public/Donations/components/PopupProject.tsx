@@ -1,6 +1,5 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
-import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
@@ -14,6 +13,8 @@ interface Props {
   open: boolean;
   handleOpen: Function;
   handleClose: Function;
+  fetchProject: Function;
+  setShowSingleProject: Function;
 }
 
 export default function PopupProject({
@@ -21,6 +22,8 @@ export default function PopupProject({
   open,
   handleOpen,
   handleClose,
+  fetchProject,
+  setShowSingleProject,
 }: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -30,6 +33,11 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
+
+  const handleOpenProject = async () => {
+    await fetchProject();
+    setShowSingleProject(true);
+  };
   return (
     <>
       <Modal
@@ -43,32 +51,32 @@ export default function PopupProject({
           <TreeDonation project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
-        <a>
-          <div className={styles.projectImage}>
-            {project.properties.image &&
-            typeof project.properties.image !== 'undefined' ? (
-              <div
-                className={styles.projectImageFile}
-                style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                  backgroundPosition: 'center',
-                }}
-              ></div>
-            ) : null}
+      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
+        <a> */}
+      <div onClick={handleOpenProject} className={styles.projectImage}>
+        {project.properties.image &&
+        typeof project.properties.image !== 'undefined' ? (
+          <div
+            className={styles.projectImageFile}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ) : null}
 
-            <div className={styles.projectImageBlock}>
-              {/* <div className={styles.projectType}>
+        <div className={styles.projectImageBlock}>
+          {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-              <div className={styles.projectName}>
-                {Sugar.String.truncate(project.properties.name, 54)}
-              </div>
-            </div>
+          <div className={styles.projectName}>
+            {Sugar.String.truncate(project.properties.name, 54)}
           </div>
-        </a>
-      </Link>
+        </div>
+      </div>
+      {/* </a>
+      </Link> */}
 
       <div className={styles.progressBar}>
         <div

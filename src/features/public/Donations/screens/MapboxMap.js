@@ -175,6 +175,12 @@ export default function MapboxMap(props) {
     }
   }
 
+  const handleOpenProject = () => {
+    // await props.fetchProject();
+    // props.setShowSingleProject(true);
+    console.log('clicked');
+  };
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
@@ -281,6 +287,13 @@ export default function MapboxMap(props) {
                 open={open}
                 handleOpen={handleOpen}
                 handleClose={handleClose}
+                onClick={handleOpenProject}
+                setShowSingleProject={props.setShowSingleProject}
+                fetchProject={async () => {
+                  await props.fetchSingleProject(
+                    popupData.project.properties.id
+                  );
+                }}
               />
             </div>
           </Popup>
