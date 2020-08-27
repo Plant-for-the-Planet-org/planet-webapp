@@ -188,7 +188,7 @@ export default function SingleProjectDetails({
                 min={300}
                 ideal={350}
                 max={400}
-                readMoreText=" Read more"
+                readMoreText="Read more"
                 text={project.description}
               />
             </div>
