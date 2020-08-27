@@ -175,10 +175,9 @@ export default function MapboxMap(props) {
     }
   }
 
-  const handleOpenProject = () => {
-    // await props.fetchProject();
-    // props.setShowSingleProject(true);
-    console.log('clicked');
+  const handleOpenProject = async (id) => {
+    await props.fetchSingleProject(id);
+    props.setShowSingleProject(true);
   };
 
   return (
@@ -237,6 +236,9 @@ export default function MapboxMap(props) {
             >
               <div
                 className={styles.marker}
+                onClick={() =>
+                  handleOpenProject(popupData.project.properties.id)
+                }
                 onMouseOver={(e) => {
                   timer = setTimeout(function () {
                     setPopupData({
@@ -267,11 +269,12 @@ export default function MapboxMap(props) {
             onClose={() => setPopupData({ ...popupData, show: false })}
             anchor="bottom"
             dynamicPosition={false}
-            offsetTop={20}
+            offsetTop={-15}
             tipSize={0}
           >
             <div
               className={styles.popupProject}
+              onClick={() => handleOpenProject(popupData.project.properties.id)}
               onMouseLeave={(e) => {
                 if (!open) {
                   setTimeout(function () {
@@ -287,13 +290,6 @@ export default function MapboxMap(props) {
                 open={open}
                 handleOpen={handleOpen}
                 handleClose={handleClose}
-                onClick={handleOpenProject}
-                setShowSingleProject={props.setShowSingleProject}
-                fetchProject={async () => {
-                  await props.fetchSingleProject(
-                    popupData.project.properties.id
-                  );
-                }}
               />
             </div>
           </Popup>

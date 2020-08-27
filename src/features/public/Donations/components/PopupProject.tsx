@@ -34,10 +34,6 @@ export default function PopupProject({
 
   const projectDetails = project.properties;
 
-  const handleOpenProject = async () => {
-    await fetchProject();
-    setShowSingleProject(true);
-  };
   return (
     <>
       <Modal
@@ -53,7 +49,7 @@ export default function PopupProject({
       </Modal>
       {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
         <a> */}
-      <div onClick={handleOpenProject} className={styles.projectImage}>
+      <div className={styles.projectImage}>
         {project.properties.image &&
         typeof project.properties.image !== 'undefined' ? (
           <div
