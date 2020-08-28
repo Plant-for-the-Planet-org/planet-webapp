@@ -3,3 +3,13 @@
 .allProjectsContainer {
   padding-bottom: 12px;
 }
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
