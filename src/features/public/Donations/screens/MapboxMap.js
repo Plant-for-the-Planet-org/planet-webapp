@@ -217,7 +217,7 @@ export default function MapboxMap(props) {
         mapboxApiAccessToken={props.mapboxToken}
         mapOptions={{
           customAttribution:
-            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="https://plant-for-the-planet.org/en/footermenu/form">Contact</a> <a href="https://plant-for-the-planet.org/en/footermenu/press-releases">Press</a> <a href="https://plant-for-the-planet.org/">Jobs</a> <a href="https://plant-for-the-planet.org/en/support">Support Us</a> <a href="https://plant-for-the-planet.org/en/footermenu/faq">FAQs</a>',
+            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
         }}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
