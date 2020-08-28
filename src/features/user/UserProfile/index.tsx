@@ -33,7 +33,7 @@ export default function UserProfile({ userprofile }: any) {
 
   
   // editProfile modal  (from settings modal)
-  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(true);
+  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
   const handleEditProfileModalClose = () => {
     setEditProfileModalOpen(false);
   };

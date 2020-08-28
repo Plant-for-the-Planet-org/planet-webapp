@@ -6,7 +6,6 @@
   align-items: center;
   justify-content: center;
   margin: 0px 20px;
-  // dont write width here
 }
 
 // white modal
@@ -25,7 +24,7 @@
   align-items: center;
 }
 
-// for mobile
+// for mobile - modal
 @media only screen and (max-width: 768px) {
     .modal {
         min-width: 80vw;
@@ -40,7 +39,6 @@
   float: left;
   width: 100%;
   align-items: center;
-  //   justify-content: center;
 }
 
 .backDiv:hover {
@@ -59,9 +57,12 @@
     margin: 10px 0px;
 }
 
+.profilePicDiv:hover{
+    cursor: pointer;
+}
+
 // first name, last name div
 .namesDiv {
-
   display: flex;
   float: left;
   width: 100%;
@@ -145,4 +146,8 @@
   font-size: $fontSubTitleSize;
   font-weight: 600;
   margin-top: 30px;
+}
+
+.saveButton:hover{
+    cursor: pointer;
 }
