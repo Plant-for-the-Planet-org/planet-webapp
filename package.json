@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "d3-ease": "^2.0.0",
+    "framer-motion": "^2.6.5",
     "mapbox-gl": "^1.11.1",
     "next": "^9.5.2",
     "next-i18next": "^4.5.0",

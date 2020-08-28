@@ -1,8 +1,10 @@
 
+import { motion } from "framer-motion";
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
+import AnimatedButton from "../../../common/InputTypes/AnimatedButton";
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../../common/types/donations';
 import {
@@ -126,7 +128,11 @@ function TreeDonation({
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     : (
       <>
-        <div
+        <motion.div
+          animate={{
+            scale: [0.94, 1.05, 1],
+          }}
+          transition={{ duration: 0.8, type: "tween" }}
           className={styles.cardContainer}
           style={{ alignSelf: isGift ? 'start' : 'center' }}
         >
@@ -282,11 +288,10 @@ function TreeDonation({
                 onPaymentFunction={onPaymentFunction} />
               {/* {paymentRequest ? 'Or' : null} */}
             </div>
-            <div onClick={() => continueNext()} className={styles.continueButton}>
-              Continue
+
+            <AnimatedButton onClick={() => continueNext()} className={styles.continueButton}>Continue</AnimatedButton>
           </div>
-          </div>
-        </div>
+        </motion.div>
         <SelectTaxDeductionCountryModal
           openModal={openTaxDeductionModal}
           handleModalClose={() => setOpenTaxDeductionModal(false)}
