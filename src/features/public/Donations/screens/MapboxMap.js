@@ -84,7 +84,7 @@ export default function MapboxMap(props) {
           latitude: 36.96,
           longitude: -28.5,
           zoom: 1.4,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
@@ -115,14 +115,14 @@ export default function MapboxMap(props) {
           longitude,
           latitude,
           zoom,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
         setTimeout(() => {
           setMapState(newMapState);
-        }, [2300]);
+        }, [3800]);
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -132,7 +132,7 @@ export default function MapboxMap(props) {
           longitude: singleProjectLatLong[1],
           latitude: singleProjectLatLong[0],
           zoom: 13,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
