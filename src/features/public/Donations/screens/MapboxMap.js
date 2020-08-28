@@ -121,10 +121,6 @@ export default function MapboxMap(props) {
         };
         setMapState(newMapState);
         setViewPort(newViewport);
-        console.log(mapRef);
-        // mapRef.current.setState({
-        //   mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-        // });
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
