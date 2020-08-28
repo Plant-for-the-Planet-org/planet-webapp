@@ -1,0 +1,42 @@
+@import './../../../../theme/theme';
+
+// modal container for black opacity
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+// white modal
+.modal {
+  background-color: #ffffff;
+  border: 0px;
+  border-radius: 8px;
+  padding: 30px 56px;
+  max-width: 80vw;
+  overflow: hidden;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.inputField {
+    margin-top: 20px;
+}
+
+.continueButton {
+  background-color: $light;
+  padding: 8px 40px;
+  border-radius: 24px;
+  color: $primaryColor;
+  border-color: $primaryColor;
+  border-width: 1px;
+  border-style: solid;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  margin-top: 30px;
+}

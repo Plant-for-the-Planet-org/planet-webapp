@@ -99,6 +99,8 @@ function ProjectsList({ projects }: Props): ReactElement {
     <div onTouchMove={onTouchMove}>
       <MapLayout
         {...ProjectsProps}
+        fetchSingleProject={fetchSingleProject}
+        setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
 

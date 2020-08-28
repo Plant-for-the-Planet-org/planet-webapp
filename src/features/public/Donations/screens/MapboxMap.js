@@ -2,7 +2,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
   Layer,
@@ -10,7 +10,7 @@ import MapGL, {
   NavigationControl,
   Popup,
   Source,
-  WebMercatorViewport,
+  WebMercatorViewport
 } from 'react-map-gl';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
@@ -19,6 +19,7 @@ export default function MapboxMap(props) {
   var timer;
   const projects = props.projects;
   const project = props.project;
+  const mapRef = useRef(null);
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -29,6 +30,10 @@ export default function MapboxMap(props) {
   const [geojson, setGeojson] = React.useState({});
   const [maxSites, setMaxSites] = React.useState();
   const [currentSite, setCurrentSite] = React.useState();
+
+  const [mapState, setMapState] = useState({
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+  });
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -71,6 +76,9 @@ export default function MapboxMap(props) {
       }
     } else {
       if (project !== null) {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           latitude: 36.96,
@@ -80,6 +88,7 @@ export default function MapboxMap(props) {
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
       }
     }
@@ -98,6 +107,9 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
@@ -108,7 +120,14 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setTimeout(() => {
+          setMapState(newMapState)
+        }, [2300])
+
       } else {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           longitude: singleProjectLatLong[1],
@@ -118,7 +137,10 @@ export default function MapboxMap(props) {
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+
         setViewPort(newViewport);
+        setMapState(newMapState);
+
       }
     }
   }, [project, siteExists, geojson]);
@@ -136,6 +158,9 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
@@ -146,9 +171,14 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setTimeout(() => {
+          setMapState(newMapState)
+        }, [2300])
       }
     }
   }, [currentSite]);
+
+  const _onStateChange = (state) => setMapState({ ...state });
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -175,13 +205,24 @@ export default function MapboxMap(props) {
     }
   }
 
+  const handleOpenProject = async (id) => {
+    await props.fetchSingleProject(id);
+    props.setShowSingleProject(true);
+  };
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
+        ref={mapRef}
+        {...mapState}
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
-        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+        mapOptions={{
+          customAttribution:
+            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="https://plant-for-the-planet.org/en/footermenu/form">Contact</a> <a href="https://plant-for-the-planet.org/en/footermenu/press-releases">Press</a> <a href="https://plant-for-the-planet.org/">Jobs</a> <a href="https://plant-for-the-planet.org/en/support">Support Us</a> <a href="https://plant-for-the-planet.org/en/footermenu/faq">FAQs</a>',
+        }}
         onViewportChange={_onViewportChange}
+        onStateChange={_onStateChange}
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
@@ -197,27 +238,27 @@ export default function MapboxMap(props) {
               <div className={styles.marker}></div>
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geojson}>
-              <Layer
-                id="ploygonLayer"
-                type="fill"
-                source="singleProject"
-                paint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-              />
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#89b54a',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
-          )
+              <Source id="singleProject" type="geojson" data={geojson}>
+                <Layer
+                  id="ploygonLayer"
+                  type="fill"
+                  source="singleProject"
+                  paint={{
+                    'fill-color': '#fff',
+                    'fill-opacity': 0.2,
+                  }}
+                />
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#89b54a',
+                    'line-width': 2,
+                  }}
+                />
+              </Source>
+            )
         ) : null}
         {!props.showSingleProject &&
           projects.map((project, index) => (
@@ -231,6 +272,9 @@ export default function MapboxMap(props) {
             >
               <div
                 className={styles.marker}
+                onClick={() =>
+                  handleOpenProject(popupData.project.properties.id)
+                }
                 onMouseOver={(e) => {
                   timer = setTimeout(function () {
                     setPopupData({
@@ -261,11 +305,12 @@ export default function MapboxMap(props) {
             onClose={() => setPopupData({ ...popupData, show: false })}
             anchor="bottom"
             dynamicPosition={false}
-            offsetTop={20}
+            offsetTop={-15}
             tipSize={0}
           >
             <div
               className={styles.popupProject}
+              onClick={() => handleOpenProject(popupData.project.properties.id)}
               onMouseLeave={(e) => {
                 if (!open) {
                   setTimeout(function () {

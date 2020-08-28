@@ -46,6 +46,10 @@
   bottom: 50px;
 }
 
+.popupProject {
+  cursor: pointer;
+}
+
 .projectControls {
   position: absolute;
   left: 0;
@@ -76,6 +80,10 @@
   overflow: hidden;
   max-width: 200px;
   min-width: 100px;
+}
+
+.mapContainer .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  padding-left: 20px;
 }
 
 @media only screen and (max-width: 768px) {
