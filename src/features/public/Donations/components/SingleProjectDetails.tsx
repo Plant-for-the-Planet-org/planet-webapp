@@ -83,23 +83,26 @@ function SingleProjectDetails({
 
   let projectImages: { content: () => JSX.Element; }[] = [];
 
-  project.images.forEach((image: any) => {
-    let imageURL = loadImageSource(image.image);
-    projectImages.push({
-      content: () => (
-        <div
-          className={styles.projectImageSliderContent}
-          style={{
-            background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-          }}
-        >
-          <p className={styles.projectImageSliderContentText}>
-            {image.description}
-          </p>
-        </div>
-      ),
+  React.useEffect(() => {
+    project.images.forEach((image: any) => {
+      let imageURL = loadImageSource(image.image);
+      projectImages.push({
+        content: () => (
+          <div
+            className={styles.projectImageSliderContent}
+            style={{
+              background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+            }}
+          >
+            <p className={styles.projectImageSliderContentText}>
+              {image.description}
+            </p>
+          </div>
+        ),
+      });
     });
-  });
+  }, [])
+
 
   const ProjectProps = {
     project: project,
