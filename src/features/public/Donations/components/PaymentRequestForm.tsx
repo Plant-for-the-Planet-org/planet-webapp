@@ -1,5 +1,6 @@
 import { PaymentRequestButtonElement, useStripe } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
+import styles from './../styles/TreeDonation.module.scss';
 
 export const useOptions = (paymentRequest: null) => {
   const typeOfButton = "donate";
@@ -106,5 +107,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
         console.log('PaymentRequestButton [focus]');
       }}
     />
-  ) : <p></p> : <p></p>;
+  ) : <div className={styles.paymentRequestPlaceholder}>
+      Loading...
+</div> : null;
 }

@@ -6,6 +6,7 @@
   padding: 26px;
   width: 412px;
   height: max-content;
+  z-index: 10;
 }
 
 .header {
@@ -257,6 +258,16 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.paymentRequestPlaceholder {
+  background-color: $blueishGrey;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $dark;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
 }
 
 .horizontalLine {
