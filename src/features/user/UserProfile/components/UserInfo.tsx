@@ -5,7 +5,10 @@ import Layout from '../../../common/Layout';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
 
-export default function MyForestItem({ userprofile }: any) {
+export default function MyForestItem({
+  userprofile,
+  handleTextCopiedSnackbarOpen,
+}: any) {
   return (
     <div className={styles.landingContent}>
       <TreeCounter
@@ -24,7 +27,10 @@ export default function MyForestItem({ userprofile }: any) {
           </p>
 
           {/* three icons in a row */}
-          <UserProfileOptions userprofile={userprofile} />
+          <UserProfileOptions
+            userprofile={userprofile}
+            handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+          />
         </React.Fragment>
       )}
     </div>

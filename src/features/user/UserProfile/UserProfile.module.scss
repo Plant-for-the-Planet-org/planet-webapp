@@ -65,6 +65,11 @@
   text-align: center;
 }
 
+.textCopiedSnackbar {
+  z-index: 5000;
+  background-color:'black';
+}
+
 .settingsIcon {
   display: flex;
   position: absolute;

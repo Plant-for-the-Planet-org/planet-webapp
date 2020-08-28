@@ -6,13 +6,32 @@ import ScrollDown from '../../../assets/images/icons/userProfileIcons/ScrollDown
 import MyForestContainer from './components/MyForestContainer';
 import Footer from '../../common/Footer';
 import UserInfo from './components/UserInfo';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 import SettingsModal from './components/SettingsModal';
 
 export default function UserProfile({ userprofile }: any) {
+
+  function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(false);
+
+  const handleTextCopiedSnackbarOpen = () => {
+    setTextCopiedSnackbarOpen(true)
+  }
+  const handleTextCopiedSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setTextCopiedSnackbarOpen(false);
+  };
+
   const scrollRef = useRef(null);
 
-  function handleClick() {
+  function handleScrollDownClick() {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({
         behavior: 'smooth',
@@ -64,14 +83,17 @@ export default function UserProfile({ userprofile }: any) {
           </>
         )}
         {userprofile.isMe && (
-          <div className={styles.downIcon} onClick={handleClick}>
+          <div className={styles.downIcon} onClick={handleScrollDownClick}>
             <ScrollDown color="white" />
           </div>
         )}
 
         {/* userinfo section */}
         <LandingSection fixedBg>
-          <UserInfo userprofile={userprofile} />
+          <UserInfo 
+          userprofile={userprofile} 
+          handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+          />
         </LandingSection>
 
         {/* my forest section */}
@@ -86,6 +108,14 @@ export default function UserProfile({ userprofile }: any) {
           <Footer />
         </div>
       </main>
+
+        {/* snackbar for showing text copied to clipboard */}
+      <Snackbar open={textCopiedsnackbarOpen} autoHideDuration={4000} onClose={handleTextCopiedSnackbarClose} >
+      <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+          Text Copied to Clipboard!
+        </Alert>
+      </Snackbar>
+
     </React.Fragment>
   );
 }

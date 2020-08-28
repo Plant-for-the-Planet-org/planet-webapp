@@ -7,17 +7,23 @@ import styles from '../UserProfile.module.scss';
 import RedeemModal from './RedeemModal';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 
-export default function UserProfileOptions({ userprofile }: any) {
+import { makeStyles, Theme } from '@material-ui/core/styles';
 
+export default function UserProfileOptions({ 
+  userprofile,
+  handleTextCopiedSnackbarOpen
+ }: any) {
 
+  
   const onShareClicked = () => {
-
-    // desktop browser
     if (!isMobileBrowser()) {
-     navigator.clipboard.writeText('Dummy text copied to clipboard!')
+      // desktop browser
+      navigator.clipboard.writeText('Dummy text copied to clipboard!');
+      handleTextCopiedSnackbarOpen();
+    } else {
+      // mobile browser
     }
   };
-
 
   // redeem modal
   const [redeemModalOpen, setRedeemModalOpen] = React.useState(false);
@@ -29,33 +35,33 @@ export default function UserProfileOptions({ userprofile }: any) {
   };
 
   return (
-    <Row className={styles.bottomIconsRow}>
-      <Col className={styles.iconTextColumn}>
-        <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
-          <Redeem color="white" />
-        </div>
-        <p className={styles.bottomRowText}> Redeem</p>
-      </Col>
+      <Row className={styles.bottomIconsRow}>
+        <Col className={styles.iconTextColumn}>
+          <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
+            <Redeem color="white" />
+          </div>
+          <p className={styles.bottomRowText}> Redeem</p>
+        </Col>
 
-      <RedeemModal
-        redeemModalOpen={redeemModalOpen}
-        handleRedeemModalClose={handleRedeemModalClose}
-      />
+        <RedeemModal
+          redeemModalOpen={redeemModalOpen}
+          handleRedeemModalClose={handleRedeemModalClose}
+        />
 
-      <Col className={styles.iconTextColumn}>
-        <div className={styles.bottomIconBg}>
-          <Shovel color="white" />
-        </div>
+        <Col className={styles.iconTextColumn}>
+          <div className={styles.bottomIconBg}>
+            <Shovel color="white" />
+          </div>
 
-        <p className={styles.bottomRowText}> Register Trees</p>
-      </Col>
+          <p className={styles.bottomRowText}> Register Trees</p>
+        </Col>
 
-      <Col className={styles.iconTextColumn} onClick={onShareClicked}>
-        <div className={styles.bottomIconBg}>
-          <Share color="white" />
-        </div>
-        <p className={styles.bottomRowText}> Share </p>
-      </Col>
-    </Row>
+        <Col className={styles.iconTextColumn} onClick={onShareClicked}>
+          <div className={styles.bottomIconBg}>
+            <Share color="white" />
+          </div>
+          <p className={styles.bottomRowText}> Share </p>
+        </Col>
+      </Row>
   );
 }
