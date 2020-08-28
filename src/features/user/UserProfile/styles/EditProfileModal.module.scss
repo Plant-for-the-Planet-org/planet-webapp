@@ -2,35 +2,116 @@
 
 // modal container for black opacity
 .modalContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  
-  // white modal
-  .modal {
-    background-color: #ffffff;
-    border: 0px;
-    border-radius: 8px;
-    padding: 6px 72px;
-    max-width: 80vw;
-    overflow: hidden;
-    outline: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .settingsItem {
-      padding: 10px 0px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+//   overflow: scroll;
+}
 
-  .settingsItem:hover {
-      cursor: pointer;
-      background-color:'red';
-  }
+// white modal
+.modal {
+  background-color: #ffffff;
+  border: 0px;
+  border-radius: 8px;
+  padding: 6px 32px;
+  max-width: 60vw;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .cancelText {
-      color: $highlightBackground;  //grey
-  } 
+// header div
+.headerDiv {
+  display: flex;
+  float: left;
+  width: 100%;
+  align-items: center;
+  //   justify-content: center;
+}
+
+.backDiv:hover {
+    cursor: pointer;
+}
+
+.editProfileText {
+    font-size: 22px;
+    margin-left: 10px;
+}
+
+//profile pic div
+.profilePicDiv {
+    height: 100px;
+    width: 100px;
+    margin: 10px 0px;
+}
+
+// first name, last name div
+.namesDiv {
+
+  display: flex;
+  float: left;
+  width: 100%;
+  justify-content: space-between;
+  margin: 6px 0px;
+}
+
+// address div
+.addressDiv {
+  display: flex;
+  width: 100%;
+  margin: 6px 0px;
+}
+
+// city, zip code div
+.cityZipDiv {
+  display: flex;
+  float: left;
+  width: 100%;
+  justify-content: space-between;
+  margin: 6px 0px;
+}
+
+// country div
+.countryDiv {
+  display: flex;
+  width: 50%;
+  align-self: flex-start;
+  margin: 6px 0px;
+}
+
+// private account div
+.isPrivateAccountDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin: 6px 0px;
+}
+
+.mainText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
+  font-size: larger;
+  text-align: left;
+}
+
+.isPrivateAccountText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
+}
+
+// save button
+.saveButton {
+  background-color: $primaryColor;
+  padding: 8px 40px;
+  border-radius: 6px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  margin-top: 30px;
+}
