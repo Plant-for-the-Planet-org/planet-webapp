@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import styles from '../UserProfile.module.scss';
+import styles from '../styles/UserInfo.module.scss';
 import Layout from '../../../common/Layout';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';

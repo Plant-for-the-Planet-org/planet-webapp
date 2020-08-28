@@ -3,7 +3,7 @@ import Redeem from '../../../../assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import Shovel from '../../../../assets/images/icons/userProfileIcons/Shovel';
 import { Col, Container, Row } from 'react-bootstrap';
-import styles from '../UserProfile.module.scss';
+import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 

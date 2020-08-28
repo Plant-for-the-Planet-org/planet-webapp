@@ -1,83 +1,16 @@
 @import './../../../theme/theme';
 
-.landingContent {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 280px;
-  z-index: 2;
-}
-
-.treeCounterName {
-  font-family: $primaryFontFamily;
-  font-weight: bold;
-  font-size: 40px;
-  color: $light;
-  margin-top: 16px;
-  margin-bottom: 0px;
-}
-
-// for ME page only
-.treeCounterDescription {
-  font-family: $primaryFontFamily;
-  font-size: 18px;
-  color: $light;
-  margin-top: 24px;
-  margin-bottom: 0px;
-  max-width: 500px;
-  margin-left: 26px;
-  margin-right: 26px;
-}
-
-.bottomIconsRow {
-  margin-bottom: 20px;
-  margin-top: 36px;
-}
-
-.iconTextColumn {
-  margin: 0px 0px;
-  max-width: 160px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.bottomIconBg {
-  background-color: rgba(255,255,255,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 70px;
-}
-
-.bottomIconBg:hover {
-  cursor: pointer;
-}
-
-.bottomRowText{
-  color: $light;
-  font-size: 16px;
-  font-family: $primaryFontFamily;
-  margin-top: 12px;
-  text-align: center;
-}
-
 .textCopiedSnackbar {
   z-index: 5000;
-  background-color:'black';
 }
 
 .settingsIcon {
   display: flex;
   position: absolute;
-  right: 30px;
-  top: 60px;
-  z-index: 2;
-  // background-color: black;
+  right: 50px;
+  top: 80px;
   padding: 20px;
+  z-index: 2;
 }
 
 .settingsIcon:hover {
@@ -87,9 +20,10 @@
 .downIcon {
   display: flex;
   position: fixed;
-  right: 30px;
-  bottom: 60px;
+  right: 50px;
+  bottom: 40px;
   z-index: 2;
+  padding: 20px;
 }
 
 .downIcon:hover {
@@ -100,12 +34,10 @@
 @media only screen and (max-width: 768px) {
   .settingsIcon {
     top: 10px;
+    right: 30px;
   }
   .downIcon {
     display: none;
-  }
-  .landingContent {
-    margin-top: 240px;
   }
 }
 
@@ -113,7 +45,7 @@
 
 // the outer white background
 .myForestContainer {
-  padding: 24px;
+  padding: 0px;
   background-color: $light;
   display: flex;
   position: relative;
