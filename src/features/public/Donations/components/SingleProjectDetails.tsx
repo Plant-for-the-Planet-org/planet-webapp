@@ -81,12 +81,11 @@ function SingleProjectDetails({
     setOpen(true);
   };
 
-  var projectImages = [];
+  let projectImages: { content: () => JSX.Element; }[] = [];
 
   project.images.forEach((image: any) => {
     let imageURL = loadImageSource(image.image);
     projectImages.push({
-      // url: imageURL,
       content: () => (
         <div
           className={styles.projectImageSliderContent}
