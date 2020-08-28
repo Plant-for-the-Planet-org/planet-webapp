@@ -329,7 +329,7 @@ export default function MapboxMap(props) {
           </Popup>
         )}
         <div className={styles.mapNavigation}>
-          <NavigationControl />
+          <NavigationControl showCompass={false} />
         </div>
         {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
