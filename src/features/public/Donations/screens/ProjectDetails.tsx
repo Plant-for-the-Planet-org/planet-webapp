@@ -89,37 +89,41 @@ function ProjectDetails({ project }: Props): ReactElement {
 
   var projectImages = [];
 
-  project.images.forEach((image: any) => {
-    let imageURL = loadImageSource(image.image);
-    projectImages.push({
-      url: imageURL,
-      content: () => (
-        <div
-          style={{
-            height: '100%',
-            width: '100%',
-            background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            alignItems: 'bottom',
-          }}
-        >
-          <p
+  React.useEffect(() => {
+    project.images.forEach((image: any) => {
+      let imageURL = loadImageSource(image.image);
+      projectImages.push({
+        url: imageURL,
+        content: () => (
+          <div
+            className={styles.}
             style={{
-              bottom: 10,
-              color: 'white',
-              fontSize: 14,
-              fontFamily: styles.primaryFontFamily,
-              padding: '14px 12px',
+              height: '100%',
+              width: '100%',
+              background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ })`,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              alignItems: 'bottom',
             }}
           >
-            {image.description}
-          </p>
-        </div>
-      ),
+            <p
+              style={{
+                bottom: 10,
+                color: 'white',
+                fontSize: 14,
+                fontFamily: styles.primaryFontFamily,
+                padding: '14px 12px',
+              }}
+            >
+              {image.description}
+            </p>
+          </div>
+        ),
+      });
     });
-  });
+  }, [project])
+
   return (
     <>
       <ProjectMap
@@ -205,8 +209,8 @@ function ProjectDetails({ project }: Props): ReactElement {
                       {project.currency === 'USD'
                         ? '$'
                         : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                          ? '€'
+                          : project.currency}
                       {project.treeCost % 1 !== 0
                         ? project.treeCost.toFixed(2)
                         : project.treeCost}

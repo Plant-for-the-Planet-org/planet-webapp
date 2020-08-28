@@ -13,7 +13,7 @@ export default function ImageSlider(props) {
           7000
         }
         width={
-          325
+          '100%'
         }
         height={
           244
