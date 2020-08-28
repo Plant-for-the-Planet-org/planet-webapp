@@ -2,7 +2,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
   Layer,
@@ -19,6 +19,7 @@ export default function MapboxMap(props) {
   var timer;
   const projects = props.projects;
   const project = props.project;
+  const mapRef = useRef(null);
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -29,6 +30,10 @@ export default function MapboxMap(props) {
   const [geojson, setGeojson] = React.useState({});
   const [maxSites, setMaxSites] = React.useState();
   const [currentSite, setCurrentSite] = React.useState();
+
+  const [mapState, setMapState] = useState({
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+  });
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -71,6 +76,9 @@ export default function MapboxMap(props) {
       }
     } else {
       if (project !== null) {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           latitude: 36.96,
@@ -80,6 +88,7 @@ export default function MapboxMap(props) {
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
       }
     }
@@ -98,6 +107,9 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
@@ -107,8 +119,16 @@ export default function MapboxMap(props) {
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
+        console.log(mapRef);
+        // mapRef.current.setState({
+        //   mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        // });
       } else {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           longitude: singleProjectLatLong[1],
@@ -118,6 +138,7 @@ export default function MapboxMap(props) {
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
       }
     }
@@ -136,6 +157,9 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
@@ -145,10 +169,13 @@ export default function MapboxMap(props) {
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
       }
     }
   }, [currentSite]);
+
+  const _onStateChange = (state) => setMapState({ ...state });
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -183,10 +210,12 @@ export default function MapboxMap(props) {
   return (
     <div className={styles.mapContainer}>
       <MapGL
+        ref={mapRef}
+        {...mapState}
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
-        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
         onViewportChange={_onViewportChange}
+        onStateChange={_onStateChange}
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
