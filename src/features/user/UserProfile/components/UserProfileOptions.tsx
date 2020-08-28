@@ -11,10 +11,13 @@ export default function UserProfileOptions({ userprofile }: any) {
 
 
   const onShareClicked = () => {
-    console.log('clicked', isMobileBrowser())
-  }
 
-  
+    // desktop browser
+    if (!isMobileBrowser()) {
+     navigator.clipboard.writeText('Dummy text copied to clipboard!')
+    }
+  };
+
 
   // redeem modal
   const [redeemModalOpen, setRedeemModalOpen] = React.useState(false);
@@ -35,9 +38,9 @@ export default function UserProfileOptions({ userprofile }: any) {
       </Col>
 
       <RedeemModal
-              redeemModalOpen={redeemModalOpen}
-              handleRedeemModalClose={handleRedeemModalClose}
-            />
+        redeemModalOpen={redeemModalOpen}
+        handleRedeemModalClose={handleRedeemModalClose}
+      />
 
       <Col className={styles.iconTextColumn}>
         <div className={styles.bottomIconBg}>
