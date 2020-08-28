@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import '../src/features/public/Donations/styles/Maps.scss';
+import '../src/theme/global.scss';
 import ThemeProvider from '../src/utils/themeContext';
 
 export default function PlanetWeb({ Component, pageProps, config }: any) {
