@@ -112,12 +112,15 @@ export default function EditProfileModal({
             />
           </div>
 
-          <div className={styles.isPrivateAccountDiv}>
-            <div className={styles.mainText}>Profile Description</div>
+          <div className={styles.horizontalLine}/>
+
+          <div className={styles.profileDescriptionDiv}>
+            <MaterialTextField label="Profile Desciption" variant="outlined" />
           </div>
 
-          <div className={styles.isPrivateAccountDiv}>
-            <div className={styles.mainText}>Website</div>
+          
+          <div className={styles.websiteDiv}>
+            <MaterialTextField label="Website" variant="outlined" />
           </div>
 
           <div
