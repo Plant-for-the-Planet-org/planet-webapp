@@ -6,13 +6,25 @@ export default function ImageSlider(props) {
   React.useEffect(() => {
     setSlider(
       <Stories
-        stories={props}
-        defaultInterval={7000}
-        width={325}
-        height={244}
-        loop={true}
+        stories={
+          props.project
+        }
+        defaultInterval={
+          7000
+        }
+        width={
+          325
+        }
+        height={
+          244
+        }
+        loop={
+          true
+        }
       />
     );
   }, []);
-  return <>{slider}</>;
+  return <> {
+    slider
+  } </>;
 }
