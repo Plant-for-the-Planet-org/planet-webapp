@@ -55,7 +55,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
   useEffect(() => {
     let subscribed = true;
     if (paymentRequest) {
-      paymentRequest?.canMakePayment().then((res: any) => {
+      paymentRequest.canMakePayment().then((res: any) => {
         if (res && subscribed) {
           setCanMakePayment(true);
         }
@@ -69,7 +69,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
 
   useEffect(() => {
     if (paymentRequest) {
-      paymentRequest?.on('paymentmethod',
+      paymentRequest.on('paymentmethod',
         ({ complete, paymentMethod, ...data }: any) => {
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
@@ -77,7 +77,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
     }
     return () => {
       if (paymentRequest) {
-        paymentRequest?.off('paymentmethod',
+        paymentRequest.off('paymentmethod',
           ({ complete, paymentMethod, ...data }: any) => {
             onPaymentFunction(paymentMethod, paymentRequest);
             complete('success');

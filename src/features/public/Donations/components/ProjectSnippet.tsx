@@ -58,15 +58,15 @@ export default function ProjectSnippet({
       <a>
         <div onClick={handleOpenProject} className={styles.projectImage}>
           {project.properties.image &&
-          typeof project.properties.image !== 'undefined' ? (
-            <div
-              className={styles.projectImageFile}
-              style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                backgroundPosition: 'center',
-              }}
-            ></div>
-          ) : null}
+            typeof project.properties.image !== 'undefined' ? (
+              <div
+                className={styles.projectImageFile}
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  backgroundPosition: 'center',
+                }}
+              ></div>
+            ) : null}
 
           <div className={styles.projectImageBlock}>
             {/* <div className={styles.projectType}>
@@ -113,8 +113,8 @@ export default function ProjectSnippet({
                   {project.properties.currency === 'USD'
                     ? '$'
                     : project.properties.currency === 'EUR'
-                    ? '€'
-                    : project.properties.currency}
+                      ? '€'
+                      : project.properties.currency}{' '}
                   {project.properties.treeCost % 1 !== 0
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}

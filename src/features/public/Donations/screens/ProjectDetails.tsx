@@ -167,8 +167,8 @@ function ProjectDetails({ project }: Props): ReactElement {
                       {project.currency === 'USD'
                         ? '$'
                         : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                          ? '€'
+                          : project.currency}{' '}
                       {project.treeCost % 1 !== 0
                         ? project.treeCost.toFixed(2)
                         : project.treeCost}
@@ -199,21 +199,21 @@ function ProjectDetails({ project }: Props): ReactElement {
                   <div className={styles.projectImageSliderContainer}>
                     {project.images
                       ? project.images.map(
-                          (image: {
-                            image: React.ReactNode;
-                            id: any;
-                            description: any;
-                          }) => {
-                            return (
-                              <img
-                                className={styles.projectImages}
-                                key={image.id}
-                                src={loadImageSource(image.image)}
-                                alt={image.description}
-                              />
-                            );
-                          }
-                        )
+                        (image: {
+                          image: React.ReactNode;
+                          id: any;
+                          description: any;
+                        }) => {
+                          return (
+                            <img
+                              className={styles.projectImages}
+                              key={image.id}
+                              src={loadImageSource(image.image)}
+                              alt={image.description}
+                            />
+                          );
+                        }
+                      )
                       : null}
                   </div>
                 </LazyLoad>

@@ -17,7 +17,7 @@ function ThankYou({ project,
     let paymentTypeUsed;
     switch (paymentType) {
         case 'CARD': paymentTypeUsed = 'Credit Card'; break;
-        case 'SEPA': paymentTypeUsed = 'SEPA DBIT CARD'; break;
+        case 'SEPA': paymentTypeUsed = 'SEPA Direct Debit'; break;
         case 'GOOGLE_PAY': paymentTypeUsed = 'Google Pay'; break;
         case 'APPLE_PAY': paymentTypeUsed = 'Apple Pay'; break;
         case 'BROWSER': paymentTypeUsed = 'Browser'; break;

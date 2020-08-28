@@ -121,7 +121,7 @@ function ContactDetails({
           <div style={{ width: '20px' }}></div>
           <div>
             <MaterialTextFeild
-              inputRef={register({ pattern: /^(0|[1-9][0-9]*)$/i })}
+              inputRef={register({})}
               label="Zip Code"
               variant="outlined"
               name="zipCode"
@@ -130,7 +130,7 @@ function ContactDetails({
             />
             {errors.zipCode && (
               <span className={styles.formErrors}>
-                ZipCode is should only be Numeric
+                ZipCode is should only be Alpha Numeric
               </span>
             )}
           </div>

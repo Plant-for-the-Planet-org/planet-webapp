@@ -20,29 +20,22 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
 
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
-  const [country, setCountry] = React.useState(project.country);
+  const [country, setCountry] = React.useState(localStorage.getItem('countryCode')!);
 
   const [paymentType, setPaymentType] = React.useState('');
 
 
   // to get country and currency from local storage
-  React.useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('countryCode')) {
-        if (isTaxDeductible) {
-          if (
-            project.taxDeductionCountries.includes(
-              localStorage.getItem('countryCode') // Use this currency only if it exists in the array
-            )
-          ) {
-            setCountry(localStorage.getItem('countryCode'));
-          }
-        } else {
-          setCountry(localStorage.getItem('countryCode'));
-        }
-      }
-    }
-  }, [project]);
+  // React.useEffect(() => {
+  //   async function loadData() {
+  //     if (typeof Storage !== 'undefined') {
+  //       if (localStorage.getItem('countryCode')) {
+  //         setCountry(localStorage.getItem('countryCode'));
+  //       }
+  //     }
+  //   }
+  //   loadData();
+  // }, []);
 
   //  to load payment data
   React.useEffect(() => {
