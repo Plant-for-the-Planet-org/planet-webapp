@@ -35,8 +35,8 @@ function ProjectsList({ projects }: Props): ReactElement {
     let currencyCode;
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
-        // currencyCode = localStorage.getItem('currencyCode');
-        currencyCode = 'EUR';
+        currencyCode = localStorage.getItem('currencyCode');
+        // currencyCode = 'EUR';
       } else {
         currencyCode = 'EUR';
       }
@@ -109,11 +109,11 @@ function ProjectsList({ projects }: Props): ReactElement {
           setShowSingleProject={setShowSingleProject}
         />
       ) : (
-        <ProjectsContainer
-          {...ProjectsProps}
-          setShowSingleProject={setShowSingleProject}
-        />
-      )}
+          <ProjectsContainer
+            {...ProjectsProps}
+            setShowSingleProject={setShowSingleProject}
+          />
+        )}
     </div>
   );
 }
