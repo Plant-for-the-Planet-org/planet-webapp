@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@turf/turf": "^5.1.6",
     "@types/esri-leaflet": "^2.1.6",
@@ -17,6 +18,7 @@
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
+    "d3-ease": "^2.0.0",
     "esri-leaflet": "^2.5.0",
     "leaflet": "^1.6.0",
     "mapbox-gl": "^1.11.1",
@@ -31,6 +33,8 @@
     "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",
     "react-map-gl": "^5.2.7",
+    "react-player": "^2.6.1",
+    "read-more-react": "^1.0.10",
     "sugar": "^2.0.6"
   },
   "devDependencies": {

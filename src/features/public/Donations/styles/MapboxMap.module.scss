@@ -46,6 +46,46 @@
   bottom: 50px;
 }
 
+.popupProject {
+  cursor: pointer;
+}
+
+.projectControls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  bottom: 30px;
+  width: max-content;
+  height: 30px;
+  padding: 5px 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #aaaaaa;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: $primaryFontFamily;
+}
+
+.projectControlText {
+  font-size: 14px;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 200px;
+  min-width: 100px;
+}
+
+.mapContainer .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  padding-left: 20px;
+}
+
 @media only screen and (max-width: 768px) {
   .mapContainer {
     top: 0px;
