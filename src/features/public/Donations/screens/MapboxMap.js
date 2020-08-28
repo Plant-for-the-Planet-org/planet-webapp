@@ -10,7 +10,7 @@ import MapGL, {
   NavigationControl,
   Popup,
   Source,
-  WebMercatorViewport
+  WebMercatorViewport,
 } from 'react-map-gl';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
@@ -121,9 +121,8 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setTimeout(() => {
-          setMapState(newMapState)
-        }, [2300])
-
+          setMapState(newMapState);
+        }, [2300]);
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -140,7 +139,6 @@ export default function MapboxMap(props) {
 
         setViewPort(newViewport);
         setMapState(newMapState);
-
       }
     }
   }, [project, siteExists, geojson]);
@@ -172,8 +170,8 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setTimeout(() => {
-          setMapState(newMapState)
-        }, [2300])
+          setMapState(newMapState);
+        }, [2300]);
       }
     }
   }, [currentSite]);
@@ -238,27 +236,27 @@ export default function MapboxMap(props) {
               <div className={styles.marker}></div>
             </Marker>
           ) : (
-              <Source id="singleProject" type="geojson" data={geojson}>
-                <Layer
-                  id="ploygonLayer"
-                  type="fill"
-                  source="singleProject"
-                  paint={{
-                    'fill-color': '#fff',
-                    'fill-opacity': 0.2,
-                  }}
-                />
-                <Layer
-                  id="ploygonOutline"
-                  type="line"
-                  source="singleProject"
-                  paint={{
-                    'line-color': '#89b54a',
-                    'line-width': 2,
-                  }}
-                />
-              </Source>
-            )
+            <Source id="singleProject" type="geojson" data={geojson}>
+              <Layer
+                id="ploygonLayer"
+                type="fill"
+                source="singleProject"
+                paint={{
+                  'fill-color': '#fff',
+                  'fill-opacity': 0.2,
+                }}
+              />
+              <Layer
+                id="ploygonOutline"
+                type="line"
+                source="singleProject"
+                paint={{
+                  'line-color': '#89b54a',
+                  'line-width': 2,
+                }}
+              />
+            </Source>
+          )
         ) : null}
         {!props.showSingleProject &&
           projects.map((project, index) => (
@@ -339,8 +337,10 @@ export default function MapboxMap(props) {
               <ChevronLeftIcon onClick={goToPrevProject} />
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {siteExists && project.sites.length != 0
-                  ? project.sites[currentSite].properties.name
+                {siteExists &&
+                project.sites.length != 0 &&
+                geojson.features[currentSite]
+                  ? geojson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
               </p>
