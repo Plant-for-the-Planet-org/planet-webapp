@@ -5,8 +5,16 @@ import Shovel from '../../../../assets/images/icons/userProfileIcons/Shovel';
 import { Col, Container, Row } from 'react-bootstrap';
 import styles from '../UserProfile.module.scss';
 import RedeemModal from './RedeemModal';
+import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 
 export default function UserProfileOptions({ userprofile }: any) {
+
+
+  const onShareClicked = () => {
+    console.log('clicked', isMobileBrowser())
+  }
+
+  
 
   // redeem modal
   const [redeemModalOpen, setRedeemModalOpen] = React.useState(false);
@@ -39,7 +47,7 @@ export default function UserProfileOptions({ userprofile }: any) {
         <p className={styles.bottomRowText}> Register Trees</p>
       </Col>
 
-      <Col className={styles.iconTextColumn}>
+      <Col className={styles.iconTextColumn} onClick={onShareClicked}>
         <div className={styles.bottomIconBg}>
           <Share color="white" />
         </div>
