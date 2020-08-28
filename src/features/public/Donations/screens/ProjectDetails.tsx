@@ -222,36 +222,11 @@ function ProjectDetails({ project }: Props): ReactElement {
               </div>
 
               <div className={styles.projectInfoProperties}>
-<<<<<<< HEAD
-                <LazyLoad>
-                  <div className={styles.projectImageSliderContainer}>
-                    {project.images
-                      ? project.images.map(
-                        (image: {
-                          image: React.ReactNode;
-                          id: any;
-                          description: any;
-                        }) => {
-                          return (
-                            <img
-                              className={styles.projectImages}
-                              key={image.id}
-                              src={loadImageSource(image.image)}
-                              alt={image.description}
-                            />
-                          );
-                        }
-                      )
-                      : null}
-                  </div>
-                </LazyLoad>
-=======
                 <div className={styles.projectImageSliderContainer}>
                   {project.images.length > 0 ? (
                     <ImageSlider project={projectImages} />
                   ) : null}
                 </div>
->>>>>>> develop
                 {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
