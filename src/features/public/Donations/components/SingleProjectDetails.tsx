@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import ReactPlayer from 'react-player/lazy';
+import ReadMoreReact from 'read-more-react';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
@@ -140,7 +141,14 @@ function SingleProjectDetails({
                   </div>
                 </div>
               </LazyLoad>
-            ) : null}
+            ) : (
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowSingleProject(false)}
+              >
+                <BackButton />
+              </div>
+            )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -212,7 +220,13 @@ function SingleProjectDetails({
             </div> */}
 
             <div className={styles.projectDescription}>
-              {project.description}
+              <ReadMoreReact
+                min={300}
+                ideal={350}
+                max={400}
+                readMoreText="Read more"
+                text={project.description}
+              />
             </div>
 
             <div className={styles.projectInfoProperties}>

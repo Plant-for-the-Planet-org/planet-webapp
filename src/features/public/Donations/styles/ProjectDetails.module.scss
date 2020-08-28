@@ -254,15 +254,15 @@
   max-width: 325px;
   border-radius: 0.6em;
   overflow: hidden;
-  :first-child{
-    :first-child{
+  :first-child {
+    :first-child {
       bottom: 2px;
-      >div{
+      > div {
         background: rgba(0, 0, 0, 0.4) !important;
-  height: 4px !important;
-  >div{
-    background: rgba(255, 255, 255, 0.8) !important;
-  }
+        height: 4px !important;
+        > div {
+          background: rgba(255, 255, 255, 0.8) !important;
+        }
       }
     }
   }
@@ -284,7 +284,7 @@
 //   background: rgba(255, 255, 255, 0.8) !important;
 // }
 
-.projectImageSliderContent{
+.projectImageSliderContent {
   height: 100%;
   width: 100%;
   display: flex;
@@ -292,10 +292,18 @@
   justify-content: flex-end;
   align-items: bottom;
 }
-.projectImageSliderContentText{
+
+.projectImageSliderContentText {
   bottom: 10;
   color: white;
   font-size: 14;
   font-family: $primaryFontFamily;
   padding: 14px 12px;
+}
+
+.projectDescription > div > span > div {
+  color: $primaryColor;
+  display: inline;
+  padding-left: 5px;
+  cursor: pointer;
 }

@@ -35,6 +35,7 @@
     "react-leaflet": "^2.7.0",
     "react-map-gl": "^5.2.7",
     "react-player": "^2.6.1",
+    "read-more-react": "^1.0.10",
     "sugar": "^2.0.6"
   },
   "devDependencies": {

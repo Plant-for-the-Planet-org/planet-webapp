@@ -2,7 +2,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
   Layer,
@@ -19,6 +19,7 @@ export default function MapboxMap(props) {
   var timer;
   const projects = props.projects;
   const project = props.project;
+  const mapRef = useRef(null);
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -29,6 +30,10 @@ export default function MapboxMap(props) {
   const [geojson, setGeojson] = React.useState({});
   const [maxSites, setMaxSites] = React.useState();
   const [currentSite, setCurrentSite] = React.useState();
+
+  const [mapState, setMapState] = useState({
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+  });
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -71,15 +76,19 @@ export default function MapboxMap(props) {
       }
     } else {
       if (project !== null) {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           latitude: 36.96,
           longitude: -28.5,
           zoom: 1.4,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
       }
     }
@@ -98,27 +107,38 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
           latitude,
           zoom,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setTimeout(() => {
+          setMapState(newMapState);
+        }, [3800]);
       } else {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           longitude: singleProjectLatLong[1],
           latitude: singleProjectLatLong[0],
           zoom: 13,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+
         setViewPort(newViewport);
+        setMapState(newMapState);
       }
     }
   }, [project, siteExists, geojson]);
@@ -136,6 +156,9 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
@@ -146,9 +169,14 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setTimeout(() => {
+          setMapState(newMapState);
+        }, [2300]);
       }
     }
   }, [currentSite]);
+
+  const _onStateChange = (state) => setMapState({ ...state });
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -183,10 +211,16 @@ export default function MapboxMap(props) {
   return (
     <div className={styles.mapContainer}>
       <MapGL
+        ref={mapRef}
+        {...mapState}
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
-        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+        mapOptions={{
+          customAttribution:
+            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
+        }}
         onViewportChange={_onViewportChange}
+        onStateChange={_onStateChange}
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
@@ -295,7 +329,7 @@ export default function MapboxMap(props) {
           </Popup>
         )}
         <div className={styles.mapNavigation}>
-          <NavigationControl />
+          <NavigationControl showCompass={false} />
         </div>
         {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
@@ -303,8 +337,10 @@ export default function MapboxMap(props) {
               <ChevronLeftIcon onClick={goToPrevProject} />
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {siteExists && project.sites.length != 0
-                  ? project.sites[currentSite].properties.name
+                {siteExists &&
+                project.sites.length != 0 &&
+                geojson.features[currentSite]
+                  ? geojson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
               </p>
