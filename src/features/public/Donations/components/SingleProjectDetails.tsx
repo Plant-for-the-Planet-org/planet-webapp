@@ -22,7 +22,7 @@ interface Props {
   setShowSingleProject: Function;
 }
 
-const ImageSlider = dynamic(() => import('../components/ImageSlider'), {
+const ImageSlider = dynamic(() => import('./ImageSlider'), {
   ssr: false,
   loading: () => <p>Images</p>,
 });

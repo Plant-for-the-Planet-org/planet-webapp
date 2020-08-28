@@ -1,11 +1,11 @@
 import React from 'react';
 import Stories from 'react-insta-stories';
 
-export default function ImageSlider(project: any) {
+export default function ImageSlider(props) {
 
   return <Stories
     stories={
-      project
+      props.project
     }
     defaultInterval={
       7000
