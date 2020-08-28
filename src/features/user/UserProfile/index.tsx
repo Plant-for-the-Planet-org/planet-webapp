@@ -30,7 +30,16 @@ export default function UserProfile({ userprofile }: any) {
     setSettingsModalOpen(true);
   };
 
-   
+
+  
+  // editProfile modal  (from settings modal)
+  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
+  const handleEditProfileModalClose = () => {
+    setEditProfileModalOpen(false);
+  };
+  const handleEditProfileModalOpen = () => {
+    setEditProfileModalOpen(true);
+  };
 
   return (
     <React.Fragment>
@@ -47,6 +56,10 @@ export default function UserProfile({ userprofile }: any) {
             <SettingsModal
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
+
+              editProfileModalOpen = {editProfileModalOpen}
+              handleEditProfileModalClose = {handleEditProfileModalClose}
+              handleEditProfileModalOpen = {handleEditProfileModalOpen}
             />
           </>
         )}
