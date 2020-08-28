@@ -101,7 +101,7 @@ function SingleProjectDetails({
         ),
       });
     });
-  }, [])
+  }, [project])
 
 
   const ProjectProps = {
