@@ -30,7 +30,7 @@ export default function EditProfileModal({
     <Modal
       className={styles.modalContainer}
       open={editProfileModalOpen}
-      onClose={handleEditProfileModalClose}
+    //   onClose={handleEditProfileModalClose}
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
@@ -60,7 +60,7 @@ export default function EditProfileModal({
 
           <div className={styles.namesDiv}>
             <div className={styles.firstNameDiv}>
-              <MaterialTextField label="First " variant="outlined" />
+              <MaterialTextField label="First Name" variant="outlined" />
             </div>
 
             <div className={styles.lastNameDiv}>
@@ -73,10 +73,10 @@ export default function EditProfileModal({
           </div>
 
           <div className={styles.cityZipDiv}>
-            <div className={styles.firstNameDiv}>
+            <div className={styles.cityDiv}>
               <MaterialTextField label="City" variant="outlined" />
             </div>
-            <div className={styles.firstNameDiv}>
+            <div className={styles.zipDiv}>
               <MaterialTextField label="Zip Code" variant="outlined" />
             </div>
           </div>
