@@ -112,7 +112,14 @@ export default function SingleProjectDetails({
                   </div>
                 </div>
               </LazyLoad>
-            ) : null}
+            ) : (
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowSingleProject(false)}
+              >
+                <BackButton />
+              </div>
+            )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>

@@ -217,7 +217,7 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
 
         <div className={styles.isGiftDonation}>
           <div className={styles.isGiftDonationText}>
-            My Donation is a gift to someone
+            My donation is a gift to someone
           </div>
           <ToggleSwitch
             checked={isGift}
