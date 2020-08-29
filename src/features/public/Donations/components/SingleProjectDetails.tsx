@@ -1,6 +1,10 @@
 import Modal from '@material-ui/core/Modal';
-import React from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import dynamic from 'next/dynamic';
+import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
+import ReactPlayer from 'react-player/lazy';
+import ReadMoreReact from 'read-more-react';
 import Sugar from 'sugar';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
@@ -9,9 +13,9 @@ import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-// import getStripe from '../../../../utils/getStripe';
+import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-// import TreeDonation from '../screens/TreeDonation';
+import TreeDonation from '../screens/TreeDonation';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
@@ -19,10 +23,15 @@ interface Props {
   setShowSingleProject: Function;
 }
 
-export default function SingleProjectDetails({
+const ImageSlider = dynamic(() => import('./ImageSlider'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
+
+function SingleProjectDetails({
   project,
   setShowSingleProject,
-}: Props) {
+}: Props): ReactElement {
   const [rating, setRating] = React.useState<number | null>(2);
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
@@ -73,6 +82,29 @@ export default function SingleProjectDetails({
     setOpen(true);
   };
 
+  let projectImages: { content: () => JSX.Element; }[] = [];
+
+  React.useEffect(() => {
+    project.images.forEach((image: any) => {
+      let imageURL = loadImageSource(image.image);
+      projectImages.push({
+        content: () => (
+          <div
+            className={styles.projectImageSliderContent}
+            style={{
+              background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+            }}
+          >
+            <p className={styles.projectImageSliderContentText}>
+              {image.description}
+            </p>
+          </div>
+        ),
+      });
+    });
+  }, [project])
+
+
   const ProjectProps = {
     project: project,
   };
@@ -86,9 +118,9 @@ export default function SingleProjectDetails({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {/* <Elements stripe={getStripe()}>
+        <Elements stripe={getStripe()}>
           <TreeDonation project={project} onClose={handleClose} />
-        </Elements> */}
+        </Elements>
       </Modal>
       <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
@@ -109,7 +141,14 @@ export default function SingleProjectDetails({
                   </div>
                 </div>
               </LazyLoad>
-            ) : null}
+            ) : (
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowSingleProject(false)}
+              >
+                <BackButton />
+              </div>
+            )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -157,8 +196,8 @@ export default function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
+                        ? '€'
+                        : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
@@ -181,32 +220,37 @@ export default function SingleProjectDetails({
             </div> */}
 
             <div className={styles.projectDescription}>
-              {project.description}
+              <ReadMoreReact
+                min={300}
+                ideal={350}
+                max={400}
+                readMoreText="Read more"
+                text={project.description}
+              />
             </div>
 
             <div className={styles.projectInfoProperties}>
-              <LazyLoad>
-                <div className={styles.projectImageSliderContainer}>
-                  {project.images
-                    ? project.images.map(
-                        (image: {
-                          image: React.ReactNode;
-                          id: any;
-                          description: any;
-                        }) => {
-                          return (
-                            <img
-                              className={styles.projectImages}
-                              key={image.id}
-                              src={loadImageSource(image.image)}
-                              alt={image.description}
-                            />
-                          );
-                        }
-                      )
-                    : null}
-                </div>
-              </LazyLoad>
+              {ReactPlayer.canPlay(project.videoUrl) ? (
+                <ReactPlayer
+                  className={styles.projectVideoContainer}
+                  width="312px"
+                  height="220px"
+                  loop={true}
+                  light={true}
+                  controls={true}
+                  config={{
+                    youtube: {
+                      playerVars: { autoplay: 1 },
+                    },
+                  }}
+                  url={project.videoUrl}
+                />
+              ) : null}
+              <div className={styles.projectImageSliderContainer}>
+                {project.images.length > 0 ? (
+                  <ImageSlider project={projectImages} />
+                ) : null}
+              </div>
               {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }
@@ -222,3 +266,5 @@ export default function SingleProjectDetails({
     </div>
   );
 }
+
+export default SingleProjectDetails;

@@ -4,7 +4,7 @@ function BackButton(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      style={{backgroundColor:'white', borderRadius:30, marginTop: 10, marginLeft: 10}}
+      style={props.style ? props.style : {backgroundColor:'white', borderRadius:30, marginTop: 10, marginLeft: 10}}
       width="30"
       height="30"
       enableBackground="new 0 0 219.151 219.151"

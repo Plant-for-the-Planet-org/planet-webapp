@@ -1,7 +1,9 @@
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
+import NotFound from '../../../../assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
+import styles from './../styles/AllProjects.module.scss';
 
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
   loading: () => <ProjectLoader />,
@@ -19,15 +21,16 @@ function AllProjects({
 }: Props): ReactElement {
   if (projects.length < 1) {
     return (
-      <div>
+      <div className={styles.projectNotFound}>
         <LazyLoad>
-          <h3> No projects found </h3>
+          <NotFound className={styles.projectNotFoundImage} />
+          <h5>No projects found</h5>
         </LazyLoad>
       </div>
     );
   } else {
     return (
-      <div>
+      <div className={styles.allProjectsContainer}>
         <LazyLoad>
           {projects.map((project: any) => {
             return (

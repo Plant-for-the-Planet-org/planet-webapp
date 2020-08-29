@@ -1,6 +1,8 @@
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
   Layer,
@@ -17,14 +19,21 @@ export default function MapboxMap(props) {
   var timer;
   const projects = props.projects;
   const project = props.project;
+  const mapRef = useRef(null);
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
-  const [geometryExists, setGeometryExists] = React.useState(false);
+  const [siteExists, setsiteExists] = React.useState(false);
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
     -28.5,
     36.96,
   ]);
   const [geojson, setGeojson] = React.useState({});
+  const [maxSites, setMaxSites] = React.useState();
+  const [currentSite, setCurrentSite] = React.useState();
+
+  const [mapState, setMapState] = useState({
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+  });
 
   const [viewport, setViewPort] = useState({
     width: '100%',
@@ -56,24 +65,30 @@ export default function MapboxMap(props) {
         newGeojson.features.length > 0
       ) {
         if (newGeojson.features[0].geometry !== null) {
-          setGeometryExists(true);
+          setsiteExists(true);
+          setCurrentSite(0);
+          setMaxSites(newGeojson.features.length);
         } else {
-          setGeometryExists(false);
+          setsiteExists(false);
         }
       } else {
-        setGeometryExists(false);
+        setsiteExists(false);
       }
     } else {
       if (project !== null) {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
         const newViewport = {
           ...viewport,
           latitude: 36.96,
           longitude: -28.5,
           zoom: 1.4,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
+        setMapState(newMapState);
         setViewPort(newViewport);
       }
     }
@@ -81,8 +96,8 @@ export default function MapboxMap(props) {
 
   React.useEffect(() => {
     if (props.showSingleProject) {
-      if (geometryExists) {
-        var bbox = turf.bbox(geojson);
+      if (siteExists) {
+        var bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
           [bbox[0], bbox[1]],
           [bbox[2], bbox[3]],
@@ -92,6 +107,58 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: 100,
         });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
+        const newViewport = {
+          ...viewport,
+          longitude,
+          latitude,
+          zoom,
+          transitionDuration: 4000,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+        setViewPort(newViewport);
+        setTimeout(() => {
+          setMapState(newMapState);
+        }, [3800]);
+      } else {
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
+        const newViewport = {
+          ...viewport,
+          longitude: singleProjectLatLong[1],
+          latitude: singleProjectLatLong[0],
+          zoom: 13,
+          transitionDuration: 4000,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+
+        setViewPort(newViewport);
+        setMapState(newMapState);
+      }
+    }
+  }, [project, siteExists, geojson]);
+
+  React.useEffect(() => {
+    if (props.showSingleProject && siteExists) {
+      if (currentSite < maxSites) {
+        var bbox = turf.bbox(geojson.features[currentSite]);
+        bbox = [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ];
+        const { longitude, latitude, zoom } = new WebMercatorViewport(
+          viewport
+        ).fitBounds(bbox, {
+          padding: 100,
+        });
+        const newMapState = {
+          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+        };
         const newViewport = {
           ...viewport,
           longitude,
@@ -102,26 +169,14 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
-      } else {
-        const newViewport = {
-          ...viewport,
-          longitude: singleProjectLatLong[1],
-          latitude: singleProjectLatLong[0],
-          zoom: 13,
-          transitionDuration: 2400,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: d3.easeCubic,
-        };
-        setViewPort(newViewport);
+        setTimeout(() => {
+          setMapState(newMapState);
+        }, [2300]);
       }
     }
-  }, [project, geometryExists, geojson]);
+  }, [currentSite]);
 
-  // React.useEffect(() => {
-  //   if (!props.showSingleProject) {
-
-  //   }
-  // }, [props.showSingleProject]);
+  const _onStateChange = (state) => setMapState({ ...state });
 
   const _onViewportChange = (view) => setViewPort({ ...view });
 
@@ -133,21 +188,44 @@ export default function MapboxMap(props) {
   };
 
   function goToNextProject() {
-    console.log('clicked');
+    if (currentSite < maxSites - 1) {
+      setCurrentSite(currentSite + 1);
+    } else {
+      setCurrentSite(0);
+    }
   }
+
+  function goToPrevProject() {
+    if (currentSite > 0) {
+      setCurrentSite(currentSite - 1);
+    } else {
+      setCurrentSite(maxSites - 1);
+    }
+  }
+
+  const handleOpenProject = async (id) => {
+    await props.fetchSingleProject(id);
+    props.setShowSingleProject(true);
+  };
 
   return (
     <div className={styles.mapContainer}>
       <MapGL
+        ref={mapRef}
+        {...mapState}
         {...viewport}
         mapboxApiAccessToken={props.mapboxToken}
-        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+        mapOptions={{
+          customAttribution:
+            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
+        }}
         onViewportChange={_onViewportChange}
+        onStateChange={_onStateChange}
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
         {props.showSingleProject ? (
-          !geometryExists ? (
+          !siteExists ? (
             <Marker
               latitude={singleProjectLatLong[0]}
               longitude={singleProjectLatLong[1]}
@@ -192,6 +270,9 @@ export default function MapboxMap(props) {
             >
               <div
                 className={styles.marker}
+                onClick={() =>
+                  handleOpenProject(popupData.project.properties.id)
+                }
                 onMouseOver={(e) => {
                   timer = setTimeout(function () {
                     setPopupData({
@@ -222,11 +303,12 @@ export default function MapboxMap(props) {
             onClose={() => setPopupData({ ...popupData, show: false })}
             anchor="bottom"
             dynamicPosition={false}
-            offsetTop={20}
+            offsetTop={-15}
             tipSize={0}
           >
             <div
               className={styles.popupProject}
+              onClick={() => handleOpenProject(popupData.project.properties.id)}
               onMouseLeave={(e) => {
                 if (!open) {
                   setTimeout(function () {
@@ -247,9 +329,25 @@ export default function MapboxMap(props) {
           </Popup>
         )}
         <div className={styles.mapNavigation}>
-          <NavigationControl />
+          <NavigationControl showCompass={false} />
         </div>
-        {/* <div className={styles.projectControls} onClick={goToNextProject}></div> */}
+        {props.showSingleProject && siteExists ? (
+          maxSites > 1 ? (
+            <div className={styles.projectControls}>
+              <ChevronLeftIcon onClick={goToPrevProject} />
+              <p className={styles.projectControlText}>
+                &nbsp;&nbsp;
+                {siteExists &&
+                project.sites.length != 0 &&
+                geojson.features[currentSite]
+                  ? geojson.features[currentSite].properties.name
+                  : null}
+                &nbsp;&nbsp;
+              </p>
+              <ChevronRightIcon onClick={goToNextProject} />
+            </div>
+          ) : null
+        ) : null}
       </MapGL>
     </div>
   );

@@ -54,7 +54,6 @@ export default function ProjectSnippet({
           <TreeDonation project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}> */}
       <a>
         <div onClick={handleOpenProject} className={styles.projectImage}>
           {project.properties.image &&
@@ -79,7 +78,6 @@ export default function ProjectSnippet({
           </div>
         </div>
       </a>
-      {/* </Link> */}
 
       <div className={styles.progressBar}>
         <div
