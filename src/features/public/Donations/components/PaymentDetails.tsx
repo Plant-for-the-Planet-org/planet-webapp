@@ -10,6 +10,7 @@ import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from './../../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation } from './treeDonation/PaymentFunctions';
@@ -295,7 +296,7 @@ function PaymentDetails({
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
         <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-          <div className={styles.continueButton}>Continue</div>
+          <AnimatedButton className={styles.continueButton}>Continue</AnimatedButton>
         </div>
       </div>
     );

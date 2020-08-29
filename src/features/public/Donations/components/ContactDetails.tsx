@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
@@ -189,11 +190,9 @@ function ContactDetails({
         </div>
 
         <div className={styles.actionButtonsContainer}>
-          <input
-            type="submit"
-            value="Continue"
-            className={styles.continueButton}
-          />
+
+          <AnimatedButton onClick={handleSubmit(onSubmit)} className={styles.continueButton}>Continue</AnimatedButton>
+
         </div>
       </form>
     </div>
