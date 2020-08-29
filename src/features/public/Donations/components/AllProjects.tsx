@@ -13,12 +13,14 @@ interface Props {
   projects: any;
   setShowSingleProject: Function;
   fetchSingleProject: Function;
+  setLayoutId: Function;
 }
 
 function AllProjects({
   projects,
   setShowSingleProject,
   fetchSingleProject,
+  setLayoutId,
 }: Props): ReactElement {
   const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -57,11 +59,16 @@ function AllProjects({
           <motion.div variants={container} initial="hidden" animate="visible">
             {projects.map((project: any) => {
               return (
-                <motion.div variants={item} key={project.properties.id}>
+                <motion.div
+                  variants={item}
+                  layoutId={project.properties.id}
+                  key={project.properties.id}
+                >
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project}
                     setShowSingleProject={setShowSingleProject}
+                    setLayoutId={setLayoutId}
                     fetchProject={async () => {
                       await fetchSingleProject(project.properties.id);
                     }}

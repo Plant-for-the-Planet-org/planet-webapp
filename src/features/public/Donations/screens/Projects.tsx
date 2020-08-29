@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import ProjectsContainer from '../components/ProjectsContainer';
@@ -96,6 +96,11 @@ function ProjectsList({ projects }: Props): ReactElement {
       setCanChangeTopValue(false);
     }
   }
+
+  // For animation
+
+  const [selectedId, setSelectedId] = React.useState(null);
+
   return (
     <div onTouchMove={onTouchMove}>
       <MapLayout
@@ -106,26 +111,30 @@ function ProjectsList({ projects }: Props): ReactElement {
       />
 
       {/* Add Condition Operator */}
-      {showSingleProject ? (
-        <SingleProjectDetails
-          project={project}
-          setShowSingleProject={setShowSingleProject}
-        />
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 300 }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{ duration: 1 }}
-        >
-          <ProjectsContainer
-            {...ProjectsProps}
+      <AnimateSharedLayout type="crossfade">
+        {showSingleProject ? (
+          <SingleProjectDetails
+            project={project}
             setShowSingleProject={setShowSingleProject}
+            setLayoutId={() => setSelectedId}
           />
-        </motion.div>
-      )}
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 300 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{ duration: 1 }}
+          >
+            <ProjectsContainer
+              {...ProjectsProps}
+              setLayoutId={() => setSelectedId}
+              setShowSingleProject={setShowSingleProject}
+            />
+          </motion.div>
+        )}
+      </AnimateSharedLayout>
     </div>
   );
 }

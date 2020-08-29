@@ -1,5 +1,6 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
@@ -21,6 +22,7 @@ import styles from './../styles/ProjectDetails.module.scss';
 interface Props {
   project: any;
   setShowSingleProject: Function;
+  setLayoutId: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -31,6 +33,7 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 function SingleProjectDetails({
   project,
   setShowSingleProject,
+  setLayoutId,
 }: Props): ReactElement {
   const [rating, setRating] = React.useState<number | null>(2);
   const progressPercentage =
@@ -82,7 +85,7 @@ function SingleProjectDetails({
     setOpen(true);
   };
 
-  let projectImages: { content: () => JSX.Element; }[] = [];
+  let projectImages: { content: () => JSX.Element }[] = [];
 
   React.useEffect(() => {
     project.images.forEach((image: any) => {
@@ -102,14 +105,13 @@ function SingleProjectDetails({
         ),
       });
     });
-  }, [project])
-
+  }, [project]);
 
   const ProjectProps = {
     project: project,
   };
   return (
-    <div className={styles.container}>
+    <motion.div layoutId={project.id} className={styles.container}>
       <Modal
         className={styles.modal}
         open={open}
@@ -135,20 +137,22 @@ function SingleProjectDetails({
                 >
                   <div
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setShowSingleProject(false)}
+                    onClick={() => {
+                      setShowSingleProject(false), setLayoutId(null);
+                    }}
                   >
                     <BackButton />
                   </div>
                 </div>
               </LazyLoad>
             ) : (
-                <div
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setShowSingleProject(false)}
-                >
-                  <BackButton />
-                </div>
-              )}
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowSingleProject(false)}
+              >
+                <BackButton />
+              </div>
+            )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -196,8 +200,8 @@ function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                      ? '€'
+                      : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
@@ -263,7 +267,7 @@ function SingleProjectDetails({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
