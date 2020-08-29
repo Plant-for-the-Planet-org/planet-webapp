@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import ProjectsContainer from '../components/ProjectsContainer';
@@ -5,7 +6,7 @@ import SingleProjectDetails from '../components/SingleProjectDetails';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
-  loading: () => <p>Loading...</p>,
+  loading: () => <p></p>,
 });
 
 interface Props {
@@ -111,11 +112,20 @@ function ProjectsList({ projects }: Props): ReactElement {
           setShowSingleProject={setShowSingleProject}
         />
       ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 300 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{ duration: 1 }}
+        >
           <ProjectsContainer
             {...ProjectsProps}
             setShowSingleProject={setShowSingleProject}
           />
-        )}
+        </motion.div>
+      )}
     </div>
   );
 }
