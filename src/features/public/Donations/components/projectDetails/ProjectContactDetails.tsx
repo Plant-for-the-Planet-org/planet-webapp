@@ -32,40 +32,87 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
           </a>
         </Link>
       </div>
-
-      {/* contactDetails website, maps, mail links */}
-      {contactDetails.slice(1).map((contactDetails) => (
-        <div key={contactDetails.id}>
-          {contactDetails.link ? (
-            <a href={contactDetails.link} target="_blank">
-              <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-                {contactDetails.icon}
-                <span
-                  style={{
-                    marginLeft: '16px',
-                    flexGrow: 1,
-                    wordWrap: 'break-word',
-                  }}
-                >
-                  {
-                    contactDetails.text
-                      .replace('http://', '')
-                      .replace('https://', '')
-                      .split(/[/?#]/)[0]
-                  }
-                </span>
-              </div>
-            </a>
-          ) : (
+      <div>
+        {contactDetails.slice(1)[0].link ? (
+          <a href={contactDetails.slice(1)[0].link} target="_blank">
             <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-              {contactDetails.icon}
-              <span style={{ marginLeft: '16px', flexGrow: 1 }}>
-                {contactDetails.text}
+              {contactDetails.slice(1)[0].icon}
+              <span
+                style={{
+                  marginLeft: '16px',
+                  flexGrow: 1,
+                  wordWrap: 'break-word',
+                }}
+              >
+                {
+                  contactDetails
+                    .slice(1)[0]
+                    .text.replace('http://', '')
+                    .replace('https://', '')
+                    .split(/[/?#]/)[0]
+                }
               </span>
             </div>
-          )}
-        </div>
-      ))}
+          </a>
+        ) : (
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails.slice(1)[0].icon}
+            <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+              {contactDetails.slice(1)[0].text}
+            </span>
+          </div>
+        )}
+      </div>
+      <div>
+        {contactDetails.slice(1)[1].link ? (
+          <a href={contactDetails.slice(1)[1].link} target="_blank">
+            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+              {contactDetails.slice(1)[1].icon}
+              <span
+                style={{
+                  marginLeft: '16px',
+                  flexGrow: 1,
+                  wordWrap: 'break-word',
+                }}
+              >
+                {contactDetails.slice(1)[1].text}
+              </span>
+            </div>
+          </a>
+        ) : (
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails.slice(1)[1].icon}
+            <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+              {contactDetails.slice(1)[1].text}
+            </span>
+          </div>
+        )}
+      </div>
+      <div>
+        {contactDetails.slice(1)[2].link ? (
+          <a href={contactDetails.slice(1)[2].link} target="_blank">
+            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+              {contactDetails.slice(1)[2].icon}
+              <span
+                style={{
+                  marginLeft: '16px',
+                  flexGrow: 1,
+                  wordWrap: 'break-word',
+                }}
+              >
+                {contactDetails.slice(1)[2].text}
+              </span>
+            </div>
+          </a>
+        ) : (
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails.slice(1)[2].icon}
+            <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+              {contactDetails.slice(1)[2].text}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
