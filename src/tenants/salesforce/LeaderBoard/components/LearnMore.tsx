@@ -23,6 +23,7 @@ export default function LearnMore() {
           the gift of a tree donation to a friend!
         </p>
         <button className={styles.buttonStyle}>Learn More</button>
+        <div className={styles.learnMoreSectionOverlay}></div>
       </Col>
     </Row>
   );

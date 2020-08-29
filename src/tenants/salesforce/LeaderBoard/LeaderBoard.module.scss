@@ -93,8 +93,8 @@
 
 .treeCounterSectionTextHeader {
   font-weight: 600;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 30px;
+  line-height: 32px;
   letter-spacing: -0.4px;
   color: #080707;
   font-family: $primaryFontFamily;
@@ -121,20 +121,25 @@
   justify-content: center;
   align-items: center;
   order: -1;
+  height: 320px;
+  max-width: 320px;
+  align-self: center;
+  margin: auto;
 }
 
 .treeCounter {
   position: absolute;
+  top: 0px;
   right: 0px;
   z-index: 1;
 }
 
 .treeCounterImage {
-  height: 120px;
-  width: 128px;
+  height: 160px;
+  width: 160px;
   position: absolute;
   left: 0px;
-  bottom: 40px;
+  bottom: 20px;
 }
 
 // Learn More section
@@ -152,22 +157,42 @@
   flex-direction: column;
   justify-content: center;
   max-width: 464px;
+  position: relative;
+}
+
+.learnMoreSectionText > p,
+.learnMoreSectionText > button {
+  z-index: 1;
+}
+
+.learnMoreSectionOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.3) 20%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
 }
 
 .learnMoreSectionTextHeader {
   font-weight: 600;
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 30px;
+  line-height: 32px;
   letter-spacing: -0.4px;
-  color: #080707;
+  color: #ffffff;
   font-family: $primaryFontFamily;
 }
 
 .learnMoreSectionTextPara {
   font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  font-size: 16px;
-  line-height: 24px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .learnMoreSectionTextLink {
@@ -551,14 +576,20 @@
 
   .treeCounterSection {
     order: 0;
+    height: 560px;
+    max-width: 560px;
+  }
+
+  .treeCounter {
+    top: 40px;
   }
 
   .treeCounterImage {
     height: 280px;
     width: 288px;
     position: absolute;
-    left: 0px;
-    bottom: 40px;
+    left: 40px;
+    bottom: 60px;
   }
 
   .leaderBoardBody {
@@ -573,6 +604,22 @@
   .treeCounterSectionTextPara {
     font-size: 16px;
     line-height: 24px;
+  }
+
+  .learnMoreSectionTextHeader {
+    font-size: 36px;
+    line-height: 40px;
+    color: #080707;
+  }
+
+  .learnMoreSectionTextPara {
+    font-size: 16px;
+    line-height: 24px;
+    color: $primaryFontColor;
+  }
+
+  .learnMoreSectionOverlay {
+    display: none;
   }
 
   .articleContainer {

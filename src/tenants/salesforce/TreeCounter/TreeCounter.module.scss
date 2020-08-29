@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 55%;
+  height: 60%;
 }
 
 .treeCounterDataField > h1 {
@@ -21,7 +21,7 @@
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;
-  font-size: 20px;
+  font-size: 24px;
   margin-bottom: 0px;
 }
 .treeCounterDataField > h2 {
@@ -29,15 +29,15 @@
   font-family: $primaryFontFamily;
   font-weight: 600;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   max-width: 180px;
   margin-top: 2px;
 }
 .backgroundCircle {
   border: 12px solid white;
   border-radius: 50%;
-  height: 200px;
-  width: 200px;
+  height: 240px;
+  width: 240px;
   position: absolute;
   top: 3px;
   background-color: #027e46;

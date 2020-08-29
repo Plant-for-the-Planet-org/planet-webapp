@@ -32,7 +32,7 @@ function FacebookCircularProgress(props: any) {
         classes={{
           circle: classes.circle,
         }}
-        size={isMobile ? 206 : 340}
+        size={isMobile ? 246 : 340}
         thickness={isMobile ? 3.6 : 4.6}
         {...props}
       />
@@ -41,9 +41,8 @@ function FacebookCircularProgress(props: any) {
 }
 
 export default function TpoProfile(props: any) {
-  const [progress, setProgress] = React.useState(0);
-  // const screenWidth = window.innerWidth;
-  const isMobile = true;
+  const [progress, setProgress] = React.useState<number>(0);
+  const [isMobile, setIsMobile] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     let percentage = (props.planted / props.target) * 100;
@@ -62,6 +61,12 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
+
+  // sets [isMobile] to true if the device width is less than 768 else false
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
+
   return (
     <div className={treeCounterStyles.treeCounter}>
       <div className={treeCounterStyles.backgroundCircle}></div>
@@ -75,7 +80,7 @@ export default function TpoProfile(props: any) {
           <h2>Target</h2>
         </div>
       </div>
-      <FacebookCircularProgress value={50} isMobile={isMobile} />
+      <FacebookCircularProgress value={progress} isMobile={isMobile} />
     </div>
   );
 }
