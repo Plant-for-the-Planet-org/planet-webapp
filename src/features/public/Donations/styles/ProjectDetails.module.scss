@@ -250,9 +250,9 @@
 }
 
 .projectImageSliderContainer {
-  margin-top: 24px;
-  max-width: 325px;
-  border-radius: 0.6em;
+  margin-top: 2px;
+  width: 100%;
+  // border-radius: 0.6em;
   overflow: hidden;
   :first-child {
     :first-child {
@@ -268,22 +268,6 @@
   }
 }
 
-// .projectImageSliderContainer:first-child
-//   > div:first-child
-//   > div:first-child
-//   > div {
-//   background: rgba(0, 0, 0, 0.4) !important;
-//   height: 4px !important;
-// }
-
-// .projectImageSliderContainer:first-child
-//   > div:first-child
-//   > div:first-child
-//   > div
-//   > div {
-//   background: rgba(255, 255, 255, 0.8) !important;
-// }
-
 .projectImageSliderContent {
   height: 100%;
   width: 100%;
@@ -291,6 +275,8 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: bottom;
+  background-position: center center;
+  background-size: cover;
 }
 
 .projectImageSliderContentText {

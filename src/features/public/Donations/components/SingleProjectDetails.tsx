@@ -82,7 +82,7 @@ function SingleProjectDetails({
     setOpen(true);
   };
 
-  let projectImages: { content: () => JSX.Element; }[] = [];
+  let projectImages: { content: () => JSX.Element }[] = [];
 
   React.useEffect(() => {
     project.images.forEach((image: any) => {
@@ -102,8 +102,7 @@ function SingleProjectDetails({
         ),
       });
     });
-  }, [project])
-
+  }, [project]);
 
   const ProjectProps = {
     project: project,
@@ -196,8 +195,8 @@ function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                      ? '€'
+                      : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
