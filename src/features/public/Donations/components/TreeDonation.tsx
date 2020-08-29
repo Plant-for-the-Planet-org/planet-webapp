@@ -1,5 +1,4 @@
 
-import { motion } from "framer-motion";
 import React, { ReactElement } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
@@ -128,11 +127,8 @@ function TreeDonation({
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     : (
       <>
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8, type: "tween" }}
+        <div
+
           className={styles.cardContainer}
           style={{ alignSelf: isGift ? 'start' : 'center' }}
         >
@@ -291,7 +287,7 @@ function TreeDonation({
 
             <AnimatedButton onClick={() => continueNext()} className={styles.continueButton}>Continue</AnimatedButton>
           </div>
-        </motion.div>
+        </div>
         <SelectTaxDeductionCountryModal
           openModal={openTaxDeductionModal}
           handleModalClose={() => setOpenTaxDeductionModal(false)}

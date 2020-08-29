@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import ContactDetails from '../components/ContactDetails';
 import PaymentDetails from '../components/PaymentDetails';
@@ -20,10 +21,11 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
 
   // modal for selecting currency
   const [currency, setCurrency] = React.useState(project.currency);
-  const [country, setCountry] = React.useState(localStorage.getItem('countryCode')!);
+  const [country, setCountry] = React.useState(
+    localStorage.getItem('countryCode')!
+  );
 
   const [paymentType, setPaymentType] = React.useState('');
-
 
   // to get country and currency from local storage
   // React.useEffect(() => {
@@ -66,7 +68,6 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     giftMessage: '',
   });
 
-
   const [contactDetails, setContactDetails] = React.useState({
     firstName: '',
     lastName: '',
@@ -96,7 +97,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setDonationStep,
     giftDetails,
     setGiftDetails,
-    paymentType, setPaymentType
+    paymentType,
+    setPaymentType,
   };
 
   const ContactDetailsProps = {
@@ -105,7 +107,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     currency,
     setDonationStep,
     contactDetails,
-    setContactDetails
+    setContactDetails,
   };
 
   const PaymentDetailsProps = {
@@ -118,7 +120,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     isGift,
     giftDetails,
     paymentSetup,
-    paymentType, setPaymentType
+    paymentType,
+    setPaymentType,
   };
 
   const ThankYouProps = {
@@ -130,19 +133,66 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     contactDetails,
     isGift,
     giftDetails,
-    onClose, paymentType
+    onClose,
+    paymentType,
   };
   switch (donationStep) {
     case 1:
-      return <TreeDonation {...TreeDonationProps} />;
+      return (
+        <motion.div
+          animate={{
+            scale: [0.94, 1.05, 1],
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          <TreeDonation {...TreeDonationProps} />
+        </motion.div>
+      );
     case 2:
-      return <ContactDetails {...ContactDetailsProps} />;
+      return (
+        <motion.div
+          animate={{
+            scale: [0.94, 1.04, 1],
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          <ContactDetails {...ContactDetailsProps} />
+        </motion.div>
+      );
     case 3:
-      return <PaymentDetails {...PaymentDetailsProps} />;
+      return (
+        <motion.div
+          animate={{
+            scale: [0.94, 1.05, 1],
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          <PaymentDetails {...PaymentDetailsProps} />
+        </motion.div>
+      );
     case 4:
-      return <ThankYou {...ThankYouProps} />;
+      return (
+        <motion.div
+          animate={{
+            scale: [0.94, 1.04, 1],
+            rotate: [-15, 5, 0],
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          <ThankYou {...ThankYouProps} />
+        </motion.div>
+      );
     default:
-      return <TreeDonation {...TreeDonationProps} />;
+      return (
+        <motion.div
+          animate={{
+            scale: [0.94, 1.05, 1],
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          <TreeDonation {...TreeDonationProps} />
+        </motion.div>
+      );
   }
 }
 
