@@ -23,9 +23,10 @@ export default function MapboxMap(props) {
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
+  const defaultMapCenter = [36.96, -28.5];
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
-    -28.5,
-    36.96,
+    defaultMapCenter[0],
+    defaultMapCenter[1],
   ]);
   const [geojson, setGeojson] = React.useState({});
   const [maxSites, setMaxSites] = React.useState();
@@ -38,8 +39,8 @@ export default function MapboxMap(props) {
   const [viewport, setViewPort] = useState({
     width: '100%',
     height: '100%',
-    latitude: 36.96,
-    longitude: -28.5,
+    latitude: defaultMapCenter[0],
+    longitude: defaultMapCenter[1],
     zoom: 1.4,
   });
 
@@ -81,10 +82,10 @@ export default function MapboxMap(props) {
         };
         const newViewport = {
           ...viewport,
-          latitude: 36.96,
-          longitude: -28.5,
+          latitude: defaultMapCenter[0],
+          longitude: defaultMapCenter[1],
           zoom: 1.4,
-          transitionDuration: 4000,
+          transitionDuration: 2400,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
