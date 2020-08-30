@@ -22,6 +22,11 @@ const ProjectMap = dynamic(() => import('./ProjectMap'), {
   loading: () => <p>Loading...</p>,
 });
 
+const ImageSlider = dynamic(() => import('../components/ImageSlider'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
+
 interface Props {
   project: any;
 }
@@ -81,6 +86,28 @@ function ProjectDetails({ project }: Props): ReactElement {
   const ProjectProps = {
     project: project,
   };
+
+  var projectImages = [];
+
+  React.useEffect(() => {
+    project.images.forEach((image: any) => {
+      let imageURL = loadImageSource(image.image);
+      projectImages.push({
+        content: () => (
+          <div
+            className={styles.projectImageSliderContent}
+            style={{
+              background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+            }}
+          >
+            <p className={styles.projectImageSliderContentText}>
+              {image.description}
+            </p>
+          </div>
+        ),
+      });
+    });
+  }, [])
 
   return (
     <>
@@ -167,8 +194,8 @@ function ProjectDetails({ project }: Props): ReactElement {
                       {project.currency === 'USD'
                         ? '$'
                         : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                          ? '€'
+                          : project.currency}
                       {project.treeCost % 1 !== 0
                         ? project.treeCost.toFixed(2)
                         : project.treeCost}
@@ -195,28 +222,11 @@ function ProjectDetails({ project }: Props): ReactElement {
               </div>
 
               <div className={styles.projectInfoProperties}>
-                <LazyLoad>
-                  <div className={styles.projectImageSliderContainer}>
-                    {project.images
-                      ? project.images.map(
-                          (image: {
-                            image: React.ReactNode;
-                            id: any;
-                            description: any;
-                          }) => {
-                            return (
-                              <img
-                                className={styles.projectImages}
-                                key={image.id}
-                                src={loadImageSource(image.image)}
-                                alt={image.description}
-                              />
-                            );
-                          }
-                        )
-                      : null}
-                  </div>
-                </LazyLoad>
+                <div className={styles.projectImageSliderContainer}>
+                  {project.images.length > 0 ? (
+                    <ImageSlider project={projectImages} />
+                  ) : null}
+                </div>
                 {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
                             {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                             {species ? <PlantSpecies species={species} /> : null }

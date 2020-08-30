@@ -250,35 +250,46 @@
 }
 
 .projectImageSliderContainer {
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: nowrap;
-  display: grid;
-  margin-top: 24px;
-  scroll-behavior: smooth;
-  max-width: 328px;
-  overflow: scroll;
-  overflow-x: auto;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: repeat(2, 50%);
-  grid-auto-columns: 50%;
-  grid-auto-flow: column;
+  margin-top: 2px;
+  width: 100%;
+  // border-radius: 0.6em;
+  overflow: hidden;
+  :first-child {
+    :first-child {
+      bottom: 2px;
+      > div {
+        background: rgba(0, 0, 0, 0.4) !important;
+        height: 4px !important;
+        > div {
+          background: rgba(255, 255, 255, 0.8) !important;
+        }
+      }
+    }
+  }
 }
 
-.projectImages {
-  height: 148px;
-  width: 132px;
-  border-radius: 7px;
-  margin-right: 6px;
-  grid-area: span 2 / span 1;
+.projectImageSliderContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: bottom;
+  background-position: center center !important;
+  background-size: cover !important;
 }
 
-.projectImages:nth-child(3n-1),
-.projectImages:nth-child(3n) {
-  height: 70px;
-  grid-area: span 1 / span 1;
+.projectImageSliderContentText {
+  bottom: 10;
+  color: white;
+  font-size: 14;
+  font-family: $primaryFontFamily;
+  padding: 14px 12px;
 }
 
-.projectImages:nth-child(3n) {
-  margin-top: 4px;
+.projectDescription > div > span > div {
+  color: $primaryColor;
+  display: inline;
+  padding-left: 5px;
+  cursor: pointer;
 }
