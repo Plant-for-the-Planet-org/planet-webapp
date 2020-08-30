@@ -16,14 +16,28 @@ export default function NavbarComponent(props: any) {
       name: 'About us',
       path: '/about',
       icon: (
-        <LOGO color={router.pathname === '/about' ? '#89b35a' : '#2f3336'} />
+        <LOGO
+          color={
+            router.pathname === '/about'
+              ? styles.primaryColor
+              : styles.primaryFontColor
+          }
+        />
       ),
     },
     {
       id: 2,
       name: 'Donate/Gift',
       path: '/',
-      icon: <Donate color={router.pathname === `/` ? '#89b35a' : '#2f3336'} />,
+      icon: (
+        <Donate
+          color={
+            router.pathname === `/`
+              ? styles.primaryColor
+              : styles.primaryFontColor
+          }
+        />
+      ),
     },
     {
       id: 3,
@@ -31,7 +45,11 @@ export default function NavbarComponent(props: any) {
       path: '/leaderboard',
       icon: (
         <Leaderboard
-          color={router.pathname === '/leaderboard' ? '#89b35a' : '#2f3336'}
+          color={
+            router.pathname === '/leaderboard'
+              ? styles.primaryColor
+              : styles.primaryFontColor
+          }
         />
       ),
     },
@@ -39,7 +57,15 @@ export default function NavbarComponent(props: any) {
       id: 4,
       name: 'Me',
       path: '/me',
-      icon: <Me color={router.pathname === '/me' ? '#89b35a' : '#2f3336'} />,
+      icon: (
+        <Me
+          color={
+            router.pathname === '/me'
+              ? styles.primaryColor
+              : styles.primaryFontColor
+          }
+        />
+      ),
     },
   ];
 

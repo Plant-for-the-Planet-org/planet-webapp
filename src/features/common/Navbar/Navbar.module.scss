@@ -1,4 +1,6 @@
 @import './../../../theme/theme';
+
+// $primaryColor: $primaryColor;
 .link_container {
   display: flex;
   flex-direction: column;
@@ -22,8 +24,14 @@
 .first_icon {
   position: absolute;
   left: calc(25% - 100px);
-  bottom: 0;
-  top: 0;
+  padding: 0;
+  top: 2px;
+  bottom: 2px;
+}
+
+.first_icon > .link_container > .link_icon {
+  height: 40px;
+  width: 40px;
 }
 
 .tenant_logo_container {
@@ -89,4 +97,9 @@
   .top_nav {
     display: none;
   }
+}
+
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
 }
