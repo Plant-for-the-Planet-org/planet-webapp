@@ -156,10 +156,57 @@ export default function NavbarComponent(props: any) {
       >
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
           {menuItems.map((item) => {
+            // Shows tenant and PFP logo if tenant is present
+            if (
+              item.id === 1 &&
+              process.env.TENANT !== 'plantfortheplanet' &&
+              process.env.TENANT
+            ) {
+              return (
+                <>
+                  <Nav.Link
+                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                  >
+                    <Link href="https://salesforce.com">
+                      <div
+                        className={styles.link_container}
+                        style={{ margin: '0px 8px' }}
+                      >
+                        <img
+                          src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
+                        />
+                      </div>
+                    </Link>
+                  </Nav.Link>
+                  <Nav.Link
+                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                  >
+                    <Link href={item.path}>
+                      <div
+                        className={styles.link_container}
+                        style={{ margin: '0px 8px' }}
+                      >
+                        <img
+                          src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        />
+                      </div>
+                    </Link>
+                  </Nav.Link>
+                </>
+              );
+            }
             return (
               <Nav.Link key={item.id}>
                 <Link href={item.path}>
-                  <div className={styles.link_container}>
+                  <div
+                    className={styles.link_container}
+                    style={
+                      process.env.TENANT &&
+                      process.env.TENANT !== 'plantfortheplanet'
+                        ? { margin: '0px 8px' }
+                        : {}
+                    }
+                  >
                     <div className={styles.link_icon}>{item.icon}</div>
                     <p>{item.name}</p>
                   </div>
