@@ -82,6 +82,47 @@ export default function NavbarComponent(props: any) {
           {/* Maps the menu items on the nav bar */}
           {menuItems.map((item) => {
             let isFirstItem = item.id === 1;
+            {
+              /* if it's first item in menu items and tenant is not 'plantfortheplanet'
+                      the shows the logo of tenant with PFP logo.
+                      else it shows PFP logo with About Us text */
+            }
+            if (
+              isFirstItem &&
+              process.env.TENANT !== 'plantfortheplanet' &&
+              process.env.TENANT
+            ) {
+              return (
+                <div
+                  key={item.id}
+                  // if it's the first item then shows the icon on the left of top navbar
+                  className={`${styles.first_icon} ${styles.tenant_logo}`}
+                  style={{ padding: '0rem 0.5rem' }}
+                >
+                  <div className={styles.tenant_logo_container}>
+                    <Nav.Link
+                      style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                    >
+                      <Link href="https://salesforce.com">
+                        <img
+                          src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
+                        />
+                      </Link>
+                    </Nav.Link>
+                    <div className={styles.logo_divider}></div>
+                    <Nav.Link
+                      style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                    >
+                      <Link href={item.path}>
+                        <img
+                          src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        />
+                      </Link>
+                    </Nav.Link>
+                  </div>
+                </div>
+              );
+            }
             return (
               <Nav.Link
                 key={item.id}
@@ -89,31 +130,16 @@ export default function NavbarComponent(props: any) {
                 className={isFirstItem ? styles.first_icon : ''}
               >
                 <Link href={item.path}>
-                  {/* if it's first item in menu items and tenant is not 'plantfortheplanet'
-                      the shows the logo of tenant with PFP logo.
-                      else it shows PFP logo with About Us text */}
-                  {isFirstItem && process.env.TENANT !== 'plantfortheplanet' ? (
-                    <div className={styles.tenant_logo_container}>
-                      <img
-                        src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
-                      />
-                      <div className={styles.logo_divider}></div>
-                      <img src={`${process.env.CDN_URL}logo/svg/planet.svg`} />
-                    </div>
-                  ) : (
-                    <div className={styles.link_container}>
-                      <div className={styles.link_icon}>{item.icon}</div>
-                      <p
-                        className={
-                          router.pathname === item.path
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {item.name}
-                      </p>
-                    </div>
-                  )}
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>{item.icon}</div>
+                    <p
+                      className={
+                        router.pathname === item.path ? styles.active_icon : ''
+                      }
+                    >
+                      {item.name}
+                    </p>
+                  </div>
                 </Link>
               </Nav.Link>
             );

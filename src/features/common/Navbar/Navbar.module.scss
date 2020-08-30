@@ -24,14 +24,19 @@
 .first_icon {
   position: absolute;
   left: calc(25% - 100px);
-  padding: 0;
+  padding: 0.3rem 0.5rem;
   top: 2px;
   bottom: 2px;
 }
 
+.tenant_logo {
+  left: calc(25% - 140px);
+  padding: 0rem 0.5rem;
+}
+
 .first_icon > .link_container > .link_icon {
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
 }
 
 .tenant_logo_container {
@@ -39,7 +44,7 @@
   align-items: center;
 }
 
-.tenant_logo_container > img {
+.tenant_logo_container img {
   height: 44px;
   width: auto;
 }
@@ -48,7 +53,7 @@
   height: 36px;
   width: 1px;
   background-color: rgba(0, 0, 0, 0.5);
-  margin: 0px 14px;
+  margin: 0rem 0.5rem;
 }
 
 .link_container > p {
