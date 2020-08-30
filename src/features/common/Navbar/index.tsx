@@ -95,7 +95,7 @@ export default function NavbarComponent(props: any) {
                   {isFirstItem && process.env.TENANT !== 'plantfortheplanet' ? (
                     <div className={styles.tenant_logo_container}>
                       <img
-                        src={`${process.env.CDN_URL}logo/svg/${process.env.TENANT}.svg`}
+                        src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
                       />
                       <div className={styles.logo_divider}></div>
                       <img src={`${process.env.CDN_URL}logo/svg/planet.svg`} />
