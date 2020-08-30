@@ -232,7 +232,7 @@ function SingleProjectDetails({
               {ReactPlayer.canPlay(project.videoUrl) ? (
                 <ReactPlayer
                   className={styles.projectVideoContainer}
-                  width="312px"
+                  width="100%"
                   height="220px"
                   loop={true}
                   light={true}

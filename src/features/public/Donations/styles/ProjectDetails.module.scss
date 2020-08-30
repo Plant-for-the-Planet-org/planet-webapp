@@ -275,8 +275,8 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: bottom;
-  background-position: center center;
-  background-size: cover;
+  background-position: center center !important;
+  background-size: cover !important;
 }
 
 .projectImageSliderContentText {

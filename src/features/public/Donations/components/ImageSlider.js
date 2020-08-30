@@ -9,7 +9,7 @@ export default function ImageSlider(props) {
         stories={props.project}
         defaultInterval={7000}
         width="100%"
-        height={220}
+        height={233}
         loop={true}
       />
     );
