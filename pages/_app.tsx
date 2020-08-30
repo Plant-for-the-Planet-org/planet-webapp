@@ -4,7 +4,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
-import { initGA, logPageView } from '../src/utils/googleAnalytics';
 import ThemeProvider from '../src/utils/themeContext';
 
 export default function PlanetWeb({ Component, pageProps, config }: any) {
@@ -14,14 +13,6 @@ export default function PlanetWeb({ Component, pageProps, config }: any) {
     if (jssStyles) {
       jssStyles!.parentElement!.removeChild(jssStyles);
     }
-  }, []);
-
-  React.useEffect(() => {
-    if (!window.GA_INITIALIZED) {
-      initGA();
-      window.GA_INITIALIZED = true;
-    }
-    logPageView();
   }, []);
 
   React.useEffect(() => {
