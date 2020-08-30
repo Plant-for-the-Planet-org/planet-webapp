@@ -13,13 +13,13 @@ export default function Landing() {
       <div className={styles.landingContent}>
         <h2>Plant the Seeds for a More Sustainable Future</h2>
         <p>
-          To address climate change, we need to do two things: cut emissions and
-          draw down the carbon in the atmosphere. In terms of carbon drawdown,
-          forests are our largest, most advanced tool.
+          Salesforce set a goal to support and mobilize the conservation,
+          restoration, and growth of 100 million trees by 2030.
         </p>
-        <button className={styles.buttonStyle}>
+        <p style={{ marginTop: '10px' }}>Join us and start planting!</p>
+        {/* <button className={styles.buttonStyle}>
           Plant Trees with Salesforce
-        </button>
+        </button> */}
       </div>
     </section>
   );

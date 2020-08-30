@@ -14,7 +14,7 @@
   top: 0px;
   left: 0px;
   height: 100%;
-  padding-top: 48vh;
+  padding-top: 75vh;
   overflow: hidden;
   width: 100vw;
   position: absolute;
@@ -26,14 +26,19 @@
   );
 }
 
+.backgroundImage img {
+  width: 120%;
+}
+
 .landingContent {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-top: 60px;
   max-width: 80vw;
-  height: calc(100vh - 76px);
+  height: calc(75vh - 76px);
 }
 
 .landingContent > h2 {
@@ -51,7 +56,7 @@
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   text-align: center;
   color: #080707;
@@ -556,16 +561,22 @@
 @include tabletView {
   .landingSection {
     justify-content: center;
+    margin-top: 60px;
   }
 
   .backgroundImage {
     border-bottom-left-radius: 50%;
     border-bottom-right-radius: 50%;
+    padding-top: 48vh;
+  }
+
+  .backgroundImage img {
+    width: 100%;
   }
 
   .landingContent {
-    justify-content: center;
-    margin-top: 0px;
+    justify-content: flex-start;
+    margin-top: 10vw;
     max-width: 70vw;
   }
 
