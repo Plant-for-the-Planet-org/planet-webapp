@@ -45,6 +45,7 @@ export default function NavbarComponent(props: any) {
 
   return (
     <>
+      {/* Top Navbar */}
       <Navbar
         fixed="top"
         className={styles.top_nav}
@@ -52,23 +53,41 @@ export default function NavbarComponent(props: any) {
         variant={props.theme === 'theme-light' ? 'light' : 'dark'}
       >
         <Nav className={'d-none d-md-flex flex-row ' + styles.nav_container}>
+          {/* Maps the menu items on the nav bar */}
           {menuItems.map((item) => {
+            let isFirstItem = item.id === 1;
             return (
               <Nav.Link
                 key={item.id}
-                className={item.id === 1 ? styles.first_icon : ''}
+                // if it's the first item then shows the icon on the left of top navbar
+                className={isFirstItem ? styles.first_icon : ''}
               >
                 <Link href={item.path}>
-                  <div className={styles.link_container}>
-                    <div className={styles.link_icon}>{item.icon}</div>
-                    <p
-                      className={
-                        router.pathname === item.path ? styles.active_icon : ''
-                      }
-                    >
-                      {item.name}
-                    </p>
-                  </div>
+                  {/* if it's first item in menu items and tenant is not 'plantfortheplanet'
+                      the shows the logo of tenant with PFP logo.
+                      else it shows PFP logo with About Us text */}
+                  {isFirstItem && process.env.TENANT !== 'plantfortheplanet' ? (
+                    <div className={styles.tenant_logo_container}>
+                      <img
+                        src={`${process.env.CDN_URL}logo/svg/${process.env.TENANT}.svg`}
+                      />
+                      <div className={styles.logo_divider}></div>
+                      <img src={`${process.env.CDN_URL}logo/svg/planet.svg`} />
+                    </div>
+                  ) : (
+                    <div className={styles.link_container}>
+                      <div className={styles.link_icon}>{item.icon}</div>
+                      <p
+                        className={
+                          router.pathname === item.path
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
+                        {item.name}
+                      </p>
+                    </div>
+                  )}
                 </Link>
               </Nav.Link>
             );
@@ -76,6 +95,7 @@ export default function NavbarComponent(props: any) {
         </Nav>
       </Navbar>
 
+      {/* Bottom navbar */}
       <Navbar
         fixed="bottom"
         className={`d-md-none ${styles.bottom_nav}`}

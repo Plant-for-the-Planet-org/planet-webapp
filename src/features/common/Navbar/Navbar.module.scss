@@ -26,6 +26,23 @@
   top: 0;
 }
 
+.tenant_logo_container {
+  display: flex;
+  align-items: center;
+}
+
+.tenant_logo_container > img {
+  height: 44px;
+  width: auto;
+}
+
+.tenant_logo_container .logo_divider {
+  height: 36px;
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 0px 14px;
+}
+
 .link_container > p {
   font-size: 12px;
   margin-top: 4px;
