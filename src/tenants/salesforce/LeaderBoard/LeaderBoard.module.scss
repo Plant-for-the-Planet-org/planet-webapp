@@ -266,6 +266,7 @@
   padding: 0px;
   display: flex;
   justify-content: center;
+  margin: auto;
 }
 
 .blogContainer > div:not(:first-of-type) {
@@ -274,6 +275,7 @@
 
 .blogSingleContainer {
   position: relative;
+  margin-bottom: 32px;
 }
 
 .blogImage {
@@ -488,6 +490,8 @@
   justify-content: space-around;
   margin: 54px 0px;
   width: 100vw;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .articleContainer > div:not(:first-of-type) {
   margin-top: 30px;
@@ -495,6 +499,8 @@
 .articleSingleContainer {
   position: relative;
   width: 100%;
+  background: #ffffff;
+  margin-bottom: 32px;
 }
 
 .articleImage {
@@ -517,6 +523,13 @@
 .articleInfoSection {
   text-align: center;
   color: #000000;
+  border: 1px solid #dddbda;
+  border-top: none;
+  box-sizing: border-box;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+
+  padding: 20px;
 }
 .articletreeCount {
   font-family: $primaryFontFamily;
@@ -545,11 +558,13 @@
   color: #0070d2;
   flex: none;
   align-self: center;
+  background-color: #0070d2;
   padding: 6px 16px;
-  background-color: white;
+  color: white;
   width: fit-content;
   border-radius: 4px;
-  margin-top: 30px;
+  margin: auto;
+  margin-top: 48px;
   margin-bottom: 0px;
 }
 
