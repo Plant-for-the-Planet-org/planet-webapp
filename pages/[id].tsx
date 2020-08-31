@@ -3,10 +3,6 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import ProjectLoaderDetails from '../src/features/common/ContentLoaders/Projects/ProjectLoaderDetails';
 import Layout from '../src/features/common/Layout';
-const MapLayout = dynamic(
-  () => import('../src/features/public/Donations/screens/ExtendedMap'),
-  { ssr: false, loading: () => <p>Loading...</p> }
-);
 
 const ProjectDetails = dynamic(
   () => import('../src/features/public/Donations/screens/ProjectDetails'),
@@ -24,8 +20,8 @@ export default function Donate() {
       let currencyCode;
       if (typeof Storage !== 'undefined') {
         if (localStorage.getItem('currencyCode')) {
-          // currencyCode = localStorage.getItem('currencyCode');
-          currencyCode = 'EUR';
+          currencyCode = localStorage.getItem('currencyCode');
+          //currencyCode = 'EUR';
         } else {
           currencyCode = 'EUR';
         }
@@ -42,7 +38,6 @@ export default function Donate() {
 
   return (
     <Layout>
-      {/* <MapLayout {...DonateProps} /> */}
       {project ? <ProjectDetails {...DonateProps} /> : null}
     </Layout>
   );
