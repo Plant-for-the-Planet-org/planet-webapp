@@ -28,18 +28,16 @@ export default function Blogs() {
 
   return (
     <section className={styles.blogSection}>
-      <p className={styles.blogSectionHeader}>
-        Get involved and start planting
-      </p>
+      <p className={styles.blogSectionHeader}>Resources</p>
       <Row className={styles.blogContainer}>
         {blogs.map((blog) => {
           return (
-            <Col key={blog.id} sm={10} lg={4}>
+            <Col key={blog.id} sm={10} lg={4} xl={4}>
               <div className={styles.blogSingleContainer}>
                 <img className={styles.blogImage} src={blog.imagePath} />
                 <div className={styles.blogImageOverlay}></div>
                 <div className={styles.blogInfoSection}>
-                  <p className={styles.blogtreeCount}>{blog.treeCount}</p>
+                  {/* <p className={styles.blogtreeCount}>{blog.treeCount}</p> */}
                   <p className={styles.blogTitle}>{blog.name}</p>
                   <p className={styles.blogLink}>Learn More</p>
                 </div>

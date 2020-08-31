@@ -21,6 +21,9 @@ export default function Articles() {
 
   return (
     <section className={styles.articleSection}>
+      <h2 className={styles.articleSectionHeader}>
+        Learn About Our Tree Initiatives
+      </h2>
       <Row className={styles.articleContainer}>
         {articles.map((article) => {
           return (

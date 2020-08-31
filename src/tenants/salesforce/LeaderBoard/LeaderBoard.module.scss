@@ -248,14 +248,15 @@
   letter-spacing: -0.4px;
   color: #00396b;
   font-family: $primaryFontFamily;
+  margin-top: 100px;
 }
 
 .blogContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-width: 90%;
-  margin-top: 54px;
+  margin-top: 45px;
+  width: 100%;
 }
 
 .blogContainer > div {
@@ -270,9 +271,6 @@
 
 .blogSingleContainer {
   position: relative;
-
-  height: 300px;
-  width: 300px;
 }
 
 .blogImage {
@@ -472,13 +470,14 @@
 
 .articleSectionHeader {
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 36px;
   line-height: 40px;
   text-align: center;
   letter-spacing: -0.4px;
   color: #00396b;
   font-family: $primaryFontFamily;
+  margin-top: 42px;
 }
 
 .articleContainer {
@@ -666,9 +665,9 @@
     );
   }
 
-  .blogContainer {
-    max-width: 80%;
-  }
+  // .blogContainer {
+  //   max-width: 80%;
+  // }
   .blogContainer > div:not(:first-of-type) {
     margin-top: 0px;
   }

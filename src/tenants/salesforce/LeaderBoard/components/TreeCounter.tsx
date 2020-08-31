@@ -8,14 +8,16 @@ export default function TreeCounterSection() {
       <Row className={styles.treeCounterSectionRow}>
         <Col xs={12} md={6} className={styles.treeCounterSectionText}>
           <p className={styles.treeCounterSectionTextHeader}>
-            The clock is ticking on climate change.
+            Take climate action.
           </p>
           <p className={styles.treeCounterSectionTextPara}>
-            Salesforce supports 1t.org, an initiative led by the World Economic
-            Forum to conserve, restore, and plant 1 trillion trees by 2030 to
-            help slow the planet’s rising temperatures. To that end, Salesforce
-            set a goal to support and mobilize the conservation and restoration
-            of 100 million trees over the next decade.
+            Trees and forests are a critical nature-based solution to solve the
+            global climate crisis. While not a silver bullet, forests are our
+            best tool to remove carbon from the atmosphere.
+            <br />
+            <br />
+            It's easy to get involved – select your favorite tree project to
+            support, or give the gift of a tree donation to a friend!
           </p>
           <button className={styles.buttonStyle}>Join Us</button>
         </Col>

@@ -5,69 +5,10 @@ import { Nav, Navbar } from 'react-bootstrap';
 import Donate from '../../../assets/images/navigation/Donate';
 import Leaderboard from '../../../assets/images/navigation/Leaderboard';
 import Me from '../../../assets/images/navigation/Me';
-import LOGO from '../../../assets/images/PlanetLogo';
 import styles from './Navbar.module.scss';
 
 export default function NavbarComponent(props: any) {
   const router = useRouter();
-  let menuItems = [
-    {
-      id: 1,
-      name: 'About us',
-      path: '/about',
-      icon: (
-        <LOGO
-          color={
-            router.pathname === '/about'
-              ? styles.primaryColor
-              : styles.primaryFontColor
-          }
-        />
-      ),
-    },
-    {
-      id: 2,
-      name: 'Donate/Gift',
-      path: '/',
-      icon: (
-        <Donate
-          color={
-            router.pathname === `/`
-              ? styles.primaryColor
-              : styles.primaryFontColor
-          }
-        />
-      ),
-    },
-    {
-      id: 3,
-      name: 'Leaderboard',
-      path: '/leaderboard',
-      icon: (
-        <Leaderboard
-          color={
-            router.pathname === '/leaderboard'
-              ? styles.primaryColor
-              : styles.primaryFontColor
-          }
-        />
-      ),
-    },
-    {
-      id: 4,
-      name: 'Me',
-      path: '/me',
-      icon: (
-        <Me
-          color={
-            router.pathname === '/me'
-              ? styles.primaryColor
-              : styles.primaryFontColor
-          }
-        />
-      ),
-    },
-  ];
 
   return (
     <>
@@ -144,6 +85,7 @@ export default function NavbarComponent(props: any) {
             <Link href={'/leaderboard'}>
               <div className={styles.link_container}>
                 <div className={styles.link_icon}>
+                  {/* <i className="fas fa-ad"></i> */}
                   <Leaderboard
                     color={
                       router.pathname === '/leaderboard'
@@ -157,7 +99,7 @@ export default function NavbarComponent(props: any) {
                     router.pathname === '/leaderboard' ? styles.active_icon : ''
                   }
                 >
-                  Leaderboard
+                  Leaders
                 </p>
               </div>
             </Link>
@@ -285,7 +227,7 @@ export default function NavbarComponent(props: any) {
                     router.pathname === '/leaderboard' ? styles.active_icon : ''
                   }
                 >
-                  Leaderboard
+                  Leaders
                 </p>
               </div>
             </Link>
