@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node server.js",
     "start": "next start -p $PORT",
-    "heroku-postbuild": "node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
