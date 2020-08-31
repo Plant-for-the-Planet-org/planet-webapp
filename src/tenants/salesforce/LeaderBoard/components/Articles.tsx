@@ -15,7 +15,7 @@ export default function Articles() {
       articleDescription:
         'Salesforce advocates for this legislation that would remove the outdated cap on the Reforestation Trust Fund and nearly quadruple the amount of money available for reforestation across America’s national forests.',
       name: 'Advocacy Efforts',
-      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      imagePath: '/tenants/salesforce/images/Articles/2.png',
       link: '',
     },
     {
@@ -23,7 +23,7 @@ export default function Articles() {
       articleDescription:
         'Salesforce joins U.S. organizations committed to supporting almost one billion trees to accelerate the Trillion Trees movement.',
       name: '1t.org U.S Chapter Pledge to Scale Action',
-      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      imagePath: '/tenants/salesforce/images/Articles/3.png',
       link: '',
     },
     {
@@ -31,7 +31,7 @@ export default function Articles() {
       articleDescription:
         'Salesforce technology powers this digital platform that crowdsources innovations from ecopreneurs, who are developing solutions to meet the Trillion Trees goal.',
       name: 'Uplink Trillion Trees Challenge',
-      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      imagePath: '/tenants/salesforce/images/Articles/4.png',
       link: '',
     },
   ];

@@ -4,25 +4,27 @@ export default function Blogs() {
   const blogs = [
     {
       id: 1,
-      treeCount: '1000000',
       name:
-        'Public policy and advocacy work - CA Climate Justice Corps proposal',
+        'Learn how trees play a key role in addressing climate change and how you can be a climate champion',
       imagePath: '/tenants/salesforce/images/Blog/1.png',
       link: '',
+      linkTitle: 'Hit the Trail on Trailhead',
     },
     {
       id: 2,
-      treeCount: '500000',
-      name: 'Planting trees in the Andes with Accion Andina ',
-      imagePath: '/tenants/salesforce/images/Blog/1.png',
+      name:
+        'Make working-from-home more comfortable, productive, and sustainable',
+      imagePath: '/tenants/salesforce/images/Blog/2.png',
       link: '',
+      linkTitle: 'Read the Sustainability at Home Guide',
     },
     {
       id: 3,
-      treeCount: '500000',
-      name: 'Youth education and engagement',
-      imagePath: '/tenants/salesforce/images/Blog/1.png',
+      name:
+        'Drawing parallels between COVID-19 and climate change could be the key to a healthier, more sustainable future',
+      imagePath: '/tenants/salesforce/images/Blog/3.png',
       link: '',
+      linkTitle: 'Learn More on Newsroom',
     },
   ];
 
@@ -39,7 +41,7 @@ export default function Blogs() {
                 <div className={styles.blogInfoSection}>
                   {/* <p className={styles.blogtreeCount}>{blog.treeCount}</p> */}
                   <p className={styles.blogTitle}>{blog.name}</p>
-                  <p className={styles.blogLink}>Learn More</p>
+                  <p className={styles.blogLink}>{blog.linkTitle}</p>
                 </div>
               </div>
             </Col>
