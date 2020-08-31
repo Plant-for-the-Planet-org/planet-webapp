@@ -513,11 +513,8 @@
   z-index: 2;
 }
 .articleInfoSection {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  z-index: 3;
+  text-align: center;
+  color: #000000;
 }
 .articletreeCount {
   font-family: $primaryFontFamily;
@@ -527,7 +524,6 @@
   line-height: 19px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ffffff;
 }
 
 .articleTitle {
@@ -536,7 +532,6 @@
   font-weight: 600;
   font-size: 20px;
   line-height: 29px;
-  color: #ffffff;
 }
 
 .articleLink {
