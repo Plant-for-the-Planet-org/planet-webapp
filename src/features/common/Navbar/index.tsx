@@ -123,6 +123,9 @@ export default function NavbarComponent(props: any) {
                 </div>
               );
             }
+            if (item.id === 4 && process.env.TENANT === 'salesforce') {
+              return <></>;
+            }
             return (
               <Nav.Link
                 key={item.id}
@@ -194,6 +197,9 @@ export default function NavbarComponent(props: any) {
                   </Nav.Link>
                 </>
               );
+            }
+            if (item.id === 4 && process.env.TENANT === 'salesforce') {
+              return <></>;
             }
             return (
               <Nav.Link key={item.id}>
