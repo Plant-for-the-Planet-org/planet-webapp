@@ -6,8 +6,7 @@ export default function Articles() {
       id: 1,
       articleDescription:
         'In Myanmar, only 16 percent of the original mangrove forest remains along the coastline. This project helps restore those forests while working with the local population to adapt to more sustainable practices. ',
-      name:
-        'Public policy and advocacy work - CA Climate Justice Corps proposal',
+      name: 'Sea of Change: Restoring Mangroves',
       imagePath: '/tenants/salesforce/images/Articles/1.png',
       link: '',
     },
@@ -15,7 +14,23 @@ export default function Articles() {
       id: 2,
       articleDescription:
         'Salesforce advocates for this legislation that would remove the outdated cap on the Reforestation Trust Fund and nearly quadruple the amount of money available for reforestation across America’s national forests.',
-      name: 'Planting trees in the Andes with Accion Andina ',
+      name: 'Advocacy Efforts',
+      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      link: '',
+    },
+    {
+      id: 3,
+      articleDescription:
+        'Salesforce joins U.S. organizations committed to supporting almost one billion trees to accelerate the Trillion Trees movement.',
+      name: '1t.org U.S Chapter Pledge to Scale Action',
+      imagePath: '/tenants/salesforce/images/Articles/1.png',
+      link: '',
+    },
+    {
+      id: 4,
+      articleDescription:
+        'Salesforce technology powers this digital platform that crowdsources innovations from ecopreneurs, who are developing solutions to meet the Trillion Trees goal.',
+      name: 'Uplink Trillion Trees Challenge',
       imagePath: '/tenants/salesforce/images/Articles/1.png',
       link: '',
     },
@@ -34,8 +49,11 @@ export default function Articles() {
                 <img className={styles.articleImage} src={article.imagePath} />
                 {/* <div className={styles.articleImageOverlay}></div> */}
                 <div className={styles.articleInfoSection}>
-                  <p className={styles.articletreeCount}>{article.treeCount}</p>
                   <p className={styles.articleTitle}>{article.name}</p>
+                  <p className={styles.articleDescription}>
+                    {article.articleDescription}
+                  </p>
+
                   <p className={styles.articleLink}>Learn More</p>
                 </div>
               </div>
