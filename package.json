@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p $PORT"
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -17,7 +18,9 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "d3-ease": "^2.0.0",
+    "express": "^4.17.1",
     "framer-motion": "^2.6.5",
+    "heroku-ssl-redirect": "^0.1.1",
     "mapbox-gl": "^1.11.1",
     "next": "^9.5.2",
     "next-i18next": "^4.5.0",
