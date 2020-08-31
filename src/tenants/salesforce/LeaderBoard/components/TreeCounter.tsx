@@ -19,7 +19,7 @@ export default function TreeCounterSection() {
             It's easy to get involved – select your favorite tree project to
             support, or give the gift of a tree donation to a friend!
           </p>
-          <button className={styles.buttonStyle}>Join Us</button>
+          {/* <button className={styles.buttonStyle}>Join Us</button> */}
         </Col>
         <Col xs={12} md={6} className={styles.treeCounterSection}>
           <div className={styles.treeCounter}>

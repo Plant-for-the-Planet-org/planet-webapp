@@ -8,7 +8,7 @@ import TreeCounterSection from './components/TreeCounter';
 
 export default function About() {
   return (
-    <main>
+    <main style={{ overflowX: 'hidden' }}>
       <Landing />
       <TreeCounterSection />
       <LearnMore />
