@@ -4,7 +4,7 @@
   background-color: $light;
   border-radius: 7px;
   padding: 20px;
-  min-width: 412px;
+  width: 412px;
 }
 
 .header {
@@ -86,6 +86,9 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .horizontalLine {
@@ -159,4 +162,12 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: $primaryFontColor;
+}
+
+.mandateAcceptance{
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize - 2;
+  color: $primaryFontColor;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
