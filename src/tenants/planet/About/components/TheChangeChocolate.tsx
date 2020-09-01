@@ -24,7 +24,7 @@ export default function TheChangeChocolate() {
           </div>
           <img
             style={{ width: '100%' }}
-            src={'/tenants/plantfortheplanet/images/home/Chocolate.jpg'}
+            src={'/tenants/planet/images/home/Chocolate.jpg'}
           />
         </Col>
       </Row>
