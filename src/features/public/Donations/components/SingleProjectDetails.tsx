@@ -1,5 +1,6 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
@@ -15,12 +16,13 @@ import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import TreeDonation from '../screens/TreeDonation';
+import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
   project: any;
   setShowSingleProject: Function;
+  setLayoutId: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -31,6 +33,7 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 function SingleProjectDetails({
   project,
   setShowSingleProject,
+  setLayoutId,
 }: Props): ReactElement {
   const [rating, setRating] = React.useState<number | null>(2);
   const progressPercentage =
@@ -108,7 +111,7 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <div className={styles.container}>
+    <motion.div layoutId={project.id} className={styles.container}>
       <Modal
         className={styles.modal}
         open={open}
@@ -118,7 +121,7 @@ function SingleProjectDetails({
         aria-describedby="simple-modal-description"
       >
         <Elements stripe={getStripe()}>
-          <TreeDonation project={project} onClose={handleClose} />
+          <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
       <div className={styles.projectContainer}>
@@ -134,7 +137,9 @@ function SingleProjectDetails({
                 >
                   <div
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setShowSingleProject(false)}
+                    onClick={() => {
+                      setShowSingleProject(false), setLayoutId(null);
+                    }}
                   >
                     <BackButton />
                   </div>
@@ -262,7 +267,7 @@ function SingleProjectDetails({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

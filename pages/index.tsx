@@ -13,18 +13,20 @@ export default function Donate() {
       let currencyCode;
       if (typeof Storage !== 'undefined') {
         if (localStorage.getItem('currencyCode')) {
-          // currencyCode = localStorage.getItem('currencyCode');
-          currencyCode = 'EUR';
+          currencyCode = localStorage.getItem('currencyCode');
+          // currencyCode = 'EUR';
         } else {
           currencyCode = 'EUR';
         }
       }
       const res = await fetch(
         `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`
-      ).then(async (res) => {
-        const projects = await res.json();
-        setProjects(projects);
-      });
+        , {
+          headers: { 'tenant-key': `${process.env.TENANTID}` }
+        }).then(async (res) => {
+          const projects = await res.json();
+          setProjects(projects);
+        });
     }
     loadProjects();
   }, []);

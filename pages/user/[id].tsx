@@ -14,7 +14,9 @@ export default function UserProfile() {
   useEffect(() => {
     async function loadUserData() {
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${router.query.id}`
+        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${router.query.id}`, {
+        headers: { 'tenant-key': `${process.env.TENANTID}` }
+      }
       );
 
       const userprofile = await res.json();

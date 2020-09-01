@@ -22,13 +22,20 @@ export default function TransitionsModal(props: any) {
 
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
   //   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
-  const [selectedModalValue, setSelectedModalValue] = useState(`${currency}`);
+  const [selectedModalValue, setSelectedModalValue] = useState(`${currency},${country}`);
 
   // changes the currency in when a currency is selected
   const handleCurrencyChange = (event: any) => {
     setSelectedModalValue(event.target.value);
   };
 
+  const [importantList, setImportantList] = React.useState({})
+
+  React.useEffect(() => {
+    setImportantList(countriesData.filter(singleData =>
+      singleData.currencyCode === currency // To Do - Create an array of local country plus selected country
+    ))
+  }, [currency])
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
@@ -62,6 +69,12 @@ export default function TransitionsModal(props: any) {
             <div className={styles.radioButtonsContainer}>
               <p className={styles.sectionHead}>Select your Currency</p>
               {/* maps the radio button for currency */}
+              <MapCurrency
+                sortedCountriesData={importantList}
+                // this is selectedValue, country wala object
+                value={selectedModalValue}
+                handleChange={handleCurrencyChange}
+              />
               <MapCurrency
                 sortedCountriesData={sortedCountriesData}
                 // this is selectedValue, country wala object
