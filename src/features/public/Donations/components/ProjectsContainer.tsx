@@ -163,7 +163,16 @@ export default function ProjectsContainer({
         ref={projectContainer}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
         onTouchCancel={onTouchEnd}
+        style={
+          isMobile && screenWidth > 420
+            ? {
+                left: 'calc((100vw - 420px)/2)',
+                right: 'calc((100vw - 420px)/2)',
+              }
+            : {}
+        }
       >
         {searchMode ? (
           <div className={styles.headerSearchMode}>
