@@ -4,6 +4,7 @@ export async function createDonation(data: any) {
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
+      'tenant-key': `${process.env.TENANTID}`
     },
   });
   const donation = await res.json();
@@ -16,6 +17,7 @@ export async function payDonation(data: any, id: any) {
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
+      'tenant-key': `${process.env.TENANTID}`
     },
   });
   const contribution = await res.json();

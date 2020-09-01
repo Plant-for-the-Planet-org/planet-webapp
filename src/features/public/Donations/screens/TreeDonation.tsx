@@ -6,7 +6,7 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import GiftForm from '../components/treeDonation/GiftForm';
 import {
   createDonation,
-  payDonation,
+  payDonation
 } from '../components/treeDonation/PaymentFunctions';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
@@ -14,7 +14,7 @@ import DownArrow from './../../../../assets/images/icons/DownArrow';
 import Close from './../../../../assets/images/icons/headerIcons/close';
 import {
   useOptions,
-  usePaymentRequest,
+  usePaymentRequest
 } from './../components/PaymentRequestForm';
 import styles from './../styles/TreeDonation.module.scss';
 
@@ -78,7 +78,9 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
     async function loadPaymentSetup() {
       try {
         const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
+          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`, {
+          headers: { 'tenant-key': `${process.env.TENANTID}` }
+        }
         );
         const paymentSetupData = await res.json();
         if (paymentSetupData) {
@@ -203,17 +205,17 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
             </div>
           </div>
         ) : (
-          // enabled if taxDeduction switch OFF
-          <div className={styles.currencyRate} onClick={handleModalOpen}>
-            <div className={styles.currency}>{currency}</div>
-            <div className={styles.downArrow}>
-              <DownArrow color={'#87B738'} />
+            // enabled if taxDeduction switch OFF
+            <div className={styles.currencyRate} onClick={handleModalOpen}>
+              <div className={styles.currency}>{currency}</div>
+              <div className={styles.downArrow}>
+                <DownArrow color={'#87B738'} />
+              </div>
+              <div className={styles.rate}>
+                {Number(treeCost).toFixed(2)} per tree
             </div>
-            <div className={styles.rate}>
-              {Number(treeCost).toFixed(2)} per tree
             </div>
-          </div>
-        )}
+          )}
 
         <div className={styles.isGiftDonation}>
           <div className={styles.isGiftDonationText}>
@@ -285,30 +287,30 @@ function TreeDonation({ onClose, project }: Props): ReactElement {
                   {project.taxDeductionCountries.includes(country)
                     ? getCountryDataBy('countryCode', country).countryName
                     : getCountryDataBy(
-                        'countryCode',
-                        project.taxDeductionCountries[0]
-                      ).countryName}
+                      'countryCode',
+                      project.taxDeductionCountries[0]
+                    ).countryName}
                 </div>
                 <div className={styles.downArrow}>
                   <DownArrow color={'#87B738'} />
                 </div>
               </div>
             ) : (
-              // disabled modal if taxDeductible switch OFF
-              <div className={styles.taxDeductibleDisabled}>
-                <div className={styles.taxDeductibleCountryDisabled}>
-                  {project.taxDeductionCountries.includes(country)
-                    ? getCountryDataBy('countryCode', country).countryName
-                    : getCountryDataBy(
+                // disabled modal if taxDeductible switch OFF
+                <div className={styles.taxDeductibleDisabled}>
+                  <div className={styles.taxDeductibleCountryDisabled}>
+                    {project.taxDeductionCountries.includes(country)
+                      ? getCountryDataBy('countryCode', country).countryName
+                      : getCountryDataBy(
                         'countryCode',
                         project.taxDeductionCountries[0]
                       ).countryName}
+                  </div>
+                  <div className={styles.downArrow}>
+                    <DownArrow color={'grey'} />
+                  </div>
                 </div>
-                <div className={styles.downArrow}>
-                  <DownArrow color={'grey'} />
-                </div>
-              </div>
-            )}
+              )}
           </React.Fragment>
         )}
 

@@ -44,7 +44,9 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     async function loadPaymentSetup() {
       try {
         const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`
+          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`, {
+          headers: { 'tenant-key': `${process.env.TENANTID}` }
+        }
         );
         const paymentSetupData = await res.json();
         if (paymentSetupData) {
