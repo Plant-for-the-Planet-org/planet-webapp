@@ -17,7 +17,8 @@ export default function UserProfileOptions({
   const webShareMobile = async() => {
       try {
         const response = await navigator.share({
-        text: 'Check out Plant for the Planet!',
+          title:'Check out Plant for the Planet!',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
         })
         console.log('Share complete', response)
       } catch (error) {
