@@ -156,6 +156,7 @@ export default function ProjectsContainer({
         ref={projectContainer}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
         onTouchCancel={onTouchEnd}
       >
         {searchMode ? (
