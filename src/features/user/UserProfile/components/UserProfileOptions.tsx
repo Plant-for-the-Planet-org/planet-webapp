@@ -14,14 +14,26 @@ export default function UserProfileOptions({
   handleTextCopiedSnackbarOpen
  }: any) {
 
+  const webShareMobile = async() => {
+      try {
+        const response = await navigator.share({
+          title:'Check out Plant for the Planet!',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+        })
+        console.log('Share complete', response)
+      } catch (error) {
+        console.error('Could not share at this time', error);
+      }
+  }
   
   const onShareClicked = () => {
-    if (!isMobileBrowser()) {
-      // desktop browser
+    if(navigator.share!== undefined) {
+      // if in phone and web share API supported
+      webShareMobile();
+    } else {
+      // in desktop
       navigator.clipboard.writeText('Dummy text copied to clipboard!');
       handleTextCopiedSnackbarOpen();
-    } else {
-      // mobile browser
     }
   };
 

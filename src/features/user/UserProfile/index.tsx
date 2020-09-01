@@ -82,11 +82,6 @@ export default function UserProfile({ userprofile }: any) {
             />
           </>
         )}
-        {userprofile.isMe && (
-          <div className={styles.downIcon} onClick={handleScrollDownClick}>
-            <ScrollDown color="white" />
-          </div>
-        )}
 
         {/* userinfo section */}
         <LandingSection fixedBg>
