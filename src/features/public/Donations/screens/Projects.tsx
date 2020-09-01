@@ -43,7 +43,9 @@ function ProjectsList({ projects }: Props): ReactElement {
       }
     }
     const res = await fetch(
-      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`
+      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`, {
+      headers: { 'tenant-key': `${process.env.TENANTID}` }
+    }
     );
 
     const newProject = res.status === 200 ? await res.json() : null;
@@ -119,21 +121,21 @@ function ProjectsList({ projects }: Props): ReactElement {
             setLayoutId={() => setSelectedId}
           />
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 300 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{ duration: 1 }}
-          >
-            <ProjectsContainer
-              {...ProjectsProps}
-              setLayoutId={() => setSelectedId}
-              setShowSingleProject={setShowSingleProject}
-            />
-          </motion.div>
-        )}
+            <motion.div
+              initial={{ opacity: 0, y: 300 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{ duration: 1 }}
+            >
+              <ProjectsContainer
+                {...ProjectsProps}
+                setLayoutId={() => setSelectedId}
+                setShowSingleProject={setShowSingleProject}
+              />
+            </motion.div>
+          )}
       </AnimateSharedLayout>
     </div>
   );

@@ -14,7 +14,9 @@ export default function Tpo() {
   useEffect(() => {
     async function loadTpoData() {
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${router.query.id}`
+        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${router.query.id}`, {
+        headers: { 'tenant-key': `${process.env.TENANTID}` }
+      }
       );
 
       const tpoprofile = await res.json();

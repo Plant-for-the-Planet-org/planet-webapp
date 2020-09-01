@@ -1,12 +1,20 @@
 import Layout from '../src/features/common/Layout';
-import dynamic from 'next/dynamic';
+import About from './../src/tenants/plantfortheplanet/About/About';
+import SalesforceLeaderBoard from './../src/tenants/salesforce/LeaderBoard';
+// const importURL = `../src/tenants/${
+//   process.env.TENANT ? process.env.TENANT : 'plantfortheplanet'
+//   }/${
+//   process.env.TENANT === 'plantfortheplanet' ? 'About/About' : 'LeaderBoard'
+//   }`
+// const LeaderBoardPage = dynamic(() =>
+//   import(importURL)
+// );
 
-const Tenant = process.env.TENANT ? process.env.TENANT : 'plantfortheplanet';
-const AboutPage = dynamic(() => import(`../src/tenants/${Tenant}/About/About`));
 export default function LeaderBoard() {
+
   return (
     <Layout>
-      <AboutPage />
+      {process.env.TENANT === 'plantfortheplanet' ? <About /> : <SalesforceLeaderBoard />}
     </Layout>
   );
 }

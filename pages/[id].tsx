@@ -28,7 +28,9 @@ export default function Donate() {
       }
       const res = await fetch(
         `${process.env.API_ENDPOINT}/app/projects/${router.query.id}?_scope=extended&currency=${currencyCode}`
-      );
+        , {
+          headers: { 'tenant-key': `${process.env.TENANTID}` }
+        });
 
       const project = await res.json();
       setProject(project);

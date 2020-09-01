@@ -21,10 +21,12 @@ export default function Donate() {
       }
       const res = await fetch(
         `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`
-      ).then(async (res) => {
-        const projects = await res.json();
-        setProjects(projects);
-      });
+        , {
+          headers: { 'tenant-key': `${process.env.TENANTID}` }
+        }).then(async (res) => {
+          const projects = await res.json();
+          setProjects(projects);
+        });
     }
     loadProjects();
   }, []);

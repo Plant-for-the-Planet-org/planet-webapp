@@ -2,22 +2,19 @@
 
 .landingSection {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 76px);
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .backgroundImage {
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 100vh;
-  padding-top: 48vh;
-  border-bottom-left-radius: 90%;
-  border-bottom-right-radius: 90%;
+  height: 100%;
+  padding-top: 75vh;
   overflow: hidden;
   width: 100vw;
   position: absolute;
@@ -29,20 +26,27 @@
   );
 }
 
+.backgroundImage img {
+  width: 120%;
+}
+
 .landingContent {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 70vw;
+  justify-content: center;
+  margin-top: 60px;
+  max-width: 80vw;
+  height: calc(75vh - 76px);
 }
 
 .landingContent > h2 {
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: 600;
-  font-size: 56px;
-  line-height: 60px;
+  font-size: 30px;
+  line-height: 40px;
   text-align: center;
   letter-spacing: -0.006em;
   color: #080707;
@@ -83,6 +87,7 @@
   min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 40px;
+  display: flex;
 }
 
 .treeCounterSectionText {
@@ -93,10 +98,11 @@
 
 .treeCounterSectionTextHeader {
   font-weight: 600;
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 30px;
+  line-height: 32px;
   letter-spacing: -0.4px;
   color: #080707;
+  text-align: center;
   font-family: $primaryFontFamily;
 }
 
@@ -104,7 +110,8 @@
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 20px;
+  text-align: center;
 }
 
 .treeCounterSectionTextLink {
@@ -120,19 +127,27 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vw;
+  max-width: 100vw;
+  align-self: center;
+  margin: 30px auto;
 }
 
 .treeCounter {
   position: absolute;
-  right: 0px;
+  top: 0px;
+  right: -60px;
   z-index: 1;
+  width: 80%;
+  height: 80%;
 }
+
 .treeCounterImage {
-  height: 280px;
-  width: 288px;
+  height: 50%;
+  width: 50%;
   position: absolute;
-  left: 0px;
-  bottom: 40px;
+  left: 10px;
+  bottom: 20px;
 }
 
 // Learn More section
@@ -142,6 +157,7 @@
   padding-top: 40px;
   padding-bottom: 40px;
   overflow: hidden;
+  margin: 0px;
 }
 
 .learnMoreSectionText {
@@ -149,22 +165,42 @@
   flex-direction: column;
   justify-content: center;
   max-width: 464px;
+  position: relative;
+}
+
+.learnMoreSectionText > p,
+.learnMoreSectionText > button {
+  z-index: 1;
+}
+
+.learnMoreSectionOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.3) 20%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
 }
 
 .learnMoreSectionTextHeader {
   font-weight: 600;
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 30px;
+  line-height: 32px;
   letter-spacing: -0.4px;
-  color: #080707;
+  color: #ffffff;
   font-family: $primaryFontFamily;
 }
 
 .learnMoreSectionTextPara {
   font-family: $primaryFontFamily;
-  color: $primaryFontColor;
-  font-size: 16px;
-  line-height: 24px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .learnMoreSectionTextLink {
@@ -215,20 +251,31 @@
   letter-spacing: -0.4px;
   color: #00396b;
   font-family: $primaryFontFamily;
+  margin-top: 100px;
 }
 
 .blogContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-width: 80%;
-  margin-top: 54px;
+  margin-top: 45px;
+  width: 100%;
 }
+
+.blogContainer > div {
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+.blogContainer > div:not(:first-of-type) {
+  margin-top: 30px;
+}
+
 .blogSingleContainer {
   position: relative;
-
-  height: 300px;
-  width: 300px;
+  margin-bottom: 32px;
 }
 
 .blogImage {
@@ -283,7 +330,6 @@
   line-height: 20px;
   color: #0070d2;
   flex: none;
-  order: 0;
   align-self: center;
   padding: 6px 16px;
   background-color: white;
@@ -361,7 +407,7 @@
   cursor: pointer;
 }
 .leaderBoardBody {
-  width: 528px;
+  width: 100%;
   margin-top: 60px;
 }
 .leaderBoardBodyRow {
@@ -428,25 +474,33 @@
 
 .articleSectionHeader {
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 36px;
   line-height: 40px;
   text-align: center;
   letter-spacing: -0.4px;
   color: #00396b;
   font-family: $primaryFontFamily;
+  margin-top: 42px;
 }
 
 .articleContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 54px;
+  margin: 54px 0px;
   width: 100vw;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.articleContainer > div:not(:first-of-type) {
+  margin-top: 30px;
 }
 .articleSingleContainer {
   position: relative;
   width: 100%;
+  background: #ffffff;
+  margin-bottom: 32px;
 }
 
 .articleImage {
@@ -457,8 +511,7 @@
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0) 36%,
-    rgba(0, 0, 0, 0.502) 55.7%,
+    rgba(0, 0, 0, 0.3) 40%,
     #000000 100%
   );
   position: absolute;
@@ -468,10 +521,15 @@
   z-index: 2;
 }
 .articleInfoSection {
-  position: absolute;
-  bottom: 70px;
-  left: 40px;
-  z-index: 3;
+  text-align: center;
+  color: #000000;
+  border: 1px solid #dddbda;
+  border-top: none;
+  box-sizing: border-box;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+
+  padding: 20px;
 }
 .articletreeCount {
   font-family: $primaryFontFamily;
@@ -481,16 +539,14 @@
   line-height: 19px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ffffff;
 }
 
 .articleTitle {
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 29px;
-  color: #ffffff;
 }
 
 .articleLink {
@@ -501,11 +557,134 @@
   line-height: 20px;
   color: #0070d2;
   flex: none;
-  order: 0;
   align-self: center;
+  background-color: #0070d2;
   padding: 6px 16px;
-  background-color: white;
+  color: white;
   width: fit-content;
   border-radius: 4px;
-  margin-top: 44px;
+  margin: auto;
+  margin-top: 48px;
+  margin-bottom: 0px;
+}
+
+@include tabletView {
+  .landingSection {
+    justify-content: center;
+    margin-top: 60px;
+  }
+
+  .backgroundImage {
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    padding-top: 48vh;
+  }
+
+  .backgroundImage img {
+    width: 100%;
+  }
+
+  .landingContent {
+    justify-content: flex-start;
+    margin-top: 10vw;
+    max-width: 70vw;
+  }
+
+  .landingContent > h2 {
+    font-size: 56px;
+    line-height: 60px;
+  }
+
+  .treeCounterSection {
+    max-height: 60vh;
+    max-width: 60vh;
+    padding: 0px;
+  }
+
+  .treeCounter {
+    right: 0px;
+    width: 80%;
+    height: 80%;
+  }
+
+  .treeCounterImage {
+    left: 0px;
+  }
+
+  .leaderBoardBody {
+    width: 528px;
+    margin-top: 60px;
+  }
+
+  .treeCounterSectionTextHeader {
+    font-size: 36px;
+    line-height: 40px;
+    text-align: left;
+  }
+
+  .treeCounterSectionTextPara {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+  }
+
+  .learnMoreSectionTextHeader {
+    font-size: 36px;
+    line-height: 40px;
+    color: #080707;
+  }
+
+  .learnMoreSectionTextPara {
+    font-size: 16px;
+    line-height: 24px;
+    color: $primaryFontColor;
+  }
+
+  .learnMoreSectionOverlay {
+    display: none;
+  }
+
+  .articleContainer {
+    margin-bottom: 0px;
+  }
+
+  .articleContainer > div:not(:first-of-type) {
+    margin-top: 0px;
+  }
+
+  .articleInfoSection {
+    bottom: 70px;
+    left: 40px;
+    z-index: 3;
+  }
+
+  .articleTitle {
+    font-size: 24px;
+  }
+
+  .articleLink {
+    margin-top: 44px;
+    margin-bottom: 16px;
+  }
+
+  .articleImageOverlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 36%,
+      rgba(0, 0, 0, 0.502) 55.7%,
+      #000000 100%
+    );
+  }
+
+  // .blogContainer {
+  //   max-width: 80%;
+  // }
+  .blogContainer > div:not(:first-of-type) {
+    margin-top: 0px;
+  }
+
+  .blogContainer > div {
+    padding: 0px 15px;
+  }
 }
