@@ -12,7 +12,7 @@ export default function LandingSection(props: any) {
             src={
               props.imageSrc
                 ? props.imageSrc
-                : '/tenants/plantfortheplanet/images/home/BackgroundImage.png'
+                : '/tenants/planet/images/home/BackgroundImage.png'
             }
           />
         </LazyLoad>
