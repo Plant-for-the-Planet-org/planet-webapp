@@ -8,6 +8,7 @@ module.exports = {
     API_ENDPOINT: process.env.API_ENDPOINT,
     CDN_URL: process.env.CDN_URL,
     TENANT: process.env.TENANT,
+    TENANTID: process.env.TENANTID,
   },
   trailingSlash: false,
   reactStrictMode: true,
