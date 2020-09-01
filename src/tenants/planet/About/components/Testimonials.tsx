@@ -4,25 +4,25 @@ export default function Testimonials() {
     {
       id: 1,
       name: 'National Geographic',
-      imagePath: '/tenants/plantfortheplanet/images/home/NatGeo.jpg',
+      imagePath: '/tenants/planet/images/home/NatGeo.jpg',
       link: '',
     },
     {
       id: 2,
       name: 'The Washington Post',
-      imagePath: '/tenants/plantfortheplanet/images/home/Washington.jpg',
+      imagePath: '/tenants/planet/images/home/Washington.jpg',
       link: '',
     },
     {
       id: 3,
       name: 'Süddeutsche_Zeitung',
-      imagePath: '/tenants/plantfortheplanet/images/home/Suddeutsche.jpg',
+      imagePath: '/tenants/planet/images/home/Suddeutsche.jpg',
       link: '',
     },
     {
       id: 4,
       name: 'The Guardian',
-      imagePath: '/tenants/plantfortheplanet/images/home/TheGuardian.jpg',
+      imagePath: '/tenants/planet/images/home/TheGuardian.jpg',
       link: '',
     },
   ];

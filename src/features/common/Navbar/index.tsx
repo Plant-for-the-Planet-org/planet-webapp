@@ -20,7 +20,7 @@ export default function NavbarComponent(props: any) {
         variant={props.theme === 'theme-light' ? 'light' : 'dark'}
       >
         <Nav className={'d-none d-md-flex flex-row ' + styles.nav_container}>
-          {process.env.TENANT !== 'plantfortheplanet' && process.env.TENANT ? (
+          {process.env.TENANT !== 'planet' && process.env.TENANT ? (
             <div
               className={`${styles.first_icon} ${styles.tenant_logo}`}
               style={{ padding: '0rem 0.5rem' }}
@@ -139,7 +139,7 @@ export default function NavbarComponent(props: any) {
         expand="lg"
       >
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
-          {process.env.TENANT !== 'plantfortheplanet' && process.env.TENANT ? (
+          {process.env.TENANT !== 'planet' && process.env.TENANT ? (
             <>
               <Nav.Link
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}

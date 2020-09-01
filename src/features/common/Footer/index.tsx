@@ -96,7 +96,7 @@ export default function Footer() {
             <div className={styles.pfp_logo}>
               <PlanetLogo />
             </div>
-            {process.env.TENANT === 'plantfortheplanet' ||
+            {process.env.TENANT === 'planet' ||
               (!process.env.TENANT && (
                 <div className={styles.unep_logo_container}>
                   <div>
