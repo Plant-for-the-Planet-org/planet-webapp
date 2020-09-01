@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   PullDownContent,
   PullToRefresh,
@@ -7,17 +8,14 @@ import {
 import Layout from '../src/features/common/Layout';
 import About from './../src/tenants/planet/About/About';
 import SalesforceLeaderBoard from './../src/tenants/salesforce/LeaderBoard';
-// const importURL = `../src/tenants/${
-//   process.env.TENANT ? process.env.TENANT : 'planet'
-//   }/${
-//   process.env.TENANT === 'planet' ? 'About/About' : 'LeaderBoard'
-//   }`
-// const LeaderBoardPage = dynamic(() =>
-//   import(importURL)
-// );
 
 export default function LeaderBoard() {
-  const isMobile = window.innerWidth <= 768;
+  // stores whether device is mobile or not;
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
 
   function onRefresh() {
     return new Promise((resolve) => {
@@ -31,7 +29,7 @@ export default function LeaderBoard() {
       refreshContent={<RefreshContent />}
       pullDownThreshold={150}
       onRefresh={onRefresh}
-      triggerHeight={isMobile ? 100 : 0}
+      triggerHeight={isMobile ? 150 : 0}
       backgroundColor="white"
       startInvisible={true}
     >
