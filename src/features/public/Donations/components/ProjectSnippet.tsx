@@ -5,7 +5,7 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
-import TreeDonation from './../screens/TreeDonation';
+import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
   key: number;
   setShowSingleProject: Function;
   fetchProject: Function;
+  setLayoutId: Function;
 }
 
 export default function ProjectSnippet({
@@ -20,6 +21,7 @@ export default function ProjectSnippet({
   key,
   setShowSingleProject,
   fetchProject,
+  setLayoutId,
 }: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -39,6 +41,7 @@ export default function ProjectSnippet({
   const handleOpenProject = async () => {
     await fetchProject();
     setShowSingleProject(true);
+    setLayoutId(projectDetails.id);
   };
   const projectDetails = project.properties;
   return (
@@ -49,12 +52,12 @@ export default function ProjectSnippet({
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        disableBackdropClick
       >
         <Elements stripe={getStripe()}>
-          <TreeDonation project={projectDetails} onClose={handleClose} />
+          <DonationsPopup project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}> */}
       <a>
         <div onClick={handleOpenProject} className={styles.projectImage}>
           {project.properties.image &&
@@ -79,7 +82,6 @@ export default function ProjectSnippet({
           </div>
         </div>
       </a>
-      {/* </Link> */}
 
       <div className={styles.progressBar}>
         <div
@@ -115,7 +117,7 @@ export default function ProjectSnippet({
                     ? '$'
                     : project.properties.currency === 'EUR'
                     ? '€'
-                    : project.properties.currency}
+                    : project.properties.currency}{' '}
                   {project.properties.treeCost % 1 !== 0
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}

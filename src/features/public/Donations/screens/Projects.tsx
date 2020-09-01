@@ -1,3 +1,4 @@
+import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import ProjectsContainer from '../components/ProjectsContainer';
@@ -5,7 +6,7 @@ import SingleProjectDetails from '../components/SingleProjectDetails';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
-  loading: () => <p>Loading...</p>,
+  loading: () => <p></p>,
 });
 
 interface Props {
@@ -35,14 +36,16 @@ function ProjectsList({ projects }: Props): ReactElement {
     let currencyCode;
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
-        // currencyCode = localStorage.getItem('currencyCode');
-        currencyCode = 'EUR';
+        currencyCode = localStorage.getItem('currencyCode');
+        // currencyCode = 'EUR';
       } else {
         currencyCode = 'EUR';
       }
     }
     const res = await fetch(
-      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`
+      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`, {
+      headers: { 'tenant-key': `${process.env.TENANTID}` }
+    }
     );
 
     const newProject = res.status === 200 ? await res.json() : null;
@@ -95,25 +98,45 @@ function ProjectsList({ projects }: Props): ReactElement {
       setCanChangeTopValue(false);
     }
   }
+
+  // For animation
+
+  const [selectedId, setSelectedId] = React.useState(null);
+
   return (
     <div onTouchMove={onTouchMove}>
       <MapLayout
         {...ProjectsProps}
+        fetchSingleProject={fetchSingleProject}
+        setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
 
       {/* Add Condition Operator */}
-      {showSingleProject ? (
-        <SingleProjectDetails
-          project={project}
-          setShowSingleProject={setShowSingleProject}
-        />
-      ) : (
-        <ProjectsContainer
-          {...ProjectsProps}
-          setShowSingleProject={setShowSingleProject}
-        />
-      )}
+      <AnimateSharedLayout type="crossfade">
+        {showSingleProject ? (
+          <SingleProjectDetails
+            project={project}
+            setShowSingleProject={setShowSingleProject}
+            setLayoutId={() => setSelectedId}
+          />
+        ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 300 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{ duration: 1 }}
+            >
+              <ProjectsContainer
+                {...ProjectsProps}
+                setLayoutId={() => setSelectedId}
+                setShowSingleProject={setShowSingleProject}
+              />
+            </motion.div>
+          )}
+      </AnimateSharedLayout>
     </div>
   );
 }

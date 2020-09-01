@@ -5,14 +5,14 @@ import styles from './LandingSection.module.scss';
 export default function LandingSection(props: any) {
   return (
     <section className={styles.landingSection}>
-      <div className={styles.backgroundImage}>
+      <div className={props.fixedBg ? styles.backgroundImageFixed : styles.backgroundImage }>
         <LazyLoad>
           <img
             style={{ maxHeight: '100vh', minWidth: '100vw' }}
             src={
               props.imageSrc
                 ? props.imageSrc
-                : '/tenants/plantfortheplanet/images/home/BackgroundImage.png'
+                : '/tenants/planet/images/home/BackgroundImage.png'
             }
           />
         </LazyLoad>

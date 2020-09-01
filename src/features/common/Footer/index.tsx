@@ -37,7 +37,10 @@ export default function Footer() {
     let langCode;
     let currencyCode;
     let countryCode;
-
+    console.log(
+      "localStorage.getItem('language')",
+      localStorage.getItem('language')
+    );
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
         currencyCode = localStorage.getItem('currencyCode');
@@ -93,12 +96,15 @@ export default function Footer() {
             <div className={styles.pfp_logo}>
               <PlanetLogo />
             </div>
-            <div className={styles.unep_logo_container}>
-              <div>
-                <p className={styles.unep_logo_text}>Supports the UNEP</p>
-                <UNEPLogo />
-              </div>
-            </div>
+            {process.env.TENANT === 'planet' ||
+              (!process.env.TENANT && (
+                <div className={styles.unep_logo_container}>
+                  <div>
+                    <p className={styles.unep_logo_text}>Supports the UNEP</p>
+                    <UNEPLogo />
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
         <SelectLanguageAndCountry

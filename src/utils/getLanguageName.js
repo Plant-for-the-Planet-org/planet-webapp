@@ -12,5 +12,7 @@ export default function getLanguageName(code) {
     if (supportedLanguages[i].langCode === code) {
       return supportedLanguages[i].languageName;
     }
+    // returns English as default language if none matches
+    return 'English';
   }
 }

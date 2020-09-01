@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import {
   PullDownContent,
   PullToRefresh,
@@ -6,9 +5,16 @@ import {
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
 import Layout from '../src/features/common/Layout';
-
-const Tenant = process.env.TENANT ? process.env.TENANT : 'plantfortheplanet';
-const AboutPage = dynamic(() => import(`../src/tenants/${Tenant}/About/About`));
+import About from './../src/tenants/planet/About/About';
+import SalesforceLeaderBoard from './../src/tenants/salesforce/LeaderBoard';
+// const importURL = `../src/tenants/${
+//   process.env.TENANT ? process.env.TENANT : 'planet'
+//   }/${
+//   process.env.TENANT === 'planet' ? 'About/About' : 'LeaderBoard'
+//   }`
+// const LeaderBoardPage = dynamic(() =>
+//   import(importURL)
+// );
 
 export default function LeaderBoard() {
   const isMobile = window.innerWidth <= 768;
@@ -18,7 +24,6 @@ export default function LeaderBoard() {
       setTimeout(resolve, 2000);
     });
   }
-
   return (
     <PullToRefresh
       pullDownContent={<PullDownContent />}
@@ -31,7 +36,11 @@ export default function LeaderBoard() {
       startInvisible={true}
     >
       <Layout>
-        <AboutPage />
+        {process.env.TENANT === 'planet' ? (
+          <About />
+        ) : (
+          <SalesforceLeaderBoard />
+        )}
       </Layout>
     </PullToRefresh>
   );

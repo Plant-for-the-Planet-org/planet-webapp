@@ -6,6 +6,7 @@
   padding: 26px;
   width: 412px;
   height: max-content;
+  z-index: 10;
 }
 
 .header {
@@ -126,6 +127,7 @@
 .treeCountOption:hover,
 .treeCountOptionSelected:hover {
   cursor: pointer;
+  border: 2px solid $primaryColor;
 }
 .treeCountOption > .treeCountOptionTrees {
   font-family: $primaryFontFamily;
@@ -144,7 +146,12 @@
   border: 0px;
   border-bottom: 1px solid $primaryColor;
   margin: 0px 10px;
-  width: 40px;
+  width: 70%;
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+  text-align: center;
 }
 
 .treeCountOption > .customTreeInput:focus {
@@ -251,6 +258,19 @@
   border-radius: 6px;
   padding: 8px 40px;
   color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.paymentRequestPlaceholder {
+  background-color: $blueishGrey;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $dark;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;

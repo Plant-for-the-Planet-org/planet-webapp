@@ -10,6 +10,7 @@ interface Props {
   projects: any;
   setShowSingleProject: Function;
   fetchSingleProject: Function;
+  setLayoutId: Function;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -21,6 +22,7 @@ export default function ProjectsContainer({
   projects,
   setShowSingleProject,
   fetchSingleProject,
+  setLayoutId,
 }: Props) {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -80,16 +82,19 @@ export default function ProjectsContainer({
     projects: allProjects,
     setShowSingleProject,
     fetchSingleProject,
+    setLayoutId,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
     setShowSingleProject,
     fetchSingleProject,
+    setLayoutId,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
     setShowSingleProject,
     fetchSingleProject,
+    setLayoutId,
   };
 
   // when touched on the project list container enables scrolling of list and
@@ -191,7 +196,7 @@ export default function ProjectsContainer({
                       : styles.tabButtonText
                   }
                 >
-                  Transparent Projects
+                  Top Projects
                 </div>
                 {selectedTab === 'featured' ? (
                   <div className={styles.tabButtonSelectedIndicator} />
