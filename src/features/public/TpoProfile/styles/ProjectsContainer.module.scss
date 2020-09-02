@@ -4,12 +4,13 @@
 .outerProjectsContainer {
     display: flex;
     flex-direction: column;
+    // padding to left of text and list
+    padding: 0px 0px 0px 20px;
 }
 
-.myForestTitleText {
+.projectsTitleText {
     font-family: $primaryFontFamily;
     text-align: left;
-    padding: 0px 0px 0px 8px;
     width: 100%;
 }
   
@@ -17,9 +18,12 @@
 .listProjects {
   display: flex;
   flex-direction: row;
+  // for padding to the farthest right project
+  padding: 0px 20px 0px 0px;
 }
 
 .singleProject {
+  // margin to right of every project
   margin: 0px 30px 0px 0px;
   min-width: 300px;
 }

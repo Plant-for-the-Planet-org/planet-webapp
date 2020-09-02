@@ -10,17 +10,19 @@ import ProjectsContainer from './components/ProjectsContainer'
 export default function TpoProfile({ tpoprofile }: any) {
 
   return (
-    <main>
 
+    <main>
       {/* tpoinfo section */}
+      <div className={styles.wrappingDiv}>
       <LandingSection fixedBg>
+          <div className={styles.tpoProfileDiv}>
           <TpoInfo 
           tpoprofile={tpoprofile} 
           />
-        </LandingSection>
+          </div>
 
-        {/*  projects section */}
-          <div className={styles.projectsContainer}>
+           {/*  projects section */}
+           <div className={styles.projectsContainer}>
             <ProjectsContainer projects={tpoprofile.userProfile.plantProjects} />
           </div>
   
@@ -29,6 +31,10 @@ export default function TpoProfile({ tpoprofile }: any) {
           <Footer />
         </div>
 
+        </LandingSection>
+        </div>
+
+       
     </main>
   );
 }

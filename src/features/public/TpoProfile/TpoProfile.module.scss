@@ -1,21 +1,24 @@
 @import './../../../theme/theme';
 
-
+.wrappingDiv {
+  // margin top for desktop
+  margin-top: 360px;
+}
 
 // the outer white background
 .projectsContainer {
-  padding: 30px;
+  padding: 30px 0px;
   background-color: $light;
   display: flex;
   position: relative;
-  min-width: 100vw;
-  min-height: fit-content;
+  width: 100vw;
+  min-height: 50vh;
   z-index: 5;
-  top: 180px;
+  top: 100px;
   align-items: left;
   justify-content: left; 
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-x: auto; 
+  overflow-y: hidden;  
 }
 
 /* Footer */
@@ -25,11 +28,11 @@
   padding: 1px;
   width: 100vw;
   background-color: $light;
-  top: 180px;
+  top: 100px;
 }
 
 @media only screen and (max-width: 768px) {
-  .footerDiv {
-    display: none;
+  .wrappingDiv {
+    margin-top: 500px;
   }
 }
