@@ -44,6 +44,8 @@ function TreeDonation({
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
     false
   );
+
+  const stripeAllowedCountries = ['AE', 'AT', 'AU', 'BE', 'BG', 'BR', 'CA', 'CH', 'CI', 'CR', 'CY', 'CZ', 'DE', 'DK', 'DO', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'GT', 'HK', 'HU', 'ID', 'IE', 'IN', 'IT', 'JP', 'LT', 'LU', 'LV', 'MT', 'MX', 'MY', 'NL', 'NO', 'NZ', 'PE', 'PH', 'PL', 'PT', 'RO', 'SE', 'SG', 'SI', 'SK', 'SN', 'TH', 'TT', 'US', 'UY']
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
   const taxDeductSwitchOn = () => {
     setIsTaxDeductible(!isTaxDeductible);
@@ -57,10 +59,14 @@ function TreeDonation({
   };
 
   const setCustomTreeValue = (e: any) => {
+
     if (e.target.value === '') {
-      setTreeCount(0);
+      // if input is '', default 1
+      setTreeCount(1);
     } else {
-      setTreeCount(e.target.value);
+      if (e.target.value.toString().length <= 12) {
+        setTreeCount(e.target.value);
+      }
     }
   };
 
@@ -213,6 +219,12 @@ function TreeDonation({
                 onInput={(e) => {
                   // replaces any character other than number to blank
                   e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                  //  if length of input more than 12, display only 12 digits
+                  if (e.target.value.toString().length >= 12) {
+                    e.target.value = e.target.value.toString().slice(0, 12)
+                  }
+
                 }}
                 type="text"
                 onChange={(e) => setCustomTreeValue(e)}
@@ -279,7 +291,7 @@ function TreeDonation({
 
           <div className={styles.actionButtonsContainer}>
             <div style={{ width: '150px' }}>
-              {currency && <PaymentRequestCustomButton
+              {stripeAllowedCountries.includes(country) && currency && <PaymentRequestCustomButton
                 country={country}
                 currency={currency}
                 amount={formatAmountForStripe(
