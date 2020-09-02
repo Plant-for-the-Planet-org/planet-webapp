@@ -11,7 +11,6 @@ export default function PlanetWeb({ Component, pageProps }: any) {
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
-
   React.useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
