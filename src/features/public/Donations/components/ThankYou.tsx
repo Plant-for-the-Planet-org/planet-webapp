@@ -42,7 +42,6 @@ function ThankYou({
       try {
         const response = await navigator.share({
           title: 'Planting trees against the climate crisis!',
-          url: 'https://www.salesforce.com',
           text:
             'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n',
         });
