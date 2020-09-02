@@ -22,7 +22,10 @@ export default function CookiePolicy() {
         <FontAwesomeIcon icon={faTimesCircle} />
       </div>
       <div className={styles.cookieContent}>
-        By using this website, you agree to our <a href="#">cookie policy</a>
+        By using this website, you agree to our{' '}
+        <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">
+          privacy policy
+        </a>
         <div
           onClick={() => setShowCookieNotice(false)}
           className={styles.cookieCloseButton}
