@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import Close from '../../../../assets/images/icons/headerIcons/close';
-import PlanetLogo from '../../../../assets/images/PlanetLogo';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 
@@ -23,6 +22,8 @@ function ThankYou({ project,
         case 'BROWSER': paymentTypeUsed = 'Browser'; break;
         default: paymentTypeUsed = 'Credit Card';
     }
+
+    console.log('Project', project)
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -47,12 +48,16 @@ function ThankYou({ project,
 
             <div className={styles.thankyouImageContainer}>
                 <div className={styles.thankyouImage}>
-                    <div className={styles.pfpLogo}>
+                    {/* <div className={styles.pfpLogo}>
                         <PlanetLogo />
-                    </div>
+                    </div> */}
                     <div className={styles.donationCount}>
-                        I just donated <br /> {treeCount} trees.
+                        My {treeCount} trees are being planted in {project.location}
+                        <div className={styles.donationTenant}>
+                            Plant trees at {process.env.TENANT === 'salesforce' ? 'salesforce.com/trees' : 'trilliontreecampaign.org'}
+                        </div>
                     </div>
+
                 </div>
             </div>
 
