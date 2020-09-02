@@ -8,15 +8,15 @@ export default function AboutSection() {
         <Col xs={12} md={6} className={styles.aboutSectionImages}>
           <img
             style={{ width: '100%' }}
-            src={'/tenants/plantfortheplanet/images/home/About1.jpg'}
+            src={'/tenants/planet/images/home/About1.jpg'}
           />
           <img
             style={{ width: '48%', marginTop: '16px' }}
-            src={'/tenants/plantfortheplanet/images/home/About2.jpg'}
+            src={'/tenants/planet/images/home/About2.jpg'}
           />
           <img
             style={{ width: '48%', marginTop: '16px' }}
-            src={'/tenants/plantfortheplanet/images/home/About3.jpg'}
+            src={'/tenants/planet/images/home/About3.jpg'}
           />
         </Col>
         <Col xs={12} md={6} className={styles.aboutSectionText}>

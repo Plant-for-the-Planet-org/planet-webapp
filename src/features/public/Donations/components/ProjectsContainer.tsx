@@ -56,10 +56,17 @@ export default function ProjectsContainer({
   function getSearchProjects(projects: Array<any>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
-      resultProjects = projects.filter(
-        (project: { properties: { name: string } }) =>
-          project.properties.name.toLowerCase().includes(keyword.toLowerCase())
-      );
+      resultProjects = projects.filter(function(project) {
+        if (project.properties.name.toLowerCase().includes(keyword.toLowerCase())){
+          return true;
+        } else if (project.properties.location && project.properties.location.toLowerCase().includes(keyword.toLowerCase())){
+          return true;
+        } else if (project.properties.tpo.name && project.properties.tpo.name.toLowerCase().includes(keyword.toLowerCase())){
+          return true;
+        } else {
+          return false
+        }
+      });
     }
     return resultProjects;
   }
@@ -156,7 +163,16 @@ export default function ProjectsContainer({
         ref={projectContainer}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
         onTouchCancel={onTouchEnd}
+        style={
+          isMobile && screenWidth > 420
+            ? {
+                left: 'calc((100vw - 420px)/2)',
+                right: 'calc((100vw - 420px)/2)',
+              }
+            : {}
+        }
       >
         {searchMode ? (
           <div className={styles.headerSearchMode}>

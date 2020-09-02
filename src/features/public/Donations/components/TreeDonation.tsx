@@ -57,10 +57,14 @@ function TreeDonation({
   };
 
   const setCustomTreeValue = (e: any) => {
+
     if (e.target.value === '') {
-      setTreeCount(0);
+      // if input is '', default 1
+      setTreeCount(1);
     } else {
+      if (e.target.value.toString().length <= 12) {
       setTreeCount(e.target.value);
+      }
     }
   };
 
@@ -211,8 +215,14 @@ function TreeDonation({
               <input
                 className={styles.customTreeInput}
                 onInput={(e) => {
-                  // replaces any character other than number to blank
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                   // replaces any character other than number to blank
+                   e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                  //  if length of input more than 12, display only 12 digits
+                  if (e.target.value.toString().length >= 12){ 
+                    e.target.value = e.target.value.toString().slice(0, 12)
+                  }
+
                 }}
                 type="text"
                 onChange={(e) => setCustomTreeValue(e)}
