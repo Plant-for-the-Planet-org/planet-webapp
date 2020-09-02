@@ -61,7 +61,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     loadPaymentSetup();
   }, [project, country]);
 
-  const [donationStep, setDonationStep] = React.useState(1);
+  const [donationStep, setDonationStep] = React.useState(4);
 
   const [giftDetails, setGiftDetails] = React.useState({
     firstName: '',

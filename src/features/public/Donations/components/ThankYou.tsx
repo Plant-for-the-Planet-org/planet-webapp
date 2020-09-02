@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import Close from '../../../../assets/images/icons/headerIcons/close';
+import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 
@@ -62,16 +63,16 @@ function ThankYou({ project,
             </div>
 
 
-            {/* <div className={styles.buttonsContainer}>
-                <div className={styles.downloadButton}>
+            <div className={styles.buttonsContainer}>
+                {/* <div className={styles.downloadButton}>
                     <Download />
-                </div>
-                <div style={{ width: '20px' }}></div>
+                </div> */}
+                {/* <div style={{ width: '20px' }}></div> */}
                 <div className={styles.downloadButton}>
                     <Share color={'#87b738'} />
                 </div>
 
-            </div> */}
+            </div>
         </div>
     )
 }

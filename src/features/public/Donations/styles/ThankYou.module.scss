@@ -78,7 +78,7 @@
   font-weight: 600;
   text-align: center;
   position: absolute;
-  bottom: 16px;
+  bottom: 20px;
   text-align: center;
   color: $light;
 }
@@ -120,4 +120,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
+  background-color: $light;
+  :hover{
+    cursor: pointer;
+  }
 }
