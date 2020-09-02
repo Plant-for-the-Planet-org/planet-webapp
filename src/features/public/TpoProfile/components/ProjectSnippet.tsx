@@ -1,27 +1,18 @@
 import Modal from '@material-ui/core/Modal';
-import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-import getStripe from '../../../../utils/getStripe';
-import DonationsPopup from '../../Donations/screens/DonationsPopup';
 import styles from '../../Donations/styles/Projects.module.scss';
 
 interface Props {
   project: any;
   key: number;
-  setShowSingleProject: Function;
-  fetchProject: Function;
-  setLayoutId: Function;
 }
 
 export default function ProjectSnippet({
   project,
   key,
-  setShowSingleProject,
-  fetchProject,
-  setLayoutId,
 }: Props): ReactElement {
   
   const ImageSource = project.image
@@ -30,37 +21,13 @@ export default function ProjectSnippet({
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 +
     '%';
-
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleOpenProject = async () => {
-    await fetchProject();
-    setShowSingleProject(true);
-    setLayoutId(projectDetails.id);
-  };
-  const projectDetails = project.properties;
+  
+  const projectDetails = project;
   return (
     <div className={styles.singleProject} key={key}>
-      <Modal
-        className={styles.modal}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        disableBackdropClick
-      >
-        <Elements stripe={getStripe()}>
-          <DonationsPopup project={projectDetails} onClose={handleClose} />
-        </Elements>
-      </Modal>
+
       <a>
-        <div onClick={handleOpenProject} className={styles.projectImage}>
+        <div className={styles.projectImage}>
           {project.image &&
           typeof project.image !== 'undefined' ? (
             <div
@@ -113,7 +80,7 @@ export default function ProjectSnippet({
           <div className={styles.projectCost}>
             {project.treeCost ? (
               <>
-                <div onClick={handleOpen} className={styles.costButton}>
+                <div  className={styles.costButton}>
                   {project.currency === 'USD'
                     ? '$'
                     : project.currency === 'EUR'
