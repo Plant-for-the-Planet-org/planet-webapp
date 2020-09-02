@@ -90,6 +90,18 @@
     cursor: pointer;
   }
 }
+.continueButtonDisabled {
+  background-color: $dividerColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
 
 .horizontalLine {
   height: 1px;
