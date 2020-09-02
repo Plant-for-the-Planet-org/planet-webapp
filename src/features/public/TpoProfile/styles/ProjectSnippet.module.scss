@@ -11,89 +11,6 @@
   left: 24px;
 }
 
-.header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: $light;
-  border-radius: 13px 13px 0px 0px;
-  width: 360px;
-  height: 50px;
-}
-
-.tabButtonContainer {
-  flex-grow: 1;
-  display: flex;
-}
-
-.tabButton {
-  background-color: transparent;
-  border: none;
-  margin-left: 16px;
-  margin-top: 18px;
-}
-
-.tabButton:hover {
-  cursor: pointer;
-}
-
-.tabButtonText {
-  font-family: $primaryFontFamily;
-  font-size: 13px;
-  font-weight: bold;
-  color: $primaryFontColor;
-  margin-bottom: 10px;
-}
-
-.tabButtonSelected {
-  color: $primaryColor;
-  font-family: $primaryFontFamily;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.tabButtonSelectedIndicator {
-  height: 3px;
-  background-color: $primaryColor;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  align-self: flex-end;
-}
-
-.headerSearchMode {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: $light;
-  border-radius: 13px 13px 0px 0px;
-  width: 100%;
-  height: 50px;
-}
-
-.searchIcon {
-  margin-right: 8px;
-  padding: 10px;
-  font-size: 12px;
-}
-
-.searchIcon:hover {
-  cursor: pointer;
-}
-
-.searchInput {
-  flex-grow: 3;
-}
-
-.cancelIcon {
-  margin-right: 10px;
-  padding: 10px;
-}
-
-.cancelIcon:hover {
-  cursor: pointer;
-}
-
 /* Projects */
 .projectsContainer {
   display: flex;
@@ -107,28 +24,6 @@
   max-height: calc(100vh - 145px);
   overflow-x: hidden;
   overflow-y: scroll;
-}
-
-// .projectsContainer::-webkit-scrollbar-track {
-//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   border-radius: 10px;
-//   background-color: #f5f5f5;
-// }
-
-// .projectsContainer::-webkit-scrollbar {
-//   width: 5px;
-//   background-color: #f5f5f5;
-// }
-
-// .projectsContainer::-webkit-scrollbar-thumb {
-//   border-radius: 10px;
-//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   background-color: $dividerColor;
-// }
-
-.singleProject {
-  margin-top: 20px;
 }
 
 .modal {

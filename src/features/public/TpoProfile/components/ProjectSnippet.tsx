@@ -24,7 +24,7 @@ export default function ProjectSnippet({
   
   const projectDetails = project;
   return (
-    <div className={styles.singleProject} key={key}>
+    <div key={key}>
 
       <a>
         <div className={styles.projectImage}>
