@@ -13,8 +13,8 @@ export default function TpoProfile({ tpoprofile }: any) {
 
     <main>
       {/* tpoinfo section */}
-      <div className={styles.wrappingDiv}>
-      <LandingSection fixedBg>
+ 
+      <LandingSection fixedBg noFixedHeight>
           <div className={styles.tpoProfileDiv}>
           <TpoInfo 
           tpoprofile={tpoprofile} 
@@ -32,7 +32,7 @@ export default function TpoProfile({ tpoprofile }: any) {
         </div>
 
         </LandingSection>
-        </div>
+
 
        
     </main>

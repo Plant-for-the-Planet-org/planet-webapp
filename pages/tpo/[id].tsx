@@ -35,7 +35,6 @@ export default function Tpo() {
   return tpoprofile ? (
     <Layout>
       <TpoPage {...TpoProps} />
-      <Footer />
     </Layout>
   ) : null;
 }

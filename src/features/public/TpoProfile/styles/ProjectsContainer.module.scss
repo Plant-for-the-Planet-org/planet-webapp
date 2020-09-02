@@ -4,28 +4,34 @@
 .outerProjectsContainer {
     display: flex;
     flex-direction: column;
-    // padding to left of text and list
+    // DESKTOP: padding to left of text and list
     padding: 0px 0px 0px 40px;
+
+    width: 100%;
 }
 
 .projectsTitleText {
     font-family: $primaryFontFamily;
     text-align: left;
     width: 100%;
+    font-weight: bold;
 }
   
 //  the list of projects
 .listProjects {
   display: flex;
   flex-direction: row;
-  // for padding to the farthest right project
+  flex-wrap: wrap;
+  justify-content: left;
+
+  // ONLYDESKTOP : for padding to the farthest right project
   padding: 0px 20px 0px 0px;
 }
 
 .singleProject {
-  // margin to right of every project
-  margin: 0px 50px 0px 0px;
-  min-width: 320px;
+  // ONLYDESKTOP :margin to right of every project
+  margin: 0px 50px 40px 0px;
+  width: calc(100vw / 4.3);
 }
 
 .projectNotFound {
@@ -36,4 +42,23 @@
 
 .projectNotFoundImage {
   width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .outerProjectsContainer{
+    padding: 0px 0px 0px 10px;
+  }
+  .listProjects {
+    display: flex;
+  flex-direction: column;
+    padding: 0px;
+  }
+  .projectsTitleText {
+    padding:0px 20px;
+  }
+  .singleProject {
+    width: 100%;
+    padding: 20px 20px;
+    margin: 0px 0px 0px 0px;
+  }
 }

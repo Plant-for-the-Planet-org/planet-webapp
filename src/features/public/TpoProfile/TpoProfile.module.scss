@@ -1,24 +1,26 @@
 @import './../../../theme/theme';
 
-.wrappingDiv {
-  // margin top for desktop
-  margin-top: 360px;
+.tpoProfileDiv{
+  display: flex;
+  margin-top: 100px;
 }
 
 // the outer white background
 .projectsContainer {
-  padding: 30px 0px;
+  padding: 30px 0px 0px 130px;
   background-color: $light;
   display: flex;
   position: relative;
   width: 100vw;
-  min-height: 50vh;
-  z-index: 5;
-  top: 100px;
+  // min-height: 50vh;
+  z-index: 40;
+  margin-top: 100px;
   align-items: left;
-  justify-content: left; 
-  overflow-x: auto; 
-  overflow-y: hidden;  
+  justify-content: left;
+}
+
+.projectsContainer:after {
+  min-height: fit-content;
 }
 
 /* Footer */
@@ -28,11 +30,15 @@
   padding: 1px;
   width: 100vw;
   background-color: $light;
-  top: 100px;
+  // margin-top: 100px;
 }
 
 @media only screen and (max-width: 768px) {
-  .wrappingDiv {
-    margin-top: 500px;
+  .tpoProfileDiv {
+    margin-top: 100px;
+  }
+  .projectsContainer{
+    width: 100vw;
+    padding: 30px 0px;
   }
 }
