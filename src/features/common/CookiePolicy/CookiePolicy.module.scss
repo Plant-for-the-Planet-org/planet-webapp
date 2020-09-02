@@ -64,7 +64,7 @@
   color: $primaryColor;
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 767px) {
   .cookieContainer {
     display: flex;
     flex-direction: column;
@@ -76,8 +76,7 @@
     max-width: 100%;
   }
   .cookieCloseButton {
-    display: flex;
-    width: 100%;
+    display: none;
   }
   .cookieContent {
     padding: 16px 24px 16px 24px;
@@ -86,6 +85,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .closeButton {
+    display: block;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .cookieCloseButton {
+    display: flex;
+    width: 100%;
   }
   .closeButton {
     display: none;
