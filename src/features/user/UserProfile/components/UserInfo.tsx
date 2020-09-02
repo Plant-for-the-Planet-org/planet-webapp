@@ -5,7 +5,7 @@ import Layout from '../../../common/Layout';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
 
-export default function MyForestItem({
+export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
 }: any) {

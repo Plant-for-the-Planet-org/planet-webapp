@@ -13,13 +13,20 @@ export default function Tpo() {
   };
   useEffect(() => {
     async function loadTpoData() {
+      let tpoId;
+      if (router.query.id === undefined){
+        tpoId = 'ayudh-europe'
+      } else {
+        tpoId = router.query.id
+      }
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${router.query.id}`, {
+        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${tpoId}`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` }
       }
       );
-
+      console.log('url',`${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${tpoId}` )
       const tpoprofile = await res.json();
+      console.log('response', tpoprofile)
       setTpoprofile(tpoprofile);
     }
     loadTpoData();

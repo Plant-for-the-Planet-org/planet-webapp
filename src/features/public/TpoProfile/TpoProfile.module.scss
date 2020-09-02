@@ -1,17 +1,35 @@
 @import './../../../theme/theme';
 
-.treeCounterName {
-  font-family: $primaryFontFamily;
-  font-weight: bold;
-  font-size: 40px;
-  color: white;
-  margin-top: 48px;
-  margin-bottom: 0px;
+
+
+// the outer white background
+.projectsContainer {
+  padding: 30px;
+  background-color: $light;
+  display: flex;
+  position: relative;
+  min-width: 100vw;
+  min-height: fit-content;
+  z-index: 5;
+  top: 180px;
+  align-items: left;
+  justify-content: left; 
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
-.landingContent {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Footer */
+.footerDiv {
+  z-index: 24; //more than myForestContainer
+  position: relative;
+  padding: 1px;
+  width: 100vw;
+  background-color: $light;
+  top: 180px;
+}
+
+@media only screen and (max-width: 768px) {
+  .footerDiv {
+    display: none;
+  }
 }

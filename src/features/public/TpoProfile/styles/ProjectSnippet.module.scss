@@ -1,0 +1,303 @@
+@import '../../../../theme/theme';
+
+.container {
+  position: absolute;
+  z-index: 6;
+}
+
+.cardContainer {
+  position: relative;
+  top: 30px;
+  left: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: $light;
+  border-radius: 13px 13px 0px 0px;
+  width: 360px;
+  height: 50px;
+}
+
+.tabButtonContainer {
+  flex-grow: 1;
+  display: flex;
+}
+
+.tabButton {
+  background-color: transparent;
+  border: none;
+  margin-left: 16px;
+  margin-top: 18px;
+}
+
+.tabButton:hover {
+  cursor: pointer;
+}
+
+.tabButtonText {
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  color: $primaryFontColor;
+  margin-bottom: 10px;
+}
+
+.tabButtonSelected {
+  color: $primaryColor;
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tabButtonSelectedIndicator {
+  height: 3px;
+  background-color: $primaryColor;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  align-self: flex-end;
+}
+
+.headerSearchMode {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: $light;
+  border-radius: 13px 13px 0px 0px;
+  width: 100%;
+  height: 50px;
+}
+
+.searchIcon {
+  margin-right: 8px;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.searchIcon:hover {
+  cursor: pointer;
+}
+
+.searchInput {
+  flex-grow: 3;
+}
+
+.cancelIcon {
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.cancelIcon:hover {
+  cursor: pointer;
+}
+
+/* Projects */
+.projectsContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: $light;
+  margin-top: 5px;
+  width: 360px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  max-height: calc(100vh - 145px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+// .projectsContainer::-webkit-scrollbar-track {
+//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   border-radius: 10px;
+//   background-color: #f5f5f5;
+// }
+
+// .projectsContainer::-webkit-scrollbar {
+//   width: 5px;
+//   background-color: #f5f5f5;
+// }
+
+// .projectsContainer::-webkit-scrollbar-thumb {
+//   border-radius: 10px;
+//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   background-color: $dividerColor;
+// }
+
+.singleProject {
+  margin-top: 20px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
+}
+
+.popupProject {
+  margin-top: 0px;
+}
+
+.targetLocation {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.target {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.projectTPOName {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  margin-top: 10px;
+  line-height: 14px;
+}
+
+.location {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  line-height: 14px;
+}
+
+.costButton {
+  background-color: $primaryColor;
+  width: 72px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  color: $light;
+  font-weight: bold;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  text-transform: uppercase;
+}
+
+.costButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.perTree {
+  font-family: $primaryFontFamily;
+  font-size: 9px;
+  color: $primaryFontColor;
+  margin-top: 5px;
+}
+
+.projectCost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Progress Bar */
+.progressBar {
+  height: 4px;
+  width: 100%;
+  background-color: $dividerColor;
+}
+
+.progressBarHighlight {
+  height: 4px;
+  background-color: $primaryColor;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.projectImage {
+  height: 160px;
+  width: 100%;
+  background-color: $primaryColor;
+  position: relative;
+}
+
+.projectImage:hover {
+  cursor: pointer;
+}
+
+.projectImageFile {
+  height: 160px;
+  width: 100%;
+  position: relative;
+}
+
+.projectImageBlock {
+  position: absolute;
+  bottom: 12px;
+  left: 7px;
+}
+
+.projectType {
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.projectName {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    width: 100vw;
+    margin-top: 0px;
+    height: calc(100vh - 76px);
+    overflow: hidden;
+  }
+
+  .cardContainer {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 420px;
+  }
+
+  .header {
+    width: 100%;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Projects */
+  .projectsContainer {
+    margin-top: 0px;
+    width: 100%;
+    max-height: calc(100vh - 126px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
