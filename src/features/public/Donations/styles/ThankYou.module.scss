@@ -57,6 +57,7 @@
 .thankyouImageContainer {
   display: flex;
   justify-content: center;
+  background-image:url('/public/tenants/planet/images/donations/donationComplete.jpg') ;
 }
 .thankyouImage {
   background-color: $primaryFontColor;

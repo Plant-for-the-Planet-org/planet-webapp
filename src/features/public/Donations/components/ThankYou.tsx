@@ -72,3 +72,10 @@ function ThankYou({ project,
 }
 
 export default ThankYou
+
+// Thank you, Marc!
+// Your €11.84 donation was successful. We thank you for helping us fulfil our mission of bringing back the world’s forests. Your 10 trees will be planted by Yucatan Reforestation in Mexico. Maybe you’ll be able to visit them some day?
+// Want to do even more? Maybe hook up your friends with some trees of their own by telling them our yours?
+
+// Title: Planting trees against the climate crisis
+// Text: Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out salesforce.com/trees if you want to plant some too!
