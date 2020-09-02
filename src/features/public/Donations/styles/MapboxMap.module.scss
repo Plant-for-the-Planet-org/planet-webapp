@@ -87,6 +87,16 @@
   padding-left: 20px;
 }
 
+.exploreButton {
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  padding: 9px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+}
+
 @media only screen and (max-width: 768px) {
   .mapContainer {
     top: 0px;

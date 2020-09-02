@@ -332,6 +332,7 @@ export default function MapboxMap(props) {
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
+        <div className={styles.exploreButton}>Explore</div>
         {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
