@@ -27,10 +27,7 @@ export default function Footer() {
     { id: 1, title: 'Privacy & Terms', link: '/' },
     { id: 2, title: 'Imprint', link: '/' },
     { id: 3, title: 'Contact', link: '/' },
-    { id: 4, title: 'Press Releases', link: '/' },
-    { id: 5, title: 'Report a project', link: '/' },
     { id: 6, title: 'Support Us', link: '/' },
-    { id: 7, title: 'FAQs', link: '/' },
   ];
   // changes the language and selected currency id found in local storage
   useEffect(() => {
