@@ -91,10 +91,72 @@
   position: fixed;
   right: 20px;
   top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   padding: 9px;
   background: #fff;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
+  line-height: 16px;
+}
+.exploreButton > svg {
+  width: 20px;
+}
+
+.exploreText {
+  padding-left: 4px;
+  margin: 0;
+}
+
+.exploreExpanded {
+  position: fixed;
+  right: 70px;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+}
+
+.exploreToggleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.exploreToggleRow svg {
+  width: 15px;
+}
+
+.exploreExpanded hr {
+  margin-top: 10px;
+}
+
+.exploreNote {
+  padding-top: 10px;
+  text-align: center;
+  width: 200px;
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+}
+
+.exploreNote a {
+  color: $primaryColor;
+}
+
+.exploreNote a:visited {
+  color: $primaryColor;
+}
+
+.exploreNote a:hover {
+  color: $primaryColor;
 }
 
 @media only screen and (max-width: 768px) {

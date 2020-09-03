@@ -1,3 +1,5 @@
+@import './theme';
+
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
 }
@@ -8,4 +10,13 @@
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
   background: transparent;
+}
+
+.MuiTypography-body1 {
+  font-size: 14px !important;
+  font-family: $primaryFontFamily !important;
+}
+
+.MuiFormControlLabel-root {
+  margin: 0;
 }

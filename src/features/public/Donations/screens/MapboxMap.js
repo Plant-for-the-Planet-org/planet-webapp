@@ -1,3 +1,8 @@
+import { faBinoculars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Divider from '@material-ui/core/Divider';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
@@ -12,6 +17,7 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
+import Switch from '../../../common/InputTypes/ToggleSwitch';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
@@ -43,6 +49,35 @@ export default function MapboxMap(props) {
     longitude: defaultMapCenter[1],
     zoom: 1.4,
   });
+
+  const [exploreExpanded, setExploreExpanded] = React.useState(false);
+
+  const [exploreForests, setExploreForests] = React.useState(false);
+
+  const [explorePotential, setExplorePotential] = React.useState(false);
+
+  const [exploreDeforestation, setExploreDeforestation] = React.useState(false);
+
+  const [explorePlanted, setExplorePlanted] = React.useState(false);
+
+  const [exploreProjects, setExploreProjects] = React.useState(true);
+
+  const handleExploreForestsChange = (event) => {
+    setExploreForests(event.target.checked);
+  };
+
+  const handleExplorePotentialChange = (event) => {
+    setExplorePotential(event.target.checked);
+  };
+  const handleExploreDeforestationChange = (event) => {
+    setExploreDeforestation(event.target.checked);
+  };
+  const handleExplorePlantedChange = (event) => {
+    setExplorePlanted(event.target.checked);
+  };
+  const handleExploreProjectsChange = (event) => {
+    setExploreProjects(event.target.checked);
+  };
 
   React.useEffect(() => {
     if (props.showSingleProject) {
@@ -260,6 +295,7 @@ export default function MapboxMap(props) {
           )
         ) : null}
         {!props.showSingleProject &&
+          exploreProjects &&
           projects.map((project, index) => (
             <Marker
               key={index}
@@ -329,10 +365,119 @@ export default function MapboxMap(props) {
             </div>
           </Popup>
         )}
+        <Source
+          id="forests1"
+          type="vector"
+          url="https://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/Tree_Cover_2000_Bright_Green/MapServer/4?f=pjson"
+        >
+          {/* <Layer
+            id="forest-layer"
+            source="forests1"
+            source-layer="landcover"
+            type="hillshade"
+          /> */}
+        </Source>
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
-        <div className={styles.exploreButton}>Explore</div>
+        <div
+          onMouseOver={() => setExploreExpanded(true)}
+          onMouseLeave={() => setExploreExpanded(false)}
+        >
+          <div className={styles.exploreButton}>
+            {exploreExpanded ? (
+              <FontAwesomeIcon
+                onClick={() => setExploreExpanded(false)}
+                icon={faTimes}
+              />
+            ) : (
+              <FontAwesomeIcon icon={faBinoculars} />
+            )}
+            {exploreExpanded ? null : (
+              <p className={styles.exploreText}>Explore</p>
+            )}
+          </div>
+          {exploreExpanded ? (
+            <div className={styles.exploreExpanded}>
+              <div>
+                <FormGroup>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={exploreForests}
+                          onChange={handleExploreForestsChange}
+                          name="forest"
+                        />
+                      }
+                      label="Forest"
+                    />
+                  </div>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={explorePotential}
+                          onChange={handleExplorePotentialChange}
+                          name="potential"
+                        />
+                      }
+                      label="Restoration Potential"
+                    />
+                    {/* <FontAwesomeIcon icon={faInfoCircle} /> */}
+                  </div>
+
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={exploreDeforestation}
+                          onChange={handleExploreDeforestationChange}
+                          name="deforestation"
+                        />
+                      }
+                      label="Deforestation"
+                    />
+                  </div>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={explorePlanted}
+                          onChange={handleExplorePlantedChange}
+                          name="planted"
+                        />
+                      }
+                      label="Planted Trees"
+                    />
+                  </div>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={exploreProjects}
+                          onChange={handleExploreProjectsChange}
+                          name="projects"
+                        />
+                      }
+                      label="Restoration Projects"
+                    />
+                  </div>
+                </FormGroup>
+              </div>
+              <Divider width="85%" />
+              <div className={styles.exploreNote}>
+                The world has about 3 trillion trees today ("Forests"). And
+                space for up to a trillion more ("Reforestation Protential").
+                <br />
+                <br />
+                Ecology data from{' '}
+                <a href="https://crowtherlab.com">crowtherlab.com</a>
+              </div>
+            </div>
+          ) : null}
+        </div>
+
         {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
