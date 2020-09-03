@@ -28,10 +28,19 @@ export default function ProjectsContainer({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
 
+  const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
+
+  const showFeaturedList = featuredList === 'true' ? true : false;
+
   // subtract screen height with bottom nav
   const containerHeight = screenHeight - 76;
 
-  const [selectedTab, setSelectedTab] = React.useState('featured');
+  const [selectedTab, setSelectedTab] = React.useState('all');
+
+  React.useEffect(() => {
+    showFeaturedList ? setSelectedTab('featured') : null;
+  }, []);
+
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
 
@@ -56,15 +65,27 @@ export default function ProjectsContainer({
   function getSearchProjects(projects: Array<any>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
-      resultProjects = projects.filter(function(project) {
-        if (project.properties.name.toLowerCase().includes(keyword.toLowerCase())){
+      resultProjects = projects.filter(function (project) {
+        if (
+          project.properties.name.toLowerCase().includes(keyword.toLowerCase())
+        ) {
           return true;
-        } else if (project.properties.location && project.properties.location.toLowerCase().includes(keyword.toLowerCase())){
+        } else if (
+          project.properties.location &&
+          project.properties.location
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
           return true;
-        } else if (project.properties.tpo.name && project.properties.tpo.name.toLowerCase().includes(keyword.toLowerCase())){
+        } else if (
+          project.properties.tpo.name &&
+          project.properties.tpo.name
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
           return true;
         } else {
-          return false
+          return false;
         }
       });
     }
@@ -201,23 +222,25 @@ export default function ProjectsContainer({
         ) : (
           <div className={styles.header}>
             <div className={styles.tabButtonContainer}>
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('featured')}
-              >
+              {showFeaturedList ? (
                 <div
-                  className={
-                    selectedTab === 'featured'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('featured')}
                 >
-                  Top Projects
+                  <div
+                    className={
+                      selectedTab === 'featured'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    Top Projects
+                  </div>
+                  {selectedTab === 'featured' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
                 </div>
-                {selectedTab === 'featured' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
-              </div>
+              ) : null}
 
               <div
                 className={styles.tabButton}
