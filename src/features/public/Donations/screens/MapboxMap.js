@@ -367,8 +367,8 @@ export default function MapboxMap(props) {
         )}
         <Source
           id="forests1"
-          type="vector"
-          url="https://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/Tree_Cover_2000_Bright_Green/MapServer/4?f=pjson"
+          type="raster"
+          url="https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer?f=pjson&cacheKey=9d64b9d4b9db42bd&token=S6VID-NbNpInq3btKsFT-AXbkdSzSaWya0QZ2ROk0IiiemDoTuD4yB0M0HdAzshrSVHmcwqZgaLaT7hFWiEAEt3Vqi6CiTf4eoUtXu3Hmmcj7NJ_I2RTn6Y41aAu7RTzT1BRePFYUC53hI-RY4cJEJwI0mwFa7JRDhjB8KRkdg-JNI06BedZz9T2MMxlTtj1mF9fUHubK8S3sWndZCMiqEeXX6G5FYHA04bD0_SxjZST2OsP8hVyoGorhTVY4FMQ"
         >
           {/* <Layer
             id="forest-layer"
