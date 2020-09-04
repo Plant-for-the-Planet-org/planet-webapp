@@ -31,7 +31,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
-    yScroll: yScroll
+    yScroll: yScroll,
     setSearchedProjects: setSearchedProjects
   };
 
