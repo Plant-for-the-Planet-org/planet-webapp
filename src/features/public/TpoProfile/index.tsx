@@ -14,7 +14,7 @@ export default function TpoProfile({ tpoprofile }: any) {
     <main>
       {/* tpoinfo section */}
  
-      <LandingSection fixedBg noFixedHeight>
+      <LandingSection fixedBg noFixedHeight imageSrc={`${process.env.CDN_URL}/media/images/app/bg_layer.jpg`}>
           <div className={styles.tpoProfileDiv}>
           <TpoInfo 
           tpoprofile={tpoprofile} 
