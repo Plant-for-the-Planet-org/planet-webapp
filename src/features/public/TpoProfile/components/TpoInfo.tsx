@@ -19,7 +19,7 @@ export default function TpoInfo({ tpoprofile }: any) {
 
       {/* tpo description */}
       <p className={styles.tpoDescription}>
-        {tpoprofile.userProfile.synopsis1.split('.').slice(0,2).join('.')}
+        {tpoprofile.userProfile.synopsis1 ? tpoprofile.userProfile.synopsis1 : ""}
       </p>
     </div>
   );
