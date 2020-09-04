@@ -30,10 +30,20 @@ export default function ProjectsContainer({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
 
+  const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
+
+  const showFeaturedList =
+    featuredList === 'false' || featuredList === '0' ? false : true;
+
   // subtract screen height with bottom nav
   const containerHeight = screenHeight - 76;
 
-  const [selectedTab, setSelectedTab] = React.useState('featured');
+  const [selectedTab, setSelectedTab] = React.useState('all');
+
+  React.useEffect(() => {
+    showFeaturedList ? setSelectedTab('featured') : null;
+  }, []);
+
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
 
@@ -59,14 +69,26 @@ export default function ProjectsContainer({
     let resultProjects = [];
     if (keyword !== '') {
       resultProjects = projects.filter(function (project) {
-        if (project.properties.name.toLowerCase().includes(keyword.toLowerCase())) {
+        if (
+          project.properties.name.toLowerCase().includes(keyword.toLowerCase())
+        ) {
           return true;
-        } else if (project.properties.location && project.properties.location.toLowerCase().includes(keyword.toLowerCase())) {
+        } else if (
+          project.properties.location &&
+          project.properties.location
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
           return true;
-        } else if (project.properties.tpo.name && project.properties.tpo.name.toLowerCase().includes(keyword.toLowerCase())) {
+        } else if (
+          project.properties.tpo.name &&
+          project.properties.tpo.name
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
           return true;
         } else {
-          return false
+          return false;
         }
       });
     }
@@ -202,7 +224,8 @@ export default function ProjectsContainer({
             </div>
           </div>
         ) : (
-            <div className={styles.header}>
+          <div className={styles.header}>
+            {showFeaturedList ? (
               <div className={styles.tabButtonContainer}>
                 <div
                   className={styles.tabButton}
@@ -216,7 +239,7 @@ export default function ProjectsContainer({
                     }
                   >
                     Top Projects
-                </div>
+                  </div>
                   {selectedTab === 'featured' ? (
                     <div className={styles.tabButtonSelectedIndicator} />
                   ) : null}
@@ -234,12 +257,13 @@ export default function ProjectsContainer({
                     }
                   >
                     All {projects.length} Projects
-                </div>
+                  </div>
                   {selectedTab === 'all' ? (
                     <div className={styles.tabButtonSelectedIndicator} />
                   ) : null}
                 </div>
               </div>
+            ) : null}
 
               <div
                 className={styles.searchIcon}
