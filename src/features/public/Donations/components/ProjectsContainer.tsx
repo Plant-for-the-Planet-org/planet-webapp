@@ -11,6 +11,7 @@ interface Props {
   setShowSingleProject: Function;
   fetchSingleProject: Function;
   setLayoutId: Function;
+  setSearchedProjects: Function;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -23,6 +24,7 @@ export default function ProjectsContainer({
   setShowSingleProject,
   fetchSingleProject,
   setLayoutId,
+  setSearchedProjects
 }: Props) {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -90,6 +92,7 @@ export default function ProjectsContainer({
         }
       });
     }
+    setSearchedProjects(resultProjects);
     return resultProjects;
   }
 
@@ -190,9 +193,9 @@ export default function ProjectsContainer({
         style={
           isMobile && screenWidth > 420
             ? {
-                left: 'calc((100vw - 420px)/2)',
-                right: 'calc((100vw - 420px)/2)',
-              }
+              left: 'calc((100vw - 420px)/2)',
+              right: 'calc((100vw - 420px)/2)',
+            }
             : {}
         }
       >
@@ -262,14 +265,14 @@ export default function ProjectsContainer({
               </div>
             ) : null}
 
-            <div
-              className={styles.searchIcon}
-              onClick={() => setSearchMode(true)}
-            >
-              <SearchIcon />
+              <div
+                className={styles.searchIcon}
+                onClick={() => setSearchMode(true)}
+              >
+                <SearchIcon />
+              </div>
             </div>
-          </div>
-        )}
+          )}
         {/* till here is header */}
         <div
           onScroll={handleScroll}
@@ -287,8 +290,8 @@ export default function ProjectsContainer({
           ) : selectedTab === 'all' ? (
             <AllProjects {...AllProjectsProps} />
           ) : (
-            <AllProjects {...FeaturedProjectsProps} />
-          )}
+                <AllProjects {...FeaturedProjectsProps} />
+              )}
         </div>
       </div>
     </div>
