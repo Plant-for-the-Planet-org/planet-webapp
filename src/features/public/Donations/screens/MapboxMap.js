@@ -39,7 +39,7 @@ export default function MapboxMap(props) {
   const [currentSite, setCurrentSite] = React.useState();
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'https://trilliontrees.maps.arcgis.com/sharing/rest/content/items/7feb108006d44028a5da4e4716498ecd/resources/styles/root.json',
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
   });
 
   const [viewport, setViewPort] = useState({
@@ -137,7 +137,7 @@ export default function MapboxMap(props) {
     } else {
       if (project !== null) {
         const newMapState = {
-          mapStyle: 'https://trilliontrees.maps.arcgis.com/sharing/rest/content/items/7feb108006d44028a5da4e4716498ecd/resources/styles/root.json',
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
         };
         const newViewport = {
           ...viewport,
@@ -185,7 +185,7 @@ export default function MapboxMap(props) {
         }, [3800]);
       } else {
         const newMapState = {
-          mapStyle: 'https://trilliontrees.maps.arcgis.com/sharing/rest/content/items/7feb108006d44028a5da4e4716498ecd/resources/styles/root.json',
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
         };
         const newViewport = {
           ...viewport,
