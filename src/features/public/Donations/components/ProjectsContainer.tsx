@@ -30,7 +30,8 @@ export default function ProjectsContainer({
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
-  const showFeaturedList = featuredList === 'true' ? true : false;
+  const showFeaturedList =
+    featuredList === 'false' || featuredList === '0' ? false : true;
 
   // subtract screen height with bottom nav
   const containerHeight = screenHeight - 76;
@@ -221,8 +222,8 @@ export default function ProjectsContainer({
           </div>
         ) : (
           <div className={styles.header}>
-            <div className={styles.tabButtonContainer}>
-              {showFeaturedList ? (
+            {showFeaturedList ? (
+              <div className={styles.tabButtonContainer}>
                 <div
                   className={styles.tabButton}
                   onClick={() => setSelectedTab('featured')}
@@ -240,26 +241,26 @@ export default function ProjectsContainer({
                     <div className={styles.tabButtonSelectedIndicator} />
                   ) : null}
                 </div>
-              ) : null}
 
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('all')}
-              >
                 <div
-                  className={
-                    selectedTab === 'all'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('all')}
                 >
-                  All {projects.length} Projects
+                  <div
+                    className={
+                      selectedTab === 'all'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    All {projects.length} Projects
+                  </div>
+                  {selectedTab === 'all' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
                 </div>
-                {selectedTab === 'all' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
               </div>
-            </div>
+            ) : null}
 
             <div
               className={styles.searchIcon}
