@@ -16,8 +16,6 @@ export default function ProjectsContainer({ projects }: any) {
     console.log('dummy func');
   };
 
-  const tempProjects = projects.concat(projects).concat(projects).concat(projects).concat(projects);
-
   const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -52,7 +50,7 @@ export default function ProjectsContainer({ projects }: any) {
       ) : (
           <LazyLoad>
             <motion.div className={styles.listProjects}  variants={container} initial="hidden" animate="visible">
-              {tempProjects.map((project: any) => {
+              {projects.map((project: any) => {
                 return (
                   <motion.div
                   className={styles.singleProject}
