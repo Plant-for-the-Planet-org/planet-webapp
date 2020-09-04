@@ -26,8 +26,6 @@ export default function MapboxMap(props) {
   const projects = props.projects;
   const project = props.project;
   const mapRef = useRef(null);
-  const forestRef = useRef(null);
-
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -41,7 +39,7 @@ export default function MapboxMap(props) {
   const [currentSite, setCurrentSite] = React.useState();
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    mapStyle: 'https://trilliontrees.maps.arcgis.com/sharing/rest/content/items/7feb108006d44028a5da4e4716498ecd/resources/styles/root.json',
   });
 
   const [viewport, setViewPort] = useState({
@@ -106,7 +104,6 @@ export default function MapboxMap(props) {
   };
 
   React.useEffect(() => {
-    console.log(forestRef);
     if (props.showSingleProject) {
       setSingleProjectLatLong([
         project.coordinates.lat,
@@ -140,7 +137,7 @@ export default function MapboxMap(props) {
     } else {
       if (project !== null) {
         const newMapState = {
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          mapStyle: 'https://trilliontrees.maps.arcgis.com/sharing/rest/content/items/7feb108006d44028a5da4e4716498ecd/resources/styles/root.json',
         };
         const newViewport = {
           ...viewport,
@@ -188,7 +185,7 @@ export default function MapboxMap(props) {
         }, [3800]);
       } else {
         const newMapState = {
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          mapStyle: 'https://trilliontrees.maps.arcgis.com/sharing/rest/content/items/7feb108006d44028a5da4e4716498ecd/resources/styles/root.json',
         };
         const newViewport = {
           ...viewport,
@@ -392,26 +389,59 @@ export default function MapboxMap(props) {
             </div>
           </Popup>
         )}
+        {exploreForests ? 
         <Source
-          ref={forestRef}
-          id="forests1"
-          type="vector"
+          id="forests"
+          type="raster"
           tiles={[
-            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2_Webapp/MapServer/0?f=pjson',
+            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer/tile/{z}/{y}/{x}',
           ]}
-          tileSize={512}
+          tileSize={128}
         >
           <Layer
             id="forest-layer"
-            source="forests1"
-            source-layer="landcover"
-            type="hillshade"
-            // paint={{
-            //   'fill-color': '#000',
-            //   'fill-opacity': 0.5,
-            // }}
+            source="forests"
+            type="raster"
+
           />
         </Source>
+         :null}
+
+          {explorePotential ? 
+        <Source
+          id="potential"
+          type="raster"
+          tiles={[
+            ' https://earthengine.googleapis.com/map/80c988d5e8f6021ef9e6d2447f405c79/{z}/{x}/{y}?token=75974606a47356f360a3c7783b54369c',
+          ]}
+          tileSize={128}
+        >
+          <Layer
+            id="forest-layer"
+            source="potential"
+            type="raster"
+
+          />
+        </Source>
+         :null}
+
+        {exploreDeforestation ? 
+        <Source
+          id="deforestation"
+          type="raster"
+          tiles={[
+            'https://earthengine.google.org/static/hansen_2013/gain_alpha/{z}/{x}/{y}.png',
+          ]}
+          tileSize={128}
+        >
+          <Layer
+            id="forest-layer"
+            source="deforestation"
+            type="raster"
+
+          />
+        </Source>
+        :null}
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
