@@ -16,11 +16,13 @@ interface Props {
 function ProjectsList({ projects }: Props): ReactElement {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
+  const [showProjects, setShowProjects] = React.useState(true);
   const ProjectsProps = {
     projects: projects,
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
+    setShowProjects,
   };
 
   async function fetchSingleProject(id: any) {
@@ -56,32 +58,33 @@ function ProjectsList({ projects }: Props): ReactElement {
         setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-
       {/* Add Condition Operator */}
-      <AnimateSharedLayout type="crossfade">
-        {showSingleProject ? (
-          <SingleProjectDetails
-            project={project}
-            setShowSingleProject={setShowSingleProject}
-            setLayoutId={() => setSelectedId}
-          />
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 300 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{ duration: 1 }}
-          >
-            <ProjectsContainer
-              {...ProjectsProps}
-              setLayoutId={() => setSelectedId}
+      {showProjects ? (
+        <AnimateSharedLayout type="crossfade">
+          {showSingleProject ? (
+            <SingleProjectDetails
+              project={project}
               setShowSingleProject={setShowSingleProject}
+              setLayoutId={() => setSelectedId}
             />
-          </motion.div>
-        )}
-      </AnimateSharedLayout>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 300 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{ duration: 1 }}
+            >
+              <ProjectsContainer
+                {...ProjectsProps}
+                setLayoutId={() => setSelectedId}
+                setShowSingleProject={setShowSingleProject}
+              />
+            </motion.div>
+          )}
+        </AnimateSharedLayout>
+      ) : null}
     </div>
   );
 }

@@ -26,6 +26,8 @@ export default function MapboxMap(props) {
   const projects = props.projects;
   const project = props.project;
   const mapRef = useRef(null);
+  const forestRef = useRef(null);
+
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -77,9 +79,34 @@ export default function MapboxMap(props) {
   };
   const handleExploreProjectsChange = (event) => {
     setExploreProjects(event.target.checked);
+    props.setShowProjects(event.target.checked);
+    if (!event.target.checked) {
+      const newViewport = {
+        ...viewport,
+        latitude: 36.96,
+        longitude: 0,
+        zoom: 1.4,
+        transitionDuration: 2400,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setViewPort(newViewport);
+    } else {
+      const newViewport = {
+        ...viewport,
+        latitude: defaultMapCenter[0],
+        longitude: defaultMapCenter[1],
+        zoom: 1.4,
+        transitionDuration: 2400,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setViewPort(newViewport);
+    }
   };
 
   React.useEffect(() => {
+    console.log(forestRef);
     if (props.showSingleProject) {
       setSingleProjectLatLong([
         project.coordinates.lat,
@@ -366,16 +393,24 @@ export default function MapboxMap(props) {
           </Popup>
         )}
         <Source
+          ref={forestRef}
           id="forests1"
-          type="raster"
-          url="https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer?f=pjson&cacheKey=9d64b9d4b9db42bd&token=S6VID-NbNpInq3btKsFT-AXbkdSzSaWya0QZ2ROk0IiiemDoTuD4yB0M0HdAzshrSVHmcwqZgaLaT7hFWiEAEt3Vqi6CiTf4eoUtXu3Hmmcj7NJ_I2RTn6Y41aAu7RTzT1BRePFYUC53hI-RY4cJEJwI0mwFa7JRDhjB8KRkdg-JNI06BedZz9T2MMxlTtj1mF9fUHubK8S3sWndZCMiqEeXX6G5FYHA04bD0_SxjZST2OsP8hVyoGorhTVY4FMQ"
+          type="vector"
+          tiles={[
+            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2_Webapp/MapServer/0?f=pjson',
+          ]}
+          tileSize={512}
         >
-          {/* <Layer
+          <Layer
             id="forest-layer"
             source="forests1"
             source-layer="landcover"
             type="hillshade"
-          /> */}
+            // paint={{
+            //   'fill-color': '#000',
+            //   'fill-opacity': 0.5,
+            // }}
+          />
         </Source>
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
@@ -422,7 +457,7 @@ export default function MapboxMap(props) {
                           name="potential"
                         />
                       }
-                      label="Restoration Potential"
+                      label="Reforestation Potential"
                     />
                     {/* <FontAwesomeIcon icon={faInfoCircle} /> */}
                   </div>
@@ -460,7 +495,7 @@ export default function MapboxMap(props) {
                           name="projects"
                         />
                       }
-                      label="Restoration Projects"
+                      label="Projects"
                     />
                   </div>
                 </FormGroup>
@@ -469,10 +504,6 @@ export default function MapboxMap(props) {
               <div className={styles.exploreNote}>
                 The world has about 3 trillion trees today ("Forests"). And
                 space for up to a trillion more ("Reforestation Protential").
-                <br />
-                <br />
-                Ecology data from{' '}
-                <a href="https://crowtherlab.com">crowtherlab.com</a>
               </div>
             </div>
           ) : null}
