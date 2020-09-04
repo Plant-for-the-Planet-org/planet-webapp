@@ -34,6 +34,8 @@
 .footer_button {
   border: 1px solid #2f3336;
   border-radius: 7px;
+  color: #2f3336;
+  text-decoration: none;
   height: 46px;
   display: flex;
   flex-direction: row;
@@ -43,6 +45,14 @@
   padding-right: 10px;
   margin-right: 16px;
   margin-top: 18.8px;
+}
+
+.footer_button > svg {
+  width: 22px;
+}
+.footer_button_container > a:hover {
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .footer_button:hover {
