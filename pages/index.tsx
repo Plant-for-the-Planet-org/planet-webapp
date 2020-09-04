@@ -4,9 +4,13 @@ import ProjectsList from '../src/features/public/Donations/screens/Projects';
 
 export default function Donate() {
   const [projects, setProjects] = React.useState();
+  const [yScroll, setYScroll] = React.useState(0)
+
   const DonateProps = {
     projects: projects,
+    yScroll: yScroll
   };
+
 
   React.useEffect(() => {
     async function loadProjects() {
@@ -31,9 +35,17 @@ export default function Donate() {
     loadProjects();
   }, []);
 
-  // React.useEffect(() => {
-  //   fetchSingleProject(projectId);
-  // }, [projectId]);
+  React.useEffect(() => {
+    const handleScroll = (e) => {
+      let newScroll = yScroll + e.deltaY;
+      if (newScroll < 0) {
+        newScroll = 0;
+      }
+      setYScroll(newScroll)
+    }
+    window.addEventListener('wheel', handleScroll)
+    return () => window.removeEventListener('wheel', handleScroll)
+  })
   return (
     <Layout>
       {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading...</h2>}
