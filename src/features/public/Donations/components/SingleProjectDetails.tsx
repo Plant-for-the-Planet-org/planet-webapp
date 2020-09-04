@@ -47,7 +47,7 @@ function SingleProjectDetails({
     : '';
 
   const contactDetails = [
-    { id: 1, icon: <BlackTree />, text: 'View Profile', link: project.slug },
+    { id: 1, icon: <BlackTree />, text: 'View Profile', link: project.tpo.slug },
     {
       id: 2,
       icon: <WorldWeb />,
