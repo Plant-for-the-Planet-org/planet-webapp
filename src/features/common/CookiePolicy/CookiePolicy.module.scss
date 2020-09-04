@@ -74,6 +74,7 @@
     right: 0;
     bottom: 76px;
     max-width: 100%;
+    border-radius: 0px;
   }
   .cookieCloseButton {
     display: none;
@@ -89,8 +90,7 @@
   .closeButton {
     display: block;
     position: absolute;
-    top: -5px;
-    right: -5px;
+    right: 0;
   }
 }
 
