@@ -17,12 +17,22 @@ interface Props {
 function ProjectsList({ projects, yScroll }: Props): ReactElement {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
+
+  const [searchedProjects, setSearchedProjects] = React.useState([])
+  const [allProjects, setAllProjects] = React.useState(projects)
+  React.useEffect(() => {
+    if (searchedProjects === null || searchedProjects.length < 1)
+      setAllProjects(projects)
+    else setAllProjects(searchedProjects)
+  }, [projects, searchedProjects])
+
   const ProjectsProps = {
-    projects: projects,
+    projects: allProjects,
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
     yScroll: yScroll
+    setSearchedProjects: setSearchedProjects
   };
 
   async function fetchSingleProject(id: any) {
