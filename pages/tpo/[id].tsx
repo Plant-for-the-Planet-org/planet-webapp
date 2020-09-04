@@ -6,31 +6,35 @@ import TpoPage from '../../src/features/public/TpoProfile';
 
 export default function Tpo() {
   const [tpoprofile, setTpoprofile] = React.useState();
+  const [slug, setSlug] = React.useState(null)
+  const [ready, setReady] = React.useState(false)
 
   const router = useRouter();
   const TpoProps = {
     tpoprofile: tpoprofile,
   };
+
+  useEffect(()=> {
+    if(router && router.query.id !== undefined) {
+      setSlug(router.query.id)
+      setReady(true)
+    }
+  }, [router])
+
   useEffect(() => {
-    async function loadTpoData() {
-      let tpoId;
-      if (router.query.id === undefined){
-        tpoId = 'ayudh-europe'
-      } else {
-        tpoId = router.query.id
-      }
+    async function loadTpoData() { 
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${tpoId}`, {
+        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${slug}`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` }
       }
       );
-      console.log('url',`${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${tpoId}` )
       const tpoprofile = await res.json();
-      console.log('response', tpoprofile)
       setTpoprofile(tpoprofile);
     }
-    loadTpoData();
-  }, []);
+    if (ready){
+      loadTpoData();
+    }
+  }, [ready]);
 
   return tpoprofile ? (
     <Layout>

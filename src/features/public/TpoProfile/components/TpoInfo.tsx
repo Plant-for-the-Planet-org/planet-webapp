@@ -5,6 +5,7 @@ import styles from '../styles/TpoInfo.module.scss';
 import TreeCounter from '../../../common/TreeCounter/TreeCounter';
 
 export default function TpoInfo({ tpoprofile }: any) {
+  console.log('tpoprofile', tpoprofile)
   return (
     <div className={styles.landingContent}>
       <TreeCounter
