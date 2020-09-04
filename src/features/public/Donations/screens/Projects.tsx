@@ -11,9 +11,10 @@ const MapLayout = dynamic(() => import('./MapboxMap'), {
 
 interface Props {
   projects: any;
+  yScroll: any;
 }
 
-function ProjectsList({ projects }: Props): ReactElement {
+function ProjectsList({ projects, yScroll }: Props): ReactElement {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
   const ProjectsProps = {
@@ -21,6 +22,7 @@ function ProjectsList({ projects }: Props): ReactElement {
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
+    yScroll: yScroll
   };
 
   async function fetchSingleProject(id: any) {
@@ -66,21 +68,21 @@ function ProjectsList({ projects }: Props): ReactElement {
             setLayoutId={() => setSelectedId}
           />
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 300 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{ duration: 1 }}
-          >
-            <ProjectsContainer
-              {...ProjectsProps}
-              setLayoutId={() => setSelectedId}
-              setShowSingleProject={setShowSingleProject}
-            />
-          </motion.div>
-        )}
+            <motion.div
+              initial={{ opacity: 0, y: 300 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{ duration: 1 }}
+            >
+              <ProjectsContainer
+                {...ProjectsProps}
+                setLayoutId={() => setSelectedId}
+                setShowSingleProject={setShowSingleProject}
+              />
+            </motion.div>
+          )}
       </AnimateSharedLayout>
     </div>
   );
