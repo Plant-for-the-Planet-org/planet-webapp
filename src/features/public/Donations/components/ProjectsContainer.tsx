@@ -25,7 +25,7 @@ export default function ProjectsContainer({
   setShowSingleProject,
   fetchSingleProject,
   setLayoutId,
-  yScroll
+  yScroll,
   setSearchedProjects
 }: Props) {
   const screenWidth = window.innerWidth;
