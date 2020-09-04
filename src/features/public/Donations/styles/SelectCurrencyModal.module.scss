@@ -26,7 +26,7 @@
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   grid-gap: 10px;
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 // adds scroll property to radio button container
@@ -60,7 +60,7 @@
   font-size: 14px;
   font-weight: bold;
   color: $primaryFontColor;
-  margin: 0px;
+  margin: 0px 0px 0px 20px;
 }
 
 // button container for CTA
@@ -146,6 +146,6 @@
   .currencyGrid {
     grid-template-columns: repeat(1, 1fr);
     grid-gap: 10px;
-    padding: 20px;
+    padding: 20px 10px;
   }
 }

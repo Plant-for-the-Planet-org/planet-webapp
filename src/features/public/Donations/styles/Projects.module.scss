@@ -15,6 +15,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
   width: 360px;
@@ -197,7 +198,7 @@
   border-radius: 11px;
   color: $light;
   font-weight: bold;
-  font-family: $primaryFontFamily;
+  font-family: $openSans;
   font-size: $fontSubTitleSize;
   text-transform: uppercase;
 }
