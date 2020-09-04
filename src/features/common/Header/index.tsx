@@ -12,8 +12,9 @@ export default function Layout() {
         rel="stylesheet"
       />
       <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap&subset=latin-ext"
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext"
         rel="stylesheet"
       />
     </Head>
   );
+}
