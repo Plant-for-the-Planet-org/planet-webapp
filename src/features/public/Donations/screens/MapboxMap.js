@@ -132,7 +132,7 @@ export default function MapboxMap(props) {
           ...viewport,
           longitude: singleProjectLatLong[1],
           latitude: singleProjectLatLong[0],
-          zoom: 13,
+          zoom: 5,
           transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,

@@ -11,6 +11,7 @@ interface Props {
   setShowSingleProject: Function;
   fetchSingleProject: Function;
   setLayoutId: Function;
+  setSearchedProjects: Function;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -23,15 +24,26 @@ export default function ProjectsContainer({
   setShowSingleProject,
   fetchSingleProject,
   setLayoutId,
+  setSearchedProjects
 }: Props) {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
 
+  const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
+
+  const showFeaturedList =
+    featuredList === 'false' || featuredList === '0' ? false : true;
+
   // subtract screen height with bottom nav
   const containerHeight = screenHeight - 76;
 
-  const [selectedTab, setSelectedTab] = React.useState('featured');
+  const [selectedTab, setSelectedTab] = React.useState('all');
+
+  React.useEffect(() => {
+    showFeaturedList ? setSelectedTab('featured') : null;
+  }, []);
+
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
 
@@ -56,18 +68,31 @@ export default function ProjectsContainer({
   function getSearchProjects(projects: Array<any>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
-      resultProjects = projects.filter(function(project) {
-        if (project.properties.name.toLowerCase().includes(keyword.toLowerCase())){
+      resultProjects = projects.filter(function (project) {
+        if (
+          project.properties.name.toLowerCase().includes(keyword.toLowerCase())
+        ) {
           return true;
-        } else if (project.properties.location && project.properties.location.toLowerCase().includes(keyword.toLowerCase())){
+        } else if (
+          project.properties.location &&
+          project.properties.location
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
           return true;
-        } else if (project.properties.tpo.name && project.properties.tpo.name.toLowerCase().includes(keyword.toLowerCase())){
+        } else if (
+          project.properties.tpo.name &&
+          project.properties.tpo.name
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
           return true;
         } else {
-          return false
+          return false;
         }
       });
     }
+    setSearchedProjects(resultProjects);
     return resultProjects;
   }
 
@@ -168,9 +193,9 @@ export default function ProjectsContainer({
         style={
           isMobile && screenWidth > 420
             ? {
-                left: 'calc((100vw - 420px)/2)',
-                right: 'calc((100vw - 420px)/2)',
-              }
+              left: 'calc((100vw - 420px)/2)',
+              right: 'calc((100vw - 420px)/2)',
+            }
             : {}
         }
       >
@@ -200,52 +225,54 @@ export default function ProjectsContainer({
           </div>
         ) : (
           <div className={styles.header}>
-            <div className={styles.tabButtonContainer}>
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('featured')}
-              >
+            {showFeaturedList ? (
+              <div className={styles.tabButtonContainer}>
                 <div
-                  className={
-                    selectedTab === 'featured'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('featured')}
                 >
-                  Top Projects
+                  <div
+                    className={
+                      selectedTab === 'featured'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    Top Projects
+                  </div>
+                  {selectedTab === 'featured' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
                 </div>
-                {selectedTab === 'featured' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
+
+                <div
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('all')}
+                >
+                  <div
+                    className={
+                      selectedTab === 'all'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    All {projects.length} Projects
+                  </div>
+                  {selectedTab === 'all' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
+                </div>
               </div>
+            ) : null}
 
               <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('all')}
+                className={styles.searchIcon}
+                onClick={() => setSearchMode(true)}
               >
-                <div
-                  className={
-                    selectedTab === 'all'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
-                >
-                  All {projects.length} Projects
-                </div>
-                {selectedTab === 'all' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
+                <SearchIcon />
               </div>
             </div>
-
-            <div
-              className={styles.searchIcon}
-              onClick={() => setSearchMode(true)}
-            >
-              <SearchIcon />
-            </div>
-          </div>
-        )}
+          )}
         {/* till here is header */}
         <div
           onScroll={handleScroll}
@@ -263,8 +290,8 @@ export default function ProjectsContainer({
           ) : selectedTab === 'all' ? (
             <AllProjects {...AllProjectsProps} />
           ) : (
-            <AllProjects {...FeaturedProjectsProps} />
-          )}
+                <AllProjects {...FeaturedProjectsProps} />
+              )}
         </div>
       </div>
     </div>
