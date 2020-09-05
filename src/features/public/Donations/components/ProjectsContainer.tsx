@@ -11,6 +11,7 @@ interface Props {
   setShowSingleProject: Function;
   fetchSingleProject: Function;
   setLayoutId: Function;
+  yScroll: any;
   setSearchedProjects: Function;
 }
 
@@ -24,6 +25,7 @@ export default function ProjectsContainer({
   setShowSingleProject,
   fetchSingleProject,
   setLayoutId,
+  yScroll,
   setSearchedProjects
 }: Props) {
   const screenWidth = window.innerWidth;
@@ -175,6 +177,13 @@ export default function ProjectsContainer({
       setCanChangeTopValue(false);
     }
   }
+
+  const projectsContainer = React.useRef(null);
+
+  React.useEffect(() => {
+    let Ref = projectsContainer.current;
+    Ref.scrollTo(0, yScroll);
+  })
   return (
     <div
       className={styles.container}
@@ -284,6 +293,7 @@ export default function ProjectsContainer({
                 : window.innerHeight - 126,
             overflowY: allowScroll ? 'scroll' : 'hidden',
           }}
+          ref={projectsContainer}
         >
           {searchValue !== '' ? (
             <AllProjects {...SearchResultProjectsProps} />

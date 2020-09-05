@@ -11,9 +11,10 @@ const MapLayout = dynamic(() => import('./MapboxMap'), {
 
 interface Props {
   projects: any;
+  yScroll: any;
 }
 
-function ProjectsList({ projects }: Props): ReactElement {
+function ProjectsList({ projects, yScroll }: Props): ReactElement {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
 
@@ -30,6 +31,7 @@ function ProjectsList({ projects }: Props): ReactElement {
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
+    yScroll: yScroll,
     setSearchedProjects: setSearchedProjects
   };
 
