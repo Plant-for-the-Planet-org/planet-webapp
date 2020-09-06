@@ -9,6 +9,7 @@ import React, { ReactElement } from 'react';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import { getCardBrand } from '../../../../utils/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from './../../../common/types/donations';
@@ -22,7 +23,7 @@ const FormControlNew = withStyles({
     border: '0px!important',
     borderRadius: '10px',
     fontFamily: 'Raleway, sans-serif',
-    padding: '18.5px',
+    padding: '18.5px'
   },
 })(FormControl);
 const ELEMENT_OPTIONS = {
@@ -92,7 +93,35 @@ function PaymentDetails({
 
   const [isSepa, setIsSepa] = React.useState(false)
 
-  const [paymentError, setPaymentError] = React.useState(null);
+  const [paymentError, setPaymentError] = React.useState('');
+
+  const [showContinue, setShowContinue] = React.useState(false);
+  const [showBrand, setShowBrand] = React.useState('')
+  React.useEffect(() => {
+    const cardNumberElement = elements!.getElement(CardNumberElement);
+    cardNumberElement!.on('change', ({ error, complete, brand }) => {
+      if (error) {
+        setShowContinue(false);
+      } else if (complete) {
+        setShowBrand(brand);
+        const cardExpiryElement = elements!.getElement(CardExpiryElement);
+        cardExpiryElement!.on('change', ({ error, complete }) => {
+          if (error) {
+            setShowContinue(false);
+          } else if (complete) {
+            const cardCvcElement = elements!.getElement(CardCvcElement);
+            cardCvcElement!.on('change', ({ error, complete }) => {
+              if (error) {
+                setShowContinue(false);
+              } else if (complete) {
+                setShowContinue(true)
+              }
+            });
+          }
+        });
+      }
+    });
+  }, [CardNumberElement, CardExpiryElement, CardCvcElement])
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     if (!stripe || !elements) {
@@ -103,7 +132,15 @@ function PaymentDetails({
     let error;
 
     if (paymentType === 'CARD') {
+
       const cardElement = elements!.getElement(CardNumberElement);
+      cardElement!.on('change', ({ error }) => {
+        const displayError = document.getElementById('payment-errors');
+        if (error) {
+          setPaymentError(error.message);
+          return;
+        }
+      });
       const payload = await stripe.createPaymentMethod({
         type: 'card',
         card: cardElement!,
@@ -171,9 +208,9 @@ function PaymentDetails({
         }
       });
     });
-    // if(error){
-    //   setPaymentError(error)
-    // }
+    if (error) {
+      setPaymentError(error.message)
+    }
   };
 
   return isPaymentProcessing ?
@@ -189,14 +226,15 @@ function PaymentDetails({
           </div>
           <div className={styles.headerTitle}>Payment Details</div>
         </div>
-        {paymentError && <div className={styles.paymentError}>
+        {paymentError && <pre className={styles.paymentError}>
           Error, Payment failed. Please try again.
-      </div>}
+      </pre>}
 
 
         <div className={styles.paymentModeContainer}>
           <div className={styles.paymentModeHeader}>
-            <CreditCard />
+            {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
+
             <div className={styles.paymentModeTitle}>Credit/Debit Card</div>
             {/* <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
@@ -206,10 +244,12 @@ function PaymentDetails({
 
           <div className={styles.formRow}>
             <FormControlNew variant="outlined">
+
               <CardNumberElement
                 id="cardNumber"
                 options={getInputOptions('Card Number')}
               />
+
 
             </FormControlNew>
 
@@ -296,7 +336,8 @@ function PaymentDetails({
           <div className={styles.totalCostText}>for {treeCount} Trees</div>
         </div>
         <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-          <AnimatedButton className={styles.continueButton}>Continue</AnimatedButton>
+          {showContinue ? <AnimatedButton className={styles.continueButton}>Continue</AnimatedButton> : <AnimatedButton disabled className={styles.continueButtonDisabled}>Continue</AnimatedButton>}
+
         </div>
       </div>
     );

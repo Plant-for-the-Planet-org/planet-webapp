@@ -26,9 +26,12 @@ export default function ProjectSnippet({
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
-  const progressPercentage =
-    (project.properties.countPlanted / project.properties.countTarget) * 100 +
-    '%';
+  let progressPercentage =
+    (project.properties.countPlanted / project.properties.countTarget) * 100;
+
+  if (progressPercentage > 100) {
+    progressPercentage = 100;
+  }
 
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -61,15 +64,15 @@ export default function ProjectSnippet({
       <a>
         <div onClick={handleOpenProject} className={styles.projectImage}>
           {project.properties.image &&
-          typeof project.properties.image !== 'undefined' ? (
-            <div
-              className={styles.projectImageFile}
-              style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                backgroundPosition: 'center',
-              }}
-            ></div>
-          ) : null}
+            typeof project.properties.image !== 'undefined' ? (
+              <div
+                className={styles.projectImageFile}
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  backgroundPosition: 'center',
+                }}
+              ></div>
+            ) : null}
 
           <div className={styles.projectImageBlock}>
             {/* <div className={styles.projectType}>
@@ -86,7 +89,7 @@ export default function ProjectSnippet({
       <div className={styles.progressBar}>
         <div
           className={styles.progressBarHighlight}
-          style={{ width: progressPercentage }}
+          style={{ width: progressPercentage + '%' }}
         />
       </div>
       <div className={styles.projectInfo}>
@@ -116,8 +119,8 @@ export default function ProjectSnippet({
                   {project.properties.currency === 'USD'
                     ? '$'
                     : project.properties.currency === 'EUR'
-                    ? '€'
-                    : project.properties.currency}{' '}
+                      ? '€'
+                      : project.properties.currency}{' '}
                   {project.properties.treeCost % 1 !== 0
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}

@@ -36,14 +36,18 @@ function SingleProjectDetails({
   setLayoutId,
 }: Props): ReactElement {
   const [rating, setRating] = React.useState<number | null>(2);
-  const progressPercentage =
-    (project.countPlanted / project.countTarget) * 100 + '%';
+  let progressPercentage =
+    (project.countPlanted / project.countTarget) * 100;
+
+  if (progressPercentage > 100) {
+    progressPercentage = 100;
+  }
   const ImageSource = project.image
     ? getImageUrl('project', 'large', project.image)
     : '';
 
   const contactDetails = [
-    { id: 1, icon: <BlackTree />, text: 'View Profile', link: project.slug },
+    { id: 1, icon: <BlackTree />, text: 'View Profile', link: project.tpo.slug },
     {
       id: 2,
       icon: <WorldWeb />,
@@ -146,13 +150,13 @@ function SingleProjectDetails({
                 </div>
               </LazyLoad>
             ) : (
-              <div
-                style={{ cursor: 'pointer' }}
-                onClick={() => setShowSingleProject(false)}
-              >
-                <BackButton />
-              </div>
-            )}
+                <div
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setShowSingleProject(false)}
+                >
+                  <BackButton />
+                </div>
+              )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -167,7 +171,7 @@ function SingleProjectDetails({
           <div className={styles.progressBar}>
             <div
               className={styles.progressBarHighlight}
-              style={{ width: progressPercentage }}
+              style={{ width: progressPercentage + '%' }}
             />
           </div>
 
@@ -200,8 +204,8 @@ function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
+                        ? '€'
+                        : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
