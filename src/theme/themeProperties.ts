@@ -1,9 +1,9 @@
 const theme = {
   fontFamily: {
-    sansSerif: '"Raleway", sans-serif',
+    sansSerif: `"${process.env.TENANT_PRIMARY_FONT || 'Raleway'}"`,
   },
   fontSizes: {
-    subTitleSize: '40px',
+    subTitleSize: '14px',
     titleSize: '18px',
   },
   light: {
@@ -18,15 +18,15 @@ const theme = {
     dark: '#000',
   },
   dark: {
-    primaryColor: '#0000ff',
-    primaryFontColor: '#ff0000',
-    dividerColor: '#000000',
+    primaryColor: '#ff0000',
+    primaryFontColor: '#2f3336',
+    dividerColor: '#d5d5d5',
     secondaryColor: '#ecb641',
     blueishGrey: '#f2f2f7',
     backgroundColor: '#fff',
     highlightBackground: '#4d5153',
-    light: '#000',
-    dark: '#fff',
+    light: '#fff',
+    dark: '#000',
   },
 };
 

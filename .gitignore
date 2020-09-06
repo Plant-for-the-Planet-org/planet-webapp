@@ -33,3 +33,6 @@ yarn-error.log*
 # certificates 
 ./certificates/localhost.crt
 ./certificates/localhost.key
+
+# tenant
+tenant.config.js

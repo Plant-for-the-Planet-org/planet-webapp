@@ -1,3 +1,4 @@
+import React from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../utils/themeContext';
 import CookiePolicy from '../CookiePolicy';
