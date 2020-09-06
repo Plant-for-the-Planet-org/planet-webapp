@@ -3,6 +3,8 @@ import Close from '../../../../assets/images/icons/headerIcons/close';
 import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 function ThankYou({
   project,
@@ -36,6 +38,22 @@ function ThankYou({
       paymentTypeUsed = 'Credit Card';
   }
 
+  function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(false);
+
+  const handleTextCopiedSnackbarOpen = () => {
+    setTextCopiedSnackbarOpen(true)
+  }
+  const handleTextCopiedSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setTextCopiedSnackbarOpen(false);
+  };
+
   const shareClicked = async () => {
     if (navigator.share !== undefined) {
       // if in phone and web share API supported
@@ -49,6 +67,10 @@ function ThankYou({
       } catch (error) {
         console.error('Could not share at this time', error);
       }
+    } else {
+      // copy to clipboard
+      navigator.clipboard.writeText('Dummy text copied to clipboard!');
+      handleTextCopiedSnackbarOpen();
     }
   };
 
@@ -101,6 +123,14 @@ function ThankYou({
           <Share color={'#87b738'} />
         </div>
       </div>
+
+       {/* snackbar for showing text copied to clipboard */}
+       <Snackbar open={textCopiedsnackbarOpen} autoHideDuration={4000} onClose={handleTextCopiedSnackbarClose} >
+      <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+          Text Copied to Clipboard!
+        </Alert>
+      </Snackbar>
+
     </div>
   );
 }
