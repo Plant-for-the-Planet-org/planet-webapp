@@ -59,9 +59,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
               </span>
             </div>
           </div>
-          <div className={styles.projectTPOName}>
-            By {project.publicUserData.name}
-          </div>
+          <div className={styles.projectTPOName}>By {project.tpoData.name}</div>
         </div>
 
         {project.allowDonations && (
