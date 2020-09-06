@@ -1,0 +1,28 @@
+@import '../../../../theme/theme';
+
+.landingContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.publicUserName {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 40px;
+  color: $light;
+  margin-top: 16px;
+  margin-bottom: 0px;
+}
+
+.publicUserDescription {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: $light;
+  margin-top: 24px;
+  margin-bottom: 0px;
+  max-width: 500px;
+  margin-left: 26px;
+  margin-right: 26px;
+}
