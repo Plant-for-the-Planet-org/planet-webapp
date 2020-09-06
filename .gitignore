@@ -35,4 +35,4 @@ yarn-error.log*
 ./certificates/localhost.key
 
 # tenant
-tenant.config.js
+# tenant.config.js
