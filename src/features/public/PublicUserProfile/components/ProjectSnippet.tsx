@@ -1,4 +1,3 @@
-import Modal from '@material-ui/core/Modal';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
@@ -10,26 +9,19 @@ interface Props {
   key: number;
 }
 
-export default function ProjectSnippet({
-  project,
-  key,
-}: Props): ReactElement {
-  
+export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
   const progressPercentage =
-    (project.countPlanted / project.countTarget) * 100 +
-    '%';
-  
+    (project.countPlanted / project.countTarget) * 100 + '%';
+
   const projectDetails = project;
   return (
     <div key={key}>
-
       <a>
         <div className={styles.projectImage}>
-          {project.image &&
-          typeof project.image !== 'undefined' ? (
+          {project.image && typeof project.image !== 'undefined' ? (
             <div
               className={styles.projectImageFile}
               style={{
@@ -61,18 +53,14 @@ export default function ProjectSnippet({
         <div className={styles.projectData}>
           <div className={styles.targetLocation}>
             <div className={styles.target}>
-              {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
-              planted •{' '}
+              {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted •{' '}
               <span style={{ fontWeight: 400 }}>
-                {
-                  getCountryDataBy('countryCode', project.country)
-                    .countryName
-                }
+                {getCountryDataBy('countryCode', project.country).countryName}
               </span>
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.tpoData.name}
+            By {project.publicUserData.name}
           </div>
         </div>
 
@@ -80,7 +68,7 @@ export default function ProjectSnippet({
           <div className={styles.projectCost}>
             {project.treeCost ? (
               <>
-                <div  className={styles.costButton}>
+                <div className={styles.costButton}>
                   {project.currency === 'USD'
                     ? '$'
                     : project.currency === 'EUR'

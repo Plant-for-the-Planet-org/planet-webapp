@@ -1,6 +1,6 @@
 @import './../../../theme/theme';
 
-.tpoProfileDiv{
+.publicUserProfileDiv {
   display: flex;
   margin-top: 100px;
 }
@@ -34,10 +34,10 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .tpoProfileDiv {
+  .publicUserProfileDiv {
     margin-top: 100px;
   }
-  .projectsContainer{
+  .projectsContainer {
     width: 100vw;
     padding: 30px 0px;
   }

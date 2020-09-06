@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import React from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../assets/images/NotFound';
-import { Col, Container, Row } from 'react-bootstrap';
-import styles from '../styles/ProjectsContainer.module.scss';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import dynamic from 'next/dynamic';
+import styles from '../styles/ProjectsContainer.module.scss';
 
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
   loading: () => <ProjectLoader />,
@@ -48,29 +47,33 @@ export default function ProjectsContainer({ projects }: any) {
           </LazyLoad>
         </div>
       ) : (
-          <LazyLoad>
-            <motion.div className={styles.listProjects}  variants={container} initial="hidden" animate="visible">
-              {projects.map((project: any) => {
-                return (
-                  <motion.div
+        <LazyLoad>
+          <motion.div
+            className={styles.listProjects}
+            variants={container}
+            initial="hidden"
+            animate="visible"
+          >
+            {projects.map((project: any) => {
+              return (
+                <motion.div
                   className={styles.singleProject}
-                    variants={item}
-                    layoutId={project.id}
+                  variants={item}
+                  layoutId={project.id}
+                  key={project.id}
+                >
+                  <ProjectSnippet
                     key={project.id}
-                  >
-                    <ProjectSnippet
-                      key={project.id}
-                      project={project}
-                      setShowSingleProject={dummyFunc1}
-                      setLayoutId={dummyFunc1}
-                      fetchProject={dummyFunc1}
-                    />
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </LazyLoad>
-
+                    project={project}
+                    setShowSingleProject={dummyFunc1}
+                    setLayoutId={dummyFunc1}
+                    fetchProject={dummyFunc1}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </LazyLoad>
       )}
     </div>
   );
