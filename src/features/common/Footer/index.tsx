@@ -1,7 +1,6 @@
-import Link from 'next/link';
+import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import AppStore from '../../../assets/images/footer/AppStore';
-import GooglePlay from '../../../assets/images/footer/GooglePlay';
 import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
 import World from '../../../assets/images/footer/World';
 import PlanetLogo from '../../../assets/images/PlanetLogo';
@@ -24,13 +23,26 @@ export default function Footer() {
   };
 
   const FooterLinks = [
-    { id: 1, title: 'Privacy & Terms', link: '/' },
-    { id: 2, title: 'Imprint', link: '/' },
-    { id: 3, title: 'Contact', link: '/' },
-    { id: 4, title: 'Press Releases', link: '/' },
-    { id: 5, title: 'Report a project', link: '/' },
-    { id: 6, title: 'Support Us', link: '/' },
-    { id: 7, title: 'FAQs', link: '/' },
+    {
+      id: 1,
+      title: 'Privacy & Terms',
+      link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
+    },
+    {
+      id: 2,
+      title: 'Imprint',
+      link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
+    },
+    {
+      id: 3,
+      title: 'Contact',
+      link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
+    },
+    {
+      id: 6,
+      title: 'Support Us',
+      link: 'https://www.plant-for-the-planet.org/en/donation',
+    },
   ];
   // changes the language and selected currency id found in local storage
   useEffect(() => {
@@ -72,29 +84,35 @@ export default function Footer() {
                   {`${getLanguageName(language)} (${selectedCurrency})`}
                 </p>
               </div>
-              <div className={styles.footer_button}>
-                <GooglePlay />
-                <p className={styles.selected_language_bold}>Google Play</p>
-              </div>
-              <div className={styles.footer_button}>
-                <AppStore />
-                <p className={styles.selected_language_bold}>App Store</p>
-              </div>
+              <a href="https://play.google.com/store/apps/details?id=org.pftp">
+                <div className={styles.footer_button}>
+                  <FontAwesomeIcon icon={faGooglePlay} />
+                  <p className={styles.selected_language_bold}>Google Play</p>
+                </div>
+              </a>
+              <a href="https://apps.apple.com/us/app/plant-for-the-planet/id1444740626">
+                <div className={styles.footer_button}>
+                  <FontAwesomeIcon icon={faApple} />
+                  <p className={styles.selected_language_bold}>App Store</p>
+                </div>
+              </a>
             </div>
             <div className={styles.footer_links_container}>
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {FooterLinks.map((link) => {
                 return (
-                  <Link key={link.id} href={link.link}>
+                  <a href={link.link} target="_blank">
                     <p className={styles.footer_links}>{link.title}</p>
-                  </Link>
+                  </a>
                 );
               })}
             </div>
           </div>
           <div className={styles.logo_container}>
             <div className={styles.pfp_logo}>
-              <PlanetLogo />
+              <a href="http://www.plant-for-the-planet.org/" target="_blank">
+                <PlanetLogo />
+              </a>
             </div>
             {process.env.TENANT === 'planet' ||
               (!process.env.TENANT && (
