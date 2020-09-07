@@ -19,7 +19,7 @@
 
 // when background image is fixed wrt viewport
 .backgroundImageFixed {
-  position: fixed;
+  position: absolute;
   top: 0px;
   left: 0px;
   min-height: 100vh;
@@ -32,7 +32,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-} 
+}
 
 .backgroundImage > img {
   height: 100%;

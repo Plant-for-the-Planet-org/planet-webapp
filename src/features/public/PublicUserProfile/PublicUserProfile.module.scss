@@ -7,7 +7,6 @@
 
 // the outer white background
 .projectsContainer {
-  padding: 30px 0px 0px 130px;
   background-color: $light;
   display: flex;
   position: relative;
@@ -15,8 +14,8 @@
   // min-height: 50vh;
   z-index: 40;
   margin-top: 100px;
-  align-items: left;
-  justify-content: left;
+  align-items: center;
+  justify-content: center;
 }
 
 .projectsContainer:after {

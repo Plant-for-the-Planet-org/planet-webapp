@@ -1,37 +1,26 @@
 @import '../../../../theme/theme';
 
-// heading and row of boxes
-.outerProjectsContainer {
-    display: flex;
-    flex-direction: column;
-    // DESKTOP: padding to left of text and list
-    padding: 0px 0px 0px 40px;
-
-    width: 100%;
-}
-
 .projectsTitleText {
-    font-family: $primaryFontFamily;
-    text-align: left;
-    width: 100%;
-    font-weight: bold;
+  font-family: $primaryFontFamily;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 60px;
 }
-  
+
 //  the list of projects
 .listProjects {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: left;
-
-  // ONLYDESKTOP : for padding to the farthest right project
-  padding: 0px 20px 0px 0px;
+  justify-content: center;
 }
 
 .singleProject {
   // ONLYDESKTOP :margin to right of every project
   margin: 0px 50px 40px 0px;
-  width: calc(100vw / 4.3);
+  width: 360px;
 }
 
 .projectNotFound {
@@ -45,19 +34,10 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .outerProjectsContainer{
+  .outerProjectsContainer {
     padding: 0px 0px 0px 10px;
   }
-  .listProjects {
-    display: flex;
-  flex-direction: column;
-    padding: 0px;
-  }
-  .projectsTitleText {
-    padding:0px 20px;
-  }
   .singleProject {
-    width: 100%;
     padding: 20px 20px;
     margin: 0px 0px 0px 0px;
   }

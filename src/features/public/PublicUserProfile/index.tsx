@@ -7,7 +7,7 @@ import styles from './PublicUserProfile.module.scss';
 
 export default function PublicUserProfile({ publicUserprofile }: any) {
   return (
-    <main>
+    <div>
       {/* publicUserinfo section */}
 
       <LandingSection
@@ -23,18 +23,15 @@ export default function PublicUserProfile({ publicUserprofile }: any) {
           <PublicUserInfo publicUserprofile={publicUserprofile} />
         </div>
 
-        {/*  projects section */}
-        <div className={styles.projectsContainer}>
-          <ProjectsContainer
-            projects={publicUserprofile.userProfile.plantProjects}
-          />
-        </div>
-
         {/* footer */}
-        <div className={styles.footerDiv}>
-          <Footer />
-        </div>
       </LandingSection>
-    </main>
+      {/*  projects section */}
+      <div className={styles.projectsContainer}>
+        <ProjectsContainer
+          projects={publicUserprofile.userProfile.plantProjects}
+        />
+      </div>
+      <Footer />
+    </div>
   );
 }

@@ -36,9 +36,7 @@ export default function ProjectsContainer({ projects }: any) {
     },
   };
   return (
-    <div className={styles.outerProjectsContainer}>
-      <h6 className={styles.projectsTitleText}> PROJECTS </h6>
-
+    <div>
       {projects.length < 1 ? (
         <div className={styles.projectNotFound}>
           <LazyLoad>
@@ -54,6 +52,8 @@ export default function ProjectsContainer({ projects }: any) {
             initial="hidden"
             animate="visible"
           >
+            <h6 className={styles.projectsTitleText}> PROJECTS </h6>
+
             {projects.map((project: any) => {
               return (
                 <motion.div
