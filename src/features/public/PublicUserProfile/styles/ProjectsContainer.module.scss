@@ -2,7 +2,7 @@
 
 .projectsTitleText {
   font-family: $primaryFontFamily;
-  text-align: center;
+  text-align: left;
   width: 100%;
   font-weight: bold;
   margin-bottom: 20px;
@@ -14,12 +14,11 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: left;
+  padding: 0px 20px;
 }
 
 .singleProject {
-  // ONLYDESKTOP :margin to right of every project
-  margin: 0px 50px 40px 0px;
   width: 360px;
 }
 
@@ -33,12 +32,8 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 768px) {
-  .outerProjectsContainer {
-    padding: 0px 0px 0px 10px;
-  }
-  .singleProject {
-    padding: 20px 20px;
-    margin: 0px 0px 0px 0px;
+@include tabletView {
+  .listProjects {
+    padding: 0px;
   }
 }

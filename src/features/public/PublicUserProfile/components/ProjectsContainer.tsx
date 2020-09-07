@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
@@ -15,28 +14,8 @@ export default function ProjectsContainer({ projects }: any) {
     console.log('dummy func');
   };
 
-  const container = {
-    hidden: { opacity: 1, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delay: 0.3,
-        when: 'beforeChildren',
-        staggerChildren: 1,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
-  };
   return (
-    <div>
+    <div style={{ margin: 'auto', maxWidth: '950px' }}>
       {projects.length < 1 ? (
         <div className={styles.projectNotFound}>
           <LazyLoad>
@@ -45,35 +24,22 @@ export default function ProjectsContainer({ projects }: any) {
           </LazyLoad>
         </div>
       ) : (
-        <LazyLoad>
-          <motion.div
-            className={styles.listProjects}
-            variants={container}
-            initial="hidden"
-            animate="visible"
-          >
-            <h6 className={styles.projectsTitleText}> PROJECTS </h6>
+        <div className={styles.listProjects}>
+          <h6 className={styles.projectsTitleText}> PROJECTS </h6>
 
-            {projects.map((project: any) => {
-              return (
-                <motion.div
-                  className={styles.singleProject}
-                  variants={item}
-                  layoutId={project.id}
+          {projects.map((project: any) => {
+            return (
+              <div className={styles.singleProject} key={project.id}>
+                <ProjectSnippet
                   key={project.id}
-                >
-                  <ProjectSnippet
-                    key={project.id}
-                    project={project}
-                    setShowSingleProject={dummyFunc1}
-                    setLayoutId={dummyFunc1}
-                    fetchProject={dummyFunc1}
-                  />
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </LazyLoad>
+                  project={project}
+                  setShowSingleProject={dummyFunc1}
+                  fetchProject={dummyFunc1}
+                />
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
