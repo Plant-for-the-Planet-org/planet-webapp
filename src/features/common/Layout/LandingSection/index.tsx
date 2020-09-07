@@ -19,19 +19,6 @@ export default function LandingSection(props: any) {
         backgroundSize: 'cover',
       }}
     >
-      {/* <LazyLoad> */}
-      {/* <img
-        className={
-          props.fixedBg ? styles.backgroundImageFixed : styles.backgroundImage
-        }
-        src={
-          props.imageSrc
-            ? props.imageSrc
-            : '/tenants/planet/images/home/BackgroundImage.png'
-        }
-      /> */}
-      {/* </LazyLoad> */}
-
       {props.children}
     </div>
   );

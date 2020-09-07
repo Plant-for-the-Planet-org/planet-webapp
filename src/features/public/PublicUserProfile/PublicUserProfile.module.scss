@@ -5,26 +5,8 @@
   margin-top: 100px;
 }
 
-// the outer white background
-// .projectsContainer {
-//   background-color: $light;
-//   display: flex;
-//   width: 100vw;
-//   z-index: 40;
-//   align-items: center;
-//   justify-content: center;
-// }
-
 .projectsContainer:after {
   min-height: fit-content;
-}
-
-/* Footer */
-.footerDiv {
-  z-index: 24; //more than myForestContainer
-  position: relative;
-  width: 100vw;
-  background-color: $light;
 }
 
 .landingContent {

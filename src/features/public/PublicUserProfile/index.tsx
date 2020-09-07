@@ -6,11 +6,7 @@ import PublicUserInfo from './components/PublicUserInfo';
 export default function PublicUserProfile({ publicUserprofile }: any) {
   return (
     <div>
-      {/* publicUserinfo section */}
-
       <LandingSection
-        // fixedBg
-        // noFixedHeight
         imageSrc={
           process.env.CDN_URL
             ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
@@ -19,7 +15,6 @@ export default function PublicUserProfile({ publicUserprofile }: any) {
       >
         <PublicUserInfo publicUserprofile={publicUserprofile} />
       </LandingSection>
-      {/*  projects section */}
       <ProjectsContainer
         projects={publicUserprofile.userProfile.plantProjects}
       />
