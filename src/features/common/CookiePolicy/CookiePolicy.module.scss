@@ -45,21 +45,6 @@
   color: $primaryColor;
 }
 
-.cookieCloseButton {
-  padding: 7px 20px;
-  color: $primaryColor;
-  font-family: $primaryFontFamily;
-  border-radius: 100px;
-  widows: 100%;
-  margin-top: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid $primaryColor;
-  cursor: pointer;
-  display: none;
-}
-
 .cookieContent > a:visited {
   color: $primaryColor;
 }
@@ -76,9 +61,7 @@
     max-width: 100%;
     border-radius: 0px;
   }
-  .cookieCloseButton {
-    display: none;
-  }
+
   .cookieContent {
     padding: 16px 24px 16px 24px;
     max-width: 100%;
@@ -95,11 +78,7 @@
 }
 
 @media only screen and (max-width: 425px) {
-  .cookieCloseButton {
-    display: flex;
-    width: 100%;
-  }
-  .closeButton {
-    display: none;
+  .closeButton > svg {
+    width: 16px;
   }
 }
