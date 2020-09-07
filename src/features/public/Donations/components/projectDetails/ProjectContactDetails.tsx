@@ -19,8 +19,8 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
       <div key={contactDetails[0].id}>
         <Link
           prefetch={false}
-          href="/tpo/[id]"
-          as={`/tpo/${contactDetails[0].link}`}
+          href="/t/[id]"
+          as={`/t/${contactDetails[0].link}`}
         >
           <a>
             <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
