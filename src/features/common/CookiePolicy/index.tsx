@@ -26,12 +26,6 @@ export default function CookiePolicy() {
         <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">
           privacy policy
         </a>
-        <div
-          onClick={() => setShowCookieNotice(false)}
-          className={styles.cookieCloseButton}
-        >
-          Close
-        </div>
       </div>
     </div>
   ) : null;
