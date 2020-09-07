@@ -1,7 +1,4 @@
 const theme = {
-  fontFamily: {
-    sansSerif: `"${process.env.TENANT_PRIMARY_FONT || 'Raleway'}"`,
-  },
   fontSizes: {
     subTitleSize: '14px',
     titleSize: '18px',
