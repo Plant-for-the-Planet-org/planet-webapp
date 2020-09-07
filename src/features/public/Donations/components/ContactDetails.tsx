@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
+import Sugar from 'sugar';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
@@ -185,9 +186,11 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {(treeCount * treeCost).toFixed(2)}{' '}
+            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
           </div>
-          <div className={styles.totalCostText}>for {treeCount} Trees</div>
+          <div className={styles.totalCostText}>
+            for {Sugar.Number.format(Number(treeCount))} Trees
+          </div>
         </div>
 
         <div className={styles.actionButtonsContainer}>
