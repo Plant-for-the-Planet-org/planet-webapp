@@ -12,6 +12,7 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getCardBrand } from '../../../../utils/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
@@ -160,6 +161,13 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
     }
     setIsPaymentProcessing(true);
+    let countryCode = getCountryDataBy(
+      'countryName',
+      contactDetails.country.toString()
+    )
+      ? getCountryDataBy('countryName', contactDetails.country.toString())
+          .countryCode
+      : null;
     let createDonationData = {
       type: 'trees',
       project: project.id,
@@ -173,7 +181,7 @@ function PaymentDetails({
         address: contactDetails.address,
         zipCode: contactDetails.zipCode,
         city: contactDetails.city,
-        country: contactDetails.country.toUpperCase(),
+        country: countryCode,
       },
     };
     let gift = {
