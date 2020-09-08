@@ -116,13 +116,15 @@
 .downloadButton {
   border-radius: 40px;
   height: 48px;
-  width: 48px;
-  border: 1px solid $primaryColor;
+  padding: 12px 36px;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10;
-  background-color: $light;
+  background-color: $primaryColor;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-weight: 600;
   :hover {
     cursor: pointer;
   }

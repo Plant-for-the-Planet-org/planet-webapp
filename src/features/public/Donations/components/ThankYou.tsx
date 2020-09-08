@@ -1,8 +1,8 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
+import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
-import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 
@@ -125,7 +125,8 @@ function ThankYou({
                 </div> */}
         {/* <div style={{ width: '20px' }}></div> */}
         <div className={styles.downloadButton} onClick={shareClicked}>
-          <Share color={'#87b738'} />
+          <div style={{ marginRight: '12px' }}>Share</div>
+          <ShareFilled height={'18px'} width={'18px'} color={'#fff'} />
         </div>
       </div>
 
