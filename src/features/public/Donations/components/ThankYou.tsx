@@ -1,6 +1,7 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
+import Sugar from 'sugar';
 import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
@@ -89,8 +90,9 @@ function ThankYou({
       </div>
 
       <div className={styles.contributionAmount}>
-        Your Donation of {currency} {Number(treeCount * treeCost).toFixed(2)}{' '}
-        was paid with {paymentTypeUsed}
+        Your Donation of {currency}{' '}
+        {Sugar.Number.format(Number(treeCount * treeCost), 2)} was paid with{' '}
+        {paymentTypeUsed}
       </div>
 
       <div className={styles.contributionMessage}>
