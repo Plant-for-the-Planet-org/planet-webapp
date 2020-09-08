@@ -2,43 +2,24 @@
 
 .landingSection {
   width: 100vw;
-  height: calc(100vh - 76px);
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+  padding: 12vh 0;
 
-.backgroundImage {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  padding-top: 75vh;
-  overflow: hidden;
-  width: 100vw;
-  position: absolute;
-  background: linear-gradient(
-    180deg,
-    #ffffff 34.56%,
-    #c0ddf2 87.7%,
-    #1da0da 100.46%
-  );
-}
-
-.backgroundImage img {
-  width: 120%;
+  background-image: url('/tenants/salesforce/images/mobile/Landscape.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .landingContent {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 60px;
   max-width: 80vw;
-  height: calc(75vh - 76px);
+  margin-bottom: 10vh;
 }
 
 .landingContent > h2 {
@@ -56,11 +37,12 @@
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   text-align: center;
   color: #080707;
   max-width: 500px;
+  margin-top: 1.5vh;
 }
 
 .buttonStyle {
@@ -569,32 +551,6 @@
 }
 
 @include tabletView {
-  .landingSection {
-    justify-content: center;
-    margin-top: 60px;
-  }
-
-  .backgroundImage {
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    padding-top: 48vh;
-  }
-
-  .backgroundImage img {
-    width: 100%;
-  }
-
-  .landingContent {
-    justify-content: flex-start;
-    margin-top: 10vw;
-    max-width: 70vw;
-  }
-
-  .landingContent > h2 {
-    font-size: 56px;
-    line-height: 60px;
-  }
-
   .treeCounterSection {
     max-height: 60vh;
     max-width: 60vh;
@@ -677,9 +633,6 @@
     );
   }
 
-  // .blogContainer {
-  //   max-width: 80%;
-  // }
   .blogContainer > div:not(:first-of-type) {
     margin-top: 0px;
   }
@@ -687,4 +640,29 @@
   .blogContainer > div {
     padding: 0px 15px;
   }
+}
+
+@include laptopView {
+  .landingSection {
+    background-image: url('/tenants/salesforce/images/desktop/Landscape.png');
+    margin-top: 60px;
+    padding: 20vh 0;
+  }
+  .landingContent {
+    margin-bottom: 16vh;
+  }
+
+  .landingContent > h2 {
+    font-size: 56px;
+    line-height: 60px;
+    max-width: 800px;
+  }
+
+  .landingContent > p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@include laptop-xlView {
 }
