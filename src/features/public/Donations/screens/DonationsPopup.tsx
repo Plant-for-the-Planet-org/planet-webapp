@@ -44,9 +44,10 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     async function loadPaymentSetup() {
       try {
         const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`, {
-          headers: { 'tenant-key': `${process.env.TENANTID}` }
-        }
+          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`,
+          {
+            headers: { 'tenant-key': `${process.env.TENANTID}` },
+          }
         );
         const paymentSetupData = await res.json();
         if (paymentSetupData) {
@@ -64,8 +65,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   const [donationStep, setDonationStep] = React.useState(1);
 
   const [giftDetails, setGiftDetails] = React.useState({
-    firstName: '',
-    lastName: '',
+    recipientName: '',
     email: '',
     giftMessage: '',
   });

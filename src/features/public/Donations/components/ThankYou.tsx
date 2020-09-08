@@ -1,10 +1,10 @@
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
+import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
-import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import Snackbar from '@material-ui/core/Snackbar';
 
 function ThankYou({
   project,
@@ -42,12 +42,17 @@ function ThankYou({
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(false);
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
+    false
+  );
 
   const handleTextCopiedSnackbarOpen = () => {
-    setTextCopiedSnackbarOpen(true)
-  }
-  const handleTextCopiedSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
+    setTextCopiedSnackbarOpen(true);
+  };
+  const handleTextCopiedSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -63,9 +68,9 @@ function ThankYou({
           text:
             'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n',
         });
-        console.log('Share complete', response);
+        // console.log('Share complete', response);
       } catch (error) {
-        console.error('Could not share at this time', error);
+        // console.error('Could not share at this time', error);
       }
     } else {
       // copy to clipboard
@@ -74,7 +79,6 @@ function ThankYou({
     }
   };
 
-  console.log('Project', project);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -91,7 +95,7 @@ function ThankYou({
 
       <div className={styles.contributionMessage}>
         {isGift &&
-          `We've sent an email to ${giftDetails.firstName} ${giftDetails.lastName} about the gift.`}{' '}
+          `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
         Your {treeCount} trees will be planted by {project.name}.
       </div>
 
@@ -120,17 +124,21 @@ function ThankYou({
                 </div> */}
         {/* <div style={{ width: '20px' }}></div> */}
         <div className={styles.downloadButton} onClick={shareClicked}>
-          <Share color={'#87b738'} />
+          <div style={{ marginRight: '12px' }}>Share</div>
+          <ShareFilled height={'18px'} width={'18px'} color={'#fff'} />
         </div>
       </div>
 
-       {/* snackbar for showing text copied to clipboard */}
-       <Snackbar open={textCopiedsnackbarOpen} autoHideDuration={4000} onClose={handleTextCopiedSnackbarClose} >
-      <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+      {/* snackbar for showing text copied to clipboard */}
+      <Snackbar
+        open={textCopiedsnackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleTextCopiedSnackbarClose}
+      >
+        <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
           Text Copied to Clipboard!
         </Alert>
       </Snackbar>
-
     </div>
   );
 }

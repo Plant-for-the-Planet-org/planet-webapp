@@ -144,6 +144,7 @@ function ContactDetails({
               label="Country"
               name="country"
               onChange={changeContactDetails}
+              defaultValue={contactDetails.country}
             />
             {errors.country && (
               <span className={styles.formErrors}>Country is required</span>
