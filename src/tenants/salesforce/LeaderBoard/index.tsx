@@ -6,13 +6,17 @@ import LeaderBoard from './components/LeaderBoardSection';
 import LearnMore from './components/LearnMore';
 import TreeCounterSection from './components/TreeCounter';
 
-export default function About() {
+interface Props {
+  leaderboard: any;
+}
+
+export default function About(leaderboard: Props) {
   return (
     <main style={{ overflowX: 'hidden' }}>
       <Landing />
       <TreeCounterSection />
       <LearnMore />
-      <LeaderBoard />
+      <LeaderBoard leaderboard={leaderboard} />
       <Articles />
       <Blogs />
       <Footer />
