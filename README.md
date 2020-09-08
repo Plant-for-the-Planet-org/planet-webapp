@@ -86,15 +86,9 @@
         </tr>
         <tr>
          <td>6</td>
-            <td>tpo/[id].tsx</td>
-            <td>/tpo/tpo-id</td>
+            <td>t/[id].tsx</td>
+            <td>/t/tpo-id</td>
             <td>TPO's profile</td>
-        </tr>
-        <tr>
-         <td>7</td>
-            <td>user/[id].tsx</td>
-            <td>/user/user-id</td>
-            <td>User's public profile</td>
         </tr>
     </table>
 </ul>

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
 
@@ -39,6 +40,7 @@ export default function PublicUser() {
   return publicUserprofile ? (
     <Layout>
       <PublicUserPage {...PublicUserProps} />
+      <Footer />
     </Layout>
   ) : null;
 }
