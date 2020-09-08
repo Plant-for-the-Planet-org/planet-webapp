@@ -68,9 +68,9 @@ function ThankYou({
           text:
             'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n',
         });
-        console.log('Share complete', response);
+        // console.log('Share complete', response);
       } catch (error) {
-        console.error('Could not share at this time', error);
+        // console.error('Could not share at this time', error);
       }
     } else {
       // copy to clipboard
@@ -79,7 +79,6 @@ function ThankYou({
     }
   };
 
-  console.log('Project', project);
   return (
     <div className={styles.container}>
       <div className={styles.header}>

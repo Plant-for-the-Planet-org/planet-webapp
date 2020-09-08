@@ -3,7 +3,6 @@ import TreeCounter from '../../../common/TreeCounter/TreeCounter';
 import styles from '../PublicUserProfile.module.scss';
 
 export default function PublicUserInfo({ publicUserprofile }: any) {
-  console.log('publicUserprofile', publicUserprofile);
   return (
     <div className={styles.landingContent}>
       <TreeCounter

@@ -182,8 +182,6 @@ function TreeDonation({
     });
   };
 
-  console.log('Payment Setup', paymentSetup);
-
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
