@@ -117,7 +117,8 @@
 }
 
 .treeCounterContainer {
-  height: 100vw;
+  height: 50vh;
+  // max-height: 500px;
 }
 
 .treeCounter {
@@ -141,7 +142,7 @@
 
 .learnMoreSectionRow {
   // min-height: 100vh;
-  padding-top: 65vh;
+  padding-top: 56vh;
   padding-bottom: 40px;
   // overflow: hidden;
 
@@ -161,6 +162,7 @@
   position: relative;
   background: transparent;
   text-align: center;
+  margin-bottom: -90px;
 }
 
 .learnMoreSectionText > p,
@@ -221,7 +223,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
 }
 
 .blogSectionHeader {
@@ -249,12 +251,12 @@
   padding: 0px;
   display: flex;
   justify-content: center;
-  margin: auto;
+  padding: 0 20px;
 }
 
-.blogContainer > div:not(:first-of-type) {
-  margin-top: 30px;
-}
+// .blogContainer > div:not(:first-of-type) {
+//   margin-top: 30px;
+// }
 
 .blogSingleContainer {
   position: relative;
@@ -263,27 +265,13 @@
 
 .blogImage {
   width: 100%;
+  height: 200px;
 }
 
 .blogImageOverlay {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0) 36%,
-    rgba(0, 0, 0, 0.502) 55.7%,
-    #000000 100%
-  );
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  bottom: 0px;
-  z-index: 2;
+  background: none;
 }
 .blogInfoSection {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  z-index: 3;
 }
 .blogtreeCount {
   font-family: $primaryFontFamily;
@@ -302,22 +290,15 @@
   font-weight: 600;
   font-size: 24px;
   line-height: 29px;
-  color: #ffffff;
+  color: #000;
+  margin-top: 15px;
 }
 
 .blogLink {
   font-family: $primaryFontFamily;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 24px;
   color: #0070d2;
-  flex: none;
-  align-self: center;
-  padding: 6px 16px;
-  background-color: white;
-  width: fit-content;
-  border-radius: 4px;
 }
 
 // Leaderboard Section
@@ -325,6 +306,7 @@
   min-height: 100vh;
   width: 100%;
   display: flex;
+  margin-top: 50px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -440,9 +422,12 @@
 }
 
 .leaderBoardBushImage {
+  display: none;
+}
+.leaderBoardBushImageMobile {
   position: absolute;
   bottom: 0px;
-  right: 0px;
+  width: 100%;
 }
 
 // articleSection
@@ -477,14 +462,19 @@
   padding-left: 20px;
   padding-right: 20px;
 }
-.articleContainer > div:not(:first-of-type) {
+
+.articleContainer > div {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.articleContainer > div {
   margin-top: 30px;
 }
 .articleSingleContainer {
   position: relative;
   width: 100%;
   background: #ffffff;
-  margin-bottom: 32px;
+  margin-bottom: 0px;
 }
 
 .articleImage {
@@ -548,7 +538,7 @@
   width: fit-content;
   border-radius: 4px;
   margin: auto;
-  margin-top: 48px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 
@@ -565,6 +555,7 @@
     height: 60vh;
     padding-top: 10vh;
     margin: 40px 0;
+    max-height: 420px;
   }
 
   .treeCounterContainer {
@@ -617,6 +608,8 @@
 
   .learnMoreSectionText {
     text-align: left;
+    margin-left: -30px;
+    margin-bottom: 0px;
   }
 
   .learnMoreSectionTextHeader {
@@ -631,11 +624,7 @@
     color: $primaryFontColor;
   }
 
-  .articleContainer {
-    margin-bottom: 0px;
-  }
-
-  .articleContainer > div:not(:first-of-type) {
+  .leaderBoardSection {
     margin-top: 0px;
   }
 
@@ -643,6 +632,15 @@
     bottom: 70px;
     left: 40px;
     z-index: 3;
+  }
+
+  .articleContainer > div {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .articleSingleContainer {
+    margin-bottom: 30px;
   }
 
   .articleTitle {
@@ -664,12 +662,72 @@
     );
   }
 
+  .blogContainer {
+    justify-content: center;
+  }
+
+  .blogImage {
+    height: auto;
+  }
+
+  .blogImageOverlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 36%,
+      rgba(0, 0, 0, 0.502) 55.7%,
+      #000000 100%
+    );
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    bottom: 0px;
+    z-index: 2;
+  }
+
+  .blogInfoSection {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    z-index: 3;
+  }
+
   .blogContainer > div:not(:first-of-type) {
     margin-top: 0px;
   }
 
   .blogContainer > div {
     padding: 0px 15px;
+  }
+
+  .blogTitle {
+    color: #fff;
+  }
+
+  .blogLink {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: #0070d2;
+    flex: none;
+    align-self: center;
+    padding: 6px 16px;
+    background-color: white;
+    width: fit-content;
+    border-radius: 4px;
+  }
+
+  .leaderBoardBushImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+
+  .leaderBoardBushImageMobile {
+    display: none;
   }
 }
 
@@ -710,6 +768,10 @@
 
   .learnMoreSectionRow {
     padding: 48vh 0;
+  }
+
+  .learnMoreSectionText {
+    margin-left: 0px;
   }
 }
 
