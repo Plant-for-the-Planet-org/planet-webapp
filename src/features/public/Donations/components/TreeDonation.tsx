@@ -346,7 +346,7 @@ function TreeDonation({
 
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
-            {paymentSetup.gateways.stripe.account &&
+            {paymentSetup?.gateways?.stripe?.account &&
               stripeAllowedCountries.includes(country) &&
               currency && (
                 <PaymentRequestCustomButton

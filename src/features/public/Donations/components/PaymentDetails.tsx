@@ -242,7 +242,7 @@ function PaymentDetails({
         </pre>
       )}
 
-      {paymentSetup.gateways.stripe.account && (
+      {paymentSetup?.gateways?.stripe?.account && (
         <div className={styles.paymentModeContainer}>
           <div className={styles.paymentModeHeader}>
             {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
