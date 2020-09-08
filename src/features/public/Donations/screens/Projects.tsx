@@ -61,13 +61,20 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
 
   React.useEffect(() => {
     if (router.query.p) {
-      fetchProject(router.query.p);
+      fetchProject(router.query.p).then(() => {
+        console.log('log');
+      });
     }
   }, []);
 
+  React.useEffect(() => {
+    if (project !== null) {
+      setShowSingleProject(true);
+    }
+  }, [project]);
+
   async function fetchProject(id: any) {
     await fetchSingleProject(id);
-    setShowSingleProject(true);
   }
 
   const [selectedId, setSelectedId] = React.useState(null);

@@ -10,7 +10,6 @@ interface Props {
 export default function ImageSlider(project: Props) {
   const [slider, setSlider] = React.useState();
   let projectImages: { content: () => JSX.Element }[] = [];
-  console.log(project);
 
   const loadImageSource = (image: any) => {
     const ImageSource = getImageUrl('project', 'medium', image);
