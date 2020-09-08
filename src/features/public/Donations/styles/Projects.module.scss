@@ -3,6 +3,7 @@
 .container {
   position: absolute;
   z-index: 6;
+  transition: all 0.3s ease-in-out;
 }
 
 .cardContainer {
