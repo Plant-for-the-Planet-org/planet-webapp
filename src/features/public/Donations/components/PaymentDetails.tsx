@@ -8,7 +8,6 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
@@ -212,18 +211,23 @@ function PaymentDetails({
         },
       };
 
-      payDonation(payDonationData, res.id).then((res) => {
+      payDonation(payDonationData, res.id).then(async (res) => {
         // console.log('Res', res);
         if (res.paymentStatus === 'success') {
           setIsPaymentProcessing(false);
           setDonationStep(4);
         } else if (res.status === 'action_required') {
           const clientSecret = res.response.payment_intent_client_secret;
-          // const response = stripe.confirmCardPayment(clientSecret);
-          console.log('Action Response Received', res.response);
-
-          const stripeNew = getNewStripe(res.response.account);
-          const response = stripeNew.handleCardAction(clientSecret);
+          const stripe = window.Stripe(
+            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+            {
+              stripeAccount: res.response.account,
+            }
+          );
+          let response;
+          if (stripe) {
+            response = await stripe.handleCardAction(clientSecret);
+          }
           console.log('Response', response);
         }
       });
@@ -231,20 +235,6 @@ function PaymentDetails({
     if (error) {
       setPaymentError(error.message);
     }
-  };
-
-  let stripePromise: Promise<Stripe | null>;
-
-  const getNewStripe = (props: any) => {
-    if (!stripePromise) {
-      stripePromise = loadStripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-        {
-          stripeAccount: props.account,
-        }
-      );
-    }
-    return stripePromise;
   };
 
   return isPaymentProcessing ? (
