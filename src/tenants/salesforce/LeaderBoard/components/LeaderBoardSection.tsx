@@ -7,7 +7,6 @@ interface Props {
 
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
-  console.log(leaderboard.leaderboard.leaderboard);
   return (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
@@ -36,46 +35,50 @@ export default function LeaderBoardSection(leaderboard: Props) {
               Most Trees
             </div>
           </div>
-          {selectedTab === 'recent' ? (
-            <div className={styles.leaderBoardBody}>
-              {leaderboard.leaderboard.leaderboard.mostRecent.map(
-                (leader: any) => {
-                  return (
-                    <div className={styles.leaderBoardBodyRow}>
-                      <p className={styles.leaderBoardDonorName}>
-                        {leader.donorName}
-                      </p>
-                      <p className={styles.leaderBoardDonorTrees}>
-                        {leader.treeCount} Trees
-                      </p>
-                      <p className={styles.leaderBoardDonorTime}>
-                        {leader.created}
-                      </p>
-                    </div>
-                  );
-                }
-              )}
-            </div>
+          {leaderboard.leaderboard.leaderboard !== null ? (
+            selectedTab === 'recent' ? (
+              <div className={styles.leaderBoardBody}>
+                {leaderboard.leaderboard.leaderboard.mostRecent.map(
+                  (leader: any) => {
+                    return (
+                      <div className={styles.leaderBoardBodyRow}>
+                        <p className={styles.leaderBoardDonorName}>
+                          {leader.donorName}
+                        </p>
+                        <p className={styles.leaderBoardDonorTrees}>
+                          {leader.treeCount} Trees
+                        </p>
+                        <p className={styles.leaderBoardDonorTime}>
+                          {leader.created}
+                        </p>
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            ) : (
+              <div className={styles.leaderBoardBody}>
+                {leaderboard.leaderboard.leaderboard.mostDonated.map(
+                  (leader: any) => {
+                    return (
+                      <div className={styles.leaderBoardBodyRow}>
+                        <p className={styles.leaderBoardDonorName}>
+                          {leader.donorName}
+                        </p>
+                        <p className={styles.leaderBoardDonorTrees}>
+                          {leader.treeCount} Trees
+                        </p>
+                        <p className={styles.leaderBoardDonorTime}>
+                          {leader.created}
+                        </p>
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            )
           ) : (
-            <div className={styles.leaderBoardBody}>
-              {leaderboard.leaderboard.leaderboard.mostDonated.map(
-                (leader: any) => {
-                  return (
-                    <div className={styles.leaderBoardBodyRow}>
-                      <p className={styles.leaderBoardDonorName}>
-                        {leader.donorName}
-                      </p>
-                      <p className={styles.leaderBoardDonorTrees}>
-                        {leader.treeCount} Trees
-                      </p>
-                      <p className={styles.leaderBoardDonorTime}>
-                        {leader.created}
-                      </p>
-                    </div>
-                  );
-                }
-              )}
-            </div>
+            <p>loading</p>
           )}
         </div>
       </div>
