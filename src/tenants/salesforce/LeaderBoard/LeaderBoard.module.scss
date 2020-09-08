@@ -66,16 +66,17 @@
 // Tree Counter Section
 
 .treeCounterSectionRow {
-  min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 40px;
   display: flex;
+  flex-direction: column;
 }
 
 .treeCounterSectionText {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 40px 0;
 }
 
 .treeCounterSectionTextHeader {
@@ -104,41 +105,51 @@
 }
 
 .treeCounterSection {
-  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vw;
+  // justify-content: center;
+  // align-items: center;
+  width: 100%;
   max-width: 100vw;
-  align-self: center;
-  margin: 30px auto;
+  // height: 70vh;
+  // align-self: center;
+  // margin: 30px auto;
+}
+
+.treeCounterContainer {
+  height: 100vw;
 }
 
 .treeCounter {
   position: absolute;
   top: 0px;
-  right: -60px;
+  right: -50px;
   z-index: 1;
-  width: 80%;
-  height: 80%;
+  width: 320px;
+  height: 320px;
 }
 
 .treeCounterImage {
-  height: 50%;
+  height: auto;
   width: 50%;
   position: absolute;
-  left: 10px;
-  bottom: 20px;
+  left: 0;
+  bottom: 0;
 }
 
 // Learn More section
 
 .learnMoreSectionRow {
-  min-height: 100vh;
-  padding-top: 40px;
+  // min-height: 100vh;
+  padding-top: 65vh;
   padding-bottom: 40px;
-  overflow: hidden;
+  // overflow: hidden;
+
+  background-image: url('/tenants/salesforce/images/mobile/learnMore.png');
+  background-position-x: center;
+  background-position-y: bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 0px;
 }
 
@@ -148,6 +159,8 @@
   justify-content: center;
   max-width: 464px;
   position: relative;
+  background: transparent;
+  text-align: center;
 }
 
 .learnMoreSectionText > p,
@@ -155,32 +168,18 @@
   z-index: 1;
 }
 
-.learnMoreSectionOverlay {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.3) 20%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  bottom: 0px;
-  left: 0px;
-}
-
 .learnMoreSectionTextHeader {
   font-weight: 600;
   font-size: 30px;
   line-height: 32px;
   letter-spacing: -0.4px;
-  color: #ffffff;
+  color: #000;
   font-family: $primaryFontFamily;
 }
 
 .learnMoreSectionTextPara {
   font-family: $primaryFontFamily;
-  color: rgba(255, 255, 255, 0.8);
+  color: $primaryFontColor;
   font-size: 14px;
   line-height: 20px;
 }
@@ -193,8 +192,9 @@
 }
 
 .learnMoreSection {
-  position: relative;
-  display: flex;
+  width: 100%;
+  height: auto;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -552,23 +552,35 @@
 
 @include tabletView {
   .landingSection {
-    padding: 18vh 0;
+    padding: 17vh 0;
+  }
+
+  .landingContent {
+    max-width: 60%;
   }
 
   .treeCounterSection {
-    max-height: 60vh;
-    max-width: 60vh;
-    padding: 0px;
+    height: 60vh;
+    padding-top: 10vh;
+    margin: 40px 0;
+  }
+
+  .treeCounterContainer {
+    height: 55vh;
+  }
+
+  .treeCounterSectionRow {
+    flex-direction: row;
   }
 
   .treeCounter {
-    right: 0px;
-    width: 80%;
-    height: 80%;
+    // right: -40px;
+    width: 330px;
+    height: 330px;
   }
 
   .treeCounterImage {
-    left: 0px;
+    left: 40px;
   }
 
   .leaderBoardBody {
@@ -588,6 +600,23 @@
     text-align: left;
   }
 
+  .learnMoreSectionRow {
+    margin-top: -8vh;
+    padding: 20vh 0;
+    background-image: url('/tenants/salesforce/images/desktop/learnMore.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .learnMoreSection {
+    display: flex;
+  }
+
+  .learnMoreSectionText {
+    text-align: left;
+  }
+
   .learnMoreSectionTextHeader {
     font-size: 36px;
     line-height: 40px;
@@ -598,10 +627,6 @@
     font-size: 16px;
     line-height: 24px;
     color: $primaryFontColor;
-  }
-
-  .learnMoreSectionOverlay {
-    display: none;
   }
 
   .articleContainer {
@@ -650,21 +675,39 @@
   .landingSection {
     background-image: url('/tenants/salesforce/images/desktop/Landscape.png');
     margin-top: 60px;
-    padding: 20vh 0;
+    // padding: 20vh 0;
   }
   .landingContent {
+    max-width: 800px;
     margin-bottom: 16vh;
   }
 
   .landingContent > h2 {
     font-size: 56px;
     line-height: 60px;
-    max-width: 800px;
   }
 
   .landingContent > p {
     font-size: 16px;
     line-height: 24px;
+  }
+
+  .treeCounterSectionRow {
+    padding-bottom: 0px;
+  }
+
+  .treeCounterSectionText {
+    padding-top: 10vh;
+    justify-content: flex-start;
+  }
+  .treeCounter {
+    right: -40px;
+    width: 400px;
+    height: 400px;
+  }
+
+  .learnMoreSectionRow {
+    padding: 48vh 0;
   }
 }
 

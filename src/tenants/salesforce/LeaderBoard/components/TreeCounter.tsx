@@ -22,8 +22,9 @@ export default function TreeCounterSection() {
           {/* <button className={styles.buttonStyle}>Join Us</button> */}
         </Col>
         <Col xs={12} md={6} className={styles.treeCounterSection}>
+          <div className={styles.treeCounterContainer}></div>
           <div className={styles.treeCounter}>
-            <TreeCounter target={100000000} planted={24300000} />
+            <TreeCounter target={100000000} planted={24.3} />
           </div>
           <img
             className={styles.treeCounterImage}
