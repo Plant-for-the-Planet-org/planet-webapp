@@ -242,38 +242,39 @@ function PaymentDetails({
         </pre>
       )}
 
-      <div className={styles.paymentModeContainer}>
-        <div className={styles.paymentModeHeader}>
-          {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
+      {paymentSetup.gateways.stripe.account && (
+        <div className={styles.paymentModeContainer}>
+          <div className={styles.paymentModeHeader}>
+            {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
 
-          <div className={styles.paymentModeTitle}>Credit/Debit Card</div>
-          {/* <div className={styles.paymentModeFee}>
+            <div className={styles.paymentModeTitle}>Credit/Debit Card</div>
+            {/* <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
             <InfoIcon />
           </div> */}
-        </div>
+          </div>
 
-        <div className={styles.formRow}>
-          <FormControlNew variant="outlined">
-            <CardNumberElement
-              id="cardNumber"
-              options={getInputOptions('Card Number')}
-            />
-          </FormControlNew>
-        </div>
-        <div className={styles.formRow}>
-          <FormControlNew variant="outlined">
-            <CardExpiryElement
-              id="expiry"
-              options={getInputOptions('Exp. Date (MM/YY)')}
-            />
-          </FormControlNew>
-          <div style={{ width: '20px' }}></div>
-          <FormControlNew variant="outlined">
-            <CardCvcElement id="cvc" options={getInputOptions('CVV')} />
-          </FormControlNew>
-        </div>
-        {/* <div className={styles.saveCard}>
+          <div className={styles.formRow}>
+            <FormControlNew variant="outlined">
+              <CardNumberElement
+                id="cardNumber"
+                options={getInputOptions('Card Number')}
+              />
+            </FormControlNew>
+          </div>
+          <div className={styles.formRow}>
+            <FormControlNew variant="outlined">
+              <CardExpiryElement
+                id="expiry"
+                options={getInputOptions('Exp. Date (MM/YY)')}
+              />
+            </FormControlNew>
+            <div style={{ width: '20px' }}></div>
+            <FormControlNew variant="outlined">
+              <CardCvcElement id="cvc" options={getInputOptions('CVV')} />
+            </FormControlNew>
+          </div>
+          {/* <div className={styles.saveCard}>
           <div className={styles.saveCardText}>
             Save card for future Donations
           </div>
@@ -284,7 +285,8 @@ function PaymentDetails({
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
         </div> */}
-      </div>
+        </div>
+      )}
 
       {/* <div className={styles.paymentModeContainer}>
           <div className={styles.paymentModeHeader}>

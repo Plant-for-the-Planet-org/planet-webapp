@@ -182,6 +182,8 @@ function TreeDonation({
     });
   };
 
+  console.log('Payment Setup', paymentSetup);
+
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
@@ -346,17 +348,19 @@ function TreeDonation({
 
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
-            {stripeAllowedCountries.includes(country) && currency && (
-              <PaymentRequestCustomButton
-                country={country}
-                currency={currency}
-                amount={formatAmountForStripe(
-                  treeCost * treeCount,
-                  currency.toLowerCase()
-                )}
-                onPaymentFunction={onPaymentFunction}
-              />
-            )}
+            {paymentSetup.gateways.stripe.account &&
+              stripeAllowedCountries.includes(country) &&
+              currency && (
+                <PaymentRequestCustomButton
+                  country={country}
+                  currency={currency}
+                  amount={formatAmountForStripe(
+                    treeCost * treeCount,
+                    currency.toLowerCase()
+                  )}
+                  onPaymentFunction={onPaymentFunction}
+                />
+              )}
 
             {/* {paymentRequest ? 'Or' : null} */}
           </div>
