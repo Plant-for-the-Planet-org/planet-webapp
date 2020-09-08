@@ -187,7 +187,7 @@ function PaymentDetails({
     let gift = {
       gift: {
         type: 'invitation',
-        recipientName: giftDetails.firstName,
+        recipientName: giftDetails.recipientName,
         recipientEmail: giftDetails.email,
         message: giftDetails.giftMessage,
       },
