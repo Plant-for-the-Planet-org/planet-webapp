@@ -17,6 +17,21 @@ export default function LeaderBoard() {
     setIsMobile(window.innerWidth <= 768);
   }, []);
 
+  const [leaderboard, setLeaderboard] = React.useState(null);
+
+  React.useEffect(() => {
+    async function loadLeaderboard() {
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/app/leaderboard`, {
+        headers: { 'tenant-key': `${process.env.TENANTID}`},
+      }).then(async (res) => {
+        const leaderboard = await res.json();
+        setLeaderboard(leaderboard);
+      });
+    }
+    loadLeaderboard();
+  }, []);
+  console.log(leaderboard);
   function onRefresh() {
     return new Promise((resolve) => {
       setTimeout(resolve, 2000);
@@ -37,7 +52,7 @@ export default function LeaderBoard() {
         {process.env.TENANT === 'planet' ? (
           <About />
         ) : (
-          <SalesforceLeaderBoard />
+          <SalesforceLeaderBoard leaderboard={leaderboard} />
         )}
       </Layout>
     </PullToRefresh>

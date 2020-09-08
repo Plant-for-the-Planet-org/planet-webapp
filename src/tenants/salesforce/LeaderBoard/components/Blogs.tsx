@@ -16,7 +16,7 @@ export default function Blogs() {
         'Make working-from-home more comfortable, productive, and sustainable',
       imagePath: '/tenants/salesforce/images/Blog/2.png',
       link: '',
-      linkTitle: 'Read the Sustainability at Home Guide',
+      linkTitle: 'Read the Wellbeing at Home Guide',
     },
     {
       id: 3,
