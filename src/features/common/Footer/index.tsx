@@ -72,7 +72,7 @@ export default function Footer() {
 
   return (
     <footer>
-      <div className="container">
+      <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
 
         <div className={styles.footer_container}>
