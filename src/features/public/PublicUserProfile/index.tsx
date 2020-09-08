@@ -1,40 +1,23 @@
 import React from 'react';
-import Footer from '../../common/Footer';
 import LandingSection from '../../common/Layout/LandingSection';
 import ProjectsContainer from './components/ProjectsContainer';
 import PublicUserInfo from './components/PublicUserInfo';
-import styles from './PublicUserProfile.module.scss';
 
 export default function PublicUserProfile({ publicUserprofile }: any) {
   return (
-    <main>
-      {/* publicUserinfo section */}
-
+    <div>
       <LandingSection
-        fixedBg
-        noFixedHeight
         imageSrc={
           process.env.CDN_URL
             ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
       >
-        <div className={styles.publicUserProfileDiv}>
-          <PublicUserInfo publicUserprofile={publicUserprofile} />
-        </div>
-
-        {/*  projects section */}
-        <div className={styles.projectsContainer}>
-          <ProjectsContainer
-            projects={publicUserprofile.userProfile.plantProjects}
-          />
-        </div>
-
-        {/* footer */}
-        <div className={styles.footerDiv}>
-          <Footer />
-        </div>
+        <PublicUserInfo publicUserprofile={publicUserprofile} />
       </LandingSection>
-    </main>
+      <ProjectsContainer
+        projects={publicUserprofile.userProfile.plantProjects}
+      />
+    </div>
   );
 }

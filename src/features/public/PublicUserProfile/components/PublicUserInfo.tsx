@@ -1,6 +1,6 @@
 import React from 'react';
 import TreeCounter from '../../../common/TreeCounter/TreeCounter';
-import styles from '../styles/PublicUserInfo.module.scss';
+import styles from '../PublicUserProfile.module.scss';
 
 export default function PublicUserInfo({ publicUserprofile }: any) {
   console.log('publicUserprofile', publicUserprofile);
