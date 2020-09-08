@@ -4,7 +4,7 @@
   background-color: $light;
   border-radius: 7px;
   padding: 20px;
-  width: 412px;
+  width: 320px;
 }
 
 .header {
@@ -50,7 +50,7 @@
 
 .horizontalLine {
   height: 1px;
-  background-color: $dividerColor;
+  background-color: #d5d5d5;
   margin-top: 20px;
 }
 
@@ -59,13 +59,14 @@
   justify-content: center;
 }
 .thankyouImage {
-  background-image:url('/tenants/planet/images/donations/donationComplete.jpg') ;
+  background-image: url('/tenants/planet/images/donations/donationComplete.jpg');
   background-position: center;
   background-size: cover;
   border-radius: 7px;
-  margin: 20px;
-  height: 280px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   width: 280px;
+  height: 280px;
   align-self: center;
   position: relative;
   display: flex;
@@ -83,7 +84,7 @@
   color: $light;
 }
 
-.donationTenant{
+.donationTenant {
   font-size: 13px;
   font-family: $primaryFontFamily;
   font-weight: 400;
@@ -122,7 +123,17 @@
   align-items: center;
   z-index: 10;
   background-color: $light;
-  :hover{
+  :hover {
     cursor: pointer;
+  }
+}
+
+@include tabletView {
+  .container {
+    width: 412px;
+  }
+  .thankyouImage {
+    width: 372px;
+    height: 372px;
   }
 }
