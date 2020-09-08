@@ -1,3 +1,15 @@
+@import '../../../theme/theme';
+
+.footerMainContainer {
+  max-width: 950px;
+  margin: auto 20px 76px 20px;
+}
+@media screen and (min-width: 950px) {
+  .footerMainContainer {
+    margin: auto;
+  }
+}
+
 .hr {
   height: 1px;
   background-color: #2f3336;
