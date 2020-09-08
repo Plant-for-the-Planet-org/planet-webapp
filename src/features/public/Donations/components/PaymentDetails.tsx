@@ -149,6 +149,7 @@ function PaymentDetails({
         card: cardElement!,
       });
       paymentMethod = payload.paymentMethod;
+      // Add payload error if failed
     } else if (paymentType === 'SEPA') {
       const payload = await stripe.createPaymentMethod({
         type: 'sepa_debit',
@@ -159,6 +160,7 @@ function PaymentDetails({
         },
       });
       paymentMethod = payload.paymentMethod;
+      // Add payload error if failed
     }
     setIsPaymentProcessing(true);
     let countryCode = getCountryDataBy(
@@ -212,26 +214,49 @@ function PaymentDetails({
       };
 
       payDonation(payDonationData, res.id).then(async (res) => {
-        // console.log('Res', res);
         if (res.paymentStatus === 'success') {
           setIsPaymentProcessing(false);
           setDonationStep(4);
         } else if (res.status === 'action_required') {
           const clientSecret = res.response.payment_intent_client_secret;
+          const donationID = res.id;
           const stripe = window.Stripe(
             process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
             {
               stripeAccount: res.response.account,
             }
           );
-          let response;
           if (stripe) {
-            response = await stripe.handleCardAction(clientSecret);
+            await stripe.handleCardAction(clientSecret).then((res) => {
+              if (res.error) {
+                setIsPaymentProcessing(false);
+                setPaymentError(res.error.message);
+              } else {
+                const payDonationData = {
+                  paymentProviderRequest: {
+                    account: paymentSetup.gateways.stripe.account,
+                    gateway: 'stripe_pi',
+                    source: {
+                      id: res.paymentIntent.id,
+                      object: 'payment_intent',
+                    },
+                  },
+                };
+                payDonation(payDonationData, donationID).then((res) => {
+                  if (res.paymentStatus === 'success') {
+                    setIsPaymentProcessing(false);
+                    setDonationStep(4);
+                  } else {
+                    setIsPaymentProcessing(false);
+                    setPaymentError(res.error.message);
+                  }
+                });
+              }
+            });
           }
-          console.log('Response', response);
         }
-      });
-    });
+      }); // Add Catch if pay donation failes
+    }); // Add Catch if create donation failes
     if (error) {
       setPaymentError(error.message);
     }
@@ -251,9 +276,7 @@ function PaymentDetails({
         <div className={styles.headerTitle}>Payment Details</div>
       </div>
       {paymentError && (
-        <pre className={styles.paymentError}>
-          Error, Payment failed. Please try again.
-        </pre>
+        <div className={styles.paymentError}>{paymentError}</div>
       )}
 
       {
