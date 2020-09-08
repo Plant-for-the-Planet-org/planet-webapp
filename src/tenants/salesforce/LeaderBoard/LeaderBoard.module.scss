@@ -18,7 +18,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 80vw;
+  max-width: 90%;
   margin-bottom: 10vh;
 }
 
@@ -551,6 +551,10 @@
 }
 
 @include tabletView {
+  .landingSection {
+    padding: 18vh 0;
+  }
+
   .treeCounterSection {
     max-height: 60vh;
     max-width: 60vh;
