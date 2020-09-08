@@ -3,8 +3,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import Donate from '../../../assets/images/navigation/Donate';
+import DonateSelected from '../../../assets/images/navigation/DonateSelected';
+import Globe from '../../../assets/images/navigation/Globe';
+import GlobeSelected from '../../../assets/images/navigation/GlobeSelected';
 import Leaderboard from '../../../assets/images/navigation/Leaderboard';
+import LeaderboardSelected from '../../../assets/images/navigation/LeaderboardSelected';
 import Me from '../../../assets/images/navigation/Me';
+import MeSelected from '../../../assets/images/navigation/MeSelected';
 import styles from './Navbar.module.scss';
 
 export default function NavbarComponent(props: any) {
@@ -46,32 +51,30 @@ export default function NavbarComponent(props: any) {
               </div>
             </div>
           ) : (
-              <div
-                className={`${styles.first_icon} ${styles.tenant_logo}`}
-                style={{ padding: '0rem 0.5rem' }}
-              >
-                <div className={styles.tenant_logo_container}>
-                  <Nav.Link
-                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                  >
-                    <a href={'https://www.plant-for-the-planet.org'}>
-                      <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
-                    </a>
-                  </Nav.Link>
-                </div>
+            <div
+              className={`${styles.first_icon} ${styles.tenant_logo}`}
+              style={{ padding: '0rem 0.5rem' }}
+            >
+              <div className={styles.tenant_logo_container}>
+                <Nav.Link
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
+                  <a href={'https://www.plant-for-the-planet.org'}>
+                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                  </a>
+                </Nav.Link>
               </div>
-            )}
+            </div>
+          )}
           <Nav.Link>
             <Link href={'/'}>
               <div className={styles.link_container}>
                 <div className={styles.link_icon}>
-                  <Donate
-                    color={
-                      router.pathname === `/`
-                        ? styles.primaryColor
-                        : styles.primaryFontColor
-                    }
-                  />
+                  {router.pathname === `/` ? (
+                    <Donate color={styles.primaryColor} />
+                  ) : (
+                    <DonateSelected color={styles.primaryFontColor} />
+                  )}
                 </div>
                 <p
                   className={router.pathname === '/' ? styles.active_icon : ''}
@@ -81,41 +84,66 @@ export default function NavbarComponent(props: any) {
               </div>
             </Link>
           </Nav.Link>
-          <Nav.Link>
-            <Link href={'/leaderboard'}>
-              <div className={styles.link_container}>
-                <div className={styles.link_icon}>
-                  {/* <i className="fas fa-ad"></i> */}
-                  <Leaderboard
-                    color={
+
+          {process.env.TENANT !== 'planet' && process.env.TENANT ? (
+            <Nav.Link>
+              <Link href={'/leaderboard'}>
+                <div className={styles.link_container}>
+                  <div className={styles.link_icon}>
+                    {/* <i className="fas fa-ad"></i> */}
+                    {router.pathname === '/leaderboard' ? (
+                      <GlobeSelected color={styles.primaryColor} />
+                    ) : (
+                      <Globe color={styles.primaryFontColor} />
+                    )}
+                  </div>
+                  <p
+                    className={
                       router.pathname === '/leaderboard'
-                        ? styles.primaryColor
-                        : styles.primaryFontColor
+                        ? styles.active_icon
+                        : ''
                     }
-                  />
+                  >
+                    Home
+                  </p>
                 </div>
-                <p
-                  className={
-                    router.pathname === '/leaderboard' ? styles.active_icon : ''
-                  }
-                >
-                  Leaders
-                </p>
-              </div>
-            </Link>
-          </Nav.Link>
+              </Link>
+            </Nav.Link>
+          ) : (
+            <Nav.Link>
+              <Link href={'/leaderboard'}>
+                <div className={styles.link_container}>
+                  <div className={styles.link_icon}>
+                    {/* <i className="fas fa-ad"></i> */}
+                    {router.pathname === '/leaderboard' ? (
+                      <LeaderboardSelected color={styles.primaryColor} />
+                    ) : (
+                      <Leaderboard color={styles.primaryFontColor} />
+                    )}
+                  </div>
+                  <p
+                    className={
+                      router.pathname === '/leaderboard'
+                        ? styles.active_icon
+                        : ''
+                    }
+                  >
+                    Leaders
+                  </p>
+                </div>
+              </Link>
+            </Nav.Link>
+          )}
           {process.env.TENANT !== 'salesforce' ? (
             <Nav.Link>
               <Link href={'/me'}>
                 <div className={styles.link_container}>
                   <div className={styles.link_icon}>
-                    <Me
-                      color={
-                        router.pathname === '/me'
-                          ? styles.primaryColor
-                          : styles.primaryFontColor
-                      }
-                    />
+                    {router.pathname === '/me' ? (
+                      <Me color={styles.primaryColor} />
+                    ) : (
+                      <MeSelected color={styles.primaryFontColor} />
+                    )}
                   </div>
                   <p
                     className={
@@ -169,21 +197,21 @@ export default function NavbarComponent(props: any) {
               </Nav.Link>
             </>
           ) : (
-              <>
-                <Nav.Link
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <a href={'https://www.plant-for-the-planet.org'}>
-                    <div
-                      className={styles.link_container}
-                      style={{ margin: '0px 8px' }}
-                    >
-                      <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
-                    </div>
-                  </a>
-                </Nav.Link>
-              </>
-            )}
+            <>
+              <Nav.Link
+                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+              >
+                <a href={'https://www.plant-for-the-planet.org'}>
+                  <div
+                    className={styles.link_container}
+                    style={{ margin: '0px 8px' }}
+                  >
+                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                  </div>
+                </a>
+              </Nav.Link>
+            </>
+          )}
           <Nav.Link>
             <Link href={'/'}>
               <div
