@@ -4,10 +4,6 @@ export default function tenantConfig() {
       return {
         // name of tenant
         tenantName: 'planet',
-        // tenant id
-        tenantID: 'ten_I9TW3ncG',
-        //url scheme
-        tenantURLScheme: 'https://',
         // url of tenant home page
         tenantURL: 'www.trilliontreecampaign.org',
         //logo url
@@ -26,10 +22,6 @@ export default function tenantConfig() {
       return {
         // name of tenant
         tenantName: 'salesforce',
-        // tenant id
-        tenantID: 'ten_3hEjJCBs',
-        //url scheme
-        tenantURLScheme: 'https://',
         // url of tenant home page
         tenantURL: 'trees.salesforce.com',
         //logo url
@@ -48,10 +40,6 @@ export default function tenantConfig() {
       return {
         // name of tenant
         tenantName: 'planet',
-        // tenant id
-        tenantID: 'ten_I9TW3ncG',
-        //url scheme
-        tenantURLScheme: 'https://',
         // url of tenant home page
         tenantURL: 'www.plant-for-the-planet.org',
         // font family and it's property particular to tenant
