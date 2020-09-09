@@ -139,6 +139,10 @@
   }
 }
 
+.speedDialButton:focus {
+  outline:none;
+}
+
 @include tabletView {
   .container {
     width: 412px;

@@ -221,6 +221,7 @@ function ThankYou({
             {actions.map((action) => (
               <SpeedDialAction
                 key={action.name}
+                className={styles.speedDialButton}
                 icon={action.icon}
                 tooltipTitle={action.name}
                 onClick={action.onClickAction}
