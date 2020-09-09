@@ -23,7 +23,7 @@ const linkToShare = 'https://www.salesforce.com/';
 
 const actions = [
   {
-    icon: <EmailIcon/>,
+    icon: <EmailIcon />,
     name: 'Email',
     onClickAction: function () {
       window.open(
@@ -64,14 +64,6 @@ const actions = [
   },
 ];
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    speedDial: {
-      position: 'absolute',
-    },
-  })
-);
-
 function ThankYou({
   project,
   treeCount,
@@ -83,12 +75,7 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
-  const classes = useStyles();
-  const [direction, setDirection] = React.useState<SpeedDialProps['direction']>(
-    'right'
-  );
-  const [speedDialOpen, setSpeedDialOpen] = React.useState(true); // TODO FALSE
-  const [hidden, setHidden] = React.useState(false);
+  const [speedDialOpen, setSpeedDialOpen] = React.useState(false);
 
   let paymentTypeUsed;
   switch (paymentType) {
@@ -142,9 +129,10 @@ function ThankYou({
         });
       } catch (error) {}
     } else {
-      // copy to clipboard
-      navigator.clipboard.writeText('Dummy text copied to clipboard!');
-      handleTextCopiedSnackbarOpen();
+      /* copy to clipboard
+       navigator.clipboard.writeText('Dummy text copied to clipboard!');
+       handleTextCopiedSnackbarOpen();   */
+      handleSpeedDialOpen()
     }
   };
 
@@ -199,19 +187,30 @@ function ThankYou({
         </div>
       </div>
 
-      <div className={styles.buttonsContainer}>
-        <div className={styles.downloadButton} onClick={shareClicked}>
-          <div style={{ marginRight: '12px' }}>Share</div>
+      <div className={styles.shareRow}>
+
+        {/* div for button */}
+        <div
+          className={styles.buttonsContainer}
+          onClick={shareClicked}
+          onMouseOver={handleSpeedDialOpen}
+        >
+          <div className={styles.downloadButton}>
+            <div style={{ marginRight: '12px' }}>Share</div>
+            <ShareFilled height={'18px'} width={'18px'} color={'#fff'} />
+          </div>
         </div>
+
+
+        {/* div for speed dial elements */}
         <SpeedDial
           ariaLabel="SpeedDial example"
-          className={classes.speedDial}
-          hidden={hidden}
-          icon={<ShareFilled height={'18px'} width={'18px'} color={'#fff'} />}
+  
+          hidden={true}
           onClose={handleSpeedDialClose}
-          onOpen={handleSpeedDialOpen}
+          // on open not needed
           open={speedDialOpen}
-          direction={direction}
+          direction={'right'}
         >
           {actions.map((action) => (
             <SpeedDialAction
