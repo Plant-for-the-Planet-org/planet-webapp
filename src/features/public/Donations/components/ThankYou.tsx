@@ -203,7 +203,7 @@ function ThankYou({
         </div>
 
         {/* div for speed dial elements */}
-        { speedDialOpen && (
+        { !(isMobileBrowser()) && (
           <SpeedDial
             ariaLabel="SpeedDial example"
             hidden={true}
