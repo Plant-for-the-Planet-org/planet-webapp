@@ -139,7 +139,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     paymentType,
   };
   switch (donationStep) {
-    case 4:
+    case 1:
       return (
         <motion.div
           animate={{
@@ -172,7 +172,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
           <PaymentDetails {...PaymentDetailsProps} />
         </motion.div>
       );
-    case 1:
+    case 4:
       return (
         <motion.div
           animate={{
