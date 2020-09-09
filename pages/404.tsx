@@ -11,7 +11,7 @@ export default function Custom404() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: '40px',
+          marginTop: '80px',
         }}
       >
         <Custom404Image />
