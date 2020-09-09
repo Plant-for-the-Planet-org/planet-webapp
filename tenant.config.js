@@ -5,12 +5,12 @@ export default function tenantConfig() {
         // name of tenant
         tenantName: 'planet',
         // tenant id
-        tenantID: 'ten_SqaVY1QS',
+        tenantID: 'ten_I9TW3ncG',
         // url of tenant home page
-        tenantURL: '',
+        tenantURL: 'www.trilliontreecampaign.org',
         // font family and it's property particular to tenant
         font: {
-          primaryFontFamily: '"Raleway", sans-serif',
+          primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
           primaryFontURL:
             'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap&subset=latin-ext',
           secondaryFontFamily: '"Open Sans", sans-serif',
@@ -23,15 +23,15 @@ export default function tenantConfig() {
         // name of tenant
         tenantName: 'salesforce',
         // tenant id
-        tenantID: 'ten_a7hDszU9',
+        tenantID: 'ten_3hEjJCBs',
         // url of tenant home page
         tenantURL: '',
         // font family and it's property particular to tenant
         font: {
-          primaryFontFamily: '"SalesforceSans", sans-serif',
+          primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
           primaryFontURL:
             'https://cdn.pp.eco/media/fonts/salesforce/salesforce-sans.css?v1.0',
-          secondaryFontFamily: '"Open Sans", sans-serif',
+          secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
           secondaryFontURL:
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext',
         },
@@ -41,15 +41,15 @@ export default function tenantConfig() {
         // name of tenant
         tenantName: 'planet',
         // tenant id
-        tenantID: 'ten_SqaVY1QS',
+        tenantID: 'ten_I9TW3ncG',
         // url of tenant home page
-        tenantURL: '',
+        tenantURL: 'www.trilliontreecampaign.org',
         // font family and it's property particular to tenant
         font: {
-          primaryFontFamily: '"Raleway", sans-serif',
+          primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
           primaryFontURL:
             'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap&subset=latin-ext',
-          secondaryFontFamily: '"Open Sans", sans-serif',
+          secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
           secondaryFontURL:
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext',
         },
