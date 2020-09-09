@@ -1,6 +1,7 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
+import Sugar from 'sugar';
 import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
@@ -89,14 +90,16 @@ function ThankYou({
       </div>
 
       <div className={styles.contributionAmount}>
-        Your Donation of {currency} {Number(treeCount * treeCost).toFixed(2)}{' '}
-        was paid with {paymentTypeUsed}
+        Your {currency}{' '}
+        {Sugar.Number.format(Number(treeCount * treeCost), 2)} donation was successfully paid with{' '}
+        {paymentTypeUsed}.
       </div>
 
       <div className={styles.contributionMessage}>
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {treeCount} trees will be planted by {project.name}.
+        Your {treeCount} trees will be planted by {project.name} in {project.location}. Maybe you'll visit them some day?
+In the mean time, maybe hook up your friends with some trees of their own by telling them our yours?
       </div>
 
       <div className={styles.horizontalLine} />
