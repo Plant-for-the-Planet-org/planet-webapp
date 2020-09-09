@@ -22,8 +22,9 @@ export default function LeaderBoard() {
   React.useEffect(() => {
     async function loadLeaderboard() {
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/leaderboard`
-      ).then(async (res) => {
+        `${process.env.API_ENDPOINT}/app/leaderboard`, {
+        headers: { 'tenant-key': `${process.env.TENANTID}`},
+      }).then(async (res) => {
         const leaderboard = await res.json();
         setLeaderboard(leaderboard);
       });

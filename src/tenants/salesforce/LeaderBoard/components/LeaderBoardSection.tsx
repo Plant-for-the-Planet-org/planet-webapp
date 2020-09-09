@@ -1,4 +1,5 @@
 import React from 'react';
+import Sugar from 'sugar';
 import styles from './../LeaderBoard.module.scss';
 
 interface Props {
@@ -46,11 +47,11 @@ export default function LeaderBoardSection(leaderboard: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {leader.treeCount} Trees
+                          {Sugar.Number.format(Number(leader.treeCount))} Trees
                         </p>
-                        <p className={styles.leaderBoardDonorTime}>
+                        {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
-                        </p>
+                        </p> */}
                       </div>
                     );
                   }
@@ -66,11 +67,11 @@ export default function LeaderBoardSection(leaderboard: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {leader.treeCount} Trees
+                          {Sugar.Number.format(Number(leader.treeCount))} Trees
                         </p>
-                        <p className={styles.leaderBoardDonorTime}>
+                        {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
-                        </p>
+                        </p> */}
                       </div>
                     );
                   }
@@ -85,6 +86,10 @@ export default function LeaderBoardSection(leaderboard: Props) {
       <img
         className={styles.leaderBoardBushImage}
         src={'/tenants/salesforce/images/Bush.png'}
+      />
+      <img
+        className={styles.leaderBoardBushImageMobile}
+        src={'/tenants/salesforce/images/mobile/Bush.png'}
       />
     </section>
   );

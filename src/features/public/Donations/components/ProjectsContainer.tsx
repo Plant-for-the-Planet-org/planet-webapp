@@ -26,7 +26,7 @@ export default function ProjectsContainer({
   fetchSingleProject,
   setLayoutId,
   yScroll,
-  setSearchedProjects
+  setSearchedProjects,
 }: Props) {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -182,8 +182,22 @@ export default function ProjectsContainer({
 
   React.useEffect(() => {
     let Ref = projectsContainer.current;
-    Ref.scrollTo(0, yScroll);
-  })
+    var wheelEvent =
+      'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+    function preventDefault(e) {
+      e.preventDefault();
+    }
+
+    var wheelOpt = false;
+    Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
+    Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+    Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+
+    return () => {
+      Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
+      Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+    };
+  });
   return (
     <div
       className={styles.container}
@@ -202,9 +216,9 @@ export default function ProjectsContainer({
         style={
           isMobile && screenWidth > 420
             ? {
-              left: 'calc((100vw - 420px)/2)',
-              right: 'calc((100vw - 420px)/2)',
-            }
+                left: 'calc((100vw - 420px)/2)',
+                right: 'calc((100vw - 420px)/2)',
+              }
             : {}
         }
       >
@@ -274,14 +288,14 @@ export default function ProjectsContainer({
               </div>
             ) : null}
 
-              <div
-                className={styles.searchIcon}
-                onClick={() => setSearchMode(true)}
-              >
-                <SearchIcon />
-              </div>
+            <div
+              className={styles.searchIcon}
+              onClick={() => setSearchMode(true)}
+            >
+              <SearchIcon />
             </div>
-          )}
+          </div>
+        )}
         {/* till here is header */}
         <div
           onScroll={handleScroll}
@@ -300,8 +314,8 @@ export default function ProjectsContainer({
           ) : selectedTab === 'all' ? (
             <AllProjects {...AllProjectsProps} />
           ) : (
-                <AllProjects {...FeaturedProjectsProps} />
-              )}
+            <AllProjects {...FeaturedProjectsProps} />
+          )}
         </div>
       </div>
     </div>

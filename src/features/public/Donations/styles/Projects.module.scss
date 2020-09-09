@@ -190,7 +190,8 @@
 
 .costButton {
   background-color: $primaryColor;
-  width: 72px;
+  min-width: 74px;
+  max-width: 100px;
   height: 22px;
   display: flex;
   justify-content: center;
@@ -198,7 +199,7 @@
   border-radius: 11px;
   color: $light;
   font-weight: bold;
-  font-family: $openSans;
+  font-family: $secondaryFontFamily;
   font-size: $fontSubTitleSize;
   text-transform: uppercase;
 }

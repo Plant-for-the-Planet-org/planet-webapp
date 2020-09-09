@@ -3,8 +3,8 @@ const theme = {
     subTitleSize: '14px',
     titleSize: '18px',
   },
+  primaryColor: '#68B030',
   light: {
-    primaryColor: '#68B030',
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
     secondaryColor: '#ecb641',
@@ -15,7 +15,6 @@ const theme = {
     dark: '#000',
   },
   dark: {
-    primaryColor: '#ff0000',
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
     secondaryColor: '#ecb641',

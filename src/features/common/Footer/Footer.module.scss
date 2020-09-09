@@ -1,3 +1,15 @@
+@import '../../../theme/theme';
+
+.footerMainContainer {
+  max-width: 950px;
+  margin: auto 20px 76px 20px;
+}
+@media screen and (min-width: 950px) {
+  .footerMainContainer {
+    margin: auto;
+  }
+}
+
 .hr {
   height: 1px;
   background-color: #2f3336;
@@ -17,7 +29,7 @@
 }
 
 .footer_links {
-  font-family: 'Raleway';
+  font-family: $primaryFontFamily;
   font-weight: bold;
   font-size: 14px;
   color: #2f3336;
@@ -61,14 +73,14 @@
 }
 
 .selected_language {
-  font-family: 'Raleway';
+  font-family: $primaryFontFamily;
   font-size: 14px;
   margin: 0px !important;
   margin-left: 8px !important;
 }
 
 .selected_language_bold {
-  font-family: 'Raleway';
+  font-family: $primaryFontFamily;
   font-size: 14px;
   font-weight: bold;
   margin: 0px !important;
@@ -88,7 +100,7 @@
   width: 69px;
 }
 .unep_logo_text {
-  font-family: 'Raleway';
+  font-family: $primaryFontFamily;
   font-size: 9px;
   font-weight: normal;
   letter-spacing: 0.18px;

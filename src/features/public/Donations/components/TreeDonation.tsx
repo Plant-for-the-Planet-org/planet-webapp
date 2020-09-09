@@ -148,7 +148,7 @@ function TreeDonation({
     let gift = {
       gift: {
         type: 'invitation',
-        recipientName: giftDetails.firstName,
+        recipientName: giftDetails.recipientName,
         recipientEmail: giftDetails.email,
         message: giftDetails.giftMessage,
       },
@@ -346,17 +346,19 @@ function TreeDonation({
 
         <div className={styles.actionButtonsContainer}>
           <div style={{ width: '150px' }}>
-            {stripeAllowedCountries.includes(country) && currency && (
-              <PaymentRequestCustomButton
-                country={country}
-                currency={currency}
-                amount={formatAmountForStripe(
-                  treeCost * treeCount,
-                  currency.toLowerCase()
-                )}
-                onPaymentFunction={onPaymentFunction}
-              />
-            )}
+            {paymentSetup?.gateways?.stripe?.account &&
+              stripeAllowedCountries.includes(country) &&
+              currency && (
+                <PaymentRequestCustomButton
+                  country={country}
+                  currency={currency}
+                  amount={formatAmountForStripe(
+                    treeCost * treeCount,
+                    currency.toLowerCase()
+                  )}
+                  onPaymentFunction={onPaymentFunction}
+                />
+              )}
 
             {/* {paymentRequest ? 'Or' : null} */}
           </div>

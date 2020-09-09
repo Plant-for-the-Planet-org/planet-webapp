@@ -32,6 +32,7 @@ export default function CountrySelect(props: {
   label: React.ReactNode;
   inputRef: ((instance: any) => void) | React.RefObject<any> | null | undefined;
   name: string | undefined;
+  defaultValue: string;
   onChange:
     | ((
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,6 +41,7 @@ export default function CountrySelect(props: {
 }) {
   const classes = useStyles();
 
+  const defaultValue = props.defaultValue;
   return (
     <Autocomplete
       id="country-select-demo"
@@ -56,6 +58,7 @@ export default function CountrySelect(props: {
           {option.label} ({option.code})
         </React.Fragment>
       )}
+      defaultValue={defaultValue}
       renderInput={(params) => (
         <MaterialTextFeild
           {...params}
@@ -68,6 +71,7 @@ export default function CountrySelect(props: {
           inputRef={props.inputRef}
           name={props.name}
           onChange={props.onChange}
+          defaultValue={props.defaultValue}
         />
       )}
     />
