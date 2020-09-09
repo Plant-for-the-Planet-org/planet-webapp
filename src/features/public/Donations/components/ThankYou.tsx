@@ -6,6 +6,71 @@ import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
+import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+
+import EmailIcon from '../../../../assets/images/icons/share/Email';
+import FacebookIcon from '../../../../assets/images/icons/share/Facebook';
+import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
+import LinkedinIcon from '../../../../assets/images/icons/share/Linkedin';
+
+const titleToShare = 'Planting trees against the climate crisis!';
+const textToShare =
+  'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n';
+const linkToShare = 'https://www.salesforce.com/';
+
+const actions = [
+  {
+    icon: <EmailIcon/>,
+    name: 'Email',
+    onClickAction: function () {
+      window.open(
+        `mailto:?subject=${titleToShare}&body=${textToShare}`,
+        '_blank'
+      );
+    },
+  },
+  {
+    icon: <FacebookIcon />,
+    name: 'Facebook',
+    onClickAction: function () {
+      window.open(
+        `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShare}`,
+        '_blank'
+      );
+    },
+  },
+  {
+    icon: <TwitterIcon />,
+    name: 'Twitter',
+    onClickAction: function () {
+      window.open(
+        `https://twitter.com/intent/tweet?text=${textToShare}`,
+        '_blank'
+      );
+    },
+  },
+  {
+    icon: <LinkedinIcon />,
+    name: 'Linkedin',
+    onClickAction: function () {
+      window.open(
+        `https://www.linkedin.com/shareArticle?mini=true&url=&title=${textToShare}&summary=&source=`,
+        '_blank'
+      );
+    },
+  },
+];
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    speedDial: {
+      position: 'absolute',
+    },
+  })
+);
 
 function ThankYou({
   project,
@@ -18,6 +83,13 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
+  const classes = useStyles();
+  const [direction, setDirection] = React.useState<SpeedDialProps['direction']>(
+    'right'
+  );
+  const [speedDialOpen, setSpeedDialOpen] = React.useState(true); // TODO FALSE
+  const [hidden, setHidden] = React.useState(false);
+
   let paymentTypeUsed;
   switch (paymentType) {
     case 'CARD':
@@ -65,19 +137,24 @@ function ThankYou({
       // if in phone and web share API supported
       try {
         const response = await navigator.share({
-          title: 'Planting trees against the climate crisis!',
-          text:
-            'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n',
+          title: titleToShare,
+          text: textToShare,
         });
-        // console.log('Share complete', response);
-      } catch (error) {
-        // console.error('Could not share at this time', error);
-      }
+      } catch (error) {}
     } else {
       // copy to clipboard
       navigator.clipboard.writeText('Dummy text copied to clipboard!');
       handleTextCopiedSnackbarOpen();
     }
+  };
+
+  // share speed dial
+  const handleSpeedDialClose = () => {
+    setSpeedDialOpen(false);
+  };
+
+  const handleSpeedDialOpen = () => {
+    setSpeedDialOpen(true);
   };
 
   return (
@@ -90,16 +167,17 @@ function ThankYou({
       </div>
 
       <div className={styles.contributionAmount}>
-        Your {currency}{' '}
-        {Sugar.Number.format(Number(treeCount * treeCost), 2)} donation was successfully paid with{' '}
-        {paymentTypeUsed}.
+        Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
+        donation was successfully paid with {paymentTypeUsed}.
       </div>
 
       <div className={styles.contributionMessage}>
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {treeCount} trees will be planted by {project.name} in {project.location}. Maybe you'll visit them some day?
-In the mean time, maybe hook up your friends with some trees of their own by telling them our yours?
+        Your {treeCount} trees will be planted by {project.name} in{' '}
+        {project.location}. Maybe you'll visit them some day? In the mean time,
+        maybe hook up your friends with some trees of their own by telling them
+        our yours?
       </div>
 
       <div className={styles.horizontalLine} />
@@ -122,14 +200,28 @@ In the mean time, maybe hook up your friends with some trees of their own by tel
       </div>
 
       <div className={styles.buttonsContainer}>
-        {/* <div className={styles.downloadButton}>
-                    <Download />
-                </div> */}
-        {/* <div style={{ width: '20px' }}></div> */}
         <div className={styles.downloadButton} onClick={shareClicked}>
           <div style={{ marginRight: '12px' }}>Share</div>
-          <ShareFilled height={'18px'} width={'18px'} color={'#fff'} />
         </div>
+        <SpeedDial
+          ariaLabel="SpeedDial example"
+          className={classes.speedDial}
+          hidden={hidden}
+          icon={<ShareFilled height={'18px'} width={'18px'} color={'#fff'} />}
+          onClose={handleSpeedDialClose}
+          onOpen={handleSpeedDialOpen}
+          open={speedDialOpen}
+          direction={direction}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={action.onClickAction}
+            />
+          ))}
+        </SpeedDial>
       </div>
 
       {/* snackbar for showing text copied to clipboard */}
