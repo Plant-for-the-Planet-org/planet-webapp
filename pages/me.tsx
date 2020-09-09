@@ -1,6 +1,4 @@
-import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import Footer from '../src/features/common/Footer';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
 
@@ -78,7 +76,10 @@ export default function UserProfile() {
 
   return (
     <Layout>
-      <UserPage {...UserProps} />
+      <UserPage
+        style={{ height: '100vh', overflowX: 'hidden' }}
+        {...UserProps}
+      />
     </Layout>
   );
 }

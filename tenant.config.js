@@ -4,29 +4,25 @@ export default function tenantConfig() {
       return {
         // name of tenant
         tenantName: 'planet',
-        // tenant id
-        tenantID: 'ten_I9TW3ncG',
         // url of tenant home page
         tenantURL: 'www.trilliontreecampaign.org',
+        //logo url
+        tenantLogoURL: 'https://www.plant-for-the-planet.org',
         // font family and it's property particular to tenant
         font: {
           primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
           primaryFontURL:
             'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap&subset=latin-ext',
-          secondaryFontFamily: '"Open Sans", sans-serif',
+          secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
           secondaryFontURL:
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext',
         },
       };
     case 'salesforce':
       return {
-        // name of tenant
         tenantName: 'salesforce',
-        // tenant id
-        tenantID: 'ten_3hEjJCBs',
-        // url of tenant home page
-        tenantURL: '',
-        // font family and it's property particular to tenant
+        tenantURL: 'trees.salesforce.com',
+        tenantLogoURL: 'https://www.salesforce.com/sustainability',
         font: {
           primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
           primaryFontURL:
@@ -38,13 +34,8 @@ export default function tenantConfig() {
       };
     default:
       return {
-        // name of tenant
         tenantName: 'planet',
-        // tenant id
-        tenantID: 'ten_I9TW3ncG',
-        // url of tenant home page
-        tenantURL: 'www.trilliontreecampaign.org',
-        // font family and it's property particular to tenant
+        tenantURL: 'www.plant-for-the-planet.org',
         font: {
           primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
           primaryFontURL:

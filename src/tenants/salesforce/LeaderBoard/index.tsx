@@ -12,7 +12,7 @@ interface Props {
 
 export default function About(leaderboard: Props) {
   return (
-    <main style={{ overflowX: 'hidden' }}>
+    <main style={{ height: '100vh', overflowX: 'hidden' }}>
       <Landing />
       <TreeCounterSection />
       <LearnMore />
