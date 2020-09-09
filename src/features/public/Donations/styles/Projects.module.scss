@@ -190,8 +190,9 @@
 
 .costButton {
   background-color: $primaryColor;
-  min-width: 74px;
-  max-width: 100px;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
   height: 22px;
   display: flex;
   justify-content: center;
