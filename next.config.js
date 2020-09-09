@@ -5,10 +5,11 @@ module.exports = {
   },
   env: {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
-    API_ENDPOINT: process.env.API_ENDPOINT,
-    CDN_URL: process.env.CDN_URL,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
+    SCHEME: process.env.SCHEME,
+    API_ENDPOINT: process.env.SCHEME+"://"+process.env.API_ENDPOINT,
+    CDN_URL: process.env.SCHEME+"://"+process.env.CDN_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
