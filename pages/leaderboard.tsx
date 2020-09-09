@@ -36,6 +36,15 @@ export default function LeaderBoard() {
     loadLeaderboard();
   }, []);
 
+  React.useEffect(() => {
+    if (leaderboard != null) {
+      if (leaderboard.toString().includes('Invalid')) {
+        router.push('/404', undefined, { shallow: true });
+        console.log('invalid');
+      }
+    }
+  }, [leaderboard]);
+
   function onRefresh() {
     return new Promise((resolve) => {
       setTimeout(resolve, 2000);
