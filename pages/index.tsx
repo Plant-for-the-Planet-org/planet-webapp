@@ -1,16 +1,17 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../src/features/common/Layout';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
 
 export default function Donate() {
+  const router = useRouter();
   const [projects, setProjects] = React.useState();
-  const [yScroll, setYScroll] = React.useState(0)
+  const [yScroll, setYScroll] = React.useState(0);
 
   const DonateProps = {
     projects: projects,
-    yScroll: yScroll
+    yScroll: yScroll,
   };
-
 
   React.useEffect(() => {
     async function loadProjects() {
@@ -24,13 +25,17 @@ export default function Donate() {
         }
       }
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`
-        , {
-          headers: { 'tenant-key': `${process.env.TENANTID}` }
-        }).then(async (res) => {
-          const projects = await res.json();
-          setProjects(projects);
-        });
+        `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`,
+        {
+          headers: { 'tenant-key': `${process.env.TENANTID}` },
+        }
+      ).then(async (res) => {
+        const projects = res.status === 200 ? await res.json() : null;
+        if (res.status !== 200) {
+          router.push('/404', undefined, { shallow: true });
+        }
+        setProjects(projects);
+      });
     }
     loadProjects();
   }, []);
@@ -41,11 +46,11 @@ export default function Donate() {
       if (newScroll < 0) {
         newScroll = 0;
       }
-      setYScroll(newScroll)
-    }
-    window.addEventListener('wheel', handleScroll)
-    return () => window.removeEventListener('wheel', handleScroll)
-  })
+      setYScroll(newScroll);
+    };
+    window.addEventListener('wheel', handleScroll);
+    return () => window.removeEventListener('wheel', handleScroll);
+  });
   return (
     <Layout>
       {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading...</h2>}
