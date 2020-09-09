@@ -16,9 +16,14 @@ import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
 import LinkedinIcon from '../../../../assets/images/icons/share/Linkedin';
 
 const titleToShare = 'Planting trees against the climate crisis!';
+const urlToShare = (process.env.TENANT === 'salesforce'
+? 'https://www.salesforce.com/'
+: 'https://www.trilliontreecampaign.org/');
+const linkToShare = (process.env.TENANT === 'salesforce'
+? 'salesforce.com/trees'
+: 'trilliontreecampaign.org');
 const textToShare =
-  'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n';
-const linkToShare = 'https://www.salesforce.com/';
+  `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 const actions = [
   {
@@ -36,7 +41,7 @@ const actions = [
     name: 'Facebook',
     onClickAction: function () {
       window.open(
-        `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShare}`,
+        `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
         '_blank'
       );
     },
@@ -195,6 +200,7 @@ function ThankYou({
         <div
           className={styles.buttonsContainer}
           onClick={shareClicked}
+          onMouseOver={handleSpeedDialOpen}
         >
           <div className={styles.downloadButton}>
             <div style={{ marginRight: '12px' }}>Share</div>
