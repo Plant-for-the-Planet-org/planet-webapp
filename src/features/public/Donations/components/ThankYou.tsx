@@ -88,17 +88,22 @@ function ThankYou({
         </div>
         <div className={styles.headerTitle}>Thank You!</div>
       </div>
-
       <div className={styles.contributionAmount}>
         Your Donation of {currency}{' '}
         {Sugar.Number.format(Number(treeCount * treeCost), 2)} was paid with{' '}
         {paymentTypeUsed}
       </div>
 
+      <div className={styles.contributionAmount}>
+        Your {currency}{' '}
+        {Sugar.Number.format(Number(treeCount * treeCost), 2)} donation was successful.
+      </div>
+
       <div className={styles.contributionMessage}>
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {treeCount} trees will be planted by {project.name}.
+        Your {treeCount} trees will be planted by {project.name} in {project.location}. Maybe you'll visit them some day?
+In the mean time, maybe hook up your friends with some trees of their own by telling them our yours?
       </div>
 
       <div className={styles.horizontalLine} />
