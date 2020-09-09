@@ -76,9 +76,9 @@ export default function NavbarComponent(props: any) {
               <div className={styles.link_container}>
                 <div className={styles.link_icon}>
                   {router.pathname === `/` ? (
-                    <Donate color={styles.primaryColor} />
+                    <DonateSelected color={styles.primaryColor} />
                   ) : (
-                    <DonateSelected color={styles.primaryFontColor} />
+                    <Donate color={styles.primaryFontColor} />
                   )}
                 </div>
                 <p
