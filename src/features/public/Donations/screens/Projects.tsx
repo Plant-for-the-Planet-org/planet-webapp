@@ -61,9 +61,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
 
   React.useEffect(() => {
     if (router.query.p) {
-      fetchProject(router.query.p).then(() => {
-        console.log('log');
-      });
+      fetchProject(router.query.p).then(() => {});
     }
   }, []);
 
