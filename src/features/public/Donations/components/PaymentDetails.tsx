@@ -98,7 +98,6 @@ function PaymentDetails({
   const [isSepa, setIsSepa] = React.useState(false);
 
   const [paymentError, setPaymentError] = React.useState('');
-
   const [showContinue, setShowContinue] = React.useState(false);
   const [showBrand, setShowBrand] = React.useState('');
   React.useEffect(() => {
@@ -144,21 +143,31 @@ function PaymentDetails({
           return;
         }
       });
-      const payload = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement!,
-      });
+      const payload = await stripe
+        .createPaymentMethod({
+          type: 'card',
+          card: cardElement!,
+        })
+        .catch((error) => {
+          setPaymentError(error.message);
+          return;
+        });
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     } else if (paymentType === 'SEPA') {
-      const payload = await stripe.createPaymentMethod({
-        type: 'sepa_debit',
-        sepa_debit: elements.getElement(IbanElement)!,
-        billing_details: {
-          name: contactDetails.firstName,
-          email: contactDetails.email,
-        },
-      });
+      const payload = await stripe
+        .createPaymentMethod({
+          type: 'sepa_debit',
+          sepa_debit: elements.getElement(IbanElement)!,
+          billing_details: {
+            name: contactDetails.firstName,
+            email: contactDetails.email,
+          },
+        })
+        .catch((error) => {
+          setPaymentError(error.message);
+          return;
+        });
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
@@ -200,65 +209,93 @@ function PaymentDetails({
         ...gift,
       };
     }
-    createDonation(createDonationData).then((res) => {
-      // Code for Payment API
-      const payDonationData = {
-        paymentProviderRequest: {
-          account: paymentSetup.gateways.stripe.account,
-          gateway: 'stripe_pi',
-          source: {
-            id: paymentMethod.id,
-            object: 'payment_method',
-          },
-        },
-      };
+    createDonation(createDonationData)
+      .then((res) => {
+        // Code for Payment API
 
-      payDonation(payDonationData, res.id).then(async (res) => {
-        if (res.paymentStatus === 'success') {
+        if (res.code === 400) {
           setIsPaymentProcessing(false);
-          setDonationStep(4);
-        } else if (res.status === 'action_required') {
-          const clientSecret = res.response.payment_intent_client_secret;
-          const donationID = res.id;
-          const stripe = window.Stripe(
-            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-            {
-              stripeAccount: res.response.account,
-            }
-          );
-          if (stripe) {
-            await stripe.handleCardAction(clientSecret).then((res) => {
-              if (res.error) {
+          setPaymentError(res.message);
+          return;
+        } else {
+          const payDonationData = {
+            paymentProviderRequest: {
+              account: paymentSetup.gateways.stripe.account,
+              gateway: 'stripe_pi',
+              source: {
+                id: paymentMethod.id,
+                object: 'payment_method',
+              },
+            },
+          };
+
+          payDonation(payDonationData, res.id)
+            .then(async (res) => {
+              if (res.status === 'failed') {
                 setIsPaymentProcessing(false);
-                setPaymentError(res.error.message);
+                setPaymentError(res.message);
+                return;
               } else {
-                const payDonationData = {
-                  paymentProviderRequest: {
-                    account: paymentSetup.gateways.stripe.account,
-                    gateway: 'stripe_pi',
-                    source: {
-                      id: res.paymentIntent.id,
-                      object: 'payment_intent',
-                    },
-                  },
-                };
-                payDonation(payDonationData, donationID).then((res) => {
-                  if (res.paymentStatus === 'success') {
-                    setIsPaymentProcessing(false);
-                    setDonationStep(4);
-                  } else {
-                    setIsPaymentProcessing(false);
-                    setPaymentError(res.error.message);
+                if (res.paymentStatus === 'success') {
+                  setIsPaymentProcessing(false);
+                  setDonationStep(4);
+                } else if (res.status === 'action_required') {
+                  const clientSecret =
+                    res.response.payment_intent_client_secret;
+                  const donationID = res.id;
+                  const stripe = window.Stripe(
+                    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+                    {
+                      stripeAccount: res.response.account,
+                    }
+                  );
+                  if (stripe) {
+                    await stripe.handleCardAction(clientSecret).then((res) => {
+                      if (res.error) {
+                        setIsPaymentProcessing(false);
+                        setPaymentError(res.error.message);
+                      } else {
+                        const payDonationData = {
+                          paymentProviderRequest: {
+                            account: paymentSetup.gateways.stripe.account,
+                            gateway: 'stripe_pi',
+                            source: {
+                              id: res.paymentIntent.id,
+                              object: 'payment_intent',
+                            },
+                          },
+                        };
+                        payDonation(payDonationData, donationID).then((res) => {
+                          if (res.paymentStatus === 'success') {
+                            setIsPaymentProcessing(false);
+                            setDonationStep(4);
+                          } else {
+                            setIsPaymentProcessing(false);
+                            setPaymentError(res.error.message);
+                          }
+                        });
+                      }
+                    });
                   }
-                });
+                }
               }
-            });
-          }
+            })
+            .catch((error) => {
+              setIsPaymentProcessing(false);
+              setPaymentError(error.message);
+              return;
+            }); // Add Catch if pay donation failes
         }
-      }); // Add Catch if pay donation failes
-    }); // Add Catch if create donation failes
+      })
+      .catch((error) => {
+        setIsPaymentProcessing(false);
+        setPaymentError(error.message);
+        return;
+      }); // Add Catch if create donation failes
     if (error) {
+      setIsPaymentProcessing(false);
       setPaymentError(error.message);
+      return;
     }
   };
 
