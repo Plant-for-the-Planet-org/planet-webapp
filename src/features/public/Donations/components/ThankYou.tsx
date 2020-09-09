@@ -7,10 +7,9 @@ import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-
+import {isMobileBrowser} from '../../../../utils/isMobileBrowser'
 import EmailIcon from '../../../../assets/images/icons/share/Email';
 import FacebookIcon from '../../../../assets/images/icons/share/Facebook';
 import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
@@ -57,7 +56,7 @@ const actions = [
     name: 'Linkedin',
     onClickAction: function () {
       window.open(
-        `https://www.linkedin.com/shareArticle?mini=true&url=&title=${textToShare}&summary=&source=`,
+        `https://www.linkedin.com/shareArticle?mini=true&title=${textToShare}`,
         '_blank'
       );
     },
@@ -129,10 +128,14 @@ function ThankYou({
         });
       } catch (error) {}
     } else {
-      /* copy to clipboard
+      if (isMobileBrowser()){
+      /* copy to clipboard */
        navigator.clipboard.writeText('Dummy text copied to clipboard!');
-       handleTextCopiedSnackbarOpen();   */
-      handleSpeedDialOpen()
+       handleTextCopiedSnackbarOpen();
+      } else {
+        handleSpeedDialOpen();
+      }
+      
     }
   };
 
@@ -188,12 +191,10 @@ function ThankYou({
       </div>
 
       <div className={styles.shareRow}>
-
         {/* div for button */}
         <div
           className={styles.buttonsContainer}
           onClick={shareClicked}
-          onMouseOver={handleSpeedDialOpen}
         >
           <div className={styles.downloadButton}>
             <div style={{ marginRight: '12px' }}>Share</div>
@@ -201,26 +202,26 @@ function ThankYou({
           </div>
         </div>
 
-
         {/* div for speed dial elements */}
-        <SpeedDial
-          ariaLabel="SpeedDial example"
-  
-          hidden={true}
-          onClose={handleSpeedDialClose}
-          // on open not needed
-          open={speedDialOpen}
-          direction={'right'}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              onClick={action.onClickAction}
-            />
-          ))}
-        </SpeedDial>
+        { speedDialOpen && (
+          <SpeedDial
+            ariaLabel="SpeedDial example"
+            hidden={true}
+            onClose={handleSpeedDialClose}
+            // on open not needed
+            open={speedDialOpen}
+            direction={'right'}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={action.onClickAction}
+              />
+            ))}
+          </SpeedDial>
+        )}
       </div>
 
       {/* snackbar for showing text copied to clipboard */}
