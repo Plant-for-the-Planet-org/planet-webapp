@@ -4,9 +4,10 @@ function Icon(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="512pt"
-      height="512pt"
+      width="65%"
+      height="65%"
       viewBox="0 0 512 512"
+      xmlSpace="preserve"
     >
       <path
         fill="#4267b2"

@@ -4,7 +4,7 @@ function Icon(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      
+      style={{border: 'none'}}
       enableBackground="new 0 0 477.867 477.867"
       version="1.1"
       viewBox="0 0 477.867 477.867"

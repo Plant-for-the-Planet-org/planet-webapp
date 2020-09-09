@@ -215,7 +215,7 @@ function ThankYou({
             hidden={true}
             onClose={handleSpeedDialClose}
             // on open not needed
-            open={speedDialOpen}
+            open={true} //TODO
             direction={'right'}
           >
             {actions.map((action) => (

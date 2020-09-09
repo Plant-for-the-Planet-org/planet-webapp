@@ -5,9 +5,10 @@ function Icon() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="512pt"
-      height="512pt"
+      width="65%"
+      height="65%"
       viewBox="0 0 512 512"
+      xmlSpace="preserve"
     >
       <linearGradient
         id="a"
