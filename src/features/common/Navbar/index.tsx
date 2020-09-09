@@ -2,10 +2,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
+import tenantConfig from '../../../../tenant.config';
 import Donate from '../../../assets/images/navigation/Donate';
 import Leaderboard from '../../../assets/images/navigation/Leaderboard';
 import Me from '../../../assets/images/navigation/Me';
 import styles from './Navbar.module.scss';
+const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
   const router = useRouter();
@@ -27,9 +29,10 @@ export default function NavbarComponent(props: any) {
             >
               <div className={styles.tenant_logo_container}>
                 <Nav.Link
+                  href={config.tenantLogoURL}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <a href="https://salesforce.com">
+                  <a href={config.tenantLogoURL}>
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
                     />
@@ -37,30 +40,32 @@ export default function NavbarComponent(props: any) {
                 </Nav.Link>
                 <div className={styles.logo_divider}></div>
                 <Nav.Link
+                  href="https://www.plant-for-the-planet.org"
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <a href={'https://www.plant-for-the-planet.org'}>
+                  <a href="https://www.plant-for-the-planet.org">
                     <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
                   </a>
                 </Nav.Link>
               </div>
             </div>
           ) : (
-              <div
-                className={`${styles.first_icon} ${styles.tenant_logo}`}
-                style={{ padding: '0rem 0.5rem' }}
-              >
-                <div className={styles.tenant_logo_container}>
-                  <Nav.Link
-                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                  >
-                    <a href={'https://www.plant-for-the-planet.org'}>
-                      <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
-                    </a>
-                  </Nav.Link>
-                </div>
+            <div
+              className={`${styles.first_icon} ${styles.tenant_logo}`}
+              style={{ padding: '0rem 0.5rem' }}
+            >
+              <div className={styles.tenant_logo_container}>
+                <Nav.Link
+                  href="https://www.plant-for-the-planet.org"
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
+                  <a href="https://www.plant-for-the-planet.org">
+                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                  </a>
+                </Nav.Link>
               </div>
-            )}
+            </div>
+          )}
           <Nav.Link>
             <Link href={'/'}>
               <div className={styles.link_container}>
@@ -169,21 +174,21 @@ export default function NavbarComponent(props: any) {
               </Nav.Link>
             </>
           ) : (
-              <>
-                <Nav.Link
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <a href={'https://www.plant-for-the-planet.org'}>
-                    <div
-                      className={styles.link_container}
-                      style={{ margin: '0px 8px' }}
-                    >
-                      <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
-                    </div>
-                  </a>
-                </Nav.Link>
-              </>
-            )}
+            <>
+              <Nav.Link
+                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+              >
+                <a href={'https://www.plant-for-the-planet.org'}>
+                  <div
+                    className={styles.link_container}
+                    style={{ margin: '0px 8px' }}
+                  >
+                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                  </div>
+                </a>
+              </Nav.Link>
+            </>
+          )}
           <Nav.Link>
             <Link href={'/'}>
               <div
