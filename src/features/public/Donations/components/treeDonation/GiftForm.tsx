@@ -23,33 +23,17 @@ export default function GiftForm({
       <div className={styles.singleGiftContainer}>
         <div className={styles.singleGiftTitle}>Gift Recepient</div>
         <div className={styles.formRow}>
-          <div>
+          <div style={{ width: '100%' }}>
             <MaterialTextFeild
-              name={'firstName'}
+              name={'recipientName'}
               onChange={changeGiftDetails}
-              label="First Name"
+              label="Recipient Name"
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
             />
-            {errors.firstName && (
+            {errors.recipientName && (
               <span className={styles.formErrors}>
-                First Name field is required
-              </span>
-            )}
-          </div>
-
-          <div style={{ width: '20px' }}></div>
-          <div>
-            <MaterialTextFeild
-              name={'lastName'}
-              onChange={changeGiftDetails}
-              label="Last Name"
-              variant="outlined"
-              inputRef={isGift ? register({ required: true }) : register({})}
-            />
-            {errors.lastName && (
-              <span className={styles.formErrors}>
-                Last Name field is required
+                Recipient Name field is required
               </span>
             )}
           </div>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
+import tenantConfig from '../../../../tenant.config';
 import Donate from '../../../assets/images/navigation/Donate';
 import DonateSelected from '../../../assets/images/navigation/DonateSelected';
 import Globe from '../../../assets/images/navigation/Globe';
@@ -11,6 +12,7 @@ import LeaderboardSelected from '../../../assets/images/navigation/LeaderboardSe
 import Me from '../../../assets/images/navigation/Me';
 import MeSelected from '../../../assets/images/navigation/MeSelected';
 import styles from './Navbar.module.scss';
+const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
   const router = useRouter();
@@ -32,9 +34,10 @@ export default function NavbarComponent(props: any) {
             >
               <div className={styles.tenant_logo_container}>
                 <Nav.Link
+                  href={config.tenantLogoURL}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <a href="https://salesforce.com">
+                  <a href={config.tenantLogoURL}>
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
                     />
@@ -42,9 +45,10 @@ export default function NavbarComponent(props: any) {
                 </Nav.Link>
                 <div className={styles.logo_divider}></div>
                 <Nav.Link
+                  href="https://www.plant-for-the-planet.org"
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <a href={'https://www.plant-for-the-planet.org'}>
+                  <a href="https://www.plant-for-the-planet.org">
                     <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
                   </a>
                 </Nav.Link>
@@ -57,9 +61,10 @@ export default function NavbarComponent(props: any) {
             >
               <div className={styles.tenant_logo_container}>
                 <Nav.Link
+                  href="https://www.plant-for-the-planet.org"
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <a href={'https://www.plant-for-the-planet.org'}>
+                  <a href="https://www.plant-for-the-planet.org">
                     <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
                   </a>
                 </Nav.Link>

@@ -2,6 +2,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
+import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
@@ -17,6 +18,7 @@ import styles from '../styles/MapboxMap.module.scss';
 
 export default function MapboxMap(props) {
   var timer;
+  const router = useRouter();
   const projects = props.projects;
   const project = props.project;
   const mapRef = useRef(null);
@@ -121,6 +123,14 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        router.push(
+          '/?p=' + project.slug,
+          //  +
+          // '&s=' +
+          // project.sites[currentSite].properties.id
+          undefined,
+          { shallow: true }
+        );
         setTimeout(() => {
           setMapState(newMapState);
         }, [3800]);
@@ -139,6 +149,7 @@ export default function MapboxMap(props) {
         };
 
         setViewPort(newViewport);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
         setMapState(newMapState);
       }
     }
@@ -170,6 +181,14 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        router.push(
+          '/?p=' + project.slug,
+          //  +
+          // '&s=' +
+          // project.sites[currentSite].properties.id
+          undefined,
+          { shallow: true }
+        );
         setTimeout(() => {
           setMapState(newMapState);
         }, [2300]);

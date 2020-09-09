@@ -1,4 +1,5 @@
 import React from 'react';
+import Sugar from 'sugar';
 import styles from './../LeaderBoard.module.scss';
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
 
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
+  const leaderboardData = leaderboard.leaderboard.leaderboard;
+
   return (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
@@ -35,46 +38,44 @@ export default function LeaderBoardSection(leaderboard: Props) {
               Most Trees
             </div>
           </div>
-          {leaderboard.leaderboard.leaderboard !== null ? (
+          {leaderboardData !== null &&
+          leaderboardData.mostRecent &&
+          leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboard.leaderboard.leaderboard.mostRecent.map(
-                  (leader: any) => {
-                    return (
-                      <div className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {leader.treeCount} Trees
-                        </p>
-                        <p className={styles.leaderBoardDonorTime}>
+                {leaderboardData.mostRecent.map((leader: any) => {
+                  return (
+                    <div className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {Sugar.Number.format(Number(leader.treeCount))} Trees
+                      </p>
+                      {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
-                        </p>
-                      </div>
-                    );
-                  }
-                )}
+                        </p> */}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboard.leaderboard.leaderboard.mostDonated.map(
-                  (leader: any) => {
-                    return (
-                      <div className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {leader.treeCount} Trees
-                        </p>
-                        <p className={styles.leaderBoardDonorTime}>
+                {leaderboardData.mostDonated.map((leader: any) => {
+                  return (
+                    <div className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {Sugar.Number.format(Number(leader.treeCount))} Trees
+                      </p>
+                      {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
-                        </p>
-                      </div>
-                    );
-                  }
-                )}
+                        </p> */}
+                    </div>
+                  );
+                })}
               </div>
             )
           ) : (
@@ -85,6 +86,10 @@ export default function LeaderBoardSection(leaderboard: Props) {
       <img
         className={styles.leaderBoardBushImage}
         src={'/tenants/salesforce/images/Bush.png'}
+      />
+      <img
+        className={styles.leaderBoardBushImageMobile}
+        src={'/tenants/salesforce/images/mobile/Bush.png'}
       />
     </section>
   );
