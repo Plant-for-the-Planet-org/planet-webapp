@@ -49,7 +49,6 @@ function ThankYou({
 }: ThankYouProps): ReactElement {
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [speedDialOpen, setSpeedDialOpen] = React.useState(false);
-  console.log('curent', currentHover);
   const actions = [
     {
       icon: (
