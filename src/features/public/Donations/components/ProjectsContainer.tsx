@@ -228,7 +228,7 @@ export default function ProjectsContainer({
         {searchMode ? (
           <div className={styles.headerSearchMode}>
             <div className={styles.searchIcon}>
-              <SearchIcon />
+              <SearchIcon color={styles.primaryFontColor} />
             </div>
 
             <div className={styles.searchInput}>
@@ -249,7 +249,7 @@ export default function ProjectsContainer({
                 console.log(searchRef);
               }}
             >
-              <CancelIcon />
+              <CancelIcon color={styles.primaryFontColor} />
             </div>
           </div>
         ) : (
