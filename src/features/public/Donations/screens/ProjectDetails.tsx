@@ -107,7 +107,7 @@ function ProjectDetails({ project }: Props): ReactElement {
         ),
       });
     });
-  }, [])
+  }, []);
 
   return (
     <>
@@ -140,9 +140,7 @@ function ProjectDetails({ project }: Props): ReactElement {
                     }}
                   >
                     <Link prefetch={false} href="/" as={`/`}>
-                      <a>
-                        <BackButton />
-                      </a>
+                      <BackButton />
                     </Link>
                   </div>
                 </LazyLoad>
@@ -194,8 +192,8 @@ function ProjectDetails({ project }: Props): ReactElement {
                       {project.currency === 'USD'
                         ? '$'
                         : project.currency === 'EUR'
-                          ? '€'
-                          : project.currency}{' '}
+                        ? '€'
+                        : project.currency}{' '}
                       {project.treeCost % 1 !== 0
                         ? project.treeCost.toFixed(2)
                         : project.treeCost}

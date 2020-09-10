@@ -1,6 +1,9 @@
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
+import Sugar from 'sugar';
+import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
-import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 
@@ -36,6 +39,27 @@ function ThankYou({
       paymentTypeUsed = 'Credit Card';
   }
 
+  function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
+    false
+  );
+
+  const handleTextCopiedSnackbarOpen = () => {
+    setTextCopiedSnackbarOpen(true);
+  };
+  const handleTextCopiedSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setTextCopiedSnackbarOpen(false);
+  };
+
   const shareClicked = async () => {
     if (navigator.share !== undefined) {
       // if in phone and web share API supported
@@ -45,14 +69,17 @@ function ThankYou({
           text:
             'Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out salesforce.com/trees if you want to plant some too!\n',
         });
-        console.log('Share complete', response);
+        // console.log('Share complete', response);
       } catch (error) {
-        console.error('Could not share at this time', error);
+        // console.error('Could not share at this time', error);
       }
+    } else {
+      // copy to clipboard
+      navigator.clipboard.writeText('Dummy text copied to clipboard!');
+      handleTextCopiedSnackbarOpen();
     }
   };
 
-  console.log('Project', project);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -63,14 +90,16 @@ function ThankYou({
       </div>
 
       <div className={styles.contributionAmount}>
-        Your Donation of {currency} {Number(treeCount * treeCost).toFixed(2)}{' '}
-        was paid with {paymentTypeUsed}
+        Your {currency}{' '}
+        {Sugar.Number.format(Number(treeCount * treeCost), 2)} donation was successfully paid with{' '}
+        {paymentTypeUsed}.
       </div>
 
       <div className={styles.contributionMessage}>
         {isGift &&
-          `We've sent an email to ${giftDetails.firstName} ${giftDetails.lastName} about the gift.`}{' '}
-        Your {treeCount} trees will be planted by {project.name}.
+          `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
+        Your {treeCount} trees will be planted by {project.name} in {project.location}. Maybe you'll visit them some day?
+In the mean time, maybe hook up your friends with some trees of their own by telling them our yours?
       </div>
 
       <div className={styles.horizontalLine} />
@@ -98,9 +127,21 @@ function ThankYou({
                 </div> */}
         {/* <div style={{ width: '20px' }}></div> */}
         <div className={styles.downloadButton} onClick={shareClicked}>
-          <Share color={'#87b738'} />
+          <div style={{ marginRight: '12px' }}>Share</div>
+          <ShareFilled height={'18px'} width={'18px'} color={'#fff'} />
         </div>
       </div>
+
+      {/* snackbar for showing text copied to clipboard */}
+      <Snackbar
+        open={textCopiedsnackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleTextCopiedSnackbarClose}
+      >
+        <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+          Text Copied to Clipboard!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

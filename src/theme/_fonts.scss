@@ -1,4 +1,4 @@
-$primaryFontFamily: 'Raleway', sans-serif;
-$fontSubTitleSize: 14px;
+$primaryFontFamily: var(--primary-font-family);
+$fontSubTitleSize: var(--sub-title-size);
 
-$openSans: 'Open Sans', sans-serif;
+$secondaryFontFamily: var(--secondary-font-family);

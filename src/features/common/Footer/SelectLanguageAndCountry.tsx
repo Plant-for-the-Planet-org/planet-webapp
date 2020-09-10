@@ -133,6 +133,7 @@ function MapCountry(props) {
         name="language"
         value={value}
         onChange={handleChange}
+        className={styles.currencyGrid}
       >
         {sortedCountriesData.map((country) => (
           <FormControlLabel
@@ -156,6 +157,7 @@ function MapLanguage(props) {
         name="language"
         value={value}
         onChange={handleChange}
+        className={styles.currencyGrid}
       >
         {supportedLanguages.map((lang) => (
           <FormControlLabel

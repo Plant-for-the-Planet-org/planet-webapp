@@ -4,7 +4,7 @@
   background-color: $light;
   border-radius: 7px;
   padding: 20px;
-  width: 412px;
+  width: 320px;
 }
 
 .header {
@@ -50,7 +50,7 @@
 
 .horizontalLine {
   height: 1px;
-  background-color: $dividerColor;
+  background-color: #d5d5d5;
   margin-top: 20px;
 }
 
@@ -59,13 +59,14 @@
   justify-content: center;
 }
 .thankyouImage {
-  background-image:url('/tenants/planet/images/donations/donationComplete.jpg') ;
+  background-image: url('/tenants/planet/images/donations/donationComplete.jpg');
   background-position: center;
   background-size: cover;
   border-radius: 7px;
-  margin: 20px;
-  height: 280px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   width: 280px;
+  height: 280px;
   align-self: center;
   position: relative;
   display: flex;
@@ -83,7 +84,7 @@
   color: $light;
 }
 
-.donationTenant{
+.donationTenant {
   font-size: 13px;
   font-family: $primaryFontFamily;
   font-weight: 400;
@@ -109,20 +110,32 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: -40px;
+  margin-top: -30px;
   z-index: 10;
 }
 .downloadButton {
   border-radius: 40px;
   height: 48px;
-  width: 48px;
-  border: 1px solid $primaryColor;
+  padding: 12px 36px;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10;
-  background-color: $light;
-  :hover{
+  background-color: $primaryColor;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-weight: 600;
+  :hover {
     cursor: pointer;
+  }
+}
+
+@include tabletView {
+  .container {
+    width: 412px;
+  }
+  .thankyouImage {
+    width: 372px;
+    height: 372px;
   }
 }

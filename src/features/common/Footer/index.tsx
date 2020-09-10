@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
 import World from '../../../assets/images/footer/World';
-import PlanetLogo from '../../../assets/images/PlanetLogo';
 import getLanguageName from '../../../utils/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
@@ -72,7 +71,7 @@ export default function Footer() {
 
   return (
     <footer>
-      <div className="container">
+      <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
 
         <div className={styles.footer_container}>
@@ -111,7 +110,10 @@ export default function Footer() {
           <div className={styles.logo_container}>
             <div className={styles.pfp_logo}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank">
-                <PlanetLogo />
+                <img
+                  src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                  alt="About Plant-for-the-Planet"
+                />
               </a>
             </div>
             {process.env.TENANT === 'planet' ||

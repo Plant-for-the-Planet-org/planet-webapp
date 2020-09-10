@@ -73,7 +73,7 @@
 }
 
 .searchIcon {
-  margin-right: 8px;
+  margin-left: 6px;
   padding: 10px;
   font-size: 12px;
 }
@@ -87,8 +87,12 @@
 }
 
 .cancelIcon {
-  margin-right: 10px;
+  margin-right: 6px;
   padding: 10px;
+}
+
+.cancelIcon > svg {
+  width: 20px;
 }
 
 .cancelIcon:hover {
@@ -190,7 +194,9 @@
 
 .costButton {
   background-color: $primaryColor;
-  width: 72px;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
   height: 22px;
   display: flex;
   justify-content: center;
@@ -198,7 +204,7 @@
   border-radius: 11px;
   color: $light;
   font-weight: bold;
-  font-family: $openSans;
+  font-family: $secondaryFontFamily;
   font-size: $fontSubTitleSize;
   text-transform: uppercase;
 }
@@ -301,4 +307,9 @@
     overflow-x: hidden;
     overflow-y: scroll;
   }
+}
+
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
 }

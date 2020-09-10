@@ -3,12 +3,16 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   CardCvcElement,
   CardExpiryElement,
-  CardNumberElement, IbanElement, useElements, useStripe
+  CardNumberElement,
+  IbanElement,
+  useElements,
+  useStripe,
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
+import Sugar from 'sugar';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
-import PaypalIcon from '../../../../assets/images/icons/donation/PaypalIcon';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getCardBrand } from '../../../../utils/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
@@ -23,7 +27,7 @@ const FormControlNew = withStyles({
     border: '0px!important',
     borderRadius: '10px',
     fontFamily: 'Raleway, sans-serif',
-    padding: '18.5px'
+    padding: '18.5px',
   },
 })(FormControl);
 const ELEMENT_OPTIONS = {
@@ -48,25 +52,24 @@ const getInputOptions = (placeholder: string) => {
   const ObjectM = {
     style: {
       base: {
-        color: "#32325d",
+        color: '#32325d',
         fontFamily: 'Raleway, sans-serif',
-        fontSize: "16px",
-        "::placeholder": {
+        fontSize: '16px',
+        '::placeholder': {
           color: '#2F3336',
           fontFamily: 'Raleway, sans-serif',
           fontSize: '14px',
         },
       },
       invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
+        color: '#fa755a',
+        iconColor: '#fa755a',
       },
     },
-    placeholder: placeholder
+    placeholder: placeholder,
   };
   return ObjectM;
-}
-
+};
 
 function PaymentDetails({
   paymentSetup,
@@ -78,25 +81,25 @@ function PaymentDetails({
   contactDetails,
   isGift,
   giftDetails,
-  paymentType, setPaymentType
+  paymentType,
+  setPaymentType,
 }: PaymentDetailsProps): ReactElement {
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
   const elements = useElements();
 
-  const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false)
+  const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
   React.useEffect(() => {
-    setPaymentType('CARD')
-  }, [])
+    setPaymentType('CARD');
+  }, []);
 
-  const [isSepa, setIsSepa] = React.useState(false)
+  const [isSepa, setIsSepa] = React.useState(false);
 
   const [paymentError, setPaymentError] = React.useState('');
-
   const [showContinue, setShowContinue] = React.useState(false);
-  const [showBrand, setShowBrand] = React.useState('')
+  const [showBrand, setShowBrand] = React.useState('');
   React.useEffect(() => {
     const cardNumberElement = elements!.getElement(CardNumberElement);
     cardNumberElement!.on('change', ({ error, complete, brand }) => {
@@ -114,15 +117,15 @@ function PaymentDetails({
               if (error) {
                 setShowContinue(false);
               } else if (complete) {
-                setShowContinue(true)
+                setShowContinue(true);
               }
             });
           }
         });
       }
     });
-  }, [CardNumberElement, CardExpiryElement, CardCvcElement])
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (!stripe || !elements) {
       return;
@@ -132,7 +135,6 @@ function PaymentDetails({
     let error;
 
     if (paymentType === 'CARD') {
-
       const cardElement = elements!.getElement(CardNumberElement);
       cardElement!.on('change', ({ error }) => {
         const displayError = document.getElementById('payment-errors');
@@ -141,23 +143,42 @@ function PaymentDetails({
           return;
         }
       });
-      const payload = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement!,
-      });
+      const payload = await stripe
+        .createPaymentMethod({
+          type: 'card',
+          card: cardElement!,
+        })
+        .catch((error) => {
+          setPaymentError(error.message);
+          return;
+        });
       paymentMethod = payload.paymentMethod;
+      // Add payload error if failed
     } else if (paymentType === 'SEPA') {
-      const payload = await stripe.createPaymentMethod({
-        type: 'sepa_debit',
-        sepa_debit: elements.getElement(IbanElement)!,
-        billing_details: {
-          name: contactDetails.firstName,
-          email: contactDetails.email,
-        },
-      });
+      const payload = await stripe
+        .createPaymentMethod({
+          type: 'sepa_debit',
+          sepa_debit: elements.getElement(IbanElement)!,
+          billing_details: {
+            name: contactDetails.firstName,
+            email: contactDetails.email,
+          },
+        })
+        .catch((error) => {
+          setPaymentError(error.message);
+          return;
+        });
       paymentMethod = payload.paymentMethod;
+      // Add payload error if failed
     }
-    setIsPaymentProcessing(true)
+    setIsPaymentProcessing(true);
+    let countryCode = getCountryDataBy(
+      'countryName',
+      contactDetails.country.toString()
+    )
+      ? getCountryDataBy('countryName', contactDetails.country.toString())
+          .countryCode
+      : null;
     let createDonationData = {
       type: 'trees',
       project: project.id,
@@ -171,66 +192,131 @@ function PaymentDetails({
         address: contactDetails.address,
         zipCode: contactDetails.zipCode,
         city: contactDetails.city,
-        country: contactDetails.country.toUpperCase(),
+        country: countryCode,
       },
-    }
+    };
     let gift = {
       gift: {
         type: 'invitation',
-        recipientName: giftDetails.firstName,
+        recipientName: giftDetails.recipientName,
         recipientEmail: giftDetails.email,
-        message: giftDetails.giftMessage
-      }
-    }
+        message: giftDetails.giftMessage,
+      },
+    };
     if (isGift) {
       createDonationData = {
         ...createDonationData,
-        ...gift
-      }
-    }
-    createDonation(createDonationData).then((res) => {
-      // Code for Payment API
-      const payDonationData = {
-        paymentProviderRequest: {
-          account: paymentSetup.gateways.stripe.account,
-          gateway: 'stripe_pi',
-          source: {
-            id: paymentMethod.id,
-            object: 'payment_method',
-          },
-        },
+        ...gift,
       };
+    }
+    createDonation(createDonationData)
+      .then((res) => {
+        // Code for Payment API
 
-      payDonation(payDonationData, res.id).then((res) => {
-        if (res.paymentStatus === 'success') {
-          setIsPaymentProcessing(false)
-          setDonationStep(4);
+        if (res.code === 400) {
+          setIsPaymentProcessing(false);
+          setPaymentError(res.message);
+          return;
+        } else {
+          const payDonationData = {
+            paymentProviderRequest: {
+              account: paymentSetup.gateways.stripe.account,
+              gateway: 'stripe_pi',
+              source: {
+                id: paymentMethod.id,
+                object: 'payment_method',
+              },
+            },
+          };
+
+          payDonation(payDonationData, res.id)
+            .then(async (res) => {
+              if (res.status === 'failed') {
+                setIsPaymentProcessing(false);
+                setPaymentError(res.message);
+                return;
+              } else {
+                if (res.paymentStatus === 'success') {
+                  setIsPaymentProcessing(false);
+                  setDonationStep(4);
+                } else if (res.status === 'action_required') {
+                  const clientSecret =
+                    res.response.payment_intent_client_secret;
+                  const donationID = res.id;
+                  const stripe = window.Stripe(
+                    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+                    {
+                      stripeAccount: res.response.account,
+                    }
+                  );
+                  if (stripe) {
+                    await stripe.handleCardAction(clientSecret).then((res) => {
+                      if (res.error) {
+                        setIsPaymentProcessing(false);
+                        setPaymentError(res.error.message);
+                      } else {
+                        const payDonationData = {
+                          paymentProviderRequest: {
+                            account: paymentSetup.gateways.stripe.account,
+                            gateway: 'stripe_pi',
+                            source: {
+                              id: res.paymentIntent.id,
+                              object: 'payment_intent',
+                            },
+                          },
+                        };
+                        payDonation(payDonationData, donationID).then((res) => {
+                          if (res.paymentStatus === 'success') {
+                            setIsPaymentProcessing(false);
+                            setDonationStep(4);
+                          } else {
+                            setIsPaymentProcessing(false);
+                            setPaymentError(res.error.message);
+                          }
+                        });
+                      }
+                    });
+                  }
+                }
+              }
+            })
+            .catch((error) => {
+              setIsPaymentProcessing(false);
+              setPaymentError(error.message);
+              return;
+            }); // Add Catch if pay donation failes
         }
-      });
-    });
+      })
+      .catch((error) => {
+        setIsPaymentProcessing(false);
+        setPaymentError(error.message);
+        return;
+      }); // Add Catch if create donation failes
     if (error) {
-      setPaymentError(error.message)
+      setIsPaymentProcessing(false);
+      setPaymentError(error.message);
+      return;
     }
   };
 
-  return isPaymentProcessing ?
+  return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-    : (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div
-            onClick={() => setDonationStep(2)}
-            className={styles.headerBackIcon}
-          >
-            <BackArrow />
-          </div>
-          <div className={styles.headerTitle}>Payment Details</div>
+  ) : (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div
+          onClick={() => setDonationStep(2)}
+          className={styles.headerBackIcon}
+        >
+          <BackArrow />
         </div>
-        {paymentError && <pre className={styles.paymentError}>
-          Error, Payment failed. Please try again.
-      </pre>}
+        <div className={styles.headerTitle}>Payment Details</div>
+      </div>
+      {paymentError && (
+        <div className={styles.paymentError}>{paymentError}</div>
+      )}
 
-
+      {
         <div className={styles.paymentModeContainer}>
           <div className={styles.paymentModeHeader}>
             {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
@@ -244,15 +330,11 @@ function PaymentDetails({
 
           <div className={styles.formRow}>
             <FormControlNew variant="outlined">
-
               <CardNumberElement
                 id="cardNumber"
                 options={getInputOptions('Card Number')}
               />
-
-
             </FormControlNew>
-
           </div>
           <div className={styles.formRow}>
             <FormControlNew variant="outlined">
@@ -260,15 +342,10 @@ function PaymentDetails({
                 id="expiry"
                 options={getInputOptions('Exp. Date (MM/YY)')}
               />
-
             </FormControlNew>
             <div style={{ width: '20px' }}></div>
             <FormControlNew variant="outlined">
-              <CardCvcElement
-                id="cvc"
-                options={getInputOptions('CVV')}
-              />
-
+              <CardCvcElement id="cvc" options={getInputOptions('CVV')} />
             </FormControlNew>
           </div>
           {/* <div className={styles.saveCard}>
@@ -283,20 +360,21 @@ function PaymentDetails({
           />
         </div> */}
         </div>
+      }
 
-        <div className={styles.paymentModeContainer}>
+      {/* <div className={styles.paymentModeContainer}>
           <div className={styles.paymentModeHeader}>
-            {/* <PaypalButton /> */}
+            <PaypalButton />
             <PaypalIcon />
             <div className={styles.paymentModeTitle}>Paypal</div>
-            {/* <div className={styles.paymentModeFee}>
+            <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
             <InfoIcon />
-          </div> */}
           </div>
-        </div>
+          </div>
+        </div> */}
 
-        {/* <div className={styles.paymentModeContainer}>
+      {/* <div className={styles.paymentModeContainer}>
         <div onClick={() => {
           setIsSepa(!isSepa), setPaymentType('SEPA')
         }} className={styles.paymentModeHeader}>
@@ -327,20 +405,28 @@ function PaymentDetails({
         </div>)}
       </div> */}
 
-
-        <div className={styles.horizontalLine} />
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {currency} {(treeCount * treeCost).toFixed(2)}{' '}
-          </div>
-          <div className={styles.totalCostText}>for {treeCount} Trees</div>
+      <div className={styles.horizontalLine} />
+      <div className={styles.finalTreeCount}>
+        <div className={styles.totalCost}>
+          {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
         </div>
-        <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-          {showContinue ? <AnimatedButton className={styles.continueButton}>Continue</AnimatedButton> : <AnimatedButton disabled className={styles.continueButtonDisabled}>Continue</AnimatedButton>}
-
+        <div className={styles.totalCostText}>
+          for {Sugar.Number.format(Number(treeCount))} Trees
         </div>
       </div>
-    );
+      <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
+        {showContinue ? (
+          <AnimatedButton className={styles.continueButton}>
+            Continue
+          </AnimatedButton>
+        ) : (
+          <AnimatedButton disabled className={styles.continueButtonDisabled}>
+            Continue
+          </AnimatedButton>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default PaymentDetails;
