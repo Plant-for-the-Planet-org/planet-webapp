@@ -9,64 +9,32 @@ import styles from './../styles/ThankYou.module.scss';
 import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import {isMobileBrowser} from '../../../../utils/isMobileBrowser'
+import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFacebook,
+  faTwitter,
+  faLinkedin,
+  faLinkedinIn,
+} from '@fortawesome/free-brands-svg-icons';
+
 import EmailIcon from '../../../../assets/images/icons/share/Email';
 import FacebookIcon from '../../../../assets/images/icons/share/Facebook';
 import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
 import LinkedinIcon from '../../../../assets/images/icons/share/Linkedin';
+import { faDownload, faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { blue } from '@material-ui/core/colors';
 
 const titleToShare = 'Planting trees against the climate crisis!';
-const urlToShare = (process.env.TENANT === 'salesforce'
-? 'https://www.salesforce.com/'
-: 'https://www.trilliontreecampaign.org/');
-const linkToShare = (process.env.TENANT === 'salesforce'
-? 'salesforce.com/trees'
-: 'trilliontreecampaign.org');
-const textToShare =
-  `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
-
-const actions = [
-  {
-    icon: <EmailIcon />,
-    name: 'Email',
-    onClickAction: function () {
-      window.open(
-        `mailto:?subject=${titleToShare}&body=${textToShare}`,
-        '_blank'
-      );
-    },
-  },
-  {
-    icon: <FacebookIcon />,
-    name: 'Facebook',
-    onClickAction: function () {
-      window.open(
-        `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
-        '_blank'
-      );
-    },
-  },
-  {
-    icon: <TwitterIcon />,
-    name: 'Twitter',
-    onClickAction: function () {
-      window.open(
-        `https://twitter.com/intent/tweet?text=${textToShare}`,
-        '_blank'
-      );
-    },
-  },
-  {
-    icon: <LinkedinIcon />,
-    name: 'Linkedin',
-    onClickAction: function () {
-      window.open(
-        `https://www.linkedin.com/shareArticle?mini=true&title=${textToShare}`,
-        '_blank'
-      );
-    },
-  },
-];
+const urlToShare =
+  process.env.TENANT === 'salesforce'
+    ? 'https://www.salesforce.com/'
+    : 'https://www.trilliontreecampaign.org/';
+const linkToShare =
+  process.env.TENANT === 'salesforce'
+    ? 'salesforce.com/trees'
+    : 'trilliontreecampaign.org';
+const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 function ThankYou({
   project,
@@ -79,7 +47,79 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
+  const [currentHover, setCurrentHover] = React.useState(-1);
   const [speedDialOpen, setSpeedDialOpen] = React.useState(false);
+  console.log('curent', currentHover);
+  const actions = [
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faDownload}
+          height="30px"
+          color={currentHover === 1 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.8)'}
+          onMouseOver={() => setCurrentHover(1)}
+        />
+      ),
+      name: 'Email',
+      onClickAction: function () {
+        window.open(
+          `mailto:?subject=${titleToShare}&body=${textToShare}`,
+          '_blank'
+        );
+      },
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faFacebook}
+          height="35px"
+          color={currentHover === 2 ? '#3b5998' : 'rgba(0,0,0,0.8)'}
+          onMouseOver={() => setCurrentHover(2)}
+        />
+      ),
+      name: 'Facebook',
+      onClickAction: function () {
+        window.open(
+          `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
+          '_blank'
+        );
+      },
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faTwitter}
+          color={currentHover === 3 ? '#00acee' : 'rgba(0,0,0,0.8)'}
+          height="30px"
+          onMouseOver={() => setCurrentHover(3)}
+        />
+      ),
+      name: 'Twitter',
+      onClickAction: function () {
+        window.open(
+          `https://twitter.com/intent/tweet?text=${textToShare}`,
+          '_blank'
+        );
+      },
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faLinkedinIn}
+          height="30px"
+          color={currentHover === 4 ? '#0e76a8' : 'rgba(0,0,0,0.8)'}
+          onMouseOver={() => setCurrentHover(4)}
+        />
+      ),
+      name: 'Linkedin',
+      onClickAction: function () {
+        window.open(
+          `https://www.linkedin.com/shareArticle?mini=true&title=${textToShare}`,
+          '_blank'
+        );
+      },
+    },
+  ];
 
   let paymentTypeUsed;
   switch (paymentType) {
@@ -133,14 +173,13 @@ function ThankYou({
         });
       } catch (error) {}
     } else {
-      if (isMobileBrowser()){
-      /* copy to clipboard */
-       navigator.clipboard.writeText('Dummy text copied to clipboard!');
-       handleTextCopiedSnackbarOpen();
+      if (isMobileBrowser()) {
+        /* copy to clipboard */
+        navigator.clipboard.writeText('Dummy text copied to clipboard!');
+        handleTextCopiedSnackbarOpen();
       } else {
         handleSpeedDialOpen();
       }
-      
     }
   };
 
@@ -209,13 +248,13 @@ function ThankYou({
         </div>
 
         {/* div for speed dial elements */}
-        { !(isMobileBrowser()) && (
+        {!isMobileBrowser() && (
           <SpeedDial
             ariaLabel="SpeedDial example"
             hidden={true}
             onClose={handleSpeedDialClose}
             // on open not needed
-            open={true} //TODO
+            open={true}
             direction={'right'}
           >
             {actions.map((action) => (
@@ -225,6 +264,7 @@ function ThankYou({
                 icon={action.icon}
                 tooltipTitle={action.name}
                 onClick={action.onClickAction}
+                onMouseOut={() => setCurrentHover(-1)}
               />
             ))}
           </SpeedDial>
