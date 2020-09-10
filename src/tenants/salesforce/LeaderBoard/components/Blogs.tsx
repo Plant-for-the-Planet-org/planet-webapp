@@ -36,7 +36,11 @@ export default function Blogs() {
           return (
             <Col key={blog.id} sm={10} lg={4} xl={4}>
               <div className={styles.blogSingleContainer}>
-                <img className={styles.blogImage} src={blog.imagePath} />
+                <img
+                  className={styles.blogImage}
+                  src={blog.imagePath}
+                  alt={blog.name}
+                />
                 <div className={styles.blogImageOverlay}></div>
                 <div className={styles.blogInfoSection}>
                   {/* <p className={styles.blogtreeCount}>{blog.treeCount}</p> */}

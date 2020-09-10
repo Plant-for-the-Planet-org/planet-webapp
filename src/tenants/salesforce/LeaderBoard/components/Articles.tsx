@@ -46,7 +46,11 @@ export default function Articles() {
           return (
             <Col key={article.id} sm={10} lg={6}>
               <div className={styles.articleSingleContainer}>
-                <img className={styles.articleImage} src={article.imagePath} />
+                <img
+                  className={styles.articleImage}
+                  src={article.imagePath}
+                  alt={article.name}
+                />
                 {/* <div className={styles.articleImageOverlay}></div> */}
                 <div className={styles.articleInfoSection}>
                   <p className={styles.articleTitle}>{article.name}</p>

@@ -29,6 +29,7 @@ export default function TreeCounterSection() {
           <img
             className={styles.treeCounterImage}
             src={'/tenants/salesforce/images/TreeCounterImage.png'}
+            alt="Treecounter Image"
           />
         </Col>
       </Row>
