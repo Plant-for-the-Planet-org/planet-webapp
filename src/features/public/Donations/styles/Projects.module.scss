@@ -73,7 +73,7 @@
 }
 
 .searchIcon {
-  margin-right: 8px;
+  margin-left: 6px;
   padding: 10px;
   font-size: 12px;
 }
@@ -87,8 +87,12 @@
 }
 
 .cancelIcon {
-  margin-right: 10px;
+  margin-right: 6px;
   padding: 10px;
+}
+
+.cancelIcon > svg {
+  width: 20px;
 }
 
 .cancelIcon:hover {
@@ -303,4 +307,9 @@
     overflow-x: hidden;
     overflow-y: scroll;
   }
+}
+
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
 }

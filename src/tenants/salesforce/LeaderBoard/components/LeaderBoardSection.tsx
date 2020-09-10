@@ -70,9 +70,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       <p className={styles.leaderBoardDonorTrees}>
                         {Sugar.Number.format(Number(leader.treeCount))} Trees
                       </p>
-                      {/* <p className={styles.leaderBoardDonorTime}>
-                          {leader.created}
-                        </p> */}
                     </div>
                   );
                 })}
@@ -86,10 +83,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
       <img
         className={styles.leaderBoardBushImage}
         src={'/tenants/salesforce/images/Bush.png'}
+        alt=""
       />
       <img
         className={styles.leaderBoardBushImageMobile}
         src={'/tenants/salesforce/images/mobile/Bush.png'}
+        alt=""
       />
     </section>
   );

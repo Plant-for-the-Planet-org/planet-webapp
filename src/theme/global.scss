@@ -1,3 +1,5 @@
+@import './theme';
+
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
 }
@@ -23,4 +25,8 @@ body {
   line-height: 1.43;
   letter-spacing: 0.01071em;
   background-color: #fafafa;
+}
+
+.MuiInput-underline:after {
+  border-bottom: 2px solid $primaryColor !important;
 }

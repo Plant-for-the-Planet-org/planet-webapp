@@ -7,6 +7,7 @@
   justify-content: center;
   align-items: center;
   margin: 0px 12px;
+  cursor: pointer;
 }
 .link_icon {
   width: 24px;
@@ -69,6 +70,12 @@
 .nav_container {
   height: 60px;
 }
+
+.navlink {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
 .mobile_nav {
   justify-content: space-around !important;
   width: 100%;

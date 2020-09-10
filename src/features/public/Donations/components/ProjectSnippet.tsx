@@ -61,30 +61,29 @@ export default function ProjectSnippet({
           <DonationsPopup project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      <a>
-        <div onClick={handleOpenProject} className={styles.projectImage}>
-          {project.properties.image &&
-          typeof project.properties.image !== 'undefined' ? (
-            <div
-              className={styles.projectImageFile}
-              style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                backgroundPosition: 'center',
-              }}
-            ></div>
-          ) : null}
 
-          <div className={styles.projectImageBlock}>
-            {/* <div className={styles.projectType}>
+      <div onClick={handleOpenProject} className={styles.projectImage}>
+        {project.properties.image &&
+        typeof project.properties.image !== 'undefined' ? (
+          <div
+            className={styles.projectImageFile}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ) : null}
+
+        <div className={styles.projectImageBlock}>
+          {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-            <div className={styles.projectName}>
-              {Sugar.String.truncate(project.properties.name, 54)}
-            </div>
+          <div className={styles.projectName}>
+            {Sugar.String.truncate(project.properties.name, 54)}
           </div>
         </div>
-      </a>
+      </div>
 
       <div className={styles.progressBar}>
         <div
