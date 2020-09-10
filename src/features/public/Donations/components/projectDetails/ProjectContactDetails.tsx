@@ -22,14 +22,12 @@ function ProjectContactDetails({ contactDetails }: Props): ReactElement {
           href="/t/[id]"
           as={`/t/${contactDetails[0].link}`}
         >
-          <a>
-            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-              {contactDetails[0].icon}
-              <span style={{ marginLeft: '16px', flexGrow: 1 }}>
-                {contactDetails[0].text}
-              </span>
-            </div>
-          </a>
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails[0].icon}
+            <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+              {contactDetails[0].text}
+            </span>
+          </div>
         </Link>
       </div>
       <div>

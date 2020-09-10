@@ -17,7 +17,7 @@
   height: 100%;
 }
 
-.treeCounterDataField > h1 {
+.treeCounterDataField > .countNumber {
   color: $light;
   font-family: $primaryFontFamily;
   font-weight: bold;
@@ -25,7 +25,7 @@
   font-size: calc(36px + (42 - 36) * ((100vw - 300px) / (1600 - 300)));
   margin-bottom: 10px;
 }
-.treeCounterDataField > h2 {
+.treeCounterDataField > .countLabel {
   color: $light;
   font-family: $primaryFontFamily;
   font-weight: 400;
@@ -55,7 +55,7 @@
   // .treeCounterDataField > h1 {
   //   font-size: 49px;
   // }
-  .treeCounterDataField > h2 {
+  .treeCounterDataField > .countLabel {
     font-size: 14px;
     font-weight: bold;
     max-width: 200px;

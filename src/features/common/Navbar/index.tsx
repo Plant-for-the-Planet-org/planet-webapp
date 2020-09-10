@@ -32,25 +32,23 @@ export default function NavbarComponent(props: any) {
               style={{ padding: '0rem 0.5rem' }}
             >
               <div className={styles.tenant_logo_container}>
-                <Nav.Link
-                  href={config.tenantLogoURL}
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
+                <div className={styles.navlink}>
                   <a href={config.tenantLogoURL}>
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
+                      alt={config.tenantName}
                     />
                   </a>
-                </Nav.Link>
+                </div>
                 <div className={styles.logo_divider}></div>
-                <Nav.Link
-                  href="https://www.plant-for-the-planet.org"
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
+                <div className={styles.navlink}>
                   <a href="https://www.plant-for-the-planet.org">
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
                   </a>
-                </Nav.Link>
+                </div>
               </div>
             </div>
           ) : (
@@ -59,19 +57,19 @@ export default function NavbarComponent(props: any) {
               style={{ padding: '0rem 0.5rem' }}
             >
               <div className={styles.tenant_logo_container}>
-                <Nav.Link
-                  href="https://www.plant-for-the-planet.org"
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
+                <div style={{ padding: '0.4rem 0.5rem' }}>
                   <a href="https://www.plant-for-the-planet.org">
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
                   </a>
-                </Nav.Link>
+                </div>
               </div>
             </div>
           )}
-          <Nav.Link>
-            <Link href={'/'}>
+          <div className={styles.navlink}>
+            <Link href={'/'} className={styles.navlink}>
               <div className={styles.link_container}>
                 <div className={styles.link_icon}>
                   {router.pathname === `/` ? (
@@ -87,10 +85,10 @@ export default function NavbarComponent(props: any) {
                 </p>
               </div>
             </Link>
-          </Nav.Link>
+          </div>
 
           {process.env.TENANT !== 'planet' && process.env.TENANT ? (
-            <Nav.Link>
+            <div className={styles.navlink}>
               <Link href={'/leaderboard'}>
                 <div className={styles.link_container}>
                   <div className={styles.link_icon}>
@@ -112,9 +110,9 @@ export default function NavbarComponent(props: any) {
                   </p>
                 </div>
               </Link>
-            </Nav.Link>
+            </div>
           ) : (
-            <Nav.Link>
+            <div className={styles.navlink}>
               <Link href={'/leaderboard'}>
                 <div className={styles.link_container}>
                   <div className={styles.link_icon}>
@@ -136,10 +134,10 @@ export default function NavbarComponent(props: any) {
                   </p>
                 </div>
               </Link>
-            </Nav.Link>
+            </div>
           )}
           {process.env.TENANT !== 'salesforce' ? (
-            <Nav.Link>
+            <div className={styles.navlink}>
               <Link href={'/me'}>
                 <div className={styles.link_container}>
                   <div className={styles.link_icon}>
@@ -158,7 +156,7 @@ export default function NavbarComponent(props: any) {
                   </p>
                 </div>
               </Link>
-            </Nav.Link>
+            </div>
           ) : null}
         </Nav>
       </Navbar>
@@ -173,9 +171,7 @@ export default function NavbarComponent(props: any) {
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
           {process.env.TENANT !== 'planet' && process.env.TENANT ? (
             <>
-              <Nav.Link
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
+              <div className={styles.navlink}>
                 <a href="https://salesforce.com">
                   <div
                     className={styles.link_container}
@@ -183,40 +179,43 @@ export default function NavbarComponent(props: any) {
                   >
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`}
+                      alt={config.tenantName}
                     />
                   </div>
                 </a>
-              </Nav.Link>
-              <Nav.Link
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
+              </div>
+              <div className={styles.navlink}>
                 <a href={'https://www.plant-for-the-planet.org'}>
                   <div
                     className={styles.link_container}
                     style={{ margin: '0px 8px' }}
                   >
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
                   </div>
                 </a>
-              </Nav.Link>
+              </div>
             </>
           ) : (
             <>
-              <Nav.Link
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
+              <div className={styles.navlink}>
                 <a href={'https://www.plant-for-the-planet.org'}>
                   <div
                     className={styles.link_container}
                     style={{ margin: '0px 8px' }}
                   >
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
                   </div>
                 </a>
-              </Nav.Link>
+              </div>
             </>
           )}
-          <Nav.Link>
+          <div>
             <Link href={'/'}>
               <div
                 className={styles.link_container}
@@ -238,8 +237,8 @@ export default function NavbarComponent(props: any) {
                 </p>
               </div>
             </Link>
-          </Nav.Link>
-          <Nav.Link>
+          </div>
+          <div>
             <Link href={'/leaderboard'}>
               <div
                 className={styles.link_container}
@@ -263,9 +262,9 @@ export default function NavbarComponent(props: any) {
                 </p>
               </div>
             </Link>
-          </Nav.Link>
+          </div>
           {process.env.TENANT !== 'salesforce' ? (
-            <Nav.Link>
+            <div>
               <Link href={'/me'}>
                 <div
                   className={styles.link_container}
@@ -289,7 +288,7 @@ export default function NavbarComponent(props: any) {
                   </p>
                 </div>
               </Link>
-            </Nav.Link>
+            </div>
           ) : null}
         </Nav>
       </Navbar>
