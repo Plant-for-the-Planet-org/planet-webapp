@@ -47,8 +47,6 @@ export default function PopupProject({
           <DonationsPopup project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
-        <a> */}
       <div className={styles.projectImage}>
         {project.properties.image &&
         typeof project.properties.image !== 'undefined' ? (
@@ -71,8 +69,6 @@ export default function PopupProject({
           </div>
         </div>
       </div>
-      {/* </a>
-      </Link> */}
 
       <div className={styles.progressBar}>
         <div

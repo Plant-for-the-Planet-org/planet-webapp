@@ -41,13 +41,16 @@ export default function ProjectsContainer({
   const containerHeight = screenHeight - 76;
 
   const [selectedTab, setSelectedTab] = React.useState('all');
+  const [searchMode, setSearchMode] = React.useState(false);
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
+    showFeaturedList ? null : setSearchMode(true);
   }, []);
 
-  const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
+
+  const searchRef = React.useRef(null);
 
   const [isScrolling, setIsScrolling] = React.useState(false);
   const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
@@ -225,25 +228,28 @@ export default function ProjectsContainer({
         {searchMode ? (
           <div className={styles.headerSearchMode}>
             <div className={styles.searchIcon}>
-              <SearchIcon />
+              <SearchIcon color={styles.primaryFontColor} />
             </div>
 
             <div className={styles.searchInput}>
               <TextField
+                ref={searchRef}
                 fullWidth={true}
                 autoFocus={true}
                 placeholder="Search Projects"
                 onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
               />
             </div>
             <div
               className={styles.cancelIcon}
               onClick={() => {
-                setSearchMode(false);
+                showFeaturedList ? setSearchMode(false) : null;
                 setSearchValue('');
+                console.log(searchRef);
               }}
             >
-              <CancelIcon />
+              <CancelIcon color={styles.primaryFontColor} />
             </div>
           </div>
         ) : (
