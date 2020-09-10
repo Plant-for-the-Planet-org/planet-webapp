@@ -53,7 +53,7 @@ export default function Articles() {
                 />
                 {/* <div className={styles.articleImageOverlay}></div> */}
                 <div className={styles.articleInfoSection}>
-                  <p className={styles.articleTitle}>{article.name}</p>
+                  <h3 className={styles.articleTitle}>{article.name}</h3>
                   <p className={styles.articleDescription}>
                     {article.articleDescription}
                   </p>

@@ -70,9 +70,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       <p className={styles.leaderBoardDonorTrees}>
                         {Sugar.Number.format(Number(leader.treeCount))} Trees
                       </p>
-                      {/* <p className={styles.leaderBoardDonorTime}>
-                          {leader.created}
-                        </p> */}
                     </div>
                   );
                 })}

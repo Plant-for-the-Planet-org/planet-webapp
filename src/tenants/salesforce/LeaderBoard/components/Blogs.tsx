@@ -44,7 +44,7 @@ export default function Blogs() {
                 <div className={styles.blogImageOverlay}></div>
                 <div className={styles.blogInfoSection}>
                   {/* <p className={styles.blogtreeCount}>{blog.treeCount}</p> */}
-                  <p className={styles.blogTitle}>{blog.name}</p>
+                  <h3 className={styles.blogTitle}>{blog.name}</h3>
                   <p className={styles.blogLink}>{blog.linkTitle}</p>
                 </div>
               </div>

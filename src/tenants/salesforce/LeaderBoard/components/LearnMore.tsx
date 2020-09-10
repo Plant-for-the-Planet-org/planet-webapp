@@ -6,9 +6,9 @@ export default function LearnMore() {
     <Row className={styles.learnMoreSectionRow}>
       <Col xs={12} md={6} className={styles.learnMoreSection}></Col>
       <Col xs={12} md={6} className={styles.learnMoreSectionText}>
-        <p className={styles.learnMoreSectionTextHeader}>
+        <h2 className={styles.learnMoreSectionTextHeader}>
           We’re committed to the planet.
-        </p>
+        </h2>
         <p className={styles.learnMoreSectionTextPara}>
           We believe business is one of the greatest platforms for change. We
           commit to creating a sustainable, low-carbon future for all. That
