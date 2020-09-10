@@ -39,7 +39,7 @@ export default function Blogs() {
                 <img
                   className={styles.blogImage}
                   src={blog.imagePath}
-                  alt={blog.name}
+                  alt={'Image of ' + blog.name}
                 />
                 <div className={styles.blogImageOverlay}></div>
                 <div className={styles.blogInfoSection}>

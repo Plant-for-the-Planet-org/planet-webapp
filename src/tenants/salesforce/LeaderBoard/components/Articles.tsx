@@ -49,7 +49,7 @@ export default function Articles() {
                 <img
                   className={styles.articleImage}
                   src={article.imagePath}
-                  alt={article.name}
+                  alt={'Image of ' + article.name}
                 />
                 {/* <div className={styles.articleImageOverlay}></div> */}
                 <div className={styles.articleInfoSection}>
