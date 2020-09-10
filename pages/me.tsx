@@ -90,7 +90,10 @@ const Me = () => {
     <Layout>
       {/* These BR's put the page content below the nav bar. */}
       {/* Other pages (like leaderboard) seem to have a similar problem. */}
-      <UserPage {...UserProps} />
+      <UserPage
+        style={{ height: '100vh', overflowX: 'hidden' }}
+        {...UserProps}
+      />
       Signed in as {JSON.stringify(session)} <br />
       <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
     </Layout>

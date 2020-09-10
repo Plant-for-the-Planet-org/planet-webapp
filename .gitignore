@@ -29,3 +29,10 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# certificates 
+./certificates/localhost.crt
+./certificates/localhost.key
+
+# tenant
+# tenant.config.js

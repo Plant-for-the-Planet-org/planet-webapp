@@ -1,22 +1,10 @@
 @import './../../../../theme/theme';
 
 .landingSection {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.backgroundImage {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  height: 100vh;
-  max-width: 100vw;
-}
-
-.backgroundImage > img {
-  height: 100%;
 }

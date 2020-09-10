@@ -4,8 +4,9 @@
   background-color: $light;
   border-radius: 7px;
   padding: 26px;
-  max-width: 412px;
+  width: 412px;
   height: max-content;
+  z-index: 10;
 }
 
 .header {
@@ -126,6 +127,7 @@
 .treeCountOption:hover,
 .treeCountOptionSelected:hover {
   cursor: pointer;
+  border: 2px solid $primaryColor;
 }
 .treeCountOption > .treeCountOptionTrees {
   font-family: $primaryFontFamily;
@@ -144,7 +146,12 @@
   border: 0px;
   border-bottom: 1px solid $primaryColor;
   margin: 0px 10px;
-  width: 40px;
+  width: 70%;
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+  text-align: center;
 }
 
 .treeCountOption > .customTreeInput:focus {
@@ -231,6 +238,14 @@
   margin-top: 20px;
 }
 
+.actionButtonsContainerCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .actionButtonsText {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
@@ -243,6 +258,19 @@
   border-radius: 6px;
   padding: 8px 40px;
   color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.paymentRequestPlaceholder {
+  background-color: $blueishGrey;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $dark;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
@@ -268,5 +296,15 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  margin-top: 20px;
+}
+
+/* Payment error */
+.paymentError {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
   margin-top: 20px;
 }

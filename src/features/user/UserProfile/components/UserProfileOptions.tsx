@@ -3,32 +3,77 @@ import Redeem from '../../../../assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../assets/images/icons/userProfileIcons/Share';
 import Shovel from '../../../../assets/images/icons/userProfileIcons/Shovel';
 import { Col, Container, Row } from 'react-bootstrap';
-import styles from '../UserProfile.module.scss';
+import styles from '../styles/UserInfo.module.scss';
+import RedeemModal from './RedeemModal';
+import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 
-export default function UserProfileOptions({ userprofile }: any) {
+import { makeStyles, Theme } from '@material-ui/core/styles';
+
+export default function UserProfileOptions({ 
+  userprofile,
+  handleTextCopiedSnackbarOpen
+ }: any) {
+
+  const webShareMobile = async() => {
+      try {
+        const response = await navigator.share({
+          title:'Check out Plant for the Planet!',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+        })
+        console.log('Share complete', response)
+      } catch (error) {
+        console.error('Could not share at this time', error);
+      }
+  }
+  
+  const onShareClicked = () => {
+    if(navigator.share!== undefined) {
+      // if in phone and web share API supported
+      webShareMobile();
+    } else {
+      // in desktop
+      navigator.clipboard.writeText('Dummy text copied to clipboard!');
+      handleTextCopiedSnackbarOpen();
+    }
+  };
+
+  // redeem modal
+  const [redeemModalOpen, setRedeemModalOpen] = React.useState(false);
+  const handleRedeemModalClose = () => {
+    setRedeemModalOpen(false);
+  };
+  const handleRedeemModalOpen = () => {
+    setRedeemModalOpen(true);
+  };
+
   return (
-    <Row className={styles.bottomIconsRow}>
-      <Col className={styles.iconTextColumn}>
-        <div className={styles.bottomIconBg}>
-          <Redeem color="white" />
-        </div>
-        <p className={styles.bottomRowText}> Redeem</p>
-      </Col>
+      <Row className={styles.bottomIconsRow}>
+        <Col className={styles.iconTextColumn}>
+          <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
+            <Redeem color="white" />
+          </div>
+          <p className={styles.bottomRowText}> Redeem</p>
+        </Col>
 
-      <Col className={styles.iconTextColumn}>
-        <div className={styles.bottomIconBg}>
-          <Shovel color="white" />
-        </div>
+        <RedeemModal
+          redeemModalOpen={redeemModalOpen}
+          handleRedeemModalClose={handleRedeemModalClose}
+        />
 
-        <p className={styles.bottomRowText}> Register Trees</p>
-      </Col>
+        <Col className={styles.iconTextColumn}>
+          <div className={styles.bottomIconBg}>
+            <Shovel color="white" />
+          </div>
 
-      <Col className={styles.iconTextColumn}>
-        <div className={styles.bottomIconBg}>
-          <Share color="white" />
-        </div>
-        <p className={styles.bottomRowText}> Share </p>
-      </Col>
-    </Row>
+          <p className={styles.bottomRowText}> Register Trees</p>
+        </Col>
+
+        <Col className={styles.iconTextColumn} onClick={onShareClicked}>
+          <div className={styles.bottomIconBg}>
+            <Share color="white" />
+          </div>
+          <p className={styles.bottomRowText}> Share </p>
+        </Col>
+      </Row>
   );
 }

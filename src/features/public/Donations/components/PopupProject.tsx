@@ -1,17 +1,30 @@
 import Modal from '@material-ui/core/Modal';
-import Link from 'next/link';
+import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
-import TreeDonation from './../screens/TreeDonation';
+import getStripe from '../../../../utils/getStripe';
+import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 
 interface Props {
   project: any;
+  open: boolean;
+  handleOpen: Function;
+  handleClose: Function;
+  fetchProject: Function;
+  setShowSingleProject: Function;
 }
 
-export default function PopupProject({ project }: Props): ReactElement {
+export default function PopupProject({
+  project,
+  open,
+  handleOpen,
+  handleClose,
+  fetchProject,
+  setShowSingleProject,
+}: Props): ReactElement {
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -19,51 +32,47 @@ export default function PopupProject({ project }: Props): ReactElement {
     (project.properties.countPlanted / project.properties.countTarget) * 100 +
     '%';
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   const projectDetails = project.properties;
+
   return (
     <>
       <Modal
+        className={styles.modal}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <TreeDonation project={projectDetails} onClose={handleClose} />
+        <Elements stripe={getStripe()}>
+          <DonationsPopup project={projectDetails} onClose={handleClose} />
+        </Elements>
       </Modal>
-      <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
-        <a>
-          <div className={styles.projectImage}>
-            {project.properties.image &&
-            typeof project.properties.image !== 'undefined' ? (
-              <div
-                className={styles.projectImageFile}
-                style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                  backgroundPosition: 'center',
-                }}
-              ></div>
-            ) : null}
+      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
+        <a> */}
+      <div className={styles.projectImage}>
+        {project.properties.image &&
+        typeof project.properties.image !== 'undefined' ? (
+          <div
+            className={styles.projectImageFile}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ) : null}
 
-            <div className={styles.projectImageBlock}>
-              {/* <div className={styles.projectType}>
+        <div className={styles.projectImageBlock}>
+          {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-              <div className={styles.projectName}>
-                {Sugar.String.truncate(project.properties.name, 54)}
-              </div>
-            </div>
+          <div className={styles.projectName}>
+            {Sugar.String.truncate(project.properties.name, 54)}
           </div>
-        </a>
-      </Link>
+        </div>
+      </div>
+      {/* </a>
+      </Link> */}
 
       <div className={styles.progressBar}>
         <div
@@ -89,23 +98,25 @@ export default function PopupProject({ project }: Props): ReactElement {
             By {project.properties.tpo.name}
           </div>
         </div>
-        <div className={styles.projectCost}>
-          {project.properties.treeCost ? (
-            <>
-              <div onClick={handleOpen} className={styles.costButton}>
-                {project.properties.currency === 'USD'
-                  ? '$'
-                  : project.properties.currency === 'EUR'
-                  ? '€'
-                  : project.properties.currency}
-                {project.properties.treeCost % 1 !== 0
-                  ? project.properties.treeCost.toFixed(2)
-                  : project.properties.treeCost}
-              </div>
-              <div className={styles.perTree}>per tree</div>
-            </>
-          ) : null}
-        </div>
+        {project.properties.allowDonations && (
+          <div className={styles.projectCost}>
+            {project.properties.treeCost ? (
+              <>
+                <div onClick={handleOpen} className={styles.costButton}>
+                  {project.properties.currency === 'USD'
+                    ? '$'
+                    : project.properties.currency === 'EUR'
+                    ? '€'
+                    : project.properties.currency}
+                  {project.properties.treeCost % 1 !== 0
+                    ? project.properties.treeCost.toFixed(2)
+                    : project.properties.treeCost}
+                </div>
+                <div className={styles.perTree}>per tree</div>
+              </>
+            ) : null}
+          </div>
+        )}
       </div>
     </>
   );

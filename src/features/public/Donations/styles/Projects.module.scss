@@ -1,7 +1,6 @@
 @import './../../../../theme/theme';
 
 .container {
-  margin-top: 60px;
   position: absolute;
   z-index: 6;
 }
@@ -11,10 +10,12 @@
   top: 30px;
   left: 24px;
 }
+
 .header {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
   width: 360px;
@@ -32,9 +33,11 @@
   margin-left: 16px;
   margin-top: 18px;
 }
+
 .tabButton:hover {
   cursor: pointer;
 }
+
 .tabButtonText {
   font-family: $primaryFontFamily;
   font-size: 13px;
@@ -70,8 +73,9 @@
 }
 
 .searchIcon {
-  margin-left: 10px;
+  margin-right: 8px;
   padding: 10px;
+  font-size: 12px;
 }
 
 .searchIcon:hover {
@@ -106,23 +110,23 @@
   overflow-y: scroll;
 }
 
-.projectsContainer::-webkit-scrollbar-track {
-  // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  background-color: #f5f5f5;
-}
+// .projectsContainer::-webkit-scrollbar-track {
+//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   border-radius: 10px;
+//   background-color: #f5f5f5;
+// }
 
-.projectsContainer::-webkit-scrollbar {
-  width: 5px;
-  background-color: #f5f5f5;
-}
+// .projectsContainer::-webkit-scrollbar {
+//   width: 5px;
+//   background-color: #f5f5f5;
+// }
 
-.projectsContainer::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: $dividerColor;
-}
+// .projectsContainer::-webkit-scrollbar-thumb {
+//   border-radius: 10px;
+//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   background-color: $dividerColor;
+// }
 
 .singleProject {
   margin-top: 20px;
@@ -133,6 +137,8 @@
   justify-content: center;
   align-items: center;
   overflow-y: scroll;
+  width: 100%;
+  height: 100%;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -166,6 +172,7 @@
   font-weight: bold;
   margin-right: 4px;
 }
+
 .projectTPOName {
   font-family: $primaryFontFamily;
   font-size: 12px;
@@ -183,7 +190,9 @@
 
 .costButton {
   background-color: $primaryColor;
-  width: 72px;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
   height: 22px;
   display: flex;
   justify-content: center;
@@ -191,14 +200,16 @@
   border-radius: 11px;
   color: $light;
   font-weight: bold;
-  font-family: $primaryFontFamily;
+  font-family: $secondaryFontFamily;
   font-size: $fontSubTitleSize;
   text-transform: uppercase;
 }
+
 .costButton:hover {
   cursor: pointer;
   text-decoration: none;
 }
+
 .perTree {
   font-family: $primaryFontFamily;
   font-size: 9px;
@@ -276,12 +287,14 @@
     left: 0;
     right: 0;
     bottom: 0;
+    max-width: 420px;
   }
 
   .header {
     width: 100%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
   }
+
   /* Projects */
   .projectsContainer {
     margin-top: 0px;

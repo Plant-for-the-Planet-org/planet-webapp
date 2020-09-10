@@ -1,0 +1,39 @@
+@import '../../../../theme/theme';
+
+.projectsTitleText {
+  font-family: $primaryFontFamily;
+  text-align: left;
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 60px;
+}
+
+//  the list of projects
+.listProjects {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+  padding: 0px 20px;
+}
+
+.singleProject {
+  width: 360px;
+}
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+@include tabletView {
+  .listProjects {
+    padding: 0px;
+  }
+}

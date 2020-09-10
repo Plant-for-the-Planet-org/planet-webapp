@@ -1,228 +1,117 @@
-import { TextField } from '@material-ui/core';
+import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import CancelIcon from './../../../../assets/images/icons/CancelIcon';
-import SearchIcon from './../../../../assets/images/icons/SearchIcon';
-import styles from './../styles/Projects.module.scss';
+import ProjectsContainer from '../components/ProjectsContainer';
+import SingleProjectDetails from '../components/SingleProjectDetails';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
-  loading: () => <p>Loading...</p>,
+  loading: () => <p></p>,
 });
 
-const AllProjects = dynamic(() => import('../components/AllProjects'), {
-  ssr: false,
-  loading: () => <ProjectLoader />,
-});
 interface Props {
   projects: any;
+  yScroll: any;
 }
 
-function ProjectsList({ projects }: Props): ReactElement {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const isMobile = screenWidth <= 768;
+function ProjectsList({ projects, yScroll }: Props): ReactElement {
+  const router = useRouter();
+  const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [project, setProject] = React.useState(null);
+  const [site, setSite] = React.useState(null);
 
-  // subtract screen height with bottom nav
-  const containerHeight = screenHeight - 76;
+  const [searchedProjects, setSearchedProjects] = React.useState([]);
+  const [allProjects, setAllProjects] = React.useState(projects);
+  React.useEffect(() => {
+    if (searchedProjects === null || searchedProjects.length < 1)
+      setAllProjects(projects);
+    else setAllProjects(searchedProjects);
+  }, [projects, searchedProjects]);
 
-  const [selectedTab, setSelectedTab] = React.useState('featured');
-  const [searchMode, setSearchMode] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState('');
-
-  const [isScrolling, setIsScrolling] = React.useState(false);
-  const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
-  const [top, setTop] = React.useState(!isMobile ? 60 : 200);
-  const projectContainer = React.useRef(null);
-
-  function getProjects(projects: Array<any>, type: string) {
-    if (type === 'featured') {
-      return projects.filter(
-        (project: { properties: { isFeatured: boolean } }) =>
-          project.properties.isFeatured === true
-      );
-    } else if (type === 'all') {
-      return projects;
-    }
-  }
-
-  function getSearchProjects(projects: Array<any>, keyword: string) {
-    let resultProjects = [];
-    if (keyword !== '') {
-      resultProjects = projects.filter(
-        (project: { properties: { name: string } }) =>
-          project.properties.name.toLowerCase().includes(keyword.toLowerCase())
-      );
-    }
-    return resultProjects;
-  }
-
-  const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
-    projects,
-  ]);
-
-  const searchProjectResults = React.useMemo(
-    () => getSearchProjects(projects, searchValue),
-    [searchValue]
-  );
-
-  const featuredProjects = React.useMemo(
-    () => getProjects(projects, 'featured'),
-    [projects]
-  );
-
-  const AllProjectsProps = {
-    projects: allProjects,
-  };
-  const SearchResultProjectsProps = {
-    projects: searchProjectResults,
-  };
-  const FeaturedProjectsProps = {
-    projects: featuredProjects,
-  };
   const ProjectsProps = {
-    projects: projects,
+    projects: allProjects,
+    project: project,
+    showSingleProject,
+    fetchSingleProject: fetchSingleProject,
+    yScroll: yScroll,
+    setSearchedProjects: setSearchedProjects,
   };
 
-  // when touched on the project list container enables scrolling of list and
-  // sets the current y-axis touch position in clientY
-  function onTouchStart(e: any) {
-    if (isMobile) {
-      setIsScrolling(true);
-      setClientY(e.touches[0].clientY);
-    }
-  }
-
-  // when finger is dragged new on the list it adjusts the margin of the container accordingly
-  function onTouchMove(e: any) {
-    if (isScrolling) {
-      let newTop = top + (e.touches[0].clientY - clientY);
-      if (newTop >= 0 && newTop <= screenHeight - 100) {
-        setTop(newTop);
-        setClientY(e.touches[0].clientY);
+  async function fetchSingleProject(id: any) {
+    let currencyCode;
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        currencyCode = localStorage.getItem('currencyCode');
+        // currencyCode = 'EUR';
+      } else {
+        currencyCode = 'EUR';
       }
     }
+    const res = await fetch(
+      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
+      {
+        headers: { 'tenant-key': `${process.env.TENANTID}` },
+      }
+    );
+
+    const newProject = res.status === 200 ? await res.json() : null;
+    setProject(newProject);
   }
 
-  // when finger is removed from the surface or interupted then stops the scrolling of list
-  function onTouchEnd() {
-    if (isMobile) {
-      setIsScrolling(false);
+  React.useEffect(() => {
+    if (router.query.p) {
+      fetchProject(router.query.p).then(() => {});
     }
+  }, []);
+
+  React.useEffect(() => {
+    if (project !== null) {
+      setShowSingleProject(true);
+    }
+  }, [project]);
+
+  async function fetchProject(id: any) {
+    await fetchSingleProject(id);
   }
+
+  const [selectedId, setSelectedId] = React.useState(null);
+
   return (
-    <div onTouchMove={onTouchMove}>
+    <div>
       <MapLayout
         {...ProjectsProps}
+        fetchSingleProject={fetchSingleProject}
+        setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-      <div
-        className={styles.container}
-        style={{
-          marginTop: top,
-          height: isMobile ? containerHeight - top : containerHeight,
-        }}
-      >
-        <div
-          className={styles.cardContainer}
-          ref={projectContainer}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          onTouchCancel={onTouchEnd}
-        >
-          {searchMode ? (
-            <div className={styles.headerSearchMode}>
-              <div className={styles.searchIcon}>
-                <SearchIcon />
-              </div>
 
-              <div className={styles.searchInput}>
-                <TextField
-                  fullWidth={true}
-                  autoFocus={true}
-                  placeholder="Search Projects"
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-              </div>
-              <div
-                className={styles.cancelIcon}
-                onClick={() => {
-                  setSearchMode(false);
-                  setSearchValue('');
-                }}
-              >
-                <CancelIcon />
-              </div>
-            </div>
-          ) : (
-            <div className={styles.header}>
-              <div className={styles.tabButtonContainer}>
-                <div
-                  className={styles.tabButton}
-                  onClick={() => setSelectedTab('featured')}
-                >
-                  <div
-                    className={
-                      selectedTab === 'featured'
-                        ? styles.tabButtonSelected
-                        : styles.tabButtonText
-                    }
-                  >
-                    Transparent Projects
-                  </div>
-                  {selectedTab === 'featured' ? (
-                    <div className={styles.tabButtonSelectedIndicator} />
-                  ) : null}
-                </div>
+      {/* Add Condition Operator */}
 
-                <div
-                  className={styles.tabButton}
-                  onClick={() => setSelectedTab('all')}
-                >
-                  <div
-                    className={
-                      selectedTab === 'all'
-                        ? styles.tabButtonSelected
-                        : styles.tabButtonText
-                    }
-                  >
-                    All {projects.length} Projects
-                  </div>
-                  {selectedTab === 'all' ? (
-                    <div className={styles.tabButtonSelectedIndicator} />
-                  ) : null}
-                </div>
-              </div>
-
-              <div
-                className={styles.searchIcon}
-                onClick={() => setSearchMode(true)}
-              >
-                <SearchIcon />
-              </div>
-            </div>
-          )}
-          {/* till here is header */}
-          <div
-            className={styles.projectsContainer}
-            style={{
-              height:
-                window.innerWidth <= 768
-                  ? window.innerHeight - 126 - top
-                  : window.innerHeight - 126,
+      {showSingleProject ? (
+        <SingleProjectDetails
+          project={project}
+          setShowSingleProject={setShowSingleProject}
+          setLayoutId={() => setSelectedId}
+        />
+      ) : (
+        <AnimateSharedLayout type="crossfade">
+          <motion.div
+            initial={{ opacity: 0, y: 300 }}
+            animate={{
+              opacity: 1,
+              y: 0,
             }}
+            transition={{ duration: 1 }}
           >
-            {searchValue !== '' ? (
-              <AllProjects {...SearchResultProjectsProps} />
-            ) : selectedTab === 'all' ? (
-              <AllProjects {...AllProjectsProps} />
-            ) : (
-              <AllProjects {...FeaturedProjectsProps} />
-            )}
-          </div>
-        </div>
-      </div>
+            <ProjectsContainer
+              {...ProjectsProps}
+              setLayoutId={() => setSelectedId}
+              setShowSingleProject={setShowSingleProject}
+            />
+          </motion.div>
+        </AnimateSharedLayout>
+      )}
     </div>
   );
 }

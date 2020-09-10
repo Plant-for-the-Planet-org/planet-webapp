@@ -1,0 +1,15 @@
+// Make a copy of this file with name tenant.config.js and fill the property with relevant tenant details
+export default function tenantConfig() {
+  return {
+    // name of tenant
+    tenantName: '',
+    // tenant id
+    tenantID: '',
+    // url of tenant home page
+    tenantURL: '',
+    // font family and it's property particular to tenant
+    font: {
+      fontFamily: '',
+    },
+  };
+}
