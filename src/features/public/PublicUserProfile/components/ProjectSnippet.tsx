@@ -19,29 +19,27 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const projectDetails = project;
   return (
     <div key={key}>
-      <a>
-        <div className={styles.projectImage}>
-          {project.image && typeof project.image !== 'undefined' ? (
-            <div
-              className={styles.projectImageFile}
-              style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                backgroundPosition: 'center',
-              }}
-            ></div>
-          ) : null}
+      <div className={styles.projectImage}>
+        {project.image && typeof project.image !== 'undefined' ? (
+          <div
+            className={styles.projectImageFile}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ) : null}
 
-          <div className={styles.projectImageBlock}>
-            {/* <div className={styles.projectType}>
+        <div className={styles.projectImageBlock}>
+          {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-            <div className={styles.projectName}>
-              {Sugar.String.truncate(project.name, 54)}
-            </div>
+          <div className={styles.projectName}>
+            {Sugar.String.truncate(project.name, 54)}
           </div>
         </div>
-      </a>
+      </div>
 
       <div className={styles.progressBar}>
         <div
