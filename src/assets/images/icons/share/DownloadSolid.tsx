@@ -3,8 +3,8 @@ import React from "react";
 function Icon(props:any) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" 
-    height="30px"
-      width="30px"
+    height="26px"
+      width="26px"
     viewBox="0 0 512 512">
         <path
         fill={props.color ? props.color : 'black'}
