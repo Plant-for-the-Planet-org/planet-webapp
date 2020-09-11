@@ -2,6 +2,8 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
+import { getImageUrl } from '../../../../utils/getImageURL';
+import MetaTags from '../../../common/MetaTags';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
 
@@ -20,7 +22,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
   const [site, setSite] = React.useState(null);
-
+  const [imageSource, SetImageSource] = React.useState('');
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
   React.useEffect(() => {
@@ -74,11 +76,36 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
   async function fetchProject(id: any) {
     await fetchSingleProject(id);
   }
-
+  console.log(project);
+  React.useEffect(() => {
+    if (project !== null) {
+      var newimageSource = project.image
+        ? getImageUrl('project', 'medium', project.image)
+        : '';
+      SetImageSource(newimageSource);
+    }
+  }, [project]);
   const [selectedId, setSelectedId] = React.useState(null);
 
   return (
     <div>
+      {showSingleProject ? (
+        <MetaTags
+          title={project.name + ' by ' + project.tpo.name}
+          desc={project.description.substring(0, 147) + '...'}
+          imageURL={imageSource}
+          ogType={'website'}
+        />
+      ) : (
+        <MetaTags
+          title={'Plant trees around the world - Plant-for-the-Planet'}
+          desc={
+            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
+          }
+          imageURL={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+          ogType={'website'}
+        />
+      )}
       <MapLayout
         {...ProjectsProps}
         fetchSingleProject={fetchSingleProject}
