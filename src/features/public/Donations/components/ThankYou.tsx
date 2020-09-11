@@ -6,24 +6,16 @@ import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
-import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFacebook,
-  faTwitter,
-  faLinkedin,
-  faLinkedinIn,
-} from '@fortawesome/free-brands-svg-icons';
+
 
 import EmailIcon from '../../../../assets/images/icons/share/Email';
+import EmailSolid from '../../../../assets/images/icons/share/EmailSolid';
 import FacebookIcon from '../../../../assets/images/icons/share/Facebook';
 import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
-import LinkedinIcon from '../../../../assets/images/icons/share/Linkedin';
-import { faDownload, faFileDownload } from '@fortawesome/free-solid-svg-icons';
-import { blue } from '@material-ui/core/colors';
+import DownloadIcon from '../../../../assets/images/icons/share/Download';
+import DownloadSolid from '../../../../assets/images/icons/share/DownloadSolid';
+import InstagramIcon from '../../../../assets/images/icons/share/Instagram';
 
 const titleToShare = 'Planting trees against the climate crisis!';
 const urlToShare =
@@ -49,76 +41,6 @@ function ThankYou({
 }: ThankYouProps): ReactElement {
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [speedDialOpen, setSpeedDialOpen] = React.useState(false);
-  const actions = [
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faDownload}
-          height="30px"
-          color={currentHover === 1 ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.8)'}
-          onMouseOver={() => setCurrentHover(1)}
-        />
-      ),
-      name: 'Email',
-      onClickAction: function () {
-        window.open(
-          `mailto:?subject=${titleToShare}&body=${textToShare}`,
-          '_blank'
-        );
-      },
-    },
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faFacebook}
-          height="35px"
-          color={currentHover === 2 ? '#3b5998' : 'rgba(0,0,0,0.8)'}
-          onMouseOver={() => setCurrentHover(2)}
-        />
-      ),
-      name: 'Facebook',
-      onClickAction: function () {
-        window.open(
-          `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
-          '_blank'
-        );
-      },
-    },
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faTwitter}
-          color={currentHover === 3 ? '#00acee' : 'rgba(0,0,0,0.8)'}
-          height="30px"
-          onMouseOver={() => setCurrentHover(3)}
-        />
-      ),
-      name: 'Twitter',
-      onClickAction: function () {
-        window.open(
-          `https://twitter.com/intent/tweet?text=${textToShare}`,
-          '_blank'
-        );
-      },
-    },
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faLinkedinIn}
-          height="30px"
-          color={currentHover === 4 ? '#0e76a8' : 'rgba(0,0,0,0.8)'}
-          onMouseOver={() => setCurrentHover(4)}
-        />
-      ),
-      name: 'Linkedin',
-      onClickAction: function () {
-        window.open(
-          `https://www.linkedin.com/shareArticle?mini=true&title=${textToShare}`,
-          '_blank'
-        );
-      },
-    },
-  ];
 
   let paymentTypeUsed;
   switch (paymentType) {
@@ -162,7 +84,7 @@ function ThankYou({
     setTextCopiedSnackbarOpen(false);
   };
 
-  const shareClicked = async () => {
+  const shareClicked = async (shareUrl:string) => {
     if (navigator.share !== undefined) {
       // if in phone and web share API supported
       try {
@@ -173,22 +95,15 @@ function ThankYou({
       } catch (error) {}
     } else {
       if (isMobileBrowser()) {
+        // if in phone
         /* copy to clipboard */
         navigator.clipboard.writeText('Dummy text copied to clipboard!');
         handleTextCopiedSnackbarOpen();
       } else {
-        handleSpeedDialOpen();
+        // desktop
+        window.open(shareUrl, '_blank')
       }
     }
-  };
-
-  // share speed dial
-  const handleSpeedDialClose = () => {
-    setSpeedDialOpen(false);
-  };
-
-  const handleSpeedDialOpen = () => {
-    setSpeedDialOpen(true);
   };
 
   return (
@@ -218,9 +133,7 @@ function ThankYou({
 
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage}>
-          {/* <div className={styles.pfpLogo}>
-                        <PlanetLogo />
-                    </div> */}
+
           <div className={styles.donationCount}>
             My {treeCount} trees are being planted in {project.location}
             <div className={styles.donationTenant}>
@@ -233,41 +146,68 @@ function ThankYou({
         </div>
       </div>
 
-      <div className={styles.shareRow}>
-        {/* div for button */}
-        <div
-          className={styles.buttonsContainer}
-          onClick={shareClicked}
-          onMouseOver={handleSpeedDialOpen}
-        >
-          <div className={styles.downloadButton}>
-            <div style={{ marginRight: '12px' }}>Share</div>
-            <ShareFilled height={'18px'} width={'18px'} color={'#fff'} />
-          </div>
+      <div className={styles.shareRow} onMouseOut={()=> setCurrentHover(-1)} >
+        <div className={styles.shareIcon} onMouseOver={() => setCurrentHover(1)}>
+        {
+            currentHover === 1 ?  
+            <DownloadSolid  color='rgba(0,0,0,0.9)'/> 
+             :
+             <DownloadIcon
+            color='rgba(0,0,0,0.9)'
+          />
+          }
+          
         </div>
 
-        {/* div for speed dial elements */}
-        {!isMobileBrowser() && (
-          <SpeedDial
-            ariaLabel="SpeedDial example"
-            hidden={true}
-            onClose={handleSpeedDialClose}
-            // on open not needed
-            open={speedDialOpen}
-            direction={'right'}
-          >
-            {actions.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                className={styles.speedDialButton}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={action.onClickAction}
-                onMouseOut={() => setCurrentHover(-1)}
-              />
-            ))}
-          </SpeedDial>
+        <div 
+        className={styles.shareIcon}
+        onClick={()=> shareClicked(
+          `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
+          '_blank'
         )}
+         onMouseOver={() => setCurrentHover(2)}
+         >
+          <FacebookIcon
+            color={currentHover === 2 ? '#3b5998' : 'rgba(0,0,0,0.9)'}
+          />
+        </div>
+
+        <div className={styles.shareIcon} 
+        onMouseOver={() => setCurrentHover(3)}
+        onClick={()=> shareClicked(
+          `https://www.instagram.com/plantfortheplanet_official/`
+        )}
+        >
+          <InstagramIcon
+            color={currentHover === 3 ? '#dd217b' : 'rgba(0,0,0,0.9)'}
+          />
+        </div>
+
+        <div 
+        className={styles.shareIcon} 
+        onMouseOver={() => setCurrentHover(4)} 
+        onClick={()=> shareClicked(
+          `https://twitter.com/intent/tweet?text=${textToShare}`
+        )}
+        >
+          <TwitterIcon
+            color={currentHover === 4 ? '#00acee' : 'rgba(0,0,0,0.9)'}
+          />
+        </div>
+
+        <div className={styles.shareIcon} 
+        onClick={()=> shareClicked(
+          `mailto:?subject=${titleToShare}&body=${textToShare}`
+        )}
+        onMouseOver={() => setCurrentHover(5)}
+        >
+          {
+            currentHover === 5 ?  
+            <EmailSolid  color='rgba(0,0,0,0.9)'/> 
+             :
+             <EmailIcon  color='rgba(0,0,0,0.9)'/>
+          }          
+        </div>
       </div>
 
       {/* snackbar for showing text copied to clipboard */}
