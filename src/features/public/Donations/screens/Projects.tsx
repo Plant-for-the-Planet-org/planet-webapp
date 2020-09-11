@@ -74,23 +74,9 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
     }
   }, [project]);
 
-  async function fetchProject(id: any) {
-    await fetchSingleProject(id);
-  }
-  console.log(project);
   React.useEffect(() => {
-    if (project !== null) {
-      var newimageSource = project.image
-        ? getImageUrl('project', 'medium', project.image)
-        : '';
-      SetImageSource(newimageSource);
-    }
-  }, [project]);
-  const [selectedId, setSelectedId] = React.useState(null);
-
-  return (
-    <div>
-      {showSingleProject ? (
+    {
+      showSingleProject ? (
         <MetaTags
           title={project.name + ' by ' + project.tpo.name}
           desc={project.description.substring(0, 147) + '...'}
@@ -124,7 +110,26 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
             />
           </Head>
         </>
-      )}
+      );
+    }
+  }, []);
+
+  async function fetchProject(id: any) {
+    await fetchSingleProject(id);
+  }
+  console.log(project);
+  React.useEffect(() => {
+    if (project !== null) {
+      var newimageSource = project.image
+        ? getImageUrl('project', 'medium', project.image)
+        : '';
+      SetImageSource(newimageSource);
+    }
+  }, [project]);
+  const [selectedId, setSelectedId] = React.useState(null);
+
+  return (
+    <div>
       <MapLayout
         {...ProjectsProps}
         fetchSingleProject={fetchSingleProject}

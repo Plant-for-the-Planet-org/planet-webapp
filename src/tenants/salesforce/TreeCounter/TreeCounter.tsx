@@ -6,12 +6,12 @@ export default function TpoProfile(props: any) {
     <div className={treeCounterStyles.treeCounter}>
       <div className={treeCounterStyles.backgroundCircle}>
         <div className={treeCounterStyles.treeCounterDataField}>
-          <p className={treeCounterStyles.countNumber}>
+          <h3 className={treeCounterStyles.countNumber}>
             {Number(props.planted)} Million
-          </p>
-          <p className={treeCounterStyles.countLabel}>
+          </h3>
+          <h3 className={treeCounterStyles.countLabel}>
             Trees Supported by the Salesforce Community
-          </p>
+          </h3>
         </div>
       </div>
     </div>
