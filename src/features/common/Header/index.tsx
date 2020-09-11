@@ -15,6 +15,10 @@ export default function Layout() {
       {config.font.secondaryFontURL && (
         <link href={config.font.secondaryFontURL} rel="stylesheet" />
       )}
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="application-name" content="Plant-for-the-Planet" />
+      <meta name="apple-mobile-web-app-title" content="Plant-for-the-Planet" />
     </Head>
   );
 }

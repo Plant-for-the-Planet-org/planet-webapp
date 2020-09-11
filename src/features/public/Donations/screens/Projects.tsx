@@ -1,5 +1,6 @@
 import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getImageUrl } from '../../../../utils/getImageURL';
@@ -97,14 +98,32 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
           ogType={'website'}
         />
       ) : (
-        <MetaTags
-          title={'Plant trees around the world - Plant-for-the-Planet'}
-          desc={
-            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
-          }
-          imageURL={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-          ogType={'website'}
-        />
+        <>
+          <MetaTags
+            title={'Plant trees around the world - Plant-for-the-Planet'}
+            desc={
+              "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
+            }
+            imageURL={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+            ogType={'website'}
+          />
+          <Head>
+            <meta name="twitter:card" content="summary" />
+            <meta
+              name="twitter:title"
+              content="Plant trees around the world - Plant-for-the-Planet"
+            />
+            <meta name="twitter:site" content="@pftp_int" />
+            <meta
+              name="twitter:url"
+              content="https://www.trilliontreecampaign.org/"
+            />
+            <meta
+              name="twitter:description"
+              content="No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
+            />
+          </Head>
+        </>
       )}
       <MapLayout
         {...ProjectsProps}
