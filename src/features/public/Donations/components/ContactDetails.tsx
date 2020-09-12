@@ -33,7 +33,7 @@ function ContactDetails({
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
-          <BackArrow />
+          <BackArrow color={styles.primaryFontColor} />
         </div>
         <div className={styles.headerTitle}>Contact Details</div>
       </div>

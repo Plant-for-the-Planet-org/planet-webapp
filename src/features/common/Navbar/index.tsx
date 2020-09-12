@@ -11,11 +11,16 @@ import Leaderboard from '../../../assets/images/navigation/Leaderboard';
 import LeaderboardSelected from '../../../assets/images/navigation/LeaderboardSelected';
 import Me from '../../../assets/images/navigation/Me';
 import MeSelected from '../../../assets/images/navigation/MeSelected';
+import Moon from '../../../assets/images/navigation/Moon';
+import Sun from '../../../assets/images/navigation/Sun';
+import { ThemeContext } from '../../../utils/themeContext';
 import styles from './Navbar.module.scss';
 const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
   const router = useRouter();
+
+  const { toggleTheme } = React.useContext(ThemeContext);
 
   return (
     <>
@@ -159,6 +164,14 @@ export default function NavbarComponent(props: any) {
               </Link>
             </div>
           ) : null}
+          <div
+            className={`${styles.theme_icon} ${styles.link_container}`}
+            onClick={toggleTheme}
+          >
+            <div className={styles.link_icon}>
+              {props.theme === 'theme-light' ? <Moon /> : <Sun />}
+            </div>
+          </div>
         </Nav>
       </Navbar>
 

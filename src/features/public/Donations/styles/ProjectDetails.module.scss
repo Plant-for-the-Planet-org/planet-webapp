@@ -24,17 +24,30 @@
 .projectContainer {
   display: flex;
   flex-direction: column;
-  background-color: $light;
+  background-color: $backgroundColor;
   width: 360px;
   padding-bottom: 16px;
   max-height: calc(100vh - 95px);
-  border-top-right-radius: 13px;
+  border-top-right-radius: 6px;
   border-top-left-radius: 13px;
   position: absolute;
   top: 30px;
   left: 24px;
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.projectContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projectContainer::-webkit-scrollbar-track {
+  background-color: $dividerColor;
+  border-top-right-radius: 13px;
+}
+
+.projectContainer::-webkit-scrollbar-thumb {
+  background-color: $primaryColor;
 }
 
 // .projectContainer::-webkit-scrollbar-track {
@@ -293,4 +306,8 @@
   display: inline;
   padding-left: 5px;
   cursor: pointer;
+}
+
+:export {
+  highlightBackground: $highlightBackground;
 }

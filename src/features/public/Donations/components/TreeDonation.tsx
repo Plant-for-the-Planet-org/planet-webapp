@@ -243,7 +243,7 @@ function TreeDonation({
       >
         <div className={styles.header}>
           <div onClick={onClose} className={styles.headerCloseIcon}>
-            <Close />
+            <Close color={styles.primaryFontColor} />
           </div>
           <div className={styles.headerTitle}>Tree Donation</div>
         </div>

@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .cardContainer {
-  background-color: $light;
+  background-color: $backgroundColor;
   border-radius: 7px;
   padding: 26px;
   width: 412px;
@@ -152,6 +152,7 @@
   font-size: $fontSubTitleSize;
   color: $primaryColor;
   text-align: center;
+  background-color: transparent;
 }
 
 .treeCountOption > .customTreeInput:focus {
@@ -307,4 +308,8 @@
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
 }
