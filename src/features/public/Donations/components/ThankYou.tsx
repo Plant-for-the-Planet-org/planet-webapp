@@ -90,8 +90,8 @@ function ThankYou({
 
       <div className={styles.horizontalLine} />
 
-      <div className={styles.thankyouImageContainer} ref={imageRef}>
-        <div className={styles.thankyouImage}>
+      <div className={styles.thankyouImageContainer} >
+        <div className={styles.thankyouImage} ref={imageRef}>
 
           <div className={styles.donationCount}>
             My {treeCount} trees are being planted in {project.location}
