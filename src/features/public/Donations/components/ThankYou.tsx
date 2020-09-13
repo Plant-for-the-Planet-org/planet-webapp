@@ -1,13 +1,11 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement, useRef } from 'react';
-import dynamic from 'next/dynamic'
 import Sugar from 'sugar';
-import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
-import ShareOptions from './ShareOptions'
+import ShareOptions from './ShareOptions';
 
 function ThankYou({
   project,
@@ -74,16 +72,17 @@ function ThankYou({
         <div className={styles.headerTitle}>Thank You!</div>
       </div>
 
-      <div className={styles.contributionAmount}>
+      <div className={styles.contributionMessage}>
         Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
         donation was successfully paid with {paymentTypeUsed}.
-      </div>
-
-      <div className={styles.contributionMessage}>
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
         Your {treeCount} trees will be planted by {project.name} in{' '}
-        {project.location}. Maybe you'll visit them some day? In the mean time,
+        {project.location}.
+      </div>
+
+      <div className={styles.contributionMessage}>
+        Maybe you'll visit them some day? In the mean time,
         maybe hook up your friends with some trees of their own by telling them
         our yours?
       </div>
@@ -106,9 +105,9 @@ function ThankYou({
       </div>
 
       <ShareOptions
-      toPrintRef={imageRef}
-      handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-       />
+        toPrintRef={imageRef}
+        handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+      />
 
       {/* snackbar for showing text copied to clipboard */}
       <Snackbar
