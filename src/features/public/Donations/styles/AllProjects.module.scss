@@ -13,3 +13,17 @@
 .projectNotFoundImage {
   width: 100%;
 }
+
+@include tabletView {
+  .allProjectsContainer > div > div {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 16px;
+  }
+}
+
+@include laptopView {
+  .allProjectsContainer > div > div {
+    display: block;
+  }
+}

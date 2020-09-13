@@ -30,7 +30,7 @@ export default function ProjectsContainer({
 }: Props) {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
-  const isMobile = screenWidth <= 768;
+  const isMobile = screenWidth <= 1024;
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
@@ -149,7 +149,7 @@ export default function ProjectsContainer({
       let newTop = top + (e.touches[0].clientY - clientY);
       // if change of top value is allowed and the current top value is below the
       // top of the screen then replaces the state top value with current top value
-      if (canChangeTopValue && newTop >= 0 && newTop <= screenHeight - 100) {
+      if (canChangeTopValue && newTop >= 0 && newTop <= screenHeight - 130) {
         setTop(newTop);
         setClientY(e.touches[0].clientY);
       }
