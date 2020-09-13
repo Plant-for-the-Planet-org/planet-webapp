@@ -6,8 +6,6 @@ export default function tenantConfig() {
         tenantName: 'planet',
         // url of tenant home page
         tenantURL: 'www.trilliontreecampaign.org',
-        //logo url
-        tenantLogoURL: 'https://www.plant-for-the-planet.org',
         // font family and it's property particular to tenant
         font: {
           primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
@@ -17,12 +15,50 @@ export default function tenantConfig() {
           secondaryFontURL:
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext',
         },
+        header: {
+          isSecondaryTenant: false, // This will mean that we have to load both the tenant logo and PFP logo
+          tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
+          tenantLogoLink: 'https://www.plant-for-the-planet.org',
+          items: [
+            {
+              id: 1,
+              order: 1,
+              title: 'Donate/Gift',
+              onclick: '/',
+              visible: true,
+              key: 'donate',
+            },
+            {
+              id: 2,
+              order: 2,
+              title: 'Leaders',
+              onclick: '/leaderboard',
+              visible: true,
+              key: 'leaderboard',
+            },
+            {
+              id: 3,
+              order: 4,
+              title: 'Home',
+              onclick: '/home',
+              visible: false,
+              key: 'home',
+            },
+            {
+              id: 4,
+              order: 3,
+              title: 'Me',
+              onclick: '/me',
+              visible: true,
+              key: 'me',
+            },
+          ],
+        },
       };
     case 'salesforce':
       return {
         tenantName: 'salesforce',
         tenantURL: 'trees.salesforce.com',
-        tenantLogoURL: 'https://www.salesforce.com/sustainability',
         font: {
           primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
           primaryFontURL:
@@ -30,6 +66,46 @@ export default function tenantConfig() {
           secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
           secondaryFontURL:
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext',
+        },
+        header: {
+          isSecondaryTenant: true, // This will mean that we have to load both the tenant logo and PFP logo
+          tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+          tenantLogoLink: 'https://www.salesforce.com/sustainability/',
+          items: [
+            {
+              id: 1,
+              order: 1,
+              title: 'Home',
+              onclick: '/leaderboard',
+              visible: true,
+              key: 'home',
+            },
+            {
+              id: 3,
+              order: 2,
+              title: 'Donate/Gift',
+              onclick: '/',
+              visible: true,
+              key: 'donate',
+            },
+            {
+              id: 2,
+              order: 3,
+              title: 'Leaders',
+              onclick: '/',
+              visible: false, // Leaders is false for Salesforce
+              key: 'leaderboard',
+            },
+
+            {
+              id: 4,
+              order: 4,
+              title: 'Me',
+              onclick: '/me',
+              visible: false, // Me is false for Salesforce
+              key: 'me',
+            },
+          ],
         },
       };
     default:
