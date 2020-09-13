@@ -165,7 +165,7 @@ export default function NavbarComponent(props: any) {
       {/* Bottom navbar */}
       <Navbar
         fixed="bottom"
-        className={`d-md-none ${styles.bottom_nav}`}
+        className={styles.bottom_nav}
         bg="light"
         expand="lg"
       >

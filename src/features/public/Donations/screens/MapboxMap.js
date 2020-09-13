@@ -22,6 +22,12 @@ export default function MapboxMap(props) {
   const projects = props.projects;
   const project = props.project;
   const mapRef = useRef(null);
+  const parentRef = useRef(null);
+  const defaultMapSize = [0, 0];
+  const [mapSize, setMapSize] = React.useState(
+    defaultMapSize[0],
+    defaultMapSize[1]
+  );
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -45,6 +51,12 @@ export default function MapboxMap(props) {
     longitude: defaultMapCenter[1],
     zoom: 1.4,
   });
+
+  React.useEffect(() => {
+    console.log(mapRef);
+    mapRef.current.getMap().resize();
+    // setMapSize([parentRef.current.offsetHeight, parentRef.current.offsetWidth]);
+  }, [window.width, window.height]);
 
   React.useEffect(() => {
     if (props.showSingleProject) {
@@ -229,11 +241,13 @@ export default function MapboxMap(props) {
   };
 
   return (
-    <div className={styles.mapContainer}>
+    <div ref={parentRef} className={styles.mapContainer}>
       <MapGL
         ref={mapRef}
         {...mapState}
         {...viewport}
+        // height={mapSize[0]}
+        // width={mapSize[1]}
         mapboxApiAccessToken={props.mapboxToken}
         mapOptions={{
           customAttribution:

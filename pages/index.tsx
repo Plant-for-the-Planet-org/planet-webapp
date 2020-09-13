@@ -52,8 +52,6 @@ export default function Donate() {
     return () => window.removeEventListener('wheel', handleScroll);
   });
   return (
-    <Layout>
-      {projects ? <ProjectsList {...DonateProps} /> : <h2>Loading...</h2>}
-    </Layout>
+    <Layout>{projects ? <ProjectsList {...DonateProps} /> : <h2></h2>}</Layout>
   );
 }

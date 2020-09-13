@@ -2,9 +2,15 @@
 
 .mapContainer {
   position: absolute;
-  top: 60px;
-  height: calc(100vh - 60px);
+  top: 0px;
+  height: calc(100vh - 72px);
   width: 100vw;
+  background-color: rgba(70, 168, 221, 0.15);
+}
+
+.mapContainer > div {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .marker {
@@ -87,9 +93,9 @@
   padding-left: 20px;
 }
 
-@media only screen and (max-width: 768px) {
+@include laptopView {
   .mapContainer {
-    top: 0px;
-    height: calc(100vh - 76px);
+    top: 60px;
+    height: calc(100vh - 60px);
   }
 }
