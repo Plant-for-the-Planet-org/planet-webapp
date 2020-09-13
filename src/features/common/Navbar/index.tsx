@@ -42,33 +42,33 @@ export default function NavbarComponent(props: any) {
                   </a>
                 </Nav.Link>
                 <div className={styles.logo_divider}></div>
-                <Nav.Link
-                  href="https://www.plant-for-the-planet.org"
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
+                <div className={styles.navlink}>
                   <a href="https://www.plant-for-the-planet.org">
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
                   </a>
-                </Nav.Link>
+                </div>
               </div>
             </div>
           ) : (
-            <div
-              className={`${styles.first_icon} ${styles.tenant_logo}`}
-              style={{ padding: '0rem 0.5rem' }}
-            >
-              <div className={styles.tenant_logo_container}>
-                <Nav.Link
-                  href="https://www.plant-for-the-planet.org"
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <a href="https://www.plant-for-the-planet.org">
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
-                  </a>
-                </Nav.Link>
+              <div
+                className={`${styles.first_icon} ${styles.tenant_logo}`}
+                style={{ padding: '0rem 0.5rem' }}
+              >
+                <div className={styles.tenant_logo_container}>
+                  <div style={{ padding: '0.4rem 0.5rem' }}>
+                    <a href="https://www.plant-for-the-planet.org">
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt="About Plant-for-the-Planet"
+                      />
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {config.header?.items.map((item) => {
             return (
@@ -82,8 +82,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <GlobeSelected color={styles.primaryColor} />
                           ) : (
-                            <Globe color={styles.primaryFontColor} />
-                          )}
+                              <Globe color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -106,8 +106,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <DonateSelected color={styles.primaryColor} />
                           ) : (
-                            <Donate color={styles.primaryFontColor} />
-                          )}
+                              <Donate color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -132,8 +132,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <LeaderboardSelected color={styles.primaryColor} />
                           ) : (
-                            <Leaderboard color={styles.primaryFontColor} />
-                          )}
+                              <Leaderboard color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -157,8 +157,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <MeSelected color={styles.primaryColor} />
                           ) : (
-                            <Me color={styles.primaryFontColor} />
-                          )}
+                              <Me color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -211,28 +211,34 @@ export default function NavbarComponent(props: any) {
                     className={styles.link_container}
                     style={{ margin: '0px 8px' }}
                   >
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
                   </div>
                 </a>
               </Nav.Link>
             </>
           ) : (
-            <>
-              <Nav.Link
-                href={'https://www.plant-for-the-planet.org'}
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
-                <a href={'https://www.plant-for-the-planet.org'}>
-                  <div
-                    className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
-                  >
-                    <img src={`${process.env.CDN_URL}/logo/svg/planet.svg`} />
-                  </div>
-                </a>
-              </Nav.Link>
-            </>
-          )}
+              <>
+                <Nav.Link
+                  href={'https://www.plant-for-the-planet.org'}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
+                  <a href={'https://www.plant-for-the-planet.org'}>
+                    <div
+                      className={styles.link_container}
+                      style={{ margin: '0px 8px' }}
+                    >
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt="About Plant-for-the-Planet"
+                      />
+                    </div>
+                  </a>
+                </Nav.Link>
+              </>
+            )}
 
           {config.header?.items.map((item) => {
             return (
@@ -248,8 +254,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <GlobeSelected color={styles.primaryColor} />
                           ) : (
-                            <Globe color={styles.primaryFontColor} />
-                          )}
+                              <Globe color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -275,8 +281,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <DonateSelected color={styles.primaryColor} />
                           ) : (
-                            <Donate color={styles.primaryFontColor} />
-                          )}
+                              <Donate color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -303,8 +309,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <LeaderboardSelected color={styles.primaryColor} />
                           ) : (
-                            <Leaderboard color={styles.primaryFontColor} />
-                          )}
+                              <Leaderboard color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={
@@ -331,8 +337,8 @@ export default function NavbarComponent(props: any) {
                           {router.pathname === item.onclick ? (
                             <MeSelected color={styles.primaryColor} />
                           ) : (
-                            <Me color={styles.primaryFontColor} />
-                          )}
+                              <Me color={styles.primaryFontColor} />
+                            )}
                         </div>
                         <p
                           className={

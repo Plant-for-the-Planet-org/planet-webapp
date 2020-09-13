@@ -22,7 +22,7 @@
   margin-bottom: 10vh;
 }
 
-.landingContent > h2 {
+.landingContent > h1 {
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: 600;
@@ -289,7 +289,7 @@
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-  line-height: 29px;
+  line-height: 30px;
   color: #000;
   margin-top: 15px;
 }
@@ -520,7 +520,7 @@
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
-  line-height: 29px;
+  line-height: 30px;
 }
 
 .articleLink {
@@ -742,9 +742,11 @@
     margin-bottom: 16vh;
   }
 
-  .landingContent > h2 {
+  .landingContent > h1 {
     font-size: 56px;
     line-height: 60px;
+    text-align: center;
+    font-weight: 700;
   }
 
   .landingContent > p {

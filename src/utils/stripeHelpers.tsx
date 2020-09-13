@@ -1,4 +1,12 @@
-import { faCcAmex, faCcDinersClub, faCcDiscover, faCcJcb, faCcMastercard, faCcStripe, faCcVisa } from '@fortawesome/free-brands-svg-icons';
+import {
+  faCcAmex,
+  faCcDinersClub,
+  faCcDiscover,
+  faCcJcb,
+  faCcMastercard,
+  faCcStripe,
+  faCcVisa,
+} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function formatAmountForDisplay(
@@ -34,14 +42,23 @@ export function formatAmountForStripe(
 
 export const getCardBrand = (brand: String) => {
   switch (brand) {
-    case 'visa': return <FontAwesomeIcon size={"2x"} icon={faCcVisa} />;
-    case 'mastercard': return <FontAwesomeIcon size={"2x"} icon={faCcMastercard} />;
-    case 'amex': return <FontAwesomeIcon size={"2x"} icon={faCcAmex} />;
-    case 'discover': return <FontAwesomeIcon size={"2x"} icon={faCcDiscover} />;
-    case 'diners': return <FontAwesomeIcon size={"2x"} icon={faCcDinersClub} />;
-    case 'jcb': return <FontAwesomeIcon size={"2x"} icon={faCcJcb} />;
-    case 'unionpay': return <FontAwesomeIcon size={"2x"} icon={faCcStripe} />;
-    case 'unknown': return <FontAwesomeIcon size={"2x"} icon={faCcStripe} />;
-    default: return <FontAwesomeIcon size={"2x"} icon={faCcStripe} />;
+    case 'visa':
+      return <FontAwesomeIcon icon={faCcVisa} />;
+    case 'mastercard':
+      return <FontAwesomeIcon icon={faCcMastercard} />;
+    case 'amex':
+      return <FontAwesomeIcon icon={faCcAmex} />;
+    case 'discover':
+      return <FontAwesomeIcon icon={faCcDiscover} />;
+    case 'diners':
+      return <FontAwesomeIcon icon={faCcDinersClub} />;
+    case 'jcb':
+      return <FontAwesomeIcon icon={faCcJcb} />;
+    case 'unionpay':
+      return <FontAwesomeIcon icon={faCcStripe} />;
+    case 'unknown':
+      return <FontAwesomeIcon icon={faCcStripe} />;
+    default:
+      return <FontAwesomeIcon icon={faCcStripe} />;
   }
-}
+};
