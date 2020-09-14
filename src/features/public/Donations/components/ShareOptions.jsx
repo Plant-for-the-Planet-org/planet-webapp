@@ -9,11 +9,9 @@ import DownloadSolid from '../../../../assets/images/icons/share/DownloadSolid';
 import InstagramIcon from '../../../../assets/images/icons/share/Instagram';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 import tenantConfig from '../../../../../tenant.config';
+import ReactDOM from 'react-dom';
+import html2canvas from 'html2canvas';
 
-let rcei;
-import('react-component-export-image').then(tempModule=> {
-    rcei = tempModule;
-}).catch(err=> {})
 const config = tenantConfig();
 
 const titleToShare = 'Planting trees against the climate crisis!';
@@ -22,6 +20,38 @@ const linkToShare = config.tenantURL
 const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 const ShareOptions = (props) => {
+
+  const saveAs = (uri, filename) => {
+    const link = document.createElement('a');
+
+    if (typeof link.download === 'string') {
+        link.href = uri;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        window.open(uri);
+    }
+};
+
+  const exportComponent = (node, fileName, backgroundColor, type) => {
+    const element = ReactDOM.findDOMNode(node.current);
+    return html2canvas(element, {
+        backgroundColor: backgroundColor,
+        scrollY: -window.scrollY,
+        useCORS: true,
+        allowTaint : true,
+        letterRendering:true,
+    }).then(canvas => {
+            saveAs(canvas.toDataURL(type, 1.0), fileName); 
+    });
+};
+
+  const exportComponentAsPNG = (node, fileName = 'component.png', backgroundColor = null, type = 'image/png') => {
+    return exportComponent(node, fileName, backgroundColor, type);
+};
+
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
@@ -50,8 +80,8 @@ const ShareOptions = (props) => {
       <div
         className={styles.shareIcon}
         onClick={() => {
-          if (props.toPrintRef) {
-            rcei.exportComponentAsJPEG(props.toPrintRef);
+          if (props.sendRef) {
+            exportComponentAsPNG(props.sendRef(), "My Trees");
           }
         }}
         onMouseOver={() => setCurrentHover(1)}

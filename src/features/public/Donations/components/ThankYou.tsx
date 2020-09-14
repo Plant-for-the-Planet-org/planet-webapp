@@ -20,7 +20,7 @@ function ThankYou({
   paymentType,
 }: ThankYouProps): ReactElement {
   const config = tenantConfig();
-  const imageRef = useRef();
+  const imageRef = React.createRef();
 
   let paymentTypeUsed;
   switch (paymentType) {
@@ -50,6 +50,10 @@ function ThankYou({
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
   );
+
+  const sendRef = () => {
+    return imageRef
+  }
 
   const handleTextCopiedSnackbarOpen = () => {
     setTextCopiedSnackbarOpen(true);
@@ -92,18 +96,17 @@ function ThankYou({
 
       <div className={styles.thankyouImageContainer} >
         <div className={styles.thankyouImage} ref={imageRef}>
-
           <div className={styles.donationCount}>
             My {treeCount} trees are being planted in {project.location}
-            <div className={styles.donationTenant}>
-              Plant trees at{' '} {config.tenantURL}
-            </div>
+            <p className={styles.donationTenant}>
+              Plant trees at {config.tenantURL}
+            </p>
           </div>
         </div>
       </div>
 
       <ShareOptions
-        toPrintRef={imageRef}
+        sendRef = {sendRef}
         handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
       />
 
