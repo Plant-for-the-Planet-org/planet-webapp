@@ -6,6 +6,7 @@ import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';
+import tenantConfig from '../../../../../tenant.config';
 
 function ThankYou({
   project,
@@ -18,7 +19,7 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
-
+  const config = tenantConfig();
   const imageRef = useRef();
 
   let paymentTypeUsed;
@@ -95,10 +96,7 @@ function ThankYou({
           <div className={styles.donationCount}>
             My {treeCount} trees are being planted in {project.location}
             <div className={styles.donationTenant}>
-              Plant trees at{' '}
-              {process.env.TENANT === 'salesforce'
-                ? 'salesforce.com/trees'
-                : 'trilliontreecampaign.org'}
+              Plant trees at{' '} {config.tenantURL}
             </div>
           </div>
         </div>

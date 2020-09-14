@@ -8,21 +8,17 @@ import DownloadIcon from '../../../../assets/images/icons/share/Download';
 import DownloadSolid from '../../../../assets/images/icons/share/DownloadSolid';
 import InstagramIcon from '../../../../assets/images/icons/share/Instagram';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
+import tenantConfig from '../../../../../tenant.config';
 
 let rcei;
 import('react-component-export-image').then(tempModule=> {
     rcei = tempModule;
 }).catch(err=> {})
+const config = tenantConfig();
 
 const titleToShare = 'Planting trees against the climate crisis!';
-const urlToShare =
-  process.env.TENANT === 'salesforce'
-    ? 'https://www.salesforce.com/'
-    : 'https://www.trilliontreecampaign.org/';
-const linkToShare =
-  process.env.TENANT === 'salesforce'
-    ? 'salesforce.com/trees'
-    : 'trilliontreecampaign.org';
+const urlToShare = config.tenantURL
+const linkToShare = config.tenantURL
 const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 const ShareOptions = (props) => {
