@@ -8,7 +8,7 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.backgroundCircle}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h2 className={treeCounterStyles.countNumber}>
-            {Sugar.Number.abbr(Number(props.planted), 1)}
+            {Sugar.Number.format(Number(props.planted))}
           </h2>
           <h2 className={treeCounterStyles.countLabel}>
             Trees Supported by the Salesforce Community

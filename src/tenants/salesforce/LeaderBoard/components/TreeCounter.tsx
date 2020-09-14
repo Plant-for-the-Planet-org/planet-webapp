@@ -8,7 +8,6 @@ export default function TreeCounterSection(tenantScore: Props) {
   const tenantScoreData = tenantScore.tenantScore
     ? tenantScore.tenantScore.total
     : '';
-  console.log(tenantScoreData);
   return (
     <Container fluid="md">
       <Row className={styles.treeCounterSectionRow}>

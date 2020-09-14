@@ -21,7 +21,6 @@ export default function LeaderBoard() {
 
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
-  console.log(tenantScore);
   React.useEffect(() => {
     async function loadTenantScore() {
       const res = await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
