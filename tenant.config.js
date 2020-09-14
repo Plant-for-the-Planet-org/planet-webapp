@@ -108,6 +108,33 @@ export default function tenantConfig() {
           ],
         },
       };
+      case 'planetbeta':
+        return {
+          tenantName: 'planetbeta',
+          tenantURL: 'beta.plant-for-the-planet.org',
+          tenantLogoURL: 'https://www.plant-for-the-planet.org',
+          font: {
+            primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
+            primaryFontURL:
+              'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap&subset=latin-ext',
+            secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
+            secondaryFontURL:
+              'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap&subset=latin-ext',
+          },
+          header: {
+            isSecondaryTenant: false, // This will mean that we have to load both the tenant logo and PFP logo
+            tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
+            tenantLogoLink: 'https://www.plant-for-the-planet.org',
+            items: [
+              {
+                id: 1,
+                order: 1,
+                title: 'Donate/Gift',
+                onclick: '/',
+                visible: true,
+                key: 'donate',
+              },
+        };
     default:
       return {
         tenantName: 'planet',
