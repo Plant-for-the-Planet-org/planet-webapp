@@ -8,7 +8,7 @@ interface Props {
 
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
-  const leaderboardData = leaderboard.leaderboard.leaderboard;
+  const leaderboardData = leaderboard.leaderboard;
 
   return (
     <section className={styles.leaderBoardSection}>
