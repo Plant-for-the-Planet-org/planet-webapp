@@ -134,6 +134,23 @@ export default function tenantConfig() {
                 visible: true,
                 key: 'donate',
               },
+              {
+                id: 2,
+                order: 3,
+                title: 'Leaders',
+                onclick: '/',
+                visible: false,
+                key: 'leaderboard',
+              },
+
+              {
+                id: 4,
+                order: 4,
+                title: 'Me',
+                onclick: '/me',
+                visible: false,
+                key: 'me',
+              },
             ],
         },
       };
