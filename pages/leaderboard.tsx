@@ -20,6 +20,22 @@ export default function LeaderBoard() {
   }, []);
 
   const [leaderboard, setLeaderboard] = React.useState(null);
+  const [tenantScore, setTenantScore] = React.useState(null);
+  console.log(tenantScore);
+  React.useEffect(() => {
+    async function loadTenantScore() {
+      const res = await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
+        headers: { 'tenant-key': `${process.env.TENANTID}` },
+      }).then(async (res) => {
+        const tenantScore = res.status === 200 ? await res.json() : null;
+        if (res.status !== 200) {
+          router.push('/404', undefined, { shallow: true });
+        }
+        setTenantScore(tenantScore);
+      });
+    }
+    loadTenantScore();
+  }, []);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
@@ -56,7 +72,10 @@ export default function LeaderBoard() {
         {process.env.TENANT === 'planet' ? (
           <About />
         ) : (
-          <SalesforceLeaderBoard leaderboard={leaderboard} />
+          <SalesforceLeaderBoard
+            leaderboard={leaderboard}
+            tenantScore={tenantScore}
+          />
         )}
       </Layout>
     </PullToRefresh>

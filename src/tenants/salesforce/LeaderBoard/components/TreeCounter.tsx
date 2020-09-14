@@ -1,8 +1,14 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import TreeCounter from '../../TreeCounter/TreeCounter';
 import styles from './../LeaderBoard.module.scss';
-
-export default function TreeCounterSection() {
+interface Props {
+  tenantScore: any;
+}
+export default function TreeCounterSection(tenantScore: Props) {
+  const tenantScoreData = tenantScore.tenantScore
+    ? tenantScore.tenantScore.total
+    : '';
+  console.log(tenantScoreData);
   return (
     <Container fluid="md">
       <Row className={styles.treeCounterSectionRow}>
@@ -24,7 +30,7 @@ export default function TreeCounterSection() {
         <Col xs={12} md={6} className={styles.treeCounterSection}>
           <div className={styles.treeCounterContainer}></div>
           <div className={styles.treeCounter}>
-            <TreeCounter target={100000000} planted={24.3} />
+            <TreeCounter target={100000000} planted={tenantScoreData} />
           </div>
           <img
             className={styles.treeCounterImage}
