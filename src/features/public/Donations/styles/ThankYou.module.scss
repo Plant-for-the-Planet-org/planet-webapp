@@ -124,6 +124,12 @@
 
 .shareIcon {
   padding: 4px 4px;
+  // background-color: blue;
+  border-radius: 30px;
+  margin: 0px 2px;
+  border-color: $blueishGrey;
+  border-width: 1px;
+  border-style: solid;
 }
 
 .buttonsContainer {
@@ -164,4 +170,8 @@
     width: 372px;
     height: 372px;
   }
+}
+
+:export {
+  blueishGrey: $blueishGrey;
 }

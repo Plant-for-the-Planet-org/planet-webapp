@@ -5,7 +5,8 @@ function Icon(props: any) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="20px"
-      width="20px"
+      style={{overflow:'visible'}}
+      width="18px"
       viewBox="0 0 512 512"
       xmlSpace="preserve"
     >

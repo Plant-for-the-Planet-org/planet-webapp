@@ -61,9 +61,9 @@ const ShareOptions = (props) => {
         onMouseOver={() => setCurrentHover(1)}
       >
         {currentHover === 1 ? (
-          <DownloadSolid color="rgba(0,0,0,0.9)" />
+          <DownloadSolid color={styles.blueishGrey} />
         ) : (
-          <DownloadIcon color="rgba(0,0,0,0.9)" />
+          <DownloadIcon color={styles.blueishGrey} />
         )}
       </div>
 
@@ -78,7 +78,7 @@ const ShareOptions = (props) => {
         onMouseOver={() => setCurrentHover(2)}
       >
         <FacebookIcon
-          color={currentHover === 2 ? '#3b5998' : 'rgba(0,0,0,0.9)'}
+          color={currentHover === 2 ? '#3b5998' : styles.blueishGrey}
         />
       </div>
 
@@ -90,7 +90,7 @@ const ShareOptions = (props) => {
         }
       >
         <InstagramIcon
-          color={currentHover === 3 ? '#dd217b' : 'rgba(0,0,0,0.9)'}
+          color={currentHover === 3 ? '#dd217b' : styles.blueishGrey}
         />
       </div>
 
@@ -102,7 +102,7 @@ const ShareOptions = (props) => {
         }
       >
         <TwitterIcon
-          color={currentHover === 4 ? '#00acee' : 'rgba(0,0,0,0.9)'}
+          color={currentHover === 4 ? '#00acee' : styles.blueishGrey}
         />
       </div>
 
@@ -114,9 +114,9 @@ const ShareOptions = (props) => {
         onMouseOver={() => setCurrentHover(5)}
       >
         {currentHover === 5 ? (
-          <EmailSolid color="rgba(0,0,0,0.9)" />
+          <EmailSolid color={styles.blueishGrey} />
         ) : (
-          <EmailIcon color="rgba(0,0,0,0.9)" />
+          <EmailIcon color={styles.blueishGrey} />
         )}
       </div>
     </div>
