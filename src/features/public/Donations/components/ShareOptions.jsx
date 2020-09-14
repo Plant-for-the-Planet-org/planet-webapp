@@ -40,7 +40,7 @@ const ShareOptions = (props) => {
     } else {
       if (isMobileBrowser()) {
         // if in phone, copy to clipboard
-        navigator.clipboard.writeText('Dummy text copied to clipboard!');
+        navigator.clipboard.writeText(textToShare);
         props.handleTextCopiedSnackbarOpen();
       } else {
         // desktop
