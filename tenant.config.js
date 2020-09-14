@@ -135,7 +135,7 @@ export default function tenantConfig() {
                 key: 'donate',
               },
             ],
-        };
+        },
       },
     default:
       return {
