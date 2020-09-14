@@ -136,7 +136,7 @@ export default function tenantConfig() {
               },
             ],
         },
-      },
+      };
     default:
       return {
         tenantName: 'planet',
