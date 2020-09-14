@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
@@ -56,27 +55,21 @@ function AllProjects({
     return (
       <div className={styles.allProjectsContainer}>
         <LazyLoad>
-          <motion.div variants={container} initial="hidden" animate="visible">
+          <div>
             {projects.map((project: any) => {
               return (
-                <motion.div
-                  variants={item}
-                  layoutId={project.properties.id}
+                <ProjectSnippet
                   key={project.properties.id}
-                >
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project}
-                    setShowSingleProject={setShowSingleProject}
-                    setLayoutId={setLayoutId}
-                    fetchProject={async () => {
-                      await fetchSingleProject(project.properties.id);
-                    }}
-                  />
-                </motion.div>
+                  project={project}
+                  setShowSingleProject={setShowSingleProject}
+                  setLayoutId={setLayoutId}
+                  fetchProject={async () => {
+                    await fetchSingleProject(project.properties.id);
+                  }}
+                />
               );
             })}
-          </motion.div>
+          </div>
         </LazyLoad>
       </div>
     );
