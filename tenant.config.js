@@ -134,7 +134,9 @@ export default function tenantConfig() {
                 visible: true,
                 key: 'donate',
               },
+            ],
         };
+      },
     default:
       return {
         tenantName: 'planet',
