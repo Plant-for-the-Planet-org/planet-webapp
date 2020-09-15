@@ -64,8 +64,8 @@ function ThankYou({
         donation was successfully paid with {paymentTypeUsed}.
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {treeCount} trees will be planted by {project.name} in{' '}
-        {project.location}.
+        Your {Sugar.Number.format(Number(treeCount), 2)} trees will be planted
+        by {project.name} in {project.location}.
       </div>
 
       <div className={styles.contributionMessage}>
