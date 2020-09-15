@@ -96,6 +96,16 @@ export function payWithCard({
         setIsPaymentProcessing(false);
         setPaymentError(res.message);
         return;
+      } else if (res.code === 500) {
+        setIsPaymentProcessing(false);
+        setPaymentError('Something went wrong please try again soon!');
+        return;
+      } else if (res.code === 503) {
+        setIsPaymentProcessing(false);
+        setPaymentError(
+          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details'
+        );
+        return;
       } else {
         const payDonationData = {
           paymentProviderRequest: {
@@ -110,6 +120,21 @@ export function payWithCard({
 
         payDonation(payDonationData, res.id)
           .then(async (res) => {
+            if (res.code === 400) {
+              setIsPaymentProcessing(false);
+              setPaymentError(res.message);
+              return;
+            } else if (res.code === 500) {
+              setIsPaymentProcessing(false);
+              setPaymentError('Something went wrong please try again soon!');
+              return;
+            } else if (res.code === 503) {
+              setIsPaymentProcessing(false);
+              setPaymentError(
+                'App is undergoing maintenance, please check status.plant-for-the-planet.org for details'
+              );
+              return;
+            }
             if (res.status === 'failed') {
               setIsPaymentProcessing(false);
               setPaymentError(res.message);
