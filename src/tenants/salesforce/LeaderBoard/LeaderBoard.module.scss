@@ -542,7 +542,7 @@
   margin-bottom: 0px;
 }
 
-@include tabletView {
+@include smTabletView {
   .landingSection {
     padding: 17vh 0;
   }
@@ -731,7 +731,7 @@
   }
 }
 
-@include laptopView {
+@include lglaptopView {
   .landingSection {
     background-image: url('/tenants/salesforce/images/desktop/Landscape.png');
     margin-top: 60px;
@@ -777,5 +777,5 @@
   }
 }
 
-@include laptop-xlView {
+@include xlDesktopView {
 }

@@ -14,7 +14,7 @@
   width: 100%;
 }
 
-@include tabletView {
+@include smTabletView {
   .allProjectsContainer > div > div {
     display: grid;
     grid-template-columns: auto auto;
@@ -22,7 +22,7 @@
   }
 }
 
-@include laptopView {
+@include lglaptopView {
   .allProjectsContainer > div > div {
     display: block;
   }

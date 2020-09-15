@@ -43,7 +43,7 @@
   margin-right: 5%;
 }
 
-@include tabletView {
+@include smTabletView {
   .publicUserName {
     margin-left: auto;
     margin-right: auto;
