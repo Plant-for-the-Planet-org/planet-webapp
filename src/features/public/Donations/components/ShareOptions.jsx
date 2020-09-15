@@ -81,7 +81,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onClick={() => {
           if (props.sendRef) {
-            exportComponentAsPNG(props.sendRef(), "My Trees");
+            exportComponentAsPNG(props.sendRef(), `My ${props.treeCount} tree donation`);
           }
         }}
         onMouseOver={() => setCurrentHover(1)}

@@ -106,6 +106,7 @@ function ThankYou({
       </div>
 
       <ShareOptions
+        treeCount={treeCount}
         sendRef = {sendRef}
         handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
       />
