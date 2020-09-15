@@ -166,7 +166,12 @@ export default function ProjectsContainer({
           }}
         ></div>
       ) : null}
-      <div className={styles.containerChild}>
+      <div
+        onTouchMove={() => {
+          setTouchMap(false);
+        }}
+        className={styles.containerChild}
+      >
         <div className={styles.cardContainer}>
           {searchMode ? (
             <div className={styles.headerSearchMode}>
@@ -196,12 +201,7 @@ export default function ProjectsContainer({
               </div>
             </div>
           ) : (
-            <div
-              onTouchMove={() => {
-                setTouchMap(false);
-              }}
-              className={styles.header}
-            >
+            <div className={styles.header}>
               {showFeaturedList ? (
                 <div className={styles.tabButtonContainer}>
                   <div

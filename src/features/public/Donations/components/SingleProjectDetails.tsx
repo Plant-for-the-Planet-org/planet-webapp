@@ -132,20 +132,17 @@ function SingleProjectDetails({
         ></div>
       ) : null}
       <div className={styles.projectContainer}>
-        <div className={styles.singleProject}>
-          <div
-            onTouchMove={() => {
-              setTouchMap(false);
-            }}
-            className={styles.projectImage}
-          >
+        <div
+          onTouchMove={() => {
+            setTouchMap(false);
+          }}
+          className={styles.singleProject}
+        >
+          <div className={styles.projectImage}>
             {project.image ? (
               <LazyLoad>
                 <div
                   className={styles.projectImageFile}
-                  onTouchMove={() => {
-                    setTouchMap(false);
-                  }}
                   style={{
                     backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
                   }}
