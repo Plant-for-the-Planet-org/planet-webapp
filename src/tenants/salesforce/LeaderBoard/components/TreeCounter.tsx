@@ -1,15 +1,20 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import TreeCounter from '../../TreeCounter/TreeCounter';
 import styles from './../LeaderBoard.module.scss';
-
-export default function TreeCounterSection() {
+interface Props {
+  tenantScore: any;
+}
+export default function TreeCounterSection(tenantScore: Props) {
+  const tenantScoreData = tenantScore.tenantScore
+    ? tenantScore.tenantScore.total
+    : '';
   return (
     <Container fluid="md">
       <Row className={styles.treeCounterSectionRow}>
         <Col xs={12} md={6} className={styles.treeCounterSectionText}>
-          <p className={styles.treeCounterSectionTextHeader}>
+          <h2 className={styles.treeCounterSectionTextHeader}>
             Take climate action.
-          </p>
+          </h2>
           <p className={styles.treeCounterSectionTextPara}>
             Trees and forests are a critical nature-based solution to solve the
             global climate crisis. While not a silver bullet, forests are our
@@ -22,12 +27,14 @@ export default function TreeCounterSection() {
           {/* <button className={styles.buttonStyle}>Join Us</button> */}
         </Col>
         <Col xs={12} md={6} className={styles.treeCounterSection}>
+          <div className={styles.treeCounterContainer}></div>
           <div className={styles.treeCounter}>
-            <TreeCounter target={100000000} planted={24300000} />
+            <TreeCounter target={100000000} planted={tenantScoreData} />
           </div>
           <img
             className={styles.treeCounterImage}
             src={'/tenants/salesforce/images/TreeCounterImage.png'}
+            alt="Treecounter Image"
           />
         </Col>
       </Row>

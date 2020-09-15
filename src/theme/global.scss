@@ -1,3 +1,5 @@
+@import './theme';
+
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
 }
@@ -8,4 +10,23 @@
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
   background: transparent;
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  color: rgba(0, 0, 0, 0.87);
+  margin: 0;
+  font-size: 0.875rem;
+  font-family: var(--primary-font-family) !important;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  background-color: #fafafa;
+}
+
+.MuiInput-underline:after {
+  border-bottom: 2px solid $primaryColor !important;
 }

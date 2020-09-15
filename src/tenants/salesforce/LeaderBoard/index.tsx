@@ -6,13 +6,18 @@ import LeaderBoard from './components/LeaderBoardSection';
 import LearnMore from './components/LearnMore';
 import TreeCounterSection from './components/TreeCounter';
 
-export default function About() {
+interface Props {
+  leaderboard: any;
+  tenantScore: any;
+}
+
+export default function About({ tenantScore, leaderboard }: Props) {
   return (
-    <main style={{ overflowX: 'hidden' }}>
+    <main style={{ height: '100vh', overflowX: 'hidden' }}>
       <Landing />
-      <TreeCounterSection />
+      <TreeCounterSection tenantScore={tenantScore} />
       <LearnMore />
-      <LeaderBoard />
+      <LeaderBoard leaderboard={leaderboard} />
       <Articles />
       <Blogs />
       <Footer />

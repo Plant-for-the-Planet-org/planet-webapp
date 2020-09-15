@@ -222,6 +222,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .infoTextButton {
@@ -246,11 +247,11 @@
 }
 
 .projectVideoContainer {
-  padding: 20px 0px;
+  padding: 20px 0px 10px 0px;
 }
 
 .projectImageSliderContainer {
-  margin-top: 2px;
+  margin-top: 10px;
   width: 100%;
   // border-radius: 0.6em;
   overflow: hidden;

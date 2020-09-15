@@ -26,7 +26,7 @@ export default function ProjectsContainer({
   fetchSingleProject,
   setLayoutId,
   yScroll,
-  setSearchedProjects
+  setSearchedProjects,
 }: Props) {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -41,13 +41,16 @@ export default function ProjectsContainer({
   const containerHeight = screenHeight - 76;
 
   const [selectedTab, setSelectedTab] = React.useState('all');
+  const [searchMode, setSearchMode] = React.useState(false);
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
+    showFeaturedList ? null : setSearchMode(true);
   }, []);
 
-  const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
+
+  const searchRef = React.useRef(null);
 
   const [isScrolling, setIsScrolling] = React.useState(false);
   const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
@@ -151,7 +154,7 @@ export default function ProjectsContainer({
         setClientY(e.touches[0].clientY);
       }
       // checks if top value is less than 20px then allows the list to scroll else not
-      if (top <= 20) {
+      if (top <= 30) {
         setAllowScroll(true);
       } else {
         setAllowScroll(false);
@@ -181,9 +184,25 @@ export default function ProjectsContainer({
   const projectsContainer = React.useRef(null);
 
   React.useEffect(() => {
-    let Ref = projectsContainer.current;
-    Ref.scrollTo(0, yScroll);
-  })
+    if (!isMobile) {
+      let Ref = projectsContainer.current;
+      var wheelEvent =
+        'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+      function preventDefault(e) {
+        e.preventDefault();
+      }
+
+      var wheelOpt = false;
+      Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
+      Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+      Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+
+      return () => {
+        Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
+        Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+      };
+    }
+  });
   return (
     <div
       className={styles.container}
@@ -202,34 +221,37 @@ export default function ProjectsContainer({
         style={
           isMobile && screenWidth > 420
             ? {
-              left: 'calc((100vw - 420px)/2)',
-              right: 'calc((100vw - 420px)/2)',
-            }
+                left: 'calc((100vw - 420px)/2)',
+                right: 'calc((100vw - 420px)/2)',
+              }
             : {}
         }
       >
         {searchMode ? (
           <div className={styles.headerSearchMode}>
             <div className={styles.searchIcon}>
-              <SearchIcon />
+              <SearchIcon color={styles.primaryFontColor} />
             </div>
 
             <div className={styles.searchInput}>
               <TextField
+                ref={searchRef}
                 fullWidth={true}
                 autoFocus={true}
                 placeholder="Search Projects"
                 onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
               />
             </div>
             <div
               className={styles.cancelIcon}
               onClick={() => {
-                setSearchMode(false);
+                showFeaturedList ? setSearchMode(false) : null;
                 setSearchValue('');
+                console.log(searchRef);
               }}
             >
-              <CancelIcon />
+              <CancelIcon color={styles.primaryFontColor} />
             </div>
           </div>
         ) : (
@@ -274,14 +296,14 @@ export default function ProjectsContainer({
               </div>
             ) : null}
 
-              <div
-                className={styles.searchIcon}
-                onClick={() => setSearchMode(true)}
-              >
-                <SearchIcon />
-              </div>
+            <div
+              className={styles.searchIcon}
+              onClick={() => setSearchMode(true)}
+            >
+              <SearchIcon />
             </div>
-          )}
+          </div>
+        )}
         {/* till here is header */}
         <div
           onScroll={handleScroll}
@@ -300,8 +322,8 @@ export default function ProjectsContainer({
           ) : selectedTab === 'all' ? (
             <AllProjects {...AllProjectsProps} />
           ) : (
-                <AllProjects {...FeaturedProjectsProps} />
-              )}
+            <AllProjects {...FeaturedProjectsProps} />
+          )}
         </div>
       </div>
     </div>

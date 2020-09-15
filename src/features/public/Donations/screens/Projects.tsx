@@ -1,5 +1,6 @@
 import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
@@ -15,16 +16,18 @@ interface Props {
 }
 
 function ProjectsList({ projects, yScroll }: Props): ReactElement {
+  const router = useRouter();
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
+  const [site, setSite] = React.useState(null);
 
-  const [searchedProjects, setSearchedProjects] = React.useState([])
-  const [allProjects, setAllProjects] = React.useState(projects)
+  const [searchedProjects, setSearchedProjects] = React.useState([]);
+  const [allProjects, setAllProjects] = React.useState(projects);
   React.useEffect(() => {
     if (searchedProjects === null || searchedProjects.length < 1)
-      setAllProjects(projects)
-    else setAllProjects(searchedProjects)
-  }, [projects, searchedProjects])
+      setAllProjects(projects);
+    else setAllProjects(searchedProjects);
+  }, [projects, searchedProjects]);
 
   const ProjectsProps = {
     projects: allProjects,
@@ -32,7 +35,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
     yScroll: yScroll,
-    setSearchedProjects: setSearchedProjects
+    setSearchedProjects: setSearchedProjects,
   };
 
   async function fetchSingleProject(id: any) {
@@ -56,7 +59,21 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
     setProject(newProject);
   }
 
-  // For animation
+  React.useEffect(() => {
+    if (router.query.p) {
+      fetchProject(router.query.p).then(() => {});
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (project !== null) {
+      setShowSingleProject(true);
+    }
+  }, [project]);
+
+  async function fetchProject(id: any) {
+    await fetchSingleProject(id);
+  }
 
   const [selectedId, setSelectedId] = React.useState(null);
 
@@ -70,30 +87,31 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
       />
 
       {/* Add Condition Operator */}
-      <AnimateSharedLayout type="crossfade">
-        {showSingleProject ? (
-          <SingleProjectDetails
-            project={project}
-            setShowSingleProject={setShowSingleProject}
-            setLayoutId={() => setSelectedId}
-          />
-        ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 300 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{ duration: 1 }}
-            >
-              <ProjectsContainer
-                {...ProjectsProps}
-                setLayoutId={() => setSelectedId}
-                setShowSingleProject={setShowSingleProject}
-              />
-            </motion.div>
-          )}
-      </AnimateSharedLayout>
+
+      {showSingleProject ? (
+        <SingleProjectDetails
+          project={project}
+          setShowSingleProject={setShowSingleProject}
+          setLayoutId={() => setSelectedId}
+        />
+      ) : (
+        <AnimateSharedLayout type="crossfade">
+          <motion.div
+            initial={{ opacity: 0, y: 300 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{ duration: 1 }}
+          >
+            <ProjectsContainer
+              {...ProjectsProps}
+              setLayoutId={() => setSelectedId}
+              setShowSingleProject={setShowSingleProject}
+            />
+          </motion.div>
+        </AnimateSharedLayout>
+      )}
     </div>
   );
 }
