@@ -6,8 +6,12 @@
   transition: all 0.3s ease-in-out;
   width: 100vw;
   margin-top: 0px;
-  height: calc(100vh - 76px);
-  overflow: hidden;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.containerChild {
+  // margin-top: 300px;
 }
 
 .cardContainer {
@@ -116,9 +120,9 @@
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: calc(100vh - 126px);
+  height: auto;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .singleProject {
@@ -283,6 +287,13 @@
   width: 100%;
 }
 
+.avoidPointerEvents {
+  display: block;
+  height: 40vh;
+  z-index: 999;
+  // pointer-events: none;
+}
+
 @include smTabletView {
   .allProjectsContainer > div > div {
     display: grid;
@@ -292,6 +303,11 @@
 }
 
 @include mdTabletView {
+  .container {
+    overflow: hidden;
+    padding-top: 0px;
+    margin-top: 60px;
+  }
   .allProjectsContainer > div > div {
     display: block;
   }
@@ -303,10 +319,15 @@
   .projectsContainer {
     margin-top: 5px;
     width: 360px;
+    overflow-y: scroll;
     max-height: calc(100vh - 145px);
   }
   .header {
     width: 360px;
+  }
+
+  .avoidPointerEvents {
+    display: none;
   }
 }
 
