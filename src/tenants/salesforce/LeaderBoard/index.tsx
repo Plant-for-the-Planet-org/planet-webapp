@@ -8,13 +8,14 @@ import TreeCounterSection from './components/TreeCounter';
 
 interface Props {
   leaderboard: any;
+  tenantScore: any;
 }
 
-export default function About(leaderboard: Props) {
+export default function About({ tenantScore, leaderboard }: Props) {
   return (
     <main style={{ height: '100vh', overflowX: 'hidden' }}>
       <Landing />
-      <TreeCounterSection />
+      <TreeCounterSection tenantScore={tenantScore} />
       <LearnMore />
       <LeaderBoard leaderboard={leaderboard} />
       <Articles />
