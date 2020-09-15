@@ -294,7 +294,7 @@ export default function ProjectsContainer({
                 </div>
               </div>
             ) : (
-              <p className={styles.headerText}>Stop Talking. Start Planting</p>
+              <p className={styles.headerText}>Stop Talking. Start Planting.</p>
             )}
 
             <div
