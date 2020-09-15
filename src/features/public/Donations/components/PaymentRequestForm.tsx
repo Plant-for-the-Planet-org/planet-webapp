@@ -1,9 +1,12 @@
-import { PaymentRequestButtonElement, useStripe } from '@stripe/react-stripe-js';
+import {
+  PaymentRequestButtonElement,
+  useStripe,
+} from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './../styles/TreeDonation.module.scss';
 
 export const useOptions = (paymentRequest: null) => {
-  const typeOfButton = "donate";
+  const typeOfButton = 'donate';
   const options = useMemo(
     () => ({
       paymentRequest,
@@ -22,16 +25,23 @@ export const useOptions = (paymentRequest: null) => {
 };
 
 interface PaymentButtonProps {
-  country: string; currency: String; amount: number; onPaymentFunction: Function;
+  country: string;
+  currency: String;
+  amount: number;
+  onPaymentFunction: Function;
 }
-export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymentFunction }: PaymentButtonProps) => {
+export const PaymentRequestCustomButton = ({
+  country,
+  currency,
+  amount,
+  onPaymentFunction,
+}: PaymentButtonProps) => {
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
 
   useEffect(() => {
     if (stripe && paymentRequest === null) {
-
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
@@ -49,7 +59,7 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
   useEffect(() => {
     if (stripe && paymentRequest !== null) {
       setPaymentRequest(null);
-      setCanMakePayment(false)
+      setCanMakePayment(false);
     }
   }, [country, currency, amount]);
 
@@ -64,50 +74,56 @@ export const PaymentRequestCustomButton = ({ country, currency, amount, onPaymen
     }
 
     return () => {
+      setCanMakePayment(false);
       subscribed = false;
     };
   }, [paymentRequest]);
 
   useEffect(() => {
     if (paymentRequest) {
-      paymentRequest.on('paymentmethod',
+      paymentRequest.on(
+        'paymentmethod',
         ({ complete, paymentMethod, ...data }: any) => {
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
-        });
+        }
+      );
     }
     return () => {
       if (paymentRequest) {
-        paymentRequest.off('paymentmethod',
+        paymentRequest.off(
+          'paymentmethod',
           ({ complete, paymentMethod, ...data }: any) => {
             onPaymentFunction(paymentMethod, paymentRequest);
             complete('success');
-          });
+          }
+        );
       }
     };
   }, [paymentRequest, onPaymentFunction]);
 
   const options = useOptions(paymentRequest);
 
-  return canMakePayment ? paymentRequest ? (
-
-    <PaymentRequestButtonElement
-      className="PaymentRequestButton"
-      options={options}
-      onReady={() => {
-        console.log('PaymentRequestButton [ready]');
-      }}
-      onClick={(event) => {
-        console.log('PaymentRequestButton [click]', event);
-      }}
-      onBlur={() => {
-        console.log('PaymentRequestButton [blur]');
-      }}
-      onFocus={() => {
-        console.log('PaymentRequestButton [focus]');
-      }}
-    />
-  ) : <div className={styles.paymentRequestPlaceholder}>
-      Loading...
-</div> : null;
-}
+  return canMakePayment ? (
+    paymentRequest ? (
+      <PaymentRequestButtonElement
+        className="PaymentRequestButton"
+        options={options}
+        onReady={() => {
+          console.log('PaymentRequestButton [ready]');
+        }}
+        onClick={(event) => {
+          console.log('PaymentRequestButton [click]', event);
+        }}
+        onBlur={() => {
+          console.log('PaymentRequestButton [blur]');
+        }}
+        onFocus={() => {
+          console.log('PaymentRequestButton [focus]');
+        }}
+      />
+    ) : (
+      <div className={styles.paymentRequestPlaceholder}>Loading...</div>
+    )
+  ) : null;
+};
