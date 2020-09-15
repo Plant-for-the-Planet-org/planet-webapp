@@ -47,7 +47,7 @@ export default function Blogs() {
                 <div className={styles.blogInfoSection}>
                   {/* <p className={styles.blogtreeCount}>{blog.treeCount}</p> */}
                   <h3 className={styles.blogTitle}>{blog.name}</h3>
-                  <a href={blog.link}>
+                  <a href={blog.link} target="_blank">
                     <p className={styles.blogLink}>{blog.linkTitle}</p>
                   </a>
                 </div>

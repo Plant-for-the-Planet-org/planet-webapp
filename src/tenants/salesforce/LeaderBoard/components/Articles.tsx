@@ -60,7 +60,7 @@ export default function Articles() {
                     {article.articleDescription}
                   </p>
 
-                  <a href={article.link}>
+                  <a href={article.link} target="_blank">
                     <p className={styles.articleLink}>Learn More</p>
                   </a>
                 </div>
