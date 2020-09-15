@@ -7,8 +7,8 @@ import {
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
 import Layout from '../src/features/common/Layout';
-import About from './../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from './../src/tenants/salesforce/LeaderBoard';
+import About from '../src/tenants/planet/About/About';
+import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
 
 export default function LeaderBoard() {
   const router = useRouter();
