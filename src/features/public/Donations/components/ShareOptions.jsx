@@ -15,8 +15,8 @@ import html2canvas from 'html2canvas';
 const config = tenantConfig();
 
 const titleToShare = 'Planting trees against the climate crisis!';
-const urlToShare = config.tenantURL
-const linkToShare = config.tenantURL
+const urlToShare = config.tenantURL;
+const linkToShare = config.tenantURL;
 const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 const ShareOptions = (props) => {
@@ -25,38 +25,47 @@ const ShareOptions = (props) => {
     const link = document.createElement('a');
 
     if (typeof link.download === 'string') {
-        link.href = uri;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } else {
-        window.open(uri);
+      window.open(uri);
     }
-};
+  };
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
     return html2canvas(element, {
-        backgroundColor: backgroundColor,
-        scrollY: -window.scrollY,
-        useCORS: true,
-        allowTaint : true,
-        letterRendering:true,
-    }).then(canvas => {
-            saveAs(canvas.toDataURL(type, 1.0), fileName); 
+      backgroundColor: backgroundColor,
+      scrollY: -window.scrollY,
+      useCORS: true,
+      allowTaint: true,
+      letterRendering: true,
+    }).then((canvas) => {
+      saveAs(canvas.toDataURL(type, 1), fileName);
     });
-};
+  };
 
-  const exportComponentAsPNG = (node, fileName = 'component.png', backgroundColor = null, type = 'image/png') => {
+  const exportComponentAsPNG = (
+    node,
+    fileName = 'My Trees.png',
+    backgroundColor = null,
+    type = 'image/png'
+  ) => {
     return exportComponent(node, fileName, backgroundColor, type);
-};
+  };
+
+  const openWindowLinks = (shareUrl) => {
+    window.open(shareUrl, '_blank');
+  };
 
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
-    if (navigator.share !== undefined) {
-      // if in phone and web share API supported
+    // if in phone and web share API supported => navigator
+    if ( (isMobileBrowser())  && navigator.share !== undefined) {
       try {
         const response = await navigator.share({
           title: titleToShare,
@@ -64,24 +73,31 @@ const ShareOptions = (props) => {
         });
       } catch (error) {}
     } else {
+      // if in phone and web share API not supported => clipboard
       if (isMobileBrowser()) {
-        // if in phone, copy to clipboard
         navigator.clipboard.writeText(textToShare);
         props.handleTextCopiedSnackbarOpen();
       } else {
-        // desktop
-        window.open(shareUrl, '_blank');
+          // desktop => links      
+        openWindowLinks(shareUrl);
       }
     }
   };
 
   return (
-    <div className={styles.shareRow} onMouseOut={() => setCurrentHover(-1)} style={{cursor:'pointer'}}>
+    <div
+      className={styles.shareRow}
+      onMouseOut={() => setCurrentHover(-1)}
+      style={{ cursor: 'pointer' }}
+    >
       <div
         className={styles.shareIcon}
         onClick={() => {
           if (props.sendRef) {
-            exportComponentAsPNG(props.sendRef(), `My ${props.treeCount} tree donation`);
+            exportComponentAsPNG(
+              props.sendRef(),
+              `My ${props.treeCount} tree donation`
+            );
           }
         }}
         onMouseOver={() => setCurrentHover(1)}
