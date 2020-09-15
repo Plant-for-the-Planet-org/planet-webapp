@@ -38,9 +38,11 @@ const ShareOptions = (props) => {
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
     return html2canvas(element, {
+      scale: 5,
       backgroundColor: backgroundColor,
       scrollY: -window.scrollY,
       useCORS: true,
+      imageTimeout: 0,
       allowTaint: true,
       letterRendering: true,
     }).then((canvas) => {
@@ -56,6 +58,14 @@ const ShareOptions = (props) => {
   ) => {
     return exportComponent(node, fileName, backgroundColor, type);
   };
+
+  const exportComponentAsJPEG = (
+    node, fileName = 'component.jpeg',
+     backgroundColor = null, 
+     type = 'image/jpeg'
+     ) => {
+    return exportComponent(node, fileName, backgroundColor, type);
+};
 
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
@@ -94,7 +104,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onClick={() => {
           if (props.sendRef) {
-            exportComponentAsPNG(
+            exportComponentAsJPEG(
               props.sendRef(),
               `My ${props.treeCount} tree donation`
             );
