@@ -12,6 +12,7 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getCardBrand } from '../../../../utils/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
@@ -168,10 +169,27 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
+    let countryCode = getCountryDataBy(
+      'countryName',
+      contactDetails.country.toString()
+    )
+      ? getCountryDataBy('countryName', contactDetails.country.toString())
+          .countryCode
+      : null;
+
+    let donorDetails = {
+      firstname: contactDetails.firstName,
+      lastname: contactDetails.lastName,
+      email: contactDetails.email,
+      address: contactDetails.address,
+      zipCode: contactDetails.zipCode,
+      city: contactDetails.city,
+      country: countryCode,
+    };
+
     const payWithCardProps = {
       setDonationStep,
       setIsPaymentProcessing,
-      contactDetails,
       project,
       currency,
       treeCost,
@@ -179,10 +197,10 @@ function PaymentDetails({
       giftDetails,
       isGift,
       setPaymentError,
-      stripe,
       paymentSetup,
       window,
       paymentMethod,
+      donorDetails,
     };
     payWithCard({ ...payWithCardProps });
   };

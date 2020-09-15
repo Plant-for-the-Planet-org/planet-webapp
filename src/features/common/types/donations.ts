@@ -76,16 +76,15 @@ export interface ThankYouProps {
 export interface PayWithCardTypes {
   setIsPaymentProcessing: Function;
   setPaymentError: Function;
-  contactDetails: contactDetailsProps;
   project: Object;
   treeCount: number;
   treeCost: number;
   currency: String;
   giftDetails: giftDetailsProps;
   isGift: Boolean;
-  stripe: any;
   paymentSetup: Object;
   window: any;
   setDonationStep: Function;
   paymentMethod: Object;
+  donorDetails: Object;
 }

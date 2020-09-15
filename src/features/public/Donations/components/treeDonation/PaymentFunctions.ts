@@ -1,4 +1,3 @@
-import { getCountryDataBy } from '../../../../../utils/countryUtils';
 import { PayWithCardTypes } from '../../../../common/types/donations';
 
 export async function createDonation(data: any) {
@@ -53,7 +52,6 @@ export function getPaymentType(paymentType: String) {
 
 export function payWithCard({
   setIsPaymentProcessing,
-  contactDetails,
   project,
   currency,
   treeCost,
@@ -61,35 +59,20 @@ export function payWithCard({
   giftDetails,
   isGift,
   setPaymentError,
-  stripe,
   paymentSetup,
   setDonationStep,
   paymentMethod,
   window,
+  donorDetails,
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
-  let countryCode = getCountryDataBy(
-    'countryName',
-    contactDetails.country.toString()
-  )
-    ? getCountryDataBy('countryName', contactDetails.country.toString())
-        .countryCode
-    : null;
   let createDonationData = {
     type: 'trees',
     project: project.id,
     treeCount: treeCount,
     amount: treeCost * treeCount,
     currency: currency,
-    donor: {
-      firstname: contactDetails.firstName,
-      lastname: contactDetails.lastName,
-      email: contactDetails.email,
-      address: contactDetails.address,
-      zipCode: contactDetails.zipCode,
-      city: contactDetails.city,
-      country: countryCode,
-    },
+    donor: { ...donorDetails },
   };
   let gift = {
     gift: {
