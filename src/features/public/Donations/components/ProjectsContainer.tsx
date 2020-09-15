@@ -45,7 +45,7 @@ export default function ProjectsContainer({
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
-    showFeaturedList ? null : setSearchMode(true);
+    // showFeaturedList ? null : setSearchMode(true);
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
@@ -179,26 +179,24 @@ export default function ProjectsContainer({
                 <SearchIcon color={styles.primaryFontColor} />
               </div>
 
-              <div className={styles.searchInput}>
-                <TextField
-                  ref={searchRef}
-                  fullWidth={true}
-                  autoFocus={true}
-                  placeholder="Search Projects"
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  value={searchValue}
-                />
-              </div>
-              <div
-                className={styles.cancelIcon}
-                onClick={() => {
-                  showFeaturedList ? setSearchMode(false) : null;
-                  setSearchValue('');
-                  console.log(searchRef);
-                }}
-              >
-                <CancelIcon color={styles.primaryFontColor} />
-              </div>
+            <div className={styles.searchInput}>
+              <TextField
+                ref={searchRef}
+                fullWidth={true}
+                autoFocus={true}
+                placeholder="Search Projects"
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
+              />
+            </div>
+            <div
+              className={styles.cancelIcon}
+              onClick={() => {
+                setSearchMode(false);
+                setSearchValue('');
+              }}
+            >
+              <CancelIcon color={styles.primaryFontColor} />
             </div>
           ) : (
             <div className={styles.header}>
@@ -240,7 +238,11 @@ export default function ProjectsContainer({
                     ) : null}
                   </div>
                 </div>
-              ) : null}
+
+              </div>
+            ) : (
+              <p className={styles.headerText}>Stop Talking. Start Planting.</p>
+            )}
 
               <div
                 className={styles.searchIcon}
