@@ -99,3 +99,12 @@
     height: calc(100vh - 60px);
   }
 }
+
+@include xsPhoneView {
+  .mapNavigation {
+    display: none;
+  }
+  .projectControls {
+    bottom: 80px;
+  }
+}

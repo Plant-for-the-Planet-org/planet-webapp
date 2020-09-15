@@ -2,7 +2,7 @@
 @import './colors';
 
 @mixin xsPhoneView {
-  @media screen and (min-width: 481px) {
+  @media screen and (max-width: 481px) {
     @content;
   }
 }

@@ -24,6 +24,8 @@ interface Props {
   project: any;
   setShowSingleProject: Function;
   setLayoutId: Function;
+  touchMap: any;
+  setTouchMap: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {

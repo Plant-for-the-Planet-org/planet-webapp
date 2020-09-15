@@ -2,8 +2,10 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
+import MapIcon from '../../../../assets/images/icons/MapIcon';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
+import styles from './../styles/Projects.module.scss';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
@@ -20,6 +22,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
   const [site, setSite] = React.useState(null);
+  const [touchMap, setTouchMap] = React.useState(false);
 
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
@@ -36,6 +39,8 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
     fetchSingleProject: fetchSingleProject,
     yScroll: yScroll,
     setSearchedProjects: setSearchedProjects,
+    touchMap,
+    setTouchMap,
   };
 
   async function fetchSingleProject(id: any) {
@@ -85,7 +90,16 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
         setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-
+      {!touchMap ? (
+        <div
+          className={styles.openMap}
+          onClick={() => {
+            setTouchMap(true);
+          }}
+        >
+          <MapIcon color="#fff" /> Map
+        </div>
+      ) : null}
       {/* Add Condition Operator */}
 
       {showSingleProject ? (
@@ -93,6 +107,8 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
           project={project}
           setShowSingleProject={setShowSingleProject}
           setLayoutId={() => setSelectedId}
+          touchMap={touchMap}
+          setTouchMap={setTouchMap}
         />
       ) : (
         <AnimateSharedLayout type="crossfade">

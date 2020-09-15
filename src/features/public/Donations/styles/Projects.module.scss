@@ -88,6 +88,7 @@
   margin-left: 6px;
   padding: 10px;
   font-size: 12px;
+  margin-right: 6px;
 }
 
 .searchIcon:hover {
@@ -104,7 +105,7 @@
 }
 
 .cancelIcon > svg {
-  width: 20px;
+  width: 18px;
 }
 
 .cancelIcon:hover {
@@ -289,9 +290,34 @@
 
 .avoidPointerEvents {
   display: block;
-  height: 40vh;
+  height: 50vh;
   z-index: 999;
   // pointer-events: none;
+}
+
+.openMap {
+  padding: 12px 20px;
+  border-radius: 100px;
+  background-color: $primaryColor;
+  color: #fff;
+  position: absolute;
+  bottom: 90px;
+  right: 0;
+  left: 0;
+  // max-width: 50px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.openMap > svg {
+  width: 20px;
+  margin-right: 5px;
 }
 
 @include smTabletView {

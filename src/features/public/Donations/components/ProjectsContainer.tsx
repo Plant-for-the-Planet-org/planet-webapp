@@ -13,6 +13,8 @@ interface Props {
   setLayoutId: Function;
   yScroll: any;
   setSearchedProjects: Function;
+  touchMap: any;
+  setTouchMap: Function;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -27,11 +29,11 @@ export default function ProjectsContainer({
   setLayoutId,
   yScroll,
   setSearchedProjects,
+  touchMap,
+  setTouchMap,
 }: Props) {
   const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 1024;
-
-  const [touchMap, setTouchMap] = React.useState(false);
+  const isMobile = screenWidth <= 767;
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
@@ -152,7 +154,7 @@ export default function ProjectsContainer({
       style={
         touchMap
           ? { top: '80vh', overflow: 'hidden', transition: 'ease 0.5s' }
-          : { top: 0, overflow: 'scroll' }
+          : { top: 0, overflow: 'scroll', transition: 'ease 0.5s' }
       }
       className={styles.container}
     >
