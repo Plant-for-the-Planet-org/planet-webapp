@@ -4,12 +4,18 @@
   position: absolute;
   z-index: 6;
   transition: all 0.3s ease-in-out;
+  width: 100vw;
+  margin-top: 0px;
+  height: calc(100vh - 76px);
+  overflow: hidden;
 }
 
 .cardContainer {
   position: relative;
-  top: 30px;
-  left: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .header {
@@ -19,8 +25,9 @@
   justify-content: flex-end;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
-  width: 360px;
   height: 50px;
+  width: 100%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 .tabButtonContainer {
@@ -100,17 +107,16 @@
   cursor: pointer;
 }
 
-/* Projects */
 .projectsContainer {
   display: flex;
   flex-direction: column;
   background-color: $light;
-  margin-top: 5px;
-  width: 360px;
+  margin-top: 0px;
+  width: 100%;
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: calc(100vh - 145px);
+  max-height: calc(100vh - 126px);
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -263,35 +269,48 @@
   color: #fff;
 }
 
-@media only screen and (max-width: 1023.98px) {
-  .container {
-    width: 100vw;
-    margin-top: 0px;
-    height: calc(100vh - 76px);
-    overflow: hidden;
-  }
+.allProjectsContainer {
+  padding-bottom: 12px;
+}
 
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+@include smTabletView {
+  .allProjectsContainer > div > div {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 16px;
+  }
+}
+
+@include mdTabletView {
+  .allProjectsContainer > div > div {
+    display: block;
+  }
   .cardContainer {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    // max-width: 420px;
+    position: relative;
+    top: 30px;
+    left: 24px;
   }
-
-  .header {
-    width: 100%;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Projects */
   .projectsContainer {
-    margin-top: 0px;
-    width: 100%;
-    max-height: calc(100vh - 126px);
-    overflow-x: hidden;
-    overflow-y: scroll;
+    margin-top: 5px;
+    width: 360px;
+    max-height: calc(100vh - 145px);
   }
+  .header {
+    width: 360px;
+  }
+}
+
+@include lgLaptopView {
 }
 
 :export {

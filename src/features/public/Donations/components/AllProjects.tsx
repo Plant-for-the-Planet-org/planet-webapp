@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import styles from './../styles/AllProjects.module.scss';
+import styles from './../styles/Projects.module.scss';
 
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
   loading: () => <ProjectLoader />,

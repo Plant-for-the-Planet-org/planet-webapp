@@ -16,7 +16,7 @@
     @content;
   }
 }
-@mixin lglaptopView {
+@mixin lgLaptopView {
   @media screen and (min-width: 980px) {
     @content;
   }

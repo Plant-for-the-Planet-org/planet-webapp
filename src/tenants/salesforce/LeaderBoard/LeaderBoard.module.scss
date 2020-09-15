@@ -731,7 +731,7 @@
   }
 }
 
-@include lglaptopView {
+@include lgLaptopView {
   .landingSection {
     background-image: url('/tenants/salesforce/images/desktop/Landscape.png');
     margin-top: 60px;
@@ -775,7 +775,4 @@
   .learnMoreSectionText {
     margin-left: 0px;
   }
-}
-
-@include xlDesktopView {
 }
