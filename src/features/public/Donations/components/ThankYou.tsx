@@ -64,8 +64,8 @@ function ThankYou({
         donation was successfully paid with {paymentTypeUsed}.
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {Sugar.Number.format(Number(treeCount), 2)} trees will be planted
-        by {project.name} in {project.location}.
+        Your {Sugar.Number.format(Number(treeCount))} trees will be planted by{' '}
+        {project.name} in {project.location}.
       </div>
 
       <div className={styles.contributionMessage}>
@@ -78,7 +78,8 @@ function ThankYou({
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage} ref={imageRef}>
           <div className={styles.donationCount}>
-            My {treeCount} trees are being planted in {project.location}
+            My {Sugar.Number.format(Number(treeCount))} trees are being planted
+            in {project.location}
             <p className={styles.donationTenant}>
               Plant trees at {config.tenantURL}
             </p>
