@@ -45,7 +45,7 @@ export default function ProjectsContainer({
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
-    // showFeaturedList ? null : setSearchMode(true);
+    showFeaturedList ? null : setSearchMode(true);
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
@@ -246,8 +246,9 @@ export default function ProjectsContainer({
             <div
               className={styles.cancelIcon}
               onClick={() => {
-                setSearchMode(false);
+                showFeaturedList ? setSearchMode(false) : null;
                 setSearchValue('');
+                console.log(searchRef);
               }}
             >
               <CancelIcon color={styles.primaryFontColor} />
@@ -293,9 +294,7 @@ export default function ProjectsContainer({
                   ) : null}
                 </div>
               </div>
-            ) : (
-              <p className={styles.headerText}>Stop Talking. Start Planting.</p>
-            )}
+            ) : null}
 
             <div
               className={styles.searchIcon}

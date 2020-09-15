@@ -16,17 +16,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
   width: 360px;
   height: 50px;
-}
-
-.headerText {
-  margin: 0;
-  padding-left: 20px;
-  font-weight: 600;
 }
 
 .tabButtonContainer {
