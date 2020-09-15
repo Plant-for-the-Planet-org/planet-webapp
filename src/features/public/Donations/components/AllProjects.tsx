@@ -54,23 +54,23 @@ function AllProjects({
   } else {
     return (
       <div className={styles.allProjectsContainer}>
-        <LazyLoad>
-          <div>
-            {projects.map((project: any) => {
-              return (
-                <ProjectSnippet
-                  key={project.properties.id}
-                  project={project}
-                  setShowSingleProject={setShowSingleProject}
-                  setLayoutId={setLayoutId}
-                  fetchProject={async () => {
-                    await fetchSingleProject(project.properties.id);
-                  }}
-                />
-              );
-            })}
-          </div>
-        </LazyLoad>
+        {/* <LazyLoad> */}
+        <div>
+          {projects.map((project: any) => {
+            return (
+              <ProjectSnippet
+                key={project.properties.id}
+                project={project}
+                setShowSingleProject={setShowSingleProject}
+                setLayoutId={setLayoutId}
+                fetchProject={async () => {
+                  await fetchSingleProject(project.properties.id);
+                }}
+              />
+            );
+          })}
+        </div>
+        {/* </LazyLoad> */}
       </div>
     );
   }

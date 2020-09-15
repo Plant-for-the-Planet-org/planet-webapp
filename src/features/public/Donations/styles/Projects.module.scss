@@ -8,6 +8,7 @@
   margin-top: 0px;
   height: 100vh;
   overflow: scroll;
+  padding-bottom: 76px;
 }
 
 .containerChild {
@@ -333,6 +334,7 @@
     overflow: hidden;
     padding-top: 0px;
     margin-top: 60px;
+    padding-bottom: 0px;
   }
   .allProjectsContainer > div > div {
     display: block;
@@ -353,6 +355,10 @@
   }
 
   .avoidPointerEvents {
+    display: none;
+  }
+
+  .openMap {
     display: none;
   }
 }

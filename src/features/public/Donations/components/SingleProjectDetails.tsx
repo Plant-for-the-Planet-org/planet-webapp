@@ -37,19 +37,13 @@ function SingleProjectDetails({
   project,
   setShowSingleProject,
   setLayoutId,
+  touchMap,
+  setTouchMap,
 }: Props): ReactElement {
   const router = useRouter();
 
   const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const isMobile = screenWidth <= 1024;
-  // subtract screen height with bottom nav
-  const containerHeight = screenHeight - 76;
-  const [isScrolling, setIsScrolling] = React.useState(false);
-  const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
-  const [top, setTop] = React.useState(!isMobile ? 60 : 200);
-  const [allowScroll, setAllowScroll] = React.useState(!isMobile);
-  const [canChangeTopValue, setCanChangeTopValue] = React.useState(true);
+  const isMobile = screenWidth <= 768;
 
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
@@ -96,58 +90,6 @@ function SingleProjectDetails({
     },
   ];
 
-  const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'medium', image);
-    return ImageSource;
-  };
-
-  // when touched on the project list container enables scrolling of list and
-  // sets the current y-axis touch position in clientY
-  function onTouchStart(e: any) {
-    if (isMobile) {
-      setIsScrolling(true);
-      setClientY(e.touches[0].clientY);
-    }
-  }
-
-  // when finger is dragged new on the list it adjusts the margin of the container accordingly
-  function onTouchMove(e: any) {
-    if (isScrolling) {
-      let newTop = top + (e.touches[0].clientY - clientY);
-      // if change of top value is allowed and the current top value is below the
-      // top of the screen then replaces the state top value with current top value
-      if (canChangeTopValue && newTop >= 0 && newTop <= screenHeight - 130) {
-        setTop(newTop);
-        setClientY(e.touches[0].clientY);
-      }
-      // checks if top value is less than 20px then allows the list to scroll else not
-      if (top <= 30) {
-        setAllowScroll(true);
-      } else {
-        setAllowScroll(false);
-      }
-    }
-  }
-
-  // when finger is removed from the surface or interupted then stops the scrolling of list
-  function onTouchEnd() {
-    if (isMobile) {
-      setIsScrolling(false);
-    }
-  }
-
-  // handles the scroll of the project list
-  function handleScroll(e: any) {
-    // toggles the permission for changing the top value while the list is being scrolled
-    // if list is scrolled to top then then allows the value of top to be changed
-    // else disallows the top value to be changed
-    if (e.target.scrollTop === 0) {
-      setCanChangeTopValue(true);
-    } else if (e.target.scrollTop > 0 && canChangeTopValue) {
-      setCanChangeTopValue(false);
-    }
-  }
-
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -160,7 +102,15 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div layoutId={project.id} className={styles.container}>
+    <motion.div
+      layoutId={project.id}
+      className={styles.container}
+      style={
+        touchMap
+          ? { top: '80vh', overflow: 'hidden', transition: 'ease 0.5s' }
+          : { top: 0, overflow: 'scroll', transition: 'ease 0.5s' }
+      }
+    >
       <Modal
         className={styles.modal}
         open={open}
@@ -173,32 +123,29 @@ function SingleProjectDetails({
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
-      <div
-        style={{
-          marginTop: top,
-          height: isMobile ? containerHeight : containerHeight,
-          overflowY: allowScroll ? 'scroll' : 'hidden',
-        }}
-        className={styles.projectContainer}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        onTouchMove={onTouchMove}
-        onTouchCancel={onTouchEnd}
-        onScroll={handleScroll}
-        // style={{
-        //   height:
-        //     window.innerWidth <= 768
-        //       ? window.innerHeight - 126 - top
-        //       : window.innerHeight - 126,
-
-        // }}
-      >
+      {!touchMap ? (
+        <div
+          className={styles.avoidPointerEvents}
+          onTouchMove={() => {
+            setTouchMap(true);
+          }}
+        ></div>
+      ) : null}
+      <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
-          <div className={styles.projectImage}>
+          <div
+            onTouchMove={() => {
+              setTouchMap(false);
+            }}
+            className={styles.projectImage}
+          >
             {project.image ? (
               <LazyLoad>
                 <div
                   className={styles.projectImageFile}
+                  onTouchMove={() => {
+                    setTouchMap(false);
+                  }}
                   style={{
                     backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
                   }}
