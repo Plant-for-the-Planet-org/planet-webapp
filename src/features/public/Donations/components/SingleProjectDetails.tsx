@@ -107,7 +107,7 @@ function SingleProjectDetails({
       className={styles.container}
       style={
         touchMap
-          ? { top: '80vh', overflow: 'hidden', transition: 'ease 0.5s' }
+          ? { top: '75vh', overflow: 'hidden', transition: 'ease 0.5s' }
           : { top: 0, overflow: 'scroll', transition: 'ease 0.5s' }
       }
     >
