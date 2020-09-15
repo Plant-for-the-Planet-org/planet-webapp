@@ -21,7 +21,7 @@ export default function Donate() {
           currencyCode = localStorage.getItem('currencyCode');
           // currencyCode = 'EUR';
         } else {
-          currencyCode = 'EUR';
+          currencyCode = 'USD';
         }
       }
       const res = await fetch(

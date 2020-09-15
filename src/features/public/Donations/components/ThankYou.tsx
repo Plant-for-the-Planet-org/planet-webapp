@@ -5,8 +5,12 @@ import Sugar from 'sugar';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
+<<<<<<< HEAD
 import ShareOptions from './ShareOptions';
 import tenantConfig from '../../../../../tenant.config';
+=======
+import { getPaymentType } from './treeDonation/PaymentFunctions';
+>>>>>>> develop
 
 function ThankYou({
   project,
@@ -19,6 +23,7 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
+<<<<<<< HEAD
   const config = tenantConfig();
   const imageRef = React.createRef();
 
@@ -42,6 +47,9 @@ function ThankYou({
     default:
       paymentTypeUsed = 'Credit Card';
   }
+=======
+  let paymentTypeUsed = getPaymentType(paymentType);
+>>>>>>> develop
 
   function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -77,17 +85,29 @@ function ThankYou({
         <div className={styles.headerTitle}>Thank You!</div>
       </div>
 
+<<<<<<< HEAD
+=======
+      <div className={styles.contributionAmount}>
+        Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
+        donation was successfully paid with {paymentTypeUsed}.
+      </div>
+
+>>>>>>> develop
       <div className={styles.contributionMessage}>
         Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
         donation was successfully paid with {paymentTypeUsed}.
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
         Your {treeCount} trees will be planted by {project.name} in{' '}
+<<<<<<< HEAD
         {project.location}.
       </div>
 
       <div className={styles.contributionMessage}>
         Maybe you'll visit them some day? In the mean time,
+=======
+        {project.location}. Maybe you'll visit them some day? In the mean time,
+>>>>>>> develop
         maybe hook up your friends with some trees of their own by telling them
         our yours?
       </div>
