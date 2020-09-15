@@ -6,6 +6,7 @@ import ShareFilled from '../../../../assets/images/icons/donation/ShareFilled';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
+import { getPaymentType } from './treeDonation/PaymentFunctions';
 
 function ThankYou({
   project,
@@ -18,26 +19,7 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
-  let paymentTypeUsed;
-  switch (paymentType) {
-    case 'CARD':
-      paymentTypeUsed = 'Credit Card';
-      break;
-    case 'SEPA':
-      paymentTypeUsed = 'SEPA Direct Debit';
-      break;
-    case 'GOOGLE_PAY':
-      paymentTypeUsed = 'Google Pay';
-      break;
-    case 'APPLE_PAY':
-      paymentTypeUsed = 'Apple Pay';
-      break;
-    case 'BROWSER':
-      paymentTypeUsed = 'Browser';
-      break;
-    default:
-      paymentTypeUsed = 'Credit Card';
-  }
+  let paymentTypeUsed = getPaymentType(paymentType);
 
   function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -90,16 +72,17 @@ function ThankYou({
       </div>
 
       <div className={styles.contributionAmount}>
-        Your {currency}{' '}
-        {Sugar.Number.format(Number(treeCount * treeCost), 2)} donation was successfully paid with{' '}
-        {paymentTypeUsed}.
+        Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
+        donation was successfully paid with {paymentTypeUsed}.
       </div>
 
       <div className={styles.contributionMessage}>
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {treeCount} trees will be planted by {project.name} in {project.location}. Maybe you'll visit them some day?
-In the mean time, maybe hook up your friends with some trees of their own by telling them our yours?
+        Your {treeCount} trees will be planted by {project.name} in{' '}
+        {project.location}. Maybe you'll visit them some day? In the mean time,
+        maybe hook up your friends with some trees of their own by telling them
+        our yours?
       </div>
 
       <div className={styles.horizontalLine} />
