@@ -61,7 +61,11 @@ function ThankYou({
 
       <div className={styles.contributionMessage}>
         Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
-        donation was successfully paid with {paymentTypeUsed}.
+        donation was{' '}
+        {paymentTypeUsed === 'GOOGLE_PAY' || paymentTypeUsed === 'APPLE_PAY'
+          ? `successfully paid with ${paymentTypeUsed}`
+          : 'successful'}
+        .
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
         Your {Sugar.Number.format(Number(treeCount))} trees will be planted by{' '}
