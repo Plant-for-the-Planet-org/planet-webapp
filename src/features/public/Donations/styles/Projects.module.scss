@@ -3,6 +3,7 @@
 .container {
   position: absolute;
   z-index: 6;
+  transition: all 0.3s ease-in-out;
 }
 
 .cardContainer {
@@ -15,11 +16,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
   width: 360px;
   height: 50px;
+}
+
+.headerText {
+  margin: 0;
+  padding-left: 20px;
+  font-weight: 600;
 }
 
 .tabButtonContainer {

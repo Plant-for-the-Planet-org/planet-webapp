@@ -45,7 +45,7 @@ export default function ProjectsContainer({
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
-    showFeaturedList ? null : setSearchMode(true);
+    // showFeaturedList ? null : setSearchMode(true);
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
@@ -154,7 +154,7 @@ export default function ProjectsContainer({
         setClientY(e.touches[0].clientY);
       }
       // checks if top value is less than 20px then allows the list to scroll else not
-      if (top <= 20) {
+      if (top <= 30) {
         setAllowScroll(true);
       } else {
         setAllowScroll(false);
@@ -184,22 +184,24 @@ export default function ProjectsContainer({
   const projectsContainer = React.useRef(null);
 
   React.useEffect(() => {
-    let Ref = projectsContainer.current;
-    var wheelEvent =
-      'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-    function preventDefault(e) {
-      e.preventDefault();
+    if (!isMobile) {
+      let Ref = projectsContainer.current;
+      var wheelEvent =
+        'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+      function preventDefault(e) {
+        e.preventDefault();
+      }
+
+      var wheelOpt = false;
+      Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
+      Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+      Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+
+      return () => {
+        Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
+        Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+      };
     }
-
-    var wheelOpt = false;
-    Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
-    Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
-    Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
-
-    return () => {
-      Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
-      Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
-    };
   });
   return (
     <div
@@ -244,9 +246,8 @@ export default function ProjectsContainer({
             <div
               className={styles.cancelIcon}
               onClick={() => {
-                showFeaturedList ? setSearchMode(false) : null;
+                setSearchMode(false);
                 setSearchValue('');
-                console.log(searchRef);
               }}
             >
               <CancelIcon color={styles.primaryFontColor} />
@@ -292,7 +293,9 @@ export default function ProjectsContainer({
                   ) : null}
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <p className={styles.headerText}>Stop Talking. Start Planting.</p>
+            )}
 
             <div
               className={styles.searchIcon}

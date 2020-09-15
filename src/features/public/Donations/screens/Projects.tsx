@@ -48,7 +48,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
         currencyCode = localStorage.getItem('currencyCode');
         // currencyCode = 'EUR';
       } else {
-        currencyCode = 'EUR';
+        currencyCode = 'USD';
       }
     }
     const res = await fetch(
