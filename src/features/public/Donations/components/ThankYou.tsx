@@ -73,7 +73,7 @@ function ThankYou({
         friends with some trees of their own by telling them our yours?
       </div>
 
-      <div className={styles.horizontalLine} />
+      {/* <div className={styles.horizontalLine} /> */}
 
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage} ref={imageRef}>
