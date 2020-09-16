@@ -28,6 +28,8 @@ export default function MapboxMap(props) {
     defaultMapSize[0],
     defaultMapSize[1]
   );
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 767;
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -135,6 +137,7 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setMapState(newMapState);
         router.push(
           '/?p=' + project.slug,
           //  +
@@ -143,9 +146,9 @@ export default function MapboxMap(props) {
           undefined,
           { shallow: true }
         );
-        setTimeout(() => {
-          setMapState(newMapState);
-        }, [3800]);
+        // setTimeout(() => {
+        //   setMapState(newMapState);
+        // }, [3800]);
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -188,11 +191,12 @@ export default function MapboxMap(props) {
           longitude,
           latitude,
           zoom,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setMapState(newMapState);
         router.push(
           '/?p=' + project.slug,
           //  +
@@ -201,9 +205,9 @@ export default function MapboxMap(props) {
           undefined,
           { shallow: true }
         );
-        setTimeout(() => {
-          setMapState(newMapState);
-        }, [2300]);
+        // setTimeout(() => {
+        //   setMapState(newMapState);
+        // }, [3800]);
       }
     }
   }, [currentSite]);
@@ -328,7 +332,7 @@ export default function MapboxMap(props) {
               </div>
             </Marker>
           ))}
-        {popupData.show && (
+        {popupData.show && !isMobile && (
           <Popup
             latitude={popupData.lat}
             longitude={popupData.long}

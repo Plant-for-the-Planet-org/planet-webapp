@@ -300,20 +300,28 @@
 
 @include mdTabletView {
   .container {
-    overflow: hidden;
+    // overflow: hidden;
+    overflow-x: hidden;
     padding-top: 0px;
-    margin-top: 90px;
-    position: relative;
+    width: fit-content;
+    // margin-top: 90px;
+    // position: relative;
     // top: 30px;
     left: 24px;
     padding-bottom: 0px;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
+  }
+
+  .container::-webkit-scrollbar {
+    display: none;
   }
 
   .projectContainer {
-    margin-top: 5px;
+    margin-top: 90px;
     width: 360px;
-    overflow-y: scroll;
-    max-height: calc(100vh - 90px);
+    // overflow-y: scroll;
+    // max-height: calc(100vh - 90px);
   }
 
   .avoidPointerEvents {

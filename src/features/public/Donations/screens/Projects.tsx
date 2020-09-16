@@ -2,10 +2,8 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import MapIcon from '../../../../assets/images/icons/MapIcon';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
-import styles from './../styles/Projects.module.scss';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
@@ -90,7 +88,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
         setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-      {!touchMap ? (
+      {/* {!touchMap ? (
         <div
           className={styles.openMap}
           onClick={() => {
@@ -99,7 +97,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
         >
           <MapIcon color="#fff" /> Map
         </div>
-      ) : null}
+      ) : null} */}
       {/* Add Condition Operator */}
 
       {showSingleProject ? (

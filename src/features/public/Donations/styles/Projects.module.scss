@@ -340,8 +340,16 @@
     overflow: hidden;
     padding-top: 0px;
     margin-top: 60px;
-    padding-bottom: 0px;
+    // padding-bottom: 0px;
+    width: 400px;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
   }
+
+  .container::-webkit-scrollbar {
+    display: none;
+  }
+
   .allProjectsContainer > div > div {
     display: block;
   }
@@ -353,10 +361,14 @@
   .projectsContainer {
     margin-top: 5px;
     width: 360px;
-    overflow-y: scroll;
-    max-height: calc(100vh - 145px);
+    overflow-y: hidden;
+    // max-height: calc(100vh - 145px);
   }
   .header {
+    width: 360px;
+  }
+
+  .headerSearchMode {
     width: 360px;
   }
 

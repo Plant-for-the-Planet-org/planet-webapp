@@ -49,7 +49,7 @@ export default function ProjectsContainer({
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
-
+  const projectsContainer = React.useRef(null);
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
@@ -127,34 +127,35 @@ export default function ProjectsContainer({
     setLayoutId,
   };
 
-  const projectsContainer = React.useRef(null);
-
   React.useEffect(() => {
     if (!isMobile) {
-      let Ref = projectsContainer.current;
-      var wheelEvent =
-        'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-      function preventDefault(e) {
-        e.preventDefault();
+      if (projectsContainer.current !== null) {
+        let Ref = projectsContainer.current;
+        var wheelEvent =
+          'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+        function preventDefault(e) {
+          e.preventDefault();
+        }
+
+        var wheelOpt = false;
+        Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
+        Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+        Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+
+        return () => {
+          Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
+          Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+        };
       }
-
-      var wheelOpt = false;
-      Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
-      Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
-      Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
-
-      return () => {
-        Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
-        Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
-      };
     }
   });
   return (
     <div
+      ref={projectsContainer}
       style={
         touchMap
           ? { top: '75vh', overflow: 'hidden', transition: 'ease 0.5s' }
-          : { top: 0, overflow: 'scroll', transition: 'ease 0.5s' }
+          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
       }
       className={styles.container}
     >
@@ -254,7 +255,7 @@ export default function ProjectsContainer({
             </div>
           )}
           {/* till here is header */}
-          <div className={styles.projectsContainer} ref={projectsContainer}>
+          <div className={styles.projectsContainer}>
             {searchValue !== '' ? (
               <AllProjects {...SearchResultProjectsProps} />
             ) : selectedTab === 'all' ? (
