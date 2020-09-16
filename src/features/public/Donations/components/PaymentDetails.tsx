@@ -320,17 +320,19 @@ function PaymentDetails({
           for {Sugar.Number.format(Number(treeCount))} Trees
         </div>
       </div>
-      <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-        {showContinue ? (
+      {showContinue ? (
+        <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
           <AnimatedButton className={styles.continueButton}>
-            Continue
+            Donate
           </AnimatedButton>
-        ) : (
+        </div>
+      ) : (
+        <div className={styles.actionButtonsContainer}>
           <AnimatedButton disabled className={styles.continueButtonDisabled}>
-            Continue
+            Donate
           </AnimatedButton>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
