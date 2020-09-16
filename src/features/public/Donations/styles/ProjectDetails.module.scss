@@ -8,7 +8,7 @@
   margin-top: 0px;
   height: 100vh;
   overflow: scroll;
-  padding-bottom: 76px;
+  padding-bottom: 60px;
 }
 
 .modal {
@@ -285,18 +285,11 @@
   // pointer-events: none;
 }
 
-// @media only screen and (max-width: 768px) {
-//   .container {
-//     margin-top: 0px;
-//   }
-
-//   .projectContainer {
-//     left: 0;
-//     top: 0;
-//     width: 100%;
-//     max-height: none;
-//   }
-// }
+@include smTabletView {
+  .container {
+    padding-bottom: 0px;
+  }
+}
 
 @include mdTabletView {
   .container {
