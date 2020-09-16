@@ -16,9 +16,9 @@ function ContactDetails({
   setDonationStep,
   contactDetails,
   setContactDetails,
+  isCompany,
+  setIsCompany,
 }: ContactDetailsPageProps): ReactElement {
-  const [isCompany, setIsCompany] = React.useState(false);
-
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
     setDonationStep(3);

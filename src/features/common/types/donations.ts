@@ -58,6 +58,8 @@ export interface ContactDetailsPageProps {
   setDonationStep: Function;
   contactDetails: contactDetailsProps;
   setContactDetails: Function;
+  isCompany: Boolean;
+  setIsCompany: Function;
 }
 
 export interface ThankYouProps {
