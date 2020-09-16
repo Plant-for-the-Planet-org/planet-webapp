@@ -1,36 +1,9 @@
-import React from "react";
+import React from 'react';
 
 function GooglePlay() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="19.106"
-      height="21.135"
-      data-name="Group 2181"
-      viewBox="0 0 19.106 21.135"
-    >
-      <g fill="#2f3336" fillRule="evenodd" data-name="Group 2180">
-        <path
-          d="M400.451 299.449a1.442 1.442 0 00-.351 1.035V316.7a1.374 1.374 0 00.359 1.026l.059.049 9.535-9.087v-.2l-9.542-9.089z"
-          data-name="Path 3188"
-          transform="translate(-400.1 -298.032)"
-        ></path>
-        <path
-          d="M921.48 637.083l-3.18-3.18v-.223l3.18-3.18.069.042 3.762 2.138a1.168 1.168 0 010 2.222l-3.762 2.138z"
-          data-name="Path 3189"
-          transform="translate(-907.013 -623.227)"
-        ></path>
-        <path
-          d="M431.243 805.249L427.994 802l-9.594 9.594a1.259 1.259 0 001.6.052l11.245-6.4"
-          data-name="Path 3190"
-          transform="translate(-416.875 -790.765)"
-        ></path>
-        <path
-          d="M431.243 293.125L420 286.738a1.247 1.247 0 00-1.6.052l9.594 9.584z"
-          data-name="Path 3191"
-          transform="translate(-416.875 -286.48)"
-        ></path>
-      </g>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z" />
     </svg>
   );
 }

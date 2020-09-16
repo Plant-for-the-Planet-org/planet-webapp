@@ -79,6 +79,11 @@
   font-family: $primaryFontFamily;
 }
 
+.projectControls > div > svg {
+  height: 16px;
+  padding: 0 8px;
+}
+
 .projectControlText {
   font-size: 14px;
   margin: 0;

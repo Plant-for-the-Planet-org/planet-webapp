@@ -82,3 +82,8 @@
     width: 16px;
   }
 }
+
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
+}
