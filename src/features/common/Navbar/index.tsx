@@ -188,7 +188,7 @@ export default function NavbarComponent(props: any) {
       >
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
           {config.header?.isSecondaryTenant ? (
-            <>
+            <div className={styles.bottomLogo}>
               <Nav.Link
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
@@ -209,7 +209,7 @@ export default function NavbarComponent(props: any) {
                 <a href={'https://www.plant-for-the-planet.org'}>
                   <div
                     className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
+                    style={{ margin: '5px 8px' }}
                   >
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
@@ -218,9 +218,9 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </a>
               </Nav.Link>
-            </>
+            </div>
           ) : (
-            <>
+            <div className={styles.bottomLogo}>
               <Nav.Link
                 href={'https://www.plant-for-the-planet.org'}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
@@ -237,7 +237,7 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </a>
               </Nav.Link>
-            </>
+            </div>
           )}
 
           {config.header?.items.map((item) => {

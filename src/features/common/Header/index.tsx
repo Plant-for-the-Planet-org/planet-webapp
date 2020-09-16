@@ -6,7 +6,6 @@ export default function Layout() {
     <Head>
       <title>Plant-for-the-Planet</title>
       <link rel="icon" href="/favicon.ico" />
-      <script src="https://use.fontawesome.com/f275d09e8c.js"></script>
 
       {config.font.primaryFontURL && (
         <link href={config.font.primaryFontURL} rel="stylesheet" />
