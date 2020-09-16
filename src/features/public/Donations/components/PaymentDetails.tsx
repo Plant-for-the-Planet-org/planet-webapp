@@ -26,7 +26,7 @@ const FormControlNew = withStyles({
     backgroundColor: '#F2F2F7',
     border: '0px!important',
     borderRadius: '10px',
-    fontFamily: 'Raleway, sans-serif',
+    fontFamily: styles.primaryFontFamily,
     padding: '18.5px',
   },
 })(FormControl);
@@ -37,10 +37,10 @@ const ELEMENT_OPTIONS = {
       fontSize: '14px',
       color: '#424770',
       letterSpacing: '0.025em',
-      fontFamily: 'Raleway, sans-serif',
+      fontFamily: styles.primaryFontFamily,
       '::placeholder': {
         color: '#aab7c4',
-        fontFamily: 'Raleway, sans-serif',
+        fontFamily: styles.primaryFontFamily,
       },
     },
     invalid: {
@@ -53,11 +53,11 @@ const getInputOptions = (placeholder: string) => {
     style: {
       base: {
         color: '#32325d',
-        fontFamily: 'Raleway, sans-serif',
+        fontFamily: styles.primaryFontFamily,
         fontSize: '16px',
         '::placeholder': {
           color: '#2F3336',
-          fontFamily: 'Raleway, sans-serif',
+          fontFamily: styles.primaryFontFamily,
           fontSize: '14px',
         },
       },
@@ -126,6 +126,7 @@ function PaymentDetails({
     });
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
   const handleSubmit = async (event: { preventDefault: () => void }) => {
+    setShowContinue(false);
     event.preventDefault();
     if (!stripe || !elements) {
       return;
@@ -322,17 +323,19 @@ function PaymentDetails({
           for {Sugar.Number.format(Number(treeCount))} Trees
         </div>
       </div>
-      <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-        {showContinue ? (
+      {showContinue ? (
+        <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
           <AnimatedButton className={styles.continueButton}>
-            Continue
+            Donate
           </AnimatedButton>
-        ) : (
+        </div>
+      ) : (
+        <div className={styles.actionButtonsContainer}>
           <AnimatedButton disabled className={styles.continueButtonDisabled}>
-            Continue
+            Donate
           </AnimatedButton>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -62,7 +62,7 @@ export default function Blogs() {
                     <div
                       style={{
                         backgroundColor: '#87B738',
-                        fontFamily: 'Raleway',
+                        fontFamily: styles.primaryFontFamily,
                         fontSize: '14px',
                         color: 'white',
                         borderRadius: '9px',

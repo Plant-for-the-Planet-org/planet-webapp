@@ -16,6 +16,7 @@ import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
@@ -48,6 +49,8 @@ function SingleProjectDetails({
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
+  const { theme } = React.useContext(ThemeContext);
+
   if (progressPercentage > 100) {
     progressPercentage = 100;
   }
@@ -58,19 +61,19 @@ function SingleProjectDetails({
   const contactDetails = [
     {
       id: 1,
-      icon: <BlackTree />,
+      icon: <BlackTree color={styles.highlightBackground} />,
       text: 'View Profile',
       link: project.tpo.slug,
     },
     {
       id: 2,
-      icon: <WorldWeb />,
+      icon: <WorldWeb color={styles.highlightBackground} />,
       text: project.website ? project.website : 'unavailable',
       link: project.website,
     },
     {
       id: 3,
-      icon: <Location />,
+      icon: <Location color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.address
           ? project.tpo.address
@@ -82,7 +85,7 @@ function SingleProjectDetails({
     },
     {
       id: 4,
-      icon: <Email />,
+      icon: <Email color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
       link:
@@ -112,7 +115,7 @@ function SingleProjectDetails({
       }
     >
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         closeAfterTransition

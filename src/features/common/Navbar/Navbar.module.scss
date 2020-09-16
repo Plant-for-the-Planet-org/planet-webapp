@@ -19,7 +19,7 @@
   padding: 0px !important;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   width: 100%;
-  background-color: #ffffff;
+  background-color: $light;
 }
 
 .first_icon {
@@ -31,12 +31,21 @@
   margin-left: 16px;
 }
 
+.theme_icon {
+  position: absolute;
+  right: calc(25% - 100px);
+  padding: 0.3rem 0.5rem;
+  top: 2px;
+  bottom: 2px;
+}
+
 .tenant_logo {
   left: calc(25% - 140px);
   padding: 0rem 0.5rem;
 }
 
-.first_icon > .link_container > .link_icon {
+.first_icon > .link_container > .link_icon,
+.theme_icon.link_container > .link_icon {
   height: 30px;
   width: 30px;
 }
@@ -63,10 +72,10 @@
   margin-top: 4px;
   font-family: $primaryFontFamily;
   font-weight: bold;
-  color: #2f3336;
+  color: $primaryFontColor;
 }
 .link_container > p.active_icon {
-  color: #89b35a;
+  color: $primaryColor;
 }
 .nav_container {
   height: 60px;

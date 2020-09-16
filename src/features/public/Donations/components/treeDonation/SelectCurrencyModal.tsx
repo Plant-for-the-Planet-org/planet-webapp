@@ -11,6 +11,7 @@ import {
   getCountryDataBy,
   sortCountriesData,
 } from '../../../../../utils/countryUtils';
+import { ThemeContext } from '../../../../../utils/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
@@ -29,6 +30,8 @@ export default function TransitionsModal(props: any) {
   const [selectedModalValue, setSelectedModalValue] = useState(
     `${country},${currency}`
   );
+
+  const { theme } = React.useContext(ThemeContext);
 
   // changes the currency in when a currency is selected
   const handleCurrencyChange = (event: any) => {
@@ -72,7 +75,7 @@ export default function TransitionsModal(props: any) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={styles.modalContainer}
+        className={styles.modalContainer + ' ' + theme}
         open={openModal}
         onClose={handleModalClose}
         closeAfterTransition
