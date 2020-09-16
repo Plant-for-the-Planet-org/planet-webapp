@@ -109,8 +109,17 @@
 }
 
 .bottomLogo {
-  padding: 0 20px 0 0;
+  padding: 0;
   display: flex;
+}
+
+.bottomLogo::after {
+  content: '';
+  display: block;
+  margin: 0 auto;
+  height: 38px;
+  margin-top: 8px;
+  padding-left: 10px;
   border-right: $primaryFontColor solid 1px;
 }
 

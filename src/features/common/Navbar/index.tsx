@@ -209,7 +209,7 @@ export default function NavbarComponent(props: any) {
                 <a href={'https://www.plant-for-the-planet.org'}>
                   <div
                     className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
+                    style={{ margin: '5px 8px' }}
                   >
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
