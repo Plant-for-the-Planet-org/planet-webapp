@@ -7,10 +7,7 @@ import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentPro
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../../common/types/donations';
-import {
-  createDonation,
-  payDonation,
-} from '../components/treeDonation/PaymentFunctions';
+import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
@@ -129,108 +126,34 @@ function TreeDonation({
   };
 
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
-    setIsPaymentProcessing(true);
-    let createDonationData = {
-      type: 'trees',
-      project: project.id,
-      treeCount: treeCount,
-      amount: treeCost * treeCount,
-      currency: currency,
-      donor: {
-        firstname: paymentMethod.billing_details.name,
-        lastname: paymentMethod.billing_details.name,
-        email: paymentMethod.billing_details.email,
-        address: paymentMethod.billing_details.address.line1,
-        zipCode: paymentMethod.billing_details.address.postal_code,
-        city: paymentMethod.billing_details.address.city,
-        country: paymentMethod.billing_details.address.country,
-      },
-    };
-    let gift = {
-      gift: {
-        type: 'invitation',
-        recipientName: giftDetails.recipientName,
-        recipientEmail: giftDetails.email,
-        message: giftDetails.giftMessage,
-      },
-    };
-    if (isGift) {
-      createDonationData = {
-        ...createDonationData,
-        ...gift,
-      };
-    }
     setPaymentType(paymentRequest._activeBackingLibraryName);
-    createDonation(createDonationData).then((res) => {
-      // Code for Payment API
 
-      if (res.code === 400) {
-        setIsPaymentProcessing(false);
-        setPaymentError(res.message);
-        return;
-      } else {
-        const payDonationData = {
-          paymentProviderRequest: {
-            account: paymentSetup.gateways.stripe.account,
-            gateway: 'stripe_pi',
-            source: {
-              id: paymentMethod.id,
-              object: 'payment_method',
-            },
-          },
-        };
+    let donorDetails = {
+      firstname: paymentMethod.billing_details.name,
+      lastname: paymentMethod.billing_details.name,
+      email: paymentMethod.billing_details.email,
+      address: paymentMethod.billing_details.address.line1,
+      zipCode: paymentMethod.billing_details.address.postal_code,
+      city: paymentMethod.billing_details.address.city,
+      country: paymentMethod.billing_details.address.country,
+    };
 
-        payDonation(payDonationData, res.id).then(async (res) => {
-          if (res.status === 'failed') {
-            setIsPaymentProcessing(false);
-            setPaymentError(res.message);
-            return;
-          } else {
-            if (res.paymentStatus === 'success') {
-              setIsPaymentProcessing(false);
-              setDonationStep(4);
-            } else if (res.status === 'action_required') {
-              const clientSecret = res.response.payment_intent_client_secret;
-              const donationID = res.id;
-              const stripe = window.Stripe(
-                process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-                {
-                  stripeAccount: res.response.account,
-                }
-              );
-              if (stripe) {
-                await stripe.handleCardAction(clientSecret).then((res) => {
-                  if (res.error) {
-                    setIsPaymentProcessing(false);
-                    setPaymentError(res.error.message);
-                  } else {
-                    const payDonationData = {
-                      paymentProviderRequest: {
-                        account: paymentSetup.gateways.stripe.account,
-                        gateway: 'stripe_pi',
-                        source: {
-                          id: res.paymentIntent.id,
-                          object: 'payment_intent',
-                        },
-                      },
-                    };
-                    payDonation(payDonationData, donationID).then((res) => {
-                      if (res.paymentStatus === 'success') {
-                        setIsPaymentProcessing(false);
-                        setDonationStep(4);
-                      } else {
-                        setIsPaymentProcessing(false);
-                        setPaymentError(res.error.message);
-                      }
-                    });
-                  }
-                });
-              }
-            }
-          }
-        });
-      }
-    });
+    const payWithCardProps = {
+      setDonationStep,
+      setIsPaymentProcessing,
+      project,
+      currency,
+      treeCost,
+      treeCount,
+      giftDetails,
+      isGift,
+      setPaymentError,
+      paymentSetup,
+      window,
+      paymentMethod,
+      donorDetails,
+    };
+    payWithCard({ ...payWithCardProps });
   };
 
   return isPaymentProcessing ? (

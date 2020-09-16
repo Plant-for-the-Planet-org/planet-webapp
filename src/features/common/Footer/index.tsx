@@ -1,11 +1,12 @@
-import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+import AppleIcon from '../../../assets/images/footer/AppStore';
+import GooglePlayIcon from '../../../assets/images/footer/GooglePlay';
 import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
 import World from '../../../assets/images/footer/World';
 import getLanguageName from '../../../utils/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
+
 // let styles = require('./Footer.module.css');
 export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
@@ -85,13 +86,13 @@ export default function Footer() {
               </div>
               <a href="https://play.google.com/store/apps/details?id=org.pftp">
                 <div className={styles.footer_button}>
-                  <FontAwesomeIcon icon={faGooglePlay} />
+                  <GooglePlayIcon />
                   <p className={styles.selected_language_bold}>Google Play</p>
                 </div>
               </a>
               <a href="https://apps.apple.com/us/app/plant-for-the-planet/id1444740626">
                 <div className={styles.footer_button}>
-                  <FontAwesomeIcon icon={faApple} />
+                  <AppleIcon />
                   <p className={styles.selected_language_bold}>App Store</p>
                 </div>
               </a>

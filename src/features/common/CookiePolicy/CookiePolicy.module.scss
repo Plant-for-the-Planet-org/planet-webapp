@@ -49,7 +49,7 @@
   color: $primaryColor;
 }
 
-@media only screen and (max-width: 767px) {
+@include xsPhoneView {
   .cookieContainer {
     display: flex;
     flex-direction: column;
@@ -57,7 +57,7 @@
     align-items: center;
     left: 0;
     right: 0;
-    bottom: 76px;
+    bottom: 60px;
     max-width: 100%;
     border-radius: 0px;
   }
@@ -76,9 +76,7 @@
     right: 0;
   }
 }
-
-@media only screen and (max-width: 425px) {
-  .closeButton > svg {
-    width: 16px;
-  }
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
 }

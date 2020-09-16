@@ -60,7 +60,6 @@ export default function CountrySelect(props: {
           {option.label} ({option.code})
         </React.Fragment>
       )}
-      defaultValue={defaultValue}
       renderInput={(params) => (
         <MaterialTextFeild
           {...params}
@@ -68,7 +67,7 @@ export default function CountrySelect(props: {
           variant="outlined"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            // autoComplete: 'new-password', // disable autocomplete and autofill
           }}
           inputRef={props.inputRef}
           name={props.name}

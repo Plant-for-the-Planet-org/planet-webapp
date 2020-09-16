@@ -15,7 +15,7 @@
 }
 .top_nav {
   height: 60px;
-  justify-content: center !important;
+  justify-content: center;
   padding: 0px !important;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   width: 100%;
@@ -28,6 +28,7 @@
   padding: 0.3rem 0.5rem;
   top: 2px;
   bottom: 2px;
+  margin-left: 16px;
 }
 
 .theme_icon {
@@ -93,6 +94,7 @@
 }
 
 .bottom_nav {
+  display: none;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.12);
 }
 
@@ -115,15 +117,46 @@
   width: 27px;
 }
 
-@media only screen and (max-width: 768px) {
+.bottomLogo {
+  padding: 0;
+  display: flex;
+}
+
+.bottomLogo::after {
+  content: '';
+  display: block;
+  margin: 0 auto;
+  height: 38px;
+  margin-top: 8px;
+  padding-left: 10px;
+  border-right: $primaryFontColor solid 1px;
+}
+
+@include smTabletView {
+  .top_nav {
+    justify-content: flex-end;
+  }
+}
+
+@include mdTabletView {
+  .top_nav {
+    justify-content: center;
+  }
+}
+
+@include xsPhoneView {
   .top_nav {
     display: none;
+  }
+
+  .bottom_nav {
+    display: block;
+    padding: 0;
   }
 
   .link_container > img {
     height: 40px;
     width: auto;
-    max-width: 40px;
   }
 
   .link_container > p {

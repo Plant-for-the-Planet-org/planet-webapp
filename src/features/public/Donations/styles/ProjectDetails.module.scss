@@ -1,10 +1,14 @@
 @import './../../../../theme/theme';
 
 .container {
-  width: 100vw;
-  margin-top: 60px;
-  position: relative;
+  position: absolute;
   z-index: 6;
+  transition: all 0.3s ease-in-out;
+  width: 100vw;
+  margin-top: 0px;
+  height: 100vh;
+  overflow: scroll;
+  padding-bottom: 60px;
 }
 
 .modal {
@@ -25,16 +29,13 @@
   display: flex;
   flex-direction: column;
   background-color: $backgroundColor;
-  width: 360px;
+  width: 100%;
   padding-bottom: 16px;
-  max-height: calc(100vh - 95px);
-  border-top-right-radius: 6px;
+  height: auto;
+  border-top-right-radius: 13px;
   border-top-left-radius: 13px;
-  position: absolute;
-  top: 30px;
-  left: 24px;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .projectContainer::-webkit-scrollbar {
@@ -308,6 +309,51 @@
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 :export {
   highlightBackground: $highlightBackground;
+=======
+.avoidPointerEvents {
+  display: block;
+  height: 50vh;
+  z-index: 999;
+  // pointer-events: none;
+}
+
+@include smTabletView {
+  .container {
+    padding-bottom: 0px;
+  }
+}
+
+@include mdTabletView {
+  .container {
+    // overflow: hidden;
+    overflow-x: hidden;
+    padding-top: 0px;
+    width: fit-content;
+    // margin-top: 90px;
+    // position: relative;
+    // top: 30px;
+    left: 24px;
+    padding-bottom: 0px;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
+  }
+
+  .container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projectContainer {
+    margin-top: 90px;
+    width: 360px;
+    // overflow-y: scroll;
+    // max-height: calc(100vh - 90px);
+  }
+
+  .avoidPointerEvents {
+    display: none;
+  }
+>>>>>>> develop
 }

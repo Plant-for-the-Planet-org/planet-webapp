@@ -5,26 +5,28 @@ export default function Blogs() {
     {
       id: 1,
       name:
-        'Learn how trees play a key role in addressing climate change and how you can be a climate champion',
+        'Become a tree champion on Trailhead and unlock a donation to Plant for the Planet',
       imagePath: '/tenants/salesforce/images/Blog/1.png',
-      link: '',
-      linkTitle: 'Hit the Trail on Trailhead',
+      link:
+        'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
+      linkTitle: 'Hit the Trail',
     },
     {
       id: 2,
       name:
         'Make working-from-home more comfortable, productive, and sustainable',
       imagePath: '/tenants/salesforce/images/Blog/2.png',
-      link: '',
-      linkTitle: 'Read the Wellbeing at Home Guide',
+      link: 'https://www.salesforce.com/sustainability',
+      linkTitle: 'Read the Guide',
     },
     {
       id: 3,
       name:
-        'Drawing parallels between COVID-19 and climate change could be the key to a healthier, more sustainable future',
+        'Drawing parallels between COVID-19 and climate change could be the key to a healthier future',
       imagePath: '/tenants/salesforce/images/Blog/3.png',
-      link: '',
-      linkTitle: 'Learn More on Newsroom',
+      link:
+        'https://www.salesforce.com/company/news-press/stories/2020/8/salesforce-sustainability/',
+      linkTitle: 'Learn the Articles',
     },
   ];
 
@@ -45,7 +47,9 @@ export default function Blogs() {
                 <div className={styles.blogInfoSection}>
                   {/* <p className={styles.blogtreeCount}>{blog.treeCount}</p> */}
                   <h3 className={styles.blogTitle}>{blog.name}</h3>
-                  <p className={styles.blogLink}>{blog.linkTitle}</p>
+                  <a href={blog.link} target="_blank">
+                    <p className={styles.blogLink}>{blog.linkTitle}</p>
+                  </a>
                 </div>
               </div>
             </Col>
