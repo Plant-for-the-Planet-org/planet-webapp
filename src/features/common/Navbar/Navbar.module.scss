@@ -108,6 +108,12 @@
   width: 27px;
 }
 
+.bottomLogo {
+  padding: 0 20px 0 0;
+  display: flex;
+  border-right: $primaryFontColor solid 1px;
+}
+
 @media only screen and (max-width: 480px) {
   .top_nav {
     display: none;

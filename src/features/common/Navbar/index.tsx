@@ -188,7 +188,7 @@ export default function NavbarComponent(props: any) {
       >
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
           {config.header?.isSecondaryTenant ? (
-            <>
+            <div className={styles.bottomLogo}>
               <Nav.Link
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
@@ -218,7 +218,7 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </a>
               </Nav.Link>
-            </>
+            </div>
           ) : (
             <>
               <Nav.Link
