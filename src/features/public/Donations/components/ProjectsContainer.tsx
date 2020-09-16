@@ -15,6 +15,7 @@ interface Props {
   setSearchedProjects: Function;
   touchMap: any;
   setTouchMap: Function;
+  projectsContainer: any;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -31,10 +32,10 @@ export default function ProjectsContainer({
   setSearchedProjects,
   touchMap,
   setTouchMap,
+  projectsContainer,
 }: Props) {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
-
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
   const showFeaturedList =
@@ -49,7 +50,7 @@ export default function ProjectsContainer({
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
-  const projectsContainer = React.useRef(null);
+
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
@@ -129,26 +130,10 @@ export default function ProjectsContainer({
 
   React.useEffect(() => {
     if (!isMobile) {
-      if (projectsContainer.current !== null) {
-        let Ref = projectsContainer.current;
-        var wheelEvent =
-          'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-        function preventDefault(e) {
-          e.preventDefault();
-        }
-
-        var wheelOpt = false;
-        Ref.scrollTo({ top: yScroll, behaviour: 'smooth' });
-        Ref.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
-        Ref.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
-
-        return () => {
-          Ref.removeEventListener('DOMMouseScroll', preventDefault, false);
-          Ref.removeEventListener(wheelEvent, preventDefault, wheelOpt);
-        };
-      }
+      projectsContainer.current.scrollTo({ top: yScroll, behavior: 'smooth' });
     }
-  });
+  }, [yScroll]);
+
   return (
     <div
       ref={projectsContainer}

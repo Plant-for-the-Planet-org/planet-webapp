@@ -23,11 +23,6 @@ export default function MapboxMap(props) {
   const project = props.project;
   const mapRef = useRef(null);
   const parentRef = useRef(null);
-  const defaultMapSize = [0, 0];
-  const [mapSize, setMapSize] = React.useState(
-    defaultMapSize[0],
-    defaultMapSize[1]
-  );
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const [popupData, setPopupData] = useState({ show: false });
@@ -55,9 +50,7 @@ export default function MapboxMap(props) {
   });
 
   React.useEffect(() => {
-    console.log(mapRef);
     mapRef.current.getMap().resize();
-    // setMapSize([parentRef.current.offsetHeight, parentRef.current.offsetWidth]);
   }, [window.width, window.height]);
 
   React.useEffect(() => {

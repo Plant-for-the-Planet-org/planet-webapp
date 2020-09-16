@@ -13,9 +13,14 @@ const MapLayout = dynamic(() => import('./MapboxMap'), {
 interface Props {
   projects: any;
   yScroll: any;
+  projectsContainer: any;
 }
 
-function ProjectsList({ projects, yScroll }: Props): ReactElement {
+function ProjectsList({
+  projects,
+  yScroll,
+  projectsContainer,
+}: Props): ReactElement {
   const router = useRouter();
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
@@ -39,6 +44,7 @@ function ProjectsList({ projects, yScroll }: Props): ReactElement {
     setSearchedProjects: setSearchedProjects,
     touchMap,
     setTouchMap,
+    projectsContainer,
   };
 
   async function fetchSingleProject(id: any) {

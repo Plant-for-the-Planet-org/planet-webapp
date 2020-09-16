@@ -7,10 +7,12 @@ export default function Donate() {
   const router = useRouter();
   const [projects, setProjects] = React.useState();
   const [yScroll, setYScroll] = React.useState(0);
+  const projectsContainer = React.useRef(null);
 
   const DonateProps = {
     projects: projects,
     yScroll: yScroll,
+    projectsContainer,
   };
 
   React.useEffect(() => {
@@ -42,11 +44,16 @@ export default function Donate() {
 
   React.useEffect(() => {
     const handleScroll = (e) => {
-      let newScroll = yScroll + e.deltaY;
-      if (newScroll < 0) {
-        newScroll = 0;
+      if (projectsContainer.current !== null) {
+        let newScroll = yScroll + e.deltaY;
+        if (newScroll < 0) {
+          newScroll = 0;
+        }
+        if (newScroll > projectsContainer.current.scrollHeight - 490) {
+          newScroll = projectsContainer.current.scrollHeight - 490;
+        }
+        setYScroll(newScroll);
       }
-      setYScroll(newScroll);
     };
     window.addEventListener('wheel', handleScroll);
     return () => window.removeEventListener('wheel', handleScroll);
