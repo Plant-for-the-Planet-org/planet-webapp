@@ -129,8 +129,7 @@ function TreeDonation({
     setPaymentType(paymentRequest._activeBackingLibraryName);
 
     let donorDetails = {
-      firstname: paymentMethod.billing_details.name,
-      lastname: paymentMethod.billing_details.name,
+      name: paymentMethod.billing_details.name,
       email: paymentMethod.billing_details.email,
       address: paymentMethod.billing_details.address.line1,
       zipCode: paymentMethod.billing_details.address.postal_code,
