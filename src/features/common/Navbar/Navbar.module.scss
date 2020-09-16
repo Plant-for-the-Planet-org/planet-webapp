@@ -15,7 +15,7 @@
 }
 .top_nav {
   height: 60px;
-  justify-content: center !important;
+  justify-content: center;
   padding: 0px !important;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   width: 100%;
@@ -123,7 +123,19 @@
   border-right: $primaryFontColor solid 1px;
 }
 
-@media only screen and (max-width: 480px) {
+@include smTabletView {
+  .top_nav {
+    justify-content: flex-end;
+  }
+}
+
+@include mdTabletView {
+  .top_nav {
+    justify-content: center;
+  }
+}
+
+@include xsPhoneView {
   .top_nav {
     display: none;
   }
