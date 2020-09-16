@@ -137,7 +137,8 @@ function PaymentDetails({
       const cardElement = elements!.getElement(CardNumberElement);
       cardElement!.on('change', ({ error }) => {
         if (error) {
-          setPaymentError(error.message);
+          // setPaymentError(error.message);
+          setPaymentError('Could not process your payment, please try again.');
           return;
         }
       });
@@ -147,7 +148,7 @@ function PaymentDetails({
           card: cardElement!,
         })
         .catch((error) => {
-          setPaymentError(error.message);
+          setPaymentError('Could not process your payment, please try again.');
           return;
         });
       paymentMethod = payload.paymentMethod;
