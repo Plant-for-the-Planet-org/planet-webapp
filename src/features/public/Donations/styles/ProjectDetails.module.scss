@@ -309,10 +309,9 @@
   cursor: pointer;
 }
 
-<<<<<<< HEAD
 :export {
   highlightBackground: $highlightBackground;
-=======
+}
 .avoidPointerEvents {
   display: block;
   height: 50vh;
@@ -355,5 +354,4 @@
   .avoidPointerEvents {
     display: none;
   }
->>>>>>> develop
 }
