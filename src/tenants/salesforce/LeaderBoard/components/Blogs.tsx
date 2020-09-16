@@ -26,13 +26,13 @@ export default function Blogs() {
       imagePath: '/tenants/salesforce/images/Blog/3.png',
       link:
         'https://www.salesforce.com/company/news-press/stories/2020/8/salesforce-sustainability/',
-      linkTitle: 'Learn the Articles',
+      linkTitle: 'Read the Article',
     },
   ];
 
   return (
     <section className={styles.blogSection}>
-      <p className={styles.blogSectionHeader}>Resources</p>
+      <p className={styles.blogSectionHeader}>Take Climate Action.</p>
       <Row className={styles.blogContainer}>
         {blogs.map((blog) => {
           return (
