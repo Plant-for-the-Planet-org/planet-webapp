@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import InitialLoader from '../src/features/common/ContentLoaders/InitialLoader';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/utils/themeContext';
@@ -24,6 +25,8 @@ export default function PlanetWeb({ Component, pageProps }: any) {
     }
   }, []);
 
+  const [configAdded, setConfigAdded] = React.useState(false);
+
   React.useEffect(() => {
     async function loadConfig() {
       const res = await fetch(
@@ -36,16 +39,19 @@ export default function PlanetWeb({ Component, pageProps }: any) {
         localStorage.setItem('config', JSON.stringify(config));
         localStorage.setItem('countryCode', config.country);
         localStorage.setItem('currencyCode', config.currency);
+        setConfigAdded(true);
       });
     }
     loadConfig();
   }, []);
 
-  return (
+  return configAdded ? (
     <ThemeProvider>
       <CssBaseline />
 
       <Component {...pageProps} />
     </ThemeProvider>
+  ) : (
+    <InitialLoader />
   );
 }
