@@ -4,12 +4,23 @@
   position: absolute;
   z-index: 6;
   transition: all 0.3s ease-in-out;
+  width: 100vw;
+  margin-top: 0px;
+  height: 100vh;
+  overflow: scroll;
+  padding-bottom: 76px;
+}
+
+.containerChild {
+  // margin-top: 300px;
 }
 
 .cardContainer {
   position: relative;
-  top: 30px;
-  left: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .header {
@@ -19,8 +30,9 @@
   justify-content: space-between;
   background-color: $light;
   border-radius: 13px 13px 0px 0px;
-  width: 360px;
   height: 50px;
+  width: 100%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 .headerText {
@@ -83,6 +95,7 @@
   margin-left: 6px;
   padding: 10px;
   font-size: 12px;
+  margin-right: 6px;
 }
 
 .searchIcon:hover {
@@ -99,45 +112,26 @@
 }
 
 .cancelIcon > svg {
-  width: 20px;
+  width: 18px;
 }
 
 .cancelIcon:hover {
   cursor: pointer;
 }
 
-/* Projects */
 .projectsContainer {
   display: flex;
   flex-direction: column;
   background-color: $light;
-  margin-top: 5px;
-  width: 360px;
+  margin-top: 0px;
+  width: 100%;
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: calc(100vh - 145px);
+  height: auto;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
-
-// .projectsContainer::-webkit-scrollbar-track {
-//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   border-radius: 10px;
-//   background-color: #f5f5f5;
-// }
-
-// .projectsContainer::-webkit-scrollbar {
-//   width: 5px;
-//   background-color: #f5f5f5;
-// }
-
-// .projectsContainer::-webkit-scrollbar-thumb {
-//   border-radius: 10px;
-//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   background-color: $dividerColor;
-// }
 
 .singleProject {
   margin-top: 20px;
@@ -263,6 +257,8 @@
   height: 160px;
   width: 100%;
   position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .projectImageBlock {
@@ -285,35 +281,107 @@
   color: #fff;
 }
 
-@media only screen and (max-width: 768px) {
+.allProjectsContainer {
+  padding-bottom: 12px;
+}
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+.avoidPointerEvents {
+  display: block;
+  height: 50vh;
+  z-index: 999;
+  // pointer-events: none;
+}
+
+.openMap {
+  padding: 12px 20px;
+  border-radius: 100px;
+  background-color: $primaryColor;
+  color: #fff;
+  position: absolute;
+  bottom: 90px;
+  right: 0;
+  left: 0;
+  // max-width: 50px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.openMap > svg {
+  width: 20px;
+  margin-right: 5px;
+}
+
+@include smTabletView {
+  .allProjectsContainer > div > div {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 16px;
+  }
+}
+
+@include mdTabletView {
   .container {
-    width: 100vw;
-    margin-top: 0px;
-    height: calc(100vh - 76px);
     overflow: hidden;
+    padding-top: 0px;
+    margin-top: 60px;
+    // padding-bottom: 0px;
+    width: 400px;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
   }
 
+  .container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .allProjectsContainer > div > div {
+    display: block;
+  }
   .cardContainer {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    max-width: 420px;
+    position: relative;
+    top: 30px;
+    left: 24px;
   }
-
-  .header {
-    width: 100%;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Projects */
   .projectsContainer {
-    margin-top: 0px;
-    width: 100%;
-    max-height: calc(100vh - 126px);
-    overflow-x: hidden;
-    overflow-y: scroll;
+    margin-top: 5px;
+    width: 360px;
+    overflow-y: hidden;
+    // max-height: calc(100vh - 145px);
   }
+  .header {
+    width: 360px;
+  }
+
+  .headerSearchMode {
+    width: 360px;
+  }
+
+  .avoidPointerEvents {
+    display: none;
+  }
+
+  .openMap {
+    display: none;
+  }
+}
+
+@include lgLaptopView {
 }
 
 :export {

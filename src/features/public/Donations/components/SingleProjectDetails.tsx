@@ -24,6 +24,8 @@ interface Props {
   project: any;
   setShowSingleProject: Function;
   setLayoutId: Function;
+  touchMap: any;
+  setTouchMap: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -35,8 +37,14 @@ function SingleProjectDetails({
   project,
   setShowSingleProject,
   setLayoutId,
+  touchMap,
+  setTouchMap,
 }: Props): ReactElement {
   const router = useRouter();
+
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 768;
+
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -82,11 +90,6 @@ function SingleProjectDetails({
     },
   ];
 
-  const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'medium', image);
-    return ImageSource;
-  };
-
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -99,7 +102,15 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div layoutId={project.id} className={styles.container}>
+    <motion.div
+      layoutId={project.id}
+      className={styles.container}
+      style={
+        touchMap
+          ? { top: '75vh', overflow: 'hidden', transition: 'ease 0.5s' }
+          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
+      }
+    >
       <Modal
         className={styles.modal}
         open={open}
@@ -112,8 +123,21 @@ function SingleProjectDetails({
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
+      {!touchMap ? (
+        <div
+          className={styles.avoidPointerEvents}
+          onTouchMove={() => {
+            setTouchMap(true);
+          }}
+        ></div>
+      ) : null}
       <div className={styles.projectContainer}>
-        <div className={styles.singleProject}>
+        <div
+          onTouchMove={() => {
+            setTouchMap(false);
+          }}
+          className={styles.singleProject}
+        >
           <div className={styles.projectImage}>
             {project.image ? (
               <LazyLoad>
