@@ -1,13 +1,10 @@
-import {
-  faCcAmex,
-  faCcDinersClub,
-  faCcDiscover,
-  faCcJcb,
-  faCcMastercard,
-  faCcStripe,
-  faCcVisa,
-} from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AmexIcon from '../assets/images/icons/CreditCardIcons/AmexIcon';
+import DinersClub from '../assets/images/icons/CreditCardIcons/DinersClub';
+import DiscoverIcon from '../assets/images/icons/CreditCardIcons/DiscoverIcon';
+import JcbIcon from '../assets/images/icons/CreditCardIcons/JcbIcon';
+import Mastercard from '../assets/images/icons/CreditCardIcons/Mastercard';
+import StripeIcon from '../assets/images/icons/CreditCardIcons/StripeIcon';
+import VisaIcon from '../assets/images/icons/CreditCardIcons/VisaIcon';
 
 export function formatAmountForDisplay(
   amount: number,
@@ -43,22 +40,22 @@ export function formatAmountForStripe(
 export const getCardBrand = (brand: String) => {
   switch (brand) {
     case 'visa':
-      return <FontAwesomeIcon icon={faCcVisa} />;
+      return <VisaIcon />;
     case 'mastercard':
-      return <FontAwesomeIcon icon={faCcMastercard} />;
+      return <Mastercard />;
     case 'amex':
-      return <FontAwesomeIcon icon={faCcAmex} />;
+      return <AmexIcon />;
     case 'discover':
-      return <FontAwesomeIcon icon={faCcDiscover} />;
+      return <DiscoverIcon />;
     case 'diners':
-      return <FontAwesomeIcon icon={faCcDinersClub} />;
+      return <DinersClub />;
     case 'jcb':
-      return <FontAwesomeIcon icon={faCcJcb} />;
+      return <JcbIcon />;
     case 'unionpay':
-      return <FontAwesomeIcon icon={faCcStripe} />;
+      return <StripeIcon />;
     case 'unknown':
-      return <FontAwesomeIcon icon={faCcStripe} />;
+      return <StripeIcon />;
     default:
-      return <FontAwesomeIcon icon={faCcStripe} />;
+      return <StripeIcon />;
   }
 };

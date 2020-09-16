@@ -1,5 +1,3 @@
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
@@ -13,6 +11,8 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
+import LeftIcon from '../../../../assets/images/icons/LeftIcon';
+import RightIcon from '../../../../assets/images/icons/RightIcon';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
@@ -22,6 +22,9 @@ export default function MapboxMap(props) {
   const projects = props.projects;
   const project = props.project;
   const mapRef = useRef(null);
+  const parentRef = useRef(null);
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 767;
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
@@ -45,6 +48,10 @@ export default function MapboxMap(props) {
     longitude: defaultMapCenter[1],
     zoom: 1.4,
   });
+
+  React.useEffect(() => {
+    mapRef.current.getMap().resize();
+  }, [window.width, window.height]);
 
   React.useEffect(() => {
     if (props.showSingleProject) {
@@ -123,6 +130,7 @@ export default function MapboxMap(props) {
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setMapState(newMapState);
         router.push(
           '/?p=' + project.slug,
           //  +
@@ -131,9 +139,9 @@ export default function MapboxMap(props) {
           undefined,
           { shallow: true }
         );
-        setTimeout(() => {
-          setMapState(newMapState);
-        }, [3800]);
+        // setTimeout(() => {
+        //   setMapState(newMapState);
+        // }, [3800]);
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -176,11 +184,12 @@ export default function MapboxMap(props) {
           longitude,
           latitude,
           zoom,
-          transitionDuration: 2400,
+          transitionDuration: 4000,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
         setViewPort(newViewport);
+        setMapState(newMapState);
         router.push(
           '/?p=' + project.slug,
           //  +
@@ -189,9 +198,9 @@ export default function MapboxMap(props) {
           undefined,
           { shallow: true }
         );
-        setTimeout(() => {
-          setMapState(newMapState);
-        }, [2300]);
+        // setTimeout(() => {
+        //   setMapState(newMapState);
+        // }, [3800]);
       }
     }
   }, [currentSite]);
@@ -229,11 +238,13 @@ export default function MapboxMap(props) {
   };
 
   return (
-    <div className={styles.mapContainer}>
+    <div ref={parentRef} className={styles.mapContainer}>
       <MapGL
         ref={mapRef}
         {...mapState}
         {...viewport}
+        // height={mapSize[0]}
+        // width={mapSize[1]}
         mapboxApiAccessToken={props.mapboxToken}
         mapOptions={{
           customAttribution:
@@ -314,7 +325,7 @@ export default function MapboxMap(props) {
               </div>
             </Marker>
           ))}
-        {popupData.show && (
+        {popupData.show && !isMobile && (
           <Popup
             latitude={popupData.lat}
             longitude={popupData.long}
@@ -354,7 +365,10 @@ export default function MapboxMap(props) {
         {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
-              <ChevronLeftIcon onClick={goToPrevProject} />
+              <div onClick={goToPrevProject}>
+                <LeftIcon />
+              </div>
+
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {siteExists &&
@@ -364,7 +378,9 @@ export default function MapboxMap(props) {
                   : null}
                 &nbsp;&nbsp;
               </p>
-              <ChevronRightIcon onClick={goToNextProject} />
+              <div onClick={goToPrevProject}>
+                <RightIcon />
+              </div>
             </div>
           ) : null
         ) : null}

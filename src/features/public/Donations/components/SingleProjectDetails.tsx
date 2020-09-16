@@ -16,6 +16,7 @@ import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
@@ -24,6 +25,8 @@ interface Props {
   project: any;
   setShowSingleProject: Function;
   setLayoutId: Function;
+  touchMap: any;
+  setTouchMap: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -35,10 +38,18 @@ function SingleProjectDetails({
   project,
   setShowSingleProject,
   setLayoutId,
+  touchMap,
+  setTouchMap,
 }: Props): ReactElement {
   const router = useRouter();
+
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 768;
+
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
+
+  const { theme } = React.useContext(ThemeContext);
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
@@ -50,19 +61,19 @@ function SingleProjectDetails({
   const contactDetails = [
     {
       id: 1,
-      icon: <BlackTree />,
+      icon: <BlackTree color={styles.highlightBackground} />,
       text: 'View Profile',
       link: project.tpo.slug,
     },
     {
       id: 2,
-      icon: <WorldWeb />,
+      icon: <WorldWeb color={styles.highlightBackground} />,
       text: project.website ? project.website : 'unavailable',
       link: project.website,
     },
     {
       id: 3,
-      icon: <Location />,
+      icon: <Location color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.address
           ? project.tpo.address
@@ -74,18 +85,13 @@ function SingleProjectDetails({
     },
     {
       id: 4,
-      icon: <Email />,
+      icon: <Email color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
       link:
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
-
-  const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'medium', image);
-    return ImageSource;
-  };
 
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -99,9 +105,17 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div layoutId={project.id} className={styles.container}>
+    <motion.div
+      layoutId={project.id}
+      className={styles.container}
+      style={
+        touchMap
+          ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
+          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
+      }
+    >
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -112,8 +126,21 @@ function SingleProjectDetails({
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
+      {!touchMap ? (
+        <div
+          className={styles.avoidPointerEvents}
+          onTouchMove={() => {
+            setTouchMap(true);
+          }}
+        ></div>
+      ) : null}
       <div className={styles.projectContainer}>
-        <div className={styles.singleProject}>
+        <div
+          onTouchMove={() => {
+            setTouchMap(false);
+          }}
+          className={styles.singleProject}
+        >
           <div className={styles.projectImage}>
             {project.image ? (
               <LazyLoad>

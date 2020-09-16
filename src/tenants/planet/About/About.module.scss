@@ -292,3 +292,7 @@
   margin-top: 24px;
   text-align: center;
 }
+
+:export {
+  primaryFontFamily: $primaryFontFamily;
+}

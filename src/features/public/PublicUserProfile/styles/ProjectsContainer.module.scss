@@ -32,7 +32,7 @@
   width: 100%;
 }
 
-@include tabletView {
+@include smTabletView {
   .listProjects {
     padding: 0px;
   }

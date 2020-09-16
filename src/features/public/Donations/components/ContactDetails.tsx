@@ -16,9 +16,9 @@ function ContactDetails({
   setDonationStep,
   contactDetails,
   setContactDetails,
+  isCompany,
+  setIsCompany,
 }: ContactDetailsPageProps): ReactElement {
-  const [isCompany, setIsCompany] = React.useState(false);
-
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
     setDonationStep(3);
@@ -33,7 +33,7 @@ function ContactDetails({
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
-          <BackArrow />
+          <BackArrow color={styles.primaryFontColor} />
         </div>
         <div className={styles.headerTitle}>Contact Details</div>
       </div>

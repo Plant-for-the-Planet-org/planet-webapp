@@ -217,10 +217,14 @@ This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-wor
 </details>
 
 ---
+## Reporting a Vulnerability
+
+If you have found a vulnerability, you could write us at: support@plant-for-the-planet.org with details or create a PR for the fix.
+
 
 ## Important Links
 
-[Demo Deployment](https://planet-app-sf.herokuapp.com/)
+[Demo Deployment](https://dev.pp.eco/)
 
 [Designs & Prototype](https://xd.adobe.com/view/8f1c5110-4d7d-445d-8283-8eb1674ce2e4-da4f/)
 
