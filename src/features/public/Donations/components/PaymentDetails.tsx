@@ -126,6 +126,7 @@ function PaymentDetails({
     });
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
   const handleSubmit = async (event: { preventDefault: () => void }) => {
+    setShowContinue(false);
     event.preventDefault();
     if (!stripe || !elements) {
       return;
