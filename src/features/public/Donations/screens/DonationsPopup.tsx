@@ -70,6 +70,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     giftMessage: '',
   });
 
+  const [isCompany, setIsCompany] = React.useState(false);
+
   const [contactDetails, setContactDetails] = React.useState({
     firstName: '',
     lastName: '',
@@ -110,6 +112,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setDonationStep,
     contactDetails,
     setContactDetails,
+    isCompany,
+    setIsCompany,
   };
 
   const PaymentDetailsProps = {

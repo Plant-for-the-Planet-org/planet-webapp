@@ -7,7 +7,6 @@ import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentPro
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../../common/types/donations';
-import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import DownArrow from './../../../../assets/images/icons/DownArrow';
@@ -15,6 +14,7 @@ import Close from './../../../../assets/images/icons/headerIcons/close';
 import styles from './../styles/TreeDonation.module.scss';
 import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
+import { payWithCard } from './treeDonation/PaymentFunctions';
 
 function TreeDonation({
   project,
@@ -128,9 +128,15 @@ function TreeDonation({
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
     setPaymentType(paymentRequest._activeBackingLibraryName);
 
+    let fullName = paymentMethod.billing_details.name;
+    fullName = String(fullName).split(' ');
+    const firstName = fullName[0];
+    fullName.shift();
+    let lastName = String(fullName).replace(/,/g, ' ');
+
     let donorDetails = {
-      firstname: paymentMethod.billing_details.name,
-      lastname: paymentMethod.billing_details.name,
+      firstname: firstName,
+      lastname: lastName,
       email: paymentMethod.billing_details.email,
       address: paymentMethod.billing_details.address.line1,
       zipCode: paymentMethod.billing_details.address.postal_code,

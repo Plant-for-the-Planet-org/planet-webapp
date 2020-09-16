@@ -186,6 +186,7 @@ function PaymentDetails({
       zipCode: contactDetails.zipCode,
       city: contactDetails.city,
       country: countryCode,
+      companyname: contactDetails.companyName,
     };
 
     const payWithCardProps = {
