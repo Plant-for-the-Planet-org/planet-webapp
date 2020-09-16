@@ -139,7 +139,7 @@ export default function ProjectsContainer({
       ref={projectsContainer}
       style={
         touchMap
-          ? { top: '75vh', overflow: 'hidden', transition: 'ease 0.5s' }
+          ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
           : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
       }
       className={styles.container}
