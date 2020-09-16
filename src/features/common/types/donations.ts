@@ -72,3 +72,19 @@ export interface ThankYouProps {
   onClose: any;
   paymentType: String;
 }
+
+export interface PayWithCardTypes {
+  setIsPaymentProcessing: Function;
+  setPaymentError: Function;
+  project: Object;
+  treeCount: number;
+  treeCost: number;
+  currency: String;
+  giftDetails: giftDetailsProps;
+  isGift: Boolean;
+  paymentSetup: Object;
+  window: any;
+  setDonationStep: Function;
+  paymentMethod: Object;
+  donorDetails: Object;
+}
