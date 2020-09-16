@@ -8,6 +8,7 @@
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build"
   },
+  "cacheDirectories": [".next/cache"],
   "engines": {
     "node": "12.x",
     "npm": "6.x"
