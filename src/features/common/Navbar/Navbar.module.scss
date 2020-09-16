@@ -28,6 +28,7 @@
   padding: 0.3rem 0.5rem;
   top: 2px;
   bottom: 2px;
+  margin-left: 16px;
 }
 
 .tenant_logo {
@@ -84,6 +85,7 @@
 }
 
 .bottom_nav {
+  display: none;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.12);
 }
 
@@ -106,9 +108,14 @@
   width: 27px;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 480px) {
   .top_nav {
     display: none;
+  }
+
+  .bottom_nav {
+    display: block;
+    padding: 0;
   }
 
   .link_container > img {
