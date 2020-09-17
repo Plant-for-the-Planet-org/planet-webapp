@@ -22,11 +22,14 @@ export default function MetaTags({ title, desc, imageURL, ogType }: Props) {
     <meta name="description" content={desc} />
     <meta property="og:type" content={ogType} />
     <meta property="og:image" content={imageURL} />
-    <meta name="apple-mobile-web-app-title" content="Plant Trees">
+    {config.tenantName === 'planet' ? (
+      <link rel="alternate" href="android-app://org.pftp/projects" />
+    ) : null}
+    <meta name="apple-mobile-web-app-title" content="Plant Trees" />
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="#4d5153" />
     <link rel="shortcut icon" href="/public/tenants/planet/favicons/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/public/tenants/planet/favicons/apple-touch-icon.png" />
@@ -38,9 +41,6 @@ export default function MetaTags({ title, desc, imageURL, ogType }: Props) {
     <link rel="apple-touch-icon" sizes="144x144" href="/public/tenants/planet/favicons/apple-touch-icon-144x144.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="/public/tenants/planet/favicons/apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/public/tenants/planet/favicons/apple-touch-icon-180x180.png" />
-    {config.tenantName === 'planet' ? (
-      <link rel="alternate" href="android-app://org.pftp/projects" />
-    ) : null}
     </Head>
   );
 }
