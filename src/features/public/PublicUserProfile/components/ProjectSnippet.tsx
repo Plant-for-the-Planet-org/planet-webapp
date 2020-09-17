@@ -18,7 +18,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
 
   const projectDetails = project;
   return (
-    <div key={key}>
+    <div style={{ marginBottom: '40px' }} key={key}>
       <div className={styles.projectImage}>
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -68,8 +68,8 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
                   {project.currency === 'USD'
                     ? '$'
                     : project.currency === 'EUR'
-                    ? '€'
-                    : project.currency}{' '}
+                      ? '€'
+                      : project.currency}{' '}
                   {project.treeCost % 1 !== 0
                     ? project.treeCost.toFixed(2)
                     : project.treeCost}
