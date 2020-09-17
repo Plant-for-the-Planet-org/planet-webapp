@@ -1,11 +1,13 @@
 import {
   PaymentRequestButtonElement,
-  useStripe,
+  useStripe
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../styles/TreeDonation.module.scss';
 
 export const useOptions = (paymentRequest: null) => {
+
   const typeOfButton = 'donate';
   const options = useMemo(
     () => ({
@@ -29,17 +31,72 @@ interface PaymentButtonProps {
   currency: String;
   amount: number;
   onPaymentFunction: Function;
+  continueNext: Function;
 }
 export const PaymentRequestCustomButton = ({
   country,
   currency,
   amount,
   onPaymentFunction,
+  continueNext
 }: PaymentButtonProps) => {
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
-
+  const stripeAllowedCountries = [
+    'AE',
+    'AT',
+    'AU',
+    'BE',
+    'BG',
+    'BR',
+    'CA',
+    'CH',
+    'CI',
+    'CR',
+    'CY',
+    'CZ',
+    'DE',
+    'DK',
+    'DO',
+    'EE',
+    'ES',
+    'FI',
+    'FR',
+    'GB',
+    'GR',
+    'GT',
+    'HK',
+    'HU',
+    'ID',
+    'IE',
+    'IN',
+    'IT',
+    'JP',
+    'LT',
+    'LU',
+    'LV',
+    'MT',
+    'MX',
+    'MY',
+    'NL',
+    'NO',
+    'NZ',
+    'PE',
+    'PH',
+    'PL',
+    'PT',
+    'RO',
+    'SE',
+    'SG',
+    'SI',
+    'SK',
+    'SN',
+    'TH',
+    'TT',
+    'US',
+    'UY',
+  ];
   useEffect(() => {
     if (stripe && paymentRequest === null) {
       const pr = stripe.paymentRequest({
@@ -104,26 +161,58 @@ export const PaymentRequestCustomButton = ({
 
   const options = useOptions(paymentRequest);
 
-  return canMakePayment ? (
+  console.log('canMakePayment', canMakePayment);
+  console.log('stripeAllowedCountries.includes(country)', stripeAllowedCountries.includes(country));
+  console.log('paymentRequest', paymentRequest);
+
+
+  return stripeAllowedCountries.includes(country) && canMakePayment ? (
     paymentRequest ? (
-      <PaymentRequestButtonElement
-        className="PaymentRequestButton"
-        options={options}
-        onReady={() => {
-          console.log('PaymentRequestButton [ready]');
-        }}
-        onClick={(event) => {
-          console.log('PaymentRequestButton [click]', event);
-        }}
-        onBlur={() => {
-          console.log('PaymentRequestButton [blur]');
-        }}
-        onFocus={() => {
-          console.log('PaymentRequestButton [focus]');
-        }}
-      />
+      <div className={styles.actionButtonsContainer}>
+        <div style={{ width: '150px' }}>
+          <PaymentRequestButtonElement
+            className="PaymentRequestButton"
+            options={options}
+            onReady={() => {
+              console.log('PaymentRequestButton [ready]');
+            }}
+            onClick={(event) => {
+              console.log('PaymentRequestButton [click]', event);
+            }}
+            onBlur={() => {
+              console.log('PaymentRequestButton [blur]');
+            }}
+            onFocus={() => {
+              console.log('PaymentRequestButton [focus]');
+            }}
+          />
+        </div>
+
+        <AnimatedButton
+          onClick={() => continueNext()}
+          className={styles.continueButton}
+        >
+          Continue
+          </AnimatedButton>
+      </div>
+
+
     ) : (
-      <div className={styles.paymentRequestPlaceholder}>Loading...</div>
-    )
-  ) : null;
+        <div className={styles.actionButtonsContainer}>
+          <AnimatedButton
+            onClick={() => continueNext()}
+            className={styles.continueButton}
+          >
+            Continue
+          </AnimatedButton>
+        </div>
+      )
+  ) : <div className={styles.actionButtonsContainer}>
+      <AnimatedButton
+        onClick={() => continueNext()}
+        className={styles.continueButton}
+      >
+        Continue
+</AnimatedButton>
+    </div>;
 };
