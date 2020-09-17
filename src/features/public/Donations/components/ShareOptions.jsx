@@ -74,24 +74,7 @@ const ShareOptions = (props) => {
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
-    // if in phone and web share API supported => navigator
-    if ( (isMobileBrowser())  && navigator.share !== undefined) {
-      try {
-        const response = await navigator.share({
-          title: titleToShare,
-          text: textToShare,
-        });
-      } catch (error) {}
-    } else {
-      // if in phone and web share API not supported => clipboard
-      if (isMobileBrowser()) {
-        navigator.clipboard.writeText(textToShare);
-        props.handleTextCopiedSnackbarOpen();
-      } else {
-          // desktop => links      
         openWindowLinks(shareUrl);
-      }
-    }
   };
 
   return (

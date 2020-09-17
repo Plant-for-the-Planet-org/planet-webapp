@@ -75,11 +75,11 @@
 }
 
 .tempThankYouImage {
-  background-image: url('/tenants/planet/images/donations/roadWEBP.webp');
+  background-image: url('/tenants/planet/images/donations/donationComplete.jpg');
   background-position: center;
   background-size: cover;
-  width: 1500px;
-  height: 1500px;
+  width: 2300px;
+  height: 2300px;
   align-self: center;
   position: relative;
   display: flex;
@@ -88,24 +88,24 @@
 
 
 .tempDonationCount{
-  font-size: 90px;
+  font-size: 130px;
   font-weight: 600;
   text-align: center;
   position: absolute;
-  bottom: 200px;
-  padding: 0px 50px;
+  bottom: 300px;
+  padding: 0px 80px;
   color: $light;
   font-variant-ligatures: none;
 }
 
 
 .tempDonationTenant{
-  font-size: 50px;
+  font-size: 75px;
   font-weight: 400;
   font-style: italic;
   text-align: center;
   position: absolute;
-  bottom: 40px;
+  bottom: 60px;
   color: $light;
   font-variant-ligatures: none;
 }
