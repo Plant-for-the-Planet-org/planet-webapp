@@ -43,6 +43,8 @@ export default function Donate() {
   }, []);
 
   React.useEffect(() => {
+    const screenWidth = window.innerWidth;
+    const isMobile = screenWidth <= 767;
     const handleScroll = (e) => {
       if (projectsContainer.current !== null) {
         let newScroll = yScroll + e.deltaY;
@@ -50,7 +52,11 @@ export default function Donate() {
           newScroll = 0;
         }
         if (newScroll > projectsContainer.current.scrollHeight - 490) {
-          newScroll = projectsContainer.current.scrollHeight - 490;
+          if (isMobile) {
+            newScroll = projectsContainer.current.scrollHeight - 490;
+          } else {
+            newScroll = projectsContainer.current.scrollHeight - 430;
+          }
         }
         setYScroll(newScroll);
       }
