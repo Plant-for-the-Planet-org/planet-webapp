@@ -112,7 +112,6 @@ export default function tenantConfig() {
         return {
           tenantName: 'planetbeta',
           tenantURL: 'beta.plant-for-the-planet.org',
-          tenantLogoURL: 'https://www.plant-for-the-planet.org',
           font: {
             primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
             primaryFontURL:
@@ -141,6 +140,59 @@ export default function tenantConfig() {
                 onclick: '/',
                 visible: false,
                 key: 'leaderboard',
+              },
+
+              {
+                id: 4,
+                order: 4,
+                title: 'Me',
+                onclick: '/me',
+                visible: false,
+                key: 'me',
+              },
+            ],
+        },
+      };
+      case 'stern':
+        return {
+          tenantName: 'stern',
+          tenantURL: 'baeume.stern.de',
+          font: {
+            primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
+            primaryFontURL:
+              `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+            secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
+            secondaryFontURL:
+              `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+          },
+          header: {
+            isSecondaryTenant: false, // This will mean that we have to load both the tenant logo and PFP logo
+            tenantLogoURL: `${process.env.CDN_URL}/logo/svg/stern.svg`,
+            tenantLogoLink: 'https://www.stern.de',
+            items: [
+              {
+                id: 1,
+                order: 1,
+                title: 'Donate/Gift',
+                onclick: '/',
+                visible: true,
+                key: 'donate',
+              },
+              {
+                id: 2,
+                order: 2,
+                title: 'Leaderboard',
+                onclick: '/',
+                visible: true,
+                key: 'leaderboard',
+              },
+              {
+                id: 3,
+                order: 3,
+                title: 'Home',
+                onclick: '/',
+                visible: false,
+                key: 'home',
               },
 
               {
