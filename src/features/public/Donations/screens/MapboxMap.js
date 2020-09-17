@@ -116,7 +116,12 @@ export default function MapboxMap(props) {
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
         ).fitBounds(bbox, {
-          padding: 100,
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: isMobile ? 50 : 400,
+            right: isMobile ? 50 : 100,
+          },
         });
         const newMapState = {
           mapStyle: 'mapbox://styles/mapbox/satellite-v9',
@@ -175,7 +180,12 @@ export default function MapboxMap(props) {
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
         ).fitBounds(bbox, {
-          padding: 100,
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: isMobile ? 50 : 400,
+            right: isMobile ? 50 : 100,
+          },
         });
         const newMapState = {
           mapStyle: 'mapbox://styles/mapbox/satellite-v9',
