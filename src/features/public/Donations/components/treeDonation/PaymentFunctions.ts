@@ -75,9 +75,14 @@ export function payWithCard({
     treeCount: treeCount,
     amount: treeCost * treeCount,
     currency: currency,
-    taxDeductionCountry: taxDeductionCountry,
     donor: { ...donorDetails },
   };
+  if (taxDeductionCountry) {
+    createDonationData = {
+      ...createDonationData,
+      taxDeductionCountry: taxDeductionCountry,
+    };
+  }
   let gift = {
     gift: {
       type: 'invitation',
@@ -92,6 +97,7 @@ export function payWithCard({
       ...gift,
     };
   }
+
   createDonation(createDonationData)
     .then((res) => {
       // Code for Payment API

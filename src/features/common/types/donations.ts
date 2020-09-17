@@ -51,6 +51,7 @@ export interface PaymentDetailsProps {
   paymentType: String;
   setPaymentType: Function;
   country: string;
+  isTaxDeductible: Boolean;
 }
 
 export interface ContactDetailsPageProps {
@@ -91,5 +92,5 @@ export interface PayWithCardTypes {
   setDonationStep: Function;
   paymentMethod: Object;
   donorDetails: Object;
-  taxDeductionCountry: string
+  taxDeductionCountry: string | null;
 }

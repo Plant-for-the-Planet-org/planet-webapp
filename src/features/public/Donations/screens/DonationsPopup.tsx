@@ -137,7 +137,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     paymentSetup,
     paymentType,
     setPaymentType,
-    country
+    country,
+    isTaxDeductible
   };
 
   const ThankYouProps = {

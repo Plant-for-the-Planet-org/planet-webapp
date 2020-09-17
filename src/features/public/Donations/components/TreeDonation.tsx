@@ -62,6 +62,14 @@ function TreeDonation({
     setDonationStep(2);
   };
 
+  React.useEffect(() => {
+    if (project.taxDeductionCountries.includes(country)) {
+      setIsTaxDeductible(true)
+    } else {
+      setIsTaxDeductible(false)
+    }
+  }, [country])
+
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
     setPaymentType(paymentRequest._activeBackingLibraryName);
 
@@ -95,7 +103,7 @@ function TreeDonation({
       window,
       paymentMethod,
       donorDetails,
-      taxDeductionCountry: country
+      taxDeductionCountry: isTaxDeductible ? country : null
     };
     payWithCard({ ...payWithCardProps });
   };
