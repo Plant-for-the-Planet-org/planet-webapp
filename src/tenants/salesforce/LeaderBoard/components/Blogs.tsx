@@ -16,7 +16,7 @@ export default function Blogs() {
       name:
         'Make working-from-home more comfortable, productive, and sustainable',
       imagePath: '/tenants/salesforce/images/Blog/2.png',
-      link: 'https://www.salesforce.com/sustainability',
+      link: 'https://www.salesforce.com/blog/2020/09/sustainability-environmentally-friendly-work-from-home.html',
       linkTitle: 'Read the Guide',
     },
     {
