@@ -1,5 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/Blogs.module.scss';
 export default function Blogs() {
   const blogs = [
     {
@@ -16,7 +16,7 @@ export default function Blogs() {
       name:
         'Make working-from-home more comfortable, productive, and sustainable',
       imagePath: '/tenants/salesforce/images/Blog/2.png',
-      link: 'https://www.salesforce.com/sustainability',
+      link: 'https://www.salesforce.com/blog/2020/09/sustainability-environmentally-friendly-work-from-home.html',
       linkTitle: 'Read the Guide',
     },
     {
@@ -32,7 +32,7 @@ export default function Blogs() {
 
   return (
     <section className={styles.blogSection}>
-      <p className={styles.blogSectionHeader}>Take Climate Action.</p>
+      <p className={styles.blogSectionHeader}>Take climate action.</p>
       <Row className={styles.blogContainer}>
         {blogs.map((blog) => {
           return (
