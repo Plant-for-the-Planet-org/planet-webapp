@@ -98,6 +98,18 @@
   .treeCounterImage {
     left: 40px;
   }
+
+  .treeCounterSectionTextHeader {
+    font-size: 36px;
+    line-height: 40px;
+    text-align: left;
+  }
+
+  .treeCounterSectionTextPara {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+  }
 }
 
 @include lgLaptopView {
