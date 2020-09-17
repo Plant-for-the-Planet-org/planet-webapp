@@ -220,9 +220,9 @@ function TreeDonation({
                   <DownArrow color={'#87B738'} />
                 </div>
               </div>
-              <div className={styles.isTaxDeductibleText}>
+              <div className={styles.isTaxDeductibleText} style={{ marginLeft: '4px' }}>
                 {project.taxDeductionCountries.includes(country)
-                  ? 'in time for tax returns.'
+                  ? ' in time for tax returns.'
                   : null}
               </div>
             </div>
