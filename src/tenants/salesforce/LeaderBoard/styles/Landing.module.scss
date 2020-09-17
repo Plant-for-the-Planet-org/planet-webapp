@@ -1,0 +1,79 @@
+@import '../../../../theme/theme';
+
+.landingSection {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12vh 0;
+  
+    background-image: url('/tenants/salesforce/images/mobile/Landscape.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .landingContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 90%;
+    margin-bottom: 10vh;
+  }
+  
+  .landingContent > h1 {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 40px;
+    text-align: center;
+    letter-spacing: -0.006em;
+    color: #080707;
+  }
+  
+  .landingContent > p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #080707;
+    max-width: 500px;
+    margin-top: 1.5vh;
+  }
+@include smTabletView {
+    .landingSection {
+        padding: 17vh 0;
+      }
+
+  .landingContent {
+    max-width: 60%;
+  }
+}
+
+@include lgLaptopView {
+    .landingSection {
+        background-image: url('/tenants/salesforce/images/desktop/Landscape.png');
+        margin-top: 60px;
+        // padding: 20vh 0;
+      }
+      .landingContent {
+        max-width: 800px;
+        margin-bottom: 16vh;
+      }
+    
+      .landingContent > h1 {
+        font-size: 56px;
+        line-height: 60px;
+        text-align: center;
+        font-weight: 700;
+      }
+    
+      .landingContent > p {
+        font-size: 16px;
+        line-height: 24px;
+      }
+}
