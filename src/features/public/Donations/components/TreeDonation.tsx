@@ -1,4 +1,3 @@
-import { CircularProgress } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
@@ -109,11 +108,6 @@ function TreeDonation({
         className={styles.cardContainer}
         style={{ alignSelf: isGift ? 'start' : 'center' }}
       >
-        {isPaymentOptionsLoading && (
-          <div className={styles.loader}>
-            <CircularProgress style={{ color: styles.primaryFontColor }} />
-          </div>
-        )}
         <div className={styles.header}>
           <div onClick={onClose} className={styles.headerCloseIcon}>
             <Close color={styles.primaryFontColor} />
@@ -248,7 +242,9 @@ function TreeDonation({
           </div>
         </div>
 
-        {paymentSetup?.gateways?.stripe?.account && currency ? (
+        {!isPaymentOptionsLoading &&
+        paymentSetup?.gateways?.stripe?.account &&
+        currency ? (
           <PaymentRequestCustomButton
             country={country}
             currency={currency}
