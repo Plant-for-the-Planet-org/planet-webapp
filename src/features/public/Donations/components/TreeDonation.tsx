@@ -134,7 +134,7 @@ function TreeDonation({
           >
             <div className={styles.currency}>{currency}</div>
             <div className={styles.downArrow}>
-              <DownArrow color={isTaxDeductible ? 'grey' : '#87B738'} />
+              <DownArrow color={'#87B738'} />
             </div>
             <div className={styles.rate}>
               {Number(treeCost).toFixed(2)} per tree
