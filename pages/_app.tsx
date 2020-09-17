@@ -44,7 +44,6 @@ export default function PlanetWeb({ Component, pageProps }: any) {
   return (
     <ThemeProvider>
       <CssBaseline />
-
       <Component {...pageProps} />
     </ThemeProvider>
   );

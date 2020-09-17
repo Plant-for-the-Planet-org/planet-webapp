@@ -58,6 +58,8 @@ export interface ContactDetailsPageProps {
   setDonationStep: Function;
   contactDetails: contactDetailsProps;
   setContactDetails: Function;
+  isCompany: Boolean;
+  setIsCompany: Function;
 }
 
 export interface ThankYouProps {
@@ -71,4 +73,20 @@ export interface ThankYouProps {
   giftDetails: giftDetailsProps;
   onClose: any;
   paymentType: String;
+}
+
+export interface PayWithCardTypes {
+  setIsPaymentProcessing: Function;
+  setPaymentError: Function;
+  project: Object;
+  treeCount: number;
+  treeCost: number;
+  currency: String;
+  giftDetails: giftDetailsProps;
+  isGift: Boolean;
+  paymentSetup: Object;
+  window: any;
+  setDonationStep: Function;
+  paymentMethod: Object;
+  donorDetails: Object;
 }

@@ -18,7 +18,7 @@ import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentPro
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from './../../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
-import { createDonation, payDonation } from './treeDonation/PaymentFunctions';
+import { payWithCard } from './treeDonation/PaymentFunctions';
 
 const FormControlNew = withStyles({
   root: {
@@ -26,7 +26,7 @@ const FormControlNew = withStyles({
     backgroundColor: '#F2F2F7',
     border: '0px!important',
     borderRadius: '10px',
-    fontFamily: 'Raleway, sans-serif',
+    fontFamily: styles.primaryFontFamily,
     padding: '18.5px',
   },
 })(FormControl);
@@ -37,10 +37,10 @@ const ELEMENT_OPTIONS = {
       fontSize: '14px',
       color: '#424770',
       letterSpacing: '0.025em',
-      fontFamily: 'Raleway, sans-serif',
+      fontFamily: styles.primaryFontFamily,
       '::placeholder': {
         color: '#aab7c4',
-        fontFamily: 'Raleway, sans-serif',
+        fontFamily: styles.primaryFontFamily,
       },
     },
     invalid: {
@@ -53,11 +53,11 @@ const getInputOptions = (placeholder: string) => {
     style: {
       base: {
         color: '#32325d',
-        fontFamily: 'Raleway, sans-serif',
+        fontFamily: styles.primaryFontFamily,
         fontSize: '16px',
         '::placeholder': {
           color: '#2F3336',
-          fontFamily: 'Raleway, sans-serif',
+          fontFamily: styles.primaryFontFamily,
           fontSize: '14px',
         },
       },
@@ -126,20 +126,20 @@ function PaymentDetails({
     });
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
   const handleSubmit = async (event: { preventDefault: () => void }) => {
+    setShowContinue(false);
     event.preventDefault();
     if (!stripe || !elements) {
       return;
     }
 
     let paymentMethod: any;
-    let error;
 
     if (paymentType === 'CARD') {
       const cardElement = elements!.getElement(CardNumberElement);
       cardElement!.on('change', ({ error }) => {
-        const displayError = document.getElementById('payment-errors');
         if (error) {
-          setPaymentError(error.message);
+          // setPaymentError(error.message);
+          setPaymentError('Could not process your payment, please try again.');
           return;
         }
       });
@@ -149,7 +149,7 @@ function PaymentDetails({
           card: cardElement!,
         })
         .catch((error) => {
-          setPaymentError(error.message);
+          setPaymentError('Could not process your payment, please try again.');
           return;
         });
       paymentMethod = payload.paymentMethod;
@@ -171,7 +171,6 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
-    setIsPaymentProcessing(true);
     let countryCode = getCountryDataBy(
       'countryName',
       contactDetails.country.toString()
@@ -179,124 +178,34 @@ function PaymentDetails({
       ? getCountryDataBy('countryName', contactDetails.country.toString())
           .countryCode
       : null;
-    let createDonationData = {
-      type: 'trees',
-      project: project.id,
-      treeCount: treeCount,
-      amount: treeCost * treeCount,
-      currency: currency,
-      donor: {
-        firstname: contactDetails.firstName,
-        lastname: contactDetails.lastName,
-        email: contactDetails.email,
-        address: contactDetails.address,
-        zipCode: contactDetails.zipCode,
-        city: contactDetails.city,
-        country: countryCode,
-      },
-    };
-    let gift = {
-      gift: {
-        type: 'invitation',
-        recipientName: giftDetails.recipientName,
-        recipientEmail: giftDetails.email,
-        message: giftDetails.giftMessage,
-      },
-    };
-    if (isGift) {
-      createDonationData = {
-        ...createDonationData,
-        ...gift,
-      };
-    }
-    createDonation(createDonationData)
-      .then((res) => {
-        // Code for Payment API
 
-        if (res.code === 400) {
-          setIsPaymentProcessing(false);
-          setPaymentError(res.message);
-          return;
-        } else {
-          const payDonationData = {
-            paymentProviderRequest: {
-              account: paymentSetup.gateways.stripe.account,
-              gateway: 'stripe_pi',
-              source: {
-                id: paymentMethod.id,
-                object: 'payment_method',
-              },
-            },
-          };
+    let donorDetails = {
+      firstname: contactDetails.firstName,
+      lastname: contactDetails.lastName,
+      email: contactDetails.email,
+      address: contactDetails.address,
+      zipCode: contactDetails.zipCode,
+      city: contactDetails.city,
+      country: countryCode,
+      companyname: contactDetails.companyName,
+    };
 
-          payDonation(payDonationData, res.id)
-            .then(async (res) => {
-              if (res.status === 'failed') {
-                setIsPaymentProcessing(false);
-                setPaymentError(res.message);
-                return;
-              } else {
-                if (res.paymentStatus === 'success') {
-                  setIsPaymentProcessing(false);
-                  setDonationStep(4);
-                } else if (res.status === 'action_required') {
-                  const clientSecret =
-                    res.response.payment_intent_client_secret;
-                  const donationID = res.id;
-                  const stripe = window.Stripe(
-                    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-                    {
-                      stripeAccount: res.response.account,
-                    }
-                  );
-                  if (stripe) {
-                    await stripe.handleCardAction(clientSecret).then((res) => {
-                      if (res.error) {
-                        setIsPaymentProcessing(false);
-                        setPaymentError(res.error.message);
-                      } else {
-                        const payDonationData = {
-                          paymentProviderRequest: {
-                            account: paymentSetup.gateways.stripe.account,
-                            gateway: 'stripe_pi',
-                            source: {
-                              id: res.paymentIntent.id,
-                              object: 'payment_intent',
-                            },
-                          },
-                        };
-                        payDonation(payDonationData, donationID).then((res) => {
-                          if (res.paymentStatus === 'success') {
-                            setIsPaymentProcessing(false);
-                            setDonationStep(4);
-                          } else {
-                            setIsPaymentProcessing(false);
-                            setPaymentError(res.error.message);
-                          }
-                        });
-                      }
-                    });
-                  }
-                }
-              }
-            })
-            .catch((error) => {
-              setIsPaymentProcessing(false);
-              setPaymentError(error.message);
-              return;
-            }); // Add Catch if pay donation failes
-        }
-      })
-      .catch((error) => {
-        setIsPaymentProcessing(false);
-        setPaymentError(error.message);
-        return;
-      }); // Add Catch if create donation failes
-    if (error) {
-      setIsPaymentProcessing(false);
-      setPaymentError(error.message);
-      return;
-    }
+    const payWithCardProps = {
+      setDonationStep,
+      setIsPaymentProcessing,
+      project,
+      currency,
+      treeCost,
+      treeCount,
+      giftDetails,
+      isGift,
+      setPaymentError,
+      paymentSetup,
+      window,
+      paymentMethod,
+      donorDetails,
+    };
+    payWithCard({ ...payWithCardProps });
   };
 
   return isPaymentProcessing ? (
@@ -414,17 +323,19 @@ function PaymentDetails({
           for {Sugar.Number.format(Number(treeCount))} Trees
         </div>
       </div>
-      <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-        {showContinue ? (
+      {showContinue ? (
+        <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
           <AnimatedButton className={styles.continueButton}>
-            Continue
+            Donate
           </AnimatedButton>
-        ) : (
+        </div>
+      ) : (
+        <div className={styles.actionButtonsContainer}>
           <AnimatedButton disabled className={styles.continueButtonDisabled}>
-            Continue
+            Donate
           </AnimatedButton>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

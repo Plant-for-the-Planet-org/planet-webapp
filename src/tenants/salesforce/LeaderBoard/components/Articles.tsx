@@ -5,41 +5,43 @@ export default function Articles() {
     {
       id: 1,
       articleDescription:
-        'In Myanmar, only 16 percent of the original mangrove forest remains along the coastline. This project helps restore those forests while working with the local population to adapt to more sustainable practices. ',
-      name: 'Sea of Change: Restoring Mangroves',
+        'Since 2017 we’ve supported carbon projects, such as restoring mangrove forests in Myanmar while working with the local population to adapt to more sustainable practices.',
+      name: 'Sea of Change',
       imagePath: '/tenants/salesforce/images/Articles/1.png',
-      link: '',
+      link: 'https://www.cooleffect.org/content/project/sea-of-change',
     },
     {
       id: 2,
       articleDescription:
-        'Salesforce advocates for this legislation that would remove the outdated cap on the Reforestation Trust Fund and nearly quadruple the amount of money available for reforestation across America’s national forests.',
-      name: 'Advocacy Efforts',
+        'Salesforce supports the four Together With Nature Principles to responsibly tackle the climate crisis, restore biodiversity, and benefit planetary health and human wellbeing.',
+      name: 'Together with Nature',
       imagePath: '/tenants/salesforce/images/Articles/2.png',
-      link: '',
+      link: 'http://www.togetherwithnature.com/',
     },
     {
       id: 3,
       articleDescription:
-        'Salesforce joins U.S. organizations committed to supporting almost one billion trees to accelerate the Trillion Trees movement.',
-      name: '1t.org U.S Chapter Pledge to Scale Action',
+        'We pledged with other U.S.-based organizations to support almost one billion trees and accelerate the trillion trees movement.',
+      name: '1t.org U.S Chapter Launch',
       imagePath: '/tenants/salesforce/images/Articles/3.png',
-      link: '',
+      link:
+        'https://us.1t.org/pledge/mobilizing-and-supporting-the-conservation-restoration-and-growth-of-100m-trees/',
     },
     {
       id: 4,
       articleDescription:
-        'Salesforce technology powers this digital platform that crowdsources innovations from ecopreneurs, who are developing solutions to meet the Trillion Trees goal.',
+        'Salesforce technology powers this digital platform that crowdsources innovations from ecopreneurs, who are developing solutions to meet the trillion trees goal.',
       name: 'Uplink Trillion Trees Challenge',
       imagePath: '/tenants/salesforce/images/Articles/4.png',
-      link: '',
+      link:
+        'https://uplink.weforum.org/uplink/s/uplink-issue/a002o00000vOf09AAC/trillion-trees',
     },
   ];
 
   return (
     <section className={styles.articleSection}>
       <h2 className={styles.articleSectionHeader}>
-        Learn About Our Tree Initiatives
+        Check out some other ways we support trees.
       </h2>
       <Row className={styles.articleContainer}>
         {articles.map((article) => {
@@ -58,7 +60,9 @@ export default function Articles() {
                     {article.articleDescription}
                   </p>
 
-                  <p className={styles.articleLink}>Learn More</p>
+                  <a href={article.link} target="_blank">
+                    <p className={styles.articleLink}>Learn More</p>
+                  </a>
                 </div>
               </div>
             </Col>

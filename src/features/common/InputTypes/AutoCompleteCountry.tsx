@@ -2,7 +2,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
+import tenantConfig from '../../../../tenant.config';
 import MaterialTextFeild from './MaterialTextFeild';
+const config = tenantConfig();
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
@@ -19,7 +21,7 @@ function countryToFlag(isoCode: string) {
 const useStyles = makeStyles({
   option: {
     color: '#2F3336',
-    fontFamily: 'Raleway',
+    fontFamily: config!.font.primaryFontFamily,
     fontSize: '14px',
     '& > span': {
       marginRight: 10,
@@ -58,7 +60,6 @@ export default function CountrySelect(props: {
           {option.label} ({option.code})
         </React.Fragment>
       )}
-      defaultValue={defaultValue}
       renderInput={(params) => (
         <MaterialTextFeild
           {...params}
@@ -66,7 +67,7 @@ export default function CountrySelect(props: {
           variant="outlined"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            // autoComplete: 'new-password', // disable autocomplete and autofill
           }}
           inputRef={props.inputRef}
           name={props.name}

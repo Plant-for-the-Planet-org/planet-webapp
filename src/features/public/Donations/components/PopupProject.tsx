@@ -5,6 +5,7 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 
@@ -25,6 +26,8 @@ export default function PopupProject({
   fetchProject,
   setShowSingleProject,
 }: Props): ReactElement {
+  const { theme } = React.useContext(ThemeContext);
+
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -37,7 +40,7 @@ export default function PopupProject({
   return (
     <>
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"

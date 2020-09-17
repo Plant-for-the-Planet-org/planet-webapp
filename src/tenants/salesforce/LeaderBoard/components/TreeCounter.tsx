@@ -13,16 +13,24 @@ export default function TreeCounterSection(tenantScore: Props) {
       <Row className={styles.treeCounterSectionRow}>
         <Col xs={12} md={6} className={styles.treeCounterSectionText}>
           <h2 className={styles.treeCounterSectionTextHeader}>
-            Take climate action.
+            Our commitment.
           </h2>
           <p className={styles.treeCounterSectionTextPara}>
-            Trees and forests are a critical nature-based solution to solve the
-            global climate crisis. While not a silver bullet, forests are our
-            best tool to remove carbon from the atmosphere.
+            At Salesforce, we believe business is one of the greatest platforms
+            for change. We are committed to doing everything we can to step up
+            to the urgent challenge of climate change and creating a
+            sustainable, low-carbon future for all. That means reducing
+            emissions, as well as protecting and improving carbon sinks like
+            forests.
             <br />
             <br />
-            It's easy to get involved – select your favorite tree project to
-            support, or give the gift of a tree donation to a friend!
+            Salesforce’s tree journey is just starting, and we already know it
+            isn’t enough. As a founding partner of 1t.org and in support of the
+            trillion tree movement, we hope to catalyze change on a much bigger
+            scale by demonstrating, enabling, and advocating for it. As we work
+            to meet our goals and set the world on a more just path, we
+            encourage every company, every community, and every person to join
+            us.
           </p>
           {/* <button className={styles.buttonStyle}>Join Us</button> */}
         </Col>
