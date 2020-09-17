@@ -1,5 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/Blogs.module.scss';
 export default function Blogs() {
   const blogs = [
     {
