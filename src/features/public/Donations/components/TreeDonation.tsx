@@ -1,9 +1,9 @@
-import { CircularProgress } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
+import ButtonLoader from '../../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../../common/types/donations';
@@ -289,7 +289,9 @@ function TreeDonation({
                 onPaymentFunction={onPaymentFunction}
                 continueNext={continueNext}
               />
-            ) : <div className={styles.actionButtonsContainer} style={{ justifyContent: 'center' }}><CircularProgress size={"2rem"} color="inherit" /></div>}
+            ) : <div className={styles.actionButtonsContainer}>
+              <ButtonLoader /><ButtonLoader />
+            </div>}
 
         </div>
         <SelectTaxDeductionCountryModal

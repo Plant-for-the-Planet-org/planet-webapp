@@ -103,7 +103,7 @@ export const PaymentRequestCustomButton = ({
         country: country,
         currency: currency.toLowerCase(),
         total: {
-          label: 'Trees donated to Plant for the Planet',
+          label: 'Tree donation with Plant-for-the-Planet',
           amount: amount,
         },
         requestPayerName: true,
@@ -160,11 +160,6 @@ export const PaymentRequestCustomButton = ({
   }, [paymentRequest, onPaymentFunction]);
 
   const options = useOptions(paymentRequest);
-
-  console.log('canMakePayment', canMakePayment);
-  console.log('stripeAllowedCountries.includes(country)', stripeAllowedCountries.includes(country));
-  console.log('paymentRequest', paymentRequest);
-
 
   return stripeAllowedCountries.includes(country) && canMakePayment &&
     paymentRequest ? (
