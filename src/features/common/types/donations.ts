@@ -35,6 +35,7 @@ export interface TreeDonationProps {
   setGiftDetails: Function;
   paymentType: String;
   setPaymentType: Function;
+  isPaymentOptionsLoading: boolean;
 }
 
 export interface PaymentDetailsProps {
