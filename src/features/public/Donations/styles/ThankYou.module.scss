@@ -74,6 +74,42 @@
   justify-content: center;
 }
 
+.tempThankYouImage {
+  background-image: url('/tenants/planet/images/donations/roadWEBP.webp');
+  background-position: center;
+  background-size: cover;
+  width: 1500px;
+  height: 1500px;
+  align-self: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+
+.tempDonationCount{
+  font-size: 90px;
+  font-weight: 600;
+  text-align: center;
+  position: absolute;
+  bottom: 200px;
+  padding: 0px 50px;
+  color: $light;
+  font-variant-ligatures: none;
+}
+
+
+.tempDonationTenant{
+  font-size: 50px;
+  font-weight: 400;
+  font-style: italic;
+  text-align: center;
+  position: absolute;
+  bottom: 40px;
+  color: $light;
+  font-variant-ligatures: none;
+}
+
 .donationCount {
   font-size: 22px;
   font-weight: 600;
@@ -126,7 +162,7 @@
   // background-color: blue;
   border-radius: 30px;
   margin: 0px 2px;
-  border-color: $blueishGrey;
+  border-color: '#f2f2f7';
   border-width: 1px;
   border-style: solid;
 }
@@ -173,5 +209,5 @@
 }
 
 :export {
-  blueishGrey: $blueishGrey;
+  blueishGrey: '#f2f2f7';
 }

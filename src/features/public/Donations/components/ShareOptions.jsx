@@ -38,7 +38,7 @@ const ShareOptions = (props) => {
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
     return html2canvas(element, {
-      scale: 5,
+      scale: 1,
       backgroundColor: backgroundColor,
       scrollY: -window.scrollY,
       useCORS: true,
