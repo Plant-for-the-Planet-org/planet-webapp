@@ -224,7 +224,7 @@ function TreeDonation({
           ) : (
               <div className={styles.isTaxDeductible}>
                 <div className={styles.isTaxDeductibleText}>
-                  No tax deduction receipt is available for this project
+                  Tax deduction is not yet available for this project
             </div>
               </div>
             )}
