@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
-
+import UserNotFound from './../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
 export default function PublicUser() {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
   const [slug, setSlug] = React.useState(null);
@@ -29,18 +30,30 @@ export default function PublicUser() {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
         }
       );
-      const publicUserprofile = await res.json();
-      setPublicUserprofile(publicUserprofile);
+
+      if (res.ok === false) {
+        setPublicUserprofile(null);
+      } else {
+        const publicUserprofile = await res.json();
+        setPublicUserprofile(publicUserprofile);
+      }
+
     }
     if (ready) {
       loadPublicUserData();
     }
   }, [ready]);
 
+  if (publicUserprofile === null) {
+    return (
+      <UserNotFound />
+    )
+  }
+
   return publicUserprofile ? (
     <Layout>
       <PublicUserPage {...PublicUserProps} />
       <Footer />
     </Layout>
-  ) : null;
+  ) : <UserProfleLoader />;
 }
