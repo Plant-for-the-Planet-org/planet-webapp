@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
+import ButtonLoader from '../../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../../common/types/donations';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
@@ -44,60 +44,7 @@ function TreeDonation({
   );
   const [paymentError, setPaymentError] = React.useState('');
 
-  const stripeAllowedCountries = [
-    'AE',
-    'AT',
-    'AU',
-    'BE',
-    'BG',
-    'BR',
-    'CA',
-    'CH',
-    'CI',
-    'CR',
-    'CY',
-    'CZ',
-    'DE',
-    'DK',
-    'DO',
-    'EE',
-    'ES',
-    'FI',
-    'FR',
-    'GB',
-    'GR',
-    'GT',
-    'HK',
-    'HU',
-    'ID',
-    'IE',
-    'IN',
-    'IT',
-    'JP',
-    'LT',
-    'LU',
-    'LV',
-    'MT',
-    'MX',
-    'MY',
-    'NL',
-    'NO',
-    'NZ',
-    'PE',
-    'PH',
-    'PL',
-    'PT',
-    'RO',
-    'SE',
-    'SG',
-    'SI',
-    'SK',
-    'SN',
-    'TH',
-    'TT',
-    'US',
-    'UY',
-  ];
+
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
   const taxDeductSwitchOn = () => {
     setIsTaxDeductible(!isTaxDeductible);
@@ -330,32 +277,22 @@ function TreeDonation({
           </div>
           </div>
 
-          <div className={styles.actionButtonsContainer}>
-            <div style={{ width: '150px' }}>
-              {paymentSetup?.gateways?.stripe?.account &&
-                stripeAllowedCountries.includes(country) &&
-                currency && (
-                  <PaymentRequestCustomButton
-                    country={country}
-                    currency={currency}
-                    amount={formatAmountForStripe(
-                      treeCost * treeCount,
-                      currency.toLowerCase()
-                    )}
-                    onPaymentFunction={onPaymentFunction}
-                  />
+          {paymentSetup?.gateways?.stripe?.account &&
+            currency ? (
+              <PaymentRequestCustomButton
+                country={country}
+                currency={currency}
+                amount={formatAmountForStripe(
+                  treeCost * treeCount,
+                  currency.toLowerCase()
                 )}
+                onPaymentFunction={onPaymentFunction}
+                continueNext={continueNext}
+              />
+            ) : <div className={styles.actionButtonsContainer}>
+              <ButtonLoader /><ButtonLoader />
+            </div>}
 
-              {/* {paymentRequest ? 'Or' : null} */}
-            </div>
-
-            <AnimatedButton
-              onClick={() => continueNext()}
-              className={styles.continueButton}
-            >
-              Continue
-          </AnimatedButton>
-          </div>
         </div>
         <SelectTaxDeductionCountryModal
           openModal={openTaxDeductionModal}
