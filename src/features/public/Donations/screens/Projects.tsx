@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
+import styles from '../styles/Projects.module.scss';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
@@ -87,13 +88,8 @@ function ProjectsList({
   const [selectedId, setSelectedId] = React.useState(null);
 
   return (
-    <div>
-      <MapLayout
-        {...ProjectsProps}
-        fetchSingleProject={fetchSingleProject}
-        setShowSingleProject={setShowSingleProject}
-        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-      />
+    <>
+      {/* <div className={styles.mainContainer}> */}
       {/* {!touchMap ? (
         <div
           className={styles.openMap}
@@ -123,6 +119,13 @@ function ProjectsList({
               y: 0,
             }}
             transition={{ duration: 1 }}
+            ref={projectsContainer}
+            // style={
+            //   touchMap
+            //     ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
+            //     : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
+            // }
+            className={styles.container}
           >
             <ProjectsContainer
               {...ProjectsProps}
@@ -132,7 +135,14 @@ function ProjectsList({
           </motion.div>
         </AnimateSharedLayout>
       )}
-    </div>
+      <MapLayout
+        {...ProjectsProps}
+        fetchSingleProject={fetchSingleProject}
+        setShowSingleProject={setShowSingleProject}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+      />
+      {/* </div> */}
+    </>
   );
 }
 

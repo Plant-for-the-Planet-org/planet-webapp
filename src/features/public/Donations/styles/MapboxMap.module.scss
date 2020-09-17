@@ -3,9 +3,13 @@
 .mapContainer {
   position: absolute;
   top: 0px;
-  height: calc(100vh - 72px);
-  width: 100vw;
+  // height: calc(100vh - 72px);
+  // width: 100vw;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   background-color: rgba(70, 168, 221, 0.15);
+  // z-index: 2;
 }
 
 .mapContainer > div {
@@ -101,8 +105,11 @@
 
 @include mdTabletView {
   .mapContainer {
-    top: 60px;
-    height: calc(100vh - 60px);
+    // height: calc(100vh - 60px);
+    // top: 60px;
+    // cursor: -webkit-grab;
+    // cursor: grab;
+    padding-top: 60px;
   }
 }
 

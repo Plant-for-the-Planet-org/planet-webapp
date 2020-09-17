@@ -13,7 +13,10 @@ export default function Layout(props: any) {
       <style jsx global>
         {theme}
       </style>
-      <div className={`${themeType}`}>
+      <div
+        style={{ overflow: 'scroll', maxHeight: '100vh' }}
+        className={`${themeType}`}
+      >
         <Navbar theme={themeType} />
         {props.children}
         <CookiePolicy />
