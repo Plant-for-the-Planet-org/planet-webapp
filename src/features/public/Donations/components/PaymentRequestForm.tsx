@@ -166,7 +166,7 @@ export const PaymentRequestCustomButton = ({
   console.log('paymentRequest', paymentRequest);
 
 
-  return stripeAllowedCountries.includes(country) && canMakePayment ? (
+  return stripeAllowedCountries.includes(country) && canMakePayment &&
     paymentRequest ? (
       <div className={styles.actionButtonsContainer}>
         <div style={{ width: '150px' }}>
@@ -198,21 +198,14 @@ export const PaymentRequestCustomButton = ({
 
 
     ) : (
-        <div className={styles.actionButtonsContainer}>
-          <AnimatedButton
-            onClick={() => continueNext()}
-            className={styles.continueButton}
-          >
-            Continue
+      <div className={styles.actionButtonsContainer} style={{ justifyContent: 'center' }}>
+        <AnimatedButton
+          onClick={() => continueNext()}
+          className={styles.continueButton}
+        >
+          Continue
           </AnimatedButton>
-        </div>
-      )
-  ) : <div className={styles.actionButtonsContainer}>
-      <AnimatedButton
-        onClick={() => continueNext()}
-        className={styles.continueButton}
-      >
-        Continue
-</AnimatedButton>
-    </div>;
+      </div>
+    )
+    ;
 };
