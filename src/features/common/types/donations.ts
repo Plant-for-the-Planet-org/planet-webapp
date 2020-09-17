@@ -50,6 +50,7 @@ export interface PaymentDetailsProps {
   giftDetails: giftDetailsProps;
   paymentType: String;
   setPaymentType: Function;
+  country: string;
 }
 
 export interface ContactDetailsPageProps {
@@ -90,4 +91,5 @@ export interface PayWithCardTypes {
   setDonationStep: Function;
   paymentMethod: Object;
   donorDetails: Object;
+  taxDeductionCountry: string
 }

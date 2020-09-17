@@ -95,11 +95,10 @@ function TreeDonation({
       window,
       paymentMethod,
       donorDetails,
+      taxDeductionCountry: country
     };
     payWithCard({ ...payWithCardProps });
   };
-
-  console.log('Payment setup', paymentSetup);
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   return isPaymentProcessing ? (

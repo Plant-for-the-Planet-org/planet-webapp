@@ -64,14 +64,18 @@ export function payWithCard({
   paymentMethod,
   window,
   donorDetails,
+  taxDeductionCountry
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
+
+
   let createDonationData = {
     type: 'trees',
     project: project.id,
     treeCount: treeCount,
     amount: treeCost * treeCount,
     currency: currency,
+    taxDeductionCountry: taxDeductionCountry,
     donor: { ...donorDetails },
   };
   let gift = {
