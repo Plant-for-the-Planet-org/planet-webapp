@@ -11,8 +11,6 @@ interface Props {
   ogType: string;
 }
 
-const favURL: scheme + '://' + {config.tenantURL} + ,
-
 export default function MetaTags({ title, desc, imageURL, ogType }: Props) {
   return (
     <Head>
@@ -31,7 +29,7 @@ export default function MetaTags({ title, desc, imageURL, ogType }: Props) {
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#4d5153" /> <!-- Android Header color, disabled if dark mode is enabled -->
-    
+
     <link rel="shortcut icon" href="/public/tenants/planet/favicons/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/public/tenants/planet/favicons/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="57x57" href="/public/tenants/planet/favicons/apple-touch-icon-57x57.png" />
