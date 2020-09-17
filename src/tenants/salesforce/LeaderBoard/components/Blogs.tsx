@@ -32,7 +32,7 @@ export default function Blogs() {
 
   return (
     <section className={styles.blogSection}>
-      <p className={styles.blogSectionHeader}>Take Climate Action.</p>
+      <p className={styles.blogSectionHeader}>Take climate action.</p>
       <Row className={styles.blogContainer}>
         {blogs.map((blog) => {
           return (
