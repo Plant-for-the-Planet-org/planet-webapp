@@ -82,6 +82,8 @@ function PaymentDetails({
   giftDetails,
   paymentType,
   setPaymentType,
+  country,
+  isTaxDeductible
 }: PaymentDetailsProps): ReactElement {
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
@@ -196,6 +198,7 @@ function PaymentDetails({
       window,
       paymentMethod,
       donorDetails,
+      taxDeductionCountry: isTaxDeductible ? country : null
     };
     payWithCard({ ...payWithCardProps });
   };
