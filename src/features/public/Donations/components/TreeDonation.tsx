@@ -1,3 +1,4 @@
+import { CircularProgress } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
@@ -277,7 +278,7 @@ function TreeDonation({
           </div>
 
           {paymentSetup?.gateways?.stripe?.account &&
-            currency && (
+            currency ? (
               <PaymentRequestCustomButton
                 country={country}
                 currency={currency}
@@ -288,7 +289,7 @@ function TreeDonation({
                 onPaymentFunction={onPaymentFunction}
                 continueNext={continueNext}
               />
-            )}
+            ) : <div className={styles.actionButtonsContainer} style={{ justifyContent: 'center' }}><CircularProgress size={"2rem"} color="inherit" /></div>}
 
         </div>
         <SelectTaxDeductionCountryModal
