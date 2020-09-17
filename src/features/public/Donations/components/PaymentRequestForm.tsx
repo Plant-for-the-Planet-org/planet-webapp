@@ -98,7 +98,7 @@ export const PaymentRequestCustomButton = ({
     'UY',
   ];
   useEffect(() => {
-    if (stripe && paymentRequest === null) {
+    if (stripe && paymentRequest === null && stripeAllowedCountries.includes(country)) {
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
@@ -118,15 +118,21 @@ export const PaymentRequestCustomButton = ({
       setPaymentRequest(null);
       setCanMakePayment(false);
     }
+    // if(!stripeAllowedCountries.includes(country)){
+    //   setPaymentRequest(null);
+    //   setCanMakePayment(false);
+    // }
   }, [country, currency, amount]);
 
   useEffect(() => {
     let subscribed = true;
     if (paymentRequest) {
       paymentRequest.canMakePayment().then((res: any) => {
+
         if (res && subscribed) {
           setCanMakePayment(true);
         }
+
       });
     }
 
