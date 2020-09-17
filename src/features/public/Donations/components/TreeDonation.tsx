@@ -108,6 +108,7 @@ function TreeDonation({
     payWithCard({ ...payWithCardProps });
   };
 
+  const [isCustomTrees, setIsCustomTrees] = React.useState(false)
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
@@ -175,10 +176,10 @@ function TreeDonation({
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setTreeCount(option)}
+                onClick={() => { setTreeCount(option), setIsCustomTrees(false) }}
                 key={option}
                 className={
-                  treeCount === option
+                  treeCount === option && !isCustomTrees
                     ? styles.treeCountOptionSelected
                     : styles.treeCountOption
                 }
@@ -190,8 +191,10 @@ function TreeDonation({
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
-              className={styles.treeCountOption}
+              className={isCustomTrees ? styles.treeCountOptionSelected
+                : styles.treeCountOption}
               style={{ minWidth: '65%', flexDirection: 'row' }}
+              onClick={() => setIsCustomTrees(true)}
             >
               <input
                 className={styles.customTreeInput}
