@@ -5,6 +5,7 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 
@@ -26,6 +27,8 @@ export default function ProjectSnippet({
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
+
+  const { theme } = React.useContext(ThemeContext);
   let progressPercentage =
     (project.properties.countPlanted / project.properties.countTarget) * 100;
 
@@ -50,7 +53,7 @@ export default function ProjectSnippet({
   return (
     <div className={styles.singleProject} key={key}>
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"

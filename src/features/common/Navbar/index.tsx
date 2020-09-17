@@ -11,11 +11,14 @@ import Leaderboard from '../../../assets/images/navigation/Leaderboard';
 import LeaderboardSelected from '../../../assets/images/navigation/LeaderboardSelected';
 import Me from '../../../assets/images/navigation/Me';
 import MeSelected from '../../../assets/images/navigation/MeSelected';
+import { ThemeContext } from '../../../utils/themeContext';
 import styles from './Navbar.module.scss';
 const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
   const router = useRouter();
+
+  const { toggleTheme } = React.useContext(ThemeContext);
 
   return (
     <>
@@ -176,6 +179,14 @@ export default function NavbarComponent(props: any) {
               </>
             );
           })}
+          {/* <div
+            className={`${styles.theme_icon} ${styles.link_container}`}
+            onClick={toggleTheme}
+          >
+            <div className={styles.link_icon}>
+              {props.theme === 'theme-light' ? <Moon /> : <Sun />}
+            </div>
+          </div> */}
         </Nav>
       </Navbar>
 
@@ -188,7 +199,7 @@ export default function NavbarComponent(props: any) {
       >
         <Nav className={'d-flex flex-row ' + styles.mobile_nav}>
           {config.header?.isSecondaryTenant ? (
-            <>
+            <div className={styles.bottomLogo}>
               <Nav.Link
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
@@ -209,7 +220,7 @@ export default function NavbarComponent(props: any) {
                 <a href={'https://www.plant-for-the-planet.org'}>
                   <div
                     className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
+                    style={{ margin: '5px 8px' }}
                   >
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
@@ -218,9 +229,9 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </a>
               </Nav.Link>
-            </>
+            </div>
           ) : (
-            <>
+            <div className={styles.bottomLogo}>
               <Nav.Link
                 href={'https://www.plant-for-the-planet.org'}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
@@ -237,7 +248,7 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </a>
               </Nav.Link>
-            </>
+            </div>
           )}
 
           {config.header?.items.map((item) => {

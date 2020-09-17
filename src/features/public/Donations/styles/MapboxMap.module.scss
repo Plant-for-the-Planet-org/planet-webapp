@@ -55,6 +55,7 @@
 .popupProject {
   cursor: pointer;
   z-index: 5;
+  background-color: $backgroundColor;
 }
 
 .projectControls {
@@ -77,6 +78,11 @@
   justify-content: center;
   align-items: center;
   font-family: $primaryFontFamily;
+}
+
+.projectControls > div > svg {
+  height: 16px;
+  padding: 0 8px;
 }
 
 .projectControlText {

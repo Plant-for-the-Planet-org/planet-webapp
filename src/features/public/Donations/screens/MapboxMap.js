@@ -1,5 +1,3 @@
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
@@ -13,6 +11,8 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
+import LeftIcon from '../../../../assets/images/icons/LeftIcon';
+import RightIcon from '../../../../assets/images/icons/RightIcon';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
@@ -365,7 +365,10 @@ export default function MapboxMap(props) {
         {props.showSingleProject && siteExists ? (
           maxSites > 1 ? (
             <div className={styles.projectControls}>
-              <ChevronLeftIcon onClick={goToPrevProject} />
+              <div onClick={goToPrevProject}>
+                <LeftIcon />
+              </div>
+
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {siteExists &&
@@ -375,7 +378,9 @@ export default function MapboxMap(props) {
                   : null}
                 &nbsp;&nbsp;
               </p>
-              <ChevronRightIcon onClick={goToNextProject} />
+              <div onClick={goToPrevProject}>
+                <RightIcon />
+              </div>
             </div>
           ) : null
         ) : null}

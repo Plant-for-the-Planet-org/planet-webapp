@@ -6,19 +6,21 @@ export default function LearnMore() {
     <Row className={styles.learnMoreSectionRow}>
       <Col xs={12} md={6} className={styles.learnMoreSection}></Col>
       <Col xs={12} md={6} className={styles.learnMoreSectionText}>
-        <h2 className={styles.learnMoreSectionTextHeader}>
-          We’re committed to the planet.
-        </h2>
+        <h2 className={styles.learnMoreSectionTextHeader}>Getting to work.</h2>
         <p className={styles.learnMoreSectionTextPara}>
-          We believe business is one of the greatest platforms for change. We
-          commit to creating a sustainable, low-carbon future for all. That
-          means reducing emissions, as well as protecting and improving carbon
-          sinks, like forests.
+          Reaching our goal means tapping into the full power of Salesforce,
+          including our technology, capital, and influence. It also means
+          refining our programs and methodology over time by sharing with and
+          learning from others. That’s why we partnered with Plant for the
+          Planet to share progress towards our goal and feature tree projects
+          that we support directly.
           <br />
           <br />
-          Climate change disproportionately affects the most disadvantaged and
-          vulnerable populations, exacerbating existing economic and racial
-          inequalities. It’s critical that we take bold steps now.
+          Our methodology for selecting projects continues to evolve, but we
+          know every project must be done in a socially and ecologically
+          responsible way. That means growing the right tree, in the right
+          place, by the right people, for the right reasons, to drive
+          long-lasting impact and work towards systems change.
         </p>
       </Col>
     </Row>

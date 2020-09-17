@@ -76,7 +76,7 @@ export default function tenantConfig() {
               id: 1,
               order: 1,
               title: 'Home',
-              onclick: '/leaderboard',
+              onclick: '/home',
               visible: true,
               key: 'home',
             },

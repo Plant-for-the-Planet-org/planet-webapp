@@ -8,7 +8,7 @@
   margin-top: 0px;
   height: 100vh;
   overflow: scroll;
-  padding-bottom: 76px;
+  padding-bottom: 60px;
 }
 
 .modal {
@@ -28,7 +28,7 @@
 .projectContainer {
   display: flex;
   flex-direction: column;
-  background-color: $light;
+  background-color: $backgroundColor;
   width: 100%;
   padding-bottom: 16px;
   height: auto;
@@ -37,6 +37,37 @@
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
+.projectContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projectContainer::-webkit-scrollbar-track {
+  background-color: $dividerColor;
+  border-top-right-radius: 13px;
+}
+
+.projectContainer::-webkit-scrollbar-thumb {
+  background-color: $primaryColor;
+}
+
+// .projectContainer::-webkit-scrollbar-track {
+//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   border-radius: 10px;
+//   background-color: #f5f5f5;
+// }
+
+// .projectContainer::-webkit-scrollbar {
+//   width: 5px;
+//   background-color: #f5f5f5;
+// }
+
+// .projectContainer::-webkit-scrollbar-thumb {
+//   border-radius: 10px;
+//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   background-color: $dividerColor;
+// }
 
 .targetLocation {
   display: flex;
@@ -278,6 +309,9 @@
   cursor: pointer;
 }
 
+:export {
+  highlightBackground: $highlightBackground;
+}
 .avoidPointerEvents {
   display: block;
   height: 50vh;
@@ -285,18 +319,11 @@
   // pointer-events: none;
 }
 
-// @media only screen and (max-width: 768px) {
-//   .container {
-//     margin-top: 0px;
-//   }
-
-//   .projectContainer {
-//     left: 0;
-//     top: 0;
-//     width: 100%;
-//     max-height: none;
-//   }
-// }
+@include smTabletView {
+  .container {
+    padding-bottom: 0px;
+  }
+}
 
 @include mdTabletView {
   .container {

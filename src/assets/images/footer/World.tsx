@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function World() {
+function World({ color }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ function World() {
       <path fill="none" d="M0 0H24V24H0z" data-name="Rectangle 997"></path>
       <g
         fill="none"
-        stroke="#2f3336"
+        stroke={color || '#2f3336'}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="3"
