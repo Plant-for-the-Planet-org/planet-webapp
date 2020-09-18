@@ -69,7 +69,7 @@ export default function TransitionsModal(props: any) {
         }}
       >
         <Fade in={openModal}>
-          <div className={styles.modal}>
+          <div className={styles.modal} style={{ height: 'auto' }}>
             <div className={styles.radioButtonsContainer}>
               <p className={styles.sectionHead}>Select Country</p>
               {/* maps the radio button for country */}
@@ -116,7 +116,7 @@ function MapCountry(props: any) {
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
             label={`${country.countryName} · (${country.countryCode})`}
-            // label={`${country.countryCode},${country.currencyCode}`}
+          // label={`${country.countryCode},${country.currencyCode}`}
           />
         ))}
       </RadioGroup>
