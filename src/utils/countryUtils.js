@@ -27,10 +27,10 @@ export function getCountryDataBy(key, value) {
  */
 export function sortCountriesData(sortBy) {
   // returns a sorted array which is sorted by passed value
-  return countriesData.sort(function (a, b) {
+  return countriesData.sort((a, b) => {
     if (a[sortBy] > b[sortBy]) {
       return 1;
-    } else if (a[sortBy] < b[sortBy]) {
+    } if (a[sortBy] < b[sortBy]) {
       return -1;
     }
     return 0;
