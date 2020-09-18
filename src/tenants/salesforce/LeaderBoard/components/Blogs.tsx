@@ -5,7 +5,7 @@ export default function Blogs() {
     {
       id: 1,
       name:
-        'Become a tree champion on Trailhead and unlock a donation to Plant for the Planet',
+        'Become a tree champion on Trailhead and unlock a donation to Plant-for-the-Planet',
       imagePath: '/tenants/salesforce/images/Blog/1.png',
       link:
         'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
