@@ -1,7 +1,6 @@
-const scheme =
-  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-    ? process.env.SCHEME
-    : 'https';
+const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+  ? process.env.SCHEME
+  : 'https';
 
 module.exports = {
   // your config for other plugins or the general next.js here...
@@ -12,8 +11,8 @@ module.exports = {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
-    API_ENDPOINT: scheme + '://' + process.env.API_ENDPOINT,
-    CDN_URL: scheme + '://' + process.env.CDN_URL,
+    API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
+    CDN_URL: `${scheme}://${process.env.CDN_URL}`,
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -32,6 +31,6 @@ module.exports = {
         destination: '/',
         permanent: true,
       },
-    ]
+    ];
   },
 };
