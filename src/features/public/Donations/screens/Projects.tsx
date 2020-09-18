@@ -89,6 +89,15 @@ function ProjectsList({
 
   return (
     <>
+      <MapLayout
+        {...ProjectsProps}
+        fetchSingleProject={fetchSingleProject}
+        setShowSingleProject={setShowSingleProject}
+        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+        // onTouchMove={() => {
+        //   setTouchMap(true);
+        // }}
+      />
       {/* <div className={styles.mainContainer}> */}
       {/* {!touchMap ? (
         <div
@@ -122,8 +131,8 @@ function ProjectsList({
             ref={projectsContainer}
             // style={
             //   touchMap
-            //     ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
-            //     : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
+            //     ? { top: '70vh', transition: 'ease 1s' }
+            //     : { top: '0px', transition: 'ease 1s' }
             // }
             className={styles.container}
           >
@@ -135,12 +144,7 @@ function ProjectsList({
           </motion.div>
         </AnimateSharedLayout>
       )}
-      <MapLayout
-        {...ProjectsProps}
-        fetchSingleProject={fetchSingleProject}
-        setShowSingleProject={setShowSingleProject}
-        mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-      />
+
       {/* </div> */}
     </>
   );

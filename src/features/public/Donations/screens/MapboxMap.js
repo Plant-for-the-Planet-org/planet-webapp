@@ -301,9 +301,7 @@ export default function MapboxMap(props) {
             >
               <div
                 className={styles.marker}
-                onClick={() =>
-                  handleOpenProject(popupData.project.properties.id)
-                }
+                onClick={() => handleOpenProject(project.properties.id)}
                 onMouseOver={(e) => {
                   timer = setTimeout(function () {
                     setPopupData({
