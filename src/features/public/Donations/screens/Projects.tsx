@@ -1,4 +1,3 @@
-import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
@@ -22,6 +21,10 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
   const [project, setProject] = React.useState(null);
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const isMobile = screenWidth <= 767;
+  const [scrollY, setScrollY] = React.useState(0);
   React.useEffect(() => {
     if (searchedProjects === null || searchedProjects.length < 1)
       setAllProjects(projects);
@@ -93,24 +96,27 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
           setLayoutId={() => setSelectedId}
         />
       ) : (
-        <AnimateSharedLayout type="crossfade">
-          <motion.div
-            initial={{ opacity: 0, y: 300 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{ duration: 1 }}
-            ref={projectsContainer}
-            className={styles.container}
-          >
-            <ProjectsContainer
-              {...ProjectsProps}
-              setLayoutId={() => setSelectedId}
-              setShowSingleProject={setShowSingleProject}
-            />
-          </motion.div>
-        </AnimateSharedLayout>
+        <div
+          style={{ transform: `translate(0,${scrollY}px)` }}
+          className={styles.container}
+          onTouchMove={(event) => {
+            if (isMobile) {
+              if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+                setScrollY(event.targetTouches[0].clientY);
+              } else {
+                setScrollY((screenHeight * 2) / 8);
+                console.log(scrollY);
+              }
+            }
+          }}
+        >
+          {isMobile ? <div className={styles.dragBar}></div> : null}
+          <ProjectsContainer
+            {...ProjectsProps}
+            setLayoutId={() => setSelectedId}
+            setShowSingleProject={setShowSingleProject}
+          />
+        </div>
       )}
     </>
   );

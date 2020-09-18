@@ -340,6 +340,18 @@
   margin-right: 5px;
 }
 
+.dragBar {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 60px;
+  background-color: #c5c5c5;
+  height: 5px;
+  border-radius: 100px;
+}
+
 @include smTabletView {
   .allProjectsContainer > div > div {
     display: grid;
