@@ -118,7 +118,7 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: {
             top: 50,
-            bottom: 50,
+            bottom: isMobile ? 120 : 50,
             left: isMobile ? 50 : 400,
             right: isMobile ? 50 : 100,
           },
@@ -172,7 +172,7 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: {
             top: 50,
-            bottom: 50,
+            bottom: isMobile ? 120 : 50,
             left: isMobile ? 50 : 400,
             right: isMobile ? 50 : 100,
           },
