@@ -224,7 +224,7 @@ function TreeDonation({
             <div className={styles.isTaxDeductibleText}>
               {project.taxDeductionCountries.includes(country)
                 ? 'You will receive a tax deduction receipt for '
-                : 'Tax deduction is not available for '}
+                : 'Tax deduction is not yet available for '}
             </div>
             <div
               className={styles.taxDeductible}
