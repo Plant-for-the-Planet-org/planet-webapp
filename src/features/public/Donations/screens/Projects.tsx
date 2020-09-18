@@ -63,7 +63,7 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
 
   React.useEffect(() => {
     if (router.query.p) {
-      fetchProject(router.query.p).then(() => {});
+      fetchProject(router.query.p).then(() => { });
     }
   }, []);
 
@@ -100,29 +100,27 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
         <SingleProjectDetails
           project={project}
           setShowSingleProject={setShowSingleProject}
-          setLayoutId={() => setSelectedId}
         />
       ) : (
-        <div
-          style={{ transform: `translate(0,${scrollY}px)` }}
-          className={styles.container}
-          onTouchMove={(event) => {
-            if (isMobile) {
-              if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
-                setScrollY(event.targetTouches[0].clientY);
-              } else {
-                setScrollY((screenHeight * 2) / 9);
+          <div
+            style={{ transform: `translate(0,${scrollY}px)` }}
+            className={styles.container}
+            onTouchMove={(event) => {
+              if (isMobile) {
+                if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+                  setScrollY(event.targetTouches[0].clientY);
+                } else {
+                  setScrollY((screenHeight * 2) / 9);
+                }
               }
-            }
-          }}
-        >
-          <ProjectsContainer
-            {...ProjectsProps}
-            setLayoutId={() => setSelectedId}
-            setShowSingleProject={setShowSingleProject}
-          />
-        </div>
-      )}
+            }}
+          >
+            <ProjectsContainer
+              {...ProjectsProps}
+              setShowSingleProject={setShowSingleProject}
+            />
+          </div>
+        )}
     </>
   );
 }

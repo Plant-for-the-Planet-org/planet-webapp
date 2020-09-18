@@ -12,14 +12,12 @@ interface Props {
   projects: any;
   setShowSingleProject: Function;
   fetchSingleProject: Function;
-  setLayoutId: Function;
 }
 
 function AllProjects({
   projects,
   setShowSingleProject,
   fetchSingleProject,
-  setLayoutId,
 }: Props): ReactElement {
   const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -63,7 +61,6 @@ function AllProjects({
                   key={project.properties.id}
                   project={project}
                   setShowSingleProject={setShowSingleProject}
-                  setLayoutId={setLayoutId}
                   fetchProject={async () => {
                     await fetchSingleProject(project.properties.id);
                   }}

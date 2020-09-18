@@ -23,7 +23,6 @@ import styles from './../styles/ProjectDetails.module.scss';
 interface Props {
   project: any;
   setShowSingleProject: Function;
-  setLayoutId: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -34,7 +33,6 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 function SingleProjectDetails({
   project,
   setShowSingleProject,
-  setLayoutId,
 }: Props): ReactElement {
   const router = useRouter();
 
@@ -146,7 +144,6 @@ function SingleProjectDetails({
                     style={{ cursor: 'pointer', width: 'fit-content' }}
                     onClick={() => {
                       setShowSingleProject(false),
-                        setLayoutId(null),
                         router.push('/', undefined, { shallow: true });
                     }}
                   >
@@ -155,16 +152,16 @@ function SingleProjectDetails({
                 </div>
               </LazyLoad>
             ) : (
-              <div
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setShowSingleProject(false),
-                    router.push('/', undefined, { shallow: true });
-                }}
-              >
-                <BackButton />
-              </div>
-            )}
+                <div
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setShowSingleProject(false),
+                      router.push('/', undefined, { shallow: true });
+                  }}
+                >
+                  <BackButton />
+                </div>
+              )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -212,8 +209,8 @@ function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
+                        ? '€'
+                        : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
