@@ -2,6 +2,7 @@ const scheme =
   process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
     ? process.env.SCHEME
     : 'https';
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   // your config for other plugins or the general next.js here...
@@ -34,4 +35,7 @@ module.exports = {
       },
     ]
   },
+  assetPrefix: isProd ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
+  // Asset Prefix allows to use CDN for the generated js files
+  // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 };
