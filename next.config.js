@@ -25,4 +25,13 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/me',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
 };
