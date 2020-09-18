@@ -76,7 +76,6 @@ function ProjectsList({
 
   React.useEffect(() => {
     if (router.query.p === undefined) {
-      console.log('here');
       setShowSingleProject(false),
         router.push('/', undefined, { shallow: true });
     }
