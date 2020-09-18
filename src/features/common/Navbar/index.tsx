@@ -217,17 +217,15 @@ export default function NavbarComponent(props: any) {
                 href={'https://www.plant-for-the-planet.org'}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
               >
-                <a href={'https://www.plant-for-the-planet.org'}>
-                  <div
-                    className={styles.link_container}
-                    style={{ margin: '5px 8px' }}
-                  >
-                    <img
-                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                      alt="About Plant-for-the-Planet"
-                    />
-                  </div>
-                </a>
+                <div
+                  className={styles.link_container}
+                  style={{ margin: '5px 8px' }}
+                >
+                  <img
+                    src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                    alt="About Plant-for-the-Planet"
+                  />
+                </div>
               </Nav.Link>
             </div>
           ) : (
@@ -236,17 +234,15 @@ export default function NavbarComponent(props: any) {
                   href={'https://www.plant-for-the-planet.org'}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <a href={'https://www.plant-for-the-planet.org'}>
-                    <div
-                      className={styles.link_container}
-                      style={{ margin: '0px 8px' }}
-                    >
-                      <img
-                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                        alt="About Plant-for-the-Planet"
-                      />
-                    </div>
-                  </a>
+                  <div
+                    className={styles.link_container}
+                    style={{ margin: '0px 8px' }}
+                  >
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
+                  </div>
                 </Nav.Link>
               </div>
             )}
