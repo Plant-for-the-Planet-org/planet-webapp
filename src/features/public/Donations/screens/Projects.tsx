@@ -105,7 +105,6 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
                 setScrollY(event.targetTouches[0].clientY);
               } else {
                 setScrollY((screenHeight * 2) / 8);
-                console.log(scrollY);
               }
             }
           }}

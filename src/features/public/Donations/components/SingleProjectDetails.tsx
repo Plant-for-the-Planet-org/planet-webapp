@@ -1,6 +1,5 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
@@ -40,8 +39,9 @@ function SingleProjectDetails({
   const router = useRouter();
 
   const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
-
+  const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -101,7 +101,20 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div layoutId={project.id} className={styles.container}>
+    <div
+      style={{ transform: `translate(0,${scrollY}px)` }}
+      className={styles.container}
+      onTouchMove={(event) => {
+        if (isMobile) {
+          if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+            setScrollY(event.targetTouches[0].clientY);
+          } else {
+            setScrollY((screenHeight * 2) / 8);
+            console.log(scrollY);
+          }
+        }
+      }}
+    >
       <Modal
         className={styles.modal + ' ' + theme}
         open={open}
@@ -126,7 +139,7 @@ function SingleProjectDetails({
                   }}
                 >
                   <div
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', width: 'fit-content' }}
                     onClick={() => {
                       setShowSingleProject(false),
                         setLayoutId(null),
@@ -262,7 +275,7 @@ function SingleProjectDetails({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
