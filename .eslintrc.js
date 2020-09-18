@@ -22,6 +22,11 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'no-use-before-define': 'off',
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
+    'react/jsx-indent': 'off',
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
   },
   globals: {
     React: 'writable',

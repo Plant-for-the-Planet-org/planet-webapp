@@ -1,15 +1,10 @@
 {
   // Format a file on save. A formatter must be available, the file must not be
   // auto-saved, and editor must not be shutting down.
-  "editor.formatOnSave": true,
-  "javascript.format.enable": true,
+  // "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
-    "source.fixAll.eslint": true
   },
-  "eslint.validate": [
-    "javascript"
-  ],
   "css.lint.duplicateProperties": "warning",
   "editor.rulers": [
     80
