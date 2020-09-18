@@ -89,6 +89,10 @@ function SingleProjectDetails({
     },
   ];
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);

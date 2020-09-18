@@ -6,7 +6,6 @@
   transition: all 0.3s ease-in-out;
   width: 100vw;
   margin-top: 50vh;
-  padding-bottom: 60px;
 }
 
 .modal {
@@ -292,12 +291,6 @@
 :export {
   highlightBackground: $highlightBackground;
 }
-.avoidPointerEvents {
-  display: block;
-  height: 50vh;
-  z-index: 999;
-  // pointer-events: none;
-}
 
 @include smTabletView {
   .container {
@@ -310,7 +303,6 @@
     padding-top: 0px;
     width: fit-content;
     left: 24px;
-    padding-bottom: 0px;
     margin-top: 0px;
   }
 
@@ -322,9 +314,5 @@
     margin-top: 90px;
     width: 360px;
     padding-bottom: 16px;
-  }
-
-  .avoidPointerEvents {
-    display: none;
   }
 }
