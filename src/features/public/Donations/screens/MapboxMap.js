@@ -28,7 +28,8 @@ export default function MapboxMap(props) {
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
-  const defaultMapCenter = [36.96, -28.5];
+  const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
+  const defaultZoom = isMobile ? 1 : 1.4;
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
     defaultMapCenter[0],
     defaultMapCenter[1],
@@ -46,7 +47,7 @@ export default function MapboxMap(props) {
     height: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
-    zoom: 1.4,
+    zoom: defaultZoom,
   });
 
   React.useEffect(() => {
@@ -115,7 +116,12 @@ export default function MapboxMap(props) {
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
         ).fitBounds(bbox, {
-          padding: 100,
+          padding: {
+            top: 50,
+            bottom: isMobile ? 120 : 50,
+            left: isMobile ? 50 : 400,
+            right: isMobile ? 50 : 100,
+          },
         });
         const newMapState = {
           mapStyle: 'mapbox://styles/mapbox/satellite-v9',
@@ -131,17 +137,7 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(
-          '/?p=' + project.slug,
-          //  +
-          // '&s=' +
-          // project.sites[currentSite].properties.id
-          undefined,
-          { shallow: true }
-        );
-        // setTimeout(() => {
-        //   setMapState(newMapState);
-        // }, [3800]);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -174,7 +170,12 @@ export default function MapboxMap(props) {
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
         ).fitBounds(bbox, {
-          padding: 100,
+          padding: {
+            top: 50,
+            bottom: isMobile ? 120 : 50,
+            left: isMobile ? 50 : 400,
+            right: isMobile ? 50 : 100,
+          },
         });
         const newMapState = {
           mapStyle: 'mapbox://styles/mapbox/satellite-v9',
@@ -190,17 +191,7 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(
-          '/?p=' + project.slug,
-          //  +
-          // '&s=' +
-          // project.sites[currentSite].properties.id
-          undefined,
-          { shallow: true }
-        );
-        // setTimeout(() => {
-        //   setMapState(newMapState);
-        // }, [3800]);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
       }
     }
   }, [currentSite]);
@@ -243,8 +234,6 @@ export default function MapboxMap(props) {
         ref={mapRef}
         {...mapState}
         {...viewport}
-        // height={mapSize[0]}
-        // width={mapSize[1]}
         mapboxApiAccessToken={props.mapboxToken}
         mapOptions={{
           customAttribution:
@@ -301,9 +290,7 @@ export default function MapboxMap(props) {
             >
               <div
                 className={styles.marker}
-                onClick={() =>
-                  handleOpenProject(popupData.project.properties.id)
-                }
+                onClick={() => handleOpenProject(project.properties.id)}
                 onMouseOver={(e) => {
                   timer = setTimeout(function () {
                     setPopupData({

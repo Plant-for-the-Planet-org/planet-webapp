@@ -79,8 +79,23 @@ function ThankYou({
 
       {/* <div className={styles.horizontalLine} /> */}
 
+          {/* hidden div for image download */}
+      {(
+        <div style={{width:'0px', height:'0px', overflow:'hidden'}}>
+        <div className={styles.tempThankYouImage} ref={imageRef}>
+          <p className={styles.tempDonationCount}>
+            My {Sugar.Number.format(Number(treeCount))} trees are being planted
+            in {project.location}
+          </p>
+          <p className={styles.tempDonationTenant}>
+            Plant trees at {config.tenantURL}
+          </p>
+        </div>
+        </div>
+      )}
+
       <div className={styles.thankyouImageContainer}>
-        <div className={styles.thankyouImage} ref={imageRef}>
+        <div className={styles.thankyouImage}>
           <div className={styles.donationCount}>
             My {Sugar.Number.format(Number(treeCount))} trees are being planted
             in {project.location}

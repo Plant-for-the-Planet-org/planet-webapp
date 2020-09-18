@@ -1,5 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/LearnMore.module.scss';
 
 export default function LearnMore() {
   return (

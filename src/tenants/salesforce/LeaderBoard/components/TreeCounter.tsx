@@ -1,6 +1,6 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import TreeCounter from '../../TreeCounter/TreeCounter';
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/TreeCounter.module.scss';
 interface Props {
   tenantScore: any;
 }

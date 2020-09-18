@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import MetaTags from '../../src/features/common/MetaTags';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
 import { getImageUrl } from '../../src/utils/getImageURL';
+import UserNotFound from './../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
 
 export default function PublicUser() {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
@@ -33,8 +35,14 @@ export default function PublicUser() {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
         }
       );
-      const publicUserprofile = await res.json();
-      setPublicUserprofile(publicUserprofile);
+
+      if (res.ok === false) {
+        setPublicUserprofile(null);
+      } else {
+        const publicUserprofile = await res.json();
+        setPublicUserprofile(publicUserprofile);
+      }
+
     }
     if (ready) {
       loadPublicUserData();
@@ -48,6 +56,13 @@ export default function PublicUser() {
       SetImageSource(newimageSource);
     }
   }, [publicUserprofile]);
+
+  if (publicUserprofile === null) {
+    return (
+      <UserNotFound />
+    )
+  }
+
   return publicUserprofile ? (
     <Layout>
       <MetaTags
@@ -63,5 +78,5 @@ export default function PublicUser() {
       <PublicUserPage {...PublicUserProps} />
       <Footer />
     </Layout>
-  ) : null;
+  ) : <UserProfleLoader />;
 }

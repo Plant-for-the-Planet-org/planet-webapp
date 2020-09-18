@@ -153,6 +153,7 @@
   color: $primaryColor;
   text-align: center;
   background-color: transparent;
+  outline: 0px;
 }
 
 .treeCountOption > .customTreeInput:focus {
@@ -166,14 +167,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   margin-top: 20px;
+  flex-flow: wrap;
 }
 
 .isTaxDeductibleText {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: $primaryFontColor;
+  white-space: nowrap;
+  margin-right: 6px;
 }
 
 .taxDeductible {
@@ -196,6 +199,7 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: $primaryColor;
+  white-space: nowrap;
 }
 
 .taxDeductibleCountryDisabled {
@@ -312,4 +316,5 @@
 
 :export {
   primaryFontColor: $primaryFontColor;
+  primaryColor: $primaryColor;
 }

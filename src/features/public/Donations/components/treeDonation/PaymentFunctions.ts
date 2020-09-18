@@ -64,8 +64,11 @@ export function payWithCard({
   paymentMethod,
   window,
   donorDetails,
+  taxDeductionCountry
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
+
+
   let createDonationData = {
     type: 'trees',
     project: project.id,
@@ -74,6 +77,12 @@ export function payWithCard({
     currency: currency,
     donor: { ...donorDetails },
   };
+  if (taxDeductionCountry) {
+    createDonationData = {
+      ...createDonationData,
+      taxDeductionCountry: taxDeductionCountry,
+    };
+  }
   let gift = {
     gift: {
       type: 'invitation',
@@ -88,6 +97,7 @@ export function payWithCard({
       ...gift,
     };
   }
+
   createDonation(createDonationData)
     .then((res) => {
       // Code for Payment API

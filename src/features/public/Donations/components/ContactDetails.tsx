@@ -26,6 +26,11 @@ function ContactDetails({
   const changeContactDetails = (e: any) => {
     setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
   };
+
+  const changeCountry = (country: any) => {
+    setContactDetails({ ...contactDetails, country: country });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -143,7 +148,7 @@ function ContactDetails({
               inputRef={register({ required: true })}
               label="Country"
               name="country"
-              onChange={changeContactDetails}
+              onChange={changeCountry}
               defaultValue={contactDetails.country}
             />
             {errors.country && (

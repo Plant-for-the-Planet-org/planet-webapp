@@ -1,6 +1,5 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
@@ -25,8 +24,6 @@ interface Props {
   project: any;
   setShowSingleProject: Function;
   setLayoutId: Function;
-  touchMap: any;
-  setTouchMap: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -38,14 +35,13 @@ function SingleProjectDetails({
   project,
   setShowSingleProject,
   setLayoutId,
-  touchMap,
-  setTouchMap,
 }: Props): ReactElement {
   const router = useRouter();
 
   const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
-
+  const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -93,6 +89,10 @@ function SingleProjectDetails({
     },
   ];
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -105,14 +105,19 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div
-      layoutId={project.id}
+    <div
+      style={{ transform: `translate(0,${scrollY}px)` }}
       className={styles.container}
-      style={
-        touchMap
-          ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
-          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
-      }
+      onTouchMove={(event) => {
+        if (isMobile) {
+          if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+            setScrollY(event.targetTouches[0].clientY);
+          } else {
+            setScrollY((screenHeight * 2) / 8);
+            console.log(scrollY);
+          }
+        }
+      }}
     >
       <Modal
         className={styles.modal + ' ' + theme}
@@ -126,21 +131,8 @@ function SingleProjectDetails({
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
-      {!touchMap ? (
-        <div
-          className={styles.avoidPointerEvents}
-          onTouchMove={() => {
-            setTouchMap(true);
-          }}
-        ></div>
-      ) : null}
       <div className={styles.projectContainer}>
-        <div
-          onTouchMove={() => {
-            setTouchMap(false);
-          }}
-          className={styles.singleProject}
-        >
+        <div className={styles.singleProject}>
           <div className={styles.projectImage}>
             {project.image ? (
               <LazyLoad>
@@ -151,7 +143,7 @@ function SingleProjectDetails({
                   }}
                 >
                   <div
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', width: 'fit-content' }}
                     onClick={() => {
                       setShowSingleProject(false),
                         setLayoutId(null),
@@ -287,7 +279,7 @@ function SingleProjectDetails({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

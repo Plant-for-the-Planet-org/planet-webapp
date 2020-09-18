@@ -1,4 +1,3 @@
-import { AnimateSharedLayout, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -7,6 +6,7 @@ import { getImageUrl } from '../../../../utils/getImageURL';
 import MetaTags from '../../../common/MetaTags';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
+import styles from '../styles/Projects.module.scss';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
@@ -15,15 +15,10 @@ const MapLayout = dynamic(() => import('./MapboxMap'), {
 
 interface Props {
   projects: any;
-  yScroll: any;
   projectsContainer: any;
 }
 
-function ProjectsList({
-  projects,
-  yScroll,
-  projectsContainer,
-}: Props): ReactElement {
+function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
   const router = useRouter();
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
@@ -32,6 +27,10 @@ function ProjectsList({
   const [imageSource, SetImageSource] = React.useState('');
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const isMobile = screenWidth <= 767;
+  const [scrollY, setScrollY] = React.useState(0);
   React.useEffect(() => {
     if (searchedProjects === null || searchedProjects.length < 1)
       setAllProjects(projects);
@@ -43,10 +42,7 @@ function ProjectsList({
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
-    yScroll: yScroll,
     setSearchedProjects: setSearchedProjects,
-    touchMap,
-    setTouchMap,
     projectsContainer,
   };
 
@@ -73,9 +69,16 @@ function ProjectsList({
 
   React.useEffect(() => {
     if (router.query.p) {
-      fetchProject(router.query.p).then(() => {});
+      fetchProject(router.query.p).then(() => { });
     }
   }, []);
+
+  React.useEffect(() => {
+    if (router.query.p === undefined) {
+      setShowSingleProject(false),
+        router.push('/', undefined, { shallow: true });
+    }
+  }, [router.query.p]);
 
   React.useEffect(() => {
     if (project !== null) {
@@ -93,33 +96,33 @@ function ProjectsList({
           ogType={'website'}
         />
       ) : (
-        <>
-          <MetaTags
-            title={'Plant trees around the world - Plant-for-the-Planet'}
-            desc={
-              "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
-            }
-            imageURL={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-            ogType={'website'}
-          />
-          <Head>
-            <meta name="twitter:card" content="summary" />
-            <meta
-              name="twitter:title"
-              content="Plant trees around the world - Plant-for-the-Planet"
+          <>
+            <MetaTags
+              title={'Plant trees around the world - Plant-for-the-Planet'}
+              desc={
+                "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
+              }
+              imageURL={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+              ogType={'website'}
             />
-            <meta name="twitter:site" content="@pftp_int" />
-            <meta
-              name="twitter:url"
-              content="https://www.trilliontreecampaign.org/"
-            />
-            <meta
-              name="twitter:description"
-              content="No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
-            />
-          </Head>
-        </>
-      );
+            <Head>
+              <meta name="twitter:card" content="summary" />
+              <meta
+                name="twitter:title"
+                content="Plant trees around the world - Plant-for-the-Planet"
+              />
+              <meta name="twitter:site" content="@pftp_int" />
+              <meta
+                name="twitter:url"
+                content="https://www.trilliontreecampaign.org/"
+              />
+              <meta
+                name="twitter:description"
+                content="No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis."
+              />
+            </Head>
+          </>
+        );
     }
   }, []);
 
@@ -138,23 +141,13 @@ function ProjectsList({
   const [selectedId, setSelectedId] = React.useState(null);
 
   return (
-    <div>
+    <>
       <MapLayout
         {...ProjectsProps}
         fetchSingleProject={fetchSingleProject}
         setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
-      {/* {!touchMap ? (
-        <div
-          className={styles.openMap}
-          onClick={() => {
-            setTouchMap(true);
-          }}
-        >
-          <MapIcon color="#fff" /> Map
-        </div>
-      ) : null} */}
       {/* Add Condition Operator */}
 
       {showSingleProject ? (
@@ -162,28 +155,29 @@ function ProjectsList({
           project={project}
           setShowSingleProject={setShowSingleProject}
           setLayoutId={() => setSelectedId}
-          touchMap={touchMap}
-          setTouchMap={setTouchMap}
         />
       ) : (
-        <AnimateSharedLayout type="crossfade">
-          <motion.div
-            initial={{ opacity: 0, y: 300 }}
-            animate={{
-              opacity: 1,
-              y: 0,
+          <div
+            style={{ transform: `translate(0,${scrollY}px)` }}
+            className={styles.container}
+            onTouchMove={(event) => {
+              if (isMobile) {
+                if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+                  setScrollY(event.targetTouches[0].clientY);
+                } else {
+                  setScrollY((screenHeight * 2) / 9);
+                }
+              }
             }}
-            transition={{ duration: 1 }}
           >
             <ProjectsContainer
               {...ProjectsProps}
               setLayoutId={() => setSelectedId}
               setShowSingleProject={setShowSingleProject}
             />
-          </motion.div>
-        </AnimateSharedLayout>
-      )}
-    </div>
+          </div>
+        )}
+    </>
   );
 }
 

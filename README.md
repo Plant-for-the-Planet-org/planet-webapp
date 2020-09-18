@@ -228,4 +228,14 @@ If you have found a vulnerability, you could write us at: support@plant-for-the-
 
 [Designs & Prototype](https://xd.adobe.com/view/8f1c5110-4d7d-445d-8283-8eb1674ce2e4-da4f/)
 
-[Backend APIs](https://stoplight.io/p/docs/gh/plant-for-the-planet-org/treecounter-platform?group=api-docs&utm_campaign=publish_dialog&utm_source=studio)
+[Backend APIs](https://plant-for-the-planet.stoplight.io/docs/treecounter-platform/)
+
+## Thank You
+The deployment and management of this application is possible with support from open soruce contributors and following partners.
+
+<a href="https://www.vercel.com?utm_source=planetapp&utm_medium=web&utm_campaign=oss">
+<img src="https://cdn.pp.eco/logo/svg/powered-by-vercel.svg" height="26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+## Legal
+Any brand-images/logo/iconography used in this project, including of Plant-for-the-Planet, are registered trademark(s) of respective parties. Please contact partner at plant-for-the-planet d0t org for approval to use the Plant-for-the-Planet Logo.

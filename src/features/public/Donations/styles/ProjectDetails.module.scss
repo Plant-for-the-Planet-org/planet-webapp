@@ -1,14 +1,11 @@
 @import './../../../../theme/theme';
 
 .container {
-  position: absolute;
+  position: relative;
   z-index: 6;
   transition: all 0.3s ease-in-out;
   width: 100vw;
-  margin-top: 0px;
-  height: 100vh;
-  overflow: scroll;
-  padding-bottom: 60px;
+  margin-top: 50vh;
 }
 
 .modal {
@@ -30,7 +27,7 @@
   flex-direction: column;
   background-color: $backgroundColor;
   width: 100%;
-  padding-bottom: 16px;
+  padding-bottom: 76px;
   height: auto;
   border-top-right-radius: 13px;
   border-top-left-radius: 13px;
@@ -50,24 +47,6 @@
 .projectContainer::-webkit-scrollbar-thumb {
   background-color: $primaryColor;
 }
-
-// .projectContainer::-webkit-scrollbar-track {
-//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   border-radius: 10px;
-//   background-color: #f5f5f5;
-// }
-
-// .projectContainer::-webkit-scrollbar {
-//   width: 5px;
-//   background-color: #f5f5f5;
-// }
-
-// .projectContainer::-webkit-scrollbar-thumb {
-//   border-radius: 10px;
-//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   background-color: $dividerColor;
-// }
 
 .targetLocation {
   display: flex;
@@ -312,12 +291,6 @@
 :export {
   highlightBackground: $highlightBackground;
 }
-.avoidPointerEvents {
-  display: block;
-  height: 50vh;
-  z-index: 999;
-  // pointer-events: none;
-}
 
 @include smTabletView {
   .container {
@@ -327,17 +300,10 @@
 
 @include mdTabletView {
   .container {
-    // overflow: hidden;
-    overflow-x: hidden;
     padding-top: 0px;
     width: fit-content;
-    // margin-top: 90px;
-    // position: relative;
-    // top: 30px;
     left: 24px;
-    padding-bottom: 0px;
-    -ms-overflow-style: none;
-    scrollbar-color: transparent transparent;
+    margin-top: 0px;
   }
 
   .container::-webkit-scrollbar {
@@ -347,11 +313,6 @@
   .projectContainer {
     margin-top: 90px;
     width: 360px;
-    // overflow-y: scroll;
-    // max-height: calc(100vh - 90px);
-  }
-
-  .avoidPointerEvents {
-    display: none;
+    padding-bottom: 16px;
   }
 }

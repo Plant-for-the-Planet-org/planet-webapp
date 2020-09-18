@@ -6,12 +6,10 @@ import ProjectsList from '../src/features/public/Donations/screens/Projects';
 export default function Donate() {
   const router = useRouter();
   const [projects, setProjects] = React.useState();
-  const [yScroll, setYScroll] = React.useState(0);
   const projectsContainer = React.useRef(null);
 
   const DonateProps = {
     projects: projects,
-    yScroll: yScroll,
     projectsContainer,
   };
 
@@ -41,23 +39,6 @@ export default function Donate() {
     }
     loadProjects();
   }, []);
-
-  React.useEffect(() => {
-    const handleScroll = (e) => {
-      if (projectsContainer.current !== null) {
-        let newScroll = yScroll + e.deltaY;
-        if (newScroll < 0) {
-          newScroll = 0;
-        }
-        if (newScroll > projectsContainer.current.scrollHeight - 490) {
-          newScroll = projectsContainer.current.scrollHeight - 490;
-        }
-        setYScroll(newScroll);
-      }
-    };
-    window.addEventListener('wheel', handleScroll);
-    return () => window.removeEventListener('wheel', handleScroll);
-  });
   return (
     <Layout>{projects ? <ProjectsList {...DonateProps} /> : <h2></h2>}</Layout>
   );
