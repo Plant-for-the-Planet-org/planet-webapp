@@ -204,14 +204,14 @@ export default function NavbarComponent(props: any) {
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
               >
-                <a href={config.header?.tenantLogoLink}>
-                  <div
-                    className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
-                  >
-                    <img src={config.header.tenantLogoURL} />
-                  </div>
-                </a>
+                {/* <a href={config.header?.tenantLogoLink}> */}
+                <div
+                  className={styles.link_container}
+                  style={{ margin: '0px 8px' }}
+                >
+                  <img src={config.header.tenantLogoURL} />
+                </div>
+                {/* </a> */}
               </Nav.Link>
               <Nav.Link
                 href={'https://www.plant-for-the-planet.org'}
