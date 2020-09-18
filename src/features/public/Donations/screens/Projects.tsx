@@ -110,7 +110,6 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
             }
           }}
         >
-          {isMobile ? <div className={styles.dragBar}></div> : null}
           <ProjectsContainer
             {...ProjectsProps}
             setLayoutId={() => setSelectedId}

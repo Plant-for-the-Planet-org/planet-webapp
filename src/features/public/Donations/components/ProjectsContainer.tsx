@@ -150,7 +150,11 @@ export default function ProjectsContainer({
           </div>
         </div>
       ) : (
-        <div className={styles.header}>
+        <div
+          className={styles.header}
+          style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
+        >
+          {isMobile ? <div className={styles.dragBar}></div> : null}
           {showFeaturedList ? (
             <div className={styles.tabButtonContainer}>
               <div
