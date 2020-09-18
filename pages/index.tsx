@@ -19,7 +19,6 @@ export default function Donate() {
       if (typeof Storage !== 'undefined') {
         if (localStorage.getItem('currencyCode')) {
           currencyCode = localStorage.getItem('currencyCode');
-          // currencyCode = 'EUR';
         } else {
           currencyCode = 'USD';
         }
