@@ -118,7 +118,7 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: {
             top: 50,
-            bottom: 50,
+            bottom: isMobile ? 120 : 50,
             left: isMobile ? 50 : 400,
             right: isMobile ? 50 : 100,
           },
@@ -137,17 +137,7 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(
-          '/?p=' + project.slug,
-          //  +
-          // '&s=' +
-          // project.sites[currentSite].properties.id
-          undefined,
-          { shallow: true }
-        );
-        // setTimeout(() => {
-        //   setMapState(newMapState);
-        // }, [3800]);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -182,7 +172,7 @@ export default function MapboxMap(props) {
         ).fitBounds(bbox, {
           padding: {
             top: 50,
-            bottom: 50,
+            bottom: isMobile ? 120 : 50,
             left: isMobile ? 50 : 400,
             right: isMobile ? 50 : 100,
           },
@@ -201,17 +191,7 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(
-          '/?p=' + project.slug,
-          //  +
-          // '&s=' +
-          // project.sites[currentSite].properties.id
-          undefined,
-          { shallow: true }
-        );
-        // setTimeout(() => {
-        //   setMapState(newMapState);
-        // }, [3800]);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
       }
     }
   }, [currentSite]);
@@ -254,8 +234,6 @@ export default function MapboxMap(props) {
         ref={mapRef}
         {...mapState}
         {...viewport}
-        // height={mapSize[0]}
-        // width={mapSize[1]}
         mapboxApiAccessToken={props.mapboxToken}
         mapOptions={{
           customAttribution:
@@ -312,9 +290,7 @@ export default function MapboxMap(props) {
             >
               <div
                 className={styles.marker}
-                onClick={() =>
-                  handleOpenProject(popupData.project.properties.id)
-                }
+                onClick={() => handleOpenProject(project.properties.id)}
                 onMouseOver={(e) => {
                   timer = setTimeout(function () {
                     setPopupData({

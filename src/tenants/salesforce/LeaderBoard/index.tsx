@@ -13,7 +13,7 @@ interface Props {
 
 export default function About({ tenantScore, leaderboard }: Props) {
   return (
-    <main style={{ height: '100vh', overflowX: 'hidden' }}>
+    <main>
       <Landing />
       <TreeCounterSection tenantScore={tenantScore} />
       <LearnMore />
