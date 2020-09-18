@@ -10,7 +10,7 @@
 
 // white modal
 .modal {
-  background-color: #ffffff;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
   max-height: 80vh;
@@ -26,7 +26,7 @@
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   grid-gap: 10px;
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 // adds scroll property to radio button container
@@ -45,8 +45,8 @@
 // styles the scrollbar thumb to rounded corners
 .radioButtonsContainer:hover::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  border: 3px solid #ffffff;
-  background-color: #ffffff;
+  border: 3px solid $backgroundColor;
+  background-color: $backgroundColor;
 }
 
 // shows thumb when mouse is over the radio buttons container
@@ -60,7 +60,7 @@
   font-size: 14px;
   font-weight: bold;
   color: $primaryFontColor;
-  margin: 0px;
+  margin: 0px 0px 0px 20px;
 }
 
 // button container for CTA
@@ -107,7 +107,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #e9e9e9;
+  background-color: $dividerColor;
   border-radius: 4px;
   transition: all 0.3s ease;
 }
@@ -146,6 +146,6 @@
   .currencyGrid {
     grid-template-columns: repeat(1, 1fr);
     grid-gap: 10px;
-    padding: 20px;
+    padding: 20px 10px;
   }
 }

@@ -10,6 +10,9 @@ interface Props {
   projects: any;
   setShowSingleProject: Function;
   fetchSingleProject: Function;
+  setLayoutId: Function;
+  setSearchedProjects: Function;
+  projectsContainer: any;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -21,24 +24,27 @@ export default function ProjectsContainer({
   projects,
   setShowSingleProject,
   fetchSingleProject,
+  setLayoutId,
+  setSearchedProjects,
 }: Props) {
   const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const isMobile = screenWidth <= 768;
+  const isMobile = screenWidth <= 767;
+  const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
-  // subtract screen height with bottom nav
-  const containerHeight = screenHeight - 76;
+  const showFeaturedList =
+    featuredList === 'false' || featuredList === '0' ? false : true;
 
-  const [selectedTab, setSelectedTab] = React.useState('featured');
+  const [selectedTab, setSelectedTab] = React.useState('all');
   const [searchMode, setSearchMode] = React.useState(false);
+
+  React.useEffect(() => {
+    showFeaturedList ? setSelectedTab('featured') : null;
+    // showFeaturedList ? null : setSearchMode(true);
+  }, []);
+
   const [searchValue, setSearchValue] = React.useState('');
 
-  const [isScrolling, setIsScrolling] = React.useState(false);
-  const [clientY, setClientY] = React.useState(!isMobile ? 60 : 0);
-  const [top, setTop] = React.useState(!isMobile ? 60 : 200);
-  const [allowScroll, setAllowScroll] = React.useState(!isMobile);
-  const [canChangeTopValue, setCanChangeTopValue] = React.useState(true);
-  const projectContainer = React.useRef(null);
+  const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
     if (type === 'featured') {
@@ -54,11 +60,31 @@ export default function ProjectsContainer({
   function getSearchProjects(projects: Array<any>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
-      resultProjects = projects.filter(
-        (project: { properties: { name: string } }) =>
+      resultProjects = projects.filter(function (project) {
+        if (
           project.properties.name.toLowerCase().includes(keyword.toLowerCase())
-      );
+        ) {
+          return true;
+        } else if (
+          project.properties.location &&
+          project.properties.location
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
+          return true;
+        } else if (
+          project.properties.tpo.name &&
+          project.properties.tpo.name
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
     }
+    setSearchedProjects(resultProjects);
     return resultProjects;
   }
 
@@ -80,105 +106,56 @@ export default function ProjectsContainer({
     projects: allProjects,
     setShowSingleProject,
     fetchSingleProject,
+    setLayoutId,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
     setShowSingleProject,
     fetchSingleProject,
+    setLayoutId,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
     setShowSingleProject,
     fetchSingleProject,
+    setLayoutId,
   };
 
-  // when touched on the project list container enables scrolling of list and
-  // sets the current y-axis touch position in clientY
-  function onTouchStart(e: any) {
-    if (isMobile) {
-      setIsScrolling(true);
-      setClientY(e.touches[0].clientY);
-    }
-  }
-
-  // when finger is dragged new on the list it adjusts the margin of the container accordingly
-  function onTouchMove(e: any) {
-    if (isScrolling) {
-      let newTop = top + (e.touches[0].clientY - clientY);
-      // if change of top value is allowed and the current top value is below the
-      // top of the screen then replaces the state top value with current top value
-      if (canChangeTopValue && newTop >= 0 && newTop <= screenHeight - 100) {
-        setTop(newTop);
-        setClientY(e.touches[0].clientY);
-      }
-      // checks if top value is less than 20px then allows the list to scroll else not
-      if (top <= 20) {
-        setAllowScroll(true);
-      } else {
-        setAllowScroll(false);
-      }
-    }
-  }
-
-  // when finger is removed from the surface or interupted then stops the scrolling of list
-  function onTouchEnd() {
-    if (isMobile) {
-      setIsScrolling(false);
-    }
-  }
-
-  // handles the scroll of the project list
-  function handleScroll(e: any) {
-    // toggles the permission for changing the top value while the list is being scrolled
-    // if list is scrolled to top then then allows the value of top to be changed
-    // else disallows the top value to be changed
-    if (e.target.scrollTop === 0) {
-      setCanChangeTopValue(true);
-    } else if (e.target.scrollTop > 0 && canChangeTopValue) {
-      setCanChangeTopValue(false);
-    }
-  }
   return (
-    <div
-      className={styles.container}
-      style={{
-        marginTop: top,
-        height: isMobile ? containerHeight - top : containerHeight,
-      }}
-    >
-      <div
-        className={styles.cardContainer}
-        ref={projectContainer}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
-      >
-        {searchMode ? (
-          <div className={styles.headerSearchMode}>
-            <div className={styles.searchIcon}>
-              <SearchIcon />
-            </div>
-
-            <div className={styles.searchInput}>
-              <TextField
-                fullWidth={true}
-                autoFocus={true}
-                placeholder="Search Projects"
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </div>
-            <div
-              className={styles.cancelIcon}
-              onClick={() => {
-                setSearchMode(false);
-                setSearchValue('');
-              }}
-            >
-              <CancelIcon />
-            </div>
+    <>
+      {searchMode ? (
+        <div className={styles.headerSearchMode}>
+          <div className={styles.searchIcon}>
+            <SearchIcon color={styles.primaryFontColor} />
           </div>
-        ) : (
-          <div className={styles.header}>
+
+          <div className={styles.searchInput}>
+            <TextField
+              ref={searchRef}
+              fullWidth={true}
+              autoFocus={true}
+              placeholder="Search Projects"
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+            />
+          </div>
+          <div
+            className={styles.cancelIcon}
+            onClick={() => {
+              setSearchMode(false);
+              setSearchValue('');
+            }}
+          >
+            <CancelIcon color={styles.primaryFontColor} />
+          </div>
+        </div>
+      ) : (
+        <div
+          className={styles.header}
+          style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
+        >
+          {isMobile ? <div className={styles.dragBar}></div> : null}
+          {showFeaturedList ? (
             <div className={styles.tabButtonContainer}>
               <div
                 className={styles.tabButton}
@@ -216,36 +193,28 @@ export default function ProjectsContainer({
                 ) : null}
               </div>
             </div>
-
-            <div
-              className={styles.searchIcon}
-              onClick={() => setSearchMode(true)}
-            >
-              <SearchIcon />
-            </div>
-          </div>
-        )}
-        {/* till here is header */}
-        <div
-          onScroll={handleScroll}
-          className={styles.projectsContainer}
-          style={{
-            height:
-              window.innerWidth <= 768
-                ? window.innerHeight - 126 - top
-                : window.innerHeight - 126,
-            overflowY: allowScroll ? 'scroll' : 'hidden',
-          }}
-        >
-          {searchValue !== '' ? (
-            <AllProjects {...SearchResultProjectsProps} />
-          ) : selectedTab === 'all' ? (
-            <AllProjects {...AllProjectsProps} />
           ) : (
-            <AllProjects {...FeaturedProjectsProps} />
+            <p className={styles.headerText}>Stop Talking. Start Planting.</p>
           )}
+
+          <div
+            className={styles.searchIcon}
+            onClick={() => setSearchMode(true)}
+          >
+            <SearchIcon />
+          </div>
         </div>
+      )}
+      {/* till here is header */}
+      <div className={styles.projectsContainer}>
+        {searchValue !== '' ? (
+          <AllProjects {...SearchResultProjectsProps} />
+        ) : selectedTab === 'all' ? (
+          <AllProjects {...AllProjectsProps} />
+        ) : (
+          <AllProjects {...FeaturedProjectsProps} />
+        )}
       </div>
-    </div>
+    </>
   );
 }

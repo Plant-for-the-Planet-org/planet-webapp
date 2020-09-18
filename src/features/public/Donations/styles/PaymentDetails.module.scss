@@ -1,10 +1,10 @@
 @import './../../../../theme/theme';
 
 .container {
-  background-color: $light;
+  background-color: $backgroundColor;
   border-radius: 7px;
   padding: 20px;
-  min-width: 412px;
+  width: 412px;
 }
 
 .header {
@@ -86,6 +86,21 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.continueButtonDisabled {
+  background-color: $dividerColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .horizontalLine {
@@ -124,6 +139,10 @@
   align-items: center;
 }
 
+.paymentModeHeader > svg {
+  height: 20px;
+}
+
 .paymentModeFee {
   display: flex;
   flex-direction: row;
@@ -136,7 +155,7 @@
   color: $primaryFontColor;
   font-weight: 600;
   flex-grow: 1;
-  margin-left: 20px;
+  margin-left: 8px;
 }
 
 .paymentModeFeeAmount {
@@ -159,4 +178,16 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: $primaryFontColor;
+}
+
+.mandateAcceptance {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize - 2;
+  color: $primaryFontColor;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+:export {
+  primaryFontFamily: $primaryFontFamily;
 }

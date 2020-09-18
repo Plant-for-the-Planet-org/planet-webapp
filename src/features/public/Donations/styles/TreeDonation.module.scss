@@ -1,11 +1,12 @@
 @import './../../../../theme/theme';
 
 .cardContainer {
-  background-color: $light;
+  background-color: $backgroundColor;
   border-radius: 7px;
   padding: 26px;
   width: 412px;
   height: max-content;
+  z-index: 10;
 }
 
 .header {
@@ -126,6 +127,7 @@
 .treeCountOption:hover,
 .treeCountOptionSelected:hover {
   cursor: pointer;
+  border: 2px solid $primaryColor;
 }
 .treeCountOption > .treeCountOptionTrees {
   font-family: $primaryFontFamily;
@@ -144,7 +146,14 @@
   border: 0px;
   border-bottom: 1px solid $primaryColor;
   margin: 0px 10px;
-  width: 40px;
+  width: 70%;
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+  text-align: center;
+  background-color: transparent;
+  outline: 0px;
 }
 
 .treeCountOption > .customTreeInput:focus {
@@ -158,14 +167,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   margin-top: 20px;
+  flex-flow: wrap;
 }
 
 .isTaxDeductibleText {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: $primaryFontColor;
+  white-space: nowrap;
+  margin-right: 6px;
 }
 
 .taxDeductible {
@@ -188,6 +199,7 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: $primaryColor;
+  white-space: nowrap;
 }
 
 .taxDeductibleCountryDisabled {
@@ -254,6 +266,19 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.paymentRequestPlaceholder {
+  background-color: $blueishGrey;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $dark;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
 }
 
 .horizontalLine {
@@ -277,4 +302,19 @@
   flex-direction: row;
   width: 100%;
   margin-top: 20px;
+}
+
+/* Payment error */
+.paymentError {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
+  primaryColor: $primaryColor;
 }

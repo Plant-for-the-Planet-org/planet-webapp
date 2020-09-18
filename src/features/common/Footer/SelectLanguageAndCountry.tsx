@@ -11,6 +11,7 @@ import {
   sortCountriesData,
 } from '../../../utils/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
+import { ThemeContext } from '../../../utils/themeContext';
 import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
 
@@ -27,6 +28,8 @@ export default function TransitionsModal(props) {
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
+
+  const { theme } = React.useContext(ThemeContext);
 
   // changes the language in when a language is selected
   const handleLanguageChange = (event) => {
@@ -79,7 +82,7 @@ export default function TransitionsModal(props) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={styles.modalContainer}
+        className={styles.modalContainer + ' ' + theme}
         open={openModal}
         onClose={handleModalClose}
         closeAfterTransition
@@ -133,6 +136,7 @@ function MapCountry(props) {
         name="language"
         value={value}
         onChange={handleChange}
+        className={styles.currencyGrid}
       >
         {sortedCountriesData.map((country) => (
           <FormControlLabel
@@ -156,6 +160,7 @@ function MapLanguage(props) {
         name="language"
         value={value}
         onChange={handleChange}
+        className={styles.currencyGrid}
       >
         {supportedLanguages.map((lang) => (
           <FormControlLabel

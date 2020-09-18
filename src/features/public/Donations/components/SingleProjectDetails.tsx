@@ -1,6 +1,7 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import ReactPlayer from 'react-player/lazy';
@@ -14,13 +15,15 @@ import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import TreeDonation from '../screens/TreeDonation';
+import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
   project: any;
   setShowSingleProject: Function;
+  setLayoutId: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -31,25 +34,42 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 function SingleProjectDetails({
   project,
   setShowSingleProject,
+  setLayoutId,
 }: Props): ReactElement {
+  const router = useRouter();
+
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const isMobile = screenWidth <= 768;
+  const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
-  const progressPercentage =
-    (project.countPlanted / project.countTarget) * 100 + '%';
+  let progressPercentage = (project.countPlanted / project.countTarget) * 100;
+
+  const { theme } = React.useContext(ThemeContext);
+
+  if (progressPercentage > 100) {
+    progressPercentage = 100;
+  }
   const ImageSource = project.image
     ? getImageUrl('project', 'large', project.image)
     : '';
 
   const contactDetails = [
-    { id: 1, icon: <BlackTree />, text: 'View Profile', link: project.slug },
+    {
+      id: 1,
+      icon: <BlackTree color={styles.highlightBackground} />,
+      text: 'View Profile',
+      link: project.tpo.slug,
+    },
     {
       id: 2,
-      icon: <WorldWeb />,
+      icon: <WorldWeb color={styles.highlightBackground} />,
       text: project.website ? project.website : 'unavailable',
       link: project.website,
     },
     {
       id: 3,
-      icon: <Location />,
+      icon: <Location color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.address
           ? project.tpo.address
@@ -61,7 +81,7 @@ function SingleProjectDetails({
     },
     {
       id: 4,
-      icon: <Email />,
+      icon: <Email color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
       link:
@@ -69,10 +89,9 @@ function SingleProjectDetails({
     },
   ];
 
-  const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'medium', image);
-    return ImageSource;
-  };
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -82,35 +101,26 @@ function SingleProjectDetails({
     setOpen(true);
   };
 
-  let projectImages: { content: () => JSX.Element }[] = [];
-
-  React.useEffect(() => {
-    project.images.forEach((image: any) => {
-      let imageURL = loadImageSource(image.image);
-      projectImages.push({
-        content: () => (
-          <div
-            className={styles.projectImageSliderContent}
-            style={{
-              background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-            }}
-          >
-            <p className={styles.projectImageSliderContentText}>
-              {image.description}
-            </p>
-          </div>
-        ),
-      });
-    });
-  }, [project]);
-
   const ProjectProps = {
     project: project,
   };
   return (
-    <div className={styles.container}>
+    <div
+      style={{ transform: `translate(0,${scrollY}px)` }}
+      className={styles.container}
+      onTouchMove={(event) => {
+        if (isMobile) {
+          if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+            setScrollY(event.targetTouches[0].clientY);
+          } else {
+            setScrollY((screenHeight * 2) / 8);
+            console.log(scrollY);
+          }
+        }
+      }}
+    >
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -118,7 +128,7 @@ function SingleProjectDetails({
         aria-describedby="simple-modal-description"
       >
         <Elements stripe={getStripe()}>
-          <TreeDonation project={project} onClose={handleClose} />
+          <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
       <div className={styles.projectContainer}>
@@ -133,8 +143,12 @@ function SingleProjectDetails({
                   }}
                 >
                   <div
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setShowSingleProject(false)}
+                    style={{ cursor: 'pointer', width: 'fit-content' }}
+                    onClick={() => {
+                      setShowSingleProject(false),
+                        setLayoutId(null),
+                        router.push('/', undefined, { shallow: true });
+                    }}
                   >
                     <BackButton />
                   </div>
@@ -143,7 +157,10 @@ function SingleProjectDetails({
             ) : (
               <div
                 style={{ cursor: 'pointer' }}
-                onClick={() => setShowSingleProject(false)}
+                onClick={() => {
+                  setShowSingleProject(false),
+                    router.push('/', undefined, { shallow: true });
+                }}
               >
                 <BackButton />
               </div>
@@ -162,7 +179,7 @@ function SingleProjectDetails({
           <div className={styles.progressBar}>
             <div
               className={styles.progressBarHighlight}
-              style={{ width: progressPercentage }}
+              style={{ width: progressPercentage + '%' }}
             />
           </div>
 
@@ -247,7 +264,7 @@ function SingleProjectDetails({
               ) : null}
               <div className={styles.projectImageSliderContainer}>
                 {project.images.length > 0 ? (
-                  <ImageSlider project={projectImages} />
+                  <ImageSlider project={project} />
                 ) : null}
               </div>
               {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}

@@ -1,24 +1,29 @@
 @import './../../../../theme/theme';
 
 .container {
-  margin-top: 60px;
   position: absolute;
-  z-index: 6;
+  transition: all 0.3s ease-in-out;
+  width: 100vw;
+  margin-top: 50vh;
+  padding-bottom: 60px;
 }
 
-.cardContainer {
-  position: relative;
-  top: 30px;
-  left: 24px;
-}
 .header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: $light;
+  justify-content: space-between;
+  background-color: $backgroundColor;
   border-radius: 13px 13px 0px 0px;
-  width: 360px;
   height: 50px;
+  width: 100%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.headerText {
+  margin: 0;
+  padding-left: 20px;
+  font-weight: 600;
 }
 
 .tabButtonContainer {
@@ -32,9 +37,11 @@
   margin-left: 16px;
   margin-top: 18px;
 }
+
 .tabButton:hover {
   cursor: pointer;
 }
+
 .tabButtonText {
   font-family: $primaryFontFamily;
   font-size: 13px;
@@ -63,16 +70,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: $light;
+  background-color: $backgroundColor;
   border-radius: 13px 13px 0px 0px;
   width: 100%;
   height: 50px;
 }
 
 .searchIcon {
-  margin-right: 8px;
+  margin-left: 6px;
   padding: 10px;
   font-size: 12px;
+  margin-right: 6px;
 }
 
 .searchIcon:hover {
@@ -84,46 +92,43 @@
 }
 
 .cancelIcon {
-  margin-right: 10px;
+  margin-right: 6px;
   padding: 10px;
+}
+
+.cancelIcon > svg {
+  width: 18px;
 }
 
 .cancelIcon:hover {
   cursor: pointer;
 }
 
-/* Projects */
 .projectsContainer {
   display: flex;
   flex-direction: column;
-  background-color: $light;
-  margin-top: 5px;
-  width: 360px;
+  background-color: $backgroundColor;
+  margin-top: 0px;
+  width: 100%;
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  max-height: calc(100vh - 145px);
+  height: auto;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
-// .projectsContainer::-webkit-scrollbar-track {
-//   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   border-radius: 10px;
-//   background-color: #f5f5f5;
-// }
+.projectsContainer::-webkit-scrollbar {
+  width: 6px;
+}
 
-// .projectsContainer::-webkit-scrollbar {
-//   width: 5px;
-//   background-color: #f5f5f5;
-// }
+.projectsContainer::-webkit-scrollbar-track {
+  background-color: $dividerColor;
+}
 
-// .projectsContainer::-webkit-scrollbar-thumb {
-//   border-radius: 10px;
-//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   background-color: $dividerColor;
-// }
+.projectsContainer::-webkit-scrollbar-thumb {
+  background-color: $primaryColor;
+}
 
 .singleProject {
   margin-top: 20px;
@@ -169,6 +174,7 @@
   font-weight: bold;
   margin-right: 4px;
 }
+
 .projectTPOName {
   font-family: $primaryFontFamily;
   font-size: 12px;
@@ -186,7 +192,9 @@
 
 .costButton {
   background-color: $primaryColor;
-  width: 72px;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
   height: 22px;
   display: flex;
   justify-content: center;
@@ -194,14 +202,16 @@
   border-radius: 11px;
   color: $light;
   font-weight: bold;
-  font-family: $primaryFontFamily;
+  font-family: $secondaryFontFamily;
   font-size: $fontSubTitleSize;
   text-transform: uppercase;
 }
+
 .costButton:hover {
   cursor: pointer;
   text-decoration: none;
 }
+
 .perTree {
   font-family: $primaryFontFamily;
   font-size: 9px;
@@ -244,6 +254,8 @@
   height: 160px;
   width: 100%;
   position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .projectImageBlock {
@@ -266,31 +278,135 @@
   color: #fff;
 }
 
-@media only screen and (max-width: 768px) {
+.allProjectsContainer {
+  padding-bottom: 12px;
+}
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+.avoidPointerEvents {
+  display: block;
+  height: 50vh;
+  z-index: 999;
+  // pointer-events: none;
+}
+
+.openMap {
+  padding: 12px 20px;
+  border-radius: 100px;
+  background-color: $primaryColor;
+  color: #fff;
+  position: absolute;
+  bottom: 90px;
+  right: 0;
+  left: 0;
+  // max-width: 50px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.openMap > svg {
+  width: 20px;
+  margin-right: 5px;
+}
+
+.dragBar {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 60px;
+  background-color: #c5c5c5;
+  height: 5px;
+  border-radius: 100px;
+}
+
+@include smTabletView {
+  .allProjectsContainer > div > div {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 16px;
+  }
+
   .container {
-    width: 100vw;
-    margin-top: 0px;
-    height: calc(100vh - 76px);
-    overflow: hidden;
+    padding-bottom: 0px;
+  }
+}
+
+@include mdTabletView {
+  .mainContainer {
+    max-height: calc(100vh - 60px);
+    position: relative;
+    // top: 60px;
+    overflow-y: visible;
   }
 
+  .container {
+    overflow: visible;
+    padding-top: 0px;
+    margin-top: 90px;
+    margin-left: 24px;
+    // padding-bottom: 0px;
+    width: fit-content;
+    // z-index: 2;
+    bottom: 0px;
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
+    z-index: 2;
+  }
+
+  // .container::-webkit-scrollbar {
+  //   display: none;
+  // }
+
+  .allProjectsContainer > div > div {
+    display: block;
+  }
   .cardContainer {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: relative;
+    top: 30px;
+    left: 24px;
+  }
+  .projectsContainer {
+    margin-top: 5px;
+    width: 360px;
+    overflow-y: hidden;
+    padding-bottom: 0px;
+  }
+  .header {
+    width: 360px;
   }
 
-  .header {
-    width: 100%;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+  .headerSearchMode {
+    width: 360px;
   }
-  /* Projects */
-  .projectsContainer {
-    margin-top: 0px;
-    width: 100%;
-    max-height: calc(100vh - 126px);
-    overflow-x: hidden;
-    overflow-y: scroll;
+
+  .avoidPointerEvents {
+    display: none;
   }
+
+  .openMap {
+    display: none;
+  }
+}
+
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
 }

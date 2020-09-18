@@ -5,7 +5,8 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getImageUrl } from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
-import TreeDonation from './../screens/TreeDonation';
+import { ThemeContext } from '../../../../utils/themeContext';
+import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 
 interface Props {
@@ -25,6 +26,8 @@ export default function PopupProject({
   fetchProject,
   setShowSingleProject,
 }: Props): ReactElement {
+  const { theme } = React.useContext(ThemeContext);
+
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -37,18 +40,16 @@ export default function PopupProject({
   return (
     <>
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
         <Elements stripe={getStripe()}>
-          <TreeDonation project={projectDetails} onClose={handleClose} />
+          <DonationsPopup project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      {/* <Link prefetch={false} href="/[id]" as={`/${project.properties.id}`}>
-        <a> */}
       <div className={styles.projectImage}>
         {project.properties.image &&
         typeof project.properties.image !== 'undefined' ? (
@@ -71,8 +72,6 @@ export default function PopupProject({
           </div>
         </div>
       </div>
-      {/* </a>
-      </Link> */}
 
       <div className={styles.progressBar}>
         <div
