@@ -75,6 +75,14 @@ function ProjectsList({
   }, []);
 
   React.useEffect(() => {
+    if (router.query.p === undefined) {
+      console.log('here');
+      setShowSingleProject(false),
+        router.push('/', undefined, { shallow: true });
+    }
+  }, [router.query.p]);
+
+  React.useEffect(() => {
     if (project !== null) {
       setShowSingleProject(true);
     }
