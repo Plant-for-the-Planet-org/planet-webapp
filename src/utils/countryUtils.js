@@ -10,10 +10,11 @@ import countriesData from './countriesData.json';
  * @returns {Object} contains
  *  - {countryCode, countryName, currencyName, currencyCode, currencyCountryFlag}
  */
+// eslint-disable-next-line consistent-return
 export function getCountryDataBy(key, value) {
   // Finds required country data from the country data array and returns the
   // matched country result
-  for (let i = 0; i < countriesData.length; i++) {
+  for (let i = 0; i < countriesData.length; i += 1) {
     if (countriesData[i][key] === value) {
       return countriesData[i];
     }

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /**
  * * Returns true if browser is a mobile browser
  * @returns boolean

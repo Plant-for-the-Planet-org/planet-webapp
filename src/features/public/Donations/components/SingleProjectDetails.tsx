@@ -13,7 +13,7 @@ import Email from '../../../../assets/images/icons/project/Email';
 import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { getImageUrl } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
 import { ThemeContext } from '../../../../utils/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';

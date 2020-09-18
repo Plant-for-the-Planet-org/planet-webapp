@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
 const express = require('express');
 const next = require('next');
 const path = require('path');
@@ -13,7 +15,7 @@ if (!dev && cluster.isMaster) {
   console.log(`Node cluster master ${process.pid} is running`);
 
   // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
+  for (let i = 0; i < numCPUs; i += 1) {
     cluster.fork();
   }
 
@@ -31,6 +33,7 @@ if (!dev && cluster.isMaster) {
 
     if (!dev) {
       // Enforce SSL & HSTS in production
+      // eslint-disable-next-line no-shadow
       server.use((req, res, next) => {
         const proto = req.headers['x-forwarded-proto'];
         if (proto === 'https') {
