@@ -7,7 +7,7 @@ export default function UserProfile() {
   const [userprofile, setUserprofile] = React.useState({});
 
   const UserProps = {
-    userprofile: userprofile,
+    userprofile,
   };
 
   const texts = getMe();
@@ -78,7 +78,10 @@ export default function UserProfile() {
 
   return (
     <Layout>
-      <h2 style={{ marginTop: '80px' }}>description: {texts.description}</h2>
+      <h2 style={{ marginTop: '80px' }}>
+        description:
+        {texts.description}
+      </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
         {...UserProps}
