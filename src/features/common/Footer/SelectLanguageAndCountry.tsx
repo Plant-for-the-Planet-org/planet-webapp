@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import countriesData from '../../../utils/countriesData.json';
 import {
   getCountryDataBy,
-  sortCountriesData,
+  sortCountriesData
 } from '../../../utils/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
 import { ThemeContext } from '../../../utils/themeContext';
@@ -142,7 +142,7 @@ function MapCountry(props) {
           <FormControlLabel
             value={country.countryCode}
             control={<GreenRadio />}
-            label={`${country.countryName} (${country.currencyCode})`}
+            label={`${country.countryName} · ${country.currencyCode}`}
           />
         ))}
       </RadioGroup>
