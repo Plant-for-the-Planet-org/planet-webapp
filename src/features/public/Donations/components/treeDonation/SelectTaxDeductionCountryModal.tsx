@@ -116,7 +116,6 @@ function MapCountry(props: any) {
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
             label={`${country.countryName} · (${country.countryCode})`}
-          // label={`${country.countryCode},${country.currencyCode}`}
           />
         ))}
       </RadioGroup>
