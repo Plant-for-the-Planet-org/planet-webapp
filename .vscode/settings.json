@@ -4,8 +4,14 @@
   "editor.formatOnSave": true,
   "javascript.format.enable": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": true,
+    "source.fixAll.eslint": true
   },
+  "eslint.validate": [
+    "javascript"
+  ],
   "css.lint.duplicateProperties": "warning",
-  "editor.rulers": [80]
+  "editor.rulers": [
+    80
+  ]
 }
