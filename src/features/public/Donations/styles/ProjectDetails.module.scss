@@ -1,13 +1,12 @@
 @import './../../../../theme/theme';
 
 .container {
-  position: absolute;
+  position: relative;
   z-index: 6;
   transition: all 0.3s ease-in-out;
   width: 100vw;
-  margin-top: 0px;
+  margin-top: 50vh;
   height: 100vh;
-  overflow: scroll;
   padding-bottom: 60px;
 }
 
@@ -30,7 +29,7 @@
   flex-direction: column;
   background-color: $backgroundColor;
   width: 100%;
-  padding-bottom: 16px;
+  padding-bottom: 76px;
   height: auto;
   border-top-right-radius: 13px;
   border-top-left-radius: 13px;
@@ -327,13 +326,8 @@
 
 @include mdTabletView {
   .container {
-    // overflow: hidden;
-    overflow-x: hidden;
     padding-top: 0px;
     width: fit-content;
-    // margin-top: 90px;
-    // position: relative;
-    // top: 30px;
     left: 24px;
     padding-bottom: 0px;
     -ms-overflow-style: none;
@@ -347,8 +341,7 @@
   .projectContainer {
     margin-top: 90px;
     width: 360px;
-    // overflow-y: scroll;
-    // max-height: calc(100vh - 90px);
+    padding-bottom: 16px;
   }
 
   .avoidPointerEvents {

@@ -13,21 +13,13 @@ const MapLayout = dynamic(() => import('./MapboxMap'), {
 
 interface Props {
   projects: any;
-  yScroll: any;
   projectsContainer: any;
 }
 
-function ProjectsList({
-  projects,
-  yScroll,
-  projectsContainer,
-}: Props): ReactElement {
+function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
   const router = useRouter();
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [project, setProject] = React.useState(null);
-  const [site, setSite] = React.useState(null);
-  const [touchMap, setTouchMap] = React.useState(false);
-
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
   React.useEffect(() => {
@@ -41,10 +33,7 @@ function ProjectsList({
     project: project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
-    yScroll: yScroll,
     setSearchedProjects: setSearchedProjects,
-    touchMap,
-    setTouchMap,
     projectsContainer,
   };
 
@@ -94,21 +83,7 @@ function ProjectsList({
         fetchSingleProject={fetchSingleProject}
         setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-        // onTouchMove={() => {
-        //   setTouchMap(true);
-        // }}
       />
-      {/* <div className={styles.mainContainer}> */}
-      {/* {!touchMap ? (
-        <div
-          className={styles.openMap}
-          onClick={() => {
-            setTouchMap(true);
-          }}
-        >
-          <MapIcon color="#fff" /> Map
-        </div>
-      ) : null} */}
       {/* Add Condition Operator */}
 
       {showSingleProject ? (
@@ -116,8 +91,6 @@ function ProjectsList({
           project={project}
           setShowSingleProject={setShowSingleProject}
           setLayoutId={() => setSelectedId}
-          touchMap={touchMap}
-          setTouchMap={setTouchMap}
         />
       ) : (
         <AnimateSharedLayout type="crossfade">
@@ -129,11 +102,6 @@ function ProjectsList({
             }}
             transition={{ duration: 1 }}
             ref={projectsContainer}
-            // style={
-            //   touchMap
-            //     ? { top: '70vh', transition: 'ease 1s' }
-            //     : { top: '0px', transition: 'ease 1s' }
-            // }
             className={styles.container}
           >
             <ProjectsContainer
@@ -144,8 +112,6 @@ function ProjectsList({
           </motion.div>
         </AnimateSharedLayout>
       )}
-
-      {/* </div> */}
     </>
   );
 }

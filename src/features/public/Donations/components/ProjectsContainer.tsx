@@ -11,10 +11,7 @@ interface Props {
   setShowSingleProject: Function;
   fetchSingleProject: Function;
   setLayoutId: Function;
-  yScroll: any;
   setSearchedProjects: Function;
-  touchMap: any;
-  setTouchMap: Function;
   projectsContainer: any;
 }
 
@@ -28,11 +25,7 @@ export default function ProjectsContainer({
   setShowSingleProject,
   fetchSingleProject,
   setLayoutId,
-  yScroll,
   setSearchedProjects,
-  touchMap,
-  setTouchMap,
-  projectsContainer,
 }: Props) {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
@@ -128,29 +121,8 @@ export default function ProjectsContainer({
     setLayoutId,
   };
 
-  // React.useEffect(() => {
-  //   if (!isMobile) {
-  //     projectsContainer.current.scrollTo({ top: yScroll, behavior: 'smooth' });
-  //   }
-  // }, [yScroll]);
-
   return (
     <>
-      {/* {!touchMap ? (
-        <div
-          className={styles.avoidPointerEvents}
-          onTouchMove={() => {
-            setTouchMap(true);
-          }}
-        ></div>
-      ) : null} */}
-      {/* <div
-        onTouchMove={() => {
-          setTouchMap(false);
-        }}
-        className={styles.containerChild}
-      > */}
-      {/* <div className={styles.cardContainer}> */}
       {searchMode ? (
         <div className={styles.headerSearchMode}>
           <div className={styles.searchIcon}>
@@ -239,8 +211,6 @@ export default function ProjectsContainer({
           <AllProjects {...FeaturedProjectsProps} />
         )}
       </div>
-      {/* </div> */}
-      {/* </div> */}
     </>
   );
 }

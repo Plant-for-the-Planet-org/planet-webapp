@@ -131,17 +131,7 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(
-          '/?p=' + project.slug,
-          //  +
-          // '&s=' +
-          // project.sites[currentSite].properties.id
-          undefined,
-          { shallow: true }
-        );
-        // setTimeout(() => {
-        //   setMapState(newMapState);
-        // }, [3800]);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -190,17 +180,7 @@ export default function MapboxMap(props) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(
-          '/?p=' + project.slug,
-          //  +
-          // '&s=' +
-          // project.sites[currentSite].properties.id
-          undefined,
-          { shallow: true }
-        );
-        // setTimeout(() => {
-        //   setMapState(newMapState);
-        // }, [3800]);
+        router.push('/?p=' + project.slug, undefined, { shallow: true });
       }
     }
   }, [currentSite]);
@@ -243,8 +223,6 @@ export default function MapboxMap(props) {
         ref={mapRef}
         {...mapState}
         {...viewport}
-        // height={mapSize[0]}
-        // width={mapSize[1]}
         mapboxApiAccessToken={props.mapboxToken}
         mapOptions={{
           customAttribution:

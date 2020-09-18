@@ -25,8 +25,6 @@ interface Props {
   project: any;
   setShowSingleProject: Function;
   setLayoutId: Function;
-  touchMap: any;
-  setTouchMap: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -38,8 +36,6 @@ function SingleProjectDetails({
   project,
   setShowSingleProject,
   setLayoutId,
-  touchMap,
-  setTouchMap,
 }: Props): ReactElement {
   const router = useRouter();
 
@@ -105,15 +101,7 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div
-      layoutId={project.id}
-      className={styles.container}
-      style={
-        touchMap
-          ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
-          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
-      }
-    >
+    <motion.div layoutId={project.id} className={styles.container}>
       <Modal
         className={styles.modal + ' ' + theme}
         open={open}
@@ -126,21 +114,8 @@ function SingleProjectDetails({
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
-      {!touchMap ? (
-        <div
-          className={styles.avoidPointerEvents}
-          onTouchMove={() => {
-            setTouchMap(true);
-          }}
-        ></div>
-      ) : null}
       <div className={styles.projectContainer}>
-        <div
-          onTouchMove={() => {
-            setTouchMap(false);
-          }}
-          className={styles.singleProject}
-        >
+        <div className={styles.singleProject}>
           <div className={styles.projectImage}>
             {project.image ? (
               <LazyLoad>
