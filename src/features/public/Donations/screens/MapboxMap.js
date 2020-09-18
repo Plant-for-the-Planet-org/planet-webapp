@@ -28,7 +28,8 @@ export default function MapboxMap(props) {
   const [popupData, setPopupData] = useState({ show: false });
   const [open, setOpen] = React.useState(false);
   const [siteExists, setsiteExists] = React.useState(false);
-  const defaultMapCenter = [36.96, -28.5];
+  const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
+  const defaultZoom = isMobile ? 1 : 1.4;
   const [singleProjectLatLong, setSingleProjectLatLong] = React.useState([
     defaultMapCenter[0],
     defaultMapCenter[1],
@@ -46,7 +47,7 @@ export default function MapboxMap(props) {
     height: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
-    zoom: 1.4,
+    zoom: defaultZoom,
   });
 
   React.useEffect(() => {
@@ -115,7 +116,12 @@ export default function MapboxMap(props) {
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
         ).fitBounds(bbox, {
-          padding: 100,
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: isMobile ? 50 : 400,
+            right: isMobile ? 50 : 100,
+          },
         });
         const newMapState = {
           mapStyle: 'mapbox://styles/mapbox/satellite-v9',
@@ -164,7 +170,12 @@ export default function MapboxMap(props) {
         const { longitude, latitude, zoom } = new WebMercatorViewport(
           viewport
         ).fitBounds(bbox, {
-          padding: 100,
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: isMobile ? 50 : 400,
+            right: isMobile ? 50 : 100,
+          },
         });
         const newMapState = {
           mapStyle: 'mapbox://styles/mapbox/satellite-v9',

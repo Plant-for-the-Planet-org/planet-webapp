@@ -11,10 +11,10 @@ const config = tenantConfig();
 function countryToFlag(isoCode: string) {
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) =>
-          String.fromCodePoint(char.charCodeAt(0) + 127397)
-        )
+      .toUpperCase()
+      .replace(/./g, (char) =>
+        String.fromCodePoint(char.charCodeAt(0) + 127397)
+      )
     : isoCode;
 }
 
@@ -36,10 +36,10 @@ export default function CountrySelect(props: {
   name: string | undefined;
   defaultValue: string;
   onChange:
-    | ((
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      ) => void)
-    | undefined;
+  | ((
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void)
+  | undefined;
 }) {
   const classes = useStyles();
 
@@ -60,6 +60,11 @@ export default function CountrySelect(props: {
           {option.label} ({option.code})
         </React.Fragment>
       )}
+      onChange={(event: any, newValue: CountryType | null) => {
+        if (newValue) {
+          props.onChange(newValue.code);
+        }
+      }}
       renderInput={(params) => (
         <MaterialTextFeild
           {...params}

@@ -1,5 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/Articles.module.scss';
 export default function Articles() {
   const articles = [
     {

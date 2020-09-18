@@ -1,4 +1,4 @@
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/Landing.module.scss';
 
 export default function Landing() {
   return (

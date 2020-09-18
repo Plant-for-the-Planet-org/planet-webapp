@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
+import ButtonLoader from '../../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../../common/types/donations';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
@@ -36,6 +36,7 @@ function TreeDonation({
   setGiftDetails,
   paymentType,
   setPaymentType,
+  isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
@@ -44,71 +45,7 @@ function TreeDonation({
   );
   const [paymentError, setPaymentError] = React.useState('');
 
-  const stripeAllowedCountries = [
-    'AE',
-    'AT',
-    'AU',
-    'BE',
-    'BG',
-    'BR',
-    'CA',
-    'CH',
-    'CI',
-    'CR',
-    'CY',
-    'CZ',
-    'DE',
-    'DK',
-    'DO',
-    'EE',
-    'ES',
-    'FI',
-    'FR',
-    'GB',
-    'GR',
-    'GT',
-    'HK',
-    'HU',
-    'ID',
-    'IE',
-    'IN',
-    'IT',
-    'JP',
-    'LT',
-    'LU',
-    'LV',
-    'MT',
-    'MX',
-    'MY',
-    'NL',
-    'NO',
-    'NZ',
-    'PE',
-    'PH',
-    'PL',
-    'PT',
-    'RO',
-    'SE',
-    'SG',
-    'SI',
-    'SK',
-    'SN',
-    'TH',
-    'TT',
-    'US',
-    'UY',
-  ];
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
-  const taxDeductSwitchOn = () => {
-    setIsTaxDeductible(!isTaxDeductible);
-    if (!project.taxDeductionCountries.includes(country)) {
-      const displayedCountry = project.taxDeductionCountries[0];
-      const respCurrency = getCountryDataBy('countryCode', displayedCountry)
-        .currencyCode;
-      setCountry(displayedCountry);
-      setCurrency(respCurrency);
-    }
-  };
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '') {
@@ -124,6 +61,14 @@ function TreeDonation({
   const continueNext = () => {
     setDonationStep(2);
   };
+
+  React.useEffect(() => {
+    if (project.taxDeductionCountries.includes(country)) {
+      setIsTaxDeductible(true)
+    } else {
+      setIsTaxDeductible(false)
+    }
+  }, [country])
 
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
     setPaymentType(paymentRequest._activeBackingLibraryName);
@@ -158,221 +103,201 @@ function TreeDonation({
       window,
       paymentMethod,
       donorDetails,
+      taxDeductionCountry: isTaxDeductible ? country : null
     };
     payWithCard({ ...payWithCardProps });
   };
 
+  const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
-    <>
-      <div
-        className={styles.cardContainer}
-        style={{ alignSelf: isGift ? 'start' : 'center' }}
-      >
-        <div className={styles.header}>
-          <div onClick={onClose} className={styles.headerCloseIcon}>
-            <Close color={styles.primaryFontColor} />
-          </div>
-          <div className={styles.headerTitle}>Tree Donation</div>
-        </div>
-
-        <div className={styles.plantProjectName}>
-          To {project.name} by {project.tpo.name}
-        </div>
-
+      <>
         <div
-          className={
-            isTaxDeductible ? styles.currencyRateDisabled : styles.currencyRate
-          }
-          onClick={
-            !isTaxDeductible ? () => setOpenCurrencyModal(true) : () => {}
-          }
+          className={styles.cardContainer}
+          style={{ alignSelf: isGift ? 'start' : 'center' }}
         >
+          <div className={styles.header}>
+            <div onClick={onClose} className={styles.headerCloseIcon}>
+              <Close color={styles.primaryFontColor} />
+            </div>
+            <div className={styles.headerTitle}>Tree Donation</div>
+          </div>
+
+          <div className={styles.plantProjectName}>
+            To {project.name} by {project.tpo.name}
+          </div>
+
           <div
-            className={
-              isTaxDeductible ? styles.currencyDisabled : styles.currency
-            }
+            className={styles.currencyRate}
+            onClick={() => setOpenCurrencyModal(true)}
           >
-            {currency}
+            <div className={styles.currency}>{currency}</div>
+            <div className={styles.downArrow}>
+              <DownArrow color={'#87B738'} />
+            </div>
+            <div className={styles.rate}>
+              {Number(treeCost).toFixed(2)} per tree
           </div>
-          <div className={styles.downArrow}>
-            <DownArrow color={isTaxDeductible ? 'grey' : '#87B738'} />
           </div>
-          <div className={styles.rate}>
-            {Number(treeCost).toFixed(2)} per tree
-          </div>
-        </div>
 
-        <div className={styles.isGiftDonation}>
-          <div className={styles.isGiftDonationText}>
-            My donation is a gift to someone
+          <div className={styles.isGiftDonation}>
+            <div className={styles.isGiftDonationText}>
+              My donation is a gift to someone
           </div>
-          <ToggleSwitch
-            checked={isGift}
-            onChange={() => setIsGift(!isGift)}
-            name="checkedA"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-        </div>
+            <ToggleSwitch
+              checked={isGift}
+              onChange={() => setIsGift(!isGift)}
+              name="checkedA"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+          </div>
 
-        {isGift ? (
-          <GiftForm
-            isGift={isGift}
-            giftDetails={giftDetails}
-            setGiftDetails={setGiftDetails}
-          />
-        ) : null}
+          {isGift ? (
+            <GiftForm
+              isGift={isGift}
+              giftDetails={giftDetails}
+              setGiftDetails={setGiftDetails}
+            />
+          ) : null}
 
-        <div className={styles.selectTreeCount}>
-          {treeCountOptions.map((option) => (
+          <div className={styles.selectTreeCount}>
+            {treeCountOptions.map((option) => (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setTreeCount(option), setIsCustomTrees(false);
+                }}
+                key={option}
+                className={
+                  treeCount === option && !isCustomTrees
+                    ? styles.treeCountOptionSelected
+                    : styles.treeCountOption
+                }
+              >
+                <div className={styles.treeCountOptionTrees}>{option}</div>
+                <div className={styles.treeCountOptionTrees}>Trees</div>
+              </motion.div>
+            ))}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setTreeCount(option)}
-              key={option}
               className={
-                treeCount === option
+                isCustomTrees
                   ? styles.treeCountOptionSelected
                   : styles.treeCountOption
               }
+              style={{ minWidth: '65%', flexDirection: 'row' }}
+              onClick={() => setIsCustomTrees(true)}
             >
-              <div className={styles.treeCountOptionTrees}>{option}</div>
+              <input
+                className={styles.customTreeInput}
+                onInput={(e) => {
+                  // replaces any character other than number to blank
+                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                  //  if length of input more than 12, display only 12 digits
+                  if (e.target.value.toString().length >= 12) {
+                    e.target.value = e.target.value.toString().slice(0, 12);
+                  }
+                }}
+                type="text"
+                onChange={(e) => setCustomTreeValue(e)}
+              />
               <div className={styles.treeCountOptionTrees}>Trees</div>
             </motion.div>
-          ))}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-            className={styles.treeCountOption}
-            style={{ minWidth: '65%', flexDirection: 'row' }}
-          >
-            <input
-              className={styles.customTreeInput}
-              onInput={(e) => {
-                // replaces any character other than number to blank
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+          </div>
 
-                //  if length of input more than 12, display only 12 digits
-                if (e.target.value.toString().length >= 12) {
-                  e.target.value = e.target.value.toString().slice(0, 12);
-                }
-              }}
-              type="text"
-              onChange={(e) => setCustomTreeValue(e)}
-            />
-            <div className={styles.treeCountOptionTrees}>Trees</div>
-          </motion.div>
-        </div>
-
-        {project.taxDeductionCountries.length > 0 && (
-          <React.Fragment>
+          {project.taxDeductionCountries.length > 0 ? (
             <div className={styles.isTaxDeductible}>
               <div className={styles.isTaxDeductibleText}>
-                Send me a tax deduction receipt for
-              </div>
-              <ToggleSwitch
-                checked={isTaxDeductible}
-                onChange={taxDeductSwitchOn}
-                name="checkedB"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-
-            <div
-              className={
-                isTaxDeductible
-                  ? styles.taxDeductible
-                  : styles.taxDeductibleDisabled
-              }
-              onClick={
-                isTaxDeductible
-                  ? () => setOpenTaxDeductionModal(true)
-                  : () => {}
-              }
-            >
-              <div
-                className={
-                  isTaxDeductible
-                    ? styles.taxDeductibleCountry
-                    : styles.taxDeductibleCountryDisabled
-                }
-              >
                 {project.taxDeductionCountries.includes(country)
-                  ? getCountryDataBy('countryCode', country).countryName
-                  : getCountryDataBy(
-                      'countryCode',
-                      project.taxDeductionCountries[0]
-                    ).countryName}
+                  ? 'You will receive a tax deduction receipt for '
+                  : 'Tax deduction is not available for '}
               </div>
-              <div className={styles.downArrow}>
-                <DownArrow color={isTaxDeductible ? '#87B738' : 'grey'} />
+              <div
+                className={styles.taxDeductible}
+                onClick={() => setOpenTaxDeductionModal(true)}
+              >
+                <div className={styles.taxDeductibleCountry}>
+                  {getCountryDataBy('countryCode', country).countryName}
+                </div>
+                <div className={styles.downArrow}>
+                  <DownArrow color={'#87B738'} />
+                </div>
+              </div>
+              <div className={styles.isTaxDeductibleText} style={{ marginLeft: '4px' }}>
+                {project.taxDeductionCountries.includes(country)
+                  ? ' in time for tax returns.'
+                  : null}
               </div>
             </div>
-          </React.Fragment>
-        )}
+          ) : (
+              <div className={styles.isTaxDeductible}>
+                <div className={styles.isTaxDeductibleText}>
+                  Tax deduction is not yet available for this project
+            </div>
+              </div>
+            )}
 
-        <div className={styles.horizontalLine} />
+          <div className={styles.horizontalLine} />
 
-        {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
-        )}
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
-            {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
+          {paymentError && (
+            <div className={styles.paymentError}>{paymentError}</div>
+          )}
+          {paymentSetup?.gateways?.stripe?.isLive === false ? <div className={styles.paymentError}>Test Mode: Your donations will not be charged</div> : null}
+
+          <div className={styles.finalTreeCount}>
+            <div className={styles.totalCost}>
+              {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+              {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
+            </div>
+            <div className={styles.totalCostText}>
+              for {Sugar.Number.format(Number(treeCount))} Trees
           </div>
-          <div className={styles.totalCostText}>
-            for {Sugar.Number.format(Number(treeCount))} Trees
           </div>
+
+
+          {!isPaymentOptionsLoading &&
+            paymentSetup?.gateways?.stripe?.account &&
+            currency ? (
+              <PaymentRequestCustomButton
+                country={country}
+                currency={currency}
+                amount={formatAmountForStripe(
+                  treeCost * treeCount,
+                  currency.toLowerCase()
+                )}
+                onPaymentFunction={onPaymentFunction}
+                continueNext={continueNext}
+              />
+            ) : (
+              <div className={styles.actionButtonsContainer}>
+                <ButtonLoader />
+                <ButtonLoader />
+              </div>
+            )}
         </div>
-
-        <div className={styles.actionButtonsContainer}>
-          <div style={{ width: '150px' }}>
-            {paymentSetup?.gateways?.stripe?.account &&
-              stripeAllowedCountries.includes(country) &&
-              currency && (
-                <PaymentRequestCustomButton
-                  country={country}
-                  currency={currency}
-                  amount={formatAmountForStripe(
-                    treeCost * treeCount,
-                    currency.toLowerCase()
-                  )}
-                  onPaymentFunction={onPaymentFunction}
-                />
-              )}
-
-            {/* {paymentRequest ? 'Or' : null} */}
-          </div>
-
-          <AnimatedButton
-            onClick={() => continueNext()}
-            className={styles.continueButton}
-          >
-            Continue
-          </AnimatedButton>
-        </div>
-      </div>
-      <SelectTaxDeductionCountryModal
-        openModal={openTaxDeductionModal}
-        handleModalClose={() => setOpenTaxDeductionModal(false)}
-        taxDeductionCountries={project.taxDeductionCountries}
-        setCountry={setCountry}
-        country={country}
-        setCurrency={setCurrency}
-        currency={currency}
-      />
-      <SelectCurrencyModal
-        openModal={openCurrencyModal}
-        handleModalClose={() => setOpenCurrencyModal(false)}
-        setCurrency={setCurrency}
-        currency={currency}
-        setCountry={setCountry}
-        country={country}
-      />
-    </>
-  );
+        <SelectTaxDeductionCountryModal
+          openModal={openTaxDeductionModal}
+          handleModalClose={() => setOpenTaxDeductionModal(false)}
+          taxDeductionCountries={project.taxDeductionCountries}
+          setCountry={setCountry}
+          country={country}
+          setCurrency={setCurrency}
+          currency={currency}
+        />
+        <SelectCurrencyModal
+          openModal={openCurrencyModal}
+          handleModalClose={() => setOpenCurrencyModal(false)}
+          setCurrency={setCurrency}
+          currency={currency}
+          setCountry={setCountry}
+          country={country}
+        />
+      </>
+    );
 }
 
 export default TreeDonation;
