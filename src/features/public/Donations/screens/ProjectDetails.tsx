@@ -11,10 +11,10 @@ import Email from '../../../../assets/images/icons/project/Email';
 import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { getImageUrl } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import styles from './../styles/ProjectDetails.module.scss';
+import styles from '../styles/ProjectDetails.module.scss';
 import DonationsPopup from './DonationsPopup';
 
 const ProjectMap = dynamic(() => import('./ProjectMap'), {
@@ -84,7 +84,7 @@ function ProjectDetails({ project }: Props): ReactElement {
   };
 
   const ProjectProps = {
-    project: project,
+    project,
   };
 
   var projectImages = [];
