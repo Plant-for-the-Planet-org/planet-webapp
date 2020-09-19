@@ -57,7 +57,7 @@ export default function ProjectMap(props:ProjectMapProps) {
       <MapGL
         {...viewport}
         mapboxApiAccessToken={mapboxToken}
-        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+        mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true"
         onViewportChange={_onViewportChange}
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}

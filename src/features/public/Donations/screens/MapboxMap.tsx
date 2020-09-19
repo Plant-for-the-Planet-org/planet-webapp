@@ -53,7 +53,7 @@ export default function MapboxMap(props:mapProps) {
   const [currentSite, setCurrentSite] = React.useState<null | Number>();
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
   });
 
   const [viewport, setViewPort] = useState({
@@ -101,7 +101,7 @@ export default function MapboxMap(props:mapProps) {
       }
     } else if (project !== null) {
       const newMapState = {
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
       };
       const newViewport = {
         ...viewport,
@@ -152,7 +152,7 @@ export default function MapboxMap(props:mapProps) {
         router.push(`/?p=${project.slug}`, undefined, { shallow: true });
       } else {
         const newMapState = {
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
         };
         const newViewport = {
           ...viewport,

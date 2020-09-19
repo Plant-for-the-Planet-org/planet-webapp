@@ -32,7 +32,7 @@ export default function MyForestContainer({ userprofile }: any) {
           <MapGL
             {...viewport}
             mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-            mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+            mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true"
             onViewportChange={_onViewportChange}
             scrollZoom={false}
           ></MapGL>
