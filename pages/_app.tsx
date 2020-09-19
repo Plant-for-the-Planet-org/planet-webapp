@@ -6,12 +6,19 @@ import TagManager from 'react-gtm-module';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/utils/themeContext';
+import i18next from '../i18n';
 
 export default function PlanetWeb({ Component, pageProps }: any) {
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
+	
+	const [initialized, setInitialized] = React.useState(false);
 
+	React.useEffect(() => {
+	    i18next.initPromise.then(() => setInitialized(true));
+	  }, []);
+		
   React.useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
@@ -41,10 +48,14 @@ export default function PlanetWeb({ Component, pageProps }: any) {
     loadConfig();
   }, []);
 
-  return (
-    <ThemeProvider>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
-  );
+  if (!initialized) {
+    return <p>Loading...</p>;
+  } else {
+    return (
+      <ThemeProvider>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    ); 
+  }
 }

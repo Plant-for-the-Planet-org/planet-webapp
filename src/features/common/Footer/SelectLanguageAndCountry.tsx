@@ -14,6 +14,9 @@ import supportedLanguages from '../../../utils/supportedLanguages.json';
 import { ThemeContext } from '../../../utils/themeContext';
 import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
+import i18next from '../../../../i18n';
+
+const { Trans, useTranslation } = i18next;
 
 export default function TransitionsModal(props) {
   const {
@@ -28,6 +31,8 @@ export default function TransitionsModal(props) {
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
+
+  const { i18n } = useTranslation();
 
   const { theme } = React.useContext(ThemeContext);
 
@@ -60,6 +65,7 @@ export default function TransitionsModal(props) {
   // changes the language in local state whenever the language changes in Footer state
   useEffect(() => {
     if (language) {
+      i18n.changeLanguage(language);
       setModalLanguage(language);
     }
   }, [language]);

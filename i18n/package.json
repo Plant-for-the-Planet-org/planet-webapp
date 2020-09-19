@@ -1,0 +1,8 @@
+{
+  "name": "i18n",
+  "version": "0.0.1",
+  "description": "Routes i18n imports to client/server according to the runtime environment",
+  "private": true,
+  "main": "./server.js",
+  "browser": "./client.js"
+}

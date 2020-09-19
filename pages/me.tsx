@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
-import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
+import i18next from '../i18n';
+
+const { Trans, useTranslation } = i18next;
 
 export default function UserProfile() {
   const [userprofile, setUserprofile] = React.useState({});
+  const { t } = useTranslation();
 
   const UserProps = {
     userprofile,
   };
 
-  const texts = getMe();
   // dummy data
   const dummyProfile = {
     countTarget: 200,
@@ -80,7 +82,7 @@ export default function UserProfile() {
     <Layout>
       <h2 style={{ marginTop: '80px' }}>
         description:
-        {texts.description}
+        {t('description')}
       </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
