@@ -5,6 +5,9 @@ import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
 import UserNotFound from '../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
+import Head from 'next/head';
+import tenantConfig from '../../tenant.config';
+const config = tenantConfig();
 
 export default function PublicUser() {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
@@ -29,7 +32,7 @@ export default function PublicUser() {
         `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${slug}`,
         {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
-        },
+        }
       );
 
       if (res.ok === false) {
@@ -45,15 +48,41 @@ export default function PublicUser() {
   }, [ready]);
 
   if (publicUserprofile === null) {
-    return (
-      <UserNotFound />
-    );
+    return <UserNotFound />;
   }
 
-  return publicUserprofile ? (
-    <Layout>
-      <PublicUserPage {...PublicUserProps} />
-      <Footer />
-    </Layout>
-  ) : <UserProfleLoader />;
+  return (
+    <>
+      <Head>
+        <title>{`${config.meta.title}`}</title>
+        <meta property="og:site_name" content={config.meta.title} />
+        <meta property="og:locale" content="en_US" />
+        <meta
+          property="og:url"
+          content={`${process.env.SCHEME}://${config.tenantURL}`}
+        />
+        <meta property="og:title" content={`${config.meta.title} - Home`} />
+        <meta property="og:description" content={config.meta.description} />
+        <meta name="description" content={config.meta.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={config.meta.image} />
+        {config.tenantName === 'planet' ? (
+          <link rel="alternate" href="android-app://org.pftp/projects" />
+        ) : null}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={config.meta.title} />
+        <meta name="twitter:site" content={config.meta.twitterHandle} />
+        <meta name="twitter:url" content={config.tenantURL} />
+        <meta name="twitter:description" content={config.meta.description} />
+      </Head>
+      {publicUserprofile ? (
+        <Layout>
+          <PublicUserPage {...PublicUserProps} />
+          <Footer />
+        </Layout>
+      ) : (
+        <UserProfleLoader />
+      )}
+    </>
+  );
 }
