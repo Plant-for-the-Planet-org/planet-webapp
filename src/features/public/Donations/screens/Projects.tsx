@@ -7,7 +7,7 @@ import styles from '../styles/Projects.module.scss';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
-  loading: () => <p></p>,
+  loading: () => <p />,
 });
 
 interface Props {
@@ -26,17 +26,16 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
   React.useEffect(() => {
-    if (searchedProjects === null || searchedProjects.length < 1)
-      setAllProjects(projects);
+    if (searchedProjects === null || searchedProjects.length < 1) setAllProjects(projects);
     else setAllProjects(searchedProjects);
   }, [projects, searchedProjects]);
 
   const ProjectsProps = {
     projects: allProjects,
-    project: project,
+    project,
     showSingleProject,
-    fetchSingleProject: fetchSingleProject,
-    setSearchedProjects: setSearchedProjects,
+    fetchSingleProject,
+    setSearchedProjects,
     projectsContainer,
   };
 
@@ -54,7 +53,7 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
       `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
       {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }
+      },
     );
 
     const newProject = res.status === 200 ? await res.json() : null;
@@ -63,9 +62,16 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
 
   React.useEffect(() => {
     if (router.query.p) {
-      fetchProject(router.query.p).then(() => {});
+      fetchProject(router.query.p).then(() => { });
     }
   }, []);
+
+  React.useEffect(() => {
+    if (router.query.p === undefined) {
+      setShowSingleProject(false);
+      router.push('/', undefined, { shallow: true });
+    }
+  }, [router.query.p]);
 
   React.useEffect(() => {
     if (project !== null) {
@@ -76,8 +82,6 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
   async function fetchProject(id: any) {
     await fetchSingleProject(id);
   }
-
-  const [selectedId, setSelectedId] = React.useState(null);
 
   return (
     <>
@@ -93,28 +97,26 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
         <SingleProjectDetails
           project={project}
           setShowSingleProject={setShowSingleProject}
-          setLayoutId={() => setSelectedId}
         />
       ) : (
-        <div
-          style={{ transform: `translate(0,${scrollY}px)` }}
-          className={styles.container}
-          onTouchMove={(event) => {
-            if (isMobile) {
-              if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
-                setScrollY(event.targetTouches[0].clientY);
-              } else {
-                setScrollY((screenHeight * 2) / 9);
+          <div
+            style={{ transform: `translate(0,${scrollY}px)` }}
+            className={styles.container}
+            onTouchMove={(event) => {
+              if (isMobile) {
+                if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+                  setScrollY(event.targetTouches[0].clientY);
+                } else {
+                  setScrollY((screenHeight * 2) / 9);
+                }
               }
-            }
-          }}
-        >
-          <ProjectsContainer
-            {...ProjectsProps}
-            setLayoutId={() => setSelectedId}
-            setShowSingleProject={setShowSingleProject}
-          />
-        </div>
+            }}
+          >
+            <ProjectsContainer
+              {...ProjectsProps}
+              setShowSingleProject={setShowSingleProject}
+            />
+          </div>
       )}
     </>
   );

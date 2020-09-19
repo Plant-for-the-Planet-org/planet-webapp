@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
 const express = require('express');
 const next = require('next');
 const path = require('path');
@@ -13,13 +15,13 @@ if (!dev && cluster.isMaster) {
   console.log(`Node cluster master ${process.pid} is running`);
 
   // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
+  for (let i = 0; i < numCPUs; i += 1) {
     cluster.fork();
   }
 
   cluster.on('exit', (worker, code, signal) => {
     console.error(
-      `Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`
+      `Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`,
     );
   });
 } else {
@@ -31,15 +33,16 @@ if (!dev && cluster.isMaster) {
 
     if (!dev) {
       // Enforce SSL & HSTS in production
-      server.use(function (req, res, next) {
-        var proto = req.headers['x-forwarded-proto'];
+      // eslint-disable-next-line no-shadow
+      server.use((req, res, next) => {
+        const proto = req.headers['x-forwarded-proto'];
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
           });
           return next();
         }
-        res.redirect('https://' + req.headers.host + req.url);
+        res.redirect(`https://${req.headers.host}${req.url}`);
       });
     }
 
@@ -49,7 +52,7 @@ if (!dev && cluster.isMaster) {
       '/static',
       express.static(path.join(__dirname, 'static'), {
         maxAge: dev ? '0' : '365d',
-      })
+      }),
     );
 
     // Example server-side routing

@@ -18,6 +18,8 @@ function ContactDetails({
   setContactDetails,
   isCompany,
   setIsCompany,
+  isTaxDeductible,
+  country
 }: ContactDetailsPageProps): ReactElement {
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
@@ -31,6 +33,7 @@ function ContactDetails({
     setContactDetails({ ...contactDetails, country: country });
   };
 
+  let defaultCountry = isTaxDeductible ? country : localStorage.getItem('countryCode');
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -149,7 +152,7 @@ function ContactDetails({
               label="Country"
               name="country"
               onChange={changeCountry}
-              defaultValue={contactDetails.country}
+              defaultValue={contactDetails.country ? contactDetails.country : defaultCountry}
             />
             {errors.country && (
               <span className={styles.formErrors}>Country is required</span>
