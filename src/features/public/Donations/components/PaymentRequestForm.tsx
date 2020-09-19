@@ -118,10 +118,6 @@ export const PaymentRequestCustomButton = ({
       setPaymentRequest(null);
       setCanMakePayment(false);
     }
-    // if(!stripeAllowedCountries.includes(country)){
-    //   setPaymentRequest(null);
-    //   setCanMakePayment(false);
-    // }
   }, [country, currency, amount]);
 
   useEffect(() => {

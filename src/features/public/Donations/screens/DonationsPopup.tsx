@@ -123,6 +123,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setContactDetails,
     isCompany,
     setIsCompany,
+    country,
+    isTaxDeductible
   };
 
   const PaymentDetailsProps = {

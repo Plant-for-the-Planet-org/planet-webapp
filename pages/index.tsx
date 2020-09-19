@@ -9,7 +9,7 @@ export default function Donate() {
   const projectsContainer = React.useRef(null);
 
   const DonateProps = {
-    projects: projects,
+    projects,
     projectsContainer,
   };
 
@@ -19,27 +19,26 @@ export default function Donate() {
       if (typeof Storage !== 'undefined') {
         if (localStorage.getItem('currencyCode')) {
           currencyCode = localStorage.getItem('currencyCode');
-          // currencyCode = 'EUR';
         } else {
           currencyCode = 'USD';
         }
       }
-      const res = await fetch(
+      await fetch(
         `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`,
         {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
-        }
+        },
       ).then(async (res) => {
-        const projects = res.status === 200 ? await res.json() : null;
+        const fetchedProjects = res.status === 200 ? await res.json() : null;
         if (res.status !== 200) {
           router.push('/404', undefined, { shallow: true });
         }
-        setProjects(projects);
+        setProjects(fetchedProjects);
       });
     }
     loadProjects();
   }, []);
   return (
-    <Layout>{projects ? <ProjectsList {...DonateProps} /> : <h2></h2>}</Layout>
+    <Layout>{projects ? <ProjectsList {...DonateProps} /> : <></>}</Layout>
   );
 }
