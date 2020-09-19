@@ -57,6 +57,7 @@ export default function tenantConfig() {
           description:
             "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
           image: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+          twitterHandle: '@pftp_int',
         },
       };
     case 'salesforce':
@@ -114,6 +115,7 @@ export default function tenantConfig() {
           description:
             'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
           image: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+          twitterHandle: '',
         },
       };
     case 'planetbeta':
@@ -164,6 +166,7 @@ export default function tenantConfig() {
           description:
             "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
           image: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+          twitterHandle: '@pftp_int',
         },
       };
     default:
@@ -182,7 +185,8 @@ export default function tenantConfig() {
             process.env.TENANT.slice(1)
           } ❤️ Trees`,
           description: 'Plant Trees',
-          image: '',
+          image: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+          twitterHandle: '@pftp_int',
         },
       };
   }
