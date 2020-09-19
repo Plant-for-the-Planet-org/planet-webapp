@@ -1,33 +1,38 @@
+/* eslint-disable no-underscore-dangle */
 import * as turf from '@turf/turf';
-import React, { useRef, useState } from 'react';
-import MapGL, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
+import React, { useState } from 'react';
+import MapGL, {
+  Layer, Marker, NavigationControl, Source,
+} from 'react-map-gl';
 import styles from '../styles/MapboxMap.module.scss';
 
-export default function ProjectMap(props) {
-  let mapContainer = useRef(null);
-  var timer;
-  const { project } = props;
+interface ProjectMapProps{
+  project:any;
+  mapboxToken:any;
+}
+export default function ProjectMap(props:ProjectMapProps) {
+  const { project, mapboxToken } = props;
   const [popupData, setPopupData] = useState({ show: false });
   const sourceRef = React.useRef(null);
 
-  let lat = project.coordinates.lat;
-  let lon = project.coordinates.lon;
+  let { lat } = project.coordinates;
+  let { lon } = project.coordinates;
   let geometryExists = false;
   const geojson = {
     type: 'FeatureCollection',
     features: project.sites,
   };
 
-  var zoomLevel = 15;
+  let zoomLevel = 15;
   if (typeof geojson.features !== 'undefined' && geojson.features.length > 0) {
     if (geojson.features[0].geometry !== null) {
       geometryExists = true;
-      var centroid = turf.centroid(geojson);
+      const centroid = turf.centroid(geojson);
       lat = centroid.geometry.coordinates[1];
       lon = centroid.geometry.coordinates[0];
-      var bbox = turf.bbox(geojson);
-      var bboxPolygon = turf.bboxPolygon(bbox);
-      var area = turf.area(bboxPolygon);
+      const bbox = turf.bbox(geojson);
+      const bboxPolygon = turf.bboxPolygon(bbox);
+      const area = turf.area(bboxPolygon);
       if (area > 2000000000) {
         zoomLevel = 10;
       } else if (area > 600000) {
@@ -45,13 +50,13 @@ export default function ProjectMap(props) {
     zoom: zoomLevel,
   });
 
-  const _onViewportChange = (view) => setViewPort({ ...view });
+  const _onViewportChange = (view:any) => setViewPort({ ...view });
 
   return (
     <div className={styles.mapContainer}>
       <MapGL
         {...viewport}
-        mapboxApiAccessToken={props.mapboxToken}
+        mapboxApiAccessToken={mapboxToken}
         mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
         onViewportChange={_onViewportChange}
         scrollZoom={false}
@@ -65,7 +70,7 @@ export default function ProjectMap(props) {
             offsetTop={-16}
             style={{ left: '28px' }}
           >
-            <div className={styles.marker}></div>
+            <div className={styles.marker} />
           </Marker>
         ) : (
           <Source

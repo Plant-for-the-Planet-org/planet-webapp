@@ -1,7 +1,6 @@
-const scheme =
-  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-    ? process.env.SCHEME
-    : 'https';
+const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+  ? process.env.SCHEME
+  : 'https';
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -13,8 +12,8 @@ module.exports = {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
-    API_ENDPOINT: scheme + '://' + process.env.API_ENDPOINT,
-    CDN_URL: scheme + '://' + process.env.CDN_URL,
+    API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
+    CDN_URL: `${scheme}://${process.env.CDN_URL}`,
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -33,7 +32,7 @@ module.exports = {
         destination: '/',
         permanent: true,
       },
-    ]
+    ];
   },
   assetPrefix: isProd ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files

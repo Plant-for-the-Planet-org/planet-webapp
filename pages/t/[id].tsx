@@ -4,7 +4,8 @@ import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfi
 import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
-import UserNotFound from './../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
+import UserNotFound from '../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
+
 export default function PublicUser() {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
   const [slug, setSlug] = React.useState(null);
@@ -12,7 +13,7 @@ export default function PublicUser() {
 
   const router = useRouter();
   const PublicUserProps = {
-    publicUserprofile: publicUserprofile,
+    publicUserprofile,
   };
 
   useEffect(() => {
@@ -28,16 +29,15 @@ export default function PublicUser() {
         `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${slug}`,
         {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
-        }
+        },
       );
 
       if (res.ok === false) {
         setPublicUserprofile(null);
       } else {
-        const publicUserprofile = await res.json();
-        setPublicUserprofile(publicUserprofile);
+        const newPublicUserprofile = await res.json();
+        setPublicUserprofile(newPublicUserprofile);
       }
-
     }
     if (ready) {
       loadPublicUserData();
@@ -47,7 +47,7 @@ export default function PublicUser() {
   if (publicUserprofile === null) {
     return (
       <UserNotFound />
-    )
+    );
   }
 
   return publicUserprofile ? (
