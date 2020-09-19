@@ -10,7 +10,6 @@ interface Props {
   projects: any;
   setShowSingleProject: Function;
   fetchSingleProject: Function;
-  setLayoutId: Function;
   setSearchedProjects: Function;
 }
 
@@ -23,7 +22,6 @@ export default function ProjectsContainer({
   projects,
   setShowSingleProject,
   fetchSingleProject,
-  setLayoutId,
   setSearchedProjects,
 }: Props) {
   const screenWidth = window.innerWidth;
@@ -105,19 +103,16 @@ export default function ProjectsContainer({
     projects: allProjects,
     setShowSingleProject,
     fetchSingleProject,
-    setLayoutId,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
     setShowSingleProject,
     fetchSingleProject,
-    setLayoutId,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
     setShowSingleProject,
     fetchSingleProject,
-    setLayoutId,
   };
 
   return (
@@ -149,61 +144,61 @@ export default function ProjectsContainer({
           </div>
         </div>
       ) : (
-        <div
-          className={styles.header}
-          style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
-        >
-          {isMobile ? <div className={styles.dragBar}></div> : null}
-          {showFeaturedList ? (
-            <div className={styles.tabButtonContainer}>
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('featured')}
-              >
-                <div
-                  className={
-                    selectedTab === 'featured'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
-                >
-                  Top Projects
-                </div>
-                {selectedTab === 'featured' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
-              </div>
-
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('all')}
-              >
-                <div
-                  className={
-                    selectedTab === 'all'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
-                >
-                  All {projects.length} Projects
-                </div>
-                {selectedTab === 'all' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
-              </div>
-            </div>
-          ) : (
-            <p className={styles.headerText}>Stop Talking. Start Planting.</p>
-          )}
-
           <div
-            className={styles.searchIcon}
-            onClick={() => setSearchMode(true)}
+            className={styles.header}
+            style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
           >
-            <SearchIcon />
+            {isMobile ? <div className={styles.dragBar}></div> : null}
+            {showFeaturedList ? (
+              <div className={styles.tabButtonContainer}>
+                <div
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('featured')}
+                >
+                  <div
+                    className={
+                      selectedTab === 'featured'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    Top Projects
+                </div>
+                  {selectedTab === 'featured' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
+                </div>
+
+                <div
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('all')}
+                >
+                  <div
+                    className={
+                      selectedTab === 'all'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    All {projects.length} Projects
+                </div>
+                  {selectedTab === 'all' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
+                </div>
+              </div>
+            ) : (
+                <p className={styles.headerText}>Stop Talking. Start Planting.</p>
+              )}
+
+            <div
+              className={styles.searchIcon}
+              onClick={() => setSearchMode(true)}
+            >
+              <SearchIcon />
+            </div>
           </div>
-        </div>
-      )}
+        )}
       {/* till here is header */}
       <div className={styles.projectsContainer}>
         {searchValue !== '' ? (
@@ -211,8 +206,8 @@ export default function ProjectsContainer({
         ) : selectedTab === 'all' ? (
           <AllProjects {...AllProjectsProps} />
         ) : (
-          <AllProjects {...FeaturedProjectsProps} />
-        )}
+              <AllProjects {...FeaturedProjectsProps} />
+            )}
       </div>
     </>
   );

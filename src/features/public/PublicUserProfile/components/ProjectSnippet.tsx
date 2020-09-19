@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { getImageUrl } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../../Donations/styles/Projects.module.scss';
 
 interface Props {

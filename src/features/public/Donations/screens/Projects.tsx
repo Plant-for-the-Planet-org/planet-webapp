@@ -7,7 +7,7 @@ import styles from '../styles/Projects.module.scss';
 
 const MapLayout = dynamic(() => import('./MapboxMap'), {
   ssr: false,
-  loading: () => <p></p>,
+  loading: () => <p />,
 });
 
 interface Props {
@@ -41,7 +41,7 @@ function ProjectsList({
 
   const ProjectsProps = {
     projects: allProjects,
-    project: project,
+    project,
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
     setSearchedProjects: setSearchedProjects,
@@ -63,7 +63,6 @@ function ProjectsList({
         <SingleProjectDetails
           project={project}
           setShowSingleProject={setShowSingleProject}
-          setLayoutId={() => setSelectedId}
         />
       ) : (
         <div
@@ -81,7 +80,6 @@ function ProjectsList({
         >
           <ProjectsContainer
             {...ProjectsProps}
-            setLayoutId={() => setSelectedId}
             setShowSingleProject={setShowSingleProject}
           />
         </div>

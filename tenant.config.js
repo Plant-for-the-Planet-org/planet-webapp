@@ -16,7 +16,7 @@ export default function tenantConfig() {
             `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
         },
         header: {
-          isSecondaryTenant: false, // This will mean that we have to load both the tenant logo and PFP logo
+          isSecondaryTenant: false,
           tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
           tenantLogoLink: 'https://www.plant-for-the-planet.org',
           items: [
@@ -68,7 +68,7 @@ export default function tenantConfig() {
             `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
         },
         header: {
-          isSecondaryTenant: true, // This will mean that we have to load both the tenant logo and PFP logo
+          isSecondaryTenant: true,
           tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
           tenantLogoLink: 'https://www.salesforce.com/sustainability/',
           items: [
@@ -108,50 +108,50 @@ export default function tenantConfig() {
           ],
         },
       };
-      case 'planetbeta':
-        return {
-          tenantName: 'planetbeta',
-          tenantURL: 'beta.plant-for-the-planet.org',
-          tenantLogoURL: 'https://www.plant-for-the-planet.org',
-          font: {
-            primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-            primaryFontURL:
-              `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
-            secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-            secondaryFontURL:
-              `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
-          },
-          header: {
-            isSecondaryTenant: false, // This will mean that we have to load both the tenant logo and PFP logo
-            tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
-            tenantLogoLink: 'https://www.plant-for-the-planet.org',
-            items: [
-              {
-                id: 1,
-                order: 1,
-                title: 'Donate/Gift',
-                onclick: '/',
-                visible: true,
-                key: 'donate',
-              },
-              {
-                id: 2,
-                order: 3,
-                title: 'Leaders',
-                onclick: '/',
-                visible: false,
-                key: 'leaderboard',
-              },
+    case 'planetbeta':
+      return {
+        tenantName: 'planetbeta',
+        tenantURL: 'beta.plant-for-the-planet.org',
+        tenantLogoURL: 'https://www.plant-for-the-planet.org',
+        font: {
+          primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
+          primaryFontURL:
+            `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+          secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
+          secondaryFontURL:
+            `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+        },
+        header: {
+          isSecondaryTenant: false,
+          tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
+          tenantLogoLink: 'https://www.plant-for-the-planet.org',
+          items: [
+            {
+              id: 1,
+              order: 1,
+              title: 'Donate/Gift',
+              onclick: '/',
+              visible: true,
+              key: 'donate',
+            },
+            {
+              id: 2,
+              order: 3,
+              title: 'Leaders',
+              onclick: '/',
+              visible: false,
+              key: 'leaderboard',
+            },
 
-              {
-                id: 4,
-                order: 4,
-                title: 'Me',
-                onclick: '/me',
-                visible: false,
-                key: 'me',
-              },
-            ],
+            {
+              id: 4,
+              order: 4,
+              title: 'Me',
+              onclick: '/me',
+              visible: false,
+              key: 'me',
+            },
+          ],
         },
       };
     default:
