@@ -12,13 +12,21 @@ const MapLayout = dynamic(() => import('./MapboxMap'), {
 
 interface Props {
   projects: any;
-  projectsContainer: any;
+  project: any;
+  fetchSingleProject: Function;
+  showSingleProject: any;
+  setShowSingleProject: Function;
 }
 
-function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
+function ProjectsList({
+  projects,
+  project,
+  fetchSingleProject,
+  showSingleProject,
+  setShowSingleProject,
+}: Props): ReactElement {
   const router = useRouter();
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
-  const [project, setProject] = React.useState(null);
+
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
   const screenWidth = window.innerWidth;
@@ -37,52 +45,7 @@ function ProjectsList({ projects, projectsContainer }: Props): ReactElement {
     showSingleProject,
     fetchSingleProject: fetchSingleProject,
     setSearchedProjects: setSearchedProjects,
-    projectsContainer,
   };
-
-  async function fetchSingleProject(id: any) {
-    let currencyCode;
-    if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('currencyCode')) {
-        currencyCode = localStorage.getItem('currencyCode');
-        // currencyCode = 'EUR';
-      } else {
-        currencyCode = 'USD';
-      }
-    }
-    const res = await fetch(
-      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
-      {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }
-    );
-
-    const newProject = res.status === 200 ? await res.json() : null;
-    setProject(newProject);
-  }
-
-  React.useEffect(() => {
-    if (router.query.p) {
-      fetchProject(router.query.p).then(() => {});
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (router.query.p === undefined) {
-      setShowSingleProject(false),
-        router.push('/', undefined, { shallow: true });
-    }
-  }, [router.query.p]);
-
-  React.useEffect(() => {
-    if (project !== null) {
-      setShowSingleProject(true);
-    }
-  }, [project]);
-
-  async function fetchProject(id: any) {
-    await fetchSingleProject(id);
-  }
 
   const [selectedId, setSelectedId] = React.useState(null);
 

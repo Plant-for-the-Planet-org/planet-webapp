@@ -365,7 +365,7 @@ export default function MapboxMap(props) {
                   : null}
                 &nbsp;&nbsp;
               </p>
-              <div onClick={goToPrevProject}>
+              <div onClick={goToNextProject}>
                 <RightIcon />
               </div>
             </div>

@@ -12,7 +12,6 @@ interface Props {
   fetchSingleProject: Function;
   setLayoutId: Function;
   setSearchedProjects: Function;
-  projectsContainer: any;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
