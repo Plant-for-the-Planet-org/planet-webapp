@@ -2,6 +2,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../src/features/common/Layout';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
+import Head from 'next/head';
+import tenantConfig from '../tenant.config';
+const config = tenantConfig();
 
 export default function Donate() {
   const router = useRouter();
@@ -87,6 +90,27 @@ export default function Donate() {
     await fetchSingleProject(id);
   }
   return (
-    <Layout>{projects ? <ProjectsList {...DonateProps} /> : <></>}</Layout>
+    <>
+      <Head>
+        <title>{config.meta.title}</title>
+        <meta property="og:site_name" content={config.meta.title} />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:url" content={config.tenantURL} />
+        <meta property="og:title" content={config.meta.title} />
+        <meta property="og:description" content={config.meta.description} />
+        <meta name="description" content={config.meta.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={config.meta.image} />
+        {config.tenantName === 'planet' ? (
+          <link rel="alternate" href="android-app://org.pftp/projects" />
+        ) : null}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={config.meta.title} />
+        <meta name="twitter:site" content="@pftp_int" />
+        <meta name="twitter:url" content={config.tenantURL} />
+        <meta name="twitter:description" content={config.meta.description} />
+      </Head>
+      <Layout>{projects ? <ProjectsList {...DonateProps} /> : <></>}</Layout>
+    </>
   );
 }

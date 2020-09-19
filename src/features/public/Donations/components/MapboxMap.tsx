@@ -15,7 +15,7 @@ import MapGL, {
 } from 'react-map-gl';
 import LeftIcon from '../../../../assets/images/icons/LeftIcon';
 import RightIcon from '../../../../assets/images/icons/RightIcon';
-import PopupProject from '../components/PopupProject';
+import PopupProject from './PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
 interface mapProps {
@@ -61,10 +61,6 @@ export default function MapboxMap(props: mapProps) {
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-
-  React.useEffect(() => {
-    mapRef.current.getMap().resize();
-  }, [window.width, window.height]);
 
   React.useEffect(() => {
     if (props.showSingleProject) {

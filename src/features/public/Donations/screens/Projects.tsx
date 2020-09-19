@@ -5,7 +5,7 @@ import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
 import styles from '../styles/Projects.module.scss';
 
-const MapLayout = dynamic(() => import('./MapboxMap'), {
+const MapLayout = dynamic(() => import('../components/MapboxMap'), {
   ssr: false,
   loading: () => <p />,
 });
