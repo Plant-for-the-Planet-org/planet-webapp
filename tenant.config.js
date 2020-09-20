@@ -129,7 +129,7 @@ export default function tenantConfig() {
             {
               id: 1,
               order: 1,
-              title: 'Donate/Gift',
+              title: 'Home',
               onclick: '/',
               visible: true,
               key: 'donate',
