@@ -8,7 +8,6 @@ const me: ILocaleObject = {
   redeem: 'Einlösen',
   myForest: 'Mein Wald',
   giftToGiftee: ({ gifteeName }: ILocaleParams) => `Geschenk an ${gifteeName}`,
-  description: 'My name is Norbert',
 };
 
 export default me;
