@@ -5,7 +5,7 @@ import PublicUserInfo from './components/PublicUserInfo';
 
 export default function PublicUserProfile({ publicUserprofile }: any) {
   return (
-    <div>
+    <>
       <LandingSection
         imageSrc={
           process.env.CDN_URL
@@ -18,6 +18,6 @@ export default function PublicUserProfile({ publicUserprofile }: any) {
       <ProjectsContainer
         projects={publicUserprofile.userProfile.plantProjects}
       />
-    </div>
+    </>
   );
 }

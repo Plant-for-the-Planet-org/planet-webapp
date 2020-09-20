@@ -13,8 +13,9 @@
 }
 
 html {
-  overflow: hidden;
+  overflow-y: scroll;
   background-color: #c8def4;
+  overscroll-behavior: none;
 }
 
 body {
@@ -30,4 +31,8 @@ body {
 
 .MuiInput-underline:after {
   border-bottom: 2px solid $primaryColor !important;
+}
+
+:focus{
+  outline: none !important;
 }

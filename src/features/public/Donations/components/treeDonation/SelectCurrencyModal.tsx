@@ -55,6 +55,7 @@ export default function TransitionsModal(props: any) {
 
     // adds the important country list to state
     setImportantList(impCountryList);
+    setSelectedModalValue(`${country},${currency}`);
   }, [currency]);
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
@@ -140,8 +141,9 @@ function MapCurrency(props: any) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country: any) => (
+        {sortedCountriesData.map((country: any, index: number) => (
           <FormControlLabel
+            key={country.countryCode + '-' + index}
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
             label={`${country.countryName} · ${country.currencyCode}`}

@@ -10,10 +10,11 @@ import countriesData from './countriesData.json';
  * @returns {Object} contains
  *  - {countryCode, countryName, currencyName, currencyCode, currencyCountryFlag}
  */
+// eslint-disable-next-line consistent-return
 export function getCountryDataBy(key, value) {
   // Finds required country data from the country data array and returns the
   // matched country result
-  for (let i = 0; i < countriesData.length; i++) {
+  for (let i = 0; i < countriesData.length; i += 1) {
     if (countriesData[i][key] === value) {
       return countriesData[i];
     }
@@ -27,10 +28,10 @@ export function getCountryDataBy(key, value) {
  */
 export function sortCountriesData(sortBy) {
   // returns a sorted array which is sorted by passed value
-  return countriesData.sort(function (a, b) {
+  return countriesData.sort((a, b) => {
     if (a[sortBy] > b[sortBy]) {
       return 1;
-    } else if (a[sortBy] < b[sortBy]) {
+    } if (a[sortBy] < b[sortBy]) {
       return -1;
     }
     return 0;

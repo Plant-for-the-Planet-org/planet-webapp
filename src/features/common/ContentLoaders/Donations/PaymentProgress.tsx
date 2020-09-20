@@ -1,6 +1,7 @@
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styles from './PaymentProgress.module.scss';
+
 export default function PaymentProgress(isPaymentProcessing: any) {
   return (
     <Backdrop className={styles.progressBackdrop} open={isPaymentProcessing}>

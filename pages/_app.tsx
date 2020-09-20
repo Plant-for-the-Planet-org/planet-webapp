@@ -26,11 +26,11 @@ export default function PlanetWeb({ Component, pageProps }: any) {
 
   React.useEffect(() => {
     async function loadConfig() {
-      const res = await fetch(
+      await fetch(
         `${process.env.API_ENDPOINT}/public/v1.2/en/config`,
         {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
-        }
+        },
       ).then(async (res) => {
         const config = await res.json();
         localStorage.setItem('config', JSON.stringify(config));

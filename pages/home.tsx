@@ -7,8 +7,8 @@ import {
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
 import Layout from '../src/features/common/Layout';
-import About from './../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from './../src/tenants/salesforce/LeaderBoard';
+import About from '../src/tenants/planet/About/About';
+import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
 
 export default function LeaderBoard() {
   const router = useRouter();
@@ -23,14 +23,14 @@ export default function LeaderBoard() {
   const [tenantScore, setTenantScore] = React.useState(null);
   React.useEffect(() => {
     async function loadTenantScore() {
-      const res = await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
+      await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
       }).then(async (res) => {
-        const tenantScore = res.status === 200 ? await res.json() : null;
+        const newTenantScore = res.status === 200 ? await res.json() : null;
         if (res.status !== 200) {
           router.push('/404', undefined, { shallow: true });
         }
-        setTenantScore(tenantScore);
+        setTenantScore(newTenantScore);
       });
     }
     loadTenantScore();
@@ -38,14 +38,14 @@ export default function LeaderBoard() {
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const res = await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
+      await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
       }).then(async (res) => {
-        const leaderboard = res.status === 200 ? await res.json() : null;
+        const newLeaderboard = res.status === 200 ? await res.json() : null;
         if (res.status !== 200) {
           router.push('/404', undefined, { shallow: true });
         }
-        setLeaderboard(leaderboard);
+        setLeaderboard(newLeaderboard);
       });
     }
     loadLeaderboard();
@@ -65,7 +65,7 @@ export default function LeaderBoard() {
       onRefresh={onRefresh}
       triggerHeight={isMobile ? 150 : 0}
       backgroundColor="white"
-      startInvisible={true}
+      startInvisible
     >
       <Layout>
         {process.env.TENANT === 'planet' ? (

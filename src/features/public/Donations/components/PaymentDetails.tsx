@@ -6,13 +6,12 @@ import {
   CardNumberElement,
   IbanElement,
   useElements,
-  useStripe,
+  useStripe
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
 import { getCardBrand } from '../../../../utils/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
@@ -83,6 +82,8 @@ function PaymentDetails({
   giftDetails,
   paymentType,
   setPaymentType,
+  country,
+  isTaxDeductible
 }: PaymentDetailsProps): ReactElement {
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
@@ -171,13 +172,6 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
-    let countryCode = getCountryDataBy(
-      'countryName',
-      contactDetails.country.toString()
-    )
-      ? getCountryDataBy('countryName', contactDetails.country.toString())
-          .countryCode
-      : null;
 
     let donorDetails = {
       firstname: contactDetails.firstName,
@@ -186,7 +180,7 @@ function PaymentDetails({
       address: contactDetails.address,
       zipCode: contactDetails.zipCode,
       city: contactDetails.city,
-      country: countryCode,
+      country: contactDetails.country,
       companyname: contactDetails.companyName,
     };
 
@@ -204,6 +198,7 @@ function PaymentDetails({
       window,
       paymentMethod,
       donorDetails,
+      taxDeductionCountry: isTaxDeductible ? country : null
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -211,53 +206,53 @@ function PaymentDetails({
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div
-          onClick={() => setDonationStep(2)}
-          className={styles.headerBackIcon}
-        >
-          <BackArrow />
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div
+            onClick={() => setDonationStep(2)}
+            className={styles.headerBackIcon}
+          >
+            <BackArrow />
+          </div>
+          <div className={styles.headerTitle}>Payment Details</div>
         </div>
-        <div className={styles.headerTitle}>Payment Details</div>
-      </div>
-      {paymentError && (
-        <div className={styles.paymentError}>{paymentError}</div>
-      )}
+        {paymentError && (
+          <div className={styles.paymentError}>{paymentError}</div>
+        )}
 
-      {
-        <div className={styles.paymentModeContainer}>
-          <div className={styles.paymentModeHeader}>
-            {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
+        {
+          <div className={styles.paymentModeContainer}>
+            <div className={styles.paymentModeHeader}>
+              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
 
-            <div className={styles.paymentModeTitle}>Credit/Debit Card</div>
-            {/* <div className={styles.paymentModeFee}>
+              <div className={styles.paymentModeTitle}>Credit/Debit Card</div>
+              {/* <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
             <InfoIcon />
           </div> */}
-          </div>
+            </div>
 
-          <div className={styles.formRow}>
-            <FormControlNew variant="outlined">
-              <CardNumberElement
-                id="cardNumber"
-                options={getInputOptions('Card Number')}
-              />
-            </FormControlNew>
-          </div>
-          <div className={styles.formRow}>
-            <FormControlNew variant="outlined">
-              <CardExpiryElement
-                id="expiry"
-                options={getInputOptions('Exp. Date (MM/YY)')}
-              />
-            </FormControlNew>
-            <div style={{ width: '20px' }}></div>
-            <FormControlNew variant="outlined">
-              <CardCvcElement id="cvc" options={getInputOptions('CVV')} />
-            </FormControlNew>
-          </div>
-          {/* <div className={styles.saveCard}>
+            <div className={styles.formRow}>
+              <FormControlNew variant="outlined">
+                <CardNumberElement
+                  id="cardNumber"
+                  options={getInputOptions('Card Number')}
+                />
+              </FormControlNew>
+            </div>
+            <div className={styles.formRow}>
+              <FormControlNew variant="outlined">
+                <CardExpiryElement
+                  id="expiry"
+                  options={getInputOptions('Exp. Date (MM/YY)')}
+                />
+              </FormControlNew>
+              <div style={{ width: '20px' }}></div>
+              <FormControlNew variant="outlined">
+                <CardCvcElement id="cvc" options={getInputOptions('CVV')} />
+              </FormControlNew>
+            </div>
+            {/* <div className={styles.saveCard}>
           <div className={styles.saveCardText}>
             Save card for future Donations
           </div>
@@ -268,10 +263,10 @@ function PaymentDetails({
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
         </div> */}
-        </div>
-      }
+          </div>
+        }
 
-      {/* <div className={styles.paymentModeContainer}>
+        {/* <div className={styles.paymentModeContainer}>
           <div className={styles.paymentModeHeader}>
             <PaypalButton />
             <PaypalIcon />
@@ -283,7 +278,7 @@ function PaymentDetails({
           </div>
         </div> */}
 
-      {/* <div className={styles.paymentModeContainer}>
+        {/* <div className={styles.paymentModeContainer}>
         <div onClick={() => {
           setIsSepa(!isSepa), setPaymentType('SEPA')
         }} className={styles.paymentModeHeader}>
@@ -314,30 +309,30 @@ function PaymentDetails({
         </div>)}
       </div> */}
 
-      <div className={styles.horizontalLine} />
-      <div className={styles.finalTreeCount}>
-        <div className={styles.totalCost}>
-          {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+        <div className={styles.horizontalLine} />
+        <div className={styles.finalTreeCount}>
+          <div className={styles.totalCost}>
+            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+          </div>
+          <div className={styles.totalCostText}>
+            for {Sugar.Number.format(Number(treeCount))} Trees
         </div>
-        <div className={styles.totalCostText}>
-          for {Sugar.Number.format(Number(treeCount))} Trees
         </div>
+        {showContinue ? (
+          <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
+            <AnimatedButton className={styles.continueButton}>
+              Donate
+          </AnimatedButton>
+          </div>
+        ) : (
+            <div className={styles.actionButtonsContainer}>
+              <AnimatedButton disabled className={styles.continueButtonDisabled}>
+                Donate
+          </AnimatedButton>
+            </div>
+          )}
       </div>
-      {showContinue ? (
-        <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-          <AnimatedButton className={styles.continueButton}>
-            Donate
-          </AnimatedButton>
-        </div>
-      ) : (
-        <div className={styles.actionButtonsContainer}>
-          <AnimatedButton disabled className={styles.continueButtonDisabled}>
-            Donate
-          </AnimatedButton>
-        </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default PaymentDetails;
