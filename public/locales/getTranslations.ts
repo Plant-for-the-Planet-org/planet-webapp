@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import de_me from './de/me.json';
-import me from './en/me.json';
-import es_me from './es/me.json';
+import de from './de';
+import en from './en';
+import es from './es';
 
 let language = 'en';
 let localLanguage;
@@ -12,20 +12,15 @@ if (localLanguage) {
   language = localLanguage;
 }
 
-export function getMe() {
+export default function getTranslation() {
   switch (language) {
-    case 'de': return de_me;
-    case 'es': return es_me;
-    case 'en': return me;
-    default: return me;
-  }
-}
-
-export function getHome() {
-  switch (language) {
-    case 'de': return de_me;
-    case 'es': return es_me;
-    case 'en': return me;
-    default: return me;
+    case 'de':
+      return de;
+    case 'es':
+      return es;
+    case 'en':
+      return en;
+    default:
+      return en;
   }
 }

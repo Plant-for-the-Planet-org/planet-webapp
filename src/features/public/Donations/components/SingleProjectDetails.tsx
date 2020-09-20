@@ -7,6 +7,7 @@ import LazyLoad from 'react-lazyload';
 import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import Sugar from 'sugar';
+import getTranslation from '../../../../../public/locales/getTranslations';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import BlackTree from '../../../../assets/images/icons/project/BlackTree';
 import Email from '../../../../assets/images/icons/project/Email';
@@ -34,6 +35,7 @@ function SingleProjectDetails({
   project,
   setShowSingleProject,
 }: Props): ReactElement {
+  const t = getTranslation();
   const router = useRouter();
 
   const screenWidth = window.innerWidth;
@@ -56,7 +58,7 @@ function SingleProjectDetails({
     {
       id: 1,
       icon: <BlackTree color={styles.highlightBackground} />,
-      text: 'View Profile',
+      text: t.viewProfile,
       link: project.tpo.slug,
     },
     {
@@ -152,16 +154,16 @@ function SingleProjectDetails({
                 </div>
               </LazyLoad>
             ) : (
-                <div
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    setShowSingleProject(false),
-                      router.push('/', undefined, { shallow: true });
-                  }}
-                >
-                  <BackButton />
-                </div>
-              )}
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  setShowSingleProject(false),
+                    router.push('/', undefined, { shallow: true });
+                }}
+              >
+                <BackButton />
+              </div>
+            )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -185,8 +187,8 @@ function SingleProjectDetails({
               <div className={styles.projectData}>
                 <div className={styles.targetLocation}>
                   <div className={styles.target}>
-                    {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted
-                    •{' '}
+                    {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
+                    {t.planted}•{' '}
                     <span style={{ fontWeight: 400 }}>
                       {
                         getCountryDataBy('countryCode', project.country)
@@ -199,7 +201,7 @@ function SingleProjectDetails({
                   </div> */}
                 </div>
                 <div className={styles.projectTPOName}>
-                  By {project.tpo.name}
+                  {t.by} {project.tpo.name}
                 </div>
               </div>
 
@@ -209,13 +211,13 @@ function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                      ? '€'
+                      : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
                   </div>
-                  <div className={styles.perTree}>per tree</div>
+                  <div className={styles.perTree}>{t.perTree}</div>
                 </div>
               )}
             </div>
@@ -237,7 +239,7 @@ function SingleProjectDetails({
                 min={300}
                 ideal={350}
                 max={400}
-                readMoreText="Read more"
+                readMoreText={t.readMore}
                 text={project.description}
               />
             </div>

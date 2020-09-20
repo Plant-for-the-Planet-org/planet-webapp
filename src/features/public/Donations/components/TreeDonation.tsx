@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
+import getTranslation from '../../../../../public/locales/getTranslations';
 import DownArrow from '../../../../assets/images/icons/DownArrow';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
@@ -37,10 +38,11 @@ function TreeDonation({
   setPaymentType,
   isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
+  const t = getTranslation();
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
-    false,
+    false
   );
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -116,20 +118,23 @@ function TreeDonation({
         style={{ alignSelf: isGift ? 'start' : 'center' }}
       >
         <div className={styles.header}>
-          <div onClick={onClose} onKeyPress={onClose} role="button" tabIndex={0} className={styles.headerCloseIcon}>
+          <div
+            onClick={onClose}
+            onKeyPress={onClose}
+            role="button"
+            tabIndex={0}
+            className={styles.headerCloseIcon}
+          >
             <Close color={styles.primaryFontColor} />
           </div>
-          <div className={styles.headerTitle}>Tree Donation</div>
+          <div className={styles.headerTitle}>{t.treeDonation}</div>
         </div>
 
         <div className={styles.plantProjectName}>
-          To
-          {' '}
-          {project.name}
-          {' '}
-          by
-          {' '}
-          {project.tpo.name}
+          {t.toProjectByOrganization({
+            projectName: project.name,
+            organizationName: project.tpo.name,
+          })}
         </div>
 
         <div
@@ -144,15 +149,13 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-            {Number(treeCost).toFixed(2)}
-            {' '}
-            per tree
+            {Number(treeCost).toFixed(2)} {t.perTree}
           </div>
         </div>
 
         <div className={styles.isGiftDonation}>
           <div className={styles.isGiftDonationText}>
-            My donation is a gift to someone
+            {t.myDonationGiftToSomeone}
           </div>
           <ToggleSwitch
             checked={isGift}
@@ -177,27 +180,28 @@ function TreeDonation({
               whileTap={{ scale: 0.98 }}
               onClick={() => {
                 // eslint-disable-next-line no-unused-expressions
-                setTreeCount(option); setIsCustomTrees(false);
+                setTreeCount(option);
+                setIsCustomTrees(false);
               }}
               key={option}
               className={
-                  treeCount === option && !isCustomTrees
-                    ? styles.treeCountOptionSelected
-                    : styles.treeCountOption
-                }
+                treeCount === option && !isCustomTrees
+                  ? styles.treeCountOptionSelected
+                  : styles.treeCountOption
+              }
             >
               <div className={styles.treeCountOptionTrees}>{option}</div>
-              <div className={styles.treeCountOptionTrees}>Trees</div>
+              <div className={styles.treeCountOptionTrees}>{t.trees}</div>
             </motion.div>
           ))}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
             className={
-                isCustomTrees
-                  ? styles.treeCountOptionSelected
-                  : styles.treeCountOption
-              }
+              isCustomTrees
+                ? styles.treeCountOptionSelected
+                : styles.treeCountOption
+            }
             style={{ minWidth: '65%', flexDirection: 'row' }}
             onClick={() => setIsCustomTrees(true)}
           >
@@ -215,7 +219,7 @@ function TreeDonation({
               type="text"
               onChange={(e) => setCustomTreeValue(e)}
             />
-            <div className={styles.treeCountOptionTrees}>Trees</div>
+            <div className={styles.treeCountOptionTrees}>{t.trees}</div>
           </motion.div>
         </div>
 
@@ -223,8 +227,8 @@ function TreeDonation({
           <div className={styles.isTaxDeductible}>
             <div className={styles.isTaxDeductibleText}>
               {project.taxDeductionCountries.includes(country)
-                ? 'You will receive a tax deduction receipt for '
-                : 'Tax deduction is not yet available for '}
+                ? t.youWillReceiveTaxDeduction
+                : t.taxDeductionNotAvailable}
             </div>
             <div
               className={styles.taxDeductible}
@@ -240,7 +244,10 @@ function TreeDonation({
                 <DownArrow color="#87B738" />
               </div>
             </div>
-            <div className={styles.isTaxDeductibleText} style={{ marginLeft: '4px' }}>
+            <div
+              className={styles.isTaxDeductibleText}
+              style={{ marginLeft: '4px' }}
+            >
               {project.taxDeductionCountries.includes(country)
                 ? ' in time for tax returns.'
                 : null}
@@ -249,7 +256,7 @@ function TreeDonation({
         ) : (
           <div className={styles.isTaxDeductible}>
             <div className={styles.isTaxDeductibleText}>
-              Tax deduction is not yet available for this project
+              {t.taxDeductionYetNotAvailable}
             </div>
           </div>
         )}
@@ -257,47 +264,45 @@ function TreeDonation({
         <div className={styles.horizontalLine} />
 
         {paymentError && (
-        <div className={styles.paymentError}>{paymentError}</div>
+          <div className={styles.paymentError}>{paymentError}</div>
         )}
-        {paymentSetup?.gateways?.stripe?.isLive === false
-          ? <div className={styles.paymentError}>Test Mode: Your donations will not be charged</div>
-          : null}
+        {paymentSetup?.gateways?.stripe?.isLive === false ? (
+          <div className={styles.paymentError}>
+            Test Mode: Your donations will not be charged
+          </div>
+        ) : null}
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency}
-            {' '}
-            {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
             {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
           </div>
           <div className={styles.totalCostText}>
-            for
-            {' '}
-            {Sugar.Number.format(Number(treeCount))}
-            {' '}
-            Trees
+            {t.fortreeCountTrees({
+              treeCount: Sugar.Number.format(Number(treeCount)),
+            })}
           </div>
         </div>
 
-        {!isPaymentOptionsLoading
-            && paymentSetup?.gateways?.stripe?.account
-            && currency ? (
-              <PaymentRequestCustomButton
-                country={country}
-                currency={currency}
-                amount={formatAmountForStripe(
-                  treeCost * treeCount,
-                  currency.toLowerCase(),
-                )}
-                onPaymentFunction={onPaymentFunction}
-                continueNext={continueNext}
-              />
-          ) : (
-            <div className={styles.actionButtonsContainer}>
-              <ButtonLoader />
-              <ButtonLoader />
-            </div>
-          )}
+        {!isPaymentOptionsLoading &&
+        paymentSetup?.gateways?.stripe?.account &&
+        currency ? (
+          <PaymentRequestCustomButton
+            country={country}
+            currency={currency}
+            amount={formatAmountForStripe(
+              treeCost * treeCount,
+              currency.toLowerCase()
+            )}
+            onPaymentFunction={onPaymentFunction}
+            continueNext={continueNext}
+          />
+        ) : (
+          <div className={styles.actionButtonsContainer}>
+            <ButtonLoader />
+            <ButtonLoader />
+          </div>
+        )}
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}

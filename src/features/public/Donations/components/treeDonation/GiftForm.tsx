@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
+import getTranslation from '../../../../../../public/locales/getTranslations';
 import MaterialTextFeild from './../../../../common/InputTypes/MaterialTextFeild';
 import styles from './../../styles/TreeDonation.module.scss';
 
@@ -14,6 +15,7 @@ export default function GiftForm({
   giftDetails,
   isGift,
 }: Props): ReactElement {
+  const t = getTranslation();
   const { register, handleSubmit, errors } = useForm();
   const changeGiftDetails = (e: any) => {
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
@@ -21,19 +23,19 @@ export default function GiftForm({
   return (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
-        <div className={styles.singleGiftTitle}>Gift Recepient</div>
+        <div className={styles.singleGiftTitle}>{t.giftRecipient}</div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
             <MaterialTextFeild
               name={'recipientName'}
               onChange={changeGiftDetails}
-              label="Recipient Name"
+              label={t.recipientName}
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
             />
             {errors.recipientName && (
               <span className={styles.formErrors}>
-                Recipient Name field is required
+                {t.recipientNameRequired}
               </span>
             )}
           </div>
@@ -43,12 +45,12 @@ export default function GiftForm({
             <MaterialTextFeild
               name={'email'}
               onChange={changeGiftDetails}
-              label="Email"
+              label={t.email}
               variant="outlined"
               inputRef={isGift ? register({ required: true }) : register({})}
             />
             {errors.email && (
-              <span className={styles.formErrors}>Email field is required</span>
+              <span className={styles.formErrors}>{t.emailRequired}</span>
             )}
           </div>
         </div>
@@ -56,7 +58,7 @@ export default function GiftForm({
           <MaterialTextFeild
             multiline
             rowsMax="4"
-            label="Gift Message"
+            label={t.giftMessage}
             variant="outlined"
             name={'giftMessage'}
             onChange={changeGiftDetails}

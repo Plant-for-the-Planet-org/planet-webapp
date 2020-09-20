@@ -2,6 +2,7 @@ import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
+import getTranslation from '../../../../../public/locales/getTranslations';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
@@ -27,6 +28,7 @@ export default function PopupProject({
   setShowSingleProject,
 }: Props): ReactElement {
   const { theme } = React.useContext(ThemeContext);
+  const t = getTranslation();
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -84,7 +86,7 @@ export default function PopupProject({
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •{' '}
+              {t.planted} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {
                   getCountryDataBy('countryCode', project.properties.country)
@@ -94,7 +96,7 @@ export default function PopupProject({
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpo.name}
+            {t.by} {project.properties.tpo.name}
           </div>
         </div>
         {project.properties.allowDonations && (
@@ -111,7 +113,7 @@ export default function PopupProject({
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}
                 </div>
-                <div className={styles.perTree}>per tree</div>
+                <div className={styles.perTree}>{t.perTree}</div>
               </>
             ) : null}
           </div>

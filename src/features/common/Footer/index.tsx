@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import getTranslation from '../../../../public/locales/getTranslations';
 import AppleIcon from '../../../assets/images/footer/AppStore';
 import GooglePlayIcon from '../../../assets/images/footer/GooglePlay';
 import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
@@ -9,6 +10,7 @@ import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
+  const t = getTranslation();
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState('en');
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
@@ -25,22 +27,22 @@ export default function Footer() {
   const FooterLinks = [
     {
       id: 1,
-      title: 'Privacy & Terms',
+      title: t.privacyAndTerms,
       link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
     },
     {
       id: 2,
-      title: 'Imprint',
+      title: t.imprint,
       link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
     },
     {
       id: 3,
-      title: 'Contact',
+      title: t.contact,
       link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
     },
     {
       id: 6,
-      title: 'Support Us',
+      title: t.supportUs,
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
   ];

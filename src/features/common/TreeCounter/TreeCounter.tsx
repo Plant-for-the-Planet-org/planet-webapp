@@ -4,20 +4,23 @@ import CircularProgress, {
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import Sugar from 'sugar';
+import getTranslation from '../../../../public/locales/getTranslations';
 import treeCounterStyles from './TreeCounter.module.scss';
 
-const useStylesFacebook = makeStyles(() => createStyles({
-  root: {
-    position: 'relative',
-  },
-  top: {
-    color: '#fff',
-    animationDuration: '550ms',
-  },
-  circle: {
-    strokeLinecap: 'round',
-  },
-}));
+const useStylesFacebook = makeStyles(() =>
+  createStyles({
+    root: {
+      position: 'relative',
+    },
+    top: {
+      color: '#fff',
+      animationDuration: '550ms',
+    },
+    circle: {
+      strokeLinecap: 'round',
+    },
+  })
+);
 
 function FacebookCircularProgress(props: CircularProgressProps) {
   const classes = useStylesFacebook();
@@ -40,6 +43,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
 }
 
 export default function TpoProfile(props: any) {
+  const t = getTranslation();
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
@@ -53,7 +57,9 @@ export default function TpoProfile(props: any) {
       percentage = 100;
     }
     const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= percentage ? percentage : prevProgress + 5));
+      setProgress((prevProgress) =>
+        prevProgress >= percentage ? percentage : prevProgress + 5
+      );
     }, 100);
 
     return () => {
@@ -67,11 +73,11 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
-          <h2>Trees Planted</h2>
+          <h2>{t.treesPlanted}</h2>
         </div>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
-          <h2>Target</h2>
+          <h2>{t.target}</h2>
         </div>
       </div>
     </div>

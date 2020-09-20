@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { getMe } from '../public/locales/getTranslations';
+import getTranslations from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
 
@@ -10,7 +10,7 @@ export default function UserProfile() {
     userprofile,
   };
 
-  const texts = getMe();
+  const texts = getTranslations();
   // dummy data
   const dummyProfile = {
     countTarget: 200,
@@ -78,10 +78,6 @@ export default function UserProfile() {
 
   return (
     <Layout>
-      <h2 style={{ marginTop: '80px' }}>
-        description:
-        {texts.description}
-      </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
         {...UserProps}

@@ -2,6 +2,7 @@ import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
+import getTranslation from '../../../../../public/locales/getTranslations';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
@@ -22,6 +23,7 @@ export default function ProjectSnippet({
   setShowSingleProject,
   fetchProject,
 }: Props): ReactElement {
+  const t = getTranslation();
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -64,15 +66,15 @@ export default function ProjectSnippet({
 
       <div onClick={handleOpenProject} className={styles.projectImage}>
         {project.properties.image &&
-          typeof project.properties.image !== 'undefined' ? (
-            <div
-              className={styles.projectImageFile}
-              style={{
-                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                backgroundPosition: 'center',
-              }}
-            ></div>
-          ) : null}
+        typeof project.properties.image !== 'undefined' ? (
+          <div
+            className={styles.projectImageFile}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ) : null}
 
         <div className={styles.projectImageBlock}>
           {/* <div className={styles.projectType}>
@@ -96,7 +98,7 @@ export default function ProjectSnippet({
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •{' '}
+              {t.planted} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {
                   getCountryDataBy('countryCode', project.properties.country)
@@ -106,7 +108,7 @@ export default function ProjectSnippet({
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpo.name}
+            {t.by} {project.properties.tpo.name}
           </div>
         </div>
 
@@ -118,13 +120,13 @@ export default function ProjectSnippet({
                   {project.properties.currency === 'USD'
                     ? '$'
                     : project.properties.currency === 'EUR'
-                      ? '€'
-                      : project.properties.currency}
+                    ? '€'
+                    : project.properties.currency}
                   {project.properties.treeCost % 1 !== 0
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}
                 </div>
-                <div className={styles.perTree}>per tree</div>
+                <div className={styles.perTree}>{t.perTree}</div>
               </>
             ) : null}
           </div>

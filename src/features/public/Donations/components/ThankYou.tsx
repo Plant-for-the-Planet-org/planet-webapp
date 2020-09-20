@@ -2,6 +2,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
+import getTranslation from '../../../../../public/locales/getTranslations';
 import tenantConfig from '../../../../../tenant.config';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
@@ -22,6 +23,7 @@ function ThankYou({
 }: ThankYouProps): ReactElement {
   const config = tenantConfig();
   const imageRef = React.createRef();
+  const t = getTranslation();
 
   let paymentTypeUsed = getPaymentType(paymentType);
 
@@ -56,7 +58,7 @@ function ThankYou({
         <div onClick={onClose} className={styles.headerCloseIcon}>
           <Close />
         </div>
-        <div className={styles.headerTitle}>Thank You!</div>
+        <div className={styles.headerTitle}>{t.thankYou}!</div>
       </div>
 
       <div className={styles.contributionMessage}>
@@ -79,20 +81,20 @@ function ThankYou({
 
       {/* <div className={styles.horizontalLine} /> */}
 
-          {/* hidden div for image download */}
-      {(
-        <div style={{width:'0px', height:'0px', overflow:'hidden'}}>
-        <div className={styles.tempThankYouImage} ref={imageRef}>
-          <p className={styles.tempDonationCount}>
-            My {Sugar.Number.format(Number(treeCount))} trees are being planted
-            in {project.location}
-          </p>
-          <p className={styles.tempDonationTenant}>
-            Plant trees at {config.tenantURL}
-          </p>
+      {/* hidden div for image download */}
+      {
+        <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
+          <div className={styles.tempThankYouImage} ref={imageRef}>
+            <p className={styles.tempDonationCount}>
+              My {Sugar.Number.format(Number(treeCount))} trees are being
+              planted in {project.location}
+            </p>
+            <p className={styles.tempDonationTenant}>
+              Plant trees at {config.tenantURL}
+            </p>
+          </div>
         </div>
-        </div>
-      )}
+      }
 
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage}>

@@ -5,8 +5,10 @@ import Layout from '../../../common/Layout';
 import MyForestItem from '../components/MyForestItem';
 import LazyLoad from 'react-lazyload';
 import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
+import getTranslation from '../../../../../public/locales/getTranslations';
 
 export default function MyForestContainer({ userprofile }: any) {
+  const t = getTranslation();
   const [viewport, setViewPort] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -22,11 +24,10 @@ export default function MyForestContainer({ userprofile }: any) {
   return (
     // the text and two boxes
     <div className={styles.outerMyForestContainer}>
-      <h6 className={styles.myForestTitleText }> MY FOREST </h6>
+      <h6 className={styles.myForestTitleText}> {t.myForest} </h6>
 
       {/* the two boxes */}
       <div className={styles.innerMyForestContainer}>
-
         {/* map */}
         <div className={styles.mapSection}>
           <MapGL
@@ -42,7 +43,6 @@ export default function MyForestContainer({ userprofile }: any) {
         <div className={styles.forestListSection}>
           <LazyLoad>{userForests}</LazyLoad>
         </div>
-
       </div>
     </div>
   );

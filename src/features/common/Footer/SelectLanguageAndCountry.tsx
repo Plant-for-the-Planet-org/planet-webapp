@@ -5,10 +5,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Modal from '@material-ui/core/Modal';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import React, { useEffect, useState } from 'react';
+import getTranslation from '../../../../public/locales/getTranslations';
 import countriesData from '../../../utils/countriesData.json';
 import {
   getCountryDataBy,
-  sortCountriesData
+  sortCountriesData,
 } from '../../../utils/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
 import { ThemeContext } from '../../../utils/themeContext';
@@ -25,6 +26,7 @@ export default function TransitionsModal(props) {
     selectedCountry,
     setSelectedCountry,
   } = props;
+  const t = getTranslation();
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
@@ -94,13 +96,13 @@ export default function TransitionsModal(props) {
         <Fade in={openModal}>
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>Select a Language</p>
+              <p className={styles.sectionHead}>{t.selectLanguage}</p>
               {/* maps the radio button for languages */}
               <MapLanguage
                 value={modalLanguage}
                 handleChange={handleLanguageChange}
               />
-              <p className={styles.sectionHead}>Select your Country</p>
+              <p className={styles.sectionHead}>{t.selectCountry}</p>
               {/* maps the radio button for countries */}
               <MapCountry
                 sortedCountriesData={sortedCountriesData}
@@ -112,11 +114,11 @@ export default function TransitionsModal(props) {
             <div className={styles.buttonContainer}>
               <div className={styles.button} onClick={handleModalClose}>
                 <div></div>
-                <p>Cancel</p>
+                <p>{t.cancel}</p>
               </div>
               <div className={styles.button} onClick={handleOKClick}>
                 <div></div>
-                <p>OK</p>
+                <p>{t.ok}</p>
               </div>
             </div>
           </div>

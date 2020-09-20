@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import getTranslation from '../../../../../../public/locales/getTranslations';
 import countriesData from '../../../../../utils/countriesData.json';
 import {
   getCountryDataBy,
@@ -24,6 +25,8 @@ export default function TransitionsModal(props: any) {
     currency,
     country,
   } = props;
+
+  const t = getTranslation();
 
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
   //   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
@@ -88,7 +91,7 @@ export default function TransitionsModal(props: any) {
         <Fade in={openModal}>
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>Select your Currency</p>
+              <p className={styles.sectionHead}>{t.selectCurrency}</p>
               {/* maps the radio button for currency */}
               <MapCurrency
                 sortedCountriesData={importantList}
@@ -109,11 +112,11 @@ export default function TransitionsModal(props: any) {
             <div className={styles.buttonContainer}>
               <div className={styles.button} onClick={handleModalClose}>
                 <div></div>
-                <p>Cancel</p>
+                <p>{t.cancel}</p>
               </div>
               <div className={styles.button} onClick={handleOKClick}>
                 <div></div>
-                <p>OK</p>
+                <p>{t.ok}</p>
               </div>
             </div>
           </div>

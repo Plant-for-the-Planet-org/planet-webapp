@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
+import getTranslation from '../../../../../../public/locales/getTranslations';
 import styles from './../../styles/ProjectDetails.module.scss';
 
 interface Props {
@@ -12,9 +13,10 @@ interface Props {
 }
 
 function ProjectContactDetails({ contactDetails }: Props): ReactElement {
+  const t = getTranslation();
   return (
     <div className={styles.projectMoreInfo}>
-      <div className={styles.infoTitle}>Contact Details</div>
+      <div className={styles.infoTitle}>{t.contactDetails}</div>
       {/* contactDetails tpo profile page link */}
       <div key={contactDetails[0].id}>
         <Link
