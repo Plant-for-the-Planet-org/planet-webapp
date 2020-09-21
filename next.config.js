@@ -15,6 +15,7 @@ module.exports = {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
+    SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
   },
