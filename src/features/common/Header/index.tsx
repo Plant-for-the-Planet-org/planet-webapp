@@ -19,8 +19,8 @@ export default function Layout() {
       />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="application-name" content="Plant-for-the-Planet" />
-      <meta name="apple-mobile-web-app-title" content="Plant-for-the-Planet" />
+      <meta name="application-name" content={config.meta.title} />
+      <meta name="apple-mobile-web-app-title" content={config.meta.title} />
       <meta name="apple-mobile-web-app-title" content={config.meta.title} />
       {/* <!-- New in iOS6  alt, --> */}
       <meta name="apple-mobile-web-app-capable" content="yes" />
