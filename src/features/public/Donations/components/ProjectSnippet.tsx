@@ -3,27 +3,20 @@ import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { getImageUrl } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
 import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
+import { useRouter } from 'next/router';
 
 interface Props {
   project: any;
   key: number;
-  setShowSingleProject: Function;
-  fetchProject: Function;
-  setLayoutId: Function;
 }
 
-export default function ProjectSnippet({
-  project,
-  key,
-  setShowSingleProject,
-  fetchProject,
-  setLayoutId,
-}: Props): ReactElement {
+export default function ProjectSnippet({ project, key }: Props): ReactElement {
+  const router = useRouter();
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -44,11 +37,6 @@ export default function ProjectSnippet({
     setOpen(true);
   };
 
-  const handleOpenProject = async () => {
-    await fetchProject();
-    setShowSingleProject(true);
-    setLayoutId(projectDetails.id);
-  };
   const projectDetails = project.properties;
   return (
     <div className={styles.singleProject} key={key}>
@@ -65,7 +53,14 @@ export default function ProjectSnippet({
         </Elements>
       </Modal>
 
-      <div onClick={handleOpenProject} className={styles.projectImage}>
+      <div
+        onClick={() => {
+          router.push(`/?p=${project.properties.slug}`, undefined, {
+            shallow: true,
+          });
+        }}
+        className={styles.projectImage}
+      >
         {project.properties.image &&
         typeof project.properties.image !== 'undefined' ? (
           <div

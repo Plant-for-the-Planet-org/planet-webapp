@@ -1,26 +1,19 @@
 import { Col, Row } from 'react-bootstrap';
-import styles from './../LeaderBoard.module.scss';
+import styles from './../styles/LearnMore.module.scss';
 
 export default function LearnMore() {
   return (
     <Row className={styles.learnMoreSectionRow}>
       <Col xs={12} md={6} className={styles.learnMoreSection}></Col>
       <Col xs={12} md={6} className={styles.learnMoreSectionText}>
-        <h2 className={styles.learnMoreSectionTextHeader}>Getting to work.</h2>
+        <h2 className={styles.learnMoreSectionTextHeader}>It's bigger than trees.</h2>
         <p className={styles.learnMoreSectionTextPara}>
-          Reaching our goal means tapping into the full power of Salesforce,
-          including our technology, capital, and influence. It also means
-          refining our programs and methodology over time by sharing with and
-          learning from others. That’s why we partnered with Plant for the
-          Planet to share progress towards our goal and feature tree projects
-          that we support directly.
+        We’re committed to doing everything we can to step up to the urgent challenge of climate change and creating a sustainable, low-carbon future for all. That means reducing emissions, as well as protecting and improving carbon sinks like forests. 
+        <br />
           <br />
-          <br />
-          Our methodology for selecting projects continues to evolve, but we
-          know every project must be done in a socially and ecologically
-          responsible way. That means growing the right tree, in the right
-          place, by the right people, for the right reasons, to drive
-          long-lasting impact and work towards systems change.
+Forests, which are critical to the health of our planet, covered about half the earth before the agricultural revolution began. In the 8,000 years since, while we’ve managed to feed and house billions of people, we’ve also lost or degraded half of those forests, fueling a biodiversity collapse and the climate crisis. It’s time we stop taking from our natural ecosystems, and start giving back. 
+         
+          
         </p>
       </Col>
     </Row>

@@ -8,6 +8,7 @@ import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';
 import { getPaymentType } from './treeDonation/PaymentFunctions';
+import { getCountryDataBy } from '../../../../utils/countryUtils';
 
 function ThankYou({
   project,
@@ -69,7 +70,8 @@ function ThankYou({
         {isGift &&
           `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
         Your {Sugar.Number.format(Number(treeCount))} trees will be planted by{' '}
-        {project.name} in {project.location}.
+        {project.name} in {getCountryDataBy('countryCode', project.country)
+          .countryName}.
       </div>
 
       <div className={styles.contributionMessage}>
@@ -79,11 +81,28 @@ function ThankYou({
 
       {/* <div className={styles.horizontalLine} /> */}
 
+          {/* hidden div for image download */}
+      {(
+        <div style={{width:'0px', height:'0px', overflow:'hidden'}}>
+        <div className={styles.tempThankYouImage} ref={imageRef}>
+          <p className={styles.tempDonationCount}>
+            My {Sugar.Number.format(Number(treeCount))} trees are being planted
+            in {getCountryDataBy('countryCode', project.country)
+              .countryName}
+          </p>
+          <p className={styles.tempDonationTenant}>
+            Plant trees at {config.tenantURL}
+          </p>
+        </div>
+        </div>
+      )}
+
       <div className={styles.thankyouImageContainer}>
-        <div className={styles.thankyouImage} ref={imageRef}>
+        <div className={styles.thankyouImage}>
           <div className={styles.donationCount}>
             My {Sugar.Number.format(Number(treeCount))} trees are being planted
-            in {project.location}
+            in {getCountryDataBy('countryCode', project.country)
+              .countryName}
             <p className={styles.donationTenant}>
               Plant trees at {config.tenantURL}
             </p>

@@ -74,6 +74,42 @@
   justify-content: center;
 }
 
+.tempThankYouImage {
+  background-image: url('/tenants/planet/images/donations/donationComplete.jpg');
+  background-position: center;
+  background-size: cover;
+  width: 2300px;
+  height: 2300px;
+  align-self: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+
+.tempDonationCount{
+  font-size: 130px;
+  font-weight: 600;
+  text-align: center;
+  position: absolute;
+  bottom: 300px;
+  padding: 0px 80px;
+  color: $light;
+  font-variant-ligatures: none;
+}
+
+
+.tempDonationTenant{
+  font-size: 75px;
+  font-weight: 400;
+  font-style: italic;
+  text-align: center;
+  position: absolute;
+  bottom: 60px;
+  color: $light;
+  font-variant-ligatures: none;
+}
+
 .donationCount {
   font-size: 22px;
   font-weight: 600;
@@ -125,10 +161,7 @@
   padding: 4px 4px;
   // background-color: blue;
   border-radius: 30px;
-  margin: 0px 2px;
-  border-color: $blueishGrey;
-  border-width: 1px;
-  border-style: solid;
+  margin: 0px 5px;
 }
 
 .buttonsContainer {
@@ -173,5 +206,5 @@
 }
 
 :export {
-  blueishGrey: $blueishGrey;
+  blueishGrey: '#f2f2f7';
 }

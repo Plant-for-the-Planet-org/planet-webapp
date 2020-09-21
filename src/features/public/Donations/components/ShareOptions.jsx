@@ -17,7 +17,7 @@ const config = tenantConfig();
 const titleToShare = 'Planting trees against the climate crisis!';
 const urlToShare = config.tenantURL;
 const linkToShare = config.tenantURL;
-const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
+const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out ${linkToShare} if you want to plant some too! #StopTalkingStartPlanting #TrillionTrees @PftP_int`;
 
 const ShareOptions = (props) => {
 
@@ -38,7 +38,7 @@ const ShareOptions = (props) => {
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
     return html2canvas(element, {
-      scale: 5,
+      scale: 1,
       backgroundColor: backgroundColor,
       scrollY: -window.scrollY,
       useCORS: true,
@@ -61,7 +61,7 @@ const ShareOptions = (props) => {
 
   const exportComponentAsJPEG = (
     node, fileName = 'component.jpeg',
-     backgroundColor = null, 
+     backgroundColor = null,
      type = 'image/jpeg'
      ) => {
     return exportComponent(node, fileName, backgroundColor, type);
@@ -74,24 +74,7 @@ const ShareOptions = (props) => {
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
-    // if in phone and web share API supported => navigator
-    if ( (isMobileBrowser())  && navigator.share !== undefined) {
-      try {
-        const response = await navigator.share({
-          title: titleToShare,
-          text: textToShare,
-        });
-      } catch (error) {}
-    } else {
-      // if in phone and web share API not supported => clipboard
-      if (isMobileBrowser()) {
-        navigator.clipboard.writeText(textToShare);
-        props.handleTextCopiedSnackbarOpen();
-      } else {
-          // desktop => links      
         openWindowLinks(shareUrl);
-      }
-    }
   };
 
   return (
@@ -106,7 +89,7 @@ const ShareOptions = (props) => {
           if (props.sendRef) {
             exportComponentAsJPEG(
               props.sendRef(),
-              `My ${props.treeCount} tree donation`
+              `My_${props.treeCount}_tree_donation.jpeg`
             );
           }
         }}

@@ -1,5 +1,6 @@
 import { signIn, signout, useSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
+import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
 
@@ -7,9 +8,10 @@ const Me = () => {
   const [userprofile, setUserprofile] = React.useState({});
 
   const UserProps = {
-    userprofile: userprofile,
+    userprofile,
   };
 
+  const texts = getMe();
   // dummy data
   const dummyProfile = {
     countTarget: 200,
@@ -87,9 +89,10 @@ const Me = () => {
     );
   }
   return (
-    <Layout>
-      {/* These BR's put the page content below the nav bar. */}
-      {/* Other pages (like leaderboard) seem to have a similar problem. */}
+      <h2 style={{ marginTop: '80px' }}>
+        description:
+        {texts.description}
+      </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
         {...UserProps}

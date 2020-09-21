@@ -1,8 +1,13 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
+import UserNotFound from '../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
+import Head from 'next/head';
+import tenantConfig from '../../tenant.config';
+const config = tenantConfig();
 
 export default function PublicUser() {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
@@ -11,7 +16,7 @@ export default function PublicUser() {
 
   const router = useRouter();
   const PublicUserProps = {
-    publicUserprofile: publicUserprofile,
+    publicUserprofile,
   };
 
   useEffect(() => {
@@ -29,18 +34,73 @@ export default function PublicUser() {
           headers: { 'tenant-key': `${process.env.TENANTID}` },
         }
       );
-      const publicUserprofile = await res.json();
-      setPublicUserprofile(publicUserprofile);
+
+      if (res.ok === false) {
+        setPublicUserprofile(null);
+      } else {
+        const newPublicUserprofile = await res.json();
+        setPublicUserprofile(newPublicUserprofile);
+      }
     }
     if (ready) {
       loadPublicUserData();
     }
   }, [ready]);
 
-  return publicUserprofile ? (
-    <Layout>
-      <PublicUserPage {...PublicUserProps} />
-      <Footer />
-    </Layout>
-  ) : null;
+  if (publicUserprofile === null) {
+    return <UserNotFound />;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{`${
+          publicUserprofile !== undefined
+            ? publicUserprofile.displayName
+            : config.meta.title
+        }`}</title>
+        <meta
+          property="og:site_name"
+          content={
+            publicUserprofile !== undefined
+              ? publicUserprofile.displayName
+              : config.meta.title
+          }
+        />
+        <meta property="og:locale" content="en_US" />
+        <meta
+          property="og:url"
+          content={`${process.env.SCHEME}://${config.tenantURL}`}
+        />
+        <meta
+          property="og:title"
+          content={`${
+            publicUserprofile !== undefined
+              ? publicUserprofile.displayName
+              : config.meta.title
+          }`}
+        />
+        <meta property="og:description" content={config.meta.description} />
+        <meta name="description" content={config.meta.description} />
+        <meta property="og:type" content="profile" />
+        <meta property="og:image" content={config.meta.image} />
+        {config.tenantName === 'planet' ? (
+          <link rel="alternate" href="android-app://org.pftp/projects" />
+        ) : null}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={config.meta.title} />
+        <meta name="twitter:site" content={config.meta.twitterHandle} />
+        <meta name="twitter:url" content={config.tenantURL} />
+        <meta name="twitter:description" content={config.meta.description} />
+      </Head>
+      {publicUserprofile ? (
+        <Layout>
+          <PublicUserPage {...PublicUserProps} />
+          <Footer />
+        </Layout>
+      ) : (
+        <UserProfleLoader />
+      )}
+    </>
+  );
 }
