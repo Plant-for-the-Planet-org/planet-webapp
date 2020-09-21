@@ -12,13 +12,13 @@ export default function PlanetWeb({ Component, pageProps }: any) {
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
-	
-	const [initialized, setInitialized] = React.useState(false);
+  
+  const [initialized, setInitialized] = React.useState(false);
 
-	React.useEffect(() => {
-	    i18next.initPromise.then(() => setInitialized(true));
-	  }, []);
-		
+  React.useEffect(() => {
+      i18next.initPromise.then(() => setInitialized(true));
+    }, []);
+    
   React.useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
