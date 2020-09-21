@@ -22,17 +22,17 @@ interface mapProps {
   projects: any;
   project: any;
   showSingleProject: Boolean;
-  fetchSingleProject: Function;
-  setSearchedProjects: Function;
-  projectsContainer: any;
-  setShowSingleProject: Function;
   mapboxToken: any;
 }
-export default function MapboxMap(props: mapProps) {
+export default function MapboxMap({
+  projects,
+  project,
+  showSingleProject,
+  mapboxToken,
+}: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
-  const { projects, project, showSingleProject, mapboxToken } = props;
   const mapRef = useRef(null);
   const parentRef = useRef(null);
   const screenWidth = window.innerWidth;
@@ -63,7 +63,7 @@ export default function MapboxMap(props: mapProps) {
   });
 
   React.useEffect(() => {
-    if (props.showSingleProject) {
+    if (showSingleProject && project !== null) {
       setSingleProjectLatLong([
         project.coordinates.lat,
         project.coordinates.lon,
@@ -112,7 +112,7 @@ export default function MapboxMap(props: mapProps) {
   }, [project, showSingleProject]);
 
   React.useEffect(() => {
-    if (props.showSingleProject) {
+    if (showSingleProject) {
       if (siteExists) {
         let bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
@@ -143,7 +143,6 @@ export default function MapboxMap(props: mapProps) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(`/?p=${project.slug}`, undefined, { shallow: true });
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -159,14 +158,13 @@ export default function MapboxMap(props: mapProps) {
         };
 
         setViewPort(newViewport);
-        router.push(`/?p=${project.slug}`, undefined, { shallow: true });
         setMapState(newMapState);
       }
     }
   }, [project, siteExists, geojson]);
 
   React.useEffect(() => {
-    if (props.showSingleProject && siteExists) {
+    if (showSingleProject && siteExists) {
       if (currentSite < maxSites) {
         let bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
@@ -197,7 +195,6 @@ export default function MapboxMap(props: mapProps) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(`/?p=${project.slug}`, undefined, { shallow: true });
       }
     }
   }, [currentSite]);
@@ -228,11 +225,6 @@ export default function MapboxMap(props: mapProps) {
       setCurrentSite(maxSites - 1);
     }
   }
-
-  const handleOpenProject = async (id) => {
-    await props.fetchSingleProject(id);
-    props.setShowSingleProject(true);
-  };
 
   return (
     <div ref={parentRef} className={styles.mapContainer}>
@@ -296,9 +288,19 @@ export default function MapboxMap(props: mapProps) {
             >
               <div
                 className={styles.marker}
-                onClick={() => handleOpenProject(projectMarker.properties.id)}
+                onClick={() =>
+                  router.push(
+                    `/?p=${projectMarker.properties.slug}`,
+                    undefined,
+                    { shallow: true }
+                  )
+                }
                 onKeyPress={() =>
-                  handleOpenProject(projectMarker.properties.id)
+                  router.push(
+                    `/?p=${projectMarker.properties.slug}`,
+                    undefined,
+                    { shallow: true }
+                  )
                 }
                 role="button"
                 tabIndex={0}
@@ -338,9 +340,15 @@ export default function MapboxMap(props: mapProps) {
           >
             <div
               className={styles.popupProject}
-              onClick={() => handleOpenProject(popupData.project.properties.id)}
+              onClick={() =>
+                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
+                  shallow: true,
+                })
+              }
               onKeyPress={() =>
-                handleOpenProject(popupData.project.properties.id)
+                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
+                  shallow: true,
+                })
               }
               role="button"
               tabIndex={0}

@@ -8,8 +8,6 @@ import styles from './../styles/Projects.module.scss';
 
 interface Props {
   projects: any;
-  setShowSingleProject: Function;
-  fetchSingleProject: Function;
   setSearchedProjects: Function;
 }
 
@@ -20,8 +18,6 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 
 export default function ProjectsContainer({
   projects,
-  setShowSingleProject,
-  fetchSingleProject,
   setSearchedProjects,
 }: Props) {
   const screenWidth = window.innerWidth;
@@ -101,18 +97,12 @@ export default function ProjectsContainer({
 
   const AllProjectsProps = {
     projects: allProjects,
-    setShowSingleProject,
-    fetchSingleProject,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
-    setShowSingleProject,
-    fetchSingleProject,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
-    setShowSingleProject,
-    fetchSingleProject,
   };
 
   return (

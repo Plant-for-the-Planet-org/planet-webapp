@@ -5,6 +5,7 @@ import ProjectsList from '../src/features/public/Donations/screens/Projects';
 import Head from 'next/head';
 import tenantConfig from '../tenant.config';
 import getImageUrl from '../src/utils/getImageURL';
+import { route } from 'next/dist/next-server/server/router';
 const config = tenantConfig();
 
 export default function Donate() {
@@ -18,8 +19,21 @@ export default function Donate() {
     project,
     fetchSingleProject,
     showSingleProject,
-    setShowSingleProject,
   };
+
+  React.useEffect(() => {
+    if (router.asPath === '/') {
+      setShowSingleProject(false);
+    } else {
+      if (router.query.p !== undefined && router.query.p !== 'undefined') {
+        fetchProject(router.query.p).then(() => {
+          setShowSingleProject(true);
+        });
+      } else {
+        setShowSingleProject(false);
+      }
+    }
+  }, [router]);
 
   React.useEffect(() => {
     async function loadProjects() {
@@ -68,27 +82,10 @@ export default function Donate() {
     setProject(newProject);
   }
 
-  React.useEffect(() => {
-    if (router.query.p) {
-      fetchProject(router.query.p).then(() => {});
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (router.query.p === undefined) {
-      setShowSingleProject(false),
-        router.push('/', undefined, { shallow: true });
-    }
-  }, [router.query.p]);
-
-  React.useEffect(() => {
-    if (project !== null) {
-      setShowSingleProject(true);
-    }
-  }, [project]);
   async function fetchProject(id: any) {
     await fetchSingleProject(id);
   }
+
   return (
     <>
       {project ? (
