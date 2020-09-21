@@ -61,7 +61,7 @@ const ShareOptions = (props) => {
 
   const exportComponentAsJPEG = (
     node, fileName = 'component.jpeg',
-     backgroundColor = null, 
+     backgroundColor = null,
      type = 'image/jpeg'
      ) => {
     return exportComponent(node, fileName, backgroundColor, type);
@@ -89,7 +89,7 @@ const ShareOptions = (props) => {
           if (props.sendRef) {
             exportComponentAsJPEG(
               props.sendRef(),
-              `My ${props.treeCount} tree donation`
+              `My_${props.treeCount}_tree_donation.jpeg`
             );
           }
         }}
