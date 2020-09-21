@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import tenantConfig from '../../../../tenant.config';
 import { useTheme } from '../../../utils/themeContext';
+import styles from './Header.module.scss';
 const config = tenantConfig();
 export default function Layout() {
   const { theme: themeType } = useTheme();
@@ -25,7 +26,10 @@ export default function Layout() {
       {/* <!-- New in iOS6  alt, --> */}
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-touch-fullscreen" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+      />
       <meta name="format-detection" content="telephone=no" />
       <link
         rel="icon"
@@ -81,7 +85,7 @@ export default function Layout() {
         href={`/tenants/${config.tenantName}/favicons/apple-touch-icon-180x180.png`}
       />
       {themeType === 'theme-light' ? (
-        <meta name="theme-color" content="#999999" />
+        <meta name="theme-color" content={styles.primaryColor} />
       ) : null}
     </Head>
   );

@@ -62,7 +62,7 @@ export default function LeaderBoard() {
   return (
     <>
       <Head>
-        <title>{`${config.meta.title} - Home`}</title>
+        <title>{`Home | ${config.meta.title}`}</title>
         <meta property="og:site_name" content={config.meta.title} />
         <meta property="og:locale" content="en_US" />
         <meta
