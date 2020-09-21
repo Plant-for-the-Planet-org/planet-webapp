@@ -20,7 +20,6 @@ const linkToShare = config.tenantURL;
 const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 const ShareOptions = (props) => {
-
   const saveAs = (uri, filename) => {
     const link = document.createElement('a');
 
@@ -59,13 +58,14 @@ const ShareOptions = (props) => {
     return exportComponent(node, fileName, backgroundColor, type);
   };
 
-  const exportComponentAsJPEG = (
-    node, fileName = 'component.jpeg',
-     backgroundColor = null,
-     type = 'image/jpeg'
-     ) => {
+  const exportComponentAsJPG = (
+    node,
+    fileName = 'component.jpg',
+    backgroundColor = null,
+    type = 'image/jpg'
+  ) => {
     return exportComponent(node, fileName, backgroundColor, type);
-};
+  };
 
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
@@ -74,7 +74,7 @@ const ShareOptions = (props) => {
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
-        openWindowLinks(shareUrl);
+    openWindowLinks(shareUrl);
   };
 
   return (
@@ -87,9 +87,9 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onClick={() => {
           if (props.sendRef) {
-            exportComponentAsJPEG(
+            exportComponentAsJPG(
               props.sendRef(),
-              `My_${props.treeCount}_tree_donation.jpeg`
+              `My_${props.treeCount}_tree_donation.jpg`
             );
           }
         }}
