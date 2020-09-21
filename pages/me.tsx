@@ -7,7 +7,7 @@ const { Trans, useTranslation } = i18next;
 
 export default function UserProfile() {
   const [userprofile, setUserprofile] = React.useState({});
-  const { t } = useTranslation();
+  const { t } = useTranslation(['me', 'common']);
 
   const UserProps = {
     userprofile,
@@ -81,8 +81,8 @@ export default function UserProfile() {
   return (
     <Layout>
       <h2 style={{ marginTop: '80px' }}>
-        description:
-        {t('description')}
+        description: {t('me:description')}<br/>
+        appname: {t('common:appname')}
       </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
