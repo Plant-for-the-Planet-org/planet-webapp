@@ -390,8 +390,8 @@ export default function MapboxMap(props:mapProps) {
                 &nbsp;&nbsp;
               </p>
               <div
-                onClick={goToPrevProject}
-                onKeyPress={goToPrevProject}
+                onClick={goToNextProject}
+                onKeyPress={goToNextProject}
                 role="button"
                 tabIndex={0}
               >

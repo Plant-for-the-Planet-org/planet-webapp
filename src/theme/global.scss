@@ -32,3 +32,7 @@ body {
 .MuiInput-underline:after {
   border-bottom: 2px solid $primaryColor !important;
 }
+
+:focus{
+  outline: none !important;
+}
