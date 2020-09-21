@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
@@ -19,20 +18,14 @@ const MapLayout = dynamic(() => import('../components/MapboxMap'), {
 interface Props {
   projects: any;
   project: any;
-  fetchSingleProject: Function;
   showSingleProject: any;
-  setShowSingleProject: Function;
 }
 
 function ProjectsList({
   projects,
   project,
-  fetchSingleProject,
   showSingleProject,
-  setShowSingleProject,
 }: Props): ReactElement {
-  const router = useRouter();
-
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
   const screenWidth = window.innerWidth;
@@ -49,27 +42,19 @@ function ProjectsList({
     projects: allProjects,
     project,
     showSingleProject,
-    fetchSingleProject: fetchSingleProject,
     setSearchedProjects: setSearchedProjects,
   };
-
-  const [selectedId, setSelectedId] = React.useState(null);
 
   return (
     <>
       <MapLayout
         {...ProjectsProps}
-        fetchSingleProject={fetchSingleProject}
-        setShowSingleProject={setShowSingleProject}
         mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
       />
       {/* Add Condition Operator */}
 
       {showSingleProject ? (
-        <SingleProjectDetails
-          project={project}
-          setShowSingleProject={setShowSingleProject}
-        />
+        <SingleProjectDetails project={project} />
       ) : (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
@@ -84,10 +69,7 @@ function ProjectsList({
             }
           }}
         >
-          <ProjectsContainer
-            {...ProjectsProps}
-            setShowSingleProject={setShowSingleProject}
-          />
+          <ProjectsContainer {...ProjectsProps} />
         </div>
       )}
     </>
