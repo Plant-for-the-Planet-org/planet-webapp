@@ -89,16 +89,17 @@ const Me = () => {
     );
   }
   return (
+      <Layout>
       <h2 style={{ marginTop: '80px' }}>
         description:
         {texts.description}
+        Signed in as {JSON.stringify(session)} 
       </h2>
+      <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
         {...UserProps}
       />
-      Signed in as {JSON.stringify(session)} <br />
-      <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
     </Layout>
   );
 };
