@@ -75,9 +75,12 @@ export default function Donate() {
   }, []);
 
   React.useEffect(() => {
-    if (router.query.p === undefined) {
-      setShowSingleProject(false),
-        router.push('/', undefined, { shallow: true });
+    if (document.readyState === 'complete') {
+      if (router.query.p === undefined) {
+        console.log(router.query.p);
+        setShowSingleProject(false),
+          router.push('/', undefined, { shallow: true });
+      }
     }
   }, [router.query.p]);
 
