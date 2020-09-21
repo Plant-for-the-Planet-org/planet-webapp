@@ -16,10 +16,21 @@ export default function TreeCounterSection(tenantScore: Props) {
             Getting to work.
           </h2>
           <p className={styles.treeCounterSectionTextPara}>
-          Even though our journey is just starting, we know it will take the full power of Salesforce - including our technology, capital, influence, and network - to get there. And we know there’s no time to waste. We know we’ll have to refine our programs and methodology over time, by sharing with and learning from others. That’s why we’ve launched this resource.
+            Even though our journey is just starting, we know it will take the
+            full power of Salesforce - including our technology, capital,
+            influence, and network - to get there. And we know there’s no time
+            to waste. We know we’ll have to refine our programs and methodology
+            over time, by sharing with and learning from others. That’s why
+            we’ve launched this resource.
             <br />
             <br />
-Check out the “Donate” tab to see some of the places where we’re supporting tree planting organizations and lend your support! The tracker to the right and leaderboard below reflect all the donations made and registered on this platform. Also below, you’ll find examples of our other initiatives as well as resources to get involved. We’ll continue to add projects, programs, and resources so check back often!
+            Check out the “Donate” tab to see some of the places where we’re
+            supporting tree planting organizations and lend your support! The
+            tracker to the right and leaderboard below reflect all the donations
+            made and registered on this platform. Also below, you’ll find
+            examples of our other initiatives as well as resources to get
+            involved. We’ll continue to add projects, programs, and resources so
+            check back often!
           </p>
           {/* <button className={styles.buttonStyle}>Join Us</button> */}
         </Col>
