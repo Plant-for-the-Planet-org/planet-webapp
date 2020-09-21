@@ -124,7 +124,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     isCompany,
     setIsCompany,
     country,
-    isTaxDeductible
+    isTaxDeductible,
   };
 
   const PaymentDetailsProps = {
@@ -140,7 +140,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     paymentType,
     setPaymentType,
     country,
-    isTaxDeductible
+    isTaxDeductible,
   };
 
   const ThankYouProps = {

@@ -9,6 +9,9 @@ import {
 import Layout from '../src/features/common/Layout';
 import About from '../src/tenants/planet/About/About';
 import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
+import Head from 'next/head';
+import tenantConfig from '../tenant.config';
+const config = tenantConfig();
 
 export default function LeaderBoard() {
   const router = useRouter();
@@ -57,26 +60,50 @@ export default function LeaderBoard() {
     });
   }
   return (
-    <PullToRefresh
-      pullDownContent={<PullDownContent />}
-      releaseContent={<ReleaseContent />}
-      refreshContent={<RefreshContent />}
-      pullDownThreshold={150}
-      onRefresh={onRefresh}
-      triggerHeight={isMobile ? 150 : 0}
-      backgroundColor="white"
-      startInvisible
-    >
-      <Layout>
-        {process.env.TENANT === 'planet' ? (
-          <About />
-        ) : (
-          <SalesforceLeaderBoard
-            leaderboard={leaderboard}
-            tenantScore={tenantScore}
-          />
-        )}
-      </Layout>
-    </PullToRefresh>
+    <>
+      <Head>
+        <title>{`Home | ${config.meta.title}`}</title>
+        <meta property="og:site_name" content={config.meta.title} />
+        <meta property="og:locale" content="en_US" />
+        <meta
+          property="og:url"
+          content={`${process.env.SCHEME}://${config.tenantURL}`}
+        />
+        <meta property="og:title" content={`${config.meta.title} - Home`} />
+        <meta property="og:description" content={config.meta.description} />
+        <meta name="description" content={config.meta.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={config.meta.image} />
+        {config.tenantName === 'planet' ? (
+          <link rel="alternate" href="android-app://org.pftp/projects" />
+        ) : null}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={config.meta.title} />
+        <meta name="twitter:site" content={config.meta.twitterHandle} />
+        <meta name="twitter:url" content={config.tenantURL} />
+        <meta name="twitter:description" content={config.meta.description} />
+      </Head>
+      <PullToRefresh
+        pullDownContent={<PullDownContent />}
+        releaseContent={<ReleaseContent />}
+        refreshContent={<RefreshContent />}
+        pullDownThreshold={150}
+        onRefresh={onRefresh}
+        triggerHeight={isMobile ? 150 : 0}
+        backgroundColor="white"
+        startInvisible
+      >
+        <Layout>
+          {process.env.TENANT === 'planet' ? (
+            <About />
+          ) : (
+            <SalesforceLeaderBoard
+              leaderboard={leaderboard}
+              tenantScore={tenantScore}
+            />
+          )}
+        </Layout>
+      </PullToRefresh>
+    </>
   );
 }
