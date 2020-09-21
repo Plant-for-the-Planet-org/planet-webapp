@@ -54,17 +54,35 @@ export default function PublicUser() {
   return (
     <>
       <Head>
-        <title>{`${config.meta.title}`}</title>
-        <meta property="og:site_name" content={config.meta.title} />
+        <title>{`${
+          publicUserprofile !== undefined
+            ? publicUserprofile.displayName
+            : config.meta.title
+        }`}</title>
+        <meta
+          property="og:site_name"
+          content={
+            publicUserprofile !== undefined
+              ? publicUserprofile.displayName
+              : config.meta.title
+          }
+        />
         <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}
         />
-        <meta property="og:title" content={`${config.meta.title} - Home`} />
+        <meta
+          property="og:title"
+          content={`${
+            publicUserprofile !== undefined
+              ? publicUserprofile.displayName
+              : config.meta.title
+          }`}
+        />
         <meta property="og:description" content={config.meta.description} />
         <meta name="description" content={config.meta.description} />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="profile" />
         <meta property="og:image" content={config.meta.image} />
         {config.tenantName === 'planet' ? (
           <link rel="alternate" href="android-app://org.pftp/projects" />
