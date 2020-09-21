@@ -5,9 +5,15 @@ import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
 import styles from '../styles/Projects.module.scss';
 
+const MapLoader = () => (
+  <div
+    style={{ minHeight: '100vh', backgroundColor: '#c8def4', width: '100%' }}
+  />
+);
+
 const MapLayout = dynamic(() => import('../components/MapboxMap'), {
   ssr: false,
-  loading: () => <p />,
+  loading: () => <MapLoader />,
 });
 
 interface Props {
