@@ -7,10 +7,8 @@ import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
 import DownloadIcon from '../../../../assets/images/icons/share/Download';
 import DownloadSolid from '../../../../assets/images/icons/share/DownloadSolid';
 import InstagramIcon from '../../../../assets/images/icons/share/Instagram';
-import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 import tenantConfig from '../../../../../tenant.config';
 import ReactDOM from 'react-dom';
-import html2canvas from 'html2canvas';
 import { Elements } from '@stripe/react-stripe-js';
 import domtoimage from 'dom-to-image';
 

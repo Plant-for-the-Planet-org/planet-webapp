@@ -28,7 +28,6 @@
     "dom-to-image": "^2.6.0",
     "express": "^4.17.1",
     "framer-motion": "^2.6.5",
-    "html2canvas": "^1.0.0-rc.7",
     "mapbox-gl": "^1.11.1",
     "next": "^9.5.2",
     "node-sass": "^4.14.1",
