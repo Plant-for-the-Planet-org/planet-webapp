@@ -5,7 +5,7 @@ title: ''
 assignees: 'sagararl'
 ---
 
-Please contact partner at plant-for-the-planet dot org before creating this request. Any
+Please contact partner at plant-for-the-planet dot org before creating this request.
 
 
 Type of Tenant [Please select all that apply]
@@ -25,3 +25,5 @@ Type of Tenant [Please select all that apply]
 - [ ] Completed tenant.config file
 - [ ] Svg logo url:
 - [ ] Custom fonts (woff, woff2) url:
+- [ ] Generate new maxbox token
+- [ ] Use ASSET_PREFIX with maxcdn if high traffic site

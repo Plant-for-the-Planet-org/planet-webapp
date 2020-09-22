@@ -13,24 +13,13 @@ export default function TreeCounterSection(tenantScore: Props) {
       <Row className={styles.treeCounterSectionRow}>
         <Col xs={12} md={6} className={styles.treeCounterSectionText}>
           <h2 className={styles.treeCounterSectionTextHeader}>
-            Our commitment.
+            Getting to work.
           </h2>
           <p className={styles.treeCounterSectionTextPara}>
-            At Salesforce, we believe business is one of the greatest platforms
-            for change. We are committed to doing everything we can to step up
-            to the urgent challenge of climate change and creating a
-            sustainable, low-carbon future for all. That means reducing
-            emissions, as well as protecting and improving carbon sinks like
-            forests.
+          Even though our journey is just starting, we know it will take the full power of Salesforce - including our technology, capital, influence, and network - to get there. And we know there’s no time to waste. We know we’ll have to refine our programs and methodology over time, by sharing with and learning from others. That’s why we’ve launched this resource.
             <br />
             <br />
-            Salesforce’s tree journey is just starting, and we already know it
-            isn’t enough. As a founding partner of 1t.org and in support of the
-            trillion tree movement, we hope to catalyze change on a much bigger
-            scale by demonstrating, enabling, and advocating for it. As we work
-            to meet our goals and set the world on a more just path, we
-            encourage every company, every community, and every person to join
-            us.
+Check out the “Donate” tab to see some of the places where we’re supporting tree planting organizations and lend your support! The tracker to the right and leaderboard below reflect all the donations made and registered on this platform. Also below, you’ll find examples of our other initiatives as well as resources to get involved. We’ll continue to add projects, programs, and resources so check back often!
           </p>
           {/* <button className={styles.buttonStyle}>Join Us</button> */}
         </Col>

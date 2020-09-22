@@ -22,11 +22,11 @@ export default function Blogs() {
     {
       id: 3,
       name:
-        'Drawing parallels between COVID-19 and climate change could be the key to a healthier future',
+        'Calculate your corporate emissions with Salesforce Sustainability Cloud',
       imagePath: '/tenants/salesforce/images/Blog/3.png',
       link:
-        'https://www.salesforce.com/company/news-press/stories/2020/8/salesforce-sustainability/',
-      linkTitle: 'Read the Article',
+        'https://www.salesforce.com/products/sustainability-cloud/overview/',
+      linkTitle: 'Learn More',
     },
   ];
 
