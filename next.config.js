@@ -1,6 +1,10 @@
-const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-  ? process.env.SCHEME
-  : 'https';
+const scheme =
+  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+    ? process.env.SCHEME
+    : 'https';
+
+const hasAssetPrefix =
+  process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = {
   // your config for other plugins or the general next.js here...
@@ -11,6 +15,7 @@ module.exports = {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
+    SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
   },
@@ -33,4 +38,7 @@ module.exports = {
       },
     ];
   },
+  assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
+  // Asset Prefix allows to use CDN for the generated js files
+  // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 };

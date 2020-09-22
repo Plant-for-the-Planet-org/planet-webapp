@@ -10,15 +10,9 @@ const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
 });
 interface Props {
   projects: any;
-  setShowSingleProject: Function;
-  fetchSingleProject: Function;
 }
 
-function AllProjects({
-  projects,
-  setShowSingleProject,
-  fetchSingleProject,
-}: Props): ReactElement {
+function AllProjects({ projects }: Props): ReactElement {
   const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -57,14 +51,7 @@ function AllProjects({
           <div>
             {projects.map((project: any) => {
               return (
-                <ProjectSnippet
-                  key={project.properties.id}
-                  project={project}
-                  setShowSingleProject={setShowSingleProject}
-                  fetchProject={async () => {
-                    await fetchSingleProject(project.properties.id);
-                  }}
-                />
+                <ProjectSnippet key={project.properties.id} project={project} />
               );
             })}
           </div>
