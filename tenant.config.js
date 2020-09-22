@@ -9,11 +9,9 @@ export default function tenantConfig() {
         // font family and it's property particular to tenant
         font: {
           primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-          primaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+          primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
           secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-          secondaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+          secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
         },
         header: {
           isSecondaryTenant: false,
@@ -54,6 +52,13 @@ export default function tenantConfig() {
             },
           ],
         },
+        meta: {
+          title: 'Plant trees around the world - Plant-for-the-Planet',
+          description:
+            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+          image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+          twitterHandle: '@pftp_int',
+        },
       };
     case 'salesforce':
       return {
@@ -61,11 +66,9 @@ export default function tenantConfig() {
         tenantURL: 'trees.salesforce.com',
         font: {
           primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
-          primaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
+          primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
           secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-          secondaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+          secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
         },
         header: {
           isSecondaryTenant: true,
@@ -107,6 +110,13 @@ export default function tenantConfig() {
             },
           ],
         },
+        meta: {
+          title: `Salesforce ❤️ Trees`,
+          description:
+            'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
+          image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+          twitterHandle: '',
+        },
       };
     case 'planetbeta':
       return {
@@ -115,11 +125,9 @@ export default function tenantConfig() {
         tenantLogoURL: 'https://www.plant-for-the-planet.org',
         font: {
           primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-          primaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+          primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
           secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-          secondaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+          secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
         },
         header: {
           isSecondaryTenant: false,
@@ -152,6 +160,13 @@ export default function tenantConfig() {
               key: 'me',
             },
           ],
+        },
+        meta: {
+          title: 'Plant trees around the world - Plant-for-the-Planet',
+          description:
+            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+          image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+          twitterHandle: '@pftp_int',
         },
       };
       case 'stern':
@@ -213,11 +228,18 @@ export default function tenantConfig() {
         tenantURL: 'plant-for-the-planet.org',
         font: {
           primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-          primaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+          primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
           secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-          secondaryFontURL:
-            `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+          secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+        },
+        meta: {
+          title: `${
+            process.env.TENANT.charAt(0).toUpperCase() +
+            process.env.TENANT.slice(1)
+          } ❤️ Trees`,
+          description: 'Plant Trees',
+          image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+          twitterHandle: '@pftp_int',
         },
       };
   }

@@ -22,7 +22,6 @@ import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
   project: any;
-  setShowSingleProject: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -30,10 +29,7 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
   loading: () => <p>Images</p>,
 });
 
-function SingleProjectDetails({
-  project,
-  setShowSingleProject,
-}: Props): ReactElement {
+function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
 
   const screenWidth = window.innerWidth;
@@ -112,7 +108,6 @@ function SingleProjectDetails({
             setScrollY(event.targetTouches[0].clientY);
           } else {
             setScrollY((screenHeight * 2) / 8);
-            console.log(scrollY);
           }
         }
       }}
@@ -143,8 +138,7 @@ function SingleProjectDetails({
                   <div
                     style={{ cursor: 'pointer', width: 'fit-content' }}
                     onClick={() => {
-                      setShowSingleProject(false),
-                        router.push('/', undefined, { shallow: true });
+                      router.push('/', undefined, { shallow: true });
                     }}
                   >
                     <BackButton />
@@ -152,16 +146,15 @@ function SingleProjectDetails({
                 </div>
               </LazyLoad>
             ) : (
-                <div
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    setShowSingleProject(false),
-                      router.push('/', undefined, { shallow: true });
-                  }}
-                >
-                  <BackButton />
-                </div>
-              )}
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  router.push('/', undefined, { shallow: true });
+                }}
+              >
+                <BackButton />
+              </div>
+            )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -209,8 +202,8 @@ function SingleProjectDetails({
                     {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
-                        ? '€'
-                        : project.currency}
+                      ? '€'
+                      : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
