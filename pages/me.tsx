@@ -81,7 +81,8 @@ export default function UserProfile() {
   return (
     <Layout>
       <h2 style={{ marginTop: '80px' }}>
-        description: {t('me:description', { name: 'Norbert' })}<br/>
+        description: {t('me:description', { name: 'Noert' })}
+        <br />
         appname: {t('common:appname')}
       </h2>
       <UserPage

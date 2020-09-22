@@ -20,7 +20,6 @@ const linkToShare = config.tenantURL;
 const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out ${linkToShare} if you want to plant some too! #StopTalkingStartPlanting #TrillionTrees @PftP_int`;
 
 const ShareOptions = (props) => {
-
   const saveAs = (uri, filename) => {
     const link = document.createElement('a');
 
@@ -60,12 +59,13 @@ const ShareOptions = (props) => {
   };
 
   const exportComponentAsJPEG = (
-    node, fileName = 'component.jpeg',
-     backgroundColor = null,
-     type = 'image/jpeg'
-     ) => {
+    node,
+    fileName = 'component.jpeg',
+    backgroundColor = null,
+    type = 'image/jpeg'
+  ) => {
     return exportComponent(node, fileName, backgroundColor, type);
-};
+  };
 
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
@@ -74,7 +74,7 @@ const ShareOptions = (props) => {
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
-        openWindowLinks(shareUrl);
+    openWindowLinks(shareUrl);
   };
 
   return (

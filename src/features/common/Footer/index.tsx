@@ -6,6 +6,9 @@ import World from '../../../assets/images/footer/World';
 import getLanguageName from '../../../utils/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
+import i18next from '../../../../i18n';
+
+const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
@@ -13,6 +16,7 @@ export default function Footer() {
   const [language, setLanguage] = useState('en');
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
+  const { t } = useTranslation(['common']);
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -25,22 +29,22 @@ export default function Footer() {
   const FooterLinks = [
     {
       id: 1,
-      title: 'Privacy & Terms',
+      title: t('common:privacyAndTerms'),
       link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
     },
     {
       id: 2,
-      title: 'Imprint',
+      title: t('common:imprint'),
       link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
     },
     {
       id: 3,
-      title: 'Contact',
+      title: t('common:contact'),
       link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
     },
     {
       id: 6,
-      title: 'Support Us',
+      title: t('common:supportUs'),
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
   ];

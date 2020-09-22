@@ -9,6 +9,9 @@ import styles from './../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';
 import { getPaymentType } from './treeDonation/PaymentFunctions';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 function ThankYou({
   project,
@@ -21,6 +24,8 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
+  const { t } = useTranslation(['donate', 'common']);
+
   const config = tenantConfig();
   const imageRef = React.createRef();
 
@@ -57,54 +62,66 @@ function ThankYou({
         <div onClick={onClose} className={styles.headerCloseIcon}>
           <Close />
         </div>
-        <div className={styles.headerTitle}>Thank You!</div>
+        <div className={styles.headerTitle}>{t('common:thankYou')}</div>
       </div>
 
       <div className={styles.contributionMessage}>
-        Your {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}{' '}
-        donation was{' '}
-        {paymentTypeUsed === 'GOOGLE_PAY' || paymentTypeUsed === 'APPLE_PAY'
-          ? `successfully paid with ${paymentTypeUsed}`
-          : 'successful'}
-        .
+        {t(
+          paymentTypeUsed === 'GOOGLE_PAY' || paymentTypeUsed === 'APPLE_PAY'
+            ? 'donate:donationSuccessfulWith'
+            : 'donate:donationSuccessful',
+          {
+            currency,
+            totalAmount: Sugar.Number.format(Number(treeCount * treeCost), 2),
+            paymentTypeUsed,
+          }
+        )}
         {isGift &&
-          `We've sent an email to ${giftDetails.recipientName} about the gift.`}{' '}
-        Your {Sugar.Number.format(Number(treeCount))} trees will be planted by{' '}
-        {project.name} in {getCountryDataBy('countryCode', project.country)
-          .countryName}.
+          t('donate:giftSentMessage', {
+            recipientName: giftDetails.recipientName,
+          })}{' '}
+        {t('donate:yourTreesPlantedByOnLocation', {
+          treeCount: Sugar.Number.format(Number(treeCount)),
+          projectName: project.name,
+          location: getCountryDataBy('countryCode', project.country)
+            .countryName,
+        })}
       </div>
 
       <div className={styles.contributionMessage}>
-        Maybe you'll visit them some day? In the mean time, maybe hook up your
-        friends with some trees of their own by telling them our yours?
+        {t('donate:contributionMessage')}
       </div>
 
       {/* <div className={styles.horizontalLine} /> */}
 
-          {/* hidden div for image download */}
-      {(
-        <div style={{width:'0px', height:'0px', overflow:'hidden'}}>
-        <div className={styles.tempThankYouImage} ref={imageRef}>
-          <p className={styles.tempDonationCount}>
-            My {Sugar.Number.format(Number(treeCount))} trees are being planted
-            in {getCountryDataBy('countryCode', project.country)
-              .countryName}
-          </p>
-          <p className={styles.tempDonationTenant}>
-            Plant trees at {config.tenantURL}
-          </p>
+      {/* hidden div for image download */}
+      {
+        <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
+          <div className={styles.tempThankYouImage} ref={imageRef}>
+            <p className={styles.tempDonationCount}>
+              {t('donate:myTreesPlantedByOnLocation', {
+                treeCount: Sugar.Number.format(Number(treeCount)),
+                location: getCountryDataBy('countryCode', project.country)
+                  .countryName,
+              })}
+            </p>
+            <p className={styles.tempDonationTenant}>
+              {t('donate:plantTreesAtURL', { url: config.tenantURL })}
+            </p>
+          </div>
         </div>
-        </div>
-      )}
+      }
 
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage}>
           <div className={styles.donationCount}>
-            My {Sugar.Number.format(Number(treeCount))} trees are being planted
-            in {getCountryDataBy('countryCode', project.country)
-              .countryName}
+            {t('donate:myTreesPlantedByOnLocation', {
+              treeCount: Sugar.Number.format(Number(treeCount)),
+              location: getCountryDataBy('countryCode', project.country)
+                .countryName,
+            })}
             <p className={styles.donationTenant}>
-              Plant trees at {config.tenantURL}
+              {t('donate:plantTreesAtURL', { url: config.tenantURL })}
             </p>
           </div>
         </div>
@@ -123,7 +140,7 @@ function ThankYou({
         onClose={handleTextCopiedSnackbarClose}
       >
         <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
-          Text Copied to Clipboard!
+          {t('donate:copiedToClipboard')}
         </Alert>
       </Snackbar>
     </div>

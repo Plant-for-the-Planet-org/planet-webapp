@@ -19,7 +19,9 @@ import { ThemeContext } from '../../../../utils/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
+import i18next from '../../../../../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
 }
@@ -31,6 +33,7 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 
 function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
+  const { t } = useTranslation(['donate', 'common']);
 
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -52,13 +55,13 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     {
       id: 1,
       icon: <BlackTree color={styles.highlightBackground} />,
-      text: 'View Profile',
+      text: t('donate:viewProfile'),
       link: project.tpo.slug,
     },
     {
       id: 2,
       icon: <WorldWeb color={styles.highlightBackground} />,
-      text: project.website ? project.website : 'unavailable',
+      text: project.website ? project.website : t('donate:unavailable'),
       link: project.website,
     },
     {
@@ -67,7 +70,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       text:
         project.tpo && project.tpo.address
           ? project.tpo.address
-          : 'unavailable',
+          : t('donate:unavailable'),
 
       link: project.coordinates
         ? `https://maps.google.com/?q=${project.tpo.address}`
@@ -77,7 +80,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       id: 4,
       icon: <Email color={styles.highlightBackground} />,
       text:
-        project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
+        project.tpo && project.tpo.email
+          ? project.tpo.email
+          : t('donate:unavailable'),
       link:
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
@@ -178,8 +183,8 @@ function SingleProjectDetails({ project }: Props): ReactElement {
               <div className={styles.projectData}>
                 <div className={styles.targetLocation}>
                   <div className={styles.target}>
-                    {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted
-                    •{' '}
+                    {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
+                    {t('common:planted')}•{' '}
                     <span style={{ fontWeight: 400 }}>
                       {
                         getCountryDataBy('countryCode', project.country)
@@ -192,7 +197,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                   </div> */}
                 </div>
                 <div className={styles.projectTPOName}>
-                  By {project.tpo.name}
+                  {t('common:by')} {project.tpo.name}
                 </div>
               </div>
 
@@ -208,7 +213,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                       ? project.treeCost.toFixed(2)
                       : project.treeCost}
                   </div>
-                  <div className={styles.perTree}>per tree</div>
+                  <div className={styles.perTree}>{t('donate:perTree')}</div>
                 </div>
               )}
             </div>
@@ -230,7 +235,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 min={300}
                 ideal={350}
                 max={400}
-                readMoreText="Read more"
+                readMoreText={t('donate:readMore')}
                 text={project.description}
               />
             </div>

@@ -9,7 +9,9 @@ import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 import { useRouter } from 'next/router';
+import i18next from '../../../../../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
   key: number;
@@ -17,6 +19,8 @@ interface Props {
 
 export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const router = useRouter();
+  const { t } = useTranslation(['donate', 'common']);
+
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -94,7 +98,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •{' '}
+              {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {
                   getCountryDataBy('countryCode', project.properties.country)
@@ -104,7 +108,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpo.name}
+            {t('common:by')} {project.properties.tpo.name}
           </div>
         </div>
 
@@ -122,7 +126,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}
                 </div>
-                <div className={styles.perTree}>per tree</div>
+                <div className={styles.perTree}>{t('donate:perTree')}</div>
               </>
             ) : null}
           </div>

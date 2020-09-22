@@ -8,7 +8,9 @@ import getStripe from '../../../../utils/getStripe';
 import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
+import i18next from '../../../../../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
   open: boolean;
@@ -22,6 +24,7 @@ export default function PopupProject({
   handleOpen,
   handleClose,
 }: Props): ReactElement {
+  const { t } = useTranslation(['donate', 'common']);
   const { theme } = React.useContext(ThemeContext);
 
   const ImageSource = project.properties.image
@@ -80,7 +83,7 @@ export default function PopupProject({
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •{' '}
+              {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {
                   getCountryDataBy('countryCode', project.properties.country)
@@ -90,7 +93,7 @@ export default function PopupProject({
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpo.name}
+            {t('common:by')} {project.properties.tpo.name}
           </div>
         </div>
         {project.properties.allowDonations && (
@@ -107,7 +110,7 @@ export default function PopupProject({
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}
                 </div>
-                <div className={styles.perTree}>per tree</div>
+                <div className={styles.perTree}>{t('donate:perTree')}</div>
               </>
             ) : null}
           </div>

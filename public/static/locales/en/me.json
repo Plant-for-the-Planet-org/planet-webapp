@@ -1,3 +1,10 @@
 {
-    "description": "My name is {{name}}"
+  "description": "My name is {{name}}",
+  "treesPlanted": "Trees Planted",
+  "target": "Target",
+  "share": "Share",
+  "registerTrees": "Register Trees",
+  "redeem": "Redeem",
+  "myForest": "My Forest",
+  "giftToGiftee": "Gift to ${gifteeName}"
 }
