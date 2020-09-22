@@ -205,8 +205,8 @@ export default function tenantConfig() {
                 id: 2,
                 order: 2,
                 title: 'Leaderboard',
-                onclick: '/',
-                visible: true,
+                onclick: '/leaderboard',
+                visible: false,
                 key: 'leaderboard',
               },
               {
