@@ -10,9 +10,11 @@ const config = tenantConfig();
 
 export default function Donate() {
   const router = useRouter();
+
   const [projects, setProjects] = React.useState();
   const [project, setProject] = React.useState(null);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(true);
 
   const DonateProps = {
     projects,
@@ -20,6 +22,11 @@ export default function Donate() {
     fetchSingleProject,
     showSingleProject,
   };
+
+  React.useEffect(() => {
+    const screenWidth = window.innerWidth;
+    setIsMobile(screenWidth <= 767);
+  }, []);
 
   React.useEffect(() => {
     if (router.asPath === '/') {
@@ -155,7 +162,11 @@ export default function Donate() {
           <>
             {' '}
             <img
-              style={{ height: '100%', width: 'auto', position: 'fixed' }}
+              style={
+                isMobile
+                  ? { height: '100%', width: 'auto', position: 'fixed' }
+                  : { height: 'auto', width: 'width', position: 'fixed' }
+              }
               src={`https://api.mapbox.com/styles/v1/sagararl/ckdfyrsw80y3a1il9eqpecoc7/static/-28.5,36.96,1.4/1200x800?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`}
             />
           </>

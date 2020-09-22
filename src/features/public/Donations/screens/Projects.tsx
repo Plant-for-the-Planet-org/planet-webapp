@@ -4,16 +4,24 @@ import ProjectsContainer from '../components/ProjectsContainer';
 import SingleProjectDetails from '../components/SingleProjectDetails';
 import styles from '../styles/Projects.module.scss';
 
-const MapLoader = () => (
-  <div
-    style={{ minHeight: '100vh', backgroundColor: '#c8def4', width: '100%' }}
-  >
-    <img
-      src={`https://api.mapbox.com/styles/v1/sagararl/ckdfyrsw80y3a1il9eqpecoc7/static/-28.5,36.96,1.4/1200x800?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`}
-      style={{ height: '100%', width: 'auto', position: 'fixed' }}
-    />
-  </div>
-);
+const MapLoader = () => {
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 767;
+  return (
+    <div
+      style={{ minHeight: '100vh', backgroundColor: '#c8def4', width: '100%' }}
+    >
+      <img
+        src={`https://api.mapbox.com/styles/v1/sagararl/ckdfyrsw80y3a1il9eqpecoc7/static/-28.5,36.96,1.4/1200x800?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`}
+        style={
+          isMobile
+            ? { height: '100%', width: 'auto', position: 'fixed' }
+            : { height: 'auto', width: 'width', position: 'fixed' }
+        }
+      />
+    </div>
+  );
+};
 
 const MapLayout = dynamic(() => import('../components/MapboxMap'), {
   ssr: false,
