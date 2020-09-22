@@ -155,7 +155,7 @@ export default function Donate() {
           <>
             {' '}
             <img
-              style={{ height: '100%', width: '100%', position: 'fixed' }}
+              style={{ height: '100%', width: 'auto', position: 'fixed' }}
               src={`https://api.mapbox.com/styles/v1/sagararl/ckdfyrsw80y3a1il9eqpecoc7/static/-28.5,36.96,1.4/1200x800?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`}
             />
           </>
