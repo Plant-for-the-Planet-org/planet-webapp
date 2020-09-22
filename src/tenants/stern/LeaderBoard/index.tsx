@@ -25,8 +25,8 @@ export default function About({ leaderboard, tenantScore }: Props) {
           target={1000000}
           planted={889898}
         />
-        <p className={styles.publicUserDescription}><bold>Baum pflanzen – Zeit gewinnen</bold> 
-Mit Plant-for-the-Planet pflanzen wir weltweit Bäume und lassen somit unseren globalen STERN-Wald entstehen. Pro verkauftem Exemplar der Kliamwoche-Ausgabe spendet die Redaktion einen Baum. Jeder Baum, den wir pflanzen, bindet CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen! Für die Menschen!
+        <p className={styles.publicUserDescription} style={{fontWeight:'bold',marginBottom:'0px'}}>Baum pflanzen – Zeit gewinnen</p>
+        <p className={styles.publicUserDescription} style={{marginTop:'8px'}}>Mit Plant-for-the-Planet pflanzen wir weltweit Bäume und lassen somit unseren globalen STERN-Wald entstehen. Pro verkauftem Exemplar der Kliamwoche-Ausgabe spendet die Redaktion einen Baum. Jeder Baum, den wir pflanzen, bindet CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen! Für die Menschen!
         </p>
       </LandingSection>
       <LeaderBoard leaderboard={leaderboard} />

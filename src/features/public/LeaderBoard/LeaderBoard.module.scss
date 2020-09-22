@@ -118,7 +118,7 @@
     font-family: $primaryFontFamily;
   }
   
-  .leaderBoardBushImage {
+  .leaderBoardBushImage, .leaderBoardGroupTreeImage {
     display: none;
   }
   .leaderBoardBushImageMobile {
@@ -142,6 +142,13 @@
         position: absolute;
         bottom: 0px;
         right: 0px;
+      }
+
+      .leaderBoardGroupTreeImage {
+        display: block;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
       }
     
       .leaderBoardBushImageMobile {

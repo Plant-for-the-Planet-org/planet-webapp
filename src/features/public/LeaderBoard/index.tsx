@@ -82,14 +82,19 @@ export default function LeaderBoardSection(leaderboard: Props) {
       </div>
       <img
         className={styles.leaderBoardBushImage}
-        src={'/tenants/salesforce/images/Bush.png'}
+        src={'/tenants/stern/images/leaderboard.png'}
         alt=""
       />
       <img
+        className={styles.leaderBoardGroupTreeImage}
+        src={'/tenants/stern/images/treeGroup.png'}
+        alt=""
+      />
+      {/* <img
         className={styles.leaderBoardBushImageMobile}
         src={'/tenants/salesforce/images/mobile/Bush.png'}
         alt=""
-      />
+      /> */}
     </section>
   );
 }
