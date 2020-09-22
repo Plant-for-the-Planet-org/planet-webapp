@@ -100,7 +100,7 @@ export default function LeaderBoard() {
       >
         <Layout>
           {process.env.TENANT === 'stern' ? (
-            <SternLeaderBoard leaderboard={leaderboard} />
+            <SternLeaderBoard tenantScore={tenantScore} leaderboard={leaderboard} />
           ) : (
             <SalesforceLeaderBoard
               leaderboard={leaderboard}
