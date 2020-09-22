@@ -9,7 +9,6 @@ import DownloadSolid from '../../../../assets/images/icons/share/DownloadSolid';
 import InstagramIcon from '../../../../assets/images/icons/share/Instagram';
 import tenantConfig from '../../../../../tenant.config';
 import ReactDOM from 'react-dom';
-import { Elements } from '@stripe/react-stripe-js';
 import domtoimage from 'dom-to-image';
 
 const config = tenantConfig();
