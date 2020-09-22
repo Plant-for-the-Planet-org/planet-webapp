@@ -11,6 +11,8 @@ import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 import tenantConfig from '../../../../../tenant.config';
 import ReactDOM from 'react-dom';
 import html2canvas from 'html2canvas';
+import { Elements } from '@stripe/react-stripe-js';
+import domtoimage from 'dom-to-image';
 
 const config = tenantConfig();
 
@@ -20,52 +22,34 @@ const linkToShare = config.tenantURL;
 const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
 
 const ShareOptions = (props) => {
-
-  const saveAs = (uri, filename) => {
-    const link = document.createElement('a');
-
-    if (typeof link.download === 'string') {
-      link.href = uri;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(uri);
-    }
-  };
-
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
-    return html2canvas(element, {
-      scale: 1,
-      backgroundColor: backgroundColor,
-      scrollY: -window.scrollY,
-      useCORS: true,
-      imageTimeout: 0,
-      allowTaint: true,
-      letterRendering: true,
-    }).then((canvas) => {
-      saveAs(canvas.toDataURL(type, 1), fileName);
-    });
-  };
-
-  const exportComponentAsPNG = (
-    node,
-    fileName = 'My Trees.png',
-    backgroundColor = null,
-    type = 'image/png'
-  ) => {
-    return exportComponent(node, fileName, backgroundColor, type);
+    var options = {
+      quality: 1,
+    };
+    domtoimage.toJpeg(element, options).then((dataUrl) => {
+        domtoimage.toJpeg(element, options).then((dataUrl) => {
+          domtoimage.toJpeg(element, options).then((dataUrl) => {
+            var link = document.createElement('a');
+            link.download = fileName;
+            link.href = dataUrl;
+            link.click();
+          });
+        });
+      })
+      .catch(function (error) {
+        console.error('Image cannot be downloaded', error);
+      });
   };
 
   const exportComponentAsJPEG = (
-    node, fileName = 'component.jpeg',
-     backgroundColor = null,
-     type = 'image/jpeg'
-     ) => {
+    node,
+    fileName = `My_${props.treeCount}_tree_donation.jpeg`,
+    backgroundColor = null,
+    type = 'image/jpeg'
+  ) => {
     return exportComponent(node, fileName, backgroundColor, type);
-};
+  };
 
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
@@ -74,7 +58,7 @@ const ShareOptions = (props) => {
   const [currentHover, setCurrentHover] = React.useState(-1);
 
   const shareClicked = async (shareUrl) => {
-        openWindowLinks(shareUrl);
+    openWindowLinks(shareUrl);
   };
 
   return (
