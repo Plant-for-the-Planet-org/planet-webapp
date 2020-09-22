@@ -181,6 +181,13 @@ export default function tenantConfig() {
             secondaryFontURL:
               `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
           },
+          meta: {
+            title: `Stern ❤️ Baeume`,
+            description:
+              'Stern set a goal to conserve, restore, and grow trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
+            image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+            twitterHandle: '',
+          },
           header: {
             isSecondaryTenant: true, // This will mean that we have to load both the tenant logo and PFP logo
             tenantLogoURL: `${process.env.CDN_URL}/logo/svg/stern.svg`,
@@ -189,7 +196,7 @@ export default function tenantConfig() {
               {
                 id: 1,
                 order: 1,
-                title: 'Donate/Gift',
+                title: 'Home',
                 onclick: '/',
                 visible: true,
                 key: 'donate',
