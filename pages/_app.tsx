@@ -6,8 +6,28 @@ import TagManager from 'react-gtm-module';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/utils/themeContext';
+import * as Sentry from '@sentry/node';
+import { RewriteFrames } from '@sentry/integrations';
+import getConfig from 'next/config';
 
-export default function PlanetWeb({ Component, pageProps }: any) {
+if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  const config = getConfig();
+  const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
+  Sentry.init({
+    enabled: process.env.NODE_ENV === 'production',
+    integrations: [
+      new RewriteFrames({
+        iteratee: (frame) => {
+          frame.filename = frame.filename.replace(distDir, 'app:///_next');
+          return frame;
+        },
+      }),
+    ],
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  });
+}
+
+export default function PlanetWeb({ Component, pageProps, err }: any) {
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
@@ -26,12 +46,9 @@ export default function PlanetWeb({ Component, pageProps }: any) {
 
   React.useEffect(() => {
     async function loadConfig() {
-      await fetch(
-        `${process.env.API_ENDPOINT}/public/v1.2/en/config`,
-        {
-          headers: { 'tenant-key': `${process.env.TENANTID}` },
-        },
-      ).then(async (res) => {
+      await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
+        headers: { 'tenant-key': `${process.env.TENANTID}` },
+      }).then(async (res) => {
         const config = await res.json();
         localStorage.setItem('config', JSON.stringify(config));
         localStorage.setItem('countryCode', config.country);
@@ -42,7 +59,7 @@ export default function PlanetWeb({ Component, pageProps }: any) {
   }, []);
 
   return (
-    <ThemeProvider>
+    <ThemeProvider err={err}>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
