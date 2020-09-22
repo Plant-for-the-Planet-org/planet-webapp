@@ -1,4 +1,4 @@
-import { signIn, signout, useSession } from 'next-auth/client';
+import { signIn, signout, useSession, getSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
 import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
@@ -6,7 +6,7 @@ import UserPage from '../src/features/user/UserProfile';
 
 const Me = () => {
   const [userprofile, setUserprofile] = React.useState({});
-
+  const [ session, loading ] = useSession()
   const UserProps = {
     userprofile,
   };
@@ -69,7 +69,6 @@ const Me = () => {
       },
     ],
   };
-
   useEffect(() => {
     async function loadUserData() {
       // here, API call
@@ -77,31 +76,42 @@ const Me = () => {
     }
     loadUserData();
   }, []);
-  const [session, loading] = useSession();
-  if (!session && !loading) {
-    return (
-      <Layout>
-        <br />
-        <br />
-        <br />
-        <button onClick={() => signIn('auth0')}>Sign In</button>{' '}
-      </Layout>
-    );
-  }
+  // if (!session && !loading) {
   return (
-      <Layout>
-      <h2 style={{ marginTop: '80px' }}>
-        description:
-        {texts.description}
-        Signed in as {JSON.stringify(session)} 
-      </h2>
-      <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
-      <UserPage
-        style={{ height: '100vh', overflowX: 'hidden' }}
-        {...UserProps}
-      />
+    <Layout>
+      <br />
+      <br />
+      <br />
+      <a
+        href={`/api/auth/signin`}
+        onClick={(e) => {
+          e.preventDefault();
+          signIn();
+        }}
+      >
+        Sign In
+      </a>{' '}
+      {console.log('session', session)}
+      <h1> session : {session}</h1>
     </Layout>
   );
+  // }
+  // else {
+  //   return (
+  //     <Layout>
+  //       <h2 style={{ marginTop: '80px' }}>
+  //         description:
+  //         {texts.description}
+  //         {/* Signed in as {JSON.stringify(session)} */}
+  //       </h2>
+  //       <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
+  //       <UserPage
+  //         style={{ height: '100vh', overflowX: 'hidden' }}
+  //         {...UserProps}
+  //       />
+  //     </Layout>
+  //   );
+  // }
 };
 
 export default Me;
