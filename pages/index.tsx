@@ -148,7 +148,20 @@ export default function Donate() {
           <meta name="twitter:description" content={config.meta.description} />
         </Head>
       )}
-      <Layout>{projects ? <ProjectsList {...DonateProps} /> : <></>}</Layout>
+      <Layout>
+        {projects ? (
+          <ProjectsList {...DonateProps} />
+        ) : (
+          <>
+            {' '}
+            <img
+              src={`https://api.mapbox.com/styles/v1/sagararl/ckdfyrsw80y3a1il9eqpecoc7/static/-28.5,36.96,1.4/1200x800?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`}
+              height="100%"
+              width="100%"
+            />
+          </>
+        )}
+      </Layout>
     </>
   );
 }

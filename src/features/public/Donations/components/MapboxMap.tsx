@@ -51,7 +51,7 @@ export default function MapboxMap({
   const [currentSite, setCurrentSite] = React.useState<null | Number>();
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
+    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
   });
 
   const [viewport, setViewPort] = useState({
@@ -95,7 +95,7 @@ export default function MapboxMap({
       }
     } else if (project !== null) {
       const newMapState = {
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
+        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
       };
       const newViewport = {
         ...viewport,
@@ -145,7 +145,7 @@ export default function MapboxMap({
         setMapState(newMapState);
       } else {
         const newMapState = {
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
         };
         const newViewport = {
           ...viewport,
