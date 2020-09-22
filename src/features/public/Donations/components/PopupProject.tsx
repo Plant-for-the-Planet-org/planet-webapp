@@ -14,8 +14,6 @@ interface Props {
   open: boolean;
   handleOpen: Function;
   handleClose: Function;
-  fetchProject: Function;
-  setShowSingleProject: Function;
 }
 
 export default function PopupProject({
@@ -23,8 +21,6 @@ export default function PopupProject({
   open,
   handleOpen,
   handleClose,
-  fetchProject,
-  setShowSingleProject,
 }: Props): ReactElement {
   const { theme } = React.useContext(ThemeContext);
 

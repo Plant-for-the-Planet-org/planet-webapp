@@ -15,26 +15,24 @@ import MapGL, {
 } from 'react-map-gl';
 import LeftIcon from '../../../../assets/images/icons/LeftIcon';
 import RightIcon from '../../../../assets/images/icons/RightIcon';
-import PopupProject from '../components/PopupProject';
+import PopupProject from './PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 
-interface mapProps{
-  projects:any;
-  project:any;
-  showSingleProject:Boolean;
-  fetchSingleProject:Function;
-  setSearchedProjects:Function;
-  projectsContainer:any;
-  setShowSingleProject:Function;
-  mapboxToken:any;
+interface mapProps {
+  projects: any;
+  project: any;
+  showSingleProject: Boolean;
+  mapboxToken: any;
 }
-export default function MapboxMap(props:mapProps) {
+export default function MapboxMap({
+  projects,
+  project,
+  showSingleProject,
+  mapboxToken,
+}: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
-  const {
-    projects, project, showSingleProject, mapboxToken,
-  } = props;
   const mapRef = useRef(null);
   const parentRef = useRef(null);
   const screenWidth = window.innerWidth;
@@ -65,11 +63,7 @@ export default function MapboxMap(props:mapProps) {
   });
 
   React.useEffect(() => {
-    mapRef.current.getMap().resize();
-  }, [window.width, window.height]);
-
-  React.useEffect(() => {
-    if (props.showSingleProject) {
+    if (showSingleProject && project !== null) {
       setSingleProjectLatLong([
         project.coordinates.lat,
         project.coordinates.lon,
@@ -86,8 +80,8 @@ export default function MapboxMap(props:mapProps) {
       });
 
       if (
-        typeof newGeojson.features !== 'undefined'
-        && newGeojson.features.length > 0
+        typeof newGeojson.features !== 'undefined' &&
+        newGeojson.features.length > 0
       ) {
         if (newGeojson.features[0].geometry !== null) {
           setsiteExists(true);
@@ -118,7 +112,7 @@ export default function MapboxMap(props:mapProps) {
   }, [project, showSingleProject]);
 
   React.useEffect(() => {
-    if (props.showSingleProject) {
+    if (showSingleProject) {
       if (siteExists) {
         let bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
@@ -126,7 +120,7 @@ export default function MapboxMap(props:mapProps) {
           [bbox[2], bbox[3]],
         ];
         const { longitude, latitude, zoom } = new WebMercatorViewport(
-          viewport,
+          viewport
         ).fitBounds(bbox, {
           padding: {
             top: 50,
@@ -149,7 +143,6 @@ export default function MapboxMap(props:mapProps) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(`/?p=${project.slug}`, undefined, { shallow: true });
       } else {
         const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7?optimize=true',
@@ -165,14 +158,13 @@ export default function MapboxMap(props:mapProps) {
         };
 
         setViewPort(newViewport);
-        router.push(`/?p=${project.slug}`, undefined, { shallow: true });
         setMapState(newMapState);
       }
     }
   }, [project, siteExists, geojson]);
 
   React.useEffect(() => {
-    if (props.showSingleProject && siteExists) {
+    if (showSingleProject && siteExists) {
       if (currentSite < maxSites) {
         let bbox = turf.bbox(geojson.features[currentSite]);
         bbox = [
@@ -180,7 +172,7 @@ export default function MapboxMap(props:mapProps) {
           [bbox[2], bbox[3]],
         ];
         const { longitude, latitude, zoom } = new WebMercatorViewport(
-          viewport,
+          viewport
         ).fitBounds(bbox, {
           padding: {
             top: 50,
@@ -203,14 +195,13 @@ export default function MapboxMap(props:mapProps) {
         };
         setViewPort(newViewport);
         setMapState(newMapState);
-        router.push(`/?p=${project.slug}`, undefined, { shallow: true });
       }
     }
   }, [currentSite]);
 
-  const _onStateChange = (state:any) => setMapState({ ...state });
+  const _onStateChange = (state: any) => setMapState({ ...state });
 
-  const _onViewportChange = (view:any) => setViewPort({ ...view });
+  const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   const handleClose = () => {
     setOpen(false);
@@ -234,11 +225,6 @@ export default function MapboxMap(props:mapProps) {
       setCurrentSite(maxSites - 1);
     }
   }
-
-  const handleOpenProject = async (id) => {
-    await props.fetchSingleProject(id);
-    props.setShowSingleProject(true);
-  };
 
   return (
     <div ref={parentRef} className={styles.mapContainer}>
@@ -290,8 +276,8 @@ export default function MapboxMap(props:mapProps) {
             </Source>
           )
         ) : null}
-        {!showSingleProject
-          && projects.map((projectMarker:any, index:any) => (
+        {!showSingleProject &&
+          projects.map((projectMarker: any, index: any) => (
             <Marker
               key={index}
               latitude={projectMarker.geometry.coordinates[1]}
@@ -302,8 +288,20 @@ export default function MapboxMap(props:mapProps) {
             >
               <div
                 className={styles.marker}
-                onClick={() => handleOpenProject(projectMarker.properties.id)}
-                onKeyPress={() => handleOpenProject(projectMarker.properties.id)}
+                onClick={() =>
+                  router.push(
+                    `/?p=${projectMarker.properties.slug}`,
+                    undefined,
+                    { shallow: true }
+                  )
+                }
+                onKeyPress={() =>
+                  router.push(
+                    `/?p=${projectMarker.properties.slug}`,
+                    undefined,
+                    { shallow: true }
+                  )
+                }
                 role="button"
                 tabIndex={0}
                 onMouseOver={() => {
@@ -342,8 +340,16 @@ export default function MapboxMap(props:mapProps) {
           >
             <div
               className={styles.popupProject}
-              onClick={() => handleOpenProject(popupData.project.properties.id)}
-              onKeyPress={() => handleOpenProject(popupData.project.properties.id)}
+              onClick={() =>
+                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
+                  shallow: true,
+                })
+              }
+              onKeyPress={() =>
+                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
+                  shallow: true,
+                })
+              }
               role="button"
               tabIndex={0}
               onMouseLeave={() => {
@@ -382,16 +388,16 @@ export default function MapboxMap(props:mapProps) {
 
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {siteExists
-                && project.sites.length !== 0
-                && geojson.features[currentSite]
+                {siteExists &&
+                project.sites.length !== 0 &&
+                geojson.features[currentSite]
                   ? geojson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
               </p>
               <div
-                onClick={goToPrevProject}
-                onKeyPress={goToPrevProject}
+                onClick={goToNextProject}
+                onKeyPress={goToNextProject}
                 role="button"
                 tabIndex={0}
               >

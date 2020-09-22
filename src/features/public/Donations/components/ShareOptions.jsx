@@ -17,7 +17,7 @@ const config = tenantConfig();
 const titleToShare = 'Planting trees against the climate crisis!';
 const urlToShare = config.tenantURL;
 const linkToShare = config.tenantURL;
-const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some.\nCheck out ${linkToShare} if you want to plant some too!\n`;
+const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out ${linkToShare} if you want to plant some too! #StopTalkingStartPlanting #TrillionTrees @PftP_int`;
 
 const ShareOptions = (props) => {
 
@@ -61,7 +61,7 @@ const ShareOptions = (props) => {
 
   const exportComponentAsJPEG = (
     node, fileName = 'component.jpeg',
-     backgroundColor = null, 
+     backgroundColor = null,
      type = 'image/jpeg'
      ) => {
     return exportComponent(node, fileName, backgroundColor, type);
@@ -89,7 +89,7 @@ const ShareOptions = (props) => {
           if (props.sendRef) {
             exportComponentAsJPEG(
               props.sendRef(),
-              `My ${props.treeCount} tree donation`
+              `My_${props.treeCount}_tree_donation.jpeg`
             );
           }
         }}

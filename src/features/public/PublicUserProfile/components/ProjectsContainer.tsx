@@ -10,10 +10,6 @@ const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
 });
 
 export default function ProjectsContainer({ projects }: any) {
-  const dummyFunc1 = () => {
-    console.log('dummy func');
-  };
-
   return (
     <div style={{ margin: 'auto', maxWidth: '950px' }}>
       {projects.length < 1 ? (
@@ -30,12 +26,7 @@ export default function ProjectsContainer({ projects }: any) {
           {projects.map((project: any) => {
             return (
               <div className={styles.singleProject} key={project.id}>
-                <ProjectSnippet
-                  key={project.id}
-                  project={project}
-                  setShowSingleProject={dummyFunc1}
-                  fetchProject={dummyFunc1}
-                />
+                <ProjectSnippet key={project.id} project={project} />
               </div>
             );
           })}
