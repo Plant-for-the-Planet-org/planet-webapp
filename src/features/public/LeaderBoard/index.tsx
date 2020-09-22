@@ -13,7 +13,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
   return (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
-        <h3>Stern</h3>
         <h2>Forest Frontrunners</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
@@ -82,12 +81,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
       </div>
       <img
         className={styles.leaderBoardBushImage}
-        src={'/tenants/stern/images/leaderboard.png'}
+        src={'/tenants/stern/images/leaderboard.svg'}
         alt=""
       />
       <img
         className={styles.leaderBoardGroupTreeImage}
-        src={'/tenants/stern/images/treeGroup.png'}
+        src={'/tenants/stern/images/treeGroup.svg'}
         alt=""
       />
       {/* <img

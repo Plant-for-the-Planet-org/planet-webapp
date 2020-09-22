@@ -23,7 +23,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
       >
         {tenantScore && tenantScore.total && 
         <TreeCounter
-          target={1}
+          target={tenantScore.total}
           planted={tenantScore.total}
           hideTarget
         /> }
