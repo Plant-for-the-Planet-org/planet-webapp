@@ -103,6 +103,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const ProjectProps = {
     project: project,
   };
+
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}

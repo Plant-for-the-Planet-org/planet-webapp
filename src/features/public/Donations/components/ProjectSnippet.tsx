@@ -10,6 +10,7 @@ import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
 export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const router = useRouter();
   const { t } = useTranslation(['donate', 'common']);
+  const [countryCode, setCountryCode] = React.useState<string>('DE');
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -41,7 +43,13 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
     setOpen(true);
   };
 
+  React.useEffect(() => {
+    const code = window.localStorage.getItem('countryCode') || 'DE';
+    setCountryCode(code);
+  });
+
   const projectDetails = project.properties;
+  console.log('project.properties', project.properties.currency);
   return (
     <div className={styles.singleProject} key={key}>
       <Modal
@@ -117,14 +125,19 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
             {project.properties.treeCost ? (
               <>
                 <div onClick={handleOpen} className={styles.costButton}>
-                  {project.properties.currency === 'USD'
+                  {/* {project.properties.currency === 'USD'
                     ? '$'
                     : project.properties.currency === 'EUR'
                     ? '€'
-                    : project.properties.currency}
-                  {project.properties.treeCost % 1 !== 0
+                    : project.properties.currency} */}
+                  {/* {project.properties.treeCost % 1 !== 0
                     ? project.properties.treeCost.toFixed(2)
-                    : project.properties.treeCost}
+                  : project.properties.treeCost} */}
+                  {getFormatedCurrency(
+                    countryCode,
+                    project.properties.currency,
+                    project.properties.treeCost
+                  )}
                 </div>
                 <div className={styles.perTree}>{t('donate:perTree')}</div>
               </>
