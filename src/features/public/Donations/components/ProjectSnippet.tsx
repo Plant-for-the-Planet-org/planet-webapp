@@ -49,7 +49,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   });
 
   const projectDetails = project.properties;
-  console.log('project.properties', project.properties.currency);
+
   return (
     <div className={styles.singleProject} key={key}>
       <Modal
