@@ -190,7 +190,7 @@
   line-height: 14px;
 }
 
-.costButton {
+.donateButton {
   background-color: $primaryColor;
   min-width: 75px;
   max-width: 150px;
@@ -201,22 +201,23 @@
   align-items: center;
   border-radius: 11px;
   color: $light;
-  font-weight: bold;
-  font-family: $secondaryFontFamily;
+  font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
-.costButton:hover {
+.donateButton:hover {
   cursor: pointer;
   text-decoration: none;
 }
 
 .perTree {
-  font-family: $primaryFontFamily;
-  font-size: 9px;
+  font-family: $secondaryFontFamily;
+  font-size: 10px;
   color: $primaryFontColor;
   margin-top: 5px;
+  font-weight: 400;
 }
 
 .projectCost {

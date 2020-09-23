@@ -124,22 +124,17 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <div className={styles.projectCost}>
             {project.properties.treeCost ? (
               <>
-                <div onClick={handleOpen} className={styles.costButton}>
-                  {/* {project.properties.currency === 'USD'
-                    ? '$'
-                    : project.properties.currency === 'EUR'
-                    ? '€'
-                    : project.properties.currency} */}
-                  {/* {project.properties.treeCost % 1 !== 0
-                    ? project.properties.treeCost.toFixed(2)
-                  : project.properties.treeCost} */}
+                <div onClick={handleOpen} className={styles.donateButton}>
+                  {t('common:donate')}
+                </div>
+                <div className={styles.perTree}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.properties.currency,
                     project.properties.treeCost
-                  )}
+                  )}{' '}
+                  {t('donate:perTree')}
                 </div>
-                <div className={styles.perTree}>{t('donate:perTree')}</div>
               </>
             ) : null}
           </div>
