@@ -31,7 +31,6 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const { Trans, useTranslation } = i18next;
   const { i18n } = useTranslation();
-  const [language, setLanguage] = React.useState('en');
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -62,8 +61,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       }).then(async (res) => {
         const config = await res.json();
         localStorage.setItem('config', JSON.stringify(config));
-        localStorage.setItem('countryCode', config.country);
-        localStorage.setItem('currencyCode', config.currency);
+        if (localStorage.getItem('countryCode') === null) {
+          localStorage.setItem('countryCode', config.country);
+        }
+        if (localStorage.getItem('currencyCode') === null) {
+          localStorage.setItem('currencyCode', config.currency);
+        }
       });
     }
     loadConfig();
@@ -71,12 +74,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   React.useEffect(() => {
     if (localStorage.getItem('language') !== null) {
-      console.log('localstorage', localStorage.getItem('language'));
       i18n.changeLanguage(localStorage.getItem('language'));
     } else {
-      i18n.changeLanguage(language);
+      i18n.changeLanguage('en');
     }
-  }, [language]);
+  }, []);
 
   if (!initialized) {
     return <p>Loading...</p>;

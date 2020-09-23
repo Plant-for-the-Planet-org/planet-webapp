@@ -61,6 +61,7 @@ export default function Footer() {
       selectedCountry === 'CH'
     ) {
       setLanguage('de');
+      localStorage.setItem('language', 'de');
     }
 
     if (typeof Storage !== 'undefined') {

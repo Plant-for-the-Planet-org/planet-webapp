@@ -1,6 +1,7 @@
 import React from 'react';
 import Sugar from 'sugar';
 import styles from './../styles/LeaderBoardSection.module.scss';
+import i18next from '../../../../../i18n';
 
 interface Props {
   leaderboard: any;
@@ -9,12 +10,14 @@ interface Props {
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
+  const { useTranslation } = i18next;
+  const { t } = useTranslation(['leaderboard']);
 
   return (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h3>Salesforce</h3>
-        <h2>Forest Frontrunners</h2>
+        <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
             <div
@@ -25,7 +28,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   : styles.leaderBoardTableHeaderTitle
               }
             >
-              Most Recent
+              {t('leaderboard:mostRecent')}
             </div>
             <div
               onClick={() => setSelectedTab('highest')}
@@ -35,49 +38,49 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   : styles.leaderBoardTableHeaderTitle
               }
             >
-              Most Trees
+              {t('leaderboard:mostTrees')}
             </div>
           </div>
           {leaderboardData !== null &&
-            leaderboardData.mostRecent &&
-            leaderboardData.mostDonated ? (
-              selectedTab === 'recent' ? (
-                <div className={styles.leaderBoardBody}>
-                  {leaderboardData.mostRecent.map((leader: any) => {
-                    return (
-                      <div className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {Sugar.Number.format(Number(leader.treeCount))} Trees
+          leaderboardData.mostRecent &&
+          leaderboardData.mostDonated ? (
+            selectedTab === 'recent' ? (
+              <div className={styles.leaderBoardBody}>
+                {leaderboardData.mostRecent.map((leader: any) => {
+                  return (
+                    <div className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
                       </p>
-                        {/* <p className={styles.leaderBoardDonorTime}>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {Sugar.Number.format(Number(leader.treeCount))} Trees
+                      </p>
+                      {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
                         </p> */}
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                  <div className={styles.leaderBoardBody}>
-                    {leaderboardData.mostDonated.map((leader: any) => {
-                      return (
-                        <div className={styles.leaderBoardBodyRow}>
-                          <p className={styles.leaderBoardDonorName}>
-                            {leader.donorName}
-                          </p>
-                          <p className={styles.leaderBoardDonorTrees}>
-                            {Sugar.Number.format(Number(leader.treeCount))} Trees
-                      </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
+                    </div>
+                  );
+                })}
+              </div>
             ) : (
-              <p>loading</p>
-            )}
+              <div className={styles.leaderBoardBody}>
+                {leaderboardData.mostDonated.map((leader: any) => {
+                  return (
+                    <div className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {Sugar.Number.format(Number(leader.treeCount))} Trees
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )
+          ) : (
+            <p>loading</p>
+          )}
         </div>
       </div>
       <img
