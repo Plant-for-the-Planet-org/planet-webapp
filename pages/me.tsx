@@ -1,8 +1,12 @@
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
+import tenantConfig from '../tenant.config';
 
+const config = tenantConfig();
 export default function UserProfile() {
+  const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
 
   const UserProps = {
@@ -74,6 +78,11 @@ export default function UserProfile() {
     loadUserData();
   }, []);
 
+  if (!config.header.items[3].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+  }
   return (
     <Layout>
       <UserPage
