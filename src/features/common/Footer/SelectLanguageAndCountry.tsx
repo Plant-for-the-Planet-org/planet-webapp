@@ -68,6 +68,7 @@ export default function TransitionsModal(props) {
     if (language) {
       i18n.changeLanguage(language);
       setModalLanguage(language);
+      console.log(language);
     }
   }, [language]);
 

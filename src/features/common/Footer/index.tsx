@@ -48,6 +48,7 @@ export default function Footer() {
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
   ];
+
   // changes the language and selected currency id found in local storage
   useEffect(() => {
     let langCode;

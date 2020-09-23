@@ -20,6 +20,7 @@ import ProjectContactDetails from '../components/projectDetails/ProjectContactDe
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -87,6 +88,11 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
+  const [countryCode, setCountryCode] = React.useState<string>('DE');
+  React.useEffect(() => {
+    const code = window.localStorage.getItem('countryCode') || 'DE';
+    setCountryCode(code);
+  });
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -205,14 +211,19 @@ function SingleProjectDetails({ project }: Props): ReactElement {
               {project.allowDonations && (
                 <div className={styles.projectCost}>
                   <div onClick={handleOpen} className={styles.costButton}>
-                    {project.currency === 'USD'
+                    {/* {project.currency === 'USD'
                       ? '$'
                       : project.currency === 'EUR'
                       ? '€'
                       : project.currency}
                     {project.treeCost % 1 !== 0
                       ? project.treeCost.toFixed(2)
-                      : project.treeCost}
+                      : project.treeCost} */}
+                    {getFormatedCurrency(
+                      countryCode,
+                      project.currency,
+                      project.treeCost
+                    )}
                   </div>
                   <div className={styles.perTree}>{t('donate:perTree')}</div>
                 </div>
