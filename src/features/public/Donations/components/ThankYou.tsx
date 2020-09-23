@@ -76,7 +76,7 @@ function ThankYou({
 
       <div className={styles.contributionMessage}>
         Maybe you'll visit them some day? In the mean time, maybe hook up your
-        friends with some trees of their own by telling them our yours?
+        friends with some trees of their own by telling them about yours?
       </div>
 
       {/* <div className={styles.horizontalLine} /> */}
