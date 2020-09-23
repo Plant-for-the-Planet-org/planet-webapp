@@ -37,43 +37,43 @@ export default function LeaderBoardSection(leaderboard: Props) {
               Most Trees
             </div>
           </div>
-          {leaderboardData !== null &&
-            leaderboardData.mostRecent &&
-            leaderboardData.mostDonated ? (
+          {leaderboardData !== null
+            && leaderboardData.mostRecent
+            && leaderboardData.mostDonated ? (
               selectedTab === 'recent' ? (
                 <div className={styles.leaderBoardBody}>
-                  {leaderboardData.mostRecent.map((leader: any) => {
-                    return (
+                  {leaderboardData.mostRecent.map((leader: any) => (
                       <div className={styles.leaderBoardBodyRow}>
                         <p className={styles.leaderBoardDonorName}>
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {Sugar.Number.format(Number(leader.treeCount))} Trees
-                      </p>
+                          {Sugar.Number.format(Number(leader.treeCount))}
+{' '}
+Trees
+                        </p>
                         {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
                         </p> */}
                       </div>
-                    );
-                  })}
+                  ))}
                 </div>
               ) : (
                   <div className={styles.leaderBoardBody}>
-                    {leaderboardData.mostDonated.map((leader: any) => {
-                      return (
+                    {leaderboardData.mostDonated.map((leader: any) => (
                         <div className={styles.leaderBoardBodyRow}>
                           <p className={styles.leaderBoardDonorName}>
                             {leader.donorName}
                           </p>
                           <p className={styles.leaderBoardDonorTrees}>
-                            {Sugar.Number.format(Number(leader.treeCount))} Trees
-                      </p>
+                            {Sugar.Number.format(Number(leader.treeCount))}
+{' '}
+Trees
+                          </p>
                         </div>
-                      );
-                    })}
+                    ))}
                   </div>
-                )
+              )
             ) : (
               <p>loading</p>
             )}
@@ -81,12 +81,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
       </div>
       <img
         className={styles.leaderBoardBushImage}
-        src={'/tenants/stern/images/leaderboard.svg'}
+        src="/tenants/stern/images/leaderboard.svg"
         alt=""
       />
       <img
         className={styles.leaderBoardGroupTreeImage}
-        src={'/tenants/stern/images/treeGroup.svg'}
+        src="/tenants/stern/images/treeGroup.svg"
         alt=""
       />
       {/* <img

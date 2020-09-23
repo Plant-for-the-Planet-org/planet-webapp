@@ -1,4 +1,4 @@
-import styles from './Leaderboard.module.scss';
+import styles from './Home.module.scss';
 import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../../common/LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';

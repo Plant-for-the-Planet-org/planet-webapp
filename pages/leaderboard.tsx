@@ -9,7 +9,7 @@ import {
 import Layout from '../src/features/common/Layout';
 import About from '../src/tenants/planet/About/About';
 import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
-import SternLeaderBoard from '../src/tenants/stern/LeaderBoard';
+import SternLeaderBoard from '../src/tenants/stern/Home';
 
 import Head from 'next/head';
 import tenantConfig from '../tenant.config';
