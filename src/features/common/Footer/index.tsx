@@ -49,15 +49,30 @@ export default function Footer() {
     },
   ];
 
+  useEffect(() => {
+    if (
+      selectedCountry === 'DE' ||
+      selectedCountry === 'AT' ||
+      selectedCountry === 'CH'
+    ) {
+      setLanguage('de');
+    }
+  }, []);
+
   // changes the language and selected currency id found in local storage
   useEffect(() => {
     let langCode;
     let currencyCode;
     let countryCode;
-    console.log(
-      "localStorage.getItem('language')",
-      localStorage.getItem('language')
-    );
+
+    if (
+      selectedCountry === 'DE' ||
+      selectedCountry === 'AT' ||
+      selectedCountry === 'CH'
+    ) {
+      setLanguage('de');
+    }
+
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
         currencyCode = localStorage.getItem('currencyCode');
@@ -71,6 +86,7 @@ export default function Footer() {
         langCode = localStorage.getItem('language');
         if (langCode) setLanguage(langCode);
       }
+
       // console.log('in footer', langCode, currencyCode, countryCode)
     }
   }, []);
