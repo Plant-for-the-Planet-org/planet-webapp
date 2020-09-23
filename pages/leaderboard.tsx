@@ -9,6 +9,8 @@ import {
 import Layout from '../src/features/common/Layout';
 import About from '../src/tenants/planet/About/About';
 import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
+import SternLeaderBoard from '../src/tenants/stern/Home';
+
 import Head from 'next/head';
 import tenantConfig from '../tenant.config';
 const config = tenantConfig();
@@ -97,8 +99,8 @@ export default function LeaderBoard() {
         startInvisible
       >
         <Layout>
-          {process.env.TENANT === 'planet' ? (
-            <About />
+          {process.env.TENANT === 'stern' ? (
+            <SternLeaderBoard tenantScore={tenantScore} leaderboard={leaderboard} />
           ) : (
             <SalesforceLeaderBoard
               leaderboard={leaderboard}
