@@ -2,7 +2,9 @@
   "name": "planet-web2",
   "version": "0.1.0",
   "private": true,
-  "cacheDirectories": [".next/cache"],
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -21,11 +23,16 @@
     "@turf/turf": "^5.1.6",
     "@types/react-lazyload": "^2.6.0",
     "@zeit/next-sass": "^1.0.1",
+    "@sentry/browser": "^5.15.5",
+    "@sentry/integrations": "5.20.1",
+    "@sentry/node": "^5.15.5",
+    "@sentry/webpack-plugin": "^1.11.1",
+    "@zeit/next-source-maps": "0.0.4-canary.1",
     "bootstrap": "^4.5.0",
     "d3-ease": "^2.0.0",
+    "dom-to-image": "^2.6.0",
     "express": "^4.17.1",
     "framer-motion": "^2.6.5",
-    "html2canvas": "^1.0.0-rc.7",
     "mapbox-gl": "^1.11.1",
     "next": "^9.5.2",
     "node-sass": "^4.14.1",

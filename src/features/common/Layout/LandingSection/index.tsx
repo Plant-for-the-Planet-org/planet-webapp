@@ -10,7 +10,7 @@ export default function LandingSection(props: any) {
           : styles.landingSection
       }
       style={{
-        background: `transparent url(${
+        background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${
           props.imageSrc
             ? props.imageSrc
             : '/tenants/planet/images/home/BackgroundImage.png'

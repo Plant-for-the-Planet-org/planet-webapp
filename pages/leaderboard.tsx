@@ -6,11 +6,10 @@ import {
   RefreshContent,
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
-import Layout from '../src/features/common/Layout';
-import About from '../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
 import Head from 'next/head';
+import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
+
 const config = tenantConfig();
 
 export default function LeaderBoard() {
@@ -59,6 +58,12 @@ export default function LeaderBoard() {
       setTimeout(resolve, 2000);
     });
   }
+
+  if (!config.header.items[2].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+  }
   return (
     <>
       <Head>
@@ -97,14 +102,7 @@ export default function LeaderBoard() {
         startInvisible
       >
         <Layout>
-          {process.env.TENANT === 'planet' ? (
-            <About />
-          ) : (
-            <SalesforceLeaderBoard
-              leaderboard={leaderboard}
-              tenantScore={tenantScore}
-            />
-          )}
+          
         </Layout>
       </PullToRefresh>
     </>
