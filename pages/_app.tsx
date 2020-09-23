@@ -72,14 +72,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     loadConfig();
   }, []);
 
-  React.useEffect(() => {
-    if (localStorage.getItem('language') !== null) {
-      i18n.changeLanguage(localStorage.getItem('language'));
-    } else {
-      i18n.changeLanguage('en');
-    }
-  }, []);
-
   if (!initialized) {
     return <p>Loading...</p>;
   } else {

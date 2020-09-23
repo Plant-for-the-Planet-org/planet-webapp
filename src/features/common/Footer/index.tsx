@@ -12,11 +12,12 @@ const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
+  const { t, i18n } = useTranslation(['common']);
+
   const [openModal, setOpenModal] = useState(false);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('US');
-  const { t } = useTranslation(['common']);
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -61,7 +62,7 @@ export default function Footer() {
       selectedCountry === 'CH'
     ) {
       setLanguage('de');
-      localStorage.setItem('language', 'de');
+      i18n.changeLanguage('de');
     }
 
     if (typeof Storage !== 'undefined') {
@@ -72,10 +73,6 @@ export default function Footer() {
       if (localStorage.getItem('countryCode')) {
         countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
-      }
-      if (localStorage.getItem('language')) {
-        langCode = localStorage.getItem('language');
-        if (langCode) setLanguage(langCode);
       }
     }
   }, []);
