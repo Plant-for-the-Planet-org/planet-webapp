@@ -18,7 +18,7 @@
   "email": "Email",
   "address": "Address",
   "city": "City",
-  "zipCode": "Zip Code",
+  "zipCode": "Postal/Zip Code",
   "zipCodeAlphaNumValidation": "ZipCode should only contain letters and numbers",
   "country": "Country",
   "isACompanyDonation": "This is a company donation",
