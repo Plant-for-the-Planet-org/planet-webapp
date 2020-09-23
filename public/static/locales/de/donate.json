@@ -19,7 +19,7 @@
   "address": "Adresse",
   "city": "Stadt",
   "zipCode": "PLZ",
-  "zipCodeAlphaNumValidation": "PLZ sollte nur Zahlen enthalten",
+  "zipCodeAlphaNumValidation": "PLZ sollte nur Zahlen und Buchstaben enthalten",
   "country": "Land",
   "isACompanyDonation": "Dies ist eine Firmenspende",
   "companyName": "Firmenname",
