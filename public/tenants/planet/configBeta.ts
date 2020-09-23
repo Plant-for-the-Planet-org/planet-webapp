@@ -22,7 +22,7 @@ const config = {
       },
       {
         id: 2,
-        title: 'Donate/Gift',
+        title: 'Home',
         onclick: '/',
         visible: true,
         key: 'donate',
