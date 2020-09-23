@@ -7,8 +7,8 @@ const url = require('url');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
-const i18next = require('../i18n/server');
-const nextI18NextMiddleware = require('next-i18next/middleware').default;
+const i18next = require('./i18n/server');
+// const nextI18NextMiddleware = require('next-i18next/middleware').default;
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -24,18 +24,18 @@ if (!dev && cluster.isMaster) {
 
   cluster.on('exit', (worker, code, signal) => {
     console.error(
-      `Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`,
+      `Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`
     );
   });
 } else {
   const nextApp = next({ dir: '.', dev });
   const nextHandler = nextApp.getRequestHandler();
 
-  nextApp.prepare().then(() => {
+  nextApp.prepare().then(async () => {
     const server = express();
 
     await i18next.initPromise;
-    app.use(nextI18NextMiddleware(i18next));
+    // server.use(nextI18NextMiddleware(i18next));
 
     if (!dev) {
       // Enforce SSL & HSTS in production
@@ -58,7 +58,7 @@ if (!dev && cluster.isMaster) {
       '/static',
       express.static(path.join(__dirname, 'static'), {
         maxAge: dev ? '0' : '365d',
-      }),
+      })
     );
 
     // Example server-side routing
