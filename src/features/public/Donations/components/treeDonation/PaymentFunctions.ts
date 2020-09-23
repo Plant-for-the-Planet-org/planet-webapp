@@ -7,6 +7,11 @@ export async function createDonation(data: any) {
     headers: {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
+      'x-locale': `${
+        localStorage.getItem('language') !== null
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
     },
   });
   const donation = await res.json();
@@ -20,6 +25,11 @@ export async function payDonation(data: any, id: any) {
     headers: {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
+      'x-locale': `${
+        localStorage.getItem('language') !== null
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
     },
   });
   const contribution = await res.json();
@@ -64,10 +74,9 @@ export function payWithCard({
   paymentMethod,
   window,
   donorDetails,
-  taxDeductionCountry
+  taxDeductionCountry,
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
-
 
   let createDonationData = {
     type: 'trees',

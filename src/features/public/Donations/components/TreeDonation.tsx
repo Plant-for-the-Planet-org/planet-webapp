@@ -280,7 +280,7 @@ function TreeDonation({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, treeCost)}
+            {getFormatedCurrency(i18n.language, currency, treeCost * treeCount)}
             {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
           </div>
           <div className={styles.totalCostText}>
