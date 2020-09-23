@@ -17,5 +17,7 @@
   "selectCountry": "Land auswählen",
   "ok": "OK",
   "cancel": "Abbrechen",
-  "thankYou": "Vielen Dank"
+  "thankYou": "Vielen Dank",
+  "privacyPolicyNotice": "Durch die Nutzung dieser Website stimmen Sie unserer",
+  "privacyPolicy": "Datenschutz-Erklärung"
 }

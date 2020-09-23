@@ -54,5 +54,6 @@
   "myTreesPlantedByOnLocation": "Meine {{treeCount}} Bäume werden in {{location}} gepflanzt.",
   "plantTreesAtURL": "Pflanze Bäume unter {{url}}",
   "copiedToClipboard": "Text in die Zwischenablage kopiert!",
-  "noProjectsFound": "Keine Projekte gefunden"
+  "noProjectsFound": "Keine Projekte gefunden",
+  "inTimeOfTaxReturns": ""
 }
