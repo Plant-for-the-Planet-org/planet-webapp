@@ -1,5 +1,4 @@
 {
-  "description": "My name is Norbert",
   "by": "By",
   "to": "To",
   "for": "for",
@@ -14,7 +13,6 @@
   "donate": "Donate",
   "gift": "Gift",
   "continue": "Continue",
-  "selectCountry": "Select your Country",
   "selectLanguage": "Select a Language",
   "ok": "OK",
   "cancel": "Cancel",

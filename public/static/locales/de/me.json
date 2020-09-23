@@ -1,0 +1,10 @@
+{
+  "description": "Mein Name ist {{name}}",
+  "treesPlanted": "Bäume gepflanzt",
+  "target": "Ziel",
+  "share": "Teilen",
+  "registerTrees": "Bäume registrieren",
+  "redeem": "Einlösen",
+  "myForest": "Mein Wald",
+  "giftToGiftee": "Geschenk an {gifteeName}"
+}
