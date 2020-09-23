@@ -8,7 +8,7 @@ import {
 } from 'react-js-pull-to-refresh';
 import Layout from '../src/features/common/Layout';
 import About from '../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
+import SalesforceLeaderBoard from '../src/tenants/salesforce/Home';
 import SternLeaderBoard from '../src/tenants/stern/Home';
 
 import Head from 'next/head';
