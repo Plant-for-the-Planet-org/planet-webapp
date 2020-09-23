@@ -210,22 +210,17 @@ function SingleProjectDetails({ project }: Props): ReactElement {
 
               {project.allowDonations && (
                 <div className={styles.projectCost}>
-                  <div onClick={handleOpen} className={styles.costButton}>
-                    {/* {project.currency === 'USD'
-                      ? '$'
-                      : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
-                    {project.treeCost % 1 !== 0
-                      ? project.treeCost.toFixed(2)
-                      : project.treeCost} */}
+                  <div onClick={handleOpen} className={styles.donateButton}>
+                    {t('common:donate')}
+                  </div>
+                  <div className={styles.perTreeCost}>
                     {getFormatedCurrency(
                       i18n.language,
                       project.currency,
                       project.treeCost
-                    )}
+                    )}{' '}
+                    <span>{t('donate:perTree')}</span>
                   </div>
-                  <div className={styles.perTree}>{t('donate:perTree')}</div>
                 </div>
               )}
             </div>

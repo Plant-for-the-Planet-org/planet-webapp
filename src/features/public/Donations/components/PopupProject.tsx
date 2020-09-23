@@ -9,6 +9,7 @@ import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -24,7 +25,7 @@ export default function PopupProject({
   handleOpen,
   handleClose,
 }: Props): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
   const { theme } = React.useContext(ThemeContext);
 
   const ImageSource = project.properties.image
@@ -100,17 +101,17 @@ export default function PopupProject({
           <div className={styles.projectCost}>
             {project.properties.treeCost ? (
               <>
-                <div onClick={handleOpen} className={styles.costButton}>
-                  {project.properties.currency === 'USD'
-                    ? '$'
-                    : project.properties.currency === 'EUR'
-                    ? '€'
-                    : project.properties.currency}
-                  {project.properties.treeCost % 1 !== 0
-                    ? project.properties.treeCost.toFixed(2)
-                    : project.properties.treeCost}
+                <div onClick={handleOpen} className={styles.donateButton}>
+                  {t('common:donate')}
                 </div>
-                <div className={styles.perTree}>{t('donate:perTree')}</div>
+                <div className={styles.perTreeCost}>
+                  {getFormatedCurrency(
+                    i18n.language,
+                    project.properties.currency,
+                    project.properties.treeCost
+                  )}{' '}
+                  <span>{t('donate:perTree')}</span>
+                </div>
               </>
             ) : null}
           </div>
