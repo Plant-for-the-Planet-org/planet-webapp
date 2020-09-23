@@ -14,7 +14,6 @@ const config = {
     items: [
       {
         id: 1,
-        order: 1,
         title: 'Home',
         onclick: '/home',
         visible: true,
@@ -22,7 +21,6 @@ const config = {
       },
       {
         id: 3,
-        order: 2,
         title: 'Donate/Gift',
         onclick: '/',
         visible: true,
@@ -30,16 +28,13 @@ const config = {
       },
       {
         id: 2,
-        order: 3,
         title: 'Leaders',
         onclick: '/',
         visible: false, // Leaders is false for Salesforce
         key: 'leaderboard',
       },
-
       {
         id: 4,
-        order: 4,
         title: 'Me',
         onclick: '/me',
         visible: false, // Me is false for Salesforce

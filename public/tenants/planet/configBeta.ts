@@ -15,15 +15,20 @@ const config = {
     items: [
       {
         id: 1,
-        order: 1,
+        title: 'Home',
+        onclick: '/home',
+        visible: false,
+        key: 'home',
+      },
+      {
+        id: 2,
         title: 'Donate/Gift',
         onclick: '/',
         visible: true,
         key: 'donate',
       },
       {
-        id: 2,
-        order: 3,
+        id: 3,
         title: 'Leaders',
         onclick: '/',
         visible: false,
@@ -32,7 +37,6 @@ const config = {
 
       {
         id: 4,
-        order: 4,
         title: 'Me',
         onclick: '/me',
         visible: false,
