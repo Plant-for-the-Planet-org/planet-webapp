@@ -16,6 +16,7 @@ import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 
@@ -40,7 +41,7 @@ function TreeDonation({
   setPaymentType,
   isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
 
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
@@ -254,7 +255,7 @@ function TreeDonation({
               style={{ marginLeft: '4px' }}
             >
               {project.taxDeductionCountries.includes(country)
-                ? ' in time for tax returns.'
+                ? t('donate:inTimeOfTaxReturns')
                 : null}
             </div>
           </div>
@@ -279,7 +280,7 @@ function TreeDonation({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+            {getFormatedCurrency(i18n.language, currency, treeCost)}
             {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
           </div>
           <div className={styles.totalCostText}>

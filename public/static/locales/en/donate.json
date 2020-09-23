@@ -54,5 +54,6 @@
   "myTreesPlantedByOnLocation": "My {{treeCount}} trees are being planted in {{location}}.",
   "plantTreesAtURL": "Plant trees at {{url}}",
   "copiedToClipboard": "Text Copied to Clipboard!",
-  "noProjectsFound": "No projects found"
+  "noProjectsFound": "No projects found",
+  "inTimeOfTaxReturns": "in time for tax returns."
 }
