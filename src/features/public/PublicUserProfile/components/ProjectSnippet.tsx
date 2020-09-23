@@ -73,13 +73,13 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
             {project.treeCost ? (
               <>
                 <div className={styles.donateButton}>{t('common:donate')}</div>
-                <div className={styles.perTree}>
+                <div className={styles.perTreeCost}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
                     project.treeCost
                   )}{' '}
-                  {t('donate:perTree')}
+                  <span>{t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}

@@ -213,13 +213,13 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                   <div onClick={handleOpen} className={styles.donateButton}>
                     {t('common:donate')}
                   </div>
-                  <div className={styles.perTree}>
+                  <div className={styles.perTreeCost}>
                     {getFormatedCurrency(
                       i18n.language,
                       project.currency,
                       project.treeCost
                     )}{' '}
-                    {t('donate:perTree')}
+                    <span>{t('donate:perTree')}</span>
                   </div>
                 </div>
               )}

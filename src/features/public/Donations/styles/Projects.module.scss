@@ -212,12 +212,16 @@
   text-decoration: none;
 }
 
-.perTree {
+.perTreeCost {
   font-family: $secondaryFontFamily;
   font-size: 10px;
   color: $primaryFontColor;
   margin-top: 5px;
   font-weight: 400;
+}
+
+.perTreeCost > span {
+  font-family: $primaryFontFamily;
 }
 
 .projectCost {
