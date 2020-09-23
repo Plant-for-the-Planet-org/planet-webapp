@@ -20,7 +20,7 @@ interface Props {
 
 export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const router = useRouter();
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
   const [countryCode, setCountryCode] = React.useState<string>('DE');
 
   const ImageSource = project.properties.image
@@ -134,7 +134,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
                     ? project.properties.treeCost.toFixed(2)
                   : project.properties.treeCost} */}
                   {getFormatedCurrency(
-                    countryCode,
+                    i18n.language,
                     project.properties.currency,
                     project.properties.treeCost
                   )}

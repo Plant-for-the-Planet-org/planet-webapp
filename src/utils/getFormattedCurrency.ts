@@ -1,12 +1,9 @@
-import { getCountryDataBy } from './countryUtils';
-
 export default function getFormatedCurrency(
-  countryCode: string,
+  langCode: string,
   currency: string,
   number: number
 ) {
-  let langCode = getCountryDataBy('countryCode', countryCode).languageCode;
-  const formatter = new Intl.NumberFormat(langCode + '-' + countryCode, {
+  const formatter = new Intl.NumberFormat(langCode, {
     style: 'currency',
     currency: currency,
 

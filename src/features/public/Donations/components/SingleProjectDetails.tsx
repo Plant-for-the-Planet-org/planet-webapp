@@ -34,7 +34,8 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 
 function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
+  const [countryCode, setCountryCode] = React.useState<string>('DE');
 
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -88,7 +89,6 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
-  const [countryCode, setCountryCode] = React.useState<string>('DE');
   React.useEffect(() => {
     const code = window.localStorage.getItem('countryCode') || 'DE';
     setCountryCode(code);
@@ -220,7 +220,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                       ? project.treeCost.toFixed(2)
                       : project.treeCost} */}
                     {getFormatedCurrency(
-                      countryCode,
+                      i18n.language,
                       project.currency,
                       project.treeCost
                     )}
