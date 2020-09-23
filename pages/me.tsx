@@ -80,11 +80,6 @@ export default function UserProfile() {
 
   return (
     <Layout>
-      <h2 style={{ marginTop: '80px' }}>
-        description: {t('me:description', { name: 'Noert' })}
-        <br />
-        appname: {t('common:appname')}
-      </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
         {...UserProps}

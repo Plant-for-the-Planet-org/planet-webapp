@@ -6,7 +6,7 @@ export default new NextI18Next({
   use: [LanguageDetector, initReactI18next],
   defaultLanguage: 'en',
   fallbackLng: 'en',
-  otherLanguages: ['de', 'es'], // list all languages here
+  otherLanguages: ['de'], // list all languages here
   detection: {
     // check if language is cached in cookies, if not check local storage
     order: ['cookie', 'localStorage'],
