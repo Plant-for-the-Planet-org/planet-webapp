@@ -19,6 +19,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
             : 'https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg'
         }
       >
+        <div style={{ marginTop:'64px' }} />
         {tenantScore && tenantScore.total
           && (
           <TreeCounter
