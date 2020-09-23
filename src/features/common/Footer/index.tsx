@@ -56,14 +56,15 @@ export default function Footer() {
     let currencyCode;
     let countryCode;
 
-    if (
-      selectedCountry === 'DE' ||
-      selectedCountry === 'AT' ||
-      selectedCountry === 'CH'
-    ) {
-      setLanguage('de');
-      i18n.changeLanguage('de');
-    }
+    // Norbert: we do not want users in DACH force to use the website in German, do we?
+    // if (
+    //   selectedCountry === 'DE' ||
+    //   selectedCountry === 'AT' ||
+    //   selectedCountry === 'CH'
+    // ) {
+    //   setLanguage('de');
+    //   localStorage.setItem('language', 'de');
+    // }
 
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {

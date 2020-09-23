@@ -16,7 +16,7 @@ import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
 import i18next from '../../../../i18n';
 
-const { Trans, useTranslation } = i18next;
+const { useTranslation } = i18next;
 
 export default function TransitionsModal(props) {
   const {
@@ -53,6 +53,7 @@ export default function TransitionsModal(props) {
     i18n.changeLanguage(modalLanguage);
     // window.localStorage.setItem('language', modalLanguage);
     setLanguage(modalLanguage);
+    i18n.changeLanguage(modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
     let currencyCode = getCountryDataBy('countryCode', selectedModalCountry)
@@ -67,7 +68,6 @@ export default function TransitionsModal(props) {
   // changes the language in local state whenever the language changes in Footer state
   useEffect(() => {
     if (language) {
-      i18n.changeLanguage(language);
       setModalLanguage(language);
     }
   }, [language]);

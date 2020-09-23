@@ -6,14 +6,16 @@ export default new NextI18Next({
   use: [LanguageDetector, initReactI18next],
   defaultLanguage: 'en',
   fallbackLng: 'en',
+  debug: false,
   otherLanguages: ['de'], // list all languages here
   detection: {
-    // check if language is cached in cookies, if not check local storage
-    order: ['cookie', 'localStorage'],
+    // check if language is cached in cookies, if not check local storage, 
+    // last retrieve from browser language
+    order: ['cookie', 'localStorage', 'navigator'],
 
     // next-i18next by default searches for the 'next-i18next' cookie on server requests
-    lookupCookie: 'next-i18next',
-    lookupLocalStorage: 'i18nextLng',
+    lookupCookie: 'language',
+    lookupLocalStorage: 'language',
 
     // cache the language in cookies and local storage
     caches: ['cookie', 'localStorage'],
