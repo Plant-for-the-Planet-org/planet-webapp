@@ -32,13 +32,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
-  
+
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-      i18next.initPromise.then(() => setInitialized(true));
-    }, []);
-    
+    i18next.initPromise.then(() => setInitialized(true));
+  }, []);
+
   React.useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
@@ -65,7 +65,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     loadConfig();
   }, []);
 
-
   if (!initialized) {
     return <p>Loading...</p>;
   } else {
@@ -74,6 +73,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
-    ); 
-  },
+    );
+  }
 }
