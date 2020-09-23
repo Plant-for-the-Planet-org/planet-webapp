@@ -1,4 +1,4 @@
-import { signIn, signout, useSession, getSession } from 'next-auth/client';
+import { signIn, signOut, useSession, getSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
 import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
@@ -76,17 +76,18 @@ const Me = () => {
     }
     loadUserData();
   }, []);
-  // if (!session && !loading) {
+
+  if (!session && !loading) {
   return (
     <Layout>
       <br />
       <br />
       <br />
       <a
-        href={`/api/auth/signin`}
+        href={`/api/auth/signin/`}
         onClick={(e) => {
           e.preventDefault();
-          signIn();
+          signIn(null, { callbackUrl: 'http://localhost:3000/me'});
         }}
       >
         Sign In
@@ -95,23 +96,24 @@ const Me = () => {
       <h1> session : {session}</h1>
     </Layout>
   );
-  // }
-  // else {
-  //   return (
-  //     <Layout>
-  //       <h2 style={{ marginTop: '80px' }}>
-  //         description:
-  //         {texts.description}
-  //         {/* Signed in as {JSON.stringify(session)} */}
-  //       </h2>
-  //       <button onClick={() => signout({ callbackUrl: '/' })}>Sign out</button>
-  //       <UserPage
-  //         style={{ height: '100vh', overflowX: 'hidden' }}
-  //         {...UserProps}
-  //       />
-  //     </Layout>
-  //   );
-  // }
+  }
+  else {
+    return (
+      <Layout>
+        <h2 style={{ marginTop: '80px' }}>
+          description:
+          {texts.description}
+          {/* Signed in as {JSON.stringify(session)} */}
+        </h2>
+        <h1> session : {JSON.stringify(session)}</h1>
+        <button onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button>
+        <UserPage
+          style={{ height: '100vh', overflowX: 'hidden' }}
+          {...UserProps}
+        />
+      </Layout>
+    );
+  }
 };
 
 export default Me;

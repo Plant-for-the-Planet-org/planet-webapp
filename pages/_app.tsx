@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import { Provider as AuthProvider } from 'next-auth/client'
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/utils/themeContext';
@@ -40,11 +41,13 @@ export default function PlanetWeb({ Component, pageProps }: any) {
     }
     loadConfig();
   }, []);
-
+  console.log('in app', process.env.NEXT_PUBLIC_VERCEL_URL)
   return (
+    <AuthProvider session={pageProps.session}>
     <ThemeProvider>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
+    </AuthProvider>
   );
 }
