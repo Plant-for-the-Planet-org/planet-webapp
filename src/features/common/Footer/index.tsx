@@ -49,16 +49,6 @@ export default function Footer() {
     },
   ];
 
-  useEffect(() => {
-    if (
-      selectedCountry === 'DE' ||
-      selectedCountry === 'AT' ||
-      selectedCountry === 'CH'
-    ) {
-      setLanguage('de');
-    }
-  }, []);
-
   // changes the language and selected currency id found in local storage
   useEffect(() => {
     let langCode;
@@ -86,8 +76,6 @@ export default function Footer() {
         langCode = localStorage.getItem('language');
         if (langCode) setLanguage(langCode);
       }
-
-      // console.log('in footer', langCode, currencyCode, countryCode)
     }
   }, []);
 

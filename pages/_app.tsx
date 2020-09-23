@@ -29,6 +29,10 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
+  const { Trans, useTranslation } = i18next;
+  const { i18n } = useTranslation();
+  const [language, setLanguage] = React.useState('en');
+
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
@@ -64,6 +68,15 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
     loadConfig();
   }, []);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('language') !== null) {
+      console.log('localstorage', localStorage.getItem('language'));
+      i18n.changeLanguage(localStorage.getItem('language'));
+    } else {
+      i18n.changeLanguage(language);
+    }
+  }, [language]);
 
   if (!initialized) {
     return <p>Loading...</p>;
