@@ -44,7 +44,6 @@
   "cardNumber": "Card Number",
   "expDate": "Exp. Date (MM/YY)",
   "selectCurrency": "Select your Currency",
-  "selectCountry": "Select Country",
   "treeDonationWithPFP": "Tree donation with Plant-for-the-Planet",
   "unavailable": "unavailable",
   "donationSuccessfulWith": "Your {{currency}} {{totalAmount}} donation was successfully paid with {{paymentTypeUsed}}.",

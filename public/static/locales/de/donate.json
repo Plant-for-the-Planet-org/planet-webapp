@@ -44,7 +44,6 @@
   "cardNumber": "Kartennummer",
   "expDate": "Gültigkeitsdatum (MM/JJ)",
   "selectCurrency": "Dein Land auswählen",
-  "selectCountry": "Land auswählen",
   "treeDonationWithPFP": "Baumspende mit Plant-for-the-Planet",
   "unavailable": "nicht verfügbar",
   "donationSuccessfulWith": "Deine {{totalAmount}} {{currency}} Spende wurde erfolgreich mit {{paymentTypeUsed}} bezahlt.",

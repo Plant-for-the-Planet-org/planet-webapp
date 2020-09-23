@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
-import i18next from '../i18n';
-
-const { Trans, useTranslation } = i18next;
 
 export default function UserProfile() {
   const [userprofile, setUserprofile] = React.useState({});
-  const { t } = useTranslation(['me', 'common']);
 
   const UserProps = {
     userprofile,

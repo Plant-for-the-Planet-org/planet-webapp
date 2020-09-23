@@ -76,7 +76,7 @@ export default function TransitionsModal(props: any) {
         <Fade in={openModal}>
           <div className={styles.modal} style={{ height: 'auto' }}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>{t('donate:selectCountry')}</p>
+              <p className={styles.sectionHead}>{t('common:selectCountry')}</p>
               {/* maps the radio button for country */}
               <MapCountry
                 countriesData={countriesData}
