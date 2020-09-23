@@ -57,7 +57,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
-              {t('donate:planted')} •{' '}
+              {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {getCountryDataBy('countryCode', project.country).countryName}
               </span>

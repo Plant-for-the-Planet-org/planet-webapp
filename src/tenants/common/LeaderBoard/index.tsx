@@ -11,7 +11,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard']);
+  const { t } = useTranslation(['leaderboard', 'common']);
 
   return (
     <section className={styles.leaderBoardSection}>
@@ -51,7 +51,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {Sugar.Number.format(Number(leader.treeCount))} Trees
+                      {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
                     </p>
                     {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -67,7 +67,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {Sugar.Number.format(Number(leader.treeCount))} Trees
+                      {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
                     </p>
                   </div>
                 ))}
