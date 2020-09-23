@@ -151,7 +151,8 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-            {Number(treeCost).toFixed(2)} {t('donate:perTree')}
+            {getFormatedCurrency(i18n.language, currency, treeCost)}{' '}
+            {t('donate:perTree')}
           </div>
         </div>
 
