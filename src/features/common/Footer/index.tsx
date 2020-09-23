@@ -15,7 +15,7 @@ export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState('en');
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('DE');
+  const [selectedCountry, setSelectedCountry] = useState('US');
   const { t } = useTranslation(['common']);
 
   const handleModalOpen = () => {
