@@ -312,14 +312,22 @@ export default function MapboxMap({
             <div
               className={styles.popupProject}
               onClick={() =>
-                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
-                  shallow: true,
-                })
+                router.push(
+                  `/?p=${popupData.project.properties.slug}`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                )
               }
               onKeyPress={() =>
-                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
-                  shallow: true,
-                })
+                router.push(
+                  `/?p=${popupData.project.properties.slug}`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                )
               }
               role="button"
               tabIndex={0}

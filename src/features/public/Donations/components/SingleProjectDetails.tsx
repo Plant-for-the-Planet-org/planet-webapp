@@ -106,10 +106,6 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     setOpen(true);
   };
 
-  const ProjectProps = {
-    project: project,
-  };
-
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -140,24 +136,24 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         <div className={styles.singleProject}>
           <div className={styles.projectImage}>
             {project.image ? (
-              <LazyLoad>
+              // <LazyLoad>
+              <div
+                className={styles.projectImageFile}
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                }}
+              >
                 <div
-                  className={styles.projectImageFile}
-                  style={{
-                    backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  style={{ cursor: 'pointer', width: 'fit-content' }}
+                  onClick={() => {
+                    router.push('/', undefined, { shallow: true });
                   }}
                 >
-                  <div
-                    style={{ cursor: 'pointer', width: 'fit-content' }}
-                    onClick={() => {
-                      router.push('/', undefined, { shallow: true });
-                    }}
-                  >
-                    <BackButton />
-                  </div>
+                  <BackButton />
                 </div>
-              </LazyLoad>
+              </div>
             ) : (
+              // </LazyLoad>
               <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
