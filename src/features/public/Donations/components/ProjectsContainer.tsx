@@ -8,14 +8,7 @@ import styles from './../styles/Projects.module.scss';
 
 interface Props {
   projects: any;
-  setShowSingleProject: Function;
-  fetchSingleProject: Function;
-  setLayoutId: Function;
-  yScroll: any;
   setSearchedProjects: Function;
-  touchMap: any;
-  setTouchMap: Function;
-  projectsContainer: any;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -25,17 +18,10 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 
 export default function ProjectsContainer({
   projects,
-  setShowSingleProject,
-  fetchSingleProject,
-  setLayoutId,
-  yScroll,
   setSearchedProjects,
-  touchMap,
-  setTouchMap,
-  projectsContainer,
 }: Props) {
   const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 767;
+  const [isMobile, setIsMobile] = React.useState(screenWidth <= 767);
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
   const showFeaturedList =
@@ -111,146 +97,108 @@ export default function ProjectsContainer({
 
   const AllProjectsProps = {
     projects: allProjects,
-    setShowSingleProject,
-    fetchSingleProject,
-    setLayoutId,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
-    setShowSingleProject,
-    fetchSingleProject,
-    setLayoutId,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
-    setShowSingleProject,
-    fetchSingleProject,
-    setLayoutId,
   };
 
-  React.useEffect(() => {
-    if (!isMobile) {
-      projectsContainer.current.scrollTo({ top: yScroll, behavior: 'smooth' });
-    }
-  }, [yScroll]);
-
   return (
-    <div
-      ref={projectsContainer}
-      style={
-        touchMap
-          ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
-          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
-      }
-      className={styles.container}
-    >
-      {!touchMap ? (
+    <>
+      {searchMode ? (
+        <div className={styles.headerSearchMode}>
+          <div className={styles.searchIcon}>
+            <SearchIcon color={styles.primaryFontColor} />
+          </div>
+
+          <div className={styles.searchInput}>
+            <TextField
+              ref={searchRef}
+              fullWidth={true}
+              autoFocus={true}
+              placeholder="Search Projects"
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+            />
+          </div>
+          <div
+            className={styles.cancelIcon}
+            onClick={() => {
+              setSearchMode(false);
+              setSearchValue('');
+            }}
+          >
+            <CancelIcon color={styles.primaryFontColor} />
+          </div>
+        </div>
+      ) : (
         <div
-          className={styles.avoidPointerEvents}
-          onTouchMove={() => {
-            setTouchMap(true);
-          }}
-        ></div>
-      ) : null}
-      <div
-        onTouchMove={() => {
-          setTouchMap(false);
-        }}
-        className={styles.containerChild}
-      >
-        <div className={styles.cardContainer}>
-          {searchMode ? (
-            <div className={styles.headerSearchMode}>
-              <div className={styles.searchIcon}>
-                <SearchIcon color={styles.primaryFontColor} />
+          className={styles.header}
+          style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
+        >
+          {isMobile ? <div className={styles.dragBar}></div> : null}
+          {showFeaturedList ? (
+            <div className={styles.tabButtonContainer}>
+              <div
+                className={styles.tabButton}
+                onClick={() => setSelectedTab('featured')}
+              >
+                <div
+                  className={
+                    selectedTab === 'featured'
+                      ? styles.tabButtonSelected
+                      : styles.tabButtonText
+                  }
+                >
+                  Top Projects
+                </div>
+                {selectedTab === 'featured' ? (
+                  <div className={styles.tabButtonSelectedIndicator} />
+                ) : null}
               </div>
 
-              <div className={styles.searchInput}>
-                <TextField
-                  ref={searchRef}
-                  fullWidth={true}
-                  autoFocus={true}
-                  placeholder="Search Projects"
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  value={searchValue}
-                />
-              </div>
               <div
-                className={styles.cancelIcon}
-                onClick={() => {
-                  setSearchMode(false);
-                  setSearchValue('');
-                }}
+                className={styles.tabButton}
+                onClick={() => setSelectedTab('all')}
               >
-                <CancelIcon color={styles.primaryFontColor} />
+                <div
+                  className={
+                    selectedTab === 'all'
+                      ? styles.tabButtonSelected
+                      : styles.tabButtonText
+                  }
+                >
+                  All {projects.length} Projects
+                </div>
+                {selectedTab === 'all' ? (
+                  <div className={styles.tabButtonSelectedIndicator} />
+                ) : null}
               </div>
             </div>
           ) : (
-            <div className={styles.header}>
-              {showFeaturedList ? (
-                <div className={styles.tabButtonContainer}>
-                  <div
-                    className={styles.tabButton}
-                    onClick={() => setSelectedTab('featured')}
-                  >
-                    <div
-                      className={
-                        selectedTab === 'featured'
-                          ? styles.tabButtonSelected
-                          : styles.tabButtonText
-                      }
-                    >
-                      Top Projects
-                    </div>
-                    {selectedTab === 'featured' ? (
-                      <div className={styles.tabButtonSelectedIndicator} />
-                    ) : null}
-                  </div>
-
-                  <div
-                    className={styles.tabButton}
-                    onClick={() => setSelectedTab('all')}
-                  >
-                    <div
-                      className={
-                        selectedTab === 'all'
-                          ? styles.tabButtonSelected
-                          : styles.tabButtonText
-                      }
-                    >
-                      All {projects.length} Projects
-                    </div>
-                    {selectedTab === 'all' ? (
-                      <div className={styles.tabButtonSelectedIndicator} />
-                    ) : null}
-                  </div>
-                </div>
-              ) : (
-                <p className={styles.headerText}>
-                  Stop Talking. Start Planting.
-                </p>
-              )}
-
-              <div
-                className={styles.searchIcon}
-                onClick={() => setSearchMode(true)}
-              >
-                <SearchIcon />
-              </div>
-            </div>
+            <p className={styles.headerText}>Stop Talking. Start Planting.</p>
           )}
-          {/* till here is header */}
-          <div className={styles.projectsContainer}>
-            {searchValue !== '' ? (
-              <AllProjects {...SearchResultProjectsProps} />
-            ) : selectedTab === 'all' ? (
-              <AllProjects {...AllProjectsProps} />
-            ) : (
-              <AllProjects {...FeaturedProjectsProps} />
-            )}
+
+          <div
+            className={styles.searchIcon}
+            onClick={() => setSearchMode(true)}
+          >
+            <SearchIcon />
           </div>
         </div>
+      )}
+      {/* till here is header */}
+      <div className={styles.projectsContainer}>
+        {searchValue !== '' ? (
+          <AllProjects {...SearchResultProjectsProps} />
+        ) : selectedTab === 'all' ? (
+          <AllProjects {...AllProjectsProps} />
+        ) : (
+          <AllProjects {...FeaturedProjectsProps} />
+        )}
       </div>
-    </div>
+    </>
   );
 }

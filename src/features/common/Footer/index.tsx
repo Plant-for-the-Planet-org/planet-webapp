@@ -79,9 +79,9 @@ export default function Footer() {
           <div>
             <div className={styles.footer_button_container}>
               <div onClick={handleModalOpen} className={styles.footer_button}>
-                <World />
+                <World color={styles.primaryFontColor} />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(language)} (${selectedCurrency})`}
+                  {`${getLanguageName(language)} · ${selectedCurrency}`}
                 </p>
               </div>
               <a href="https://play.google.com/store/apps/details?id=org.pftp">

@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .container {
-  background-color: $light;
+  background-color: $backgroundColor;
   border-radius: 7px;
   padding: 20px;
   max-width: 412px;
@@ -120,4 +120,8 @@
   height: 1px;
   background-color: $dividerColor;
   margin-top: 20px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
 }

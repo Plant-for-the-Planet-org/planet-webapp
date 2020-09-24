@@ -18,6 +18,8 @@ function ContactDetails({
   setContactDetails,
   isCompany,
   setIsCompany,
+  isTaxDeductible,
+  country
 }: ContactDetailsPageProps): ReactElement {
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
@@ -26,6 +28,12 @@ function ContactDetails({
   const changeContactDetails = (e: any) => {
     setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
   };
+
+  const changeCountry = (country: any) => {
+    setContactDetails({ ...contactDetails, country: country });
+  };
+
+  let defaultCountry = isTaxDeductible ? country : localStorage.getItem('countryCode');
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -33,7 +41,7 @@ function ContactDetails({
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
-          <BackArrow />
+          <BackArrow color={styles.primaryFontColor} />
         </div>
         <div className={styles.headerTitle}>Contact Details</div>
       </div>
@@ -143,8 +151,8 @@ function ContactDetails({
               inputRef={register({ required: true })}
               label="Country"
               name="country"
-              onChange={changeContactDetails}
-              defaultValue={contactDetails.country}
+              onChange={changeCountry}
+              defaultValue={contactDetails.country ? contactDetails.country : defaultCountry}
             />
             {errors.country && (
               <span className={styles.formErrors}>Country is required</span>

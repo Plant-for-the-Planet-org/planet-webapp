@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .container {
-  background-color: $light;
+  background-color: $backgroundColor;
   border-radius: 7px;
   padding: 20px;
   width: 412px;
@@ -186,4 +186,8 @@
   color: $primaryFontColor;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+:export {
+  primaryFontFamily: $primaryFontFamily;
 }

@@ -2,24 +2,26 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
+import tenantConfig from '../../../../tenant.config';
 import MaterialTextFeild from './MaterialTextFeild';
+const config = tenantConfig();
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
 function countryToFlag(isoCode: string) {
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) =>
-          String.fromCodePoint(char.charCodeAt(0) + 127397)
-        )
+      .toUpperCase()
+      .replace(/./g, (char) =>
+        String.fromCodePoint(char.charCodeAt(0) + 127397)
+      )
     : isoCode;
 }
 
 const useStyles = makeStyles({
   option: {
     color: '#2F3336',
-    fontFamily: 'Raleway',
+    fontFamily: config!.font.primaryFontFamily,
     fontSize: '14px',
     '& > span': {
       marginRight: 10,
@@ -32,16 +34,23 @@ export default function CountrySelect(props: {
   label: React.ReactNode;
   inputRef: ((instance: any) => void) | React.RefObject<any> | null | undefined;
   name: string | undefined;
-  defaultValue: string;
+  defaultValue: String | undefined;
   onChange:
-    | ((
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      ) => void)
-    | undefined;
+  | ((
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void)
+  | undefined;
 }) {
   const classes = useStyles();
 
   const defaultValue = props.defaultValue;
+
+  let defaultCountry;
+  defaultCountry = countries.filter(function (data) {
+    return data.code === defaultValue;
+  })
+  const [value, setValue] = React.useState(defaultCountry[0])
+
   return (
     <Autocomplete
       id="country-select-demo"
@@ -50,6 +59,7 @@ export default function CountrySelect(props: {
       classes={{
         option: classes.option,
       }}
+      value={value}
       autoHighlight
       getOptionLabel={(option) => option.label}
       renderOption={(option) => (
@@ -58,6 +68,12 @@ export default function CountrySelect(props: {
           {option.label} ({option.code})
         </React.Fragment>
       )}
+      onChange={(event: any, newValue: CountryType | null) => {
+        if (newValue) {
+          props.onChange(newValue.code);
+        }
+      }}
+      defaultValue={defaultCountry[0].label}
       renderInput={(params) => (
         <MaterialTextFeild
           {...params}
@@ -65,12 +81,11 @@ export default function CountrySelect(props: {
           variant="outlined"
           inputProps={{
             ...params.inputProps,
-            // autoComplete: 'new-password', // disable autocomplete and autofill
+            autoComplete: 'new-password', // disable autocomplete and autofill
           }}
           inputRef={props.inputRef}
           name={props.name}
           onChange={props.onChange}
-          defaultValue={props.defaultValue}
         />
       )}
     />

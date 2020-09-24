@@ -1,13 +1,14 @@
-export const getImageUrl = (
+// eslint-disable-next-line consistent-return
+export default function getImageUrl(
   category: string,
   variant: string,
-  imageName: any
-) => {
+  imageName: any,
+) {
   if (process.env.CDN_URL) {
     const cdnURl = process.env.CDN_URL;
-    const cacheURl = "media/cache";
+    const cacheURl = 'media/cache';
     return `${cdnURl}/${cacheURl}/${category}/${variant}/${imageName}`;
-  } else if (typeof Storage !== 'undefined') {
+  } if (typeof Storage !== 'undefined') {
     let configStore;
     configStore = localStorage.getItem('config');
     configStore = configStore ? JSON.parse(configStore) : null;
@@ -16,4 +17,4 @@ export const getImageUrl = (
       return `${cacheURl}/${category}/${variant}/${imageName}`;
     }
   }
-};
+}

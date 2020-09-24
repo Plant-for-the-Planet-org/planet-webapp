@@ -1,6 +1,5 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
@@ -14,18 +13,15 @@ import Email from '../../../../assets/images/icons/project/Email';
 import Location from '../../../../assets/images/icons/project/Location';
 import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { getImageUrl } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
   project: any;
-  setShowSingleProject: Function;
-  setLayoutId: Function;
-  touchMap: any;
-  setTouchMap: Function;
 }
 
 const ImageSlider = dynamic(() => import('./ImageSlider'), {
@@ -33,20 +29,17 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
   loading: () => <p>Images</p>,
 });
 
-function SingleProjectDetails({
-  project,
-  setShowSingleProject,
-  setLayoutId,
-  touchMap,
-  setTouchMap,
-}: Props): ReactElement {
+function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
 
   const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
-
+  const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
+
+  const { theme } = React.useContext(ThemeContext);
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
@@ -58,19 +51,19 @@ function SingleProjectDetails({
   const contactDetails = [
     {
       id: 1,
-      icon: <BlackTree />,
+      icon: <BlackTree color={styles.highlightBackground} />,
       text: 'View Profile',
       link: project.tpo.slug,
     },
     {
       id: 2,
-      icon: <WorldWeb />,
+      icon: <WorldWeb color={styles.highlightBackground} />,
       text: project.website ? project.website : 'unavailable',
       link: project.website,
     },
     {
       id: 3,
-      icon: <Location />,
+      icon: <Location color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.address
           ? project.tpo.address
@@ -82,13 +75,17 @@ function SingleProjectDetails({
     },
     {
       id: 4,
-      icon: <Email />,
+      icon: <Email color={styles.highlightBackground} />,
       text:
         project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
       link:
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -102,17 +99,21 @@ function SingleProjectDetails({
     project: project,
   };
   return (
-    <motion.div
-      layoutId={project.id}
+    <div
+      style={{ transform: `translate(0,${scrollY}px)` }}
       className={styles.container}
-      style={
-        touchMap
-          ? { top: '70vh', overflow: 'hidden', transition: 'ease 0.5s' }
-          : { top: 0, overflowY: 'scroll', transition: 'ease 0.5s' }
-      }
+      onTouchMove={(event) => {
+        if (isMobile) {
+          if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+            setScrollY(event.targetTouches[0].clientY);
+          } else {
+            setScrollY((screenHeight * 2) / 8);
+          }
+        }
+      }}
     >
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -123,21 +124,8 @@ function SingleProjectDetails({
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
-      {!touchMap ? (
-        <div
-          className={styles.avoidPointerEvents}
-          onTouchMove={() => {
-            setTouchMap(true);
-          }}
-        ></div>
-      ) : null}
       <div className={styles.projectContainer}>
-        <div
-          onTouchMove={() => {
-            setTouchMap(false);
-          }}
-          className={styles.singleProject}
-        >
+        <div className={styles.singleProject}>
           <div className={styles.projectImage}>
             {project.image ? (
               <LazyLoad>
@@ -148,11 +136,9 @@ function SingleProjectDetails({
                   }}
                 >
                   <div
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', width: 'fit-content' }}
                     onClick={() => {
-                      setShowSingleProject(false),
-                        setLayoutId(null),
-                        router.push('/', undefined, { shallow: true });
+                      router.push('/', undefined, { shallow: true });
                     }}
                   >
                     <BackButton />
@@ -163,8 +149,7 @@ function SingleProjectDetails({
               <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
-                  setShowSingleProject(false),
-                    router.push('/', undefined, { shallow: true });
+                  router.push('/', undefined, { shallow: true });
                 }}
               >
                 <BackButton />
@@ -284,7 +269,7 @@ function SingleProjectDetails({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
