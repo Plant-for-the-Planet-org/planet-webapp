@@ -24,6 +24,7 @@ export default function Donate() {
   React.useEffect(() => {
     if (router.asPath === '/') {
       setShowSingleProject(false);
+      setProject(null);
     } else {
       if (router.query.p !== undefined && router.query.p !== 'undefined') {
         fetchProject(router.query.p).then(() => {
@@ -31,6 +32,7 @@ export default function Donate() {
         });
       } else {
         setShowSingleProject(false);
+        setProject(null);
       }
     }
   }, [router]);
