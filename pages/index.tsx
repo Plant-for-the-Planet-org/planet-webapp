@@ -44,7 +44,7 @@ export default function Donate() {
         if (localStorage.getItem('currencyCode')) {
           currencyCode = localStorage.getItem('currencyCode');
         } else {
-          currencyCode = 'USD';
+          currencyCode = 'EUR'; //This should be based on tenant config
         }
       }
       await fetch(
@@ -70,7 +70,7 @@ export default function Donate() {
         currencyCode = localStorage.getItem('currencyCode');
         // currencyCode = 'EUR';
       } else {
-        currencyCode = 'USD';
+        currencyCode = 'EUR'; //This should be based on tenant config as well
       }
     }
     const res = await fetch(
