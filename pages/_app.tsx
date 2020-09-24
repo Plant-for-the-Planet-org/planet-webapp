@@ -41,7 +41,7 @@ export default function PlanetWeb({ Component, pageProps }: any) {
     }
     loadConfig();
   }, []);
-  console.log('in app', process.env.NEXT_PUBLIC_VERCEL_URL)
+
   return (
     <AuthProvider session={pageProps.session}>
     <ThemeProvider>

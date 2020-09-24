@@ -9,10 +9,10 @@ const options = {
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
     }),
   ],
-  // secret: process.env.SECRET,
-  // session: {
-  //   jwt: true,
-  // },
+  secret: process.env.SECRET,
+  session: {
+    jwt: true,
+  },
   // pages: {
     // signIn: '/api/auth/signin',  // Displays signin buttons
     // signOut: '/api/auth/signout', // Displays form with sign out button
@@ -23,35 +23,29 @@ const options = {
 
   callbacks: {
     redirect: async (url, baseUrl) => {
+      console.log('---------------------')
       console.log('in redirect callback', url, baseUrl)
       return Promise.resolve(url)
     },
 
     signIn: async (user, account, profile) => {
-      console.log('in signin callback', user, 'account----', account,'profile---', profile)
-      // user is client side
-      // account is provider info  -> take from here
-      //  TODO: create API call to send token and get id back
+      user.accessToken = account.accessToken
     },
 
     jwt: async (token, user, account, profile, isNewUser) => {
-      
-      // user is the signin user
       if (user){
         token.accessToken = user.accessToken
+        token.userID = user.userID
       }
-      console.log('in jwt callback', 'token---', token, 'user---', user, 'newUser---', isNewUser )
       return token
     },
 
-
     session: async (session, token) => {
-      console.log('in session callback', session, token)
+      // now, session has accessToken. can be accessed by next-auth/client - useSession()
       session.accessToken = token.accessToken
+      session.userID = token.userID
       return session
-    },
-
-    
+    },    
   },
 
   events: {
