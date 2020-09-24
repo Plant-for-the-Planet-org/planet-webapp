@@ -1,4 +1,5 @@
 {
+  "PROJECTS": "PROJECTS",
   "topProjects": "Top Projects",
   "allCountProjects": "All {{projectCount}} Projects",
   "searchProjects": "Search Projects",
