@@ -3,29 +3,25 @@ import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { getImageUrl } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/getStripe';
+import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
+import { useRouter } from 'next/router';
 
 interface Props {
   project: any;
   key: number;
-  setShowSingleProject: Function;
-  fetchProject: Function;
-  setLayoutId: Function;
 }
 
-export default function ProjectSnippet({
-  project,
-  key,
-  setShowSingleProject,
-  fetchProject,
-  setLayoutId,
-}: Props): ReactElement {
+export default function ProjectSnippet({ project, key }: Props): ReactElement {
+  const router = useRouter();
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
+
+  const { theme } = React.useContext(ThemeContext);
   let progressPercentage =
     (project.properties.countPlanted / project.properties.countTarget) * 100;
 
@@ -41,16 +37,11 @@ export default function ProjectSnippet({
     setOpen(true);
   };
 
-  const handleOpenProject = async () => {
-    await fetchProject();
-    setShowSingleProject(true);
-    setLayoutId(projectDetails.id);
-  };
   const projectDetails = project.properties;
   return (
     <div className={styles.singleProject} key={key}>
       <Modal
-        className={styles.modal}
+        className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
@@ -61,30 +52,36 @@ export default function ProjectSnippet({
           <DonationsPopup project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      <a>
-        <div onClick={handleOpenProject} className={styles.projectImage}>
-          {project.properties.image &&
-            typeof project.properties.image !== 'undefined' ? (
-              <div
-                className={styles.projectImageFile}
-                style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-                  backgroundPosition: 'center',
-                }}
-              ></div>
-            ) : null}
 
-          <div className={styles.projectImageBlock}>
-            {/* <div className={styles.projectType}>
+      <div
+        onClick={() => {
+          router.push(`/?p=${project.properties.slug}`, undefined, {
+            shallow: true,
+          });
+        }}
+        className={styles.projectImage}
+      >
+        {project.properties.image &&
+        typeof project.properties.image !== 'undefined' ? (
+          <div
+            className={styles.projectImageFile}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ) : null}
+
+        <div className={styles.projectImageBlock}>
+          {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-            <div className={styles.projectName}>
-              {Sugar.String.truncate(project.properties.name, 54)}
-            </div>
+          <div className={styles.projectName}>
+            {Sugar.String.truncate(project.properties.name, 54)}
           </div>
         </div>
-      </a>
+      </div>
 
       <div className={styles.progressBar}>
         <div
@@ -119,8 +116,8 @@ export default function ProjectSnippet({
                   {project.properties.currency === 'USD'
                     ? '$'
                     : project.properties.currency === 'EUR'
-                      ? '€'
-                      : project.properties.currency}{' '}
+                    ? '€'
+                    : project.properties.currency}
                   {project.properties.treeCost % 1 !== 0
                     ? project.properties.treeCost.toFixed(2)
                     : project.properties.treeCost}

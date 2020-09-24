@@ -1,16 +1,18 @@
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import tenantConfig from '../../../../tenant.config';
+const config = tenantConfig();
 
 const MaterialTextFeild = withStyles({
   root: {
     width: '100%',
     '& label.Mui-focused': {
       color: '#2F3336',
-      fontFamily: 'Raleway',
+      fontFamily: config!.font.primaryFontFamily,
     },
     '& label': {
       color: '#2F3336',
-      fontFamily: 'Raleway',
+      fontFamily: config!.font.primaryFontFamily,
       fontSize: '14px',
     },
     '& .MuiInput-underline:after': {
@@ -23,7 +25,7 @@ const MaterialTextFeild = withStyles({
       backgroundColor: '#F2F2F7',
       border: '0px!important',
       borderRadius: '10px',
-      fontFamily: 'Raleway',
+      fontFamily: config!.font.primaryFontFamily,
     },
   },
 })(TextField);

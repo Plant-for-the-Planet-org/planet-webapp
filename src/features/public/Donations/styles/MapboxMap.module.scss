@@ -1,10 +1,18 @@
 @import '../../../../theme/theme';
 
 .mapContainer {
-  position: absolute;
-  top: 60px;
-  height: calc(100vh - 60px);
-  width: 100vw;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(70, 168, 221, 0.15);
+  padding-bottom: 60px;
+}
+
+.mapContainer > div {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .marker {
@@ -49,6 +57,7 @@
 .popupProject {
   cursor: pointer;
   z-index: 5;
+  background-color: $backgroundColor;
 }
 
 .projectControls {
@@ -58,7 +67,8 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  bottom: 30px;
+  bottom: auto;
+  top: 30px;
   width: max-content;
   height: 30px;
   padding: 5px 20px;
@@ -71,6 +81,11 @@
   justify-content: center;
   align-items: center;
   font-family: $primaryFontFamily;
+}
+
+.projectControls > div > svg {
+  height: 16px;
+  padding: 0 8px;
 }
 
 .projectControlText {
@@ -159,9 +174,35 @@
   color: $primaryColor;
 }
 
-@media only screen and (max-width: 768px) {
+@include smTabletView {
+  .projectControls {
+    top: 90px;
+  }
+}
+
+@include mdTabletView {
   .mapContainer {
-    top: 0px;
-    height: calc(100vh - 76px);
+    padding-top: 60px;
+    padding-bottom: 0px;
+  }
+  .projectControls {
+    top: auto;
+    bottom: 30px;
+    left: 300px;
+  }
+}
+
+@include lgLaptopView {
+  .projectControls {
+    left: 0px;
+  }
+}
+
+@include xsPhoneView {
+  .mapNavigation {
+    display: none;
+  }
+  .projectControls {
+    bottom: 80px;
   }
 }

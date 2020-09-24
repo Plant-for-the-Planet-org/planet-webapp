@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import React, { useState } from 'react';
 import { getCountryDataBy } from '../../../../../utils/countryUtils';
+import { ThemeContext } from '../../../../../utils/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
@@ -24,6 +25,8 @@ export default function TransitionsModal(props: any) {
   const [selectedModalValue, setSelectedModalValue] = useState(
     `${country},${currency}`
   );
+
+  const { theme } = React.useContext(ThemeContext);
 
   // changes the currency in when a currency is selected
   const handleCountryChange = (event: any) => {
@@ -56,7 +59,7 @@ export default function TransitionsModal(props: any) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={styles.modalContainer}
+        className={styles.modalContainer + ' ' + theme}
         open={openModal}
         onClose={handleModalClose}
         closeAfterTransition
@@ -66,7 +69,7 @@ export default function TransitionsModal(props: any) {
         }}
       >
         <Fade in={openModal}>
-          <div className={styles.modal}>
+          <div className={styles.modal} style={{ height: 'auto' }}>
             <div className={styles.radioButtonsContainer}>
               <p className={styles.sectionHead}>Select Country</p>
               {/* maps the radio button for country */}
@@ -107,12 +110,12 @@ function MapCountry(props: any) {
         value={value}
         onChange={handleChange}
       >
-        {countriesData.map((country: any) => (
+        {countriesData.map((country: any, index: number) => (
           <FormControlLabel
+            key={country.countryCode + '-' + index}
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
             label={`${country.countryName} · (${country.countryCode})`}
-            // label={`${country.countryCode},${country.currencyCode}`}
           />
         ))}
       </RadioGroup>

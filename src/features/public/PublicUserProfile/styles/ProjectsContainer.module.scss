@@ -1,0 +1,48 @@
+@import '../../../../theme/theme';
+
+.projectsTitleText {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 60px;
+}
+
+//  the list of projects
+.listProjects {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0px 20px;
+}
+
+.singleProject {
+  width: 300px;
+}
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+@include smTabletView {
+  .listProjects {
+    padding: 0px;
+  }
+  .projectsTitleText {
+    text-align: left;
+  }
+}
+
+@include lgLaptopView{
+  .listProjects {
+    justify-content: space-between;
+  }
+}

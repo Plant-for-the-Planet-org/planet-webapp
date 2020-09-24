@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
+import Sugar from 'sugar';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
@@ -14,10 +15,12 @@ function ContactDetails({
   currency,
   setDonationStep,
   contactDetails,
-  setContactDetails
+  setContactDetails,
+  isCompany,
+  setIsCompany,
+  isTaxDeductible,
+  country
 }: ContactDetailsPageProps): ReactElement {
-  const [isCompany, setIsCompany] = React.useState(false);
-
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
     setDonationStep(3);
@@ -25,6 +28,12 @@ function ContactDetails({
   const changeContactDetails = (e: any) => {
     setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
   };
+
+  const changeCountry = (country: any) => {
+    setContactDetails({ ...contactDetails, country: country });
+  };
+
+  let defaultCountry = isTaxDeductible ? country : localStorage.getItem('countryCode');
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -32,7 +41,7 @@ function ContactDetails({
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
-          <BackArrow />
+          <BackArrow color={styles.primaryFontColor} />
         </div>
         <div className={styles.headerTitle}>Contact Details</div>
       </div>
@@ -138,11 +147,13 @@ function ContactDetails({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-
-            <AutoCompleteCountry inputRef={register({ required: true })}
+            <AutoCompleteCountry
+              inputRef={register({ required: true })}
               label="Country"
               name="country"
-              onChange={changeContactDetails} />
+              onChange={changeCountry}
+              defaultValue={contactDetails.country ? contactDetails.country : defaultCountry}
+            />
             {errors.country && (
               <span className={styles.formErrors}>Country is required</span>
             )}
@@ -150,7 +161,7 @@ function ContactDetails({
         </div>
 
         <div className={styles.isCompany}>
-          <div className={styles.isCompanyText}>This is a Company Donation</div>
+          <div className={styles.isCompanyText}>This is a company donation</div>
           <ToggleSwitch
             checked={isCompany}
             onChange={() => setIsCompany(!isCompany)}
@@ -184,15 +195,20 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {(treeCount * treeCost).toFixed(2)}{' '}
+            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
           </div>
-          <div className={styles.totalCostText}>for {treeCount} Trees</div>
+          <div className={styles.totalCostText}>
+            for {Sugar.Number.format(Number(treeCount))} Trees
+          </div>
         </div>
 
         <div className={styles.actionButtonsContainer}>
-
-          <AnimatedButton onClick={handleSubmit(onSubmit)} className={styles.continueButton}>Continue</AnimatedButton>
-
+          <AnimatedButton
+            onClick={handleSubmit(onSubmit)}
+            className={styles.continueButton}
+          >
+            Continue
+          </AnimatedButton>
         </div>
       </form>
     </div>

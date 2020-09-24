@@ -1,27 +1,18 @@
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import styles from './../styles/AllProjects.module.scss';
+import styles from './../styles/Projects.module.scss';
 
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 interface Props {
   projects: any;
-  setShowSingleProject: Function;
-  fetchSingleProject: Function;
-  setLayoutId: Function;
 }
 
-function AllProjects({
-  projects,
-  setShowSingleProject,
-  fetchSingleProject,
-  setLayoutId,
-}: Props): ReactElement {
+function AllProjects({ projects }: Props): ReactElement {
   const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -55,29 +46,17 @@ function AllProjects({
   } else {
     return (
       <div className={styles.allProjectsContainer}>
-        <LazyLoad>
-          <motion.div variants={container} initial="hidden" animate="visible">
+        {/* <LazyLoad> */}
+        <div>
+          <div>
             {projects.map((project: any) => {
               return (
-                <motion.div
-                  variants={item}
-                  layoutId={project.properties.id}
-                  key={project.properties.id}
-                >
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project}
-                    setShowSingleProject={setShowSingleProject}
-                    setLayoutId={setLayoutId}
-                    fetchProject={async () => {
-                      await fetchSingleProject(project.properties.id);
-                    }}
-                  />
-                </motion.div>
+                <ProjectSnippet key={project.properties.id} project={project} />
               );
             })}
-          </motion.div>
-        </LazyLoad>
+          </div>
+        </div>
+        {/* </LazyLoad> */}
       </div>
     );
   }

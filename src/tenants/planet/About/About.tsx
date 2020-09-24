@@ -10,7 +10,7 @@ import Yucantan from './components/Yucantan';
 
 export default function About() {
   return (
-    <main>
+    <main style={{ height: '100vh', overflowX: 'hidden' }}>
       <AdditionalNavbar />
       <Landing />
       <AboutSection />

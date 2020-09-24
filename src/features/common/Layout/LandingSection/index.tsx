@@ -1,24 +1,25 @@
 import React from 'react';
-import LazyLoad from 'react-lazyload';
 import styles from './LandingSection.module.scss';
 
 export default function LandingSection(props: any) {
   return (
-    <section className={styles.landingSection}>
-      <div className={props.fixedBg ? styles.backgroundImageFixed : styles.backgroundImage }>
-        <LazyLoad>
-          <img
-            style={{ maxHeight: '100vh', minWidth: '100vw' }}
-            src={
-              props.imageSrc
-                ? props.imageSrc
-                : '/tenants/planet/images/home/BackgroundImage.png'
-            }
-          />
-        </LazyLoad>
-      </div>
-
+    <div
+      className={
+        props.noFixedHeight
+          ? styles.landingSectionNoFixedHeight
+          : styles.landingSection
+      }
+      style={{
+        background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${
+          props.imageSrc
+            ? props.imageSrc
+            : '/tenants/planet/images/home/BackgroundImage.png'
+        }) 0% 0% no-repeat padding-box`,
+        mixBlendMode: 'darken',
+        backgroundSize: 'cover',
+      }}
+    >
       {props.children}
-    </section>
+    </div>
   );
 }

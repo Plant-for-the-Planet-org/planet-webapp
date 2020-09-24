@@ -25,6 +25,12 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     localStorage.getItem('countryCode')!
   );
 
+  // stores the value as boolean whether payment options is being fetched or not
+  // used for showing a loader
+  const [isPaymentOptionsLoading, setIsPaymentOptionsLoading] = React.useState<
+    boolean
+  >(false);
+
   const [paymentType, setPaymentType] = React.useState('');
 
   // to get country and currency from local storage
@@ -43,10 +49,12 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   React.useEffect(() => {
     async function loadPaymentSetup() {
       try {
+        setIsPaymentOptionsLoading(true);
         const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`, {
-          headers: { 'tenant-key': `${process.env.TENANTID}` }
-        }
+          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`,
+          {
+            headers: { 'tenant-key': `${process.env.TENANTID}` },
+          }
         );
         const paymentSetupData = await res.json();
         if (paymentSetupData) {
@@ -54,6 +62,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
           setTreeCost(paymentSetupData.treeCost);
           setCurrency(paymentSetupData.currency);
         }
+        setIsPaymentOptionsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -64,11 +73,12 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   const [donationStep, setDonationStep] = React.useState(1);
 
   const [giftDetails, setGiftDetails] = React.useState({
-    firstName: '',
-    lastName: '',
+    recipientName: '',
     email: '',
     giftMessage: '',
   });
+
+  const [isCompany, setIsCompany] = React.useState(false);
 
   const [contactDetails, setContactDetails] = React.useState({
     firstName: '',
@@ -101,6 +111,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setGiftDetails,
     paymentType,
     setPaymentType,
+    isPaymentOptionsLoading,
   };
 
   const ContactDetailsProps = {
@@ -110,6 +121,10 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setDonationStep,
     contactDetails,
     setContactDetails,
+    isCompany,
+    setIsCompany,
+    country,
+    isTaxDeductible,
   };
 
   const PaymentDetailsProps = {
@@ -124,6 +139,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     paymentSetup,
     paymentType,
     setPaymentType,
+    country,
+    isTaxDeductible,
   };
 
   const ThankYouProps = {

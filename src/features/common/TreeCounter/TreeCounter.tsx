@@ -1,25 +1,23 @@
 import CircularProgress, {
   CircularProgressProps,
 } from '@material-ui/core/CircularProgress';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import Sugar from 'sugar';
 import treeCounterStyles from './TreeCounter.module.scss';
 
-const useStylesFacebook = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      position: 'relative',
-    },
-    top: {
-      color: '#fff',
-      animationDuration: '550ms',
-    },
-    circle: {
-      strokeLinecap: 'round',
-    },
-  })
-);
+const useStylesFacebook = makeStyles(() => createStyles({
+  root: {
+    position: 'relative',
+  },
+  top: {
+    color: '#fff',
+    animationDuration: '550ms',
+  },
+  circle: {
+    strokeLinecap: 'round',
+  },
+}));
 
 function FacebookCircularProgress(props: CircularProgressProps) {
   const classes = useStylesFacebook();
@@ -51,10 +49,11 @@ export default function TpoProfile(props: any) {
       if (props.planted === 0) percentage = 0.1;
       else percentage = 100;
     }
+    if (percentage > 100) {
+      percentage = 100;
+    }
     const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= percentage ? percentage : prevProgress + 5
-      );
+      setProgress((prevProgress) => (prevProgress >= percentage ? percentage : prevProgress + 5));
     }, 100);
 
     return () => {
@@ -64,7 +63,16 @@ export default function TpoProfile(props: any) {
   return (
     <div className={treeCounterStyles.treeCounter}>
       <FacebookCircularProgress value={progress} />
-      <div className={treeCounterStyles.backgroundCircle}></div>
+      <div className={treeCounterStyles.backgroundCircle} />
+      {props.hideTarget && 
+      <div className={treeCounterStyles.treeCounterData} style={{justifyContent: 'center'}}>
+        <div className={treeCounterStyles.treeCounterDataField}>
+          <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
+          <h2>Trees Planted</h2>
+        </div>
+      </div>
+      }
+      {!props.hideTarget && 
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
@@ -73,8 +81,9 @@ export default function TpoProfile(props: any) {
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
           <h2>Target</h2>
-        </div>
+        </div>  
       </div>
+      }
     </div>
   );
 }

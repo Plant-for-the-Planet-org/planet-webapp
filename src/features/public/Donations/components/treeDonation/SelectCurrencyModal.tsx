@@ -11,6 +11,7 @@ import {
   getCountryDataBy,
   sortCountriesData,
 } from '../../../../../utils/countryUtils';
+import { ThemeContext } from '../../../../../utils/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
@@ -29,6 +30,8 @@ export default function TransitionsModal(props: any) {
   const [selectedModalValue, setSelectedModalValue] = useState(
     `${country},${currency}`
   );
+
+  const { theme } = React.useContext(ThemeContext);
 
   // changes the currency in when a currency is selected
   const handleCurrencyChange = (event: any) => {
@@ -52,6 +55,7 @@ export default function TransitionsModal(props: any) {
 
     // adds the important country list to state
     setImportantList(impCountryList);
+    setSelectedModalValue(`${country},${currency}`);
   }, [currency]);
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
@@ -72,7 +76,7 @@ export default function TransitionsModal(props: any) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={styles.modalContainer}
+        className={styles.modalContainer + ' ' + theme}
         open={openModal}
         onClose={handleModalClose}
         closeAfterTransition
@@ -137,8 +141,9 @@ function MapCurrency(props: any) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country: any) => (
+        {sortedCountriesData.map((country: any, index: number) => (
           <FormControlLabel
+            key={country.countryCode + '-' + index}
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
             label={`${country.countryName} · ${country.currencyCode}`}

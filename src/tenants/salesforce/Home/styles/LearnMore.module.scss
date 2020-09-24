@@ -1,0 +1,131 @@
+@import '../../../../theme/theme';
+
+
+.learnMoreSectionRow {
+    padding-top: 56vh;
+    padding-bottom: 40px;
+    background-image: url('/tenants/salesforce/images/mobile/learnMore.png');
+    background-position-x: center;
+    background-position-y: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0px;
+  }
+  
+  .learnMoreSectionText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // max-width: 464px;
+    position: relative;
+    background: transparent;
+    text-align: center;
+    margin-bottom: -90px;
+  }
+  
+  .learnMoreSectionText > p,
+  .learnMoreSectionText > button {
+    z-index: 1;
+  }
+  
+  .learnMoreSectionTextHeader {
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 32px;
+    letter-spacing: -0.4px;
+    color: #000;
+    font-family: $primaryFontFamily;
+  }
+  
+  .learnMoreSectionTextPara {
+    font-family: $primaryFontFamily;
+    color: $primaryFontColor;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .learnMoreSectionTextLink {
+    font-family: $primaryFontFamily;
+    color: $primaryColor;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .learnMoreSection {
+    width: 100%;
+    height: auto;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .learnMoreTreeImage {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 250px;
+    width: 250px;
+  }
+  .learnMoreImage {
+    height: 100vh;
+    width: auto;
+    position: absolute;
+    top: 0px;
+    left: 40px;
+  }
+@media screen and (max-width: 380px) {
+    .learnMoreSectionRow {
+      background-position-y: 145%;
+    }
+  }
+  
+@include smTabletView {
+      .learnMoreSection {
+        display: flex;
+      }
+    
+      .learnMoreSectionTextHeader {
+        font-size: 36px;
+        line-height: 40px;
+        color: #080707;
+      }
+    
+      .learnMoreSectionTextPara {
+        font-size: 16px;
+        line-height: 24px;
+        color: $primaryFontColor;
+        max-width: 460px;
+        margin:auto;
+      }
+    
+}
+
+@include mdTabletView{
+  .learnMoreSectionRow {
+    margin-top: -8vh;
+    padding: 20vh 0;
+    background-image: url('/tenants/salesforce/images/desktop/learnMore.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .learnMoreSectionText {
+    text-align: left;
+    margin-left: -30px;
+    margin-bottom: 0px;
+  }
+  .learnMoreSectionTextPara {
+    margin:0px;
+  }
+}
+@include lgLaptopView {
+    .learnMoreSectionRow {
+        padding: 30vh 0;
+      }
+    
+      .learnMoreSectionText {
+        margin-top: 12px;
+        margin-left: 0px;
+      }
+}

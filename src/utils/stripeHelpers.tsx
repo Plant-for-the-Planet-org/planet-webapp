@@ -1,13 +1,18 @@
-import { faCcAmex, faCcDinersClub, faCcDiscover, faCcJcb, faCcMastercard, faCcStripe, faCcVisa } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AmexIcon from '../assets/images/icons/CreditCardIcons/AmexIcon';
+import DinersClub from '../assets/images/icons/CreditCardIcons/DinersClub';
+import DiscoverIcon from '../assets/images/icons/CreditCardIcons/DiscoverIcon';
+import JcbIcon from '../assets/images/icons/CreditCardIcons/JcbIcon';
+import Mastercard from '../assets/images/icons/CreditCardIcons/Mastercard';
+import StripeIcon from '../assets/images/icons/CreditCardIcons/StripeIcon';
+import VisaIcon from '../assets/images/icons/CreditCardIcons/VisaIcon';
 
 export function formatAmountForDisplay(
   amount: number,
-  currency: string
+  currency: string,
 ): string {
-  let numberFormat = new Intl.NumberFormat(['en-US'], {
+  const numberFormat = new Intl.NumberFormat(['en-US'], {
     style: 'currency',
-    currency: currency,
+    currency,
     currencyDisplay: 'symbol',
   });
   return numberFormat.format(amount);
@@ -15,33 +20,50 @@ export function formatAmountForDisplay(
 
 export function formatAmountForStripe(
   amount: number,
-  currency: string
+  currency: string,
 ): number {
-  let numberFormat = new Intl.NumberFormat(['en-US'], {
+  const numberFormat = new Intl.NumberFormat(['en-US'], {
     style: 'currency',
-    currency: currency,
+    currency,
     currencyDisplay: 'symbol',
   });
   const parts = numberFormat.formatToParts(amount);
   let zeroDecimalCurrency: boolean = true;
-  for (let part of parts) {
+
+  // https://gist.github.com/ljharb/58faf1cfcb4e6808f74aae4ef7944cff
+  // for (const part of parts) {
+  //   if (part.type === 'decimal') {
+  //     zeroDecimalCurrency = false;
+  //   }
+  // }
+
+  parts.forEach((part) => {
     if (part.type === 'decimal') {
       zeroDecimalCurrency = false;
     }
-  }
+  });
   return zeroDecimalCurrency ? amount : Math.round(amount * 100);
 }
 
 export const getCardBrand = (brand: String) => {
   switch (brand) {
-    case 'visa': return <FontAwesomeIcon size={"2x"} icon={faCcVisa} />;
-    case 'mastercard': return <FontAwesomeIcon size={"2x"} icon={faCcMastercard} />;
-    case 'amex': return <FontAwesomeIcon size={"2x"} icon={faCcAmex} />;
-    case 'discover': return <FontAwesomeIcon size={"2x"} icon={faCcDiscover} />;
-    case 'diners': return <FontAwesomeIcon size={"2x"} icon={faCcDinersClub} />;
-    case 'jcb': return <FontAwesomeIcon size={"2x"} icon={faCcJcb} />;
-    case 'unionpay': return <FontAwesomeIcon size={"2x"} icon={faCcStripe} />;
-    case 'unknown': return <FontAwesomeIcon size={"2x"} icon={faCcStripe} />;
-    default: return <FontAwesomeIcon size={"2x"} icon={faCcStripe} />;
+    case 'visa':
+      return <VisaIcon />;
+    case 'mastercard':
+      return <Mastercard />;
+    case 'amex':
+      return <AmexIcon />;
+    case 'discover':
+      return <DiscoverIcon />;
+    case 'diners':
+      return <DinersClub />;
+    case 'jcb':
+      return <JcbIcon />;
+    case 'unionpay':
+      return <StripeIcon />;
+    case 'unknown':
+      return <StripeIcon />;
+    default:
+      return <StripeIcon />;
   }
-}
+};
