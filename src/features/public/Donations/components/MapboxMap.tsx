@@ -452,11 +452,11 @@ export default function MapboxMap({
             id="potential"
             type="raster"
             tiles={[
-              ' https://earthengine.googleapis.com/map/80c988d5e8f6021ef9e6d2447f405c79/{z}/{x}/{y}?token=75974606a47356f360a3c7783b54369c',
+              ' https://earthengine.googleapis.com/map/80c988d5e8f6021ef9e6d2447f405c79/{z}/{x}/{y}?token=a5a5893006a0ea587845708b078df9ca',
             ]}
             tileSize={128}
           >
-            <Layer id="forest-layer" source="potential" type="raster" />
+            <Layer id="potential-layer" source="potential" type="raster" />
           </Source>
         ) : null}
 
@@ -469,7 +469,11 @@ export default function MapboxMap({
             ]}
             tileSize={128}
           >
-            <Layer id="forest-layer" source="deforestation" type="raster" />
+            <Layer
+              id="deforestation-layer"
+              source="deforestation"
+              type="raster"
+            />
           </Source>
         ) : null}
         <div className={styles.mapNavigation}>
