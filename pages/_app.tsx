@@ -58,16 +58,18 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     async function loadConfig() {
       await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const config = await res.json();
-        localStorage.setItem('config', JSON.stringify(config));
-        if (localStorage.getItem('countryCode') === null) {
-          localStorage.setItem('countryCode', config.country);
-        }
-        if (localStorage.getItem('currencyCode') === null) {
-          localStorage.setItem('currencyCode', config.currency);
-        }
-      });
+      })
+        .then(async (res) => {
+          const config = await res.json();
+          localStorage.setItem('config', JSON.stringify(config));
+          if (localStorage.getItem('countryCode') === null) {
+            localStorage.setItem('countryCode', config.country);
+          }
+          if (localStorage.getItem('currencyCode') === null) {
+            localStorage.setItem('currencyCode', config.currency);
+          }
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadConfig();
   }, []);
