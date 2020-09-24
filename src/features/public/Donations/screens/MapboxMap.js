@@ -1,5 +1,3 @@
-import { faBinoculars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -17,6 +15,8 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
+import CancelIcon from '../../../../assets/images/icons/CancelIcon';
+import ExploreIcon from '../../../../assets/images/icons/ExploreIcon';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import PopupProject from '../components/PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
@@ -389,77 +389,66 @@ export default function MapboxMap(props) {
             </div>
           </Popup>
         )}
-        {exploreForests ? 
-        <Source
-          id="forests"
-          type="raster"
-          tiles={[
-            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer/tile/{z}/{y}/{x}',
-          ]}
-          tileSize={128}
-        >
-          <Layer
-            id="forest-layer"
-            source="forests"
+        {exploreForests ? (
+          <Source
+            id="forests"
             type="raster"
+            tiles={[
+              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer/tile/{z}/{y}/{x}',
+            ]}
+            tileSize={128}
+          >
+            <Layer id="forest-layer" source="forests" type="raster" />
+          </Source>
+        ) : null}
 
-          />
-        </Source>
-         :null}
-
-          {explorePotential ? 
-        <Source
-          id="potential"
-          type="raster"
-          tiles={[
-            ' https://earthengine.googleapis.com/map/80c988d5e8f6021ef9e6d2447f405c79/{z}/{x}/{y}?token=75974606a47356f360a3c7783b54369c',
-          ]}
-          tileSize={128}
-        >
-          <Layer
-            id="forest-layer"
-            source="potential"
+        {explorePotential ? (
+          <Source
+            id="potential"
             type="raster"
+            tiles={[
+              ' https://earthengine.googleapis.com/map/80c988d5e8f6021ef9e6d2447f405c79/{z}/{x}/{y}?token=75974606a47356f360a3c7783b54369c',
+            ]}
+            tileSize={128}
+          >
+            <Layer id="forest-layer" source="potential" type="raster" />
+          </Source>
+        ) : null}
 
-          />
-        </Source>
-         :null}
-
-        {exploreDeforestation ? 
-        <Source
-          id="deforestation"
-          type="raster"
-          tiles={[
-            'https://earthengine.google.org/static/hansen_2013/gain_alpha/{z}/{x}/{y}.png',
-          ]}
-          tileSize={128}
-        >
-          <Layer
-            id="forest-layer"
-            source="deforestation"
+        {exploreDeforestation ? (
+          <Source
+            id="deforestation"
             type="raster"
-
-          />
-        </Source>
-        :null}
+            tiles={[
+              'https://earthengine.google.org/static/hansen_2013/gain_alpha/{z}/{x}/{y}.png',
+            ]}
+            tileSize={128}
+          >
+            <Layer id="forest-layer" source="deforestation" type="raster" />
+          </Source>
+        ) : null}
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
-        <div
-          onMouseOver={() => setExploreExpanded(true)}
-          onMouseLeave={() => setExploreExpanded(false)}
-        >
-          <div className={styles.exploreButton}>
-            {exploreExpanded ? (
-              <FontAwesomeIcon
-                onClick={() => setExploreExpanded(false)}
-                icon={faTimes}
-              />
-            ) : (
-              <FontAwesomeIcon icon={faBinoculars} />
-            )}
+        <div>
+          <div
+            className={styles.exploreButton}
+            onClick={() => {
+              if (exploreExpanded) {
+                setExploreExpanded(false);
+              } else {
+                setExploreExpanded(true);
+              }
+            }}
+          >
+            {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
             {exploreExpanded ? null : (
-              <p className={styles.exploreText}>Explore</p>
+              <p
+                onClick={() => setExploreExpanded(true)}
+                className={styles.exploreText}
+              >
+                Explore
+              </p>
             )}
           </div>
           {exploreExpanded ? (
