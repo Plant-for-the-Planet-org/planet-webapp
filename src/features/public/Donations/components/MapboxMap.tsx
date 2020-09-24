@@ -538,7 +538,7 @@ export default function MapboxMap({
                       label="Deforestation"
                     />
                   </div>
-                  <div className={styles.exploreToggleRow}>
+                  {/* <div className={styles.exploreToggleRow}>
                     <FormControlLabel
                       control={
                         <Switch
@@ -549,7 +549,7 @@ export default function MapboxMap({
                       }
                       label="Planted Trees"
                     />
-                  </div>
+                  </div> */}
                   <div className={styles.exploreToggleRow}>
                     <FormControlLabel
                       control={
@@ -563,11 +563,6 @@ export default function MapboxMap({
                     />
                   </div>
                 </FormGroup>
-              </div>
-              <Divider width="85%" />
-              <div className={styles.exploreNote}>
-                The world has about 3 trillion trees today ("Forests"). And
-                space for up to a trillion more ("Reforestation Protential").
               </div>
             </div>
           ) : null}
