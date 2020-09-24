@@ -99,26 +99,27 @@ export default function MapboxMap({
     if (showSingleProject) {
       if (siteExists) {
         if (geoJson !== null) {
-          let bbox = turf.bbox(geoJson.features[currentSite]);
-          bbox = [
-            [bbox[0], bbox[1]],
-            [bbox[2], bbox[3]],
-          ];
-          let { longitude, latitude, zoom } = new WebMercatorViewport(
+          const bbox = turf.bbox(geoJson.features[currentSite]);
+          const { longitude, latitude, zoom } = new WebMercatorViewport(
             viewport
-          ).fitBounds(bbox, {
-            padding: {
-              top: 50,
-              bottom: isMobile ? 120 : 50,
-              left: isMobile ? 50 : 400,
-              right: isMobile ? 50 : 100,
-            },
-          });
-          console.log(longitude, latitude, zoom);
-          let newMapState = {
+          ).fitBounds(
+            [
+              [bbox[0], bbox[1]],
+              [bbox[2], bbox[3]],
+            ],
+            {
+              padding: {
+                top: 50,
+                bottom: isMobile ? 120 : 50,
+                left: isMobile ? 50 : 400,
+                right: isMobile ? 50 : 100,
+              },
+            }
+          );
+          const newMapState = {
             mapStyle: 'mapbox://styles/mapbox/satellite-v9',
           };
-          let newViewport = {
+          const newViewport = {
             ...viewport,
             longitude,
             latitude,
@@ -131,10 +132,10 @@ export default function MapboxMap({
           setMapState(newMapState);
         }
       } else {
-        let newMapState = {
+        const newMapState = {
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
         };
-        let newViewport = {
+        const newViewport = {
           ...viewport,
           longitude: singleProjectLatLong[1],
           latitude: singleProjectLatLong[0],
@@ -147,10 +148,10 @@ export default function MapboxMap({
         setMapState(newMapState);
       }
     } else {
-      let newMapState = {
+      const newMapState = {
         mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
       };
-      let newViewport = {
+      const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
         longitude: defaultMapCenter[1],
