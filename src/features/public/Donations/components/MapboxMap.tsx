@@ -97,35 +97,49 @@ export default function MapboxMap({
 
   React.useEffect(() => {
     if (showSingleProject) {
-      if (siteExists) {
-        if (geoJson !== null) {
-          console.log(geoJson);
-          let bbox = turf.bbox(geoJson.features[currentSite]);
-          bbox = [
-            [bbox[0], bbox[1]],
-            [bbox[2], bbox[3]],
-          ];
-          console.log(bbox);
-
-          let { longitude, latitude, zoom } = new WebMercatorViewport(
-            viewport
-          ).fitBounds(bbox, {
-            padding: {
-              top: 50,
-              bottom: isMobile ? 120 : 50,
-              left: isMobile ? 50 : 400,
-              right: isMobile ? 50 : 100,
-            },
-          });
-          console.log(longitude, latitude, zoom);
+      setTimeout(() => {
+        if (siteExists) {
+          if (geoJson !== null) {
+            let bbox = turf.bbox(geoJson.features[currentSite]);
+            bbox = [
+              [bbox[0], bbox[1]],
+              [bbox[2], bbox[3]],
+            ];
+            let { longitude, latitude, zoom } = new WebMercatorViewport(
+              viewport
+            ).fitBounds(bbox, {
+              padding: {
+                top: 50,
+                bottom: isMobile ? 120 : 50,
+                left: isMobile ? 50 : 400,
+                right: isMobile ? 50 : 100,
+              },
+            });
+            console.log(longitude, latitude, zoom);
+            let newMapState = {
+              mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+            };
+            let newViewport = {
+              ...viewport,
+              longitude,
+              latitude,
+              zoom,
+              transitionDuration: 4000,
+              transitionInterpolator: new FlyToInterpolator(),
+              transitionEasing: d3.easeCubic,
+            };
+            setViewPort(newViewport);
+            setMapState(newMapState);
+          }
+        } else {
           let newMapState = {
-            mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+            mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
           };
           let newViewport = {
             ...viewport,
-            longitude,
-            latitude,
-            zoom,
+            longitude: singleProjectLatLong[1],
+            latitude: singleProjectLatLong[0],
+            zoom: 5,
             transitionDuration: 4000,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
@@ -133,23 +147,7 @@ export default function MapboxMap({
           setViewPort(newViewport);
           setMapState(newMapState);
         }
-      } else {
-        let newMapState = {
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-        };
-        let newViewport = {
-          ...viewport,
-          longitude: singleProjectLatLong[1],
-          latitude: singleProjectLatLong[0],
-          zoom: 5,
-          transitionDuration: 4000,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: d3.easeCubic,
-        };
-        console.log('here');
-        setViewPort(newViewport);
-        setMapState(newMapState);
-      }
+      }, 300);
     } else {
       let newMapState = {
         mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
