@@ -39,11 +39,11 @@
   "validationFailed": "Prüfung fehlgeschlagen",
   "seedingYourDonation": "Deine Spende wird bearbeitet",
   "pleaseDoNotCloseThisTab": "Bitte schließe diese Seite nicht!",
-  "perTree": "pro Baum",
+  "perTree": "/ Baum",
   "stopTalkingStartPlanting": "Stop Talking. Start Planting.",
   "creditDebitCard": "Kreditkarte",
   "cardNumber": "Kartennummer",
-  "expDate": "Gültigkeitsdatum (MM/JJ)",
+  "expDate": "Gültigkeit (MM/JJ)",
   "selectCurrency": "Dein Land auswählen",
   "treeDonationWithPFP": "Baumspende mit Plant-for-the-Planet",
   "unavailable": "nicht verfügbar",
@@ -56,5 +56,5 @@
   "plantTreesAtURL": "Pflanze mit! {{url}}",
   "copiedToClipboard": "Text in die Zwischenablage kopiert!",
   "noProjectsFound": "Keine Projekte gefunden",
-  "inTimeOfTaxReturns": "bekommst du rechtzeitig für deine Steuererklärung"
+  "inTimeOfTaxReturns": "rechtzeitig für deine Steuererklärung."
 }
