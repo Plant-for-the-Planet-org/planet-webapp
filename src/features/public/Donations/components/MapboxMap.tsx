@@ -33,8 +33,6 @@ export default function MapboxMap({
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
-  const mapRef = useRef(null);
-  const parentRef = useRef(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const [popupData, setPopupData] = useState({ show: false });
@@ -67,13 +65,15 @@ export default function MapboxMap({
       if (project !== null) {
         if (typeof project.sites !== 'undefined' && project.sites.length > 0) {
           if (project.sites[0].geometry !== null) {
-            setsiteExists(true);
             setCurrentSite(0);
             setMaxSites(project.sites.length);
             setGeoJson({
               type: 'FeatureCollection',
               features: project.sites,
             });
+            setTimeout(() => {
+              setsiteExists(true);
+            }, 300);
           } else {
             setsiteExists(false);
             setGeoJson(null);
@@ -97,49 +97,32 @@ export default function MapboxMap({
 
   React.useEffect(() => {
     if (showSingleProject) {
-      setTimeout(() => {
-        if (siteExists) {
-          if (geoJson !== null) {
-            let bbox = turf.bbox(geoJson.features[currentSite]);
-            bbox = [
-              [bbox[0], bbox[1]],
-              [bbox[2], bbox[3]],
-            ];
-            let { longitude, latitude, zoom } = new WebMercatorViewport(
-              viewport
-            ).fitBounds(bbox, {
-              padding: {
-                top: 50,
-                bottom: isMobile ? 120 : 50,
-                left: isMobile ? 50 : 400,
-                right: isMobile ? 50 : 100,
-              },
-            });
-            console.log(longitude, latitude, zoom);
-            let newMapState = {
-              mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-            };
-            let newViewport = {
-              ...viewport,
-              longitude,
-              latitude,
-              zoom,
-              transitionDuration: 4000,
-              transitionInterpolator: new FlyToInterpolator(),
-              transitionEasing: d3.easeCubic,
-            };
-            setViewPort(newViewport);
-            setMapState(newMapState);
-          }
-        } else {
+      if (siteExists) {
+        if (geoJson !== null) {
+          let bbox = turf.bbox(geoJson.features[currentSite]);
+          bbox = [
+            [bbox[0], bbox[1]],
+            [bbox[2], bbox[3]],
+          ];
+          let { longitude, latitude, zoom } = new WebMercatorViewport(
+            viewport
+          ).fitBounds(bbox, {
+            padding: {
+              top: 50,
+              bottom: isMobile ? 120 : 50,
+              left: isMobile ? 50 : 400,
+              right: isMobile ? 50 : 100,
+            },
+          });
+          console.log(longitude, latitude, zoom);
           let newMapState = {
-            mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+            mapStyle: 'mapbox://styles/mapbox/satellite-v9',
           };
           let newViewport = {
             ...viewport,
-            longitude: singleProjectLatLong[1],
-            latitude: singleProjectLatLong[0],
-            zoom: 5,
+            longitude,
+            latitude,
+            zoom,
             transitionDuration: 4000,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
@@ -147,7 +130,22 @@ export default function MapboxMap({
           setViewPort(newViewport);
           setMapState(newMapState);
         }
-      }, 300);
+      } else {
+        let newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
+        let newViewport = {
+          ...viewport,
+          longitude: singleProjectLatLong[1],
+          latitude: singleProjectLatLong[0],
+          zoom: 5,
+          transitionDuration: 4000,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+        setViewPort(newViewport);
+        setMapState(newMapState);
+      }
     } else {
       let newMapState = {
         mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -200,9 +198,8 @@ export default function MapboxMap({
   }
 
   return (
-    <div ref={parentRef} className={styles.mapContainer}>
+    <div className={styles.mapContainer}>
       <MapGL
-        ref={mapRef}
         {...mapState}
         {...viewport}
         mapboxApiAccessToken={mapboxToken}
