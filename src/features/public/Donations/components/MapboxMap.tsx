@@ -43,6 +43,7 @@ export default function MapboxMap({
   const router = useRouter();
   const mapRef = useRef(null);
   const parentRef = useRef(null);
+  const exploreContainerRef = useRef(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const [popupData, setPopupData] = useState({ show: false });
@@ -104,7 +105,7 @@ export default function MapboxMap({
         latitude: 36.96,
         longitude: 0,
         zoom: 1.4,
-        transitionDuration: 2400,
+        transitionDuration: 1200,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
@@ -115,7 +116,7 @@ export default function MapboxMap({
         latitude: defaultMapCenter[0],
         longitude: defaultMapCenter[1],
         zoom: 1.4,
-        transitionDuration: 2400,
+        transitionDuration: 1200,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
@@ -259,6 +260,23 @@ export default function MapboxMap({
       }
     }
   }, [currentSite]);
+
+  React.useEffect(() => {
+    document.addEventListener(
+      'mousedown',
+      (event) => {
+        if (exploreExpanded) {
+          if (
+            exploreContainerRef &&
+            !exploreContainerRef.current.contains(event.target)
+          ) {
+            setExploreExpanded(false);
+          }
+        }
+      },
+      false
+    );
+  });
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -479,7 +497,7 @@ export default function MapboxMap({
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
-        <div>
+        <div ref={exploreContainerRef}>
           <div
             className={styles.exploreButton}
             onClick={() => {
@@ -489,6 +507,13 @@ export default function MapboxMap({
                 setExploreExpanded(true);
               }
             }}
+            style={
+              exploreExpanded
+                ? {
+                    padding: '4px 10px',
+                  }
+                : {}
+            }
           >
             {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
             {exploreExpanded ? null : (
@@ -496,7 +521,7 @@ export default function MapboxMap({
                 onClick={() => setExploreExpanded(true)}
                 className={styles.exploreText}
               >
-                Explore
+                {isMobile ? null : 'Explore'}
               </p>
             )}
           </div>
