@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession, getSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import { userInfo } from 'os';
 import React, { useEffect } from 'react';
 import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
@@ -75,11 +76,34 @@ export default function UserProfile() {
   const texts = getMe();
   
   useEffect(() => {
-    async function loadUserData() {
-      // here, API call
-      setUserprofile(dummyProfile);
+    async function fetchUserInfo(session:any) {
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/app/accountInfo`, {
+          headers: { 
+            'Authorization': `OAuth ${session.accessToken}`
+           },
+           method: 'GET',
+        },
+      );
+      if (res.status === 200){
+        // user exists in db and return info
+        const resJson = await res.json()
+        setUserprofile(resJson);
+      } else if (res.status === 303){
+        // user does not exist in db
+        if (typeof window !== 'undefined') {
+          router.push('/complete-signup');
+        }
+      }
     }
-    loadUserData();
+
+    if (!loading && !session){
+      // user not logged in -> send to login screen
+      signIn(null)
+    } else if (!loading && session) {
+      // some user is logged in -> api call to backend
+      fetchUserInfo(session)
+    }
   }, []);
 
   if (!config.header.items[3].visible) {
@@ -87,36 +111,18 @@ export default function UserProfile() {
       router.push('/');
     }
   }
-  if (!session && !loading){
-  return (
-    <Layout>
-      <br />
-      <br />
-      <br />
-      <a
-        href={`/api/auth/signin/`}
-        onClick={(e) => {
-          e.preventDefault();
-          signIn(null, { callbackUrl: 'http://localhost:3000/me'});
-        }}
-      >
-        Sign In
-      </a>{' '}
-      {console.log('session', session)}
-      <h1> session : {session}</h1>
-    </Layout>
-  );
+
+  // loading
+  if (loading){
+    return(<h1>Loading...</h1>)
   }
-  else {
+  if (!loading && !session){
+    return <h1> redirecting to login...</h1>
+  }
+  if (!loading && session)
+  {
     return (
       <Layout>
-        <h2 style={{ marginTop: '80px' }}>
-          description:
-          {texts.description}
-          {/* Signed in as {JSON.stringify(session)} */}
-        </h2>
-        <h1> session : {JSON.stringify(session)}</h1>
-        <button onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button>
         <UserPage
           style={{ height: '100vh', overflowX: 'hidden' }}
           {...UserProps}
