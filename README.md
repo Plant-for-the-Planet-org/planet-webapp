@@ -231,7 +231,7 @@ If you have found a vulnerability, you could write us at: support@plant-for-the-
 [Backend APIs](https://plant-for-the-planet.stoplight.io/docs/treecounter-platform/)
 
 ## Thank You
-The deployment and management of this application is possible with support from open soruce contributors and following partners.
+The deployment and management of this application is possible with support from open source contributors and following partners.
 
 <a href="https://www.vercel.com?utm_source=planetapp&utm_medium=web&utm_campaign=oss">
 <img src="https://cdn.pp.eco/logo/svg/powered-by-vercel.svg" height="26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
