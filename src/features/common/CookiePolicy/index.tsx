@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import CloseIcon from '../../../assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
+import i18next from '../../../../i18n';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);
+  const { useTranslation } = i18next;
+  const { t } = useTranslation(['leaderboard']);
   React.useEffect(() => {
     let prev = localStorage.getItem('cookieNotice');
     if (prev === 'false') {
@@ -21,9 +24,9 @@ export default function CookiePolicy() {
         <CloseIcon color={styles.primaryColor} />
       </div>
       <div className={styles.cookieContent}>
-        By using this website, you agree to our{' '}
+        {t('common:privacyPolicyNotice')}{' '}
         <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">
-          privacy policy
+          {t('common:privacyPolicy')}
         </a>
       </div>
     </div>

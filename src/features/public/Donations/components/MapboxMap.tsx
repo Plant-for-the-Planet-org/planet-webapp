@@ -33,8 +33,6 @@ export default function MapboxMap({
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
-  const mapRef = useRef(null);
-  const parentRef = useRef(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const [popupData, setPopupData] = useState({ show: false });
@@ -46,7 +44,7 @@ export default function MapboxMap({
     defaultMapCenter[0],
     defaultMapCenter[1],
   ]);
-  const [geojson, setGeojson] = React.useState({});
+  const [geoJson, setGeoJson] = React.useState(null);
   const [maxSites, setMaxSites] = React.useState();
   const [currentSite, setCurrentSite] = React.useState<null | Number>();
 
@@ -63,37 +61,93 @@ export default function MapboxMap({
   });
 
   React.useEffect(() => {
-    if (showSingleProject && project !== null) {
-      setSingleProjectLatLong([
-        project.coordinates.lat,
-        project.coordinates.lon,
-      ]);
-
-      const newGeojson = {
-        type: 'FeatureCollection',
-        features: project.sites,
-      };
-
-      setGeojson({
-        type: 'FeatureCollection',
-        features: project.sites,
-      });
-
-      if (
-        typeof newGeojson.features !== 'undefined' &&
-        newGeojson.features.length > 0
-      ) {
-        if (newGeojson.features[0].geometry !== null) {
-          setsiteExists(true);
-          setCurrentSite(0);
-          setMaxSites(newGeojson.features.length);
+    if (showSingleProject) {
+      if (project !== null) {
+        if (typeof project.sites !== 'undefined' && project.sites.length > 0) {
+          if (project.sites[0].geometry !== null) {
+            setCurrentSite(0);
+            setMaxSites(project.sites.length);
+            setGeoJson({
+              type: 'FeatureCollection',
+              features: project.sites,
+            });
+            setTimeout(() => {
+              setsiteExists(true);
+            }, 300);
+          } else {
+            setsiteExists(false);
+            setGeoJson(null);
+            setSingleProjectLatLong([
+              project.coordinates.lat,
+              project.coordinates.lon,
+            ]);
+          }
         } else {
           setsiteExists(false);
+          setGeoJson(null);
+          setSingleProjectLatLong([
+            project.coordinates.lat,
+            project.coordinates.lon,
+          ]);
+        }
+      }
+    } else {
+    }
+  }, [showSingleProject, project]);
+
+  React.useEffect(() => {
+    if (showSingleProject) {
+      if (siteExists) {
+        if (geoJson !== null) {
+          const bbox = turf.bbox(geoJson.features[currentSite]);
+          const { longitude, latitude, zoom } = new WebMercatorViewport(
+            viewport
+          ).fitBounds(
+            [
+              [bbox[0], bbox[1]],
+              [bbox[2], bbox[3]],
+            ],
+            {
+              padding: {
+                top: 50,
+                bottom: isMobile ? 120 : 50,
+                left: isMobile ? 50 : 400,
+                right: isMobile ? 50 : 100,
+              },
+            }
+          );
+          const newMapState = {
+            mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+          };
+          const newViewport = {
+            ...viewport,
+            longitude,
+            latitude,
+            zoom,
+            transitionDuration: 4000,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: d3.easeCubic,
+          };
+          setViewPort(newViewport);
+          setMapState(newMapState);
         }
       } else {
-        setsiteExists(false);
+        const newMapState = {
+          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        };
+        const newViewport = {
+          ...viewport,
+          longitude: singleProjectLatLong[1],
+          latitude: singleProjectLatLong[0],
+          zoom: 5,
+          transitionDuration: 4000,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: d3.easeCubic,
+        };
+        setViewPort(newViewport);
+        setMapState(newMapState);
       }
-    } else if (project !== null) {
+    } else {
       const newMapState = {
         mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
       };
@@ -109,95 +163,13 @@ export default function MapboxMap({
       setMapState(newMapState);
       setViewPort(newViewport);
     }
-  }, [project, showSingleProject]);
-
-  React.useEffect(() => {
-    if (showSingleProject) {
-      if (siteExists) {
-        let bbox = turf.bbox(geojson.features[currentSite]);
-        bbox = [
-          [bbox[0], bbox[1]],
-          [bbox[2], bbox[3]],
-        ];
-        const { longitude, latitude, zoom } = new WebMercatorViewport(
-          viewport
-        ).fitBounds(bbox, {
-          padding: {
-            top: 50,
-            bottom: isMobile ? 120 : 50,
-            left: isMobile ? 50 : 400,
-            right: isMobile ? 50 : 100,
-          },
-        });
-        const newMapState = {
-          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-        };
-        const newViewport = {
-          ...viewport,
-          longitude,
-          latitude,
-          zoom,
-          transitionDuration: 4000,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: d3.easeCubic,
-        };
-        setViewPort(newViewport);
-        setMapState(newMapState);
-      } else {
-        const newMapState = {
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-        };
-        const newViewport = {
-          ...viewport,
-          longitude: singleProjectLatLong[1],
-          latitude: singleProjectLatLong[0],
-          zoom: 5,
-          transitionDuration: 4000,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: d3.easeCubic,
-        };
-
-        setViewPort(newViewport);
-        setMapState(newMapState);
-      }
-    }
-  }, [project, siteExists, geojson]);
-
-  React.useEffect(() => {
-    if (showSingleProject && siteExists) {
-      if (currentSite < maxSites) {
-        let bbox = turf.bbox(geojson.features[currentSite]);
-        bbox = [
-          [bbox[0], bbox[1]],
-          [bbox[2], bbox[3]],
-        ];
-        const { longitude, latitude, zoom } = new WebMercatorViewport(
-          viewport
-        ).fitBounds(bbox, {
-          padding: {
-            top: 50,
-            bottom: isMobile ? 120 : 50,
-            left: isMobile ? 50 : 400,
-            right: isMobile ? 50 : 100,
-          },
-        });
-        const newMapState = {
-          mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-        };
-        const newViewport = {
-          ...viewport,
-          longitude,
-          latitude,
-          zoom,
-          transitionDuration: 4000,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: d3.easeCubic,
-        };
-        setViewPort(newViewport);
-        setMapState(newMapState);
-      }
-    }
-  }, [currentSite]);
+  }, [
+    showSingleProject,
+    siteExists,
+    geoJson,
+    currentSite,
+    singleProjectLatLong,
+  ]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -227,9 +199,8 @@ export default function MapboxMap({
   }
 
   return (
-    <div ref={parentRef} className={styles.mapContainer}>
+    <div className={styles.mapContainer}>
       <MapGL
-        ref={mapRef}
         {...mapState}
         {...viewport}
         mapboxApiAccessToken={mapboxToken}
@@ -254,7 +225,7 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geojson}>
+            <Source id="singleProject" type="geojson" data={geoJson}>
               <Layer
                 id="ploygonLayer"
                 type="fill"
@@ -341,14 +312,22 @@ export default function MapboxMap({
             <div
               className={styles.popupProject}
               onClick={() =>
-                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
-                  shallow: true,
-                })
+                router.push(
+                  `/?p=${popupData.project.properties.slug}`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                )
               }
               onKeyPress={() =>
-                router.push(`/?p=${projectMarker.properties.slug}`, undefined, {
-                  shallow: true,
-                })
+                router.push(
+                  `/?p=${popupData.project.properties.slug}`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                )
               }
               role="button"
               tabIndex={0}
@@ -390,8 +369,8 @@ export default function MapboxMap({
                 &nbsp;&nbsp;
                 {siteExists &&
                 project.sites.length !== 0 &&
-                geojson.features[currentSite]
-                  ? geojson.features[currentSite].properties.name
+                geoJson.features[currentSite]
+                  ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
               </p>

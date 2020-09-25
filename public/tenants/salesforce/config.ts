@@ -7,6 +7,7 @@ const config = {
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
+  languages: ['en'],
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
@@ -45,9 +46,10 @@ const config = {
   meta: {
     title: 'Salesforce ❤️ Trees',
     description:
-            'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
+      'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
+    locale: 'en_US',
   },
 };
 

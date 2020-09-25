@@ -13,8 +13,10 @@ import {
 } from '../../../../../utils/countryUtils';
 import { ThemeContext } from '../../../../../utils/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
+import i18next from '../../../../../../i18n';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
+const { useTranslation } = i18next;
 export default function TransitionsModal(props: any) {
   const {
     openModal,
@@ -24,6 +26,8 @@ export default function TransitionsModal(props: any) {
     currency,
     country,
   } = props;
+
+  const { t } = useTranslation(['donate', 'common']);
 
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
   //   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
@@ -57,6 +61,7 @@ export default function TransitionsModal(props: any) {
     setImportantList(impCountryList);
     setSelectedModalValue(`${country},${currency}`);
   }, [currency]);
+
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
@@ -88,7 +93,7 @@ export default function TransitionsModal(props: any) {
         <Fade in={openModal}>
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>Select your Currency</p>
+              <p className={styles.sectionHead}>{t('donate:selectCurrency')}</p>
               {/* maps the radio button for currency */}
               <MapCurrency
                 sortedCountriesData={importantList}
@@ -109,11 +114,11 @@ export default function TransitionsModal(props: any) {
             <div className={styles.buttonContainer}>
               <div className={styles.button} onClick={handleModalClose}>
                 <div></div>
-                <p>Cancel</p>
+                <p>{t('common:cancel')}</p>
               </div>
               <div className={styles.button} onClick={handleOKClick}>
                 <div></div>
-                <p>OK</p>
+                <p>{t('common:ok')}</p>
               </div>
             </div>
           </div>

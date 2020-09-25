@@ -27,13 +27,15 @@ export default function LeaderBoard() {
     async function loadTenantScore() {
       await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newTenantScore = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setTenantScore(newTenantScore);
-      });
+      })
+        .then(async (res) => {
+          const newTenantScore = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setTenantScore(newTenantScore);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadTenantScore();
   }, []);
@@ -42,13 +44,15 @@ export default function LeaderBoard() {
     async function loadLeaderboard() {
       await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newLeaderboard = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setLeaderboard(newLeaderboard);
-      });
+      })
+        .then(async (res) => {
+          const newLeaderboard = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setLeaderboard(newLeaderboard);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadLeaderboard();
   }, []);
@@ -101,9 +105,7 @@ export default function LeaderBoard() {
         backgroundColor="white"
         startInvisible
       >
-        <Layout>
-          
-        </Layout>
+        <Layout></Layout>
       </PullToRefresh>
     </>
   );

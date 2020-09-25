@@ -2,7 +2,6 @@ import { signIn, signOut, useSession, getSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { userInfo } from 'os';
 import React, { useEffect } from 'react';
-import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
 import tenantConfig from '../tenant.config';
@@ -73,8 +72,6 @@ export default function UserProfile() {
   const UserProps = {
     userprofile,
   };
-
-  const texts = getMe();
   
   useEffect(() => {
     async function fetchUserInfo(session:any) {
