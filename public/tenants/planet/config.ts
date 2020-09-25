@@ -10,6 +10,7 @@ const config = {
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
+  languages: ['de', 'en'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,

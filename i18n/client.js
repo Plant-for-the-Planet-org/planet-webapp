@@ -1,13 +1,16 @@
 import LanguageDetector from 'i18next-browser-languagedetector';
 import NextI18Next from 'next-i18next';
 import { initReactI18next } from 'react-i18next';
+import getConfig from '../tenant.config';
+
+const config = getConfig();
 
 export default new NextI18Next({
   use: [LanguageDetector, initReactI18next],
-  defaultLanguage: 'en',
-  fallbackLng: 'en',
+  defaultLanguage: config.languages[0] ? config.languages[0] : 'en',
+  fallbackLng: config.languages[0] ? config.languages[0] : 'en',
   debug: false,
-  otherLanguages: ['de'], // list all languages here
+  otherLanguages: config.languages.splice(0, 1), // list all languages here
   detection: {
     // check if language is cached in cookies, if not check local storage, 
     // last retrieve from browser language
