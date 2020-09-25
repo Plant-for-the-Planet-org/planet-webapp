@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
+import i18next from '../../../../../../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   contactDetails: Array<{
     id: number;
@@ -12,9 +14,11 @@ interface Props {
 }
 
 function ProjectContactDetails({ contactDetails }: Props): ReactElement {
+  const { t } = useTranslation(['donate']);
+
   return (
     <div className={styles.projectMoreInfo}>
-      <div className={styles.infoTitle}>Contact Details</div>
+      <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
       {/* contactDetails tpo profile page link */}
       <div key={contactDetails[0].id}>
         <Link

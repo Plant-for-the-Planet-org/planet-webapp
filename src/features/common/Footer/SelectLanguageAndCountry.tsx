@@ -8,12 +8,15 @@ import React, { useEffect, useState } from 'react';
 import countriesData from '../../../utils/countriesData.json';
 import {
   getCountryDataBy,
-  sortCountriesData
+  sortCountriesData,
 } from '../../../utils/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
 import { ThemeContext } from '../../../utils/themeContext';
 import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
+import i18next from '../../../../i18n';
+
+const { useTranslation } = i18next;
 
 export default function TransitionsModal(props) {
   const {
@@ -28,6 +31,9 @@ export default function TransitionsModal(props) {
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
   const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
+
+  const { i18n } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   const { theme } = React.useContext(ThemeContext);
 
@@ -44,8 +50,10 @@ export default function TransitionsModal(props) {
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-    window.localStorage.setItem('language', modalLanguage);
+    i18n.changeLanguage(modalLanguage);
+    // window.localStorage.setItem('language', modalLanguage);
     setLanguage(modalLanguage);
+    i18n.changeLanguage(modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
     let currencyCode = getCountryDataBy('countryCode', selectedModalCountry)
@@ -94,13 +102,13 @@ export default function TransitionsModal(props) {
         <Fade in={openModal}>
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>Select a Language</p>
+              <p className={styles.sectionHead}>{t('common:selectLanguage')}</p>
               {/* maps the radio button for languages */}
               <MapLanguage
                 value={modalLanguage}
                 handleChange={handleLanguageChange}
               />
-              <p className={styles.sectionHead}>Select your Country</p>
+              <p className={styles.sectionHead}>{t('common:selectCountry')}</p>
               {/* maps the radio button for countries */}
               <MapCountry
                 sortedCountriesData={sortedCountriesData}
@@ -112,11 +120,11 @@ export default function TransitionsModal(props) {
             <div className={styles.buttonContainer}>
               <div className={styles.button} onClick={handleModalClose}>
                 <div></div>
-                <p>Cancel</p>
+                <p>{t('common:cancel')}</p>
               </div>
               <div className={styles.button} onClick={handleOKClick}>
                 <div></div>
-                <p>OK</p>
+                <p>{t('common:ok')}</p>
               </div>
             </div>
           </div>

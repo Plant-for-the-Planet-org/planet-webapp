@@ -5,7 +5,9 @@ import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader
 import CancelIcon from './../../../../assets/images/icons/CancelIcon';
 import SearchIcon from './../../../../assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
+import i18next from '../../../../../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   projects: any;
   setSearchedProjects: Function;
@@ -20,6 +22,8 @@ export default function ProjectsContainer({
   projects,
   setSearchedProjects,
 }: Props) {
+  const { t } = useTranslation(['donate']);
+
   const screenWidth = window.innerWidth;
   const [isMobile, setIsMobile] = React.useState(screenWidth <= 767);
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
@@ -118,7 +122,7 @@ export default function ProjectsContainer({
               ref={searchRef}
               fullWidth={true}
               autoFocus={true}
-              placeholder="Search Projects"
+              placeholder={t('donate:searchProjects')}
               onChange={(e) => setSearchValue(e.target.value)}
               value={searchValue}
             />
@@ -152,7 +156,7 @@ export default function ProjectsContainer({
                       : styles.tabButtonText
                   }
                 >
-                  Top Projects
+                  {t('donate:topProjects')}
                 </div>
                 {selectedTab === 'featured' ? (
                   <div className={styles.tabButtonSelectedIndicator} />
@@ -170,7 +174,9 @@ export default function ProjectsContainer({
                       : styles.tabButtonText
                   }
                 >
-                  All {projects.length} Projects
+                  {t('donate:allCountProjects', {
+                    projectCount: projects.length,
+                  })}
                 </div>
                 {selectedTab === 'all' ? (
                   <div className={styles.tabButtonSelectedIndicator} />
@@ -178,7 +184,9 @@ export default function ProjectsContainer({
               </div>
             </div>
           ) : (
-            <p className={styles.headerText}>Stop Talking. Start Planting.</p>
+            <p className={styles.headerText}>
+              {t('donate:stopTalkingStartPlanting')}
+            </p>
           )}
 
           <div
