@@ -56,5 +56,7 @@
   "plantTreesAtURL": "Pflanze mit! {{url}}",
   "copiedToClipboard": "Text in die Zwischenablage kopiert!",
   "noProjectsFound": "Keine Projekte gefunden",
-  "inTimeOfTaxReturns": "rechtzeitig für deine Steuererklärung."
+  "inTimeOfTaxReturns": "rechtzeitig für deine Steuererklärung.",
+  "titleToShare": "Bäume pflanzen gegen die Klimakrise!",
+  "textToShare": "Um die Klimakrise zu verhindern, müssen die Kohlenstoffemissionen drastisch reduziert und Bäume gepflanzt werden. Deshalb habe ich gerade einige gepflanzt. Schau unter {{linkToShare}} nach, wenn du auch welche pflanzen willst! #StopTalkingStartPlanting #TrillionTrees @PftP_int"
 }
