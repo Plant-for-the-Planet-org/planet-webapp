@@ -11,17 +11,21 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from './components/SettingsModal';
 
 export default function UserProfile({ userprofile }: any) {
-
   function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(false);
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
+    false
+  );
 
   const handleTextCopiedSnackbarOpen = () => {
-    setTextCopiedSnackbarOpen(true)
-  }
-  const handleTextCopiedSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
+    setTextCopiedSnackbarOpen(true);
+  };
+  const handleTextCopiedSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -39,8 +43,6 @@ export default function UserProfile({ userprofile }: any) {
     setSettingsModalOpen(true);
   };
 
-
-  
   // editProfile modal  (from settings modal)
   const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
   const handleEditProfileModalClose = () => {
@@ -65,19 +67,24 @@ export default function UserProfile({ userprofile }: any) {
             <SettingsModal
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
-
-              editProfileModalOpen = {editProfileModalOpen}
-              handleEditProfileModalClose = {handleEditProfileModalClose}
-              handleEditProfileModalOpen = {handleEditProfileModalOpen}
+              editProfileModalOpen={editProfileModalOpen}
+              handleEditProfileModalClose={handleEditProfileModalClose}
+              handleEditProfileModalOpen={handleEditProfileModalOpen}
             />
           </>
         )}
 
         {/* userinfo section */}
-        <LandingSection fixedBg>
-          <UserInfo 
-          userprofile={userprofile} 
-          handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+        <LandingSection
+          imageSrc={
+            process.env.CDN_URL
+              ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
+              : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
+          }
+        >
+          <UserInfo
+            userprofile={userprofile}
+            handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
           />
         </LandingSection>
 
@@ -94,13 +101,16 @@ export default function UserProfile({ userprofile }: any) {
         </div>
       </main>
 
-        {/* snackbar for showing text copied to clipboard */}
-      <Snackbar open={textCopiedsnackbarOpen} autoHideDuration={4000} onClose={handleTextCopiedSnackbarClose} >
-      <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+      {/* snackbar for showing text copied to clipboard */}
+      <Snackbar
+        open={textCopiedsnackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleTextCopiedSnackbarClose}
+      >
+        <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
           Text Copied to Clipboard!
         </Alert>
       </Snackbar>
-
     </React.Fragment>
   );
 }
