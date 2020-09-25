@@ -4,5 +4,10 @@
   "description": "Routes i18n imports to client/server according to the runtime environment",
   "private": true,
   "main": "./server.js",
-  "browser": "./client.js"
+  "browser": "./client.js",
+  "dependencies": {
+    "next-i18next": "^6.0.2",
+    "i18next": "^19.7.0",
+    "i18next-browser-languagedetector": "^6.0.1"
+  }
 }
