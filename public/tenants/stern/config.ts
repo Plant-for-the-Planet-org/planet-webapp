@@ -3,18 +3,17 @@ const config = {
   tenantURL: 'baeume.stern.de',
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL:
-                  `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+    primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL:
-                  `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
   meta: {
     title: 'Stern ❤️ Baeume',
     description:
-                  'Mit Plant-for-the-Planet pflanzen wir weltweit Bäume. So entsteht unser globaler sternWald. Pro verkauftem Exemplar der KeinGradWeiter-Ausgabe spendet die Redaktion einen Baum.',
+      'Mit Plant-for-the-Planet pflanzen wir weltweit Bäume. So entsteht unser globaler sternWald. Pro verkauftem Exemplar der KeinGradWeiter-Ausgabe spendet die Redaktion einen Baum.',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
+    locale: 'de_DE',
   },
   header: {
     isSecondaryTenant: true,
