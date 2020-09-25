@@ -1,4 +1,5 @@
 import React from 'react';
+import { signIn, signOut, useSession, getSession } from 'next-auth/client';
 import { Col, Container, Row } from 'react-bootstrap';
 import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../assets/images/icons/headerIcons/close';
@@ -35,7 +36,7 @@ export default function SettingsModal({
             <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div>
-            <div className={styles.settingsItem}>
+            <div className={styles.settingsItem} onClick={() => signOut({ callbackUrl: '/' })}>
               <b> Logout </b>
             </div>
             <div
