@@ -8,7 +8,6 @@ import Footer from '../../common/Footer';
 import UserInfo from './components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-
 import SettingsModal from './components/SettingsModal';
 
 export default function UserProfile({ userprofile }: any) {
@@ -30,15 +29,6 @@ export default function UserProfile({ userprofile }: any) {
   };
 
   const scrollRef = useRef(null);
-
-  function handleScrollDownClick() {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      });
-    }
-  }
 
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
