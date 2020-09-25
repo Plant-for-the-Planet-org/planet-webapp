@@ -16,7 +16,7 @@ const options = {
   jwt:{
   secret: process.env.JWT_SECRET,
   encryption: true,
-  }
+  },
   // pages: {
     // signIn: '/api/auth/signin',  // Displays signin buttons
     // signOut: '/api/auth/signout', // Displays form with sign out button
