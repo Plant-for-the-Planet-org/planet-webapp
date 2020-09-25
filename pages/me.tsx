@@ -1,10 +1,14 @@
 import { signIn, signOut, useSession, getSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
+import tenantConfig from '../tenant.config';
 
-const Me = () => {
+const config = tenantConfig();
+export default function UserProfile() {
+  const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
   const [ session, loading ] = useSession()
   const UserProps = {
@@ -77,7 +81,12 @@ const Me = () => {
     loadUserData();
   }, []);
 
-  if (!session && !loading) {
+  if (!config.header.items[3].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+  }
+  if (!session && !loading){
   return (
     <Layout>
       <br />
@@ -115,5 +124,3 @@ const Me = () => {
     );
   }
 };
-
-export default Me;

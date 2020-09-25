@@ -64,6 +64,15 @@ export default function TpoProfile(props: any) {
     <div className={treeCounterStyles.treeCounter}>
       <FacebookCircularProgress value={progress} />
       <div className={treeCounterStyles.backgroundCircle} />
+      {props.hideTarget && 
+      <div className={treeCounterStyles.treeCounterData} style={{justifyContent: 'center'}}>
+        <div className={treeCounterStyles.treeCounterDataField}>
+          <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
+          <h2>Trees Planted</h2>
+        </div>
+      </div>
+      }
+      {!props.hideTarget && 
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
@@ -72,8 +81,9 @@ export default function TpoProfile(props: any) {
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
           <h2>Target</h2>
-        </div>
+        </div>  
       </div>
+      }
     </div>
   );
 }

@@ -6,14 +6,16 @@ import {
   RefreshContent,
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
-import Layout from '../src/features/common/Layout';
-import About from '../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
 import Head from 'next/head';
+import Layout from '../src/features/common/Layout';
+import SalesforceHome from '../src/tenants/salesforce/Home';
+import SternHome from '../src/tenants/stern/Home';
+
 import tenantConfig from '../tenant.config';
+
 const config = tenantConfig();
 
-export default function LeaderBoard() {
+export default function Home() {
   const router = useRouter();
   // stores whether device is mobile or not;
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
@@ -59,6 +61,34 @@ export default function LeaderBoard() {
       setTimeout(resolve, 2000);
     });
   }
+
+  if (!config.header.items[0].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+  }
+
+  let HomePage;
+  function getHomePage() {
+    switch (process.env.TENANT) {
+      case 'salesforce': HomePage = SalesforceHome;
+        return (
+          <HomePage
+            leaderboard={leaderboard}
+            tenantScore={tenantScore}
+          />
+        );
+      case 'stern': HomePage = SternHome;
+        return (
+          <HomePage
+            leaderboard={leaderboard}
+            tenantScore={tenantScore}
+          />
+        );
+      default: HomePage = null; return HomePage;
+    }
+  }
+
   return (
     <>
       <Head>
@@ -94,14 +124,7 @@ export default function LeaderBoard() {
         startInvisible
       >
         <Layout>
-          {process.env.TENANT === 'planet' ? (
-            <About />
-          ) : (
-            <SalesforceLeaderBoard
-              leaderboard={leaderboard}
-              tenantScore={tenantScore}
-            />
-          )}
+        {getHomePage()}
         </Layout>
       </PullToRefresh>
     </>
