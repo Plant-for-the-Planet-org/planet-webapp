@@ -68,7 +68,8 @@ export default function UserProfile() {
   
   const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
-  const [ session, loading ] = useSession()
+  const [ session] = useSession()
+  const [pageLoading, setPageLoading] = React.useState(true)
   const UserProps = {
     userprofile,
   };
@@ -88,7 +89,12 @@ export default function UserProfile() {
       if (res.status === 200){
         // user exists in db and return info
         const resJson = await res.json()
-        setUserprofile(resJson);
+        const newMeObj = {
+          ...resJson,
+          isMe: true,
+        }
+        setPageLoading(false)
+        setUserprofile(newMeObj);
       } else if (res.status === 303){
         // user does not exist in db
         if (typeof window !== 'undefined') {
@@ -97,10 +103,11 @@ export default function UserProfile() {
       }
     }
 
-    if (!loading && !session){
+    if (!session){
+      setPageLoading(false)
       // user not logged in -> send to login screen
       signIn(null)
-    } else if (!loading && session) {
+    } else if (session) {
       // some user is logged in -> api call to backend
       fetchUserInfo(session)
     }
@@ -113,13 +120,13 @@ export default function UserProfile() {
   }
 
   // loading
-  if (loading){
+  if (pageLoading){
     return(<h1>Loading...</h1>)
   }
-  if (!loading && !session){
+  if (!pageLoading && !session){
     return <h1> redirecting to login...</h1>
   }
-  if (!loading && session)
+  if (!pageLoading && session)
   {
     return (
       <Layout>

@@ -81,8 +81,8 @@ export default function UserProfile({ userprofile }: any) {
           />
         </LandingSection>
 
-        {/* my forest section */}
-        {userprofile.isMe && (
+        {/* my forest section  - if contains projects field*/}
+        {userprofile.isMe && userprofile.projects && (
           <div ref={scrollRef} className={styles.myForestContainer}>
             <MyForestContainer userprofile={userprofile} />
           </div>
