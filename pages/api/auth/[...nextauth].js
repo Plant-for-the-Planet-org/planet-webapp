@@ -39,7 +39,6 @@ const options = {
     jwt: async (token, user, account, profile, isNewUser) => {
       if (user){
         token.accessToken = user.accessToken
-        token.userID = user.userID
       }
       return token
     },
