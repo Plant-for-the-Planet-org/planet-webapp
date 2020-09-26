@@ -6,14 +6,16 @@ import {
   RefreshContent,
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
-import Layout from '../src/features/common/Layout';
-import About from '../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
 import Head from 'next/head';
+import Layout from '../src/features/common/Layout';
+import SalesforceHome from '../src/tenants/salesforce/Home';
+import SternHome from '../src/tenants/stern/Home';
+
 import tenantConfig from '../tenant.config';
+
 const config = tenantConfig();
 
-export default function LeaderBoard() {
+export default function Home() {
   const router = useRouter();
   // stores whether device is mobile or not;
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
@@ -28,13 +30,15 @@ export default function LeaderBoard() {
     async function loadTenantScore() {
       await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newTenantScore = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setTenantScore(newTenantScore);
-      });
+      })
+        .then(async (res) => {
+          const newTenantScore = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setTenantScore(newTenantScore);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadTenantScore();
   }, []);
@@ -43,13 +47,15 @@ export default function LeaderBoard() {
     async function loadLeaderboard() {
       await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newLeaderboard = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setLeaderboard(newLeaderboard);
-      });
+      })
+        .then(async (res) => {
+          const newLeaderboard = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setLeaderboard(newLeaderboard);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadLeaderboard();
   }, []);
@@ -59,17 +65,38 @@ export default function LeaderBoard() {
       setTimeout(resolve, 2000);
     });
   }
+
+  if (!config.header.items[0].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+  }
+
+  let HomePage;
+  function getHomePage() {
+    switch (process.env.TENANT) {
+      case 'salesforce':
+        HomePage = SalesforceHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'stern':
+        HomePage = SternHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      default:
+        HomePage = null;
+        return HomePage;
+    }
+  }
+
   return (
     <>
       <Head>
         <title>{`Home | ${config.meta.title}`}</title>
         <meta property="og:site_name" content={config.meta.title} />
-        <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}
         />
-        <meta property="og:title" content={`${config.meta.title} - Home`} />
+        <meta property="og:title" content={`Home | ${config.meta.title}`} />
         <meta property="og:description" content={config.meta.description} />
         <meta name="description" content={config.meta.description} />
         <meta property="og:type" content="website" />
@@ -93,16 +120,7 @@ export default function LeaderBoard() {
         backgroundColor="white"
         startInvisible
       >
-        <Layout>
-          {process.env.TENANT === 'planet' ? (
-            <About />
-          ) : (
-            <SalesforceLeaderBoard
-              leaderboard={leaderboard}
-              tenantScore={tenantScore}
-            />
-          )}
-        </Layout>
+        <Layout>{getHomePage()}</Layout>
       </PullToRefresh>
     </>
   );

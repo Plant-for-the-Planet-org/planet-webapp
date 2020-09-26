@@ -9,7 +9,10 @@ import { ThemeContext } from '../../../../utils/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 import { useRouter } from 'next/router';
+import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
   key: number;
@@ -17,6 +20,9 @@ interface Props {
 
 export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const router = useRouter();
+  const { t, i18n } = useTranslation(['donate', 'common']);
+  const [countryCode, setCountryCode] = React.useState<string>('DE');
+
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
     : '';
@@ -37,7 +43,13 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
     setOpen(true);
   };
 
+  React.useEffect(() => {
+    const code = window.localStorage.getItem('countryCode') || 'DE';
+    setCountryCode(code);
+  });
+
   const projectDetails = project.properties;
+
   return (
     <div className={styles.singleProject} key={key}>
       <Modal
@@ -94,7 +106,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •{' '}
+              {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {
                   getCountryDataBy('countryCode', project.properties.country)
@@ -104,7 +116,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpo.name}
+            {t('common:by')} {project.properties.tpo.name}
           </div>
         </div>
 
@@ -112,17 +124,17 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           <div className={styles.projectCost}>
             {project.properties.treeCost ? (
               <>
-                <div onClick={handleOpen} className={styles.costButton}>
-                  {project.properties.currency === 'USD'
-                    ? '$'
-                    : project.properties.currency === 'EUR'
-                    ? '€'
-                    : project.properties.currency}
-                  {project.properties.treeCost % 1 !== 0
-                    ? project.properties.treeCost.toFixed(2)
-                    : project.properties.treeCost}
+                <div onClick={handleOpen} className={styles.donateButton}>
+                  {t('common:donate')}
                 </div>
-                <div className={styles.perTree}>per tree</div>
+                <div className={styles.perTreeCost}>
+                  {getFormatedCurrency(
+                    i18n.language,
+                    project.properties.currency,
+                    project.properties.treeCost
+                  )}{' '}
+                  <span>{t('donate:perTree')}</span>
+                </div>
               </>
             ) : null}
           </div>

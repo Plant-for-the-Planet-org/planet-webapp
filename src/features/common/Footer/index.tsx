@@ -6,13 +6,18 @@ import World from '../../../assets/images/footer/World';
 import getLanguageName from '../../../utils/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
+import i18next from '../../../../i18n';
+
+const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
+  const { t, i18n } = useTranslation(['common']);
+
   const [openModal, setOpenModal] = useState(false);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('DE');
+  const [selectedCountry, setSelectedCountry] = useState('US');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -25,34 +30,42 @@ export default function Footer() {
   const FooterLinks = [
     {
       id: 1,
-      title: 'Privacy & Terms',
+      title: t('common:privacyAndTerms'),
       link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
     },
     {
       id: 2,
-      title: 'Imprint',
+      title: t('common:imprint'),
       link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
     },
     {
       id: 3,
-      title: 'Contact',
+      title: t('common:contact'),
       link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
     },
     {
       id: 6,
-      title: 'Support Us',
+      title: t('common:supportUs'),
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
   ];
+
   // changes the language and selected currency id found in local storage
   useEffect(() => {
     let langCode;
     let currencyCode;
     let countryCode;
-    console.log(
-      "localStorage.getItem('language')",
-      localStorage.getItem('language')
-    );
+
+    // Norbert: we do not want users in DACH force to use the website in German, do we?
+    // if (
+    //   selectedCountry === 'DE' ||
+    //   selectedCountry === 'AT' ||
+    //   selectedCountry === 'CH'
+    // ) {
+    //   setLanguage('de');
+    //   localStorage.setItem('language', 'de');
+    // }
+
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
         currencyCode = localStorage.getItem('currencyCode');
@@ -62,11 +75,6 @@ export default function Footer() {
         countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
       }
-      if (localStorage.getItem('language')) {
-        langCode = localStorage.getItem('language');
-        if (langCode) setLanguage(langCode);
-      }
-      // console.log('in footer', langCode, currencyCode, countryCode)
     }
   }, []);
 
@@ -81,7 +89,7 @@ export default function Footer() {
               <div onClick={handleModalOpen} className={styles.footer_button}>
                 <World color={styles.primaryFontColor} />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(language)} (${selectedCurrency})`}
+                  {`${getLanguageName(language)} · ${selectedCurrency}`}
                 </p>
               </div>
               <a href="https://play.google.com/store/apps/details?id=org.pftp">

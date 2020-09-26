@@ -7,6 +7,11 @@ export async function createDonation(data: any) {
     headers: {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
+      'x-locale': `${
+        localStorage.getItem('language') !== null
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
     },
   });
   const donation = await res.json();
@@ -20,6 +25,11 @@ export async function payDonation(data: any, id: any) {
     headers: {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
+      'x-locale': `${
+        localStorage.getItem('language') !== null
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
     },
   });
   const contribution = await res.json();
@@ -64,26 +74,25 @@ export function payWithCard({
   paymentMethod,
   window,
   donorDetails,
-  taxDeductionCountry
+  taxDeductionCountry,
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
-
 
   let createDonationData = {
     type: 'trees',
     project: project.id,
-    treeCount: treeCount,
-    amount: treeCost * treeCount,
-    currency: currency,
+    treeCount,
+    amount: Math.round((treeCost * treeCount + Number.EPSILON) * 100) / 100,
+    currency,
     donor: { ...donorDetails },
   };
   if (taxDeductionCountry) {
     createDonationData = {
       ...createDonationData,
-      taxDeductionCountry: taxDeductionCountry,
+      taxDeductionCountry,
     };
   }
-  let gift = {
+  const gift = {
     gift: {
       type: 'invitation',
       recipientName: giftDetails.recipientName,
@@ -105,17 +114,14 @@ export function payWithCard({
       if (res.code === 400) {
         setIsPaymentProcessing(false);
         setPaymentError(res.message);
-        return;
       } else if (res.code === 500) {
         setIsPaymentProcessing(false);
         setPaymentError('Something went wrong please try again soon!');
-        return;
       } else if (res.code === 503) {
         setIsPaymentProcessing(false);
         setPaymentError(
-          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details'
+          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
         );
-        return;
       } else {
         const payDonationData = {
           paymentProviderRequest: {
@@ -134,75 +140,70 @@ export function payWithCard({
               setIsPaymentProcessing(false);
               setPaymentError(res.message);
               return;
-            } else if (res.code === 500) {
+            } if (res.code === 500) {
               setIsPaymentProcessing(false);
               setPaymentError('Something went wrong please try again soon!');
               return;
-            } else if (res.code === 503) {
+            } if (res.code === 503) {
               setIsPaymentProcessing(false);
               setPaymentError(
-                'App is undergoing maintenance, please check status.plant-for-the-planet.org for details'
+                'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
               );
               return;
             }
             if (res.status === 'failed') {
               setIsPaymentProcessing(false);
               setPaymentError(res.message);
-              return;
-            } else {
-              if (res.paymentStatus === 'success') {
-                setIsPaymentProcessing(false);
-                setDonationStep(4);
-              } else if (res.status === 'action_required') {
-                const clientSecret = res.response.payment_intent_client_secret;
-                const donationID = res.id;
-                const stripe = window.Stripe(
+            } else if (res.paymentStatus === 'success') {
+              setIsPaymentProcessing(false);
+              setDonationStep(4);
+            } else if (res.status === 'action_required') {
+              const clientSecret = res.response.payment_intent_client_secret;
+              const donationID = res.id;
+              const stripe = window.Stripe(
                   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
                   {
                     stripeAccount: res.response.account,
-                  }
-                );
-                if (stripe) {
-                  await stripe.handleCardAction(clientSecret).then((res) => {
-                    if (res.error) {
-                      setIsPaymentProcessing(false);
-                      setPaymentError(res.error.message);
-                    } else {
-                      const payDonationData = {
-                        paymentProviderRequest: {
-                          account: paymentSetup.gateways.stripe.account,
-                          gateway: 'stripe_pi',
-                          source: {
-                            id: res.paymentIntent.id,
-                            object: 'payment_intent',
-                          },
+                  },
+              );
+              if (stripe) {
+                await stripe.handleCardAction(clientSecret).then((res) => {
+                  if (res.error) {
+                    setIsPaymentProcessing(false);
+                    setPaymentError(res.error.message);
+                  } else {
+                    const payDonationData = {
+                      paymentProviderRequest: {
+                        account: paymentSetup.gateways.stripe.account,
+                        gateway: 'stripe_pi',
+                        source: {
+                          id: res.paymentIntent.id,
+                          object: 'payment_intent',
                         },
-                      };
-                      payDonation(payDonationData, donationID).then((res) => {
-                        if (res.paymentStatus === 'success') {
-                          setIsPaymentProcessing(false);
-                          setDonationStep(4);
-                        } else {
-                          setIsPaymentProcessing(false);
-                          setPaymentError(res.error.message);
-                        }
-                      });
-                    }
-                  });
-                }
+                      },
+                    };
+                    payDonation(payDonationData, donationID).then((res) => {
+                      if (res.paymentStatus === 'success') {
+                        setIsPaymentProcessing(false);
+                        setDonationStep(4);
+                      } else {
+                        setIsPaymentProcessing(false);
+                        setPaymentError(res.error.message);
+                      }
+                    });
+                  }
+                });
               }
             }
           })
           .catch((error) => {
             setIsPaymentProcessing(false);
             setPaymentError(error.message);
-            return;
           }); // Add Catch if pay donation failes
       }
     })
     .catch((error) => {
       setIsPaymentProcessing(false);
       setPaymentError(error.message);
-      return;
     }); // Add Catch if create donation failes
 }

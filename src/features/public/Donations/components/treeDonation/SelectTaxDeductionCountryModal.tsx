@@ -8,7 +8,10 @@ import React, { useState } from 'react';
 import { getCountryDataBy } from '../../../../../utils/countryUtils';
 import { ThemeContext } from '../../../../../utils/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
+import i18next from '../../../../../../i18n';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
+
+const { useTranslation } = i18next;
 
 export default function TransitionsModal(props: any) {
   const {
@@ -20,6 +23,8 @@ export default function TransitionsModal(props: any) {
     setCurrency,
     currency,
   } = props;
+
+  const { t } = useTranslation(['donate', 'common']);
 
   const [countriesData, setCountriesData] = useState([]);
   const [selectedModalValue, setSelectedModalValue] = useState(
@@ -48,7 +53,7 @@ export default function TransitionsModal(props: any) {
 
   React.useEffect(() => {
     const tempCountriesData: any = [];
-    taxDeductionCountries.forEach((countryCode) =>
+    taxDeductionCountries.forEach((countryCode: string) =>
       tempCountriesData.push(getCountryDataBy('countryCode', countryCode))
     );
     setCountriesData(tempCountriesData);
@@ -71,7 +76,7 @@ export default function TransitionsModal(props: any) {
         <Fade in={openModal}>
           <div className={styles.modal} style={{ height: 'auto' }}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>Select Country</p>
+              <p className={styles.sectionHead}>{t('common:selectCountry')}</p>
               {/* maps the radio button for country */}
               <MapCountry
                 countriesData={countriesData}
@@ -85,11 +90,11 @@ export default function TransitionsModal(props: any) {
             <div className={styles.buttonContainer}>
               <div className={styles.button} onClick={handleModalClose}>
                 <div></div>
-                <p>Cancel</p>
+                <p>{t('common:cancel')}</p>
               </div>
               <div className={styles.button} onClick={handleOKClick}>
                 <div></div>
-                <p>OK</p>
+                <p>{t('common:ok')}</p>
               </div>
             </div>
           </div>

@@ -2,6 +2,8 @@ import Head from 'next/head';
 import tenantConfig from '../../../../tenant.config';
 import { useTheme } from '../../../utils/themeContext';
 import styles from './Header.module.scss';
+import locales from '../../../../public/static/localeList.json';
+
 const config = tenantConfig();
 export default function Layout() {
   const { theme: themeType } = useTheme();
@@ -14,7 +16,16 @@ export default function Layout() {
       {config.font.secondaryFontURL && (
         <link href={config.font.secondaryFontURL} rel="stylesheet" />
       )}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      />
+      <meta property="og:locale" content={config.meta.locale} />
+      {locales.map((locale) => {
+        if (locale !== config.meta.locale) {
+          return <meta property="og:locale:alternate" content={locale} />;
+        }
+      })}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="application-name" content={config.meta.title} />

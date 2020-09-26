@@ -1,16 +1,18 @@
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { getMe } from '../public/locales/getTranslations';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
+import tenantConfig from '../tenant.config';
 
+const config = tenantConfig();
 export default function UserProfile() {
+  const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
 
   const UserProps = {
     userprofile,
   };
 
-  const texts = getMe();
   // dummy data
   const dummyProfile = {
     countTarget: 200,
@@ -76,12 +78,13 @@ export default function UserProfile() {
     loadUserData();
   }, []);
 
+  if (!config.header.items[3].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+  }
   return (
     <Layout>
-      <h2 style={{ marginTop: '80px' }}>
-        description:
-        {texts.description}
-      </h2>
       <UserPage
         style={{ height: '100vh', overflowX: 'hidden' }}
         {...UserProps}

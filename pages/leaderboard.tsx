@@ -6,11 +6,10 @@ import {
   RefreshContent,
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
-import Layout from '../src/features/common/Layout';
-import About from '../src/tenants/planet/About/About';
-import SalesforceLeaderBoard from '../src/tenants/salesforce/LeaderBoard';
 import Head from 'next/head';
+import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
+
 const config = tenantConfig();
 
 export default function LeaderBoard() {
@@ -28,13 +27,15 @@ export default function LeaderBoard() {
     async function loadTenantScore() {
       await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newTenantScore = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setTenantScore(newTenantScore);
-      });
+      })
+        .then(async (res) => {
+          const newTenantScore = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setTenantScore(newTenantScore);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadTenantScore();
   }, []);
@@ -43,13 +44,15 @@ export default function LeaderBoard() {
     async function loadLeaderboard() {
       await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
         headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newLeaderboard = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setLeaderboard(newLeaderboard);
-      });
+      })
+        .then(async (res) => {
+          const newLeaderboard = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setLeaderboard(newLeaderboard);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadLeaderboard();
   }, []);
@@ -58,6 +61,12 @@ export default function LeaderBoard() {
     return new Promise((resolve) => {
       setTimeout(resolve, 2000);
     });
+  }
+
+  if (!config.header.items[2].visible) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
   }
   return (
     <>
@@ -96,16 +105,7 @@ export default function LeaderBoard() {
         backgroundColor="white"
         startInvisible
       >
-        <Layout>
-          {process.env.TENANT === 'planet' ? (
-            <About />
-          ) : (
-            <SalesforceLeaderBoard
-              leaderboard={leaderboard}
-              tenantScore={tenantScore}
-            />
-          )}
-        </Layout>
+        <Layout></Layout>
       </PullToRefresh>
     </>
   );
