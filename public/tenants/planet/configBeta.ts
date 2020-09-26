@@ -2,13 +2,14 @@ const config = {
   tenantName: 'planetbeta',
   tenantURL: 'beta.plant-for-the-planet.org',
   tenantLogoURL: 'https://www.plant-for-the-planet.org',
+  languages: ['de', 'en'],
+  fallbackCurrency: 'EUR',
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
-  languages: ['de', 'en'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
