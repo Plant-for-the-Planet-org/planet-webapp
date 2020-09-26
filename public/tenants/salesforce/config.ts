@@ -1,13 +1,14 @@
 const config = {
   tenantName: 'salesforce',
   tenantURL: 'trees.salesforce.com',
+  languages: ['en'],
+  fallbackCurrency: 'USD',
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
-  languages: ['en'],
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
