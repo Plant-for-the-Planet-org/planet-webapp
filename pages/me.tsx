@@ -5,7 +5,12 @@ import UserPage from '../src/features/user/UserProfile';
 import tenantConfig from '../tenant.config';
 
 const config = tenantConfig();
-export default function UserProfile() {
+
+interface Props {
+  initialized: Boolean;
+}
+
+export default function UserProfile(initialized: Props) {
   const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
 
@@ -85,10 +90,14 @@ export default function UserProfile() {
   }
   return (
     <Layout>
-      <UserPage
-        style={{ height: '100vh', overflowX: 'hidden' }}
-        {...UserProps}
-      />
+      {initialized ? (
+        <UserPage
+          style={{ height: '100vh', overflowX: 'hidden' }}
+          {...UserProps}
+        />
+      ) : (
+        <></>
+      )}
     </Layout>
   );
 }

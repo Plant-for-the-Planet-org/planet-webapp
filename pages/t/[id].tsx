@@ -9,7 +9,11 @@ import Head from 'next/head';
 import tenantConfig from '../../tenant.config';
 const config = tenantConfig();
 
-export default function PublicUser() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function PublicUser(initialized: Props) {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
@@ -93,7 +97,7 @@ export default function PublicUser() {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      {publicUserprofile ? (
+      {publicUserprofile && initialized ? (
         <Layout>
           <PublicUserPage {...PublicUserProps} />
           <Footer />

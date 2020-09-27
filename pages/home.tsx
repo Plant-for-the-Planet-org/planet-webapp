@@ -15,7 +15,11 @@ import tenantConfig from '../tenant.config';
 
 const config = tenantConfig();
 
-export default function Home() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function Home(initialized: Props) {
   const router = useRouter();
   // stores whether device is mobile or not;
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
@@ -120,7 +124,7 @@ export default function Home() {
         backgroundColor="white"
         startInvisible
       >
-        <Layout>{getHomePage()}</Layout>
+        {initialized ? <Layout>{getHomePage()}</Layout> : <></>}
       </PullToRefresh>
     </>
   );

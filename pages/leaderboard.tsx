@@ -12,7 +12,11 @@ import tenantConfig from '../tenant.config';
 
 const config = tenantConfig();
 
-export default function LeaderBoard() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function LeaderBoard(initialized: Props) {
   const router = useRouter();
   // stores whether device is mobile or not;
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
@@ -105,7 +109,7 @@ export default function LeaderBoard() {
         backgroundColor="white"
         startInvisible
       >
-        <Layout></Layout>
+        {initialized ? <Layout></Layout> : <></>}
       </PullToRefresh>
     </>
   );

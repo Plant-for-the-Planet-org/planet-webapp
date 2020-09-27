@@ -83,14 +83,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   //   }
   // }, []);
 
-  if (!initialized) {
-    return <p></p>;
-  } else {
-    return (
-      <ThemeProvider>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    );
-  }
+  return (
+    <ThemeProvider>
+      <CssBaseline />
+      <Component i18n={initialized} {...pageProps} />
+    </ThemeProvider>
+  );
 }
