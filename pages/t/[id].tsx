@@ -71,7 +71,6 @@ export default function PublicUser(initialized: Props) {
               : config.meta.title
           }
         />
-        <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}

@@ -77,7 +77,6 @@ export default function LeaderBoard(initialized: Props) {
       <Head>
         <title>{`${config.meta.title} - Leaderboard`}</title>
         <meta property="og:site_name" content={config.meta.title} />
-        <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}

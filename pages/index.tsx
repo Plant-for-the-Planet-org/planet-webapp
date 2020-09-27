@@ -109,7 +109,6 @@ export default function Donate(initialized: Props) {
         <Head>
           <title>{project.name}</title>
           <meta property="og:site_name" content={project.name} />
-          <meta property="og:locale" content="en_US" />
           <meta
             property="og:url"
             content={`${process.env.SCHEME}://${config.tenantURL}`}
@@ -145,7 +144,6 @@ export default function Donate(initialized: Props) {
         <Head>
           <title>{config.meta.title}</title>
           <meta property="og:site_name" content={config.meta.title} />
-          <meta property="og:locale" content="en_US" />
           <meta
             property="og:url"
             content={`${process.env.SCHEME}://${config.tenantURL}`}
