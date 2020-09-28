@@ -1,0 +1,37 @@
+@import './../../../../theme/theme';
+
+.container{
+    background-color: #007A49 ;
+    background-image: linear-gradient(to bottom, #007A49 , #68B030);
+    padding: 64px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.statCard{
+    background-color: $light;
+    border-radius: 13px;
+    height: 192px;
+    width: 192px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.statNumber{
+    font-family: $primaryFontFamily;
+    font-size: 49px;
+    font-weight: bold;
+    color: #68B030;
+}
+
+.statText{
+    font-family: $primaryFontFamily;
+    font-size: 14px;
+    font-weight: bold;
+}

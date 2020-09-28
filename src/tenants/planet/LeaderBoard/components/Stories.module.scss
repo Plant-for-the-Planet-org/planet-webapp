@@ -1,0 +1,42 @@
+@import './../../../../theme/theme';
+
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+.storyCard{
+    // height: 100%;
+    // width: 100%;
+    position: relative;
+}
+
+.storyContent{
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    h2{
+        max-width: 370px;
+        font-family: $primaryFontFamily;
+        font-size: 40px;
+        font-weight: bold;
+        color: #fff;
+    }
+    div{
+        display: flex;
+        flex-direction: row;
+        margin-top: 26px;
+        p{
+            margin: 0px;
+            margin-left: 15px;
+            color: #fff;
+            font-family: $primaryFontFamily;
+            font-size: 16px;
+            font-weight: bold;  
+            max-width: 50px;
+        }
+    }
+}
