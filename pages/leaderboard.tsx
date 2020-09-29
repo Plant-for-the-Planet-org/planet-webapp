@@ -9,6 +9,7 @@ import {
 import Head from 'next/head';
 import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
+import getsessionId from '../src/utils/getSessionId';
 
 const config = tenantConfig();
 
@@ -26,7 +27,7 @@ export default function LeaderBoard() {
   React.useEffect(() => {
     async function loadTenantScore() {
       await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
       })
         .then(async (res) => {
           const newTenantScore = res.status === 200 ? await res.json() : null;
@@ -43,7 +44,7 @@ export default function LeaderBoard() {
   React.useEffect(() => {
     async function loadLeaderboard() {
       await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
       })
         .then(async (res) => {
           const newLeaderboard = res.status === 200 ? await res.json() : null;

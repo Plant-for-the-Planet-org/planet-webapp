@@ -1,3 +1,4 @@
+import getsessionId from '../../../../../utils/getSessionId';
 import { PayWithCardTypes } from '../../../../common/types/donations';
 
 export async function createDonation(data: any) {
@@ -7,6 +8,7 @@ export async function createDonation(data: any) {
     headers: {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language') !== null
           ? localStorage.getItem('language')
@@ -25,6 +27,7 @@ export async function payDonation(data: any, id: any) {
     headers: {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language') !== null
           ? localStorage.getItem('language')
