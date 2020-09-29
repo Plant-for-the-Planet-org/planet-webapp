@@ -1,6 +1,8 @@
 const config = {
   tenantName: 'salesforce',
   tenantURL: 'trees.salesforce.com',
+  languages: ['en'],
+  fallbackCurrency: 'USD',
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
@@ -45,9 +47,10 @@ const config = {
   meta: {
     title: 'Salesforce ❤️ Trees',
     description:
-            'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
+      'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
+    locale: 'en_US',
   },
 };
 
