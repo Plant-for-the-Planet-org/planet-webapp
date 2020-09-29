@@ -163,9 +163,11 @@ export default function Donate(initialized: Props) {
           <meta name="twitter:description" content={config.meta.description} />
         </Head>
       )}
-      <Layout>
-        {projects && initialized ? <ProjectsList {...DonateProps} /> : <></>}
-      </Layout>
+      {initialized ? (
+        <Layout>
+          {projects && initialized ? <ProjectsList {...DonateProps} /> : <></>}
+        </Layout>
+      ) : null}
     </>
   );
 }

@@ -86,7 +86,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   return (
     <ThemeProvider>
       <CssBaseline />
-      <Component i18n={initialized} {...pageProps} />
+      <Component i18nloaded={initialized} {...pageProps} />
     </ThemeProvider>
   );
 }

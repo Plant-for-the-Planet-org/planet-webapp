@@ -96,7 +96,7 @@ export default function PublicUser(initialized: Props) {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      {publicUserprofile && initialized ? (
+      {initialized && publicUserprofile ? (
         <Layout>
           <PublicUserPage {...PublicUserProps} />
           <Footer />

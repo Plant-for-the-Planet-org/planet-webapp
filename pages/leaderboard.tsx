@@ -98,18 +98,22 @@ export default function LeaderBoard(initialized: Props) {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={150}
-        onRefresh={onRefresh}
-        triggerHeight={isMobile ? 150 : 0}
-        backgroundColor="white"
-        startInvisible
-      >
-        {initialized ? <Layout></Layout> : <></>}
-      </PullToRefresh>
+      {initialized ? (
+        <PullToRefresh
+          pullDownContent={<PullDownContent />}
+          releaseContent={<ReleaseContent />}
+          refreshContent={<RefreshContent />}
+          pullDownThreshold={150}
+          onRefresh={onRefresh}
+          triggerHeight={isMobile ? 150 : 0}
+          backgroundColor="white"
+          startInvisible
+        >
+          <Layout></Layout>
+        </PullToRefresh>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

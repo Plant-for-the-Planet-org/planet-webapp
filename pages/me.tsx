@@ -89,15 +89,18 @@ export default function UserProfile(initialized: Props) {
     }
   }
   return (
-    <Layout>
+    <>
       {initialized ? (
-        <UserPage
-          style={{ height: '100vh', overflowX: 'hidden' }}
-          {...UserProps}
-        />
+        <Layout>
+          <UserPage
+            style={{ height: '100vh', overflowX: 'hidden' }}
+            {...UserProps}
+          />
+          ) : (<></>)
+        </Layout>
       ) : (
-        <></>
+        <p></p>
       )}
-    </Layout>
+    </>
   );
 }
