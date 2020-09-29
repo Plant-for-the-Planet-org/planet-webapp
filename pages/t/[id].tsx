@@ -7,6 +7,7 @@ import PublicUserPage from '../../src/features/public/PublicUserProfile';
 import UserNotFound from '../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
 import Head from 'next/head';
 import tenantConfig from '../../tenant.config';
+import getsessionId from '../../src/utils/getSessionId';
 const config = tenantConfig();
 
 export default function PublicUser() {
@@ -31,7 +32,7 @@ export default function PublicUser() {
       const res = await fetch(
         `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${slug}`,
         {
-          headers: { 'tenant-key': `${process.env.TENANTID}` },
+          headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
         }
       );
 

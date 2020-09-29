@@ -12,6 +12,7 @@ import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
 
 import tenantConfig from '../tenant.config';
+import getsessionId from '../src/utils/getSessionId';
 
 const config = tenantConfig();
 
@@ -29,7 +30,7 @@ export default function Home() {
   React.useEffect(() => {
     async function loadTenantScore() {
       await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
       })
         .then(async (res) => {
           const newTenantScore = res.status === 200 ? await res.json() : null;
@@ -46,7 +47,7 @@ export default function Home() {
   React.useEffect(() => {
     async function loadLeaderboard() {
       await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
       })
         .then(async (res) => {
           const newLeaderboard = res.status === 200 ? await res.json() : null;
