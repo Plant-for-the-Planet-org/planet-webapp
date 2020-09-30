@@ -3,6 +3,8 @@ import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../../common/LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Footer';
+import tenantConfig from './../../../../tenant.config'
+const config = tenantConfig();
 
 interface Props {
   leaderboard: any;
@@ -23,9 +25,9 @@ export default function About({ leaderboard, tenantScore }: Props) {
         {tenantScore && tenantScore.total
           && (
           <TreeCounter
-            target={tenantScore.total}
+            target={config.tenantGoal}
             planted={tenantScore.total}
-            hideTarget
+            // hideTarget
           />
           ) }
 
