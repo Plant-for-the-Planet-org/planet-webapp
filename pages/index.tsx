@@ -24,6 +24,8 @@ export default function Donate() {
   };
 
   React.useEffect(() => {
+    console.log('React useeffect');
+    
     if (router.asPath === '/') {
       setShowSingleProject(false);
       setProject(null);
@@ -37,7 +39,7 @@ export default function Donate() {
         setProject(null);
       }
     }
-  }, [router]);
+  }, [router.query.p]);
 
   React.useEffect(() => {
     async function loadProjects() {
