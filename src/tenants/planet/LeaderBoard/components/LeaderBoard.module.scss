@@ -37,6 +37,13 @@
     letter-spacing: -0.4px;
     color: #080707;
   }
+
+  .leaderBoardTable{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   
   .leaderBoardTableHeader {
     display: flex;
@@ -69,7 +76,7 @@
     cursor: pointer;
   }
   .leaderBoardBody {
-    width: 100%;
+    width: 90%;
     margin-top: 60px;
     margin-bottom: 46px;
   }
@@ -134,22 +141,8 @@
         margin-top: 60px;
       }
     
-      
       .leaderBoardSection {
         // margin-top: 0px;
-      }
-      .leaderBoardBushImage {
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-      }
-
-      .leaderBoardGroupTreeImage {
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
       }
     
       .leaderBoardBushImageMobile {
@@ -158,5 +151,16 @@
 }
 
 @include lgLaptopView {
-  
+  .leaderBoardGroupTreeImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+  }
+  .leaderBoardBushImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
 }
