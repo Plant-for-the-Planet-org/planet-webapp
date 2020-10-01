@@ -1,6 +1,5 @@
-import { signIn, signOut, useSession, getSession } from 'next-auth/client';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import { userInfo } from 'os';
 import React, { useEffect } from 'react';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
