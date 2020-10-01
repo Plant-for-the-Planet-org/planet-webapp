@@ -17,6 +17,7 @@ import LeftIcon from '../../../../assets/images/icons/LeftIcon';
 import RightIcon from '../../../../assets/images/icons/RightIcon';
 import PopupProject from './PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
+import { Button } from 'react-bootstrap';
 
 interface mapProps {
   projects: any;
@@ -47,6 +48,8 @@ export default function MapboxMap({
   const [geoJson, setGeoJson] = React.useState(null);
   const [maxSites, setMaxSites] = React.useState();
   const [currentSite, setCurrentSite] = React.useState<null | Number>();
+  const buttonRef = useRef(null);
+  const popupRef = useRef(null);
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -311,15 +314,20 @@ export default function MapboxMap({
           >
             <div
               className={styles.popupProject}
-              onClick={() =>
-                router.push(
-                  `/?p=${popupData.project.properties.slug}`,
-                  undefined,
-                  {
-                    shallow: true,
-                  }
-                )
-              }
+              onClick={(event) => {
+                if (
+                  event.target !== buttonRef.current &&
+                  event.target !== popupRef.current
+                ) {
+                  router.push(
+                    `/?p=${popupData.project.properties.slug}`,
+                    undefined,
+                    {
+                      shallow: true,
+                    }
+                  );
+                }
+              }}
               onKeyPress={() =>
                 router.push(
                   `/?p=${popupData.project.properties.slug}`,
@@ -343,6 +351,8 @@ export default function MapboxMap({
               <PopupProject
                 key={popupData.project.properties.id}
                 project={popupData.project}
+                buttonRef={buttonRef}
+                popupRef={popupRef}
                 open={open}
                 handleOpen={handleOpen}
                 handleClose={handleClose}
