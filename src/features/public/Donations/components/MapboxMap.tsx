@@ -315,17 +315,24 @@ export default function MapboxMap({
             <div
               className={styles.popupProject}
               onClick={(event) => {
-                if (
-                  event.target !== buttonRef.current &&
-                  !popupRef.current.contains(event.target)
-                ) {
-                  router.push(
-                    `/?p=${popupData.project.properties.slug}`,
-                    undefined,
-                    {
-                      shallow: true,
-                    }
-                  );
+                if (event.target !== buttonRef.current) {
+                  if (popupRef.current === null) {
+                    router.push(
+                      `/?p=${popupData.project.properties.slug}`,
+                      undefined,
+                      {
+                        shallow: true,
+                      }
+                    );
+                  } else if (!popupRef.current.contains(event.target)) {
+                    router.push(
+                      `/?p=${popupData.project.properties.slug}`,
+                      undefined,
+                      {
+                        shallow: true,
+                      }
+                    );
+                  }
                 }
               }}
               onKeyPress={() =>
