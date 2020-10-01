@@ -317,7 +317,7 @@ export default function MapboxMap({
               onClick={(event) => {
                 if (
                   event.target !== buttonRef.current &&
-                  event.target !== popupRef.current
+                  !popupRef.current.contains(event.target)
                 ) {
                   router.push(
                     `/?p=${popupData.project.properties.slug}`,

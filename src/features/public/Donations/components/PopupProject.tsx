@@ -44,7 +44,6 @@ export default function PopupProject({
   return (
     <>
       <Modal
-        id="hello"
         ref={popupRef}
         className={styles.modal + ' ' + theme}
         open={open}
