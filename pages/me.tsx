@@ -108,7 +108,7 @@ export default function UserProfile() {
       // some user is logged in -> api call to backend
       fetchUserInfo(session)
     }
-  }, []);
+  }, [session]);
 
   if (!config.header.items[3].visible) {
     if (typeof window !== 'undefined') {
