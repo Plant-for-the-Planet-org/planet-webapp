@@ -18,15 +18,15 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "@sentry/browser": "^5.15.5",
+    "@sentry/integrations": "5.20.1",
+    "@sentry/node": "^5.15.5",
+    "@sentry/webpack-plugin": "^1.11.1",
     "@stripe/react-stripe-js": "1.1.2",
     "@stripe/stripe-js": "1.5.0",
     "@turf/turf": "^5.1.6",
     "@types/react-lazyload": "^2.6.0",
     "@zeit/next-sass": "^1.0.1",
-    "@sentry/browser": "^5.15.5",
-    "@sentry/integrations": "5.20.1",
-    "@sentry/node": "^5.15.5",
-    "@sentry/webpack-plugin": "^1.11.1",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "bootstrap": "^4.5.0",
     "next-auth": "^3.1.0",
@@ -54,7 +54,8 @@
     "react-player": "^2.6.1",
     "read-more-react": "^1.0.10",
     "styled-jsx": "^3.3.0",
-    "sugar": "^2.0.6"
+    "sugar": "^2.0.6",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@types/d3-ease": "^1.0.9",
@@ -62,6 +63,7 @@
     "@types/react": "^16.9.43",
     "@types/react-map-gl": "^5.2.7",
     "@types/styled-jsx": "^2.2.8",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "cross-env": "^7.0.2",

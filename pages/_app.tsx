@@ -11,6 +11,7 @@ import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
+import getsessionId from '../src/utils/getSessionId';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -58,7 +59,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   React.useEffect(() => {
     async function loadConfig() {
       await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
       })
         .then(async (res) => {
           const config = await res.json();
