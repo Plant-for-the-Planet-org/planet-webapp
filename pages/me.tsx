@@ -67,14 +67,14 @@ export default function UserProfile() {
   
   const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
-  const [ session] = useSession()
+  const [ session, loading] = useSession()
   const [pageLoading, setPageLoading] = React.useState(true)
   const UserProps = {
     userprofile,
   };
-  
   useEffect(() => {
     async function fetchUserInfo(session:any) {
+      try { 
       const res = await fetch(
         `${process.env.API_ENDPOINT}/app/accountInfo`, {
           headers: { 
@@ -84,7 +84,7 @@ export default function UserProfile() {
         },
       );
       if (res.status === 200){
-        // user exists in db and return info
+        // user exists in db and ren info
         const resJson = await res.json()
         const newMeObj = {
           ...resJson,
@@ -98,17 +98,20 @@ export default function UserProfile() {
           router.push('/complete-signup');
         }
       }
+    } catch { 
+      console.log('Error')
+    }
     }
 
-    if (!session){
+    if (!loading && !session){
       setPageLoading(false)
       // user not logged in -> send to login screen
       signIn(null)
-    } else if (session) {
+    } else if (!loading && session) {
       // some user is logged in -> api call to backend
       fetchUserInfo(session)
     }
-  }, [session]);
+  }, [loading]);
 
   if (!config.header.items[3].visible) {
     if (typeof window !== 'undefined') {
@@ -117,13 +120,13 @@ export default function UserProfile() {
   }
 
   // loading
-  if (pageLoading){
+  if (pageLoading || loading){
     return(<h1>Loading...</h1>)
   }
-  if (!pageLoading && !session){
+  if (!loading && !session){
     return <h1> redirecting to login...</h1>
   }
-  if (!pageLoading && session)
+  if (!pageLoading && !loading && session)
   {
     return (
       <Layout>
