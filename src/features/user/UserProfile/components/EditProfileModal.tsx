@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSession } from 'next-auth/client';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -7,14 +8,24 @@ import BackButton from '../../../../assets/images/icons/BackButton';
 import Camera from '../../../../assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import { validateBBox } from '@turf/turf';
 
 export default function EditProfileModal({
+  userprofile,
   editProfileModalOpen,
   handleEditProfileModalClose,
 }: any) {
-  const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
-  const [isSubscribed, setIsSubscribed] = React.useState(false);
-
+  const [firstName, setFirstName] = React.useState(userprofile.firstname);
+  const [lastName, setLastName] = React.useState(userprofile.lastname);
+  const [address, setAddress] = React.useState(userprofile.address);
+  const [city, setCity] = React.useState(userprofile.city);
+  const [zip, setZip] = React.useState(userprofile.zipCode);
+  const [country, setCountry] = React.useState(userprofile.country);
+  const [isPrivateAccount, setIsPrivateAccount] = React.useState(userprofile.mayPublish);
+  const [isSubscribed, setIsSubscribed] = React.useState(userprofile.mayContact);
+  const [description, setDescription] = React.useState(userprofile.synopsis);
+  const [website, setWebsite] = React.useState(userprofile.url);
+  const [ session, loading] = useSession()
   var profilePicStyle = {
     height: '100%',
     width: '100%',
@@ -26,6 +37,42 @@ export default function EditProfileModal({
     backgroundImage: `url(https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?size=626&ext=jpg)`,
   };
 
+  const saveProfile = async() => {
+    const userObject = {
+      firstname: firstName,
+      lastname: lastName,
+      address,
+      city,
+      zipCode: zip,
+      country: country,
+      mayPublish: !isPrivateAccount,
+      mayContact: isSubscribed,
+      synopsis: description,
+      url: website
+    }
+    if (!loading && session && userprofile.id) {
+      try{
+      console.log('in saved', userObject, session, userprofile.id)
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/app/profiles/${userprofile.id}`, {
+          method: 'PUT',
+          headers: { 
+            'Authorization': `OAuth ${session.accessToken}`
+          },
+          body: JSON.stringify(userObject)
+        },
+      );
+      if (res.status === 200) {
+        // show toast
+        console.log('done')
+      }
+    } catch {
+      //show error toast
+      console.log('Error')
+    }
+    }
+  }
+  console.log('here', userprofile)
   return (
     <Modal
       className={styles.modalContainer}
@@ -60,29 +107,56 @@ export default function EditProfileModal({
 
           <div className={styles.namesDiv}>
             <div className={styles.firstNameDiv}>
-              <MaterialTextField label="First Name" variant="outlined" />
+              <MaterialTextField 
+              onChange={(e)=> setFirstName(e.target.value)}
+              label="First Name" 
+              variant="outlined" 
+              defaultValue={firstName}
+              />
             </div>
 
             <div className={styles.lastNameDiv}>
-              <MaterialTextField label="Last Name" variant="outlined" />
+              <MaterialTextField
+              label="Last Name" 
+              variant="outlined"
+              onChange={(e)=> setLastName(e.target.value)} 
+              defaultValue={lastName}
+              />
             </div>
           </div>
 
           <div className={styles.addressDiv}>
-            <MaterialTextField label="Address" variant="outlined" />
+            <MaterialTextField 
+            onChange={(e)=> setAddress(e.target.value)} 
+            defaultValue={address}
+            label="Address" 
+            variant="outlined" />
           </div>
 
           <div className={styles.cityZipDiv}>
             <div className={styles.cityDiv}>
-              <MaterialTextField label="City" variant="outlined" />
+              <MaterialTextField 
+              onChange={(e)=> setCity(e.target.value)} 
+              defaultValue={city}
+              label="City" 
+              variant="outlined" 
+              />
             </div>
             <div className={styles.zipDiv}>
-              <MaterialTextField label="Zip Code" variant="outlined" />
+              <MaterialTextField 
+              onChange={(e)=> setZip(e.target.value)} 
+              defaultValue={zip}
+              label="Zip Code" 
+              variant="outlined" />
             </div>
           </div>
 
           <div className={styles.countryDiv}>
-            <MaterialTextField label="Country" variant="outlined" />
+            <MaterialTextField 
+            onChange={(e)=> setCountry(e.target.value)} 
+            defaultValue={country}
+            label="Country" 
+            variant="outlined" />
           </div>
 
           <div className={styles.isPrivateAccountDiv}>
@@ -115,17 +189,25 @@ export default function EditProfileModal({
           <div className={styles.horizontalLine}/>
 
           <div className={styles.profileDescriptionDiv}>
-            <MaterialTextField label="Profile Desciption" variant="outlined" />
+            <MaterialTextField 
+            onChange={(e)=> setDescription(e.target.value)} 
+            defaultValue={description}
+            label="Profile Desciption" 
+            variant="outlined" />
           </div>
 
           
           <div className={styles.websiteDiv}>
-            <MaterialTextField label="Website" variant="outlined" />
+            <MaterialTextField 
+            onChange={(e)=> setWebsite(e.target.value)} 
+            defaultValue={website}
+            label="Website" 
+            variant="outlined" />
           </div>
 
           <div
             className={styles.saveButton}
-            onClick={handleEditProfileModalClose}
+            onClick={saveProfile}
           >
             Save
           </div>
