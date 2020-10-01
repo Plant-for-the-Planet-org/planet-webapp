@@ -6,6 +6,8 @@ import Head from 'next/head';
 import tenantConfig from '../tenant.config';
 import getImageUrl from '../src/utils/getImageURL';
 // import { route } from 'next/dist/next-server/server/router';
+import getsessionId from '../src/utils/getSessionId';
+
 const config = tenantConfig();
 
 interface Props {
@@ -56,7 +58,7 @@ export default function Donate(initialized: Props) {
       await fetch(
         `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`,
         {
-          headers: { 'tenant-key': `${process.env.TENANTID}` },
+          headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId() },
         }
       )
         .then(async (res) => {
@@ -86,10 +88,9 @@ export default function Donate(initialized: Props) {
     await fetch(
       `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
       {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }
-    )
-      .then(async (res) => {
+         headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId() },
+      },
+    ).then(async (res) => {
         const newProject = res.status === 200 ? await res.json() : null;
         if (res.status !== 200) {
           router.push('/404', undefined, { shallow: true });
