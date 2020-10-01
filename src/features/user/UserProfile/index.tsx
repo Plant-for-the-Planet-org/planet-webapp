@@ -65,6 +65,7 @@ export default function UserProfile({ userprofile }: any) {
               <Settings color="white" />
             </div>
             <SettingsModal
+              userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
               editProfileModalOpen={editProfileModalOpen}

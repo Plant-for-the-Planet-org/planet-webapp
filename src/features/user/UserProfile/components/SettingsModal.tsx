@@ -9,6 +9,7 @@ import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 
 export default function SettingsModal({
+  userprofile,
   settingsModalOpen,
   handleSettingsModalClose,
   editProfileModalOpen,
@@ -50,6 +51,7 @@ export default function SettingsModal({
       </Modal>
 
       <EditProfileModal
+        userprofile={userprofile}
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
