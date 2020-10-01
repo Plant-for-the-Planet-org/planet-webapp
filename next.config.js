@@ -4,6 +4,7 @@ const withSourceMaps = require('@zeit/next-source-maps')();
 
 // Use the SentryWebpack plugin to upload the source maps during build step
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+
 const {
   NEXT_PUBLIC_SENTRY_DSN: SENTRY_DSN,
   SENTRY_ORG,
@@ -15,21 +16,18 @@ const {
   VERCEL_BITBUCKET_COMMIT_SHA,
 } = process.env;
 
-const COMMIT_SHA =
-  VERCEL_GITHUB_COMMIT_SHA ||
-  VERCEL_GITLAB_COMMIT_SHA ||
-  VERCEL_BITBUCKET_COMMIT_SHA;
+const COMMIT_SHA = VERCEL_GITHUB_COMMIT_SHA
+  || VERCEL_GITLAB_COMMIT_SHA
+  || VERCEL_BITBUCKET_COMMIT_SHA;
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';
 
-const scheme =
-  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-    ? process.env.SCHEME
-    : 'https';
+const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+  ? process.env.SCHEME
+  : 'https';
 
-const hasAssetPrefix =
-  process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
+const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withSourceMaps({
   serverRuntimeConfig: {
@@ -60,12 +58,12 @@ module.exports = withSourceMaps({
     // This is an alternative to manually uploading the source maps
     // Note: This is disabled in development mode.
     if (
-      SENTRY_DSN &&
-      SENTRY_ORG &&
-      SENTRY_PROJECT &&
-      SENTRY_AUTH_TOKEN &&
-      COMMIT_SHA &&
-      NODE_ENV === 'production'
+      SENTRY_DSN
+      && SENTRY_ORG
+      && SENTRY_PROJECT
+      && SENTRY_AUTH_TOKEN
+      && COMMIT_SHA
+      && NODE_ENV === 'production'
     ) {
       config.plugins.push(
         new SentryWebpackPlugin({
@@ -74,7 +72,7 @@ module.exports = withSourceMaps({
           stripPrefix: ['webpack://_N_E/'],
           urlPrefix: `~${basePath}/_next`,
           release: COMMIT_SHA,
-        })
+        }),
       );
     }
     return config;
@@ -94,7 +92,7 @@ module.exports = withSourceMaps({
     SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
-    NEXTAUTH_URL:process.env.NEXTAUTH_URL
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
