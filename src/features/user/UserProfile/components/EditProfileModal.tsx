@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
+import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -8,13 +9,34 @@ import BackButton from '../../../../assets/images/icons/BackButton';
 import Camera from '../../../../assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { validateBBox } from '@turf/turf';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 export default function EditProfileModal({
   userprofile,
   editProfileModalOpen,
   handleEditProfileModalClose,
 }: any) {
+  function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const [savedSnackbarOpen, setSavedSnackbarOpen] = React.useState(
+    false
+  );
+
+  const handleSavedSnackbarOpen = () => {
+    setSavedSnackbarOpen(true);
+  };
+  const handleSavedSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSavedSnackbarOpen(false);
+  };
+  // the form values
   const [firstName, setFirstName] = React.useState(userprofile.firstname);
   const [lastName, setLastName] = React.useState(userprofile.lastname);
   const [address, setAddress] = React.useState(userprofile.address);
@@ -26,6 +48,7 @@ export default function EditProfileModal({
   const [description, setDescription] = React.useState(userprofile.synopsis);
   const [website, setWebsite] = React.useState(userprofile.url);
   const [ session, loading] = useSession()
+
   var profilePicStyle = {
     height: '100%',
     width: '100%',
@@ -57,14 +80,15 @@ export default function EditProfileModal({
         `${process.env.API_ENDPOINT}/app/profiles/${userprofile.id}`, {
           method: 'PUT',
           headers: { 
-            'Authorization': `OAuth ${session.accessToken}`
+            'Authorization': `OAuth ${session.accessToken}`,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(userObject)
         },
       );
       if (res.status === 200) {
-        // show toast
-        console.log('done')
+        handleSavedSnackbarOpen()
+        handleEditProfileModalClose()
       }
     } catch {
       //show error toast
@@ -74,6 +98,7 @@ export default function EditProfileModal({
   }
   console.log('here', userprofile)
   return (
+    <React.Fragment>
     <Modal
       className={styles.modalContainer}
       open={editProfileModalOpen}
@@ -214,5 +239,16 @@ export default function EditProfileModal({
         </div>
       </Fade>
     </Modal>
+          {/* snackbar for showing "Saved successfully" */}
+          <Snackbar
+          open={savedSnackbarOpen}
+          autoHideDuration={4000}
+          onClose={handleSavedSnackbarClose}
+        >
+          <Alert onClose={handleSavedSnackbarClose} severity="success">
+            Saved Successfully!
+          </Alert>
+        </Snackbar>
+        </React.Fragment>
   );
 }
