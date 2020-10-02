@@ -5,6 +5,7 @@ import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import styles from '../styles/EditProfileModal.module.scss';
 import BackButton from '../../../../assets/images/icons/BackButton';
 import Camera from '../../../../assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextFeild';
@@ -49,7 +50,7 @@ export default function EditProfileModal({
   const [website, setWebsite] = React.useState(userprofile.url);
   const [ session, loading] = useSession()
 
-  var profilePicStyle = {
+  const profilePicStyle = {
     height: '100%',
     width: '100%',
     display: 'flex',
@@ -57,7 +58,7 @@ export default function EditProfileModal({
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 0.7,
-    backgroundImage: `url(https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?size=626&ext=jpg)`,
+    backgroundImage: 'url(https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?size=626&ext=jpg)',
   };
 
   const saveProfile = async() => {
@@ -211,7 +212,7 @@ export default function EditProfileModal({
             />
           </div>
 
-          <div className={styles.horizontalLine}/>
+          <div className={styles.horizontalLine} />
 
           <div className={styles.profileDescriptionDiv}>
             <MaterialTextField 
@@ -221,7 +222,6 @@ export default function EditProfileModal({
             variant="outlined" />
           </div>
 
-          
           <div className={styles.websiteDiv}>
             <MaterialTextField 
             onChange={(e)=> setWebsite(e.target.value)} 
