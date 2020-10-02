@@ -14,24 +14,3 @@ export default function UserProfile() {
     </Layout>
   );
 }
-
-// const btnSize = {
-//   width: '172px',
-//   height: '68px',
-//   borderRadius: '10px',
-//   border: 'solid 1.2px #000',
-//   margin: '5px',
-//   backgroundColor: 'white',
-// };
-// const btnColor = {
-//   border: 'solid 1.2px #68b030',
-//   margin: '5px',
-//   width: '172px',
-//   height: '68px',
-//   borderRadius: '10px',
-//   backgroundColor: 'white',
-// };
-// const btnContainer = {
-//   display: 'flex',
-//   justifyContent: 'space-between',
-// };
