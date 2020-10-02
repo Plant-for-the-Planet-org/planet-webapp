@@ -25,14 +25,12 @@ export default function CompleteSignup() {
     var flag = false;
     for (param of params) {
       if (!param || param.trim() === "") {
-        console.log('empty found')
         flag = true;
         //TODO : alert
         break
       }
     }
     if (!flag){
-      console.log('all validated')
       return true;
     } else {
       return false
@@ -40,19 +38,16 @@ export default function CompleteSignup() {
   }
 
   const sendRequest = async(type:string, body:any) => {
-    console.log('in nhere', type, body)
+    
   }
 
   const createButtonClicked = async () => {
-    console.log('in create account')
     var bodyToSend;
     var allValidated;
     switch (accountType) {
       case 'individual':
         allValidated = checkIfEmpty([firstName, lastName, country])
-        console.log('allvalidated?' , allValidated)
         if (allValidated && !loading && session) {
-          console.log('inside if ')
           bodyToSend = {
             firstname: firstName,
             lastname: lastName,
