@@ -2,7 +2,7 @@ import { signIn, signOut, useSession, getSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Layout from '../../common/Layout';
-import styles from '../UserProfile/styles/EditProfileModal.module.scss';
+import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 
@@ -60,10 +60,10 @@ export default function CompleteSignup() {
       >
         <div className={styles.SignupContainer}>
           <div className={styles.signup}>
-            <div style={btnContainer}>
+            <div className={styles.btnContainer}>
               <button
                 type="button"
-                style={accountType === 'individual' ? btnColor : btnSize}
+                className={accountType === 'individual' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('individual')}
               >
                 <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
@@ -81,7 +81,7 @@ export default function CompleteSignup() {
               </button>
               <button
                 type="button"
-                style={accountType === 'organisation' ? btnColor : btnSize}
+                className={accountType === 'organisation' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('organisation')}
               >
                 <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
@@ -98,10 +98,10 @@ export default function CompleteSignup() {
                 </div>
               </button>
             </div>
-            <div style={btnContainer}>
+            <div className={styles.btnContainer}>
               <button
                 type="button"
-                style={accountType === 'RO' ? btnColor : btnSize}
+                className={accountType === 'RO' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('RO')}
               >
                 <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
@@ -120,7 +120,7 @@ export default function CompleteSignup() {
               </button>
               <button
                 type="button"
-                style={accountType === 'education' ? btnColor : btnSize}
+                className={accountType === 'education' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('education')}
               >
                 <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
@@ -237,24 +237,3 @@ export default function CompleteSignup() {
       </div>
   );
 }
-
-const btnSize = {
-  width: '172px',
-  height: '68px',
-  borderRadius: '10px',
-  border: 'solid 1.2px #000',
-  margin: '5px',
-  backgroundColor: 'white',
-};
-const btnColor = {
-  border: 'solid 1.2px #68b030',
-  margin: '5px',
-  width: '172px',
-  height: '68px',
-  borderRadius: '10px',
-  backgroundColor: 'white',
-};
-const btnContainer = {
-  display: 'flex',
-  justifyContent: 'space-between',
-};
