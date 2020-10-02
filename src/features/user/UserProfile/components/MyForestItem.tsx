@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import styles from '../styles/MyForestItem.module.scss';
-import Layout from '../../../common/Layout';
 
 export default function MyForestItem({ forest }: any) {
   return (

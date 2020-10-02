@@ -5,12 +5,16 @@ import ProjectsList from '../src/features/public/Donations/screens/Projects';
 import Head from 'next/head';
 import tenantConfig from '../tenant.config';
 import getImageUrl from '../src/utils/getImageURL';
-import { route } from 'next/dist/next-server/server/router';
+// import { route } from 'next/dist/next-server/server/router';
 import getsessionId from '../src/utils/getSessionId';
 
 const config = tenantConfig();
 
-export default function Donate() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function Donate(initialized: Props) {
   const router = useRouter();
   const [projects, setProjects] = React.useState();
   const [project, setProject] = React.useState(null);
@@ -46,7 +50,9 @@ export default function Donate() {
         if (localStorage.getItem('currencyCode')) {
           currencyCode = localStorage.getItem('currencyCode');
         } else {
-          currencyCode = config.fallbackCurrency ? config.fallbackCurrency : 'EUR'; //This should be based on tenant config
+          currencyCode = config.fallbackCurrency
+            ? config.fallbackCurrency
+            : 'EUR'; //This should be based on tenant config
         }
       }
       await fetch(
@@ -74,7 +80,9 @@ export default function Donate() {
         currencyCode = localStorage.getItem('currencyCode');
         // currencyCode = 'EUR';
       } else {
-        currencyCode = config.fallbackCurrency ? config.fallbackCurrency : 'EUR'; //This should be based on tenant config as well
+        currencyCode = config.fallbackCurrency
+          ? config.fallbackCurrency
+          : 'EUR'; //This should be based on tenant config as well
       }
     }
     await fetch(
@@ -102,7 +110,6 @@ export default function Donate() {
         <Head>
           <title>{project.name}</title>
           <meta property="og:site_name" content={project.name} />
-          <meta property="og:locale" content="en_US" />
           <meta
             property="og:url"
             content={`${process.env.SCHEME}://${config.tenantURL}`}
@@ -138,7 +145,6 @@ export default function Donate() {
         <Head>
           <title>{config.meta.title}</title>
           <meta property="og:site_name" content={config.meta.title} />
-          <meta property="og:locale" content="en_US" />
           <meta
             property="og:url"
             content={`${process.env.SCHEME}://${config.tenantURL}`}
@@ -158,7 +164,11 @@ export default function Donate() {
           <meta name="twitter:description" content={config.meta.description} />
         </Head>
       )}
-      <Layout>{projects ? <ProjectsList {...DonateProps} /> : <></>}</Layout>
+      {initialized ? (
+        <Layout>
+          {projects && initialized ? <ProjectsList {...DonateProps} /> : <></>}
+        </Layout>
+      ) : null}
     </>
   );
 }
