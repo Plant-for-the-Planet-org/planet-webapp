@@ -51,13 +51,10 @@ export default function CompleteSignup() {
     return name;
   };
   return (
-      <div
-        style={{
-          backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
-          backgroundRepeat: 'no-repeat',
-        }}
+      <div className={styles.signUpPage}
+        style={{backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`}}
       >
-        <div className={styles.SignupContainer}>
+        
           <div className={styles.signup}>
             <div className={styles.btnContainer}>
               <button
@@ -69,7 +66,9 @@ export default function CompleteSignup() {
                   <p
                     style={{
                       paddingTop: '30px',
+                      fontSize: '14px',
                       justifyContent: 'flex-start',
+                      fontWeight: accountType === 'individual' ? 'bolder' : 'normal',
                       textTransform: 'capitalize',
                       color: accountType === 'individual' ? styles.primaryColor : styles.dark,
                     }}
@@ -87,7 +86,9 @@ export default function CompleteSignup() {
                   <p
                     style={{
                       paddingTop: '30px',
+                      fontSize: '14px',
                       justifyContent: 'flex-start',
+                      fontWeight: accountType === 'organisation' ? 'bolder' : 'normal',
                       textTransform: 'capitalize',
                       color: accountType === 'organisation' ? styles.primaryColor : styles.dark,
                     }}
@@ -107,8 +108,10 @@ export default function CompleteSignup() {
                   <p
                     style={{
                       paddingTop: '15px',
+                      fontSize: '14px',
                       justifyContent: 'flex-start',
                       textTransform: 'capitalize',
+                      fontWeight: accountType === 'RO' ? 'bolder' : 'normal',
                       paddingRight: '60px',
                       color: accountType === 'RO' ? styles.primaryColor :styles.dark,
                     }}
@@ -126,8 +129,10 @@ export default function CompleteSignup() {
                   <p
                     style={{
                       paddingTop: '30px',
+                      fontSize: '14px',
                       justifyContent: 'flex-start',
                       textTransform: 'capitalize',
+                      fontWeight: accountType === 'education' ? 'bolder' : 'normal',
                       color: accountType === 'education' ? styles.primaryColor : styles.dark,
                     }}
                   >
@@ -191,6 +196,8 @@ export default function CompleteSignup() {
                     />
                   </div>
                 </div>
+                </div>
+                ):null}
 
                 <div className={styles.countryDiv}>
                   <MaterialTextField
@@ -199,8 +206,7 @@ export default function CompleteSignup() {
                     onChange={(text) => setCountry(text)}
                   />
                 </div>
-              </div>
-            ) : null}
+              
             <div className={styles.isPrivateAccountDiv}>
               <div>
                 <div className={styles.mainText}>Private Account</div>
@@ -232,7 +238,6 @@ export default function CompleteSignup() {
 
             <div className={styles.saveButton}>Create Account</div>
           </div>
-        </div>
       </div>
   );
 }

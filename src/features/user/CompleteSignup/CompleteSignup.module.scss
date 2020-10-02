@@ -1,13 +1,17 @@
 @import './../../../theme/theme';
 
-.SignupContainer {   
-  display: flex;
-  align-items: center;
+// entire page
+.signUpPage{
+  background-repeat: no-repeat;
+  // background-size: cover;
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
   justify-content: center;
-  margin: 0px 20px;
-  padding-top: 8%;
+  padding: 120px 0px;
 }
 
+// the white form
 .signup {
   background-color: $light;
   border: 0px;
@@ -16,8 +20,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border-radius: 8px;
+  align-self: center;
+  padding:20px 20px;
+}
 
+.btnSize {
+  width: 152px;
+  height:68px;
+  border-radius: 10px;
+  border: solid 1.6px $dark;
+  margin: 5px;
+  background-color: $light;
+}
+
+.btnColor {
+  border: solid 1.6px $primaryColor;
+  width: 152px;
+  height:68px;
+  border-radius: 10px;
+  background-color: $light;
+  margin: 5px;
+}
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .accountTypeDiv{
@@ -46,12 +74,12 @@
 }
 
 .firstNameDiv {
-    margin: 0px 6px 0px 10px;
+    margin: 0px 6px 0px 0px;
     width: 50%;
 }
 
 .lastNameDiv  {
-    margin: 0px 10px 0px 6px;
+    margin: 0px 0px 0px 6px;
     width: 50%;
 }
 
@@ -60,7 +88,6 @@
   display: flex;
   width: 100%;
   margin: 6px 0px;
-  padding: 0px 10px;
 }
 
 // city, zip code div
@@ -73,14 +100,13 @@
 }
 
 .cityDiv {
-    margin: 0px 6px 0px 10px;
+    margin: 0px 6px 0px 0px;
     width: 50%;
 }
 
 .zipDiv {
     margin: 0px 0px 0px 6px;
     width: 50%;
-    padding-right: 10px;
 }
 
 // country div
@@ -89,7 +115,6 @@
   width: 50%;
   align-self: flex-start;
   margin: 6px 6px 12px 0px;
-  padding-left: 10px;
 }
 
 // private account div
@@ -99,7 +124,7 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  margin: 6px 5px;
+  margin: 10px 5px 6px 5px;
   padding: 0px 10px;
 }
 
@@ -135,34 +160,13 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .saveButton:hover{
     cursor: pointer;
 }
 
-.btnSize {
-    width: 172px;
-    height:68px;
-    border-radius: 10px;
-    border: solid 1.2px $dark;
-    margin: 5px;
-    background-color: $light;
-}
-
-.btnColor {
-    border: solid 1.2px $primaryColor;
-    width: 172px;
-    height:68px;
-    border-radius: 10px;
-    background-color: $light;
-    margin: 5px;
-}
-.btnContainer {
-    display: flex;
-    justify-content: space-between;
-}
 :export {
     primaryColor: $primaryColor;
     light: $light;
