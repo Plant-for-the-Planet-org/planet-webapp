@@ -1,11 +1,12 @@
 import { useSession, } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
-import Layout from '../../common/Layout';
+import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 
 export default function CompleteSignup() {
+  const router = useRouter();
   const [session, loading] = useSession();
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
   const [isSubscribed, setIsSubscribed] = React.useState(false);
@@ -35,7 +36,7 @@ export default function CompleteSignup() {
     }
   }
 
-  const sendRequest = async(body:any) => {
+  const sendRequest = async(bodyToSend:any) => {
     try { 
       const res = await fetch(
         `${process.env.API_ENDPOINT}/app/profiles`, {
@@ -43,10 +44,21 @@ export default function CompleteSignup() {
             'Content-Type': 'application/json'
           },
            method: 'POST',
+           body: JSON.stringify(bodyToSend)
         },
       );
       console.log('res', res)
+      if (res.status === 200) {
+        // successful signup -> goto me page
+        // TODO: alert success
+        if (typeof window !== 'undefined') {
+          router.push('/me');
+        }
+      } else {
+        // TODO: alert error
+      }
     } catch { 
+      // TODO: show error
       console.log('Error')
     }
   }
@@ -131,7 +143,6 @@ export default function CompleteSignup() {
   if (loading) {
     return null;
   }
-
 
   const SelectType = (type: any) => {
     let name;
