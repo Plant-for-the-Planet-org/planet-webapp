@@ -62,8 +62,12 @@ const dummyProfile = {
   ],
 };
 const config = tenantConfig();
-export default function UserProfile() {
-  
+
+interface Props {
+  initialized: Boolean;
+}
+
+export default function UserProfile(initialized: Props) {
   const router = useRouter();
   const [userprofile, setUserprofile] = React.useState({});
   const [ session, loading] = useSession()
@@ -117,7 +121,9 @@ export default function UserProfile() {
       router.push('/');
     }
   }
-
+  if (!initialized) {
+    return (<React.Fragment/>)
+  }
   // loading
   if (pageLoading || loading){
     return(<h1>Loading...</h1>)

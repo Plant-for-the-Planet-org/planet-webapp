@@ -85,14 +85,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   //   }
   // }, []);
 
-  if (!initialized) {
-    return <p></p>;
-  } else {
+ 
     return (
       <AuthProvider session={pageProps.session}>
       <ThemeProvider>
         <CssBaseline />
-        <Component {...pageProps} />
+        <Component i18nloaded={initialized} {...pageProps} />
       </ThemeProvider>
       </AuthProvider>
     );
