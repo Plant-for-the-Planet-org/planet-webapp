@@ -3,13 +3,18 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../../Donations/styles/Projects.module.scss';
+import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
   key: number;
 }
 
 export default function ProjectSnippet({ project, key }: Props): ReactElement {
+  const { t, i18n } = useTranslation(['donate', 'common']);
+
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -51,30 +56,31 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
         <div className={styles.projectData}>
           <div className={styles.targetLocation}>
             <div className={styles.target}>
-              {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted •{' '}
+              {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
+              {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {getCountryDataBy('countryCode', project.country).countryName}
               </span>
             </div>
           </div>
-          <div className={styles.projectTPOName}>By {project.tpoData.name}</div>
+          <div className={styles.projectTPOName}>
+            {t('common:by')} {project.tpoData.name}
+          </div>
         </div>
 
         {project.allowDonations && (
           <div className={styles.projectCost}>
             {project.treeCost ? (
               <>
-                <div className={styles.costButton}>
-                  {project.currency === 'USD'
-                    ? '$'
-                    : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}{' '}
-                  {project.treeCost % 1 !== 0
-                    ? project.treeCost.toFixed(2)
-                    : project.treeCost}
+                <div className={styles.donateButton}>{t('common:donate')}</div>
+                <div className={styles.perTreeCost}>
+                  {getFormatedCurrency(
+                    i18n.language,
+                    project.currency,
+                    project.treeCost
+                  )}{' '}
+                  <span>{t('donate:perTree')}</span>
                 </div>
-                <div className={styles.perTree}>per tree</div>
               </>
             ) : null}
           </div>

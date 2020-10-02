@@ -10,11 +10,11 @@ import supportedLanguages from './supportedLanguages.json';
 // eslint-disable-next-line consistent-return
 export default function getLanguageName(code) {
   // Finds required language name from the code
-  for (let i = 0; i < supportedLanguages.length; i += 1) {
+  for (let i = 0; i < supportedLanguages.length; i++) {
     if (supportedLanguages[i].langCode === code) {
       return supportedLanguages[i].languageName;
     }
-    // returns English as default language if none matches
-    return 'English';
   }
+  // returns English as default language if none matches
+  return 'English';
 }

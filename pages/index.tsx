@@ -6,6 +6,8 @@ import Head from 'next/head';
 import tenantConfig from '../tenant.config';
 import getImageUrl from '../src/utils/getImageURL';
 import { route } from 'next/dist/next-server/server/router';
+import getsessionId from '../src/utils/getSessionId';
+
 const config = tenantConfig();
 
 export default function Donate() {
@@ -24,6 +26,7 @@ export default function Donate() {
   React.useEffect(() => {
     if (router.asPath === '/') {
       setShowSingleProject(false);
+      setProject(null);
     } else {
       if (router.query.p !== undefined && router.query.p !== 'undefined') {
         fetchProject(router.query.p).then(() => {
@@ -31,6 +34,7 @@ export default function Donate() {
         });
       } else {
         setShowSingleProject(false);
+        setProject(null);
       }
     }
   }, [router]);
@@ -42,21 +46,23 @@ export default function Donate() {
         if (localStorage.getItem('currencyCode')) {
           currencyCode = localStorage.getItem('currencyCode');
         } else {
-          currencyCode = 'USD';
+          currencyCode = config.fallbackCurrency ? config.fallbackCurrency : 'EUR'; //This should be based on tenant config
         }
       }
       await fetch(
         `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`,
         {
-          headers: { 'tenant-key': `${process.env.TENANTID}` },
+          headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId() },
         }
-      ).then(async (res) => {
-        const fetchedProjects = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setProjects(fetchedProjects);
-      });
+      )
+        .then(async (res) => {
+          const fetchedProjects = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setProjects(fetchedProjects);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadProjects();
   }, []);
@@ -68,18 +74,22 @@ export default function Donate() {
         currencyCode = localStorage.getItem('currencyCode');
         // currencyCode = 'EUR';
       } else {
-        currencyCode = 'USD';
+        currencyCode = config.fallbackCurrency ? config.fallbackCurrency : 'EUR'; //This should be based on tenant config as well
       }
     }
-    const res = await fetch(
+    await fetch(
       `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
       {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }
-    );
-
-    const newProject = res.status === 200 ? await res.json() : null;
-    setProject(newProject);
+         headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId() },
+      },
+    ).then(async (res) => {
+        const newProject = res.status === 200 ? await res.json() : null;
+        if (res.status !== 200) {
+          router.push('/404', undefined, { shallow: true });
+        }
+        setProject(newProject);
+      })
+      .catch((err) => console.log(`Something went wrong: ${err}`));
   }
 
   async function fetchProject(id: any) {

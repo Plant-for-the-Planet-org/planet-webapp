@@ -2,6 +2,8 @@ const config = {
   tenantName: 'planetbeta',
   tenantURL: 'beta.plant-for-the-planet.org',
   tenantLogoURL: 'https://www.plant-for-the-planet.org',
+  languages: ['de', 'en'],
+  fallbackCurrency: 'EUR',
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
@@ -47,9 +49,10 @@ const config = {
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
     description:
-            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+      "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '@pftp_int',
+    locale: 'en_US',
   },
 };
 

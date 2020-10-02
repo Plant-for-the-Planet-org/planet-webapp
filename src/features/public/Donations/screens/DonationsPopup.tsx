@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
+import getsessionId from '../../../../utils/getSessionId';
 import ContactDetails from '../components/ContactDetails';
 import PaymentDetails from '../components/PaymentDetails';
 import ThankYou from '../components/ThankYou';
@@ -53,7 +54,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
         const res = await fetch(
           `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`,
           {
-            headers: { 'tenant-key': `${process.env.TENANTID}` },
+            headers: { 'tenant-key': `${process.env.TENANTID}`,'X-SESSION-ID': await getsessionId() },
           }
         );
         const paymentSetupData = await res.json();

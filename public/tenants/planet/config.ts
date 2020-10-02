@@ -10,6 +10,7 @@ const config = {
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
+  languages: ['de', 'en'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
@@ -48,9 +49,10 @@ const config = {
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
     description:
-            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+      "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '@pftp_int',
+    locale: 'en_US',
   },
 };
 

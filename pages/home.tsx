@@ -12,6 +12,7 @@ import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
 
 import tenantConfig from '../tenant.config';
+import getsessionId from '../src/utils/getSessionId';
 
 const config = tenantConfig();
 
@@ -29,14 +30,16 @@ export default function Home() {
   React.useEffect(() => {
     async function loadTenantScore() {
       await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newTenantScore = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setTenantScore(newTenantScore);
-      });
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
+      })
+        .then(async (res) => {
+          const newTenantScore = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setTenantScore(newTenantScore);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadTenantScore();
   }, []);
@@ -44,14 +47,16 @@ export default function Home() {
   React.useEffect(() => {
     async function loadLeaderboard() {
       await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const newLeaderboard = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setLeaderboard(newLeaderboard);
-      });
+        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
+      })
+        .then(async (res) => {
+          const newLeaderboard = res.status === 200 ? await res.json() : null;
+          if (res.status !== 200) {
+            router.push('/404', undefined, { shallow: true });
+          }
+          setLeaderboard(newLeaderboard);
+        })
+        .catch((err) => console.log(`Something went wrong: ${err}`));
     }
     loadLeaderboard();
   }, []);
@@ -71,21 +76,15 @@ export default function Home() {
   let HomePage;
   function getHomePage() {
     switch (process.env.TENANT) {
-      case 'salesforce': HomePage = SalesforceHome;
-        return (
-          <HomePage
-            leaderboard={leaderboard}
-            tenantScore={tenantScore}
-          />
-        );
-      case 'stern': HomePage = SternHome;
-        return (
-          <HomePage
-            leaderboard={leaderboard}
-            tenantScore={tenantScore}
-          />
-        );
-      default: HomePage = null; return HomePage;
+      case 'salesforce':
+        HomePage = SalesforceHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'stern':
+        HomePage = SternHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      default:
+        HomePage = null;
+        return HomePage;
     }
   }
 
@@ -94,12 +93,11 @@ export default function Home() {
       <Head>
         <title>{`Home | ${config.meta.title}`}</title>
         <meta property="og:site_name" content={config.meta.title} />
-        <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}
         />
-        <meta property="og:title" content={`${config.meta.title} - Home`} />
+        <meta property="og:title" content={`Home | ${config.meta.title}`} />
         <meta property="og:description" content={config.meta.description} />
         <meta name="description" content={config.meta.description} />
         <meta property="og:type" content="website" />
@@ -123,9 +121,7 @@ export default function Home() {
         backgroundColor="white"
         startInvisible
       >
-        <Layout>
-        {getHomePage()}
-        </Layout>
+        <Layout>{getHomePage()}</Layout>
       </PullToRefresh>
     </>
   );
