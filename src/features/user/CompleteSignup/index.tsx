@@ -1,5 +1,4 @@
-import { signIn, signOut, useSession, getSession } from 'next-auth/client';
-import { useRouter } from 'next/router';
+import { useSession, } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
 import Layout from '../../common/Layout';
 import styles from './CompleteSignup.module.scss';
@@ -7,7 +6,6 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 
 export default function CompleteSignup() {
-  const router = useRouter();
   const [session, loading] = useSession();
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
   const [isSubscribed, setIsSubscribed] = React.useState(false);
@@ -37,8 +35,20 @@ export default function CompleteSignup() {
     }
   }
 
-  const sendRequest = async(type:string, body:any) => {
-   
+  const sendRequest = async(body:any) => {
+    try { 
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}/app/profiles`, {
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+           method: 'POST',
+        },
+      );
+      console.log('res', res)
+    } catch { 
+      console.log('Error')
+    }
   }
 
   const createButtonClicked = async () => {
@@ -49,6 +59,7 @@ export default function CompleteSignup() {
         allValidated = checkIfEmpty([firstName, lastName, country])
         if (allValidated && !loading && session) {
           bodyToSend = {
+            type:'individual',
             firstname: firstName,
             lastname: lastName,
             country: country,
@@ -56,7 +67,7 @@ export default function CompleteSignup() {
             mayContact: isSubscribed,
             oAuthAccessToken: session.accessToken
           }
-          sendRequest('individual', bodyToSend)
+          sendRequest(bodyToSend)
         }
 
         break;
@@ -64,6 +75,7 @@ export default function CompleteSignup() {
         allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg, address, city, zipCode])
         if (allValidated && !loading && session) {
           bodyToSend = {
+            type: 'tpo',
             firstname: firstName,
             lastname: lastName,
             name: nameOfOrg,
@@ -75,13 +87,14 @@ export default function CompleteSignup() {
             mayContact: isSubscribed,
             oAuthAccessToken: session.accessToken
           }
-          sendRequest('tpo', bodyToSend)
+          sendRequest(bodyToSend)
         }
         break;
       case 'education':
         allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg])
         if (allValidated && !loading && session) {
           bodyToSend = {
+            type: 'education',
             firstname: firstName,
             lastname: lastName,
             name: nameOfOrg,
@@ -90,13 +103,14 @@ export default function CompleteSignup() {
             mayContact: isSubscribed,
             oAuthAccessToken: session.accessToken
           }
-          sendRequest('education', bodyToSend)
+          sendRequest( bodyToSend)
         }
         break;
       case 'organisation':
         allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg])
         if (allValidated && !loading && session) {
           bodyToSend = {
+            type: 'organization', 
             firstname: firstName,
             lastname: lastName,
             name: nameOfOrg,
@@ -105,7 +119,7 @@ export default function CompleteSignup() {
             mayContact: isSubscribed,
             oAuthAccessToken: session.accessToken
           }
-          sendRequest('organization', bodyToSend)
+          sendRequest(bodyToSend)
         }
         break;
       default:
@@ -114,11 +128,6 @@ export default function CompleteSignup() {
     }
   }
 
-  // if (!session) {
-  //   if (typeof window !== 'undefined') {
-  //     router.push('/');
-  //   }
-  // }
   if (loading) {
     return null;
   }
