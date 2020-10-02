@@ -17,7 +17,6 @@ import LeftIcon from '../../../../assets/images/icons/LeftIcon';
 import RightIcon from '../../../../assets/images/icons/RightIcon';
 import PopupProject from './PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
-import { Button } from 'react-bootstrap';
 
 interface mapProps {
   projects: any;
