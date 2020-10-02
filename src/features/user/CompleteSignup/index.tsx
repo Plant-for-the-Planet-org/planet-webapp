@@ -38,7 +38,7 @@ export default function CompleteSignup() {
   }
 
   const sendRequest = async(type:string, body:any) => {
-    
+   
   }
 
   const createButtonClicked = async () => {
