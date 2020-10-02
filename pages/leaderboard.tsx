@@ -13,7 +13,11 @@ import getsessionId from '../src/utils/getSessionId';
 
 const config = tenantConfig();
 
-export default function LeaderBoard() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function LeaderBoard(initialized: Props) {
   const router = useRouter();
   // stores whether device is mobile or not;
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
@@ -74,7 +78,6 @@ export default function LeaderBoard() {
       <Head>
         <title>{`${config.meta.title} - Leaderboard`}</title>
         <meta property="og:site_name" content={config.meta.title} />
-        <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}
@@ -96,18 +99,22 @@ export default function LeaderBoard() {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={150}
-        onRefresh={onRefresh}
-        triggerHeight={isMobile ? 150 : 0}
-        backgroundColor="white"
-        startInvisible
-      >
-        <Layout></Layout>
-      </PullToRefresh>
+      {initialized ? (
+        <PullToRefresh
+          pullDownContent={<PullDownContent />}
+          releaseContent={<ReleaseContent />}
+          refreshContent={<RefreshContent />}
+          pullDownThreshold={150}
+          onRefresh={onRefresh}
+          triggerHeight={isMobile ? 150 : 0}
+          backgroundColor="white"
+          startInvisible
+        >
+          <Layout></Layout>
+        </PullToRefresh>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

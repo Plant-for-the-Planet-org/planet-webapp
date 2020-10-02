@@ -16,7 +16,11 @@ import getsessionId from '../src/utils/getSessionId';
 
 const config = tenantConfig();
 
-export default function Home() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function Home(initialized: Props) {
   const router = useRouter();
   // stores whether device is mobile or not;
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
@@ -111,18 +115,22 @@ export default function Home() {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={150}
-        onRefresh={onRefresh}
-        triggerHeight={isMobile ? 150 : 0}
-        backgroundColor="white"
-        startInvisible
-      >
-        <Layout>{getHomePage()}</Layout>
-      </PullToRefresh>
+      {initialized ? (
+        <PullToRefresh
+          pullDownContent={<PullDownContent />}
+          releaseContent={<ReleaseContent />}
+          refreshContent={<RefreshContent />}
+          pullDownThreshold={150}
+          onRefresh={onRefresh}
+          triggerHeight={isMobile ? 150 : 0}
+          backgroundColor="white"
+          startInvisible
+        >
+          <Layout>{getHomePage()}</Layout>
+        </PullToRefresh>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

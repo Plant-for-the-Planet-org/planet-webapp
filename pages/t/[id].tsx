@@ -10,7 +10,11 @@ import tenantConfig from '../../tenant.config';
 import getsessionId from '../../src/utils/getSessionId';
 const config = tenantConfig();
 
-export default function PublicUser() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function PublicUser(initialized: Props) {
   const [publicUserprofile, setPublicUserprofile] = React.useState();
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
@@ -68,7 +72,6 @@ export default function PublicUser() {
               : config.meta.title
           }
         />
-        <meta property="og:locale" content="en_US" />
         <meta
           property="og:url"
           content={`${process.env.SCHEME}://${config.tenantURL}`}
@@ -94,7 +97,7 @@ export default function PublicUser() {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      {publicUserprofile ? (
+      {initialized && publicUserprofile ? (
         <Layout>
           <PublicUserPage {...PublicUserProps} />
           <Footer />
