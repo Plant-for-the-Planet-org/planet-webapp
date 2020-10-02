@@ -9,7 +9,7 @@
 }
 
 .signup {
-  background-color: #ffffff;
+  background-color: $light;
   border: 0px;
   min-width: 360px;
   max-width: 30vw;
@@ -19,7 +19,12 @@
   border-radius: 8px;
 
 }
-  
+
+.accountTypeDiv{
+    display: flex;
+    padding:4px;
+    margin:0px;
+}
 //profile pic div
 .profilePicDiv {
     height: 100px;
@@ -141,20 +146,25 @@
     width: 172px;
     height:68px;
     border-radius: 10px;
-    border: solid 1.2px #000;
+    border: solid 1.2px $dark;
     margin: 5px;
-    background-color: #ffffff;
+    background-color: $light;
 }
 
 .btnColor {
-    border: solid 1.2px #68b030;
+    border: solid 1.2px $primaryColor;
     width: 172px;
     height:68px;
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: $light;
     margin: 5px;
 }
 .btnContainer {
     display: flex;
     justify-content: space-between;
 }
+:export {
+    primaryColor: $primaryColor;
+    light: $light;
+    dark: $dark;
+  }  

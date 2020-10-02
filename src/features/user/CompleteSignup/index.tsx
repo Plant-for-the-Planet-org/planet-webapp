@@ -65,13 +65,13 @@ export default function CompleteSignup() {
                 className={accountType === 'individual' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('individual')}
               >
-                <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
+                <div className={styles.accountTypeDiv}>
                   <p
                     style={{
                       paddingTop: '30px',
                       justifyContent: 'flex-start',
                       textTransform: 'capitalize',
-                      color: accountType === 'individual' ? '#68b030' : '#000000',
+                      color: accountType === 'individual' ? styles.primaryColor : styles.dark,
                     }}
                   >
                     Individual{' '}
@@ -83,13 +83,13 @@ export default function CompleteSignup() {
                 className={accountType === 'organisation' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('organisation')}
               >
-                <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
+                <div className={styles.accountTypeDiv}>
                   <p
                     style={{
                       paddingTop: '30px',
                       justifyContent: 'flex-start',
                       textTransform: 'capitalize',
-                      color: accountType === 'organisation' ? '#68b030' : '#000000',
+                      color: accountType === 'organisation' ? styles.primaryColor : styles.dark,
                     }}
                   >
                     Organisation{' '}
@@ -103,14 +103,14 @@ export default function CompleteSignup() {
                 className={accountType === 'RO' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('RO')}
               >
-                <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
+                <div className={styles.accountTypeDiv}>
                   <p
                     style={{
                       paddingTop: '15px',
                       justifyContent: 'flex-start',
                       textTransform: 'capitalize',
                       paddingRight: '60px',
-                      color: accountType === 'RO' ? '#68b030' : '#000000',
+                      color: accountType === 'RO' ? styles.primaryColor :styles.dark,
                     }}
                   >
                     Reforestation Organisation
@@ -122,13 +122,13 @@ export default function CompleteSignup() {
                 className={accountType === 'education' ? styles.btnColor : styles.btnSize}
                 onClick={() => setAccountType('education')}
               >
-                <div style={{ display: 'flex', padding: '4px', margin: 0 }}>
+                <div className={styles.accountTypeDiv}>
                   <p
                     style={{
                       paddingTop: '30px',
                       justifyContent: 'flex-start',
                       textTransform: 'capitalize',
-                      color: accountType === 'education' ? '#68b030' : '#000000',
+                      color: accountType === 'education' ? styles.primaryColor : styles.dark,
                     }}
                   >
                     Education{' '}
