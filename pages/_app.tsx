@@ -95,4 +95,3 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       </AuthProvider>
     );
   }
-}
