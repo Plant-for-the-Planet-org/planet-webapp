@@ -96,7 +96,6 @@ export default function EditProfileModal({
     }
     }
   }
-  console.log('here', userprofile)
   return (
     <React.Fragment>
     <Modal
