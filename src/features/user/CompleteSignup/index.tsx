@@ -51,10 +51,9 @@ export default function CompleteSignup() {
     return name;
   };
   return (
-    
       <div
         style={{
-          backgroundImage: `url('/app-background.png')`,
+          backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
           backgroundRepeat: 'no-repeat',
         }}
       >
