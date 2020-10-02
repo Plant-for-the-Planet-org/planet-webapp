@@ -7,13 +7,6 @@
   justify-content: center;
   margin: 0px 20px;
 }
-.SignupContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0px 20px;
-  padding-top: 8%;
-}
 
 // white modal
 .modal {
@@ -29,17 +22,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.signup {
-  background-color: #ffffff;
-  border: 0px;
-  min-width: 360px;
-  max-width: 30vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 8px;
-
 }
 
 // for mobile - modal
@@ -89,11 +71,11 @@
 }
 
 .firstNameDiv {
-    margin: 0px 6px 0px 10px;
+    margin: 0px 6px 0px 0px;
     width: 50%;
 }
 .lastNameDiv  {
-    margin: 0px 10px 0px 6px;
+    margin: 0px 0px 0px 6px;
     width: 50%;
 }
 
@@ -102,7 +84,6 @@
   display: flex;
   width: 100%;
   margin: 6px 0px;
-  padding: 0px 10px;
 }
 
 // city, zip code div
@@ -115,7 +96,7 @@
 }
 
 .cityDiv {
-    margin: 0px 6px 0px 10px;
+    margin: 0px 6px 0px 0px;
     width: 50%;
 }
 .zipDiv {
@@ -130,7 +111,6 @@
   width: 50%;
   align-self: flex-start;
   margin: 6px 6px 12px 0px;
-  padding-left: 10px;
 }
 
 // private account div
@@ -140,8 +120,7 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  margin: 6px 5px;
-  padding: 0px 10px;
+  margin: 6px 0px;
 }
 
 .mainText {
