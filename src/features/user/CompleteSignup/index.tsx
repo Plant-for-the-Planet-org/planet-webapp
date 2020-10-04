@@ -1,4 +1,4 @@
-import { useSession, } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
@@ -8,8 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 export default function CompleteSignup() {
-
-   // positive snackbars (if profile created successfully)
+  // positive snackbars (if profile created successfully)
   const [positiveSnackbarOpen, setPositiveSnackbarOpen] = React.useState(false);
   const handlePositiveSnackbarOpen = () => {
     setPositiveSnackbarOpen(true);
@@ -59,85 +58,95 @@ export default function CompleteSignup() {
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [accountType, setAccountType] = useState('RO');
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [nameOfOrg, setNameOfOrg] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [country, setCountry] = useState("");
-  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [nameOfOrg, setNameOfOrg] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [country, setCountry] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('OK');
+  const [requestSent, setRequestSent] = useState(false);
 
-  const checkIfEmpty = (params:any[]) => {
+  const checkIfEmpty = (params: any[]) => {
     var param;
     var flag = false;
     for (param of params) {
-      if (!param || param.trim() === "") {
+      if (!param || param.trim() === '') {
         flag = true;
-        setSnackbarMessage("Please fill all the details")
-        handleWarningSnackbarOpen()
-        break
+        setSnackbarMessage('Please fill all the details');
+        handleWarningSnackbarOpen();
+        break;
       }
     }
-    if (!flag){
+    if (!flag) {
       return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
-  const sendRequest = async(bodyToSend:any) => {
-    try { 
-      const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/profiles`, {
-          headers: { 
-            'Content-Type': 'application/json'
-          },
-           method: 'POST',
-           body: JSON.stringify(bodyToSend)
+  const sendRequest = async (bodyToSend: any) => {
+    setRequestSent(true);
+    try {
+      const res = await fetch(`${process.env.API_ENDPOINT}/app/profiles`, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
-      console.log('res', res)
+        method: 'POST',
+        body: JSON.stringify(bodyToSend),
+      });
+      console.log('res', res);
+      console.log(await res.json());
+      setRequestSent(false);
       if (res.status === 200) {
         // successful signup -> goto me page
-        setSnackbarMessage("Profile Successfully created!")
-        handlePositiveSnackbarOpen()
+        setSnackbarMessage('Profile Successfully created!');
+        handlePositiveSnackbarOpen();
         if (typeof window !== 'undefined') {
           router.push('/me');
         }
       } else {
-        setSnackbarMessage("Error in creating profile")
-        handleErrorSnackbarOpen()
+        setSnackbarMessage('Error in creating profile');
+        handleErrorSnackbarOpen();
       }
-    } catch { 
-      setSnackbarMessage("Error in creating profile")
-      handleErrorSnackbarOpen()
-      console.log('Error')
+    } catch {
+      setSnackbarMessage('Error in creating profile');
+      handleErrorSnackbarOpen();
+      console.log('Error');
     }
-  }
+  };
 
   const createButtonClicked = async () => {
     var bodyToSend;
     var allValidated;
     switch (accountType) {
       case 'individual':
-        allValidated = checkIfEmpty([firstName, lastName, country])
+        allValidated = checkIfEmpty([firstName, lastName, country]);
         if (allValidated && !loading && session) {
           bodyToSend = {
-            type:'individual',
+            type: 'individual',
             firstname: firstName,
             lastname: lastName,
             country: country,
             mayPublish: !isPrivateAccount,
             mayContact: isSubscribed,
-            oAuthAccessToken: session.accessToken
-          }
-          sendRequest(bodyToSend)
+            oAuthAccessToken: session.accessToken,
+          };
+          sendRequest(bodyToSend);
         }
 
         break;
       case 'RO':
-        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg, address, city, zipCode])
+        allValidated = checkIfEmpty([
+          firstName,
+          lastName,
+          country,
+          nameOfOrg,
+          address,
+          city,
+          zipCode,
+        ]);
         if (allValidated && !loading && session) {
           bodyToSend = {
             type: 'tpo',
@@ -150,13 +159,13 @@ export default function CompleteSignup() {
             country: country,
             mayPublish: !isPrivateAccount,
             mayContact: isSubscribed,
-            oAuthAccessToken: session.accessToken
-          }
-          sendRequest(bodyToSend)
+            oAuthAccessToken: session.accessToken,
+          };
+          sendRequest(bodyToSend);
         }
         break;
       case 'education':
-        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg])
+        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg]);
         if (allValidated && !loading && session) {
           bodyToSend = {
             type: 'education',
@@ -166,33 +175,33 @@ export default function CompleteSignup() {
             country: country,
             mayPublish: !isPrivateAccount,
             mayContact: isSubscribed,
-            oAuthAccessToken: session.accessToken
-          }
-          sendRequest( bodyToSend)
+            oAuthAccessToken: session.accessToken,
+          };
+          sendRequest(bodyToSend);
         }
         break;
       case 'organisation':
-        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg])
+        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg]);
         if (allValidated && !loading && session) {
           bodyToSend = {
-            type: 'organization', 
+            type: 'organization',
             firstname: firstName,
             lastname: lastName,
             name: nameOfOrg,
             country: country,
             mayPublish: !isPrivateAccount,
             mayContact: isSubscribed,
-            oAuthAccessToken: session.accessToken
-          }
-          sendRequest(bodyToSend)
+            oAuthAccessToken: session.accessToken,
+          };
+          sendRequest(bodyToSend);
         }
         break;
       default:
-        setSnackbarMessage("Some Error has occured")
-        handleErrorSnackbarOpen()
+        setSnackbarMessage('Some Error has occured');
+        handleErrorSnackbarOpen();
         break;
     }
-  }
+  };
 
   if (loading) {
     return null;
@@ -220,31 +229,47 @@ export default function CompleteSignup() {
     return name;
   };
   return (
-    <div className={styles.signUpPage}
-      style={{ backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)` }}
+    <div
+      className={styles.signUpPage}
+      style={{
+        backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
+      }}
     >
-
-      <div className={styles.signup}>
+      <div className={requestSent ? styles.signupRequestSent : styles.signup }>
         <div className={styles.btnContainer}>
           <button
             type="button"
-            className={accountType === 'individual' ? styles.btnColor : styles.btnSize}
+            className={
+              accountType === 'individual' ? styles.btnColor : styles.btnSize
+            }
             onClick={() => setAccountType('individual')}
           >
-              <p className={accountType === 'individual' ? styles.accountTypeTextSelected : styles.accountTypeText}>
-                Individual{' '}
-              </p>
-            
+            <p
+              className={
+                accountType === 'individual'
+                  ? styles.accountTypeTextSelected
+                  : styles.accountTypeText
+              }
+            >
+              Individual{' '}
+            </p>
           </button>
           <button
             type="button"
-            className={accountType === 'organisation' ? styles.btnColor : styles.btnSize}
+            className={
+              accountType === 'organisation' ? styles.btnColor : styles.btnSize
+            }
             onClick={() => setAccountType('organisation')}
           >
-              <p className={accountType === 'organisation' ? styles.accountTypeTextSelected : styles.accountTypeText} >
-                Organisation{' '}
-              </p>
-            
+            <p
+              className={
+                accountType === 'organisation'
+                  ? styles.accountTypeTextSelected
+                  : styles.accountTypeText
+              }
+            >
+              Organisation{' '}
+            </p>
           </button>
         </div>
         <div className={styles.btnContainer}>
@@ -253,19 +278,32 @@ export default function CompleteSignup() {
             className={accountType === 'RO' ? styles.btnColor : styles.btnSize}
             onClick={() => setAccountType('RO')}
           >
-              <p className={accountType === 'RO' ? styles.accountTypeTextSelected : styles.accountTypeText} >
-                Reforestation Organisation
-                  </p>
+            <p
+              className={
+                accountType === 'RO'
+                  ? styles.accountTypeTextSelected
+                  : styles.accountTypeText
+              }
+            >
+              Reforestation Organisation
+            </p>
           </button>
           <button
             type="button"
-            className={accountType === 'education' ? styles.btnColor : styles.btnSize}
+            className={
+              accountType === 'education' ? styles.btnColor : styles.btnSize
+            }
             onClick={() => setAccountType('education')}
           >
-              <p className={accountType === 'education' ? styles.accountTypeTextSelected : styles.accountTypeText}>
-                Education{' '}
-              </p>
-            
+            <p
+              className={
+                accountType === 'education'
+                  ? styles.accountTypeTextSelected
+                  : styles.accountTypeText
+              }
+            >
+              Education{' '}
+            </p>
           </button>
         </div>
 
@@ -287,16 +325,16 @@ export default function CompleteSignup() {
           </div>
         </div>
         {accountType === 'education' ||
-          accountType === 'organisation' ||
-          accountType === 'RO' ? (
-            <div className={styles.addressDiv}>
-              <MaterialTextField
-                label={`Name of ${SelectType(accountType)}`}
-                variant="outlined"
-                onChange={(e) => setNameOfOrg(e.target.value)}
-              />
-            </div>
-          ) : null}
+        accountType === 'organisation' ||
+        accountType === 'RO' ? (
+          <div className={styles.addressDiv}>
+            <MaterialTextField
+              label={`Name of ${SelectType(accountType)}`}
+              variant="outlined"
+              onChange={(e) => setNameOfOrg(e.target.value)}
+            />
+          </div>
+        ) : null}
         {accountType === 'RO' ? (
           <div>
             <div className={styles.addressDiv}>
@@ -340,7 +378,7 @@ export default function CompleteSignup() {
             <div className={styles.isPrivateAccountText}>
               Your profile is hidden and only your first name appears in the
               leaderboard
-                </div>
+            </div>
           </div>
           <ToggleSwitch
             checked={isPrivateAccount}
@@ -348,7 +386,6 @@ export default function CompleteSignup() {
             name="checkedA"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
-
         </div>
 
         <div className={styles.isPrivateAccountDiv}>
@@ -363,40 +400,57 @@ export default function CompleteSignup() {
 
         <div className={styles.horizontalLine} />
 
-        <div className={styles.saveButton} onClick={createButtonClicked}>Create Account</div>
+        <div className={styles.saveButton} onClick={createButtonClicked}>
+          Create Account
+        </div>
       </div>
       {/* positive snackbar */}
       <Snackbar
-          open={positiveSnackbarOpen}
-          autoHideDuration={2000}
+        open={positiveSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handlePositiveSnackbarClose}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
           onClose={handlePositiveSnackbarClose}
+          severity="success"
         >
-          <MuiAlert elevation={6} variant="filled" onClose={handlePositiveSnackbarClose} severity="success" >
-            {snackbarMessage}
-          </MuiAlert>
-        </Snackbar>
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
 
-        {/* error snackbar */}
-        <Snackbar
-          open={errorSnackbarOpen}
-          autoHideDuration={2000}
+      {/* error snackbar */}
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleErrorSnackbarClose}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
           onClose={handleErrorSnackbarClose}
+          severity="error"
         >
-          <MuiAlert elevation={6} variant="filled" onClose={handleErrorSnackbarClose} severity="error" >
           {snackbarMessage}
-          </MuiAlert>
-        </Snackbar>
+        </MuiAlert>
+      </Snackbar>
 
-        {/* warning snackbar */}
-        <Snackbar
-          open={warningSnackbarOpen}
-          autoHideDuration={2000}
+      {/* warning snackbar */}
+      <Snackbar
+        open={warningSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleWarningSnackbarClose}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
           onClose={handleWarningSnackbarClose}
+          severity="warning"
         >
-          <MuiAlert elevation={6} variant="filled" onClose={handleWarningSnackbarClose} severity="warning" >
           {snackbarMessage}
-          </MuiAlert>
-        </Snackbar>
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 }
