@@ -19,21 +19,21 @@ export default function EditProfileModal({
   reloadFlag,
 }: any) {
 
-  const [savedSnackbarOpen, setSavedSnackbarOpen] = useState(
+  const [snackbarOpen, setSnackbarOpen] = useState(
     false
   );
 
-  const handleSavedSnackbarOpen = () => {
-    setSavedSnackbarOpen(true);
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
   };
-  const handleSavedSnackbarClose = (
+  const handleSnackbarClose = (
     event?: React.SyntheticEvent,
     reason?: string
   ) => {
     if (reason === 'clickaway') {
       return;
     }
-    setSavedSnackbarOpen(false);
+    setSnackbarOpen(false);
   };
   // the form values
   const [firstName, setFirstName] = useState(userprofile.firstname);
@@ -47,6 +47,8 @@ export default function EditProfileModal({
   const [description, setDescription] = useState(userprofile.synopsis);
   const [website, setWebsite] = useState(userprofile.url);
   const [ session, loading] = useSession()
+  const [severity, setSeverity] = useState('success')
+  const [snackbarMessage, setSnackbarMessage] = useState("OK")
 
   const profilePicStyle = {
     height: '100%',
@@ -74,7 +76,6 @@ export default function EditProfileModal({
     }
     if (!loading && session && userprofile.id) {
       try{
-      console.log('in saved', userObject, session, userprofile.id)
       const res = await fetch(
         `${process.env.API_ENDPOINT}/app/profiles/${userprofile.id}`, {
           method: 'PUT',
@@ -86,13 +87,20 @@ export default function EditProfileModal({
         },
       );
       if (res.status === 200) {
-        handleSavedSnackbarOpen()
+        setSeverity('success')
+        setSnackbarMessage('Saved Successfully!')
+        handleSnackbarOpen()
         handleEditProfileModalClose()
         setReloadFlag(!reloadFlag)
+      } else {
+      setSeverity('error')
+      setSnackbarMessage('Error in updating profile')
+      handleSnackbarOpen()
       }
-    } catch {
-      //show error toast
-      console.log('Error')
+    } catch (e) {
+      setSeverity('error')
+      setSnackbarMessage('Error in updating profile')
+      handleSnackbarOpen()
     }
     }
   }
@@ -237,19 +245,19 @@ export default function EditProfileModal({
         </div>
       </Fade>
     </Modal>
-          {/* snackbar for showing "Saved successfully" */}
+          {/* snackbar for showing various messages */}
           <Snackbar
-          open={savedSnackbarOpen}
-          autoHideDuration={4000}
-          onClose={handleSavedSnackbarClose}
+          open={snackbarOpen}
+          autoHideDuration={2000}
+          onClose={handleSnackbarClose}
         >
           <MuiAlert 
           elevation={6} 
           variant="filled" 
-          onClose={handleSavedSnackbarClose} 
-          severity="success" 
+          onClose={handleSnackbarClose} 
+          severity={severity}
           >
-            Saved Successfully!
+            {snackbarMessage}
           </MuiAlert>
         </Snackbar>
         </React.Fragment>
