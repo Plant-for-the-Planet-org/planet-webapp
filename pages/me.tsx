@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
 import tenantConfig from '../tenant.config';
@@ -69,10 +69,10 @@ interface Props {
 
 export default function UserProfile(initialized: Props) {
   const router = useRouter();
-  const [userprofile, setUserprofile] = React.useState({});
+  const [userprofile, setUserprofile] = useState({});
   const [ session, loading] = useSession()
-  const [pageLoading, setPageLoading] = React.useState(true)
-  const [reloadFlag, setReloadFlag] = React.useState(false);
+  const [pageLoading, setPageLoading] = useState(true)
+  const [reloadFlag, setReloadFlag] = useState(false);
   const UserProps = {
     userprofile,
     setReloadFlag,
