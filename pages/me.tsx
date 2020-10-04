@@ -90,7 +90,7 @@ export default function UserProfile(initialized: Props) {
         },
       );
       if (res.status === 200){
-        // user exists in db and ren info
+        // user exists in db and returns user info
         const resJson = await res.json()
         const newMeObj = {
           ...resJson,
