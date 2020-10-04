@@ -16,9 +16,6 @@ export default function EditProfileModal({
   editProfileModalOpen,
   handleEditProfileModalClose,
 }: any) {
-  function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const [savedSnackbarOpen, setSavedSnackbarOpen] = React.useState(
     false
@@ -243,9 +240,14 @@ export default function EditProfileModal({
           autoHideDuration={4000}
           onClose={handleSavedSnackbarClose}
         >
-          <Alert onClose={handleSavedSnackbarClose} severity="success">
+          <MuiAlert 
+          elevation={6} 
+          variant="filled" 
+          onClose={handleSavedSnackbarClose} 
+          severity="success" 
+          >
             Saved Successfully!
-          </Alert>
+          </MuiAlert>
         </Snackbar>
         </React.Fragment>
   );
