@@ -72,8 +72,11 @@ export default function UserProfile(initialized: Props) {
   const [userprofile, setUserprofile] = React.useState({});
   const [ session, loading] = useSession()
   const [pageLoading, setPageLoading] = React.useState(true)
+  const [reloadFlag, setReloadFlag] = React.useState(false);
   const UserProps = {
     userprofile,
+    setReloadFlag,
+    reloadFlag,
   };
   useEffect(() => {
     async function fetchUserInfo(session:any) {
@@ -117,7 +120,7 @@ export default function UserProfile(initialized: Props) {
       // some user is logged in -> api call to backend
       fetchUserInfo(session)
     }
-  }, [loading]);
+  }, [loading, reloadFlag]);
 
   if (!config.header.items[3].visible) {
     if (typeof window !== 'undefined') {

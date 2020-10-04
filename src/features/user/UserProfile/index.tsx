@@ -10,7 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from './components/SettingsModal';
 
-export default function UserProfile({ userprofile }: any) {
+export default function UserProfile({ userprofile, setReloadFlag, reloadFlag }: any) {
   function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -71,6 +71,8 @@ export default function UserProfile({ userprofile }: any) {
               editProfileModalOpen={editProfileModalOpen}
               handleEditProfileModalClose={handleEditProfileModalClose}
               handleEditProfileModalOpen={handleEditProfileModalOpen}
+              setReloadFlag={setReloadFlag}
+              reloadFlag={reloadFlag}
             />
           </>
         )}

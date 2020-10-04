@@ -15,6 +15,8 @@ export default function EditProfileModal({
   userprofile,
   editProfileModalOpen,
   handleEditProfileModalClose,
+  setReloadFlag,
+  reloadFlag,
 }: any) {
 
   const [savedSnackbarOpen, setSavedSnackbarOpen] = useState(
@@ -86,6 +88,7 @@ export default function EditProfileModal({
       if (res.status === 200) {
         handleSavedSnackbarOpen()
         handleEditProfileModalClose()
+        setReloadFlag(!reloadFlag)
       }
     } catch {
       //show error toast
