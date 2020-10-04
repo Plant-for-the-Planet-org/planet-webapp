@@ -4,8 +4,56 @@ import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 export default function CompleteSignup() {
+
+   // positive snackbars (if profile created successfully)
+  const [positiveSnackbarOpen, setPositiveSnackbarOpen] = React.useState(false);
+  const handlePositiveSnackbarOpen = () => {
+    setPositiveSnackbarOpen(true);
+  };
+  const handlePositiveSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setPositiveSnackbarOpen(false);
+  };
+
+  // warning snackbars (if some field empty)
+  const [warningSnackbarOpen, setWarningSnackbarOpen] = React.useState(false);
+  const handleWarningSnackbarOpen = () => {
+    setWarningSnackbarOpen(true);
+  };
+  const handleWarningSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setWarningSnackbarOpen(false);
+  };
+
+  // error snackbars (if error in request)
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = React.useState(false);
+  const handleErrorSnackbarOpen = () => {
+    setErrorSnackbarOpen(true);
+  };
+  const handleErrorSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setErrorSnackbarOpen(false);
+  };
+
   const router = useRouter();
   const [session, loading] = useSession();
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
@@ -18,6 +66,7 @@ export default function CompleteSignup() {
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [country, setCountry] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState("OK");
 
   const checkIfEmpty = (params:any[]) => {
     var param;
@@ -25,7 +74,8 @@ export default function CompleteSignup() {
     for (param of params) {
       if (!param || param.trim() === "") {
         flag = true;
-        //TODO : alert
+        setSnackbarMessage("Please fill all the details")
+        handleWarningSnackbarOpen()
         break
       }
     }
@@ -50,15 +100,18 @@ export default function CompleteSignup() {
       console.log('res', res)
       if (res.status === 200) {
         // successful signup -> goto me page
-        // TODO: alert success
+        setSnackbarMessage("Profile Successfully created!")
+        handlePositiveSnackbarOpen()
         if (typeof window !== 'undefined') {
           router.push('/me');
         }
       } else {
-        // TODO: alert error
+        setSnackbarMessage("Error in creating profile")
+        handleErrorSnackbarOpen()
       }
     } catch { 
-      // TODO: show error
+      setSnackbarMessage("Error in creating profile")
+      handleErrorSnackbarOpen()
       console.log('Error')
     }
   }
@@ -135,7 +188,8 @@ export default function CompleteSignup() {
         }
         break;
       default:
-        // TODO: alert error occured
+        setSnackbarMessage("Some Error has occured")
+        handleErrorSnackbarOpen()
         break;
     }
   }
@@ -311,6 +365,38 @@ export default function CompleteSignup() {
 
         <div className={styles.saveButton} onClick={createButtonClicked}>Create Account</div>
       </div>
+      {/* positive snackbar */}
+      <Snackbar
+          open={positiveSnackbarOpen}
+          autoHideDuration={2000}
+          onClose={handlePositiveSnackbarClose}
+        >
+          <MuiAlert elevation={6} variant="filled" onClose={handlePositiveSnackbarClose} severity="success" >
+            {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
+
+        {/* error snackbar */}
+        <Snackbar
+          open={errorSnackbarOpen}
+          autoHideDuration={2000}
+          onClose={handleErrorSnackbarClose}
+        >
+          <MuiAlert elevation={6} variant="filled" onClose={handleErrorSnackbarClose} severity="error" >
+          {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
+
+        {/* warning snackbar */}
+        <Snackbar
+          open={warningSnackbarOpen}
+          autoHideDuration={2000}
+          onClose={handleWarningSnackbarClose}
+        >
+          <MuiAlert elevation={6} variant="filled" onClose={handleWarningSnackbarClose} severity="warning" >
+          {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
     </div>
   );
 }
