@@ -100,6 +100,9 @@ export default function UserProfile(initialized: Props) {
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
         }
+      } else if (res.status === 401){
+        // unauthorized -> send to login screen
+      signIn(null)
       }
     } catch { 
       console.log('Error')
