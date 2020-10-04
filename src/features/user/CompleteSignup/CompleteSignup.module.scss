@@ -47,10 +47,22 @@
   justify-content: space-between;
 }
 
-.accountTypeDiv{
-    display: flex;
-    padding:4px;
-    margin:0px;
+.accountTypeTextSelected{
+  font-size: 14px;
+  justify-content: flex-start;
+  font-weight: bolder;
+  text-transform: capitalize;
+  color: $primaryColor;
+  margin-bottom: 0px;
+}
+
+.accountTypeText {
+  font-size: 14px;
+  justify-content: flex-start;
+  font-weight: normal;
+  text-transform: capitalize;
+  color: $dark;
+  margin-bottom: 0px;
 }
 //profile pic div
 .profilePicDiv {

@@ -177,40 +177,20 @@ export default function CompleteSignup() {
             className={accountType === 'individual' ? styles.btnColor : styles.btnSize}
             onClick={() => setAccountType('individual')}
           >
-            <div className={styles.accountTypeDiv}>
-              <p
-                style={{
-                  paddingTop: '30px',
-                  fontSize: '14px',
-                  justifyContent: 'flex-start',
-                  fontWeight: accountType === 'individual' ? 'bolder' : 'normal',
-                  textTransform: 'capitalize',
-                  color: accountType === 'individual' ? styles.primaryColor : styles.dark,
-                }}
-              >
+              <p className={accountType === 'individual' ? styles.accountTypeTextSelected : styles.accountTypeText}>
                 Individual{' '}
               </p>
-            </div>
+            
           </button>
           <button
             type="button"
             className={accountType === 'organisation' ? styles.btnColor : styles.btnSize}
             onClick={() => setAccountType('organisation')}
           >
-            <div className={styles.accountTypeDiv}>
-              <p
-                style={{
-                  paddingTop: '30px',
-                  fontSize: '14px',
-                  justifyContent: 'flex-start',
-                  fontWeight: accountType === 'organisation' ? 'bolder' : 'normal',
-                  textTransform: 'capitalize',
-                  color: accountType === 'organisation' ? styles.primaryColor : styles.dark,
-                }}
-              >
+              <p className={accountType === 'organisation' ? styles.accountTypeTextSelected : styles.accountTypeText} >
                 Organisation{' '}
               </p>
-            </div>
+            
           </button>
         </div>
         <div className={styles.btnContainer}>
@@ -219,41 +199,19 @@ export default function CompleteSignup() {
             className={accountType === 'RO' ? styles.btnColor : styles.btnSize}
             onClick={() => setAccountType('RO')}
           >
-            <div className={styles.accountTypeDiv}>
-              <p
-                style={{
-                  paddingTop: '15px',
-                  fontSize: '14px',
-                  justifyContent: 'flex-start',
-                  textTransform: 'capitalize',
-                  fontWeight: accountType === 'RO' ? 'bolder' : 'normal',
-                  paddingRight: '60px',
-                  color: accountType === 'RO' ? styles.primaryColor : styles.dark,
-                }}
-              >
+              <p className={accountType === 'RO' ? styles.accountTypeTextSelected : styles.accountTypeText} >
                 Reforestation Organisation
                   </p>
-            </div>
           </button>
           <button
             type="button"
             className={accountType === 'education' ? styles.btnColor : styles.btnSize}
             onClick={() => setAccountType('education')}
           >
-            <div className={styles.accountTypeDiv}>
-              <p
-                style={{
-                  paddingTop: '30px',
-                  fontSize: '14px',
-                  justifyContent: 'flex-start',
-                  textTransform: 'capitalize',
-                  fontWeight: accountType === 'education' ? 'bolder' : 'normal',
-                  color: accountType === 'education' ? styles.primaryColor : styles.dark,
-                }}
-              >
+              <p className={accountType === 'education' ? styles.accountTypeTextSelected : styles.accountTypeText}>
                 Education{' '}
               </p>
-            </div>
+            
           </button>
         </div>
 
