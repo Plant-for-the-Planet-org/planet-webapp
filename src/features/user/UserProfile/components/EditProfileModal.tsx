@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSession } from 'next-auth/client';
 import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
@@ -17,7 +17,7 @@ export default function EditProfileModal({
   handleEditProfileModalClose,
 }: any) {
 
-  const [savedSnackbarOpen, setSavedSnackbarOpen] = React.useState(
+  const [savedSnackbarOpen, setSavedSnackbarOpen] = useState(
     false
   );
 
@@ -34,16 +34,16 @@ export default function EditProfileModal({
     setSavedSnackbarOpen(false);
   };
   // the form values
-  const [firstName, setFirstName] = React.useState(userprofile.firstname);
-  const [lastName, setLastName] = React.useState(userprofile.lastname);
-  const [address, setAddress] = React.useState(userprofile.address);
-  const [city, setCity] = React.useState(userprofile.city);
-  const [zip, setZip] = React.useState(userprofile.zipCode);
-  const [country, setCountry] = React.useState(userprofile.country);
-  const [isPrivateAccount, setIsPrivateAccount] = React.useState(userprofile.mayPublish);
-  const [isSubscribed, setIsSubscribed] = React.useState(userprofile.mayContact);
-  const [description, setDescription] = React.useState(userprofile.synopsis);
-  const [website, setWebsite] = React.useState(userprofile.url);
+  const [firstName, setFirstName] = useState(userprofile.firstname);
+  const [lastName, setLastName] = useState(userprofile.lastname);
+  const [address, setAddress] = useState(userprofile.address);
+  const [city, setCity] = useState(userprofile.city);
+  const [zip, setZip] = useState(userprofile.zipCode);
+  const [country, setCountry] = useState(userprofile.country);
+  const [isPrivateAccount, setIsPrivateAccount] = useState(userprofile.mayPublish);
+  const [isSubscribed, setIsSubscribed] = useState(userprofile.mayContact);
+  const [description, setDescription] = useState(userprofile.synopsis);
+  const [website, setWebsite] = useState(userprofile.url);
   const [ session, loading] = useSession()
 
   const profilePicStyle = {
