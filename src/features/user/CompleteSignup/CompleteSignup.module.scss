@@ -26,7 +26,7 @@
 }
 
 .btnSize {
-  width: 152px;
+  width: 50%;
   height:68px;
   border-radius: 10px;
   border: solid 1.6px $dark;
@@ -36,7 +36,7 @@
 
 .btnColor {
   border: solid 1.6px $primaryColor;
-  width: 152px;
+  width: 50%;
   height:68px;
   border-radius: 10px;
   background-color: $light;
@@ -45,6 +45,7 @@
 .btnContainer {
   display: flex;
   justify-content: space-between;
+  width:100%
 }
 
 .accountTypeTextSelected{
