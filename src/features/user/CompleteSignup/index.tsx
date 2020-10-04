@@ -96,8 +96,6 @@ export default function CompleteSignup() {
         method: 'POST',
         body: JSON.stringify(bodyToSend),
       });
-      console.log('res', res);
-      console.log(await res.json());
       setRequestSent(false);
       if (res.status === 200) {
         // successful signup -> goto me page
@@ -113,7 +111,6 @@ export default function CompleteSignup() {
     } catch {
       setSnackbarMessage('Error in creating profile');
       handleErrorSnackbarOpen();
-      console.log('Error');
     }
   };
 
