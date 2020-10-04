@@ -11,9 +11,6 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from './components/SettingsModal';
 
 export default function UserProfile({ userprofile, setReloadFlag, reloadFlag }: any) {
-  function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
@@ -110,9 +107,14 @@ export default function UserProfile({ userprofile, setReloadFlag, reloadFlag }: 
         autoHideDuration={4000}
         onClose={handleTextCopiedSnackbarClose}
       >
-        <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+        <MuiAlert 
+        elevation={6} 
+        variant="filled"
+        onClose={handleTextCopiedSnackbarClose} 
+        severity="success"
+        >
           Text Copied to Clipboard!
-        </Alert>
+        </MuiAlert>
       </Snackbar>
     </React.Fragment>
   );
