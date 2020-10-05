@@ -195,6 +195,23 @@
     cursor: pointer;
 }
 
+.logoutButton {
+  padding: 8px 40px;
+  border-radius: 6px;
+  color: $dark;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  margin-top: 20px;
+  background-color: $light;
+  opacity: 0.8;
+}
+
+.logoutButton:hover {
+  cursor: pointer;
+  background-color:'red';
+}
+
 :export {
     primaryColor: $primaryColor;
     light: $light;

@@ -6,6 +6,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { signOut } from 'next-auth/client';
 
 export default function CompleteSignup() {
   //  snackbars (for warnings, success messages, errors)
@@ -206,6 +207,8 @@ export default function CompleteSignup() {
       className={styles.signUpPage}
       style={{
         backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
+        display:'flex',
+        flexDirection:'column'
       }}
     >
       <div className={requestSent ? styles.signupRequestSent : styles.signup }>
@@ -376,6 +379,9 @@ export default function CompleteSignup() {
         <div className={styles.saveButton} onClick={createButtonClicked}>
           Create Account
         </div>
+      </div>
+      <div className={styles.logoutButton} onClick={() => signOut({ callbackUrl: '/' })}>
+          <b> Logout </b>
       </div>
       {/* snackbar */}
       <Snackbar
