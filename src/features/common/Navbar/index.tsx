@@ -177,7 +177,7 @@ export default function NavbarComponent(props: any) {
                 <Nav.Link key={item.id} onClick={checkWhichPath}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
+                          {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
                             <MeSelected color={styles.primaryColor} />
                           ) : (
                               <Me color={styles.primaryFontColor} />
@@ -354,7 +354,7 @@ export default function NavbarComponent(props: any) {
                       <div
                     className={styles.link_container} >
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
+                          {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
                             <MeSelected color={styles.primaryColor} />
                           ) : (
                               <Me color={styles.primaryFontColor} />
