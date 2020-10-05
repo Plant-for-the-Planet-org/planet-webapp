@@ -34,13 +34,23 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
 
+  const [taxDeductionCountriesArray,setTaxDeductionCountriesArray] = React.useState([]);
+
+  React.useEffect(()=>{
+    let taxarray=[];
+    for (let i = 0; i < project.paymentSetup.taxDeduction.length; i++) {
+      const countryCode = getCountryDataBy('countryName',project.paymentSetup.taxDeduction[i]).countryCode;
+      taxarray.push(countryCode);
+    }
+    setTaxDeductionCountriesArray(taxarray)
+  },[])
   const projectDetails = {
     id: project.id,
     name: project.name,
     currency: project.currency,
     country: project.country,
     treeCost: project.treeCost,
-    taxDeductionCountries: project.taxDeductibleCountries,
+    taxDeductionCountries: taxDeductionCountriesArray,
     tpo: project.tpoData,
   };
 
