@@ -222,6 +222,8 @@ function TreeDonation({
                 }
               }}
               type="text"
+              inputMode="numeric"
+              pattern="\d*"
               onChange={(e) => setCustomTreeValue(e)}
             />
             <div className={styles.treeCountOptionTrees}>
