@@ -19,12 +19,15 @@ export default function Donate(initialized: Props) {
   const [projects, setProjects] = React.useState();
   const [project, setProject] = React.useState(null);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [searchMode, setSearchMode] = React.useState(false);
 
   const DonateProps = {
     projects,
     project,
     fetchSingleProject,
     showSingleProject,
+    setSearchMode,
+    searchMode,
   };
 
   React.useEffect(() => {
@@ -58,7 +61,10 @@ export default function Donate(initialized: Props) {
       await fetch(
         `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`,
         {
-          headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId() },
+          headers: {
+            'tenant-key': `${process.env.TENANTID}`,
+            'X-SESSION-ID': await getsessionId(),
+          },
         }
       )
         .then(async (res) => {
@@ -88,9 +94,13 @@ export default function Donate(initialized: Props) {
     await fetch(
       `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
       {
-         headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId() },
-      },
-    ).then(async (res) => {
+        headers: {
+          'tenant-key': `${process.env.TENANTID}`,
+          'X-SESSION-ID': await getsessionId(),
+        },
+      }
+    )
+      .then(async (res) => {
         const newProject = res.status === 200 ? await res.json() : null;
         if (res.status !== 200) {
           router.push('/404', undefined, { shallow: true });
@@ -165,7 +175,7 @@ export default function Donate(initialized: Props) {
         </Head>
       )}
       {initialized ? (
-        <Layout>
+        <Layout searchMode={searchMode}>
           {projects && initialized ? <ProjectsList {...DonateProps} /> : <></>}
         </Layout>
       ) : null}

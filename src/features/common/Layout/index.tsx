@@ -14,7 +14,7 @@ export default function Layout(props: any) {
         {theme}
       </style>
       <div className={`${themeType}`}>
-        <Navbar theme={themeType} />
+        <Navbar searchMode={props.searchMode} theme={themeType} />
         {props.children}
         <CookiePolicy />
       </div>

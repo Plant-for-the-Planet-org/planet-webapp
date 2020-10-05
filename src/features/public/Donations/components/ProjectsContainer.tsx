@@ -11,6 +11,8 @@ const { useTranslation } = i18next;
 interface Props {
   projects: any;
   setSearchedProjects: Function;
+  setSearchMode: Function;
+  searchMode: Boolean;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -21,6 +23,8 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 export default function ProjectsContainer({
   projects,
   setSearchedProjects,
+  setSearchMode,
+  searchMode,
 }: Props) {
   const { t } = useTranslation(['donate']);
 
@@ -32,7 +36,6 @@ export default function ProjectsContainer({
     featuredList === 'false' || featuredList === '0' ? false : true;
 
   const [selectedTab, setSelectedTab] = React.useState('all');
-  const [searchMode, setSearchMode] = React.useState(false);
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;

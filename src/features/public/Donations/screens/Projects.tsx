@@ -19,12 +19,16 @@ interface Props {
   projects: any;
   project: any;
   showSingleProject: any;
+  setSearchMode: Function;
+  searchMode: Boolean;
 }
 
 function ProjectsList({
   projects,
   project,
   showSingleProject,
+  setSearchMode,
+  searchMode,
 }: Props): ReactElement {
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
@@ -43,6 +47,8 @@ function ProjectsList({
     project,
     showSingleProject,
     setSearchedProjects: setSearchedProjects,
+    setSearchMode,
+    searchMode,
   };
 
   return (
