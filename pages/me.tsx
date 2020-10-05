@@ -108,7 +108,7 @@ export default function UserProfile(initialized: Props) {
     }
   }
 
-  if (!initialized || loading || (!loading && session && !session.userprofile)) {
+  if (!initialized || loading) {
     return <React.Fragment />;
   }
   if (!loading && session && session.userprofile) {
