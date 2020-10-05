@@ -10,8 +10,22 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import getsessionId from '../src/utils/getSessionId';
+import fetch from 'isomorphic-unfetch'
+import useSWR from 'swr'
+
+async function fetcher(path) {
+
+  const res = await fetch(path)
+  const json = await res.json()
+  return json
+
+}
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+
+
+
+
   const config = getConfig();
   const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
   Sentry.init({
@@ -32,6 +46,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   // const { useTranslation } = i18next;
   // const { i18n } = useTranslation();
 
+
+  const { data, error } = useSWR('/api/geo', fetcher)
+
+  if (error) return <div>Error! Failed to find geolocation</div>
+  
+  console.log('GEO location',data);
+  
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
