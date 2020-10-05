@@ -46,7 +46,31 @@ const options = {
     session: async (session, token) => {
       // now, session has accessToken. can be accessed by next-auth/client - useSession()
       session.accessToken = token.accessToken
-      // /session.userID = token.userID
+      
+      try {
+        const res = await fetch(
+          `${process.env.API_ENDPOINT}/app/accountInfo`,
+          {
+            headers: {
+              Authorization: `OAuth ${token.accessToken}`,
+            },
+            method: 'GET',
+          }
+        );
+        if (res.status === 200) {
+          // user exists in db
+          const resJson = await res.json();
+          const newMeObj = {
+            ...resJson,
+            isMe: true,
+          };
+          // now session has object called userprofile
+          session.userprofile = newMeObj;
+        } 
+      } catch (e){
+        console.log('error in session callback', e)
+      }
+      
       return session
     },    
   },
