@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
 import tenantConfig from '../../../../tenant.config';
 import Donate from '../../../assets/images/navigation/Donate';
 import DonateSelected from '../../../assets/images/navigation/DonateSelected';
@@ -24,27 +23,24 @@ export default function NavbarComponent(props: any) {
   return (
     <>
       {/* Top Navbar */}
-      <Navbar
-        fixed="top"
+      <div
         className={styles.top_nav}
-        bg={props.theme === 'theme-light' ? '' : 'dark'}
-        variant={props.theme === 'theme-light' ? 'light' : 'dark'}
       >
-        <Nav className={`d-sm-flex flex-row ${styles.nav_container}`}>
+        <div className={`d-sm-flex flex-row ${styles.nav_container}`}>
           {config.header?.isSecondaryTenant ? (
             <div
               className={`${styles.first_icon} ${styles.tenant_logo}`}
               style={{ padding: '0rem 0.5rem' }}
             >
               <div className={styles.tenant_logo_container}>
-                <Nav.Link
+                <Link
                   href={config.header?.tenantLogoLink}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
                   <a href={config.header?.tenantLogoLink}>
                     <img src={config.header.tenantLogoURL} />
                   </a>
-                </Nav.Link>
+                </Link>
                 <div className={styles.logo_divider} />
                 <div className={styles.navlink}>
                   <a href="https://www.plant-for-the-planet.org">
@@ -75,10 +71,9 @@ export default function NavbarComponent(props: any) {
           )}
 
           {config.header?.items.map((item) => (
-              <div key={item.id}>
+              <div key={item.id} style={{marginTop:'8px'}}>
                 {item.key === 'home' && item.visible === true ? (
-                  <Nav.Link key={item.id}>
-                    <Link href={item.onclick}>
+                    <Link key={item.id} href={item.onclick}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
                           {/* <i className="fas fa-ad"></i> */}
@@ -99,11 +94,9 @@ export default function NavbarComponent(props: any) {
                         </p>
                       </div>
                     </Link>
-                  </Nav.Link>
                 ) : null}
                 {item.key === 'donate' && item.visible === true ? (
-                  <Nav.Link key={item.id}>
-                    <Link href={item.onclick}>
+                    <Link key={item.id} href={item.onclick}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
                           {router.pathname === item.onclick ? (
@@ -123,12 +116,10 @@ export default function NavbarComponent(props: any) {
                         </p>
                       </div>
                     </Link>
-                  </Nav.Link>
                 ) : null}
 
                 {item.key === 'leaderboard' && item.visible === true ? (
-                  <Nav.Link key={item.id}>
-                    <Link href={item.onclick}>
+                    <Link key={item.id} href={item.onclick}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
                           {/* <i className="fas fa-ad"></i> */}
@@ -148,13 +139,11 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
-                  </Nav.Link>
+                  </Link>
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                  <Nav.Link key={item.id}>
-                    <Link href={item.onclick}>
+                    <Link key={item.id} href={item.onclick}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
                           {router.pathname === item.onclick ? (
@@ -173,8 +162,7 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
-                  </Nav.Link>
+                  </Link>
                 ) : null}
               </div>
           ))}
@@ -186,20 +174,17 @@ export default function NavbarComponent(props: any) {
               {props.theme === 'theme-light' ? <Moon /> : <Sun />}
             </div>
           </div> */}
-        </Nav>
-      </Navbar>
+        </div>
+      </div>
 
       {/* Bottom navbar */}
-      <Navbar
-        fixed="bottom"
+      <div
         className={styles.bottom_nav}
-        bg="light"
-        expand="lg"
       >
-        <Nav className={`d-flex flex-row ${styles.mobile_nav}`}>
+        <div className={`${styles.mobile_nav}`}>
           {config.header?.isSecondaryTenant ? (
             <div className={styles.bottomLogo}>
-              <Nav.Link
+              <Link
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
               >
@@ -208,8 +193,8 @@ export default function NavbarComponent(props: any) {
                 >
                   <img src={config.header.tenantLogoURL} />
                 </div>
-              </Nav.Link>
-              <Nav.Link
+              </Link>
+              <Link
                 href="https://www.plant-for-the-planet.org"
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
               >
@@ -221,11 +206,11 @@ export default function NavbarComponent(props: any) {
                     alt="About Plant-for-the-Planet"
                   />
                 </div>
-              </Nav.Link>
+              </Link>
             </div>
           ) : (
               <div className={styles.bottomLogo}>
-                <Nav.Link
+                <Link
                   href="https://www.plant-for-the-planet.org"
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
@@ -238,15 +223,14 @@ export default function NavbarComponent(props: any) {
                       alt="About Plant-for-the-Planet"
                     />
                   </div>
-                </Nav.Link>
+                </Link>
               </div>
           )}
 
           {config.header?.items.map((item) => (
               <div key={item.id}>
                 {item.key === 'home' && item.visible === true ? (
-                  <Nav.Link key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                    <Link href={item.onclick}>
+                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
                       <div
                         className={styles.link_container}
                         style={{ margin: '0px 8px' }}
@@ -268,12 +252,10 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
-                  </Nav.Link>
+                  </Link>
                 ) : null}
                 {item.key === 'donate' && item.visible === true ? (
-                  <Nav.Link key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                    <Link href={item.onclick}>
+                  <Link key={item.id} href={item.onclick} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
                       <div
                         className={styles.link_container}
                         // style={{ margin: '0px 8px' }}
@@ -295,13 +277,11 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
-                  </Nav.Link>
+                  </Link>
                 ) : null}
 
                 {item.key === 'leaderboard' && item.visible === true ? (
-                  <Nav.Link key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                    <Link href={item.onclick}>
+                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
                       <div
                         className={styles.link_container}
                       >
@@ -322,13 +302,11 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
-                  </Nav.Link>
+                  </Link>
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                  <Nav.Link key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                    <Link href={item.onclick}>
+                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
                       <div
                         className={styles.link_container}
                       >
@@ -350,12 +328,11 @@ export default function NavbarComponent(props: any) {
                         </p>
                       </div>
                     </Link>
-                  </Nav.Link>
                 ) : null}
               </div>
           ))}
-        </Nav>
-      </Navbar>
+        </div>
+      </div>
     </>
   );
 }
