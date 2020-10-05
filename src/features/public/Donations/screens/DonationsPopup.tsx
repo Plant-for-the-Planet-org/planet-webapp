@@ -58,7 +58,6 @@ function DonationsPopup({
     async function loadPaymentSetup() {
       try {
         setIsPaymentOptionsLoading(true);
-
         const paymentSetupData = await getRequest(`/app/projects/${project.id}/paymentOptions?country=${country}`);
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
