@@ -34,16 +34,22 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
 
-  const [taxDeductionCountriesArray,setTaxDeductionCountriesArray] = React.useState([]);
+  const [
+    taxDeductionCountriesArray,
+    setTaxDeductionCountriesArray,
+  ] = React.useState([]);
 
-  React.useEffect(()=>{
-    let taxarray=[];
+  React.useEffect(() => {
+    let taxarray = [];
     for (let i = 0; i < project.paymentSetup.taxDeduction.length; i++) {
-      const countryCode = getCountryDataBy('countryName',project.paymentSetup.taxDeduction[i]).countryCode;
+      const countryCode = getCountryDataBy(
+        'countryName',
+        project.paymentSetup.taxDeduction[i]
+      ).countryCode;
       taxarray.push(countryCode);
     }
-    setTaxDeductionCountriesArray(taxarray)
-  },[])
+    setTaxDeductionCountriesArray(taxarray);
+  }, []);
   const projectDetails = {
     id: project.id,
     name: project.name,
@@ -69,11 +75,11 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
         </Elements>
       </Modal>
       <div
-        onClick={() => {
-          router.push(`/?p=${project.slug}`, undefined, {
-            shallow: true,
-          });
-        }}
+        // onClick={() => {
+        //   router.push(`/?p=${project.slug}`, undefined, {
+        //     shallow: true,
+        //   });
+        // }}
         style={{ marginBottom: '40px' }}
         key={key}
       >
