@@ -70,8 +70,8 @@ interface Props {
 export default function UserProfile(initialized: Props) {
   const router = useRouter();
   const [userprofile, setUserprofile] = useState({});
-  const [ session, loading] = useSession()
-  const [pageLoading, setPageLoading] = useState(true)
+  const [session, loading] = useSession();
+  const [pageLoading, setPageLoading] = useState(true);
   const [reloadFlag, setReloadFlag] = useState(false);
   const UserProps = {
     userprofile,
@@ -79,66 +79,39 @@ export default function UserProfile(initialized: Props) {
     reloadFlag,
   };
   useEffect(() => {
-    async function fetchUserInfo(session:any) {
-      try { 
-      const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/accountInfo`, {
-          headers: { 
-            'Authorization': `OAuth ${session.accessToken}`
-           },
-           method: 'GET',
-        },
-      );
-      if (res.status === 200){
-        // user exists in db and returns user info
-        const resJson = await res.json()
-        const newMeObj = {
-          ...resJson,
-          isMe: true,
-        }
-        setPageLoading(false)
-        setUserprofile(newMeObj);
-      } else if (res.status === 303){
-        // user does not exist in db
-        if (typeof window !== 'undefined') {
-          router.push('/complete-signup');
-        }
-      } else if (res.status === 401){
-        // unauthorized -> send to login screen
-      signIn(null)
+    if (!loading && session && session.userprofile) {
+      setUserprofile(session.userprofile);
+    }
+    // if session present but user not signed up
+    if (!loading && session && !session.userprofile) {
+      if (typeof window !== 'undefined') {
+        router.push('/complete-signup');
       }
-    } catch { 
-      console.log('Error')
     }
-    }
-
-    if (!loading && !session){
-      setPageLoading(false)
-      // user not logged in -> send to login screen
-      signIn(null)
-    } else if (!loading && session) {
-      // some user is logged in -> api call to backend
-      fetchUserInfo(session)
-    }
-  }, [loading, reloadFlag]);
+  }, [loading]);
 
   if (!config.header.items[3].visible) {
     if (typeof window !== 'undefined') {
       router.push('/');
     }
   }
-  if (!initialized) {
-    return (<React.Fragment/>)
+  // unauthenticated user
+  if (!loading && !session) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
   }
-  // loading
-  if (pageLoading || loading){
-    return(<h1>Loading...</h1>)
+  // if session present but user not signed up
+  if (!loading && session && !session.userprofile) {
+    if (typeof window !== 'undefined') {
+      router.push('/complete-signup');
+    }
   }
-  if (!loading && !session){
-    return <h1> redirecting to login...</h1>
+
+  if (!initialized || loading || (!loading && session && !session.userprofile)) {
+    return <React.Fragment />;
   }
-  if (!pageLoading && !loading && session)
-  {
+  if (!loading && session && session.userprofile) {
     return (
       <Layout>
         <UserPage
@@ -148,4 +121,4 @@ export default function UserProfile(initialized: Props) {
       </Layout>
     );
   }
-};
+}

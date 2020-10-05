@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSession, signIn } from 'next-auth/client';
 import { Nav, Navbar } from 'react-bootstrap';
 import tenantConfig from '../../../../tenant.config';
 import Donate from '../../../assets/images/navigation/Donate';
@@ -17,7 +18,27 @@ import styles from './Navbar.module.scss';
 const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
+  const [session, loading] = useSession();
   const router = useRouter();
+
+  const checkWhichPath = () => {
+    // if no user logged in  -> signIn()
+    if (!loading && !session) {
+      signIn(null, { callbackUrl: '/me' })
+    }
+    // if user logged in, and already signed up -> /me page
+    if (!loading && session && session.userprofile) {
+      if (typeof window !== 'undefined') {
+        router.push('/me');
+      }
+    }
+    // if user logged in, not already signed up -> /complete-signup
+    if (!loading && session && !session.userprofile) {
+      if (typeof window !== 'undefined') {
+        router.push('/complete-signup');
+      }
+    }
+  }
 
   const { toggleTheme } = React.useContext(ThemeContext);
 
@@ -153,8 +174,7 @@ export default function NavbarComponent(props: any) {
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                  <Nav.Link key={item.id}>
-                    <Link href={item.onclick}>
+                <Nav.Link key={item.id} onClick={checkWhichPath}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
                           {router.pathname === item.onclick ? (
@@ -173,7 +193,6 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
                   </Nav.Link>
                 ) : null}
               </div>
@@ -327,11 +346,13 @@ export default function NavbarComponent(props: any) {
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                  <Nav.Link key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                    <Link href={item.onclick}>
+                <Nav.Link
+                  key={item.id}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                  onClick={checkWhichPath}
+                >
                       <div
-                        className={styles.link_container}
-                      >
+                    className={styles.link_container} >
                         <div className={styles.link_icon}>
                           {router.pathname === item.onclick ? (
                             <MeSelected color={styles.primaryColor} />
@@ -349,7 +370,6 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
                   </Nav.Link>
                 ) : null}
               </div>
