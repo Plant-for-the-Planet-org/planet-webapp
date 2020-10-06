@@ -112,6 +112,10 @@ export default function ProjectsContainer({
     projects: featuredProjects,
   };
 
+  const handleBlur = () => {
+    setSearchMode(false);
+  };
+
   return (
     <>
       {searchMode ? (
@@ -128,6 +132,7 @@ export default function ProjectsContainer({
               placeholder={t('donate:searchProjects')}
               onChange={(e) => setSearchValue(e.target.value)}
               value={searchValue}
+              onBlur={handleBlur}
             />
           </div>
           <div

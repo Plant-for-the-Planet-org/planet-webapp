@@ -176,167 +176,171 @@ export default function NavbarComponent(props: any) {
       </div>
 
       {/* Bottom navbar */}
-      <div className={styles.bottom_nav}>
-        <div className={`${styles.mobile_nav}`}>
-          {config.header?.isSecondaryTenant ? (
-            <div className={styles.bottomLogo}>
-              <Link
-                href={config.header?.tenantLogoLink}
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
-                <div className={styles.link_container}>
-                  <img src={config.header.tenantLogoURL} />
-                </div>
-              </Link>
-              <Link
-                href="https://www.plant-for-the-planet.org"
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
-                <div className={styles.link_container}>
-                  <img
-                    src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                    alt="About Plant-for-the-Planet"
-                  />
-                </div>
-              </Link>
-            </div>
-          ) : (
-            <div className={styles.bottomLogo}>
-              <Link
-                href="https://www.plant-for-the-planet.org"
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
-                <div
-                  className={styles.link_container}
-                  style={{ margin: '0px 8px' }}
-                >
-                  <img
-                    src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                    alt="About Plant-for-the-Planet"
-                  />
-                </div>
-              </Link>
-            </div>
-          )}
-
-          {config.header?.items.map((item) => (
-            <div key={item.id}>
-              {item.key === 'home' && item.visible === true ? (
-                <Link
-                  href={item.onclick}
-                  key={item.id}
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <div
-                    className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
+      <>
+        {!props.searchMode ? (
+          <div className={styles.bottom_nav}>
+            <div className={`${styles.mobile_nav}`}>
+              {config.header?.isSecondaryTenant ? (
+                <div className={styles.bottomLogo}>
+                  <Link
+                    href={config.header?.tenantLogoLink}
+                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                   >
-                    <div className={styles.link_icon}>
-                      {router.pathname === item.onclick ? (
-                        <GlobeSelected color={styles.primaryColor} />
-                      ) : (
-                        <Globe color={styles.primaryFontColor} />
-                      )}
+                    <div className={styles.link_container}>
+                      <img src={config.header.tenantLogoURL} />
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
-                      {item.title}
-                    </p>
-                  </div>
-                </Link>
-              ) : null}
-              {item.key === 'donate' && item.visible === true ? (
-                <Link
-                  key={item.id}
-                  href={item.onclick}
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <div
-                    className={styles.link_container}
-                    // style={{ margin: '0px 8px' }}
+                  </Link>
+                  <Link
+                    href="https://www.plant-for-the-planet.org"
+                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                   >
-                    <div className={styles.link_icon}>
-                      {router.pathname === item.onclick ? (
-                        <DonateSelected color={styles.primaryColor} />
-                      ) : (
-                        <Donate color={styles.primaryFontColor} />
-                      )}
+                    <div className={styles.link_container}>
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt="About Plant-for-the-Planet"
+                      />
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
+                  </Link>
+                </div>
+              ) : (
+                <div className={styles.bottomLogo}>
+                  <Link
+                    href="https://www.plant-for-the-planet.org"
+                    style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                  >
+                    <div
+                      className={styles.link_container}
+                      style={{ margin: '0px 8px' }}
                     >
-                      {item.title}
-                    </p>
-                  </div>
-                </Link>
-              ) : null}
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt="About Plant-for-the-Planet"
+                      />
+                    </div>
+                  </Link>
+                </div>
+              )}
 
-              {item.key === 'leaderboard' && item.visible === true ? (
-                <Link
-                  href={item.onclick}
-                  key={item.id}
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <div className={styles.link_container}>
-                    <div className={styles.link_icon}>
-                      {router.pathname === item.onclick ? (
-                        <LeaderboardSelected color={styles.primaryColor} />
-                      ) : (
-                        <Leaderboard color={styles.primaryFontColor} />
-                      )}
-                    </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
+              {config.header?.items.map((item) => (
+                <div key={item.id}>
+                  {item.key === 'home' && item.visible === true ? (
+                    <Link
+                      href={item.onclick}
+                      key={item.id}
+                      style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                     >
-                      {item.title}
-                    </p>
-                  </div>
-                </Link>
-              ) : null}
+                      <div
+                        className={styles.link_container}
+                        style={{ margin: '0px 8px' }}
+                      >
+                        <div className={styles.link_icon}>
+                          {router.pathname === item.onclick ? (
+                            <GlobeSelected color={styles.primaryColor} />
+                          ) : (
+                            <Globe color={styles.primaryFontColor} />
+                          )}
+                        </div>
+                        <p
+                          className={
+                            router.pathname === item.onclick
+                              ? styles.active_icon
+                              : ''
+                          }
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                    </Link>
+                  ) : null}
+                  {item.key === 'donate' && item.visible === true ? (
+                    <Link
+                      key={item.id}
+                      href={item.onclick}
+                      style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                    >
+                      <div
+                        className={styles.link_container}
+                        // style={{ margin: '0px 8px' }}
+                      >
+                        <div className={styles.link_icon}>
+                          {router.pathname === item.onclick ? (
+                            <DonateSelected color={styles.primaryColor} />
+                          ) : (
+                            <Donate color={styles.primaryFontColor} />
+                          )}
+                        </div>
+                        <p
+                          className={
+                            router.pathname === item.onclick
+                              ? styles.active_icon
+                              : ''
+                          }
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                    </Link>
+                  ) : null}
 
-              {item.key === 'me' && item.visible === true ? (
-                <Link
-                  href={item.onclick}
-                  key={item.id}
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <div className={styles.link_container}>
-                    <div className={styles.link_icon}>
-                      {router.pathname === item.onclick ? (
-                        <MeSelected color={styles.primaryColor} />
-                      ) : (
-                        <Me color={styles.primaryFontColor} />
-                      )}
-                    </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
+                  {item.key === 'leaderboard' && item.visible === true ? (
+                    <Link
+                      href={item.onclick}
+                      key={item.id}
+                      style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                     >
-                      {item.title}
-                    </p>
-                  </div>
-                </Link>
-              ) : null}
+                      <div className={styles.link_container}>
+                        <div className={styles.link_icon}>
+                          {router.pathname === item.onclick ? (
+                            <LeaderboardSelected color={styles.primaryColor} />
+                          ) : (
+                            <Leaderboard color={styles.primaryFontColor} />
+                          )}
+                        </div>
+                        <p
+                          className={
+                            router.pathname === item.onclick
+                              ? styles.active_icon
+                              : ''
+                          }
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                    </Link>
+                  ) : null}
+
+                  {item.key === 'me' && item.visible === true ? (
+                    <Link
+                      href={item.onclick}
+                      key={item.id}
+                      style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                    >
+                      <div className={styles.link_container}>
+                        <div className={styles.link_icon}>
+                          {router.pathname === item.onclick ? (
+                            <MeSelected color={styles.primaryColor} />
+                          ) : (
+                            <Me color={styles.primaryFontColor} />
+                          )}
+                        </div>
+                        <p
+                          className={
+                            router.pathname === item.onclick
+                              ? styles.active_icon
+                              : ''
+                          }
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                    </Link>
+                  ) : null}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        ) : null}
+      </>
     </>
   );
 }
