@@ -4,8 +4,9 @@ import Layout from '../src/features/common/Layout';
 import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
 import tenantConfig from '../tenant.config';
-import getsessionId from '../src/utils/getSessionId';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
+import {getTenantScore} from '../src/utils/apiRequests/tenants/getTenantScore';
+import {getLeaderboard} from '../src/utils/apiRequests/tenants/getLeaderboard';
 
 const config = tenantConfig();
 
@@ -18,36 +19,25 @@ export default function Home(initialized: Props) {
 
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
+  
   React.useEffect(() => {
     async function loadTenantScore() {
-      await fetch(`${process.env.API_ENDPOINT}/app/tenantScore`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
-      })
-        .then(async (res) => {
-          const newTenantScore = res.status === 200 ? await res.json() : null;
-          if (res.status !== 200) {
-            router.push('/404', undefined, { shallow: true });
-          }
-          setTenantScore(newTenantScore);
-        })
-        .catch((err) => console.log(`Something went wrong: ${err}`));
+      const newTenantScore = await getTenantScore();
+      if(newTenantScore === '404'){
+        router.push('/404', undefined, { shallow: true });
+      }
+      setTenantScore(newTenantScore);
     }
     loadTenantScore();
   }, []);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
-      })
-        .then(async (res) => {
-          const newLeaderboard = res.status === 200 ? await res.json() : null;
-          if (res.status !== 200) {
-            router.push('/404', undefined, { shallow: true });
-          }
-          setLeaderboard(newLeaderboard);
-        })
-        .catch((err) => console.log(`Something went wrong: ${err}`));
+      const newLeaderBoard = await getLeaderboard();
+      if(newLeaderBoard === '404'){
+        router.push('/404', undefined, { shallow: true });
+      }
+      setLeaderboard(newLeaderBoard);
     }
     loadLeaderboard();
   }, []);
