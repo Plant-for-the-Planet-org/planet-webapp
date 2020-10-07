@@ -46,7 +46,7 @@ export default function SettingsModal({
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
-              <p className={styles.cancelText}> Cancel</p>{' '}
+              <div className={styles.cancelText}> Cancel</div>
             </div>
           </div>
         </Fade>
