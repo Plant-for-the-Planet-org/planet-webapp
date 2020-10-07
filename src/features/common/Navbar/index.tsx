@@ -10,7 +10,7 @@ import Leaderboard from '../../../assets/images/navigation/Leaderboard';
 import LeaderboardSelected from '../../../assets/images/navigation/LeaderboardSelected';
 import Me from '../../../assets/images/navigation/Me';
 import MeSelected from '../../../assets/images/navigation/MeSelected';
-import { ThemeContext } from '../../../utils/themeContext';
+import { ThemeContext } from '../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 
 const config = tenantConfig();

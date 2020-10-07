@@ -1,4 +1,4 @@
-import tenantConfig from '../../tenant.config';
+import tenantConfig from '../../../tenant.config';
 
 const config = tenantConfig();
 

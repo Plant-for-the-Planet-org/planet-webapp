@@ -1,4 +1,4 @@
-import getsessionId from "../../getSessionId";
+import getsessionId from "../getSessionId";
 
 export async function getUserProfile(slug:any) {
     let newPublicUserprofile;

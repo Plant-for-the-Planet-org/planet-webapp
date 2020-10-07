@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import DownArrow from '../../../../assets/images/icons/DownArrow';
 import Close from '../../../../assets/images/icons/headerIcons/close';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
-import { formatAmountForStripe } from '../../../../utils/stripeHelpers';
+import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
+import { formatAmountForStripe } from '../../../../utils/stripe/stripeHelpers';
 import ButtonLoader from '../../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
@@ -16,7 +16,7 @@ import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
-import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 

@@ -8,7 +8,7 @@ import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';
 import { getPaymentType } from './treeDonation/PaymentFunctions';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
+import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;

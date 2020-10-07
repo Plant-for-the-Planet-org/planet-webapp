@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
+import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../../Donations/styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
-import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 interface Props {

@@ -5,13 +5,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Modal from '@material-ui/core/Modal';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import React, { useEffect, useState } from 'react';
-import countriesData from '../../../utils/countriesData.json';
+import countriesData from '../../../utils/countryCurrency/countriesData.json';
 import {
   getCountryDataBy,
   sortCountriesData,
-} from '../../../utils/countryUtils';
+} from '../../../utils/countryCurrency/countryUtils';
 import supportedLanguages from '../../../utils/supportedLanguages.json';
-import { ThemeContext } from '../../../utils/themeContext';
+import { ThemeContext } from '../../../theme/themeContext';
 import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
 import i18next from '../../../../i18n';

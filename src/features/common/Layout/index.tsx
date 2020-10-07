@@ -1,6 +1,6 @@
 import React from 'react';
 import theme from '../../../theme/theme';
-import { useTheme } from '../../../utils/themeContext';
+import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from '../CookiePolicy';
 import Header from '../Header';
 import Navbar from '../Navbar';

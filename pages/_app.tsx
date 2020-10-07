@@ -4,12 +4,12 @@ import React from 'react';
 import TagManager from 'react-gtm-module';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
-import ThemeProvider from '../src/utils/themeContext';
+import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
-import getsessionId from '../src/utils/getSessionId';
+import getsessionId from '../src/utils/apiRequests/getSessionId';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();

@@ -8,7 +8,7 @@ import supportedLanguages from './supportedLanguages.json';
  */
 // @ankit please check this function always
 // eslint-disable-next-line consistent-return
-export default function getLanguageName(code) {
+export default function getLanguageName(code:any) {
   // Finds required language name from the code
   for (let i = 0; i < supportedLanguages.length; i++) {
     if (supportedLanguages[i].langCode === code) {

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import tenantConfig from '../../../../tenant.config';
-import { useTheme } from '../../../utils/themeContext';
+import { useTheme } from '../../../theme/themeContext';
 import styles from './Header.module.scss';
 import locales from '../../../../public/static/localeList.json';
 

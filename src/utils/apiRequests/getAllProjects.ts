@@ -1,5 +1,5 @@
-import getsessionId from '../getSessionId';
-import getStoredCurrency from '../getStoredCurrency';
+import getsessionId from './getSessionId';
+import getStoredCurrency from '../countryCurrency/getStoredCurrency';
 
 export async function getAllProjects() {
     let currencyCode = getStoredCurrency();

@@ -12,7 +12,7 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
-import { getCardBrand } from '../../../../utils/stripeHelpers';
+import { getCardBrand } from '../../../../utils/stripe/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from './../../../common/types/donations';

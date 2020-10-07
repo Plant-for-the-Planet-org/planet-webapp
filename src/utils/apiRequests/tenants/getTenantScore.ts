@@ -1,4 +1,4 @@
-import getsessionId from "../../getSessionId";
+import getsessionId from "../getSessionId";
 
 export async function getTenantScore() {
     let newTenantScore;
