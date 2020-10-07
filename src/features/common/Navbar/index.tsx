@@ -24,7 +24,7 @@ export default function NavbarComponent(props: any) {
   const checkWhichPath = () => {
     // if no user logged in  -> signIn()
     if (!loading && !session) {
-      signIn(null, { callbackUrl: '/me' })
+      signIn('auth0', { callbackUrl: '/me' })
     }
     // if user logged in, and already signed up -> /me page
     if (!loading && session && session.userprofile) {
