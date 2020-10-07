@@ -19,7 +19,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     integrations: [
       new RewriteFrames({
         iteratee: (frame) => {
-          frame.filename = frame.filename.replace(distDir, 'app:///_next');
+          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
           return frame;
         },
       }),
@@ -29,8 +29,6 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
-  // const { useTranslation } = i18next;
-  // const { i18n } = useTranslation();
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -43,7 +41,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
     if (
       process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
       (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
@@ -84,15 +81,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
     loadConfig();
   }, []);
-
-  // Norbert: language gets detected by i18next-browser-languagedetector
-  // React.useEffect(() => {
-  //   if (localStorage.getItem('language') !== null) {
-  //     i18n.changeLanguage(localStorage.getItem('language'));
-  //   } else {
-  //     i18n.changeLanguage('en');
-  //   }
-  // }, []);
 
   return (
     <ThemeProvider>
