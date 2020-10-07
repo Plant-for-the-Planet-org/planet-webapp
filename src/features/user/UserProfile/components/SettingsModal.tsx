@@ -1,6 +1,5 @@
 import React from 'react';
 import { signIn, signOut, useSession, getSession } from 'next-auth/client';
-import { Col, Container, Row } from 'react-bootstrap';
 import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
