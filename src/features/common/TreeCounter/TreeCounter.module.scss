@@ -9,11 +9,12 @@
 
 .treeCounterData {
   position: absolute;
+  top:0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 60%;
+  height: 50%;
 }
 
 .treeCounterDataField > h1 {
