@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSession, signIn } from 'next-auth/client';
-import { Nav, Navbar } from 'react-bootstrap';
 import tenantConfig from '../../../../tenant.config';
 import Donate from '../../../assets/images/navigation/Donate';
 import DonateSelected from '../../../assets/images/navigation/DonateSelected';
@@ -165,7 +164,7 @@ export default function NavbarComponent(props: any) {
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                <Nav.Link key={item.id} onClick={checkWhichPath}>
+                <div key={item.id} onClick={checkWhichPath}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
                           {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
@@ -184,7 +183,7 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                  </Nav.Link>
+                  </div>
                 ) : null}
               </div>
           ))}
@@ -328,7 +327,7 @@ export default function NavbarComponent(props: any) {
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                <Nav.Link
+                <div
                   key={item.id}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                   onClick={checkWhichPath}
@@ -352,7 +351,7 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                  </Nav.Link>
+                  </div>
                 ) : null}
               </div>
           ))}
