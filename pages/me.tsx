@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../src/features/common/Layout';
 import UserPage from '../src/features/user/UserProfile';
 import tenantConfig from '../tenant.config';
+import Head from 'next/head';
 
 const dummyProfile = {
   countTarget: 200,
@@ -105,12 +106,17 @@ export default function UserProfile(initialized: Props) {
   }
   if (!loading && session && session.userprofile) {
     return (
+      <>
+      <Head>
+        <title>{`${config.meta.title} - Me`}</title>
+    </Head>
       <Layout>
         <UserPage
           style={{ height: '100vh', overflowX: 'hidden' }}
           {...UserProps}
         />
       </Layout>
+      </>
     );
   }
 }
