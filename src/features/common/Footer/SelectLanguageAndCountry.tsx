@@ -10,7 +10,7 @@ import {
   getCountryDataBy,
   sortCountriesData,
 } from '../../../utils/countryCurrency/countryUtils';
-import supportedLanguages from '../../../utils/supportedLanguages.json';
+import supportedLanguages from '../../../utils/language/supportedLanguages.json';
 import { ThemeContext } from '../../../theme/themeContext';
 import GreenRadio from '../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
