@@ -15,12 +15,6 @@ interface Props {
 
 export default function Home(initialized: Props) {
   const router = useRouter();
-  // stores whether device is mobile or not;
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    setIsMobile(window.innerWidth <= 768);
-  }, []);
 
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
@@ -57,12 +51,6 @@ export default function Home(initialized: Props) {
     }
     loadLeaderboard();
   }, []);
-
-  function onRefresh() {
-    return new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    });
-  }
 
   if (!config.header.items[0].visible) {
     if (typeof window !== 'undefined') {
