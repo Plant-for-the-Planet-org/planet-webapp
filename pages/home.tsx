@@ -1,11 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import {
-  PullDownContent,
-  PullToRefresh,
-  RefreshContent,
-  ReleaseContent,
-} from 'react-js-pull-to-refresh';
 import Layout from '../src/features/common/Layout';
 import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
@@ -95,18 +89,7 @@ export default function Home(initialized: Props) {
     <>
       <GetHomeMeta/>
       {initialized ? (
-        <PullToRefresh
-          pullDownContent={<PullDownContent />}
-          releaseContent={<ReleaseContent />}
-          refreshContent={<RefreshContent />}
-          pullDownThreshold={150}
-          onRefresh={onRefresh}
-          triggerHeight={isMobile ? 150 : 0}
-          backgroundColor="white"
-          startInvisible
-        >
           <Layout>{getHomePage()}</Layout>
-        </PullToRefresh>
       ) : (
         <></>
       )}
