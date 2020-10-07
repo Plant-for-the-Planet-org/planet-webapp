@@ -6,20 +6,19 @@ interface Props {
 }
 
 export default function Custom404(initialized: Props) {
+  const styles = {
+    width: '100vw',
+    height: '60vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '80px',
+  }
   return (
     <>
       {initialized ? (
         <Layout>
-          <div
-            style={{
-              width: '100vw',
-              height: '60vh',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '80px',
-            }}
-          >
+           <div style={styles}>
             <Custom404Image />
           </div>
         </Layout>
