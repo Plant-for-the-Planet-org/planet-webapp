@@ -7,11 +7,12 @@
   display:flex;
   align-items:center;
   justify-content: center;
-  padding: 120px 0px 60px 0px;
+  padding: 0px 0px 60px 0px;
 }
 
 // the white form
 .signup {
+  margin: 120px 0px 0px 0px;
   background-color: $light;
   border: 0px;
   min-width: 360px;
@@ -210,6 +211,15 @@
 .logoutButton:hover {
   cursor: pointer;
   background-color:'red';
+}
+
+@include xsPhoneView {
+  .logoutButton {
+    margin-bottom: 30px;
+  }
+  .signup {
+    margin: 40px 0px 0px 0px;
+  }
 }
 
 :export {
