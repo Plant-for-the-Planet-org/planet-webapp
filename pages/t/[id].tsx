@@ -5,11 +5,8 @@ import Footer from '../../src/features/common/Footer';
 import Layout from '../../src/features/common/Layout';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
 import UserNotFound from '../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
-import tenantConfig from '../../tenant.config';
-import getsessionId from '../../src/utils/getSessionId';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
-
-const config = tenantConfig();
+import { getUserProfile } from '../../src/utils/apiRequests/userProfile/getUserProfile';
 
 interface Props {
   initialized: Boolean;
@@ -34,18 +31,11 @@ export default function PublicUser(initialized: Props) {
 
   useEffect(() => {
     async function loadPublicUserData() {
-      const res = await fetch(
-        `${process.env.API_ENDPOINT}/public/v1.0/en/treecounter/${slug}`,
-        {
-          headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
-        }
-      );
-      if (res.ok === false) {
-        setPublicUserprofile(null);
-      } else {
-        const newPublicUserprofile = await res.json();
-        setPublicUserprofile(newPublicUserprofile);
+      const newPublicUserprofile = await getUserProfile(slug);
+      if(newPublicUserprofile === '404'){
+        router.push('/404', undefined, { shallow: true });
       }
+      setPublicUserprofile(newPublicUserprofile)
     }
     if (ready) {
       loadPublicUserData();
