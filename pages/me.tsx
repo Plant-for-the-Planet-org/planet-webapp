@@ -79,12 +79,6 @@ export default function UserProfile(initialized: Props) {
     if (!loading && session && session.userprofile) {
       setUserprofile(session.userprofile);
     }
-    // if session present but user not signed up
-    if (!loading && session && !session.userprofile) {
-      if (typeof window !== 'undefined') {
-        router.push('/complete-signup');
-      }
-    }
   }, [loading, session]);
 
   if (!config.header.items[3].visible) {
@@ -105,7 +99,8 @@ export default function UserProfile(initialized: Props) {
     }
   }
 
-  if (!initialized || loading) {
+  //  third condition to handle the 303 response code
+  if (!initialized || loading || (!loading && session && !session.userprofile)) {
     return <React.Fragment />;
   }
   if (!loading && session && session.userprofile) {
