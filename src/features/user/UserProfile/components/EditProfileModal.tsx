@@ -15,8 +15,6 @@ export default function EditProfileModal({
   userprofile,
   editProfileModalOpen,
   handleEditProfileModalClose,
-  setReloadFlag,
-  reloadFlag,
 }: any) {
 
   const [snackbarOpen, setSnackbarOpen] = useState(
@@ -91,7 +89,6 @@ export default function EditProfileModal({
         setSnackbarMessage('Saved Successfully!')
         handleSnackbarOpen()
         handleEditProfileModalClose()
-        setReloadFlag(!reloadFlag)
       } else {
       setSeverity('error')
       setSnackbarMessage('Error in updating profile')

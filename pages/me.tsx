@@ -72,11 +72,8 @@ export default function UserProfile(initialized: Props) {
   const [userprofile, setUserprofile] = useState({});
   const [session, loading] = useSession();
   const [pageLoading, setPageLoading] = useState(true);
-  const [reloadFlag, setReloadFlag] = useState(false);
   const UserProps = {
     userprofile,
-    setReloadFlag,
-    reloadFlag,
   };
   useEffect(() => {
     if (!loading && session && session.userprofile) {

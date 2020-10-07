@@ -10,7 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from './components/SettingsModal';
 
-export default function UserProfile({ userprofile, setReloadFlag, reloadFlag }: any) {
+export default function UserProfile({ userprofile }: any) {
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
@@ -68,8 +68,6 @@ export default function UserProfile({ userprofile, setReloadFlag, reloadFlag }: 
               editProfileModalOpen={editProfileModalOpen}
               handleEditProfileModalClose={handleEditProfileModalClose}
               handleEditProfileModalOpen={handleEditProfileModalOpen}
-              setReloadFlag={setReloadFlag}
-              reloadFlag={reloadFlag}
             />
           </>
         )}

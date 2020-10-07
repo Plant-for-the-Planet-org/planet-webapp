@@ -15,8 +15,6 @@ export default function SettingsModal({
   editProfileModalOpen,
   handleEditProfileModalClose,
   handleEditProfileModalOpen,
-  setReloadFlag,
-  reloadFlag,
 }: any) {
   return (
     <>
@@ -57,8 +55,6 @@ export default function SettingsModal({
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
-        setReloadFlag={setReloadFlag}
-        reloadFlag={reloadFlag}
       />
     </>
   );
