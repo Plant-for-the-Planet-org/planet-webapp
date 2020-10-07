@@ -6,13 +6,12 @@ import {
   RefreshContent,
   ReleaseContent,
 } from 'react-js-pull-to-refresh';
-import Head from 'next/head';
 import Layout from '../src/features/common/Layout';
 import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
-
 import tenantConfig from '../tenant.config';
 import getsessionId from '../src/utils/getSessionId';
+import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 
 const config = tenantConfig();
 
@@ -94,27 +93,7 @@ export default function Home(initialized: Props) {
 
   return (
     <>
-      <Head>
-        <title>{`Home | ${config.meta.title}`}</title>
-        <meta property="og:site_name" content={config.meta.title} />
-        <meta
-          property="og:url"
-          content={`${process.env.SCHEME}://${config.tenantURL}`}
-        />
-        <meta property="og:title" content={`Home | ${config.meta.title}`} />
-        <meta property="og:description" content={config.meta.description} />
-        <meta name="description" content={config.meta.description} />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content={config.meta.image} />
-        {config.tenantName === 'planet' ? (
-          <link rel="alternate" href="android-app://org.pftp/projects" />
-        ) : null}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={config.meta.title} />
-        <meta name="twitter:site" content={config.meta.twitterHandle} />
-        <meta name="twitter:url" content={config.tenantURL} />
-        <meta name="twitter:description" content={config.meta.description} />
-      </Head>
+      <GetHomeMeta/>
       {initialized ? (
         <PullToRefresh
           pullDownContent={<PullDownContent />}
