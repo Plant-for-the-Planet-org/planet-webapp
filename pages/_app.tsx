@@ -1,5 +1,4 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
@@ -45,7 +44,15 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    TagManager.initialize(tagManagerArgs);
+    console.log(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
+    if (
+      process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
+      (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
+        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== '' ||
+        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== null)
+    ) {
+      TagManager.initialize(tagManagerArgs);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -59,7 +66,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   React.useEffect(() => {
     async function loadConfig() {
       await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}`, 'X-SESSION-ID': await getsessionId()  },
+        headers: {
+          'tenant-key': `${process.env.TENANTID}`,
+          'X-SESSION-ID': await getsessionId(),
+        },
       })
         .then(async (res) => {
           const config = await res.json();

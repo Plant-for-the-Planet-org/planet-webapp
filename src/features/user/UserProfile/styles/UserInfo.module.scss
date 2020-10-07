@@ -31,6 +31,8 @@
 }
 
 .bottomIconsRow {
+  display: flex;
+  flex-direction: row;
   margin-bottom: 20px;
   margin-top: 36px;
 }
