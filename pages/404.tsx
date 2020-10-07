@@ -1,4 +1,4 @@
-import Custom404Image from '../src/assets/images/Custom404Image';
+import Custom404Image from '../public/assets/images/Custom404Image';
 import Layout from '../src/features/common/Layout';
 
 interface Props {

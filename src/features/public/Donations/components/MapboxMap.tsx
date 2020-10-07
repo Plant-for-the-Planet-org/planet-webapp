@@ -13,8 +13,8 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
-import LeftIcon from '../../../../assets/images/icons/LeftIcon';
-import RightIcon from '../../../../assets/images/icons/RightIcon';
+import LeftIcon from '../../../../../public/assets/images/icons/LeftIcon';
+import RightIcon from '../../../../../public/assets/images/icons/RightIcon';
 import PopupProject from './PopupProject';
 import styles from '../styles/MapboxMap.module.scss';
 

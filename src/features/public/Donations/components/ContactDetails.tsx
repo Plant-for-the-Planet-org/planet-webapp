@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import Sugar from 'sugar';
-import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';

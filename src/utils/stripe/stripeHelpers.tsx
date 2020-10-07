@@ -1,10 +1,10 @@
-import AmexIcon from '../../assets/images/icons/CreditCardIcons/AmexIcon';
-import DinersClub from '../../assets/images/icons/CreditCardIcons/DinersClub';
-import DiscoverIcon from '../../assets/images/icons/CreditCardIcons/DiscoverIcon';
-import JcbIcon from '../../assets/images/icons/CreditCardIcons/JcbIcon';
-import Mastercard from '../../assets/images/icons/CreditCardIcons/Mastercard';
-import StripeIcon from '../../assets/images/icons/CreditCardIcons/StripeIcon';
-import VisaIcon from '../../assets/images/icons/CreditCardIcons/VisaIcon';
+import AmexIcon from '../../../public/assets/images/icons/CreditCardIcons/AmexIcon';
+import DinersClub from '../../../public/assets/images/icons/CreditCardIcons/DinersClub';
+import DiscoverIcon from '../../../public/assets/images/icons/CreditCardIcons/DiscoverIcon';
+import JcbIcon from '../../../public/assets/images/icons/CreditCardIcons/JcbIcon';
+import Mastercard from '../../../public/assets/images/icons/CreditCardIcons/Mastercard';
+import StripeIcon from '../../../public/assets/images/icons/CreditCardIcons/StripeIcon';
+import VisaIcon from '../../../public/assets/images/icons/CreditCardIcons/VisaIcon';
 
 export function formatAmountForDisplay(
   amount: number,

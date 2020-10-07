@@ -3,7 +3,7 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import tenantConfig from '../../../../../tenant.config';
-import Close from '../../../../assets/images/icons/headerIcons/close';
+import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';

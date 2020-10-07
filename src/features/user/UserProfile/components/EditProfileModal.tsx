@@ -3,8 +3,8 @@ import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import BackButton from '../../../../assets/images/icons/BackButton';
-import Camera from '../../../../assets/images/icons/userProfileIcons/Camera';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextFeild';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 

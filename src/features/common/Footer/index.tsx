@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import AppleIcon from '../../../assets/images/footer/AppStore';
-import GooglePlayIcon from '../../../assets/images/footer/GooglePlay';
-import UNEPLogo from '../../../assets/images/footer/UNEPLogo';
-import World from '../../../assets/images/footer/World';
+import AppleIcon from '../../../../public/assets/images/footer/AppStore';
+import GooglePlayIcon from '../../../../public/assets/images/footer/GooglePlay';
+import UNEPLogo from '../../../../public/assets/images/footer/UNEPLogo';
+import World from '../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';

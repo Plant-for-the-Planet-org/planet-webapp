@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CloseIcon from '../../../assets/images/icons/CloseIcon';
+import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import i18next from '../../../../i18n';
 

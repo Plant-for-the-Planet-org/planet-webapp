@@ -1,4 +1,4 @@
-import Custom404Image from '../../../../assets/images/Custom404Image';
+import Custom404Image from '../../../../../public/assets/images/Custom404Image';
 import Footer from '../../Footer';
 import Layout from '../../Layout';
 

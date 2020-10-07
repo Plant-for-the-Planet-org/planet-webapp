@@ -10,8 +10,8 @@ import {
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
-import CreditCard from '../../../../assets/images/icons/donation/CreditCard';
-import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import CreditCard from '../../../../../public/assets/images/icons/donation/CreditCard';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { getCardBrand } from '../../../../utils/stripe/stripeHelpers';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
