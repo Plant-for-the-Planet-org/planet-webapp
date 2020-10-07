@@ -88,7 +88,7 @@ export default function UserProfile(initialized: Props) {
         router.push('/complete-signup');
       }
     }
-  }, [loading]);
+  }, [loading, session]);
 
   if (!config.header.items[3].visible) {
     if (typeof window !== 'undefined') {
