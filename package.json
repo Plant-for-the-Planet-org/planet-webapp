@@ -9,11 +9,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "find:unused": "next-unused"
   },
   "engines": {
     "node": "12.x",
     "npm": "6.x"
+  },
+  "next-unused": {
+    "alias": {},
+    "include": ["src","public"],
+    "exclude": [],
+    "entrypoints": []
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -38,6 +45,7 @@
     "mapbox-gl": "^1.11.1",
     "next": "^9.5.2",
     "next-i18next": "^6.0.2",
+    "next-unused": "0.0.3",
     "node-sass": "^4.14.1",
     "react": "16.13.1",
     "react-content-loader": "^5.1.0",
