@@ -86,7 +86,6 @@ module.exports = withSourceMaps({
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
-    AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
     SCHEME: scheme,
