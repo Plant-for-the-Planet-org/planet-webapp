@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import Layout from '../src/features/common/Layout';
 import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
 import tenantConfig from '../tenant.config';
@@ -67,7 +66,7 @@ export default function Home(initialized: Props) {
     <>
       <GetHomeMeta/>
       {initialized ? (
-          <Layout>{getHomePage()}</Layout>
+          getHomePage()
       ) : (
         <></>
       )}

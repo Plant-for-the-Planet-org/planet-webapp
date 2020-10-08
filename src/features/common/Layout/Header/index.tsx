@@ -5,7 +5,7 @@ import styles from './Header.module.scss';
 import locales from '../../../../../public/static/localeList.json';
 
 const config = tenantConfig();
-export default function Layout() {
+export default function Header() {
   const { theme: themeType } = useTheme();
   return (
     <Head>

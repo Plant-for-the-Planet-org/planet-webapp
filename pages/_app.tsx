@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import getsessionId from '../src/utils/apiRequests/getSessionId';
+import Layout from '../src/features/common/Layout';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -85,7 +86,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   return (
     <ThemeProvider>
       <CssBaseline />
-      <Component i18nloaded={initialized} {...pageProps} />
+      <Layout>
+        <Component i18nloaded={initialized} {...pageProps} />
+      </Layout>
     </ThemeProvider>
   );
 }
