@@ -13,6 +13,11 @@ import Me from '../../../assets/images/navigation/Me';
 import MeSelected from '../../../assets/images/navigation/MeSelected';
 import { ThemeContext } from '../../../utils/themeContext';
 import styles from './Navbar.module.scss';
+console.log('-----------------------')
+console.log('NODE_ENV', process.env.NODE_ENV)
+console.log('AUTH0_CLIENT_ID', process.env.AUTH0_CLIENT_ID)
+console.log('AUTH0_CUSTOM_DOMAIN', process.env.AUTH0_CUSTOM_DOMAIN)
+console.log('NEXTAUTH_URL', process.env.AUTH0_NEXTAUTH_URL)
 
 const config = tenantConfig();
 
