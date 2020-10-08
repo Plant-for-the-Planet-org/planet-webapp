@@ -18,7 +18,10 @@
   },
   "next-unused": {
     "alias": {},
-    "include": ["src","public"],
+    "include": [
+      "src",
+      "public"
+    ],
     "exclude": [],
     "entrypoints": []
   },
