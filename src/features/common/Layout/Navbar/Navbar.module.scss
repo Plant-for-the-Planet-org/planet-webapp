@@ -1,6 +1,5 @@
-@import './../../../theme/theme';
+@import './../../../../theme/theme';
 
-// $primaryColor: $primaryColor;
 .link_container {
   display: flex;
   flex-direction: column;
@@ -8,7 +7,6 @@
   align-items: center;
   margin: 0px 12px;
   cursor: pointer;
-
 }
 .link_icon {
   width: 24px;

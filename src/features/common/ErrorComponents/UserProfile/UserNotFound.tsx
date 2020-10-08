@@ -1,5 +1,5 @@
 import Custom404Image from '../../../../../public/assets/images/Custom404Image';
-import Footer from '../../Footer';
+import Footer from '../../Layout/Footer';
 import Layout from '../../Layout';
 
 export default function UserNotFound() {

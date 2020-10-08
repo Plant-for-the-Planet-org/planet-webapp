@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import tenantConfig from '../../../../tenant.config';
-import { useTheme } from '../../../theme/themeContext';
+import tenantConfig from '../../../../../tenant.config';
+import { useTheme } from '../../../../theme/themeContext';
 import styles from './Header.module.scss';
-import locales from '../../../../public/static/localeList.json';
+import locales from '../../../../../public/static/localeList.json';
 
 const config = tenantConfig();
 export default function Layout() {
