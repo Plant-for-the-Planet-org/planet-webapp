@@ -9,13 +9,8 @@ const options = {
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
     }),
   ],
-  secret: process.env.NEXT_AUTH_SECRET,
   session: {
     jwt: true,
-  },
-  jwt:{
-  secret: process.env.JWT_SECRET,
-  encryption: true,
   },
   // pages: {
     // signIn: '/api/auth/signin',  // Displays signin buttons
