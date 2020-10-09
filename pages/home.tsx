@@ -4,8 +4,7 @@ import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import {getTenantScore} from '../src/utils/apiRequests/tenants/getTenantScore';
-import {getLeaderboard} from '../src/utils/apiRequests/tenants/getLeaderboard';
+import { getRequest } from '../src/utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -21,10 +20,7 @@ export default function Home(initialized: Props) {
   
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getTenantScore();
-      if(newTenantScore === '404'){
-        router.push('/404', undefined, { shallow: true });
-      }
+      const newTenantScore = await getRequest(`/app/tenantScore`);
       setTenantScore(newTenantScore);
     }
     loadTenantScore();
@@ -32,10 +28,7 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderBoard = await getLeaderboard();
-      if(newLeaderBoard === '404'){
-        router.push('/404', undefined, { shallow: true });
-      }
+      const newLeaderBoard = await getRequest(`/app/leaderboard`);
       setLeaderboard(newLeaderBoard);
     }
     loadLeaderboard();
