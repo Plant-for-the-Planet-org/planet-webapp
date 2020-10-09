@@ -19,6 +19,10 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
 
+  React.useEffect(() => {
+    setShowSingleProject(true);
+  }, []);
+
   // Code to find out whether show single project or list of project
   React.useEffect(() => {
     fetchSingleProject(router.query.p)
