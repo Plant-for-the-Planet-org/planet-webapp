@@ -81,6 +81,7 @@
     padding-top: 10vh;
     margin: 40px 0;
     max-height: 420px;
+   
   }
 
   .treeCounterContainer {
@@ -114,7 +115,14 @@
   }
 }
 
+@include mdTabletView{
+  .treeCounterSection{
+    overflow: visible;
+  }
+}
+
 @include lgLaptopView {
+
   
   .treeCounterSectionRow {
     padding-bottom: 0px;

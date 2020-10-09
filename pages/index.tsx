@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
-import { getAllProjects } from '../src/utils/apiRequests/getAllProjects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
+import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
+import {getRequest} from '../src/utils/apiRequests/api';
+import storeConfig from '../src/utils/storeConfig';
 
 interface Props {
   initialized: Boolean;
@@ -21,13 +23,15 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
 
+  React.useEffect(() => {
+    storeConfig();
+  }, []);
+  
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      const projects = await getAllProjects();
-      if (projects === '404') {
-        router.push('/404', undefined, { shallow: true });
-      }
+      let currencyCode = getStoredCurrency();
+      const projects = await getRequest(`/app/projects?_scope=map&currency=${currencyCode}`);
       setProjects(projects);
       setShowSingleProject(false);
     }

@@ -10,7 +10,9 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
-    "find:unused": "next-unused"
+    "find:unused": "next-unused",
+    "lint": "eslint i18n pages src",
+    "lint:errors": "eslint i18n pages src --quiet"
   },
   "engines": {
     "node": "12.x",
@@ -55,7 +57,7 @@
     "react-dom": "16.13.1",
     "react-gtm-module": "^2.0.10",
     "react-hook-form": "^6.4.1",
-    "react-i18next": "^11.7.2",
+    "react-i18next": "^11.7.3",
     "react-insta-stories": "^2.0.4",
     "react-lazyload": "^3.0.0",
     "react-map-gl": "^5.2.7",

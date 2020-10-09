@@ -1,4 +1,6 @@
 import Custom404Image from '../public/assets/images/Custom404Image';
+import Footer from '../src/features/common/Layout/Footer';
+import { useRouter } from 'next/router';
 
 interface Props {
   initialized: Boolean;
@@ -7,21 +9,28 @@ interface Props {
 export default function Custom404(initialized: Props) {
   const styles = {
     width: '100vw',
-    height: '60vh',
+    height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '80px',
+    flexDirection:'column'
   }
+  const router = useRouter();
+
   return (
     <>
       {initialized ? (
            <div style={styles}>
-            <Custom404Image />
+            <h2>{router.query.error}</h2>
+            <div style={{width:'300px',height:'175px'}}>
+              <Custom404Image />
+            </div>
+            
           </div>
       ) : (
         <></>
       )}
+      <Footer/>
     </>
   );
 }
