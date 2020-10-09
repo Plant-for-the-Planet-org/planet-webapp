@@ -33,6 +33,7 @@ export default function Donate({
       let currencyCode = getStoredCurrency();
       const projects = await getRequest(`/app/projects?_scope=map&currency=${currencyCode}`);
       setProjects(projects);
+      setProject(null);
       setShowSingleProject(false);
     }
     loadProjects();

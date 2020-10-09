@@ -77,7 +77,7 @@ export default function MapboxMap({
               setsiteExists(true);
             }, 300);
           } else {
-            setsiteExists(false);
+            setsiteExists(false); 
             setGeoJson(null);
             setSingleProjectLatLong([
               project.coordinates.lat,
@@ -99,6 +99,7 @@ export default function MapboxMap({
 
   React.useEffect(() => {
     if (showSingleProject) {
+      if(project) {
       if (siteExists) {
         if (geoJson !== null) {
           const bbox = turf.bbox(geoJson.features[currentSite]);
@@ -165,7 +166,9 @@ export default function MapboxMap({
       setMapState(newMapState);
       setViewPort(newViewport);
     }
+  }
   }, [
+    project,
     showSingleProject,
     siteExists,
     geoJson,
@@ -216,7 +219,7 @@ export default function MapboxMap({
         onClick={() => setPopupData({ ...popupData, show: false })}
       >
         {showSingleProject ? (
-          !siteExists ? (
+          !siteExists ? (   
             <Marker
               latitude={singleProjectLatLong[0]}
               longitude={singleProjectLatLong[1]}
@@ -375,7 +378,7 @@ export default function MapboxMap({
 
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {siteExists &&
+                {project!==null && siteExists &&
                 project.sites.length !== 0 &&
                 geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name

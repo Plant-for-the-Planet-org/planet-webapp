@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import SingleProjectDetails from '../src/features/public/Donations/components/SingleProjectDetails';
-import { getSingleProject } from '../src/utils/apiRequests/getSingleProject';
+import { getRequest } from '../src/utils/apiRequests/api';
+import getStoredCurrency from "../src/utils/countryCurrency/getStoredCurrency";
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 
 interface Props {
@@ -23,29 +24,18 @@ export default function Donate({
     setShowSingleProject(true);
   }, []);
 
-  // Code to find out whether show single project or list of project
   React.useEffect(() => {
-    fetchSingleProject(router.query.p)
-      .then(() => {
+   
+      async function loadProject() {
+        let currencyCode = getStoredCurrency();
+        const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
+        setProject(project);
         setShowSingleProject(true);
-        // Show single project
-      })
-      .catch((err) => {
-        setShowSingleProject(false);
-        setProject(null);
-        console.log('An error occured:', err);
-        router.push('/404', undefined, { shallow: true });
-      });
-  }, [router.query.p]);
-
-  // Load single project
-  async function fetchSingleProject(id: any) {
-    const project = await getSingleProject(id);
-    if (project === '404') {
-      router.push('/404', undefined, { shallow: true });
+      }
+      if(router.query.p !== undefined) {
+      loadProject();
     }
-    setProject(project);
-  }
+  }, [router.query.p]);
 
   const ProjectProps = {
     project,
