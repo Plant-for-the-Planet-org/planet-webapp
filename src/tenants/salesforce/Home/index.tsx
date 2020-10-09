@@ -1,4 +1,4 @@
-import Footer from '../../../features/common/Footer';
+import Footer from '../../../features/common/Layout/Footer';
 import Articles from './components/Articles';
 import Blogs from './components/Blogs';
 import Landing from './components/Landing';

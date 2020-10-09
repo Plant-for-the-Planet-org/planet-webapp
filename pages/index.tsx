@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import Layout from '../src/features/common/Layout';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
 import { getAllProjects } from '../src/utils/apiRequests/getAllProjects';
 import { getSingleProject } from '../src/utils/apiRequests/getSingleProject';
@@ -73,9 +72,7 @@ export default function Donate(initialized: Props) {
         <GetAllProjectsMeta/>
       )}
       {initialized ? (
-        <Layout>
-          {projects && initialized ? <ProjectsList {...DonateProps} /> : <></>}
-        </Layout>
+          projects && initialized ? <ProjectsList {...DonateProps} /> : <></>
       ) : null}
     </>
   );

@@ -1,16 +1,16 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
-import Donate from '../../../../public/assets/images/navigation/Donate';
-import DonateSelected from '../../../../public/assets/images/navigation/DonateSelected';
-import Globe from '../../../../public/assets/images/navigation/Globe';
-import GlobeSelected from '../../../../public/assets/images/navigation/GlobeSelected';
-import Leaderboard from '../../../../public/assets/images/navigation/Leaderboard';
-import LeaderboardSelected from '../../../../public/assets/images/navigation/LeaderboardSelected';
-import Me from '../../../../public/assets/images/navigation/Me';
-import MeSelected from '../../../../public/assets/images/navigation/MeSelected';
-import { ThemeContext } from '../../../theme/themeContext';
+import tenantConfig from '../../../../../tenant.config';
+import Donate from '../../../../../public/assets/images/navigation/Donate';
+import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
+import Globe from '../../../../../public/assets/images/navigation/Globe';
+import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
+import Leaderboard from '../../../../../public/assets/images/navigation/Leaderboard';
+import LeaderboardSelected from '../../../../../public/assets/images/navigation/LeaderboardSelected';
+import Me from '../../../../../public/assets/images/navigation/Me';
+import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
+import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 
 const config = tenantConfig();

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import AppleIcon from '../../../../public/assets/images/footer/AppStore';
-import GooglePlayIcon from '../../../../public/assets/images/footer/GooglePlay';
-import UNEPLogo from '../../../../public/assets/images/footer/UNEPLogo';
-import World from '../../../../public/assets/images/footer/World';
-import getLanguageName from '../../../utils/language/getLanguageName';
+import AppleIcon from '../../../../../public/assets/images/footer/AppStore';
+import GooglePlayIcon from '../../../../../public/assets/images/footer/GooglePlay';
+import UNEPLogo from '../../../../../public/assets/images/footer/UNEPLogo';
+import World from '../../../../../public/assets/images/footer/World';
+import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
-import i18next from '../../../../i18n';
+import i18next from '../../../../../i18n/server';
 
 const { useTranslation } = i18next;
 

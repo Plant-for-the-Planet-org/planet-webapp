@@ -1,7 +1,6 @@
 <br/>
 <br/>
 <img src="./documentation/screenshots/PFP.png" alt="PFP Page." align="center">
-
 <br/>
 <br/>
 
@@ -97,13 +96,14 @@
 <details><summary>public - Assets</summary>
 <ul>
     <li>tenants = Assets of all the tenants</li>
+    <li>assets = All the images and image components </li>
     <li>And other public assets.</li>
+
 </ul>
 </details>
 
 <details><summary>src - Source code</summary>
 <ul>
-    <li>assets = All the assets </li>
     <li>features = Project features are present here </li>
     <li>tenants = Tenant specific features are present here</li>
     <li>theme = Theme scss files </li>
