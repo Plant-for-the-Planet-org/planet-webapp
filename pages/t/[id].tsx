@@ -2,10 +2,9 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import PublicUserPage from '../../src/features/public/PublicUserProfile';
-import UserNotFound from '../../src/features/common/ErrorComponents/UserProfile/UserNotFound';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
-import { getUserProfile } from '../../src/utils/apiRequests/userProfile/getUserProfile';
 import Footer from '../../src/features/common/Layout/Footer';
+import { getRequest } from '../../src/utils/apiRequests/api';
 
 interface Props {
   initialized: Boolean;
@@ -30,20 +29,14 @@ export default function PublicUser(initialized: Props) {
 
   useEffect(() => {
     async function loadPublicUserData() {
-      const newPublicUserprofile = await getUserProfile(slug);
-      if(newPublicUserprofile === '404'){
-        router.push('/404', undefined, { shallow: true });
-      }
+
+      const newPublicUserprofile = await getRequest(`/public/v1.0/en/treecounter/${slug}`);
       setPublicUserprofile(newPublicUserprofile)
     }
     if (ready) {
       loadPublicUserData();
     }
   }, [ready]);
-
-  if (publicUserprofile === null) {
-    return <UserNotFound />;
-  }
 
   return (
     <>

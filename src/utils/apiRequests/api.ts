@@ -1,6 +1,6 @@
 import getsessionId from "./getSessionId";
 
-export default async function getRequest(url: any) {
+export async function getRequest(url: any) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
       headers: {
@@ -9,10 +9,16 @@ export default async function getRequest(url: any) {
       },
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
-      if (res.status !== 200) {
-        return '404';
+      if(res.status === 404){
+        const errorMessage = 'Not Found';
+        window.location.href = `/404?error=${errorMessage}`;
+      } else if (res.status !== 200) {
+        // Maybe show a Modal with Error and redirect to home page
+        const errorMessage = res.statusText;
+        window.location.href = `/404?error=${errorMessage}`;
+      } else{
+        return result;
       }
-      return result;
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
   return result;
