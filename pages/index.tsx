@@ -23,13 +23,13 @@ export default function Donate({
 
   // Load all projects
   React.useEffect(() => {
-    setShowSingleProject(false);
     async function loadProjects() {
       const projects = await getAllProjects();
       if (projects === '404') {
         router.push('/404', undefined, { shallow: true });
       }
       setProjects(projects);
+      setShowSingleProject(false);
     }
     loadProjects();
   }, []);

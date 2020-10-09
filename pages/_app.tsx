@@ -125,7 +125,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <CssBaseline />
       <Layout>
         {isMap ? (
-          projects ? (
+          project !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : projects !== null ? (
             <MapLayout
               {...ProjectProps}
               mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
