@@ -11,6 +11,8 @@ import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import getsessionId from '../src/utils/apiRequests/getSessionId';
 import Layout from '../src/features/common/Layout';
+import MapLayout from '../src/features/public/Donations/components/MapboxMap';
+import { useRouter } from 'next/router';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -30,6 +32,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
+  const router = useRouter();
+  const [projects, setProjects] = React.useState(null);
+  const [project, setProject] = React.useState(null);
+  const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [isMap, setIsMap] = React.useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -40,6 +47,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   React.useEffect(() => {
     i18next.initPromise.then(() => setInitialized(true));
   }, []);
+
+  React.useEffect(() => {
+    if (router.pathname === '/' || router.pathname === '/[p]') {
+      setIsMap(true);
+    } else {
+      setIsMap(false);
+    }
+  }, [router]);
 
   React.useEffect(() => {
     if (
@@ -83,11 +98,41 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     loadConfig();
   }, []);
 
+  // const MapLoader = () => (
+  //   <div
+  //     style={{ minHeight: '100vh', backgroundColor: '#c8def4', width: '100%' }}
+  //   />
+  // );
+
+  // const MapLayout = dynamic(() => import('../components/MapboxMap'), {
+  //   ssr: false,
+  //   loading: () => <MapLoader />,
+  // });
+
+  const ProjectProps = {
+    projects,
+    project,
+    setProject,
+    setProjects,
+    showSingleProject,
+    setShowSingleProject,
+    pageProps,
+    initialized,
+  };
+
   return (
     <ThemeProvider>
       <CssBaseline />
       <Layout>
-        <Component i18nloaded={initialized} {...pageProps} />
+        {isMap ? (
+          projects ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : null
+        ) : null}
+        <Component {...ProjectProps} />
       </Layout>
     </ThemeProvider>
   );
