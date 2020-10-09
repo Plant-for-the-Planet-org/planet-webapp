@@ -98,17 +98,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     loadConfig();
   }, []);
 
-  // const MapLoader = () => (
-  //   <div
-  //     style={{ minHeight: '100vh', backgroundColor: '#c8def4', width: '100%' }}
-  //   />
-  // );
-
-  // const MapLayout = dynamic(() => import('../components/MapboxMap'), {
-  //   ssr: false,
-  //   loading: () => <MapLoader />,
-  // });
-
   const ProjectProps = {
     projects,
     project,
