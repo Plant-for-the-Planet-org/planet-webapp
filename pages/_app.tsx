@@ -9,7 +9,6 @@ import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
-import getsessionId from '../src/utils/apiRequests/getSessionId';
 import Layout from '../src/features/common/Layout';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
@@ -50,37 +49,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     ) {
       TagManager.initialize(tagManagerArgs);
     }
-  }, []);
-
-  React.useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles!.parentElement!.removeChild(jssStyles);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    async function loadConfig() {
-      await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
-        headers: {
-          'tenant-key': `${process.env.TENANTID}`,
-          'X-SESSION-ID': await getsessionId(),
-        },
-      })
-        .then(async (res) => {
-          const config = await res.json();
-          localStorage.setItem('config', JSON.stringify(config));
-          if (localStorage.getItem('countryCode') === null) {
-            localStorage.setItem('countryCode', config.country);
-          }
-          if (localStorage.getItem('currencyCode') === null) {
-            localStorage.setItem('currencyCode', config.currency);
-          }
-        })
-        .catch((err) => console.log(`Something went wrong: ${err}`));
-    }
-    loadConfig();
   }, []);
 
   return (

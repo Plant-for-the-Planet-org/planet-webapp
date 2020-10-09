@@ -5,6 +5,7 @@ import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import {getRequest} from '../src/utils/apiRequests/api';
+import storeConfig from '../src/utils/storeConfig';
 
 interface Props {
   initialized: Boolean;
@@ -36,6 +37,10 @@ export default function Donate(initialized: Props) {
     }
   }, [router.query.p]);
 
+  React.useEffect(() => {
+    storeConfig();
+  }, []);
+  
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
