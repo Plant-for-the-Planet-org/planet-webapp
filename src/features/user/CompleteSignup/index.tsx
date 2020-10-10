@@ -8,6 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../assets/images/icons/headerIcons/BackArrow';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry'
 
 export default function CompleteSignup() {
 
@@ -369,11 +370,13 @@ export default function CompleteSignup() {
         ) : null}
 
         <div className={styles.countryDiv}>
-          <MaterialTextField
-            label="Country"
-            variant="outlined"
-            onChange={(e) => setCountry(e.target.value)}
-          />
+          <AutoCompleteCountry
+            inputRef={null}
+            label='Country'
+            name="country"
+            onChange={(country)=> setCountry(country)}
+            defaultValue={localStorage.getItem('countryCode')}
+            />
         </div>
 
         <div className={styles.isPrivateAccountDiv}>
