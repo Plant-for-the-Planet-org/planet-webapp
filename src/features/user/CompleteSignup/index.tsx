@@ -216,7 +216,7 @@ export default function CompleteSignup() {
         {/* header */}
       <div className={styles.header}>
         <div
-          onClick={() => console.log('pressed')}
+          onClick={() => signOut({ callbackUrl: '/' })}
           className={styles.headerBackIcon}
         >
           <BackArrow color={styles.primaryFontColor} />
@@ -392,7 +392,7 @@ export default function CompleteSignup() {
           Create Account
         </div>
       </div>
-      <div className={styles.logoutButton} onClick={() => signOut({ callbackUrl: '/' })}>
+      <div className={styles.logoutButton} >
           <b> Logout </b>
       </div>
       {/* snackbar */}
