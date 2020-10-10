@@ -338,6 +338,17 @@ export default function CompleteSignup() {
             />
           </div>
         ) : null}
+        
+          <div className={styles.addressDiv}>
+            <MaterialTextField
+              defaultValue={session.user.email}
+              label='Email'
+              variant="outlined"
+              disabled
+              onChange={(e) => console.log(e.target.value)}
+            />
+          </div>
+
         {accountType === 'RO' ? (
           <div>
             <div className={styles.addressDiv}>
