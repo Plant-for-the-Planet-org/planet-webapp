@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/client';
+import { useSession, signIn } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
@@ -24,9 +24,7 @@ export default function CompleteSignup() {
 
   // if accessed by unauthenticated user
   if(!loading && !session){
-    if (typeof window !== 'undefined') {
-      router.push('/me'); // will trigger the signin flow
-    }
+    signIn('auth0', { callbackUrl: '/me' });
   }
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -216,7 +214,7 @@ export default function CompleteSignup() {
     return name;
   };
 
-  if (loading || ( !loading && session && session.userprofile)) {
+  if (loading || ( !loading && session && session.userprofile) || (!loading && !session)) {
     return null;
   }
 
