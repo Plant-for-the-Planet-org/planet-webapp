@@ -75,7 +75,7 @@
   height:58px;
   border-radius: 10px;
   justify-content: flex-end;
-  border: solid 1.6px $dark;
+  border: solid 1.6px $dividerColor;
   margin: 5px;
   background-color: $light;
 }
@@ -115,7 +115,7 @@
   font-weight: normal;
   text-align: left;
   text-transform: capitalize;
-  color: $dark;
+  color: $primaryFontColor;
 }
 //profile pic div
 .profilePicDiv {
@@ -242,4 +242,5 @@
     light: $light;
     dark: $dark;
     primaryFontColor: $primaryFontColor;
+    dividerColor: $dividerColor;
   }  
