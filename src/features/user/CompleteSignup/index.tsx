@@ -361,7 +361,6 @@ export default function CompleteSignup() {
               <div className={styles.zipDiv}>
                 <MaterialTextField
                   label="Zip Code"
-                  type="number"
                   variant="outlined"
                   onChange={(e) => setZipCode(e.target.value)}
                 />
