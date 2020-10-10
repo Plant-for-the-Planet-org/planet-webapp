@@ -29,7 +29,7 @@ export default function CompleteSignup() {
   const [session, loading] = useSession();
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
   const [isSubscribed, setIsSubscribed] = React.useState(true);
-  const [accountType, setAccountType] = useState('RO');
+  const [accountType, setAccountType] = useState('individual');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [nameOfOrg, setNameOfOrg] = useState('');
