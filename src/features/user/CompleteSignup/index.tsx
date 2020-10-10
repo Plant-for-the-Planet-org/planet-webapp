@@ -392,9 +392,6 @@ export default function CompleteSignup() {
           Create Account
         </div>
       </div>
-      <div className={styles.logoutButton} >
-          <b> Logout </b>
-      </div>
       {/* snackbar */}
       <Snackbar
         open={snackbarOpen}
