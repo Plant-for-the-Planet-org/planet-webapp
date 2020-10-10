@@ -7,6 +7,7 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
+import BackArrow from '../../../assets/images/icons/headerIcons/BackArrow';
 
 export default function CompleteSignup() {
   //  snackbars (for warnings, success messages, errors)
@@ -212,6 +213,17 @@ export default function CompleteSignup() {
       }}
     >
       <div className={requestSent ? styles.signupRequestSent : styles.signup }>
+        {/* header */}
+      <div className={styles.header}>
+        <div
+          onClick={() => console.log('pressed')}
+          className={styles.headerBackIcon}
+        >
+          <BackArrow color={styles.primaryFontColor} />
+        </div>
+        <div className={styles.headerTitle}>Complete Signup</div>
+      </div>
+      {/* type of account buttons */}
         <div className={styles.btnContainer}>
           <button
             type="button"

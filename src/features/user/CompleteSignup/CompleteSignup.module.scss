@@ -42,6 +42,33 @@
   padding:20px 20px;
 }
 
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.headerBackIcon:hover {
+  cursor: pointer;
+}
+
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 10px;
+}
+
 .btnSize {
   width: 50%;
   height:68px;
@@ -226,4 +253,5 @@
     primaryColor: $primaryColor;
     light: $light;
     dark: $dark;
+    primaryFontColor: $primaryFontColor;
   }  
