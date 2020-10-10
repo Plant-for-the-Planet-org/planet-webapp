@@ -10,6 +10,23 @@ import { signOut } from 'next-auth/client';
 import BackArrow from '../../../assets/images/icons/headerIcons/BackArrow';
 
 export default function CompleteSignup() {
+
+  const [session, loading] = useSession();
+  const router = useRouter();
+
+  // if accessed by a registered up user
+  if(!loading && session && session?.userprofile){
+    if (typeof window !== 'undefined') {
+      router.push('/me');
+    }
+  }
+
+  // if accessed by unauthenticated user
+  if(!loading && !session){
+    if (typeof window !== 'undefined') {
+      router.push('/me'); // will trigger the signin flow
+    }
+  }
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const handleSnackbarOpen = () => {
@@ -25,8 +42,6 @@ export default function CompleteSignup() {
     setSnackbarOpen(false);
   };
 
-  const router = useRouter();
-  const [session, loading] = useSession();
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
   const [isSubscribed, setIsSubscribed] = React.useState(true);
   const [accountType, setAccountType] = useState('individual');
@@ -178,10 +193,6 @@ export default function CompleteSignup() {
     }
   };
 
-  if (loading) {
-    return null;
-  }
-
   const SelectType = (type: any) => {
     let name;
     switch (type) {
@@ -203,6 +214,11 @@ export default function CompleteSignup() {
     }
     return name;
   };
+
+  if (loading || ( !loading && session && session.userprofile)) {
+    return null;
+  }
+
   return (
     <div
       className={styles.signUpPage}
