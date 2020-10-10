@@ -70,17 +70,21 @@
 }
 
 .btnSize {
+  position: relative;
   width: 50%;
   height:68px;
   border-radius: 10px;
+  justify-content: flex-end;
   border: solid 1.6px $dark;
   margin: 5px;
   background-color: $light;
 }
 
 .btnColor {
+  position: relative;
   border: solid 1.6px $primaryColor;
   width: 50%;
+  justify-content: flex-end;
   height:68px;
   border-radius: 10px;
   background-color: $light;
@@ -93,21 +97,25 @@
 }
 
 .accountTypeTextSelected{
+  position: absolute;
   font-size: 14px;
-  justify-content: flex-start;
   font-weight: bolder;
+  text-align: left; 
+  bottom: 0;
+  margin: 0px 0px 8px 8px;
   text-transform: capitalize;
   color: $primaryColor;
-  margin-bottom: 0px;
 }
 
 .accountTypeText {
+  position: absolute;
+  bottom: 0;
+  margin: 0px 0px 8px 8px;
   font-size: 14px;
-  justify-content: flex-start;
   font-weight: normal;
+  text-align: left;
   text-transform: capitalize;
   color: $dark;
-  margin-bottom: 0px;
 }
 //profile pic div
 .profilePicDiv {
