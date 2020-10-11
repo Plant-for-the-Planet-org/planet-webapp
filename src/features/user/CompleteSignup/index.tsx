@@ -16,7 +16,7 @@ export default function CompleteSignup() {
   const router = useRouter();
 
   // if accessed by a registered up user
-  if(!loading && session && session?.userprofile){
+  if(!loading && session && session?.userExistsInDB){
     if (typeof window !== 'undefined') {
       router.push('/me');
     }
@@ -214,7 +214,7 @@ export default function CompleteSignup() {
     return name;
   };
 
-  if (loading || ( !loading && session && session.userprofile) || (!loading && !session)) {
+  if (loading || ( !loading && session && session.userExistsInDB) || (!loading && !session)) {
     return null;
   }
 

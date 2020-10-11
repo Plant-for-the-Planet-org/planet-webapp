@@ -31,13 +31,13 @@ export default function NavbarComponent(props: any) {
       signIn('auth0', { callbackUrl: '/me' })
     }
     // if user logged in, and already signed up -> /me page
-    if (!loading && session && session.userprofile) {
+    if (!loading && session && session.userExistsInDB) {
       if (typeof window !== 'undefined') {
         router.push('/me');
       }
     }
     // if user logged in, not already signed up -> /complete-signup
-    if (!loading && session && !session.userprofile) {
+    if (!loading && session && !session.userExistsInDB) {
       if (typeof window !== 'undefined') {
         router.push('/complete-signup');
       }

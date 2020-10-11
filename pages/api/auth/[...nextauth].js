@@ -58,9 +58,13 @@ const options = {
             ...resJson,
             isMe: true,
           };
-          // now session has object called userprofile
           session.userprofile = newMeObj;
+          session.userExistsInDB = true;
+        } else {
+          session.userExistsInDB = false;
         } 
+        /* now session has field called userExistsinDB to check 
+        if that email-id exists in our database or not */
       } catch (e){
         console.log('error in session callback', e)
       }

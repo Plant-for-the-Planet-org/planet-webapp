@@ -17,14 +17,14 @@ export default function Login() {
   }
 
   //   new user
-  if (!loading && session && !session.userprofile) {
+  if (!loading && session && !session.userExistsInDB) {
     if (typeof window !== 'undefined') {
       router.push('/complete-signup');
     }
   }
 
   //   existing user -> to me page
-  if (!loading && session && session.userprofile) {
+  if (!loading && session && session.userExistsInDB) {
     if (typeof window !== 'undefined') {
       router.push('/me');
     }

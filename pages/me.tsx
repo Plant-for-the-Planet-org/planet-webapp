@@ -77,7 +77,7 @@ export default function UserProfile(initialized: Props) {
     userprofile,
   };
   useEffect(() => {
-    if (!loading && session && session.userprofile) {
+    if (!loading && session && session.userExistsInDB) {
       setUserprofile(session.userprofile);
     }
   }, [loading, session]);
@@ -94,17 +94,17 @@ export default function UserProfile(initialized: Props) {
     }
   }
   // if session present but user not signed up
-  if (!loading && session && !session.userprofile) {
+  if (!loading && session && !session.userExistsInDB) {
     if (typeof window !== 'undefined') {
       router.push('/complete-signup');
     }
   }
 
   //  third condition to handle the 303 response code
-  if (!initialized || loading || (!loading && session && !session.userprofile)) {
+  if (!initialized || loading || (!loading && session && !session.userExistsInDB)) {
     return <React.Fragment />;
   }
-  if (!loading && session && session.userprofile) {
+  if (!loading && session && session.userExistsInDB) {
     return (
       <>
       <Head>
