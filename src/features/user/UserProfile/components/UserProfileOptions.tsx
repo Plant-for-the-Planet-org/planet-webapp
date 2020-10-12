@@ -1,8 +1,7 @@
 import React from 'react';
-import Redeem from '../../../../assets/images/icons/userProfileIcons/Redeem';
-import Share from '../../../../assets/images/icons/userProfileIcons/Share';
-import Shovel from '../../../../assets/images/icons/userProfileIcons/Shovel';
-import { Col, Container, Row } from 'react-bootstrap';
+import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
+import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
+import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
@@ -47,33 +46,33 @@ export default function UserProfileOptions({
   };
 
   return (
-      <Row className={styles.bottomIconsRow}>
-        <Col className={styles.iconTextColumn}>
+      <div className={styles.bottomIconsRow}>
+        <div className={styles.iconTextColumn}>
           <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
             <Redeem color="white" />
           </div>
           <p className={styles.bottomRowText}> Redeem</p>
-        </Col>
+        </div>
 
         <RedeemModal
           redeemModalOpen={redeemModalOpen}
           handleRedeemModalClose={handleRedeemModalClose}
         />
 
-        <Col className={styles.iconTextColumn}>
+        <div className={styles.iconTextColumn}>
           <div className={styles.bottomIconBg}>
             <Shovel color="white" />
           </div>
 
           <p className={styles.bottomRowText}> Register Trees</p>
-        </Col>
+        </div>
 
-        <Col className={styles.iconTextColumn} onClick={onShareClicked}>
+        <div className={styles.iconTextColumn} onClick={onShareClicked}>
           <div className={styles.bottomIconBg}>
             <Share color="white" />
           </div>
           <p className={styles.bottomRowText}> Share </p>
-        </Col>
-      </Row>
+        </div>
+      </div>
   );
 }
