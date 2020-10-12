@@ -21,6 +21,7 @@ import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/getFormattedCurrency';
+import isIOSSafari from '../../../../utils/isIOSSafari';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -107,9 +108,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   };
 
   React.useEffect(() => {
-    setIsIOSSafari(
-      !!window.navigator.userAgent.match(/Version\/[d.]+.*Safari/)
-    );
+    setIsIOSSafari(isIOSSafari());
   }, []);
 
   return (
