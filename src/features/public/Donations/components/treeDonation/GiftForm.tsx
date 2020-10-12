@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
-import MaterialTextFeild from './../../../../common/InputTypes/MaterialTextFeild';
+import MaterialTextField from './../../../../common/InputTypes/MaterialTextField';
 import styles from './../../styles/TreeDonation.module.scss';
 import i18next from '../../../../../../i18n';
 
@@ -30,7 +30,7 @@ export default function GiftForm({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               name={'recipientName'}
               onChange={changeGiftDetails}
               label={t('donate:recipientName')}
@@ -46,7 +46,7 @@ export default function GiftForm({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               name={'email'}
               onChange={changeGiftDetails}
               label={t('donate:email')}
@@ -61,7 +61,7 @@ export default function GiftForm({
           </div>
         </div>
         <div className={styles.formRow}>
-          <MaterialTextFeild
+          <MaterialTextField
             multiline
             rowsMax="4"
             label={t('donate:giftMessage')}

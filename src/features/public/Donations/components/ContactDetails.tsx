@@ -4,7 +4,7 @@ import Sugar from 'sugar';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
-import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';
+import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from './../../../common/types/donations';
 import styles from './../styles/ContactDetails.module.scss';
@@ -55,7 +55,7 @@ function ContactDetails({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formRow}>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
               label={t('donate:firstName')}
               variant="outlined"
@@ -72,7 +72,7 @@ function ContactDetails({
 
           <div style={{ width: '20px' }}></div>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
               label={t('donate:lastName')}
               variant="outlined"
@@ -89,7 +89,7 @@ function ContactDetails({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({
                 required: true,
                 pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i,
@@ -109,7 +109,7 @@ function ContactDetails({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
               label={t('donate:address')}
               variant="outlined"
@@ -126,7 +126,7 @@ function ContactDetails({
         </div>
         <div className={styles.formRow}>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
               label={t('donate:city')}
               variant="outlined"
@@ -143,7 +143,7 @@ function ContactDetails({
 
           <div style={{ width: '20px' }}></div>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({})}
               label={t('donate:zipCode')}
               variant="outlined"
@@ -191,7 +191,7 @@ function ContactDetails({
         {isCompany ? (
           <div className={styles.formRow}>
             <div style={{ width: '100%' }}>
-              <MaterialTextFeild
+              <MaterialTextField
                 label={t('donate:companyName')}
                 name="companyName"
                 variant="outlined"
