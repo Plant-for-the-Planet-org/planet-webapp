@@ -2,12 +2,12 @@ import { useSession, signIn } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
-import MaterialTextField from '../../common/InputTypes/MaterialTextFeild';
+import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
-import BackArrow from '../../../assets/images/icons/headerIcons/BackArrow';
+import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry'
 
 export default function CompleteSignup() {
