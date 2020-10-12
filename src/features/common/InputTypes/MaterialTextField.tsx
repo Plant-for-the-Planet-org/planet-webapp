@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import tenantConfig from '../../../../tenant.config';
 const config = tenantConfig();
 
-const MaterialTextFeild = withStyles({
+const MaterialTextField = withStyles({
   root: {
     width: '100%',
     '& label.Mui-focused': {
@@ -30,4 +30,4 @@ const MaterialTextFeild = withStyles({
   },
 })(TextField);
 
-export default MaterialTextFeild;
+export default MaterialTextField;
