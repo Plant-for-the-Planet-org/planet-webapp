@@ -108,7 +108,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
 
   React.useEffect(() => {
     setIsIOSSafari(
-      !!window.navigator.userAgent.match('/Version/[d.]+.*Safari/')
+      !!window.navigator.userAgent.match(/Version\/[d.]+.*Safari/)
     );
   }, []);
 
