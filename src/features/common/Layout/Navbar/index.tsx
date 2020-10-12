@@ -44,6 +44,17 @@ export default function NavbarComponent(props: any) {
     }
   }
 
+
+  // Add a React useeffect - 
+  // to check whether there is a session or not
+  // If there is a session, instead of me profile, show user profile icon
+
+  // Add a function of loaduser profile
+  // If the user is logged in, redirect to t/userSlug
+  // If user is not logged in we will redirect to singin page with Auth0
+  // If in the singin flow, if the user is already existing, we login the user and  redirect to t/userSlug
+  // If in the singin flow, if the user is not existing, then we redirect to complete Signup flow
+
   const { toggleTheme } = React.useContext(ThemeContext);
 
   return (

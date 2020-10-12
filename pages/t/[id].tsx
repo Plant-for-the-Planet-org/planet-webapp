@@ -27,9 +27,13 @@ export default function PublicUser(initialized: Props) {
     }
   }, [router]);
 
+  
+
   useEffect(() => {
     async function loadPublicUserData() {
-
+      // If the user is logged in and there is a session, check if the slug fetched matches with the slug in the session
+      // If it matches load Private user page -> Session.userprofile
+      // If it doesn't match load Public user page
       const newPublicUserprofile = await getRequest(`/public/v1.0/en/treecounter/${slug}`);
       setPublicUserprofile(newPublicUserprofile)
     }
@@ -41,6 +45,9 @@ export default function PublicUser(initialized: Props) {
   return (
     <>
       <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
+
+        {/* If the user is logged in and the slug matches, load private user PrivateUserPage
+        Else load Public user page */}
         {initialized && publicUserprofile ? (
             <PublicUserPage {...PublicUserProps} />
           ) : (
