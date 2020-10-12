@@ -12,7 +12,7 @@ export default new NextI18Next({
   debug: false,
   otherLanguages: config.languages.splice(0, 1), // list all languages here
   detection: {
-    // check if language is cached in cookies, if not check local storage, 
+    // check if language is cached in cookies, if not check local storage,
     // last retrieve from browser language
     order: ['cookie', 'localStorage', 'navigator'],
 

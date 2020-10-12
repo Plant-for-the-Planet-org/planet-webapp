@@ -4,6 +4,7 @@ const config = {
   // url of tenant home page
   tenantURL: 'trilliontreecampaign.org',
   // font family and it's property particular to tenant
+  tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,

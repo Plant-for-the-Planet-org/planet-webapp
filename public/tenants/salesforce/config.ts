@@ -3,6 +3,7 @@ const config = {
   tenantURL: 'trees.salesforce.com',
   languages: ['en'],
   fallbackCurrency: 'USD',
+  tenantGoal:null,
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,

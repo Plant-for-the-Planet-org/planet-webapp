@@ -1,6 +1,6 @@
-import { Col, Container, Row } from 'react-bootstrap';
 import TreeCounter from '../../TreeCounter/TreeCounter';
 import styles from './../styles/TreeCounter.module.scss';
+import gridStyles from './../styles/Grid.module.scss'
 interface Props {
   tenantScore: any;
 }
@@ -9,9 +9,9 @@ export default function TreeCounterSection(tenantScore: Props) {
     ? tenantScore.tenantScore.total
     : '';
   return (
-    <Container fluid="md">
-      <Row className={styles.treeCounterSectionRow}>
-        <Col xs={12} md={6} className={styles.treeCounterSectionText}>
+    <div className={gridStyles.fluidContainer}>
+      <div className={`${gridStyles.gridRow} ${styles.treeCounterSectionRow}`}>
+        <div className={`${gridStyles.colMd6} ${gridStyles.col12} ${styles.treeCounterSectionText}`}>
           <h2 className={styles.treeCounterSectionTextHeader}>
             Getting to work.
           </h2>
@@ -22,8 +22,8 @@ export default function TreeCounterSection(tenantScore: Props) {
 Check out the “Donate” tab to see some of the places where we’re supporting tree planting organizations and lend your support! The tracker to the right and leaderboard below reflect all the donations made and registered on this platform. Also below, you’ll find examples of our other initiatives as well as resources to get involved. We’ll continue to add projects, programs, and resources so check back often!
           </p>
           {/* <button className={styles.buttonStyle}>Join Us</button> */}
-        </Col>
-        <Col xs={12} md={6} className={styles.treeCounterSection}>
+        </div>
+        <div className={`${gridStyles.colMd6} ${gridStyles.col12} ${styles.treeCounterSection}`}>
           <div className={styles.treeCounterContainer}></div>
           <div className={styles.treeCounter}>
             <TreeCounter target={100000000} planted={tenantScoreData} />
@@ -33,8 +33,8 @@ Check out the “Donate” tab to see some of the places where we’re supportin
             src={'/tenants/salesforce/images/TreeCounterImage.png'}
             alt="Treecounter Image"
           />
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import getsessionId from '../../../../../utils/getSessionId';
+import getsessionId from '../../../../../utils/apiRequests/getSessionId';
 import { PayWithCardTypes } from '../../../../common/types/donations';
 
 export async function createDonation(data: any) {
@@ -191,7 +191,7 @@ export function payWithCard({
                         setDonationStep(4);
                       } else {
                         setIsPaymentProcessing(false);
-                        setPaymentError(res.error.message);
+                        setPaymentError(res.error ? res.error.message : res.message);
                       }
                     });
                   }
