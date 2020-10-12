@@ -36,7 +36,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation(['donate', 'common']);
   const [countryCode, setCountryCode] = React.useState<string>('DE');
-
+  const [isIOSSafari, setIsIOSSafari] = React.useState(false);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -106,6 +106,12 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     setOpen(true);
   };
 
+  React.useEffect(() => {
+    setIsIOSSafari(
+      !!window.navigator.userAgent.match('/Version/[d.]+.*Safari/')
+    );
+  }, []);
+
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -132,7 +138,10 @@ function SingleProjectDetails({ project }: Props): ReactElement {
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
-      <div className={styles.projectContainer}>
+      <div
+        style={isIOSSafari ? { paddingBottom: 77 } : {}}
+        className={styles.projectContainer}
+      >
         <div className={styles.singleProject}>
           <div className={styles.projectImage}>
             {project.image ? (
