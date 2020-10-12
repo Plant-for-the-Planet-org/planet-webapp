@@ -26,6 +26,6 @@
     "**/*.ts",
     "**/*.tsx",
     "./src/**/*",
-    "tenant.config.js"
+    "tenant.config.js", "public/assets"
   ]
 }
