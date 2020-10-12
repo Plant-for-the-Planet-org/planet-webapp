@@ -3,7 +3,7 @@ import React from 'react';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
-import {getRequest} from '../src/utils/apiRequests/api';
+import { getRequest } from '../src/utils/apiRequests/api';
 import storeConfig from '../src/utils/storeConfig';
 
 interface Props {
@@ -26,12 +26,23 @@ export default function Donate({
   React.useEffect(() => {
     storeConfig();
   }, []);
-  
+
+  //Deprecation Notice: This route will be removed in next major version
+  React.useEffect(() => {
+    if (router.query.p) {
+      router.push('/[p]', `/${router.query.p}`, {
+        shallow: true,
+      });
+    }
+  }, [router]);
+
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
       let currencyCode = getStoredCurrency();
-      const projects = await getRequest(`/app/projects?_scope=map&currency=${currencyCode}`);
+      const projects = await getRequest(
+        `/app/projects?_scope=map&currency=${currencyCode}`
+      );
       setProjects(projects);
       setProject(null);
       setShowSingleProject(false);
