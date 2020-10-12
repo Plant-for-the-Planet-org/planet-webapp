@@ -1,4 +1,4 @@
-import getsessionId from '../../../../../utils/getSessionId';
+import getsessionId from '../../../../../utils/apiRequests/getSessionId';
 import { PayWithCardTypes } from '../../../../common/types/donations';
 
 export async function createDonation(data: any) {

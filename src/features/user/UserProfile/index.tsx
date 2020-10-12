@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import LandingSection from '../../common/Layout/LandingSection';
 import styles from './UserProfile.module.scss';
-import Settings from '../../../assets/images/icons/userProfileIcons/Settings';
-import ScrollDown from '../../../assets/images/icons/userProfileIcons/ScrollDown';
+import Settings from '../../../../public/assets/images/icons/userProfileIcons/Settings';
+import ScrollDown from '../../../../public/assets/images/icons/userProfileIcons/ScrollDown';
 import MyForestContainer from './components/MyForestContainer';
-import Footer from '../../common/Footer';
+import Footer from '../../common/Layout/Footer';
 import UserInfo from './components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';

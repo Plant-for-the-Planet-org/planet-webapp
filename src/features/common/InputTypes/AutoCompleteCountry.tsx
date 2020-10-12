@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
-import MaterialTextFeild from './MaterialTextFeild';
+import MaterialTextField from './MaterialTextField';
 
 const config = tenantConfig();
 
@@ -93,7 +93,7 @@ export default function CountrySelect(props: {
       }}
       defaultValue={value.label}
       renderInput={(params) => (
-        <MaterialTextFeild
+        <MaterialTextField
           {...params}
           label={props.label}
           variant="outlined"

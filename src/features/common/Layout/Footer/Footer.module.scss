@@ -1,0 +1,113 @@
+@import '../../../../theme/theme';
+
+.footerMainContainer {
+  max-width: 950px;
+  margin: auto 20px 76px 20px;
+}
+@media screen and (min-width: 950px) {
+  .footerMainContainer {
+    margin: auto;
+  }
+}
+
+.hr {
+  height: 1px;
+  background-color: $primaryFontColor;
+  width: 100%;
+  margin-top: 100px;
+}
+.footer_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.footer_links_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.footer_links {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 14px;
+  color: $primaryFontColor;
+  margin-right: 16px;
+  margin-top: 22.2px;
+}
+
+.footer_button_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.footer_button {
+  border: 1px solid $primaryFontColor;
+  border-radius: 7px;
+  color: $primaryFontColor;
+  text-decoration: none;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 16px;
+  margin-top: 18.8px;
+}
+
+.footer_button > svg {
+  width: 22px;
+}
+.footer_button_container > a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footer_button:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.selected_language {
+  font-family: $primaryFontFamily;
+  font-size: 14px;
+  margin: 0px !important;
+  margin-left: 8px !important;
+}
+
+.selected_language_bold {
+  font-family: $primaryFontFamily;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0px !important;
+  margin-left: 8px !important;
+}
+
+.logo_container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 16.8px;
+  margin-bottom: 80px;
+}
+
+.pfp_logo {
+  margin-right: 30px;
+  height: 69px;
+  width: 69px;
+}
+.unep_logo_text {
+  font-family: $primaryFontFamily;
+  font-size: 9px;
+  font-weight: normal;
+  letter-spacing: 0.18px;
+  color: $primaryFontColor;
+  margin-bottom: 10px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
+}

@@ -3,12 +3,12 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import tenantConfig from '../../../../../tenant.config';
-import Close from '../../../../assets/images/icons/headerIcons/close';
+import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../../common/types/donations';
 import styles from './../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';
 import { getPaymentType } from './treeDonation/PaymentFunctions';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
+import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;

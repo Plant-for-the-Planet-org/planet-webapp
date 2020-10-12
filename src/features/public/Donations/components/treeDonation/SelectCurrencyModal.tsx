@@ -6,12 +6,12 @@ import Modal from '@material-ui/core/Modal';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import countriesData from '../../../../../utils/countriesData.json';
+import countriesData from '../../../../../utils/countryCurrency/countriesData.json';
 import {
   getCountryDataBy,
   sortCountriesData,
-} from '../../../../../utils/countryUtils';
-import { ThemeContext } from '../../../../../utils/themeContext';
+} from '../../../../../utils/countryCurrency/countryUtils';
+import { ThemeContext } from '../../../../../theme/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
 import i18next from '../../../../../../i18n';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
