@@ -10,6 +10,8 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
+import MapLayout from '../src/features/public/Donations/components/MapboxMap';
+import { useRouter } from 'next/router';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -29,6 +31,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
+  const router = useRouter();
+  const [projects, setProjects] = React.useState(null);
+  const [project, setProject] = React.useState(null);
+  const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [isMap, setIsMap] = React.useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -41,6 +48,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
+    if (router.pathname === '/' || router.pathname === '/[p]') {
+      setIsMap(true);
+    } else {
+      setIsMap(false);
+    }
+  }, [router]);
+
+  React.useEffect(() => {
     if (
       process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
       (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
@@ -51,11 +66,35 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, []);
 
+  const ProjectProps = {
+    projects,
+    project,
+    setProject,
+    setProjects,
+    showSingleProject,
+    setShowSingleProject,
+    pageProps,
+    initialized,
+  };
+
   return (
     <ThemeProvider>
       <CssBaseline />
       <Layout>
-        <Component i18nloaded={initialized} {...pageProps} />
+        {isMap ? (
+          project !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : projects !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : null
+        ) : null}
+        <Component {...ProjectProps} />
       </Layout>
     </ThemeProvider>
   );

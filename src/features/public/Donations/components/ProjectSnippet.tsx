@@ -67,7 +67,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
 
       <div
         onClick={() => {
-          router.push(`/?p=${project.properties.slug}`, undefined, {
+          router.push('/[p]', `/${project.properties.slug}`, {
             shallow: true,
           });
         }}
