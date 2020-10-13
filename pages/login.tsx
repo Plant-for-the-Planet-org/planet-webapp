@@ -23,7 +23,7 @@ export default function Login() {
     }
   }
 
-  //   existing user -> to me page
+  //   existing user -> to user profile page
   if (!loading && session && session.userExistsInDB) {
     if (typeof window !== 'undefined') {
       router.push(`/t/${session.userprofile.userSlug}`);
