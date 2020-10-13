@@ -24,7 +24,7 @@ export default function CompleteSignup() {
 
   // if accessed by unauthenticated user
   if(!loading && !session){
-    signIn('auth0', { callbackUrl: '/complete-signup' });
+    signIn('auth0', { callbackUrl: '/login' });
   }
 
   //  snackbars (for warnings, success messages, errors)

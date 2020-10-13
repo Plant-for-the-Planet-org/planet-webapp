@@ -13,32 +13,34 @@ import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
-console.log('-----------------------')
-console.log('NODE_ENV', process.env.NODE_ENV)
-console.log('AUTH0_CLIENT_ID', process.env.AUTH0_CLIENT_ID)
-console.log('AUTH0_CUSTOM_DOMAIN', process.env.AUTH0_CUSTOM_DOMAIN)
-console.log('NEXTAUTH_URL', process.env.NEXTAUTH_URL)
 
 const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
+
+  // If there is a session we will use it
   const [session, loading] = useSession();
+
   const router = useRouter();
 
+  // Works when user clicks on Me
   const checkWhichPath = () => {
     // if no user logged in  -> signIn()
     if (!loading && !session) {
-      signIn('auth0', { callbackUrl: `/complete-signup` })
+      console.log('if no user logged in  -> signIn()');
+      signIn('auth0', { callbackUrl: `/login` })
     }
     // if user logged in, and already signed up -> /t/userSlug page
     if (!loading && session && session.userExistsInDB) {
       if (typeof window !== 'undefined') {
+        console.log('if user logged in, and already signed up -> /t/userSlug page');
         router.push(`/t/${session.userprofile.userSlug}`);
       }
     }
     // if user logged in, not already signed up -> /complete-signup
     if (!loading && session && !session.userExistsInDB) {
       if (typeof window !== 'undefined') {
+        console.log('if user logged in, not already signed up -> /complete-signup');
         router.push('/complete-signup');
       }
     }

@@ -61,9 +61,11 @@ const options = {
           };
           session.userprofile = newMeObj;
           session.userExistsInDB = true;
-        } else {
+        } else if(res.status === 303) {
           session.userExistsInDB = false;
-        } 
+        } else {
+          session = null;
+        }
         /* now session has field called userExistsinDB to check 
         if that email-id exists in our database or not */
       } catch (e){
