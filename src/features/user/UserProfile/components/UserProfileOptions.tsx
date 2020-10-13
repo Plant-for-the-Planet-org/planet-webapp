@@ -4,7 +4,6 @@ import Share from '../../../../../public/assets/images/icons/userProfileIcons/Sh
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
-import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
