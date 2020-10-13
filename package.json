@@ -12,7 +12,8 @@
     "heroku-postbuild": "npm run build",
     "find:unused": "next-unused",
     "lint": "eslint i18n pages src",
-    "lint:errors": "eslint i18n pages src --quiet"
+    "lint:errors": "eslint i18n pages src --quiet",
+    "export": "cross-env NEXT_EXPORT=true next build && cross-env NEXT_EXPORT=true next export"
   },
   "engines": {
     "node": "12.x",
@@ -51,6 +52,7 @@
     "next": "^9.5.2",
     "next-auth": "^3.1.0",
     "next-i18next": "^6.0.2",
+    "next-offline": "^5.0.2",
     "next-unused": "0.0.3",
     "node-sass": "^4.14.1",
     "react": "16.13.1",

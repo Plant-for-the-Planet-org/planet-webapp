@@ -1,0 +1,16 @@
+{
+    "name": "Plant for the Planet",
+    "short_name": "Plant for the Planet",
+    "description": "Plant trees with Plant for the planet",
+    "icons": [
+      {
+        "src": "planet.png",
+        "sizes": "400x400",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "start_url": "/",
+    "display": "standalone"
+  }

@@ -4,6 +4,7 @@ const withSourceMaps = require('@zeit/next-source-maps')();
 
 // Use the SentryWebpack plugin to upload the source maps during build step
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+const withOffline = require('next-offline')
 
 const {
   NEXT_PUBLIC_SENTRY_DSN: SENTRY_DSN,
@@ -29,7 +30,7 @@ const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
 
 const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-module.exports = withSourceMaps({
+const nextConfig = withSourceMaps({
   serverRuntimeConfig: {
     rootDir: __dirname,
   },
@@ -106,4 +107,31 @@ module.exports = withSourceMaps({
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
+  workboxOpts: {
+    swDest: process.env.NEXT_EXPORT
+      ? 'service-worker.js'
+      : 'static/service-worker.js',
+    runtimeCaching: [
+      {
+        urlPattern: /^https?.*/,
+        handler: 'NetworkFirst',
+        options: {
+          cacheName: 'offlineCache',
+          expiration: {
+            maxEntries: 200,
+          },
+        },
+      },
+    ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/service-worker.js',
+        destination: '/_next/static/service-worker.js',
+      },
+    ]
+  }
 });
+
+module.exports = withOffline(nextConfig)
