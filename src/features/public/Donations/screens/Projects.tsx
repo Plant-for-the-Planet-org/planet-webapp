@@ -4,9 +4,10 @@ import styles from '../styles/Projects.module.scss';
 
 interface Props {
   projects: any;
+  directGift: any;
 }
 
-function ProjectsList({ projects }: Props): ReactElement {
+function ProjectsList({ projects, directGift }: Props): ReactElement {
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
   const screenWidth = window.innerWidth;
@@ -22,6 +23,7 @@ function ProjectsList({ projects }: Props): ReactElement {
   const ProjectsProps = {
     projects: allProjects,
     setSearchedProjects: setSearchedProjects,
+    directGift,
   };
 
   return (

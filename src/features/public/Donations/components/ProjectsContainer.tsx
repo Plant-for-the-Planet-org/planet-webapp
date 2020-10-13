@@ -11,6 +11,7 @@ const { useTranslation } = i18next;
 interface Props {
   projects: any;
   setSearchedProjects: Function;
+  directGift: any;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
