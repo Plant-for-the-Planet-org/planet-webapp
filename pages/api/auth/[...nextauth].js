@@ -43,7 +43,7 @@ const options = {
       
       try {
         const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/accountInfo`,
+          `${process.env.API_ENDPOINT}/treemapper/accountInfo`,
           {
             headers: {
               Authorization: `OAuth ${token.accessToken}`,
@@ -61,7 +61,7 @@ const options = {
           };
           session.userprofile = newMeObj;
           session.userExistsInDB = true;
-        } else if(res.status === 303) {
+        } else if (res.status === 303) {
           session.userExistsInDB = false;
         } else {
           session = null;
