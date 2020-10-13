@@ -10,7 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
 
-export default function PrivateIndividualProfile({ userprofile }: any) {
+export default function PrivateIndividualProfile({ privateUserprofile }: any) {
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
@@ -53,7 +53,7 @@ export default function PrivateIndividualProfile({ userprofile }: any) {
     <React.Fragment>
       <main>
         {/* will render only if it is ME page */}
-        {userprofile.isMe && (
+(
           <>
             <div
               className={styles.settingsIcon}
@@ -62,7 +62,7 @@ export default function PrivateIndividualProfile({ userprofile }: any) {
               <Settings color="white" />
             </div>
             <SettingsModal
-              userprofile={userprofile}
+              userprofile={privateUserprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
               editProfileModalOpen={editProfileModalOpen}
@@ -70,7 +70,7 @@ export default function PrivateIndividualProfile({ userprofile }: any) {
               handleEditProfileModalOpen={handleEditProfileModalOpen}
             />
           </>
-        )}
+        )
 
         {/* userinfo section */}
         <LandingSection
@@ -81,15 +81,15 @@ export default function PrivateIndividualProfile({ userprofile }: any) {
           }
         >
           <UserInfo
-            userprofile={userprofile}
+            userprofile={privateUserprofile}
             handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
           />
         </LandingSection>
 
         {/* my forest section  - if contains projects field*/}
-        {userprofile.isMe && userprofile.projects && (
+        {privateUserprofile.projects && (
           <div ref={scrollRef} className={styles.myForestContainer}>
-            <MyForestContainer userprofile={userprofile} />
+            <MyForestContainer userprofile={privateUserprofile} />
           </div>
         )}
 

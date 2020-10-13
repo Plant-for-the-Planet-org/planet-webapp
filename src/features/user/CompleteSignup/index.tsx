@@ -15,17 +15,18 @@ export default function CompleteSignup() {
   const [session, loading] = useSession();
   const router = useRouter();
 
-  // if accessed by a registered up user
-  if(!loading && session && session?.userExistsInDB){
+   // if accessed by a registered user
+   if(!loading && session && session?.userExistsInDB){
     if (typeof window !== 'undefined') {
-      router.push('/me');
+      router.push(`/t/${session.userprofile.userSlug}`);
     }
   }
 
   // if accessed by unauthenticated user
   if(!loading && !session){
-    signIn('auth0', { callbackUrl: '/me' });
+    signIn('auth0', { callbackUrl: '/complete-signup' });
   }
+
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const handleSnackbarOpen = () => {
@@ -87,11 +88,13 @@ export default function CompleteSignup() {
       setRequestSent(false);
       if (res.status === 200) {
         // successful signup -> goto me page
+        const resJson = await res.json()
+        const tempResponse = {...resJson, userSlug: 'trial-slug'}
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
         if (typeof window !== 'undefined') {
-          router.push('/me');
+          router.push(`/t/${tempResponse.userSlug}`);
         }
       } else {
         setSnackbarMessage('Error in creating profile');

@@ -28,12 +28,12 @@ export default function NavbarComponent(props: any) {
   const checkWhichPath = () => {
     // if no user logged in  -> signIn()
     if (!loading && !session) {
-      signIn('auth0', { callbackUrl: '/me' })
+      signIn('auth0', { callbackUrl: `/complete-signup` })
     }
-    // if user logged in, and already signed up -> /me page
+    // if user logged in, and already signed up -> /t/userSlug page
     if (!loading && session && session.userExistsInDB) {
       if (typeof window !== 'undefined') {
-        router.push('/me');
+        router.push(`/t/${session.userprofile.userSlug}`);
       }
     }
     // if user logged in, not already signed up -> /complete-signup

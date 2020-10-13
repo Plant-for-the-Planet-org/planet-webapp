@@ -13,7 +13,7 @@ export default function Login() {
 
   // start login flow
   if (!loading && !session) {
-    signIn('auth0', { callbackUrl: '/me' });
+    signIn('auth0', { callbackUrl: '/complete-signup' });
   }
 
   //   new user
@@ -23,10 +23,10 @@ export default function Login() {
     }
   }
 
-  //   existing user -> to me page
+  //   existing user -> to user profile page
   if (!loading && session && session.userExistsInDB) {
     if (typeof window !== 'undefined') {
-      router.push('/me');
+      router.push(`/t/${session.userprofile.userSlug}`);
     }
   }
   return (

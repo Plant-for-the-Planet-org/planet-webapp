@@ -18,7 +18,7 @@ export default function UserInfo({
       <h2 className={styles.treeCounterName}>{`${userprofile.firstname} ${userprofile.lastname}`}</h2>
 
       {/* will render only if it is ME page */}
-      {userprofile.isMe && (
+      {(
         <React.Fragment>
           {/* user description */}
           <p className={styles.treeCounterDescription}>

@@ -56,6 +56,7 @@ const options = {
           const resJson = await res.json();
           const newMeObj = {
             ...resJson,
+            userSlug: 'trial-slug',
             isMe: true,
           };
           session.userprofile = newMeObj;

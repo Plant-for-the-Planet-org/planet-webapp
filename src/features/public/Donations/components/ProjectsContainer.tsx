@@ -5,7 +5,7 @@ import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/server'
 
 const { useTranslation } = i18next;
 interface Props {
