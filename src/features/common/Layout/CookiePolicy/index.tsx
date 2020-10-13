@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);

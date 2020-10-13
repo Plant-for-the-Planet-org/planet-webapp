@@ -14,7 +14,7 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 

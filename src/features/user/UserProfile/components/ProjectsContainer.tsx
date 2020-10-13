@@ -3,7 +3,7 @@ import React from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 import styles from '../styles/ProjectsContainer.module.scss';
 
 const { useTranslation } = i18next;
