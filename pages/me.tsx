@@ -72,7 +72,6 @@ export default function UserProfile(initialized: Props) {
   const router = useRouter();
   const [userprofile, setUserprofile] = useState({});
   const [session, loading] = useSession();
-  const [pageLoading, setPageLoading] = useState(true);
   const UserProps = {
     userprofile,
   };
