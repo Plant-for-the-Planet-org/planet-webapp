@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
 import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import TPOProfile from '../../src/features/public/UserProfile/screens/TpoProfile';
@@ -6,19 +7,25 @@ import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserP
 import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/public/UserProfile/screens/IndividualProfile';
+import PrivateUserProfile from '../../src/features/user/UserProfile';
 
 interface Props {
   initialized: Boolean;
 }
 
 export default function PublicUser(initialized: Props) {
+  const [session, loading] = useSession();
   const [publicUserprofile, setPublicUserprofile] = React.useState();
+  const [privateUserprofile, setPrivateUserprofile] = React.useState();
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
 
   const router = useRouter();
   const PublicUserProps = {
     publicUserprofile,
+  };
+  const PrivateUserProps = {
+    privateUserprofile,
   };
 
   useEffect(() => {
@@ -27,41 +34,66 @@ export default function PublicUser(initialized: Props) {
       setReady(true);
     }
   }, [router]);
-
-  
-
   useEffect(() => {
-    async function loadPublicUserData() {
-      // If the user is logged in and there is a session, check if the slug fetched matches with the slug in the session
-      // If it matches load Private user page -> Session.userprofile
-      // If it doesn't match load Public user page
-      const newPublicUserprofile = await getRequest(`/public/v1.0/en/treecounter/${slug}`);
-      setPublicUserprofile(newPublicUserprofile)
+    async function loadUserData() {
+      // some user logged in and slug matches -> private profile
+      if (
+        !loading &&
+        session &&
+        session?.userprofile &&
+        session.userprofile.userSlug === slug
+      ) {
+        setPrivateUserprofile(session.userprofile);
+      } else {
+        //no user logged in or slug mismatch -> public profile
+        const newPublicUserprofile = await getRequest(
+          `/public/v1.0/en/treecounter/${slug}`
+        );
+        setPublicUserprofile(newPublicUserprofile);
+      }
     }
-    if (ready) {
-      loadPublicUserData();
+    // ready is for router, loading is for session
+    if (ready && !loading) {
+      loadUserData();
     }
-  }, [ready]);
+  }, [ready, loading]);
 
-  function getUserProfile(){
-    switch(publicUserprofile?.userProfile.type){
-      case 'tpo': return (<TPOProfile {...PublicUserProps} />);
-      case 'individual': return (<IndividualProfile {...PublicUserProps} />)
+  function getPublicUserProfile() {
+    switch (publicUserprofile?.userProfile.type) {
+      case 'tpo':
+        return (
+          <>
+          <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
+        <TPOProfile {...PublicUserProps} />
+        <Footer />
+        </>
+        );
+      case 'individual':
+        return (
+          <>
+          <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
+        <IndividualProfile {...PublicUserProps} />
+        <Footer />
+        </>
+        );
     }
   }
-  
-  return (
-    <>
-      <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
 
-        {/* If the user is logged in and the slug matches, load private user PrivateUserPage
-        Else load Public user page */}
-        {initialized && publicUserprofile ?
-          getUserProfile()
-          : (
-            <UserProfleLoader />
-        )}
-        <Footer />
-    </>
-  );
+  if (initialized && (publicUserprofile || privateUserprofile)) {
+    if (publicUserprofile) {
+         return ( getPublicUserProfile() )
+    } else if (privateUserprofile) {
+      return (
+        <>
+          <PrivateUserProfile
+            style={{ height: '100vh', overflowX: 'hidden' }}
+            {...PrivateUserProps}
+          />
+          <Footer />
+        </>
+      );
+    }
+  } else {
+    return <UserProfleLoader />;
+  }
 }
