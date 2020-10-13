@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Layout from '../src/features/common/Layout';
-import UserPage from '../src/features/user/UserProfile';
+import UserPage from '../src/features/user/UserProfile/screens/PrivateIndividualProfile';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 

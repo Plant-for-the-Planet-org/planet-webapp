@@ -1,16 +1,16 @@
 import React, { useRef } from 'react';
-import LandingSection from '../../common/Layout/LandingSection';
-import styles from './UserProfile.module.scss';
-import Settings from '../../../../public/assets/images/icons/userProfileIcons/Settings';
-import ScrollDown from '../../../../public/assets/images/icons/userProfileIcons/ScrollDown';
-import MyForestContainer from './components/MyForestContainer';
-import Footer from '../../common/Layout/Footer';
-import UserInfo from './components/UserInfo';
+import LandingSection from '../../../common/Layout/LandingSection';
+import styles from '../styles/UserProfile.module.scss';
+import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
+import ScrollDown from '../../../../../public/assets/images/icons/userProfileIcons/ScrollDown';
+import MyForestContainer from '../components/MyForestContainer';
+import Footer from '../../../common/Layout/Footer';
+import UserInfo from '../components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import SettingsModal from './components/SettingsModal';
+import SettingsModal from '../components/SettingsModal';
 
-export default function UserProfile({ userprofile }: any) {
+export default function PrivateIndividualProfile({ userprofile }: any) {
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false

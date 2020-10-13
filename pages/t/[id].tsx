@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import TPOProfile from '../../src/features/public/UserProfile/screens/TpoProfile';
+import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
-import IndividualProfile from '../../src/features/public/UserProfile/screens/IndividualProfile';
+import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 
 interface Props {
   initialized: Boolean;
