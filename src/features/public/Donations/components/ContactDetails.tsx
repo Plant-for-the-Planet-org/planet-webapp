@@ -6,9 +6,10 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { ContactDetailsPageProps } from './../../../common/types/donations';
-import styles from './../styles/ContactDetails.module.scss';
+import { ContactDetailsPageProps } from '../../../common/types/donations';
+import styles from '../styles/ContactDetails.module.scss';
 import i18next from '../../../../../i18n';
+import zipCodeValidation from '../../../../utils/countryZipCode/zipCodeValidation';
 
 const { useTranslation } = i18next;
 
@@ -35,10 +36,19 @@ function ContactDetails({
   };
 
   const changeCountry = (country: any) => {
-    setContactDetails({ ...contactDetails, country: country });
+    console.log(country);
+    setContactDetails({ ...contactDetails, country });
   };
 
-  let defaultCountry = isTaxDeductible
+  const zipCodeValidate = () => zipCodeValidation(contactDetails.country, contactDetails.zipCode);
+
+  React.useEffect(() => {
+    if (contactDetails.zipCode && contactDetails.country) {
+      zipCodeValidate();
+    }
+  }, [contactDetails]);
+
+  const defaultCountry = isTaxDeductible
     ? country
     : localStorage.getItem('countryCode');
   return (
@@ -70,7 +80,7 @@ function ContactDetails({
             )}
           </div>
 
-          <div style={{ width: '20px' }}></div>
+          <div style={{ width: '20px' }} />
           <div>
             <MaterialTextField
               inputRef={register({ required: true })}
@@ -141,10 +151,12 @@ function ContactDetails({
             )}
           </div>
 
-          <div style={{ width: '20px' }}></div>
+          <div style={{ width: '20px' }} />
           <div>
             <MaterialTextField
-              inputRef={register({})}
+              inputRef={register({
+                validate: zipCodeValidate,
+              })}
               label={t('donate:zipCode')}
               variant="outlined"
               name="zipCode"
@@ -154,6 +166,11 @@ function ContactDetails({
             {errors.zipCode && (
               <span className={styles.formErrors}>
                 {t('donate:zipCodeAlphaNumValidation')}
+              </span>
+            )}
+            {errors.zipCode && errors.zipCode.type === 'validate' && (
+              <span className={styles.formErrors}>
+                {t('donate:invalidZipCode')}
               </span>
             )}
           </div>
@@ -214,7 +231,9 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+            {currency}
+            {' '}
+            {Sugar.Number.format(Number(treeCount * treeCost), 2)}
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
