@@ -70,10 +70,10 @@ interface Props {
 
 export default function UserProfile(initialized: Props) {
   const router = useRouter();
-  const [userprofile, setUserprofile] = useState({});
+  const [privateUserprofile, setUserprofile] = useState({});
   const [session, loading] = useSession();
   const UserProps = {
-    userprofile,
+    privateUserprofile,
   };
   useEffect(() => {
     if (!loading && session && session.userExistsInDB) {
