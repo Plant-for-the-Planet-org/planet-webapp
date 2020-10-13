@@ -215,9 +215,7 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-          {t('donate:fortreeAmountTrees', {
-            amount: getFormatedCurrency(i18n.language, currency, treeCount * treeCost),
-          })}
+          {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
             {/* {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)} */}
           </div>
           <div className={styles.totalCostText}>
