@@ -1,9 +1,8 @@
 import React from 'react';
-import LandingSection from '../../common/Layout/LandingSection';
-import ProjectsContainer from './components/ProjectsContainer';
-import PublicUserInfo from './components/PublicUserInfo';
+import LandingSection from '../../../common/Layout/LandingSection';
+import PublicUserInfo from '../components/PublicUserInfo';
 
-export default function PublicUserProfile({ publicUserprofile }: any) {
+export default function IndividualProfile({ publicUserprofile }: any) {
   return (
     <>
       <LandingSection
@@ -15,9 +14,6 @@ export default function PublicUserProfile({ publicUserprofile }: any) {
       >
         <PublicUserInfo publicUserprofile={publicUserprofile} />
       </LandingSection>
-      <ProjectsContainer
-        projects={publicUserprofile.userProfile.plantProjects}
-      />
     </>
   );
 }

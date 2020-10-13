@@ -3,7 +3,7 @@ import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../../Donations/styles/Projects.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/server';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;

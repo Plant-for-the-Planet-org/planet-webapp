@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import PublicUserPage from '../../src/features/public/PublicUserProfile';
+import TPOProfile from '../../src/features/public/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
+import IndividualProfile from '../../src/features/public/UserProfile/screens/IndividualProfile';
 
 interface Props {
   initialized: Boolean;
@@ -42,15 +43,22 @@ export default function PublicUser(initialized: Props) {
     }
   }, [ready]);
 
+  function getUserProfile(){
+    switch(publicUserprofile?.userProfile.type){
+      case 'tpo': return (<TPOProfile {...PublicUserProps} />);
+      case 'individual': return (<IndividualProfile {...PublicUserProps} />)
+    }
+  }
+  
   return (
     <>
       <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
 
         {/* If the user is logged in and the slug matches, load private user PrivateUserPage
         Else load Public user page */}
-        {initialized && publicUserprofile ? (
-            <PublicUserPage {...PublicUserProps} />
-          ) : (
+        {initialized && publicUserprofile ?
+          getUserProfile()
+          : (
             <UserProfleLoader />
         )}
         <Footer />
