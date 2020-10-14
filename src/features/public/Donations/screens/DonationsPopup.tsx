@@ -183,6 +183,15 @@ function DonationsPopup({
         recipientTreecounter: directGift.id,
         receipients: null,
       });
+    } else {
+      setGiftDetails({
+        type: null,
+        recipientName: null,
+        email: null,
+        giftMessage: '',
+        recipientTreecounter: null,
+        receipients: null,
+      });
     }
   }, [directGift]);
 
