@@ -41,6 +41,12 @@ function ContactDetails({
 
   const zipCodeValidate = () => zipCodeValidation(contactDetails.country, contactDetails.zipCode);
 
+  React.useEffect(() => {
+    if (contactDetails.country && contactDetails.zipCode) {
+      zipCodeValidate();
+    }
+  }, [contactDetails]);
+
   const defaultCountry = isTaxDeductible
     ? country
     : localStorage.getItem('countryCode');
@@ -148,7 +154,7 @@ function ContactDetails({
           <div>
             <MaterialTextField
               inputRef={register({
-                validate: zipCodeValidate,
+                validate: async value => zipCodeValidation(contactDetails.country, contactDetails.zipCode),
               })}
               label={t('donate:zipCode')}
               variant="outlined"
@@ -161,11 +167,11 @@ function ContactDetails({
                 {t('donate:zipCodeAlphaNumValidation')}
               </span>
             )}
-            {errors.zipCode && errors.zipCode.type === 'validate' && (
+            {/* {errors.zipCode && errors.zipCode.type === 'validate' && (
               <span className={styles.formErrors}>
                 {t('donate:invalidZipCode')}
               </span>
-            )}
+            )} */}
           </div>
         </div>
         <div className={styles.formRow}>
