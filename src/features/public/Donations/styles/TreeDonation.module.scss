@@ -289,6 +289,13 @@
 
 /* Gift Trees Styles */
 
+.singleGiftTitleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .singleGiftTitle {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
@@ -297,6 +304,14 @@
   margin-top: 20px;
   font-weight: 600;
 }
+
+.singleGiftRemove {
+  cursor: pointer;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
 .formRow {
   display: flex;
   flex-direction: row;

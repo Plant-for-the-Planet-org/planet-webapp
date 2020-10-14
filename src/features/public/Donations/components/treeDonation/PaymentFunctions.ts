@@ -95,14 +95,37 @@ export function payWithCard({
       taxDeductionCountry,
     };
   }
-  const gift = {
-    gift: {
-      type: 'invitation',
-      recipientName: giftDetails.recipientName,
-      recipientEmail: giftDetails.email,
-      message: giftDetails.giftMessage,
-    },
-  };
+
+
+
+  async function setGiftDetails() {
+    var gift =null;
+    if(giftDetails.type === 'invitation') {
+      gift = {
+        gift: {
+          type: 'invitation',
+          recipientName: giftDetails.recipientName,
+          recipientEmail: giftDetails.email,
+          message: giftDetails.giftMessage,
+        },
+      };
+    } else if(giftDetails.type === 'direct') {
+     gift = {
+        gift: {
+          type: 'direct',
+          recipientTreecounter:giftDetails.recipientTreecounter,
+          message: giftDetails.giftMessage,
+        },
+      };
+    } else if(giftDetails.type === 'bulk') {
+     // do nothing for now
+     gift = null;
+    }
+    return gift;
+  }
+
+  const gift = setGiftDetails();
+
   if (isGift) {
     createDonationData = {
       ...createDonationData,

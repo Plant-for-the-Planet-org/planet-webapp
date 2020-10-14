@@ -12,6 +12,7 @@ interface Props {
   projects: any;
   setSearchedProjects: Function;
   directGift: any;
+  setDirectGift: Function;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -22,6 +23,8 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 export default function ProjectsContainer({
   projects,
   setSearchedProjects,
+  directGift,
+  setDirectGift,
 }: Props) {
   const { t } = useTranslation(['donate']);
 
@@ -102,12 +105,18 @@ export default function ProjectsContainer({
 
   const AllProjectsProps = {
     projects: allProjects,
+    directGift,
+    setDirectGift,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
+    directGift,
+    setDirectGift,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
+    directGift,
+    setDirectGift,
   };
 
   return (

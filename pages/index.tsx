@@ -67,6 +67,7 @@ export default function Donate({
   const ProjectsProps = {
     projects,
     directGift,
+    setDirectGift,
   };
 
   const GiftProps = {
