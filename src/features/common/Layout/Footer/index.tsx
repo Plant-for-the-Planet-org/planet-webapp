@@ -6,7 +6,7 @@ import World from '../../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
-import i18next from '../../../../../i18n/server';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 
