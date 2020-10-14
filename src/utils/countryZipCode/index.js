@@ -208,7 +208,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'CZ',
   name: 'Czech Republic',
-  postal: /[0-9]{3} [0-9]{2}/g,
+  postal: /[0-9]{3} ?[0-9]{2}/g,
 }, {
   abbrev: 'DK',
   name: 'Denmark',
@@ -296,7 +296,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'GR',
   name: 'Greece',
-  postal: /[0-9]{3} [0-9]{2}/g,
+  postal: /[0-9]{3} ?[0-9]{2}/g,
 }, {
   abbrev: 'GL',
   name: 'Greenland',
@@ -458,7 +458,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'LB',
   name: 'Lebanon',
-  postal: /[0-9]{4} [0-9]{4}/g,
+  postal: /[0-9]{4} ?[0-9]{4}/g,
 }, {
   abbrev: 'LS',
   name: 'Lesotho',
@@ -511,7 +511,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'MT',
   name: 'Malta',
-  postal: /[A-Z]{3} [0-9]{4}/g,
+  postal: /[A-Z]{3} ?[0-9]{4}/g,
 }, {
   abbrev: 'MH',
   name: 'Marshall Islands',
@@ -716,7 +716,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'SK',
   name: 'Slovakia',
-  postal: /[0-9]{3} [0-9]{2}/g,
+  postal: /[0-9]{3} ?[0-9]{2}/g,
 }, {
   abbrev: 'SI',
   name: 'Slovenia',
@@ -727,7 +727,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'SO',
   name: 'Somalia',
-  postal: /[A-Z]{2} [0-9]{5}/g,
+  postal: /[A-Z]{2} ?[0-9]{5}/g,
 }, {
   abbrev: 'ZA',
   name: 'South Africa',
@@ -772,7 +772,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'LC',
   name: 'St. Lucia',
-  postal: /[A-Z]{2}[0-9]{2} [0-9]{3}/g,
+  postal: /[A-Z]{2}[0-9]{2} ?[0-9]{3}/g,
 }, {
   abbrev: 'SX',
   name: 'St. Maarten',
@@ -797,7 +797,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'SE',
   name: 'Sweden',
-  postal: /[0-9]{3} [0-9]{2}/g,
+  postal: /[0-9]{3} ?[0-9]{2}/g,
 }, {
   abbrev: 'CH',
   name: 'Switzerland',
