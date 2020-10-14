@@ -25,28 +25,28 @@ const config = {
     items: [
       {
         id: 1,
-        title: 'Home',
+        title: 'home',
         onclick: '/home',
         visible: true,
         key: 'home',
       },
       {
         id: 2,
-        title: 'Pflanzen',
+        title: 'plant',
         onclick: '/',
         visible: true,
         key: 'donate',
       },
       {
         id: 3,
-        title: 'Leaderboard',
+        title: 'leaderboard',
         onclick: '/leaderboard',
         visible: false,
         key: 'leaderboard',
       },
       {
         id: 4,
-        title: 'Me',
+        title: 'me',
         onclick: '/me',
         visible: false,
         key: 'me',

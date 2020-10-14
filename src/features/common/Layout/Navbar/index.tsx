@@ -12,10 +12,14 @@ import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
+import i18next from '../../../../../i18n';
 
+
+const { useTranslation } = i18next;
 const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
+  const { t } = useTranslation(['common']);
   const router = useRouter();
 
   const { toggleTheme } = React.useContext(ThemeContext);
@@ -46,7 +50,7 @@ export default function NavbarComponent(props: any) {
                   <a href="https://www.plant-for-the-planet.org">
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                      alt="About Plant-for-the-Planet"
+                      alt={t('common:about_pftp')}
                     />
                   </a>
                 </div>
@@ -62,7 +66,7 @@ export default function NavbarComponent(props: any) {
                     <a href="https://www.plant-for-the-planet.org">
                       <img
                         src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                        alt="About Plant-for-the-Planet"
+                        alt={t('common:about_pftp')}
                       />
                     </a>
                   </div>
@@ -90,7 +94,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                     </Link>
@@ -112,7 +116,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                     </Link>
@@ -136,7 +140,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
@@ -159,7 +163,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>

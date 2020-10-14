@@ -121,7 +121,7 @@ export default function Footer() {
               <a href="http://www.plant-for-the-planet.org/" target="_blank">
                 <img
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                  alt="About Plant-for-the-Planet"
+                  alt={t('common:about_pftp')}
                 />
               </a>
             </div>
