@@ -319,6 +319,10 @@ function PaymentDetails({
       <div className={styles.horizontalLine} />
       <div className={styles.finalTreeCount}>
         <div className={styles.totalCost}>
+<<<<<<< HEAD
+=======
+          {/* {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)} */}
+>>>>>>> 91d9fde2875d43bcfda5c28cfc7bdb8d5390edd0
           {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
         </div>
         <div className={styles.totalCostText}>
