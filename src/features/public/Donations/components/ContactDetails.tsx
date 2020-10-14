@@ -36,7 +36,6 @@ function ContactDetails({
   };
 
   const changeCountry = (country: any) => {
-    console.log(country);
     setContactDetails({ ...contactDetails, country });
   };
 
