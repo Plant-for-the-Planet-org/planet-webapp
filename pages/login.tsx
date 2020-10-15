@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
-import UserProfleLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
 
 const config = tenantConfig();
 
@@ -36,7 +36,7 @@ export default function Login() {
         <title>{`${config.meta.title} - Login`}</title>
       </Head>
       <Layout>
-        <UserProfleLoader/>
+        <UserProfileLoader/>
       </Layout>
     </>
   );

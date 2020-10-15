@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
-import UserProfleLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
@@ -94,6 +94,6 @@ export default function PublicUser(initialized: Props) {
       );
     }
   } else {
-    return <UserProfleLoader />;
+    return <UserProfileLoader />;
   }
 }
