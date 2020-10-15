@@ -18,7 +18,11 @@ export default function Logout() {
 
   // session present
   if (!loading && session) {
-    signOut({ callbackUrl: '/' })
+    if (typeof Storage !== 'undefined'){
+      localStorage.removeItem('userExistsInDB')
+      localStorage.removeItem('userprofile')
+      signOut({ callbackUrl: '/' })
+    }
   }
  
   return (
