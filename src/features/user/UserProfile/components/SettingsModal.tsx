@@ -4,6 +4,7 @@ import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
+import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 
@@ -15,6 +16,7 @@ export default function SettingsModal({
   handleEditProfileModalClose,
   handleEditProfileModalOpen,
 }: any) {
+  const router = useRouter();
   return (
     <>
       <Modal
@@ -36,7 +38,13 @@ export default function SettingsModal({
             <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div>
-            <div className={styles.settingsItem} onClick={() => signOut({ callbackUrl: '/' })}>
+            <div 
+            className={styles.settingsItem}  
+            onClick={() => { 
+              if (typeof window !== 'undefined') {
+              router.push(`/logout`);
+            }}
+          }>
               <b> Logout </b>
             </div>
             <div
