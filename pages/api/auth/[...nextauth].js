@@ -36,7 +36,8 @@ const options = {
       }
       return token
     },
-
+    
+    // called everytime useSession is called
     session: async (session, token) => {
       // now, session has accessToken. can be accessed by next-auth/client - useSession()
       session.accessToken = token.accessToken
