@@ -8,24 +8,32 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry'
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 
 export default function CompleteSignup() {
-
   const [session, loading] = useSession();
   const router = useRouter();
 
+  var userExistsInDB;
+
+  React.useEffect(() => {
+
+    // if accessed by unauthenticated user
+    if (!loading && !session) {
+      signIn('auth0', { callbackUrl: '/login' });
+    }
+
+    userExistsInDB = JSON.parse(localStorage.getItem('userExistsInDB'));  
    // if accessed by a registered user
-   if(!loading && session && session?.userExistsInDB){
+    if (!loading && session && userExistsInDB) {
+      if (localStorage.getItem('userprofile')){
+        const userprofile = JSON.parse(localStorage.getItem('userprofile'));
     if (typeof window !== 'undefined') {
-      router.push(`/t/${session.userprofile.userSlug}`);
+            router.push(`/t/${userprofile.userSlug}`);
     }
   }
-
-  // if accessed by unauthenticated user
-  if(!loading && !session){
-    signIn('auth0', { callbackUrl: '/login' });
   }
+  }, [loading]);
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -88,11 +96,16 @@ export default function CompleteSignup() {
       setRequestSent(false);
       if (res.status === 200) {
         // successful signup -> goto me page
-        const resJson = await res.json()
-        const tempResponse = {...resJson, userSlug: 'trial-slug'}
+        const resJson = await res.json();
+        localStorage.setItem('userExistsInDB', JSON.stringify(true));
+
+        // TODO: userSlug will be received from resJson
+        const tempResponse = { ...resJson, userSlug: 'trial-slug' };
+        localStorage.setItem('userprofile', JSON.stringify(tempResponse));
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
+
         if (typeof window !== 'undefined') {
           router.push(`/t/${tempResponse.userSlug}`);
         }
@@ -217,10 +230,14 @@ export default function CompleteSignup() {
     return name;
   };
 
-  if (loading || ( !loading && session && session.userExistsInDB) || (!loading && !session)) {
+  if (
+    loading ||
+    (!loading && session && (userExistsInDB === true)) ||
+    (!loading && !session)
+  ) {
     return null;
   }
-
+  if (!loading && session && (userExistsInDB === false)) {
   return (
     <div
       className={styles.signUpPage}
@@ -443,4 +460,6 @@ export default function CompleteSignup() {
       </Snackbar>
     </div>
   );
+}
+  return null;
 }
