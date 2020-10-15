@@ -60,7 +60,7 @@
   justify-content: center;
 }
 .thankyouImage {
-  background-image: url('/tenants/planet/images/donations/donationComplete.jpg');
+  background-image: url('/tenants/planet/images/donations/donationComplete_1.jpg');
   background-position: center;
   background-size: cover;
   border-radius: 7px;
@@ -207,4 +207,17 @@
 
 :export {
   blueishGrey: '#f2f2f7';
+}
+
+.thankyouImageHeader {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  color: $light;
+  font-variant-ligatures: none;
+  padding-top: 15%;
+}
+
+.thankyouImageHeaderText{
+  font-size: 35px;
 }
