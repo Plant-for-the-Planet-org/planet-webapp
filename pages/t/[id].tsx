@@ -61,7 +61,7 @@ export default function PublicUser(initialized: Props) {
     if (ready && !loading) {
       loadUserData();
     }
-  }, [ready, loading]);
+  }, [ready, loading, forceReload]);
 
   function getPublicUserProfile() {
     switch (publicUserprofile?.userProfile.type) {

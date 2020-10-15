@@ -15,6 +15,8 @@ export default function SettingsModal({
   editProfileModalOpen,
   handleEditProfileModalClose,
   handleEditProfileModalOpen,
+  changeForceReload,
+  forceReload,
 }: any) {
   const router = useRouter();
   return (
@@ -62,6 +64,8 @@ export default function SettingsModal({
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
+        changeForceReload={changeForceReload}
+        forceReload={forceReload}
       />
     </>
   );
