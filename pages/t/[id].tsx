@@ -19,6 +19,7 @@ export default function PublicUser(initialized: Props) {
   const [privateUserprofile, setPrivateUserprofile] = React.useState();
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+  const [forceReload, changeForceReload] = React.useState(false);
 
   const router = useRouter();
   const PublicUserProps = {
@@ -26,6 +27,8 @@ export default function PublicUser(initialized: Props) {
   };
   const PrivateUserProps = {
     privateUserprofile,
+    changeForceReload,
+    forceReload,
   };
 
   useEffect(() => {
@@ -36,14 +39,15 @@ export default function PublicUser(initialized: Props) {
   }, [router]);
   useEffect(() => {
     async function loadUserData() {
+      if (typeof Storage !== 'undefined'){
       // some user logged in and slug matches -> private profile
-      if (
-        !loading &&
-        session &&
-        session?.userprofile &&
-        session.userprofile.userSlug === slug
-      ) {
-        setPrivateUserprofile(session.userprofile);
+        const userExistsInDB = JSON.parse(localStorage.getItem('userExistsInDB'));
+        if (localStorage.getItem('userprofile')){
+          var userprofile = JSON.parse(localStorage.getItem('userprofile'));
+        }
+        
+        if( !loading && session && userExistsInDB && userprofile.userSlug === slug) {
+          setPrivateUserprofile(userprofile);
       } else {
         //no user logged in or slug mismatch -> public profile
         const newPublicUserprofile = await getRequest(
@@ -51,6 +55,7 @@ export default function PublicUser(initialized: Props) {
         );
         setPublicUserprofile(newPublicUserprofile);
       }
+    }
     }
     // ready is for router, loading is for session
     if (ready && !loading) {
