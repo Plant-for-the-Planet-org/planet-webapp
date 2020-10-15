@@ -234,7 +234,11 @@ export default function CompleteSignup() {
         {/* header */}
       <div className={styles.header}>
         <div
-          onClick={() => signOut({ callbackUrl: '/' })}
+            onClick={() => { 
+              if (typeof window !== 'undefined') {
+              router.push(`/logout`);
+            }}
+          }
           className={styles.headerBackIcon}
         >
           <BackArrow color={styles.primaryFontColor} />
