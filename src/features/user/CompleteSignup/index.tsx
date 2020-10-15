@@ -386,7 +386,7 @@ export default function CompleteSignup() {
             label='Country'
             name="country"
             onChange={(country)=> setCountry(country)}
-            defaultValue={localStorage.getItem('countryCode')}
+            defaultValue={localStorage.getItem('countryCode') || 'DE'}
             />
         </div>
 
