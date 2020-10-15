@@ -51,9 +51,6 @@ export default function PrivateIndividualProfile({ privateUserprofile }: any) {
   return (
     <React.Fragment>
       <main>
-        {/* will render only if it is ME page */}
-(
-          <>
             <div
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
@@ -68,9 +65,6 @@ export default function PrivateIndividualProfile({ privateUserprofile }: any) {
               handleEditProfileModalClose={handleEditProfileModalClose}
               handleEditProfileModalOpen={handleEditProfileModalOpen}
             />
-          </>
-        )
-
         {/* userinfo section */}
         <LandingSection
           imageSrc={

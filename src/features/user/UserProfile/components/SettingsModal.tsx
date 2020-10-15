@@ -1,5 +1,5 @@
 import React from 'react';
-import { signIn, signOut, useSession, getSession } from 'next-auth/client';
+import { signOut, } from 'next-auth/client';
 import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
