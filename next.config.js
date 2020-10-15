@@ -128,7 +128,7 @@ const nextConfig = withSourceMaps({
     return [
       {
         source: '/service-worker.js',
-        destination: '/_next/static/service-worker.js',
+        destination: '/service-worker.js',
       },
     ]
   }
