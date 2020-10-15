@@ -9,6 +9,7 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from './../../../common/types/donations';
 import styles from './../styles/ContactDetails.module.scss';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 
@@ -24,7 +25,7 @@ function ContactDetails({
   isTaxDeductible,
   country,
 }: ContactDetailsPageProps): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
 
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
@@ -214,7 +215,8 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+          {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+            {/* {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)} */}
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {

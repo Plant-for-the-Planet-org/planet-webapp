@@ -191,7 +191,7 @@ export function payWithCard({
                         setDonationStep(4);
                       } else {
                         setIsPaymentProcessing(false);
-                        setPaymentError(res.error.message);
+                        setPaymentError(res.error ? res.error.message : res.message);
                       }
                     });
                   }

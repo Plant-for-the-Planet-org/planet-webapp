@@ -19,6 +19,7 @@ import { PaymentDetailsProps } from './../../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 
@@ -88,7 +89,7 @@ function PaymentDetails({
   country,
   isTaxDeductible,
 }: PaymentDetailsProps): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
 
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
@@ -318,7 +319,7 @@ function PaymentDetails({
       <div className={styles.horizontalLine} />
       <div className={styles.finalTreeCount}>
         <div className={styles.totalCost}>
-          {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+          {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
         </div>
         <div className={styles.totalCostText}>
           {t('donate:fortreeCountTrees', {
