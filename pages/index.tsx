@@ -33,13 +33,16 @@ export default function Donate({
     var getdirectGift = localStorage.getItem('directGift');
     if (getdirectGift !== null) {
       setDirectGift(JSON.parse(getdirectGift));
-      if (directGift !== null) {
-        if (directGift.show === 'false') {
-          setShowDirectGift(false);
-        }
-      }
     }
   }, []);
+
+  React.useEffect(() => {
+    if (directGift !== null) {
+      if (directGift.show === false) {
+        setShowDirectGift(false);
+      }
+    }
+  }, [directGift]);
 
   //Deprecation Notice: This route will be removed in next major version
   React.useEffect(() => {

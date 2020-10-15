@@ -19,9 +19,9 @@ export default function DirectGift({
       </div>
       <div
         onClick={() => {
-          setShowDirectGift(false);
           directGift.show = false;
-          localStorage.setItem('directGift', JSON.parse(directGift));
+          localStorage.setItem('directGift', JSON.stringify(directGift));
+          setShowDirectGift(false);
         }}
         className={styles.closeButton}
       >
