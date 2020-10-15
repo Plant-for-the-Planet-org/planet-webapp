@@ -21,7 +21,6 @@ const options = {
 
   callbacks: {
     redirect: async (url, baseUrl) => {
-      console.log('---------------------')
       console.log('in redirect callback', url, baseUrl)
       return Promise.resolve(url)
     },
@@ -41,38 +40,7 @@ const options = {
     session: async (session, token) => {
       // now, session has accessToken. can be accessed by next-auth/client - useSession()
       session.accessToken = token.accessToken
-      
-      try {
-        const res = await fetch(
-          `${process.env.API_ENDPOINT}/treemapper/accountInfo`,
-          {
-            headers: {
-              Authorization: `OAuth ${token.accessToken}`,
-            },
-            method: 'GET',
-          }
-        );
-        if (res.status === 200) {
-          // user exists in db
-          const resJson = await res.json();
-          const newMeObj = {
-            ...resJson,
-            userSlug: 'trial-slug',
-            isMe: true,
-          };
-          session.userprofile = newMeObj;
-          session.userExistsInDB = true;
-        } else if (res.status === 303) {
-          session.userExistsInDB = false;
-        } else {
-          session = null;
-        }
-        /* now session has field called userExistsinDB to check 
-        if that email-id exists in our database or not */
-      } catch (e){
-        console.log('error in session callback', e)
-      }
-      
+      console.log('.......session callback ran....')
       return session
     },    
   },
