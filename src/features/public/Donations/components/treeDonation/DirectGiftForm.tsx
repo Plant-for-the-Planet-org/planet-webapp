@@ -31,7 +31,8 @@ export default function GiftForm({
       <div className={styles.singleGiftContainer}>
         <div className={styles.singleGiftTitleContainer}>
           <div className={styles.singleGiftTitle}>
-            {t('donate:giftRecipient')}
+            {t('donate:directGiftRecipient')}{' '}
+            <span>{giftDetails.recipientName}</span>
           </div>
           <div
             onClick={() => {
@@ -42,32 +43,6 @@ export default function GiftForm({
           >
             Remove
           </div>
-        </div>
-        <div className={styles.formRow}>
-          <div style={{ width: '100%' }}>
-            <MaterialTextField
-              value={`${giftDetails.recipientName} (direct)`}
-              label={t('donate:recipientName')}
-              variant="outlined"
-              disabled
-            />
-            {errors.recipientName && (
-              <span className={styles.formErrors}>
-                {t('donate:recipientNameRequired')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.formRow}>
-          <MaterialTextField
-            multiline
-            rowsMax="4"
-            label={t('donate:giftMessage')}
-            variant="outlined"
-            name={'giftMessage'}
-            onChange={changeGiftDetails}
-          />
         </div>
       </div>
     </div>

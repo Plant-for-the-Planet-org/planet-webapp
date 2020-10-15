@@ -298,10 +298,11 @@
 
 .singleGiftTitle {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: 14px;
   color: $primaryFontColor;
-  text-transform: uppercase;
   margin-top: 20px;
+}
+.singleGiftTitle > span {
   font-weight: 600;
 }
 
