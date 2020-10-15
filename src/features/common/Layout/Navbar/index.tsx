@@ -15,12 +15,10 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
 
-
 const { useTranslation } = i18next;
 const config = tenantConfig();
 
 export default function NavbarComponent(props: any) {
-
   // If there is a session we will use it
   const [session, loading] = useSession();
 
@@ -36,24 +34,33 @@ export default function NavbarComponent(props: any) {
     // if no user logged in  -> signIn()
     if (!loading && !session) {
       console.log('if no user logged in  -> signIn()');
-      signIn('auth0', { callbackUrl: `/login` })
+        signIn('auth0', { callbackUrl: `/login` });
     }
-    // if user logged in, and already signed up -> /t/userSlug page
-    if (!loading && session && session.userExistsInDB) {
-      if (typeof window !== 'undefined') {
-        console.log('if user logged in, and already signed up -> /t/userSlug page');
-        router.push(`/t/${session.userprofile.userSlug}`);
-      }
-    }
-    // if user logged in, not already signed up -> /complete-signup
-    if (!loading && session && !session.userExistsInDB) {
-      if (typeof window !== 'undefined') {
-        console.log('if user logged in, not already signed up -> /complete-signup');
-        router.push('/complete-signup');
-      }
-    }
-  }
 
+    if (typeof Storage !== 'undefined') {
+      const stringUserExistInDB = localStorage.getItem('userExistsInDB');
+      const userExistsInDB = JSON.parse(stringUserExistInDB);
+        
+    // if user logged in, and already signed up -> /t/userSlug page
+      if (!loading && session && userExistsInDB) {
+        if (localStorage.getItem('userprofile')){
+          const stringUserProfile = localStorage.getItem('userprofile')
+          var userprofile = JSON.parse(stringUserProfile);
+          if (typeof window !== 'undefined') {
+            console.log('if user logged in, and already signed up -> /t/userSlug page');
+            router.push(`/t/${userprofile.userSlug}`);
+        }
+      }  
+    }
+      // if user logged in, not already signed up -> /complete-signup
+      if ( !loading && session && !userExistsInDB) {
+        if (typeof window !== 'undefined') {
+            console.log('if user logged in, not already signed up -> /complete-signup');
+            router.push('/complete-signup');
+        }
+      }
+    }
+  };
 
   // Add a React useeffect - 
   // to check whether there is a session or not
