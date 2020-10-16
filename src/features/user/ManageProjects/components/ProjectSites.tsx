@@ -41,6 +41,10 @@ export default function ProjectSites({}: Props): ReactElement {
                         // defaultValue={}
                     />
                 </div>
+
+                <div className={styles.formField}>
+                    <p className={styles.inlineLinkButton}>Add another site</p>
+                </div>
             </form>
         </div>
     )

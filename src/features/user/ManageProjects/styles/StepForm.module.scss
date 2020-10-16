@@ -42,3 +42,19 @@
     align-items: center;
     justify-content: center;
 }
+
+.inlineLinkButton{
+    font-family: $primaryFontFamily;
+    width: 100%;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    text-align: center;
+    color: #68b030;
+}
+.inlineLinkButton:hover{
+    cursor: pointer;
+}

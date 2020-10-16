@@ -27,6 +27,9 @@ export default function ProjectSpending({}: Props): ReactElement {
 
     };
 
+    const uploadReport = ()=>{
+
+    }
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -48,6 +51,24 @@ export default function ProjectSpending({}: Props): ReactElement {
                         onChange={changeSpendingDetails}
                         // defaultValue={}
                     />
+                </div>
+
+                <div className={styles.formField}>
+                    <div className={styles.fileUploadContainer}>
+                        <AnimatedButton
+                            onClick={uploadReport}
+                            className={styles.continueButton}
+                        >
+                           Upload Report
+                        </AnimatedButton>
+                        <p style={{marginTop:'18px'}}>
+                            or drag in a pdf
+                        </p>
+                    </div>
+                </div>
+
+                <div className={styles.formField}>
+                    <p className={styles.inlineLinkButton}>Add another year</p>
                 </div>
             </form>
         </div>

@@ -188,9 +188,13 @@ export default function DetailedAnalysis({ }: Props): ReactElement {
                            Upload Certificate
                         </AnimatedButton>
                         <p style={{marginTop:'18px'}}>
-                            or drag them in
+                            or drag in a pdf
                         </p>
                     </div>
+                </div>
+
+                <div className={styles.formField}>
+                    <p className={styles.inlineLinkButton}>Add another cerification</p>
                 </div>
 
             </form>
