@@ -6,6 +6,7 @@ const options = {
     Providers.Auth0({
       clientId: process.env.AUTH0_CLIENT_ID,
       domain: process.env.AUTH0_CUSTOM_DOMAIN,
+      authorizationUrl: `https://${process.env.AUTH0_CUSTOM_DOMAIN}/authorize?response_type=code&prompt=login`
     }),
   ],
   session: {
