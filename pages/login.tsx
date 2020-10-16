@@ -16,6 +16,7 @@ export default function Login() {
 
   const fetchInfoFromBackend = async () => {
     try {
+      console.log('------API CALL TO THE BACKEND------')
       const res = await fetch(
         `${process.env.API_ENDPOINT}/treemapper/accountInfo`,
         {
@@ -26,6 +27,7 @@ export default function Login() {
         }
       );
       if (res.status === 200) {
+        console.log('in 200-> user exists in our DB')
         // user exists in db
         const resJson = await res.json();
         const newMeObj = {
@@ -39,6 +41,7 @@ export default function Login() {
           router.push(`/t/${newMeObj.userSlug}`);
         }
       } else if (res.status === 303) {
+        console.log('in 303-> user does not exist in our DB')
         localStorage.setItem('userExistsInDB', JSON.stringify(false));
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
