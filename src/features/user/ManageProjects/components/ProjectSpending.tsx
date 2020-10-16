@@ -1,13 +1,55 @@
 import React, { ReactElement } from 'react'
+import styles from './../styles/StepForm.module.scss'
+import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
+import { useForm } from 'react-hook-form';
+import i18next from './../../../../../i18n'
+
+const { useTranslation } = i18next;
 
 interface Props {
     
 }
 
 export default function ProjectSpending({}: Props): ReactElement {
+
+    const { t, i18n } = useTranslation(['manageProjects']);
+
+    const { register, handleSubmit, errors } = useForm();
+
+    const [spendingDetails,setSpendingDetails] = React.useState({});
+
+    const changeSpendingDetails = (e: any) => {
+        setSpendingDetails({ ...spendingDetails, [e.target.name]: e.target.value });
+    };
+
+    const onSubmit = (data: any) => {
+
+    };
+
     return (
-        <div>
-            ProjectSpending
+        <div className={styles.stepContainer}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+                <div className={styles.formField}>
+                    <MaterialTextField
+                        inputRef={register({ required: true })}
+                        label={t('manageProjects:spendingYear')}
+                        variant="outlined"
+                        name="spendingYear"
+                        onChange={changeSpendingDetails}
+                        // defaultValue={}
+                    />
+                    <MaterialTextField
+                        inputRef={register({ required: true })}
+                        label={t('manageProjects:spendingAmount')}
+                        variant="outlined"
+                        name="spendingAmount"
+                        onChange={changeSpendingDetails}
+                        // defaultValue={}
+                    />
+                </div>
+            </form>
         </div>
     )
 }

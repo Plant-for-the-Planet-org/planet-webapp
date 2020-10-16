@@ -8,10 +8,15 @@ import BasicDetails from '../components/BasicDetails';
 import StepContent from '@material-ui/core/StepContent';
 import Paper from '@material-ui/core/Paper';
 import styles from './../styles/StepForm.module.scss'
+import ProjectMedia from '../components/ProjectMedia';
+import DetailedAnalysis from '../components/DetailedAnalysis';
+import ProjectSites from '../components/ProjectSites';
+import ProjectSpending from '../components/ProjectSpending';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 
 
 function getSteps() {
-    return ['Basic Details', 'Project Media', 'Detailed Analysis','Project Sites','Project Spending'];
+    return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
 }
 
 function getStepContent(step: number) {
@@ -19,9 +24,13 @@ function getStepContent(step: number) {
         case 0:
             return <BasicDetails />;
         case 1:
-            return 'What is an ad group anyways?';
+            return <ProjectMedia />;
         case 2:
-            return 'This is the bit I really care about!';
+            return <DetailedAnalysis />;
+        case 3:
+            return <ProjectSites />;
+        case 4:
+            return <ProjectSpending />;
         default:
             return 'Unknown step';
     }
@@ -52,21 +61,19 @@ export default function ManageProjects() {
                         <StepContent>
                             <Typography>{getStepContent(index)}</Typography>
                             <div>
-                                <div>
+                                <div className={styles.formField}>
                                     <Button
                                         disabled={activeStep === 0}
                                         onClick={handleBack}
-
                                     >
                                         Back
                                     </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
+                                    <AnimatedButton
                                         onClick={handleNext}
+                                        className={styles.continueButton}
                                     >
-                                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                    </Button>
+                                        {activeStep === steps.length - 1 ? 'Finish' : 'Save and Continue'}
+                                    </AnimatedButton>
                                 </div>
                             </div>
                         </StepContent>

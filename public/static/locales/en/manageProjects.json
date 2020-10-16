@@ -5,5 +5,7 @@
     "treeTarget":"Tree Target",
     "website":"Website",
     "aboutProject":"About Project",
-    "costPerTree":"Cost per tree (in EUR)"
+    "costPerTree":"Cost per tree (in EUR)",
+    "youtubeURL":"Youtube Video Link",
+    "yearOfAbandonment":"Approx. year of Abandonment"
 }

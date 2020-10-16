@@ -170,14 +170,6 @@ export default function BasicDetails({}: Props): ReactElement {
                     </p>
                 </div>
 
-                <div className={styles.formField}>
-                    <AnimatedButton 
-                        className={styles.continueButton}
-                    >
-                        Save and Continue
-                    </AnimatedButton>
-                </div>
-
             </form>
            
         </div>
