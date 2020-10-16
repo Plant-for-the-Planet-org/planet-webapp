@@ -31,33 +31,31 @@ export default function NavbarComponent(props: any) {
    If in the singin flow, if the user is already existing, we login the user and  redirect to t/userSlug
    If in the singin flow, if the user is not existing, then we redirect to complete Signup flow */
   const checkWhichPath = () => {
-    // if no user logged in  -> signIn()
-    if (!loading && !session) {
-      console.log('if no user logged in  -> signIn()');
-        signIn('auth0', { callbackUrl: `/login` });
-    }
 
+    console.log('session navbar ', session)
     if (typeof Storage !== 'undefined') {
       const stringUserExistInDB = localStorage.getItem('userExistsInDB');
       const userExistsInDB = JSON.parse(stringUserExistInDB);
-        
+  
     // if user logged in, and already signed up -> /t/userSlug page
-      if (!loading && session && userExistsInDB) {
+      if (!loading && session && (userExistsInDB === true)) {
         if (localStorage.getItem('userprofile')){
           const stringUserProfile = localStorage.getItem('userprofile')
           var userprofile = JSON.parse(stringUserProfile);
           if (typeof window !== 'undefined') {
             console.log('if user logged in, and already signed up -> /t/userSlug page');
             router.push(`/t/${userprofile.userSlug}`);
-        }
-      }  
-    }
-      // if user logged in, not already signed up -> /complete-signup
-      if ( !loading && session && !userExistsInDB) {
-        if (typeof window !== 'undefined') {
-            console.log('if user logged in, not already signed up -> /complete-signup');
-            router.push('/complete-signup');
-        }
+          }
+        }  // if user logged in, not already signed up -> /complete-signup
+      } else if ( !loading && session && (userExistsInDB === false)) {
+          if (typeof window !== 'undefined') {
+              console.log('if user logged in, not already signed up -> /complete-signup');
+              router.push('/complete-signup');
+          }
+      } else { // if no user logged in  -> signIn()
+        // or works when no active session
+        console.log('if no user logged in  -> signIn()');
+        signIn('auth0', { callbackUrl: `/login` });
       }
     }
   };
