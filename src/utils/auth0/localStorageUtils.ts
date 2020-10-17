@@ -30,3 +30,12 @@ export function setUserExistsInDB(ifExistsBoolean:boolean) {
     localStorage.setItem('userExistsInDB', JSON.stringify(ifExistsBoolean));
 }
 
+//  removes userExistsInDB from local storage
+export function removeUserExistsInDB() {
+    localStorage.removeItem('userExistsInDB');
+}
+
+//  removes userSlug from local storage
+export function removeUserSlug() {
+    localStorage.removeItem('userSlug');
+}
