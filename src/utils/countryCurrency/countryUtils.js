@@ -43,7 +43,6 @@ export function sortCountriesData(sortBy) {
  * @param {Function} t - translation function
  */
 export function sortCountriesByTranslation(t) {
-  console.log("sorting");
   // returns a sorted array
   return countriesData.sort((a, b) => {
     let nameA = t('country:' + a['countryCode'].toLowerCase()),
