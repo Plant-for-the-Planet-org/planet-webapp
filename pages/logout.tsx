@@ -17,7 +17,7 @@ export default function Logout() {
     const logoutAllSessions = async () => {
       try {
         // clear auth0 session
-        const logoutEndpoint = `https://${process.env.AUTH0_CUSTOM_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=https://${process.env.NEXTAUTH_URL}`;
+        const logoutEndpoint = `https://${process.env.AUTH0_CUSTOM_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.SCHEME}://${process.env.NEXTAUTH_URL}`;
         console.log('auth0 logout endpoint:', logoutEndpoint);
         if (typeof window !== 'undefined') {
           router.push(logoutEndpoint);
