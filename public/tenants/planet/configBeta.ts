@@ -2,7 +2,7 @@ const config = {
   tenantName: 'planetbeta',
   tenantURL: 'beta.plant-for-the-planet.org',
   tenantLogoURL: 'https://www.plant-for-the-planet.org',
-  languages: ['de', 'en'],
+  languages: ['en', 'de'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
   font: {
