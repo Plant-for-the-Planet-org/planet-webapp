@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import countriesData from '../../../../utils/countryCurrency/countriesData.json';
 import {
   getCountryDataBy,
-  sortCountriesData,
+  sortCountriesByTranslation,
 } from '../../../../utils/countryCurrency/countryUtils';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import { ThemeContext } from '../../../../theme/themeContext';
@@ -30,10 +30,9 @@ export default function TransitionsModal(props) {
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
-  const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
 
   const { i18n } = useTranslation();
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['common', 'country']);
 
   const { theme } = React.useContext(ThemeContext);
 
@@ -80,11 +79,6 @@ export default function TransitionsModal(props) {
     }
   }, [selectedCountry]);
 
-  // sorts the country data by country name as soon as the page loads
-  useEffect(() => {
-    setSortedCountriesData(sortCountriesData('countryName'));
-  }, []);
-
   return (
     <div>
       <Modal
@@ -111,7 +105,6 @@ export default function TransitionsModal(props) {
               <p className={styles.sectionHead}>{t('common:selectCountry')}</p>
               {/* maps the radio button for countries */}
               <MapCountry
-                sortedCountriesData={sortedCountriesData}
                 value={selectedModalCountry}
                 handleChange={handleCountryChange}
               />
@@ -136,7 +129,10 @@ export default function TransitionsModal(props) {
 
 // Maps the radio buttons for countries
 function MapCountry(props) {
-  const { sortedCountriesData, value, handleChange } = props;
+  const { t } = useTranslation(['country']);
+  
+  const { value, handleChange } = props;
+  const sortedCountriesData = sortCountriesByTranslation(t);
   return (
     <FormControl component="fieldset">
       <RadioGroup
@@ -150,7 +146,7 @@ function MapCountry(props) {
           <FormControlLabel
             value={country.countryCode}
             control={<GreenRadio />}
-            label={`${country.countryName} · ${country.currencyCode}`}
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
           />
         ))}
       </RadioGroup>

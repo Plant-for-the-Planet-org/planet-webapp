@@ -37,3 +37,22 @@ export function sortCountriesData(sortBy) {
     return 0;
   });
 }
+
+/**
+ * Sorts the countries array for the translated country name
+ * @param {Function} t - translation function
+ */
+export function sortCountriesByTranslation(t) {
+  console.log("sorting");
+  // returns a sorted array
+  return countriesData.sort((a, b) => {
+    let nameA = t('country:' + a['countryCode'].toLowerCase()),
+      nameB = t('country:' + b['countryCode'].toLowerCase());
+    if (nameA > nameB) {
+      return 1;
+    } if (nameA < nameB) {
+      return -1;
+    }
+    return 0;
+  });
+}
