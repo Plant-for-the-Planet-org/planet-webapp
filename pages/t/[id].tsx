@@ -12,6 +12,8 @@ import {
   getUserExistsInDB,
   getUserSlug,
   setUserExistsInDB,
+  removeUserExistsInDB,
+  removeUserSlug
 } from '../../src/utils/auth0/localStorageUtils';
 import {getAccountInfo } from '../../src/utils/auth0/getAccountInfo'
 
@@ -69,10 +71,16 @@ export default function PublicUser(initialized: Props) {
               if (typeof window !== 'undefined') {
                 router.push('/complete-signup');
               }
-            } else {
+            } else if (res.status === 401){
               // in case of 401 - invalid token: signIn()
               console.log('in 401-> unauthenticated user / invalid token')
+              signOut()
+              removeUserExistsInDB()
+              removeUserSlug()
               signIn('auth0', { callbackUrl: '/login' });
+            } else {
+              // any other error
+              console.log('in else -> other error')
             }
           } catch (e) {}
         } else {
