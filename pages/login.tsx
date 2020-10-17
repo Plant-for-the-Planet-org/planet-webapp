@@ -6,6 +6,7 @@ import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import {setUserSlug, setUserExistsInDB} from '../src/utils/auth0/localStorageUtils'
+import { getAccountInfo } from '../src/utils/auth0/getAccountInfo'
 const config = tenantConfig();
 
 export default function Login() {
@@ -16,19 +17,10 @@ export default function Login() {
 
   const fetchInfoFromBackend = async () => {
     try {
-      console.log('------API CALL TO THE BACKEND------')
-      const res = await fetch(
-        `${process.env.API_ENDPOINT}/treemapper/accountInfo`,
-        {
-          headers: {
-            Authorization: `OAuth ${session.accessToken}`,
-          },
-          method: 'GET',
-        }
-      );
+      const res = await getAccountInfo(session);
       if (res.status === 200) {
         console.log('in 200-> user exists in our DB')
-        // user exists in db
+        //if 200-> user exists in db
         const resJson = await res.json();
         const newMeObj = {
           ...resJson,
@@ -41,13 +33,16 @@ export default function Login() {
           router.push(`/t/${newMeObj.userSlug}`);
         }
       } else if (res.status === 303) {
+        // if 303 -> user doesn not exist in db
         console.log('in 303-> user does not exist in our DB')
         setUserExistsInDB(false)
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
         }
       } else {
-        localStorage.setItem('userExistsInDB', JSON.stringify(false));
+        // if 401 - invalid token: signIn()
+        console.log('in 401-> unauthenticated user / invalid token')
+        signIn('auth0', { callbackUrl: '/login' });
       }
     } catch (e){
       
