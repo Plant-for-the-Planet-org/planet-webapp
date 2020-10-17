@@ -45,8 +45,8 @@ export function sortCountriesData(sortBy) {
 export function sortCountriesByTranslation(t) {
   // returns a sorted array
   return countriesData.sort((a, b) => {
-    let nameA = t('country:' + a['countryCode'].toLowerCase()),
-      nameB = t('country:' + b['countryCode'].toLowerCase());
+    const nameA = t(`country:${a.countryCode.toLowerCase()}`);
+    const nameB = t(`country:${b.countryCode.toLowerCase()}`);
     if (nameA > nameB) {
       return 1;
     } if (nameA < nameB) {
