@@ -87,9 +87,6 @@ export default function EditProfileModal({
         },
       );
       if (res.status === 200) {
-        const resJson = await res.json()
-        const tempJson = {...resJson, userSlug: 'trial-slug'}
-        localStorage.setItem('userprofile', JSON.stringify(tempJson));
         setSeverity('success')
         setSnackbarMessage('Saved Successfully!')
         handleSnackbarOpen()
