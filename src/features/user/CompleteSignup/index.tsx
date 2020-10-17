@@ -9,11 +9,11 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
+import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserSlug } from '../../../utils/auth0/localStorageUtils'
 
 export default function CompleteSignup() {
   const [session, loading] = useSession();
   const router = useRouter();
-  const [userExistsInDB, setUserExistsInDB]= useState(null);
 
   React.useEffect(() => {
 
@@ -22,16 +22,14 @@ export default function CompleteSignup() {
       signIn('auth0', { callbackUrl: '/login' });
     }
 
-    setUserExistsInDB(JSON.parse(localStorage.getItem('userExistsInDB')));  
+    const userExistsInDB = getUserExistsInDB();  
 
     // if accessed by a registered user
     if (!loading && session && userExistsInDB) {
-      if (localStorage.getItem('userprofile')){
-        const userprofile = JSON.parse(localStorage.getItem('userprofile'));
+        const userSlug = getUserSlug();
         if (typeof window !== 'undefined') {
-          router.push(`/t/${userprofile.userSlug}`);
+          router.push(`/t/${userSlug}`);
         }
-      }
     }
   }, [loading]);
 
@@ -97,11 +95,11 @@ export default function CompleteSignup() {
       if (res.status === 200) {
         // successful signup -> goto me page
         const resJson = await res.json();
-        localStorage.setItem('userExistsInDB', JSON.stringify(true));
+        setUserExistsInDB(true);
 
         // TODO: userSlug will be received from resJson
         const tempResponse = { ...resJson, userSlug: 'trial-slug' };
-        localStorage.setItem('userprofile', JSON.stringify(tempResponse));
+        setUserSlug(tempResponse.userSlug);
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
@@ -232,12 +230,12 @@ export default function CompleteSignup() {
 
   if (
     loading ||
-    (!loading && session && (userExistsInDB === true)) ||
+    (!loading && session && (getUserExistsInDB() === true)) ||
     (!loading && !session)
   ) {
     return null;
   }
-  if (!loading && session && (userExistsInDB === false)) {
+  if (!loading && session && (getUserExistsInDB() === false)) {
   return (
     <div
       className={styles.signUpPage}
