@@ -9,7 +9,7 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserSlug } from '../../../utils/auth0/localStorageUtils'
+import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserSlug, removeUserExistsInDB, removeUserSlug } from '../../../utils/auth0/localStorageUtils'
 
 export default function CompleteSignup() {
   const [session, loading] = useSession();
@@ -107,13 +107,17 @@ export default function CompleteSignup() {
         if (typeof window !== 'undefined') {
           router.push(`/t/${tempResponse.userSlug}`);
         }
-      } else {
+      } else if (res.status === 401){
         // in case of 401 - invalid token: signIn()
-        setSnackbarMessage('Error in creating profile');
+        console.log('in 401-> unauthenticated user / invalid token')
+        signOut()
+        removeUserExistsInDB()
+        removeUserSlug()
+        signIn('auth0', { callbackUrl: '/login' });
+      } else {
+        setSnackbarMessage('Error in creating profile. Please try again');
         setSeverity("error")
         handleSnackbarOpen();
-        console.log('in 401-> unauthenticated user / invalid token')
-        signIn('auth0', { callbackUrl: '/login' });
       }
     } catch {
       setSnackbarMessage('Error in creating profile');
