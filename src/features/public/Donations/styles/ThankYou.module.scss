@@ -75,7 +75,7 @@
 }
 
 .tempThankYouImage {
-  background-image: url('/tenants/planet/images/donations/donationComplete.jpg');
+  background-image: url('/tenants/planet/images/donations/donationComplete_1.jpg');
   background-position: center;
   background-size: cover;
   width: 2300px;
@@ -216,8 +216,19 @@
   color: $light;
   font-variant-ligatures: none;
   padding-top: 15%;
+  white-space: pre-line;
 }
 
 .thankyouImageHeaderText{
   font-size: 35px;
+}
+
+.tempthankyouImageHeader{
+  font-size: 100px;
+  font-weight: 600;
+  text-align: center;
+  position: absolute;
+  padding-top: 17%;
+  color: $light;
+  font-variant-ligatures: none;
 }

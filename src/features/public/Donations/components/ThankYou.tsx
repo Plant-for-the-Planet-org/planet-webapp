@@ -98,6 +98,9 @@ function ThankYou({
       {/* hidden div for image download */}
       <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
           <div className={styles.tempThankYouImage} ref={imageRef}>
+          <div className={styles.tempthankyouImageHeader}>
+            <p>{t('donate:thankyouHeaderText')}</p>
+          </div>
             <p className={styles.tempDonationCount}>
               {t('donate:myTreesPlantedByOnLocation', {
                 treeCount: Sugar.Number.format(Number(treeCount)),
@@ -115,7 +118,7 @@ function ThankYou({
         <div className={styles.thankyouImage}>
           <div className={styles.thankyouImageHeader}>
             <p>{t('donate:thankyouHeaderText')}</p>
-            <p className={styles.thankyouImageHeaderText}>{t('donate:trillionTrees')}</p>
+            {/* <p className={styles.thankyouImageHeaderText}>{t('donate:trillionTrees')}</p> */}
           </div>
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {
