@@ -14,6 +14,7 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
+import { getUserExistsInDB, getUserSlug } from '../../../../utils/auth0/localStorageUtils'
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -34,26 +35,25 @@ export default function NavbarComponent(props: any) {
 
     console.log('session navbar ', session)
     if (typeof Storage !== 'undefined') {
-      const stringUserExistInDB = localStorage.getItem('userExistsInDB');
-      const userExistsInDB = JSON.parse(stringUserExistInDB);
+      
+    const userExistsInDB = getUserExistsInDB();
   
     // if user logged in, and already signed up -> /t/userSlug page
       if (!loading && session && (userExistsInDB === true)) {
-        if (localStorage.getItem('userprofile')){
-          const stringUserProfile = localStorage.getItem('userprofile')
-          var userprofile = JSON.parse(stringUserProfile);
+          var userslug = getUserSlug();
           if (typeof window !== 'undefined') {
             console.log('if user logged in, and already signed up -> /t/userSlug page');
-            router.push(`/t/${userprofile.userSlug}`);
+            router.push(`/t/${userslug}`);
           }
-        }  // if user logged in, not already signed up -> /complete-signup
+       // if user logged in, not already signed up -> /complete-signup
       } else if ( !loading && session && (userExistsInDB === false)) {
           if (typeof window !== 'undefined') {
               console.log('if user logged in, not already signed up -> /complete-signup');
               router.push('/complete-signup');
           }
-      } else { // if no user logged in  -> signIn()
-        // or works when no active session
+      } else { 
+        // if no user logged in  -> signIn()
+        // or when no active session
         console.log('if no user logged in  -> signIn()');
         signIn('auth0', { callbackUrl: `/login` });
       }
