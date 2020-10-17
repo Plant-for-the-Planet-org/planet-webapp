@@ -8,6 +8,11 @@ import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import PrivateUserProfile from '../../src/features/user/UserProfile/screens/PrivateIndividualProfile';
+import {
+  getUserExistsInDB,
+  getUserSlug,
+} from '../../src/utils/auth0/localStorageUtils';
+import {getAccountInfo } from '../../src/utils/auth0/getAccountInfo'
 
 interface Props {
   initialized: Boolean;
@@ -39,24 +44,38 @@ export default function PublicUser(initialized: Props) {
   }, [router]);
   useEffect(() => {
     async function loadUserData() {
-      if (typeof Storage !== 'undefined'){
-      // some user logged in and slug matches -> private profile
-        const userExistsInDB = JSON.parse(localStorage.getItem('userExistsInDB'));
-        if (localStorage.getItem('userprofile')){
-          var userprofile = JSON.parse(localStorage.getItem('userprofile'));
+      if (typeof Storage !== 'undefined') {
+        const userExistsInDB = getUserExistsInDB();
+        const currentUserSlug = getUserSlug();
+
+        // some user logged in and slug matches -> private profile
+        if (!loading && session && userExistsInDB && currentUserSlug === slug) {
+          try {
+            const res = await getAccountInfo(session)
+            if (res.status === 200) {
+              console.log('in 200-> user exists in our DB');
+              const resJson = await res.json();
+              const newMeObj = {
+                ...resJson,
+                userSlug: 'trial-slug',
+                isMe: true,
+              };
+              setPrivateUserprofile(newMeObj);
+            } else {
+              console.log('in else /t/[id]')
+              // TODO: token expired : signIn(....)
+            }
+          } catch (e) {}
+        } else {
+          //no user logged in or slug mismatch -> public profile
+          const newPublicUserprofile = await getRequest(
+            `/public/v1.0/en/treecounter/${slug}`
+          );
+          setPublicUserprofile(newPublicUserprofile);
         }
-        
-        if( !loading && session && userExistsInDB && userprofile.userSlug === slug) {
-          setPrivateUserprofile(userprofile);
-      } else {
-        //no user logged in or slug mismatch -> public profile
-        const newPublicUserprofile = await getRequest(
-          `/public/v1.0/en/treecounter/${slug}`
-        );
-        setPublicUserprofile(newPublicUserprofile);
       }
     }
-    }
+    
     // ready is for router, loading is for session
     if (ready && !loading) {
       loadUserData();
@@ -86,7 +105,7 @@ export default function PublicUser(initialized: Props) {
 
   if (initialized && (publicUserprofile || privateUserprofile)) {
     if (publicUserprofile) {
-      return (getPublicUserProfile())
+      return getPublicUserProfile();
     } else if (privateUserprofile) {
       return (
         <>
