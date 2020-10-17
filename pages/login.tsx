@@ -5,7 +5,7 @@ import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-
+import {setUserSlug, setUserExistsInDB} from '../src/utils/auth0/localStorageUtils'
 const config = tenantConfig();
 
 export default function Login() {
@@ -35,14 +35,14 @@ export default function Login() {
           userSlug: 'trial-slug',
           isMe: true,
         };
-        localStorage.setItem('userExistsInDB', JSON.stringify(true));
-        localStorage.setItem('userprofile', JSON.stringify(newMeObj));
+        setUserExistsInDB(true)
+        setUserSlug(newMeObj.userSlug)
         if (typeof window !== 'undefined') {
           router.push(`/t/${newMeObj.userSlug}`);
         }
       } else if (res.status === 303) {
         console.log('in 303-> user does not exist in our DB')
-        localStorage.setItem('userExistsInDB', JSON.stringify(false));
+        setUserExistsInDB(false)
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
         }
