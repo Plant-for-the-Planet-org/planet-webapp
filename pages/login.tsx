@@ -1,11 +1,11 @@
-import { useSession, signIn } from 'next-auth/client';
+import { useSession, signIn, signOut } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import {setUserSlug, setUserExistsInDB} from '../src/utils/auth0/localStorageUtils'
+import {setUserSlug, setUserExistsInDB, removeUserExistsInDB, removeUserSlug} from '../src/utils/auth0/localStorageUtils'
 import { getAccountInfo } from '../src/utils/auth0/getAccountInfo'
 const config = tenantConfig();
 
@@ -39,10 +39,14 @@ export default function Login() {
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
         }
-      } else {
-        // if 401 - invalid token: signIn()
+      } else if (res.status === 401){
         console.log('in 401-> unauthenticated user / invalid token')
+        signOut()
+        removeUserExistsInDB()
+        removeUserSlug()
         signIn('auth0', { callbackUrl: '/login' });
+      } else {
+        console.log('in /login else -> any other error')
       }
     } catch (e){
       
