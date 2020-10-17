@@ -2,7 +2,10 @@ import { useSession, signOut } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import tenantConfig from '../tenant.config';
-import { removeUserExistsInDB, removeUserSlug} from '../src/utils/auth0/localStorageUtils'
+import {
+  removeUserExistsInDB,
+  removeUserSlug,
+} from '../src/utils/auth0/localStorageUtils';
 
 const config = tenantConfig();
 
@@ -14,13 +17,13 @@ export default function Logout() {
     const logoutAllSessions = async () => {
       try {
         // clear auth0 session
-        const logoutEndpoint = `https://${process.env.AUTH0_CUSTOM_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.NEXTAUTH_URL}`;
+        const logoutEndpoint = `https://${process.env.AUTH0_CUSTOM_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=https://${process.env.NEXTAUTH_URL}`;
         console.log('auth0 logout endpoint:', logoutEndpoint);
         if (typeof window !== 'undefined') {
           router.push(logoutEndpoint);
         }
-        console.log('auth0 session cleared.....')
-        
+        console.log('auth0 session cleared.....');
+
         // clear application session
         removeUserExistsInDB();
         removeUserSlug();
