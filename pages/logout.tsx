@@ -2,6 +2,7 @@ import { useSession, signOut } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import tenantConfig from '../tenant.config';
+import { removeUserExistsInDB, removeUserSlug} from '../src/utils/auth0/localStorageUtils'
 
 const config = tenantConfig();
 
@@ -21,11 +22,10 @@ export default function Logout() {
         console.log('auth0 session cleared.....')
         
         // clear application session
-        localStorage.removeItem('userExistsInDB');
-        localStorage.removeItem('userprofile');
+        removeUserExistsInDB();
+        removeUserSlug();
         signOut();
         console.log('application session cleared.....');
-
       } catch (e) {
         console.log('error logout', e);
       }
