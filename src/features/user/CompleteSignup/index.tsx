@@ -13,8 +13,7 @@ import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 export default function CompleteSignup() {
   const [session, loading] = useSession();
   const router = useRouter();
-
-  var userExistsInDB;
+  const [userExistsInDB, setUserExistsInDB]= useState(null);
 
   React.useEffect(() => {
 
@@ -23,16 +22,17 @@ export default function CompleteSignup() {
       signIn('auth0', { callbackUrl: '/login' });
     }
 
-    userExistsInDB = JSON.parse(localStorage.getItem('userExistsInDB'));  
-   // if accessed by a registered user
+    setUserExistsInDB(JSON.parse(localStorage.getItem('userExistsInDB')));  
+
+    // if accessed by a registered user
     if (!loading && session && userExistsInDB) {
       if (localStorage.getItem('userprofile')){
         const userprofile = JSON.parse(localStorage.getItem('userprofile'));
-    if (typeof window !== 'undefined') {
-            router.push(`/t/${userprofile.userSlug}`);
+        if (typeof window !== 'undefined') {
+          router.push(`/t/${userprofile.userSlug}`);
+        }
+      }
     }
-  }
-  }
   }, [loading]);
 
   //  snackbars (for warnings, success messages, errors)
