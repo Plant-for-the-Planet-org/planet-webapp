@@ -14,3 +14,19 @@ export function setUserSlug(userslug:string) {
     localStorage.setItem('userSlug', JSON.stringify(userslug));
 }
 
+//   fetches if userExistsInDB from the local storage
+//  @returns boolean - if user exists in our backend
+export function getUserExistsInDB() {
+  if (localStorage.getItem('userExistsInDB')) {
+    const stringUserExistsInDB = localStorage.getItem('userExistsInDB');
+    const userExistsInDB = JSON.parse(stringUserExistsInDB);
+    return userExistsInDB;
+  }
+  return null;
+}
+
+//  sets userExistsInDB to the local storage
+export function setUserExistsInDB(ifExistsBoolean:boolean) {
+    localStorage.setItem('userExistsInDB', JSON.stringify(ifExistsBoolean));
+}
+
