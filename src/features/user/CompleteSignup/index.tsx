@@ -108,9 +108,12 @@ export default function CompleteSignup() {
           router.push(`/t/${tempResponse.userSlug}`);
         }
       } else {
+        // in case of 401 - invalid token: signIn()
         setSnackbarMessage('Error in creating profile');
         setSeverity("error")
         handleSnackbarOpen();
+        console.log('in 401-> unauthenticated user / invalid token')
+        signIn('auth0', { callbackUrl: '/login' });
       }
     } catch {
       setSnackbarMessage('Error in creating profile');
