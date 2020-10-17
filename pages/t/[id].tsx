@@ -11,6 +11,7 @@ import PrivateUserProfile from '../../src/features/user/UserProfile/screens/Priv
 import {
   getUserExistsInDB,
   getUserSlug,
+  setUserExistsInDB,
 } from '../../src/utils/auth0/localStorageUtils';
 import {getAccountInfo } from '../../src/utils/auth0/getAccountInfo'
 
@@ -61,9 +62,17 @@ export default function PublicUser(initialized: Props) {
                 isMe: true,
               };
               setPrivateUserprofile(newMeObj);
+            } else if (res.status === 303) {
+              // if 303 -> user doesn not exist in db
+              console.log('in 303-> user does not exist in our DB')
+              setUserExistsInDB(false)
+              if (typeof window !== 'undefined') {
+                router.push('/complete-signup');
+              }
             } else {
-              console.log('in else /t/[id]')
-              // TODO: token expired : signIn(....)
+              // in case of 401 - invalid token: signIn()
+              console.log('in 401-> unauthenticated user / invalid token')
+              signIn('auth0', { callbackUrl: '/login' });
             }
           } catch (e) {}
         } else {
@@ -75,7 +84,7 @@ export default function PublicUser(initialized: Props) {
         }
       }
     }
-    
+
     // ready is for router, loading is for session
     if (ready && !loading) {
       loadUserData();
