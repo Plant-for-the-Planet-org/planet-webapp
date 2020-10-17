@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useSession } from 'next-auth/client';
+import { useSession, signIn, signOut } from 'next-auth/client';
 import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
@@ -10,6 +10,7 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { removeUserExistsInDB, removeUserSlug} from '../../../../utils/auth0/localStorageUtils'
 
 export default function EditProfileModal({
   userprofile,
@@ -92,10 +93,20 @@ export default function EditProfileModal({
         handleSnackbarOpen()
         changeForceReload(!forceReload),
         handleEditProfileModalClose()
+      } else if (res.status === 401) {
+        // in case of 401 - invalid token: signIn()
+        setSeverity('error')
+        setSnackbarMessage('Error in updating profile')
+        handleSnackbarOpen()
+        console.log('in 401-> unauthenticated user / invalid token')
+        signOut()
+        removeUserExistsInDB()
+        removeUserSlug()
+        signIn('auth0', { callbackUrl: '/login' });
       } else {
-      setSeverity('error')
-      setSnackbarMessage('Error in updating profile')
-      handleSnackbarOpen()
+        setSeverity('error')
+        setSnackbarMessage('Error in updating profile')
+        handleSnackbarOpen()
       }
     } catch (e) {
       setSeverity('error')
