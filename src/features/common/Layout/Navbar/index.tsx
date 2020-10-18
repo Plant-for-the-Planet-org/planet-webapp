@@ -18,7 +18,8 @@ import { getUserExistsInDB, getUserSlug } from '../../../../utils/auth0/localSto
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
-
+console.log('NODE_ENV-----', process.env.NODE_ENV)
+console.log('NEXTAUTH_URL-------', process.env.NEXTAUTH_URL)
 export default function NavbarComponent(props: any) {
   // If there is a session we will use it
   const [session, loading] = useSession();
