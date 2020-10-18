@@ -419,10 +419,12 @@ export default function CompleteSignup() {
         <div className={styles.isPrivateAccountDiv}>
           <div>
             <div className={styles.mainText}>Private Account</div>
-            <div className={styles.isPrivateAccountText}>
+              { isPrivateAccount &&
+              <div className={styles.isPrivateAccountText}>
               Your profile is hidden and only your first name appears in the
-              leaderboard
-            </div>
+              leaderboard 
+              </div>
+              }
           </div>
           <ToggleSwitch
             checked={isPrivateAccount}
