@@ -5,6 +5,7 @@ import i18next from './../../../../../i18n'
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 const { useTranslation } = i18next;
 interface Props {
     handleNext: Function;
@@ -198,10 +199,6 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                     </div>
                 </div>
 
-                <div className={styles.formField}>
-
-                </div>
-
                 <div className={styles.formFieldLarge}>
                     <div className={styles.fileUploadContainer}>
                         <AnimatedButton
@@ -216,10 +213,30 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                     </div>
                 </div>
 
-                <div className={styles.formField}>
+                <div className={styles.formFieldLarge}>
                     <p className={styles.inlineLinkButton}>Add another cerification</p>
                 </div>
 
+                <div className={styles.formField}>
+                    <div className={`${styles.formFieldHalf}`}>
+                        <AnimatedButton
+                            onClick={handleBack}
+                            className={styles.secondaryButton}
+                        >
+                          <BackArrow/>
+                            <p>Back to project media</p>
+                        </AnimatedButton>
+                    </div> 
+                    <div style={{width:'20px'}}></div>
+                    <div className={`${styles.formFieldHalf}`}>
+                        <AnimatedButton
+                            onClick={onSubmit}
+                            className={styles.continueButton}
+                        >
+                            {'Save & continue'}
+                        </AnimatedButton>
+                    </div> 
+                </div>
             </form>
 
         </div>
