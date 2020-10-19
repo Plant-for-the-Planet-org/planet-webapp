@@ -3,22 +3,53 @@
 .mainContainer{
     margin:auto;
     margin-top: 60px;
-    max-width: 400px;
+    max-width: 780px;
+    display: flex;
+    justify-content: center;
 }
 .stepContainer{
-    max-width:364px;
     margin:auto;
     font-family:$primaryFontFamily;
+    display: flex;
+    justify-content: center;
 }
-
+.formFieldRadio{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 .formField{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 660px;
+    justify-content: space-between;
+    
+}
+.formFieldHalf{
+    margin-top: 24px;
+    div,input{
+        flex: 1;
+        width: 320px;
+    }
+}
+.formFieldLarge{
     margin-top: 24px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 660px;
+    min-width: 320px;
+    // div,input{
+    //     min-width: 320px;
+    // }
 }
 
-.continueButton{
+
+.continueButton, .secondaryButton{
     height: 40px;
     border-radius: 100px;
     padding-left: 24px;
@@ -29,6 +60,33 @@
     align-items: center;
     font-weight: bold;
     color: white;
+}
+
+.secondaryButton{
+    background-image: none;
+    background-color: $blueishGrey;
+    color: #2f3336;
+    p{
+        margin-left:6px
+    }
+    svg{
+        height: 12px;
+    }
+}
+
+.backButton{
+    margin-top: 12px;
+    font-weight: bold;
+    color: #2f3336;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    p{
+        margin-left:6px
+    }
+    svg{
+        height: 12px;
+    }
 }
 
 .fileUploadContainer{

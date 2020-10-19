@@ -12,29 +12,12 @@ import ProjectMedia from '../components/ProjectMedia';
 import DetailedAnalysis from '../components/DetailedAnalysis';
 import ProjectSites from '../components/ProjectSites';
 import ProjectSpending from '../components/ProjectSpending';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-
 
 function getSteps() {
     return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
 }
 
-function getStepContent(step: number) {
-    switch (step) {
-        case 0:
-            return <BasicDetails />;
-        case 1:
-            return <ProjectMedia />;
-        case 2:
-            return <DetailedAnalysis />;
-        case 3:
-            return <ProjectSites />;
-        case 4:
-            return <ProjectSpending />;
-        default:
-            return 'Unknown step';
-    }
-}
+
 
 export default function ManageProjects() {
     const [activeStep, setActiveStep] = React.useState(0);
@@ -52,15 +35,32 @@ export default function ManageProjects() {
         setActiveStep(0);
     };
 
+    function getStepContent(step: number) {
+        switch (step) {
+            case 0:
+                return <BasicDetails handleNext={handleNext} />;
+            case 1:
+                return <ProjectMedia handleNext={handleNext} handleBack={handleBack} />;
+            case 2:
+                return <DetailedAnalysis handleNext={handleNext} handleBack={handleBack} />;
+            case 3:
+                return <ProjectSites handleNext={handleNext} handleBack={handleBack} />;
+            case 4:
+                return <ProjectSpending handleNext={handleNext} handleBack={handleBack} />;
+            default:
+                return 'Unknown step';
+        }
+    }
+
     return (
         <div className={styles.mainContainer}>
             <Stepper activeStep={activeStep} orientation="vertical">
                 {steps.map((label, index) => (
                     <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
+                        <StepLabel onClick={()=>setActiveStep(index)}>{label}</StepLabel>
                         <StepContent>
-                            <Typography>{getStepContent(index)}</Typography>
-                            <div>
+                            {getStepContent(index)}
+                            {/* <div>
                                 <div className={styles.formField}>
                                     <Button
                                         disabled={activeStep === 0}
@@ -75,7 +75,7 @@ export default function ManageProjects() {
                                         {activeStep === steps.length - 1 ? 'Finish' : 'Save and Continue'}
                                     </AnimatedButton>
                                 </div>
-                            </div>
+                            </div> */}
                         </StepContent>
                     </Step>
                 ))}

@@ -7,16 +7,17 @@ import styles from './../styles/StepForm.module.scss'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 const { useTranslation } = i18next;
 interface Props {
-
+    handleNext: Function;
+    handleBack:Function;
 }
 
-export default function DetailedAnalysis({ }: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack,handleNext}: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors } = useForm();
 
     const onSubmit = (data: any) => {
-
+        handleNext()
     };
 
     const [isCertified,setisCertified] = React.useState(true)

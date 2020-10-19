@@ -8,10 +8,11 @@ import i18next from './../../../../../i18n'
 const { useTranslation } = i18next;
 
 interface Props {
-    
+    handleNext: Function;
+    handleBack:Function;
 }
 
-export default function ProjectSites({}: Props): ReactElement {
+export default function ProjectSites({handleBack,handleNext}: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -24,7 +25,7 @@ export default function ProjectSites({}: Props): ReactElement {
     };
 
     const onSubmit = (data: any) => {
-
+        handleNext()
     };
 
     return (
