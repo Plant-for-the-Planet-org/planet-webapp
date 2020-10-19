@@ -18,21 +18,21 @@ const config = {
     items: [
       {
         id: 1,
-        title: 'Home',
+        title: 'home',
         onclick: '/home',
         visible: false,
         key: 'home',
       },
       {
         id: 2,
-        title: 'Donate/Gift',
+        title: 'donate_gift',
         onclick: '/',
         visible: true,
         key: 'donate',
       },
       {
         id: 3,
-        title: 'Leaders',
+        title: 'leaderboard',
         onclick: '/',
         visible: false,
         key: 'leaderboard',
@@ -40,7 +40,7 @@ const config = {
 
       {
         id: 4,
-        title: 'Me',
+        title: 'me',
         onclick: '/me',
         visible: false,
         key: 'me',

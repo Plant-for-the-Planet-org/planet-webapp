@@ -1,7 +1,7 @@
 import React from 'react';
-import Redeem from '../../../../assets/images/icons/userProfileIcons/Redeem';
-import Share from '../../../../assets/images/icons/userProfileIcons/Share';
-import Shovel from '../../../../assets/images/icons/userProfileIcons/Shovel';
+import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
+import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
+import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
 import { isMobileBrowser } from '../../../../utils/isMobileBrowser';

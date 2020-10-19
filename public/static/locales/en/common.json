@@ -9,7 +9,11 @@
   "contact": "Contact",
   "supportUs": "Support Us",
   "leaders": "Leaders",
+  "leaderboard": "Leaderboard",
   "me": "Me",
+  "home": "Home",
+  "donate_gift": "Donate/Gift",
+  "plant": "Plant",
   "donate": "Donate",
   "gift": "Gift",
   "continue": "Continue",
@@ -19,5 +23,6 @@
   "cancel": "Cancel",
   "thankYou": "Thank You",
   "privacyPolicyNotice": "By using this website, you agree to our",
-  "privacyPolicy": "privacy policy"
+  "privacyPolicy": "privacy policy",
+  "about_pftp": "About Plant-for-the-Planet"
 }
