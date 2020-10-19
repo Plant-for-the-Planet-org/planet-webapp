@@ -29,7 +29,7 @@ function ContactDetails({
 }: ContactDetailsPageProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm({mode:'onChange'});
   const onSubmit = (data: any) => {
     setDonationStep(3);
   };
