@@ -60,7 +60,7 @@
   justify-content: center;
 }
 .thankyouImage {
-  background-image: url('/tenants/planet/images/donations/donationComplete_1.jpg');
+  background-image: url('/tenants/planet/images/donations/donationCompletion.jpg');
   background-position: center;
   background-size: cover;
   border-radius: 7px;
@@ -75,7 +75,7 @@
 }
 
 .tempThankYouImage {
-  background-image: url('/tenants/planet/images/donations/donationComplete_1.jpg');
+  background-image: url('/tenants/planet/images/donations/donationCompletion.jpg');
   background-position: center;
   background-size: cover;
   width: 2300px;
@@ -217,10 +217,6 @@
   font-variant-ligatures: none;
   padding-top: 15%;
   white-space: pre-line;
-}
-
-.thankyouImageHeaderText{
-  font-size: 35px;
 }
 
 .tempthankyouImageHeader{

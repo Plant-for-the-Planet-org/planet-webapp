@@ -118,7 +118,6 @@ function ThankYou({
         <div className={styles.thankyouImage}>
           <div className={styles.thankyouImageHeader}>
             <p>{t('donate:thankyouHeaderText')}</p>
-            {/* <p className={styles.thankyouImageHeaderText}>{t('donate:trillionTrees')}</p> */}
           </div>
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {
