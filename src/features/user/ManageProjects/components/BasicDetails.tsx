@@ -79,6 +79,53 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               // defaultValue={}
             />
           </div>
+          <div style={{ width: '20px' }}></div>
+          <div className={styles.formFieldHalf}>
+            <MaterialTextField
+              inputRef={register({ required: true })}
+              label={t('manageProjects:projectType')}
+              variant="outlined"
+              name="projectType"
+              onChange={changeBasicDetails}
+              // defaultValue={}
+            />
+          </div>
+        </div>
+
+        <div className={styles.formField}>
+          <div className={styles.formFieldHalf}>
+            <MaterialTextField
+              inputRef={register({ required: true })}
+              label={t('manageProjects:treeTarget')}
+              variant="outlined"
+              name="treeTarget"
+              onChange={changeBasicDetails}
+              // defaultValue={}
+            />
+          </div>
+          <div className={styles.formFieldHalf}>
+            <MaterialTextField
+              inputRef={register({ required: true })}
+              label={t('manageProjects:website')}
+              variant="outlined"
+              name="website"
+              onChange={changeBasicDetails}
+              // defaultValue={}
+            />
+          </div>
+        </div>
+
+        <div className={styles.formField}>
+          <div className={styles.formFieldHalf}>
+            <MaterialTextField
+              inputRef={register({ required: true })}
+              label={t('manageProjects:projectURL')}
+              variant="outlined"
+              name="projectURL"
+              onChange={changeBasicDetails}
+              // defaultValue={}
+            />
+          </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
               inputRef={register({ required: true })}
