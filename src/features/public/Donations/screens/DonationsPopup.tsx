@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
-import getsessionId from '../../../../utils/getSessionId';
+import getsessionId from '../../../../utils/apiRequests/getSessionId';
 import ContactDetails from '../components/ContactDetails';
 import PaymentDetails from '../components/PaymentDetails';
 import ThankYou from '../components/ThankYou';

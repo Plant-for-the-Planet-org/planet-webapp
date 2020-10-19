@@ -4,12 +4,14 @@ import React from 'react';
 import TagManager from 'react-gtm-module';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
-import ThemeProvider from '../src/utils/themeContext';
+import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
-import getsessionId from '../src/utils/getSessionId';
+import Layout from '../src/features/common/Layout';
+import MapLayout from '../src/features/public/Donations/components/MapboxMap';
+import { useRouter } from 'next/router';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -19,7 +21,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     integrations: [
       new RewriteFrames({
         iteratee: (frame) => {
-          frame.filename = frame.filename.replace(distDir, 'app:///_next');
+          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
           return frame;
         },
       }),
@@ -29,8 +31,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
-  // const { useTranslation } = i18next;
-  // const { i18n } = useTranslation();
+  const router = useRouter();
+  const [projects, setProjects] = React.useState(null);
+  const [project, setProject] = React.useState(null);
+  const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [isMap, setIsMap] = React.useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -43,7 +48,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
+    if (router.pathname === '/' || router.pathname === '/[p]') {
+      setIsMap(true);
+    } else {
+      setIsMap(false);
+    }
+  }, [router]);
+
+  React.useEffect(() => {
     if (
       process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
       (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
@@ -54,50 +66,36 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, []);
 
-  React.useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles!.parentElement!.removeChild(jssStyles);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    async function loadConfig() {
-      await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
-        headers: {
-          'tenant-key': `${process.env.TENANTID}`,
-          'X-SESSION-ID': await getsessionId(),
-        },
-      })
-        .then(async (res) => {
-          const config = await res.json();
-          localStorage.setItem('config', JSON.stringify(config));
-          if (localStorage.getItem('countryCode') === null) {
-            localStorage.setItem('countryCode', config.country);
-          }
-          if (localStorage.getItem('currencyCode') === null) {
-            localStorage.setItem('currencyCode', config.currency);
-          }
-        })
-        .catch((err) => console.log(`Something went wrong: ${err}`));
-    }
-    loadConfig();
-  }, []);
-
-  // Norbert: language gets detected by i18next-browser-languagedetector
-  // React.useEffect(() => {
-  //   if (localStorage.getItem('language') !== null) {
-  //     i18n.changeLanguage(localStorage.getItem('language'));
-  //   } else {
-  //     i18n.changeLanguage('en');
-  //   }
-  // }, []);
+  const ProjectProps = {
+    projects,
+    project,
+    setProject,
+    setProjects,
+    showSingleProject,
+    setShowSingleProject,
+    pageProps,
+    initialized,
+  };
 
   return (
     <ThemeProvider>
       <CssBaseline />
-      <Component i18nloaded={initialized} {...pageProps} />
+      <Layout>
+        {isMap ? (
+          project !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : projects !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : null
+        ) : null}
+        <Component {...ProjectProps} />
+      </Layout>
     </ThemeProvider>
   );
 }
