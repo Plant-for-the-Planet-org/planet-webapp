@@ -17,9 +17,53 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
 
     const { register, handleSubmit, errors } = useForm();
 
+    const [plantingSeasons, setPlantingSeasons] = React.useState([
+        { id: 0, title: 'January', isSet: false },
+        { id: 1, title: 'Febuary', isSet: false },
+        { id: 2, title: 'March', isSet: false },
+        { id: 3, title: 'April', isSet: false },
+        { id: 4, title: 'May', isSet: false },
+        { id: 5, title: 'June', isSet: false },
+        { id: 6, title: 'July', isSet: false },
+        { id: 7, title: 'August', isSet: false },
+        { id: 8, title: 'September', isSet: false },
+        { id: 9, title: 'October', isSet: false },
+        { id: 10, title: 'November', isSet: false },
+        { id: 11, title: 'December', isSet: false }
+    ])
+
+    const handleSetPlantingSeasons = (id: any) => {
+        let month = plantingSeasons[id];
+        let newMonth = month;
+        newMonth.isSet = !month.isSet;
+        let plantingSeasonsNew = plantingSeasons;
+        plantingSeasonsNew[id] = newMonth;
+        setPlantingSeasons([...plantingSeasonsNew]);
+    }
     const onSubmit = (data: any) => {
-        handleNext()
+        let months = [];
+        for (let i = 0; i < plantingSeasons.length; i++) {
+            if (plantingSeasons[i].isSet) {
+                let j = i + 1;
+                months.push(j)
+            }
+        }
+        console.log(months);
+
+        handleNext();
     };
+
+
+    const [siteOwners, setSiteOwner] = React.useState(
+        [
+            { id: 1, title: '', value: 'private' },
+            { id: 2, title: '', value: 'public-property' },
+            { id: 3, title: '', value: 'smallholding' },
+            { id: 4, title: '', value: 'communal-land' },
+            { id: 5, title: '', value: 'owned-by-owner' },
+            { id: 6, title: '', value: 'other' }
+        ]
+    )
 
     const [isCertified, setisCertified] = React.useState(true)
 
@@ -79,6 +123,24 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                             onChange={changeDetailedAnalysisData}
                         // defaultValue={}
                         /></div>
+                </div>
+
+                <div className={styles.formFieldLarge}>
+                    <div className={styles.plantingSeasons}>
+                        {plantingSeasons.map((month) => {
+                            return (
+                                <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
+                                    <div className={`${styles.multiSelectInputCheck} ${month.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
+                                            <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
+                                        </svg>
+                                    </div>
+                                    <p>{month.title}</p>
+                                </div>
+                            )
+                        })}
+
+                    </div>
                 </div>
 
                 <div className={styles.formFieldLarge}>
@@ -223,11 +285,11 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                             onClick={handleBack}
                             className={styles.secondaryButton}
                         >
-                          <BackArrow/>
+                            <BackArrow />
                             <p>Back to project media</p>
                         </AnimatedButton>
-                    </div> 
-                    <div style={{width:'20px'}}></div>
+                    </div>
+                    <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={onSubmit}
@@ -235,7 +297,7 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                         >
                             {'Save & continue'}
                         </AnimatedButton>
-                    </div> 
+                    </div>
                 </div>
             </form>
 
