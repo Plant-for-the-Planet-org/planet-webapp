@@ -29,7 +29,7 @@ function ContactDetails({
 }: ContactDetailsPageProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm({mode:'onChange'});
   const onSubmit = (data: any) => {
     setDonationStep(3);
   };
@@ -41,7 +41,9 @@ function ContactDetails({
     setContactDetails({ ...contactDetails, country });
   };
 
-  const zipCodeValidate = () => zipCodeValidation(contactDetails.country, contactDetails.zipCode);
+  const zipCodeValidate = () => {
+    return zipCodeValidation(contactDetails.country, contactDetails.zipCode);
+  }
 
   React.useEffect(() => {
     if (contactDetails.country && contactDetails.zipCode) {
@@ -156,7 +158,7 @@ function ContactDetails({
           <div>
             <MaterialTextField
               inputRef={register({
-                validate: async value => zipCodeValidation(contactDetails.country, contactDetails.zipCode),
+                validate: () => zipCodeValidate().test(contactDetails.zipCode) === true || "Nice TRY",
               })}
               label={t('donate:zipCode')}
               variant="outlined"
