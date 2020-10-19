@@ -99,7 +99,7 @@ function ThankYou({
       <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
           <div className={styles.tempThankYouImage} ref={imageRef}>
           <div className={styles.tempthankyouImageHeader}>
-            <p>{t('donate:thankyouHeaderText')}</p>
+          <p dangerouslySetInnerHTML={{__html: t('donate:thankyouHeaderText')}} />
           </div>
             <p className={styles.tempDonationCount}>
               {t('donate:myTreesPlantedByOnLocation', {
@@ -117,7 +117,7 @@ function ThankYou({
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage}>
           <div className={styles.thankyouImageHeader}>
-            <p>{t('donate:thankyouHeaderText')}</p>
+            <p dangerouslySetInnerHTML={{__html: t('donate:thankyouHeaderText')}} />
           </div>
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {

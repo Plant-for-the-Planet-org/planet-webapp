@@ -219,12 +219,21 @@
   white-space: pre-line;
 }
 
+.thankyouImageHeader p h1{
+  font-size: 34px;
+}
+
 .tempthankyouImageHeader{
   font-size: 100px;
   font-weight: 600;
   text-align: center;
-  position: absolute;
+  width: 100%;
   padding-top: 17%;
   color: $light;
   font-variant-ligatures: none;
+  white-space: pre-line;
+}
+
+.tempthankyouImageHeader p h1 {
+  font-size: 150px;
 }
