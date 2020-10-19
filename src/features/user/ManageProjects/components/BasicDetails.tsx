@@ -68,6 +68,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                         // defaultValue={}
                         />
                     </div>
+                    <div style={{width:'20px'}}></div>
                     <div className={styles.formFieldHalf}>
                         <MaterialTextField
                             inputRef={register({ required: true })}

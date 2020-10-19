@@ -8,10 +8,10 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 const { useTranslation } = i18next;
 interface Props {
     handleNext: Function;
-    handleBack:Function;
+    handleBack: Function;
 }
 
-export default function DetailedAnalysis({ handleBack,handleNext}: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack, handleNext }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors } = useForm();
@@ -20,7 +20,7 @@ export default function DetailedAnalysis({ handleBack,handleNext}: Props): React
         handleNext()
     };
 
-    const [isCertified,setisCertified] = React.useState(true)
+    const [isCertified, setisCertified] = React.useState(true)
 
     const defaultDetailedAnalysisData = {};
     const [detailedAnalysisData, setDetailedAnalysisData] = React.useState(defaultDetailedAnalysisData);
@@ -29,52 +29,58 @@ export default function DetailedAnalysis({ handleBack,handleNext}: Props): React
         setDetailedAnalysisData({ ...detailedAnalysisData, [e.target.name]: e.target.value });
     };
 
-    const uploadCertificate = ()=>{
+    const uploadCertificate = () => {
 
     }
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:yearOfAbandonment')}
-                        variant="outlined"
-                        name="yearOfAbandonment"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:yearOfAbandonment')}
+                            variant="outlined"
+                            name="yearOfAbandonment"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:firstTreePlanted')}
+                            variant="outlined"
+                            name="firstTreePlanted"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
                 </div>
                 <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:firstTreePlanted')}
-                        variant="outlined"
-                        name="firstTreePlanted"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
-                </div>
-                <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:plantingDensity')}
-                        variant="outlined"
-                        name="plantingDensity"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:employeeCount')}
-                        variant="outlined"
-                        name="employeeCount"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:plantingDensity')}
+                            variant="outlined"
+                            name="plantingDensity"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
+                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:employeeCount')}
+                            variant="outlined"
+                            name="employeeCount"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        /></div>
                 </div>
 
-                <div className={styles.formField}>
+                <div className={styles.formFieldLarge}>
                     <MaterialTextField
                         inputRef={register({ required: true })}
                         label={t('manageProjects:mainChallenge')}
@@ -85,7 +91,7 @@ export default function DetailedAnalysis({ handleBack,handleNext}: Props): React
                     />
                 </div>
 
-                <div className={styles.formField}>
+                <div className={styles.formFieldLarge}>
                     <MaterialTextField
                         inputRef={register({ required: true })}
                         label={t('manageProjects:whyThisSite')}
@@ -96,99 +102,115 @@ export default function DetailedAnalysis({ handleBack,handleNext}: Props): React
                     />
                 </div>
                 <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:siteOwner')}
-                        variant="outlined"
-                        name="siteOwner"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:siteOwner')}
+                            variant="outlined"
+                            name="siteOwner"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
+                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:ownerName')}
+                            variant="outlined"
+                            name="ownerName"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
                 </div>
                 <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:ownerName')}
-                        variant="outlined"
-                        name="ownerName"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:acquisitionDate')}
+                            variant="outlined"
+                            name="acquisitionDate"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
+                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:yearOfDegradation')}
+                            variant="outlined"
+                            name="yearOfDegradation"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
                 </div>
                 <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:acquisitionDate')}
-                        variant="outlined"
-                        name="acquisitionDate"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
-                </div>
-
-                <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:yearOfDegradation')}
-                        variant="outlined"
-                        name="yearOfDegradation"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
-                </div>
-                <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:causeOfDegradation')}
-                        variant="outlined"
-                        name="causeOfDegradation"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
-                </div>
-                <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:longTermPlan')}
-                        variant="outlined"
-                        name="longTermPlan"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
-                </div>
-
-                <div className={styles.formField}>
-                    <ToggleSwitch
-                        checked={isCertified}
-                        onChange={()=>setisCertified(!isCertified)}
-                        name="isCertified"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                    <p>
-                    {t('manageProjects:isCertified')}
-                    </p>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:causeOfDegradation')}
+                            variant="outlined"
+                            name="causeOfDegradation"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
+                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:longTermPlan')}
+                            variant="outlined"
+                            name="longTermPlan"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
                 </div>
 
                 <div className={styles.formField}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:certifierName')}
-                        variant="outlined"
-                        name="certifierName"
-                        onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
-                    />
+                    <div className={styles.formFieldHalf}>
+                        <div className={`${styles.formFieldRadio}`}>
+                            <label>
+                                {t('manageProjects:isCertified')}
+                            </label>
+                            <ToggleSwitch
+                                checked={isCertified}
+                                onChange={() => setisCertified(!isCertified)}
+                                name="isCertified"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                            />
+                        </div>
+                    </div>
+                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formFieldHalf}>
+                        <MaterialTextField
+                            inputRef={register({ required: true })}
+                            label={t('manageProjects:certifierName')}
+                            variant="outlined"
+                            name="certifierName"
+                            onChange={changeDetailedAnalysisData}
+                        // defaultValue={}
+                        />
+                    </div>
                 </div>
 
                 <div className={styles.formField}>
+
+                </div>
+
+                <div className={styles.formFieldLarge}>
                     <div className={styles.fileUploadContainer}>
                         <AnimatedButton
                             onClick={uploadCertificate}
                             className={styles.continueButton}
                         >
-                           Upload Certificate
+                            Upload Certificate
                         </AnimatedButton>
-                        <p style={{marginTop:'18px'}}>
+                        <p style={{ marginTop: '18px' }}>
                             or drag in a pdf
                         </p>
                     </div>

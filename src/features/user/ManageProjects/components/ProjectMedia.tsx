@@ -4,7 +4,7 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n'
-import BackArrow from '../../../../../out/assets/images/icons/headerIcons/BackArrow';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
 const { useTranslation } = i18next;
 
