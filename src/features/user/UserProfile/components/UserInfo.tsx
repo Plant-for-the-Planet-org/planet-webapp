@@ -10,14 +10,15 @@ export default function UserInfo({
   return (
     <div className={styles.landingContent}>
       <TreeCounter
-        target={userprofile.countTarget}
-        planted={userprofile.countPlanted}
+        hideTarget // changes in TreeCounter component UI
+        target={userprofile.countTarget || 22}
+        planted={userprofile.countPlanted || 100}
       />
 
-      <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
+      <h2 className={styles.treeCounterName}>{`${userprofile.firstname} ${userprofile.lastname}`}</h2>
 
       {/* will render only if it is ME page */}
-      {userprofile.isMe && (
+      {(
         <React.Fragment>
           {/* user description */}
           <p className={styles.treeCounterDescription}>

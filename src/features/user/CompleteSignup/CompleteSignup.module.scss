@@ -1,0 +1,253 @@
+@import './../../../theme/theme';
+
+// entire page
+.signUpPage{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  padding: 0px 0px 60px 0px;
+}
+
+// the white form
+.signup {
+  margin: 120px 0px 0px 0px;
+  background-color: $light;
+  border: 0px;
+  min-width: 360px;
+  max-width: 30vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  align-self: center;
+  padding:20px 20px;
+}
+
+// when request sent, opacity low
+.signupRequestSent {
+  background-color: $light;
+  border: 0px;
+  opacity: 0.8;
+  min-width: 360px;
+  max-width: 30vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  align-self: center;
+  padding:20px 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.headerBackIcon:hover {
+  cursor: pointer;
+}
+
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 10px;
+}
+
+.btnSize {
+  position: relative;
+  width: 50%;
+  height:58px;
+  border-radius: 10px;
+  justify-content: flex-end;
+  border: solid 1.6px $dividerColor;
+  margin: 5px;
+  background-color: $light;
+}
+
+.btnSize:hover {
+  cursor: pointer;
+}
+
+.btnColor {
+  position: relative;
+  border: solid 1.6px $primaryColor;
+  width: 50%;
+  justify-content: flex-end;
+  height:58px;
+  border-radius: 10px;
+  background-color: $light;
+  margin: 5px;
+}
+
+.btnColor:hover {
+  cursor: pointer;
+}
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+  width:100%
+}
+
+.accountTypeTextSelected{
+  position: absolute;
+  font-size: 14px;
+  font-weight: bolder;
+  text-align: left; 
+  bottom: 0;
+  margin: 0px 0px 8px 8px;
+  text-transform: capitalize;
+  color: $primaryColor;
+}
+
+.accountTypeText {
+  position: absolute;
+  bottom: 0;
+  margin: 0px 0px 8px 8px;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: left;
+  text-transform: capitalize;
+  color: $primaryFontColor;
+}
+//profile pic div
+.profilePicDiv {
+    height: 100px;
+    width: 100px;
+    margin: 10px 0px;
+}
+
+.profilePicDiv:hover{
+    cursor: pointer;
+}
+
+// first name, last name div
+.namesDiv {
+  display: flex;
+  float: left;
+  width: 100%;
+  justify-content: center;
+  margin: 20px 0px 10px 0px;
+}
+
+.firstNameDiv {
+    margin: 0px 6px 0px 0px;
+    width: 50%;
+}
+
+.lastNameDiv  {
+    margin: 0px 0px 0px 6px;
+    width: 50%;
+}
+
+// address div
+.addressDiv {
+  display: flex;
+  width: 100%;
+  margin: 6px 0px;
+}
+
+// city, zip code div
+.cityZipDiv {
+  display: flex;
+  float: left;
+  width: 100%;
+  justify-content: center;
+  margin: 6px 0px;
+}
+
+.cityDiv {
+    margin: 0px 6px 0px 0px;
+    width: 50%;
+}
+
+.zipDiv {
+    margin: 0px 0px 0px 6px;
+    width: 50%;
+}
+
+// country div
+.countryDiv {
+  display: flex;
+  width: 100%;
+  align-self: flex-start;
+  margin: 10px 6px 12px 0px;
+}
+
+// private account div
+.isPrivateAccountDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin: 10px 5px 6px 5px;
+  padding: 0px 10px;
+}
+
+.mainText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
+  font-size: 16px;
+  text-align: left;
+}
+
+.isPrivateAccountText {
+    margin-top: 6px;
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $highlightBackground;
+}
+
+.horizontalLine {
+    border-top: 1px solid $primaryColor;
+    width: 100%;
+    // height: 1px;
+    opacity: 0.5;
+    margin: 20px 0px;
+}
+
+// save button
+.saveButton {
+  background-color: $primaryColor;
+  padding: 8px 40px;
+  border-radius: 6px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.saveButton:hover{
+    cursor: pointer;
+}
+
+@include xsPhoneView {
+  .signup {
+    margin: 40px 0px 0px 0px;
+  }
+}
+
+:export {
+    primaryColor: $primaryColor;
+    light: $light;
+    dark: $dark;
+    primaryFontColor: $primaryFontColor;
+    dividerColor: $dividerColor;
+  }  

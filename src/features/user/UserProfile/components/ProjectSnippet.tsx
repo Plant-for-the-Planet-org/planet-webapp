@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
-import styles from '../../Donations/styles/Projects.module.scss';
+import styles from './../../../public/Donations/styles/Projects.module.scss'
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 

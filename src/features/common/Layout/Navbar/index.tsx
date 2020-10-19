@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSession, signIn } from 'next-auth/client';
 import tenantConfig from '../../../../../tenant.config';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
@@ -12,11 +13,57 @@ import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
+import i18next from '../../../../../i18n';
+import { getUserExistsInDB, getUserSlug } from '../../../../utils/auth0/localStorageUtils'
 
+const { useTranslation } = i18next;
 const config = tenantConfig();
-
+console.log('NODE_ENV-----', process.env.NODE_ENV)
+console.log('NEXTAUTH_URL-------', process.env.NEXTAUTH_URL)
 export default function NavbarComponent(props: any) {
+  // If there is a session we will use it
+  const [session, loading] = useSession();
+
+  const { t } = useTranslation(['common']);
   const router = useRouter();
+
+  /* Works when user clicks on Me
+   If the user is logged in, redirect to t/userSlug
+   If user is not logged in we will redirect to singin page with Auth0
+   If in the singin flow, if the user is already existing, we login the user and  redirect to t/userSlug
+   If in the singin flow, if the user is not existing, then we redirect to complete Signup flow */
+  const checkWhichPath = () => {
+
+    console.log('session navbar ', session)
+    if (typeof Storage !== 'undefined') {
+      
+    const userExistsInDB = getUserExistsInDB();
+  
+    // if user logged in, and already signed up -> /t/userSlug page
+      if (!loading && session && (userExistsInDB === true)) {
+          var userslug = getUserSlug();
+          if (typeof window !== 'undefined') {
+            console.log('if user logged in, and already signed up -> /t/userSlug page');
+            router.push(`/t/${userslug}`);
+          }
+       // if user logged in, not already signed up -> /complete-signup
+      } else if ( !loading && session && (userExistsInDB === false)) {
+          if (typeof window !== 'undefined') {
+              console.log('if user logged in, not already signed up -> /complete-signup');
+              router.push('/complete-signup');
+          }
+      } else { 
+        // if no user logged in  -> signIn()
+        // or when no active session
+        console.log('if no user logged in  -> signIn()');
+        signIn('auth0', { callbackUrl: `/login` });
+      }
+    }
+  };
+
+  // Add a React useeffect - 
+  // to check whether there is a session or not
+  // If there is a session, instead of me profile, show user profile icon
 
   const { toggleTheme } = React.useContext(ThemeContext);
 
@@ -46,7 +93,7 @@ export default function NavbarComponent(props: any) {
                   <a href="https://www.plant-for-the-planet.org">
                     <img
                       src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                      alt="About Plant-for-the-Planet"
+                      alt={t('common:about_pftp')}
                     />
                   </a>
                 </div>
@@ -62,7 +109,7 @@ export default function NavbarComponent(props: any) {
                     <a href="https://www.plant-for-the-planet.org">
                       <img
                         src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                        alt="About Plant-for-the-Planet"
+                        alt={t('common:about_pftp')}
                       />
                     </a>
                   </div>
@@ -90,7 +137,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                     </Link>
@@ -112,7 +159,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                     </Link>
@@ -136,17 +183,17 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                    <Link key={item.id} href={item.onclick}>
+                <div key={item.id} onClick={checkWhichPath}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
+                          {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
                             <MeSelected color={styles.primaryColor} />
                           ) : (
                               <Me color={styles.primaryFontColor} />
@@ -159,10 +206,10 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
-                  </Link>
+                  </div>
                 ) : null}
               </div>
           ))}
@@ -306,12 +353,15 @@ export default function NavbarComponent(props: any) {
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                <div
+                  key={item.id}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                  onClick={checkWhichPath}
+                >
                       <div
-                        className={styles.link_container}
-                      >
+                    className={styles.link_container} >
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
+                          {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
                             <MeSelected color={styles.primaryColor} />
                           ) : (
                               <Me color={styles.primaryFontColor} />
@@ -327,7 +377,7 @@ export default function NavbarComponent(props: any) {
                           {item.title}
                         </p>
                       </div>
-                    </Link>
+                  </div>
                 ) : null}
               </div>
           ))}
