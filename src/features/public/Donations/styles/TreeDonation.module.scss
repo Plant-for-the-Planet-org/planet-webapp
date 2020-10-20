@@ -289,14 +289,30 @@
 
 /* Gift Trees Styles */
 
+.singleGiftTitleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .singleGiftTitle {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: 14px;
   color: $primaryFontColor;
-  text-transform: uppercase;
   margin-top: 20px;
+}
+.singleGiftTitle > span {
   font-weight: 600;
 }
+
+.singleGiftRemove {
+  cursor: pointer;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
 .formRow {
   display: flex;
   flex-direction: row;
