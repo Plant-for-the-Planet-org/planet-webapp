@@ -14,6 +14,7 @@ import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTax
 import styles from '../styles/TreeDonation.module.scss';
 import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
+import DirectGiftForm from './treeDonation/DirectGiftForm';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
@@ -38,6 +39,8 @@ function TreeDonation({
   setDonationStep,
   giftDetails,
   setGiftDetails,
+  directGift,
+  setDirectGift,
   setPaymentType,
   isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
@@ -169,11 +172,21 @@ function TreeDonation({
         </div>
 
         {isGift ? (
-          <GiftForm
-            isGift={isGift}
-            giftDetails={giftDetails}
-            setGiftDetails={setGiftDetails}
-          />
+          directGift !== null ? (
+            <DirectGiftForm
+              isGift={isGift}
+              giftDetails={giftDetails}
+              setGiftDetails={setGiftDetails}
+              directGift={directGift}
+              setDirectGift={setDirectGift}
+            />
+          ) : (
+            <GiftForm
+              isGift={isGift}
+              giftDetails={giftDetails}
+              setGiftDetails={setGiftDetails}
+            />
+          )
         ) : null}
 
         <div className={styles.selectTreeCount}>
