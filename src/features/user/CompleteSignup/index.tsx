@@ -8,24 +8,30 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry'
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
+import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserSlug, removeUserExistsInDB, removeUserSlug } from '../../../utils/auth0/localStorageUtils'
 
 export default function CompleteSignup() {
-
   const [session, loading] = useSession();
   const router = useRouter();
 
-   // if accessed by a registered user
-   if(!loading && session && session?.userExistsInDB){
-    if (typeof window !== 'undefined') {
-      router.push(`/t/${session.userprofile.userSlug}`);
-    }
-  }
+  React.useEffect(() => {
 
-  // if accessed by unauthenticated user
-  if(!loading && !session){
-    signIn('auth0', { callbackUrl: '/login' });
-  }
+    // if accessed by unauthenticated user
+    if (!loading && !session) {
+      signIn('auth0', { callbackUrl: '/login' });
+    }
+
+    const userExistsInDB = getUserExistsInDB();  
+
+    // if accessed by a registered user
+    if (!loading && session && userExistsInDB) {
+        const userSlug = getUserSlug();
+        if (typeof window !== 'undefined') {
+          router.push(`/t/${userSlug}`);
+        }
+    }
+  }, [loading]);
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -88,16 +94,28 @@ export default function CompleteSignup() {
       setRequestSent(false);
       if (res.status === 200) {
         // successful signup -> goto me page
-        const resJson = await res.json()
-        const tempResponse = {...resJson, userSlug: 'trial-slug'}
+        const resJson = await res.json();
+        setUserExistsInDB(true);
+
+        // TODO: userSlug will be received from resJson
+        const tempResponse = { ...resJson, userSlug: 'trial-slug' };
+        setUserSlug(tempResponse.userSlug);
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
+
         if (typeof window !== 'undefined') {
           router.push(`/t/${tempResponse.userSlug}`);
         }
+      } else if (res.status === 401){
+        // in case of 401 - invalid token: signIn()
+        console.log('in 401-> unauthenticated user / invalid token')
+        signOut()
+        removeUserExistsInDB()
+        removeUserSlug()
+        signIn('auth0', { callbackUrl: '/login' });
       } else {
-        setSnackbarMessage('Error in creating profile');
+        setSnackbarMessage('Error in creating profile. Please try again');
         setSeverity("error")
         handleSnackbarOpen();
       }
@@ -217,10 +235,14 @@ export default function CompleteSignup() {
     return name;
   };
 
-  if (loading || ( !loading && session && session.userExistsInDB) || (!loading && !session)) {
+  if (
+    loading ||
+    (!loading && session && (getUserExistsInDB() === true)) ||
+    (!loading && !session)
+  ) {
     return null;
   }
-
+  if (!loading && session && (getUserExistsInDB() === false)) {
   return (
     <div
       className={styles.signUpPage}
@@ -235,7 +257,11 @@ export default function CompleteSignup() {
         {/* header */}
       <div className={styles.header}>
         <div
-          onClick={() => signOut({ callbackUrl: '/' })}
+            onClick={() => { 
+              if (typeof window !== 'undefined') {
+              router.push(`/logout`);
+            }}
+          }
           className={styles.headerBackIcon}
         >
           <BackArrow color={styles.primaryFontColor} />
@@ -387,17 +413,19 @@ export default function CompleteSignup() {
             label='Country'
             name="country"
             onChange={(country)=> setCountry(country)}
-            defaultValue={localStorage.getItem('countryCode')}
+            defaultValue={localStorage.getItem('countryCode') || 'DE'}
             />
         </div>
 
         <div className={styles.isPrivateAccountDiv}>
           <div>
             <div className={styles.mainText}>Private Account</div>
-            <div className={styles.isPrivateAccountText}>
+              { isPrivateAccount &&
+              <div className={styles.isPrivateAccountText}>
               Your profile is hidden and only your first name appears in the
-              leaderboard
-            </div>
+              leaderboard 
+              </div>
+              }
           </div>
           <ToggleSwitch
             checked={isPrivateAccount}
@@ -440,4 +468,6 @@ export default function CompleteSignup() {
       </Snackbar>
     </div>
   );
+}
+  return null;
 }

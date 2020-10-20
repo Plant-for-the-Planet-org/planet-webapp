@@ -8,7 +8,6 @@ import { ThankYouProps } from '../../../common/types/donations';
 import styles from '../styles/ThankYou.module.scss';
 import ShareOptions from './ShareOptions';
 import { getPaymentType } from './treeDonation/PaymentFunctions';
-import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
@@ -25,7 +24,7 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
 
   const config = tenantConfig();
   const imageRef = React.createRef();
@@ -84,8 +83,7 @@ function ThankYou({
         {t('donate:yourTreesPlantedByOnLocation', {
           treeCount: Sugar.Number.format(Number(treeCount)),
           projectName: project.name,
-          location: getCountryDataBy('countryCode', project.country)
-            .countryName,
+          location: t('country:' + project.country.toLowerCase()),
         })}
       </div>
 
@@ -101,8 +99,7 @@ function ThankYou({
             <p className={styles.tempDonationCount}>
               {t('donate:myTreesPlantedByOnLocation', {
                 treeCount: Sugar.Number.format(Number(treeCount)),
-                location: getCountryDataBy('countryCode', project.country)
-                  .countryName,
+                location: t('country:' + project.country.toLowerCase()),
               })}
             </p>
             <p className={styles.tempDonationTenant}>
@@ -116,8 +113,7 @@ function ThankYou({
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {
               treeCount: Sugar.Number.format(Number(treeCount)),
-              location: getCountryDataBy('countryCode', project.country)
-                .countryName,
+              location: t('country:' + project.country.toLowerCase()),
             })}
             <p className={styles.donationTenant}>
               {t('donate:plantTreesAtURL', { url: config.tenantURL })}

@@ -1,5 +1,5 @@
 import React from "react";
-function UserProfleLoader() {
+function UserProfileLoader() {
     return (
         <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
             <svg
@@ -55,4 +55,4 @@ function UserProfleLoader() {
     )
 }
 
-export default UserProfleLoader;
+export default UserProfileLoader;

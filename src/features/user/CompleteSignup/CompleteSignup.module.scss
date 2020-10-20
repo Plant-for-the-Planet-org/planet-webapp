@@ -2,7 +2,6 @@
 
 // entire page
 .signUpPage{
-  background-size: cover;
   min-height: 100vh;
   display:flex;
   align-items:center;
@@ -80,6 +79,10 @@
   background-color: $light;
 }
 
+.btnSize:hover {
+  cursor: pointer;
+}
+
 .btnColor {
   position: relative;
   border: solid 1.6px $primaryColor;
@@ -89,6 +92,10 @@
   border-radius: 10px;
   background-color: $light;
   margin: 5px;
+}
+
+.btnColor:hover {
+  cursor: pointer;
 }
 .btnContainer {
   display: flex;

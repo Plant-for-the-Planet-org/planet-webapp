@@ -1,7 +1,7 @@
 const config = {
   tenantName: 'stern',
   tenantURL: 'baeume.stern.de',
-  languages: ['de', 'en'],
+  languages: ['de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:1000000,
   font: {

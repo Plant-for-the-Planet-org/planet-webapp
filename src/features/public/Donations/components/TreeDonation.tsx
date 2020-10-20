@@ -3,7 +3,6 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
-import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripe/stripeHelpers';
 import ButtonLoader from '../../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
@@ -44,7 +43,7 @@ function TreeDonation({
   setPaymentType,
   isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
 
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
@@ -260,7 +259,7 @@ function TreeDonation({
               tabIndex={0}
             >
               <div className={styles.taxDeductibleCountry}>
-                {getCountryDataBy('countryCode', country).countryName}
+                {t('country:' + country.toLowerCase())}
               </div>
               <div className={styles.downArrow}>
                 <DownArrow color="#87B738" />

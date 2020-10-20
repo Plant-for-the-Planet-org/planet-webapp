@@ -9,7 +9,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
 
-export default function PrivateIndividualProfile({ privateUserprofile }: any) {
+export default function PrivateIndividualProfile({ privateUserprofile, changeForceReload,
+  forceReload, }: any) {
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
@@ -51,9 +52,6 @@ export default function PrivateIndividualProfile({ privateUserprofile }: any) {
   return (
     <React.Fragment>
       <main>
-        {/* will render only if it is ME page */}
-(
-          <>
             <div
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
@@ -67,10 +65,9 @@ export default function PrivateIndividualProfile({ privateUserprofile }: any) {
               editProfileModalOpen={editProfileModalOpen}
               handleEditProfileModalClose={handleEditProfileModalClose}
               handleEditProfileModalOpen={handleEditProfileModalOpen}
+              changeForceReload={changeForceReload}
+              forceReload={forceReload}
             />
-          </>
-        )
-
         {/* userinfo section */}
         <LandingSection
           imageSrc={

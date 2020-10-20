@@ -14,52 +14,56 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
-
+import { getUserExistsInDB, getUserSlug } from '../../../../utils/auth0/localStorageUtils'
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
-
+console.log('NODE_ENV-----', process.env.NODE_ENV)
+console.log('NEXTAUTH_URL-------', process.env.NEXTAUTH_URL)
 export default function NavbarComponent(props: any) {
-
   // If there is a session we will use it
   const [session, loading] = useSession();
 
   const { t } = useTranslation(['common']);
   const router = useRouter();
 
-  // Works when user clicks on Me
+  /* Works when user clicks on Me
+   If the user is logged in, redirect to t/userSlug
+   If user is not logged in we will redirect to singin page with Auth0
+   If in the singin flow, if the user is already existing, we login the user and  redirect to t/userSlug
+   If in the singin flow, if the user is not existing, then we redirect to complete Signup flow */
   const checkWhichPath = () => {
-    // if no user logged in  -> signIn()
-    if (!loading && !session) {
-      console.log('if no user logged in  -> signIn()');
-      signIn('auth0', { callbackUrl: `/login` })
-    }
-    // if user logged in, and already signed up -> /t/userSlug page
-    if (!loading && session && session.userExistsInDB) {
-      if (typeof window !== 'undefined') {
-        console.log('if user logged in, and already signed up -> /t/userSlug page');
-        router.push(`/t/${session.userprofile.userSlug}`);
-      }
-    }
-    // if user logged in, not already signed up -> /complete-signup
-    if (!loading && session && !session.userExistsInDB) {
-      if (typeof window !== 'undefined') {
-        console.log('if user logged in, not already signed up -> /complete-signup');
-        router.push('/complete-signup');
-      }
-    }
-  }
 
+    console.log('session navbar ', session)
+    if (typeof Storage !== 'undefined') {
+      
+    const userExistsInDB = getUserExistsInDB();
+  
+    // if user logged in, and already signed up -> /t/userSlug page
+      if (!loading && session && (userExistsInDB === true)) {
+          var userslug = getUserSlug();
+          if (typeof window !== 'undefined') {
+            console.log('if user logged in, and already signed up -> /t/userSlug page');
+            router.push(`/t/${userslug}`);
+          }
+       // if user logged in, not already signed up -> /complete-signup
+      } else if ( !loading && session && (userExistsInDB === false)) {
+          if (typeof window !== 'undefined') {
+              console.log('if user logged in, not already signed up -> /complete-signup');
+              router.push('/complete-signup');
+          }
+      } else { 
+        // if no user logged in  -> signIn()
+        // or when no active session
+        console.log('if no user logged in  -> signIn()');
+        signIn('auth0', { callbackUrl: `/login` });
+      }
+    }
+  };
 
   // Add a React useeffect - 
   // to check whether there is a session or not
   // If there is a session, instead of me profile, show user profile icon
-
-  // Add a function of loaduser profile
-  // If the user is logged in, redirect to t/userSlug
-  // If user is not logged in we will redirect to singin page with Auth0
-  // If in the singin flow, if the user is already existing, we login the user and  redirect to t/userSlug
-  // If in the singin flow, if the user is not existing, then we redirect to complete Signup flow
 
   const { toggleTheme } = React.useContext(ThemeContext);
 
