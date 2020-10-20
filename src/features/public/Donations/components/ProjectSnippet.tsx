@@ -16,9 +16,16 @@ const { useTranslation } = i18next;
 interface Props {
   project: any;
   key: number;
+  directGift: any;
+  setDirectGift: any;
 }
 
-export default function ProjectSnippet({ project, key }: Props): ReactElement {
+export default function ProjectSnippet({
+  project,
+  key,
+  directGift,
+  setDirectGift,
+}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation(['donate', 'common']);
   const [countryCode, setCountryCode] = React.useState<string>('DE');
@@ -61,7 +68,12 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
         disableBackdropClick
       >
         <Elements stripe={getStripe()}>
-          <DonationsPopup project={projectDetails} onClose={handleClose} />
+          <DonationsPopup
+            project={projectDetails}
+            directGift={directGift}
+            setDirectGift={setDirectGift}
+            onClose={handleClose}
+          />
         </Elements>
       </Modal>
 
