@@ -2,8 +2,8 @@ import { TextField } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import CancelIcon from './../../../../assets/images/icons/CancelIcon';
-import SearchIcon from './../../../../assets/images/icons/SearchIcon';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
 
