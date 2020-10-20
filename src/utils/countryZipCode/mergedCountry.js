@@ -2,15 +2,15 @@ import COUNTRY_ADDRESS_POSTALS from './index';
 import Country from '../countryCurrency/countriesData.json';
 
 const mergedCountries = () => {
-  const mergedConutryArray = [];
+  const mergedCountryArray = [];
   Country.forEach((element) => COUNTRY_ADDRESS_POSTALS.forEach((ele) => {
     if (element.countryName === ele.name) {
       const newArr = { ...element, ...ele };
-      mergedConutryArray.push(newArr);
+      mergedCountryArray.push(newArr);
     }
   }));
 
-  return mergedConutryArray;
+  return mergedCountryArray;
 };
 
 export default mergedCountries;
