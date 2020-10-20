@@ -126,6 +126,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               name="projectType"
               onChange={changeBasicDetails}
               select
+              value={defaultBasicDetails.projectType}
             >
               {projectType.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -149,7 +150,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                   value: true,
                   message: "Please enter Tree target"
                 },
+                validate: value => parseInt(value, 10) > 1
               })}
+              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
               label={t('manageProjects:treeTarget')}
               variant="outlined"
               name="treeTarget"
@@ -157,38 +160,61 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             />
             {errors.treeTarget && (
               <span className={styles.formErrors}>
-                {errors.treeTarget.message}
+                {errors.treeTarget.message ? errors.treeTarget.message : 'Tree target should be more than 1'}
               </span>
             )}
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({ required: true })}
               label={t('manageProjects:website')}
               variant="outlined"
               name="website"
               onChange={changeBasicDetails}
-            // defaultValue={}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Please enter website URL"
+                }, pattern: {
+                  value: /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/,
+                  message: "Invalid website URL"
+                }
+              })}
             />
+            {errors.website && (
+              <span className={styles.formErrors}>
+                {errors.website.message}
+              </span>
+            )}
           </div>
         </div>
 
         <div className={styles.formFieldLarge}>
           <MaterialTextField
-            inputRef={register({ required: true })}
             label={t('manageProjects:aboutProject')}
             variant="outlined"
             name="aboutProject"
             onChange={changeBasicDetails}
-          // defaultValue={}
+            multiline
+            inputRef={register({
+              required: {
+                value: true,
+                message: "Please enter About project"
+              }
+            })}
           />
+          {errors.aboutProject && (
+            <span className={styles.formErrors}>
+              {errors.aboutProject.message}
+            </span>
+          )}
         </div>
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
             <div className={`${styles.formFieldRadio}`}>
-              <label>Receive Donations</label>
+              <label htmlFor="receiveDonations">Receive Donations</label>
               <ToggleSwitch
+                id="receiveDonations"
                 checked={receiveDonations}
                 onChange={() => setReceiveDonations(!receiveDonations)}
                 name="receiveDonations"
@@ -198,13 +224,27 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({ required: true })}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Please enter cost per tree"
+                },
+                validate: value => parseFloat(value) > 0 && parseFloat(value) < 3.4028
+              })}
               label={t('manageProjects:costPerTree')}
               variant="outlined"
               name="costPerTree"
               onChange={changeBasicDetails}
-            // defaultValue={}
+              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9,.]/g, '') }}
+              InputProps={{
+                startAdornment: <p className={styles.inputStartAdornment} style={{ paddingRight: '4px' }}>{`€`}</p>
+              }}
             />
+            {errors.costPerTree && (
+              <span className={styles.formErrors}>
+                {errors.costPerTree.message ? errors.costPerTree.message : 'Cost per tree should be more than €0 and lesser than €3.4'}
+              </span>
+            )}
           </div>
         </div>
 
@@ -224,37 +264,45 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               }}
             />
           </MapGL>
-        </div>
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label="latitude"
-              variant="outlined"
-              name="latitude"
-              onChange={changeBasicDetails}
-            // defaultValue={}
-            />
-          </div>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label="longitude"
-              variant="outlined"
-              name="longitude"
-              onChange={changeBasicDetails}
-            // defaultValue={}
-            />
+          <div className={styles.formField} style={{ margin:'auto', marginTop: '-120px' }}>
+            <div className={styles.formFieldHalf}>
+              <MaterialTextField
+                inputRef={register({ required: true })}
+                label="Latitude"
+                variant="outlined"
+                name="latitude"
+                onChange={changeBasicDetails}
+                className={styles.latitudeInput}
+              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
+
+              // defaultValue={}
+              />
+            </div>
+            <div className={styles.formFieldHalf}>
+              <MaterialTextField
+                inputRef={register({ required: true })}
+                label="Longitude"
+                variant="outlined"
+                name="longitude"
+                onChange={changeBasicDetails}
+                className={styles.longitudeInput}
+              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
+
+              // defaultValue={}
+              />
+            </div>
           </div>
         </div>
 
+
         <div className={styles.formFieldLarge}>
           <div className={styles.formFieldRadio}>
-            <label>
+            <label htmlFor="reviewerExpense">
               I will provide lodging, site access and local transport if a
               reviewer is sent by Plant-for-the-Planet.
             </label>
             <ToggleSwitch
+              id="reviewerExpense"
               checked={reviewerExpense}
               onChange={() => setReviewerExpense(!reviewerExpense)}
               name="reviewerExpense"
