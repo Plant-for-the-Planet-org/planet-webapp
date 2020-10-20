@@ -41,16 +41,6 @@ function ContactDetails({
     setContactDetails({ ...contactDetails, country });
   };
 
-  const zipCodeValidate = () => {
-    return zipCodeValidation(contactDetails.country, contactDetails.zipCode);
-  }
-
-  React.useEffect(() => {
-    if (contactDetails.country && contactDetails.zipCode) {
-      zipCodeValidate();
-    }
-  }, [contactDetails]);
-
   const defaultCountry = isTaxDeductible
     ? country
     : localStorage.getItem('countryCode');
@@ -158,7 +148,7 @@ function ContactDetails({
           <div>
             <MaterialTextField
               inputRef={register({
-                validate: () => zipCodeValidate().test(contactDetails.zipCode) === true || "Nice TRY",
+                validate: () => zipCodeValidation(contactDetails.country, contactDetails.zipCode),
               })}
               label={t('donate:zipCode')}
               variant="outlined"
