@@ -30,8 +30,9 @@
 }
 .formFieldHalf{
     margin-top: 24px;
+    display: flex;
+    flex-direction: column;
     div,input{
-        flex: 1;
         width: 320px;
     }
 }
@@ -166,8 +167,15 @@
 }
 
 .formErrors {
+    // position: absolute;
     font-family: $primaryFontFamily;
     font-size: 12px;
     color: #e74c3c;
     margin-left: 6px;
+    margin-top: 6px;
+  }
+
+  .inputStartAdornment{
+    font-family: $primaryFontFamily;
+    font-weight: bold;
   }

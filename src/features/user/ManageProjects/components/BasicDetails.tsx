@@ -7,6 +7,9 @@ import styles from './../styles/StepForm.module.scss';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import MapGL, { Marker } from 'react-map-gl';
 import { Editor, DrawPointMode } from 'react-map-gl-draw';
+import { MenuItem } from '@material-ui/core';
+
+
 const { useTranslation } = i18next;
 
 interface Props {
@@ -54,99 +57,109 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
     handleNext();
   };
 
+  const projectType = [
+    { label: 'Large scale planting', value: 'large-scale-planting' },
+    { label: 'Agroforestry', value: 'agroforestry' },
+    { label: 'Natural Regeneration', value: 'natural-regeneration' },
+    { label: 'Managed Regeneration', value: 'managed-regeneration' },
+    { label: 'Urban Planting', value: 'urban-planting' },
+    { label: 'Other Planting', value: 'other-planting' }
+  ]
+
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formFieldLarge}>
           <MaterialTextField
-            inputRef={register({ required: true })}
+            inputRef={register({
+              required: {
+                value: true,
+                message: "Please enter Project Name"
+              },
+            })}
             label={t('manageProjects:projectName')}
             variant="outlined"
             name="projectName"
             onChange={changeBasicDetails}
           />
+          {errors.projectName && (
+            <span className={styles.formErrors}>
+              {errors.projectName.message}
+            </span>
+          )}
         </div>
 
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({ required: true })}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Please enter Project URL"
+                },
+              })}
               label={t('manageProjects:projectURL')}
               variant="outlined"
               name="projectURL"
               onChange={changeBasicDetails}
-            // defaultValue={}
+              InputProps={{
+                startAdornment: <p className={styles.inputStartAdornment}>pp.eco/</p>
+              }}
             />
+            {errors.projectURL && (
+              <span className={styles.formErrors}>
+                {errors.projectURL.message}
+              </span>
+            )}
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({ required: true })}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Please select Project type"
+                },
+              })}
               label={t('manageProjects:projectType')}
               variant="outlined"
               name="projectType"
               onChange={changeBasicDetails}
-            // defaultValue={}
-            />
+              select
+            >
+              {projectType.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </MaterialTextField>
+            {errors.projectType && (
+              <span className={styles.formErrors}>
+                {errors.projectType.message}
+              </span>
+            )}
           </div>
         </div>
 
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({ required: true })}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Please enter Tree target"
+                },
+              })}
               label={t('manageProjects:treeTarget')}
               variant="outlined"
               name="treeTarget"
               onChange={changeBasicDetails}
-            // defaultValue={}
             />
-          </div>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label={t('manageProjects:website')}
-              variant="outlined"
-              name="website"
-              onChange={changeBasicDetails}
-            // defaultValue={}
-            />
-          </div>
-        </div>
-
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label={t('manageProjects:projectURL')}
-              variant="outlined"
-              name="projectURL"
-              onChange={changeBasicDetails}
-            // defaultValue={}
-            />
-          </div>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label={t('manageProjects:projectType')}
-              variant="outlined"
-              name="projectType"
-              onChange={changeBasicDetails}
-            // defaultValue={}
-            />
-          </div>
-        </div>
-
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label={t('manageProjects:treeTarget')}
-              variant="outlined"
-              name="treeTarget"
-              onChange={changeBasicDetails}
-            // defaultValue={}
-            />
+            {errors.treeTarget && (
+              <span className={styles.formErrors}>
+                {errors.treeTarget.message}
+              </span>
+            )}
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
@@ -218,7 +231,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({ required: true })}
               label="latitude"
               variant="outlined"
-              name="projectURL"
+              name="latitude"
               onChange={changeBasicDetails}
             // defaultValue={}
             />
@@ -228,7 +241,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({ required: true })}
               label="longitude"
               variant="outlined"
-              name="projectType"
+              name="longitude"
               onChange={changeBasicDetails}
             // defaultValue={}
             />
