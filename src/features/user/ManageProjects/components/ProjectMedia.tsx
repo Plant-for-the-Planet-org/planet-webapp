@@ -10,14 +10,14 @@ const { useTranslation } = i18next;
 
 interface Props {
     handleNext: Function;
-    handleBack:Function;
+    handleBack: Function;
 }
 
-export default function ProjectMedia({handleBack,handleNext }: Props): ReactElement {
+export default function ProjectMedia({ handleBack, handleNext }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
     const [mediaDetails, setMediaDetails] = React.useState({});
 
@@ -38,14 +38,27 @@ export default function ProjectMedia({handleBack,handleNext }: Props): ReactElem
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formFieldLarge}>
                     <MaterialTextField
-                        inputRef={register({ required: true })}
+                        inputRef={register({
+                            required: {
+                                value:true,
+                                message:"Please enter Youtube URL"
+                            }, pattern: {
+                                value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
+                                message: "Invalid Youtube Video Link"
+                            }
+                        })}
                         label={t('manageProjects:youtubeURL')}
                         variant="outlined"
                         name="youtubeURL"
                         onChange={changeMediaDetails}
-                    // defaultValue={}
                     />
+
                 </div>
+                {errors.youtubeURL && (
+                    <span className={styles.formErrors}>
+                        {errors.youtubeURL.message}
+                    </span>
+                )}
 
                 <div className={styles.formFieldLarge}>
                     <label htmlFor="upload" className={styles.fileUploadContainer}>
@@ -68,19 +81,14 @@ export default function ProjectMedia({handleBack,handleNext }: Props): ReactElem
                             onClick={handleBack}
                             className={styles.secondaryButton}
                         >
-                          <BackArrow/>
+                            <BackArrow />
                             <p>Back to basic details</p>
                         </AnimatedButton>
-                    </div> 
-                    <div style={{width:'20px'}}></div>
+                    </div>
+                    <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
-                            onClick={onSubmit}
-                            className={styles.continueButton}
-                        >
-                            {'Save & continue'}
-                        </AnimatedButton>
-                    </div> 
+                        <input type='submit' className={styles.continueButton} value="Save & continue" ></input>
+                    </div>
                 </div>
             </form>
         </div>

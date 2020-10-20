@@ -17,8 +17,6 @@ function getSteps() {
     return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
 }
 
-
-
 export default function ManageProjects() {
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -60,22 +58,6 @@ export default function ManageProjects() {
                         <StepLabel onClick={()=>setActiveStep(index)}>{label}</StepLabel>
                         <StepContent>
                             {getStepContent(index)}
-                            {/* <div>
-                                <div className={styles.formField}>
-                                    <Button
-                                        disabled={activeStep === 0}
-                                        onClick={handleBack}
-                                    >
-                                        Back
-                                    </Button>
-                                    <AnimatedButton
-                                        onClick={handleNext}
-                                        className={styles.continueButton}
-                                    >
-                                        {activeStep === steps.length - 1 ? 'Finish' : 'Save and Continue'}
-                                    </AnimatedButton>
-                                </div>
-                            </div> */}
                         </StepContent>
                     </Step>
                 ))}

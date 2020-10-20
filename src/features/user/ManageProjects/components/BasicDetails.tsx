@@ -48,7 +48,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
     setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
   };
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm({ mode: 'onChange' });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
   const onSubmit = (data: any) => {
     handleNext();
@@ -64,7 +64,6 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             variant="outlined"
             name="projectName"
             onChange={changeBasicDetails}
-            // defaultValue={}
           />
         </div>
 
@@ -76,7 +75,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="projectURL"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
           <div style={{ width: '20px' }}></div>
@@ -87,7 +86,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="projectType"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
         </div>
@@ -100,7 +99,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="treeTarget"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
           <div className={styles.formFieldHalf}>
@@ -110,7 +109,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="website"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
         </div>
@@ -123,7 +122,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="projectURL"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
           <div className={styles.formFieldHalf}>
@@ -133,7 +132,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="projectType"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
         </div>
@@ -146,7 +145,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="treeTarget"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
           <div className={styles.formFieldHalf}>
@@ -156,7 +155,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="website"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
         </div>
@@ -168,7 +167,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             variant="outlined"
             name="aboutProject"
             onChange={changeBasicDetails}
-            // defaultValue={}
+          // defaultValue={}
           />
         </div>
 
@@ -191,7 +190,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="costPerTree"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
         </div>
@@ -221,7 +220,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="projectURL"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
           <div className={styles.formFieldHalf}>
@@ -231,7 +230,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               variant="outlined"
               name="projectType"
               onChange={changeBasicDetails}
-              // defaultValue={}
+            // defaultValue={}
             />
           </div>
         </div>
@@ -276,21 +275,11 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
-              onClick={onSubmit}
-              className={styles.secondaryButton}
-            >
-              {'Continue to Media'}
-            </AnimatedButton>
+            <input type='submit' className={styles.secondaryButton} value="Continue to Media" ></input>
           </div>
 
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
-              onClick={onSubmit}
-              className={styles.continueButton}
-            >
-              {'Save & see Project'}
-            </AnimatedButton>
+            <input type='submit' className={styles.continueButton} value="Save & see Project" ></input>
           </div>
         </div>
       </form>
