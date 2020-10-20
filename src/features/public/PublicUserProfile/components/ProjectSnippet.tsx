@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
-import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../../Donations/styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
@@ -13,7 +12,7 @@ interface Props {
 }
 
 export default function ProjectSnippet({ project, key }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -59,7 +58,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
               {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
               {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
-                {getCountryDataBy('countryCode', project.country).countryName}
+                {t('country:' + project.country.toLowerCase())}
               </span>
             </div>
           </div>

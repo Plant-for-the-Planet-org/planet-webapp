@@ -11,7 +11,7 @@ const config = {
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
-  languages: ['en'],
+  languages: ['en', 'de'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
@@ -19,28 +19,28 @@ const config = {
     items: [
       {
         id: 1,
-        title: 'Home',
+        title: 'home',
         onclick: '/home',
         visible: false,
         key: 'home',
       },
       {
         id: 2,
-        title: 'Donate/Gift',
+        title: 'donate_gift',
         onclick: '/',
         visible: true,
         key: 'donate',
       },
       {
         id: 3,
-        title: 'Leaders',
+        title: 'leaderboard',
         onclick: '/leaderboard',
         visible: true,
         key: 'leaderboard',
       },
       {
         id: 4,
-        title: 'Me',
+        title: 'me',
         onclick: '/me',
         visible: true,
         key: 'me',

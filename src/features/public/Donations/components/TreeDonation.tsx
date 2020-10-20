@@ -3,7 +3,6 @@ import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
-import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import { formatAmountForStripe } from '../../../../utils/stripe/stripeHelpers';
 import ButtonLoader from '../../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../../common/ContentLoaders/Donations/PaymentProgress';
@@ -14,6 +13,7 @@ import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTax
 import styles from '../styles/TreeDonation.module.scss';
 import { PaymentRequestCustomButton } from './PaymentRequestForm';
 import GiftForm from './treeDonation/GiftForm';
+import DirectGiftForm from './treeDonation/DirectGiftForm';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
@@ -38,10 +38,12 @@ function TreeDonation({
   setDonationStep,
   giftDetails,
   setGiftDetails,
+  directGift,
+  setDirectGift,
   setPaymentType,
   isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
 
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
@@ -169,11 +171,21 @@ function TreeDonation({
         </div>
 
         {isGift ? (
-          <GiftForm
-            isGift={isGift}
-            giftDetails={giftDetails}
-            setGiftDetails={setGiftDetails}
-          />
+          directGift !== null ? (
+            <DirectGiftForm
+              isGift={isGift}
+              giftDetails={giftDetails}
+              setGiftDetails={setGiftDetails}
+              directGift={directGift}
+              setDirectGift={setDirectGift}
+            />
+          ) : (
+            <GiftForm
+              isGift={isGift}
+              giftDetails={giftDetails}
+              setGiftDetails={setGiftDetails}
+            />
+          )
         ) : null}
 
         <div className={styles.selectTreeCount}>
@@ -247,7 +259,7 @@ function TreeDonation({
               tabIndex={0}
             >
               <div className={styles.taxDeductibleCountry}>
-                {getCountryDataBy('countryCode', country).countryName}
+                {t('country:' + country.toLowerCase())}
               </div>
               <div className={styles.downArrow}>
                 <DownArrow color="#87B738" />

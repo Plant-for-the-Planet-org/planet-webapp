@@ -17,28 +17,28 @@ const config = {
     items: [
       {
         id: 1,
-        title: 'Home',
+        title: 'home',
         onclick: '/home',
         visible: true,
         key: 'home',
       },
       {
         id: 3,
-        title: 'Donate/Gift',
+        title: 'donate_gift',
         onclick: '/',
         visible: true,
         key: 'donate',
       },
       {
         id: 2,
-        title: 'Leaders',
+        title: 'leaderboard',
         onclick: '/',
         visible: false, // Leaders is false for Salesforce
         key: 'leaderboard',
       },
       {
         id: 4,
-        title: 'Me',
+        title: 'me',
         onclick: '/me',
         visible: false, // Me is false for Salesforce
         key: 'me',

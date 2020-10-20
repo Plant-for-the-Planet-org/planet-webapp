@@ -10,7 +10,7 @@ export default new NextI18Next({
   defaultLanguage: config.languages[0] ? config.languages[0] : 'en',
   fallbackLng: config.languages[0] ? config.languages[0] : 'en',
   debug: false,
-  otherLanguages: config.languages.splice(0, 1), // list all languages here
+  otherLanguages: config.languages, // list all languages here
   detection: {
     // check if language is cached in cookies, if not check local storage,
     // last retrieve from browser language
