@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
-import getsessionId from '../../../../utils/apiRequests/getSessionId';
+import { getRequest } from '../../../../utils/apiRequests/api';
 import ContactDetails from '../components/ContactDetails';
 import PaymentDetails from '../components/PaymentDetails';
 import ThankYou from '../components/ThankYou';
@@ -58,16 +58,8 @@ function DonationsPopup({
     async function loadPaymentSetup() {
       try {
         setIsPaymentOptionsLoading(true);
-        const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`,
-          {
-            headers: {
-              'tenant-key': `${process.env.TENANTID}`,
-              'X-SESSION-ID': await getsessionId(),
-            },
-          }
-        );
-        const paymentSetupData = await res.json();
+
+        const paymentSetupData = await getRequest(`/app/projects/${project.id}/paymentOptions?country=${country}`);
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
           setTreeCost(paymentSetupData.treeCost);
