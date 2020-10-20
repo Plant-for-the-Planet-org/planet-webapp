@@ -37,3 +37,21 @@ export function sortCountriesData(sortBy) {
     return 0;
   });
 }
+
+/**
+ * Sorts the countries array for the translated country name
+ * @param {Function} t - translation function
+ */
+export function sortCountriesByTranslation(t) {
+  // returns a sorted array
+  return countriesData.sort((a, b) => {
+    const nameA = t(`country:${a.countryCode.toLowerCase()}`);
+    const nameB = t(`country:${b.countryCode.toLowerCase()}`);
+    if (nameA > nameB) {
+      return 1;
+    } if (nameA < nameB) {
+      return -1;
+    }
+    return 0;
+  });
+}

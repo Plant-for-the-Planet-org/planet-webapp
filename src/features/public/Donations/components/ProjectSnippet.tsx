@@ -2,7 +2,6 @@ import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
-import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../../theme/themeContext';
@@ -27,7 +26,7 @@ export default function ProjectSnippet({
   setDirectGift,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
   const [countryCode, setCountryCode] = React.useState<string>('DE');
 
   const ImageSource = project.properties.image
@@ -120,10 +119,7 @@ export default function ProjectSnippet({
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
               {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
-                {
-                  getCountryDataBy('countryCode', project.properties.country)
-                    .countryName
-                }
+                {t('country:' + project.properties.country.toLowerCase())}
               </span>
             </div>
           </div>
