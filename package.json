@@ -53,7 +53,7 @@
     "next-unused": "0.0.3",
     "node-sass": "^4.14.1",
     "react": "16.13.1",
-    "react-content-loader": "^5.1.0",
+    "react-content-loader": "^5.1.2",
     "react-dom": "16.13.1",
     "react-gtm-module": "^2.0.10",
     "react-hook-form": "^6.8.6",
