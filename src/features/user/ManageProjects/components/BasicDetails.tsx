@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import MapGL, { Marker } from 'react-map-gl';
 import { Editor, DrawPointMode, EditingMode } from 'react-map-gl-draw';
 import { MenuItem } from '@material-ui/core';
@@ -122,12 +121,12 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: 'Please select Project type',
-                },
-              })}
+              // inputRef={register({
+              //   required: {
+              //     value: true,
+              //     message: "Please select Project type"
+              //   },
+              // })}
               label={t('manageProjects:projectType')}
               variant="outlined"
               name="projectType"
@@ -378,27 +377,27 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
         </div>
 
         {/* <div className={styles.formField}>
-                    <ToggleSwitch
-                        checked={publishProject}
-                        onChange={() => setPublishProject(!publishProject)}
-                        name="publishProject"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                    <p>Publish Project (if projectstatus=Approved)</p>
-                </div>
+          <ToggleSwitch
+            checked={publishProject}
+            onChange={() => setPublishProject(!publishProject)}
+            name="publishProject"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
+          <p>Publish Project (if projectstatus=Approved)</p>
+        </div>
 
-                <div className={styles.formField}>
-                    <ToggleSwitch
-                        checked={projectAnalysis}
-                        onChange={() => setProjectAnalysis(!projectAnalysis)}
-                        name="projectAnalysis"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                    <p>
-                        Detailed Project Analysis if projectstatus=Approved
-                        Activate once all relevant data is submitted via Tree Mapper.
+        <div className={styles.formField}>
+          <ToggleSwitch
+            checked={projectAnalysis}
+            onChange={() => setProjectAnalysis(!projectAnalysis)}
+            name="projectAnalysis"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
+          <p>
+            Detailed Project Analysis if projectstatus=Approved
+            Activate once all relevant data is submitted via Tree Mapper.
                     </p>
-                </div> */}
+        </div> */}
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
