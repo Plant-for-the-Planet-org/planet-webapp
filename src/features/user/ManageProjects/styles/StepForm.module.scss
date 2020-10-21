@@ -1,217 +1,237 @@
 @import './../../../../theme/theme';
 
-.mainContainer{
-    margin:auto;
-    margin-top: 60px;
-    max-width: 780px;
+.mainContainer {
+  margin: auto;
+  margin-top: 60px;
+  max-width: 780px;
+  display: flex;
+  justify-content: center;
+}
+.stepContainer {
+  margin: auto;
+  font-family: $primaryFontFamily;
+  display: flex;
+  justify-content: center;
+}
+.formFieldRadio {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.formField {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 660px;
+  justify-content: space-between;
+}
+.formFieldHalf {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  div,
+  input {
+    width: 320px;
+  }
+}
+.formFieldLarge {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 660px;
+  min-width: 320px;
+  // div,input{
+  //     min-width: 320px;
+  // }
+}
+
+.continueButton,
+.secondaryButton {
+  height: 40px;
+  border-radius: 100px;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  border: 0px;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.continueButton:hover,
+.secondaryButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+.secondaryButton {
+  background-image: none;
+  background-color: $blueishGrey;
+  color: #2f3336;
+  p {
+    margin-left: 6px;
+  }
+  svg {
+    height: 12px;
+  }
+}
+
+.backButton {
+  margin-top: 12px;
+  font-weight: bold;
+  color: #2f3336;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  p {
+    margin-left: 6px;
+  }
+  svg {
+    height: 12px;
+  }
+}
+
+.fileUploadContainer {
+  height: 128px;
+  border-radius: 10px;
+  border: dashed 1px #2f3336;
+  background-color: #f2f2f7;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.inlineLinkButton {
+  font-family: $primaryFontFamily;
+  width: 100%;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  color: #68b030;
+}
+.inlineLinkButton:hover {
+  cursor: pointer;
+}
+
+.plantingSeasons {
+  border-radius: 10px;
+  background-color: #f2f2f7;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.multiSelectInput {
+  display: flex;
+  flex-direction: row;
+  padding: 6px;
+  padding-right: 12px;
+  background-color: $light;
+  border-radius: 6px;
+  transition-duration: 0.4;
+  transition-timing-function: ease-in;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  .multiSelectInputCheck {
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    background-color: #d5d5d5;
     display: flex;
     justify-content: center;
-}
-.stepContainer{
-    margin:auto;
-    font-family:$primaryFontFamily;
-    display: flex;
-    justify-content: center;
-}
-.formFieldRadio{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+  }
+  .multiSelectInputCheckTrue {
+    background-color: $primaryColor;
+  }
+  p {
+    margin-left: 6px;
+  }
 }
-.formField{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    max-width: 660px;
-    justify-content: space-between;
-    
-}
-.formFieldHalf{
-    margin-top: 24px;
-    display: flex;
-    flex-direction: column;
-    div,input{
-        width: 320px;
-    }
-}
-.formFieldLarge{
-    margin-top: 24px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    max-width: 660px;
-    min-width: 320px;
-    // div,input{
-    //     min-width: 320px;
-    // }
-}
-
-
-.continueButton, .secondaryButton{
-    height: 40px;
-    border-radius: 100px;
-    padding-left: 24px;
-    padding-right: 24px;
-    display: flex;
-    justify-content: center;
-    background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
-    align-items: center;
-    font-weight: bold;
-    color: white;
-    border: 0px;
-    transition-duration: 0.5s;
-    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.continueButton:hover, .secondaryButton:hover{
-    transform: scale(1.05);
-    cursor: pointer;
-}
-.secondaryButton{
-    background-image: none;
-    background-color: $blueishGrey;
-    color: #2f3336;
-    p{
-        margin-left:6px
-    }
-    svg{
-        height: 12px;
-    }
-}
-
-.backButton{
-    margin-top: 12px;
-    font-weight: bold;
-    color: #2f3336;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    p{
-        margin-left:6px
-    }
-    svg{
-        height: 12px;
-    }
-}
-
-.fileUploadContainer{
-    height: 128px;
-    border-radius: 10px;
-    border: dashed 1px #2f3336;
-    background-color: #f2f2f7;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.inlineLinkButton{
-    font-family: $primaryFontFamily;
-    width: 100%;
-    font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.43;
-    letter-spacing: normal;
-    text-align: center;
-    color: #68b030;
-}
-.inlineLinkButton:hover{
-    cursor: pointer;
-}
-
-.plantingSeasons{
-    border-radius: 10px;
-    background-color: #F2F2F7;
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    
-}
-
-.multiSelectInput{
-    display: flex;
-    flex-direction: row;
-    padding: 6px;
-    padding-right: 12px;
-    background-color: $light;
-    border-radius: 6px;
-    transition-duration: 0.4;
-    transition-timing-function:ease-in;
-    margin-right: 12px;
-    margin-bottom: 12px;
-    .multiSelectInputCheck{
-        height: 20px;
-        width: 20px;
-        border-radius: 20px;
-        background-color: #D5D5D5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .multiSelectInputCheckTrue{
-        background-color: $primaryColor;
-    }
-    p{
-        margin-left: 6px;
-    }
-}
-.multiSelectInput:hover{
-    cursor: pointer;
-    transform: scale(1.05);
+.multiSelectInput:hover {
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
 .formErrors {
-    // position: absolute;
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: #e74c3c;
-    margin-left: 6px;
-    margin-top: 6px;
-    max-width: 320px;
-  }
+  // position: absolute;
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+}
 
-  .inputStartAdornment{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-  }
+.inputStartAdornment {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+}
 
-  .latitudeInput{
-    width: fit-content!important;
-      div{
-          border-radius: 28px!important;
-          border-top-right-radius:0px!important;
-          border-bottom-right-radius:0px!important;
-      }
-      div,input{
-        width: fit-content!important;
-        text-align: center!important;
-      }
-      label{
-          width: 100%;
-        text-align: center!important;
-        transform: translate(0px, 20px);
-      }
+.latitudeInput {
+  width: fit-content !important;
+  div {
+    border-radius: 28px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
   }
-  .longitudeInput{
-    width: fit-content!important;
-    div{
-        border-radius: 28px!important;
-        border-top-left-radius:0px!important;
-        border-bottom-left-radius:0px!important;
-    }
-    div,input{
-        width: fit-content!important;
-        text-align: center!important;
-    }
-    label{
-        width: 100%;
-      text-align: center!important;
-      transform: translateX(0px, 20px);
-    }
+  div,
+  input {
+    width: fit-content !important;
+    text-align: center !important;
+  }
+  label {
+    width: 100%;
+    text-align: center !important;
+    transform: translate(0px, 20px);
+  }
+}
+.longitudeInput {
+  width: fit-content !important;
+  div {
+    border-radius: 28px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+  div,
+  input {
+    width: fit-content !important;
+    text-align: center !important;
+  }
+  label {
+    width: 100%;
+    text-align: center !important;
+    transform: translateX(0px, 20px);
+  }
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
 }
