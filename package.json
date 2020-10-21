@@ -33,7 +33,7 @@
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "5.24.2",
     "@sentry/node": "^5.15.5",
-    "@sentry/webpack-plugin": "^1.11.1",
+    "@sentry/webpack-plugin": "^1.13.0",
     "@stripe/react-stripe-js": "1.1.2",
     "@stripe/stripe-js": "1.9.0",
     "@turf/turf": "^5.1.6",
