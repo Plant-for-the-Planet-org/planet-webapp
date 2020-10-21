@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import MapGL, { Marker } from 'react-map-gl';
 import { Editor, DrawPointMode } from 'react-map-gl-draw';
 import { MenuItem } from '@material-ui/core';
@@ -68,7 +67,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
 
   return (
     <div className={styles.stepContainer}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+   <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formFieldLarge}>
           <MaterialTextField
             inputRef={register({
@@ -88,7 +87,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             </span>
           )}
         </div>
-
+  
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
@@ -115,12 +114,12 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: "Please select Project type"
-                },
-              })}
+              // inputRef={register({
+              //   required: {
+              //     value: true,
+              //     message: "Please select Project type"
+              //   },
+              // })}
               label={t('manageProjects:projectType')}
               variant="outlined"
               name="projectType"
@@ -273,7 +272,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 name="latitude"
                 onChange={changeBasicDetails}
                 className={styles.latitudeInput}
-              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
+                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
 
               // defaultValue={}
               />
@@ -286,7 +285,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 name="longitude"
                 onChange={changeBasicDetails}
                 className={styles.longitudeInput}
-              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
+                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
 
               // defaultValue={}
               />
@@ -312,27 +311,27 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
         </div>
 
         {/* <div className={styles.formField}>
-                    <ToggleSwitch
-                        checked={publishProject}
-                        onChange={() => setPublishProject(!publishProject)}
-                        name="publishProject"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                    <p>Publish Project (if projectstatus=Approved)</p>
-                </div>
+          <ToggleSwitch
+            checked={publishProject}
+            onChange={() => setPublishProject(!publishProject)}
+            name="publishProject"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
+          <p>Publish Project (if projectstatus=Approved)</p>
+        </div>
 
-                <div className={styles.formField}>
-                    <ToggleSwitch
-                        checked={projectAnalysis}
-                        onChange={() => setProjectAnalysis(!projectAnalysis)}
-                        name="projectAnalysis"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                    <p>
-                        Detailed Project Analysis if projectstatus=Approved
-                        Activate once all relevant data is submitted via Tree Mapper.
+        <div className={styles.formField}>
+          <ToggleSwitch
+            checked={projectAnalysis}
+            onChange={() => setProjectAnalysis(!projectAnalysis)}
+            name="projectAnalysis"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
+          <p>
+            Detailed Project Analysis if projectstatus=Approved
+            Activate once all relevant data is submitted via Tree Mapper.
                     </p>
-                </div> */}
+        </div> */}
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
@@ -343,7 +342,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             <input type='submit' className={styles.continueButton} value="Save & see Project" ></input>
           </div>
         </div>
-      </form>
+      </form> 
     </div>
   );
 }
