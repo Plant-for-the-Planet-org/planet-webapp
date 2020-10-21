@@ -61,6 +61,22 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
     handleNext();
   };
 
+  const changeLat = (e: any) => {
+    // setProjectCoords([
+    //   projectCoords ? projectCoords[0] : 0,
+    //   Number(e.target.value),
+    // ]);
+    console.log(e.target.value);
+  };
+
+  const changeLon = (e: any) => {
+    // setProjectCoords([
+    //   Number(e.target.value),
+    //   projectCoords ? projectCoords[1] : 0,
+    // ]);
+    console.log(e.target.value);
+  };
+
   const projectType = [
     { label: 'Large scale planting', value: 'large-scale-planting' },
     { label: 'Agroforestry', value: 'agroforestry' },
@@ -276,8 +292,14 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
             mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
             onViewportChange={_onViewportChange}
+            onClick={(event) => {
+              console.log(event);
+              if ((event.type = 'click')) {
+                setProjectCoords(event.lngLat);
+              }
+            }}
           >
-            <Editor
+            {/* <Editor
               clickRadius={12}
               mode={mode}
               features={features}
@@ -288,7 +310,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 setEditing(true);
                 setFeatures(data.data);
               }}
-            />
+            /> */}
             {projectCoords !== null ? (
               <Marker
                 latitude={projectCoords[1]}
@@ -300,7 +322,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 <div className={styles.marker}></div>
               </Marker>
             ) : null}
-            {projectCoords !== null ? (
+            {/* {projectCoords !== null ? (
               <div
                 onClick={() => {
                   setProjectCoords(null);
@@ -319,7 +341,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               >
                 clear
               </div>
-            ) : null}
+            ) : null} */}
           </MapGL>
           <div
             className={styles.formField}
@@ -331,9 +353,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 label="Latitude"
                 variant="outlined"
                 name="latitude"
-                onChange={changeBasicDetails}
+                onChange={changeLat}
                 className={styles.latitudeInput}
-                value={projectCoords !== null ? projectCoords[0] : null}
+                value={projectCoords !== null ? projectCoords[1] : null}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9.]/g, '');
                 }}
@@ -347,9 +369,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 label="Longitude"
                 variant="outlined"
                 name="longitude"
-                onChange={changeBasicDetails}
+                onChange={changeLon}
                 className={styles.longitudeInput}
-                value={projectCoords !== null ? projectCoords[1] : null}
+                value={projectCoords !== null ? projectCoords[0] : null}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9.]/g, '');
                 }}
