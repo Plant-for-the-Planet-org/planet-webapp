@@ -25,7 +25,7 @@ interface Props {
 export default function DetailedAnalysis({ handleBack, handleNext }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm({mode:'all'});
 
     const [plantingSeasons, setPlantingSeasons] = React.useState([
         { id: 0, title: 'January', isSet: false },
@@ -181,13 +181,24 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
 
                     {/* the main challenge the project is facing (max. 300 characters) */}
                     <MaterialTextField
-                        inputRef={register({ required: true })}
+                        inputRef={register({
+                            maxLength: {
+                                value: 300,
+                                message: 'Maximum 300 characters allowed'
+                            }
+                        })}
                         label={t('manageProjects:mainChallenge')}
                         variant="outlined"
                         name="mainChallenge"
                         onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
+                        helperText="Main challenge the project is facing"
+                        multiline
                     />
+                    {errors.mainChallenge && (
+                        <span className={styles.formErrors}>
+                            {errors.mainChallenge.message}
+                        </span>
+                    )}
                 </div>
 
                 <div className={styles.formFieldLarge}>
@@ -200,6 +211,11 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                         onChange={changeDetailedAnalysisData}
                     // defaultValue={}
                     />
+                    {errors.whyThisSite && (
+                        <span className={styles.formErrors}>
+                            {errors.whyThisSite.message}
+                        </span>
+                    )}
                 </div>
                 <div className={styles.formField}>
                     <div className={styles.formFieldHalf}>
