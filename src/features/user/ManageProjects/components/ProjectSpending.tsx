@@ -1,3 +1,4 @@
+import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
@@ -5,6 +6,11 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    DatePicker,
+    MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 
 const { useTranslation } = i18next;
 
@@ -32,31 +38,62 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
     const uploadReport = ()=>{
 
     }
+
+    const [spendingYear, setSpendingYear] = React.useState(new Date());
+
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <div className={styles.formField}>
                 <div className={`${styles.formFieldHalf}`}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:spendingYear')}
-                        variant="outlined"
-                        name="spendingYear"
-                        onChange={changeSpendingDetails}
-                        // defaultValue={}
-                    />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DatePicker
+                                views={["year"]}
+                                value={spendingYear}
+                                onChange={setSpendingYear}
+                                label={t('manageProjects:spendingYear')}
+                                name="spendingYear"
+                                inputVariant="outlined"
+                                variant="inline"
+                                TextFieldComponent={MaterialTextField}
+                                autoOk
+                                clearable
+                                disableFuture
+                            />
+                        </MuiPickersUtilsProvider>
+                   
                     </div>
                     <div style={{width:'20px'}}></div>
                     <div className={`${styles.formFieldHalf}`}>
                     <MaterialTextField
-                        inputRef={register({ required: true })}
+                        inputRef={register({
+                            validate: (value) =>
+                            parseFloat(value) > 0 && parseFloat(value) < 3.4028,
+                        })}
                         label={t('manageProjects:spendingAmount')}
+
                         variant="outlined"
                         name="spendingAmount"
                         onChange={changeSpendingDetails}
-                        // defaultValue={}
-                    />
+                        onInput={(e) => {
+                            e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                        }}
+                        InputProps={{
+                            startAdornment: (
+                            <p
+                                className={styles.inputStartAdornment}
+                                style={{ paddingRight: '4px' }}
+                            >{`€`}</p>
+                            ),
+                        }}
+                        />
+                        {errors.spendingAmount && (
+                            <span className={styles.formErrors}>
+                                {errors.spendingAmount.message}
+                            </span>
+                        )}
+                        
                      </div>
                 </div>
 
