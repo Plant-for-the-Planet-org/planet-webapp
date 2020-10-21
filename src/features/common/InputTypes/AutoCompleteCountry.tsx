@@ -4,8 +4,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
+import i18next from '../../../../i18n';
 
 const config = tenantConfig();
+const { useTranslation } = i18next;
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
@@ -40,6 +42,8 @@ export default function CountrySelect(props: {
   ) => void)
   | undefined;
 }) {
+  const { t } = useTranslation(['country']);
+
   const classes = useStyles();
 
   // This value is in country code - eg. DE, IN, US
@@ -68,10 +72,21 @@ export default function CountrySelect(props: {
       onChange(value.code);
     }
   }, [value]);
+  
+  countries.sort((a, b) => {
+      const nameA = t(`country:${a.code.toLowerCase()}`);
+      const nameB = t(`country:${b.code.toLowerCase()}`);
+      if (nameA > nameB) {
+        return 1;
+      } if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
 
   return value ? (
     <Autocomplete
-      id="country-select-demo"
+      id="country-select"
       style={{ width: '100%' }}
       options={countries as CountryType[]}
       classes={{
@@ -79,11 +94,11 @@ export default function CountrySelect(props: {
       }}
       value={value}
       autoHighlight
-      getOptionLabel={(option) => option.label}
+      getOptionLabel={(option) => t(`country:${option.code.toLowerCase()}`)}
       renderOption={(option) => (
         <>
           <span>{countryToFlag(option.code)}</span>
-          {`${option.label} ${option.code}`}
+          {t(`country:${option.code.toLowerCase()}`) + ' ' + option.code}
         </>
       )}
       onChange={(event: any, newValue: CountryType | null) => {
@@ -109,6 +124,7 @@ export default function CountrySelect(props: {
   ) : null;
 }
 
+//TODO: this should be replaced with a simpler list of country codes
 interface CountryType {
   code: string;
   label: string;
