@@ -59,6 +59,7 @@
     "react": "16.13.1",
     "react-content-loader": "^5.1.2",
     "react-dom": "16.13.1",
+    "react-dropzone": "^11.2.0",
     "react-gtm-module": "^2.0.10",
     "react-hook-form": "^6.8.6",
     "react-i18next": "^11.7.2",
