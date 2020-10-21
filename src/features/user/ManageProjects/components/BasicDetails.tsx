@@ -62,19 +62,17 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
   };
 
   const changeLat = (e: any) => {
-    // setProjectCoords([
-    //   projectCoords ? projectCoords[0] : 0,
-    //   Number(e.target.value),
-    // ]);
-    console.log(e.target.value);
+    setProjectCoords([
+      projectCoords ? projectCoords[0] : 0,
+      parseFloat(e.target.value),
+    ]);
   };
 
   const changeLon = (e: any) => {
-    // setProjectCoords([
-    //   Number(e.target.value),
-    //   projectCoords ? projectCoords[1] : 0,
-    // ]);
-    console.log(e.target.value);
+    setProjectCoords([
+      parseFloat(e.target.value),
+      projectCoords ? projectCoords[1] : 0,
+    ]);
   };
 
   const projectType = [
@@ -358,7 +356,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 className={styles.latitudeInput}
                 value={projectCoords !== null ? projectCoords[1] : null}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                  e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
 
                 // defaultValue={}
@@ -374,7 +372,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 className={styles.longitudeInput}
                 value={projectCoords !== null ? projectCoords[0] : null}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                  e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
 
                 // defaultValue={}
