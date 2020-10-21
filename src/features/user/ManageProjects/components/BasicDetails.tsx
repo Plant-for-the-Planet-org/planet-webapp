@@ -148,7 +148,8 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               name="projectType"
               onChange={changeBasicDetails}
               select
-              value={defaultBasicDetails.projectType}
+              value={basicDetails.projectType}
+              
             >
               {projectType.map((option) => (
                 <MenuItem key={option.value} value={option.value}>

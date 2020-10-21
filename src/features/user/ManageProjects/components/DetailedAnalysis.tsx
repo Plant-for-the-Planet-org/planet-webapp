@@ -1,3 +1,4 @@
+import 'date-fns'
 import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm } from 'react-hook-form';
@@ -6,6 +7,15 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    DatePicker,
+    TimePicker,
+    DateTimePicker,
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 const { useTranslation } = i18next;
 interface Props {
     handleNext: Function;
@@ -15,7 +25,7 @@ interface Props {
 export default function DetailedAnalysis({ handleBack, handleNext }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm({mode:'all'});
 
     const [plantingSeasons, setPlantingSeasons] = React.useState([
         { id: 0, title: 'January', isSet: false },
@@ -77,39 +87,63 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
     const uploadCertificate = () => {
 
     }
+
+    const [firstTreePlantedDate, setFirstTreePlantedDate] = React.useState<Date | null>(
+        new Date('2014-08-18T21:11:54'),
+    );
+
+    const [yearOfAbandonment, handleyearOfAbandonment] = React.useState(new Date());
+
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formField}>
                     <div className={styles.formFieldHalf}>
-                        <MaterialTextField
-                            inputRef={register({ required: true })}
-                            label={t('manageProjects:yearOfAbandonment')}
-                            variant="outlined"
-                            name="yearOfAbandonment"
-                            onChange={changeDetailedAnalysisData}
-                        // defaultValue={}
-                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DatePicker
+                                views={["year"]}
+                                value={yearOfAbandonment}
+                                onChange={handleyearOfAbandonment}
+                                label={t('manageProjects:yearOfAbandonment')}
+                                name="yearOfAbandonment"
+                                inputVariant="outlined"
+                                variant="inline"
+                                TextFieldComponent={MaterialTextField}
+                                autoOk
+                                clearable
+                                disableFuture
+                            />
+                        </MuiPickersUtilsProvider>
                     </div>
                     <div className={styles.formFieldHalf}>
-                        <MaterialTextField
-                            inputRef={register({ required: true })}
-                            label={t('manageProjects:firstTreePlanted')}
-                            variant="outlined"
-                            name="firstTreePlanted"
-                            onChange={changeDetailedAnalysisData}
-                        // defaultValue={}
-                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DatePicker
+                                label={t('manageProjects:firstTreePlanted')}
+                                value={firstTreePlantedDate}
+                                onChange={setFirstTreePlantedDate}
+                                inputVariant="outlined"
+                                TextFieldComponent={MaterialTextField}
+                                clearable
+                                autoOk
+                                disableFuture
+                            />
+                        </MuiPickersUtilsProvider>
                     </div>
                 </div>
                 <div className={styles.formField}>
                     <div className={styles.formFieldHalf}>
+
+                        {/* Integer - the planting density expressed in trees per ha */}
                         <MaterialTextField
-                            inputRef={register({ required: true })}
                             label={t('manageProjects:plantingDensity')}
                             variant="outlined"
                             name="plantingDensity"
                             onChange={changeDetailedAnalysisData}
+                            helperText={'Number of trees per ha'}
+                            inputRef={register({
+                                validate: value => parseInt(value, 10) > 1
+                            })}
+                            onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
                         // defaultValue={}
                         />
                     </div>
@@ -144,17 +178,31 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                 </div>
 
                 <div className={styles.formFieldLarge}>
+
+                    {/* the main challenge the project is facing (max. 300 characters) */}
                     <MaterialTextField
-                        inputRef={register({ required: true })}
+                        inputRef={register({
+                            maxLength: {
+                                value: 300,
+                                message: 'Maximum 300 characters allowed'
+                            }
+                        })}
                         label={t('manageProjects:mainChallenge')}
                         variant="outlined"
                         name="mainChallenge"
                         onChange={changeDetailedAnalysisData}
-                    // defaultValue={}
+                        helperText="Main challenge the project is facing"
+                        multiline
                     />
+                    {errors.mainChallenge && (
+                        <span className={styles.formErrors}>
+                            {errors.mainChallenge.message}
+                        </span>
+                    )}
                 </div>
 
                 <div className={styles.formFieldLarge}>
+                    {/* the reason this project has been created (max. 300 characters) */}
                     <MaterialTextField
                         inputRef={register({ required: true })}
                         label={t('manageProjects:whyThisSite')}
@@ -163,9 +211,15 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                         onChange={changeDetailedAnalysisData}
                     // defaultValue={}
                     />
+                    {errors.whyThisSite && (
+                        <span className={styles.formErrors}>
+                            {errors.whyThisSite.message}
+                        </span>
+                    )}
                 </div>
                 <div className={styles.formField}>
                     <div className={styles.formFieldHalf}>
+
                         <MaterialTextField
                             inputRef={register({ required: true })}
                             label={t('manageProjects:siteOwner')}
