@@ -6,9 +6,8 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import MapGL, { Marker } from 'react-map-gl';
-import { Editor, DrawPointMode } from 'react-map-gl-draw';
+import { Editor, DrawPointMode, EditingMode } from 'react-map-gl-draw';
 import { MenuItem } from '@material-ui/core';
-
 
 const { useTranslation } = i18next;
 
@@ -20,11 +19,17 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
+  const edit = new EditingMode();
+  const draw = new DrawPointMode();
   const [receiveDonations, setReceiveDonations] = React.useState(true);
   const [projectAnalysis, setProjectAnalysis] = React.useState(true);
   const [reviewerExpense, setReviewerExpense] = React.useState(true);
   const [publishProject, setPublishProject] = React.useState(true);
-  const mode = React.useState(new DrawPointMode());
+  const [mode, setMode] = React.useState(draw);
+  const [editing, setEditing] = React.useState(false);
+  const [projectCoords, setProjectCoords] = React.useState(null);
+  const [features, setFeatures] = React.useState(null);
+
   const mapRef = React.useRef(null);
 
   const [viewport, setViewPort] = React.useState({
@@ -63,8 +68,8 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
     { label: 'Natural Regeneration', value: 'natural-regeneration' },
     { label: 'Managed Regeneration', value: 'managed-regeneration' },
     { label: 'Urban Planting', value: 'urban-planting' },
-    { label: 'Other Planting', value: 'other-planting' }
-  ]
+    { label: 'Other Planting', value: 'other-planting' },
+  ];
 
   return (
     <div className={styles.stepContainer}>
@@ -74,7 +79,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             inputRef={register({
               required: {
                 value: true,
-                message: "Please enter Project Name"
+                message: 'Please enter Project Name',
               },
             })}
             label={t('manageProjects:projectName')}
@@ -95,7 +100,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({
                 required: {
                   value: true,
-                  message: "Please enter Project URL"
+                  message: 'Please enter Project URL',
                 },
               })}
               label={t('manageProjects:projectURL')}
@@ -103,7 +108,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               name="projectURL"
               onChange={changeBasicDetails}
               InputProps={{
-                startAdornment: <p className={styles.inputStartAdornment}>pp.eco/</p>
+                startAdornment: (
+                  <p className={styles.inputStartAdornment}>pp.eco/</p>
+                ),
               }}
             />
             {errors.projectURL && (
@@ -118,7 +125,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({
                 required: {
                   value: true,
-                  message: "Please select Project type"
+                  message: 'Please select Project type',
                 },
               })}
               label={t('manageProjects:projectType')}
@@ -148,11 +155,13 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({
                 required: {
                   value: true,
-                  message: "Please enter Tree target"
+                  message: 'Please enter Tree target',
                 },
-                validate: value => parseInt(value, 10) > 1
+                validate: (value) => parseInt(value, 10) > 1,
               })}
-              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
               label={t('manageProjects:treeTarget')}
               variant="outlined"
               name="treeTarget"
@@ -160,7 +169,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             />
             {errors.treeTarget && (
               <span className={styles.formErrors}>
-                {errors.treeTarget.message ? errors.treeTarget.message : 'Tree target should be more than 1'}
+                {errors.treeTarget.message
+                  ? errors.treeTarget.message
+                  : 'Tree target should be more than 1'}
               </span>
             )}
           </div>
@@ -173,11 +184,12 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({
                 required: {
                   value: true,
-                  message: "Please enter website URL"
-                }, pattern: {
+                  message: 'Please enter website URL',
+                },
+                pattern: {
                   value: /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/,
-                  message: "Invalid website URL"
-                }
+                  message: 'Invalid website URL',
+                },
               })}
             />
             {errors.website && (
@@ -198,8 +210,8 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
             inputRef={register({
               required: {
                 value: true,
-                message: "Please enter About project"
-              }
+                message: 'Please enter About project',
+              },
             })}
           />
           {errors.aboutProject && (
@@ -227,22 +239,32 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               inputRef={register({
                 required: {
                   value: true,
-                  message: "Please enter cost per tree"
+                  message: 'Please enter cost per tree',
                 },
-                validate: value => parseFloat(value) > 0 && parseFloat(value) < 3.4028
+                validate: (value) =>
+                  parseFloat(value) > 0 && parseFloat(value) < 3.4028,
               })}
               label={t('manageProjects:costPerTree')}
               variant="outlined"
               name="costPerTree"
               onChange={changeBasicDetails}
-              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9,.]/g, '') }}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+              }}
               InputProps={{
-                startAdornment: <p className={styles.inputStartAdornment} style={{ paddingRight: '4px' }}>{`€`}</p>
+                startAdornment: (
+                  <p
+                    className={styles.inputStartAdornment}
+                    style={{ paddingRight: '4px' }}
+                  >{`€`}</p>
+                ),
               }}
             />
             {errors.costPerTree && (
               <span className={styles.formErrors}>
-                {errors.costPerTree.message ? errors.costPerTree.message : 'Cost per tree should be more than €0 and lesser than €3.4'}
+                {errors.costPerTree.message
+                  ? errors.costPerTree.message
+                  : 'Cost per tree should be more than €0 and lesser than €3.4'}
               </span>
             )}
           </div>
@@ -258,13 +280,52 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
           >
             <Editor
               clickRadius={12}
-              mode={new DrawPointMode()}
+              mode={mode}
+              features={features}
               onUpdate={(data: any) => {
-                console.log(data);
+                console.log(data.data[0].geometry.coordinates);
+                setProjectCoords(data.data[0].geometry.coordinates);
+                setMode(edit);
+                setEditing(true);
+                setFeatures(data.data);
               }}
             />
+            {projectCoords !== null ? (
+              <Marker
+                latitude={projectCoords[1]}
+                longitude={projectCoords[0]}
+                offsetLeft={5}
+                offsetTop={-16}
+                style={{ left: '28px' }}
+              >
+                <div className={styles.marker}></div>
+              </Marker>
+            ) : null}
+            {projectCoords !== null ? (
+              <div
+                onClick={() => {
+                  setProjectCoords(null);
+                  setFeatures([]);
+                  setEditing(false);
+                  setMode(draw);
+                }}
+                style={{
+                  height: 50,
+                  width: 50,
+                  backgroundColor: 'white',
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}
+              >
+                clear
+              </div>
+            ) : null}
           </MapGL>
-          <div className={styles.formField} style={{ margin:'auto', marginTop: '-120px' }}>
+          <div
+            className={styles.formField}
+            style={{ margin: 'auto', marginTop: '-120px' }}
+          >
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 inputRef={register({ required: true })}
@@ -273,9 +334,12 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 name="latitude"
                 onChange={changeBasicDetails}
                 className={styles.latitudeInput}
-              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
+                value={projectCoords !== null ? projectCoords[0] : null}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                }}
 
-              // defaultValue={}
+                // defaultValue={}
               />
             </div>
             <div className={styles.formFieldHalf}>
@@ -286,14 +350,16 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 name="longitude"
                 onChange={changeBasicDetails}
                 className={styles.longitudeInput}
-              onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9.]/g, '') }}
+                value={projectCoords !== null ? projectCoords[1] : null}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                }}
 
-              // defaultValue={}
+                // defaultValue={}
               />
             </div>
           </div>
         </div>
-
 
         <div className={styles.formFieldLarge}>
           <div className={styles.formFieldRadio}>
@@ -336,11 +402,19 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <input type='submit' className={styles.secondaryButton} value="Continue to Media" ></input>
+            <input
+              type="submit"
+              className={styles.secondaryButton}
+              value="Continue to Media"
+            ></input>
           </div>
 
           <div className={`${styles.formFieldHalf}`}>
-            <input type='submit' className={styles.continueButton} value="Save & see Project" ></input>
+            <input
+              type="submit"
+              className={styles.continueButton}
+              value="Save & see Project"
+            ></input>
           </div>
         </div>
       </form>
