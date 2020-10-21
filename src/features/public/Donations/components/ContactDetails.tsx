@@ -9,9 +9,8 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from '../../../common/types/donations';
 import styles from '../styles/ContactDetails.module.scss';
 import i18next from '../../../../../i18n';
-import zipCodeValidation from '../../../../utils/countryZipCode/zipCodeValidation';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-
+import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 
 const { useTranslation } = i18next;
 
@@ -29,7 +28,7 @@ function ContactDetails({
 }: ContactDetailsPageProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors } = useForm({mode:'onChange'});
+  const { register, handleSubmit, errors } = useForm({ mode: 'all' });
   const onSubmit = (data: any) => {
     setDonationStep(3);
   };
@@ -44,6 +43,13 @@ function ContactDetails({
   const defaultCountry = isTaxDeductible
     ? country
     : localStorage.getItem('countryCode');
+
+  const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country)[0]?.postal)
+
+  React.useEffect(() => {
+    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country);
+    setPostalRegex(fiteredCountry[0]?.postal);
+  }, [contactDetails.country])  
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -146,26 +152,26 @@ function ContactDetails({
 
           <div style={{ width: '20px' }} />
           <div>
-            <MaterialTextField
-              inputRef={register({
-                validate: () => zipCodeValidation(contactDetails.country, contactDetails.zipCode),
-              })}
-              label={t('donate:zipCode')}
-              variant="outlined"
-              name="zipCode"
-              onChange={changeContactDetails}
-              defaultValue={contactDetails.zipCode}
-            />
+            {
+              postalRegex && (
+                <MaterialTextField
+                  inputRef={register({
+                    required: true,
+                    pattern: postalRegex
+                  })}
+                  label={t('donate:zipCode')}
+                  variant="outlined"
+                  name="zipCode"
+                  onChange={changeContactDetails}
+                  defaultValue={contactDetails.zipCode}
+                />
+              )
+            }
             {errors.zipCode && (
               <span className={styles.formErrors}>
                 {t('donate:zipCodeAlphaNumValidation')}
               </span>
             )}
-            {/* {errors.zipCode && errors.zipCode.type === 'validate' && (
-              <span className={styles.formErrors}>
-                {t('donate:invalidZipCode')}
-              </span>
-            )} */}
           </div>
         </div>
         <div className={styles.formRow}>
@@ -224,7 +230,7 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-          {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
@@ -234,12 +240,21 @@ function ContactDetails({
         </div>
 
         <div className={styles.actionButtonsContainer}>
+
+          {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country  ? 
           <AnimatedButton
+            className={styles.continueButtonDisabled}
+          >
+              {t('common:continue')}
+            </AnimatedButton>
+            :
+            <AnimatedButton
             onClick={handleSubmit(onSubmit)}
             className={styles.continueButton}
           >
             {t('common:continue')}
-          </AnimatedButton>
+          </AnimatedButton> 
+            }
         </div>
       </form>
     </div>
