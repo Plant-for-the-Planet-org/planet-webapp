@@ -33,15 +33,22 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
 
     }
 
+    const [youtubeURL,setYoutubeURL] = React.useState('')
+
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formFieldLarge}>
+                    {youtubeURL && !errors.youtubeURL ? (
+                        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+                    ) : null}
+                </div>
+                <div className={styles.formFieldLarge}>
                     <MaterialTextField
                         inputRef={register({
                             required: {
-                                value:true,
-                                message:"Please enter Youtube URL"
+                                value: true,
+                                message: "Please enter Youtube URL"
                             }, pattern: {
                                 value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
                                 message: "Invalid Youtube Video Link"
@@ -50,7 +57,8 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
                         label={t('manageProjects:youtubeURL')}
                         variant="outlined"
                         name="youtubeURL"
-                        onChange={changeMediaDetails}
+                        onChange={()=> setYoutubeURL}
+                        defaultValue={youtubeURL}
                     />
 
                 </div>

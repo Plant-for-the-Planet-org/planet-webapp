@@ -39,6 +39,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
     zoom: defaultZoom,
   });
 
+  // In future if the details are present, we will feed default values here
   const defaultBasicDetails = {
     projectName: '',
     projectURL: '',
@@ -147,7 +148,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               onChange={changeBasicDetails}
               select
               value={basicDetails.projectType}
-              
+
             >
               {projectType.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -248,40 +249,43 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               />
             </div>
           </div>
-          <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: 'Please enter cost per tree',
-                },
-                validate: (value) =>
-                  parseFloat(value) > 0 && parseFloat(value) < 3.4028,
-              })}
-              label={t('manageProjects:costPerTree')}
-              variant="outlined"
-              name="costPerTree"
-              onChange={changeBasicDetails}
-              onInput={(e) => {
-                e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
-              }}
-              InputProps={{
-                startAdornment: (
-                  <p
-                    className={styles.inputStartAdornment}
-                    style={{ paddingRight: '4px' }}
-                  >{`€`}</p>
-                ),
-              }}
-            />
-            {errors.costPerTree && (
-              <span className={styles.formErrors}>
-                {errors.costPerTree.message
-                  ? errors.costPerTree.message
-                  : 'Cost per tree should be more than €0 and lesser than €3.4'}
-              </span>
-            )}
-          </div>
+          {receiveDonations ? (
+            <div className={styles.formFieldHalf}>
+              <MaterialTextField
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: 'Please enter cost per tree',
+                  },
+                  validate: (value) =>
+                    parseFloat(value) > 0 && parseFloat(value) < 3.4028,
+                })}
+                label={t('manageProjects:costPerTree')}
+                variant="outlined"
+                name="costPerTree"
+                onChange={changeBasicDetails}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <p
+                      className={styles.inputStartAdornment}
+                      style={{ paddingRight: '4px' }}
+                    >{`€`}</p>
+                  ),
+                }}
+              />
+              {errors.costPerTree && (
+                <span className={styles.formErrors}>
+                  {errors.costPerTree.message
+                    ? errors.costPerTree.message
+                    : 'Cost per tree should be more than €0 and lesser than €3.4'}
+                </span>
+              )}
+            </div>
+          ) : null}
+
         </div>
 
         <div className={styles.formFieldLarge}>
@@ -359,7 +363,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
 
-                // defaultValue={}
+              // defaultValue={}
               />
             </div>
             <div className={styles.formFieldHalf}>
@@ -375,7 +379,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
 
-                // defaultValue={}
+              // defaultValue={}
               />
             </div>
           </div>
@@ -420,7 +424,7 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                     </p>
         </div> */}
 
-        <div className={styles.formField}>
+        <div className={styles.formField} style={{ marginTop: '48px' }}>
           <div className={`${styles.formFieldHalf}`}>
             <input
               type="submit"
