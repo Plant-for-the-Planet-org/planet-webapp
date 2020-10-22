@@ -57,6 +57,8 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
     // }
   }, []);
 
+    const [youtubeURL,setYoutubeURL] = React.useState('')
+
   React.useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
@@ -66,21 +68,26 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.formFieldLarge}>
+                    {youtubeURL && !errors.youtubeURL ? (
+                        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+                    ) : null}
+                </div>
+                <div className={styles.formFieldLarge}>
                     <MaterialTextField
-                      inputRef={register({
-                        required: {
-                          value: true,
-                          message: 'Please enter Youtube URL',
-                        },
-                        pattern: {
-                          value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
-                          message: 'Invalid Youtube Video Link',
-                        },
-                      })}
-                      label={t('manageProjects:youtubeURL')}
-                      variant="outlined"
-                      name="youtubeURL"
-                      onChange={changeMediaDetails}
+                        inputRef={register({
+                            required: {
+                                value: true,
+                                message: "Please enter Youtube URL"
+                            }, pattern: {
+                                value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
+                                message: "Invalid Youtube Video Link"
+                            }
+                        })}
+                        label={t('manageProjects:youtubeURL')}
+                        variant="outlined"
+                        name="youtubeURL"
+                        onChange={()=> setYoutubeURL}
+                        defaultValue={youtubeURL}
                     />
 
                 </div>

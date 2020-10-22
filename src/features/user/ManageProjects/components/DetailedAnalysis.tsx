@@ -240,7 +240,6 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                     <div className={styles.formFieldHalf}>
 
                         <MaterialTextField
-                            inputRef={register({ required: true })}
                             label={t('manageProjects:siteOwner')}
                             variant="outlined"
                             name="siteOwner"
@@ -316,10 +315,10 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                         })}
                     />
                     {errors.causeOfDegradation && (
-                            <span className={styles.formErrors}>
-                                {errors.causeOfDegradation.message}
-                            </span>
-                        )}
+                        <span className={styles.formErrors}>
+                            {errors.causeOfDegradation.message}
+                        </span>
+                    )}
                 </div>
                 <div className={styles.formFieldLarge}>
                     <MaterialTextField
@@ -336,10 +335,10 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                         })}
                     />
                     {errors.longTermPlan && (
-                            <span className={styles.formErrors}>
-                                {errors.longTermPlan.message}
-                            </span>
-                        )}
+                        <span className={styles.formErrors}>
+                            {errors.longTermPlan.message}
+                        </span>
+                    )}
                 </div>
 
 
@@ -360,57 +359,60 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                         </div>
                     </div>
                     <div style={{ width: '20px' }}></div>
-                    
-                </div>
-                <div className={styles.formField}>
-                    <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                            inputRef={register({ required: true })}
-                            label={t('manageProjects:certifierName')}
-                            variant="outlined"
-                            name="certifierName"
-                            onChange={changeDetailedAnalysisData}
 
-                        />
-                    </div>
-                    <div style={{ width: '20px' }}></div>
-                    <div className={styles.formFieldHalf}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                value={certifiedDate}
-                                onChange={setCertifiedDate}
-                                label={t('manageProjects:certifiedDate')}
-                                name="certifiedDate"
-                                inputVariant="outlined"
-                                variant="inline"
-                                TextFieldComponent={MaterialTextField}
-                                autoOk
-                                clearable
-                                disableFuture
+                </div>
+
+                {isCertified ? (<div>
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+                            <MaterialTextField
+                                inputRef={register({ required: true })}
+                                label={t('manageProjects:certifierName')}
+                                variant="outlined"
+                                name="certifierName"
+                                onChange={changeDetailedAnalysisData}
+
                             />
-                        </MuiPickersUtilsProvider>
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+                        <div className={styles.formFieldHalf}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    value={certifiedDate}
+                                    onChange={setCertifiedDate}
+                                    label={t('manageProjects:certifiedDate')}
+                                    name="certifiedDate"
+                                    inputVariant="outlined"
+                                    variant="inline"
+                                    TextFieldComponent={MaterialTextField}
+                                    autoOk
+                                    clearable
+                                    disableFuture
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
                     </div>
-                </div>
-                
-                <div className={styles.formFieldLarge}>
-                    <div className={styles.fileUploadContainer}>
-                        <AnimatedButton
-                            onClick={uploadCertificate}
-                            className={styles.continueButton}
-                        >
-                            Upload Certificate
+
+                    <div className={styles.formFieldLarge}>
+                        <div className={styles.fileUploadContainer}>
+                            <AnimatedButton
+                                onClick={uploadCertificate}
+                                className={styles.continueButton}
+                            >
+                                Upload Certificate
                         </AnimatedButton>
-                        <p style={{ marginTop: '18px' }}>
-                            or drag in a pdf
+                            <p style={{ marginTop: '18px' }}>
+                                or drag in a pdf
                         </p>
+                        </div>
                     </div>
-                </div>
 
-                <div className={styles.formFieldLarge}>
-                    <p className={styles.inlineLinkButton}>Add another cerification</p>
-                </div>
+                    <div className={styles.formFieldLarge}>
+                        <p className={styles.inlineLinkButton}>Add another cerification</p>
+                    </div>
+                </div>) : null}
 
-                <div className={styles.formField}>
+                <div className={styles.formField}  style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={handleBack}
