@@ -22,10 +22,10 @@
 .formField {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   flex-wrap: wrap;
   max-width: 660px;
   justify-content: space-between;
+  align-items: center;
 }
 .formFieldHalf {
   margin-top: 24px;
@@ -234,4 +234,11 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
+}
+
+
+.mapboxContainer{
+  > div > div > div{
+    border-radius: 10px;
+  } 
 }
