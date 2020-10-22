@@ -60,5 +60,6 @@
   "inTimeOfTaxReturns": "in time for tax returns.",
   "titleToShare": "Planting trees against the climate crisis!",
   "textToShare": "Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out {{linkToShare}} if you want to plant some too! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
-  "invalidZipCode": "Invalid Zip Code"
+  "invalidZipCode": "Invalid Zip Code",
+  "thankyouHeaderText": "We're on the road to a \n <h1>Trillion Trees</h1>"
 }
