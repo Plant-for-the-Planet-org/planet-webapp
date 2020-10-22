@@ -33,10 +33,19 @@ export default function ManageProjects() {
         setActiveStep(0);
     };
 
+    const [projectGUID,setProjectGUID] = React.useState(null)
+    const [projectDetails,setProjectDetails] = React.useState({})
+
+    React.useEffect(()=>{
+        // Fetch different details of the project 
+
+        // setdefault details of different components
+    },[projectGUID])
+
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <BasicDetails handleNext={handleNext} />;
+                return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} />;
             case 1:
                 return <ProjectMedia handleNext={handleNext} handleBack={handleBack} />;
             case 2:

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import ManageProjects from '../../src/features/user/ManageProjects/screens'
+import ManageProjects from '../../../src/features/user/ManageProjects/screens'
 
 interface Props {
     

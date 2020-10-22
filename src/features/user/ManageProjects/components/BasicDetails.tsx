@@ -6,16 +6,20 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
 import MapGL, { Marker } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
+import { createProject } from '../apiFunctions/createProject';
+import { useSession } from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
 interface Props {
   handleNext: Function;
+  projectDetails:Object;
+  setProjectDetails:Function;
 }
 
-export default function BasicDetails({ handleNext }: Props): ReactElement {
+export default function BasicDetails({ handleNext,projectDetails,setProjectDetails }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
-
+  const [ session, loading] = useSession();
   // Map setup
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
@@ -49,28 +53,43 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
   // Form Fields
   // In future if the details are present, we will feed default values here
   const defaultBasicDetails = {
-    projectName: '',
-    projectURL: '',
-    projectType: '',
+    name: '',
+    slug: '',
+    classification: '',
     treeTarget: 0,
     website: '',
     description: '',
-    costPerTree: 0,
+    acceptDonations:true,
+    treeCost: 0,
+    publish:true,
+    visitorAssistance:false,
+    enablePlantLocations:false,
+    currency: 'EUR',
   };
-  const [receiveDonations, setReceiveDonations] = React.useState(true);
-  const [reviewerExpense, setReviewerExpense] = React.useState(true);
-  const [publishProject, setPublishProject] = React.useState(true);
-  const [projectAnalysis, setProjectAnalysis] = React.useState(true);
+
+  const [enablePlantLocations, setenablePlantLocations] = React.useState(true);
 
   const [basicDetails, setBasicDetails] = React.useState(defaultBasicDetails);
 
   const changeBasicDetails = (e: any) => {
     setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
   };
+  const toggleAcceptDonations = ()=>{
+    setBasicDetails({...basicDetails,acceptDonations:!basicDetails.acceptDonations})
+  }
+  const togglePublish = ()=>{
+    setBasicDetails({...basicDetails,publish:!basicDetails.publish})
+  }
+  const toggleVisitorAssistance = ()=>{
+    setBasicDetails({...basicDetails,visitorAssistance:!basicDetails.visitorAssistance})
+  }
+  const toggleEnablePlantLocations = ()=>{
+    setBasicDetails({...basicDetails,enablePlantLocations:!basicDetails.enablePlantLocations})
+  }
 
   const { register, handleSubmit, errors } = useForm({ mode: 'onChange' });
 
-  const projectTypes = [
+  const classifications = [
     { label: 'Large scale planting', value: 'large-scale-planting' },
     { label: 'Agroforestry', value: 'agroforestry' },
     { label: 'Natural Regeneration', value: 'natural-regeneration' },
@@ -81,39 +100,38 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
 
   const onSubmit = (data: any) => {
 
-    console.log('Data', data);
-    // Project type
-    // Receive donations
-    // Lodging support
-
+    console.log(data,'data');
+    
     let submitData = {
-      name: data.projectName,
-      desiredSlug: data.projectURL,
-      classification: data.projectType,
-      geoLocation: {
+      name: data.name,
+      slug: data.slug,
+      classification: 'agroforestry', // TO DO 
+      geometry: {
         type: 'Point',
         coordinates: [
-          data.longitude,
-          data.latitude
+          parseFloat(data.longitude),
+          parseFloat(data.latitude)
         ]
       },
       countTarget: Number(data.treeTarget),
       webSite: data.website,
       description: data.description,
-      acceptDonations: receiveDonations,
-      treeCost: data.costPerTree ? Number(data.costPerTree) : 0,
-      currency: 'EUR',
-      vistorAssitance: reviewerExpense,
-      publish: publishProject, 
-      enablePlantLocations: projectAnalysis 
+      acceptDonations: data.acceptDonations,
+      treeCost: data.treeCost ? Number(data.treeCost) : 0,
+      currency: data.currency,
+      visitorAssistance: data.visitorAssistance,
+      publish: data.publish, 
+      enablePlantLocations: data.enablePlantLocations 
     }
-
-    console.log('Submit Data', submitData);
-
-
-    // handleNext();
+    // createProject(submitData,session).then((data)=>{
+    //   setProjectDetails(data);
+    //   handleNext();
+    // })
 
   };
+
+  // console.log('projectDetails',projectDetails);
+  
 
   return (
     <div className={styles.stepContainer}>
@@ -126,14 +144,14 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 message: 'Please enter Project Name',
               },
             })}
-            label={t('manageProjects:projectName')}
+            label={t('manageProjects:name')}
             variant="outlined"
-            name="projectName"
+            name="name"
             onChange={changeBasicDetails}
           />
-          {errors.projectName && (
+          {errors.name && (
             <span className={styles.formErrors}>
-              {errors.projectName.message}
+              {errors.name.message}
             </span>
           )}
         </div>
@@ -147,9 +165,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                   message: 'Please enter Project URL',
                 },
               })}
-              label={t('manageProjects:projectURL')}
+              label={t('manageProjects:slug')}
               variant="outlined"
-              name="projectURL"
+              name="slug"
               onChange={changeBasicDetails}
               InputProps={{
                 startAdornment: (
@@ -157,9 +175,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                 ),
               }}
             />
-            {errors.projectURL && (
+            {errors.slug && (
               <span className={styles.formErrors}>
-                {errors.projectURL.message}
+                {errors.slug.message}
               </span>
             )}
           </div>
@@ -172,23 +190,23 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
               //     message: "Please select Project type"
               //   },
               // })}
-              label={t('manageProjects:projectType')}
+              label={t('manageProjects:classification')}
               variant="outlined"
-              name="projectType"
+              name="classification"
               onChange={changeBasicDetails}
               select
-              value={basicDetails.projectType}
+              value={basicDetails.classification}
 
             >
-              {projectTypes.map((option) => (
+              {classifications.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
             </MaterialTextField>
-            {errors.projectType && (
+            {errors.classification && (
               <span className={styles.formErrors}>
-                {errors.projectType.message}
+                {errors.classification.message}
               </span>
             )}
           </div>
@@ -269,17 +287,18 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="receiveDonations">Receive Donations</label>
+              <label htmlFor="acceptDonations">Receive Donations</label>
               <ToggleSwitch
-                id="receiveDonations"
-                checked={receiveDonations}
-                onChange={() => setReceiveDonations(!receiveDonations)}
-                name="receiveDonations"
+                id="acceptDonations"
+                checked={basicDetails.acceptDonations}
+                onChange={toggleAcceptDonations}
+                name="acceptDonations"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
+                inputRef={register()}
               />
             </div>
           </div>
-          {receiveDonations ? (
+          {basicDetails.acceptDonations ? (
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 inputRef={register({
@@ -290,9 +309,9 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                   validate: (value) =>
                     parseFloat(value) > 0 && parseFloat(value) < 3.4028,
                 })}
-                label={t('manageProjects:costPerTree')}
+                label={t('manageProjects:treeCost')}
                 variant="outlined"
-                name="costPerTree"
+                name="treeCost"
                 onChange={changeBasicDetails}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
@@ -306,10 +325,10 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
                   ),
                 }}
               />
-              {errors.costPerTree && (
+              {errors.treeCost && (
                 <span className={styles.formErrors}>
-                  {errors.costPerTree.message
-                    ? errors.costPerTree.message
+                  {errors.treeCost.message
+                    ? errors.treeCost.message
                     : 'Cost per tree should be more than €0 and lesser than €3.4'}
                 </span>
               )}
@@ -383,15 +402,15 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
 
         <div className={styles.formFieldLarge}>
           <div className={styles.formFieldRadio}>
-            <label htmlFor="reviewerExpense">
+            <label htmlFor="visitorAssistance">
               I will provide lodging, site access and local transport if a
               reviewer is sent by Plant-for-the-Planet.
             </label>
             <ToggleSwitch
-              id="reviewerExpense"
-              checked={reviewerExpense}
-              onChange={() => setReviewerExpense(!reviewerExpense)}
-              name="reviewerExpense"
+              id="visitorAssistance"
+              checked={basicDetails.visitorAssistance}
+              onChange={toggleVisitorAssistance}
+              name="visitorAssistance"
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           </div>
@@ -400,12 +419,13 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publishProject'}>Publish Project (if projectstatus=Approved)</label>
+              <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
               <ToggleSwitch
-                checked={publishProject}
-                onChange={() => setPublishProject(!publishProject)}
-                name="publishProject"
-                id="publishProject"
+              inputRef={register()}
+                checked={basicDetails.publish}
+                onChange={togglePublish}
+                name="publish"
+                id="publish"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
 
@@ -413,15 +433,15 @@ export default function BasicDetails({ handleNext }: Props): ReactElement {
           </div>
           <div className={styles.formFieldHalf}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'projectAnalysis'}>
+              <label htmlFor={'enablePlantLocations'}>
                 Detailed Project Analysis if projectstatus=Approved
                 Activate once all relevant data is submitted via Tree Mapper.
                     </label>
               <ToggleSwitch
-                checked={projectAnalysis}
-                onChange={() => setProjectAnalysis(!projectAnalysis)}
-                name="projectAnalysis"
-                id="projectAnalysis"
+                checked={enablePlantLocations}
+                onChange={toggleEnablePlantLocations}
+                name="enablePlantLocations"
+                id="enablePlantLocations"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
 
