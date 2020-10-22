@@ -243,17 +243,18 @@
   } 
 }
 .mapTool {
-  background-color: #d5d5d5;
-  height: 25px;
-  width: 25px;
-  border: 2px solid #979797;
+  background-color: white;
+  height: 30px;
+  width: 30px;
+  border-radius: 3px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   margin: 5px;
+  box-shadow: 0 7px 30px -10px rgba(60,60,60,1);
 }
 
 .mapTool svg {
-  width: 12px;
+  width: 16px;
 }
