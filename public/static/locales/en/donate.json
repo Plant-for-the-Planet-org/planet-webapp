@@ -20,7 +20,7 @@
   "address": "Address",
   "city": "City",
   "zipCode": "Postal/Zip Code",
-  "zipCodeAlphaNumValidation": "ZipCode should only contain letters and numbers",
+  "zipCodeAlphaNumValidation": "ZipCode is invalid",
   "country": "Country",
   "isACompanyDonation": "This is a company donation",
   "companyName": "Company Name",
