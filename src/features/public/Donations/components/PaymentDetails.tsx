@@ -95,6 +95,9 @@ function PaymentDetails({
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const [cardNumber, setCardNumber] = React.useState(false);
+  const [cardCvv, setCardCvv] = React.useState(false);
+  const [cardDate, setCardDate] = React.useState(false);
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
@@ -143,6 +146,9 @@ function PaymentDetails({
 
     if (paymentType === 'CARD') {
       const cardElement = elements!.getElement(CardNumberElement);
+      setCardCvv(false);
+      setCardDate(false);
+      setCardNumber(false);
       cardElement!.on('change', ({ error }) => {
         if (error) {
           // setPaymentError(error.message);
@@ -209,6 +215,40 @@ function PaymentDetails({
     payWithCard({ ...payWithCardProps });
   };
 
+  const handleChange = (change) => {
+    if (change.complete === true) {
+      setCardNumber(true);
+    } else {
+      setCardNumber(false);
+    }
+  };
+  const handleChangeCvv = (change) => {
+    if (change.complete === true) {
+      setCardCvv(true);
+    } else {
+      setCardCvv(false);
+    }
+  };
+  const handleChangeCardDate = (change) => {
+    if (change.complete === true) {
+      setCardDate(true);
+    } else {
+      setCardDate(false);
+    }
+  };
+
+  const validateCard = () => {
+    if (cardNumber && cardCvv && cardDate) {
+      setShowContinue(true);
+    } else {
+      setShowContinue(false);
+    }
+  };
+
+  React.useEffect(() => {
+    validateCard();
+  }, [cardDate, cardNumber, cardCvv]);
+
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
@@ -244,6 +284,7 @@ function PaymentDetails({
               <CardNumberElement
                 id="cardNumber"
                 options={getInputOptions(t('donate:cardNumber'))}
+                onChange={handleChange}
               />
             </FormControlNew>
           </div>
@@ -252,11 +293,12 @@ function PaymentDetails({
               <CardExpiryElement
                 id="expiry"
                 options={getInputOptions(t('donate:expDate'))}
+                onChange={handleChangeCardDate}
               />
             </FormControlNew>
             <div style={{ width: '20px' }}></div>
             <FormControlNew variant="outlined">
-              <CardCvcElement id="cvc" options={getInputOptions('CVV')} />
+              <CardCvcElement id="cvc" options={getInputOptions('CVV')} onChange={handleChangeCvv} />
             </FormControlNew>
           </div>
           {/* <div className={styles.saveCard}>
