@@ -51,7 +51,7 @@ export default function GiftForm({
               onChange={changeGiftDetails}
               label={t('donate:email')}
               variant="outlined"
-              inputRef={isGift ? register({ required: true }) : register({})}
+              inputRef={isGift ? register({ required: true, pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i }) : register({})}
             />
             {errors.email && (
               <span className={styles.formErrors}>
