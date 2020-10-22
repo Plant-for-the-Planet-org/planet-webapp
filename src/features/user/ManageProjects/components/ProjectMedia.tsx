@@ -1,6 +1,7 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
+import imageToBase64 from 'image-to-base64/browser';
 import styles from '../styles/StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
@@ -43,8 +44,13 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
       })));
     },
     onDropAccepted: () => {
-      console.log('uploaded');
-      console.log(files, 'files');
+      files.map((file) => {
+        imageToBase64(file.path).then((response: any) => {
+          console.log(response);
+        }).catch((err: any) => {
+          console.log(err);
+        });
+      });
     },
     // onFileDialogCancel: () => {
     //     alert('no file selected')
@@ -86,15 +92,22 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
 
                 <div className={styles.formFieldLarge} {...getRootProps()}>
                     <label htmlFor="upload" className={styles.fileUploadContainer}>
-                        <AnimatedButton
-                          onClick={uploadPhotos}
-                          className={styles.continueButton}
-                        >
-                            <input {...getInputProps()} />
+                        <input {...getInputProps()} />
                             { isDragActive ? <p>Drop the files here ...</p>
-                              : <p>Drag 'n' drop some files here, or click to select files</p>}
+                              :  <div>
+                               <AnimatedButton
+                              onClick={uploadPhotos}
+                              className={styles.continueButton}
+                            >
+                            Upload Photos
                         </AnimatedButton>
+                        <p style={{ marginTop: '18px' }}>
+                            or drag them in
+                        </p>
+                        </div>
+                              }
                     </label>
+                    
                     {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
                 </div>
 
