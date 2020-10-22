@@ -39,7 +39,7 @@ export default function ManageProjects() {
 
     React.useEffect(()=>{
         // Fetch details of the project 
-        getRequest(`/app/projects/${projectGUID}?_scope=extended`).then((result)=>{
+        getRequest(`/app/projects/${projectGUID}?_scope=extended&currency=EUR`).then((result)=>{
             setProjectDetails(result)
         })
     },[projectGUID])

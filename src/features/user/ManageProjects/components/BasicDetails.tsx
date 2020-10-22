@@ -13,13 +13,13 @@ const { useTranslation } = i18next;
 
 interface Props {
   handleNext: Function;
-  projectDetails:Object;
-  setProjectDetails:Function;
+  projectDetails: Object;
+  setProjectDetails: Function;
 }
 
-export default function BasicDetails({ handleNext,projectDetails,setProjectDetails }: Props): ReactElement {
+export default function BasicDetails({ handleNext, projectDetails, setProjectDetails }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
-  const [ session, loading] = useSession();
+  const [session, loading] = useSession();
   // Map setup
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
@@ -55,36 +55,54 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: '',
+    classification: 'large-scale-planting',
     treeTarget: 0,
     website: '',
     description: '',
-    acceptDonations:true,
+    acceptDonations: true,
     treeCost: 0,
-    publish:true,
-    visitorAssistance:false,
-    enablePlantLocations:false,
+    publish: true,
+    visitorAssistance: false,
+    enablePlantLocations: false,
     currency: 'EUR',
   };
 
-  const [enablePlantLocations, setenablePlantLocations] = React.useState(true);
+  React.useEffect(() => {
+    const basicDetails = {
+      name: projectDetails.name,
+      slug: projectDetails.slug,
+      classification: projectDetails.classification,
+      treeTarget: projectDetails.countTarget,
+      website: projectDetails.website,
+      description: projectDetails.description,
+      acceptDonations: projectDetails.allowDonations,
+      treeCost: projectDetails.treeCost,
+      publish: projectDetails.publish,
+      visitorAssistance: projectDetails.visitorAssistance,
+      enablePlantLocations: projectDetails.enablePlantLocations,
+      currency: projectDetails.currency,
+    };
+    setBasicDetails(basicDetails)
+
+  }, [projectDetails])
+
 
   const [basicDetails, setBasicDetails] = React.useState(defaultBasicDetails);
 
   const changeBasicDetails = (e: any) => {
     setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
   };
-  const toggleAcceptDonations = ()=>{
-    setBasicDetails({...basicDetails,acceptDonations:!basicDetails.acceptDonations})
+  const toggleAcceptDonations = () => {
+    setBasicDetails({ ...basicDetails, acceptDonations: !basicDetails.acceptDonations })
   }
-  const togglePublish = ()=>{
-    setBasicDetails({...basicDetails,publish:!basicDetails.publish})
+  const togglePublish = () => {
+    setBasicDetails({ ...basicDetails, publish: !basicDetails.publish })
   }
-  const toggleVisitorAssistance = ()=>{
-    setBasicDetails({...basicDetails,visitorAssistance:!basicDetails.visitorAssistance})
+  const toggleVisitorAssistance = () => {
+    setBasicDetails({ ...basicDetails, visitorAssistance: !basicDetails.visitorAssistance })
   }
-  const toggleEnablePlantLocations = ()=>{
-    setBasicDetails({...basicDetails,enablePlantLocations:!basicDetails.enablePlantLocations})
+  const toggleEnablePlantLocations = () => {
+    setBasicDetails({ ...basicDetails, enablePlantLocations: !basicDetails.enablePlantLocations })
   }
 
   const { register, handleSubmit, errors } = useForm({ mode: 'onChange' });
@@ -100,8 +118,8 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
 
   const onSubmit = (data: any) => {
 
-    console.log(data,'data');
-    
+    console.log(data, 'data');
+
     let submitData = {
       name: data.name,
       slug: data.slug,
@@ -120,8 +138,8 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
       treeCost: data.treeCost ? Number(data.treeCost) : 0,
       currency: data.currency,
       visitorAssistance: data.visitorAssistance,
-      publish: data.publish, 
-      enablePlantLocations: data.enablePlantLocations 
+      publish: data.publish,
+      enablePlantLocations: data.enablePlantLocations
     }
     // createProject(submitData,session).then((data)=>{
     //   setProjectDetails(data);
@@ -129,9 +147,6 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
     // })
 
   };
-
-  // console.log('projectDetails',projectDetails);
-  
 
   return (
     <div className={styles.stepContainer}>
@@ -148,6 +163,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
             variant="outlined"
             name="name"
             onChange={changeBasicDetails}
+            value={basicDetails.name}
           />
           {errors.name && (
             <span className={styles.formErrors}>
@@ -174,6 +190,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
                   <p className={styles.inputStartAdornment}>pp.eco/</p>
                 ),
               }}
+              value={basicDetails.slug}
             />
             {errors.slug && (
               <span className={styles.formErrors}>
@@ -196,7 +213,6 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
               onChange={changeBasicDetails}
               select
               value={basicDetails.classification}
-
             >
               {classifications.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -229,6 +245,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
               variant="outlined"
               name="treeTarget"
               onChange={changeBasicDetails}
+              value={basicDetails.treeTarget}
             />
             {errors.treeTarget && (
               <span className={styles.formErrors}>
@@ -254,6 +271,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
                   message: 'Invalid website URL',
                 },
               })}
+              value={basicDetails.website}
             />
             {errors.website && (
               <span className={styles.formErrors}>
@@ -276,6 +294,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
                 message: 'Please enter About project',
               },
             })}
+            value={basicDetails.description}
           />
           {errors.description && (
             <span className={styles.formErrors}>
@@ -324,6 +343,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
                     >{`€`}</p>
                   ),
                 }}
+                value={basicDetails.treeCost}
               />
               {errors.treeCost && (
                 <span className={styles.formErrors}>
@@ -421,7 +441,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
               <ToggleSwitch
-              inputRef={register()}
+                inputRef={register()}
                 checked={basicDetails.publish}
                 onChange={togglePublish}
                 name="publish"
@@ -438,7 +458,7 @@ export default function BasicDetails({ handleNext,projectDetails,setProjectDetai
                 Activate once all relevant data is submitted via Tree Mapper.
                     </label>
               <ToggleSwitch
-                checked={enablePlantLocations}
+                checked={basicDetails.enablePlantLocations}
                 onChange={toggleEnablePlantLocations}
                 name="enablePlantLocations"
                 id="enablePlantLocations"
