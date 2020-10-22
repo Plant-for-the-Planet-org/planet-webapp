@@ -16,16 +16,16 @@ const { useTranslation } = i18next;
 
 interface Props {
     handleNext: Function;
-    handleBack:Function;
+    handleBack: Function;
 }
 
-export default function ProjectSpending({handleBack,handleNext}: Props): ReactElement {
+export default function ProjectSpending({ handleBack, handleNext }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors } = useForm();
 
-    const [spendingDetails,setSpendingDetails] = React.useState({});
+    const [spendingDetails, setSpendingDetails] = React.useState({});
 
     const changeSpendingDetails = (e: any) => {
         setSpendingDetails({ ...spendingDetails, [e.target.name]: e.target.value });
@@ -35,7 +35,7 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
         handleNext()
     };
 
-    const uploadReport = ()=>{
+    const uploadReport = () => {
 
     }
 
@@ -46,8 +46,8 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <div className={styles.formField}>
-                <div className={`${styles.formFieldHalf}`}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <div className={`${styles.formFieldHalf}`}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DatePicker
                                 views={["year"]}
                                 value={spendingYear}
@@ -62,39 +62,39 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
                                 disableFuture
                             />
                         </MuiPickersUtilsProvider>
-                   
-                    </div>
-                    <div style={{width:'20px'}}></div>
-                    <div className={`${styles.formFieldHalf}`}>
-                    <MaterialTextField
-                        inputRef={register({
-                            validate: (value) =>
-                            parseFloat(value) > 0 && parseFloat(value) < 3.4028,
-                        })}
-                        label={t('manageProjects:spendingAmount')}
 
-                        variant="outlined"
-                        name="spendingAmount"
-                        onChange={changeSpendingDetails}
-                        onInput={(e) => {
-                            e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
-                        }}
-                        InputProps={{
-                            startAdornment: (
-                            <p
-                                className={styles.inputStartAdornment}
-                                style={{ paddingRight: '4px' }}
-                            >{`€`}</p>
-                            ),
-                        }}
+                    </div>
+                    <div style={{ width: '20px' }}></div>
+                    <div className={`${styles.formFieldHalf}`}>
+                        <MaterialTextField
+                            inputRef={register({
+                                validate: (value) =>
+                                    parseFloat(value) > 0 && parseFloat(value) < 3.4028,
+                            })}
+                            label={t('manageProjects:spendingAmount')}
+
+                            variant="outlined"
+                            name="spendingAmount"
+                            onChange={changeSpendingDetails}
+                            onInput={(e) => {
+                                e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                            }}
+                            InputProps={{
+                                startAdornment: (
+                                    <p
+                                        className={styles.inputStartAdornment}
+                                        style={{ paddingRight: '4px' }}
+                                    >{`€`}</p>
+                                ),
+                            }}
                         />
                         {errors.spendingAmount && (
                             <span className={styles.formErrors}>
                                 {errors.spendingAmount.message}
                             </span>
                         )}
-                        
-                     </div>
+
+                    </div>
                 </div>
 
                 <div className={styles.formFieldLarge}>
@@ -103,9 +103,9 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
                             onClick={uploadReport}
                             className={styles.continueButton}
                         >
-                           Upload Report
+                            Upload Report
                         </AnimatedButton>
-                        <p style={{marginTop:'18px'}}>
+                        <p style={{ marginTop: '18px' }}>
                             or drag in a pdf
                         </p>
                     </div>
@@ -122,11 +122,11 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
                             onClick={handleBack}
                             className={styles.secondaryButton}
                         >
-                          <BackArrow/>
+                            <BackArrow />
                             <p>Back to project sites</p>
                         </AnimatedButton>
-                    </div> 
-                    <div style={{width:'20px'}}></div>
+                    </div>
+                    <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={onSubmit}
@@ -134,7 +134,7 @@ export default function ProjectSpending({handleBack,handleNext}: Props): ReactEl
                         >
                             {'Save & continue'}
                         </AnimatedButton>
-                    </div> 
+                    </div>
                 </div>
             </form>
         </div>

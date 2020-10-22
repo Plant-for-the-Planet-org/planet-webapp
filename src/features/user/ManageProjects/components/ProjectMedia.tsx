@@ -34,22 +34,41 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
   };
 
   const [files, setFiles] = React.useState([]);
+
+  const onDrop = React.useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file:any) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file);
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = (event) => {
+      // Do whatever you want with the file contents
+        // setFiles(acceptedFiles.map((file:any) => Object.assign(file, {
+        //   preview: URL.createObjectURL(file),
+        // })));
+        console.log('Base 64 version',event.target.result);
+
+        // Upload the base 64 to API and use the response to show preview to the user
+        
+      }
+    })
+    
+  }, [])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     multiple: true,
-    onDrop: (acceptedFiles) => {
-      setFiles(acceptedFiles.map((file) => Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      })));
-    },
+    onDrop:onDrop ,
     onDropAccepted: () => {
       console.log('uploaded');
-      console.log(files, 'files');
     },
+  
     // onFileDialogCancel: () => {
     //     alert('no file selected')
     // }
-  }, []);
+  });
+
+  
 
     const [youtubeURL,setYoutubeURL] = React.useState('')
 
@@ -98,9 +117,12 @@ export default function ProjectMedia({ handleBack, handleNext }: Props): ReactEl
                           className={styles.continueButton}
                         >
                             <input {...getInputProps()} />
-                            { isDragActive ? <p>Drop the files here ...</p>
-                              : <p>Drag 'n' drop some files here, or click to select files</p>}
+                            Upload Photos
+                        
                         </AnimatedButton>
+                        <p style={{ marginTop: '18px' }}>
+                            or drag them in
+                        </p>
                     </label>
                     {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
                 </div>
