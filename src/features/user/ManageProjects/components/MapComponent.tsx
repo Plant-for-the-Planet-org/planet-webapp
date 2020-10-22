@@ -34,7 +34,7 @@ export default function MapComponent({}: Props): ReactElement {
   const _renderToolbar = () => {
     return (
       <div
-        style={{ position: 'absolute', top: 0, right: 0, maxWidth: '320px' }}
+        style={{ position: 'absolute', top: 0, right: 0, maxWidth: '320px',borderRadius:'10px' }}
       >
         <div
           onClick={() => {
@@ -75,7 +75,7 @@ export default function MapComponent({}: Props): ReactElement {
   };
 
   return (
-    <div className={styles.formFieldLarge}>
+    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
       <MapGL
         {...viewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}

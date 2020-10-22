@@ -143,7 +143,7 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                             variant="outlined"
                             name="plantingDensity"
                             onChange={changeDetailedAnalysisData}
-                            helperText={'Number of trees per ha'}
+                            // helperText={'Number of trees per ha'}
                             inputRef={register({
                                 validate: value => parseInt(value, 10) > 1
                             })}
@@ -174,7 +174,9 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                 </div>
 
                 <div className={styles.formFieldLarge}>
+                    
                     <div className={styles.plantingSeasons}>
+                        <p className={styles.plantingSeasonsLabel}>Planting Seasons</p>
                         {plantingSeasons.map((month) => {
                             return (
                                 <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>

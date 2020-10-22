@@ -129,10 +129,18 @@
   border-radius: 10px;
   background-color: #f2f2f7;
   padding: 16px;
+  padding-top: 24px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  position: relative;
+  .plantingSeasonsLabel{
+    position: absolute;
+    top: -8px;
+    font-size: 12px;
+  }
 }
+
 
 .multiSelectInput {
   display: flex;

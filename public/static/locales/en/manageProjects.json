@@ -1,7 +1,7 @@
 {
     "name":"Project Name",
     "slug":"Project URL",
-    "projectType":"Project Type",
+    "classification":"Project Type",
     "treeTarget":"Tree Target",
     "website":"Website",
     "aboutProject":"About Project",

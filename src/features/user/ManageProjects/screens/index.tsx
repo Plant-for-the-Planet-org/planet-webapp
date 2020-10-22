@@ -12,6 +12,7 @@ import ProjectMedia from '../components/ProjectMedia';
 import DetailedAnalysis from '../components/DetailedAnalysis';
 import ProjectSites from '../components/ProjectSites';
 import ProjectSpending from '../components/ProjectSpending';
+import { getRequest } from '../../../../utils/apiRequests/api';
 
 function getSteps() {
     return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
@@ -33,13 +34,14 @@ export default function ManageProjects() {
         setActiveStep(0);
     };
 
-    const [projectGUID,setProjectGUID] = React.useState(null)
+    const [projectGUID,setProjectGUID] = React.useState('proj_LAIzZDu2YAWBzQziOS0H0pMj')
     const [projectDetails,setProjectDetails] = React.useState({})
 
     React.useEffect(()=>{
-        // Fetch different details of the project 
-
-        // setdefault details of different components
+        // Fetch details of the project 
+        getRequest(`/app/projects/${projectGUID}?_scope=extended`).then((result)=>{
+            setProjectDetails(result)
+        })
     },[projectGUID])
 
     function getStepContent(step: number) {

@@ -53,7 +53,7 @@ export default function ProjectSites({
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.formFieldLarge}>
+        {/* <div className={styles.formFieldLarge}>
           <StaticMap
             {...viewport}
             mapboxApiAccessToken={MAPBOX_TOKEN}
@@ -66,7 +66,7 @@ export default function ProjectSites({
             scrollZoom={false}
             touchZoom={false}
           ></StaticMap>
-        </div>
+        </div> */}
         <div className={styles.formFieldLarge}>
           <MaterialTextField
             inputRef={register({ required: true })}
