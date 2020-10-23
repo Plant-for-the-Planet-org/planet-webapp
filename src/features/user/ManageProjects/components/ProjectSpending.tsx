@@ -30,11 +30,11 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors, formState } = useForm({ mode: 'all' });
+    const { register, handleSubmit, errors, formState,getValues,setValue } = useForm({ mode: 'all' });
     const [session, loading] = useSession();
 
     const [year,setYear] = React.useState(new Date());
-    const [amount,setAmount] = React.useState();
+    const [amount,setAmount] = React.useState(0);
 
     const [uploadedFiles,setUploadedFiles] = React.useState([])
     React.useEffect(() => {
@@ -71,24 +71,20 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
     // console.log(isDirty, 'isDirty');
 
     const onSubmit = (pdf: any) => {
-        console.log(pdf);
-
+        const updatedAmount = getValues( "amount");
         const submitData = {
             year:year.getFullYear(),
-            amount:amount,
+            amount:updatedAmount,
             pdfFile:pdf
         }
-        
-        console.log('submitData',submitData);
-        
-        // postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`,submitData, session).then((res) => {
-        //     let newUploadedFiles = uploadedFiles;
-        //     newUploadedFiles.push(res)
-        //     setUploadedFiles(newUploadedFiles)
 
-        //     console.log(res,'res');
-            
-        //   })
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`,submitData, session).then((res) => {
+            let newUploadedFiles = uploadedFiles;
+            newUploadedFiles.push(res)
+            setUploadedFiles(newUploadedFiles);
+            setAmount(0);
+            setValue('amount', 0, { shouldDirty: false })
+          })
         // handleNext()
     };
 
@@ -139,10 +135,11 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
                                 }
                             })}
                             label={t('manageProjects:spendingAmount')}
-                            value={amount}
+                            // value={amount}
+                            defaultValue={amount}
                             variant="outlined"
                             name="amount"
-                            onChange={(e)=>setAmount(Number(e.target.value))}                            
+                            onChange={(e)=> setAmount(e.target.value)}                            
                             onInput={(e) => {
                                 e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
                             }}
@@ -164,7 +161,7 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
                     </div>
                 </div>
 
-                {errors.amount || errors.year || !isDirty ? (
+                {errors.amount || errors.year || !isDirty || amount === 0 ? (
                     <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                         <div className={styles.fileUploadContainer}>
                             <AnimatedButton
