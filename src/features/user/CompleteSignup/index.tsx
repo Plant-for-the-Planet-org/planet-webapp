@@ -138,8 +138,8 @@ export default function CompleteSignup() {
             firstname: firstName,
             lastname: lastName,
             country: country,
-            mayPublish: !isPrivateAccount,
-            mayContact: isSubscribed,
+            isPrivate: isPrivateAccount,
+            getNews: isSubscribed,
             oAuthAccessToken: session.accessToken,
           };
           sendRequest(bodyToSend);
@@ -166,8 +166,8 @@ export default function CompleteSignup() {
             zipCode: zipCode,
             city: city,
             country: country,
-            mayPublish: !isPrivateAccount,
-            mayContact: isSubscribed,
+            isPrivate: isPrivateAccount,
+            getNews: isSubscribed,
             oAuthAccessToken: session.accessToken,
           };
           sendRequest(bodyToSend);
@@ -182,8 +182,8 @@ export default function CompleteSignup() {
             lastname: lastName,
             name: nameOfOrg,
             country: country,
-            mayPublish: !isPrivateAccount,
-            mayContact: isSubscribed,
+            isPrivate: isPrivateAccount,
+            getNews: isSubscribed,
             oAuthAccessToken: session.accessToken,
           };
           sendRequest(bodyToSend);
@@ -198,8 +198,8 @@ export default function CompleteSignup() {
             lastname: lastName,
             name: nameOfOrg,
             country: country,
-            mayPublish: !isPrivateAccount,
-            mayContact: isSubscribed,
+            isPrivate: isPrivateAccount,
+            getNews: isSubscribed,
             oAuthAccessToken: session.accessToken,
           };
           sendRequest(bodyToSend);
