@@ -1,7 +1,7 @@
 import 'date-fns'
 import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss'
@@ -23,7 +23,7 @@ interface Props {
 export default function DetailedAnalysis({ handleBack, handleNext }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors } = useForm({ mode: 'all' });
+    const { register, handleSubmit, errors, control } = useForm({ mode: 'all' });
 
     const [plantingSeasons, setPlantingSeasons] = React.useState([
         { id: 0, title: 'January', isSet: false },
@@ -250,14 +250,13 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                             </span>
                         )}
                     </div>
-
                 </div>
 
 
                 <div className={styles.formField}>
                     <div className={styles.formFieldHalf}>
 
-                        <MaterialTextField
+                    {/* <MaterialTextField
                             label={t('manageProjects:siteOwner')}
                             variant="outlined"
                             name="siteOwner"
@@ -269,7 +268,36 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                                     {option.title}
                                 </MenuItem>
                             ))}
-                        </MaterialTextField>
+                        </MaterialTextField> */}
+                    
+                        <Controller
+                            as={
+                                <MaterialTextField
+                                inputRef={register({                      
+                                })}
+                                label={t('manageProjects:siteOwner')}
+                                variant="outlined"
+                                name="siteOwner"
+                                onChange={changeDetailedAnalysisData}
+                                select
+                                >
+                                {siteOwners.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                    {option.title}
+                                    </MenuItem>
+                                ))}
+                                </MaterialTextField>
+                            }
+                            name="siteOwner"
+                            rules={{ required: "Please select Site Owner" }}
+                            control={control}
+                            defaultValue=""
+                            />
+                            {errors.siteOwner && (
+                            <span className={styles.formErrors}>
+                                {errors.siteOwner.message}
+                            </span>
+                            )}
                     </div>
                     <div style={{ width: '20px' }}></div>
                     <div className={styles.formFieldHalf}>
@@ -389,7 +417,6 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                                 variant="outlined"
                                 name="certifierName"
                                 onChange={changeDetailedAnalysisData}
-
                             />
                         </div>
                         <div style={{ width: '20px' }}></div>

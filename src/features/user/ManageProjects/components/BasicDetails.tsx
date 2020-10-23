@@ -50,6 +50,8 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   };
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  const { register, handleSubmit, errors, control, reset } = useForm({ mode: 'onChange' });
+
 
   // Form Fields
   // In future if the details are present, we will feed default values here
@@ -84,6 +86,8 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       currency: projectDetails.currency,
     };
     setBasicDetails(basicDetails)
+    // reset is for Controller-ProjectType default value
+    reset(basicDetails)
 
   }, [projectDetails])
 
@@ -106,7 +110,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const toggleEnablePlantLocations = () => {
     setBasicDetails({ ...basicDetails, enablePlantLocations: !basicDetails.enablePlantLocations })
   }
-  const { register, handleSubmit, errors, control } = useForm({ mode: 'onChange' });
 
   const classifications = [
     { label: 'Large scale planting', value: 'large-scale-planting' },
@@ -125,7 +128,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     let submitData = {
       name: data.name,
       slug: data.slug,
-      classification: 'agroforestry', // TO DO 
+      classification: data.classification,
       geometry: {
         type: 'Point',
         coordinates: [
