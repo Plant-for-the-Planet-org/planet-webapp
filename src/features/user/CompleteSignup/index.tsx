@@ -96,16 +96,14 @@ export default function CompleteSignup() {
         // successful signup -> goto me page
         const resJson = await res.json();
         setUserExistsInDB(true);
-
-        // TODO: userSlug will be received from resJson
-        const tempResponse = { ...resJson, userSlug: 'trial-slug' };
-        setUserSlug(tempResponse.userSlug);
+        console.log('-----in complete-profile', resJson)      
+        setUserSlug(resJson.slug);
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
 
         if (typeof window !== 'undefined') {
-          router.push(`/t/${tempResponse.userSlug}`);
+          router.push(`/t/${resJson.slug}`);
         }
       } else if (res.status === 401){
         // in case of 401 - invalid token: signIn()
