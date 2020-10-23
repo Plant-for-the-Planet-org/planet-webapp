@@ -55,7 +55,7 @@ export default function ProjectMedia({ handleBack, handleNext, projectDetails, s
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
-      handleReset()
+      handleReset('Please fill the Basic Details first')
     }
   })
 

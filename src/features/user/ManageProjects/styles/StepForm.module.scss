@@ -348,3 +348,14 @@
     }
   }
 }
+
+/*  error */
+.errorMessage {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+  width: 100%;
+}

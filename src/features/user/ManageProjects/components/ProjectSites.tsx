@@ -15,6 +15,10 @@ const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 interface Props {
   handleNext: Function;
   handleBack: Function;
+  projectDetails: Object;
+  setProjectDetails: Function;
+  projectGUID: Object;
+  handleReset: Function;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -23,8 +27,7 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack,
-  handleNext,
+  handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
@@ -60,6 +63,11 @@ export default function ProjectSites({
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  React.useEffect(() => {
+    if (!projectGUID || projectGUID === '') {
+      handleReset('Please fill the Basic Details first')
+    }
+  })
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -18,9 +18,12 @@ const { useTranslation } = i18next;
 interface Props {
     handleNext: Function;
     handleBack: Function;
-}
-
-export default function DetailedAnalysis({ handleBack, handleNext }: Props): ReactElement {
+    projectDetails: Object;
+    setProjectDetails: Function;
+    projectGUID: Object;
+    handleReset: Function;
+  }
+export default function DetailedAnalysis({ handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control } = useForm({ mode: 'all' });
@@ -60,6 +63,12 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
 
         handleNext();
     };
+
+    React.useEffect(() => {
+        if (!projectGUID || projectGUID === '') {
+          handleReset('Please fill the Basic Details first')
+        }
+      })
 
     const [siteOwners, setSiteOwner] = React.useState(
         [

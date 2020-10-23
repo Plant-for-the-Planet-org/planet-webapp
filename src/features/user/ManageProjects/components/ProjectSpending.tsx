@@ -17,9 +17,13 @@ const { useTranslation } = i18next;
 interface Props {
     handleNext: Function;
     handleBack: Function;
-}
+    projectDetails: Object;
+    setProjectDetails: Function;
+    projectGUID: Object;
+    handleReset: Function;
+  }
 
-export default function ProjectSpending({ handleBack, handleNext }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -41,6 +45,11 @@ export default function ProjectSpending({ handleBack, handleNext }: Props): Reac
 
     const [spendingYear, setSpendingYear] = React.useState(new Date());
 
+    React.useEffect(() => {
+        if (!projectGUID || projectGUID === '') {
+          handleReset('Please fill the Basic Details first')
+        }
+      })
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>

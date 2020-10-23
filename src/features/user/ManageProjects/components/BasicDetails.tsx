@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { useForm,  Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
@@ -16,9 +16,10 @@ interface Props {
   handleNext: Function;
   projectDetails: Object;
   setProjectDetails: Function;
+  errorMessage: String;
 }
 
-export default function BasicDetails({ handleNext, projectDetails, setProjectDetails }: Props): ReactElement {
+export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [session, loading] = useSession();
   // Map setup
@@ -205,10 +206,10 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
-          <Controller
+            <Controller
               as={
                 <MaterialTextField
-                  inputRef={register({                      
+                  inputRef={register({
                   })}
                   label={t('manageProjects:classification')}
                   variant="outlined"
@@ -315,11 +316,11 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="acceptDonations" style={{display:'flex',alignItems:'flex-end'}}>Receive Donations <div style={{height:'13px',width:'13px',marginLeft:'6px'}}>
-              <PopHover label={<InfoIcon/>} value={'Message for receive donations'} />
+              <label htmlFor="acceptDonations" style={{ display: 'flex', alignItems: 'flex-end' }}>Receive Donations <div style={{ height: '13px', width: '13px', marginLeft: '6px' }}>
+                <PopHover label={<InfoIcon />} value={'Message for receive donations'} />
 
               </div></label>
-              
+
               <ToggleSwitch
                 id="acceptDonations"
                 checked={basicDetails.acceptDonations}
@@ -369,9 +370,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           ) : null}
 
         </div>
-        
+
         <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-        <p>Project Location</p>
+          <p>Project Location</p>
           <MapGL
             {...viewport}
             ref={mapRef}
@@ -483,6 +484,13 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           </div>
         </div>
 
+        {
+          errorMessage && errorMessage !== '' ? (
+            <div className={styles.formFieldLarge}>
+              <h4 className={styles.errorMessage}>{errorMessage}</h4>
+            </div>
+          ) : null
+        }
 
         <div className={styles.formField} style={{ marginTop: '48px' }}>
           <div className={`${styles.formFieldHalf}`}>
