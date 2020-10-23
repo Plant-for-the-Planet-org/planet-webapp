@@ -95,8 +95,7 @@ export default function CompleteSignup() {
       if (res.status === 200) {
         // successful signup -> goto me page
         const resJson = await res.json();
-        setUserExistsInDB(true);
-        console.log('-----in complete-profile', resJson)      
+        setUserExistsInDB(true);     
         setUserSlug(resJson.slug);
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")

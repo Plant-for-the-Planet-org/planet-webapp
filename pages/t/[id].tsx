@@ -58,7 +58,6 @@ export default function PublicUser(initialized: Props) {
             if (res.status === 200) {
               console.log('in 200-> user exists in our DB');
               const resJson = await res.json();
-              console.log('-----in [id]', resJson)
               setPrivateUserprofile(resJson);
             } else if (res.status === 303) {
               // if 303 -> user doesn not exist in db

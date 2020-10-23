@@ -22,7 +22,6 @@ export default function Login() {
         console.log('in 200-> user exists in our DB')
         //if 200-> user exists in db
         const resJson = await res.json();
-        console.log('-----in /login', resJson)
         setUserExistsInDB(true)
         setUserSlug(resJson.slug)
         if (typeof window !== 'undefined') {
