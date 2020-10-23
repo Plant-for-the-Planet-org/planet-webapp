@@ -18,3 +18,15 @@ export default function getImageUrl(
     }
   }
 }
+
+
+export function getS3Image(
+  category: string,
+  variant: string,
+  imageName: any,
+) {
+  const cdnURl = 'https://bucketeer-894cef84-0684-47b5-a5e7-917b8655836a.s3.eu-west-1.amazonaws.com/development';
+  const cacheURl = 'media/cache';
+  return `${cdnURl}/${cacheURl}/${category}/${variant}/${imageName}`;
+
+}

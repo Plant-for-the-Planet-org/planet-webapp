@@ -49,7 +49,7 @@ export default function ManageProjects() {
             case 0:
                 return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} />;
             case 1:
-                return <ProjectMedia handleNext={handleNext} handleBack={handleBack} />;
+                return <ProjectMedia handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:
                 return <DetailedAnalysis handleNext={handleNext} handleBack={handleBack} />;
             case 3:
