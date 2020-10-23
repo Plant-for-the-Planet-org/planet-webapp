@@ -124,7 +124,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     let submitData = {
       name: data.name,
       slug: data.slug,
-      classification: 'agroforestry', // TO DO 
+      classification: data.classification,
       geometry: {
         type: 'Point',
         coordinates: [
