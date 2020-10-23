@@ -6,7 +6,9 @@ import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import StaticMap, { Source, Layer } from 'react-map-gl';
+import StaticMap, { Source, Layer, WebMercatorViewport } from 'react-map-gl';
+import * as turf from '@turf/turf';
+import * as d3 from 'd3-ease';
 
 const { useTranslation } = i18next;
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
@@ -25,15 +27,16 @@ export default function ProjectSites({
   handleNext,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
-
+  const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors } = useForm();
-
   const [siteDetails, setSiteDetails] = React.useState({});
+  const [siteList, setSiteList] = React.useState([]);
 
   const changeSiteDetails = (e: any) => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 
+  const [geoJson, setGeoJson] = React.useState(null);
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
@@ -44,6 +47,13 @@ export default function ProjectSites({
     zoom: defaultZoom,
   });
 
+  const MapProps = {
+    geoJson,
+    setGeoJson,
+    features,
+    setFeatures,
+  };
+
   const onSubmit = (data: any) => {
     handleNext();
   };
@@ -53,20 +63,72 @@ export default function ProjectSites({
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <div className={styles.formFieldLarge}>
-          <StaticMap
-            {...viewport}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
-            mapStyle={'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7'}
-            onViewportChange={_onViewportChange}
-            dragPan={false}
-            dragRotate={false}
-            touchRotate={false}
-            doubleClickZoom={false}
-            scrollZoom={false}
-            touchZoom={false}
-          ></StaticMap>
-        </div> */}
+        {siteList
+          .filter((site) => {
+            return site.data !== null;
+          })
+          .map((site) => {
+            const bbox = turf.bbox(site.data);
+            const { longitude, latitude, zoom } = new WebMercatorViewport(
+              viewport
+            ).fitBounds(
+              [
+                [bbox[0], bbox[1]],
+                [bbox[2], bbox[3]],
+              ],
+              {
+                padding: {
+                  top: 50,
+                  bottom: 50,
+                  left: 50,
+                  right: 50,
+                },
+              }
+            );
+
+            return (
+              <div className={styles.formFieldLarge}>
+                <div>Site Name: {site.name}</div>
+                <StaticMap
+                  {...viewport}
+                  longitude={longitude}
+                  latitude={latitude}
+                  zoom={zoom}
+                  mapboxApiAccessToken={MAPBOX_TOKEN}
+                  mapStyle={'mapbox://styles/mapbox/satellite-v9'}
+                  onViewportChange={_onViewportChange}
+                  dragPan={true}
+                  dragRotate={false}
+                  touchRotate={false}
+                  doubleClickZoom={false}
+                  scrollZoom={true}
+                  touchZoom={false}
+                >
+                  <Source id="singleSite" type="geojson" data={site.data}>
+                    <Layer
+                      id="ploygonLayer"
+                      type="fill"
+                      source="singleProject"
+                      paint={{
+                        'fill-color': '#fff',
+                        'fill-opacity': 0.2,
+                      }}
+                    />
+                    <Layer
+                      id="ploygonOutline"
+                      type="line"
+                      source="singleProject"
+                      paint={{
+                        'line-color': '#89b54a',
+                        'line-width': 2,
+                      }}
+                    />
+                  </Source>
+                </StaticMap>
+              </div>
+            );
+          })}
+
         <div className={styles.formFieldLarge}>
           <MaterialTextField
             inputRef={register({ required: true })}
@@ -77,9 +139,33 @@ export default function ProjectSites({
             // defaultValue={}
           />
         </div>
-        <Map />
 
-        <div className={styles.formFieldLarge}>
+        <Map {...MapProps} />
+
+        <div
+          onClick={() => {
+            var temp = siteList;
+            if (geoJson === null) {
+              var tempGeoJson = {
+                type: 'FeatureCollection',
+                features: features,
+              };
+              setGeoJson({
+                type: 'FeatureCollection',
+                features: features,
+              });
+              temp.push({ name: siteDetails.siteName, data: tempGeoJson });
+            } else {
+              temp.push({ name: siteDetails.siteName, data: geoJson });
+            }
+
+            setSiteList(temp);
+            setGeoJson(null);
+            setFeatures([]);
+            console.log(siteList);
+          }}
+          className={styles.formFieldLarge}
+        >
           <p className={styles.inlineLinkButton}>Add another site</p>
         </div>
 
