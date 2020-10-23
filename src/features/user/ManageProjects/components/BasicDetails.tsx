@@ -149,6 +149,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     }
     // createProject(submitData,session).then((data)=>{
     //   setProjectDetails(data);
+     // set project GUID 
     //   handleNext();
     // })
 

@@ -36,7 +36,7 @@ export default function ManageProjects() {
         setActiveStep(0);
     };
 
-    const [projectGUID,setProjectGUID] = React.useState('')
+    const [projectGUID,setProjectGUID] = React.useState('proj_LAIzZDu2YAWBzQziOS0H0pMj')
     const [projectDetails,setProjectDetails] = React.useState({})
 
     React.useEffect(()=>{
