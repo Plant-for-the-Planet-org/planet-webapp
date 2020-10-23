@@ -22,15 +22,10 @@ export default function Login() {
         console.log('in 200-> user exists in our DB')
         //if 200-> user exists in db
         const resJson = await res.json();
-        const newMeObj = {
-          ...resJson,
-          userSlug: 'trial-slug',
-          isMe: true,
-        };
         setUserExistsInDB(true)
-        setUserSlug(newMeObj.userSlug)
+        setUserSlug(resJson.slug)
         if (typeof window !== 'undefined') {
-          router.push(`/t/${newMeObj.userSlug}`);
+          router.push(`/t/${resJson.slug}`);
         }
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
