@@ -2,7 +2,7 @@
     "name":"Project Name",
     "slug":"Project URL",
     "classification":"Project Type",
-    "treeTarget":"Tree Target",
+    "countTarget":"Tree Target",
     "website":"Website",
     "aboutProject":"About Project",
     "treeCost":"Cost per tree (in EUR)",
