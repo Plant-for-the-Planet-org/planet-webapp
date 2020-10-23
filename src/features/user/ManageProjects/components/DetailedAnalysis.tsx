@@ -148,6 +148,14 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                                 validate: value => parseInt(value, 10) > 1
                             })}
                             onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
+                            InputProps={{
+                                endAdornment: (
+                                  <p
+                                    className={styles.inputEndAdornment}
+                                    style={{ marginLeft: '4px',width:'100%',textAlign:'right',fontSize:'14px' }}
+                                  >{`trees per ha`}</p>
+                                ),
+                              }}
                         />
                         {errors.plantingDensity && (
                             <span className={styles.formErrors}>

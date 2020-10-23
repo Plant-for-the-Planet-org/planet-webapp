@@ -244,8 +244,19 @@
 }
 
 .mapboxContainer {
+  position: relative;
   > div > div > div {
     border-radius: 10px;
+  }
+  > p {
+    position: absolute;
+    background-color: $light;
+    padding: 6px 18px;
+    border-radius: 15px;
+    top: -10px;
+    font-size: 12px;
+    left: 12px;
+    z-index: 999;
   }
 }
 .mapTool {
