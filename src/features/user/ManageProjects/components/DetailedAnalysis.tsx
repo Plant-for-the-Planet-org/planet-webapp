@@ -174,7 +174,7 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                 </div>
 
                 <div className={styles.formFieldLarge}>
-                    
+
                     <div className={styles.plantingSeasons}>
                         <p className={styles.plantingSeasonsLabel}>Planting Seasons</p>
                         {plantingSeasons.map((month) => {
@@ -193,51 +193,59 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                     </div>
                 </div>
 
-                <div className={styles.formFieldLarge}>
 
-                    {/* the main challenge the project is facing (max. 300 characters) */}
-                    <MaterialTextField
-                        inputRef={register({
-                            maxLength: {
-                                value: 300,
-                                message: 'Maximum 300 characters allowed'
-                            }
-                        })}
-                        label={t('manageProjects:mainChallenge')}
-                        variant="outlined"
-                        name="mainChallenge"
-                        onChange={changeDetailedAnalysisData}
-                        helperText="Main challenge the project is facing"
-                        multiline
-                    />
-                    {errors.mainChallenge && (
-                        <span className={styles.formErrors}>
-                            {errors.mainChallenge.message}
-                        </span>
-                    )}
+
+                <div className={styles.formField} style={{alignItems:'flex-start'}}>
+                    <div className={styles.formFieldHalf}>
+
+                        {/* the main challenge the project is facing (max. 300 characters) */}
+                        <MaterialTextField
+                            inputRef={register({
+                                maxLength: {
+                                    value: 300,
+                                    message: 'Maximum 300 characters allowed'
+                                }
+                            })}
+                            label={t('manageProjects:mainChallenge')}
+                            variant="outlined"
+                            name="mainChallenge"
+                            onChange={changeDetailedAnalysisData}
+                            // helperText="Main challenge the project is facing"
+                            multiline
+                        />
+                        {errors.mainChallenge && (
+                            <span className={styles.formErrors}>
+                                {errors.mainChallenge.message}
+                            </span>
+                        )}
+                    </div>
+
+                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formFieldHalf}>
+                        {/* the reason this project has been created (max. 300 characters) */}
+                        <MaterialTextField
+                            inputRef={register({
+                                maxLength: {
+                                    value: 300,
+                                    message: 'Maximum 300 characters allowed'
+                                }
+                            })}
+                            label={t('manageProjects:whyThisSite')}
+                            variant="outlined"
+                            name="motivation"
+                            onChange={changeDetailedAnalysisData}
+                            multiline
+                        />
+                        {errors.motivation && (
+                            <span className={styles.formErrors}>
+                                {errors.motivation.message}
+                            </span>
+                        )}
+                    </div>
+
                 </div>
 
-                <div className={styles.formFieldLarge}>
-                    {/* the reason this project has been created (max. 300 characters) */}
-                    <MaterialTextField
-                        inputRef={register({
-                            maxLength: {
-                                value: 300,
-                                message: 'Maximum 300 characters allowed'
-                            }
-                        })}
-                        label={t('manageProjects:whyThisSite')}
-                        variant="outlined"
-                        name="motivation"
-                        onChange={changeDetailedAnalysisData}
-                        multiline
-                    />
-                    {errors.motivation && (
-                        <span className={styles.formErrors}>
-                            {errors.motivation.message}
-                        </span>
-                    )}
-                </div>
+
                 <div className={styles.formField}>
                     <div className={styles.formFieldHalf}>
 
@@ -414,7 +422,7 @@ export default function DetailedAnalysis({ handleBack, handleNext }: Props): Rea
                     </div>
                 </div>) : null}
 
-                <div className={styles.formField}  style={{ marginTop: '48px' }}>
+                <div className={styles.formField} style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={handleBack}

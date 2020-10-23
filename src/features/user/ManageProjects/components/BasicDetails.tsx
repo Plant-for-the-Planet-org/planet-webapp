@@ -56,7 +56,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     name: '',
     slug: '',
     classification: 'large-scale-planting',
-    treeTarget: 0,
+    countTarget: 0,
     website: '',
     description: '',
     acceptDonations: true,
@@ -72,7 +72,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       name: projectDetails.name,
       slug: projectDetails.slug,
       classification: projectDetails.classification,
-      treeTarget: projectDetails.countTarget,
+      countTarget: projectDetails.countTarget,
       website: projectDetails.website,
       description: projectDetails.description,
       acceptDonations: projectDetails.allowDonations,
@@ -131,7 +131,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           parseFloat(data.latitude)
         ]
       },
-      countTarget: Number(data.treeTarget),
+      countTarget: Number(data.countTarget),
       webSite: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
@@ -241,16 +241,16 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              label={t('manageProjects:treeTarget')}
+              label={t('manageProjects:countTarget')}
               variant="outlined"
-              name="treeTarget"
+              name="countTarget"
               onChange={changeBasicDetails}
-              value={basicDetails.treeTarget}
+              value={basicDetails.countTarget}
             />
-            {errors.treeTarget && (
+            {errors.countTarget && (
               <span className={styles.formErrors}>
-                {errors.treeTarget.message
-                  ? errors.treeTarget.message
+                {errors.countTarget.message
+                  ? errors.countTarget.message
                   : 'Tree target should be more than 1'}
               </span>
             )}
@@ -356,8 +356,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           ) : null}
 
         </div>
-
+        <p>Project Location</p>
         <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
+          
           <MapGL
             {...viewport}
             ref={mapRef}
