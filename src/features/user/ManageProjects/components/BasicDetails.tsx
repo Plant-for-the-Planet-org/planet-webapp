@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { useForm } from 'react-hook-form';
+import { useForm,  Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
@@ -55,7 +55,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: 'large-scale-planting',
+    classification: '',
     treeTarget: 0,
     website: '',
     description: '',
@@ -90,6 +90,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const [basicDetails, setBasicDetails] = React.useState(defaultBasicDetails);
 
   const changeBasicDetails = (e: any) => {
+    // this will not be triggered when Project type is changed (uses Controller from react-hook-form)
     setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
   };
   const toggleAcceptDonations = () => {
@@ -104,8 +105,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const toggleEnablePlantLocations = () => {
     setBasicDetails({ ...basicDetails, enablePlantLocations: !basicDetails.enablePlantLocations })
   }
-
-  const { register, handleSubmit, errors } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, errors, control } = useForm({ mode: 'onChange' });
 
   const classifications = [
     { label: 'Large scale planting', value: 'large-scale-planting' },
@@ -118,6 +118,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
 
   const onSubmit = (data: any) => {
 
+    // directly here, Project type can be accessed
     console.log(data, 'data');
 
     let submitData = {
@@ -200,26 +201,30 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
-            <MaterialTextField
-              // inputRef={register({
-              //   required: {
-              //     value: true,
-              //     message: "Please select Project type"
-              //   },
-              // })}
-              label={t('manageProjects:classification')}
-              variant="outlined"
+          <Controller
+              as={
+                <MaterialTextField
+                  inputRef={register({                      
+                  })}
+                  label={t('manageProjects:classification')}
+                  variant="outlined"
+                  name="classification"
+                  onChange={changeBasicDetails}
+                  select
+                  value={basicDetails.classification}
+                >
+                  {classifications.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </MaterialTextField>
+              }
               name="classification"
-              onChange={changeBasicDetails}
-              select
-              value={basicDetails.classification}
-            >
-              {classifications.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </MaterialTextField>
+              rules={{ required: "Please select Project type" }}
+              control={control}
+              defaultValue={basicDetails.classification ? basicDetails.classification : ""}
+            />
             {errors.classification && (
               <span className={styles.formErrors}>
                 {errors.classification.message}
