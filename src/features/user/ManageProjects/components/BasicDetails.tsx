@@ -8,7 +8,8 @@ import MapGL, { Marker } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
 import { createProject } from '../apiFunctions/createProject';
 import { useSession } from 'next-auth/client';
-
+import PopHover from '../../../common/InputTypes/PopHover';
+import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 const { useTranslation } = i18next;
 
 interface Props {
@@ -311,7 +312,11 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="acceptDonations">Receive Donations</label>
+              <label htmlFor="acceptDonations" style={{display:'flex',alignItems:'flex-end'}}>Receive Donations <div style={{height:'13px',width:'13px',marginLeft:'6px'}}>
+              <PopHover label={<InfoIcon/>} value={'Message for receive donations'} />
+
+              </div></label>
+              
               <ToggleSwitch
                 id="acceptDonations"
                 checked={basicDetails.acceptDonations}
@@ -361,9 +366,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           ) : null}
 
         </div>
-        <p>Project Location</p>
+        
         <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-          
+        <p>Project Location</p>
           <MapGL
             {...viewport}
             ref={mapRef}
