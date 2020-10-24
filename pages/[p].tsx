@@ -17,7 +17,7 @@ export default function Donate({
   project,
   setProject,
   setShowSingleProject,
-}: Props) {
+}: Props, props) {
   const router = useRouter();
 
   React.useEffect(() => {

@@ -25,6 +25,7 @@ export default function ProjectsContainer({
   setSearchedProjects,
   directGift,
   setDirectGift,
+  // unchangedProject,
 }: Props) {
   const { t } = useTranslation(['donate']);
 
