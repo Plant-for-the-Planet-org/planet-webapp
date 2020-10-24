@@ -359,3 +359,42 @@
   margin-top: 20px;
   width: 100%;
 }
+
+.reportPDFContainer{
+  border-radius: 10px;
+  background-color: #f2f2f7;
+  padding: 16px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 320px;
+  margin-top: 20px;
+  > a > svg{
+    height: 48px;
+  }
+  .reportPDFDetails{
+    flex-grow: 1;
+    margin-left: 14px;
+  }
+
+  .reportEditButton{
+    background-color: white;
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition-duration: 0.4s;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      &:hover{
+        cursor: pointer;
+      }
+      > svg {
+        height: 12px;
+      }
+  }
+}

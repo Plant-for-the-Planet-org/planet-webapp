@@ -14,6 +14,11 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useSession } from 'next-auth/client';
+import { getS3Image } from '../../../../utils/getImageURL';
+import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PDFIcon';
+import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
+import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
+import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 
 const { useTranslation } = i18next;
 
@@ -88,12 +93,38 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
         // handleNext()
     };
 
+    console.log('uploadedFiles',uploadedFiles);
+    
 
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
+            {uploadedFiles && uploadedFiles.length > 0 ? (
+                        <div className={styles.formField}>
+                            {uploadedFiles.map((report)=>{
+                                return(
+                                    <div key={report.id} className={` ${styles.reportPDFContainer}`}>
+                                      <a>
+                                        {/* <PDFIcon color="#2F3336" /> */}
+                                        <PDFRed/>
+                                      </a>
+                                      <div className={styles.reportPDFDetails}>
+                                        <p style={{fontWeight:'bold'}}>€ {report.amount} </p>
+                                        <p>in {report.year} </p>
+                                      </div>
+                                      <div className={styles.reportEditButton} style={{marginRight:'8px'}}>
+                                        <PencilIcon/>
+                                      </div>  
+                                      <div className={styles.reportEditButton}>
+                                       <CrossIcon/>
+                                      </div>  
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    ) : null}
 
-                <div className={styles.formField}>
+                <div className={styles.formField}>    
                     <div className={`${styles.formFieldHalf}`}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DatePicker
