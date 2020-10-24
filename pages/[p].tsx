@@ -17,7 +17,7 @@ export default function Donate({
   project,
   setProject,
   setShowSingleProject,
-}: Props) {
+}: Props, props) {
   const router = useRouter();
 
   React.useEffect(() => {
@@ -25,7 +25,6 @@ export default function Donate({
   }, []);
 
   React.useEffect(() => {
-   
       async function loadProject() {
         let currencyCode = getStoredCurrency();
         const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);

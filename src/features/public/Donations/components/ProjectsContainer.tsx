@@ -25,6 +25,7 @@ export default function ProjectsContainer({
   setSearchedProjects,
   directGift,
   setDirectGift,
+  // unchangedProject,
 }: Props) {
   const { t } = useTranslation(['donate']);
 
@@ -55,7 +56,7 @@ export default function ProjectsContainer({
       );
     } else if (type === 'all') {
       return projects;
-    }
+    } 
   }
 
   function getSearchProjects(projects: Array<any>, keyword: string) {
@@ -84,9 +85,12 @@ export default function ProjectsContainer({
           return false;
         }
       });
+      setSearchedProjects(resultProjects);
+      return resultProjects;
+    } else {
+      setSearchedProjects(projects);
     }
-    setSearchedProjects(resultProjects);
-    return resultProjects;
+    
   }
 
   const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
