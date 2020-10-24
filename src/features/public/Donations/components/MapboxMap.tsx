@@ -23,12 +23,14 @@ interface mapProps {
   project: any;
   showSingleProject: Boolean;
   mapboxToken: any;
+  searchedProject: any
 }
 export default function MapboxMap({
   projects,
   project,
   showSingleProject,
   mapboxToken,
+  searchedProject
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -257,7 +259,7 @@ export default function MapboxMap({
           )
         ) : null}
         {!showSingleProject &&
-          projects.map((projectMarker: any, index: any) => (
+          searchedProject.map((projectMarker: any, index: any) => (
             <Marker
               key={index}
               latitude={projectMarker.geometry.coordinates[1]}
