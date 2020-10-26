@@ -7,7 +7,7 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useSession } from 'next-auth/client';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import {getS3Image} from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
@@ -104,6 +104,14 @@ export default function ProjectMedia({ handleBack, handleNext, projectDetails, s
     files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  const deleteProjectCertificate = (id: any) => {
+    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, session).then(res => {
+        if (res !== 404) {
+            let uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
+            setUploadedImages(uploadedFilesTemp)
+        }
+    })
+}
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -149,7 +157,7 @@ export default function ProjectMedia({ handleBack, handleNext, projectDetails, s
                     <div className={styles.uploadedImageOverlay}></div>
                     <input type="text" name="" placeholder="Caption" />
                       <div className={styles.uploadedImageButtonContainer}>
-                        <div>
+                        <div onClick={()=>deleteProjectCertificate(image.id)}>
                           <DeleteIcon/>
                         </div>
                         <div>
