@@ -5,7 +5,7 @@ import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import {setUserSlug, setUserExistsInDB, removeUserExistsInDB, removeUserSlug} from '../src/utils/auth0/localStorageUtils'
+import {setUserSlug, setUserExistsInDB, removeUserExistsInDB, removeUserSlug, setUserProfilePic} from '../src/utils/auth0/localStorageUtils'
 import { getAccountInfo } from '../src/utils/auth0/getAccountInfo'
 const config = tenantConfig();
 
@@ -24,6 +24,7 @@ export default function Login() {
         const resJson = await res.json();
         setUserExistsInDB(true)
         setUserSlug(resJson.slug)
+        setUserProfilePic(resJson.image)
         if (typeof window !== 'undefined') {
           router.push(`/t/${resJson.slug}`);
         }
