@@ -11,7 +11,11 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import { useDropzone } from 'react-dropzone';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
+import { getPDFFile } from '../../../../utils/getImageURL';
+import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
+import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 
 const { useTranslation } = i18next;
 
@@ -73,8 +77,44 @@ function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
         // handleNext()
     };
 
+    const deleteProjectCertificate = (id: any) => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/certificates/${id}`, session).then(res => {
+            if (res !== 404) {
+                let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
+                setUploadedFiles(uploadedFilesTemp)
+            }
+        })
+    }
+
     return (
         <div>
+
+            {uploadedFiles && uploadedFiles.length > 0 ? (
+                <div className={styles.formField}>
+                    {uploadedFiles.map((report) => {
+                        return (
+                            <div key={report.id} className={` ${styles.reportPDFContainer}`}>
+                                <a target={"_blank"} href={getPDFFile('projectCertificate', report.pdf)}>
+                                    {/* <PDFIcon color="#2F3336" /> */}
+                                    <PDFRed />
+                                </a>
+                                <div className={styles.reportPDFDetails}>
+                                    <p style={{ fontWeight: 'bold' }}>Certified By {report.certifierName} </p>
+                                    <p>on {report.issueDate} </p>
+                                </div>
+                                <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
+                                    <PencilIcon color={"#000"} />
+                                </div>
+                                <div
+                                    onClick={() => deleteProjectCertificate(report.id)}
+                                    className={styles.reportEditButton}>
+                                    <TrashIcon />
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            ) : null}
             <div className={styles.formField}>
                 <div className={styles.formFieldHalf}>
                     <MaterialTextField
@@ -153,9 +193,9 @@ function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
                     </div>
                 )}
 
-            <div className={styles.formFieldLarge}>
+            {/* <div className={styles.formFieldLarge}>
                 <p className={styles.inlineLinkButton}>Add another cerification</p>
-            </div>
+            </div> */}
         </div>
     )
 }
