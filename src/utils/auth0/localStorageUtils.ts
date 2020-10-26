@@ -1,3 +1,5 @@
+/* USER-SLUG UTILS */
+
 // Fetches user slug from the local storage
 // @returns string - user-slug of logged-in user
 export function getUserSlug() {
@@ -13,6 +15,14 @@ export function getUserSlug() {
 export function setUserSlug(userslug:string) {
     localStorage.setItem('userSlug', JSON.stringify(userslug));
 }
+
+//  removes userSlug from local storage
+export function removeUserSlug() {
+  localStorage.removeItem('userSlug');
+}
+
+
+/* USER-EXISTS-IN-DB UTILS */
 
 //   fetches if userExistsInDB from the local storage
 //  @returns boolean - if user exists in our backend
@@ -35,7 +45,24 @@ export function removeUserExistsInDB() {
     localStorage.removeItem('userExistsInDB');
 }
 
-//  removes userSlug from local storage
-export function removeUserSlug() {
-    localStorage.removeItem('userSlug');
+/* USER PROFILE PIC */
+
+//  gets userProfilePic from the local storage
+export function getUserProfilePic() {
+  if (localStorage.getItem('userProfilePic')) {
+    const stringUserProfilePic = localStorage.getItem('userProfilePic');
+    const userProfilePic = JSON.parse(stringUserProfilePic);
+    return userProfilePic;
+  }
+  return null;
+}
+
+//  sets userProfilePic to the local storage
+export function setUserProfilePic(userProfilePic) {
+  localStorage.setItem('userProfilePic', JSON.stringify(userProfilePic));
+}
+
+//  removes userProfilePic from local storage
+export function removeUserProfilePic() {
+  localStorage.removeItem('userProfilePic');
 }
