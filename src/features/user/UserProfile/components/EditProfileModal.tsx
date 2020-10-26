@@ -78,7 +78,7 @@ export default function EditProfileModal({
     if (!loading && session && userprofile.id) {
       try{
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/profiles/${userprofile.id}`, {
+        `${process.env.API_ENDPOINT}/app/profile`, {
           method: 'PUT',
           headers: { 
             'Authorization': `OAuth ${session.accessToken}`,
