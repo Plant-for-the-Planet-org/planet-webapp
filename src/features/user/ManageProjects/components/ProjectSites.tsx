@@ -11,6 +11,8 @@ import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
+import { useSession } from 'next-auth/client';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
@@ -34,11 +36,11 @@ export default function ProjectSites({
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
-
+  const [session, loading] = useSession();
 
   const defaultSiteDetails =
   {
-    siteName: '',
+    name: '',
     status: '',
     geometry: {}
   }
@@ -46,7 +48,7 @@ export default function ProjectSites({
   // Assigning defaultSiteDetails as default
   const [siteDetails, setSiteDetails] = React.useState(defaultSiteDetails);
   const [siteList, setSiteList] = React.useState<Array<{
-    siteName: String,
+    name: String,
     status: String,
     geometry: Object
   }>>([]);
@@ -86,33 +88,32 @@ export default function ProjectSites({
   })
 
   const uploadProjectSite = (data: any) => {
-    var temp = siteList;
-    if (geoJson === null) {
-      // Creating temporary geojson from drawn polygon
-      var tempGeoJson = {
+
+    let submitData;
+
+    submitData ={
+      name: siteDetails.name, 
+      geometry: geoJson ? geoJson:{
         type: 'FeatureCollection',
         features: features,
-      };
-
-      // set geojson
-      setGeoJson({
-        type: 'FeatureCollection',
-        features: features,
-      });
-
-      // pushed new site in the temp array
-      temp.push({ siteName: siteDetails.siteName, geometry: tempGeoJson, status: data.status });
-    } else {
-      // pushed new site in the temp array
-      temp.push({ siteName: siteDetails.siteName, geometry: geoJson, status: data.status });
+      }, 
+      status: data.status
     }
 
-    // Update the site list with new geojson
-    setSiteList(temp);
-    setGeoJson(null);
-    setFeatures([]);
+    postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, session).then((res) => {
+      let temp = siteList;
 
-    console.log('siteList', siteList);
+      let submitData ={
+        id:res.id,
+        name: res.name, 
+        geometry: JSON.parse(res.geometry), 
+        status: res.status
+      }
+      temp.push(submitData);
+      setSiteList(temp);
+      setGeoJson(null);
+      setFeatures([]);
+    })
 
   }
 
@@ -154,47 +155,47 @@ export default function ProjectSites({
 
                 <div className={`${styles.formFieldHalf}`}>
                   <div className={styles.mapboxContainer}>
-                  <div className={styles.uploadedMapName}>Site Name: {site.siteName}</div>
-                  <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
-                  <div className={styles.uploadedMapDeleteButton}>
-                    <TrashIcon color={"#000"} />
-                  </div>
-                  <StaticMap
-                    {...viewport}
-                    longitude={longitude}
-                    latitude={latitude}
-                    zoom={zoom}
-                    mapboxApiAccessToken={MAPBOX_TOKEN}
-                    mapStyle={'mapbox://styles/mapbox/satellite-v9'}
-                    onViewportChange={_onViewportChange}
-                    dragPan={true}
-                    dragRotate={false}
-                    touchRotate={false}
-                    doubleClickZoom={false}
-                    scrollZoom={true}
-                    touchZoom={false}
-                  >
-                    <Source id="singleSite" type="geojson" data={site.geometry}>
-                      <Layer
-                        id="ploygonLayer"
-                        type="fill"
-                        source="singleProject"
-                        paint={{
-                          'fill-color': '#fff',
-                          'fill-opacity': 0.2,
-                        }}
-                      />
-                      <Layer
-                        id="ploygonOutline"
-                        type="line"
-                        source="singleProject"
-                        paint={{
-                          'line-color': '#89b54a',
-                          'line-width': 2,
-                        }}
-                      />
-                    </Source>
-                  </StaticMap>
+                    <div className={styles.uploadedMapName}>{site.name}</div>
+                    <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
+                    <div className={styles.uploadedMapDeleteButton}>
+                      <TrashIcon color={"#000"} />
+                    </div>
+                    <StaticMap
+                      {...viewport}
+                      longitude={longitude}
+                      latitude={latitude}
+                      zoom={zoom}
+                      mapboxApiAccessToken={MAPBOX_TOKEN}
+                      mapStyle={'mapbox://styles/mapbox/satellite-v9'}
+                      onViewportChange={_onViewportChange}
+                      dragPan={true}
+                      dragRotate={false}
+                      touchRotate={false}
+                      doubleClickZoom={false}
+                      scrollZoom={true}
+                      touchZoom={false}
+                    >
+                      <Source id="singleSite" type="geojson" data={site.geometry}>
+                        <Layer
+                          id="ploygonLayer"
+                          type="fill"
+                          source="singleProject"
+                          paint={{
+                            'fill-color': '#fff',
+                            'fill-opacity': 0.2,
+                          }}
+                        />
+                        <Layer
+                          id="ploygonOutline"
+                          type="line"
+                          source="singleProject"
+                          paint={{
+                            'line-color': '#89b54a',
+                            'line-width': 2,
+                          }}
+                        />
+                      </Source>
+                    </StaticMap>
                   </div>
                 </div>
 
@@ -207,11 +208,11 @@ export default function ProjectSites({
           <div className={styles.formFieldHalf}>
             <MaterialTextField
               inputRef={register({ required: true })}
-              label={t('manageProjects:siteName')}
+              label={t('manageProjects:name')}
               variant="outlined"
-              name="siteName"
+              name="name"
               onChange={changeSiteDetails}
-              defaultValue={siteDetails.siteName}
+              defaultValue={siteDetails.name}
             />
           </div>
           <div className={styles.formFieldHalf}>
