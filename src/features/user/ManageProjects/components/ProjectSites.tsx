@@ -12,7 +12,7 @@ import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { useSession } from 'next-auth/client';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
@@ -48,6 +48,7 @@ export default function ProjectSites({
   // Assigning defaultSiteDetails as default
   const [siteDetails, setSiteDetails] = React.useState(defaultSiteDetails);
   const [siteList, setSiteList] = React.useState<Array<{
+    id:String,
     name: String,
     status: String,
     geometry: Object
@@ -117,6 +118,15 @@ export default function ProjectSites({
 
   }
 
+  const deleteProjectSite =(id:any)=>{
+    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/sites/${id}`, session).then(res=>{
+      if(res !== 404){
+        let siteListTemp = siteList.filter(item => item.id !== id);
+        setSiteList(siteListTemp)
+      }
+    })
+  }
+
   const status = [
     { label: 'Planting', value: 'planting' },
     { label: 'Planted', value: 'planted' },
@@ -153,11 +163,13 @@ export default function ProjectSites({
 
               return (
 
-                <div className={`${styles.formFieldHalf}`}>
+                <div key={site.id} className={`${styles.formFieldHalf}`}>
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
-                    <div className={styles.uploadedMapDeleteButton}>
+                    <div
+                      onClick={()=>{deleteProjectSite(site.id)}}
+                    className={styles.uploadedMapDeleteButton}>
                       <TrashIcon color={"#000"} />
                     </div>
                     <StaticMap

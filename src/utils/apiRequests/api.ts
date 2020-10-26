@@ -44,3 +44,23 @@ export async function postAuthenticatedRequest(url:any,data:any,session:any) {
   const result = await res.json();
   return result;
 }
+
+export async function deleteAuthenticatedRequest(url:any,session:any) {
+  let result;
+   await fetch(process.env.API_ENDPOINT + url, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          'tenant-key': `${process.env.TENANTID}`,
+          'X-SESSION-ID': await getsessionId(),
+          'Authorization': `OAuth ${session.accessToken}`,
+          'x-locale': `${localStorage.getItem('language') !== null
+                  ? localStorage.getItem('language')
+                  : 'en'
+              }`,
+      },
+  }).then(res =>{
+    result = res.status;
+  });
+  return result;
+}
