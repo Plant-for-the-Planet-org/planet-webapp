@@ -258,6 +258,70 @@
     left: 12px;
     z-index: 999;
   }
+
+  .uploadedMapName{
+    background-color: $light;
+    padding: 6px 18px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 12px;
+    width: 90%;
+    text-align: center;
+    z-index: 999;
+    left: 5%;
+  }
+  .uploadedMapStatus{
+    background-color: $light;
+    padding: 6px 18px;
+    border-radius: 10px;
+    position: absolute;
+    top: 12px;
+    text-align: center;
+    z-index: 999;
+    left: 5%;
+    width: fit-content;
+    font-weight: bold;
+    font-size: 10px;
+  }
+  .uploadedMapDeleteButton{
+    background-color: $light;
+    padding: 6px;
+    border-radius: 18px;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    right: 5%;
+    width: fit-content;
+    > svg {
+      height: 12px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.mapboxContainer2 {
+  position: relative;
+  > div > div > div {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  > p {
+    position: absolute;
+    background-color: $light;
+    padding: 6px 18px;
+    border-radius: 15px;
+    top: -10px;
+    font-size: 12px;
+    left: 12px;
+    z-index: 999;
+  }
 }
 .mapTool {
   background-color: white;
@@ -286,6 +350,7 @@
   background-color: rgb(242, 242, 247);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  border: dashed 1px #2f3336;
 }
 
 .mapNavigation {

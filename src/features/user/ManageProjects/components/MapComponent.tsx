@@ -65,7 +65,7 @@ export default function MapComponent({
           }}
           className={styles.mapTool}
         >
-          <PolygonIcon />
+          <PolygonIcon color={"#000"} />
         </div>
         <div
           onClick={() => {
@@ -73,7 +73,7 @@ export default function MapComponent({
           }}
           className={styles.mapTool}
         >
-          <PencilIcon />
+          <PencilIcon color={"#000"} />
         </div>
         {/* <div
           onClick={() => {
@@ -91,7 +91,7 @@ export default function MapComponent({
           }}
           className={styles.mapTool}
         >
-          <TrashIcon />
+          <TrashIcon color={"#000"} />
         </div>
       </div>
     );
@@ -138,7 +138,7 @@ export default function MapComponent({
   }, [geoJson]);
 
   return (
-    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
+    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
       <MapGL
         {...viewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}
