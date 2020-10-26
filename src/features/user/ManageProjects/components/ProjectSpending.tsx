@@ -12,13 +12,13 @@ import {
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { useDropzone } from 'react-dropzone';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useSession } from 'next-auth/client';
-import { getS3Image } from '../../../../utils/getImageURL';
+import { getS3Image,getPDFFile } from '../../../../utils/getImageURL';
 import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PDFIcon';
-import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
+import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 
 const { useTranslation } = i18next;
 
@@ -35,13 +35,13 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors, formState,getValues,setValue } = useForm({ mode: 'all' });
+    const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
     const [session, loading] = useSession();
 
-    const [year,setYear] = React.useState(new Date());
-    const [amount,setAmount] = React.useState(0);
+    const [year, setYear] = React.useState(new Date());
+    const [amount, setAmount] = React.useState(0);
 
-    const [uploadedFiles,setUploadedFiles] = React.useState([])
+    const [uploadedFiles, setUploadedFiles] = React.useState([])
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
             handleReset('Please fill the Basic Details first')
@@ -72,71 +72,77 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
 
     const { isDirty, isSubmitting } = formState;
 
-
-    // console.log(isDirty, 'isDirty');
-
     const onSubmit = (pdf: any) => {
-        const updatedAmount = getValues( "amount");
+        const updatedAmount = getValues("amount");
         const submitData = {
-            year:year.getFullYear(),
-            amount:updatedAmount,
-            pdfFile:pdf
+            year: year.getFullYear(),
+            amount: updatedAmount,
+            pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`,submitData, session).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
             let newUploadedFiles = uploadedFiles;
             newUploadedFiles.push(res)
             setUploadedFiles(newUploadedFiles);
             setAmount(0);
             setValue('amount', 0, { shouldDirty: false })
-          })
+        })
         // handleNext()
     };
 
-    console.log('uploadedFiles',uploadedFiles);
-    
+    const deleteProjectSpending = (id: any) => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, session).then(res => {
+            if (res !== 404) {
+                let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
+                setUploadedFiles(uploadedFilesTemp)
+            }
+        })
+    }
+
 
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
-            {uploadedFiles && uploadedFiles.length > 0 ? (
-                        <div className={styles.formField}>
-                            {uploadedFiles.map((report)=>{
-                                return(
-                                    <div key={report.id} className={` ${styles.reportPDFContainer}`}>
-                                      <a>
+                {uploadedFiles && uploadedFiles.length > 0 ? (
+                    <div className={styles.formField}>
+                        {uploadedFiles.map((report) => {
+                            return (
+                                <div key={report.id} className={` ${styles.reportPDFContainer}`}>
+                                    <a target={"_blank"} href={getPDFFile('projectExpense',report.pdf)}>
                                         {/* <PDFIcon color="#2F3336" /> */}
-                                        <PDFRed/>
-                                      </a>
-                                      <div className={styles.reportPDFDetails}>
-                                        <p style={{fontWeight:'bold'}}>€ {report.amount} </p>
+                                        <PDFRed />
+                                    </a>
+                                    <div className={styles.reportPDFDetails}>
+                                        <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
                                         <p>in {report.year} </p>
-                                      </div>
-                                      <div className={styles.reportEditButton} style={{marginRight:'8px'}}>
-                                        <PencilIcon/>
-                                      </div>  
-                                      <div className={styles.reportEditButton}>
-                                       <CrossIcon/>
-                                      </div>  
                                     </div>
-                                )
-                            })}
-                        </div>
-                    ) : null}
+                                    <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
+                                        <PencilIcon color={"#000"} />
+                                    </div>
+                                    <div
+                                        onClick={() => deleteProjectSpending(report.id)}
+                                        className={styles.reportEditButton}>
+                                        <TrashIcon />
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                ) : null}
 
-                <div className={styles.formField}>    
+                <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DatePicker
-                            inputRef={register({
-                                required: {
-                                    value: true,
-                                    message: 'Please add Spending Year'
-                                }
-                            })}
+                                inputRef={register({
+                                    required: {
+                                        value: true,
+                                        message: 'Please add Spending Year'
+                                    }
+                                })}
                                 views={["year"]}
                                 value={year}
-                                onChange={(value)=>setYear(value)}
+                                onChange={(value) => setYear(value)}
                                 label={t('manageProjects:spendingYear')}
                                 name="year"
                                 inputVariant="outlined"
@@ -145,7 +151,7 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
                                 autoOk
                                 clearable
                                 disableFuture
-                                
+
                             />
                         </MuiPickersUtilsProvider>
                         {errors.year && (
@@ -167,10 +173,11 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
                             })}
                             label={t('manageProjects:spendingAmount')}
                             // value={amount}
-                            defaultValue={amount}
+                            // defaultValue={amount}
+                            placeholder={0}
                             variant="outlined"
                             name="amount"
-                            onChange={(e)=> setAmount(e.target.value)}                            
+                            onChange={(e) => setAmount(e.target.value)}
                             onInput={(e) => {
                                 e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
                             }}
