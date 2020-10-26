@@ -1,4 +1,4 @@
-//  API call to  /userInfo endpoint
+//  API call to private /profile endpoint
 export async function getAccountInfo(session:any) {
     console.log('------API CALL TO THE BACKEND------');
     const response = await fetch(
