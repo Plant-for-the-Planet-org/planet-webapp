@@ -367,7 +367,7 @@ export default function CompleteSignup() {
 
           <div className={styles.addressDiv}>
             <MaterialTextField
-              defaultValue={session.user.email}
+              defaultValue={session.userEmail}
               label='Email'
               variant="outlined"
               disabled

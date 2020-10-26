@@ -41,6 +41,7 @@ const options = {
     session: async (session, token) => {
       // now, session has accessToken. can be accessed by next-auth/client - useSession()
       session.accessToken = token.accessToken
+      session.userEmail = session.user.email
       session.user = null
       console.log('.......session callback ran....')
       return session
