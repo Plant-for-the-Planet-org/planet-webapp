@@ -14,7 +14,7 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useSession } from 'next-auth/client';
-import { getS3Image,getPDFFile } from '../../../../utils/getImageURL';
+import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PDFIcon';
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
@@ -27,7 +27,7 @@ interface Props {
     handleBack: Function;
     projectDetails: Object;
     setProjectDetails: Function;
-    projectGUID: Object;
+    projectGUID: String;
     handleReset: Function;
 }
 

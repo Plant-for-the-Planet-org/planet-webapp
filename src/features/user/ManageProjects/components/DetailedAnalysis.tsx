@@ -13,6 +13,8 @@ import {
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { MenuItem } from '@material-ui/core';
+import ProjectCertificates from './ProjectCertificates';
+import { useSession } from 'next-auth/client';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -20,11 +22,12 @@ interface Props {
     handleBack: Function;
     projectDetails: Object;
     setProjectDetails: Function;
-    projectGUID: Object;
+    projectGUID: String;
     handleReset: Function;
   }
 export default function DetailedAnalysis({ handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
+    const [session, loading] = useSession();
 
     const { register, handleSubmit, errors, control } = useForm({ mode: 'all' });
 
@@ -90,9 +93,7 @@ export default function DetailedAnalysis({ handleBack, handleNext, projectDetail
         setDetailedAnalysisData({ ...detailedAnalysisData, [e.target.name]: e.target.value });
     };
 
-    const uploadCertificate = () => {
 
-    }
 
     const [firstTreePlantedDate, setFirstTreePlantedDate] = React.useState<Date | null>(
         new Date('2014-08-18T21:11:54'),
@@ -105,7 +106,6 @@ export default function DetailedAnalysis({ handleBack, handleNext, projectDetail
     const [yearOfAbandonment, handleyearOfAbandonment] = React.useState(new Date());
 
     const [yearOfDegradation, setYearOfDegradation] = React.useState(new Date());
-    const [certifiedDate, setCertifiedDate] = React.useState(new Date());
 
     return (
         <div className={styles.stepContainer}>
@@ -417,54 +417,12 @@ export default function DetailedAnalysis({ handleBack, handleNext, projectDetail
 
                 </div>
 
-                {isCertified ? (<div>
-                    <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
-                            <MaterialTextField
-                                inputRef={register({ required: true })}
-                                label={t('manageProjects:certifierName')}
-                                variant="outlined"
-                                name="certifierName"
-                                onChange={changeDetailedAnalysisData}
-                            />
-                        </div>
-                        <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <DatePicker
-                                    value={certifiedDate}
-                                    onChange={setCertifiedDate}
-                                    label={t('manageProjects:certifiedDate')}
-                                    name="certifiedDate"
-                                    inputVariant="outlined"
-                                    variant="inline"
-                                    TextFieldComponent={MaterialTextField}
-                                    autoOk
-                                    clearable
-                                    disableFuture
-                                />
-                            </MuiPickersUtilsProvider>
-                        </div>
-                    </div>
-
-                    <div className={styles.formFieldLarge}>
-                        <div className={styles.fileUploadContainer}>
-                            <AnimatedButton
-                                onClick={uploadCertificate}
-                                className={styles.continueButton}
-                            >
-                                Upload Certificate
-                        </AnimatedButton>
-                            <p style={{ marginTop: '18px' }}>
-                                or drag in a pdf
-                        </p>
-                        </div>
-                    </div>
-
-                    <div className={styles.formFieldLarge}>
-                        <p className={styles.inlineLinkButton}>Add another cerification</p>
-                    </div>
-                </div>) : null}
+                {isCertified ? (
+                    <ProjectCertificates
+                        projectGUID={projectGUID}
+                        session={session}
+                    />
+                ) : null}
 
                 <div className={styles.formField} style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>

@@ -19,7 +19,7 @@ interface Props {
   handleBack: Function;
   projectDetails: Object;
   setProjectDetails: Function;
-  projectGUID: Object;
+  projectGUID: String;
   handleReset: Function;
 }
 
