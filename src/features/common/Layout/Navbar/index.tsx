@@ -30,8 +30,8 @@ export default function NavbarComponent(props: any) {
   /* Works when user clicks on Me
    If the user is logged in, redirect to t/userSlug
    If user is not logged in we will redirect to singin page with Auth0
-   If in the singin flow, if the user is already existing, we login the user and  redirect to t/userSlug
-   If in the singin flow, if the user is not existing, then we redirect to complete Signup flow */
+   If in the signin flow, if the user is already existing, we login the user and  redirect to t/userSlug
+   If in the signin flow, if the user is not existing, then we redirect to complete Signup flow */
   const checkWhichPath = () => {
 
     console.log('session navbar ', session)
