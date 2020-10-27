@@ -14,7 +14,8 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
-import { getUserExistsInDB, getUserSlug } from '../../../../utils/auth0/localStorageUtils'
+import {getS3Image} from '../../../../utils/getImageURL'
+import { getUserExistsInDB, getUserSlug, getUserProfilePic } from '../../../../utils/auth0/localStorageUtils'
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -61,9 +62,24 @@ export default function NavbarComponent(props: any) {
     }
   };
 
-  // Add a React useeffect - 
-  // to check whether there is a session or not
-  // If there is a session, instead of me profile, show user profile icon
+  const checkWhichIcon = () => {
+    if (typeof Storage !== 'undefined') {
+      const userProfilePic = getUserProfilePic()
+      const userSlug = getUserSlug()
+      //if logged in user && exist in db && profilepic is set -> show profile pic
+      if (!loading && session && userProfilePic) {
+        return <img src={getS3Image('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
+      } 
+      // if no session -> icon depending on path
+      // If complete-signup or it's private profile page
+      else if (router.pathname === '/complete-signup' || router.pathname === `/t/${userSlug}`){
+        return <MeSelected color={styles.primaryColor}/>
+      } else {
+        return <Me color={styles.primaryFontColor} />
+      }
+    }
+    return null;
+  }
 
   const { toggleTheme } = React.useContext(ThemeContext);
 
@@ -193,11 +209,7 @@ export default function NavbarComponent(props: any) {
                 <div key={item.id} onClick={checkWhichPath}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
-                            <MeSelected color={styles.primaryColor} />
-                          ) : (
-                              <Me color={styles.primaryFontColor} />
-                          )}
+                          {checkWhichIcon()}
                         </div>
                         <p
                           className={
@@ -361,11 +373,7 @@ export default function NavbarComponent(props: any) {
                       <div
                     className={styles.link_container} >
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick || router.pathname === '/complete-signup' ? (
-                            <MeSelected color={styles.primaryColor} />
-                          ) : (
-                              <Me color={styles.primaryFontColor} />
-                          )}
+                          {checkWhichIcon()}
                         </div>
                         <p
                           className={
