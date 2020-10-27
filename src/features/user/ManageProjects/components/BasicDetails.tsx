@@ -6,11 +6,10 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
 import MapGL, { Marker } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
-import { createProject } from '../apiFunctions/createProject';
 import { useSession } from 'next-auth/client';
 import PopHover from '../../../common/InputTypes/PopHover';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
-import { LngLat } from 'mapbox-gl';
+import { createProject } from '../apiFunctions/createProject';
 
 const { useTranslation } = i18next;
 const classifications = [
@@ -430,7 +429,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
              </div>
         </div>
 
-        <div className={styles.formFieldLarge}>
+        <div className={styles.formFieldLarge} style={{width:'320px'}}>
           <div className={styles.formFieldRadio}>
             <label htmlFor="visitorAssistance">
               I will provide lodging, site access and local transport if a
@@ -453,8 +452,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           </div>
         </div>
 
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
+          <div className={styles.formFieldLarge} style={{width:'320px'}}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
 
@@ -472,7 +470,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               />
             </div>
           </div>
-          <div className={styles.formFieldHalf}>
+          <div className={styles.formFieldLarge} style={{width:'320px'}}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'enablePlantLocations'}>
                 Detailed Project Analysis if projectstatus=Approved
@@ -493,7 +491,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                     />
             </div>
           </div>
-        </div>
 
         {
           errorMessage && errorMessage !== '' ? (
