@@ -10,7 +10,17 @@ import { createProject } from '../apiFunctions/createProject';
 import { useSession } from 'next-auth/client';
 import PopHover from '../../../common/InputTypes/PopHover';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
+import { LngLat } from 'mapbox-gl';
+
 const { useTranslation } = i18next;
+const classifications = [
+  { label: 'Large scale planting', value: 'large-scale-planting' },
+  { label: 'Agroforestry', value: 'agroforestry' },
+  { label: 'Natural Regeneration', value: 'natural-regeneration' },
+  { label: 'Managed Regeneration', value: 'managed-regeneration' },
+  { label: 'Urban Planting', value: 'urban-planting' },
+  { label: 'Other Planting', value: 'other-planting' },
+];
 
 interface Props {
   handleNext: Function;
@@ -18,6 +28,9 @@ interface Props {
   setProjectDetails: Function;
   errorMessage: String;
 }
+
+let renderCount = 0;
+
 
 export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
@@ -37,21 +50,24 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const [projectCoords, setProjectCoords] = React.useState([0, 0]);
 
   const changeLat = (e: any) => {
-    setProjectCoords([
-      projectCoords ? projectCoords[0] : 0,
-      parseFloat(e.target.value),
-    ]);
+    if(e.target.value && e.target.value > -90 && e.target.value < 90){
+      setProjectCoords([
+        projectCoords ? projectCoords[0] : 0,
+        parseFloat(e.target.value),
+      ]);
+    }
   };
 
   const changeLon = (e: any) => {
-    setProjectCoords([
-      parseFloat(e.target.value),
-      projectCoords ? projectCoords[1] : 0,
-    ]);
+    if(e.target.value && e.target.value > -180 && e.target.value < 180){
+      setProjectCoords([
+        parseFloat(e.target.value),
+        projectCoords ? projectCoords[1] : 0,
+      ]);
+    }
   };
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
-  const { register, handleSubmit, errors, control, reset } = useForm({ mode: 'onChange' });
 
 
   // Form Fields
@@ -69,62 +85,43 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
+    projectCoords:{
+      latitude:0,
+      longitude:0
+    }
   };
 
+  const { register, handleSubmit, errors, control, reset,getValues, setValue,watch} = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+
+  const acceptDonations = watch("acceptDonations");
+
   React.useEffect(() => {
-    const basicDetails = {
-      name: projectDetails.name,
-      slug: projectDetails.slug,
-      classification: projectDetails.classification,
-      countTarget: projectDetails.countTarget,
-      website: projectDetails.website,
-      description: projectDetails.description,
-      acceptDonations: projectDetails.allowDonations,
-      treeCost: projectDetails.treeCost,
-      publish: projectDetails.publish,
-      visitorAssistance: projectDetails.visitorAssistance,
-      enablePlantLocations: projectDetails.enablePlantLocations,
-      currency: projectDetails.currency,
-    };
-    setBasicDetails(basicDetails)
+    // const basicDetails = {
+    //   name: projectDetails.name,
+    //   slug: projectDetails.slug,
+    //   classification: projectDetails.classification,
+    //   countTarget: projectDetails.countTarget,
+    //   website: projectDetails.website,
+    //   description: projectDetails.description,
+    //   acceptDonations: projectDetails.allowDonations,
+    //   treeCost: projectDetails.treeCost,
+    //   publish: projectDetails.publish,
+    //   visitorAssistance: projectDetails.visitorAssistance,
+    //   enablePlantLocations: projectDetails.enablePlantLocations,
+    //   currency: projectDetails.currency,
+    // };
+    // setBasicDetails(basicDetails)
     // reset is for Controller-ProjectType default value
-    reset(basicDetails)
+    // reset(basicDetails)
 
   }, [projectDetails])
 
 
-  const [basicDetails, setBasicDetails] = React.useState(defaultBasicDetails);
-
-  const changeBasicDetails = (e: any) => {
-    // this will not be triggered when Project type is changed (uses Controller from react-hook-form)
-    setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
-  };
-  const toggleAcceptDonations = () => {
-    setBasicDetails({ ...basicDetails, acceptDonations: !basicDetails.acceptDonations })
-  }
-  const togglePublish = () => {
-    setBasicDetails({ ...basicDetails, publish: !basicDetails.publish })
-  }
-  const toggleVisitorAssistance = () => {
-    setBasicDetails({ ...basicDetails, visitorAssistance: !basicDetails.visitorAssistance })
-  }
-  const toggleEnablePlantLocations = () => {
-    setBasicDetails({ ...basicDetails, enablePlantLocations: !basicDetails.enablePlantLocations })
-  }
-
-  const classifications = [
-    { label: 'Large scale planting', value: 'large-scale-planting' },
-    { label: 'Agroforestry', value: 'agroforestry' },
-    { label: 'Natural Regeneration', value: 'natural-regeneration' },
-    { label: 'Managed Regeneration', value: 'managed-regeneration' },
-    { label: 'Urban Planting', value: 'urban-planting' },
-    { label: 'Other Planting', value: 'other-planting' },
-  ];
 
   const onSubmit = (data: any) => {
 
     // directly here, Project type can be accessed
-    console.log(data, 'data');
+    // console.log(data, 'data');
 
     let submitData = {
       name: data.name,
@@ -133,8 +130,8 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       geometry: {
         type: 'Point',
         coordinates: [
-          parseFloat(data.longitude),
-          parseFloat(data.latitude)
+          parseFloat(data.projectCoords.longitude),
+          parseFloat(data.projectCoords.latitude)
         ]
       },
       countTarget: Number(data.countTarget),
@@ -142,18 +139,25 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       description: data.description,
       acceptDonations: data.acceptDonations,
       treeCost: data.treeCost ? Number(data.treeCost) : 0,
-      currency: data.currency,
+      currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
       enablePlantLocations: data.enablePlantLocations
     }
-    // createProject(submitData,session).then((data)=>{
-    //   setProjectDetails(data);
-     // set project GUID 
-    //   handleNext();
-    // })
+
+    // console.log('submitData', submitData);
+    createProject(submitData,session).then((data)=>{
+      console.log('Submitted Data',data);
+
+      // setProjectDetails(data);
+    //  set project GUID 
+      // handleNext();
+    })
 
   };
+  renderCount++;
+
+  console.log('Rendered', renderCount);
 
   return (
     <div className={styles.stepContainer}>
@@ -169,8 +173,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             label={t('manageProjects:name')}
             variant="outlined"
             name="name"
-            onChange={changeBasicDetails}
-            value={basicDetails.name}
           />
           {errors.name && (
             <span className={styles.formErrors}>
@@ -191,13 +193,11 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               label={t('manageProjects:slug')}
               variant="outlined"
               name="slug"
-              onChange={changeBasicDetails}
               InputProps={{
                 startAdornment: (
                   <p className={styles.inputStartAdornment}>pp.eco/</p>
                 ),
               }}
-              value={basicDetails.slug}
             />
             {errors.slug && (
               <span className={styles.formErrors}>
@@ -210,14 +210,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             <Controller
               as={
                 <MaterialTextField
-                  inputRef={register({
-                  })}
                   label={t('manageProjects:classification')}
                   variant="outlined"
-                  name="classification"
-                  onChange={changeBasicDetails}
                   select
-                  value={basicDetails.classification}
                 >
                   {classifications.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -229,7 +224,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               name="classification"
               rules={{ required: "Please select Project type" }}
               control={control}
-              defaultValue={basicDetails.classification ? basicDetails.classification : ""}
             />
             {errors.classification && (
               <span className={styles.formErrors}>
@@ -255,8 +249,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               label={t('manageProjects:countTarget')}
               variant="outlined"
               name="countTarget"
-              onChange={changeBasicDetails}
-              value={basicDetails.countTarget}
+              placeholder={'0'}
             />
             {errors.countTarget && (
               <span className={styles.formErrors}>
@@ -271,7 +264,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               label={t('manageProjects:website')}
               variant="outlined"
               name="website"
-              onChange={changeBasicDetails}
               inputRef={register({
                 required: {
                   value: true,
@@ -282,7 +274,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                   message: 'Invalid website URL',
                 },
               })}
-              value={basicDetails.website}
             />
             {errors.website && (
               <span className={styles.formErrors}>
@@ -297,7 +288,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             label={t('manageProjects:aboutProject')}
             variant="outlined"
             name="description"
-            onChange={changeBasicDetails}
             multiline
             inputRef={register({
               required: {
@@ -305,7 +295,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                 message: 'Please enter About project',
               },
             })}
-            value={basicDetails.description}
           />
           {errors.description && (
             <span className={styles.formErrors}>
@@ -317,22 +306,27 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="acceptDonations" style={{ display: 'flex', alignItems: 'flex-end' }}>Receive Donations <div style={{ height: '13px', width: '13px', marginLeft: '6px' }}>
-                <PopHover label={<InfoIcon />} value={'Message for receive donations'} />
+              <label htmlFor="acceptDonations" style={{ display: 'flex', alignItems: 'center' }}>Receive Donations <div style={{ height: '13px', width: '13px', marginLeft: '6px' }}>
+                <PopHover label={<InfoIcon />} value={'Please activate once the project profile is complete. Plant-for-the-Planet will then review the profile and inform you if you are eligible to receive donations through this platform. This may take a few weeks.'} />
 
               </div></label>
 
-              <ToggleSwitch
-                id="acceptDonations"
-                checked={basicDetails.acceptDonations}
-                onChange={toggleAcceptDonations}
+              <Controller
                 name="acceptDonations"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                inputRef={register()}
+                control={control}
+                render={props => (
+                  <ToggleSwitch
+                    id="acceptDonations"
+                    checked={props.value}
+                    onChange={e => props.onChange(e.target.checked)}
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  />
+                )}
               />
+
             </div>
           </div>
-          {basicDetails.acceptDonations ? (
+          {acceptDonations ? (
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 inputRef={register({
@@ -341,15 +335,15 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                     message: 'Please enter cost per tree',
                   },
                   validate: (value) =>
-                    parseFloat(value) > 0 && parseFloat(value) < 3.4028,
+                    parseFloat(value) > 0,
                 })}
                 label={t('manageProjects:treeCost')}
                 variant="outlined"
                 name="treeCost"
-                onChange={changeBasicDetails}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
                 }}
+                placeholder={'0'}
                 InputProps={{
                   startAdornment: (
                     <p
@@ -358,7 +352,6 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                     >{`€`}</p>
                   ),
                 }}
-                value={basicDetails.treeCost}
               />
               {errors.treeCost && (
                 <span className={styles.formErrors}>
@@ -381,17 +374,19 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
             onViewportChange={_onViewportChange}
             onClick={(event) => {
-              console.log(event);
-              if ((event.type = 'click')) {
-                setProjectCoords(event.lngLat);
+              setProjectCoords(event.lngLat)
+              const latLong = {
+                latitude:event.lngLat[1],
+                longitude:event.lngLat[0]
               }
+              setValue('projectCoords',latLong)
             }}
 
           >
             {projectCoords !== null ? (
               <Marker
-                latitude={projectCoords[1]}
-                longitude={projectCoords[0]}
+              latitude={projectCoords[1]}
+              longitude={projectCoords[0]}
                 offsetLeft={5}
                 offsetTop={-16}
                 style={{ left: '28px' }}
@@ -407,13 +402,13 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           >
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                inputRef={register({ required: true })}
+                inputRef={register({ required: true,validate: (value) => parseFloat(value) > -90 && parseFloat(value) < 90 })}
+
                 label="Latitude"
                 variant="outlined"
-                name="latitude"
+                name={'projectCoords.latitude'}
                 onChange={changeLat}
                 className={styles.latitudeInput}
-                value={projectCoords !== null ? projectCoords[1] : null}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
@@ -421,19 +416,18 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             </div>
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                inputRef={register({ required: true })}
+                inputRef={register({ required: true,validate: (value) => parseFloat(value) > -180 && parseFloat(value) < 180  })}
                 label="Longitude"
                 variant="outlined"
-                name="longitude"
                 onChange={changeLon}
+                name={'projectCoords.longitude'}
                 className={styles.longitudeInput}
-                value={projectCoords !== null ? projectCoords[0] : null}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
               />
-            </div>
-          </div>
+            </div> 
+             </div>
         </div>
 
         <div className={styles.formFieldLarge}>
@@ -442,13 +436,20 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
               I will provide lodging, site access and local transport if a
               reviewer is sent by Plant-for-the-Planet.
             </label>
-            <ToggleSwitch
-              id="visitorAssistance"
-              checked={basicDetails.visitorAssistance}
-              onChange={toggleVisitorAssistance}
+            <Controller
               name="visitorAssistance"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              control={control}
+              render={props => (
+                <ToggleSwitch
+                  id="visitorAssistance"
+                  checked={props.value}
+                  onChange={e => props.onChange(e.target.checked)}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+
+              )}
             />
+
           </div>
         </div>
 
@@ -456,15 +457,19 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           <div className={styles.formFieldHalf}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
-              <ToggleSwitch
-                inputRef={register()}
-                checked={basicDetails.publish}
-                onChange={togglePublish}
-                name="publish"
-                id="publish"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
 
+              <Controller
+                name="publish"
+                control={control}
+                render={props => (
+                  <ToggleSwitch
+                    checked={props.value}
+                    onChange={e => props.onChange(e.target.checked)}
+                    id="publish"
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  />
+                )}
+              />
             </div>
           </div>
           <div className={styles.formFieldHalf}>
@@ -473,14 +478,19 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                 Detailed Project Analysis if projectstatus=Approved
                 Activate once all relevant data is submitted via Tree Mapper.
                     </label>
-              <ToggleSwitch
-                checked={basicDetails.enablePlantLocations}
-                onChange={toggleEnablePlantLocations}
-                name="enablePlantLocations"
-                id="enablePlantLocations"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
+                    <Controller
+                      name="enablePlantLocations"
+                      control={control}
+                      render={props => (
 
+                        <ToggleSwitch
+                          checked={props.value}
+                          onChange={e => props.onChange(e.target.checked)}
+                          id="enablePlantLocations"
+                          inputProps={{ 'aria-label': 'secondary checkbox' }}
+                        />
+                      )}
+                    />
             </div>
           </div>
         </div>
