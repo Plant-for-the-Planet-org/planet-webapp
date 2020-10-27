@@ -39,15 +39,15 @@ export default function EditProfileModal({
   // the form values
   const [firstName, setFirstName] = useState(userprofile.firstname);
   const [lastName, setLastName] = useState(userprofile.lastname);
-  const [address, setAddress] = useState(userprofile.address);
-  const [city, setCity] = useState(userprofile.city);
-  const [zip, setZip] = useState(userprofile.zipCode);
-  const [country, setCountry] = useState(userprofile.country);
-  const [isPrivateAccount, setIsPrivateAccount] = useState(userprofile.mayPublish);
-  const [isSubscribed, setIsSubscribed] = useState(userprofile.mayContact);
-  const [description, setDescription] = useState(userprofile.synopsis);
+  const [address, setAddress] = useState(userprofile.address.address);
+  const [city, setCity] = useState(userprofile.address.city);
+  const [zip, setZip] = useState(userprofile.address.zipCode);
+  const [country, setCountry] = useState(userprofile.address.country);
+  const [isPrivateAccount, setIsPrivateAccount] = useState(userprofile.isPrivate);
+  const [isSubscribed, setIsSubscribed] = useState(userprofile.getNews);
+  const [description, setDescription] = useState(userprofile.bio);
   const [website, setWebsite] = useState(userprofile.url);
-  const [ session, loading] = useSession()
+  const [session, loading] = useSession()
   const [severity, setSeverity] = useState('success')
   const [snackbarMessage, setSnackbarMessage] = useState("OK")
 
@@ -63,28 +63,28 @@ export default function EditProfileModal({
   };
 
   const saveProfile = async() => {
-    const userObject = {
+    const bodyToSend = {
       firstname: firstName,
       lastname: lastName,
       address,
       city,
       zipCode: zip,
       country: country,
-      mayPublish: !isPrivateAccount,
-      mayContact: isSubscribed,
-      synopsis: description,
+      isPrivate: isPrivateAccount,
+      getNews: isSubscribed,
+      bio: description,
       url: website
     }
     if (!loading && session && userprofile.id) {
       try{
       const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/profiles/${userprofile.id}`, {
+        `${process.env.API_ENDPOINT}/app/profile`, {
           method: 'PUT',
           headers: { 
             'Authorization': `OAuth ${session.accessToken}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(userObject)
+          body: JSON.stringify(bodyToSend)
         },
       );
       if (res.status === 200) {

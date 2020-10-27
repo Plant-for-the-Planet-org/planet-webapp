@@ -41,22 +41,24 @@ const options = {
     session: async (session, token) => {
       // now, session has accessToken. can be accessed by next-auth/client - useSession()
       session.accessToken = token.accessToken
+      session.userEmail = session.user.email
+      session.user = null
       console.log('.......session callback ran....')
       return session
     },    
   },
 
   events: {
-    signIn: async (message) => { console.log('successful signin', message) },
-    signOut: async (message) => { console.log('successful signout', message) },
-    createUser: async (message) => { console.log('new user created', message) },
-    linkAccount: async (message) => { console.log('account linked to a user', message) },
-    session: async (message) => { console.log('session is active', message) },
-    error: async (message) => { console.log('error in flow', message) }
+    signIn: async () => {},
+    signOut: async () => {},
+    createUser: async () => {},
+    linkAccount: async () => {},
+    session: async () => {},
+    error: async () => {}
   },
 
   // Enable debug messages in the console if you are having problems
-  debug: true,
+  debug: false,
 };
 
 export default (req, res) => NextAuth(req, res, options);
