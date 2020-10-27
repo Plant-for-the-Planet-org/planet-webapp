@@ -12,7 +12,8 @@ import ProjectMedia from '../components/ProjectMedia';
 import DetailedAnalysis from '../components/DetailedAnalysis';
 import ProjectSites from '../components/ProjectSites';
 import ProjectSpending from '../components/ProjectSpending';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { useSession } from 'next-auth/client';
 
 function getSteps() {
     return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
@@ -22,6 +23,7 @@ export default function ManageProjects() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
     const steps = getSteps();
+    const [session, loading] = useSession();
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -42,15 +44,18 @@ export default function ManageProjects() {
     React.useEffect(()=>{
         // Fetch details of the project 
         if(projectGUID !== '' && projectGUID !== null)
-        getRequest(`/app/projects/${projectGUID}?_scope=extended&currency=EUR`).then((result)=>{
+        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=default`,session).then((result)=>{
             setProjectDetails(result)
         })
-    },[projectGUID])
+    },[])
+
+    console.log('projectGUID',projectDetails);
+    
 
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} />;
+                return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} />;
             case 1:
                 return <ProjectMedia handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:

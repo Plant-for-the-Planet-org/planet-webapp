@@ -9,7 +9,7 @@ import { MenuItem } from '@material-ui/core';
 import { useSession } from 'next-auth/client';
 import PopHover from '../../../common/InputTypes/PopHover';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
-import { createProject } from '../apiFunctions/createProject';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 const classifications = [
@@ -26,12 +26,10 @@ interface Props {
   projectDetails: Object;
   setProjectDetails: Function;
   errorMessage: String;
+  setProjectGUID: Function;
 }
 
-let renderCount = 0;
-
-
-export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage }: Props): ReactElement {
+export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage, setProjectGUID }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [session, loading] = useSession();
   // Map setup
@@ -49,7 +47,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const [projectCoords, setProjectCoords] = React.useState([0, 0]);
 
   const changeLat = (e: any) => {
-    if(e.target.value && e.target.value > -90 && e.target.value < 90){
+    if (e.target.value && e.target.value > -90 && e.target.value < 90) {
       setProjectCoords([
         projectCoords ? projectCoords[0] : 0,
         parseFloat(e.target.value),
@@ -58,7 +56,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   };
 
   const changeLon = (e: any) => {
-    if(e.target.value && e.target.value > -180 && e.target.value < 180){
+    if (e.target.value && e.target.value > -180 && e.target.value < 180) {
       setProjectCoords([
         parseFloat(e.target.value),
         projectCoords ? projectCoords[1] : 0,
@@ -71,7 +69,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
 
   // Form Fields
   // In future if the details are present, we will feed default values here
-  const defaultBasicDetails = {
+  const [defaultBasicDetails,setDefaultBasicDetails] = React.useState({
     name: '',
     slug: '',
     classification: '',
@@ -84,43 +82,45 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
-    projectCoords:{
-      latitude:0,
-      longitude:0
+    projectCoords: {
+      latitude: 0,
+      longitude: 0
     }
-  };
+  }) 
 
-  const { register, handleSubmit, errors, control, reset,getValues, setValue,watch} = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+  const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const acceptDonations = watch("acceptDonations");
 
   React.useEffect(() => {
-    // const basicDetails = {
-    //   name: projectDetails.name,
-    //   slug: projectDetails.slug,
-    //   classification: projectDetails.classification,
-    //   countTarget: projectDetails.countTarget,
-    //   website: projectDetails.website,
-    //   description: projectDetails.description,
-    //   acceptDonations: projectDetails.allowDonations,
-    //   treeCost: projectDetails.treeCost,
-    //   publish: projectDetails.publish,
-    //   visitorAssistance: projectDetails.visitorAssistance,
-    //   enablePlantLocations: projectDetails.enablePlantLocations,
-    //   currency: projectDetails.currency,
-    // };
-    // setBasicDetails(basicDetails)
-    // reset is for Controller-ProjectType default value
-    // reset(basicDetails)
-
+    if(projectDetails && projectDetails !== null ){
+      const basicDetails = {
+        name: projectDetails.name,
+        slug: projectDetails.slug,
+        classification: projectDetails.classification,
+        countTarget: projectDetails.countTarget,
+        website: projectDetails.website,
+        description: projectDetails.description,
+        acceptDonations: projectDetails.allowDonations,
+        treeCost: projectDetails.treeCost,
+        publish: projectDetails.publish,
+        visitorAssistance: projectDetails.visitorAssistance,
+        enablePlantLocations: projectDetails.enablePlantLocations,
+        currency: projectDetails.currency,
+        projectCoords: {
+          latitude: 0,
+          longitude: 0
+        }
+      };
+      setDefaultBasicDetails(basicDetails)
+      // reset is for Controller-ProjectType default value
+      reset(defaultBasicDetails)
+    }
   }, [projectDetails])
 
 
 
   const onSubmit = (data: any) => {
-
-    // directly here, Project type can be accessed
-    // console.log(data, 'data');
 
     let submitData = {
       name: data.name,
@@ -144,19 +144,12 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       enablePlantLocations: data.enablePlantLocations
     }
 
-    // console.log('submitData', submitData);
-    createProject(submitData,session).then((data)=>{
-      console.log('Submitted Data',data);
-
-      // setProjectDetails(data);
-    //  set project GUID 
-      // handleNext();
+    postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
+      setProjectGUID(res.id)
+      setProjectDetails(res)
     })
 
   };
-  renderCount++;
-
-  console.log('Rendered', renderCount);
 
   return (
     <div className={styles.stepContainer}>
@@ -375,17 +368,17 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             onClick={(event) => {
               setProjectCoords(event.lngLat)
               const latLong = {
-                latitude:event.lngLat[1],
-                longitude:event.lngLat[0]
+                latitude: event.lngLat[1],
+                longitude: event.lngLat[0]
               }
-              setValue('projectCoords',latLong)
+              setValue('projectCoords', latLong)
             }}
 
           >
             {projectCoords !== null ? (
               <Marker
-              latitude={projectCoords[1]}
-              longitude={projectCoords[0]}
+                latitude={projectCoords[1]}
+                longitude={projectCoords[0]}
                 offsetLeft={5}
                 offsetTop={-16}
                 style={{ left: '28px' }}
@@ -401,7 +394,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           >
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                inputRef={register({ required: true,validate: (value) => parseFloat(value) > -90 && parseFloat(value) < 90 })}
+                inputRef={register({ required: true, validate: (value) => parseFloat(value) > -90 && parseFloat(value) < 90 })}
 
                 label="Latitude"
                 variant="outlined"
@@ -415,7 +408,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
             </div>
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                inputRef={register({ required: true,validate: (value) => parseFloat(value) > -180 && parseFloat(value) < 180  })}
+                inputRef={register({ required: true, validate: (value) => parseFloat(value) > -180 && parseFloat(value) < 180 })}
                 label="Longitude"
                 variant="outlined"
                 onChange={changeLon}
@@ -425,11 +418,11 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
               />
-            </div> 
-             </div>
+            </div>
+          </div>
         </div>
 
-        <div className={styles.formFieldLarge} style={{width:'320px'}}>
+        <div className={styles.formFieldLarge} style={{ width: '320px' }}>
           <div className={styles.formFieldRadio}>
             <label htmlFor="visitorAssistance">
               I will provide lodging, site access and local transport if a
@@ -452,45 +445,45 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           </div>
         </div>
 
-          <div className={styles.formFieldLarge} style={{width:'320px'}}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
+        <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+          <div className={`${styles.formFieldRadio}`}>
+            <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
 
-              <Controller
-                name="publish"
-                control={control}
-                render={props => (
-                  <ToggleSwitch
-                    checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
-                    id="publish"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                )}
-              />
-            </div>
+            <Controller
+              name="publish"
+              control={control}
+              render={props => (
+                <ToggleSwitch
+                  checked={props.value}
+                  onChange={e => props.onChange(e.target.checked)}
+                  id="publish"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              )}
+            />
           </div>
-          <div className={styles.formFieldLarge} style={{width:'320px'}}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'enablePlantLocations'}>
-                Detailed Project Analysis if projectstatus=Approved
-                Activate once all relevant data is submitted via Tree Mapper.
+        </div>
+        <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+          <div className={`${styles.formFieldRadio}`}>
+            <label htmlFor={'enablePlantLocations'}>
+              Detailed Project Analysis if projectstatus=Approved
+              Activate once all relevant data is submitted via Tree Mapper.
                     </label>
-                    <Controller
-                      name="enablePlantLocations"
-                      control={control}
-                      render={props => (
+            <Controller
+              name="enablePlantLocations"
+              control={control}
+              render={props => (
 
-                        <ToggleSwitch
-                          checked={props.value}
-                          onChange={e => props.onChange(e.target.checked)}
-                          id="enablePlantLocations"
-                          inputProps={{ 'aria-label': 'secondary checkbox' }}
-                        />
-                      )}
-                    />
-            </div>
+                <ToggleSwitch
+                  checked={props.value}
+                  onChange={e => props.onChange(e.target.checked)}
+                  id="enablePlantLocations"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              )}
+            />
           </div>
+        </div>
 
         {
           errorMessage && errorMessage !== '' ? (
