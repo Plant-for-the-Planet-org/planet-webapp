@@ -15,7 +15,7 @@ import {
   removeUserExistsInDB,
   removeUserSlug
 } from '../../src/utils/auth0/localStorageUtils';
-import {getAccountInfo } from '../../src/utils/auth0/getAccountInfo'
+import {getAccountInfo } from '../../src/utils/auth0/apiRequests'
 
 interface Props {
   initialized: Boolean;
