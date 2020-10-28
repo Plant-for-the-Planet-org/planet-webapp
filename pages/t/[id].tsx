@@ -36,6 +36,8 @@ export default function PublicUser(initialized: Props) {
   const router = useRouter();
   const PublicUserProps = {
     userprofile,
+    changeForceReload,
+    forceReload,
     authenticatedType,
   };
   const PrivateUserProps = {
