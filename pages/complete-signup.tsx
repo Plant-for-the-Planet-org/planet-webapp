@@ -14,9 +14,7 @@ export default function UserProfile() {
         <title>{`${config.meta.title} - Complete SignUp`}</title>
     </Head>
     <Layout>
-       <CompleteSignup
-          style={{ height: '100vh', overflowX: 'hidden' }}
-        />
+       <CompleteSignup />
     </Layout>
     </>
   );

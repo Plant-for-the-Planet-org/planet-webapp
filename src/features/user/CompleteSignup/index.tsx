@@ -246,7 +246,8 @@ export default function CompleteSignup() {
       style={{
         backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         display:'flex',
-        flexDirection:'column'
+        flexDirection:'column',
+        height: '100vh', overflowX: 'hidden'
       }}
     >
       <div className={requestSent ? styles.signupRequestSent : styles.signup }>
