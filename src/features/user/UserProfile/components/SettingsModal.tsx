@@ -9,6 +9,7 @@ import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 
 export default function SettingsModal({
+  userType,
   userprofile,
   settingsModalOpen,
   handleSettingsModalClose,
@@ -35,7 +36,9 @@ export default function SettingsModal({
       >
         <Fade in={settingsModalOpen}>
           <div className={styles.modal}>
-            <div className={styles.settingsItem}> Manage Projects </div>
+            {
+              userType == 'tpo' && <div className={styles.settingsItem}> Manage Projects </div>
+            }
             <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> Edit Profile </div>
           {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
