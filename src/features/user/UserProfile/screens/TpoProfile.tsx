@@ -13,11 +13,11 @@ export default function TpoProfile({ userprofile }: any) {
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
       >
-        {/* <PublicUserInfo userprofile={userprofile} /> */}
+        <PublicUserInfo userprofile={userprofile} />
       </LandingSection>
-      <ProjectsContainer
+      {/* <ProjectsContainer
         projects={userprofile.userProfile.plantProjects}
-      />
+      /> */}
     </>
   );
 }
