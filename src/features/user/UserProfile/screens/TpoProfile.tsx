@@ -98,7 +98,6 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
             handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
             handleAddTargetModalOpen={handleAddTargetModalOpen}
           />
-        {/* <PublicUserInfo userprofile={userprofile} /> */}
       </LandingSection>
       <ProjectsContainer
         userprofile={userprofile}
