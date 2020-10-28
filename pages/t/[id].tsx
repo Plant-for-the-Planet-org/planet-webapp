@@ -5,7 +5,7 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import { getAuthenticatedRequest, getRequest } from '../../src/utils/apiRequests/api';
+import { getRequest } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import PrivateUserProfile from '../../src/features/user/UserProfile/screens/PrivateIndividualProfile';
 import {
@@ -59,8 +59,8 @@ export default function PublicUser(initialized: Props) {
         // some user logged in and slug matches -> private profile
         if (!loading && session && userExistsInDB && currentUserSlug === slug) {
           try {
-            const res = await getAuthenticatedRequest('/app/profile',session);
-            // const res = await getAccountInfo(session)
+            
+            const res = await getAccountInfo(session)
             if (res.status === 200) {
               console.log('in 200-> user exists in our DB');
               const resJson = await res.json();
