@@ -7,6 +7,7 @@ import Settings from '../../../../../public/assets/images/icons/userProfileIcons
 import styles from '../styles/UserProfile.module.scss';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import AddTargetModal from '../components/AddTargetModal'
 
 export default function TpoProfile({ userprofile,authenticatedType, changeForceReload,
   forceReload }: any) {
@@ -48,6 +49,15 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
     const handleEditProfileModalOpen = () => {
       setEditProfileModalOpen(true);
     };
+
+      // add target modal
+  const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
+  const handleAddTargetModalClose = () => {
+    setAddTargetModalOpen(false);
+  };
+  const handleAddTargetModalOpen = () => {
+    setAddTargetModalOpen(true);
+  };
   
   return (
     <>
@@ -86,8 +96,8 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
             userprofile={userprofile}
             authenticatedType={authenticatedType}
             handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+            handleAddTargetModalOpen={handleAddTargetModalOpen}
           />
-        {/* <PublicUserInfo userprofile={userprofile} /> */}
       </LandingSection>
       <ProjectsContainer
         userprofile={userprofile}
@@ -109,6 +119,15 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
           Text Copied to Clipboard!
         </MuiAlert>
       </Snackbar>
+
+          {/* add target modal */}
+          <AddTargetModal
+        userprofile={userprofile}
+        addTargetModalOpen={addTargetModalOpen}
+        handleAddTargetModalClose={handleAddTargetModalClose}
+        changeForceReload={changeForceReload}
+        forceReload={forceReload}
+      />
     </>
   );
 }
