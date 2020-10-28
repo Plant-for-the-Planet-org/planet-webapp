@@ -2,6 +2,9 @@ const config = {
   tenantName: 'planetbeta',
   tenantURL: 'beta.plant-for-the-planet.org',
   tenantLogoURL: 'https://www.plant-for-the-planet.org',
+  languages: ['en', 'de'],
+  fallbackCurrency: 'EUR',
+  tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
@@ -15,21 +18,21 @@ const config = {
     items: [
       {
         id: 1,
-        title: 'Home',
+        title: 'home',
         onclick: '/home',
         visible: false,
         key: 'home',
       },
       {
         id: 2,
-        title: 'Donate/Gift',
+        title: 'donate_gift',
         onclick: '/',
         visible: true,
         key: 'donate',
       },
       {
         id: 3,
-        title: 'Leaders',
+        title: 'leaderboard',
         onclick: '/',
         visible: false,
         key: 'leaderboard',
@@ -37,7 +40,7 @@ const config = {
 
       {
         id: 4,
-        title: 'Me',
+        title: 'me',
         onclick: '/me',
         visible: false,
         key: 'me',
@@ -47,9 +50,10 @@ const config = {
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
     description:
-            "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+      "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '@pftp_int',
+    locale: 'en_US',
   },
 };
 

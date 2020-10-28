@@ -1,14 +1,17 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
-import ThemeProvider from '../src/utils/themeContext';
+import ThemeProvider from '../src/theme/themeContext';
+import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
+import Layout from '../src/features/common/Layout';
+import MapLayout from '../src/features/public/Donations/components/MapboxMap';
+import { useRouter } from 'next/router';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -18,7 +21,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     integrations: [
       new RewriteFrames({
         iteratee: (frame) => {
-          frame.filename = frame.filename.replace(distDir, 'app:///_next');
+          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
           return frame;
         },
       }),
@@ -28,40 +31,74 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
+  const router = useRouter();
+  const [projects, setProjects] = React.useState(null);
+  const [project, setProject] = React.useState(null);
+  const [showProjects, setShowProjects] = React.useState(true);
+  const [showSingleProject, setShowSingleProject] = React.useState(false);
+  const [isMap, setIsMap] = React.useState(false);
+
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
+  const [initialized, setInitialized] = React.useState(false);
+
   React.useEffect(() => {
-    TagManager.initialize(tagManagerArgs);
+    i18next.initPromise.then(() => setInitialized(true));
   }, []);
 
   React.useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles!.parentElement!.removeChild(jssStyles);
+    if (router.pathname === '/' || router.pathname === '/[p]') {
+      setIsMap(true);
+    } else {
+      setIsMap(false);
+    }
+  }, [router]);
+
+  React.useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
+      (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
+        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== '' ||
+        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== null)
+    ) {
+      TagManager.initialize(tagManagerArgs);
     }
   }, []);
 
-  React.useEffect(() => {
-    async function loadConfig() {
-      await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }).then(async (res) => {
-        const config = await res.json();
-        localStorage.setItem('config', JSON.stringify(config));
-        localStorage.setItem('countryCode', config.country);
-        localStorage.setItem('currencyCode', config.currency);
-      });
-    }
-    loadConfig();
-  }, []);
+  const ProjectProps = {
+    projects,
+    project,
+    setProject,
+    setProjects,
+    showSingleProject,
+    setShowSingleProject,
+    pageProps,
+    initialized,
+    showProjects,
+    setShowProjects,
+  };
 
   return (
-    <ThemeProvider err={err}>
+    <ThemeProvider>
       <CssBaseline />
-      <Component {...pageProps} />
+      <Layout>
+        {isMap ? (
+          project !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : projects !== null ? (
+            <MapLayout
+              {...ProjectProps}
+              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            />
+          ) : null
+        ) : null}
+        <Component {...ProjectProps} />
+      </Layout>
     </ThemeProvider>
   );
 }

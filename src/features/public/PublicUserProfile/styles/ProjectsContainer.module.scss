@@ -19,7 +19,7 @@
 }
 
 .singleProject {
-  width: 300px;
+  width: 280px;
 }
 
 .projectNotFound {
@@ -35,14 +35,26 @@
 @include smTabletView {
   .listProjects {
     padding: 0px;
+    
   }
+  .singleProject {
+    margin-right: 24px;
+  }
+  .singleProject:last-of-type{
+    margin-right:0px;
+  }
+}
+@include mdTabletView{
+  
+}
+@include lgLaptopView{
   .projectsTitleText {
     text-align: left;
   }
-}
-
-@include lgLaptopView{
-  .listProjects {
+  .listProjects{
     justify-content: space-between;
   }
+}
+@include xlDesktopView{
+  
 }

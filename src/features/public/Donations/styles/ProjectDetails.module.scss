@@ -80,31 +80,37 @@
   margin-top: 10px;
 }
 
-.costButton {
+.donateButton {
   background-color: $primaryColor;
-  width: 72px;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
   height: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 11px;
   color: $light;
-  font-weight: bold;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
-.costButton:hover {
+.donateButton:hover {
   cursor: pointer;
   text-decoration: none;
 }
 
-.perTree {
-  font-family: $primaryFontFamily;
-  font-size: 9px;
+.perTreeCost {
+  font-family: $secondaryFontFamily;
+  font-size: 10px;
   color: $primaryFontColor;
   margin-top: 5px;
+}
+
+.perTreeCost > span {
+  font-family: $primaryFontFamily;
 }
 
 .projectCost {

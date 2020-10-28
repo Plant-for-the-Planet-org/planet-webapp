@@ -1,19 +1,23 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, Ref } from 'react';
 import Sugar from 'sugar';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
-import getStripe from '../../../../utils/getStripe';
-import { ThemeContext } from '../../../../utils/themeContext';
+import getStripe from '../../../../utils/stripe/getStripe';
+import { ThemeContext } from '../../../../theme/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
+import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
   open: boolean;
   handleOpen: Function;
   handleClose: Function;
+  buttonRef: any;
+  popupRef: any;
 }
 
 export default function PopupProject({
@@ -21,7 +25,10 @@ export default function PopupProject({
   open,
   handleOpen,
   handleClose,
+  buttonRef,
+  popupRef,
 }: Props): ReactElement {
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
   const { theme } = React.useContext(ThemeContext);
 
   const ImageSource = project.properties.image
@@ -36,6 +43,7 @@ export default function PopupProject({
   return (
     <>
       <Modal
+        ref={popupRef}
         className={styles.modal + ' ' + theme}
         open={open}
         onClose={handleClose}
@@ -80,34 +88,35 @@ export default function PopupProject({
           <div className={styles.targetLocation}>
             <div className={styles.target}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
-              planted •{' '}
+              {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
-                {
-                  getCountryDataBy('countryCode', project.properties.country)
-                    .countryName
-                }
+              {t('country:' + project.properties.country.toLowerCase())}
               </span>
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            By {project.properties.tpo.name}
+            {t('common:by')} {project.properties.tpo.name}
           </div>
         </div>
         {project.properties.allowDonations && (
           <div className={styles.projectCost}>
             {project.properties.treeCost ? (
               <>
-                <div onClick={handleOpen} className={styles.costButton}>
-                  {project.properties.currency === 'USD'
-                    ? '$'
-                    : project.properties.currency === 'EUR'
-                    ? '€'
-                    : project.properties.currency}
-                  {project.properties.treeCost % 1 !== 0
-                    ? project.properties.treeCost.toFixed(2)
-                    : project.properties.treeCost}
+                <div
+                  ref={buttonRef}
+                  onClick={handleOpen}
+                  className={styles.donateButton}
+                >
+                  {t('common:donate')}
                 </div>
-                <div className={styles.perTree}>per tree</div>
+                <div className={styles.perTreeCost}>
+                  {getFormatedCurrency(
+                    i18n.language,
+                    project.properties.currency,
+                    project.properties.treeCost
+                  )}{' '}
+                  <span>{t('donate:perTree')}</span>
+                </div>
               </>
             ) : null}
           </div>

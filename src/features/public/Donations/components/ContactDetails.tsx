@@ -1,13 +1,17 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import Sugar from 'sugar';
-import BackArrow from '../../../../assets/images/icons/headerIcons/BackArrow';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
-import MaterialTextFeild from '../../../common/InputTypes/MaterialTextFeild';
+import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from './../../../common/types/donations';
 import styles from './../styles/ContactDetails.module.scss';
+import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+
+const { useTranslation } = i18next;
 
 function ContactDetails({
   treeCount,
@@ -19,8 +23,10 @@ function ContactDetails({
   isCompany,
   setIsCompany,
   isTaxDeductible,
-  country
+  country,
 }: ContactDetailsPageProps): ReactElement {
+  const { t, i18n } = useTranslation(['donate', 'common']);
+
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => {
     setDonationStep(3);
@@ -33,7 +39,9 @@ function ContactDetails({
     setContactDetails({ ...contactDetails, country: country });
   };
 
-  let defaultCountry = isTaxDeductible ? country : localStorage.getItem('countryCode');
+  let defaultCountry = isTaxDeductible
+    ? country
+    : localStorage.getItem('countryCode');
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -43,14 +51,14 @@ function ContactDetails({
         >
           <BackArrow color={styles.primaryFontColor} />
         </div>
-        <div className={styles.headerTitle}>Contact Details</div>
+        <div className={styles.headerTitle}>{t('donate:contactDetails')}</div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formRow}>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
-              label="First Name"
+              label={t('donate:firstName')}
               variant="outlined"
               name="firstName"
               onChange={changeContactDetails}
@@ -58,16 +66,16 @@ function ContactDetails({
             />
             {errors.firstName && (
               <span className={styles.formErrors}>
-                First Name field is required
+                {t('donate:firstNameRequired')}
               </span>
             )}
           </div>
 
           <div style={{ width: '20px' }}></div>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
-              label="Last Name"
+              label={t('donate:lastName')}
               variant="outlined"
               name="lastName"
               onChange={changeContactDetails}
@@ -75,64 +83,70 @@ function ContactDetails({
             />
             {errors.lastName && (
               <span className={styles.formErrors}>
-                Last Name field is required
+                {t('donate:lastNameRequired')}
               </span>
             )}
           </div>
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({
                 required: true,
                 pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i,
               })}
-              label="Email"
+              label={t('donate:email')}
               variant="outlined"
               name="email"
               onChange={changeContactDetails}
               defaultValue={contactDetails.email}
             />
             {errors.email && (
-              <span className={styles.formErrors}>Email is required</span>
+              <span className={styles.formErrors}>
+                {t('donate:emailRequired')}
+              </span>
             )}
           </div>
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
-              label="Address"
+              label={t('donate:address')}
               variant="outlined"
               name="address"
               onChange={changeContactDetails}
               defaultValue={contactDetails.address}
             />
             {errors.address && (
-              <span className={styles.formErrors}>Address is required</span>
+              <span className={styles.formErrors}>
+                {t('donate:addressRequired')}
+              </span>
             )}
           </div>
         </div>
         <div className={styles.formRow}>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({ required: true })}
-              label="City"
+              label={t('donate:city')}
               variant="outlined"
               name="city"
               onChange={changeContactDetails}
               defaultValue={contactDetails.city}
             />
             {errors.city && (
-              <span className={styles.formErrors}>City is required</span>
+              <span className={styles.formErrors}>
+                {t('donate:cityRequired')}
+              </span>
             )}
           </div>
 
           <div style={{ width: '20px' }}></div>
           <div>
-            <MaterialTextFeild
+            <MaterialTextField
               inputRef={register({})}
-              label="Zip Code"
+              label={t('donate:zipCode')}
               variant="outlined"
               name="zipCode"
               onChange={changeContactDetails}
@@ -140,7 +154,7 @@ function ContactDetails({
             />
             {errors.zipCode && (
               <span className={styles.formErrors}>
-                ZipCode is should only be Alpha Numeric
+                {t('donate:zipCodeAlphaNumValidation')}
               </span>
             )}
           </div>
@@ -149,19 +163,25 @@ function ContactDetails({
           <div style={{ width: '100%' }}>
             <AutoCompleteCountry
               inputRef={register({ required: true })}
-              label="Country"
+              label={t('donate:country')}
               name="country"
               onChange={changeCountry}
-              defaultValue={contactDetails.country ? contactDetails.country : defaultCountry}
+              defaultValue={
+                contactDetails.country ? contactDetails.country : defaultCountry
+              }
             />
             {errors.country && (
-              <span className={styles.formErrors}>Country is required</span>
+              <span className={styles.formErrors}>
+                {t('donate:countryRequired')}
+              </span>
             )}
           </div>
         </div>
 
         <div className={styles.isCompany}>
-          <div className={styles.isCompanyText}>This is a company donation</div>
+          <div className={styles.isCompanyText}>
+            {t('donate:isACompanyDonation')}
+          </div>
           <ToggleSwitch
             checked={isCompany}
             onChange={() => setIsCompany(!isCompany)}
@@ -172,8 +192,8 @@ function ContactDetails({
         {isCompany ? (
           <div className={styles.formRow}>
             <div style={{ width: '100%' }}>
-              <MaterialTextFeild
-                label="Company Name"
+              <MaterialTextField
+                label={t('donate:companyName')}
                 name="companyName"
                 variant="outlined"
                 inputRef={
@@ -184,7 +204,7 @@ function ContactDetails({
               />
               {errors.companyName && (
                 <span className={styles.formErrors}>
-                  Company Name is required
+                  {t('donate:companyRequired')}
                 </span>
               )}
             </div>
@@ -195,10 +215,13 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+          {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+            {/* {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)} */}
           </div>
           <div className={styles.totalCostText}>
-            for {Sugar.Number.format(Number(treeCount))} Trees
+            {t('donate:fortreeCountTrees', {
+              treeCount: Sugar.Number.format(Number(treeCount)),
+            })}
           </div>
         </div>
 
@@ -207,7 +230,7 @@ function ContactDetails({
             onClick={handleSubmit(onSubmit)}
             className={styles.continueButton}
           >
-            Continue
+            {t('common:continue')}
           </AnimatedButton>
         </div>
       </form>

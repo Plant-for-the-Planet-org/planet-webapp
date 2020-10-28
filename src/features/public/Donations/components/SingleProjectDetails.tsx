@@ -7,19 +7,21 @@ import LazyLoad from 'react-lazyload';
 import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import Sugar from 'sugar';
-import BackButton from '../../../../assets/images/icons/BackButton';
-import BlackTree from '../../../../assets/images/icons/project/BlackTree';
-import Email from '../../../../assets/images/icons/project/Email';
-import Location from '../../../../assets/images/icons/project/Location';
-import WorldWeb from '../../../../assets/images/icons/project/WorldWeb';
-import { getCountryDataBy } from '../../../../utils/countryUtils';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import BlackTree from '../../../../../public/assets/images/icons/project/BlackTree';
+import Email from '../../../../../public/assets/images/icons/project/Email';
+import Location from '../../../../../public/assets/images/icons/project/Location';
+import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
 import getImageUrl from '../../../../utils/getImageURL';
-import getStripe from '../../../../utils/getStripe';
-import { ThemeContext } from '../../../../utils/themeContext';
+import getStripe from '../../../../utils/stripe/getStripe';
+import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
+import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
+const { useTranslation } = i18next;
 interface Props {
   project: any;
 }
@@ -31,6 +33,8 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 
 function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const [countryCode, setCountryCode] = React.useState<string>('DE');
 
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -52,13 +56,13 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     {
       id: 1,
       icon: <BlackTree color={styles.highlightBackground} />,
-      text: 'View Profile',
+      text: t('donate:viewProfile'),
       link: project.tpo.slug,
     },
     {
       id: 2,
       icon: <WorldWeb color={styles.highlightBackground} />,
-      text: project.website ? project.website : 'unavailable',
+      text: project.website ? project.website : t('donate:unavailable'),
       link: project.website,
     },
     {
@@ -67,7 +71,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       text:
         project.tpo && project.tpo.address
           ? project.tpo.address
-          : 'unavailable',
+          : t('donate:unavailable'),
 
       link: project.coordinates
         ? `https://maps.google.com/?q=${project.tpo.address}`
@@ -77,11 +81,17 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       id: 4,
       icon: <Email color={styles.highlightBackground} />,
       text:
-        project.tpo && project.tpo.email ? project.tpo.email : 'unavailable',
+        project.tpo && project.tpo.email
+          ? project.tpo.email
+          : t('donate:unavailable'),
       link:
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
+  React.useEffect(() => {
+    const code = window.localStorage.getItem('countryCode') || 'DE';
+    setCountryCode(code);
+  });
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -95,9 +105,6 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     setOpen(true);
   };
 
-  const ProjectProps = {
-    project: project,
-  };
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -128,24 +135,24 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         <div className={styles.singleProject}>
           <div className={styles.projectImage}>
             {project.image ? (
-              <LazyLoad>
+              // <LazyLoad>
+              <div
+                className={styles.projectImageFile}
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                }}
+              >
                 <div
-                  className={styles.projectImageFile}
-                  style={{
-                    backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                  style={{ cursor: 'pointer', width: 'fit-content' }}
+                  onClick={() => {
+                    router.push('/', undefined, { shallow: true });
                   }}
                 >
-                  <div
-                    style={{ cursor: 'pointer', width: 'fit-content' }}
-                    onClick={() => {
-                      router.push('/', undefined, { shallow: true });
-                    }}
-                  >
-                    <BackButton />
-                  </div>
+                  <BackButton />
                 </div>
-              </LazyLoad>
+              </div>
             ) : (
+              // </LazyLoad>
               <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
@@ -178,13 +185,10 @@ function SingleProjectDetails({ project }: Props): ReactElement {
               <div className={styles.projectData}>
                 <div className={styles.targetLocation}>
                   <div className={styles.target}>
-                    {Sugar.Number.abbr(Number(project.countPlanted), 1)} planted
-                    •{' '}
+                    {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
+                    {t('common:planted')}•{' '}
                     <span style={{ fontWeight: 400 }}>
-                      {
-                        getCountryDataBy('countryCode', project.country)
-                          .countryName
-                      }
+                      {t('country:' + project.country.toLowerCase())}
                     </span>
                   </div>
                   {/* <div className={styles.location}>
@@ -192,23 +196,23 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                   </div> */}
                 </div>
                 <div className={styles.projectTPOName}>
-                  By {project.tpo.name}
+                  {t('common:by')} {project.tpo.name}
                 </div>
               </div>
 
               {project.allowDonations && (
                 <div className={styles.projectCost}>
-                  <div onClick={handleOpen} className={styles.costButton}>
-                    {project.currency === 'USD'
-                      ? '$'
-                      : project.currency === 'EUR'
-                      ? '€'
-                      : project.currency}
-                    {project.treeCost % 1 !== 0
-                      ? project.treeCost.toFixed(2)
-                      : project.treeCost}
+                  <div onClick={handleOpen} className={styles.donateButton}>
+                    {t('common:donate')}
                   </div>
-                  <div className={styles.perTree}>per tree</div>
+                  <div className={styles.perTreeCost}>
+                    {getFormatedCurrency(
+                      i18n.language,
+                      project.currency,
+                      project.treeCost
+                    )}{' '}
+                    <span>{t('donate:perTree')}</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -230,7 +234,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 min={300}
                 ideal={350}
                 max={400}
-                readMoreText="Read more"
+                readMoreText={t('donate:readMore')}
                 text={project.description}
               />
             </div>

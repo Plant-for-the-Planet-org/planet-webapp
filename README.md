@@ -1,7 +1,6 @@
 <br/>
 <br/>
 <img src="./documentation/screenshots/PFP.png" alt="PFP Page." align="center">
-
 <br/>
 <br/>
 
@@ -97,13 +96,14 @@
 <details><summary>public - Assets</summary>
 <ul>
     <li>tenants = Assets of all the tenants</li>
+    <li>assets = All the images and image components </li>
     <li>And other public assets.</li>
+
 </ul>
 </details>
 
 <details><summary>src - Source code</summary>
 <ul>
-    <li>assets = All the assets </li>
     <li>features = Project features are present here </li>
     <li>tenants = Tenant specific features are present here</li>
     <li>theme = Theme scss files </li>
@@ -140,83 +140,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel bot to the production system. There are currently some more protected branches also build by Vercel bot automatically and mapped to test backends using the branch name as subdomain.
 
 ---
-
-## Project Road Map
-
-<details><summary>Donations</summary>
-    <table>
-        <tr>
-            <td>#</td>
-            <td><b>Feature</b></td>
-            <td><b>Issue</b></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Integrate Stripe</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/47">#47</a> </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Create Payment Method</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/63">#63</a> </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Create Donation</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/60">#60</a></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Pay Donation</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/62">#62</a></td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>Load Contact details</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/61">#61</a></td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>Store Contact details</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/64">#64</a></td>
-        </tr>
-        <tr>
-            <td>7</td>
-            <td>Implement Credit Card Payment</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/65">#65</a></td>
-        </tr>
-        <tr>
-            <td>8</td>
-            <td>Implement Paypal Payment</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/66">#66</a></td>
-        </tr>
-    </table>
-</details>
-
-<details><summary>Tenant Configurations</summary>
-    <table>
-        <tr>
-            <td>#</td>
-            <td><b>Feature</b></td>
-            <td><b>Issue</b></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Create Tenant Based Headers</td>
-            <td><a href="https://github.com/Plant-for-the-Planet/planet-webapp/issues/67">#67</a> </td>
-        </tr>
-    </table>
-</details>
-
-<details><summary>Maps</summary>
-
-</details>
-
-<details><summary>Designs</summary>
-
-</details>
-
----
 ## Reporting a Vulnerability
 
 If you have found a vulnerability, you could write us at: support@plant-for-the-planet.org with details or create a PR for the fix.
@@ -231,7 +154,7 @@ If you have found a vulnerability, you could write us at: support@plant-for-the-
 [Backend APIs](https://plant-for-the-planet.stoplight.io/docs/treecounter-platform/)
 
 ## Thank You
-The deployment and management of this application is possible with support from open soruce contributors and following partners.
+The deployment and management of this application is possible with support from open source contributors and following partners.
 
 <a href="https://www.vercel.com?utm_source=planetapp&utm_medium=web&utm_campaign=oss">
 <img src="https://cdn.pp.eco/logo/svg/powered-by-vercel.svg" height="26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

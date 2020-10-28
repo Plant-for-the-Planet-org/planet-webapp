@@ -1,154 +1,106 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import Layout from '../src/features/common/Layout';
 import ProjectsList from '../src/features/public/Donations/screens/Projects';
-import Head from 'next/head';
-import tenantConfig from '../tenant.config';
-import getImageUrl from '../src/utils/getImageURL';
-import { route } from 'next/dist/next-server/server/router';
-const config = tenantConfig();
+import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
+import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
+import { getRequest } from '../src/utils/apiRequests/api';
+import storeConfig from '../src/utils/storeConfig';
+import DirectGift from '../src/features/public/Donations/components/DirectGift';
 
-export default function Donate() {
+interface Props {
+  initialized: Boolean;
+  projects: any;
+  setProject: Function;
+  setProjects: Function;
+  setShowSingleProject: Function;
+  showProjects: Boolean;
+  setShowProjects: Function;
+}
+
+export default function Donate({
+  initialized,
+  projects,
+  setProject,
+  setProjects,
+  setShowSingleProject,
+  showProjects,
+  setShowProjects,
+}: Props) {
   const router = useRouter();
-  const [projects, setProjects] = React.useState();
-  const [project, setProject] = React.useState(null);
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
-
-  const DonateProps = {
-    projects,
-    project,
-    fetchSingleProject,
-    showSingleProject,
-  };
+  const [directGift, setDirectGift] = React.useState(null);
+  const [showdirectGift, setShowDirectGift] = React.useState(true);
+  React.useEffect(() => {
+    storeConfig();
+  }, []);
 
   React.useEffect(() => {
-    if (router.asPath === '/') {
-      setShowSingleProject(false);
-    } else {
-      if (router.query.p !== undefined && router.query.p !== 'undefined') {
-        fetchProject(router.query.p).then(() => {
-          setShowSingleProject(true);
-        });
-      } else {
-        setShowSingleProject(false);
+    var getdirectGift = localStorage.getItem('directGift');
+    if (getdirectGift !== null) {
+      setDirectGift(JSON.parse(getdirectGift));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (directGift !== null) {
+      if (directGift.show === false) {
+        setShowDirectGift(false);
       }
+    }
+  }, [directGift]);
+
+  //Deprecation Notice: This route will be removed in next major version
+  React.useEffect(() => {
+    if (router.query.p) {
+      router.push('/[p]', `/${router.query.p}`, {
+        shallow: true,
+      });
     }
   }, [router]);
 
+  // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      let currencyCode;
-      if (typeof Storage !== 'undefined') {
-        if (localStorage.getItem('currencyCode')) {
-          currencyCode = localStorage.getItem('currencyCode');
-        } else {
-          currencyCode = 'USD';
-        }
-      }
-      await fetch(
-        `${process.env.API_ENDPOINT}/app/projects?_scope=map&currency=${currencyCode}`,
-        {
-          headers: { 'tenant-key': `${process.env.TENANTID}` },
-        }
-      ).then(async (res) => {
-        const fetchedProjects = res.status === 200 ? await res.json() : null;
-        if (res.status !== 200) {
-          router.push('/404', undefined, { shallow: true });
-        }
-        setProjects(fetchedProjects);
-      });
+      let currencyCode = getStoredCurrency();
+      const projects = await getRequest(
+        `/app/projects?_scope=map&currency=${currencyCode}`
+      );
+      setProjects(projects);
+      setProject(null);
+      setShowSingleProject(false);
     }
     loadProjects();
   }, []);
 
-  async function fetchSingleProject(id: any) {
-    let currencyCode;
-    if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('currencyCode')) {
-        currencyCode = localStorage.getItem('currencyCode');
-        // currencyCode = 'EUR';
-      } else {
-        currencyCode = 'USD';
-      }
-    }
-    const res = await fetch(
-      `${process.env.API_ENDPOINT}/app/projects/${id}?_scope=extended&currency=${currencyCode}`,
-      {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      }
-    );
+  const ProjectsProps = {
+    projects,
+    directGift,
+    setDirectGift,
+    showProjects,
+    setShowProjects,
+  };
 
-    const newProject = res.status === 200 ? await res.json() : null;
-    setProject(newProject);
-  }
-
-  async function fetchProject(id: any) {
-    await fetchSingleProject(id);
-  }
+  const GiftProps = {
+    setShowDirectGift,
+    directGift,
+  };
 
   return (
     <>
-      {project ? (
-        <Head>
-          <title>{project.name}</title>
-          <meta property="og:site_name" content={project.name} />
-          <meta property="og:locale" content="en_US" />
-          <meta
-            property="og:url"
-            content={`${process.env.SCHEME}://${config.tenantURL}`}
-          />
-          <meta property="og:title" content={project.name} />
-          <meta
-            property="og:description"
-            content={`${project.description.substring(0, 147)}...`}
-          />
-          <meta
-            name="description"
-            content={`${project.description.substring(0, 147)}...`}
-          />
-          <meta property="og:type" content="website" />
-          <meta
-            property="og:image"
-            content={getImageUrl('project', 'medium', project.image)}
-          />
-          <meta property="og:video" content={project.videoUrl} />
-          {config.tenantName === 'planet' ? (
-            <link rel="alternate" href="android-app://org.pftp/projects" />
-          ) : null}
-          <meta name="twitter:card" content="summary" />
-          <meta name="twitter:title" content={project.name} />
-          <meta name="twitter:site" content={config.meta.twitterHandle} />
-          <meta name="twitter:url" content={config.tenantURL} />
-          <meta
-            name="twitter:description"
-            content={`${project.description.substring(0, 147)}...`}
-          />
-        </Head>
-      ) : (
-        <Head>
-          <title>{config.meta.title}</title>
-          <meta property="og:site_name" content={config.meta.title} />
-          <meta property="og:locale" content="en_US" />
-          <meta
-            property="og:url"
-            content={`${process.env.SCHEME}://${config.tenantURL}`}
-          />
-          <meta property="og:title" content={config.meta.title} />
-          <meta property="og:description" content={config.meta.description} />
-          <meta name="description" content={config.meta.description} />
-          <meta property="og:type" content="website" />
-          <meta property="og:image" content={config.meta.image} />
-          {config.tenantName === 'planet' ? (
-            <link rel="alternate" href="android-app://org.pftp/projects" />
-          ) : null}
-          <meta name="twitter:card" content="summary" />
-          <meta name="twitter:title" content={config.meta.title} />
-          <meta name="twitter:site" content={config.meta.twitterHandle} />
-          <meta name="twitter:url" content={config.tenantURL} />
-          <meta name="twitter:description" content={config.meta.description} />
-        </Head>
-      )}
-      <Layout>{projects ? <ProjectsList {...DonateProps} /> : <></>}</Layout>
+      {projects ? <GetAllProjectsMeta /> : null}
+      {initialized ? (
+        projects && initialized ? (
+          <>
+            <ProjectsList {...ProjectsProps} />
+            {directGift !== null ? (
+              showdirectGift ? (
+                <DirectGift {...GiftProps} />
+              ) : null
+            ) : null}
+          </>
+        ) : (
+          <></>
+        )
+      ) : null}
     </>
   );
 }

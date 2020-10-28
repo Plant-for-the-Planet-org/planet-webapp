@@ -1,30 +1,35 @@
 import React, { useRef } from 'react';
 import styles from './../styles/ThankYou.module.scss';
-import EmailIcon from '../../../../assets/images/icons/share/Email';
-import EmailSolid from '../../../../assets/images/icons/share/EmailSolid';
-import FacebookIcon from '../../../../assets/images/icons/share/Facebook';
-import TwitterIcon from '../../../../assets/images/icons/share/Twitter';
-import DownloadIcon from '../../../../assets/images/icons/share/Download';
-import DownloadSolid from '../../../../assets/images/icons/share/DownloadSolid';
-import InstagramIcon from '../../../../assets/images/icons/share/Instagram';
+import EmailIcon from '../../../../../public/assets/images/icons/share/Email';
+import EmailSolid from '../../../../../public/assets/images/icons/share/EmailSolid';
+import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebook';
+import TwitterIcon from '../../../../../public/assets/images/icons/share/Twitter';
+import DownloadIcon from '../../../../../public/assets/images/icons/share/Download';
+import DownloadSolid from '../../../../../public/assets/images/icons/share/DownloadSolid';
+import InstagramIcon from '../../../../../public/assets/images/icons/share/Instagram';
 import tenantConfig from '../../../../../tenant.config';
 import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
-
-const config = tenantConfig();
-
-const titleToShare = 'Planting trees against the climate crisis!';
-const urlToShare = config.tenantURL;
-const linkToShare = config.tenantURL;
-const textToShare = `Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out ${linkToShare} if you want to plant some too! #StopTalkingStartPlanting #TrillionTrees @PftP_int`;
+import i18next from '../../../../../i18n';
 
 const ShareOptions = (props) => {
+  const { useTranslation } = i18next;
+  const { t, i18n } = useTranslation(['donate', 'common']);
+  const config = tenantConfig();
+
+  const titleToShare = t('donate:titleToShare');
+  const urlToShare = config.tenantURL;
+  const linkToShare = config.tenantURL;
+  const textToShare = t('donate:textToShare', { linkToShare: linkToShare });
+
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
     var options = {
       quality: 1,
     };
-    domtoimage.toJpeg(element, options).then((dataUrl) => {
+    domtoimage
+      .toJpeg(element, options)
+      .then((dataUrl) => {
         domtoimage.toJpeg(element, options).then((dataUrl) => {
           domtoimage.toJpeg(element, options).then((dataUrl) => {
             var link = document.createElement('a');

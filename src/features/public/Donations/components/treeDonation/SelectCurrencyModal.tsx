@@ -6,15 +6,17 @@ import Modal from '@material-ui/core/Modal';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { withStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import countriesData from '../../../../../utils/countriesData.json';
+import countriesData from '../../../../../utils/countryCurrency/countriesData.json';
 import {
   getCountryDataBy,
-  sortCountriesData,
-} from '../../../../../utils/countryUtils';
-import { ThemeContext } from '../../../../../utils/themeContext';
+  sortCountriesByTranslation,
+} from '../../../../../utils/countryCurrency/countryUtils';
+import { ThemeContext } from '../../../../../theme/themeContext';
 import GreenRadio from '../../../../common/InputTypes/GreenRadio';
+import i18next from '../../../../../../i18n';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
+const { useTranslation } = i18next;
 export default function TransitionsModal(props: any) {
   const {
     openModal,
@@ -25,7 +27,8 @@ export default function TransitionsModal(props: any) {
     country,
   } = props;
 
-  const [sortedCountriesData, setSortedCountriesData] = useState(countriesData);
+  const { t } = useTranslation(['donate', 'common', 'country']);
+
   //   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
   const [selectedModalValue, setSelectedModalValue] = useState(
     `${country},${currency}`
@@ -57,6 +60,7 @@ export default function TransitionsModal(props: any) {
     setImportantList(impCountryList);
     setSelectedModalValue(`${country},${currency}`);
   }, [currency]);
+
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
@@ -65,11 +69,6 @@ export default function TransitionsModal(props: any) {
     setCountry(selectedInfo[0]);
     handleModalClose();
   }
-
-  // sorts the country data by country name as soon as the page loads
-  useEffect(() => {
-    setSortedCountriesData(sortCountriesData('countryName'));
-  }, []);
 
   return (
     <div>
@@ -88,7 +87,7 @@ export default function TransitionsModal(props: any) {
         <Fade in={openModal}>
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
-              <p className={styles.sectionHead}>Select your Currency</p>
+              <p className={styles.sectionHead}>{t('donate:selectCurrency')}</p>
               {/* maps the radio button for currency */}
               <MapCurrency
                 sortedCountriesData={importantList}
@@ -98,7 +97,6 @@ export default function TransitionsModal(props: any) {
               />
               <hr style={{ margin: '0px 20px' }} />
               <MapCurrency
-                sortedCountriesData={sortedCountriesData}
                 // this is selectedValue, country wala object
                 value={selectedModalValue}
                 handleChange={handleCurrencyChange}
@@ -109,11 +107,11 @@ export default function TransitionsModal(props: any) {
             <div className={styles.buttonContainer}>
               <div className={styles.button} onClick={handleModalClose}>
                 <div></div>
-                <p>Cancel</p>
+                <p>{t('common:cancel')}</p>
               </div>
               <div className={styles.button} onClick={handleOKClick}>
                 <div></div>
-                <p>OK</p>
+                <p>{t('common:ok')}</p>
               </div>
             </div>
           </div>
@@ -131,7 +129,10 @@ const FormControlNew = withStyles({
 
 // Maps the radio buttons for currency
 function MapCurrency(props: any) {
-  const { sortedCountriesData, value, handleChange } = props;
+  const { t } = useTranslation(['country']);
+  
+  const { value, handleChange } = props;
+  const sortedCountriesData = sortCountriesByTranslation(t);
   return (
     <FormControlNew component="fieldset">
       <RadioGroup
@@ -146,7 +147,7 @@ function MapCurrency(props: any) {
             key={country.countryCode + '-' + index}
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={`${country.countryName} · ${country.currencyCode}`}
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
           />
         ))}
       </RadioGroup>

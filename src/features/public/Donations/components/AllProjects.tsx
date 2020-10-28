@@ -1,18 +1,28 @@
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
-import NotFound from '../../../../assets/images/NotFound';
+import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import styles from './../styles/Projects.module.scss';
+import i18next from '../../../../../i18n';
 
+const { useTranslation } = i18next;
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 interface Props {
   projects: any;
+  directGift: any;
+  setDirectGift: Function;
 }
 
-function AllProjects({ projects }: Props): ReactElement {
+function AllProjects({
+  projects,
+  directGift,
+  setDirectGift,
+}: Props): ReactElement {
+  const { t } = useTranslation(['donate', 'common']);
+
   const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -39,7 +49,7 @@ function AllProjects({ projects }: Props): ReactElement {
       <div className={styles.projectNotFound}>
         <LazyLoad>
           <NotFound className={styles.projectNotFoundImage} />
-          <h5>No projects found</h5>
+          <h5>{t('donate:noProjectsFound')}</h5>
         </LazyLoad>
       </div>
     );
@@ -51,7 +61,12 @@ function AllProjects({ projects }: Props): ReactElement {
           <div>
             {projects.map((project: any) => {
               return (
-                <ProjectSnippet key={project.properties.id} project={project} />
+                <ProjectSnippet
+                  key={project.properties.id}
+                  project={project}
+                  directGift={directGift}
+                  setDirectGift={setDirectGift}
+                />
               );
             })}
           </div>

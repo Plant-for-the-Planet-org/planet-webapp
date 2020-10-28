@@ -1,13 +1,15 @@
 import {
   PaymentRequestButtonElement,
-  useStripe
+  useStripe,
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../styles/TreeDonation.module.scss';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 export const useOptions = (paymentRequest: null) => {
-
   const typeOfButton = 'donate';
   const options = useMemo(
     () => ({
@@ -38,8 +40,10 @@ export const PaymentRequestCustomButton = ({
   currency,
   amount,
   onPaymentFunction,
-  continueNext
+  continueNext,
 }: PaymentButtonProps) => {
+  const { t } = useTranslation(['donate', 'common']);
+
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
@@ -98,12 +102,16 @@ export const PaymentRequestCustomButton = ({
     'UY',
   ];
   useEffect(() => {
-    if (stripe && paymentRequest === null && stripeAllowedCountries.includes(country)) {
+    if (
+      stripe &&
+      paymentRequest === null &&
+      stripeAllowedCountries.includes(country)
+    ) {
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
         total: {
-          label: 'Tree donation with Plant-for-the-Planet',
+          label: t('donate:treeDonationWithPFP'),
           amount: amount,
         },
         requestPayerName: true,
@@ -124,11 +132,9 @@ export const PaymentRequestCustomButton = ({
     let subscribed = true;
     if (paymentRequest) {
       paymentRequest.canMakePayment().then((res: any) => {
-
         if (res && subscribed) {
           setCanMakePayment(true);
         }
-
       });
     }
 
@@ -163,46 +169,47 @@ export const PaymentRequestCustomButton = ({
 
   const options = useOptions(paymentRequest);
 
-  return stripeAllowedCountries.includes(country) && canMakePayment &&
+  return stripeAllowedCountries.includes(country) &&
+    canMakePayment &&
     paymentRequest ? (
-      <div className={styles.actionButtonsContainer}>
-        <div style={{ width: '150px' }}>
-          <PaymentRequestButtonElement
-            className="PaymentRequestButton"
-            options={options}
-            onReady={() => {
-              console.log('PaymentRequestButton [ready]');
-            }}
-            onClick={(event) => {
-              console.log('PaymentRequestButton [click]', event);
-            }}
-            onBlur={() => {
-              console.log('PaymentRequestButton [blur]');
-            }}
-            onFocus={() => {
-              console.log('PaymentRequestButton [focus]');
-            }}
-          />
-        </div>
-
-        <AnimatedButton
-          onClick={() => continueNext()}
-          className={styles.continueButton}
-        >
-          Continue
-          </AnimatedButton>
+    <div className={styles.actionButtonsContainer}>
+      <div style={{ width: '150px' }}>
+        <PaymentRequestButtonElement
+          className="PaymentRequestButton"
+          options={options}
+          onReady={() => {
+            console.log('PaymentRequestButton [ready]');
+          }}
+          onClick={(event) => {
+            console.log('PaymentRequestButton [click]', event);
+          }}
+          onBlur={() => {
+            console.log('PaymentRequestButton [blur]');
+          }}
+          onFocus={() => {
+            console.log('PaymentRequestButton [focus]');
+          }}
+        />
       </div>
 
-
-    ) : (
-      <div className={styles.actionButtonsContainer} style={{ justifyContent: 'center' }}>
-        <AnimatedButton
-          onClick={() => continueNext()}
-          className={styles.continueButton}
-        >
-          Continue
-          </AnimatedButton>
-      </div>
-    )
-    ;
+      <AnimatedButton
+        onClick={() => continueNext()}
+        className={styles.continueButton}
+      >
+        {t('common:continue')}
+      </AnimatedButton>
+    </div>
+  ) : (
+    <div
+      className={styles.actionButtonsContainer}
+      style={{ justifyContent: 'center' }}
+    >
+      <AnimatedButton
+        onClick={() => continueNext()}
+        className={styles.continueButton}
+      >
+        {t('common:continue')}
+      </AnimatedButton>
+    </div>
+  );
 };
