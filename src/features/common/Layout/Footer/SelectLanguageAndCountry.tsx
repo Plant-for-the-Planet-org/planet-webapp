@@ -129,10 +129,10 @@ export default function TransitionsModal(props) {
 
 // Maps the radio buttons for countries
 function MapCountry(props) {
-  const { t } = useTranslation(['country']);
+  const { t, i18n } = useTranslation(['country']);
   
   const { value, handleChange } = props;
-  const sortedCountriesData = sortCountriesByTranslation(t);
+  const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
   return (
     <FormControl component="fieldset">
       <RadioGroup
