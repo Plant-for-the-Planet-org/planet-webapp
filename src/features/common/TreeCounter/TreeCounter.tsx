@@ -90,7 +90,14 @@ export default function TpoProfile(props: any) {
             <h2>{t('me:target')}</h2>
           </div>
         }
-
+        {
+          props.authenticatedType === 'private' 
+          && (props.target == 0) &&
+          <div onClick={()=> props.handleAddTargetModalOpen()} 
+          className={treeCounterStyles.addTargetButton}>
+            <p>Add Target </p>
+          </div>
+        }
       </div>
     </div>
   );
