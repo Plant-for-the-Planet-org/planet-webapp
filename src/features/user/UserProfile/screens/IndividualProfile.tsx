@@ -7,6 +7,7 @@ import UserInfo from '../components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
+import AddTargetModal from '../components/AddTargetModal'
 
 export default function IndividualProfile({ userprofile, changeForceReload,
   forceReload, authenticatedType }: any) {
@@ -48,6 +49,15 @@ export default function IndividualProfile({ userprofile, changeForceReload,
     setEditProfileModalOpen(true);
   };
 
+  // add target modal
+  const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
+  const handleAddTargetModalClose = () => {
+    setAddTargetModalOpen(false);
+  };
+  const handleAddTargetModalOpen = () => {
+    setAddTargetModalOpen(true);
+  };
+
   return (
     <React.Fragment>
       <main>
@@ -86,6 +96,7 @@ export default function IndividualProfile({ userprofile, changeForceReload,
             userprofile={userprofile}
             authenticatedType={authenticatedType}
             handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+            handleAddTargetModalOpen={handleAddTargetModalOpen}
           />
         </LandingSection>
 
@@ -113,6 +124,15 @@ export default function IndividualProfile({ userprofile, changeForceReload,
           Text Copied to Clipboard!
         </MuiAlert>
       </Snackbar>
+
+      {/* add target modal */}
+      <AddTargetModal
+        userprofile={userprofile}
+        addTargetModalOpen={addTargetModalOpen}
+        handleAddTargetModalClose={handleAddTargetModalClose}
+        changeForceReload={changeForceReload}
+        forceReload={forceReload}
+      />
     </React.Fragment>
   );
 }

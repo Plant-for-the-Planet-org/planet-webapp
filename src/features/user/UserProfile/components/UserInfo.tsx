@@ -7,10 +7,13 @@ export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
   authenticatedType,
+  handleAddTargetModalOpen
 }: any) {
   return (
     <div className={styles.landingContent}>
       <TreeCounter
+        handleAddTargetModalOpen={handleAddTargetModalOpen}
+        authenticatedType={authenticatedType}
         target={userprofile.score.target}
         planted={userprofile.score.personal}
       />
