@@ -62,6 +62,7 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
               <Settings color="white" />
             </div>
             <SettingsModal
+              userType="tpo"
               userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
