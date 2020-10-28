@@ -37,9 +37,9 @@ export default function SettingsModal({
           <div className={styles.modal}>
             <div className={styles.settingsItem}> Manage Projects </div>
             <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> Edit Profile </div>
-            <div className={styles.settingsItem}> Change Password </div>
+          {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
-            <div className={styles.settingsItem}> Embed Widget </div>
+            <div className={styles.settingsItem}> Embed Widget </div> */}
             <div 
             className={styles.settingsItem}  
             onClick={() => { 
