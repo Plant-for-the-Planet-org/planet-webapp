@@ -8,8 +8,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
 
-export default function PrivateIndividualProfile({ userprofile, changeForceReload,
-  forceReload, }: any) {
+export default function MergedIndividualProfile({ userprofile, changeForceReload,
+  forceReload, authenticatedType }: any) {
+    console.log('userprofile Individual - ', userprofile)
+    console.log('authenticatedType individual - ', authenticatedType)
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
@@ -49,6 +51,10 @@ export default function PrivateIndividualProfile({ userprofile, changeForceReloa
   return (
     <React.Fragment>
       <main>
+        {
+          authenticatedType === 'private' &&
+          (
+            <>
             <div
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
@@ -65,6 +71,9 @@ export default function PrivateIndividualProfile({ userprofile, changeForceReloa
               changeForceReload={changeForceReload}
               forceReload={forceReload}
             />
+            </>
+          )
+        }  
         {/* userinfo section */}
         <LandingSection
           imageSrc={
@@ -75,12 +84,13 @@ export default function PrivateIndividualProfile({ userprofile, changeForceReloa
         >
           <UserInfo
             userprofile={userprofile}
+            authenticatedType={authenticatedType}
             handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
           />
         </LandingSection>
 
         {/* my forest section  - if contains projects field*/}
-        {userprofile.projects && (
+        {authenticatedType === 'private' && userprofile.projects && (
           <div className={styles.myForestContainer}>
             <MyForestContainer userprofile={userprofile} />
           </div>
