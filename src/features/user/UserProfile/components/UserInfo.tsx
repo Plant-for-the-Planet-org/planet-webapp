@@ -10,7 +10,6 @@ export default function UserInfo({
   return (
     <div className={styles.landingContent}>
       <TreeCounter
-        hideTarget // changes in TreeCounter component UI
         target={userprofile.score.target}
         planted={userprofile.score.received}
       />
