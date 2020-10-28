@@ -8,7 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
 
-export default function MergedIndividualProfile({ userprofile, changeForceReload,
+export default function IndividualProfile({ userprofile, changeForceReload,
   forceReload, authenticatedType }: any) {
     console.log('userprofile Individual - ', userprofile)
     console.log('authenticatedType individual - ', authenticatedType)

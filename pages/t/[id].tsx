@@ -6,7 +6,7 @@ import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
-import MergedIndividualProfile from '../../src/features/user/UserProfile/screens/MergedIndividualProfile';
+import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import {
   getUserExistsInDB,
   getUserSlug,
@@ -117,7 +117,7 @@ export default function PublicUser(initialized: Props) {
         return (
           <>
             <GetPublicUserProfileMeta userprofile={userprofile} />
-            <MergedIndividualProfile {...PublicUserProps} />
+            <IndividualProfile {...PublicUserProps} />
             <Footer />
           </>
         );
@@ -138,7 +138,7 @@ export default function PublicUser(initialized: Props) {
         return (
           <>
             <GetPublicUserProfileMeta userprofile={userprofile} />
-            <MergedIndividualProfile
+            <IndividualProfile
             style={{ height: '100vh', overflowX: 'hidden' }}
             {...PrivateUserProps}
           />
