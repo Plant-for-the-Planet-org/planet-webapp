@@ -3,7 +3,7 @@ import LandingSection from '../../../common/Layout/LandingSection';
 import ProjectsContainer from '../components/ProjectsContainer';
 import PublicUserInfo from '../components/PublicUserInfo';
 
-export default function TpoProfile({ publicUserprofile }: any) {
+export default function TpoProfile({ userprofile }: any) {
   return (
     <>
       <LandingSection
@@ -13,10 +13,10 @@ export default function TpoProfile({ publicUserprofile }: any) {
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
       >
-        <PublicUserInfo publicUserprofile={publicUserprofile} />
+        {/* <PublicUserInfo userprofile={userprofile} /> */}
       </LandingSection>
       <ProjectsContainer
-        projects={publicUserprofile.userProfile.plantProjects}
+        projects={userprofile.userProfile.plantProjects}
       />
     </>
   );

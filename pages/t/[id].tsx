@@ -5,7 +5,7 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import { getRequest } from '../../src/utils/apiRequests/api';
+import { getAuthenticatedRequest, getRequest } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import PrivateUserProfile from '../../src/features/user/UserProfile/screens/PrivateIndividualProfile';
 import {
@@ -23,18 +23,23 @@ interface Props {
 
 export default function PublicUser(initialized: Props) {
   const [session, loading] = useSession();
-  const [publicUserprofile, setPublicUserprofile] = React.useState();
-  const [privateUserprofile, setPrivateUserprofile] = React.useState();
+
+  // Whether public or private
+  const [authenticatedType,setAuthenticatedType] = React.useState('');
+
+  const [userprofile, setUserprofile] = React.useState();
+
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+  
   const [forceReload, changeForceReload] = React.useState(false);
 
   const router = useRouter();
   const PublicUserProps = {
-    publicUserprofile,
+    userprofile,
   };
   const PrivateUserProps = {
-    privateUserprofile,
+    userprofile,
     changeForceReload,
     forceReload,
   };
@@ -54,11 +59,13 @@ export default function PublicUser(initialized: Props) {
         // some user logged in and slug matches -> private profile
         if (!loading && session && userExistsInDB && currentUserSlug === slug) {
           try {
-            const res = await getAccountInfo(session)
+            const res = await getAuthenticatedRequest('/app/profile',session);
+            // const res = await getAccountInfo(session)
             if (res.status === 200) {
               console.log('in 200-> user exists in our DB');
               const resJson = await res.json();
-              setPrivateUserprofile(resJson);
+              setAuthenticatedType('private')
+              setUserprofile(resJson);
             } else if (res.status === 303) {
               // if 303 -> user doesn not exist in db
               console.log('in 303-> user does not exist in our DB')
@@ -81,9 +88,10 @@ export default function PublicUser(initialized: Props) {
         } else {
           //no user logged in or slug mismatch -> public profile
           const newPublicUserprofile = await getRequest(
-            `/public/v1.0/en/treecounter/${slug}`
+            `/app/profiles/${slug}`
           );
-          setPublicUserprofile(newPublicUserprofile);
+          setAuthenticatedType('public')
+          setUserprofile(newPublicUserprofile);
         }
       }
     }
@@ -94,12 +102,14 @@ export default function PublicUser(initialized: Props) {
     }
   }, [ready, loading, forceReload]);
 
+  console.log('publicUserprofile',userprofile);
+  
   function getPublicUserProfile() {
-    switch (publicUserprofile?.userProfile.type) {
+    switch (userprofile?.type) {
       case 'tpo':
         return (
           <>
-            <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
+            <GetPublicUserProfileMeta userprofile={userprofile} />
             <TPOProfile {...PublicUserProps} />
             <Footer />
           </>
@@ -107,7 +117,7 @@ export default function PublicUser(initialized: Props) {
       case 'individual':
         return (
           <>
-            <GetPublicUserProfileMeta publicUserprofile={publicUserprofile} />
+            <GetPublicUserProfileMeta userprofile={userprofile} />
             <IndividualProfile {...PublicUserProps} />
             <Footer />
           </>
@@ -115,19 +125,36 @@ export default function PublicUser(initialized: Props) {
     }
   }
 
-  if (initialized && (publicUserprofile || privateUserprofile)) {
-    if (publicUserprofile) {
-      return getPublicUserProfile();
-    } else if (privateUserprofile) {
-      return (
-        <>
-          <PrivateUserProfile
+  function getPrivateUserProfile() {
+    switch (userprofile?.type) {
+      case 'tpo':
+        return (
+          <>
+            <GetPublicUserProfileMeta userprofile={userprofile} />
+            <TPOProfile {...PrivateUserProps} />
+            <Footer />
+          </>
+        );
+      case 'individual':
+        return (
+          <>
+            <GetPublicUserProfileMeta userprofile={userprofile} />
+            <PrivateUserProfile
             style={{ height: '100vh', overflowX: 'hidden' }}
             {...PrivateUserProps}
           />
-          <Footer />
-        </>
-      );
+            <Footer />
+          </>
+        );
+    }
+  }
+
+
+  if (initialized && (userprofile)) {
+    if (authenticatedType === 'public') {
+      return getPublicUserProfile();
+    } else if (authenticatedType === 'private') {
+      return getPrivateUserProfile();
     }
   } else {
     return <UserProfileLoader />;
