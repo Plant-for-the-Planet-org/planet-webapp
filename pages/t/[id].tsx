@@ -6,8 +6,7 @@ import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
-import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
-import PrivateUserProfile from '../../src/features/user/UserProfile/screens/PrivateIndividualProfile';
+import MergedIndividualProfile from '../../src/features/user/UserProfile/screens/MergedIndividualProfile';
 import {
   getUserExistsInDB,
   getUserSlug,
@@ -37,11 +36,13 @@ export default function PublicUser(initialized: Props) {
   const router = useRouter();
   const PublicUserProps = {
     userprofile,
+    authenticatedType,
   };
   const PrivateUserProps = {
     userprofile,
     changeForceReload,
     forceReload,
+    authenticatedType,
   };
 
   useEffect(() => {
@@ -118,7 +119,7 @@ export default function PublicUser(initialized: Props) {
         return (
           <>
             <GetPublicUserProfileMeta userprofile={userprofile} />
-            <IndividualProfile {...PublicUserProps} />
+            <MergedIndividualProfile {...PublicUserProps} />
             <Footer />
           </>
         );
@@ -139,7 +140,7 @@ export default function PublicUser(initialized: Props) {
         return (
           <>
             <GetPublicUserProfileMeta userprofile={userprofile} />
-            <PrivateUserProfile
+            <MergedIndividualProfile
             style={{ height: '100vh', overflowX: 'hidden' }}
             {...PrivateUserProps}
           />

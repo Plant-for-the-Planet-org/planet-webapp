@@ -6,6 +6,7 @@ import UserProfileOptions from './UserProfileOptions';
 export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
+  authenticatedType,
 }: any) {
   return (
     <div className={styles.landingContent}>
@@ -22,10 +23,13 @@ export default function UserInfo({
       </p>
 
       {/* three icons in a row */}
-      <UserProfileOptions
-        userprofile={userprofile}
-        handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-      />
+      {
+        authenticatedType === 'private' &&
+        <UserProfileOptions
+              userprofile={userprofile}
+              handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+        />
+      }
     </div>
   );
 }
