@@ -2,21 +2,19 @@ import React from 'react';
 import TreeCounter from '../../../common/TreeCounter/TreeCounter';
 import styles from '../styles/PublicUserProfile.module.scss';
 
-export default function PublicUserInfo({ publicUserprofile }: any) {
+export default function PublicUserInfo({ userprofile }: any) {
   return (
     <div className={styles.landingContent}>
       <TreeCounter
-        target={publicUserprofile.countTarget}
-        planted={publicUserprofile.countPlanted}
+        target={userprofile.score.target}
+        planted={userprofile.score.personal}
       />
 
-      <h2 className={styles.publicUserName}>{publicUserprofile.displayName}</h2>
+      <h2 className={styles.publicUserName}>{userprofile.displayName}</h2>
 
       {/* publicUser description */}
       <p className={styles.publicUserDescription}>
-        {publicUserprofile.userProfile.synopsis1
-          ? publicUserprofile.userProfile.synopsis1
-          : ''}
+        {userprofile.bio}
       </p>
     </div>
   );

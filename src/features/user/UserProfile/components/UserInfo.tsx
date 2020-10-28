@@ -11,7 +11,7 @@ export default function UserInfo({
     <div className={styles.landingContent}>
       <TreeCounter
         target={userprofile.score.target}
-        planted={userprofile.score.received}
+        planted={userprofile.score.personal}
       />
 
       <h2 className={styles.treeCounterName}>{`${userprofile.displayName}`}</h2>
