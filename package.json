@@ -43,14 +43,14 @@
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "axios": "^0.21.0",
     "d3-ease": "^2.0.0",
-    "deck.gl": "^8.3.4",
+    "deck.gl": "^7.3.6",
     "dom-to-image": "^2.6.0",
     "express": "^4.17.1",
-    "layer-manager": "^3.0.8",
-    "luma.gl": "^7.3.2",
     "framer-motion": "^2.7.5",
     "i18next": "^19.7.0",
     "i18next-browser-languagedetector": "^6.0.1",
+    "layer-manager": "^3.0.8",
+    "luma.gl": "^7.3.2",
     "mapbox-gl": "^1.12.0",
     "next": "^9.5.5",
     "next-i18next": "^6.0.2",
@@ -69,8 +69,8 @@
     "read-more-react": "^1.0.10",
     "styled-jsx": "^3.3.0",
     "sugar": "^2.0.6",
-    "viewport-mercator-project": "^7.0.1",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "viewport-mercator-project": "^6.1.1"
   },
   "devDependencies": {
     "@types/d3-ease": "^1.0.9",
