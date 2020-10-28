@@ -16,20 +16,16 @@ export default function UserInfo({
 
       <h2 className={styles.treeCounterName}>{`${userprofile.displayName}`}</h2>
 
-      {(
-        <React.Fragment>
-          {/* user bio */}
-          <p className={styles.treeCounterDescription}>
-            {userprofile.bio}{' '}
-          </p>
+      {/* user bio */}
+      <p className={styles.treeCounterDescription}>
+        {userprofile.bio}{' '}
+      </p>
 
-          {/* three icons in a row */}
-          <UserProfileOptions
-            userprofile={userprofile}
-            handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-          />
-        </React.Fragment>
-      )}
+      {/* three icons in a row */}
+      <UserProfileOptions
+        userprofile={userprofile}
+        handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+      />
     </div>
   );
 }
