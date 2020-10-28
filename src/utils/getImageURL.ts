@@ -19,7 +19,6 @@ export default function getImageUrl(
   }
 }
 
-
 export function getS3Image(
   category: string,
   variant: string,

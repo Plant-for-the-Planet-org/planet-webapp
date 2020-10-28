@@ -6,11 +6,14 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { useDropzone } from 'react-dropzone';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { removeUserExistsInDB, removeUserSlug} from '../../../../utils/auth0/localStorageUtils'
+import { removeUserExistsInDB, removeUserSlug, getUserProfilePic, setUserProfilePic} from '../../../../utils/auth0/localStorageUtils'
+import {getS3Image} from '../../../../utils/getImageURL'
+import {editProfile} from '../../../../utils/auth0/apiRequests'
 
 export default function EditProfileModal({
   userprofile,
@@ -50,17 +53,40 @@ export default function EditProfileModal({
   const [session, loading] = useSession()
   const [severity, setSeverity] = useState('success')
   const [snackbarMessage, setSnackbarMessage] = useState("OK")
+  const [addImageButtonVisible, setAddImageButtonVisible] = useState(true)
+  const [profilePic, setProfilePic] = useState(userprofile.image)
+  
+  const onDrop = React.useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file: any) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file);
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = async (event) => {
+        console.log('Base 64 version of image', event.target.result);
+        if(!loading && session){
+          const bodyToSend = {
+            imageFile: event.target.result
+          }
+          const res = await editProfile(session, bodyToSend)
+          const resJson = await res.json()
+          setUserProfilePic(resJson.image)
+          setSeverity('info')
+          setSnackbarMessage('Profile pic is being updated...')
+          handleSnackbarOpen()
+        }
+      }
+    })
+  }, [])
 
-  const profilePicStyle = {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    borderRadius: '200px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.7,
-    backgroundImage: 'url(https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?size=626&ext=jpg)',
-  };
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: 'image/*',
+    multiple: false,
+    onDrop: onDrop,
+    onDropAccepted: () => {
+      console.log('uploaded');
+    },
+  });
 
   const saveProfile = async() => {
     const bodyToSend = {
@@ -75,18 +101,9 @@ export default function EditProfileModal({
       bio: description,
       url: website
     }
-    if (!loading && session && userprofile.id) {
+    if (!loading && session) {
       try{
-      const res = await fetch(
-        `${process.env.API_ENDPOINT}/app/profile`, {
-          method: 'PUT',
-          headers: { 
-            'Authorization': `OAuth ${session.accessToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(bodyToSend)
-        },
-      );
+      const res = await editProfile(session, bodyToSend)
       if (res.status === 200) {
         setSeverity('success')
         setSnackbarMessage('Saved Successfully!')
@@ -120,7 +137,7 @@ export default function EditProfileModal({
     <Modal
       className={styles.modalContainer}
       open={editProfileModalOpen}
-    //   onClose={handleEditProfileModalClose}
+    //onClose={handleEditProfileModalClose}
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
@@ -142,11 +159,34 @@ export default function EditProfileModal({
             </div>
           </div>
 
-          <div className={styles.profilePicDiv}>
-            <div style={profilePicStyle}>
-              <Camera color="white" />
-            </div>
-          </div>
+          {
+            userprofile.image ? 
+            (
+              <div  {...getRootProps()} > 
+              <label htmlFor="upload" >
+                <div 
+                  className={styles.profilePicDiv}>
+                    <input {...getInputProps()} />
+                    <img src={getS3Image('profile','thumb', getUserProfilePic())} className={styles.profilePicImg} />      
+                </div>
+                </label>
+                </div>
+            )
+            :
+            (
+              // this style doesn't matter
+              <div  {...getRootProps()} > 
+                <label htmlFor="upload" >
+                  <div 
+                  className={styles.profilePicDiv} >
+                    <input {...getInputProps()} />
+                    <Camera color="white" />
+                </div>
+                </label>
+              </div>
+            )
+          }
+
 
           <div className={styles.namesDiv}>
             <div className={styles.firstNameDiv}>

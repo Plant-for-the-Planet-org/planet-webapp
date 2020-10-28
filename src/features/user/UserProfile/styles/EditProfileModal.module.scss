@@ -52,13 +52,24 @@
 
 //profile pic div
 .profilePicDiv {
-    height: 100px;
-    width: 100px;
-    margin: 10px 0px;
+  background-color:#4d5153;
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px;
 }
 
 .profilePicDiv:hover{
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.profilePicImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
 }
 
 // first name, last name div
