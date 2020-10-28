@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import styles from '../styles/UserProfile.module.scss';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import ScrollDown from '../../../../../public/assets/images/icons/userProfileIcons/ScrollDown';
 import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -28,8 +27,6 @@ export default function PrivateIndividualProfile({ userprofile, changeForceReloa
     }
     setTextCopiedSnackbarOpen(false);
   };
-
-  const scrollRef = useRef(null);
 
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -84,7 +81,7 @@ export default function PrivateIndividualProfile({ userprofile, changeForceReloa
 
         {/* my forest section  - if contains projects field*/}
         {userprofile.projects && (
-          <div ref={scrollRef} className={styles.myForestContainer}>
+          <div className={styles.myForestContainer}>
             <MyForestContainer userprofile={userprofile} />
           </div>
         )}
