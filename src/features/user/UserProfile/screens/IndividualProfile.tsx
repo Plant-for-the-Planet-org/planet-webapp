@@ -2,7 +2,7 @@ import React from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import PublicUserInfo from '../components/PublicUserInfo';
 
-export default function IndividualProfile({ publicUserprofile }: any) {
+export default function IndividualProfile({ userprofile }: any) {
   return (
     <>
       <LandingSection
@@ -12,7 +12,7 @@ export default function IndividualProfile({ publicUserprofile }: any) {
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
       >
-        <PublicUserInfo publicUserprofile={publicUserprofile} />
+        <PublicUserInfo userprofile={userprofile} />
       </LandingSection>
     </>
   );

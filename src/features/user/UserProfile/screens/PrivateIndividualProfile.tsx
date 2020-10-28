@@ -9,7 +9,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
 
-export default function PrivateIndividualProfile({ privateUserprofile, changeForceReload,
+export default function PrivateIndividualProfile({ userprofile, changeForceReload,
   forceReload, }: any) {
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
@@ -59,7 +59,7 @@ export default function PrivateIndividualProfile({ privateUserprofile, changeFor
               <Settings color="white" />
             </div>
             <SettingsModal
-              userprofile={privateUserprofile}
+              userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
               editProfileModalOpen={editProfileModalOpen}
@@ -77,15 +77,15 @@ export default function PrivateIndividualProfile({ privateUserprofile, changeFor
           }
         >
           <UserInfo
-            userprofile={privateUserprofile}
+            userprofile={userprofile}
             handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
           />
         </LandingSection>
 
         {/* my forest section  - if contains projects field*/}
-        {privateUserprofile.projects && (
+        {userprofile.projects && (
           <div ref={scrollRef} className={styles.myForestContainer}>
-            <MyForestContainer userprofile={privateUserprofile} />
+            <MyForestContainer userprofile={userprofile} />
           </div>
         )}
 

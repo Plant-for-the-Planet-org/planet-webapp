@@ -5,22 +5,22 @@ import Head from 'next/head';
 const config = tenantConfig();
 
 interface Props {
-    publicUserprofile:any
+    userprofile:any
 }
 
-export default function GetPublicUserProfileMeta({publicUserprofile}: Props): ReactElement {
+export default function GetPublicUserProfileMeta({userprofile}: Props): ReactElement {
     return (
         <Head>
           <title>{`${
-          publicUserprofile !== undefined
-            ? publicUserprofile.displayName
+          userprofile !== undefined
+            ? userprofile.displayName
             : config.meta.title
         }`}</title>
         <meta
           property="og:site_name"
           content={
-            publicUserprofile !== undefined
-              ? publicUserprofile.displayName
+            userprofile !== undefined
+              ? userprofile.displayName
               : config.meta.title
           }
         />
@@ -31,8 +31,8 @@ export default function GetPublicUserProfileMeta({publicUserprofile}: Props): Re
         <meta
           property="og:title"
           content={`${
-            publicUserprofile !== undefined
-              ? publicUserprofile.displayName
+            userprofile !== undefined
+              ? userprofile.displayName
               : config.meta.title
           }`}
         />
