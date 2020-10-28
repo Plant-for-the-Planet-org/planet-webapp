@@ -3,7 +3,8 @@ import LandingSection from '../../../common/Layout/LandingSection';
 import ProjectsContainer from '../components/ProjectsContainer';
 import PublicUserInfo from '../components/PublicUserInfo';
 
-export default function TpoProfile({ userprofile }: any) {
+export default function TpoProfile({ userprofile,authenticatedType }: any) {
+  
   return (
     <>
       <LandingSection
@@ -15,9 +16,10 @@ export default function TpoProfile({ userprofile }: any) {
       >
         <PublicUserInfo userprofile={userprofile} />
       </LandingSection>
-      {/* <ProjectsContainer
-        projects={userprofile.userProfile.plantProjects}
-      /> */}
+      <ProjectsContainer
+      userprofile={userprofile}
+        authenticatedType={authenticatedType}
+      />
     </>
   );
 }

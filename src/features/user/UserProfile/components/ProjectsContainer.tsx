@@ -5,16 +5,43 @@ import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../../i18n';
 import styles from '../styles/ProjectsContainer.module.scss';
+import { getAuthenticatedRequest, getRequest } from '../../../../utils/apiRequests/api';
+import {  useSession } from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
-const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
+const ProjectSnippet = dynamic(() => import('./../../../public/Donations/components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
-export default function ProjectsContainer({ projects }: any) {
+export default function ProjectsContainer({authenticatedType,userprofile }: any) {
   const { t } = useTranslation(['donate']);
+  const [session, loading] = useSession();
+  const [projects,setProjects] =React.useState([])
 
+  React.useEffect(()=>{
+    async function loadProjects() {
+      // const currencyCode = getStoredCurrency();
+      const privateURL = '/app/profile/projects';
+      const publicURL = `/app/profiles/${userprofile.id}/projects`;
+
+      if(authenticatedType === 'private'){
+        await getAuthenticatedRequest(
+          privateURL,session
+        ).then(projects => {
+          setProjects(projects);
+        })
+      }else{
+        await getRequest(
+          publicURL,
+        ).then(projects => {
+          setProjects(projects);
+        })
+      }      
+    }
+    loadProjects();
+  },[])
+  
   return (
     <div style={{ margin: 'auto', maxWidth: '950px' }}>
       {projects.length < 1 ? (
@@ -31,7 +58,7 @@ export default function ProjectsContainer({ projects }: any) {
           {projects.map((project: any) => {
             return (
               <div className={styles.singleProject} key={project.id}>
-                <ProjectSnippet key={project.id} project={project} />
+                <ProjectSnippet key={project.id} project={project} directGift={null} setDirectGift={null} />
               </div>
             );
           })}

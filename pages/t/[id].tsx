@@ -102,8 +102,6 @@ export default function PublicUser(initialized: Props) {
       loadUserData();
     }
   }, [ready, loading, forceReload]);
-
-  console.log('publicUserprofile',userprofile);
   
   function getPublicUserProfile() {
     switch (userprofile?.type) {
