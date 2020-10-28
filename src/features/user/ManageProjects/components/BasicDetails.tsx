@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker } from 'react-map-gl';
+import MapGL, { Marker,NavigationControl } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
 import { useSession } from 'next-auth/client';
 import PopHover from '../../../common/InputTypes/PopHover';
@@ -27,9 +27,10 @@ interface Props {
   setProjectDetails: Function;
   errorMessage: String;
   setProjectGUID: Function;
+  setErrorMessage: Function;
 }
 
-export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage, setProjectGUID }: Props): ReactElement {
+export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage, setProjectGUID, setErrorMessage }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [session, loading] = useSession();
   // Map setup
@@ -69,7 +70,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
 
   // Form Fields
   // In future if the details are present, we will feed default values here
-  const [defaultBasicDetails,setDefaultBasicDetails] = React.useState({
+  const [defaultBasicDetails, setDefaultBasicDetails] = React.useState({
     name: '',
     slug: '',
     classification: '',
@@ -86,14 +87,14 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       latitude: 0,
       longitude: 0
     }
-  }) 
+  })
 
   const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const acceptDonations = watch("acceptDonations");
 
   React.useEffect(() => {
-    if(projectDetails && projectDetails !== null ){
+    if (projectDetails && projectDetails !== null) {
       const basicDetails = {
         name: projectDetails.name,
         slug: projectDetails.slug,
@@ -145,6 +146,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     }
 
     postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
+      setErrorMessage('')
       setProjectGUID(res.id)
       setProjectDetails(res)
     })
@@ -386,7 +388,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
                 <div className={styles.marker}></div>
               </Marker>
             ) : null}
-
+            <div className={styles.mapNavigation}>
+              <NavigationControl showCompass={false} />
+            </div>
           </MapGL>
           <div
             className={styles.formField}
