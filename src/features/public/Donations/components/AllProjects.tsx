@@ -66,6 +66,7 @@ function AllProjects({
                   project={project}
                   directGift={directGift}
                   setDirectGift={setDirectGift}
+                  editMode={false}
                 />
               );
             })}

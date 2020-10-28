@@ -44,6 +44,8 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
     loadProjects();
   }, [])
 
+  console.log('projects',projects);
+  
   return (
     <div style={{ margin: 'auto', maxWidth: '950px' }}>
       {projects.length < 1 ?
@@ -69,7 +71,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             {projects.map((project: any) => {
               return (
                 <div className={styles.singleProject} key={project.id}>
-                  <ProjectSnippet key={project.id} project={project} directGift={null} setDirectGift={null} />
+                  <ProjectSnippet key={project.id} project={project} directGift={null} setDirectGift={null} editMode={true} />
                 </div>
               );
             })}
