@@ -45,7 +45,7 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
       let currencyCode = getStoredCurrency();
       project.properties = await getRequest(`/app/projects/${project.slug}?_scope=extended&currency=${currencyCode}`);
     }
-    if(project.slug !== undefined) {
+    if(project.slug) {
       loadProject();
     }
   }, [project.slug]);
