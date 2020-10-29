@@ -1,4 +1,3 @@
-import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 /* eslint-disable no-nested-ternary */
@@ -9,14 +8,14 @@ import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 import MapGL, {
   FlyToInterpolator,
-  // Layer as Layer1,
+  Layer,
   Marker,
   NavigationControl,
   Popup,
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
-import { LayerManager, Layer } from 'layer-manager/dist/components';
+import { LayerManager, Layer as LayerM } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../assets/images/icons/ExploreIcon';
@@ -24,6 +23,10 @@ import Switch from '../../../common/InputTypes/ToggleSwitch';
 import LeftIcon from '../../../../../public/assets/images/icons/LeftIcon';
 import RightIcon from '../../../../../public/assets/images/icons/RightIcon';
 import PopupProject from './PopupProject';
+import { getParams } from '../../../../utils/LayerManagerUtils';
+import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
+import TreeCoverGain from '../../../../../public/data/layers/tree-cover-gain';
+
 import styles from '../styles/MapboxMap.module.scss';
 
 interface mapProps {
@@ -44,7 +47,6 @@ export default function MapboxMap({
   let timer: NodeJS.Timeout;
   const router = useRouter();
   const mapRef = useRef(null);
-  const parentRef = useRef(null);
   const exploreContainerRef = useRef(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
@@ -63,6 +65,7 @@ export default function MapboxMap({
   const buttonRef = useRef(null);
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
+  const [layersSettings, setLayersSettings] = useState({});
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -75,258 +78,6 @@ export default function MapboxMap({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-
-  const activeLayers = [
-    {
-      id: 'gain',
-      name: 'Tree cover gain',
-      config: {
-        type: 'raster',
-        source: {
-          type: 'raster',
-          tiles: [
-            'https://earthengine.google.org/static/hansen_2013/gain_alpha/{z}/{x}/{y}.png',
-          ],
-          minzoom: 3,
-          maxzoom: 12,
-        },
-      },
-      legendConfig: {
-        type: 'basic',
-        items: [
-          {
-            name: 'Tree cover gain',
-            color: '#6D6DE5',
-          },
-        ],
-      },
-    },
-    {
-      id: 'loss',
-      name: 'Tree cover loss',
-      config: {
-        type: 'raster',
-        source: {
-          type: 'raster',
-          tiles: [
-            'https://storage.googleapis.com/wri-public/Hansen_16/tiles/hansen_world/v1/tc30/{z}/{x}/{y}.png',
-          ],
-          minzoom: 3,
-          maxzoom: 12,
-        },
-      },
-      legendConfig: {
-        enabled: true,
-      },
-      decodeConfig: [
-        {
-          default: '2001-01-01',
-          key: 'startDate',
-          required: true,
-        },
-        {
-          default: '2018-12-31',
-          key: 'endDate',
-          required: true,
-        },
-      ],
-      timelineConfig: {
-        step: 1,
-        speed: 250,
-        interval: 'years',
-        dateFormat: 'YYYY',
-        trimEndDate: '2018-12-31',
-        maxDate: '2018-12-31',
-        minDate: '2001-01-01',
-        canPlay: true,
-        railStyle: {
-          background: '#DDD',
-        },
-        trackStyle: [
-          {
-            background: '#dc6c9a',
-          },
-          {
-            background: '#982d5f',
-          },
-        ],
-      },
-      decodeFunction:
-        '\n      // values for creating power scale, domain (input), and range (output)\n      float domainMin = 0.;\n      float domainMax = 255.;\n      float rangeMin = 0.;\n      float rangeMax = 255.;\n\n      float exponent = zoom < 13. ? 0.3 + (zoom - 3.) / 20. : 1.;\n      float intensity = color.r * 255.;\n\n      // get the min, max, and current values on the power scale\n      float minPow = pow(domainMin, exponent - domainMin);\n      float maxPow = pow(domainMax, exponent);\n      float currentPow = pow(intensity, exponent);\n\n      // get intensity value mapped to range\n      float scaleIntensity = ((currentPow - minPow) / (maxPow - minPow) * (rangeMax - rangeMin)) + rangeMin;\n      // a value between 0 and 255\n      alpha = zoom < 13. ? scaleIntensity / 255. : color.g;\n\n      float year = 2000.0 + (color.b * 255.);\n      // map to years\n      if (year >= startYear && year <= endYear && year >= 2001.) {\n        color.r = 220. / 255.;\n        color.g = (72. - zoom + 102. - 3. * scaleIntensity / zoom) / 255.;\n        color.b = (33. - zoom + 153. - intensity / zoom) / 255.;\n      } else {\n        alpha = 0.;\n      }\n    ',
-    },
-    {
-      id: 'protected-areas',
-      name: 'Protected areas',
-      config: {
-        type: 'vector',
-        source: {
-          type: 'vector',
-          promoteId: 'cartodb_id',
-          provider: {
-            type: 'carto',
-            account: 'wri-01',
-            layers: [
-              {
-                options: {
-                  cartocss:
-                    '#wdpa_protected_areas {  polygon-opacity: 1.0; polygon-fill: #704489 }',
-                  cartocss_version: '2.3.0',
-                  sql: 'SELECT * FROM wdpa_protected_areas',
-                },
-                type: 'mapnik',
-              },
-            ],
-          },
-        },
-        render: {
-          layers: [
-            {
-              type: 'fill',
-              'source-layer': 'layer0',
-              featureState: {},
-              paint: {
-                'fill-color': [
-                  'case',
-                  ['boolean', ['feature-state', 'hover'], false],
-                  '#000',
-                  '#5ca2d1',
-                ],
-                'fill-color-transition': {
-                  duration: 300,
-                  delay: 0,
-                },
-                'fill-opacity': 1,
-              },
-            },
-            {
-              type: 'line',
-              'source-layer': 'layer0',
-              paint: {
-                'line-color': '#000000',
-                'line-opacity': 0.1,
-              },
-            },
-          ],
-        },
-      },
-      paramsConfig: [],
-      legendConfig: {
-        type: 'basic',
-        items: [
-          {
-            name: 'Protected areas',
-            color: '#5ca2d1',
-          },
-        ],
-      },
-      interactionConfig: {
-        enabled: true,
-        type: 'hover',
-      },
-    },
-    {
-      id: 'mongabay-stories',
-      name: 'Mongabay stories',
-      config: {
-        type: 'geojson',
-        images: [
-          {
-            id: 'lm-marker1',
-            src: '/layer-manager/static/media/marker1.ff16441f.svg',
-            options: {
-              sdf: true,
-            },
-          },
-          {
-            id: 'lm-marker2',
-            src: '/layer-manager/static/media/marker2.c4f943ea.svg',
-            options: {
-              sdf: true,
-            },
-          },
-        ],
-        source: {
-          type: 'geojson',
-          promoteId: 'cartodb_id',
-          data:
-            'https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20mongabay&format=geojson',
-          cluster: true,
-          clusterMaxZoom: 14,
-          clusterRadius: 45,
-        },
-        render: {
-          metadata: {
-            position: 'top',
-          },
-          layers: [
-            {
-              id: 'media-clusters',
-              metadata: {
-                position: 'top',
-              },
-              type: 'circle',
-              filter: ['has', 'point_count'],
-              paint: {
-                'circle-color': '#FFF',
-                'circle-stroke-width': 2,
-                'circle-stroke-color': [
-                  'case',
-                  ['boolean', ['feature-state', 'hover'], false],
-                  '#000',
-                  '#5ca2d1',
-                ],
-                'circle-radius': 12,
-              },
-            },
-            {
-              id: 'media-cluster-count',
-              metadata: {
-                position: 'top',
-              },
-              type: 'symbol',
-              filter: ['has', 'point_count'],
-              layout: {
-                'text-allow-overlap': true,
-                'text-ignore-placement': true,
-                'text-field': '{point_count_abbreviated}',
-                'text-size': 12,
-              },
-            },
-            {
-              id: 'media',
-              metadata: {
-                position: 'top',
-              },
-              type: 'symbol',
-              filter: ['!', ['has', 'point_count']],
-              paint: {
-                'icon-color': '#F00',
-              },
-              layout: {
-                'icon-ignore-placement': true,
-                'icon-allow-overlap': true,
-                'icon-image': 'lm-marker1',
-              },
-            },
-          ],
-        },
-      },
-      paramsConfig: [],
-      legendConfig: {
-        type: 'basic',
-        items: [
-          {
-            name: 'Mongabay stories',
-            color: '#FFCC00',
-          },
-        ],
-      },
-      interactionConfig: {
-        enabled: true,
-        type: 'hover',
-      },
-    },
-  ];
 
   const [exploreExpanded, setExploreExpanded] = React.useState(false);
 
@@ -559,6 +310,7 @@ export default function MapboxMap({
         onStateChange={_onStateChange}
         scrollZoom={false}
         onClick={() => setPopupData({ ...popupData, show: false })}
+        onLoad={() => setLoaded(true)}
       >
         {showSingleProject ? (
           !siteExists ? (
@@ -572,27 +324,26 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            // <Source id="singleProject" type="geojson" data={geoJson}>
-            //   <Layer1
-            //     id="ploygonLayer"
-            //     type="fill"
-            //     source="singleProject"
-            //     paint={{
-            //       'fill-color': '#fff',
-            //       'fill-opacity': 0.2,
-            //     }}
-            //   />
-            //   <Layer1
-            //     id="ploygonOutline"
-            //     type="line"
-            //     source="singleProject"
-            //     paint={{
-            //       'line-color': '#89b54a',
-            //       'line-width': 2,
-            //     }}
-            //   />
-            // </Source>
-            <></>
+            <Source id="singleProject" type="geojson" data={geoJson}>
+              <Layer
+                id="ploygonLayer"
+                type="fill"
+                source="singleProject"
+                paint={{
+                  'fill-color': '#fff',
+                  'fill-opacity': 0.2,
+                }}
+              />
+              <Layer
+                id="ploygonOutline"
+                type="line"
+                source="singleProject"
+                paint={{
+                  'line-color': '#89b54a',
+                  'line-width': 2,
+                }}
+              />
+            </Source>
           )
         ) : null}
 
@@ -715,7 +466,7 @@ export default function MapboxMap({
             ]}
             tileSize={128}
           >
-            {/* <Layer1 id="forest-layer" source="forests" type="raster" /> */}
+            <Layer id="forest-layer" source="forests" type="raster" />
           </Source>
         ) : null}
 
@@ -728,34 +479,40 @@ export default function MapboxMap({
             ]}
             tileSize={128}
           >
-            {/* <Layer1 id="potential-layer" source="potential" type="raster" /> */}
+            <Layer id="potential-layer" source="potential" type="raster" />
           </Source>
         ) : null}
 
-        {exploreDeforestation ? (
-          <Source
-            id="deforestation"
-            type="raster"
-            tiles={[
-              'https://earthengine.google.org/static/hansen_2013/gain_alpha/{z}/{x}/{y}.png',
-            ]}
-            tileSize={128}
-          >
-            {/* <Layer1
-              id="deforestation-layer"
-              source="deforestation"
-              type="raster"
-            /> */}
-          </Source>
-        ) : null}
-
-        {/* {loaded && mapRef.current && (
+        {loaded ? (
           <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
-            {activeLayers.map((l) => (
-              <Layer key={l.id} {...l} />
-            ))}
+            {exploreDeforestation &&
+              TreeCoverLoss.map((layer) => {
+                const { decodeConfig, timelineConfig, decodeFunction } = layer;
+                const l = {
+                  ...layer,
+                  ...layer.config,
+
+                  ...(!!decodeConfig && {
+                    decodeParams: getParams(decodeConfig, {
+                      ...timelineConfig,
+                    }),
+                    decodeFunction,
+                  }),
+                };
+
+                return <LayerM key={layer.id} {...l} />;
+              })}
+
+            {/* {TreeCoverGain.map((layer) => {
+              const l = {
+                ...layer,
+                ...layer.config,
+              };
+
+              return <LayerM key={layer.id} {...l} />;
+            })} */}
           </LayerManager>
-        )} */}
+        ) : null}
 
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
