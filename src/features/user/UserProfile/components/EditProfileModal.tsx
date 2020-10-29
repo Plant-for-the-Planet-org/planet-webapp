@@ -11,7 +11,7 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { removeUserExistsInDB, removeUserSlug, getUserProfilePic, setUserProfilePic} from '../../../../utils/auth0/localStorageUtils'
+import { removeUserExistsInDB, getUserInfo, removeUserInfo, setUserInfo} from '../../../../utils/auth0/localStorageUtils'
 import {getS3Image} from '../../../../utils/getImageURL'
 import {editProfile} from '../../../../utils/auth0/apiRequests'
 
@@ -68,12 +68,14 @@ export default function EditProfileModal({
           const bodyToSend = {
             imageFile: event.target.result
           }
-          const res = await editProfile(session, bodyToSend)
-          const resJson = await res.json()
-          setUserProfilePic(resJson.image)
           setSeverity('info')
           setSnackbarMessage('Profile pic is being updated...')
           handleSnackbarOpen()
+          const res = await editProfile(session, bodyToSend)
+          const resJson = await res.json()
+          const userInfo = getUserInfo()
+          const newUserInfo = {...userInfo, profilePic: resJson.image}
+          setUserInfo(newUserInfo)
         }
       }
     })
@@ -118,7 +120,7 @@ export default function EditProfileModal({
         console.log('in 401-> unauthenticated user / invalid token')
         signOut()
         removeUserExistsInDB()
-        removeUserSlug()
+        removeUserInfo()
         signIn('auth0', { callbackUrl: '/login' });
       } else {
         setSeverity('error')
@@ -167,7 +169,7 @@ export default function EditProfileModal({
                 <div 
                   className={styles.profilePicDiv}>
                     <input {...getInputProps()} />
-                    <img src={getS3Image('profile','thumb', getUserProfilePic())} className={styles.profilePicImg} />      
+                    <img src={getS3Image('profile','thumb', getUserInfo().profilePic)} className={styles.profilePicImg} />      
                 </div>
                 </label>
                 </div>
