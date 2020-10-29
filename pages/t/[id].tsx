@@ -32,7 +32,6 @@ export default function PublicUser(initialized: Props) {
   const [ready, setReady] = React.useState(false);
   
   const [forceReload, changeForceReload] = React.useState(false);
-  console.log('accesstoken', session)
   const router = useRouter();
   const PublicUserProps = {
     userprofile,
