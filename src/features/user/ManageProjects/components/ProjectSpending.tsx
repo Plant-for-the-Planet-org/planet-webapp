@@ -39,6 +39,7 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
 
     const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
+    const [isUploadingData,setIsUploadingData] = React.useState(false)
 
     const [uploadedFiles, setUploadedFiles] = React.useState([])
     React.useEffect(() => {
@@ -72,6 +73,7 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
     const { isDirty, isSubmitting } = formState;
 
     const onSubmit = (pdf: any) => {
+        setIsUploadingData(true)
         const updatedAmount = getValues("amount");
         const submitData = {
             year: year.getFullYear(),
@@ -80,20 +82,25 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
         }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
+            
             let newUploadedFiles = uploadedFiles;
-            newUploadedFiles.push(res)
+            newUploadedFiles.push(res);
             setUploadedFiles(newUploadedFiles);
+            console.table([uploadedFiles,res,newUploadedFiles]);
             setAmount(0);
             setValue('amount', 0, { shouldDirty: false })
+            setIsUploadingData(false)
         })
         // handleNext()
     };
 
     const deleteProjectSpending = (id: any) => {
+        setIsUploadingData(true)
         deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, session).then(res => {
             if (res !== 404) {
                 let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
+                setIsUploadingData(false)
             }
         })
     }
@@ -102,7 +109,7 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
     React.useEffect(()=>{
         // Fetch spending of the project 
         if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
-        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`,session).then((result)=>{
+        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`,session).then((result)=>{            
             setUploadedFiles(result.expenses)
         })
     },[projectGUID]);
@@ -110,6 +117,7 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
                     <div className={styles.formField}>
                         {uploadedFiles.map((report) => {
@@ -242,7 +250,7 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
                 {/* <div className={styles.formFieldLarge}>
                     <p className={styles.inlineLinkButton}>Add another year</p>
                 </div> */}
-
+</div>
 
                 <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>
@@ -257,10 +265,10 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
-                            onClick={onSubmit}
+                            onClick={()=>handleNext()}
                             className={styles.continueButton}
                         >
-                            {'Save & continue'}
+                            {isUploadingData? <div className={styles.spinner}></div> : "See Project"}
                         </AnimatedButton>
                     </div>
                 </div>

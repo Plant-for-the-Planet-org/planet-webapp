@@ -118,10 +118,7 @@ export default function BasicDetails({ handleNext, session,projectDetails, setPr
     }
   }, [projectDetails])
 
-  const onSubmit = (data: any) => {
-
-    console.log('OnSubmit');
-    
+  const onSubmit = (data: any) => {    
     setIsUploadingData(true)
     let submitData = {
       name: data.name,

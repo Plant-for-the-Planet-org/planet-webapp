@@ -23,9 +23,10 @@ const { useTranslation } = i18next;
 interface Props {
     projectGUID: String;
     session: any;
+    setIsUploadingData:Function
 }
 
-function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
+function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
@@ -60,6 +61,7 @@ function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
     });
 
     const onSubmit = (pdf: any) => {
+        setIsUploadingData(true)
         const updatedAmount = getValues("certifierName");
         const submitData = {
             issueDate: issueDate.getFullYear(),
@@ -73,6 +75,7 @@ function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
             setUploadedFiles(newUploadedFiles);
             setCertifierName('');
             setValue('certifierName', '', { shouldDirty: false })
+            setIsUploadingData(false)
         })
         // handleNext()
     };

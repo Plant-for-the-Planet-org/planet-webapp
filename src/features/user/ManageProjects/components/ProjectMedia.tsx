@@ -6,8 +6,8 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import {getS3Image} from '../../../../utils/getImageURL';
+import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { getS3Image } from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 
@@ -20,36 +20,30 @@ interface Props {
   setProjectDetails: Function;
   projectGUID: String;
   handleReset: Function;
-  session:any;
+  session: any;
 }
 
-export default function ProjectMedia({ handleBack, session,handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectMedia({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [mediaDetails, setMediaDetails] = React.useState({});
-
-  const changeMediaDetails = (e: any) => {
-    setMediaDetails({ ...mediaDetails, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = (data: any) => {
-    handleNext();
-  };
-
   const [uploadedImages, setUploadedImages] = React.useState([])
 
-  React.useEffect(()=>{
+  const [isUploadingData,setIsUploadingData] = React.useState(false)
+
+  React.useEffect(() => {
     // Fetch images of the project 
-    if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
-    getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`,session).then((result)=>{
+    if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, session).then((result) => {        
         setUploadedImages(result.images)
-    })
-},[projectGUID]);
+      })
+  }, [projectGUID]);
 
 
   const uploadPhotos = (image: any) => {
+    setIsUploadingData(true)
+
     const submitData = {
       "imageFile": image,
       "description": null,
@@ -59,6 +53,8 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
       let newUploadedImages = uploadedImages;
       newUploadedImages.push(res)
       setUploadedImages(newUploadedImages)
+      setIsUploadingData(false)
+
     })
   };
 
@@ -97,10 +93,8 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
     // }
   });
 
-
-
-  const [youtubeURL, setYoutubeURL] = React.useState('')
-
+  const [youtubeURL, setYoutubeURL] = React.useState(projectDetails.videoURL ?projectDetails.videoURL:'' )
+  
   React.useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
@@ -108,15 +102,31 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, session).then(res => {
-        if (res !== 404) {
-            let uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
-            setUploadedImages(uploadedFilesTemp)
-        }
+      if (res !== 404) {
+        let uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
+        setUploadedImages(uploadedFilesTemp)
+      }
     })
-}
+  }
+
+  const onSubmit = (data: any) => {
+    // Add isDirty test here
+    setIsUploadingData(true)
+
+    const submitData = {
+      videoUrl:data.youtubeURL
+    }
+
+    putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+      setProjectDetails(res)
+      setIsUploadingData(false)
+      handleNext()
+    })
+  };
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
         <div className={styles.formFieldLarge}>
           {youtubeURL && !errors.youtubeURL ? (
             <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
@@ -125,10 +135,7 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
         <div className={styles.formFieldLarge}>
           <MaterialTextField
             inputRef={register({
-              required: {
-                value: true,
-                message: "Please enter Youtube URL"
-              }, pattern: {
+              pattern: {
                 value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
                 message: "Invalid Youtube Video Link"
               }
@@ -147,7 +154,7 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
           </span>
         )}
 
- {/* Change to field array of react hook form  */}
+        {/* Change to field array of react hook form  */}
         {uploadedImages && uploadedImages.length > 0 ?
           <div className={styles.formField}>
             {
@@ -155,19 +162,19 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
                 return (
                   <div key={image.id} className={styles.formFieldHalf}>
                     <div className={styles.uploadedImageContainer}>
-                    <img src={getS3Image('project','medium',image.image)} />
-                    <div className={styles.uploadedImageOverlay}></div>
-                    <input type="text" name="" placeholder="Caption" />
+                      <img src={getS3Image('project', 'medium', image.image)} />
+                      <div className={styles.uploadedImageOverlay}></div>
+                      <input type="text" name="" placeholder="Caption" />
                       <div className={styles.uploadedImageButtonContainer}>
-                        <div onClick={()=>deleteProjectCertificate(image.id)}>
-                          <DeleteIcon/>
+                        <div onClick={() => deleteProjectCertificate(image.id)}>
+                          <DeleteIcon />
                         </div>
                         <div>
-                        <Star/>
+                          <Star />
                         </div>
                       </div>
                     </div>
-                    
+
                   </div>
                 )
               })
@@ -192,6 +199,7 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
 
           {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
         </div>
+        </div>
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
@@ -205,7 +213,9 @@ export default function ProjectMedia({ handleBack, session,handleNext, projectDe
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <input type="submit" className={styles.continueButton} value="Save & continue" />
+          <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+              {isUploadingData? <div className={styles.spinner}></div> : "Save & Continue"}
+            </div>
           </div>
         </div>
       </form>

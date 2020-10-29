@@ -23,12 +23,13 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
-    session:any;
-  }
-export default function DetailedAnalysis({ handleBack,session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+    session: any;
+}
+export default function DetailedAnalysis({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control } = useForm({ mode: 'all' });
+    const [isUploadingData, setIsUploadingData] = React.useState(false)
 
     const [plantingSeasons, setPlantingSeasons] = React.useState([
         { id: 0, title: 'January', isSet: false },
@@ -68,9 +69,9 @@ export default function DetailedAnalysis({ handleBack,session, handleNext, proje
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-          handleReset('Please fill the Basic Details first')
+            handleReset('Please fill the Basic Details first')
         }
-      })
+    })
 
     const [siteOwners, setSiteOwner] = React.useState(
         [
@@ -109,162 +110,164 @@ export default function DetailedAnalysis({ handleBack,session, handleNext, proje
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className={styles.formField}>
-                    <div className={styles.formFieldHalf}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                views={["year"]}
-                                value={yearOfAbandonment}
-                                onChange={handleyearOfAbandonment}
-                                label={t('manageProjects:yearOfAbandonment')}
-                                name="yearOfAbandonment"
-                                inputVariant="outlined"
-                                variant="inline"
-                                TextFieldComponent={MaterialTextField}
-                                autoOk
-                                clearable
-                                disableFuture
+                <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
+
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    views={["year"]}
+                                    value={yearOfAbandonment}
+                                    onChange={handleyearOfAbandonment}
+                                    label={t('manageProjects:yearOfAbandonment')}
+                                    name="yearOfAbandonment"
+                                    inputVariant="outlined"
+                                    variant="inline"
+                                    TextFieldComponent={MaterialTextField}
+                                    autoOk
+                                    clearable
+                                    disableFuture
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
+                        <div className={styles.formFieldHalf}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    label={t('manageProjects:firstTreePlanted')}
+                                    value={firstTreePlantedDate}
+                                    onChange={setFirstTreePlantedDate}
+                                    inputVariant="outlined"
+                                    TextFieldComponent={MaterialTextField}
+                                    clearable
+                                    autoOk
+                                    disableFuture
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
+                    </div>
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+
+                            {/* Integer - the planting density expressed in trees per ha */}
+                            <MaterialTextField
+                                label={t('manageProjects:plantingDensity')}
+                                variant="outlined"
+                                name="plantingDensity"
+                                onChange={changeDetailedAnalysisData}
+                                // helperText={'Number of trees per ha'}
+                                inputRef={register({
+                                    validate: value => parseInt(value, 10) > 1
+                                })}
+                                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <p
+                                            className={styles.inputEndAdornment}
+                                            style={{ marginLeft: '4px', width: '100%', textAlign: 'right', fontSize: '14px' }}
+                                        >{`trees per ha`}</p>
+                                    ),
+                                }}
                             />
-                        </MuiPickersUtilsProvider>
-                    </div>
-                    <div className={styles.formFieldHalf}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                label={t('manageProjects:firstTreePlanted')}
-                                value={firstTreePlantedDate}
-                                onChange={setFirstTreePlantedDate}
-                                inputVariant="outlined"
-                                TextFieldComponent={MaterialTextField}
-                                clearable
-                                autoOk
-                                disableFuture
+                            {errors.plantingDensity && (
+                                <span className={styles.formErrors}>
+                                    {errors.plantingDensity.message}
+                                </span>
+                            )}
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+                        <div className={styles.formFieldHalf}>
+                            <MaterialTextField
+                                inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
+                                label={t('manageProjects:employeeCount')}
+                                variant="outlined"
+                                name="employeeCount"
+                                onChange={changeDetailedAnalysisData}
+                                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
                             />
-                        </MuiPickersUtilsProvider>
+                            {errors.employeeCount && (
+                                <span className={styles.formErrors}>
+                                    {errors.employeeCount.message}
+                                </span>
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div className={styles.formField}>
-                    <div className={styles.formFieldHalf}>
 
-                        {/* Integer - the planting density expressed in trees per ha */}
-                        <MaterialTextField
-                            label={t('manageProjects:plantingDensity')}
-                            variant="outlined"
-                            name="plantingDensity"
-                            onChange={changeDetailedAnalysisData}
-                            // helperText={'Number of trees per ha'}
-                            inputRef={register({
-                                validate: value => parseInt(value, 10) > 1
-                            })}
-                            onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
-                            InputProps={{
-                                endAdornment: (
-                                  <p
-                                    className={styles.inputEndAdornment}
-                                    style={{ marginLeft: '4px',width:'100%',textAlign:'right',fontSize:'14px' }}
-                                  >{`trees per ha`}</p>
-                                ),
-                              }}
-                        />
-                        {errors.plantingDensity && (
-                            <span className={styles.formErrors}>
-                                {errors.plantingDensity.message}
-                            </span>
-                        )}
-                    </div>
-                    <div style={{ width: '20px' }}></div>
-                    <div className={styles.formFieldHalf}>
-                        <MaterialTextField
-                            inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
-                            label={t('manageProjects:employeeCount')}
-                            variant="outlined"
-                            name="employeeCount"
-                            onChange={changeDetailedAnalysisData}
-                            onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
-                        />
-                        {errors.employeeCount && (
-                            <span className={styles.formErrors}>
-                                {errors.employeeCount.message}
-                            </span>
-                        )}
-                    </div>
-                </div>
+                    <div className={styles.formFieldLarge}>
 
-                <div className={styles.formFieldLarge}>
-
-                    <div className={styles.plantingSeasons}>
-                        <p className={styles.plantingSeasonsLabel}>Planting Seasons</p>
-                        {plantingSeasons.map((month) => {
-                            return (
-                                <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
-                                    <div className={`${styles.multiSelectInputCheck} ${month.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
-                                            <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
-                                        </svg>
+                        <div className={styles.plantingSeasons}>
+                            <p className={styles.plantingSeasonsLabel}>Planting Seasons</p>
+                            {plantingSeasons.map((month) => {
+                                return (
+                                    <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
+                                        <div className={`${styles.multiSelectInputCheck} ${month.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
+                                                <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
+                                            </svg>
+                                        </div>
+                                        <p>{month.title}</p>
                                     </div>
-                                    <p>{month.title}</p>
-                                </div>
-                            )
-                        })}
-
-                    </div>
-                </div>
-
-
-
-                <div className={styles.formField} style={{alignItems:'flex-start'}}>
-                    <div className={styles.formFieldHalf}>
-
-                        {/* the main challenge the project is facing (max. 300 characters) */}
-                        <MaterialTextField
-                            inputRef={register({
-                                maxLength: {
-                                    value: 300,
-                                    message: 'Maximum 300 characters allowed'
-                                }
+                                )
                             })}
-                            label={t('manageProjects:mainChallenge')}
-                            variant="outlined"
-                            name="mainChallenge"
-                            onChange={changeDetailedAnalysisData}
-                            // helperText="Main challenge the project is facing"
-                            multiline
-                        />
-                        {errors.mainChallenge && (
-                            <span className={styles.formErrors}>
-                                {errors.mainChallenge.message}
-                            </span>
-                        )}
+
+                        </div>
                     </div>
 
-                    <div style={{ width: '20px' }}></div>
-                    <div className={styles.formFieldHalf}>
-                        {/* the reason this project has been created (max. 300 characters) */}
-                        <MaterialTextField
-                            inputRef={register({
-                                maxLength: {
-                                    value: 300,
-                                    message: 'Maximum 300 characters allowed'
-                                }
-                            })}
-                            label={t('manageProjects:whyThisSite')}
-                            variant="outlined"
-                            name="motivation"
-                            onChange={changeDetailedAnalysisData}
-                            multiline
-                        />
-                        {errors.motivation && (
-                            <span className={styles.formErrors}>
-                                {errors.motivation.message}
-                            </span>
-                        )}
+
+
+                    <div className={styles.formField} style={{ alignItems: 'flex-start' }}>
+                        <div className={styles.formFieldHalf}>
+
+                            {/* the main challenge the project is facing (max. 300 characters) */}
+                            <MaterialTextField
+                                inputRef={register({
+                                    maxLength: {
+                                        value: 300,
+                                        message: 'Maximum 300 characters allowed'
+                                    }
+                                })}
+                                label={t('manageProjects:mainChallenge')}
+                                variant="outlined"
+                                name="mainChallenge"
+                                onChange={changeDetailedAnalysisData}
+                                // helperText="Main challenge the project is facing"
+                                multiline
+                            />
+                            {errors.mainChallenge && (
+                                <span className={styles.formErrors}>
+                                    {errors.mainChallenge.message}
+                                </span>
+                            )}
+                        </div>
+
+                        <div style={{ width: '20px' }}></div>
+                        <div className={styles.formFieldHalf}>
+                            {/* the reason this project has been created (max. 300 characters) */}
+                            <MaterialTextField
+                                inputRef={register({
+                                    maxLength: {
+                                        value: 300,
+                                        message: 'Maximum 300 characters allowed'
+                                    }
+                                })}
+                                label={t('manageProjects:whyThisSite')}
+                                variant="outlined"
+                                name="motivation"
+                                onChange={changeDetailedAnalysisData}
+                                multiline
+                            />
+                            {errors.motivation && (
+                                <span className={styles.formErrors}>
+                                    {errors.motivation.message}
+                                </span>
+                            )}
+                        </div>
                     </div>
-                </div>
 
 
-                <div className={styles.formField}>
-                    <div className={styles.formFieldHalf}>
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
 
-                    {/* <MaterialTextField
+                            {/* <MaterialTextField
                             label={t('manageProjects:siteOwner')}
                             variant="outlined"
                             name="siteOwner"
@@ -277,151 +280,154 @@ export default function DetailedAnalysis({ handleBack,session, handleNext, proje
                                 </MenuItem>
                             ))}
                         </MaterialTextField> */}
-                    
-                        <Controller
-                            as={
-                                <MaterialTextField
-                                inputRef={register({                      
-                                })}
-                                label={t('manageProjects:siteOwner')}
-                                variant="outlined"
+
+                            <Controller
+                                as={
+                                    <MaterialTextField
+                                        inputRef={register({
+                                        })}
+                                        label={t('manageProjects:siteOwner')}
+                                        variant="outlined"
+                                        name="siteOwner"
+                                        onChange={changeDetailedAnalysisData}
+                                        select
+                                    >
+                                        {siteOwners.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.title}
+                                            </MenuItem>
+                                        ))}
+                                    </MaterialTextField>
+                                }
                                 name="siteOwner"
-                                onChange={changeDetailedAnalysisData}
-                                select
-                                >
-                                {siteOwners.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.title}
-                                    </MenuItem>
-                                ))}
-                                </MaterialTextField>
-                            }
-                            name="siteOwner"
-                            rules={{ required: "Please select Site Owner" }}
-                            control={control}
-                            defaultValue=""
+                                rules={{ required: "Please select Site Owner" }}
+                                control={control}
+                                defaultValue=""
                             />
                             {errors.siteOwner && (
-                            <span className={styles.formErrors}>
-                                {errors.siteOwner.message}
-                            </span>
+                                <span className={styles.formErrors}>
+                                    {errors.siteOwner.message}
+                                </span>
                             )}
-                    </div>
-                    <div style={{ width: '20px' }}></div>
-                    <div className={styles.formFieldHalf}>
-                        <MaterialTextField
-                            label={t('manageProjects:ownerName')}
-                            variant="outlined"
-                            name="ownerName"
-                            onChange={changeDetailedAnalysisData}
-                        />
-                    </div>
-                </div>
-                <div className={styles.formField}>
-                    <div className={styles.formFieldHalf}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                label={t('manageProjects:acquisitionDate')}
-                                value={acquisitionDate}
-                                onChange={setAcquisitionDate}
-                                inputVariant="outlined"
-                                TextFieldComponent={MaterialTextField}
-                                clearable
-                                autoOk
-                                disableFuture
-                                name="acquisitionDate"
-                            />
-                        </MuiPickersUtilsProvider>
-
-                    </div>
-                    <div style={{ width: '20px' }}></div>
-                    <div className={styles.formFieldHalf}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                views={["year"]}
-                                value={yearOfDegradation}
-                                onChange={setYearOfDegradation}
-                                label={t('manageProjects:yearOfDegradation')}
-                                name="yearOfDegradation"
-                                inputVariant="outlined"
-                                variant="inline"
-                                TextFieldComponent={MaterialTextField}
-                                autoOk
-                                clearable
-                                disableFuture
-                            />
-                        </MuiPickersUtilsProvider>
-
-                    </div>
-                </div>
-                <div className={styles.formFieldLarge}>
-                    <MaterialTextField
-                        label={t('manageProjects:causeOfDegradation')}
-                        variant="outlined"
-                        name="causeOfDegradation"
-                        onChange={changeDetailedAnalysisData}
-                        multiline
-                        inputRef={register({
-                            maxLength: {
-                                value: 300,
-                                message: 'Maximum 300 characters allowed'
-                            }
-                        })}
-                    />
-                    {errors.causeOfDegradation && (
-                        <span className={styles.formErrors}>
-                            {errors.causeOfDegradation.message}
-                        </span>
-                    )}
-                </div>
-                <div className={styles.formFieldLarge}>
-                    <MaterialTextField
-                        label={t('manageProjects:longTermPlan')}
-                        variant="outlined"
-                        name="longTermPlan"
-                        onChange={changeDetailedAnalysisData}
-                        multiline
-                        inputRef={register({
-                            maxLength: {
-                                value: 300,
-                                message: 'Maximum 300 characters allowed'
-                            }
-                        })}
-                    />
-                    {errors.longTermPlan && (
-                        <span className={styles.formErrors}>
-                            {errors.longTermPlan.message}
-                        </span>
-                    )}
-                </div>
-
-
-                <div className={styles.formField}>
-                    <div className={styles.formFieldHalf}>
-                        <div className={`${styles.formFieldRadio}`}>
-                            <label htmlFor="isCertified">
-                                {t('manageProjects:isCertified')}
-                            </label>
-                            <ToggleSwitch
-                                checked={isCertified}
-                                onChange={() => setisCertified(!isCertified)}
-                                name="isCertified"
-                                id="isCertified"
-
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+                        <div className={styles.formFieldHalf}>
+                            <MaterialTextField
+                                label={t('manageProjects:ownerName')}
+                                variant="outlined"
+                                name="ownerName"
+                                onChange={changeDetailedAnalysisData}
                             />
                         </div>
                     </div>
-                    <div style={{ width: '20px' }}></div>
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    label={t('manageProjects:acquisitionDate')}
+                                    value={acquisitionDate}
+                                    onChange={setAcquisitionDate}
+                                    inputVariant="outlined"
+                                    TextFieldComponent={MaterialTextField}
+                                    clearable
+                                    autoOk
+                                    disableFuture
+                                    name="acquisitionDate"
+                                />
+                            </MuiPickersUtilsProvider>
+
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+                        <div className={styles.formFieldHalf}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    views={["year"]}
+                                    value={yearOfDegradation}
+                                    onChange={setYearOfDegradation}
+                                    label={t('manageProjects:yearOfDegradation')}
+                                    name="yearOfDegradation"
+                                    inputVariant="outlined"
+                                    variant="inline"
+                                    TextFieldComponent={MaterialTextField}
+                                    autoOk
+                                    clearable
+                                    disableFuture
+                                />
+                            </MuiPickersUtilsProvider>
+
+                        </div>
+                    </div>
+                    <div className={styles.formFieldLarge}>
+                        <MaterialTextField
+                            label={t('manageProjects:causeOfDegradation')}
+                            variant="outlined"
+                            name="causeOfDegradation"
+                            onChange={changeDetailedAnalysisData}
+                            multiline
+                            inputRef={register({
+                                maxLength: {
+                                    value: 300,
+                                    message: 'Maximum 300 characters allowed'
+                                }
+                            })}
+                        />
+                        {errors.causeOfDegradation && (
+                            <span className={styles.formErrors}>
+                                {errors.causeOfDegradation.message}
+                            </span>
+                        )}
+                    </div>
+                    <div className={styles.formFieldLarge}>
+                        <MaterialTextField
+                            label={t('manageProjects:longTermPlan')}
+                            variant="outlined"
+                            name="longTermPlan"
+                            onChange={changeDetailedAnalysisData}
+                            multiline
+                            inputRef={register({
+                                maxLength: {
+                                    value: 300,
+                                    message: 'Maximum 300 characters allowed'
+                                }
+                            })}
+                        />
+                        {errors.longTermPlan && (
+                            <span className={styles.formErrors}>
+                                {errors.longTermPlan.message}
+                            </span>
+                        )}
+                    </div>
+
+
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+                            <div className={`${styles.formFieldRadio}`}>
+                                <label htmlFor="isCertified">
+                                    {t('manageProjects:isCertified')}
+                                </label>
+                                <ToggleSwitch
+                                    checked={isCertified}
+                                    onChange={() => setisCertified(!isCertified)}
+                                    name="isCertified"
+                                    id="isCertified"
+
+                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                />
+                            </div>
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+
+                    </div>
+
+                    {isCertified ? (
+                        <ProjectCertificates
+                            projectGUID={projectGUID}
+                            session={session}
+                            setIsUploadingData={setIsUploadingData}
+                        />
+                    ) : null}
 
                 </div>
-
-                {isCertified ? (
-                    <ProjectCertificates
-                        projectGUID={projectGUID}
-                        session={session}
-                    />
-                ) : null}
 
                 <div className={styles.formField} style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>
@@ -439,7 +445,7 @@ export default function DetailedAnalysis({ handleBack,session, handleNext, proje
                             onClick={onSubmit}
                             className={styles.continueButton}
                         >
-                            {'Save & continue'}
+                             {isUploadingData? <div className={styles.spinner}></div> : "Save and Continue"}
                         </AnimatedButton>
                     </div>
                 </div>
