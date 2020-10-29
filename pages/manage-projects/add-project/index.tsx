@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import ManageProjects from '../../../src/features/user/ManageProjects/screens'
-import { useSession } from 'next-auth/client';
-import { getUserExistsInDB, getUserSlug } from '../../../src/utils/auth0/localStorageUtils';
-import { getAccountInfo } from '../../../src/utils/auth0/apiRequests';
+import { signIn, useSession } from 'next-auth/client';
+import { getUserType } from '../../../src/utils/auth0/localStorageUtils';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
+import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 
 interface Props {
 
@@ -12,31 +12,20 @@ interface Props {
 
 export default function ManageProjectsPage({ }: Props): ReactElement {
   const [session, loading] = useSession();
-  // Check whether user is tpo or not
-
   const [accessDenied, setAccessDenied] = React.useState(false)
-
   const [setupAccess, setSetupAccess] = React.useState(false)
 
   React.useEffect(() => {
     async function loadUserData() {
-      if (typeof Storage !== 'undefined') {
-        const userExistsInDB = getUserExistsInDB();
-        if (!loading && session && userExistsInDB) {
-          try {
-            const res = await getAccountInfo(session)
-            if (res.status === 200) {
-              const resJson = await res.json();
-              if (resJson.type === 'tpo') {
-                setAccessDenied(false)
-                setSetupAccess(true)
-              }
-            } else {
-              setAccessDenied(true)
-              setSetupAccess(true)
-            }
-          } catch (e) { }
-        }
+      const usertype = getUserType();
+      console.log('usertype',usertype);
+      
+      if (usertype === 'tpo') {
+        setAccessDenied(false)
+        setSetupAccess(true)
+      }else{
+        setAccessDenied(true)
+        setSetupAccess(true)
       }
     }
 
@@ -49,9 +38,7 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
 
   // User is not logged in
   if (!loading && !session) {
-    return (
-      <h2>Please login to see this page</h2>
-    )
+    signIn('auth0', { callbackUrl: `/login` });
   }
 
   // User is not TPO
@@ -63,10 +50,15 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
       </>
     )
   }
-  return (
+  return setupAccess ? (
     <>
       <ManageProjects session={session} />
       <Footer />
+    </>
+  ) : (
+    <>
+    <GlobeContentLoader/>
+    <Footer/>
     </>
   )
 }
