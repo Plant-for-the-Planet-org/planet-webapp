@@ -9,12 +9,10 @@ import { getRequest } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import {
   getUserExistsInDB,
-  getUserSlug,
   setUserExistsInDB,
   removeUserExistsInDB,
-  removeUserSlug,
-  removeUserProfilePic,
-  removeUserType
+  removeUserInfo,
+  getUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
 import {getAccountInfo } from '../../src/utils/auth0/apiRequests'
 
@@ -34,7 +32,7 @@ export default function PublicUser(initialized: Props) {
   const [ready, setReady] = React.useState(false);
   
   const [forceReload, changeForceReload] = React.useState(false);
-
+  console.log('accesstoken', session)
   const router = useRouter();
   const PublicUserProps = {
     userprofile,
@@ -53,7 +51,7 @@ export default function PublicUser(initialized: Props) {
     async function loadUserData() {
       if (typeof Storage !== 'undefined') {
         const userExistsInDB = getUserExistsInDB();
-        const currentUserSlug = getUserSlug();
+        const currentUserSlug = getUserInfo().slug;
 
         // some user logged in and slug matches -> private profile
         if (!loading && session && userExistsInDB && currentUserSlug === slug) {
@@ -77,9 +75,7 @@ export default function PublicUser(initialized: Props) {
               console.log('in 401-> unauthenticated user / invalid token')
               signOut()
               removeUserExistsInDB()
-              removeUserSlug()
-              removeUserProfilePic()
-              removeUserType()
+              removeUserInfo()
               signIn('auth0', { callbackUrl: '/login' });
             } else {
               // any other error
