@@ -37,19 +37,21 @@ export default function SettingsModal({
         <Fade in={settingsModalOpen}>
           <div className={styles.modal}>
             {
-              userType == 'tpo' && <div className={styles.settingsItem}> Manage Projects </div>
+              userType == 'tpo' && 
+              <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> Manage Projects </a>
             }
             <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> Edit Profile </div>
-          {/*  <div className={styles.settingsItem}> Change Password </div>
+            {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
-            <div 
-            className={styles.settingsItem}  
-            onClick={() => { 
-              if (typeof window !== 'undefined') {
-              router.push(`/logout`);
-            }}
-          }>
+            <div
+              className={styles.settingsItem}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  router.push(`/logout`);
+                }
+              }
+              }>
               <b> Logout </b>
             </div>
             <div

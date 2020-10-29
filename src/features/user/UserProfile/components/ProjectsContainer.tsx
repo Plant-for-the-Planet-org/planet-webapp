@@ -44,27 +44,16 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
     loadProjects();
   }, [])
 
-  console.log('projects',projects);
-  
   return (
-    <div style={{ margin: 'auto', maxWidth: '950px' }}>
-      {projects.length < 1 ?
-        authenticatedType === 'private' ?
-          (
-            <Link href='/manage-projects/add-project'>
-                <div className={styles.projectNotFound}>
-                  <AddProject />
-                  <h2>Add Project</h2>
-                </div>
-            </Link>
-          ) : (
-            <div className={styles.projectNotFound}>
-              <LazyLoad>
-                <NotFound className={styles.projectNotFoundImage} />
-                <h5>{t('donate:noProjectsFound')}</h5>
-              </LazyLoad>
-            </div>
-          ) : (
+    <div style={{ margin: 'auto', maxWidth: '950px' }} id="projectsContainer">
+      {projects.length < 1 ? (
+        <div className={styles.projectNotFound}>
+          <LazyLoad>
+            <NotFound className={styles.projectNotFoundImage} />
+            <h5>{t('donate:noProjectsFound')}</h5>
+          </LazyLoad>
+        </div>
+      ) : (
           <div className={styles.listProjects}>
             <h6 className={styles.projectsTitleText}> {t('donate:PROJECTS')} </h6>
 
@@ -77,6 +66,19 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             })}
           </div>
         )}
+
+      {
+        authenticatedType === 'private' ? (
+          <Link href='/manage-projects/add-project'>
+            <div className={styles.projectNotFound}>
+              <AddProject />
+              <h2>Add Project</h2>
+            </div>
+          </Link>
+        ) : (
+            null
+          )
+      }
     </div>
   );
 }

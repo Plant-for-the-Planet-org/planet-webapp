@@ -1,12 +1,12 @@
 import React from "react";
 
-function AccessDenied() {
+function AccessDenied(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="1145.572"
-      height="819.907"
+      width={props.width ? props.width : '1145.572px'}
+      height={props.height ? props.height : '819.907px'}
       viewBox="0 0 1145.572 819.907"
     >
       <defs>
