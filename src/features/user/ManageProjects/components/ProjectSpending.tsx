@@ -13,7 +13,6 @@ import {
 } from '@material-ui/pickers';
 import { useDropzone } from 'react-dropzone';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useSession } from 'next-auth/client';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PDFIcon';
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
@@ -29,14 +28,14 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
+    session:any;
 }
 
-export default function ProjectSpending({ handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, session,handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
-    const [session, loading] = useSession();
 
     const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
@@ -101,7 +100,7 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
 
 
     React.useEffect(()=>{
-        // Fetch images of the project 
+        // Fetch spending of the project 
         if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
         getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`,session).then((result)=>{
             setUploadedFiles(result.expenses)

@@ -6,7 +6,6 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
 import MapGL, { Marker,NavigationControl } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
-import { useSession } from 'next-auth/client';
 import PopHover from '../../../common/InputTypes/PopHover';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 import { postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -29,11 +28,13 @@ interface Props {
   setProjectGUID: Function;
   setErrorMessage: Function;
   projectGUID:any;
+  session:any;
 }
 
-export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage, setProjectGUID, setErrorMessage,projectGUID }: Props): ReactElement {
+export default function BasicDetails({ handleNext, session,projectDetails, setProjectDetails, errorMessage, setProjectGUID, setErrorMessage,projectGUID }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
-  const [session, loading] = useSession();
+
+  const [isUploadingData,setIsUploadingData] = React.useState(false)
   // Map setup
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
@@ -119,6 +120,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
 
   const onSubmit = (data: any) => {
 
+    console.log('OnSubmit');
+    
+    setIsUploadingData(true)
     let submitData = {
       name: data.name,
       slug: data.slug,
@@ -147,6 +151,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
         setErrorMessage('')
         setProjectDetails(res)
+        setIsUploadingData(false)
         handleNext()
       })
       
@@ -156,6 +161,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
         setErrorMessage('')
         setProjectGUID(res.id)
         setProjectDetails(res)
+        setIsUploadingData(false)
         handleNext()
       })
     }
@@ -164,8 +170,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   };
 
   return (
-    <div className={styles.stepContainer}>
+    <div className={`${styles.stepContainer} `}>
       <form onSubmit={handleSubmit(onSubmit)}>
+       <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
         <div className={styles.formFieldLarge}>
           <MaterialTextField
             inputRef={register({
@@ -507,6 +514,8 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           ) : null
         }
 
+        
+        </div>
         <div className={styles.formField} style={{ marginTop: '48px' }}>
           {/* <div className={`${styles.formFieldHalf}`}>
             <input
@@ -517,13 +526,13 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
-            <input
-              type="submit"
-              className={styles.continueButton}
-              value="Save & Continue"
-            ></input>
+            <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+              {isUploadingData? <div className={styles.spinner}></div> : "Save & Continue"}
+            </div>
+            
           </div>
         </div>
+       
       </form>
     </div>
   );

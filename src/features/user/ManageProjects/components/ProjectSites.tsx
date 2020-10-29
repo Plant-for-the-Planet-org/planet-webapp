@@ -11,7 +11,6 @@ import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
-import { useSession } from 'next-auth/client';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
@@ -23,6 +22,7 @@ interface Props {
   setProjectDetails: Function;
   projectGUID: String;
   handleReset: Function;
+  session:any
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -31,12 +31,11 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset
+  handleBack,session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
-  const [session, loading] = useSession();
 
   const defaultSiteDetails =
   {
@@ -135,7 +134,7 @@ export default function ProjectSites({
   ];
 
   React.useEffect(()=>{
-    // Fetch images of the project 
+    // Fetch sites of the project 
     if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
     getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`,session).then((result)=>{
       console.log('result',result);

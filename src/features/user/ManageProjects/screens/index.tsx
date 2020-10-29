@@ -42,7 +42,7 @@ export default function ManageProjects({GUID,session,project}:any) {
     React.useEffect(()=>{
         // Fetch details of the project 
         if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
-        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=default`,session).then((result)=>{
+        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`,session).then((result)=>{
             setProjectDetails(result)
         })
     },[GUID,projectGUID])    
@@ -50,15 +50,15 @@ export default function ManageProjects({GUID,session,project}:any) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+                return <BasicDetails handleNext={handleNext} session={session} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
             case 1:
-                return <ProjectMedia handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectMedia handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:
-                return <DetailedAnalysis handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <DetailedAnalysis handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 3:
-                return <ProjectSites handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 4:
-                return <ProjectSpending handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSpending handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             default:
                 return 'Unknown step';
         }

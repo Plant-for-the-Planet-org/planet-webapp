@@ -6,7 +6,6 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import { useSession } from 'next-auth/client';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import {getS3Image} from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -21,11 +20,11 @@ interface Props {
   setProjectDetails: Function;
   projectGUID: String;
   handleReset: Function;
+  session:any;
 }
 
-export default function ProjectMedia({ handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectMedia({ handleBack, session,handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
-  const [session, loading] = useSession();
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 

@@ -14,7 +14,6 @@ import {
 } from '@material-ui/pickers';
 import { MenuItem } from '@material-ui/core';
 import ProjectCertificates from './ProjectCertificates';
-import { useSession } from 'next-auth/client';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -24,10 +23,10 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
+    session:any;
   }
-export default function DetailedAnalysis({ handleBack, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack,session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
-    const [session, loading] = useSession();
 
     const { register, handleSubmit, errors, control } = useForm({ mode: 'all' });
 

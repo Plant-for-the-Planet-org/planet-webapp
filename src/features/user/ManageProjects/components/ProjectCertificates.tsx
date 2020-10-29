@@ -87,7 +87,7 @@ function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
     }
 
     React.useEffect(()=>{
-        // Fetch images of the project 
+        // Fetch certificates of the project 
         if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
         getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`,session).then((result)=>{
             setUploadedFiles(result.certificates)
