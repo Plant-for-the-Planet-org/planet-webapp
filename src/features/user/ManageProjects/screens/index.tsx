@@ -18,7 +18,7 @@ function getSteps() {
     return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
 }
 
-export default function ManageProjects({GUID,session}:any) {
+export default function ManageProjects({GUID,session,project}:any) {
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
     const steps = getSteps();
@@ -37,11 +37,10 @@ export default function ManageProjects({GUID,session}:any) {
     };
 
     const [projectGUID,setProjectGUID] = React.useState(GUID?GUID:'')
-    const [projectDetails,setProjectDetails] = React.useState({})
+    const [projectDetails,setProjectDetails] = React.useState(project ? project: {})
 
     React.useEffect(()=>{
         // Fetch details of the project 
-
         if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
         getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=default`,session).then((result)=>{
             setProjectDetails(result)

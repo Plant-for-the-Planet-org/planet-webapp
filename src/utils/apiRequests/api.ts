@@ -25,7 +25,7 @@ export async function getRequest(url: any) {
 }
 
 export async function getAuthenticatedRequest(url: any,session:any) {
-  let result;
+  let result= {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
@@ -35,10 +35,19 @@ export async function getAuthenticatedRequest(url: any,session:any) {
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
       if(res.status === 404){
-        const errorMessage = 'Not Found';
-      } else if (res.status !== 200) {
+        let error = {
+          status: 404
+        }
+        result = error;
+      } else if(res.status === 401) {
+        let error = {
+          status: 401
+        }
+        result = error;
+      }
+      else if (res.status !== 200) {
         // Maybe show a Modal with Error and redirect to home page
-        const errorMessage = res.statusText;
+       
       } else{
         return result;
       }
