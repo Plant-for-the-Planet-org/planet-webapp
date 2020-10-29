@@ -14,6 +14,7 @@ import {
 } from '@material-ui/pickers';
 import { MenuItem } from '@material-ui/core';
 import ProjectCertificates from './ProjectCertificates';
+import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 
 const { useTranslation } = i18next;
 interface Props {
@@ -113,7 +114,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} style={{position:'relative'}}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
                                     views={["year"]}
@@ -129,6 +130,15 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     disableFuture
                                 />
                             </MuiPickersUtilsProvider>
+                            <div style={{position:'absolute',top:'-9px',right:'16px',width:'fit-content'}}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>When was the last significant human intervention in the site? Incl. logging, agriculture, cattle grazing, human induced burning.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -175,7 +185,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             )}
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} style={{position:'relative'}}>
                             <MaterialTextField
                                 inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
                                 label={t('manageProjects:employeeCount')}
@@ -189,6 +199,14 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     {errors.employeeCount.message}
                                 </span>
                             )}
+                            <div style={{position:'absolute',top:'-9px',right:'16px',width:'fit-content'}}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>Equivalent of a 40 hour week. I.e. two half time employees count as one.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -266,20 +284,6 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
-
-                            {/* <MaterialTextField
-                            label={t('manageProjects:siteOwner')}
-                            variant="outlined"
-                            name="siteOwner"
-                            onChange={changeDetailedAnalysisData}
-                            select
-                        >
-                            {siteOwners.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.title}
-                                </MenuItem>
-                            ))}
-                        </MaterialTextField> */}
 
                             <Controller
                                 as={
@@ -377,7 +381,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             </span>
                         )}
                     </div>
-                    <div className={styles.formFieldLarge}>
+                    <div className={styles.formFieldLarge} style={{position:'relative'}}>
                         <MaterialTextField
                             label={t('manageProjects:longTermPlan')}
                             variant="outlined"
@@ -396,6 +400,14 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 {errors.longTermPlan.message}
                             </span>
                         )}
+                        <div style={{position:'absolute',top:'-9px',right:'16px',width:'fit-content'}}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?</p>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
 
 

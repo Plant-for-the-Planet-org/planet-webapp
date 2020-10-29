@@ -509,9 +509,9 @@
 
 .popover{
   position: relative;
+  width: fit-content!important;
   .popoverContent{
     position: absolute;
-    left: -50%;
     z-index: 10;
     background-color: $light;
     border-radius: 10px;
