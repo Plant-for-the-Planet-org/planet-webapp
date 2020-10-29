@@ -475,7 +475,7 @@ export default function MapboxMap({
             id="potential"
             type="raster"
             tiles={[
-              ' https://earthengine.googleapis.com/map/80c988d5e8f6021ef9e6d2447f405c79/{z}/{x}/{y}?token=a5a5893006a0ea587845708b078df9ca',
+              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V3/MapServer/tile/{z}/{y}/{x}',
             ]}
             tileSize={128}
           >

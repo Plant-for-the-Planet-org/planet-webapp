@@ -73,9 +73,9 @@ export default [
           float year = 2000.0 + (color.b * 255.);
           // map to years
           if (year >= startYear && year <= endYear && year >= 2001.) {
-            color.r = 220. / 255.;
-            color.g = (72. - zoom + 102. - 3. * scaleIntensity / zoom) / 255.;
-            color.b = (33. - zoom + 153. - intensity / zoom) / 255.;
+            color.r = 255. / 255.;
+            color.g = (228. - zoom + 102. - 3. * scaleIntensity / zoom) / 255.;
+            color.b = (-100. - zoom + 153. - intensity / zoom) / 255.;
           } else {
             alpha = 0.;
           }
