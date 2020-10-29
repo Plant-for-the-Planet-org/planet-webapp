@@ -468,7 +468,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'}>Publish Project (if projectstatus=Approved)</label>
+              <label htmlFor={'publish'}>Publish Project</label>
 
               <Controller
                 name="publish"
@@ -484,7 +484,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               />
             </div>
           </div>
-          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'enablePlantLocations'}>
                 Detailed Project Analysis if projectstatus=Approved
@@ -504,7 +504,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                 )}
               />
             </div>
-          </div>
+          </div> */}
 
           {
             errorMessage && errorMessage !== '' ? (
