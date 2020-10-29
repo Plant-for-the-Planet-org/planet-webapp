@@ -27,8 +27,6 @@ const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
   ? process.env.SCHEME
   : 'https';
 
-const nextAuthUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://auth0.pp.eco'; 
-
 const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withSourceMaps({
@@ -93,7 +91,7 @@ module.exports = withSourceMaps({
     SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
-    NEXTAUTH_URL: nextAuthUrl,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
