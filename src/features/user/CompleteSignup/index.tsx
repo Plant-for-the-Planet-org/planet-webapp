@@ -9,7 +9,7 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserType, setUserSlug, removeUserExistsInDB, removeUserSlug, removeUserType } from '../../../utils/auth0/localStorageUtils'
+import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getUserInfo, setUserInfo, removeUserInfo } from '../../../utils/auth0/localStorageUtils'
 
 export default function CompleteSignup() {
   const [session, loading] = useSession();
@@ -26,7 +26,7 @@ export default function CompleteSignup() {
 
     // if accessed by a registered user
     if (!loading && session && userExistsInDB) {
-        const userSlug = getUserSlug();
+        const userSlug = getUserInfo().slug;
         if (typeof window !== 'undefined') {
           router.push(`/t/${userSlug}`);
         }
@@ -80,24 +80,24 @@ export default function CompleteSignup() {
       return false;
     }
   };
-
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await fetch(`${process.env.API_ENDPOINT}/app/profiles`, {
+      const res = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
         headers: {
           'Content-Type': 'application/json',
         },
         method: 'POST',
         body: JSON.stringify(bodyToSend),
-      });
+      });      
       setRequestSent(false);
       if (res.status === 200) {
         // successful signup -> goto me page
         const resJson = await res.json();
-        setUserExistsInDB(true);     
-        setUserSlug(resJson.slug);
-        setUserType(resJson.type);
+        setUserExistsInDB(true);  
+        const userInfo = getUserInfo(); 
+        const newUserInfo = {...userInfo, slug: resJson.slug, type:resJson.type }
+        setUserInfo(newUserInfo)
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
@@ -110,8 +110,7 @@ export default function CompleteSignup() {
         console.log('in 401-> unauthenticated user / invalid token')
         signOut()
         removeUserExistsInDB()
-        removeUserSlug()
-        removeUserType()
+        removeUserInfo()
         signIn('auth0', { callbackUrl: '/login' });
       } else {
         setSnackbarMessage('Error in creating profile. Please try again');
