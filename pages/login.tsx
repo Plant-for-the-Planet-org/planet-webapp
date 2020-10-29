@@ -5,7 +5,7 @@ import Layout from '../src/features/common/Layout';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import {setUserSlug, setUserExistsInDB, removeUserExistsInDB, removeUserSlug, setUserProfilePic, setUserType, removeUserType} from '../src/utils/auth0/localStorageUtils'
+import {setUserExistsInDB, removeUserExistsInDB, setUserInfo, removeUserInfo} from '../src/utils/auth0/localStorageUtils'
 import { getAccountInfo } from '../src/utils/auth0/apiRequests'
 const config = tenantConfig();
 
@@ -23,9 +23,12 @@ export default function Login() {
         //if 200-> user exists in db
         const resJson = await res.json();
         setUserExistsInDB(true)
-        setUserSlug(resJson.slug)
-        setUserProfilePic(resJson.image)
-        setUserType(resJson.type)
+        const userInfo = {
+          slug: resJson.slug,
+          profilePic: resJson.image,
+          type: resJson.type
+        }
+        setUserInfo(userInfo)
         if (typeof window !== 'undefined') {
           router.push(`/t/${resJson.slug}`);
         }
@@ -40,7 +43,7 @@ export default function Login() {
         console.log('in 401-> unauthenticated user / invalid token')
         signOut()
         removeUserExistsInDB()
-        removeUserSlug()
+        removeUserInfo()
         signIn('auth0', { callbackUrl: '/login' });
       } else {
         console.log('in /login else -> any other error')

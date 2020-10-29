@@ -1,27 +1,3 @@
-/* USER-SLUG UTILS */
-
-// Fetches user slug from the local storage
-// @returns string - user-slug of logged-in user
-export function getUserSlug() {
-  if (localStorage.getItem('userSlug')) {
-    const stringUserSlug = localStorage.getItem('userSlug');
-    const userSlug = JSON.parse(stringUserSlug);
-    return userSlug;
-  }
-  return null;
-}
-
-//   sets userSlug to the local storage
-export function setUserSlug(userslug:string) {
-    localStorage.setItem('userSlug', JSON.stringify(userslug));
-}
-
-//  removes userSlug from local storage
-export function removeUserSlug() {
-  localStorage.removeItem('userSlug');
-}
-
-
 /* USER-EXISTS-IN-DB UTILS */
 
 //   fetches if userExistsInDB from the local storage
@@ -45,46 +21,24 @@ export function removeUserExistsInDB() {
     localStorage.removeItem('userExistsInDB');
 }
 
-/* USER PROFILE PIC */
-
-//  gets userProfilePic from the local storage
-export function getUserProfilePic() {
-  if (localStorage.getItem('userProfilePic')) {
-    const stringUserProfilePic = localStorage.getItem('userProfilePic');
-    const userProfilePic = JSON.parse(stringUserProfilePic);
-    return userProfilePic;
-  }
-  return null;
-}
-
-//  sets userProfilePic to the local storage
-export function setUserProfilePic(userProfilePic) {
-  localStorage.setItem('userProfilePic', JSON.stringify(userProfilePic));
-}
-
-//  removes userProfilePic from local storage
-export function removeUserProfilePic() {
-  localStorage.removeItem('userProfilePic');
-}
-
-/* USER TYPE */
+/* USER INFO */
 
 //  gets userType from the local storage
-export function getUserType() {
-  if (localStorage.getItem('userType')) {
-    const stringUserType = localStorage.getItem('userType');
-    const userType = JSON.parse(stringUserType);
-    return userType;
+export function getUserInfo() {
+  if (localStorage.getItem('userInfo')) {
+    const stringUserInfo = localStorage.getItem('userInfo');
+    const userInfo = JSON.parse(stringUserInfo);
+    return userInfo;
   }
   return null;
 }
 
 //  sets userType to the local storage
-export function setUserType(userType) {
-  localStorage.setItem('userType', JSON.stringify(userType));
+export function setUserInfo(userInfo:any) {
+  localStorage.setItem('userInfo', JSON.stringify(userInfo));
 }
 
-//  removes userType from local storage
-export function removeUserType() {
-  localStorage.removeItem('userType');
+//  removes userInfo from local storage
+export function removeUserInfo() {
+  localStorage.removeItem('userInfo');
 }
