@@ -3,10 +3,12 @@
 .mainContainer {
   margin: auto;
   margin-top: 60px;
-  max-width: 780px;
+  max-width: 768px;
   display: flex;
   justify-content: center;
 }
+
+
 .stepContainer {
   margin: auto;
   font-family: $primaryFontFamily;
@@ -23,7 +25,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 660px;
+  max-width: 320px;
   justify-content: space-between;
   align-items: center;
 }
@@ -42,13 +44,24 @@
   flex-direction: row;
   align-items: flex-start;
   flex-wrap: wrap;
-  max-width: 660px;
+  max-width: 320px;
   min-width: 320px;
   // div,input{
   //     min-width: 320px;
   // }
 }
 
+@include mdTabletView{
+  .mainContainer {
+    max-width: 780px;
+  }
+  .formField {
+    max-width: 660px;
+  }
+  .formFieldLarge {
+    max-width: 660px;
+  }
+}
 .continueButton,
 .secondaryButton {
   height: 40px;

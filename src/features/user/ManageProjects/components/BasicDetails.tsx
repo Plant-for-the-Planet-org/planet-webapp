@@ -39,7 +39,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
   const [viewport, setViewPort] = React.useState({
-    width: '100%',
+    width: 760,
     height: 400,
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
@@ -147,13 +147,16 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
         setErrorMessage('')
         setProjectDetails(res)
+        handleNext()
       })
+      
       
     }else{
       postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
         setErrorMessage('')
         setProjectGUID(res.id)
         setProjectDetails(res)
+        handleNext()
       })
     }
    
@@ -505,19 +508,19 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
         }
 
         <div className={styles.formField} style={{ marginTop: '48px' }}>
-          <div className={`${styles.formFieldHalf}`}>
+          {/* <div className={`${styles.formFieldHalf}`}>
             <input
               type="submit"
               className={styles.secondaryButton}
               value="Continue to Media"
             ></input>
-          </div>
+          </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
             <input
               type="submit"
               className={styles.continueButton}
-              value="Save & see Project"
+              value="Save & Continue"
             ></input>
           </div>
         </div>
