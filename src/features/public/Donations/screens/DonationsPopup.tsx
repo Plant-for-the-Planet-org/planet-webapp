@@ -164,7 +164,7 @@ function DonationsPopup({
   };
 
   React.useEffect(() => {
-    if (directGift !== null) {
+    if (directGift) {
       setIsGift(true);
       setGiftDetails({
         type: 'direct',
