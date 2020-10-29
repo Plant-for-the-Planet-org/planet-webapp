@@ -7,7 +7,7 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useSession } from 'next-auth/client';
-import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import {getS3Image} from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
@@ -40,6 +40,16 @@ export default function ProjectMedia({ handleBack, handleNext, projectDetails, s
   };
 
   const [uploadedImages, setUploadedImages] = React.useState([])
+
+  React.useEffect(()=>{
+    // Fetch images of the project 
+    if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
+    getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`,session).then((result)=>{
+        setUploadedImages(result.images)
+    })
+},[projectGUID]);
+
+
   const uploadPhotos = (image: any) => {
     const submitData = {
       "imageFile": image,
@@ -68,14 +78,7 @@ export default function ProjectMedia({ handleBack, handleNext, projectDetails, s
       reader.onabort = () => console.log('file reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = (event) => {
-        // Do whatever you want with the file contents
-        // setFiles(acceptedFiles.map((file:any) => Object.assign(file, {
-        //   preview: URL.createObjectURL(file),
-        // })));
-        // console.log('Base 64 version', event.target.result);
         uploadPhotos(event.target.result);
-        // Upload the base 64 to API and use the response to show preview to the user
-
       }
     })
 
