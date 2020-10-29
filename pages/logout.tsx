@@ -5,7 +5,8 @@ import tenantConfig from '../tenant.config';
 import {
   removeUserExistsInDB,
   removeUserSlug,
-  removeUserProfilePic
+  removeUserProfilePic,
+  removeUserType
 } from '../src/utils/auth0/localStorageUtils';
 
 const config = tenantConfig();
@@ -21,6 +22,7 @@ export default function Logout() {
         removeUserExistsInDB();
         removeUserSlug();
         removeUserProfilePic();
+        removeUserType();
         signOut();
         console.log('application session cleared.....');
 

@@ -66,3 +66,25 @@ export function setUserProfilePic(userProfilePic) {
 export function removeUserProfilePic() {
   localStorage.removeItem('userProfilePic');
 }
+
+/* USER TYPE */
+
+//  gets userType from the local storage
+export function getUserType() {
+  if (localStorage.getItem('userType')) {
+    const stringUserType = localStorage.getItem('userType');
+    const userType = JSON.parse(stringUserType);
+    return userType;
+  }
+  return null;
+}
+
+//  sets userType to the local storage
+export function setUserType(userType) {
+  localStorage.setItem('userType', JSON.stringify(userType));
+}
+
+//  removes userType from local storage
+export function removeUserType() {
+  localStorage.removeItem('userType');
+}
