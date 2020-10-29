@@ -5,6 +5,8 @@ import styles from '../../Donations/styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import getStripe from '../../../../utils/stripe/getStripe';
+import { getRequest } from '../../../../utils/apiRequests/api';
+import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import { ThemeContext } from '../../../../theme/themeContext';
 import DonationsPopup from '../../Donations/screens/DonationsPopup';
@@ -35,31 +37,20 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const progressPercentage =
     (project.countPlanted / project.countTarget) * 100 + '%';
 
-  const [
-    taxDeductionCountriesArray,
-    setTaxDeductionCountriesArray,
-  ] = React.useState([]);
-
+  // As the data in project retrieved from the treecounter API call 
+  // is not compatible with the DonationsPopup component, 
+  // we pay a high price loading every single project again.
   React.useEffect(() => {
-    let taxarray = [];
-    for (let i = 0; i < project.paymentSetup.taxDeduction.length; i++) {
-      const countryCode = getCountryDataBy(
-        'countryName',
-        project.paymentSetup.taxDeduction[i]
-      ).countryCode;
-      taxarray.push(countryCode);
+    async function loadProject() {
+      let currencyCode = getStoredCurrency();
+      project.properties = await getRequest(`/app/projects/${project.slug}?_scope=extended&currency=${currencyCode}`);
     }
-    setTaxDeductionCountriesArray(taxarray);
-  }, []);
-  const projectDetails = {
-    id: project.id,
-    name: project.name,
-    currency: project.currency,
-    country: project.country,
-    treeCost: project.treeCost,
-    taxDeductionCountries: taxDeductionCountriesArray,
-    tpo: project.tpoData,
-  };
+    if(project.slug !== undefined) {
+      loadProject();
+    }
+  }, [project.slug]);
+  
+  const projectDetails = project.properties;
 
   return (
     <>

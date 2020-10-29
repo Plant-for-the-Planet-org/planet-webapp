@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import SingleProjectDetails from '../src/features/public/Donations/components/SingleProjectDetails';
 import { getRequest } from '../src/utils/apiRequests/api';
-import getStoredCurrency from "../src/utils/countryCurrency/getStoredCurrency";
+import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 
 interface Props {
@@ -25,13 +25,13 @@ export default function Donate({
   }, []);
 
   React.useEffect(() => {
-      async function loadProject() {
-        let currencyCode = getStoredCurrency();
-        const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
-        setProject(project);
-        setShowSingleProject(true);
-      }
-      if(router.query.p !== undefined) {
+    async function loadProject() {
+      let currencyCode = getStoredCurrency();
+      const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
+      setProject(project);
+      setShowSingleProject(true);
+    }
+    if(router.query.p !== undefined) {
       loadProject();
     }
   }, [router.query.p]);
