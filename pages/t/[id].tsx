@@ -12,7 +12,9 @@ import {
   getUserSlug,
   setUserExistsInDB,
   removeUserExistsInDB,
-  removeUserSlug
+  removeUserSlug,
+  removeUserProfilePic,
+  removeUserType
 } from '../../src/utils/auth0/localStorageUtils';
 import {getAccountInfo } from '../../src/utils/auth0/apiRequests'
 
@@ -82,6 +84,8 @@ export default function PublicUser(initialized: Props) {
               signOut()
               removeUserExistsInDB()
               removeUserSlug()
+              removeUserProfilePic()
+              removeUserType()
               signIn('auth0', { callbackUrl: '/login' });
             } else {
               // any other error
