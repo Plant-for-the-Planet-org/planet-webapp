@@ -9,7 +9,7 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserSlug, removeUserExistsInDB, removeUserSlug } from '../../../utils/auth0/localStorageUtils'
+import { getUserExistsInDB, getUserSlug, setUserExistsInDB, setUserType, setUserSlug, removeUserExistsInDB, removeUserSlug, removeUserType } from '../../../utils/auth0/localStorageUtils'
 
 export default function CompleteSignup() {
   const [session, loading] = useSession();
@@ -97,6 +97,7 @@ export default function CompleteSignup() {
         const resJson = await res.json();
         setUserExistsInDB(true);     
         setUserSlug(resJson.slug);
+        setUserType(resJson.type);
         setSnackbarMessage('Profile Successfully created!');
         setSeverity("success")
         handleSnackbarOpen();
@@ -110,6 +111,7 @@ export default function CompleteSignup() {
         signOut()
         removeUserExistsInDB()
         removeUserSlug()
+        removeUserType()
         signIn('auth0', { callbackUrl: '/login' });
       } else {
         setSnackbarMessage('Error in creating profile. Please try again');
