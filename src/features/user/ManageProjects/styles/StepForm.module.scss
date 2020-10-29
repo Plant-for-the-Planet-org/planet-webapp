@@ -269,7 +269,7 @@
     top: -10px;
     font-size: 12px;
     left: 12px;
-    z-index: 999;
+    z-index: 9;
   }
 
   .uploadedMapName{
@@ -483,6 +483,8 @@
   opacity: 0.5;
 }
 
+
+// Loader for Buttons
 .spinner{
   border: 2px solid #f3f3f3;
   border-radius: 50%;
@@ -501,4 +503,28 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+// Popover
+
+.popover{
+  position: relative;
+  .popoverContent{
+    position: absolute;
+    left: -50%;
+    z-index: 10;
+    background-color: $light;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    border: 2px solid $primaryColor;
+    display: none;
+   
+  }
+  &:hover, &:active{
+    cursor: pointer;
+    .popoverContent{
+      display: block;
+    }
+  }
 }

@@ -6,7 +6,6 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
 import MapGL, { Marker,NavigationControl } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
-import PopHover from '../../../common/InputTypes/PopHover';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 import { postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
@@ -315,8 +314,12 @@ export default function BasicDetails({ handleNext, session,projectDetails, setPr
           <div className={`${styles.formFieldHalf}`}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor="acceptDonations" style={{ display: 'flex', alignItems: 'center' }}>Receive Donations <div style={{ height: '13px', width: '13px', marginLeft: '6px' }}>
-                <PopHover label={<InfoIcon />} value={'Please activate once the project profile is complete. Plant-for-the-Planet will then review the profile and inform you if you are eligible to receive donations through this platform. This may take a few weeks.'} />
-
+                <div className={styles.popover}>
+                  <InfoIcon />
+                  <div className={styles.popoverContent}>
+                    <p>Please activate once the project profile is complete. Plant-for-the-Planet will then review the profile and inform you if you are eligible to receive donations through this platform. This may take a few weeks.</p>
+                  </div>
+                </div>
               </div></label>
 
               <Controller
