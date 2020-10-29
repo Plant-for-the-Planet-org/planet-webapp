@@ -15,7 +15,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
 import {getS3Image} from '../../../../utils/getImageURL'
-import { getUserExistsInDB, getUserSlug, getUserProfilePic } from '../../../../utils/auth0/localStorageUtils'
+import { getUserExistsInDB, getUserInfo } from '../../../../utils/auth0/localStorageUtils'
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -42,7 +42,7 @@ export default function NavbarComponent(props: any) {
   
     // if user logged in, and already signed up -> /t/userSlug page
       if (!loading && session && (userExistsInDB === true)) {
-          var userslug = getUserSlug();
+          var userslug = getUserInfo().slug;
           if (typeof window !== 'undefined') {
             console.log('if user logged in, and already signed up -> /t/userSlug page');
             router.push(`/t/${userslug}`);
@@ -64,8 +64,8 @@ export default function NavbarComponent(props: any) {
 
   const checkWhichIcon = () => {
     if (typeof Storage !== 'undefined') {
-      const userProfilePic = getUserProfilePic()
-      const userSlug = getUserSlug()
+      const userProfilePic = getUserInfo()?.profilePic;
+      const userSlug = getUserInfo()?.slug;
       //if logged in user && exist in db && profilepic is set -> show profile pic
       if (!loading && session && userProfilePic) {
         return <img src={getS3Image('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
