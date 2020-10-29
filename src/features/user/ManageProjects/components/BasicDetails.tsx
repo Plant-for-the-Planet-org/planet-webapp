@@ -70,10 +70,10 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
 
   // Form Fields
   // In future if the details are present, we will feed default values here
-  const [defaultBasicDetails, setDefaultBasicDetails] = React.useState({
+  const defaultBasicDetails={
     name: '',
     slug: '',
-    classification: '',
+    classification: { label: 'Project Type', value: null },
     countTarget: 0,
     website: '',
     description: '',
@@ -87,7 +87,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       latitude: 0,
       longitude: 0
     }
-  })
+  }
 
   const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
@@ -113,13 +113,9 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
           longitude: 0
         }
       };
-      setDefaultBasicDetails(basicDetails)
-      // reset is for Controller-ProjectType default value
-      reset(defaultBasicDetails)
+      reset(basicDetails)
     }
   }, [projectDetails])
-
-
 
   const onSubmit = (data: any) => {
 

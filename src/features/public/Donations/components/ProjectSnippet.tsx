@@ -80,6 +80,13 @@ export default function ProjectSnippet({
         </Elements>
       </Modal>
 
+      {editMode ? (
+        <Link href={`/manage-projects/${project.properties.id}`}>
+          <div className={styles.projectEditBlock}>
+            <EditIcon></EditIcon>
+          </div>
+        </Link>
+      ) : null}
       <div
         onClick={() => {
           router.push('/[p]', `/${project.properties.slug}`, {
@@ -99,13 +106,7 @@ export default function ProjectSnippet({
             ></div>
           ) : null}
 
-        {editMode ? (
-          <Link href={`/manage-projects/${project.properties.id}`}>
-            <div className={styles.projectEditBlock}>
-              <EditIcon></EditIcon>
-            </div>
-          </Link>
-        ) : null}
+
 
         <div className={styles.projectImageBlock}>
           {/* <div className={styles.projectType}>

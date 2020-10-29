@@ -13,17 +13,15 @@ import DetailedAnalysis from '../components/DetailedAnalysis';
 import ProjectSites from '../components/ProjectSites';
 import ProjectSpending from '../components/ProjectSpending';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useSession } from 'next-auth/client';
 
 function getSteps() {
     return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
 }
 
-export default function ManageProjects() {
+export default function ManageProjects({GUID,session}:any) {
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
     const steps = getSteps();
-    const [session, loading] = useSession();
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -38,19 +36,17 @@ export default function ManageProjects() {
         setActiveStep(0);
     };
 
-    const [projectGUID,setProjectGUID] = React.useState('')
+    const [projectGUID,setProjectGUID] = React.useState(GUID?GUID:'')
     const [projectDetails,setProjectDetails] = React.useState({})
 
     React.useEffect(()=>{
         // Fetch details of the project 
-        if(projectGUID !== '' && projectGUID !== null)
+
+        if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
         getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=default`,session).then((result)=>{
             setProjectDetails(result)
         })
-    },[])
-
-    console.log('projectGUID',projectDetails);
-    
+    },[GUID,projectGUID])    
 
     function getStepContent(step: number) {
         switch (step) {

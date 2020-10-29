@@ -1,5 +1,7 @@
 import React, { ReactElement,useEffect } from 'react'
 import { useRouter } from 'next/router';
+import ManageProjects from '../../src/features/user/ManageProjects/screens'
+import { useSession } from 'next-auth/client';
 
 interface Props {
     
@@ -8,6 +10,7 @@ interface Props {
 function ManageSingleProject({}: Props): ReactElement {
     const [projectGUID, setProjectGUID] = React.useState(null);
     const [ready, setReady] = React.useState(false);
+    const [session, loading] = useSession();
 
     const router = useRouter();
 
@@ -17,11 +20,9 @@ function ManageSingleProject({}: Props): ReactElement {
           setReady(true);
         }
       }, [router]);
-    return (
-        <div>
-            <h2> {projectGUID} </h2>
-        </div>
-    )
+    return ready && session ? (
+        <ManageProjects GUID={projectGUID} session={session} />
+    ): (<h2>NO Project ID FOUND</h2>)
 }
 
 export default ManageSingleProject
