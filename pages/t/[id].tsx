@@ -42,12 +42,6 @@ export default function PublicUser(initialized: Props) {
     forceReload,
     authenticatedType,
   };
-  const PrivateUserProps = {
-    userprofile,
-    changeForceReload,
-    forceReload,
-    authenticatedType,
-  };
 
   useEffect(() => {
     if (router && router.query.id !== undefined) {
@@ -109,7 +103,7 @@ export default function PublicUser(initialized: Props) {
     }
   }, [ready, loading, forceReload]);
   
-  function getPublicUserProfile() {
+  function getUserProfile() {
     switch (userprofile?.type) {
       case 'tpo':
         return (
@@ -130,37 +124,8 @@ export default function PublicUser(initialized: Props) {
     }
   }
 
-  function getPrivateUserProfile() {
-    switch (userprofile?.type) {
-      case 'tpo':
-        return (
-          <>
-            <GetPublicUserProfileMeta userprofile={userprofile} />
-            <TPOProfile {...PrivateUserProps} />
-            <Footer />
-          </>
-        );
-      case 'individual':
-        return (
-          <>
-            <GetPublicUserProfileMeta userprofile={userprofile} />
-            <IndividualProfile
-            style={{ height: '100vh', overflowX: 'hidden' }}
-            {...PrivateUserProps}
-          />
-            <Footer />
-          </>
-        );
-    }
-  }
-
-
   if (initialized && (userprofile)) {
-    if (authenticatedType === 'public') {
-      return getPublicUserProfile();
-    } else if (authenticatedType === 'private') {
-      return getPrivateUserProfile();
-    }
+    return getUserProfile()
   } else {
     return <UserProfileLoader />;
   }
