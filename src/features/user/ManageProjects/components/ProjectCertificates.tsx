@@ -11,7 +11,7 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import { useDropzone } from 'react-dropzone';
-import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
@@ -85,6 +85,14 @@ function ProjectCertificates({ projectGUID, session }: Props): ReactElement {
             }
         })
     }
+
+    React.useEffect(()=>{
+        // Fetch images of the project 
+        if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
+        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`,session).then((result)=>{
+            setUploadedFiles(result.certificates)
+        })
+    },[projectGUID]);
 
     return (
         <div>

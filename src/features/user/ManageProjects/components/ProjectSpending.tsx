@@ -12,7 +12,7 @@ import {
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { useDropzone } from 'react-dropzone';
-import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useSession } from 'next-auth/client';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PDFIcon';
@@ -99,6 +99,14 @@ export default function ProjectSpending({ handleBack, handleNext, projectDetails
         })
     }
 
+
+    React.useEffect(()=>{
+        // Fetch images of the project 
+        if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
+        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`,session).then((result)=>{
+            setUploadedFiles(result.expenses)
+        })
+    },[projectGUID]);
 
     return (
         <div className={styles.stepContainer}>

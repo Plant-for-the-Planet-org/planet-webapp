@@ -26,9 +26,9 @@
   font-family: $primaryFontFamily;
   text-align: center;
   padding: 0px 20px;
-  margin-top: 80px;
+  margin-top: 20px;
    h2{
-     margin-top: 16px;
+     margin-top: 8px;
      font-weight: bold;
     font-size: 24px;
   }
@@ -61,7 +61,7 @@
     text-align: left;
   }
   .listProjects{
-    justify-content: space-between;
+    justify-content: left;
   }
 }
 @include xlDesktopView{

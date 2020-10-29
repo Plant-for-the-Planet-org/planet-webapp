@@ -64,21 +64,24 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
                 </div>
               );
             })}
+            {
+              authenticatedType === 'private' ? (
+                <Link href='/manage-projects/add-project'>
+                  <div className={styles.singleProject}>
+                  <div className={styles.projectNotFound}>
+                    <AddProject />
+                    <h2>Add Project</h2>
+                  </div>
+                  </div>
+                </Link>
+              ) : (
+                  null
+                )
+            }
           </div>
         )}
 
-      {
-        authenticatedType === 'private' ? (
-          <Link href='/manage-projects/add-project'>
-            <div className={styles.projectNotFound}>
-              <AddProject />
-              <h2>Add Project</h2>
-            </div>
-          </Link>
-        ) : (
-            null
-          )
-      }
+
     </div>
   );
 }

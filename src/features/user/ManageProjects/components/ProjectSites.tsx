@@ -12,7 +12,7 @@ import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { useSession } from 'next-auth/client';
-import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
@@ -133,6 +133,17 @@ export default function ProjectSites({
     { label: 'Barren', value: 'barren' },
     { label: 'Reforestation', value: 'reforestation' },
   ];
+
+  React.useEffect(()=>{
+    // Fetch images of the project 
+    if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
+    getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`,session).then((result)=>{
+      console.log('result',result);
+      
+      // setSiteList(result.sites)
+    })
+},[projectGUID]);
+
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
