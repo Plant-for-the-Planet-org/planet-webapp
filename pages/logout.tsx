@@ -4,9 +4,7 @@ import React from 'react';
 import tenantConfig from '../tenant.config';
 import {
   removeUserExistsInDB,
-  removeUserSlug,
-  removeUserProfilePic,
-  removeUserType
+  removeUserInfo
 } from '../src/utils/auth0/localStorageUtils';
 
 const config = tenantConfig();
@@ -20,9 +18,7 @@ export default function Logout() {
       try {
         // clear application session
         removeUserExistsInDB();
-        removeUserSlug();
-        removeUserProfilePic();
-        removeUserType();
+        removeUserInfo();
         signOut();
         console.log('application session cleared.....');
 
