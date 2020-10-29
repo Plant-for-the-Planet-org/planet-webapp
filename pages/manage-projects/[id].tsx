@@ -4,6 +4,8 @@ import ManageProjects from '../../src/features/user/ManageProjects/screens'
 import { useSession } from 'next-auth/client';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import GlobeContentLoader from '../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import Footer from '../../src/features/common/Layout/Footer';
 
 interface Props {
 
@@ -60,16 +62,26 @@ function ManageSingleProject({ }: Props): ReactElement {
 
   if (accessDenied && setupAccess) {
     return (
-      <h2>Access Denied</h2>
+      <>
+      <AccessDeniedLoader/>
+     
+      <Footer/>
+      </>
     )
   }
 
   // Showing error to other TPOs is left
   return setupAccess ? (ready && session && !accessDenied) ? (
+    <>
     <ManageProjects GUID={projectGUID} session={session} project={project} />
+    <Footer/>
+    </>
   ) : (<h2>NO Project ID FOUND</h2>) :
     (
+      <>
       <GlobeContentLoader/>
+      <Footer/>
+      </>
     )
 }
 

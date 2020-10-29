@@ -3,18 +3,20 @@ import ManageProjects from '../../../src/features/user/ManageProjects/screens'
 import { useSession } from 'next-auth/client';
 import { getUserExistsInDB, getUserSlug } from '../../../src/utils/auth0/localStorageUtils';
 import { getAccountInfo } from '../../../src/utils/auth0/apiRequests';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import Footer from '../../../src/features/common/Layout/Footer';
 
 interface Props {
-    
+
 }
 
-export default function ManageProjectsPage({}: Props): ReactElement {
-    const [session, loading] = useSession();
+export default function ManageProjectsPage({ }: Props): ReactElement {
+  const [session, loading] = useSession();
   // Check whether user is tpo or not
 
-  const [accessDenied,setAccessDenied] = React.useState(false)
+  const [accessDenied, setAccessDenied] = React.useState(false)
 
-  const [setupAccess,setSetupAccess] = React.useState(false)
+  const [setupAccess, setSetupAccess] = React.useState(false)
 
   React.useEffect(() => {
     async function loadUserData() {
@@ -25,16 +27,16 @@ export default function ManageProjectsPage({}: Props): ReactElement {
             const res = await getAccountInfo(session)
             if (res.status === 200) {
               const resJson = await res.json();
-              if(resJson.type === 'tpo'){
+              if (resJson.type === 'tpo') {
                 setAccessDenied(false)
                 setSetupAccess(true)
               }
-            }  else {
+            } else {
               setAccessDenied(true)
               setSetupAccess(true)
             }
-          } catch (e) {}
-        } 
+          } catch (e) { }
+        }
       }
     }
 
@@ -53,12 +55,18 @@ export default function ManageProjectsPage({}: Props): ReactElement {
   }
 
   // User is not TPO
-  if(accessDenied && setupAccess){
+  if (accessDenied && setupAccess) {
     return (
-      <h2>Access Denied</h2>
+      <>
+        <AccessDeniedLoader />
+        <Footer />
+      </>
     )
   }
-    return (
-        <ManageProjects  session={session}/>
-    )
+  return (
+    <>
+      <ManageProjects session={session} />
+      <Footer />
+    </>
+  )
 }
