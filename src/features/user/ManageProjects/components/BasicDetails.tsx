@@ -9,7 +9,7 @@ import { MenuItem } from '@material-ui/core';
 import { useSession } from 'next-auth/client';
 import PopHover from '../../../common/InputTypes/PopHover';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 const classifications = [
@@ -28,9 +28,10 @@ interface Props {
   errorMessage: String;
   setProjectGUID: Function;
   setErrorMessage: Function;
+  projectGUID:any;
 }
 
-export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage, setProjectGUID, setErrorMessage }: Props): ReactElement {
+export default function BasicDetails({ handleNext, projectDetails, setProjectDetails, errorMessage, setProjectGUID, setErrorMessage,projectGUID }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [session, loading] = useSession();
   // Map setup
@@ -68,8 +69,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
 
 
 
-  // Form Fields
-  // In future if the details are present, we will feed default values here
+  // Default Form Fields
   const defaultBasicDetails={
     name: '',
     slug: '',
@@ -109,8 +109,8 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
         enablePlantLocations: projectDetails.enablePlantLocations,
         currency: projectDetails.currency,
         projectCoords: {
-          latitude: 0,
-          longitude: 0
+          latitude: projectDetails.geoLatitude,
+          longitude: projectDetails.geoLongitude
         }
       };
       reset(basicDetails)
@@ -142,11 +142,21 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
     }
 
     // Check if GUID is set use update instead of create project
-    postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
-      setErrorMessage('')
-      setProjectGUID(res.id)
-      setProjectDetails(res)
-    })
+    if(projectGUID){
+      
+      putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+        setErrorMessage('')
+        setProjectDetails(res)
+      })
+      
+    }else{
+      postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
+        setErrorMessage('')
+        setProjectGUID(res.id)
+        setProjectDetails(res)
+      })
+    }
+   
 
   };
 

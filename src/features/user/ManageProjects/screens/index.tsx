@@ -50,7 +50,7 @@ export default function ManageProjects({GUID,session,project}:any) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} setErrorMessage={setErrorMessage} />;
+                return <BasicDetails handleNext={handleNext} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
             case 1:
                 return <ProjectMedia handleNext={handleNext} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:
