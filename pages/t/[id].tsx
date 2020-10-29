@@ -121,6 +121,7 @@ export default function PublicUser(initialized: Props) {
             <Footer />
           </>
         );
+      default: return null;
     }
   }
 
