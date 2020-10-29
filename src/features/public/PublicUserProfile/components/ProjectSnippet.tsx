@@ -53,29 +53,30 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
   const projectDetails = project.properties;
 
   return (
-    <>
-      <Modal
-        className={styles.modal + ' ' + theme}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        disableBackdropClick
-      >
-        <Elements stripe={getStripe()}>
-          <DonationsPopup project={projectDetails} onClose={handleClose} />
-        </Elements>
-      </Modal>
       <div
-        // onClick={() => {
-        //   router.push(`/?p=${project.slug}`, undefined, {
-        //     shallow: true,
-        //   });
-        // }}
         style={{ marginBottom: '40px' }}
         key={key}
       >
-        <div className={styles.projectImage}>
+        <Modal
+          className={styles.modal + ' ' + theme}
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          disableBackdropClick
+        >
+          <Elements stripe={getStripe()}>
+            <DonationsPopup project={projectDetails} onClose={handleClose} />
+          </Elements>
+        </Modal>
+        <div
+          onClick={() => {
+            router.push('/[p]', `/${project.slug}`, {
+              shallow: true,
+            });
+          }}
+          className={styles.projectImage}
+        >
           {project.image && typeof project.image !== 'undefined' ? (
             <div
               className={styles.projectImageFile}
@@ -140,6 +141,5 @@ export default function ProjectSnippet({ project, key }: Props): ReactElement {
           )}
         </div>
       </div>
-    </>
   );
 }
