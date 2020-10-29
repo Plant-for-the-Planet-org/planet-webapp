@@ -141,6 +141,7 @@ export default function BasicDetails({ handleNext, projectDetails, setProjectDet
       enablePlantLocations: data.enablePlantLocations
     }
 
+    // Check if GUID is set use update instead of create project
     postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
       setErrorMessage('')
       setProjectGUID(res.id)
