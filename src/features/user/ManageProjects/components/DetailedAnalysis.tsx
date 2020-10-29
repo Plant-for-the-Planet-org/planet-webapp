@@ -97,11 +97,11 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
 
     const [firstTreePlantedDate, setFirstTreePlantedDate] = React.useState<Date | null>(
-        new Date('2014-08-18T21:11:54'),
+        new Date(),
     );
 
     const [acquisitionDate, setAcquisitionDate] = React.useState<Date | null>(
-        new Date('2014-08-18T21:11:54'),
+        new Date(),
     );
 
     const [yearOfAbandonment, handleyearOfAbandonment] = React.useState(new Date());
