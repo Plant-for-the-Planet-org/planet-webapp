@@ -39,8 +39,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
         setUploadedImages(result.images)
       })
   }, [projectGUID]);
-
-
+  
   const uploadPhotos = (image: any) => {
     setIsUploadingData(true)
 
@@ -122,6 +121,31 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       handleNext()
     })
   };
+
+  const setDefaultImage =(id:any,index:any)=>{
+    setIsUploadingData(true)
+    const submitData = {
+      isDefault: true
+    }
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`,submitData,session).then((res)=>{
+      if(res.code !== 200){
+        const tempUploadedData = uploadedImages;
+        tempUploadedData.forEach((image)=>{
+          image.isDefault = false
+        })
+        tempUploadedData[index].isDefault = true;
+        setUploadedImages(tempUploadedData);
+        setIsUploadingData(false)
+      }
+    })
+  }
+
+  const uploadCaption = (id:any,description:any)=>{
+    // when onblur get the description
+    // upload the image data with the image ID to backend
+    // if successful replace current image in the uploaded images
+    // Show a green border around the updated image for 5 seconds
+  }
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -157,19 +181,21 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
         {uploadedImages && uploadedImages.length > 0 ?
           <div className={styles.formField}>
             {
-              uploadedImages.map((image) => {
+              uploadedImages.map((image,index) => {
                 return (
                   <div key={image.id} className={styles.formFieldHalf}>
                     <div className={styles.uploadedImageContainer}>
                       <img src={getS3Image('project', 'medium', image.image)} />
                       <div className={styles.uploadedImageOverlay}></div>
-                      <input type="text" name="" placeholder="Add Caption" />
+                      
+                      <input type="text" name="" placeholder="Add Caption" value={image.description ?image.description:'' } />
+                      
                       <div className={styles.uploadedImageButtonContainer}>
                         <div onClick={() => deleteProjectCertificate(image.id)}>
                           <DeleteIcon />
                         </div>
-                        <div>
-                          <Star />
+                        <div onClick={() => setDefaultImage(image.id,index)}>
+                          <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
                         </div>
                       </div>
                     </div>
