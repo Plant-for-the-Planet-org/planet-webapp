@@ -15,8 +15,19 @@ import {
 import { MenuItem } from '@material-ui/core';
 import ProjectCertificates from './ProjectCertificates';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
+
+const siteOwners = [
+    { id: 1, title: 'Private', value: 'private' },
+    { id: 2, title: 'Public Property', value: 'public-property' },
+    { id: 3, title: 'Small Holding', value: 'smallholding' },
+    { id: 4, title: 'Communal Land', value: 'communal-land' },
+    { id: 5, title: 'Owned by Owner', value: 'owned-by-owner' },
+    { id: 6, title: 'Other', value: 'other' }
+]
+
 interface Props {
     handleNext: Function;
     handleBack: Function;
@@ -29,7 +40,6 @@ interface Props {
 export default function DetailedAnalysis({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors, control } = useForm({ mode: 'all' });
     const [isUploadingData, setIsUploadingData] = React.useState(false)
 
     const [plantingSeasons, setPlantingSeasons] = React.useState([
@@ -55,18 +65,8 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         plantingSeasonsNew[id] = newMonth;
         setPlantingSeasons([...plantingSeasonsNew]);
     }
-    const onSubmit = (data: any) => {
-        let months = [];
-        for (let i = 0; i < plantingSeasons.length; i++) {
-            if (plantingSeasons[i].isSet) {
-                let j = i + 1;
-                months.push(j)
-            }
-        }
-        console.log(months);
 
-        handleNext();
-    };
+
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
@@ -74,63 +74,119 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         }
     })
 
-    const [siteOwners, setSiteOwner] = React.useState(
-        [
-            { id: 1, title: 'Private', value: 'private' },
-            { id: 2, title: 'Public Property', value: 'public-property' },
-            { id: 3, title: 'Small Holding', value: 'smallholding' },
-            { id: 4, title: 'Communal Land', value: 'communal-land' },
-            { id: 5, title: 'Owned by Owner', value: 'owned-by-owner' },
-            { id: 6, title: 'Other', value: 'other' }
-        ]
-    )
+
 
     const [isCertified, setisCertified] = React.useState(true)
 
-    const defaultDetailedAnalysisData = {};
-    const [detailedAnalysisData, setDetailedAnalysisData] = React.useState(defaultDetailedAnalysisData);
+    const defaultDetailedAnalysisData = {
+        yearAbandoned: new Date(),
+        firstTreePlanted: new Date(),
+        plantingDensity: null,
+        employeesCount: null,
+        mainChallenge: '',
+        motivation: '',//why this site
+        siteOwnerType: '',
+        siteOwnerName: '',
+        acquisitionYear: new Date(),
+        degradationYear: new Date(),
+        degradationCause: '',
+        longTermPlan: '',
+    };
+    const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur', defaultValues: defaultDetailedAnalysisData });
 
-    const changeDetailedAnalysisData = (e: any) => {
-        setDetailedAnalysisData({ ...detailedAnalysisData, [e.target.name]: e.target.value });
+    const onSubmit = (data: any) => {
+        setIsUploadingData(true)
+        let months = [];
+        for (let i = 0; i < plantingSeasons.length; i++) {
+            if (plantingSeasons[i].isSet) {
+                let j = i + 1;
+                months.push(j)
+            }
+        }
+
+        const submitData = {
+            yearAbandoned: data.yearAbandoned.getFullYear(),
+            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
+            plantingDensity: data.plantingDensity,
+            employeesCount: data.employeesCount,
+            mainChallenge: data.mainChallenge,
+            motivation: data.motivation,
+            siteOwnerType: data.siteOwnerType.value,
+            siteOwnerName: data.siteOwnerName,
+            acquisitionYear: data.acquisitionYear.getFullYear(),
+            degradationYear: data.degradationYear.getFullYear(),
+            degradationCause: data.degradationCause,
+            longTermPlan: data.longTermPlan,
+            plantingSeasons: months
+        }
+
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+            setProjectDetails(res)
+            setIsUploadingData(false)
+            handleNext()
+        })
     };
 
 
 
-    const [firstTreePlantedDate, setFirstTreePlantedDate] = React.useState<Date | null>(
-        new Date(),
-    );
+    React.useEffect(() => {
+        if (projectDetails && projectDetails !== null) {
 
-    const [acquisitionDate, setAcquisitionDate] = React.useState<Date | null>(
-        new Date(),
-    );
+            const defaultDetailedAnalysisData = {
+                yearAbandoned: new Date(new Date().setFullYear(projectDetails.yearAbandoned)),
+                firstTreePlanted: new Date(projectDetails.firstTreePlanted),
+                plantingDensity: projectDetails.plantingDensity,
+                employeesCount: projectDetails.employeesCount,
+                mainChallenge: projectDetails.mainChallenge,
+                motivation: projectDetails.motivation,
+                siteOwnerType: siteOwners.find(element => element.value === projectDetails.siteOwnerType),  // Format with object to set it again
+                siteOwnerName: projectDetails.siteOwnerName,
+                acquisitionYear: new Date(new Date().setFullYear(projectDetails.acquisitionYear)),
+                degradationYear: new Date(new Date().setFullYear(projectDetails.degradationYear)),
+                degradationCause: projectDetails.degradationCause,
+                longTermPlan: projectDetails.longTermPlan,
+            };
 
-    const [yearOfAbandonment, handleyearOfAbandonment] = React.useState(new Date());
-
-    const [yearOfDegradation, setYearOfDegradation] = React.useState(new Date());
-
+            // set planting seasons
+            for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
+                if (projectDetails.plantingSeasons[i]) {
+                    let j = projectDetails.plantingSeasons[i]-1;                    
+                    handleSetPlantingSeasons(j)
+                }
+            }            
+            reset(defaultDetailedAnalysisData)
+        }
+    }, [projectDetails])
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>
-                        <div className={styles.formFieldHalf} style={{position:'relative'}}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <DatePicker
-                                    views={["year"]}
-                                    value={yearOfAbandonment}
-                                    onChange={handleyearOfAbandonment}
-                                    label={t('manageProjects:yearOfAbandonment')}
-                                    name="yearOfAbandonment"
-                                    inputVariant="outlined"
-                                    variant="inline"
-                                    TextFieldComponent={MaterialTextField}
-                                    autoOk
-                                    clearable
-                                    disableFuture
+                                <Controller
+                                    render={props => (
+                                        <DatePicker
+                                            views={["year"]}
+                                            value={props.value}
+                                            onChange={props.onChange}
+                                            label={t('manageProjects:yearOfAbandonment')}
+                                            inputVariant="outlined"
+                                            variant="inline"
+                                            TextFieldComponent={MaterialTextField}
+                                            autoOk
+                                            disableFuture
+                                        />
+                                    )
+                                    }
+                                    name="yearAbandoned"
+                                    control={control}
+                                    defaultValue=""
                                 />
+
                             </MuiPickersUtilsProvider>
-                            <div style={{position:'absolute',top:'-9px',right:'16px',width:'fit-content'}}>
+                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
@@ -138,19 +194,24 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <DatePicker
-                                    label={t('manageProjects:firstTreePlanted')}
-                                    value={firstTreePlantedDate}
-                                    onChange={setFirstTreePlantedDate}
-                                    inputVariant="outlined"
-                                    TextFieldComponent={MaterialTextField}
-                                    clearable
-                                    autoOk
-                                    disableFuture
+                                <Controller
+                                    render={props => (<DatePicker
+                                        label={t('manageProjects:firstTreePlanted')}
+                                        value={props.value}
+                                        onChange={props.onChange}
+                                        inputVariant="outlined"
+                                        TextFieldComponent={MaterialTextField}
+                                        autoOk
+                                        disableFuture
+                                    />)
+                                    }
+                                    name="firstTreePlanted"
+                                    control={control}
+                                    defaultValue=""
                                 />
                             </MuiPickersUtilsProvider>
                         </div>
@@ -163,8 +224,6 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 label={t('manageProjects:plantingDensity')}
                                 variant="outlined"
                                 name="plantingDensity"
-                                onChange={changeDetailedAnalysisData}
-                                // helperText={'Number of trees per ha'}
                                 inputRef={register({
                                     validate: value => parseInt(value, 10) > 1
                                 })}
@@ -185,21 +244,20 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             )}
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf} style={{position:'relative'}}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MaterialTextField
                                 inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
                                 label={t('manageProjects:employeeCount')}
                                 variant="outlined"
-                                name="employeeCount"
-                                onChange={changeDetailedAnalysisData}
-                                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
+                                name="employeesCount"
+                                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]./g, '') }}
                             />
-                            {errors.employeeCount && (
+                            {errors.employeesCount && (
                                 <span className={styles.formErrors}>
-                                    {errors.employeeCount.message}
+                                    {errors.employeesCount.message}
                                 </span>
                             )}
-                            <div style={{position:'absolute',top:'-9px',right:'16px',width:'fit-content'}}>
+                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
@@ -246,8 +304,6 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 label={t('manageProjects:mainChallenge')}
                                 variant="outlined"
                                 name="mainChallenge"
-                                onChange={changeDetailedAnalysisData}
-                                // helperText="Main challenge the project is facing"
                                 multiline
                             />
                             {errors.mainChallenge && (
@@ -270,7 +326,6 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 label={t('manageProjects:whyThisSite')}
                                 variant="outlined"
                                 name="motivation"
-                                onChange={changeDetailedAnalysisData}
                                 multiline
                             />
                             {errors.motivation && (
@@ -288,12 +343,8 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             <Controller
                                 as={
                                     <MaterialTextField
-                                        inputRef={register({
-                                        })}
                                         label={t('manageProjects:siteOwner')}
                                         variant="outlined"
-                                        name="siteOwner"
-                                        onChange={changeDetailedAnalysisData}
                                         select
                                     >
                                         {siteOwners.map((option) => (
@@ -303,14 +354,13 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                         ))}
                                     </MaterialTextField>
                                 }
-                                name="siteOwner"
-                                rules={{ required: "Please select Site Owner" }}
+                                name="siteOwnerType"
                                 control={control}
                                 defaultValue=""
                             />
-                            {errors.siteOwner && (
+                            {errors.siteOwnerType && (
                                 <span className={styles.formErrors}>
-                                    {errors.siteOwner.message}
+                                    {errors.siteOwnerType.message}
                                 </span>
                             )}
                         </div>
@@ -319,24 +369,29 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             <MaterialTextField
                                 label={t('manageProjects:ownerName')}
                                 variant="outlined"
-                                name="ownerName"
-                                onChange={changeDetailedAnalysisData}
+                                name="siteOwnerName"
+                                inputRef={register()}
                             />
                         </div>
                     </div>
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <DatePicker
-                                    label={t('manageProjects:acquisitionDate')}
-                                    value={acquisitionDate}
-                                    onChange={setAcquisitionDate}
-                                    inputVariant="outlined"
-                                    TextFieldComponent={MaterialTextField}
-                                    clearable
-                                    autoOk
-                                    disableFuture
-                                    name="acquisitionDate"
+                                <Controller
+                                    render={props => (
+                                        <DatePicker
+                                            label={t('manageProjects:acquisitionYear')}
+                                            value={props.value}
+                                            onChange={props.onChange}
+                                            inputVariant="outlined"
+                                            TextFieldComponent={MaterialTextField}
+                                            autoOk
+                                            disableFuture
+                                        />)
+                                    }
+                                    name="acquisitionYear"
+                                    control={control}
+                                    defaultValue=""
                                 />
                             </MuiPickersUtilsProvider>
 
@@ -344,18 +399,23 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <DatePicker
-                                    views={["year"]}
-                                    value={yearOfDegradation}
-                                    onChange={setYearOfDegradation}
-                                    label={t('manageProjects:yearOfDegradation')}
-                                    name="yearOfDegradation"
-                                    inputVariant="outlined"
-                                    variant="inline"
-                                    TextFieldComponent={MaterialTextField}
-                                    autoOk
-                                    clearable
-                                    disableFuture
+                                <Controller
+                                    render={props => (
+                                        <DatePicker
+                                            views={["year"]}
+                                            value={props.value}
+                                            onChange={props.onChange}
+                                            label={t('manageProjects:yearOfDegradation')}
+                                            inputVariant="outlined"
+                                            variant="inline"
+                                            TextFieldComponent={MaterialTextField}
+                                            autoOk
+                                            disableFuture
+                                        />)
+                                    }
+                                    name="degradationYear"
+                                    control={control}
+                                    defaultValue=""
                                 />
                             </MuiPickersUtilsProvider>
 
@@ -365,8 +425,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                         <MaterialTextField
                             label={t('manageProjects:causeOfDegradation')}
                             variant="outlined"
-                            name="causeOfDegradation"
-                            onChange={changeDetailedAnalysisData}
+                            name="degradationCause"
                             multiline
                             inputRef={register({
                                 maxLength: {
@@ -375,18 +434,17 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 }
                             })}
                         />
-                        {errors.causeOfDegradation && (
+                        {errors.degradationCause && (
                             <span className={styles.formErrors}>
-                                {errors.causeOfDegradation.message}
+                                {errors.degradationCause.message}
                             </span>
                         )}
                     </div>
-                    <div className={styles.formFieldLarge} style={{position:'relative'}}>
+                    <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
                         <MaterialTextField
                             label={t('manageProjects:longTermPlan')}
                             variant="outlined"
                             name="longTermPlan"
-                            onChange={changeDetailedAnalysisData}
                             multiline
                             inputRef={register({
                                 maxLength: {
@@ -400,14 +458,14 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 {errors.longTermPlan.message}
                             </span>
                         )}
-                        <div style={{position:'absolute',top:'-9px',right:'16px',width:'fit-content'}}>
-                                <div className={styles.popover}>
-                                    <InfoIcon />
-                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                        <p>What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?</p>
-                                    </div>
+                        <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                            <div className={styles.popover}>
+                                <InfoIcon />
+                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                    <p>What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?</p>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
 
@@ -454,10 +512,10 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
-                            onClick={onSubmit}
+                            onClick={handleSubmit(onSubmit)}
                             className={styles.continueButton}
                         >
-                             {isUploadingData? <div className={styles.spinner}></div> : "Save and Continue"}
+                            {isUploadingData ? <div className={styles.spinner}></div> : "Save and Continue"}
                         </AnimatedButton>
                     </div>
                 </div>
