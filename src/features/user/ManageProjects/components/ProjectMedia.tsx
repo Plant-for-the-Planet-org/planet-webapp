@@ -92,7 +92,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     // }
   });
 
-  const [youtubeURL, setYoutubeURL] = React.useState(projectDetails.videoURL ? projectDetails.videoURL : '')
+  const [youtubeURL, setYoutubeURL] = React.useState('')
 
   React.useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -123,6 +123,12 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       }
     })
   };
+
+  React.useEffect(() => {
+    if (projectDetails && projectDetails !== null) {      
+      setYoutubeURL(projectDetails.videoUrl)
+    }
+  }, [projectDetails])
 
   const setDefaultImage = (id: any, index: any) => {
     setIsUploadingData(true)
@@ -160,11 +166,11 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-          <div className={styles.formFieldLarge}>
+          {/* <div className={styles.formFieldLarge}>
             {youtubeURL && !errors.youtubeURL ? (
-              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+              <iframe src={youtubeURL}></iframe>
             ) : null}
-          </div>
+          </div> */}
           <div className={styles.formFieldLarge}>
             <MaterialTextField
               inputRef={register({
@@ -176,8 +182,9 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
               label={t('manageProjects:youtubeURL')}
               variant="outlined"
               name="youtubeURL"
-              onChange={() => setYoutubeURL}
+              onChange={(e) => setYoutubeURL(e.target.value)}
               defaultValue={youtubeURL}
+              value={youtubeURL}
             />
 
           </div>

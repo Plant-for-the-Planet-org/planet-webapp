@@ -85,11 +85,9 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
 
             if (res.code !== 200) {
-
                 let newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
                 setUploadedFiles(newUploadedFiles);
-                console.table([uploadedFiles, res, newUploadedFiles]);
                 setAmount(0);
                 setValue('amount', 0, { shouldDirty: false })
                 setIsUploadingData(false)
