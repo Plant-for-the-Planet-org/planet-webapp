@@ -180,6 +180,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
           setIsUploadingData(false)
           setErrorMessage(res.message)
         }
+      }
       })
   }
 
