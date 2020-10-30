@@ -347,6 +347,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                 <Controller
                   name="acceptDonations"
                   control={control}
+                  defaultValue={true}
                   render={props => (
                     <ToggleSwitch
                       id="acceptDonations"
