@@ -31,6 +31,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
   const [uploadedImages, setUploadedImages] = React.useState([])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState('')
 
   React.useEffect(() => {
     // Fetch images of the project 
@@ -49,10 +50,24 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       "isDefault": false
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, session).then((res) => {
-      let newUploadedImages = uploadedImages;
-      newUploadedImages.push(res)
-      setUploadedImages(newUploadedImages)
-      setIsUploadingData(false)
+      if(!res.code){
+        let newUploadedImages = uploadedImages;
+        newUploadedImages.push(res)
+        setUploadedImages(newUploadedImages)
+        setIsUploadingData(false)
+        setErrorMessage('')
+      }else {
+        if (res.code === 404) {
+          setIsUploadingData(false)
+          setErrorMessage('Project Not Found')
+        }
+        else {
+          setIsUploadingData(false)
+          setErrorMessage(res.message)
+        }
+
+      }
+      
 
     })
   };
@@ -116,16 +131,27 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       videoUrl: data.youtubeURL
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
-      if (res.code !== 200) {
-      setProjectDetails(res)
-      setIsUploadingData(false)
-      handleNext()
+      if (!res.code) {
+        setProjectDetails(res)
+        setIsUploadingData(false)
+        handleNext()
+        setErrorMessage('')
+      } else {
+        if (res.code === 404) {
+          setIsUploadingData(false)
+          setErrorMessage('Project Not Found')
+        }
+        else {
+          setIsUploadingData(false)
+          setErrorMessage(res.message)
+        }
+
       }
     })
   };
 
   React.useEffect(() => {
-    if (projectDetails && projectDetails !== null) {      
+    if (projectDetails && projectDetails !== null) {
       setYoutubeURL(projectDetails.videoUrl)
     }
   }, [projectDetails])
@@ -136,7 +162,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       isDefault: true
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, session).then((res) => {
-      if (res.code !== 200) {
+      if (!res.code) {
         let tempUploadedData = uploadedImages;
         tempUploadedData.forEach((image) => {
           image.isDefault = false
@@ -144,21 +170,41 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
         tempUploadedData[index].isDefault = true;
         setUploadedImages(tempUploadedData);
         setIsUploadingData(false)
-      }
-    })
+        setErrorMessage('')
+      } else {
+        if (res.code === 404) {
+          setIsUploadingData(false)
+          setErrorMessage('Project Not Found')
+        }
+        else {
+          setIsUploadingData(false)
+          setErrorMessage(res.message)
+        }
+      })
   }
 
   const uploadCaption = (id: any, index: any, e: any) => {
     setIsUploadingData(true)
     const submitData = {
-      description:e.target.value
+      description: e.target.value
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, session).then((res) => {
-      if (res.code !== 200) {
+      if (!res.code) {
         let tempUploadedData = uploadedImages;
         tempUploadedData[index].description = res.description;
         setUploadedImages(tempUploadedData);
         setIsUploadingData(false)
+        setErrorMessage('')
+      } else {
+        if (res.code === 404) {
+          setIsUploadingData(false)
+          setErrorMessage('Project Not Found')
+        }
+        else {
+          setIsUploadingData(false)
+          setErrorMessage(res.message)
+        }
+
       }
     })
   }
@@ -205,9 +251,9 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
                         <img src={getS3Image('project', 'medium', image.image)} />
                         <div className={styles.uploadedImageOverlay}></div>
 
-                        <input 
-                          onBlur={(e) => uploadCaption(image.id, index, e)} 
-                          type="text" 
+                        <input
+                          onBlur={(e) => uploadCaption(image.id, index, e)}
+                          type="text"
                           placeholder="Add Caption"
                           defaultValue={image.description}
                         />
@@ -246,6 +292,12 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
             {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
           </div>
         </div>
+
+        {errorMessage && errorMessage !== '' ?
+          <div className={styles.formFieldLarge}>
+            <h4 className={styles.errorMessage}>{errorMessage}</h4>
+          </div>
+          : null}
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>

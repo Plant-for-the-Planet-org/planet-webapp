@@ -41,7 +41,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
-
+    const [errorMessage, setErrorMessage] = React.useState('')
     const [plantingSeasons, setPlantingSeasons] = React.useState([
         { id: 0, title: 'January', isSet: false },
         { id: 1, title: 'Febuary', isSet: false },
@@ -107,41 +107,56 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         }
 
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
-            if (res.code !== 200) {
+            if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)
+                setErrorMessage('')
                 handleNext()
+            } else {
+                if(res.code === 404){
+                    setIsUploadingData(false)
+                    setErrorMessage('Project Not Found')
+                }
+                else{
+                    setIsUploadingData(false)
+                    setErrorMessage(res.message)
+                }
+                
             }
         })
     };
 
 
+    // Use Effect to hide error message after 10 seconds
 
     React.useEffect(() => {
         if (projectDetails && projectDetails !== null) {
 
             const defaultDetailedAnalysisData = {
                 yearAbandoned: projectDetails.yearAbandoned ? new Date(new Date().setFullYear(projectDetails.yearAbandoned)) : new Date(new Date().setFullYear(2000)),
-                firstTreePlanted: projectDetails.firstTreePlanted ? new Date(projectDetails.firstTreePlanted) :new Date() ,
+                firstTreePlanted: projectDetails.firstTreePlanted ? new Date(projectDetails.firstTreePlanted) : new Date(),
                 plantingDensity: projectDetails.plantingDensity,
                 employeesCount: projectDetails.employeesCount,
                 mainChallenge: projectDetails.mainChallenge,
                 motivation: projectDetails.motivation,
                 siteOwnerType: siteOwners.find(element => element.value === projectDetails.siteOwnerType),  // Format with object to set it again
                 siteOwnerName: projectDetails.siteOwnerName,
-                acquisitionYear: projectDetails.acquisitionYear ?  new Date(new Date().setFullYear(projectDetails.acquisitionYear)) :new Date() ,
+                acquisitionYear: projectDetails.acquisitionYear ? new Date(new Date().setFullYear(projectDetails.acquisitionYear)) : new Date(),
                 degradationYear: projectDetails.degradationYear ? new Date(new Date().setFullYear(projectDetails.degradationYear)) : new Date(),
                 degradationCause: projectDetails.degradationCause,
                 longTermPlan: projectDetails.longTermPlan,
             };
 
             // set planting seasons
-            for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
-                if (projectDetails.plantingSeasons[i]) {
-                    let j = projectDetails.plantingSeasons[i]-1;                    
-                    handleSetPlantingSeasons(j)
+            if (projectDetails.plantingSeasons.length > 0) {
+                for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
+                    if (projectDetails.plantingSeasons[i]) {
+                        let j = projectDetails.plantingSeasons[i] - 1;
+                        handleSetPlantingSeasons(j)
+                    }
                 }
-            }            
+            }
+
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
@@ -189,17 +204,17 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <Controller
                                     render={props => (
-                                    
-                                    <DatePicker
-                                        label={t('manageProjects:firstTreePlanted')}
-                                        value={props.value}
-                                        onChange={props.onChange}
-                                        inputVariant="outlined"
-                                        TextFieldComponent={MaterialTextField}
-                                        autoOk
-                                        disableFuture
-                                        minDate={new Date(new Date().setFullYear(2006))}
-                                    />)
+
+                                        <DatePicker
+                                            label={t('manageProjects:firstTreePlanted')}
+                                            value={props.value}
+                                            onChange={props.onChange}
+                                            inputVariant="outlined"
+                                            TextFieldComponent={MaterialTextField}
+                                            autoOk
+                                            disableFuture
+                                            minDate={new Date(new Date().setFullYear(2006))}
+                                        />)
                                     }
                                     name="firstTreePlanted"
                                     control={control}
@@ -492,6 +507,12 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                     ) : null}
 
                 </div>
+
+                {errorMessage && errorMessage !== '' ?
+                    <div className={styles.formFieldLarge}>
+                        <h4 className={styles.errorMessage}>{errorMessage}</h4>
+                    </div>
+                    : null}
 
                 <div className={styles.formField} style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>

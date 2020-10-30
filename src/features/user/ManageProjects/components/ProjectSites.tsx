@@ -39,6 +39,8 @@ export default function ProjectSites({
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
 
+  const [errorMessage, setErrorMessage] = React.useState('')
+
   const defaultSiteDetails =
   {
     name: '',
@@ -106,7 +108,7 @@ export default function ProjectSites({
       status: data.status
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, session).then((res) => {
-      if (res.code !== 200) {
+      if (!res.code) {
         let temp = siteList;
         let submitData = {
           id: res.id,
@@ -120,6 +122,16 @@ export default function ProjectSites({
         setFeatures([]);
         setIsUploadingData(false)
         setShowForm(false)
+        setErrorMessage('')
+      } else {
+        if (res.code === 404) {
+          setIsUploadingData(false)
+          setErrorMessage('Project Not Found')
+        }
+        else {
+          setIsUploadingData(false)
+          setErrorMessage(res.message)
+        }
       }
     })
   }
@@ -308,6 +320,11 @@ export default function ProjectSites({
             </div>
           )}
 
+{errorMessage && errorMessage !== '' ?
+          <div className={styles.formFieldLarge}>
+            <h4 className={styles.errorMessage}>{errorMessage}</h4>
+          </div>
+          : null}
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>

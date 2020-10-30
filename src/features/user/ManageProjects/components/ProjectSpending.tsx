@@ -40,6 +40,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
     const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
     const [isUploadingData, setIsUploadingData] = React.useState(false)
+    const [errorMessage, setErrorMessage] = React.useState('')
 
     const [showForm, setShowForm] = React.useState(true)
     const [uploadedFiles, setUploadedFiles] = React.useState([])
@@ -84,7 +85,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
 
-            if (res.code !== 200) {
+            if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
                 setUploadedFiles(newUploadedFiles);
@@ -92,6 +93,16 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
                 setValue('amount', 0, { shouldDirty: false })
                 setIsUploadingData(false)
                 setShowForm(false)
+                setErrorMessage('')
+            } else {
+                if (res.code === 404) {
+                    setIsUploadingData(false)
+                    setErrorMessage('Project Not Found')
+                }
+                else {
+                    setIsUploadingData(false)
+                    setErrorMessage(res.message)
+                }
             }
         })
         // handleNext()
@@ -255,6 +266,12 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
                             <p className={styles.inlineLinkButton}>Add another year</p>
                         </div>
                     )}
+
+                {errorMessage && errorMessage !== '' ?
+                    <div className={styles.formFieldLarge}>
+                        <h4 className={styles.errorMessage}>{errorMessage}</h4>
+                    </div>
+                    : null}
 
                 <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>

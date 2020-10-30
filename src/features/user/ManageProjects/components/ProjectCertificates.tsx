@@ -23,10 +23,10 @@ const { useTranslation } = i18next;
 interface Props {
     projectGUID: String;
     session: any;
-    setIsUploadingData:Function
+    setIsUploadingData: Function
 }
 
-function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props): ReactElement {
+function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
@@ -38,6 +38,7 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
 
     const [uploadedFiles, setUploadedFiles] = React.useState([])
     const [showForm, setShowForm] = React.useState(true)
+    const [errorMessage, setErrorMessage] = React.useState('')
 
     const onDrop = React.useCallback((acceptedFiles) => {
         acceptedFiles.forEach((file: any) => {
@@ -71,7 +72,7 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
         }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, session).then((res) => {
-            if (res.code !== 200) {
+            if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res)
                 setUploadedFiles(newUploadedFiles);
@@ -79,6 +80,17 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
                 setValue('certifierName', '', { shouldDirty: false })
                 setIsUploadingData(false)
                 setShowForm(false)
+                setErrorMessage('')
+            } else {
+                if (res.code === 404) {
+                    setIsUploadingData(false)
+                    setErrorMessage('Project Not Found')
+                }
+                else {
+                    setIsUploadingData(false)
+                    setErrorMessage(res.message)
+                }
+
             }
         })
     };
@@ -92,16 +104,16 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
         })
     }
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         // Fetch certificates of the project 
-        if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
-        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`,session).then((result)=>{
-            if(result.certificates.length > 0){
-                setShowForm(false)
-            }
-            setUploadedFiles(result.certificates)
-        })
-    },[projectGUID]);
+        if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`, session).then((result) => {
+                if (result.certificates.length > 0) {
+                    setShowForm(false)
+                }
+                setUploadedFiles(result.certificates)
+            })
+    }, [projectGUID]);
 
     return (
         <div>
@@ -134,88 +146,93 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
             ) : null}
 
             {showForm ? (
-            <>
-            <div className={styles.formField}>
-                <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                        inputRef={register({ required: true })}
-                        label={t('manageProjects:certifierName')}
-                        variant="outlined"
-                        name="certifierName"
-                        onChange={(e) => setCertifierName(e.target.value)}
-                    />
-                    {errors.certifierName && (
-                        <span className={styles.formErrors}>
-                            {errors.certifierName.message}
-                        </span>
-                    )}
-                </div>
-                <div style={{ width: '20px' }}></div>
-                <div className={styles.formFieldHalf}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DatePicker
-                            value={issueDate}
-                            onChange={setIssueDate}
-                            label={t('manageProjects:issueDate')}
-                            name="issueDate"
-                            inputVariant="outlined"
-                            variant="inline"
-                            TextFieldComponent={MaterialTextField}
-                            autoOk
-                            clearable
-                            disableFuture
-                            inputRef={register({
-                                required: {
-                                    value: true,
-                                    message: 'Please add Certification date'
-                                }
-                            })}
-                        />
+                <>
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+                            <MaterialTextField
+                                inputRef={register({ required: true })}
+                                label={t('manageProjects:certifierName')}
+                                variant="outlined"
+                                name="certifierName"
+                                onChange={(e) => setCertifierName(e.target.value)}
+                            />
+                            {errors.certifierName && (
+                                <span className={styles.formErrors}>
+                                    {errors.certifierName.message}
+                                </span>
+                            )}
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+                        <div className={styles.formFieldHalf}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    value={issueDate}
+                                    onChange={setIssueDate}
+                                    label={t('manageProjects:issueDate')}
+                                    name="issueDate"
+                                    inputVariant="outlined"
+                                    variant="inline"
+                                    TextFieldComponent={MaterialTextField}
+                                    autoOk
+                                    clearable
+                                    disableFuture
+                                    inputRef={register({
+                                        required: {
+                                            value: true,
+                                            message: 'Please add Certification date'
+                                        }
+                                    })}
+                                />
 
-                    </MuiPickersUtilsProvider>
-                    {errors.issueDate && (
-                        <span className={styles.formErrors}>
-                            {errors.issueDate.message}
-                        </span>
-                    )}
-                </div>
-            </div>
-
-
-
-            {errors.certifierName || errors.issueDate || !isDirty || certifierName === '' ? (
-                <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
-                    <div className={styles.fileUploadContainer}>
-                        <AnimatedButton
-                            className={styles.continueButton}
-                        >
-                            Upload Certificate
-                            </AnimatedButton>
-                        <p style={{ marginTop: '18px' }}>
-                            or drag in a pdf
-                        </p>
-                    </div>
-                </div>
-            ) : (
-                    <div className={styles.formFieldLarge} {...getRootProps()}>
-                        <div className={styles.fileUploadContainer}>
-                            <AnimatedButton
-                                // onClick={uploadReport}
-                                className={styles.continueButton}
-                            >
-                                <input {...getInputProps()} />
-                                    Upload Certificate
-                                </AnimatedButton>
-                            <p style={{ marginTop: '18px' }}>
-                                or drag in a pdf
-                                </p>
+                            </MuiPickersUtilsProvider>
+                            {errors.issueDate && (
+                                <span className={styles.formErrors}>
+                                    {errors.issueDate.message}
+                                </span>
+                            )}
                         </div>
                     </div>
-                )}
-            </>) : (
-            <div className={styles.formFieldLarge} onClick={()=>setShowForm(true)}>
-                <p className={styles.inlineLinkButton}>Add another cerification</p>
-            </div>)}
+
+                    {errorMessage && errorMessage !== '' ?
+                        <div className={styles.formFieldLarge}>
+                            <h4 className={styles.errorMessage}>{errorMessage}</h4>
+                        </div>
+                        : null}
+
+
+                    {errors.certifierName || errors.issueDate || !isDirty || certifierName === '' ? (
+                        <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
+                            <div className={styles.fileUploadContainer}>
+                                <AnimatedButton
+                                    className={styles.continueButton}
+                                >
+                                    Upload Certificate
+                            </AnimatedButton>
+                                <p style={{ marginTop: '18px' }}>
+                                    or drag in a pdf
+                        </p>
+                            </div>
+                        </div>
+                    ) : (
+                            <div className={styles.formFieldLarge} {...getRootProps()}>
+                                <div className={styles.fileUploadContainer}>
+                                    <AnimatedButton
+                                        // onClick={uploadReport}
+                                        className={styles.continueButton}
+                                    >
+                                        <input {...getInputProps()} />
+                                    Upload Certificate
+                                </AnimatedButton>
+                                    <p style={{ marginTop: '18px' }}>
+                                        or drag in a pdf
+                                </p>
+                                </div>
+                            </div>
+                        )}
+                </>) : (
+                    <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
+                        <p className={styles.inlineLinkButton}>Add another cerification</p>
+                    </div>)}
 
         </div>
     )
