@@ -299,7 +299,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
 
                     <div className={styles.formField} style={{ alignItems: 'flex-start' }}>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
 
                             {/* the main challenge the project is facing (max. 300 characters) */}
                             <MaterialTextField
@@ -319,10 +319,18 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     {errors.mainChallenge.message}
                                 </span>
                             )}
+                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                            <div className={styles.popover}>
+                                <InfoIcon />
+                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                    <p>Maximum 300 characters allowed</p>
+                                </div>
+                            </div>
+                        </div>
                         </div>
 
                         <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             {/* the reason this project has been created (max. 300 characters) */}
                             <MaterialTextField
                                 inputRef={register({
@@ -341,6 +349,14 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     {errors.motivation.message}
                                 </span>
                             )}
+                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                            <div className={styles.popover}>
+                                <InfoIcon />
+                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                    <p>Maximum 300 characters allowed</p>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
 
@@ -433,7 +449,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
                         </div>
                     </div>
-                    <div className={styles.formFieldLarge}>
+                    <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
                         <MaterialTextField
                             label={t('manageProjects:causeOfDegradation')}
                             variant="outlined"
@@ -451,6 +467,14 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 {errors.degradationCause.message}
                             </span>
                         )}
+                        <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                            <div className={styles.popover}>
+                                <InfoIcon />
+                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                    <p>Maximum 300 characters allowed</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
                         <MaterialTextField
@@ -475,6 +499,8 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
                                     <p>What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?</p>
+                                    <br/>
+                                    <p>Maximum 300 characters allowed</p>
                                 </div>
                             </div>
                         </div>
