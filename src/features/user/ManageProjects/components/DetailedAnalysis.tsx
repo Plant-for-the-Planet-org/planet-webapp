@@ -121,9 +121,11 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         }
 
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
-            setProjectDetails(res)
-            setIsUploadingData(false)
-            handleNext()
+            if (res.code !== 200) {
+                setProjectDetails(res)
+                setIsUploadingData(false)
+                handleNext()
+            }
         })
     };
 

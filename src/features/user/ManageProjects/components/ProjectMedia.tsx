@@ -116,9 +116,11 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       videoUrl: data.youtubeURL
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+      if (res.code !== 200) {
       setProjectDetails(res)
       setIsUploadingData(false)
       handleNext()
+      }
     })
   };
 

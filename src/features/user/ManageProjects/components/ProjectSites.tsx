@@ -106,20 +106,21 @@ export default function ProjectSites({
       status: data.status
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, session).then((res) => {
-      let temp = siteList;
-
-      let submitData = {
-        id: res.id,
-        name: res.name,
-        geometry: JSON.parse(res.geometry),
-        status: res.status
+      if (res.code !== 200) {
+        let temp = siteList;
+        let submitData = {
+          id: res.id,
+          name: res.name,
+          geometry: JSON.parse(res.geometry),
+          status: res.status
+        }
+        temp.push(submitData);
+        setSiteList(temp);
+        setGeoJson(null);
+        setFeatures([]);
+        setIsUploadingData(false)
+        setShowForm(false)
       }
-      temp.push(submitData);
-      setSiteList(temp);
-      setGeoJson(null);
-      setFeatures([]);
-      setIsUploadingData(false)
-      setShowForm(false)
     })
   }
 
@@ -161,87 +162,87 @@ export default function ProjectSites({
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
 
-      <div className={styles.formField}>
-              {siteList
-                .filter((site) => {
-                  return site.geometry !== null;
-                })
-                .map((site) => {
-                  const bbox = turf.bbox(site.geometry);
-                  const { longitude, latitude, zoom } = new WebMercatorViewport(
-                    viewport
-                  ).fitBounds(
-                    [
-                      [bbox[0], bbox[1]],
-                      [bbox[2], bbox[3]],
-                    ],
-                    {
-                      padding: {
-                        top: 50,
-                        bottom: 50,
-                        left: 50,
-                        right: 50,
-                      },
-                    }
-                  );
+        <div className={styles.formField}>
+          {siteList
+            .filter((site) => {
+              return site.geometry !== null;
+            })
+            .map((site) => {
+              const bbox = turf.bbox(site.geometry);
+              const { longitude, latitude, zoom } = new WebMercatorViewport(
+                viewport
+              ).fitBounds(
+                [
+                  [bbox[0], bbox[1]],
+                  [bbox[2], bbox[3]],
+                ],
+                {
+                  padding: {
+                    top: 50,
+                    bottom: 50,
+                    left: 50,
+                    right: 50,
+                  },
+                }
+              );
 
-                  return (
+              return (
 
-                    <div key={site.id} className={`${styles.formFieldHalf}`}>
-                      <div className={styles.mapboxContainer}>
-                        <div className={styles.uploadedMapName}>{site.name}</div>
-                        <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
-                        <div
-                          onClick={() => { deleteProjectSite(site.id) }}
-                          className={styles.uploadedMapDeleteButton}>
-                          <TrashIcon color={"#000"} />
-                        </div>
-                        <StaticMap
-                          {...viewport}
-                          longitude={longitude}
-                          latitude={latitude}
-                          zoom={zoom}
-                          mapboxApiAccessToken={MAPBOX_TOKEN}
-                          mapStyle={'mapbox://styles/mapbox/satellite-v9'}
-                          onViewportChange={_onViewportChange}
-                          dragPan={true}
-                          dragRotate={false}
-                          touchRotate={false}
-                          doubleClickZoom={false}
-                          scrollZoom={true}
-                          touchZoom={false}
-                        >
-                          <Source id="singleSite" type="geojson" data={site.geometry}>
-                            <Layer
-                              id="ploygonLayer"
-                              type="fill"
-                              source="singleProject"
-                              paint={{
-                                'fill-color': '#fff',
-                                'fill-opacity': 0.2,
-                              }}
-                            />
-                            <Layer
-                              id="ploygonOutline"
-                              type="line"
-                              source="singleProject"
-                              paint={{
-                                'line-color': '#89b54a',
-                                'line-width': 2,
-                              }}
-                            />
-                          </Source>
-                        </StaticMap>
-                      </div>
+                <div key={site.id} className={`${styles.formFieldHalf}`}>
+                  <div className={styles.mapboxContainer}>
+                    <div className={styles.uploadedMapName}>{site.name}</div>
+                    <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
+                    <div
+                      onClick={() => { deleteProjectSite(site.id) }}
+                      className={styles.uploadedMapDeleteButton}>
+                      <TrashIcon color={"#000"} />
                     </div>
+                    <StaticMap
+                      {...viewport}
+                      longitude={longitude}
+                      latitude={latitude}
+                      zoom={zoom}
+                      mapboxApiAccessToken={MAPBOX_TOKEN}
+                      mapStyle={'mapbox://styles/mapbox/satellite-v9'}
+                      onViewportChange={_onViewportChange}
+                      dragPan={true}
+                      dragRotate={false}
+                      touchRotate={false}
+                      doubleClickZoom={false}
+                      scrollZoom={true}
+                      touchZoom={false}
+                    >
+                      <Source id="singleSite" type="geojson" data={site.geometry}>
+                        <Layer
+                          id="ploygonLayer"
+                          type="fill"
+                          source="singleProject"
+                          paint={{
+                            'fill-color': '#fff',
+                            'fill-opacity': 0.2,
+                          }}
+                        />
+                        <Layer
+                          id="ploygonOutline"
+                          type="line"
+                          source="singleProject"
+                          paint={{
+                            'line-color': '#89b54a',
+                            'line-width': 2,
+                          }}
+                        />
+                      </Source>
+                    </StaticMap>
+                  </div>
+                </div>
 
 
-                  );
-                })}
-            </div>
+              );
+            })}
+        </div>
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-            
+
 
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>

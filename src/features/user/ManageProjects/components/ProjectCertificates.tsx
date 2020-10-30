@@ -71,13 +71,15 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
         }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, session).then((res) => {
-            let newUploadedFiles = uploadedFiles;
-            newUploadedFiles.push(res)
-            setUploadedFiles(newUploadedFiles);
-            setCertifierName('');
-            setValue('certifierName', '', { shouldDirty: false })
-            setIsUploadingData(false)
-            setShowForm(false)
+            if (res.code !== 200) {
+                let newUploadedFiles = uploadedFiles;
+                newUploadedFiles.push(res)
+                setUploadedFiles(newUploadedFiles);
+                setCertifierName('');
+                setValue('certifierName', '', { shouldDirty: false })
+                setIsUploadingData(false)
+                setShowForm(false)
+            }
         })
     };
 

@@ -84,14 +84,17 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
 
-            let newUploadedFiles = uploadedFiles;
-            newUploadedFiles.push(res);
-            setUploadedFiles(newUploadedFiles);
-            console.table([uploadedFiles, res, newUploadedFiles]);
-            setAmount(0);
-            setValue('amount', 0, { shouldDirty: false })
-            setIsUploadingData(false)
-            setShowForm(false)
+            if (res.code !== 200) {
+
+                let newUploadedFiles = uploadedFiles;
+                newUploadedFiles.push(res);
+                setUploadedFiles(newUploadedFiles);
+                console.table([uploadedFiles, res, newUploadedFiles]);
+                setAmount(0);
+                setValue('amount', 0, { shouldDirty: false })
+                setIsUploadingData(false)
+                setShowForm(false)
+            }
         })
         // handleNext()
     };
@@ -112,7 +115,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
         // Fetch spending of the project 
         if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
-                if(result.expenses.length > 0){
+                if (result.expenses.length > 0) {
                     setShowForm(false)
                 }
                 setUploadedFiles(result.expenses)
@@ -122,35 +125,35 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
-            {uploadedFiles && uploadedFiles.length > 0 ? (
-                            <div className={styles.formField}>
-                                {uploadedFiles.map((report) => {
-                                    return (
-                                        <div key={report.id} className={` ${styles.reportPDFContainer}`}>
-                                            <a target={"_blank"} href={getPDFFile('projectExpense', report.pdf)}>
-                                                {/* <PDFIcon color="#2F3336" /> */}
-                                                <PDFRed />
-                                            </a>
-                                            <div className={styles.reportPDFDetails}>
-                                                <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
-                                                <p>in {report.year} </p>
-                                            </div>
-                                            <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
-                                                <PencilIcon color={"#000"} />
-                                            </div>
-                                            <div
-                                                onClick={() => deleteProjectSpending(report.id)}
-                                                className={styles.reportEditButton}>
-                                                <TrashIcon />
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        ) : null}
+                {uploadedFiles && uploadedFiles.length > 0 ? (
+                    <div className={styles.formField}>
+                        {uploadedFiles.map((report) => {
+                            return (
+                                <div key={report.id} className={` ${styles.reportPDFContainer}`}>
+                                    <a target={"_blank"} href={getPDFFile('projectExpense', report.pdf)}>
+                                        {/* <PDFIcon color="#2F3336" /> */}
+                                        <PDFRed />
+                                    </a>
+                                    <div className={styles.reportPDFDetails}>
+                                        <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
+                                        <p>in {report.year} </p>
+                                    </div>
+                                    <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
+                                        <PencilIcon color={"#000"} />
+                                    </div>
+                                    <div
+                                        onClick={() => deleteProjectSpending(report.id)}
+                                        className={styles.reportEditButton}>
+                                        <TrashIcon />
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                ) : null}
                 {showForm ? (
                     <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-                        
+
 
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
