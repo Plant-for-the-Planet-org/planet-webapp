@@ -37,6 +37,7 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
     const [certifierName, setCertifierName] = React.useState('');
 
     const [uploadedFiles, setUploadedFiles] = React.useState([])
+    const [showForm, setShowForm] = React.useState(true)
 
     const onDrop = React.useCallback((acceptedFiles) => {
         acceptedFiles.forEach((file: any) => {
@@ -76,8 +77,8 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
             setCertifierName('');
             setValue('certifierName', '', { shouldDirty: false })
             setIsUploadingData(false)
+            setShowForm(false)
         })
-        // handleNext()
     };
 
     const deleteProjectCertificate = (id: any) => {
@@ -126,6 +127,9 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
                     })}
                 </div>
             ) : null}
+
+            {showForm ? (
+            <>
             <div className={styles.formField}>
                 <div className={styles.formFieldHalf}>
                     <MaterialTextField
@@ -203,10 +207,11 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
                         </div>
                     </div>
                 )}
-
-            {/* <div className={styles.formFieldLarge}>
+            </>) : (
+            <div className={styles.formFieldLarge} onClick={()=>setShowForm(true)}>
                 <p className={styles.inlineLinkButton}>Add another cerification</p>
-            </div> */}
+            </div>)}
+
         </div>
     )
 }
