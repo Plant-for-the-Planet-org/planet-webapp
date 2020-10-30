@@ -165,12 +165,21 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
 
     } else {
       postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
-        if (res.code) {
+        if (!res.code) {
           setErrorMessage('')
           setProjectGUID(res.id)
           setProjectDetails(res)
           setIsUploadingData(false)
           handleNext()
+        } else {
+          if (res.code === 404) {
+            setIsUploadingData(false)
+            setErrorMessage(res.message)
+          }
+          else {
+            setIsUploadingData(false)
+            setErrorMessage(res.message)
+          }
         }
       })
     }
