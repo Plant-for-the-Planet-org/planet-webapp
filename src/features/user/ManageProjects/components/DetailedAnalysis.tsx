@@ -214,6 +214,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             autoOk
                                             disableFuture
                                             minDate={new Date(new Date().setFullYear(2006))}
+                                            format="d MMMM yyyy"
                                         />)
                                     }
                                     name="firstTreePlanted"
@@ -395,11 +396,13 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             autoOk
                                             disableFuture
                                             minDate={new Date(new Date().setFullYear(2006))}
+                                            views={["year"]}
                                         />)
                                     }
                                     name="acquisitionYear"
                                     control={control}
                                     defaultValue=""
+                                    minDate={new Date(new Date().setFullYear(2006))}
                                 />
                             </MuiPickersUtilsProvider>
 
