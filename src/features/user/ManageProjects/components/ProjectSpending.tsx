@@ -112,6 +112,9 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
         // Fetch spending of the project 
         if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
+                if(result.expenses.length > 0){
+                    setShowForm(false)
+                }
                 setUploadedFiles(result.expenses)
             })
     }, [projectGUID]);

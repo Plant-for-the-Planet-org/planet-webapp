@@ -70,6 +70,8 @@ export default function ProjectSites({
     zoom: defaultZoom,
   });
 
+  const [showForm, setShowForm] = React.useState(true)
+
   const MapProps = {
     geoJson,
     setGeoJson,
@@ -117,6 +119,7 @@ export default function ProjectSites({
       setGeoJson(null);
       setFeatures([]);
       setIsUploadingData(false)
+      setShowForm(false)
     })
   }
 
@@ -147,6 +150,9 @@ export default function ProjectSites({
     // Fetch sites of the project 
     if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`, session).then((result) => {
+        if (result.sites.length > 0) {
+          setShowForm(false)
+        }
         setSiteList(result.sites)
       })
   }, [projectGUID]);
@@ -155,141 +161,152 @@ export default function ProjectSites({
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
 
-        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-          <div className={styles.formField}>
-            {siteList
-              .filter((site) => {
-                return site.geometry !== null;
-              })
-              .map((site) => {
-                const bbox = turf.bbox(site.geometry);
-                const { longitude, latitude, zoom } = new WebMercatorViewport(
-                  viewport
-                ).fitBounds(
-                  [
-                    [bbox[0], bbox[1]],
-                    [bbox[2], bbox[3]],
-                  ],
-                  {
-                    padding: {
-                      top: 50,
-                      bottom: 50,
-                      left: 50,
-                      right: 50,
-                    },
-                  }
-                );
+      <div className={styles.formField}>
+              {siteList
+                .filter((site) => {
+                  return site.geometry !== null;
+                })
+                .map((site) => {
+                  const bbox = turf.bbox(site.geometry);
+                  const { longitude, latitude, zoom } = new WebMercatorViewport(
+                    viewport
+                  ).fitBounds(
+                    [
+                      [bbox[0], bbox[1]],
+                      [bbox[2], bbox[3]],
+                    ],
+                    {
+                      padding: {
+                        top: 50,
+                        bottom: 50,
+                        left: 50,
+                        right: 50,
+                      },
+                    }
+                  );
 
-                return (
+                  return (
 
-                  <div key={site.id} className={`${styles.formFieldHalf}`}>
-                    <div className={styles.mapboxContainer}>
-                      <div className={styles.uploadedMapName}>{site.name}</div>
-                      <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
-                      <div
-                        onClick={() => { deleteProjectSite(site.id) }}
-                        className={styles.uploadedMapDeleteButton}>
-                        <TrashIcon color={"#000"} />
+                    <div key={site.id} className={`${styles.formFieldHalf}`}>
+                      <div className={styles.mapboxContainer}>
+                        <div className={styles.uploadedMapName}>{site.name}</div>
+                        <div className={styles.uploadedMapStatus}>{String(site.status).toUpperCase()}</div>
+                        <div
+                          onClick={() => { deleteProjectSite(site.id) }}
+                          className={styles.uploadedMapDeleteButton}>
+                          <TrashIcon color={"#000"} />
+                        </div>
+                        <StaticMap
+                          {...viewport}
+                          longitude={longitude}
+                          latitude={latitude}
+                          zoom={zoom}
+                          mapboxApiAccessToken={MAPBOX_TOKEN}
+                          mapStyle={'mapbox://styles/mapbox/satellite-v9'}
+                          onViewportChange={_onViewportChange}
+                          dragPan={true}
+                          dragRotate={false}
+                          touchRotate={false}
+                          doubleClickZoom={false}
+                          scrollZoom={true}
+                          touchZoom={false}
+                        >
+                          <Source id="singleSite" type="geojson" data={site.geometry}>
+                            <Layer
+                              id="ploygonLayer"
+                              type="fill"
+                              source="singleProject"
+                              paint={{
+                                'fill-color': '#fff',
+                                'fill-opacity': 0.2,
+                              }}
+                            />
+                            <Layer
+                              id="ploygonOutline"
+                              type="line"
+                              source="singleProject"
+                              paint={{
+                                'line-color': '#89b54a',
+                                'line-width': 2,
+                              }}
+                            />
+                          </Source>
+                        </StaticMap>
                       </div>
-                      <StaticMap
-                        {...viewport}
-                        longitude={longitude}
-                        latitude={latitude}
-                        zoom={zoom}
-                        mapboxApiAccessToken={MAPBOX_TOKEN}
-                        mapStyle={'mapbox://styles/mapbox/satellite-v9'}
-                        onViewportChange={_onViewportChange}
-                        dragPan={true}
-                        dragRotate={false}
-                        touchRotate={false}
-                        doubleClickZoom={false}
-                        scrollZoom={true}
-                        touchZoom={false}
-                      >
-                        <Source id="singleSite" type="geojson" data={site.geometry}>
-                          <Layer
-                            id="ploygonLayer"
-                            type="fill"
-                            source="singleProject"
-                            paint={{
-                              'fill-color': '#fff',
-                              'fill-opacity': 0.2,
-                            }}
-                          />
-                          <Layer
-                            id="ploygonOutline"
-                            type="line"
-                            source="singleProject"
-                            paint={{
-                              'line-color': '#89b54a',
-                              'line-width': 2,
-                            }}
-                          />
-                        </Source>
-                      </StaticMap>
                     </div>
-                  </div>
 
 
-                );
-              })}
-          </div>
-
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
-              <MaterialTextField
-                inputRef={register({ required: true })}
-                label={t('manageProjects:name')}
-                variant="outlined"
-                name="name"
-                onChange={changeSiteDetails}
-                defaultValue={siteDetails.name}
-              />
+                  );
+                })}
             </div>
-            <div className={styles.formFieldHalf}>
-              <Controller
-                as={
-                  <MaterialTextField
-                    inputRef={register({
-                    })}
-                    label={t('manageProjects:projectStatus')}
-                    variant="outlined"
-                    name="status"
-                    onChange={changeSiteDetails}
-                    select
-                    value={siteDetails.status}
-                  >
-                    {status.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
-                }
-                name="status"
-                rules={{ required: "Please select Project Status" }}
-                control={control}
-                defaultValue={siteDetails.status ? siteDetails.status : ""}
-              />
-              {errors.status && (
-                <span className={styles.formErrors}>
-                  {errors.status.message}
-                </span>
-              )}
+        {showForm ? (
+          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
+            
+
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf}>
+                <MaterialTextField
+                  inputRef={register({ required: true })}
+                  label={t('manageProjects:name')}
+                  variant="outlined"
+                  name="name"
+                  onChange={changeSiteDetails}
+                  defaultValue={siteDetails.name}
+                />
+              </div>
+              <div className={styles.formFieldHalf}>
+                <Controller
+                  as={
+                    <MaterialTextField
+                      inputRef={register({
+                      })}
+                      label={t('manageProjects:projectStatus')}
+                      variant="outlined"
+                      name="status"
+                      onChange={changeSiteDetails}
+                      select
+                      value={siteDetails.status}
+                    >
+                      {status.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="status"
+                  rules={{ required: "Please select Project Status" }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ""}
+                />
+                {errors.status && (
+                  <span className={styles.formErrors}>
+                    {errors.status.message}
+                  </span>
+                )}
+              </div>
+
+            </div>
+
+            <Map {...MapProps} />
+
+            <div
+              onClick={handleSubmit(uploadProjectSite)}
+              className={styles.formFieldLarge}
+            >
+              <p className={styles.inlineLinkButton}>Save & Add another site</p>
             </div>
 
           </div>
+        ) : (
+            <div
+              onClick={() => setShowForm(true)}
+              className={styles.formFieldLarge}
+            >
+              <p className={styles.inlineLinkButton}>Add another site</p>
+            </div>
+          )}
 
-          <Map {...MapProps} />
-
-          <div
-            onClick={handleSubmit(uploadProjectSite)}
-            className={styles.formFieldLarge}
-          >
-            <p className={styles.inlineLinkButton}>Save & Add another site</p>
-          </div>
-
-        </div>
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>

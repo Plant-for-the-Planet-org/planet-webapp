@@ -94,6 +94,9 @@ function ProjectCertificates({ projectGUID, session,setIsUploadingData }: Props)
         // Fetch certificates of the project 
         if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
         getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`,session).then((result)=>{
+            if(result.certificates.length > 0){
+                setShowForm(false)
+            }
             setUploadedFiles(result.certificates)
         })
     },[projectGUID]);
