@@ -147,9 +147,7 @@ export default function ProjectSites({
     // Fetch sites of the project 
     if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`, session).then((result) => {
-        console.log('result', result);
-
-        // setSiteList(result.sites)
+        setSiteList(result.sites)
       })
   }, [projectGUID]);
 
