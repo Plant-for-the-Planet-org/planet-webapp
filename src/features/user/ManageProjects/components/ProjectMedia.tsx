@@ -109,14 +109,13 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     })
   }
 
+  // For uploading the Youtube field
   const onSubmit = (data: any) => {
     // Add isDirty test here
     setIsUploadingData(true)
-
     const submitData = {
       videoUrl:data.youtubeURL
     }
-
     putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
       setProjectDetails(res)
       setIsUploadingData(false)

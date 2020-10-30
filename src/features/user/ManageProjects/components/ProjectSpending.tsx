@@ -28,10 +28,10 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
-    session:any;
+    session: any;
 }
 
-export default function ProjectSpending({ handleBack, session,handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -39,8 +39,9 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
 
     const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
-    const [isUploadingData,setIsUploadingData] = React.useState(false)
+    const [isUploadingData, setIsUploadingData] = React.useState(false)
 
+    const [showForm, setShowForm] = React.useState(true)
     const [uploadedFiles, setUploadedFiles] = React.useState([])
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
@@ -82,14 +83,15 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
         }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
-            
+
             let newUploadedFiles = uploadedFiles;
             newUploadedFiles.push(res);
             setUploadedFiles(newUploadedFiles);
-            console.table([uploadedFiles,res,newUploadedFiles]);
+            console.table([uploadedFiles, res, newUploadedFiles]);
             setAmount(0);
             setValue('amount', 0, { shouldDirty: false })
             setIsUploadingData(false)
+            setShowForm(false)
         })
         // handleNext()
     };
@@ -106,151 +108,149 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
     }
 
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         // Fetch spending of the project 
-        if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
-        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`,session).then((result)=>{            
-            setUploadedFiles(result.expenses)
-        })
-    },[projectGUID]);
+        if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
+                setUploadedFiles(result.expenses)
+            })
+    }, [projectGUID]);
 
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-                {uploadedFiles && uploadedFiles.length > 0 ? (
-                    <div className={styles.formField}>
-                        {uploadedFiles.map((report) => {
-                            return (
-                                <div key={report.id} className={` ${styles.reportPDFContainer}`}>
-                                    <a target={"_blank"} href={getPDFFile('projectExpense',report.pdf)}>
-                                        {/* <PDFIcon color="#2F3336" /> */}
-                                        <PDFRed />
-                                    </a>
-                                    <div className={styles.reportPDFDetails}>
-                                        <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
-                                        <p>in {report.year} </p>
-                                    </div>
-                                    <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
-                                        <PencilIcon color={"#000"} />
-                                    </div>
-                                    <div
-                                        onClick={() => deleteProjectSpending(report.id)}
-                                        className={styles.reportEditButton}>
-                                        <TrashIcon />
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                ) : null}
-
-                <div className={styles.formField}>
-                    <div className={`${styles.formFieldHalf}`}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                inputRef={register({
-                                    required: {
-                                        value: true,
-                                        message: 'Please add Spending Year'
-                                    }
+            {uploadedFiles && uploadedFiles.length > 0 ? (
+                            <div className={styles.formField}>
+                                {uploadedFiles.map((report) => {
+                                    return (
+                                        <div key={report.id} className={` ${styles.reportPDFContainer}`}>
+                                            <a target={"_blank"} href={getPDFFile('projectExpense', report.pdf)}>
+                                                {/* <PDFIcon color="#2F3336" /> */}
+                                                <PDFRed />
+                                            </a>
+                                            <div className={styles.reportPDFDetails}>
+                                                <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
+                                                <p>in {report.year} </p>
+                                            </div>
+                                            <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
+                                                <PencilIcon color={"#000"} />
+                                            </div>
+                                            <div
+                                                onClick={() => deleteProjectSpending(report.id)}
+                                                className={styles.reportEditButton}>
+                                                <TrashIcon />
+                                            </div>
+                                        </div>
+                                    )
                                 })}
-                                views={["year"]}
-                                value={year}
-                                onChange={(value) => setYear(value)}
-                                label={t('manageProjects:spendingYear')}
-                                name="year"
-                                inputVariant="outlined"
-                                variant="inline"
-                                TextFieldComponent={MaterialTextField}
-                                autoOk
-                                clearable
-                                disableFuture
+                            </div>
+                        ) : null}
+                {showForm ? (
+                    <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
+                        
 
-                            />
-                        </MuiPickersUtilsProvider>
-                        {errors.year && (
-                            <span className={styles.formErrors}>
-                                {errors.year.message}
-                            </span>
-                        )}
-                    </div>
-                    <div style={{ width: '20px' }}></div>
-                    <div className={`${styles.formFieldHalf}`}>
-                        <MaterialTextField
-                            inputRef={register({
-                                validate: (value) =>
-                                    parseFloat(value) > 0,
-                                required: {
-                                    value: true,
-                                    message: 'Please enter the Amount Spent'
-                                }
-                            })}
-                            label={t('manageProjects:spendingAmount')}
-                            // value={amount}
-                            // defaultValue={amount}
-                            placeholder={0}
-                            variant="outlined"
-                            name="amount"
-                            onChange={(e) => setAmount(e.target.value)}
-                            onInput={(e) => {
-                                e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
-                            }}
-                            InputProps={{
-                                startAdornment: (
-                                    <p
-                                        className={styles.inputStartAdornment}
-                                        style={{ paddingRight: '4px' }}
-                                    >{`€`}</p>
-                                ),
-                            }}
-                        />
-                        {errors.amount && (
-                            <span className={styles.formErrors}>
-                                {errors.amount.message}
-                            </span>
-                        )}
+                        <div className={styles.formField}>
+                            <div className={`${styles.formFieldHalf}`}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <DatePicker
+                                        inputRef={register({
+                                            required: {
+                                                value: true,
+                                                message: 'Please add Spending Year'
+                                            }
+                                        })}
+                                        views={["year"]}
+                                        value={year}
+                                        onChange={(value) => setYear(value)}
+                                        label={t('manageProjects:spendingYear')}
+                                        name="year"
+                                        inputVariant="outlined"
+                                        variant="inline"
+                                        TextFieldComponent={MaterialTextField}
+                                        autoOk
+                                        clearable
+                                        disableFuture
 
-                    </div>
-                </div>
+                                    />
+                                </MuiPickersUtilsProvider>
+                                {errors.year && (
+                                    <span className={styles.formErrors}>
+                                        {errors.year.message}
+                                    </span>
+                                )}
+                            </div>
+                            <div style={{ width: '20px' }}></div>
+                            <div className={`${styles.formFieldHalf}`}>
+                                <MaterialTextField
+                                    inputRef={register({
+                                        validate: (value) =>
+                                            parseFloat(value) > 0,
+                                        required: {
+                                            value: true,
+                                            message: 'Please enter the Amount Spent'
+                                        }
+                                    })}
+                                    label={t('manageProjects:spendingAmount')}
+                                    placeholder={0}
+                                    variant="outlined"
+                                    name="amount"
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    onInput={(e) => {
+                                        e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                                    }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <p
+                                                className={styles.inputStartAdornment}
+                                                style={{ paddingRight: '4px' }}
+                                            >{`€`}</p>
+                                        ),
+                                    }}
+                                />
+                                {errors.amount && (
+                                    <span className={styles.formErrors}>
+                                        {errors.amount.message}
+                                    </span>
+                                )}
 
-                {errors.amount || errors.year || !isDirty || amount === 0 ? (
-                    <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
-                        <div className={styles.fileUploadContainer}>
-                            <AnimatedButton
-                                className={styles.continueButton}
-                            >
-                                Upload Report
-                            </AnimatedButton>
-                            <p style={{ marginTop: '18px' }}>
-                                or drag in a pdf
-                        </p>
-                        </div>
-                    </div>
-                ) : (
-                        <div className={styles.formFieldLarge} {...getRootProps()}>
-                            <div className={styles.fileUploadContainer}>
-                                <AnimatedButton
-                                    // onClick={uploadReport}
-                                    className={styles.continueButton}
-                                >
-                                    <input {...getInputProps()} />
-                                    Upload Report
-                                </AnimatedButton>
-                                <p style={{ marginTop: '18px' }}>
-                                    or drag in a pdf
-                                </p>
                             </div>
                         </div>
+
+                        {errors.amount || errors.year || !isDirty || amount === 0 ? (
+                            <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
+                                <div className={styles.fileUploadContainer}>
+                                    <AnimatedButton
+                                        className={styles.continueButton}
+                                    >
+                                        Upload Report
+                            </AnimatedButton>
+                                    <p style={{ marginTop: '18px' }}>
+                                        or drag in a pdf
+                                </p>
+                                </div>
+                            </div>
+                        ) : (
+                                <div className={styles.formFieldLarge} {...getRootProps()}>
+                                    <div className={styles.fileUploadContainer}>
+                                        <AnimatedButton
+                                            // onClick={uploadReport}
+                                            className={styles.continueButton}
+                                        >
+                                            <input {...getInputProps()} />
+                                    Upload Report
+                                </AnimatedButton>
+                                        <p style={{ marginTop: '18px' }}>
+                                            or drag in a pdf
+                                </p>
+                                    </div>
+                                </div>
+                            )}
+                    </div>
+                ) : (
+                        <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
+                            <p className={styles.inlineLinkButton}>Add another year</p>
+                        </div>
                     )}
-
-
-
-
-                {/* <div className={styles.formFieldLarge}>
-                    <p className={styles.inlineLinkButton}>Add another year</p>
-                </div> */}
-</div>
 
                 <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>
@@ -265,10 +265,10 @@ export default function ProjectSpending({ handleBack, session,handleNext, projec
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
-                            onClick={()=>handleNext()}
+                            onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData? <div className={styles.spinner}></div> : "See Project"}
+                            {isUploadingData ? <div className={styles.spinner}></div> : "See Project"}
                         </AnimatedButton>
                     </div>
                 </div>
