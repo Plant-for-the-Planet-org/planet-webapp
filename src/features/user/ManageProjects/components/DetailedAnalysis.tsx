@@ -78,21 +78,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
     const [isCertified, setisCertified] = React.useState(true)
 
-    const defaultDetailedAnalysisData = {
-        yearAbandoned: new Date(),
-        firstTreePlanted: new Date(),
-        plantingDensity: null,
-        employeesCount: null,
-        mainChallenge: '',
-        motivation: '',//why this site
-        siteOwnerType: '',
-        siteOwnerName: '',
-        acquisitionYear: new Date(),
-        degradationYear: new Date(),
-        degradationCause: '',
-        longTermPlan: '',
-    };
-    const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur', defaultValues: defaultDetailedAnalysisData });
+    const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (data: any) => {
         setIsUploadingData(true)
@@ -135,16 +121,16 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         if (projectDetails && projectDetails !== null) {
 
             const defaultDetailedAnalysisData = {
-                yearAbandoned: new Date(new Date().setFullYear(projectDetails.yearAbandoned)),
-                firstTreePlanted: new Date(projectDetails.firstTreePlanted),
+                yearAbandoned: projectDetails.yearAbandoned ? new Date(new Date().setFullYear(projectDetails.yearAbandoned)) : new Date(new Date().setFullYear(2000)),
+                firstTreePlanted: projectDetails.firstTreePlanted ? new Date(projectDetails.firstTreePlanted) :new Date() ,
                 plantingDensity: projectDetails.plantingDensity,
                 employeesCount: projectDetails.employeesCount,
                 mainChallenge: projectDetails.mainChallenge,
                 motivation: projectDetails.motivation,
                 siteOwnerType: siteOwners.find(element => element.value === projectDetails.siteOwnerType),  // Format with object to set it again
                 siteOwnerName: projectDetails.siteOwnerName,
-                acquisitionYear: new Date(new Date().setFullYear(projectDetails.acquisitionYear)),
-                degradationYear: new Date(new Date().setFullYear(projectDetails.degradationYear)),
+                acquisitionYear: projectDetails.acquisitionYear ?  new Date(new Date().setFullYear(projectDetails.acquisitionYear)) :new Date() ,
+                degradationYear: projectDetails.degradationYear ? new Date(new Date().setFullYear(projectDetails.degradationYear)) : new Date(),
                 degradationCause: projectDetails.degradationCause,
                 longTermPlan: projectDetails.longTermPlan,
             };
@@ -179,6 +165,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
                                             disableFuture
+                                            minDate={new Date(new Date().setFullYear(1950))}
                                         />
                                     )
                                     }
@@ -201,7 +188,9 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <Controller
-                                    render={props => (<DatePicker
+                                    render={props => (
+                                    
+                                    <DatePicker
                                         label={t('manageProjects:firstTreePlanted')}
                                         value={props.value}
                                         onChange={props.onChange}
@@ -209,6 +198,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                         TextFieldComponent={MaterialTextField}
                                         autoOk
                                         disableFuture
+                                        minDate={new Date(new Date().setFullYear(2006))}
                                     />)
                                     }
                                     name="firstTreePlanted"
@@ -389,6 +379,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
                                             disableFuture
+                                            minDate={new Date(new Date().setFullYear(2006))}
                                         />)
                                     }
                                     name="acquisitionYear"
@@ -413,6 +404,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
                                             disableFuture
+                                            minDate={new Date(new Date().setFullYear(2006))}
                                         />)
                                     }
                                     name="degradationYear"
