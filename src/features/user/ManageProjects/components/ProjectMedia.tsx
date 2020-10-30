@@ -30,16 +30,16 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
 
   const [uploadedImages, setUploadedImages] = React.useState([])
 
-  const [isUploadingData,setIsUploadingData] = React.useState(false)
+  const [isUploadingData, setIsUploadingData] = React.useState(false)
 
   React.useEffect(() => {
     // Fetch images of the project 
     if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
-      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, session).then((result) => {        
+      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, session).then((result) => {
         setUploadedImages(result.images)
       })
   }, [projectGUID]);
-  
+
   const uploadPhotos = (image: any) => {
     setIsUploadingData(true)
 
@@ -92,8 +92,8 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     // }
   });
 
-  const [youtubeURL, setYoutubeURL] = React.useState(projectDetails.videoURL ?projectDetails.videoURL:'' )
-  
+  const [youtubeURL, setYoutubeURL] = React.useState(projectDetails.videoURL ? projectDetails.videoURL : '')
+
   React.useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
@@ -113,7 +113,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     // Add isDirty test here
     setIsUploadingData(true)
     const submitData = {
-      videoUrl:data.youtubeURL
+      videoUrl: data.youtubeURL
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
       setProjectDetails(res)
@@ -122,15 +122,15 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     })
   };
 
-  const setDefaultImage =(id:any,index:any)=>{
+  const setDefaultImage = (id: any, index: any) => {
     setIsUploadingData(true)
     const submitData = {
       isDefault: true
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`,submitData,session).then((res)=>{
-      if(res.code !== 200){
-        const tempUploadedData = uploadedImages;
-        tempUploadedData.forEach((image)=>{
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, session).then((res) => {
+      if (res.code !== 200) {
+        let tempUploadedData = uploadedImages;
+        tempUploadedData.forEach((image) => {
           image.isDefault = false
         })
         tempUploadedData[index].isDefault = true;
@@ -140,89 +140,102 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
     })
   }
 
-  const uploadCaption = (id:any,description:any)=>{
-    // when onblur get the description
-    // upload the image data with the image ID to backend
-    // if successful replace current image in the uploaded images
-    // Show a green border around the updated image for 5 seconds
+  const uploadCaption = (id: any, index: any, e: any) => {
+    setIsUploadingData(true)
+    const submitData = {
+      description:e.target.value
+    }
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, session).then((res) => {
+      if (res.code !== 200) {
+        let tempUploadedData = uploadedImages;
+        tempUploadedData[index].description = res.description;
+        setUploadedImages(tempUploadedData);
+        setIsUploadingData(false)
+      }
+    })
   }
   return (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-        <div className={styles.formFieldLarge}>
-          {youtubeURL && !errors.youtubeURL ? (
-            <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-          ) : null}
-        </div>
-        <div className={styles.formFieldLarge}>
-          <MaterialTextField
-            inputRef={register({
-              pattern: {
-                value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
-                message: "Invalid Youtube Video Link"
-              }
-            })}
-            label={t('manageProjects:youtubeURL')}
-            variant="outlined"
-            name="youtubeURL"
-            onChange={() => setYoutubeURL}
-            defaultValue={youtubeURL}
-          />
+        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
+          <div className={styles.formFieldLarge}>
+            {youtubeURL && !errors.youtubeURL ? (
+              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+            ) : null}
+          </div>
+          <div className={styles.formFieldLarge}>
+            <MaterialTextField
+              inputRef={register({
+                pattern: {
+                  value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
+                  message: "Invalid Youtube Video Link"
+                }
+              })}
+              label={t('manageProjects:youtubeURL')}
+              variant="outlined"
+              name="youtubeURL"
+              onChange={() => setYoutubeURL}
+              defaultValue={youtubeURL}
+            />
 
-        </div>
-        {errors.youtubeURL && (
-          <span className={styles.formErrors}>
-            {errors.youtubeURL.message}
-          </span>
-        )}
+          </div>
+          {errors.youtubeURL && (
+            <span className={styles.formErrors}>
+              {errors.youtubeURL.message}
+            </span>
+          )}
 
-        {/* Change to field array of react hook form  */}
-        {uploadedImages && uploadedImages.length > 0 ?
-          <div className={styles.formField}>
-            {
-              uploadedImages.map((image,index) => {
-                return (
-                  <div key={image.id} className={styles.formFieldHalf}>
-                    <div className={styles.uploadedImageContainer}>
-                      <img src={getS3Image('project', 'medium', image.image)} />
-                      <div className={styles.uploadedImageOverlay}></div>
-                      
-                      <input type="text" name="" placeholder="Add Caption" value={image.description ?image.description:'' } />
-                      
-                      <div className={styles.uploadedImageButtonContainer}>
-                        <div onClick={() => deleteProjectCertificate(image.id)}>
-                          <DeleteIcon />
-                        </div>
-                        <div onClick={() => setDefaultImage(image.id,index)}>
-                          <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
+          {/* Change to field array of react hook form  */}
+          {uploadedImages && uploadedImages.length > 0 ?
+            <div className={styles.formField}>
+              {
+                uploadedImages.map((image, index) => {
+                  return (
+                    <div key={image.id} className={styles.formFieldHalf}>
+                      <div className={styles.uploadedImageContainer}>
+                        <img src={getS3Image('project', 'medium', image.image)} />
+                        <div className={styles.uploadedImageOverlay}></div>
+
+                        <input 
+                          onBlur={(e) => uploadCaption(image.id, index, e)} 
+                          type="text" 
+                          placeholder="Add Caption"
+                          defaultValue={image.description}
+                        />
+
+                        <div className={styles.uploadedImageButtonContainer}>
+                          <div onClick={() => deleteProjectCertificate(image.id)}>
+                            <DeleteIcon />
+                          </div>
+                          <div onClick={() => setDefaultImage(image.id, index)}>
+                            <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )
-              })
-            }
-          </div>
-          : null}
+                  )
+                })
+              }
+            </div>
+            : null}
 
-        <div className={styles.formFieldLarge} {...getRootProps()}>
-          <label htmlFor="upload" className={styles.fileUploadContainer}>
-            <AnimatedButton
-              onClick={uploadPhotos}
-              className={styles.continueButton}
-            >
-              <input {...getInputProps()} />
+          <div className={styles.formFieldLarge} {...getRootProps()}>
+            <label htmlFor="upload" className={styles.fileUploadContainer}>
+              <AnimatedButton
+                onClick={uploadPhotos}
+                className={styles.continueButton}
+              >
+                <input {...getInputProps()} />
                             Upload Photos
 
                         </AnimatedButton>
-            <p style={{ marginTop: '18px' }}>
-              or drag them in
+              <p style={{ marginTop: '18px' }}>
+                or drag them in
                         </p>
-          </label>
+            </label>
 
-          {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
-        </div>
+            {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
+          </div>
         </div>
 
         <div className={styles.formField}>
@@ -237,8 +250,8 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-          <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
-              {isUploadingData? <div className={styles.spinner}></div> : "Save & Continue"}
+            <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+              {isUploadingData ? <div className={styles.spinner}></div> : "Save & Continue"}
             </div>
           </div>
         </div>
