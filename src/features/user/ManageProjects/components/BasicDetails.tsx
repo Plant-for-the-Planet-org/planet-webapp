@@ -436,10 +436,9 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               className={styles.formField}
               style={{ margin: 'auto', marginTop: '-120px' }}
             >
-              <div className={styles.formFieldHalf}>
+              <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
                 <MaterialTextField
                   inputRef={register({ required: true, validate: (value) => parseFloat(value) > -90 && parseFloat(value) < 90 })}
-
                   label="Latitude"
                   variant="outlined"
                   name={'projectCoords.latitude'}
@@ -450,7 +449,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                   }}
                 />
               </div>
-              <div className={styles.formFieldHalf}>
+              <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
                 <MaterialTextField
                   inputRef={register({ required: true, validate: (value) => parseFloat(value) > -180 && parseFloat(value) < 180 })}
                   label="Longitude"

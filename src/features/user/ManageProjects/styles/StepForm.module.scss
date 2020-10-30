@@ -47,11 +47,50 @@
   flex-wrap: wrap;
   max-width: 320px;
   min-width: 320px;
-  // div,input{
-  //     min-width: 320px;
-  // }
 }
 
+.latitudeInput {
+  width: fit-content !important;
+  div {
+    border-radius: 28px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+  }
+  div,
+  input {
+    width: fit-content !important;
+    text-align: center !important;
+  }
+  label {
+    width: 100%;
+    text-align: center !important;
+    transform: translate(0px, 20px);
+  }
+}
+.longitudeInput {
+  width: fit-content !important;
+  div {
+    border-radius: 28px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+  div,
+  input {
+    width: fit-content !important;
+    text-align: center !important;
+  }
+  label {
+    width: 100%;
+    text-align: center !important;
+    transform: translateX(0px, 20px);
+  }
+}
+.latlongField{
+  div,
+  input {
+    width: 120px!important;
+  }
+}
 @include mdTabletView{
   .mainContainer {
     max-width: 780px;
@@ -61,6 +100,12 @@
   }
   .formFieldLarge {
     max-width: 660px;
+  }
+  .latlongField{
+    div,
+    input {
+      width: 320px!important;
+    }
   }
 }
 .continueButton,
@@ -202,42 +247,6 @@
   font-weight: bold;
 }
 
-.latitudeInput {
-  width: fit-content !important;
-  div {
-    border-radius: 28px !important;
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
-  }
-  div,
-  input {
-    width: fit-content !important;
-    text-align: center !important;
-  }
-  label {
-    width: 100%;
-    text-align: center !important;
-    transform: translate(0px, 20px);
-  }
-}
-.longitudeInput {
-  width: fit-content !important;
-  div {
-    border-radius: 28px !important;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
-  }
-  div,
-  input {
-    width: fit-content !important;
-    text-align: center !important;
-  }
-  label {
-    width: 100%;
-    text-align: center !important;
-    transform: translateX(0px, 20px);
-  }
-}
 
 .marker {
   width: 30px;
