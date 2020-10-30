@@ -148,7 +148,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
             };
 
             // set planting seasons
-            if (projectDetails.plantingSeasons.length > 0) {
+            if (projectDetails.plantingSeasons && projectDetails.plantingSeasons.length > 0) {
                 for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
                     if (projectDetails.plantingSeasons[i]) {
                         let j = projectDetails.plantingSeasons[i] - 1;
