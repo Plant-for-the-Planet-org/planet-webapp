@@ -281,7 +281,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                     message: 'Please enter website URL',
                   },
                   pattern: {
-                    value: /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/,
+                    value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
                     message: 'Invalid website URL',
                   },
                 })}
