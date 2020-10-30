@@ -164,7 +164,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
                     <div className={styles.uploadedImageContainer}>
                       <img src={getS3Image('project', 'medium', image.image)} />
                       <div className={styles.uploadedImageOverlay}></div>
-                      <input type="text" name="" placeholder="Caption" />
+                      <input type="text" name="" placeholder="Add Caption" />
                       <div className={styles.uploadedImageButtonContainer}>
                         <div onClick={() => deleteProjectCertificate(image.id)}>
                           <DeleteIcon />
@@ -174,7 +174,6 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
                         </div>
                       </div>
                     </div>
-
                   </div>
                 )
               })
