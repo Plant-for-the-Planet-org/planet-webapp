@@ -5,6 +5,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import { editProfile } from '../../../../utils/auth0/apiRequests'
 
 export default function AddTargetModal({
   userprofile,
@@ -16,9 +17,20 @@ export default function AddTargetModal({
     const [target, setTarget] = React.useState(0);
     const [session, loading] = useSession();
 
-    const apiCallChangeTarget = () => {
-        console.log('here', target)
-        handleAddTargetModalClose()
+    const apiCallChangeTarget = async() => {
+      if(!loading && session){
+        const bodyToSend = {
+          target: target
+        }
+        const res =  await editProfile(session, bodyToSend)
+        if (res.status === 200){
+          handleAddTargetModalClose()
+          changeForceReload(!forceReload)
+        } else {
+          console.log('edit target failed')
+          handleAddTargetModalClose()
+        }
+      }
     }
   return (
     <Modal
