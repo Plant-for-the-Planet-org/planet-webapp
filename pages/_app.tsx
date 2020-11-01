@@ -36,6 +36,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [project, setProject] = React.useState(null);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
+  const [searchedProject, setsearchedProjects] = React.useState([]);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -75,6 +76,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setShowSingleProject,
     pageProps,
     initialized,
+    searchedProject,
+    setsearchedProjects,
   };
 
   return (
@@ -82,12 +85,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <CssBaseline />
       <Layout>
         {isMap ? (
-          project !== null ? (
+          project ? (
             <MapLayout
               {...ProjectProps}
               mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
             />
-          ) : projects !== null ? (
+          ) : projects ? (
             <MapLayout
               {...ProjectProps}
               mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
