@@ -4,7 +4,7 @@ export default async function getsessionId() {
   let sessionId;
   if (typeof Storage !== 'undefined') {
     sessionId = localStorage.getItem('sessionId');
-    if (sessionId === undefined || sessionId === null) {
+    if (!sessionId) {
       sessionId = v1();
       localStorage.setItem('sessionId', sessionId);
     }

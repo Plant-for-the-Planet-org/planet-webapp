@@ -23,7 +23,7 @@ export default function Header() {
       <meta property="og:locale" content={config.meta.locale} />
       {locales.map((locale) => {
         if (locale !== config.meta.locale) {
-          return <meta property="og:locale:alternate" content={locale} />;
+          return <meta key="og:locale:alternate" property="og:locale:alternate" content={locale} />;
         }
       })}
       <meta name="mobile-web-app-capable" content="yes" />
