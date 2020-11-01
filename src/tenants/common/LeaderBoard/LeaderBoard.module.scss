@@ -138,25 +138,23 @@
       .leaderBoardSection {
         margin-top: 0px;
       }
-      .leaderBoardBushImage {
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-      }
-
-      .leaderBoardGroupTreeImage {
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
-      }
-    
+      
       .leaderBoardBushImageMobile {
         display: none;
       }
 }
 
 @include lgLaptopView {
-  
+  .leaderBoardBushImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+  .leaderBoardGroupTreeImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+  }
 }
