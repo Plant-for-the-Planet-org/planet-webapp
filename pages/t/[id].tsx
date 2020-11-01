@@ -50,7 +50,8 @@ export default function PublicUser(initialized: Props) {
     async function loadUserData() {
       if (typeof Storage !== 'undefined') {
         const userExistsInDB = getUserExistsInDB();
-        const currentUserSlug = getUserInfo().slug;
+
+        const currentUserSlug = getUserInfo() && getUserInfo().slug ? getUserInfo().slug : null ;
 
         // some user logged in and slug matches -> private profile
         if (!loading && session && userExistsInDB && currentUserSlug === slug) {
