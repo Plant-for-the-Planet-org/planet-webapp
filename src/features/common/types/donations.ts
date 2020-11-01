@@ -10,9 +10,12 @@ export interface contactDetailsProps {
 }
 
 export interface giftDetailsProps {
-  recipientName: String;
-  email: String;
-  giftMessage: String;
+  type:String|null;
+  recipientName: String|null;
+  email: String|null;
+  giftMessage: String|null;
+  recipientTreecounter: Number|null;
+  receipients: {}|null;
 }
 
 export interface TreeDonationProps {
@@ -33,6 +36,8 @@ export interface TreeDonationProps {
   setDonationStep: Function;
   giftDetails: giftDetailsProps;
   setGiftDetails: Function;
+  directGift:any,
+  setDirectGift: Function;
   paymentType: String;
   setPaymentType: Function;
   isPaymentOptionsLoading: boolean;

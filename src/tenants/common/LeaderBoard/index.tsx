@@ -40,7 +40,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               {t('leaderboard:mostTrees')}
             </div>
           </div>
-          {leaderboardData !== null &&
+          {leaderboardData &&
           leaderboardData.mostRecent &&
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
@@ -80,12 +80,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
       </div>
       <img
         className={styles.leaderBoardBushImage}
-        src="/tenants/stern/images/leaderboard.svg"
+        src="/tenants/planet/images/leaderboard/leaderboard.svg"
         alt=""
       />
       <img
         className={styles.leaderBoardGroupTreeImage}
-        src="/tenants/stern/images/treeGroup.svg"
+        src="/tenants/planet/images/leaderboard/treeGroup.svg"
         alt=""
       />
       {/* <img

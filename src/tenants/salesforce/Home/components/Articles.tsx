@@ -1,5 +1,6 @@
-import { Col, Row } from 'react-bootstrap';
 import styles from './../styles/Articles.module.scss';
+import gridStyles from './../styles/Grid.module.scss';
+
 export default function Articles() {
   const articles = [
     {
@@ -43,10 +44,10 @@ export default function Articles() {
       <h2 className={styles.articleSectionHeader}>
         Check out some other ways we support trees.
       </h2>
-      <Row className={styles.articleContainer}>
+      <div className={`${gridStyles.gridRow} ${styles.articleContainer}`}>
         {articles.map((article) => {
           return (
-            <Col key={article.id} sm={10} lg={6}>
+            <div key={article.id} className={`${gridStyles.colSm10} ${gridStyles.colLg6}`}>
               <div className={styles.articleSingleContainer}>
                 <img
                   className={styles.articleImage}
@@ -65,10 +66,10 @@ export default function Articles() {
                   </a>
                 </div>
               </div>
-            </Col>
+            </div>
           );
         })}
-      </Row>
+      </div>
     </section>
   );
 }

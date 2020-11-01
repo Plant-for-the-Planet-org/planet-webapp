@@ -1,0 +1,69 @@
+@import '../../../../theme/theme';
+
+.fluidContainer{
+  width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@include mdTabletView{
+  .fluidContainer{
+  max-width: 720px;
+  }
+}
+@include lgLaptopView{
+  .fluidContainer{
+  max-width: 960px;
+  }
+}
+@include xlDesktopView{
+  .fluidContainer{
+  max-width: 1140px;
+  }
+}
+
+.gridRow{
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col12{
+  -moz-box-flex: 0;
+    flex: 0 0 100%;
+    max-width: 100%;
+    
+}
+.col12, .colMd6, .colSm10, .colLg6{
+  position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+@include smTabletView{
+  .colSm10{
+    flex: 0 0 83.333333%;
+      max-width: 83.333333%;
+  }
+}
+@include mdTabletView{
+  .colMd6{
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@include lgLaptopView{
+  .colLg6{
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .colLg4{
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}
+

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
 import styles from '../styles/SettingsModal.module.scss';
-import Close from '../../../../assets/images/icons/headerIcons/close';
+import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
