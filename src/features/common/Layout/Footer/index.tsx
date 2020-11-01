@@ -103,7 +103,7 @@ export default function Footer() {
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {FooterLinks.map((link) => {
                 return (
-                  <a href={link.link} target="_blank">
+                  <a key={link.title} href={link.link} target="_blank">
                     <p className={styles.footer_links}>{link.title}</p>
                   </a>
                 );

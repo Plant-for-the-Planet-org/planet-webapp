@@ -33,13 +33,13 @@ export default function Donate({
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
-    if (getdirectGift !== null) {
+    if (getdirectGift) {
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
 
   React.useEffect(() => {
-    if (directGift !== null) {
+    if (directGift) {
       if (directGift.show === false) {
         setShowDirectGift(false);
       }
@@ -87,7 +87,7 @@ export default function Donate({
         projects && initialized ? (
           <>
             <ProjectsList {...ProjectsProps} />
-            {directGift !== null ? (
+            {directGift ? (
               showdirectGift ? (
                 <DirectGift {...GiftProps} />
               ) : null
