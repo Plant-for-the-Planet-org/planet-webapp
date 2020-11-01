@@ -122,7 +122,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
 
     React.useEffect(() => {
         // Fetch spending of the project 
-        if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+        if (projectGUID && session?.accessToken)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
                 if (result.expenses.length > 0) {
                     setShowForm(false)

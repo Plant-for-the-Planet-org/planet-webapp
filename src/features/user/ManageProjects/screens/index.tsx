@@ -41,7 +41,7 @@ export default function ManageProjects({GUID,session,project}:any) {
 
     React.useEffect(()=>{
         // Fetch details of the project 
-        if(projectGUID !== '' && projectGUID !== null && session?.accessToken)
+        if(projectGUID && session?.accessToken)
         getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`,session).then((result)=>{
             setProjectDetails(result)
         })

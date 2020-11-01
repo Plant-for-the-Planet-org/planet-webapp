@@ -41,7 +41,7 @@ export default function PublicUser(initialized: Props) {
   };
 
   useEffect(() => {
-    if (router && router.query.id !== undefined) {
+    if (router && router.query.id) {
       setSlug(router.query.id);
       setReady(true);
     }

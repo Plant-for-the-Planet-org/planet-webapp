@@ -161,7 +161,7 @@ export default function ProjectSites({
 
   React.useEffect(() => {
     // Fetch sites of the project 
-    if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+    if (projectGUID && session?.accessToken)
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`, session).then((result) => {
         if (result.sites.length > 0) {
           setShowForm(false)

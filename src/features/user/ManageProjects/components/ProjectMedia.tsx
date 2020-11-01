@@ -35,7 +35,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
 
   React.useEffect(() => {
     // Fetch images of the project 
-    if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+    if (projectGUID && session?.accessToken)
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, session).then((result) => {
         setUploadedImages(result.images)
       })
@@ -151,7 +151,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
   };
 
   React.useEffect(() => {
-    if (projectDetails && projectDetails !== null) {
+    if (projectDetails) {
       setYoutubeURL(projectDetails.videoUrl)
     }
   }, [projectDetails])

@@ -94,7 +94,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
   const acceptDonations = watch("acceptDonations");
 
   React.useEffect(() => {
-    if (projectDetails && projectDetails !== null) {
+    if (projectDetails) {
       const basicDetails = {
         name: projectDetails.name,
         slug: projectDetails.slug,
@@ -417,7 +417,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               }}
 
             >
-              {projectCoords !== null ? (
+              {projectCoords ? (
                 <Marker
                   latitude={projectCoords[1]}
                   longitude={projectCoords[0]}

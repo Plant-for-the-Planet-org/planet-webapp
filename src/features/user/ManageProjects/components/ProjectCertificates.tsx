@@ -106,7 +106,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
 
     React.useEffect(() => {
         // Fetch certificates of the project 
-        if (projectGUID !== '' && projectGUID !== null && session?.accessToken)
+        if (projectGUID && session?.accessToken)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`, session).then((result) => {
                 if (result.certificates.length > 0) {
                     setShowForm(false)

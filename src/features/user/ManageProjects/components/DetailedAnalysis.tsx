@@ -130,7 +130,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
     // Use Effect to hide error message after 10 seconds
 
     React.useEffect(() => {
-        if (projectDetails && projectDetails !== null) {
+        if (projectDetails) {
 
             const defaultDetailedAnalysisData = {
                 yearAbandoned: projectDetails.yearAbandoned ? new Date(new Date().setFullYear(projectDetails.yearAbandoned)) : new Date(new Date().setFullYear(2000)),

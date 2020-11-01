@@ -58,12 +58,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, [router]);
 
   React.useEffect(() => {
-    if (
-      process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
-      (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
-        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== '' ||
-        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== null)
-    ) {
+    if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
       TagManager.initialize(tagManagerArgs);
     }
   }, []);

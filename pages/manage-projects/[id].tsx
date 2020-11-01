@@ -23,7 +23,7 @@ function ManageSingleProject({ }: Props): ReactElement {
   const [setupAccess, setSetupAccess] = React.useState(false)
 
   useEffect(() => {
-    if (router && router.query.id !== undefined) {
+    if (router && router.query.id) {
       setProjectGUID(router.query.id);
       setReady(true);
     }

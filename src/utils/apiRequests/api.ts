@@ -67,7 +67,7 @@ export async function postAuthenticatedRequest(url:any,data:any,session:any) {
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
           'Authorization': `OAuth ${session.accessToken}`,
-          'x-locale': `${localStorage.getItem('language') !== null
+          'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
               }`,
@@ -86,7 +86,7 @@ export async function deleteAuthenticatedRequest(url:any,session:any) {
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
           'Authorization': `OAuth ${session.accessToken}`,
-          'x-locale': `${localStorage.getItem('language') !== null
+          'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
               }`,
@@ -107,7 +107,7 @@ export async function putAuthenticatedRequest(url:any,data:any,session:any) {
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
           'Authorization': `OAuth ${session.accessToken}`,
-          'x-locale': `${localStorage.getItem('language') !== null
+          'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
               }`,

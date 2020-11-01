@@ -98,7 +98,7 @@ export default function MapComponent({
   };
 
   React.useEffect(() => {
-    if (geoJson !== null) {
+    if (geoJson) {
       const bbox = turf.bbox(geoJson);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
