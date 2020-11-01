@@ -10,7 +10,7 @@ export async function createDonation(data: any) {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
-        localStorage.getItem('language') !== null
+        localStorage.getItem('language')
           ? localStorage.getItem('language')
           : 'en'
       }`,
@@ -29,7 +29,7 @@ export async function payDonation(data: any, id: any) {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
-        localStorage.getItem('language') !== null
+        localStorage.getItem('language')
           ? localStorage.getItem('language')
           : 'en'
       }`,
@@ -95,19 +95,34 @@ export function payWithCard({
       taxDeductionCountry,
     };
   }
-  const gift = {
-    gift: {
-      type: 'invitation',
-      recipientName: giftDetails.recipientName,
-      recipientEmail: giftDetails.email,
-      message: giftDetails.giftMessage,
-    },
-  };
+
   if (isGift) {
+    if(giftDetails.type === 'invitation') {
     createDonationData = {
       ...createDonationData,
-      ...gift,
+      ...{
+        gift: {
+          type: 'invitation',
+          recipientName: giftDetails.recipientName,
+          recipientEmail: giftDetails.email,
+          message: giftDetails.giftMessage,
+        }
+      },
     };
+  } else if (giftDetails.type === 'direct') {
+    createDonationData = {
+      ...createDonationData,
+      ...{
+        gift: {
+          type: 'direct',
+          recipientTreecounter:giftDetails.recipientTreecounter,
+          message: giftDetails.giftMessage,
+        }
+      },
+    };
+  } else if (giftDetails.type === 'bulk') {
+    // for multiple receipients
+  }
   }
 
   createDonation(createDonationData)

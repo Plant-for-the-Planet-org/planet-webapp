@@ -6,9 +6,11 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { ContactDetailsPageProps } from './../../../common/types/donations';
-import styles from './../styles/ContactDetails.module.scss';
+import { ContactDetailsPageProps } from '../../../common/types/donations';
+import styles from '../styles/ContactDetails.module.scss';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 
 const { useTranslation } = i18next;
 
@@ -24,9 +26,9 @@ function ContactDetails({
   isTaxDeductible,
   country,
 }: ContactDetailsPageProps): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm({ mode: 'all' });
   const onSubmit = (data: any) => {
     setDonationStep(3);
   };
@@ -35,12 +37,19 @@ function ContactDetails({
   };
 
   const changeCountry = (country: any) => {
-    setContactDetails({ ...contactDetails, country: country });
+    setContactDetails({ ...contactDetails, country });
   };
 
-  let defaultCountry = isTaxDeductible
+  const defaultCountry = isTaxDeductible
     ? country
     : localStorage.getItem('countryCode');
+
+  const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country)[0]?.postal)
+
+  React.useEffect(() => {
+    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country);
+    setPostalRegex(fiteredCountry[0]?.postal);
+  }, [contactDetails.country])  
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -70,7 +79,7 @@ function ContactDetails({
             )}
           </div>
 
-          <div style={{ width: '20px' }}></div>
+          <div style={{ width: '20px' }} />
           <div>
             <MaterialTextField
               inputRef={register({ required: true })}
@@ -92,7 +101,7 @@ function ContactDetails({
             <MaterialTextField
               inputRef={register({
                 required: true,
-                pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i,
+                pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
               })}
               label={t('donate:email')}
               variant="outlined"
@@ -141,16 +150,23 @@ function ContactDetails({
             )}
           </div>
 
-          <div style={{ width: '20px' }}></div>
+          <div style={{ width: '20px' }} />
           <div>
-            <MaterialTextField
-              inputRef={register({})}
-              label={t('donate:zipCode')}
-              variant="outlined"
-              name="zipCode"
-              onChange={changeContactDetails}
-              defaultValue={contactDetails.zipCode}
-            />
+            {
+              postalRegex && (
+                <MaterialTextField
+                  inputRef={register({
+                    required: true,
+                    pattern: postalRegex
+                  })}
+                  label={t('donate:zipCode')}
+                  variant="outlined"
+                  name="zipCode"
+                  onChange={changeContactDetails}
+                  defaultValue={contactDetails.zipCode}
+                />
+              )
+            }
             {errors.zipCode && (
               <span className={styles.formErrors}>
                 {t('donate:zipCodeAlphaNumValidation')}
@@ -214,7 +230,7 @@ function ContactDetails({
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
-            {currency} {Sugar.Number.format(Number(treeCount * treeCost), 2)}
+            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
@@ -224,12 +240,21 @@ function ContactDetails({
         </div>
 
         <div className={styles.actionButtonsContainer}>
+
+          {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country  ? 
           <AnimatedButton
+            className={styles.continueButtonDisabled}
+          >
+              {t('common:continue')}
+            </AnimatedButton>
+            :
+            <AnimatedButton
             onClick={handleSubmit(onSubmit)}
             className={styles.continueButton}
           >
             {t('common:continue')}
-          </AnimatedButton>
+          </AnimatedButton> 
+            }
         </div>
       </form>
     </div>

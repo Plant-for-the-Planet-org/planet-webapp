@@ -4,24 +4,29 @@ import styles from '../styles/Projects.module.scss';
 
 interface Props {
   projects: any;
+  directGift: any;
+  setDirectGift: Function;
+  setsearchedProjects: any
 }
 
-function ProjectsList({ projects }: Props): ReactElement {
+function ProjectsList({
+  projects,
+  directGift,
+  setDirectGift,
+  setsearchedProjects,
+}: Props): ReactElement {
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
-  React.useEffect(() => {
-    if (searchedProjects === null || searchedProjects.length < 1)
-      setAllProjects(projects);
-    else setAllProjects(searchedProjects);
-  }, [projects, searchedProjects]);
 
   const ProjectsProps = {
-    projects: allProjects,
-    setSearchedProjects: setSearchedProjects,
+    projects,
+    setSearchedProjects: setsearchedProjects,
+    directGift,
+    setDirectGift,
   };
 
   return (

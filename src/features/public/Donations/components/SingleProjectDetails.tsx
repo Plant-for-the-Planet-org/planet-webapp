@@ -12,7 +12,6 @@ import BlackTree from '../../../../../public/assets/images/icons/project/BlackTr
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
-import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../../theme/themeContext';
@@ -34,7 +33,7 @@ const ImageSlider = dynamic(() => import('./ImageSlider'), {
 
 function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
   const [countryCode, setCountryCode] = React.useState<string>('DE');
 
   const screenWidth = window.innerWidth;
@@ -53,6 +52,13 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     ? getImageUrl('project', 'large', project.image)
     : '';
 
+  const contactAddress = project.tpo && project.tpo.address 
+    ? (project.tpo.address.address ? project.tpo.address.address + ', ' : '') 
+      + (project.tpo.address.city ? project.tpo.address.city + ', ' : '')        
+      + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') 
+      + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
+    : t('donate:unavailable');
+    
   const contactDetails = [
     {
       id: 1,
@@ -69,13 +75,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     {
       id: 3,
       icon: <Location color={styles.highlightBackground} />,
-      text:
-        project.tpo && project.tpo.address
-          ? project.tpo.address
-          : t('donate:unavailable'),
-
+      text: contactAddress,
       link: project.coordinates
-        ? `https://maps.google.com/?q=${project.tpo.address}`
+        ? `https://maps.google.com/?q=${contactAddress}`
         : null,
     },
     {
@@ -189,10 +191,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
                     {t('common:planted')}•{' '}
                     <span style={{ fontWeight: 400 }}>
-                      {
-                        getCountryDataBy('countryCode', project.country)
-                          .countryName
-                      }
+                      {t('country:' + project.country.toLowerCase())}
                     </span>
                   </div>
                   {/* <div className={styles.location}>

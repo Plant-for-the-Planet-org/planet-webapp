@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
-import getsessionId from '../../../../utils/apiRequests/getSessionId';
+import { getRequest } from '../../../../utils/apiRequests/api';
 import ContactDetails from '../components/ContactDetails';
 import PaymentDetails from '../components/PaymentDetails';
 import ThankYou from '../components/ThankYou';
@@ -9,9 +9,16 @@ import TreeDonation from '../components/TreeDonation';
 interface Props {
   onClose: any;
   project: any;
+  directGift: any;
+  setDirectGift: any;
 }
 
-function DonationsPopup({ onClose, project }: Props): ReactElement {
+function DonationsPopup({
+  onClose,
+  project,
+  directGift,
+  setDirectGift,
+}: Props): ReactElement {
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
@@ -51,13 +58,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     async function loadPaymentSetup() {
       try {
         setIsPaymentOptionsLoading(true);
-        const res = await fetch(
-          `${process.env.API_ENDPOINT}/app/projects/${project.id}/paymentOptions?country=${country}`,
-          {
-            headers: { 'tenant-key': `${process.env.TENANTID}`,'X-SESSION-ID': await getsessionId() },
-          }
-        );
-        const paymentSetupData = await res.json();
+
+        const paymentSetupData = await getRequest(`/app/projects/${project.id}/paymentOptions?country=${country}`);
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
           setTreeCost(paymentSetupData.treeCost);
@@ -74,9 +76,12 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   const [donationStep, setDonationStep] = React.useState(1);
 
   const [giftDetails, setGiftDetails] = React.useState({
-    recipientName: '',
-    email: '',
+    type: null,
+    recipientName: null,
+    email: null,
     giftMessage: '',
+    recipientTreecounter: null,
+    receipients: null,
   });
 
   const [isCompany, setIsCompany] = React.useState(false);
@@ -110,6 +115,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     setDonationStep,
     giftDetails,
     setGiftDetails,
+    directGift,
+    setDirectGift,
     paymentType,
     setPaymentType,
     isPaymentOptionsLoading,
@@ -156,6 +163,30 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
     onClose,
     paymentType,
   };
+
+  React.useEffect(() => {
+    if (directGift) {
+      setIsGift(true);
+      setGiftDetails({
+        type: 'direct',
+        recipientName: directGift.displayName,
+        email: null,
+        giftMessage: '',
+        recipientTreecounter: directGift.id,
+        receipients: null,
+      });
+    } else {
+      setGiftDetails({
+        type: null,
+        recipientName: null,
+        email: null,
+        giftMessage: '',
+        recipientTreecounter: null,
+        receipients: null,
+      });
+    }
+  }, [directGift]);
+
   switch (donationStep) {
     case 1:
       return (

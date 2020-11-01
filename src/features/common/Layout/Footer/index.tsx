@@ -56,16 +56,6 @@ export default function Footer() {
     let currencyCode;
     let countryCode;
 
-    // Norbert: we do not want users in DACH force to use the website in German, do we?
-    // if (
-    //   selectedCountry === 'DE' ||
-    //   selectedCountry === 'AT' ||
-    //   selectedCountry === 'CH'
-    // ) {
-    //   setLanguage('de');
-    //   localStorage.setItem('language', 'de');
-    // }
-
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
         currencyCode = localStorage.getItem('currencyCode');
@@ -74,6 +64,10 @@ export default function Footer() {
       if (localStorage.getItem('countryCode')) {
         countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
       }
     }
   }, []);
@@ -109,7 +103,7 @@ export default function Footer() {
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {FooterLinks.map((link) => {
                 return (
-                  <a href={link.link} target="_blank">
+                  <a key={link.title} href={link.link} target="_blank">
                     <p className={styles.footer_links}>{link.title}</p>
                   </a>
                 );
@@ -121,7 +115,7 @@ export default function Footer() {
               <a href="http://www.plant-for-the-planet.org/" target="_blank">
                 <img
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                  alt="About Plant-for-the-Planet"
+                  alt={t('common:about_pftp')}
                 />
               </a>
             </div>
