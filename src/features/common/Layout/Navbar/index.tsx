@@ -82,6 +82,11 @@ export default function NavbarComponent(props: any) {
   }
 
   const { toggleTheme } = React.useContext(ThemeContext);
+  const [initialized, setInitialized] = React.useState(false);
+
+  React.useEffect(() => {
+    i18next.initPromise.then(() => setInitialized(true));
+  }, []);
 
   return (
     <>
@@ -168,15 +173,17 @@ export default function NavbarComponent(props: any) {
                               <Donate color={styles.primaryFontColor} />
                           )}
                         </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
+                        {initialized ? (
+                          <p
+                            className={
+                              router.pathname === item.onclick
+                                ? styles.active_icon
+                                : ''
+                            }
+                          >
+                            {t('common:'+ item.title)}
+                          </p>
+                        ) : null}
                       </div>
                     </Link>
                 ) : null}
@@ -192,15 +199,17 @@ export default function NavbarComponent(props: any) {
                               <Leaderboard color={styles.primaryFontColor} />
                           )}
                         </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
+                        {initialized ? (
+                          <p
+                            className={
+                              router.pathname === item.onclick
+                                ? styles.active_icon
+                                : ''
+                            }
+                          >
+                            {t('common:'+ item.title)}
+                          </p>
+                        ) : null}
                       </div>
                   </Link>
                 ) : null}
@@ -211,15 +220,17 @@ export default function NavbarComponent(props: any) {
                         <div className={styles.link_icon}>
                           {checkWhichIcon()}
                         </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
+                        {initialized ? (
+                          <p
+                            className={
+                              router.pathname === item.onclick
+                                ? styles.active_icon
+                                : ''
+                            }
+                          >
+                            {t('common:'+ item.title)}
+                          </p>
+                        ) : null}
                       </div>
                   </div>
                 ) : null}

@@ -13,7 +13,7 @@ function UserProfileLoader() {
                     width="100%"
                     height="100%"
                     fill='url("#fill")'
-                    clip-path="url(#clip-path)"
+                    clipPath="url(#clip-path)"
                 ></rect>
                 <defs>
                     <clipPath id="clip-path">

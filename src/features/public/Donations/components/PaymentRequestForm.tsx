@@ -104,7 +104,7 @@ export const PaymentRequestCustomButton = ({
   useEffect(() => {
     if (
       stripe &&
-      paymentRequest === null &&
+      !paymentRequest &&
       stripeAllowedCountries.includes(country)
     ) {
       const pr = stripe.paymentRequest({
@@ -122,7 +122,7 @@ export const PaymentRequestCustomButton = ({
   }, [stripe, paymentRequest]);
 
   useEffect(() => {
-    if (stripe && paymentRequest !== null) {
+    if (stripe && paymentRequest) {
       setPaymentRequest(null);
       setCanMakePayment(false);
     }

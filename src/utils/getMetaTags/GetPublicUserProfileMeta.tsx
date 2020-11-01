@@ -12,14 +12,14 @@ export default function GetPublicUserProfileMeta({userprofile}: Props): ReactEle
     return (
         <Head>
           <title>{`${
-          userprofile !== undefined
+          userprofile
             ? userprofile.displayName
             : config.meta.title
         }`}</title>
         <meta
           property="og:site_name"
           content={
-            userprofile !== undefined
+            userprofile
               ? userprofile.displayName
               : config.meta.title
           }
@@ -31,7 +31,7 @@ export default function GetPublicUserProfileMeta({userprofile}: Props): ReactEle
         <meta
           property="og:title"
           content={`${
-            userprofile !== undefined
+            userprofile
               ? userprofile.displayName
               : config.meta.title
           }`}

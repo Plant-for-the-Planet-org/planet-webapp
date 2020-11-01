@@ -9,11 +9,11 @@
 <a href="https://planet-app-sf.herokuapp.com/">
     <img src="http://img.shields.io/badge/Demo-%23141619?style=for-the-badge&logo=next.js" />
 </a>
-<a href="./documentation/CODE_OF_CONDUCT.md">
+<a href="./CODE_OF_CONDUCT.md">
     <img src="http://img.shields.io/badge/Code%20Of%20Conduct-%231dd1a1?style=for-the-badge" />
 </a>
 
-<a href="./documentation/CONTRIBUTING.md">
+<a href="./CONTRIBUTING.md">
     <img src="http://img.shields.io/badge/CONTRIBUTING%20Guidelines-%235f27cd?style=for-the-badge" />
 </a>
 <a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
