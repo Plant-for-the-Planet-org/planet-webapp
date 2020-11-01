@@ -1,0 +1,22 @@
+@import './../../../../theme/theme';
+.progressBackdrop{
+    z-index: 11;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .progressBackdropHeader{
+    font-family: $primaryFontFamily;
+    font-weight: 800;
+    margin-top: 36px;
+    font-size: 36px;
+  }
+  
+  .progressBackdropText{
+    font-family: $primaryFontFamily;
+    font-weight: 400;
+    margin-top: 8px;
+    font-size: 18px;
+  }

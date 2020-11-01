@@ -1,0 +1,136 @@
+@import '../../../../theme/theme';
+
+.mapContainer {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(70, 168, 221, 0.15);
+  padding-bottom: 60px;
+}
+
+.mapContainer > div {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.marker {
+  border-radius: 50%;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.markerType {
+  transform: rotate(45deg);
+  width: 60px;
+  height: 40px;
+  margin-left: -6px;
+  margin-top: -4px;
+}
+
+.mapNavigation {
+  position: absolute;
+  right: 20px;
+  bottom: 50px;
+}
+
+.popupProject {
+  cursor: pointer;
+  z-index: 5;
+  background-color: $backgroundColor;
+}
+
+.projectControls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  bottom: auto;
+  top: 30px;
+  width: max-content;
+  height: 30px;
+  padding: 5px 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #aaaaaa;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: $primaryFontFamily;
+}
+
+.projectControls > div > svg {
+  height: 16px;
+  padding: 0 8px;
+}
+
+.projectControlText {
+  font-size: 14px;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 200px;
+  min-width: 100px;
+}
+
+.mapContainer .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  padding-left: 20px;
+}
+
+@include smTabletView {
+  .projectControls {
+    top: 90px;
+  }
+}
+
+@include mdTabletView {
+  .mapContainer {
+    padding-top: 60px;
+    padding-bottom: 0px;
+  }
+  .projectControls {
+    top: auto;
+    bottom: 30px;
+    left: 300px;
+  }
+}
+
+@include lgLaptopView {
+  .projectControls {
+    left: 0px;
+  }
+}
+
+@include xsPhoneView {
+  .mapNavigation {
+    display: none;
+  }
+  .projectControls {
+    bottom: 80px;
+  }
+}

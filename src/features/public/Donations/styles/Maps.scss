@@ -1,0 +1,85 @@
+.project-popup .leaflet-popup-content-wrapper {
+  padding: 0px;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
+}
+
+.project-popup .leaflet-popup-content {
+  margin: 0px;
+}
+
+.project-popup .leaflet-popup-content > div {
+  margin-top: 0px;
+}
+
+.project-popup
+  .leaflet-popup-content
+  > div
+  > a:first-child
+  > div
+  > div:first-child {
+  background-size: cover;
+}
+
+.project-popup
+  .leaflet-popup-content
+  > div
+  > a:first-child
+  > div
+  > div:last-child {
+  padding: 0px 8px 0px 8px;
+}
+
+.project-popup .leaflet-popup-content > div > div:last-child {
+  padding: 2px 16px 12px 16px;
+  margin-top: 0px;
+}
+
+.project-popup .leaflet-popup-close-button,
+.project-popup .leaflet-popup-tip-container {
+  display: none;
+}
+
+.mapboxgl-popup {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
+  z-index: 10;
+}
+
+.mapboxgl-popup .mapboxgl-popup-content {
+  padding: 0px;
+  width: 300px;
+}
+
+.mapboxgl-popup .mapboxgl-popup-content > div {
+  margin-top: 0px;
+}
+
+.mapboxgl-popup
+  .mapboxgl-popup-content
+  > div
+  > a:first-child
+  > div
+  > div:first-child {
+  background-size: cover;
+}
+
+.mapboxgl-popup
+  .mapboxgl-popup-content
+  > div
+  > a:first-child
+  > div
+  > div:last-child {
+  padding: 0px 8px 0px 8px;
+}
+
+.mapboxgl-popup .mapboxgl-popup-content > div > div:last-child {
+  padding: 10px 16px 12px 16px;
+  margin-top: 0px;
+}
+
+/* hides Improve this map footer from the map */
+.mapbox-improve-map {
+  display: none;
+}

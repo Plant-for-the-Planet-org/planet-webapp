@@ -1,2 +1,28 @@
-@import "./fonts";
-@import "./colors";
+@import './fonts';
+@import './colors';
+
+@mixin xsPhoneView {
+  @media screen and (max-width: 481px) {
+    @content;
+  }
+}
+@mixin smTabletView {
+  @media screen and (min-width: 481px) {
+    @content;
+  }
+}
+@mixin mdTabletView {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+@mixin lgLaptopView {
+  @media screen and (min-width: 980px) {
+    @content;
+  }
+}
+@mixin xlDesktopView {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+}

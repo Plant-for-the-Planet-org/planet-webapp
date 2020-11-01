@@ -1,165 +1,193 @@
 @import './../../../../theme/theme';
 
-.container{
-    background-color: $white;
-    border-radius: 7px;
-    padding: 20px;
-    min-width: 412px;
+.container {
+  background-color: $backgroundColor;
+  border-radius: 7px;
+  padding: 20px;
+  width: 412px;
 }
 
-.header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.headerBackIcon{
-    height: 32px;
-    width: 32px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
-.headerBackIcon:hover{
+.headerBackIcon:hover {
+  cursor: pointer;
+}
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 20px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Tree Count and Cost  */
+
+.finalTreeCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.totalCost {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryColor;
+}
+
+.totalCostText {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryFontColor;
+  margin-left: 6px;
+}
+
+.actionButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.actionButtonsText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.continueButton {
+  background-color: $primaryColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
     cursor: pointer;
+  }
 }
-.headerTitle{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 27px;
-    color: $primaryFontColor;
-    margin-left: 20px;
-}
-
-.formRow{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 20px;
-}
-
-
- /* Tree Count and Cost  */
-
-.finalTreeCount{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
+.continueButtonDisabled {
+  background-color: $dividerColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
-.totalCost{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 16px;
-    color: $primaryColor;
-}
-
-.totalCostText{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 16px;
-    color: $primaryFontColor;
-    margin-left: 6px;
-}
-
-.actionButtonsContainer{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.actionButtonsText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    margin-left: 24px;
-    margin-right: 24px;
-}
-.continueButton{
-    background-color: $primaryColor;
-    border-radius: 6px;
-    padding: 8px 40px;
-    color: $white;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    font-weight: 600;
-}
-
-.horizontalLine{
-    height: 1px;
-    background-color: $dividerColor;
-    margin-top: 20px;
+.horizontalLine {
+  height: 1px;
+  background-color: $dividerColor;
+  margin-top: 20px;
 }
 
 /* Payment error */
-.paymentError{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: #e74c3c;
-    text-align: center;
-    font-weight: 600;
-    margin-top: 20px;
+.paymentError {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
 }
 
 /* Payment Mode */
 
-.paymentModeContainer{
-    border-radius: 9px;
-    border:1px solid $dividerColor;
-    padding: $fontSubTitleSize 12px;
-    margin-top: 20px;
-    width: 100%;
-    
+.paymentModeContainer {
+  border-radius: 9px;
+  border: 1px solid $dividerColor;
+  padding: $fontSubTitleSize 12px;
+  margin-top: 20px;
+  width: 100%;
 }
-.paymentModeContainer:hover{
-    cursor: pointer;
-}
-
-
-.paymentModeHeader{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.paymentModeContainer:hover {
+  cursor: pointer;
 }
 
-.paymentModeFee{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.paymentModeHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.paymentModeTitle{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    font-weight: 600;
-    flex-grow: 1;
-    margin-left: 20px;
+.paymentModeHeader > svg {
+  height: 20px;
 }
 
-.paymentModeFeeAmount{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    margin-right: 4px;
+.paymentModeFee {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.paymentModeTitle {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  font-weight: 600;
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.paymentModeFeeAmount {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-right: 4px;
 }
 
 /* Save Company */
-.saveCard{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
+.saveCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.saveCardText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
+.saveCardText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+}
+
+.mandateAcceptance {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize - 2;
+  color: $primaryFontColor;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+:export {
+  primaryFontFamily: $primaryFontFamily;
 }

@@ -1,227 +1,336 @@
 @import './../../../../theme/theme';
 
-.container{
-    background-color:$white;
-    border-radius: 7px;
-    padding: 20px;
-    max-width: 412px;
+.cardContainer {
+  background-color: $backgroundColor;
+  border-radius: 7px;
+  padding: 26px;
+  width: 412px;
+  height: max-content;
+  z-index: 10;
 }
 
-.header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.headerCloseIcon{
-    height: 32px;
-    width: 32px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
+.headerCloseIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
-.headerCloseIcon:hover{
-    cursor: pointer;
+.headerCloseIcon:hover {
+  cursor: pointer;
 }
-.headerTitle{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 27px;
-    color: $primaryFontColor;
-    margin-left: 20px;
-}
-
-.plantProjectName{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    margin-top: 20px;
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 20px;
 }
 
-.currencyRate{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 10px;
+.plantProjectName {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-top: 20px;
+  width: 100%;
 }
 
-.currency{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: $fontSubTitleSize;
-    color: $primaryColor;
+.currencyRate {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
 }
 
-.downArrow{
-    margin-left: 5px;
+.currencyRateDisabled {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
 }
 
-.rate{
-    margin-left: 9px;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
+.currencyRate:hover {
+  cursor: pointer;
 }
 
-.isGiftDonation{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
+.currency {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
 }
 
-.isGiftDonationText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $highlightBackground;
+.currencyDisabled {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
 }
 
-.selectTreeCount{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.downArrow {
+  margin-left: 5px;
 }
 
-.treeCountOption, .treeCountOptionSelected {
-    height: 54px;
-    border-radius: 7px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    min-width: 30%;
-    margin-top: 20px;
-}
-.treeCountOption{
-    border: 1px solid #D5D5D5;
+.rate {
+  margin-left: 9px;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
 }
 
-.treeCountOptionSelected{
-    border: 1px solid $primaryColor;
-}
-.treeCountOption:hover, .treeCountOptionSelected:hover {
-    cursor: pointer;
-}
-.treeCountOption > .treeCountOptionTrees{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
+.isGiftDonation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.treeCountOptionSelected > .treeCountOptionTrees{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: $fontSubTitleSize;
-    color: $primaryColor;
+.isGiftDonationText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
 }
 
-.customTreeInput{
-    border:0px;
-    border-bottom: 1px solid $primaryColor;
+.selectTreeCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.treeCountOption,
+.treeCountOptionSelected {
+  height: 54px;
+  border-radius: 7px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-width: 30%;
+  margin-top: 20px;
+}
+.treeCountOption {
+  border: 1px solid #d5d5d5;
+}
+
+.treeCountOptionSelected {
+  border: 1px solid $primaryColor;
+}
+.treeCountOption:hover,
+.treeCountOptionSelected:hover {
+  cursor: pointer;
+  border: 2px solid $primaryColor;
+}
+.treeCountOption > .treeCountOptionTrees {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+}
+
+.treeCountOptionSelected > .treeCountOptionTrees {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+}
+
+.customTreeInput {
+  border: 0px;
+  border-bottom: 1px solid $primaryColor;
+  margin: 0px 10px;
+  width: 70%;
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+  text-align: center;
+  background-color: transparent;
+  outline: 0px;
+}
+
+.treeCountOption > .customTreeInput:focus {
+  display: block;
+  width: 70%;
+  outline: none;
 }
 
 /* Tax Deductible */
-.isTaxDeductible{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
+.isTaxDeductible {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  flex-flow: wrap;
 }
 
-.isTaxDeductibleText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
+.isTaxDeductibleText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  white-space: wrap;
+  margin-right: 6px;
 }
 
-
-.taxDeductible{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.taxDeductible {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.taxDeductibleCountry{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
+.taxDeductibleDisabled {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.downArrow{
-    margin-left: 5px;
+.taxDeductible:hover {
+  cursor: pointer;
 }
 
-.finalTreeCount{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
+.taxDeductibleCountry {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+  white-space: nowrap;
 }
 
-.totalCost{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 16px;
-    color: $primaryColor;
+.taxDeductibleCountryDisabled {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
 }
 
-.totalCostText{
-    font-family: $primaryFontFamily;
-    font-weight: bold;
-    font-size: 16px;
-    color: $primaryFontColor;
-    margin-left: 6px;
+.downArrow {
+  margin-left: 5px;
 }
 
-.actionButtonsContainer{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
+.finalTreeCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.actionButtonsText{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    margin-left: 24px;
-    margin-right: 24px;
-}
-.continueButton{
-    background-color: $primaryColor;
-    border-radius: 6px;
-    padding: 8px 40px;
-    color: $white;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    font-weight: 600;
+.totalCost {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryColor;
 }
 
-.horizontalLine{
-    height: 1px;
-    background-color: #D5D5D5;
-    margin-top: 20px;
+.totalCostText {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryFontColor;
+  margin-left: 6px;
+}
+
+.actionButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.actionButtonsContainerCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.actionButtonsText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.continueButton {
+  background-color: $primaryColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.paymentRequestPlaceholder {
+  background-color: $blueishGrey;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $dark;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+}
+
+.horizontalLine {
+  height: 1px;
+  background-color: #d5d5d5;
+  margin-top: 20px;
 }
 
 /* Gift Trees Styles */
 
-.singleGiftTitle{
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
-    color: $primaryFontColor;
-    text-transform: uppercase;
-    margin-top: 20px;
-    font-weight: 600;
+.singleGiftTitleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
-.formRow{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 20px;
+
+.singleGiftTitle {
+  font-family: $primaryFontFamily;
+  font-size: 14px;
+  color: $primaryFontColor;
+  margin-top: 20px;
+}
+.singleGiftTitle > span {
+  font-weight: 600;
+}
+
+.singleGiftRemove {
+  cursor: pointer;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Payment error */
+.paymentError {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
+  primaryColor: $primaryColor;
 }

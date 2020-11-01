@@ -1,170 +1,417 @@
 @import './../../../../theme/theme';
 
-.header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: $white;
-    border-radius: 13px 13px 0px 0px;
-    width: 320px;
-    height: 50px;
+.container {
+  position: absolute;
+  transition: all 0.3s ease-in-out;
+  width: 100vw;
+  margin-top: 50vh;
+  padding-bottom: 60px;
 }
 
-.tabButtonContainer{
-    flex-grow: 1;
-    display: flex;
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $backgroundColor;
+  border-radius: 13px 13px 0px 0px;
+  height: 50px;
+  width: 100%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
 }
 
-.tabButton{
-    background-color: transparent;
-    border:none;
-    margin-left: 16px;
-    margin-top: 18px;
-}
-.tabButton:hover{
-    cursor: pointer;
-}
-.tabButtonText{
-    font-family: $primaryFontFamily;
-    font-size: 13px;
-    font-weight: bold;
-    color: $primaryFontColor;
-    margin-bottom: 10px;
+.headerText {
+  margin: 0;
+  padding-left: 20px;
+  font-weight: 600;
 }
 
-.tabButtonSelected{
-    color:$secondaryColor;
-    font-family: $primaryFontFamily;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 10px;
+.tabButtonContainer {
+  flex-grow: 1;
+  display: flex;
 }
 
-.tabButtonSelectedIndicator{
-    height: 3px ;
-    background-color:  $secondaryColor;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    align-self: flex-end;
+.tabButton {
+  background-color: transparent;
+  border: none;
+  margin-left: 16px;
+  margin-top: 18px;
 }
 
-.searchIcon{
-    margin-right: 20px;
+.tabButton:hover {
+  cursor: pointer;
 }
 
-
-/* Projects */
-.projectsContainer{
-    display: flex;
-    flex-direction: column;
-    background-color: $white;
-    margin-top: 5px;
-    width: 320px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    max-height: 100vh;
-    overflow: scroll;
+.tabButtonText {
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  color: $primaryFontColor;
+  margin-bottom: 10px;
 }
 
-.singleProject{
-    margin-top: 16px;
+.tabButtonSelected {
+  color: $primaryColor;
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.targetLocation{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
+.tabButtonSelectedIndicator {
+  height: 3px;
+  background-color: $primaryColor;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  align-self: flex-end;
 }
 
-.projectInfo{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-top: 10px;
+.headerSearchMode {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: $backgroundColor;
+  border-radius: 13px 13px 0px 0px;
+  width: 100%;
+  height: 50px;
 }
 
-.target{
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: $primaryFontColor;
-    font-weight: bold;
-    margin-right: 4px;
-}
-.projectTPOName, .location {
-    font-family: $primaryFontFamily;
-    font-size: 12px;
-    color: $primaryFontColor;
-    margin-top: 10px;
+.searchIcon {
+  margin-left: 6px;
+  padding: 10px;
+  font-size: 12px;
+  margin-right: 6px;
 }
 
-.costButton{
-    background-color: $blueishGrey;
-    width: 72px;
-    height: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 11px;
-    color: $primaryColor;
-    font-weight: bold;
-    font-family: $primaryFontFamily;
-    font-size: $fontSubTitleSize;
+.searchIcon:hover {
+  cursor: pointer;
 }
 
-.perTree{
-    font-family: $primaryFontFamily;
-    font-size: 9px;
-    color: $primaryFontColor;
-    margin-top: 5px;
+.searchInput {
+  flex-grow: 3;
 }
 
-.projectCost{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.cancelIcon {
+  margin-right: 6px;
+  padding: 10px;
+}
+
+.cancelIcon > svg {
+  width: 18px;
+}
+
+.cancelIcon:hover {
+  cursor: pointer;
+}
+
+.projectsContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: $backgroundColor;
+  margin-top: 0px;
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.projectsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projectsContainer::-webkit-scrollbar-track {
+  background-color: $dividerColor;
+}
+
+.projectsContainer::-webkit-scrollbar-thumb {
+  background-color: $primaryColor;
+}
+
+.singleProject {
+  margin-top: 20px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
+}
+
+.popupProject {
+  margin-top: 0px;
+}
+
+.targetLocation {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.target {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.projectTPOName {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  margin-top: 10px;
+  line-height: 14px;
+}
+
+.location {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $primaryFontColor;
+  line-height: 14px;
+}
+
+.donateButton {
+  background-color: $primaryColor;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.donateButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.perTreeCost {
+  font-family: $secondaryFontFamily;
+  font-size: 10px;
+  color: $primaryFontColor;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+.perTreeCost > span {
+  font-family: $primaryFontFamily;
+}
+
+.projectCost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Progress Bar */
-.progressBar{
-    height: 4px;
-    width: 100%;
-    background-color: $dividerColor;
+.progressBar {
+  height: 4px;
+  width: 100%;
+  background-color: $dividerColor;
 }
 
-.progressBarHighlight{
-    height: 4px;
-    background-color: $primaryColor;
-    width: 30%;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+.progressBarHighlight {
+  height: 4px;
+  background-color: $primaryColor;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
-.projectImage{
-    height: 160px;
-    width: 100%;
-    background-color: $secondaryColor;
+.projectImage {
+  height: 160px;
+  width: 100%;
+  background-color: $primaryColor;
+  position: relative;
+}
+
+.projectImage:hover {
+  cursor: pointer;
+}
+
+.projectImageFile {
+  height: 160px;
+  width: 100%;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.projectImageBlock {
+  position: absolute;
+  bottom: 12px;
+  left: 7px;
+}
+
+.projectType {
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.projectName {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: #fff;
+}
+
+.allProjectsContainer {
+  padding-bottom: 12px;
+}
+
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+.avoidPointerEvents {
+  display: block;
+  height: 50vh;
+  z-index: 999;
+  // pointer-events: none;
+}
+
+.openMap {
+  padding: 12px 20px;
+  border-radius: 100px;
+  background-color: $primaryColor;
+  color: #fff;
+  position: absolute;
+  bottom: 90px;
+  right: 0;
+  left: 0;
+  // max-width: 50px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.openMap > svg {
+  width: 20px;
+  margin-right: 5px;
+}
+
+.dragBar {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 60px;
+  background-color: #c5c5c5;
+  height: 5px;
+  border-radius: 100px;
+}
+
+@include smTabletView {
+  .allProjectsContainer > div > div {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 16px;
+  }
+
+  .container {
+    padding-bottom: 0px;
+  }
+}
+
+@include mdTabletView {
+  .mainContainer {
+    max-height: calc(100vh - 60px);
     position: relative;
-    background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
+    // top: 60px;
+    overflow-y: visible;
+  }
+
+  .container {
+    overflow: visible;
+    padding-top: 0px;
+    margin-top: 90px;
+    margin-left: 24px;
+    // padding-bottom: 0px;
+    width: fit-content;
+    // z-index: 2;
+    bottom: 0px;
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
+    z-index: 2;
+  }
+
+  // .container::-webkit-scrollbar {
+  //   display: none;
+  // }
+
+  .allProjectsContainer > div > div {
+    display: block;
+  }
+  .cardContainer {
+    position: relative;
+    top: 30px;
+    left: 24px;
+  }
+  .projectsContainer {
+    margin-top: 5px;
+    width: 360px;
+    overflow-y: hidden;
+    padding-bottom: 0px;
+  }
+  .header {
+    width: 360px;
+  }
+
+  .headerSearchMode {
+    width: 360px;
+  }
+
+  .avoidPointerEvents {
+    display: none;
+  }
+
+  .openMap {
+    display: none;
+  }
 }
 
-.projectType{
-    font-family: $primaryFontFamily;
-    font-size: 7px;
-    color: #fff;
-    font-weight: bold;
-    position: absolute;
-    bottom: 36px;
-    left: 7px;
-    text-transform: uppercase;
-}
-
-.projectName{
-    font-family: $primaryFontFamily;
-    font-size: 18px;
-    color: #fff;
-    position: absolute;
-    bottom: 12px;
-    left: 7px;
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
 }

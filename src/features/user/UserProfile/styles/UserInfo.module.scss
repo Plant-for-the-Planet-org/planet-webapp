@@ -1,0 +1,75 @@
+@import './../../../../theme/theme';
+
+.landingContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 280px;
+  z-index: 2;
+}
+
+.treeCounterName {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 40px;
+  color: $light;
+  margin-top: 16px;
+  margin-bottom: 0px;
+}
+
+// for ME page only
+.treeCounterDescription {
+  font-family: $primaryFontFamily;
+  font-size: 18px;
+  color: $light;
+  margin-top: 24px;
+  margin-bottom: 0px;
+  max-width: 500px;
+  margin-left: 26px;
+  margin-right: 26px;
+}
+
+.bottomIconsRow {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-top: 36px;
+}
+
+.iconTextColumn {
+  margin: 0px 0px;
+  max-width: 160px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bottomIconBg {
+  background-color: rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 70px;
+}
+
+.bottomIconBg:hover {
+  cursor: pointer;
+}
+
+.bottomRowText {
+  color: $light;
+  font-size: 16px;
+  font-family: $primaryFontFamily;
+  margin-top: 12px;
+  text-align: center;
+}
+
+// mobile view
+@media only screen and (max-width: 768px) {
+  .landingContent {
+    margin-top: 240px;
+  }
+}

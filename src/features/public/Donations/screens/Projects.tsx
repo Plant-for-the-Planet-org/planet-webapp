@@ -1,42 +1,53 @@
-import React, { ReactElement } from 'react'
-import styles from './../styles/Projects.module.scss'
-import SearchIcon from './../../../../assets/images/icons/SearchIcon'
-import AllProjects from '../components/AllProjects'
-import FeaturedProjects from '../components/FeaturedProjects'
+import React, { ReactElement } from 'react';
+import ProjectsContainer from '../components/ProjectsContainer';
+import styles from '../styles/Projects.module.scss';
 
 interface Props {
-    
+  projects: any;
+  directGift: any;
+  setDirectGift: Function;
+  setsearchedProjects: any
 }
 
-function Projects({}: Props): ReactElement {
-    const [selectedTab,setSelectedTab] = React.useState('featured')
-    return (
-        <div className={styles.container}>
-            
-            <div className={styles.header}>
-                <div className={styles.tabButtonContainer}>
-                    <div className={styles.tabButton} onClick={()=>setSelectedTab('featured')}>
-                        <div className={selectedTab === 'featured' ? styles.tabButtonSelected : styles.tabButtonText}>Featured</div>
-                        {selectedTab === 'featured' ? <div className={styles.tabButtonSelectedIndicator} /> : null}    
-                    </div>
+function ProjectsList({
+  projects,
+  directGift,
+  setDirectGift,
+  setsearchedProjects,
+}: Props): ReactElement {
+  const [searchedProjects, setSearchedProjects] = React.useState([]);
+  const [allProjects, setAllProjects] = React.useState(projects);
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const isMobile = screenWidth <= 767;
+  const [scrollY, setScrollY] = React.useState(0);
 
-                    <div className={styles.tabButton} onClick={()=>setSelectedTab('all')}>
-                    <div className={selectedTab === 'all' ? styles.tabButtonSelected : styles.tabButtonText}>All 112 Projects</div>
-                        {selectedTab === 'all' ? <div className={styles.tabButtonSelectedIndicator} /> : null}
-                    </div>
-                </div>
-                <div className={styles.searchIcon}>
-                    <SearchIcon/>
-                </div>
-            </div>
+  const ProjectsProps = {
+    projects,
+    setSearchedProjects: setsearchedProjects,
+    directGift,
+    setDirectGift,
+  };
 
-
-            <div className={styles.projectsContainer}>
-                {selectedTab === 'featured' ? <AllProjects/> :<FeaturedProjects/>}
-            </div>
-
-        </div>
-    )
+  return (
+    <>
+      <div
+        style={{ transform: `translate(0,${scrollY}px)` }}
+        className={styles.container}
+        onTouchMove={(event) => {
+          if (isMobile) {
+            if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+              setScrollY(event.targetTouches[0].clientY);
+            } else {
+              setScrollY((screenHeight * 2) / 9);
+            }
+          }
+        }}
+      >
+        <ProjectsContainer {...ProjectsProps} />
+      </div>
+    </>
+  );
 }
 
-export default Projects
+export default ProjectsList;
