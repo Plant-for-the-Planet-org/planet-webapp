@@ -7,6 +7,13 @@ export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);
   const { useTranslation } = i18next;
   const { t } = useTranslation(['leaderboard']);
+
+  const [initialized, setInitialized] = React.useState(false);
+
+  React.useEffect(() => {
+    i18next.initPromise.then(() => setInitialized(true));
+  }, []);
+
   React.useEffect(() => {
     let prev = localStorage.getItem('cookieNotice');
     if (prev === 'false') {
@@ -23,12 +30,14 @@ export default function CookiePolicy() {
       >
         <CloseIcon color={styles.primaryColor} />
       </div>
-      <div className={styles.cookieContent}>
-        {t('common:privacyPolicyNotice')}{' '}
-        <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">
-          {t('common:privacyPolicy')}
-        </a>
-      </div>
+      {initialized ? (
+        <div className={styles.cookieContent}>
+          {t('common:privacyPolicyNotice')}{' '}
+          <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">
+            {t('common:privacyPolicy')}
+          </a>
+        </div>
+      ) : null}
     </div>
   ) : null;
 }
