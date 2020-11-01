@@ -73,16 +73,19 @@ export default function TpoProfile(props: any) {
     <div className={treeCounterStyles.treeCounter}>
       <FacebookCircularProgress value={progress} />
       <div className={treeCounterStyles.backgroundCircle} />
-        <div className={treeCounterStyles.treeCounterData}>
-          <div className={treeCounterStyles.treeCounterDataField}>
-            <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
-            <h2>{t('me:treesPlanted')}</h2>
-          </div>
+      <div className={treeCounterStyles.treeCounterData}>
+        <div className={treeCounterStyles.treeCounterDataField}>
+          <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
+          <h2>{t('me:treesPlanted')}</h2>
+        </div>
+        {props.hideTarget ? null : (
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
             <h2>{t('me:target')}</h2>
           </div>
-        </div>
+        )}
+
+      </div>
     </div>
   );
 }
