@@ -319,7 +319,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
@@ -344,7 +344,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
@@ -369,7 +369,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
@@ -393,7 +393,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </div>
