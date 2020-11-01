@@ -10,7 +10,7 @@ export async function createDonation(data: any) {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
-        localStorage.getItem('language') !== null
+        localStorage.getItem('language')
           ? localStorage.getItem('language')
           : 'en'
       }`,
@@ -29,7 +29,7 @@ export async function payDonation(data: any, id: any) {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
-        localStorage.getItem('language') !== null
+        localStorage.getItem('language')
           ? localStorage.getItem('language')
           : 'en'
       }`,

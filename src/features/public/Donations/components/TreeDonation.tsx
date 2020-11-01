@@ -171,7 +171,7 @@ function TreeDonation({
         </div>
 
         {isGift ? (
-          directGift !== null ? (
+          directGift ? (
             <DirectGiftForm
               isGift={isGift}
               giftDetails={giftDetails}
