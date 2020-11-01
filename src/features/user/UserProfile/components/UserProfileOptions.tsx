@@ -26,7 +26,7 @@ export default function UserProfileOptions({
   }
   
   const onShareClicked = () => {
-    if(navigator.share!== undefined) {
+    if(navigator.share) {
       // if in phone and web share API supported
       webShareMobile();
     } else {
