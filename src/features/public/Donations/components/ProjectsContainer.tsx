@@ -2,8 +2,8 @@ import { TextField } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
-import CancelIcon from './../../../../assets/images/icons/CancelIcon';
-import SearchIcon from './../../../../assets/images/icons/SearchIcon';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
 
@@ -11,6 +11,8 @@ const { useTranslation } = i18next;
 interface Props {
   projects: any;
   setSearchedProjects: Function;
+  directGift: any;
+  setDirectGift: Function;
 }
 
 const AllProjects = dynamic(() => import('../components/AllProjects'), {
@@ -21,6 +23,8 @@ const AllProjects = dynamic(() => import('../components/AllProjects'), {
 export default function ProjectsContainer({
   projects,
   setSearchedProjects,
+  directGift,
+  setDirectGift,
 }: Props) {
   const { t } = useTranslation(['donate']);
 
@@ -51,7 +55,7 @@ export default function ProjectsContainer({
       );
     } else if (type === 'all') {
       return projects;
-    }
+    } 
   }
 
   function getSearchProjects(projects: Array<any>, keyword: string) {
@@ -80,9 +84,12 @@ export default function ProjectsContainer({
           return false;
         }
       });
+      setSearchedProjects(resultProjects);
+      return resultProjects;
+    } else {
+      setSearchedProjects(projects);
     }
-    setSearchedProjects(resultProjects);
-    return resultProjects;
+    
   }
 
   const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
@@ -101,12 +108,18 @@ export default function ProjectsContainer({
 
   const AllProjectsProps = {
     projects: allProjects,
+    directGift,
+    setDirectGift,
   };
   const SearchResultProjectsProps = {
     projects: searchProjectResults,
+    directGift,
+    setDirectGift,
   };
   const FeaturedProjectsProps = {
     projects: featuredProjects,
+    directGift,
+    setDirectGift,
   };
 
   return (

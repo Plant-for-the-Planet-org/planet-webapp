@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
-import NotFound from '../../../../assets/images/NotFound';
+import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import styles from './../styles/Projects.module.scss';
 import i18next from '../../../../../i18n';
@@ -12,9 +12,15 @@ const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
 });
 interface Props {
   projects: any;
+  directGift: any;
+  setDirectGift: Function;
 }
 
-function AllProjects({ projects }: Props): ReactElement {
+function AllProjects({
+  projects,
+  directGift,
+  setDirectGift,
+}: Props): ReactElement {
   const { t } = useTranslation(['donate', 'common']);
 
   const container = {
@@ -55,7 +61,12 @@ function AllProjects({ projects }: Props): ReactElement {
           <div>
             {projects.map((project: any) => {
               return (
-                <ProjectSnippet key={project.properties.id} project={project} />
+                <ProjectSnippet
+                  key={project.properties.id}
+                  project={project}
+                  directGift={directGift}
+                  setDirectGift={setDirectGift}
+                />
               );
             })}
           </div>

@@ -1,5 +1,6 @@
-import { Col, Row } from 'react-bootstrap';
 import styles from './../styles/Blogs.module.scss';
+import gridStyles from './../styles/Grid.module.scss';
+
 export default function Blogs() {
   const blogs = [
     {
@@ -33,10 +34,10 @@ export default function Blogs() {
   return (
     <section className={styles.blogSection}>
       <p className={styles.blogSectionHeader}>Take climate action.</p>
-      <Row className={styles.blogContainer}>
+      <div className={`${gridStyles.gridRow} ${styles.blogContainer}`}>
         {blogs.map((blog) => {
           return (
-            <Col key={blog.id} sm={10} lg={4} xl={4}>
+            <div key={blog.id} className={`${gridStyles.colSm10} ${gridStyles.colLg4}`}>
               <div className={styles.blogSingleContainer}>
                 <img
                   className={styles.blogImage}
@@ -52,10 +53,10 @@ export default function Blogs() {
                   </a>
                 </div>
               </div>
-            </Col>
+            </div>
           );
         })}
-      </Row>
+      </div>
     </section>
   );
 }

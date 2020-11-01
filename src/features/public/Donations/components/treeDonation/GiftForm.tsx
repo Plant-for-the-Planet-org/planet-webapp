@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
-import MaterialTextFeild from './../../../../common/InputTypes/MaterialTextFeild';
+import MaterialTextField from './../../../../common/InputTypes/MaterialTextField';
 import styles from './../../styles/TreeDonation.module.scss';
 import i18next from '../../../../../../i18n';
 
@@ -30,7 +30,7 @@ export default function GiftForm({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               name={'recipientName'}
               onChange={changeGiftDetails}
               label={t('donate:recipientName')}
@@ -46,12 +46,12 @@ export default function GiftForm({
         </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
-            <MaterialTextFeild
+            <MaterialTextField
               name={'email'}
               onChange={changeGiftDetails}
               label={t('donate:email')}
               variant="outlined"
-              inputRef={isGift ? register({ required: true }) : register({})}
+              inputRef={isGift ? register({ required: true, pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i }) : register({})}
             />
             {errors.email && (
               <span className={styles.formErrors}>
@@ -61,7 +61,7 @@ export default function GiftForm({
           </div>
         </div>
         <div className={styles.formRow}>
-          <MaterialTextFeild
+          <MaterialTextField
             multiline
             rowsMax="4"
             label={t('donate:giftMessage')}
