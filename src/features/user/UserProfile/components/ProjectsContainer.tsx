@@ -59,8 +59,8 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
 
             {projects.map((project: any) => {
               return (
-                <div className={styles.singleProject} key={project.id}>
-                  <ProjectSnippet key={project.id} project={project} directGift={null} setDirectGift={null} editMode={true} />
+                <div className={styles.singleProject} key={project.properties.id}>
+                  <ProjectSnippet key={project.properties.id} project={project} directGift={null} setDirectGift={null} editMode={true} />
                 </div>
               );
             })}
