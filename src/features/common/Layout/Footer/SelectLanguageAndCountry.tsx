@@ -144,6 +144,7 @@ function MapCountry(props) {
       >
         {sortedCountriesData.map((country) => (
           <FormControlLabel
+            key={country.countryCode}
             value={country.countryCode}
             control={<GreenRadio />}
             label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
@@ -168,6 +169,7 @@ function MapLanguage(props) {
       >
         {supportedLanguages.map((lang) => (
           <FormControlLabel
+            key={lang.langCode}
             value={lang.langCode}
             control={<GreenRadio />}
             label={lang.languageName}
