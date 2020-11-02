@@ -135,9 +135,9 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                                     <p style={{ fontWeight: 'bold' }}>Certified By {report.certifierName} </p>
                                     <p>on {report.issueDate} </p>
                                 </div>
-                                <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
+                                {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                     <PencilIcon color={"#000"} />
-                                </div>
+                                </div> */}
                                 <div
                                     onClick={() => deleteProjectCertificate(report.id)}
                                     className={styles.reportEditButton}>
