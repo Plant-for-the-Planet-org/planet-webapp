@@ -122,7 +122,7 @@ function MapCountry(props: any) {
             key={country.countryCode + '-' + index}
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
           />
         ))}
       </RadioGroup>
