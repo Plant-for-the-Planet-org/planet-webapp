@@ -4,9 +4,12 @@
 .signUpPage{
   min-height: 100vh;
   display:flex;
-  align-items:center;
-  justify-content: center;
   position: relative;
+  background-size:cover;
+  display:flex;
+  flex-direction:column;
+  height: 100vh; 
+  overflow-x: hidden;
 }
 
 // the white form
@@ -16,15 +19,15 @@
   background-color: $light;
   position: absolute;
   border: 0px;
-  min-width: 360px;
-  max-width: 30vw;
+  min-width: 320px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   align-self: center;
-  padding:20px 20px;
+  padding:20px;
 }
 
 // when request sent, opacity low
@@ -70,70 +73,6 @@
   margin-left: 10px;
 }
 
-//profile pic div
-.profilePicDiv {
-    height: 100px;
-    width: 100px;
-    margin: 10px 0px;
-}
-
-.profilePicDiv:hover{
-    cursor: pointer;
-}
-
-// first name, last name div
-.namesDiv {
-  display: flex;
-  float: left;
-  width: 100%;
-  justify-content: center;
-  margin: 20px 0px 10px 0px;
-}
-
-.firstNameDiv {
-    margin: 0px 6px 0px 0px;
-    width: 50%;
-}
-
-.lastNameDiv  {
-    margin: 0px 0px 0px 6px;
-    width: 50%;
-}
-
-// address div
-.addressDiv {
-  display: flex;
-  width: 100%;
-  margin: 6px 0px;
-}
-
-// city, zip code div
-.cityZipDiv {
-  display: flex;
-  float: left;
-  width: 100%;
-  justify-content: center;
-  margin: 6px 0px;
-}
-
-.cityDiv {
-    margin: 0px 6px 0px 0px;
-    width: 50%;
-}
-
-.zipDiv {
-    margin: 0px 0px 0px 6px;
-    width: 50%;
-}
-
-// country div
-.countryDiv {
-  display: flex;
-  width: 100%;
-  align-self: flex-start;
-  margin: 10px 6px 12px 0px;
-}
-
 // private account div
 .isPrivateAccountDiv {
   display: flex;
@@ -168,28 +107,6 @@
     margin: 20px 0px;
 }
 
-// save button
-.saveButton {
-  background-color: $primaryColor;
-  padding: 8px 40px;
-  border-radius: 6px;
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
-.saveButton:hover{
-    cursor: pointer;
-}
-
-@include xsPhoneView {
-  .signup {
-    margin: 40px 0px 0px 0px;
-  }
-}
-
 :export {
     primaryColor: $primaryColor;
     light: $light;
@@ -216,6 +133,7 @@
   flex: 1;
   min-height: 68px;
   margin-top: 16px;
+  width: 130px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -227,4 +145,111 @@
   border: solid 1px $primaryColor;
   color: $primaryColor;
   font-weight: bold;
+}
+
+
+// Form Styles
+
+.formField {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 280px;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.formFieldHalf {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  div,
+  input {
+    width: 130px;
+  }
+}
+.formFieldLarge {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 280px;
+  position: relative;
+}
+
+@include smTabletView{
+  .profileTypes{
+    width: 180px;
+    min-width: 180px;
+  }
+  .formField {
+    width: 380px;
+  }
+  .formFieldHalf {
+    div,
+    input {
+      width: 180px;
+    }
+    
+  }
+  .formFieldLarge {
+    width: 380px;
+  }
+}
+
+// Loader for Buttons
+.spinner{
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px!important;
+  height: 16px!important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// save button
+
+.saveButton {
+  height: 40px;
+  border-radius: 100px;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  border: 0px;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-width: 280px;
+}
+.saveButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+  position: absolute;
+  bottom: -24px;
 }
