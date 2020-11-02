@@ -27,6 +27,7 @@ import { getParams } from '../../../../utils/LayerManagerUtils';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 
 import styles from '../styles/MapboxMap.module.scss';
+import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 interface mapProps {
   projects: any;
@@ -91,6 +92,8 @@ export default function MapboxMap({
   const [explorePlanted, setExplorePlanted] = React.useState(false);
 
   const [exploreProjects, setExploreProjects] = React.useState(true);
+
+  const [infoExpanded, setInfoExpanded] = React.useState(null);
 
   const handleExploreForestsChange = (event) => {
     setExploreForests(event.target.checked);
@@ -538,48 +541,72 @@ export default function MapboxMap({
             )}
           </div>
           {exploreExpanded ? (
-            <div className={styles.exploreExpanded}>
-              <div>
-                <FormGroup>
-                  <div className={styles.exploreToggleRow}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={exploreForests}
-                          onChange={handleExploreForestsChange}
-                          name="forest"
-                        />
-                      }
-                      label="Forest"
-                    />
-                  </div>
-                  <div className={styles.exploreToggleRow}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={explorePotential}
-                          onChange={handleExplorePotentialChange}
-                          name="potential"
-                        />
-                      }
-                      label="Reforestation Potential"
-                    />
-                    {/* <FontAwesomeIcon icon={faInfoCircle} /> */}
-                  </div>
+            <>
+              <div className={styles.exploreExpanded}>
+                <div>
+                  <FormGroup>
+                    <div className={styles.exploreToggleRow}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={exploreForests}
+                            onChange={handleExploreForestsChange}
+                            name="forest"
+                          />
+                        }
+                        label="Current Forests"
+                      />
+                      <div
+                        onClick={() => {
+                          setInfoExpanded('Current Forests');
+                        }}
+                        className={styles.exploreInfo}
+                      >
+                        <InfoIcon />
+                      </div>
+                    </div>
+                    <div className={styles.exploreToggleRow}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={explorePotential}
+                            onChange={handleExplorePotentialChange}
+                            name="potential"
+                          />
+                        }
+                        label="Reforestation Potential"
+                      />
+                      <div
+                        onClick={() => {
+                          setInfoExpanded('Reforestation Potential');
+                        }}
+                        className={styles.exploreInfo}
+                      >
+                        <InfoIcon />
+                      </div>
+                    </div>
 
-                  <div className={styles.exploreToggleRow}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={exploreDeforestation}
-                          onChange={handleExploreDeforestationChange}
-                          name="deforestation"
-                        />
-                      }
-                      label="Deforestation"
-                    />
-                  </div>
-                  {/* <div className={styles.exploreToggleRow}>
+                    <div className={styles.exploreToggleRow}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={exploreDeforestation}
+                            onChange={handleExploreDeforestationChange}
+                            name="deforestation"
+                          />
+                        }
+                        label="Deforestation"
+                      />
+                      <div
+                        onClick={() => {
+                          setInfoExpanded('Deforestation');
+                        }}
+                        className={styles.exploreInfo}
+                      >
+                        <InfoIcon />
+                      </div>
+                    </div>
+                    {/* <div className={styles.exploreToggleRow}>
                     <FormControlLabel
                       control={
                         <Switch
@@ -591,21 +618,50 @@ export default function MapboxMap({
                       label="Planted Trees"
                     />
                   </div> */}
-                  <div className={styles.exploreToggleRow}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={exploreProjects}
-                          onChange={handleExploreProjectsChange}
-                          name="projects"
-                        />
-                      }
-                      label="Projects"
-                    />
-                  </div>
-                </FormGroup>
+                    <div className={styles.exploreToggleRow}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={exploreProjects}
+                            onChange={handleExploreProjectsChange}
+                            name="projects"
+                          />
+                        }
+                        label="Projects"
+                      />
+                    </div>
+                  </FormGroup>
+                </div>
               </div>
-            </div>
+              {infoExpanded !== null ? (
+                <div className={styles.infoExpanded}>
+                  {infoExpanded === 'Current Forests' ? (
+                    <div className={styles.infoContainer}>
+                      <div className={styles.infoTitle}>{infoExpanded}</div>
+                      <div className={styles.infoContent}></div>
+                    </div>
+                  ) : null}
+                  {infoExpanded === 'Reforestation Potential' ? (
+                    <div className={styles.infoContainer}>
+                      <div className={styles.infoTitle}>{infoExpanded}</div>
+                      <div className={styles.infoContent}></div>
+                    </div>
+                  ) : null}
+                  {infoExpanded === 'Deforestation' ? (
+                    <div className={styles.infoContainer}>
+                      <div className={styles.infoTitle}>{infoExpanded}</div>
+                      <div className={styles.infoContent}></div>
+                    </div>
+                  ) : null}
+                  {infoExpanded === 'Planted Trees' ? (
+                    <div className={styles.infoContainer}>
+                      <div className={styles.infoTitle}>{infoExpanded}</div>
+                      <div className={styles.infoContent}></div>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+            </>
           ) : null}
         </div>
 
