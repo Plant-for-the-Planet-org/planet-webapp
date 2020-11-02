@@ -271,8 +271,6 @@ export default function ProjectSites({
                 <Controller
                   as={
                     <MaterialTextField
-                      inputRef={register({
-                      })}
                       label={t('manageProjects:projectStatus')}
                       variant="outlined"
                       name="status"

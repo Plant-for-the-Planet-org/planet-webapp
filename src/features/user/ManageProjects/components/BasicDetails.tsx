@@ -131,7 +131,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
         ]
       },
       countTarget: Number(data.countTarget),
-      webSite: data.website,
+      website: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
       treeCost: data.treeCost ? Number(data.treeCost) : 0,
