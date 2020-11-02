@@ -25,7 +25,7 @@ export default function NavbarComponent(props: any) {
   // If there is a session we will use it
   const [session, loading] = useSession();
 
-  const { t } = useTranslation(['common']);
+  const { t, ready } = useTranslation(['common']);
   const router = useRouter();
 
   /* Works when user clicks on Me
@@ -82,11 +82,6 @@ export default function NavbarComponent(props: any) {
   }
 
   const { toggleTheme } = React.useContext(ThemeContext);
-  const [initialized, setInitialized] = React.useState(false);
-
-  React.useEffect(() => {
-    i18next.initPromise.then(() => setInitialized(true));
-  }, []);
 
   return (
     <>
@@ -173,7 +168,7 @@ export default function NavbarComponent(props: any) {
                               <Donate color={styles.primaryFontColor} />
                           )}
                         </div>
-                        {initialized ? (
+                        {ready ? (
                           <p
                             className={
                               router.pathname === item.onclick
@@ -199,7 +194,7 @@ export default function NavbarComponent(props: any) {
                               <Leaderboard color={styles.primaryFontColor} />
                           )}
                         </div>
-                        {initialized ? (
+                        {ready ? (
                           <p
                             className={
                               router.pathname === item.onclick
@@ -220,7 +215,7 @@ export default function NavbarComponent(props: any) {
                         <div className={styles.link_icon}>
                           {checkWhichIcon()}
                         </div>
-                        {initialized ? (
+                        {ready ? (
                           <p
                             className={
                               router.pathname === item.onclick
