@@ -97,6 +97,7 @@
 .btnColor:hover {
   cursor: pointer;
 }
+
 .btnContainer {
   display: flex;
   justify-content: space-between;
@@ -251,3 +252,34 @@
     primaryFontColor: $primaryFontColor;
     dividerColor: $dividerColor;
   }  
+
+
+.profileTypesContainer{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  :nth-child(odd){
+    margin-right: 20px;
+  }
+}
+.profileTypes{
+  padding: 14px;
+  border: 1px solid $dividerColor;
+  border-radius: 10px;
+  flex: 1;
+  min-height: 68px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  &:hover{
+    cursor: pointer;
+  }
+}
+.profileTypesSelected{
+  border: solid 1px $primaryColor;
+  color: $primaryColor;
+  font-weight: bold;
+}

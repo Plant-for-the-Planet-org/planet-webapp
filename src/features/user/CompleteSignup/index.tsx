@@ -124,6 +124,12 @@ export default function CompleteSignup() {
     }
   };
 
+  const profileTypes = [
+    {id:1,title:'Individual',value:'individual'},
+    {id:2,title:'Organisation',value:'organisation'},
+    {id:3,title:'Reforestation Organisation',value:'tpo'},
+    {id:4,title:'Education',value:'education'}
+  ]
   const createButtonClicked = async () => {
     var bodyToSend;
     var allValidated;
@@ -144,7 +150,7 @@ export default function CompleteSignup() {
         }
 
         break;
-      case 'RO':
+      case 'tpo':
         allValidated = checkIfEmpty([
           firstName,
           lastName,
@@ -217,7 +223,7 @@ export default function CompleteSignup() {
       case 'individual':
         name = 'Individual';
         break;
-      case 'RO':
+      case 'tpo':
         name = 'Reforestation Organisation';
         break;
       case 'education':
@@ -267,76 +273,15 @@ export default function CompleteSignup() {
         <div className={styles.headerTitle}>Complete Signup</div>
       </div>
       {/* type of account buttons */}
-        <div className={styles.btnContainer}>
-          <button
-            type="button"
-            className={
-              accountType === 'individual' ? styles.btnColor : styles.btnSize
-            }
-            onClick={() => setAccountType('individual')}
-          >
-            <p
-              className={
-                accountType === 'individual'
-                  ? styles.accountTypeTextSelected
-                  : styles.accountTypeText
-              }
-            >
-              Individual{' '}
-            </p>
-          </button>
-          <button
-            type="button"
-            className={
-              accountType === 'organisation' ? styles.btnColor : styles.btnSize
-            }
-            onClick={() => setAccountType('organisation')}
-          >
-            <p
-              className={
-                accountType === 'organisation'
-                  ? styles.accountTypeTextSelected
-                  : styles.accountTypeText
-              }
-            >
-              Organisation{' '}
-            </p>
-          </button>
-        </div>
-        <div className={styles.btnContainer}>
-          <button
-            type="button"
-            className={accountType === 'RO' ? styles.btnColor : styles.btnSize}
-            onClick={() => setAccountType('RO')}
-          >
-            <p
-              className={
-                accountType === 'RO'
-                  ? styles.accountTypeTextSelected
-                  : styles.accountTypeText
-              }
-            >
-              Reforestation Organisation
-            </p>
-          </button>
-          <button
-            type="button"
-            className={
-              accountType === 'education' ? styles.btnColor : styles.btnSize
-            }
-            onClick={() => setAccountType('education')}
-          >
-            <p
-              className={
-                accountType === 'education'
-                  ? styles.accountTypeTextSelected
-                  : styles.accountTypeText
-              }
-            >
-              Education{' '}
-            </p>
-          </button>
-        </div>
+      <div  className={styles.profileTypesContainer}>
+          {profileTypes.map(item=>{
+            return(
+              <p key={item.id} className={`${styles.profileTypes} ${accountType ===  item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
+                {item.title}
+              </p>
+            )
+          })}
+      </div>
 
         <div className={styles.namesDiv}>
           <div className={styles.firstNameDiv}>
@@ -357,7 +302,7 @@ export default function CompleteSignup() {
         </div>
         {accountType === 'education' ||
         accountType === 'organisation' ||
-        accountType === 'RO' ? (
+        accountType === 'tpo' ? (
           <div className={styles.addressDiv}>
             <MaterialTextField
               label={`Name of ${SelectType(accountType)}`}
@@ -376,7 +321,7 @@ export default function CompleteSignup() {
             />
           </div>
 
-        {accountType === 'RO' ? (
+        {accountType === 'tpo' ? (
           <div>
             <div className={styles.addressDiv}>
               <MaterialTextField
