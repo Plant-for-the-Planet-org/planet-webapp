@@ -68,63 +68,6 @@
   margin-left: 10px;
 }
 
-.btnSize {
-  position: relative;
-  width: 50%;
-  height:58px;
-  border-radius: 10px;
-  justify-content: flex-end;
-  border: solid 1.6px $dividerColor;
-  margin: 5px;
-  background-color: $light;
-}
-
-.btnSize:hover {
-  cursor: pointer;
-}
-
-.btnColor {
-  position: relative;
-  border: solid 1.6px $primaryColor;
-  width: 50%;
-  justify-content: flex-end;
-  height:58px;
-  border-radius: 10px;
-  background-color: $light;
-  margin: 5px;
-}
-
-.btnColor:hover {
-  cursor: pointer;
-}
-
-.btnContainer {
-  display: flex;
-  justify-content: space-between;
-  width:100%
-}
-
-.accountTypeTextSelected{
-  position: absolute;
-  font-size: 14px;
-  font-weight: bolder;
-  text-align: left; 
-  bottom: 0;
-  margin: 0px 0px 8px 8px;
-  text-transform: capitalize;
-  color: $primaryColor;
-}
-
-.accountTypeText {
-  position: absolute;
-  bottom: 0;
-  margin: 0px 0px 8px 8px;
-  font-size: 14px;
-  font-weight: normal;
-  text-align: left;
-  text-transform: capitalize;
-  color: $primaryFontColor;
-}
 //profile pic div
 .profilePicDiv {
     height: 100px;
