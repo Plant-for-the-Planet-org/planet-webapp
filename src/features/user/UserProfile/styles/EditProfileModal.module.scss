@@ -13,24 +13,15 @@
   background-color: #ffffff;
   border: 0px;
   border-radius: 8px;
-  padding: 18px 32px;
-  min-width: 360px;
-  max-width: 30vw;   // for desktops
+  padding: 20px 20px;
+  width: 320px;
   max-height: 90vh;
   overflow: scroll;
   outline: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
 }
-
-// for mobile - modal
-@media only screen and (max-width: 768px) {
-    .modal {
-        min-width: 80vw;
-        max-width: 80vw; 
-    }
-  }
   
 
 // header div
@@ -60,6 +51,7 @@
   justify-content: center;
   align-items: center;
   margin: 10px 0px;
+  align-self: center;
 }
 
 .profilePicDiv:hover{
@@ -72,58 +64,6 @@
   border-radius: 100%;
 }
 
-// first name, last name div
-.namesDiv {
-  display: flex;
-  float: left;
-  width: 100%;
-  justify-content: center;
-  margin: 6px 0px;
-}
-
-.firstNameDiv {
-    margin: 0px 6px 0px 0px;
-    width: 50%;
-}
-.lastNameDiv  {
-    margin: 0px 0px 0px 6px;
-    width: 50%;
-}
-
-// address div
-.addressDiv {
-  display: flex;
-  width: 100%;
-  margin: 6px 0px;
-}
-
-// city, zip code div
-.cityZipDiv {
-  display: flex;
-  float: left;
-  width: 100%;
-  justify-content: center;
-  margin: 6px 0px;
-}
-
-.cityDiv {
-    margin: 0px 6px 0px 0px;
-    width: 50%;
-}
-.zipDiv {
-    margin: 0px 0px 0px 6px;
-    width: 50%;
-    padding-right: 10px;
-}
-
-// country div
-.countryDiv {
-  display: flex;
-  width: 50%;
-  align-self: flex-start;
-  margin: 6px 6px 12px 0px;
-}
-
 // private account div
 .isPrivateAccountDiv {
   display: flex;
@@ -131,7 +71,7 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  margin: 6px 0px;
+  margin-top: 20px;
 }
 
 .mainText {
@@ -152,38 +92,31 @@
 .horizontalLine {
     border-top: 1px solid $primaryColor;
     width: 100%;
-    // height: 1px;
     opacity: 0.5;
-    margin: 20px 0px;
-}
-
-// profile description
-.profileDescriptionDiv {
-    display: flex;
-  width: 100%;
-  margin: 6px 0px;
-}
-
-.websiteDiv{
-    display: flex;
-  width: 100%;
-  margin: 6px 0px;
+    margin-top: 20px;
 }
 
 // save button
-.saveButton {
-  background-color: $primaryColor;
-  padding: 8px 40px;
-  border-radius: 6px;
-  color: white;
-  font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  font-weight: 600;
-  margin-top: 30px;
-}
 
-.saveButton:hover{
-    cursor: pointer;
+.saveButton {
+  height: 40px;
+  border-radius: 100px;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  border: 0px;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-width: 280px;
+}
+.saveButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .formErrors {
@@ -225,9 +158,9 @@
   min-width: 280px;
 }
 
-@include mdTabletView{
+@include smTabletView{
   .formField {
-    max-width: 440px;
+    max-width: 420px;
   }
   .formFieldHalf {
     div,
@@ -236,7 +169,31 @@
     }
   }
   .formFieldLarge {
-    max-width: 440px;
+    max-width: 420px;
   }
-  
+  .modal {
+    width: 480px;
+    padding: 20px 30px;
+  }
+}
+
+// Loader for Buttons
+.spinner{
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px!important;
+  height: 16px!important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

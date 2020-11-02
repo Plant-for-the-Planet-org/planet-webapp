@@ -30,6 +30,9 @@ export default function EditProfileModal({
     false
   );
 
+  const [isUploadingData, setIsUploadingData] = React.useState(false)
+
+
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -49,7 +52,7 @@ export default function EditProfileModal({
       lastname: userprofile.lastname ? userprofile.lastname : '',
       address: userprofile.address.address ? userprofile.address.address : '',
       city: userprofile.address.city ? userprofile.address.city : '',
-      zip: userprofile.address.zip ? userprofile.address.zip : '',
+      zipCode: userprofile.address.zipCode ? userprofile.address.zipCode : '',
       country: userprofile.address.country ? userprofile.address.country : '',
       isPrivate: userprofile.isPrivate ? userprofile.isPrivate : false,
       getNews: userprofile.getNews ? userprofile.getNews : false,
@@ -69,13 +72,10 @@ export default function EditProfileModal({
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
-  console.log('postalRegex', postalRegex);
-
   // the form values
   const [session, loading] = useSession()
   const [severity, setSeverity] = useState('success')
   const [snackbarMessage, setSnackbarMessage] = useState("OK")
-  const [profilePic, setProfilePic] = useState(userprofile.image)
 
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
@@ -110,41 +110,47 @@ export default function EditProfileModal({
     },
   });
 
-
-
-  const saveProfile = async (bodyToSend: any) => {
-    console.log('bodyToSend', country);
-
-    // if (!loading && session) {
-    //   try {
-    //     const res = await editProfile(session, bodyToSend)
-    //     if (res.status === 200) {
-    //       setSeverity('success')
-    //       setSnackbarMessage('Saved Successfully!')
-    //       handleSnackbarOpen()
-    //       changeForceReload(!forceReload),
-    //         handleEditProfileModalClose()
-    //     } else if (res.status === 401) {
-    //       // in case of 401 - invalid token: signIn()
-    //       setSeverity('error')
-    //       setSnackbarMessage('Error in updating profile')
-    //       handleSnackbarOpen()
-    //       console.log('in 401-> unauthenticated user / invalid token')
-    //       signOut()
-    //       removeUserExistsInDB()
-    //       removeUserInfo()
-    //       signIn('auth0', { callbackUrl: '/login' });
-    //     } else {
-    //       setSeverity('error')
-    //       setSnackbarMessage('Error in updating profile')
-    //       handleSnackbarOpen()
-    //     }
-    //   } catch (e) {
-    //     setSeverity('error')
-    //     setSnackbarMessage('Error in updating profile')
-    //     handleSnackbarOpen()
-    //   }
-    // }
+  const saveProfile = async (data: any) => {
+    setIsUploadingData(true)
+    const bodyToSend = {
+      ...data,
+      country: country
+    }
+    console.log('bodyToSend', bodyToSend);
+    if (!loading && session) {
+      try {
+        const res = await editProfile(session, bodyToSend)
+        if (res.status === 200) {
+          setSeverity('success')
+          setSnackbarMessage('Saved Successfully!')
+          handleSnackbarOpen()
+          changeForceReload(!forceReload),
+          handleEditProfileModalClose()
+          setIsUploadingData(false)
+        } else if (res.status === 401) {
+          // in case of 401 - invalid token: signIn()
+          setSeverity('error')
+          setSnackbarMessage('Error in updating profile')
+          handleSnackbarOpen()
+          console.log('in 401-> unauthenticated user / invalid token')
+          signOut()
+          removeUserExistsInDB()
+          removeUserInfo()
+          signIn('auth0', { callbackUrl: '/login' });
+          setIsUploadingData(false)
+        } else {
+          setSeverity('error')
+          setSnackbarMessage('Error in updating profile')
+          handleSnackbarOpen()
+          setIsUploadingData(false)
+        }
+      } catch (e) {
+        setSeverity('error')
+        setSnackbarMessage('Error in updating profile')
+        handleSnackbarOpen()
+        setIsUploadingData(false)
+      }
+    }
   }
   return (
     <React.Fragment>
@@ -173,34 +179,16 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {
-              userprofile.image ?
-                (
-                  <div  {...getRootProps()} >
-                    <label htmlFor="upload" >
-                      <div
-                        className={styles.profilePicDiv}>
-                        <input {...getInputProps()} />
-                        <img src={getS3Image('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} />
-                      </div>
-                    </label>
-                  </div>
-                )
-                :
-                (
-                  // this style doesn't matter
-                  <div  {...getRootProps()} >
-                    <label htmlFor="upload" >
-                      <div
-                        className={styles.profilePicDiv} >
-                        <input {...getInputProps()} />
-                        <Camera color="white" />
-                      </div>
-                    </label>
-                  </div>
-                )
-            }
 
+            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center' }}>
+              <label htmlFor="upload" >
+                <div
+                  className={styles.profilePicDiv}>
+                  <input {...getInputProps()} />
+                  {userprofile.image ? <img src={getS3Image('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : <Camera color="white" />}
+                </div>
+              </label>
+            </div>
 
             <div>
 
@@ -236,7 +224,7 @@ export default function EditProfileModal({
               </div>
 
             </div>
-        
+
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
@@ -253,7 +241,7 @@ export default function EditProfileModal({
             </div>
 
             <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   label="City"
                   variant="outlined"
@@ -267,16 +255,16 @@ export default function EditProfileModal({
                 )}
               </div>
               <div style={{ width: '20px' }}></div>
-                <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   label="Zip Code"
                   variant="outlined"
-                  name="zip"
+                  name="zipCode"
                   inputRef={register({
                     pattern: postalRegex
                   })}
                 />
-                {errors.zip && (
+                {errors.zipCode && (
                   <span className={styles.formErrors}>
                     Please enter valid Zipcode
                   </span>
@@ -284,9 +272,9 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            <div className={styles.countryDiv}>
+            <div className={styles.formFieldLarge}>
               <AutoCompleteCountry
-                inputRef={register({})}
+                inputRef={null}
                 defaultValue={country}
                 onChange={setCountry}
                 label={'Country'}
@@ -340,7 +328,7 @@ export default function EditProfileModal({
 
             <div className={styles.horizontalLine} />
 
-            <div className={styles.profileDescriptionDiv}>
+            <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label="Profile Desciption"
                 variant="outlined"
@@ -355,7 +343,7 @@ export default function EditProfileModal({
               </span>
             )}
 
-            <div className={styles.websiteDiv}>
+            <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label="Website"
                 variant="outlined"
@@ -375,12 +363,15 @@ export default function EditProfileModal({
               </span>
             )}
 
-            <div
-              className={styles.saveButton}
-              onClick={handleSubmit(saveProfile)}
-            >
-              Save
-          </div>
+            <div className={styles.formFieldLarge} style={{justifyContent:'center'}}>
+              <div
+                className={styles.saveButton}
+                onClick={handleSubmit(saveProfile)}
+              >
+               {isUploadingData ? <div className={styles.spinner}></div> : "Save"}
+              </div>
+            </div>
+
           </div>
         </Fade>
       </Modal>
