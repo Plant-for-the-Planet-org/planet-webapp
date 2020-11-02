@@ -252,6 +252,7 @@ export default function CompleteSignup() {
       className={styles.signUpPage}
       style={{
         backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
+        backgroundSize:'cover',
         display:'flex',
         flexDirection:'column',
         height: '100vh', overflowX: 'hidden'

@@ -6,13 +6,15 @@
   display:flex;
   align-items:center;
   justify-content: center;
-  padding: 0px 0px 60px 0px;
+  position: relative;
 }
 
 // the white form
 .signup {
-  margin: 220px 0px 0px 0px;
+  top: 80px;
+  margin-bottom: 60px;
   background-color: $light;
+  position: absolute;
   border: 0px;
   min-width: 360px;
   max-width: 30vw;
