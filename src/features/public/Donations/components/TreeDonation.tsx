@@ -55,7 +55,7 @@ function TreeDonation({
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
   const setCustomTreeValue = (e: any) => {
-    if (e.target.value === '') {
+    if (e.target.value === '' || e.target.value < 1) {
       // if input is '', default 1
       setTreeCount(1);
     } else if (e.target.value.toString().length <= 12) {
@@ -171,7 +171,7 @@ function TreeDonation({
         </div>
 
         {isGift ? (
-          directGift !== null ? (
+          directGift ? (
             <DirectGiftForm
               isGift={isGift}
               giftDetails={giftDetails}

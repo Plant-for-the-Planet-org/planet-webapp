@@ -34,6 +34,7 @@ interface mapProps {
   showSingleProject: Boolean;
   mapboxToken: any;
   setShowProjects: Function;
+  searchedProject: any;
 }
 export default function MapboxMap({
   projects,
@@ -41,6 +42,7 @@ export default function MapboxMap({
   showSingleProject,
   mapboxToken,
   setShowProjects,
+  searchedProject,
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -133,13 +135,13 @@ export default function MapboxMap({
 
   React.useEffect(() => {
     if (showSingleProject) {
-      if (project !== null) {
+      if (project) {
         setSingleProjectLatLong([
           project.coordinates.lat,
           project.coordinates.lon,
         ]);
         if (typeof project.sites !== 'undefined' && project.sites.length > 0) {
-          if (project.sites[0].geometry !== null) {
+          if (project.sites[0].geometry) {
             setCurrentSite(0);
             setMaxSites(project.sites.length);
             setGeoJson({
@@ -174,7 +176,7 @@ export default function MapboxMap({
     if (showSingleProject) {
       if (project) {
         if (siteExists) {
-          if (geoJson !== null) {
+          if (geoJson) {
             const bbox = turf.bbox(geoJson.features[currentSite]);
             const { longitude, latitude, zoom } = new WebMercatorViewport(
               viewport
@@ -348,7 +350,7 @@ export default function MapboxMap({
 
         {!showSingleProject &&
           exploreProjects &&
-          projects.map((projectMarker: any, index: any) => (
+          searchedProject.map((projectMarker: any, index: any) => (
             <Marker
               key={index}
               latitude={projectMarker.geometry.coordinates[1]}
@@ -409,7 +411,7 @@ export default function MapboxMap({
               className={styles.popupProject}
               onClick={(event) => {
                 if (event.target !== buttonRef.current) {
-                  if (popupRef.current === null) {
+                  if (!popupRef.current) {
                     router.push(
                       '/[p]',
                       `/${popupData.project.properties.slug}`,
@@ -621,7 +623,7 @@ export default function MapboxMap({
 
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
-                {project !== null &&
+                {project &&
                 siteExists &&
                 project.sites.length !== 0 &&
                 geoJson.features[currentSite]

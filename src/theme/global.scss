@@ -46,6 +46,18 @@ body {
   outline: none !important;
 }
 
+.planet-links {
+  color: $primaryColor;
+}
+
+.planet-links:hover {
+  color: $primaryColor;
+}
+
+.planet-links:visited {
+  color: $primaryColor;
+}
+
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;

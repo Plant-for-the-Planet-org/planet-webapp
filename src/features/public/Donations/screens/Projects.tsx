@@ -8,6 +8,7 @@ interface Props {
   setDirectGift: Function;
   showProjects: Boolean;
   setShowProjects: Function;
+  setsearchedProjects: any
 }
 
 function ProjectsList({
@@ -16,6 +17,7 @@ function ProjectsList({
   setDirectGift,
   showProjects,
   setShowProjects,
+  setsearchedProjects,
 }: Props): ReactElement {
   const [searchedProjects, setSearchedProjects] = React.useState([]);
   const [allProjects, setAllProjects] = React.useState(projects);
@@ -23,15 +25,10 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
-  React.useEffect(() => {
-    if (searchedProjects === null || searchedProjects.length < 1)
-      setAllProjects(projects);
-    else setAllProjects(searchedProjects);
-  }, [projects, searchedProjects]);
 
   const ProjectsProps = {
-    projects: allProjects,
-    setSearchedProjects: setSearchedProjects,
+    projects,
+    setSearchedProjects: setsearchedProjects,
     directGift,
     setDirectGift,
     setShowProjects,
