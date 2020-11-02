@@ -25,7 +25,6 @@ import RightIcon from '../../../../../public/assets/images/icons/RightIcon';
 import PopupProject from './PopupProject';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
-import TreeCoverGain from '../../../../../public/data/layers/tree-cover-gain';
 
 import styles from '../styles/MapboxMap.module.scss';
 
@@ -502,15 +501,6 @@ export default function MapboxMap({
 
                 return <LayerM key={layer.id} {...l} />;
               })}
-
-            {/* {TreeCoverGain.map((layer) => {
-              const l = {
-                ...layer,
-                ...layer.config,
-              };
-
-              return <LayerM key={layer.id} {...l} />;
-            })} */}
           </LayerManager>
         ) : null}
 
