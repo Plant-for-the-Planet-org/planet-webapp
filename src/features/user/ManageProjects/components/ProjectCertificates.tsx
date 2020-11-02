@@ -115,6 +115,10 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
             })
     }, [projectGUID]);
 
+
+    var tenYearsAgo = new Date();
+    tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
+
     return (
         <div>
 
@@ -182,6 +186,8 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                                             message: 'Please add Certification date'
                                         }
                                     })}
+                                    maxDate={new Date()}
+                                    minDate={tenYearsAgo}
                                 />
 
                             </MuiPickersUtilsProvider>

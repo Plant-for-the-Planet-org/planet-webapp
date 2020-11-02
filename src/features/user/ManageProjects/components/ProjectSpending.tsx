@@ -131,6 +131,8 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
             })
     }, [projectGUID]);
 
+    var fiveYearsAgo = new Date();
+    fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
     return (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -185,7 +187,8 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
                                         autoOk
                                         clearable
                                         disableFuture
-
+                                        minDate={fiveYearsAgo}
+                                        maxDate={new Date()}
                                     />
                                 </MuiPickersUtilsProvider>
                                 {errors.year && (
