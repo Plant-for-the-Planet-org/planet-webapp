@@ -166,8 +166,11 @@ export default function EditProfileModal({
           timeout: 500,
         }}
       >
-        <Fade in={editProfileModalOpen}>
           <div className={styles.modal}>
+
+            
+
+            <div>
 
             <div className={styles.headerDiv}>
               <div className={styles.backDiv} onClick={handleEditProfileModalClose}>
@@ -180,7 +183,7 @@ export default function EditProfileModal({
             </div>
 
 
-            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center' }}>
+            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center',width:'100%' }}>
               <label htmlFor="upload" >
                 <div
                   className={styles.profilePicDiv}>
@@ -189,8 +192,6 @@ export default function EditProfileModal({
                 </div>
               </label>
             </div>
-
-            <div>
 
               <div className={styles.formField}>
 
@@ -223,8 +224,7 @@ export default function EditProfileModal({
                 </div>
               </div>
 
-            </div>
-
+          
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
@@ -373,7 +373,8 @@ export default function EditProfileModal({
             </div>
 
           </div>
-        </Fade>
+          </div>
+
       </Modal>
       {/* snackbar for showing various messages */}
       <Snackbar
