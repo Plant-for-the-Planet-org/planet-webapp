@@ -52,7 +52,7 @@
 
 //profile pic div
 .profilePicDiv {
-  background-color:#4d5153;
+  background-color:#fff;
   height: 100px;
   width: 100px;
   border-radius: 100px;
@@ -175,7 +175,7 @@
   background-color: $primaryColor;
   padding: 8px 40px;
   border-radius: 6px;
-  color: $light;
+  color: white;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
@@ -184,4 +184,59 @@
 
 .saveButton:hover{
     cursor: pointer;
+}
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+}
+
+
+/// Form Styles
+
+.formField {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 320px;
+  justify-content: space-between;
+  align-items: center;
+}
+.formFieldHalf {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  div,
+  input {
+    width: 280px;
+  }
+}
+.formFieldLarge {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 280px;
+  min-width: 280px;
+}
+
+@include mdTabletView{
+  .formField {
+    max-width: 440px;
+  }
+  .formFieldHalf {
+    div,
+    input {
+      width: 200px;
+    }
+  }
+  .formFieldLarge {
+    max-width: 440px;
+  }
+  
 }

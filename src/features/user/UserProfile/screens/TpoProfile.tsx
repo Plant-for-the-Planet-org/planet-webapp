@@ -11,8 +11,6 @@ import AddTargetModal from '../components/AddTargetModal'
 
 export default function TpoProfile({ userprofile,authenticatedType, changeForceReload,
   forceReload }: any) {
-  console.log('in TPO userprofile - ', userprofile)
-  console.log('in TPO authenticatedType - ', authenticatedType)
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
