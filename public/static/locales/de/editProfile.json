@@ -1,0 +1,12 @@
+{
+    "edit": "Profil beabeiten",
+    "privateAccount": "Privates Konto",
+    "privateAccountTxt": "Dein Profile ist versteckt und nur dein Vorname erscheint in der Bestenliste",
+    "subscribe": "News per E-Mail abonnieren",
+    "profileDescription": "Profilbeschreibung",
+    "descriptionRequired": "Bitte gibt eine gültige Beschreibung ein",
+    "website": "Website",
+    "websiteError": "Ungültige Website-URL",
+    "websiteRequired": "Bitte gibt eine gültige Website-URL ein",
+    "snackbarMessage": "{{message}}"
+}
