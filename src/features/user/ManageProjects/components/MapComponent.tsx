@@ -13,6 +13,8 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
+import Expand from '../../../../../public/assets/images/icons/manageProjects/Expand';
+import { relative } from 'path';
 
 interface Props {
   geoJson: any;
@@ -40,7 +42,8 @@ export default function MapComponent({
     zoom: defaultZoom,
   });
   const reader = new FileReader();
-
+  const [expanded, setExpanded] = React.useState(false);
+  const mapParentRef = React.useRef(null);
   const [selectedFeature, setSelectedFeature] = React.useState();
 
   const drawMode = new DrawPolygonMode();
@@ -61,11 +64,19 @@ export default function MapComponent({
       >
         <div
           onClick={() => {
+            expanded ? setExpanded(false) : setExpanded(true);
+          }}
+          className={styles.mapTool}
+        >
+          <Expand color={'#000'} />
+        </div>
+        <div
+          onClick={() => {
             setModeHandler(drawMode);
           }}
           className={styles.mapTool}
         >
-          <PolygonIcon color={"#000"} />
+          <PolygonIcon color={'#000'} />
         </div>
         <div
           onClick={() => {
@@ -73,7 +84,7 @@ export default function MapComponent({
           }}
           className={styles.mapTool}
         >
-          <PencilIcon color={"#000"} />
+          <PencilIcon color={'#000'} />
         </div>
         {/* <div
           onClick={() => {
@@ -91,11 +102,21 @@ export default function MapComponent({
           }}
           className={styles.mapTool}
         >
-          <TrashIcon color={"#000"} />
+          <TrashIcon color={'#000'} />
         </div>
       </div>
     );
   };
+
+  React.useEffect(() => {
+    if (mapParentRef.current !== null) {
+      setViewPort({
+        ...viewport,
+        height: mapParentRef.current.clientHeight,
+        width: mapParentRef.current.clientWidth,
+      });
+    }
+  }, [mapParentRef]);
 
   React.useEffect(() => {
     if (geoJson) {
@@ -138,7 +159,13 @@ export default function MapComponent({
   }, [geoJson]);
 
   return (
-    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
+    <div
+      style={
+        expanded ? { position: 'fixed', height: '100vh', width: '100vw' } : {}
+      }
+      ref={mapParentRef}
+      className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
+    >
       <MapGL
         {...viewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}

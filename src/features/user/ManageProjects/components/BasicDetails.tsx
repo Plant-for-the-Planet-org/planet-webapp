@@ -6,8 +6,11 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
 import MapGL, { Marker, NavigationControl } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
-import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
-import { postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
+import {
+  postAuthenticatedRequest,
+  putAuthenticatedRequest,
+} from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 const classifications = [
@@ -30,10 +33,19 @@ interface Props {
   session: any;
 }
 
-export default function BasicDetails({ handleNext, session, projectDetails, setProjectDetails, errorMessage, setProjectGUID, setErrorMessage, projectGUID }: Props): ReactElement {
+export default function BasicDetails({
+  handleNext,
+  session,
+  projectDetails,
+  setProjectDetails,
+  errorMessage,
+  setProjectGUID,
+  setErrorMessage,
+  projectGUID,
+}: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false)
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
@@ -67,8 +79,6 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
   };
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
-
-
   // Default Form Fields
   const defaultBasicDetails = {
     name: '',
@@ -85,13 +95,21 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
     currency: 'EUR',
     projectCoords: {
       latitude: 0,
-      longitude: 0
-    }
-  }
+      longitude: 0,
+    },
+  };
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+    watch,
+  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
-  const acceptDonations = watch("acceptDonations");
+  const acceptDonations = watch('acceptDonations');
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -110,15 +128,22 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
         currency: projectDetails.currency,
         projectCoords: {
           latitude: projectDetails.geoLatitude,
-          longitude: projectDetails.geoLongitude
-        }
+          longitude: projectDetails.geoLongitude,
+        },
       };
-      reset(basicDetails)
+      reset(basicDetails);
     }
-  }, [projectDetails])
+    setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
+    setViewPort({
+      ...viewport,
+      latitude: projectDetails.geoLatitude,
+      longitude: projectDetails.geoLongitude,
+      zoom: 7,
+    });
+  }, [projectDetails]);
 
   const onSubmit = (data: any) => {
-    setIsUploadingData(true)
+    setIsUploadingData(true);
     let submitData = {
       name: data.name,
       slug: data.slug,
@@ -127,8 +152,8 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
         type: 'Point',
         coordinates: [
           parseFloat(data.projectCoords.longitude),
-          parseFloat(data.projectCoords.latitude)
-        ]
+          parseFloat(data.projectCoords.latitude),
+        ],
       },
       countTarget: Number(data.countTarget),
       website: data.website,
@@ -138,53 +163,52 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
-      enablePlantLocations: data.enablePlantLocations
-    }
+      enablePlantLocations: data.enablePlantLocations,
+    };
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
-
-      putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+      putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        session
+      ).then((res) => {
         if (!res.code) {
-          setErrorMessage('')
-          setProjectDetails(res)
-          setIsUploadingData(false)
-          handleNext()
+          setErrorMessage('');
+          setProjectDetails(res);
+          setIsUploadingData(false);
+          handleNext();
         } else {
           if (res.code === 404) {
-            setIsUploadingData(false)
-            setErrorMessage(res.message)
-          }
-          else {
-            setIsUploadingData(false)
-            setErrorMessage(res.message)
+            setIsUploadingData(false);
+            setErrorMessage(res.message);
+          } else {
+            setIsUploadingData(false);
+            setErrorMessage(res.message);
           }
         }
-      })
-
-
+      });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, session).then((res) => {
-        if (!res.code) {
-          setErrorMessage('')
-          setProjectGUID(res.id)
-          setProjectDetails(res)
-          setIsUploadingData(false)
-          handleNext()
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false)
-            setErrorMessage(res.message)
-          }
-          else {
-            setIsUploadingData(false)
-            setErrorMessage(res.message)
+      postAuthenticatedRequest(`/app/projects`, submitData, session).then(
+        (res) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setProjectGUID(res.id);
+            setProjectDetails(res);
+            setIsUploadingData(false);
+            handleNext();
+          } else {
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
           }
         }
-      })
+      );
     }
-
-
   };
 
   return (
@@ -204,9 +228,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               name="name"
             />
             {errors.name && (
-              <span className={styles.formErrors}>
-                {errors.name.message}
-              </span>
+              <span className={styles.formErrors}>{errors.name.message}</span>
             )}
           </div>
 
@@ -229,9 +251,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                 }}
               />
               {errors.slug && (
-                <span className={styles.formErrors}>
-                  {errors.slug.message}
-                </span>
+                <span className={styles.formErrors}>{errors.slug.message}</span>
               )}
             </div>
             <div style={{ width: '20px' }}></div>
@@ -251,7 +271,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                   </MaterialTextField>
                 }
                 name="classification"
-                rules={{ required: "Please select Project type" }}
+                rules={{ required: 'Please select Project type' }}
                 control={control}
               />
               {errors.classification && (
@@ -335,29 +355,44 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf}`}>
               <div className={`${styles.formFieldRadio}`}>
-                <label htmlFor="acceptDonations" style={{ display: 'flex', alignItems: 'center' }}>Receive Donations <div style={{ height: '13px', width: '13px', marginLeft: '6px' }}>
-                  <div className={styles.popover}>
-                    <InfoIcon />
-                    <div className={styles.popoverContent} style={{ left: '-150px' }}>
-                      <p>Please activate once the project profile is complete. Plant-for-the-Planet will then review the profile and inform you if you are eligible to receive donations through this platform. This may take a few weeks.</p>
+                <label
+                  htmlFor="acceptDonations"
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  Receive Donations{' '}
+                  <div
+                    style={{ height: '13px', width: '13px', marginLeft: '6px' }}
+                  >
+                    <div className={styles.popover}>
+                      <InfoIcon />
+                      <div
+                        className={styles.popoverContent}
+                        style={{ left: '-150px' }}
+                      >
+                        <p>
+                          Please activate once the project profile is complete.
+                          Plant-for-the-Planet will then review the profile and
+                          inform you if you are eligible to receive donations
+                          through this platform. This may take a few weeks.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div></label>
+                </label>
 
                 <Controller
                   name="acceptDonations"
                   control={control}
                   defaultValue={true}
-                  render={props => (
+                  render={(props) => (
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={props.value}
-                      onChange={e => props.onChange(e.target.checked)}
+                      onChange={(e) => props.onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   )}
                 />
-
               </div>
             </div>
             {acceptDonations ? (
@@ -368,8 +403,7 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                       value: true,
                       message: 'Please enter cost per tree',
                     },
-                    validate: (value) =>
-                      parseFloat(value) > 0,
+                    validate: (value) => parseFloat(value) > 0,
                   })}
                   label={t('manageProjects:treeCost')}
                   variant="outlined"
@@ -396,7 +430,6 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
                 )}
               </div>
             ) : null}
-
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
@@ -408,14 +441,19 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
               onViewportChange={_onViewportChange}
               onClick={(event) => {
-                setProjectCoords(event.lngLat)
+                setProjectCoords(event.lngLat);
                 const latLong = {
                   latitude: event.lngLat[1],
-                  longitude: event.lngLat[0]
-                }
-                setValue('projectCoords', latLong)
+                  longitude: event.lngLat[0],
+                };
+                setViewPort({
+                  ...viewport,
+                  latitude: event.lngLat[1],
+                  longitude: event.lngLat[0],
+                  zoom: 7,
+                });
+                setValue('projectCoords', latLong);
               }}
-
             >
               {projectCoords ? (
                 <Marker
@@ -438,7 +476,11 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
             >
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
                 <MaterialTextField
-                  inputRef={register({ required: true, validate: (value) => parseFloat(value) > -90 && parseFloat(value) < 90 })}
+                  inputRef={register({
+                    required: true,
+                    validate: (value) =>
+                      parseFloat(value) > -90 && parseFloat(value) < 90,
+                  })}
                   label="Latitude"
                   variant="outlined"
                   name={'projectCoords.latitude'}
@@ -451,7 +493,11 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               </div>
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
                 <MaterialTextField
-                  inputRef={register({ required: true, validate: (value) => parseFloat(value) > -180 && parseFloat(value) < 180 })}
+                  inputRef={register({
+                    required: true,
+                    validate: (value) =>
+                      parseFloat(value) > -180 && parseFloat(value) < 180,
+                  })}
                   label="Longitude"
                   variant="outlined"
                   onChange={changeLon}
@@ -470,21 +516,19 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               <label htmlFor="visitorAssistance">
                 I will provide lodging, site access and local transport if a
                 reviewer is sent by Plant-for-the-Planet.
-            </label>
+              </label>
               <Controller
                 name="visitorAssistance"
                 control={control}
-                render={props => (
+                render={(props) => (
                   <ToggleSwitch
                     id="visitorAssistance"
                     checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
-
                 )}
               />
-
             </div>
           </div>
 
@@ -495,10 +539,10 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
               <Controller
                 name="publish"
                 control={control}
-                render={props => (
+                render={(props) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     id="publish"
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
@@ -528,15 +572,11 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
             </div>
           </div> */}
 
-          {
-            errorMessage && errorMessage !== '' ? (
-              <div className={styles.formFieldLarge}>
-                <h4 className={styles.errorMessage}>{errorMessage}</h4>
-              </div>
-            ) : null
-          }
-
-
+          {errorMessage && errorMessage !== '' ? (
+            <div className={styles.formFieldLarge}>
+              <h4 className={styles.errorMessage}>{errorMessage}</h4>
+            </div>
+          ) : null}
         </div>
         <div className={styles.formField} style={{ marginTop: '48px' }}>
           {/* <div className={`${styles.formFieldHalf}`}>
@@ -548,13 +588,18 @@ export default function BasicDetails({ handleNext, session, projectDetails, setP
           </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
-            <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
-              {isUploadingData ? <div className={styles.spinner}></div> : "Save & Continue"}
+            <div
+              onClick={handleSubmit(onSubmit)}
+              className={styles.continueButton}
+            >
+              {isUploadingData ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                'Save & Continue'
+              )}
             </div>
-
           </div>
         </div>
-
       </form>
     </div>
   );

@@ -8,7 +8,6 @@
   justify-content: center;
 }
 
-
 .stepContainer {
   margin: auto;
   font-family: $primaryFontFamily;
@@ -85,13 +84,13 @@
     transform: translateX(0px, 20px);
   }
 }
-.latlongField{
+.latlongField {
   div,
   input {
-    width: 120px!important;
+    width: 120px !important;
   }
 }
-@include mdTabletView{
+@include mdTabletView {
   .mainContainer {
     max-width: 780px;
   }
@@ -101,10 +100,10 @@
   .formFieldLarge {
     max-width: 660px;
   }
-  .latlongField{
+  .latlongField {
     div,
     input {
-      width: 320px!important;
+      width: 320px !important;
     }
   }
 }
@@ -247,7 +246,6 @@
   font-weight: bold;
 }
 
-
 .marker {
   width: 30px;
   height: 30px;
@@ -282,7 +280,7 @@
     z-index: 9;
   }
 
-  .uploadedMapName{
+  .uploadedMapName {
     background-color: $light;
     padding: 6px 18px;
     border-radius: 10px;
@@ -294,7 +292,7 @@
     left: 5%;
     font-weight: bold;
   }
-  .uploadedMapStatus{
+  .uploadedMapStatus {
     background-color: $light;
     padding: 6px 18px;
     border-radius: 10px;
@@ -307,7 +305,7 @@
     font-weight: bold;
     font-size: 10px;
   }
-  .uploadedMapDeleteButton{
+  .uploadedMapDeleteButton {
     background-color: $light;
     padding: 6px;
     border-radius: 18px;
@@ -323,7 +321,7 @@
     width: fit-content;
     > svg {
       height: 12px;
-      &:hover{
+      &:hover {
         cursor: pointer;
       }
     }
@@ -381,9 +379,10 @@
   position: absolute;
   right: 6px;
   bottom: 20px;
+  z-index: 2;
 }
 
-.uploadedImageContainer{
+.uploadedImageContainer {
   position: relative;
   height: min-content;
   > img {
@@ -391,9 +390,9 @@
     height: 240px;
     max-width: 320px;
     border-radius: 10px;
-    object-fit:cover;
+    object-fit: cover;
   }
-  .uploadedImageOverlay{
+  .uploadedImageOverlay {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -401,33 +400,40 @@
     height: 240px;
     max-width: 320px;
     border-radius: 10px;
-    background-image: linear-gradient(to bottom, rgba(47, 51, 54, 0) 60%, rgba(47, 51, 54, 0.22) 76%, rgba(47, 51, 54, 0.74));
+    background-image: linear-gradient(
+      to bottom,
+      rgba(47, 51, 54, 0) 60%,
+      rgba(47, 51, 54, 0.22) 76%,
+      rgba(47, 51, 54, 0.74)
+    );
   }
-  > input{
+  > input {
     position: absolute;
-    bottom:16px;
+    bottom: 16px;
     left: 12px;
     border: 0px;
     color: white;
-    background-color: transparent; 
-    font-size: 16px; 
+    background-color: transparent;
+    font-size: 16px;
     &::placeholder {
       color: white;
       opacity: 1; /* Firefox */
     }
-    &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-     color: white;
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: white;
     }
-    &::-ms-input-placeholder { /* Microsoft Edge */
-     color: white;
-    }  
+    &::-ms-input-placeholder {
+      /* Microsoft Edge */
+      color: white;
+    }
   }
   .uploadedImageButtonContainer {
     position: absolute;
     top: 14px;
     right: 14px;
     width: fit-content;
-    :nth-child(2){
+    :nth-child(2) {
       margin-top: 9px;
     }
     > div {
@@ -441,7 +447,7 @@
       box-shadow: 0 7px 12px -6px rgba(60, 60, 60, 1);
       transition-duration: 0.4s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-      &:hover{
+      &:hover {
         cursor: pointer;
       }
     }
@@ -459,7 +465,7 @@
   width: 100%;
 }
 
-.reportPDFContainer{
+.reportPDFContainer {
   border-radius: 10px;
   background-color: #f2f2f7;
   padding: 16px;
@@ -471,66 +477,73 @@
   align-items: center;
   max-width: 320px;
   margin-top: 20px;
-  > a > svg{
+  > a > svg {
     height: 48px;
   }
-  .reportPDFDetails{
+  .reportPDFDetails {
     flex-grow: 1;
     margin-left: 14px;
     max-width: 50%;
   }
 
-  .reportEditButton{
+  .reportEditButton {
     background-color: white;
-      border-radius: 50%;
-      height: 30px;
-      width: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition-duration: 0.4s;
-      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-      &:hover{
-        cursor: pointer;
-      }
-      > svg {
-        height: 12px;
-      }
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.4s;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    &:hover {
+      cursor: pointer;
+    }
+    > svg {
+      height: 12px;
+    }
   }
 }
 
-.shallowOpacity{
+.shallowOpacity {
   opacity: 0.5;
 }
 
-
 // Loader for Buttons
-.spinner{
+.spinner {
   border: 2px solid #f3f3f3;
   border-radius: 50%;
   border-top: 2px solid transparent;
-  width: 16px!important;
-  height: 16px!important;
+  width: 16px !important;
+  height: 16px !important;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }
 
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 // Popover
 
-.popover{
+.popover {
   position: relative;
-  width: fit-content!important;
-  .popoverContent{
+  width: fit-content !important;
+  .popoverContent {
     position: absolute;
     z-index: 10;
     background-color: $light;
@@ -539,11 +552,11 @@
     text-align: center;
     border: 2px solid $primaryColor;
     display: none;
-   
   }
-  &:hover, &:active{
+  &:hover,
+  &:active {
     cursor: pointer;
-    .popoverContent{
+    .popoverContent {
       display: block;
     }
   }
