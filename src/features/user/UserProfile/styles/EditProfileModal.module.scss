@@ -1,21 +1,32 @@
 @import './../../../../theme/theme';
 
+:export {
+  primaryColor: $primaryColor;
+  light: $light;
+  dark: $dark;
+  primaryFontColor: $primaryFontColor;
+  dividerColor: $dividerColor;
+}
 // modal container for black opacity
 .modalContainer {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  min-height: 100vh;
+  overflow-y: scroll;
 }
 
 // white modal
 .modal {
-  background-color: #ffffff;
+  top: 80px;
+  margin-bottom: 60px;
+  background-color: #fff;
   border: 0px;
   border-radius: 8px;
+  position: absolute;
   padding: 20px 20px;
   width: 320px;
-  max-height: 90vh;
-  overflow: scroll;
   outline: none;
   display: flex;
   flex-direction: column;
@@ -196,3 +207,4 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+

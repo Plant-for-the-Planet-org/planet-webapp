@@ -222,7 +222,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
             <MaterialTextField
               inputRef={register({
                 pattern: {
-                  value: /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
+                  value: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/,
                   message: "Invalid Youtube Video Link"
                 }
               })}

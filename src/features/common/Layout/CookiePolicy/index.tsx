@@ -6,13 +6,7 @@ import i18next from '../../../../../i18n';
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);
   const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard']);
-
-  const [initialized, setInitialized] = React.useState(false);
-
-  React.useEffect(() => {
-    i18next.initPromise.then(() => setInitialized(true));
-  }, []);
+  const { t, ready } = useTranslation(['leaderboard']);
 
   React.useEffect(() => {
     let prev = localStorage.getItem('cookieNotice');
@@ -30,7 +24,7 @@ export default function CookiePolicy() {
       >
         <CloseIcon color={styles.primaryColor} />
       </div>
-      {initialized ? (
+      {ready ? (
         <div className={styles.cookieContent}>
           {t('common:privacyPolicyNotice')}{' '}
           <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">

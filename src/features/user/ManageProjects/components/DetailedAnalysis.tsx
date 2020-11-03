@@ -133,7 +133,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         if (projectDetails) {
 
             const defaultDetailedAnalysisData = {
-                yearAbandoned: projectDetails.yearAbandoned ? new Date(new Date().setFullYear(projectDetails.yearAbandoned)) : new Date(new Date().setFullYear(2000)),
+                yearAbandoned: projectDetails.yearAbandoned ? new Date(new Date().setFullYear(projectDetails.yearAbandoned)) : new Date(),
                 firstTreePlanted: projectDetails.firstTreePlanted ? new Date(projectDetails.firstTreePlanted) : new Date(),
                 plantingDensity: projectDetails.plantingDensity,
                 employeesCount: projectDetails.employeesCount,
@@ -181,6 +181,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             autoOk
                                             disableFuture
                                             minDate={new Date(new Date().setFullYear(1950))}
+                                            maxDate={new Date()}
                                         />
                                     )
                                     }
@@ -213,8 +214,9 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
                                             disableFuture
-                                            minDate={new Date(new Date().setFullYear(2006))}
+                                            minDate={new Date(new Date().setFullYear(1950))}
                                             format="d MMMM yyyy"
+                                            maxDate={new Date()}
                                         />)
                                     }
                                     name="firstTreePlanted"
@@ -411,14 +413,15 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
                                             disableFuture
-                                            minDate={new Date(new Date().setFullYear(2006))}
+                                            minDate={new Date(new Date().setFullYear(1950))}
                                             views={["year"]}
+                                            maxDate={new Date()}
                                         />)
                                     }
                                     name="acquisitionYear"
                                     control={control}
                                     defaultValue=""
-                                    minDate={new Date(new Date().setFullYear(2006))}
+                                    
                                 />
                             </MuiPickersUtilsProvider>
 
@@ -438,7 +441,8 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
                                             disableFuture
-                                            minDate={new Date(new Date().setFullYear(2006))}
+                                            minDate={new Date(new Date().setFullYear(1950))}
+                                            maxDate={new Date()}
                                         />)
                                     }
                                     name="degradationYear"
