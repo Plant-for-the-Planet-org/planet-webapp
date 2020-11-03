@@ -131,15 +131,17 @@ export default function BasicDetails({
           longitude: projectDetails.geoLongitude,
         },
       };
+      if(projectDetails.hasOwnProperty('geoLongitude') && projectDetails.hasOwnProperty('geoLatitude')){
+        setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
+        setViewPort({
+          ...viewport,
+          latitude: projectDetails.geoLatitude,
+          longitude: projectDetails.geoLongitude,
+          zoom: 7,
+        });
+      }
       reset(basicDetails);
     }
-    setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
-    setViewPort({
-      ...viewport,
-      latitude: projectDetails.geoLatitude,
-      longitude: projectDetails.geoLongitude,
-      zoom: 7,
-    });
   }, [projectDetails]);
 
   const onSubmit = (data: any) => {
@@ -595,8 +597,8 @@ export default function BasicDetails({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                'Save & Continue'
-              )}
+                  'Save & Continue'
+                )}
             </div>
           </div>
         </div>
