@@ -17,7 +17,10 @@ import { editProfile } from '../../../../utils/auth0/apiRequests'
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
+import i18next from '../../../../../i18n';
 
+
+const {useTranslation} = i18next;
 export default function EditProfileModal({
   userprofile,
   editProfileModalOpen,
@@ -31,7 +34,7 @@ export default function EditProfileModal({
   );
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
-
+  const {t} = useTranslation(['editProfile', 'donate', 'target']); 
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -178,7 +181,7 @@ export default function EditProfileModal({
               </div>
               <div className={styles.editProfileText}>
                 {' '}
-                <b> Edit Profile </b>
+                <b> {t('editProfile:edit')} </b>
               </div>
             </div>
 
@@ -197,28 +200,28 @@ export default function EditProfileModal({
 
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
-                    label="First Name"
+                    label={t('donate:firstName')}
                     variant="outlined"
                     name="firstname"
                     inputRef={register()}
                   />
                   {errors.firstname && (
                     <span className={styles.formErrors}>
-                      Please enter valid first name
+                      {t('donate:firstNameRequired')}
                     </span>
                   )}
                 </div>
                 <div style={{ width: '20px' }}></div>
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
-                    label="Last Name"
+                    label={t('donate:lastName')}
                     variant="outlined"
                     name="lastname"
                     inputRef={register()}
                   />
                   {errors.lastname && (
                     <span className={styles.formErrors}>
-                      Please enter valid last name
+                      {t('donate:lastNameRequired')}
                     </span>
                   )}
                 </div>
@@ -228,14 +231,14 @@ export default function EditProfileModal({
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label="Address"
+                label={t('donate:address')}
                 variant="outlined"
                 name="address"
                 inputRef={register()}
               />
               {errors.address && (
                 <span className={styles.formErrors}>
-                  Please enter valid Address
+                  {t('donate:addressRequired')}
                 </span>
               )}
             </div>
@@ -243,21 +246,21 @@ export default function EditProfileModal({
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
-                  label="City"
+                  label={t('donate:city')}
                   variant="outlined"
                   name="city"
                   inputRef={register()}
                 />
                 {errors.city && (
                   <span className={styles.formErrors}>
-                    Please enter valid city
+                    {t('donate:cityRequired')}
                   </span>
                 )}
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
-                  label="Zip Code"
+                  label={t('donate:zipCode')}
                   variant="outlined"
                   name="zipCode"
                   inputRef={register({
@@ -266,7 +269,7 @@ export default function EditProfileModal({
                 />
                 {errors.zipCode && (
                   <span className={styles.formErrors}>
-                    Please enter valid Zipcode
+                    {t('donate:zipCodeAlphaNumValidation')}
                   </span>
                 )}
               </div>
@@ -277,22 +280,21 @@ export default function EditProfileModal({
                 inputRef={null}
                 defaultValue={country}
                 onChange={setCountry}
-                label={'Country'}
+                label={t('donate:country')}
                 name="country"
               />
               {errors.country && (
                 <span className={styles.formErrors}>
-                  Please enter valid Country
+                 {t('donate:countryRequired')}
                 </span>
               )}
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
               <div>
-                <div className={styles.mainText}>Private Account</div>
+              <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
                 <div className={styles.isPrivateAccountText}>
-                  Your profile is hidden and only your first name appears in the
-                  leaderboard
+                  {t('editProfile:privateAccountTxt')}
               </div>
               </div>
               <Controller
@@ -310,7 +312,7 @@ export default function EditProfileModal({
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
-              <div className={styles.mainText}>Subscribe to news via email</div>
+                <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
 
               <Controller
                 name="getNews"
@@ -330,7 +332,7 @@ export default function EditProfileModal({
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label="Profile Desciption"
+                label={t('editProfile:profileDescription')}
                 variant="outlined"
                 name="bio"
                 inputRef={register()}
@@ -339,19 +341,19 @@ export default function EditProfileModal({
             </div>
             {errors.bio && (
               <span className={styles.formErrors}>
-                Please enter valid Description
+                {t('editProfile:descriptionRequired')}
               </span>
             )}
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label="Website"
+                label={t('editProfile:website')}
                 variant="outlined"
                 name="url"
                 inputRef={register({
                   pattern: {
                     value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
-                    message: 'Invalid website URL',
+                    message: t('editProfile:websiteError'),
                   },
                 })}
               />
@@ -359,7 +361,7 @@ export default function EditProfileModal({
             </div>
             {errors.url && (
               <span className={styles.formErrors}>
-                Please enter valid Website URL
+               {t('editProfile:websiteRequired')}
               </span>
             )}
 
@@ -368,7 +370,7 @@ export default function EditProfileModal({
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
-               {isUploadingData ? <div className={styles.spinner}></div> : "Save"}
+               {isUploadingData ? <div className={styles.spinner}></div> : t('target:save')}
               </div>
             </div>
 
@@ -388,7 +390,7 @@ export default function EditProfileModal({
           onClose={handleSnackbarClose}
           severity={severity}
         >
-          {snackbarMessage}
+          {t('editProfile:snackbarMessage', {message: snackbarMessage})}
         </MuiAlert>
       </Snackbar>
     </React.Fragment>

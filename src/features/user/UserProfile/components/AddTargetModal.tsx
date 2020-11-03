@@ -5,7 +5,10 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { editProfile } from '../../../../utils/auth0/apiRequests'
+import { editProfile } from '../../../../utils/auth0/apiRequests';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 export default function AddTargetModal({
   userprofile,
@@ -16,6 +19,7 @@ export default function AddTargetModal({
 }: any) {
     const [target, setTarget] = React.useState(0);
     const [session, loading] = useSession();
+    const { t } = useTranslation(['target']);
 
     const apiCallChangeTarget = async() => {
       if(!loading && session){
@@ -48,7 +52,7 @@ export default function AddTargetModal({
       <Fade in={addTargetModalOpen}>
         <div className={styles.modal}>
           <h4>
-            <b> Add Target </b>
+            <b> {t('target:AddTarget')} </b>
           </h4>
           <div className={styles.inputField}>
             <MaterialTextField 
@@ -59,7 +63,7 @@ export default function AddTargetModal({
                 onChange={(e) => setTarget(e.target.value)}
                 variant="outlined" />
           </div>
-          <div className={styles.continueButton} onClick={()=> apiCallChangeTarget()}>Save</div>
+          <div className={styles.continueButton} onClick={()=> apiCallChangeTarget()}>{t('target:targetSave')}</div>
         </div>
       </Fade>
     </Modal>
