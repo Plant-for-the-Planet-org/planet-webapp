@@ -163,6 +163,35 @@
 .infoContent {
 }
 
+.infoContent > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.infoContent > div > p {
+  font-size: 10px;
+}
+
+.infoContent > div > svg {
+  width: 20px;
+  margin-right: 6px;
+}
+
+.infoContent > div > div > ul > li {
+  width: 200px;
+}
+
+.infoContent > div > div > ul > li > div > div > header {
+  display: none !important;
+}
+
+.layerLegend {
+  width: 200px;
+}
+
 .exploreExpanded {
   position: fixed;
   right: 70px;

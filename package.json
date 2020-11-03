@@ -65,13 +65,14 @@
     "react-i18next": "^11.7.2",
     "react-insta-stories": "^2.1.2",
     "react-lazyload": "^3.0.0",
-    "viewport-mercator-project": "^6.1.1",
-    "react-player": "^2.6.2",
     "react-map-gl": "^5.2.8",
+    "react-player": "^2.6.2",
     "read-more-react": "^1.0.10",
     "styled-jsx": "^3.3.0",
     "sugar": "^2.0.6",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.1",
+    "viewport-mercator-project": "^6.1.1",
+    "vizzuality-components": "^3.0.3"
   },
   "devDependencies": {
     "@types/d3-ease": "^1.0.9",

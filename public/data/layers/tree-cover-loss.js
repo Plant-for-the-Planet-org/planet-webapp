@@ -43,10 +43,10 @@ export default [
       },
       trackStyle: [
         {
-          background: '#dc6c9a',
+          background: '#89b54a',
         },
         {
-          background: '#982d5f',
+          background: '#658735',
         },
       ],
     },

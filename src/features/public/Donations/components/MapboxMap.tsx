@@ -26,8 +26,20 @@ import PopupProject from './PopupProject';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 
+import {
+  Icons,
+  Legend,
+  LegendListItem,
+  LegendItemTypes,
+  LegendItemTimeStep,
+  LegendItemToolbar,
+  LegendItemButtonOpacity,
+  LegendItemButtonVisibility,
+} from "vizzuality-components";
+
 import styles from '../styles/MapboxMap.module.scss';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 
 interface mapProps {
   projects: any;
@@ -298,6 +310,62 @@ export default function MapboxMap({
     }
   }
 
+  // LEGEND
+  const layerLegend = TreeCoverLoss.map((l) => {
+    const { id, decodeConfig, timelineConfig } = l;
+    const lSettings = layersSettings[id] || {};
+
+    const decodeParams =
+      !!decodeConfig &&
+      getParams(decodeConfig, { ...timelineConfig, ...lSettings.decodeParams });
+    const timelineParams = !!timelineConfig && {
+      ...timelineConfig,
+      ...getParams(decodeConfig, lSettings.decodeParams),
+    };
+
+    return {
+      id,
+      slug: id,
+      dataset: id,
+      layers: [
+        {
+          active: true,
+          ...l,
+          ...lSettings,
+          decodeParams,
+          timelineParams,
+        },
+      ],
+      ...lSettings,
+    };
+  });
+
+
+  const onChangeLayerDate = (dates, layer) => {
+    const { id, decodeConfig } = layer;
+
+    setLayersSettings({
+      ...layersSettings,
+      [id]: {
+        ...layersSettings[id],
+        ...(decodeConfig && {
+          decodeParams: {
+            startDate: dates[0],
+            endDate: dates[1],
+            trimEndDate: dates[2],
+          },
+        }),
+        ...(!decodeConfig && {
+          params: {
+            startDate: dates[0],
+            endDate: dates[1],
+          },
+        }),
+      },
+    });
+  };
+
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
@@ -491,14 +559,35 @@ export default function MapboxMap({
           <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
             {exploreDeforestation &&
               TreeCoverLoss.map((layer) => {
-                const { decodeConfig, timelineConfig, decodeFunction } = layer;
+                const {
+                  id,
+                  // paramsConfig,
+                  // sqlConfig,
+                  decodeConfig,
+                  timelineConfig,
+                  decodeFunction,
+                } = layer;
+
+                const lSettings = layersSettings[id] || {};
+
                 const l = {
                   ...layer,
                   ...layer.config,
+                  ...lSettings,
+                  // ...(!!paramsConfig && {
+                  //   params: getParams(paramsConfig, { ...lSettings.params }),
+                  // }),
+
+                  // ...(!!sqlConfig && {
+                  //   sqlParams: getParams(sqlConfig, {
+                  //     ...lSettings.sqlParams,
+                  //   }),
+                  // }),
 
                   ...(!!decodeConfig && {
                     decodeParams: getParams(decodeConfig, {
                       ...timelineConfig,
+                      ...lSettings.decodeParams,
                     }),
                     decodeFunction,
                   }),
@@ -649,8 +738,52 @@ export default function MapboxMap({
                   ) : null}
                   {infoExpanded === 'Deforestation' ? (
                     <div className={styles.infoContainer}>
+                      <Icons />
                       <div className={styles.infoTitle}>{infoExpanded}</div>
-                      <div className={styles.infoContent}></div>
+                      <div className={styles.infoContent}>
+                      {/* <div className="c-legend"> */}
+                      <Legend
+                      
+                collapsable={false}
+                sortable={false}
+              >
+                {layerLegend.map((layerGroup, i) => {
+                  return (
+                    <LegendListItem
+                      index={i}
+                      key={layerGroup.slug}
+                      layerGroup={layerGroup}
+                      className={styles.layerLegend}
+                    >
+                      {/* <LegendItemTypes /> */}
+                      <LegendItemTimeStep
+                        defaultStyles={{
+                          handleStyle: {
+                            backgroundColor: "white",
+                            borderRadius: "50%",
+                            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.29)",
+                            border: "0px",
+                            zIndex: 2,
+                          },
+                          railStyle: { backgroundColor: "#d6d6d9" },
+                          dotStyle: { visibility: "hidden", border: "0px" },
+                        }}
+                        handleChange={onChangeLayerDate}
+                      />
+                    </LegendListItem>
+                  );
+                })}
+              </Legend>
+              {/* </div> */}
+                        <div>
+                          <OpenLink/>
+                          <p>
+                          Global Forest Watch<br/>
+                          globalforestwatch.org
+                          </p>
+                         
+                        </div>
+                      </div>
                     </div>
                   ) : null}
                   {infoExpanded === 'Planted Trees' ? (
@@ -699,6 +832,7 @@ export default function MapboxMap({
           ) : null
         ) : null}
       </MapGL>
+      
     </div>
   );
 }
