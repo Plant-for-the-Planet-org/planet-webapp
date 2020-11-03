@@ -160,9 +160,9 @@ export default function MapComponent({
 
   return (
     <div
-      style={
-        expanded ? { position: 'fixed', height: '100vh', width: '100vw' } : {}
-      }
+      // style={
+      //   expanded ? { position: 'fixed', height: '100vh', width: '100vw' } : {}
+      // }
       ref={mapParentRef}
       className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
     >
