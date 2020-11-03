@@ -7,11 +7,17 @@ import Head from 'next/head';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import {setUserExistsInDB, removeUserExistsInDB, setUserInfo, removeUserInfo} from '../src/utils/auth0/localStorageUtils'
 import { getAccountInfo } from '../src/utils/auth0/apiRequests'
+import i18next from '../i18n'
+
 const config = tenantConfig();
+
+const { useTranslation } = i18next;
 
 export default function Login() {
   const [session, loading] = useSession();
   const router = useRouter();
+
+  const { t } = useTranslation(['login']);
 
   React.useEffect(()=> {
 
@@ -67,6 +73,9 @@ export default function Login() {
   return (
     <>
       <Head>
+        {/* <title>{t('login:loginTitle', {
+          log: config.meta.title
+        })}</title> */}
         <title>{`${config.meta.title} - Login`}</title>
       </Head>
       <Layout>

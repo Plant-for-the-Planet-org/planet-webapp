@@ -12,10 +12,13 @@ import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getUserInfo, setUserInfo, removeUserInfo } from '../../../utils/auth0/localStorageUtils'
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
+import i18next from '../../../../i18n';
 
+const {useTranslation} = i18next;
 export default function CompleteSignup() {
   const [session, loading] = useSession();
   const router = useRouter();
+  const {t} = useTranslation(['editProfile', 'donate', 'login']); 
 
   const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
 
@@ -282,14 +285,16 @@ export default function CompleteSignup() {
             >
               <BackArrow color={styles.primaryFontColor} />
             </div>
-            <div className={styles.headerTitle}>Complete Signup</div>
+            <div className={styles.headerTitle}>{t('login:signUpText')}</div>
           </div>
           {/* type of account buttons */}
           <div className={styles.profileTypesContainer}>
             {profileTypes.map(item => {
               return (
                 <p key={item.id} className={`${styles.profileTypes} ${accountType === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
-                  {item.title}
+                  {t('login:profileTypes', {
+                    item: item
+                  })}
                 </p>
               )
             })}
@@ -298,7 +303,7 @@ export default function CompleteSignup() {
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                label="First Name"
+                label={t('donate:firstName')}
                 variant="outlined"
                 onChange={(e) => setFirstName(e.target.value)}
               />
@@ -306,7 +311,7 @@ export default function CompleteSignup() {
 
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                label="Last Name"
+                label={t('donate:lastName')}
                 variant="outlined"
                 onChange={(e) => setLastName(e.target.value)}
               />
@@ -317,7 +322,9 @@ export default function CompleteSignup() {
             accountType === 'tpo' ? (
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
-                  label={`Name of ${SelectType(accountType)}`}
+                  label={t('login:profileName', {
+                    type: SelectType(accountType)
+                  })}
                   variant="outlined"
                   onChange={(e) => setNameOfOrg(e.target.value)}
                 />
@@ -327,7 +334,7 @@ export default function CompleteSignup() {
           <div className={styles.formFieldLarge}>
             <MaterialTextField
               defaultValue={session.userEmail}
-              label='Email'
+              label={t('donate:email')}
               variant="outlined"
               disabled
             />
@@ -337,7 +344,7 @@ export default function CompleteSignup() {
             <>
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
-                  label="Address"
+                  label={t('donate:address')}
                   variant="outlined"
                   onChange={(e) => setAddress(e.target.value)}
                 />
@@ -346,14 +353,14 @@ export default function CompleteSignup() {
               <div className={styles.formField}>
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
-                    label="City"
+                    label={t('donate:city')}
                     variant="outlined"
                     onChange={(e) => setCity(e.target.value)}
                   />
                 </div>
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
-                    label="Zip Code"
+                    label={t('donate:zipCode')}
                     variant="outlined"
                     name="zipcode"
                     onChange={(e) => setZipCode(e.target.value)}
@@ -363,7 +370,7 @@ export default function CompleteSignup() {
                   />
                   {errors.zipcode && (
                     <span className={styles.formErrors}>
-                      Please enter valid zip code
+                      {t('donate:zipCodeAlphaNumValidation')}
                     </span>
                   )}
 
@@ -376,7 +383,7 @@ export default function CompleteSignup() {
           <div className={styles.formFieldLarge}>
             <AutoCompleteCountry
               inputRef={null}
-              label='Country'
+              label={t('donate:country')}
               name="country"
               onChange={(country) => setCountry(country)}
               defaultValue={defaultCountry}
@@ -385,11 +392,10 @@ export default function CompleteSignup() {
 
           <div className={styles.isPrivateAccountDiv}>
             <div>
-              <div className={styles.mainText}>Private Account</div>
+                  <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
               {isPrivateAccount &&
                 <div className={styles.isPrivateAccountText}>
-                  Your profile is hidden and only your first name appears in the
-                  leaderboard
+                  {t('editProfile:privateAccountTxt')}
               </div>
               }
             </div>
@@ -402,7 +408,7 @@ export default function CompleteSignup() {
           </div>
 
           <div className={styles.isPrivateAccountDiv}>
-            <div className={styles.mainText}>Subscribe to news via email</div>
+            <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
             <ToggleSwitch
               checked={isSubscribed}
               onChange={() => setIsSubscribed(!isSubscribed)}
@@ -414,7 +420,7 @@ export default function CompleteSignup() {
           <div className={styles.horizontalLine} />
 
           <div className={styles.saveButton} onClick={createButtonClicked}>
-            Create Account
+            {t('login:createAccount')}
         </div>
         </div>
         {/* snackbar */}
@@ -429,7 +435,9 @@ export default function CompleteSignup() {
             onClose={handleSnackbarClose}
             severity={severity}
           >
-            {snackbarMessage}
+            {t('editProfile:snackbarMessage', {
+              message: snackbarMessage
+            })}
           </MuiAlert>
         </Snackbar>
       </div>
