@@ -41,6 +41,9 @@ import styles from '../styles/MapboxMap.module.scss';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 interface mapProps {
   projects: any;
@@ -61,6 +64,9 @@ export default function MapboxMap({
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
+
+  const { t, i18n } = useTranslation(['maps']);
+
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
   const screenWidth = window.innerWidth;
@@ -624,7 +630,7 @@ export default function MapboxMap({
                 onClick={() => setExploreExpanded(true)}
                 className={styles.exploreText}
               >
-                {isMobile ? null : 'Explore'}
+                {isMobile ? null : t('maps:explore')}
               </p>
             )}
           </div>
@@ -642,11 +648,11 @@ export default function MapboxMap({
                             name="forest"
                           />
                         }
-                        label="Current Forests"
+                        label={t('maps:forests')}
                       />
                       <div
                         onClick={() => {
-                          setInfoExpanded('Current Forests');
+                          setInfoExpanded('Forests');
                         }}
                         className={styles.exploreInfo}
                       >
@@ -662,11 +668,11 @@ export default function MapboxMap({
                             name="potential"
                           />
                         }
-                        label="Reforestation Potential"
+                        label={t('maps:restoration')}
                       />
                       <div
                         onClick={() => {
-                          setInfoExpanded('Reforestation Potential');
+                          setInfoExpanded('Restoration');
                         }}
                         className={styles.exploreInfo}
                       >
@@ -683,7 +689,7 @@ export default function MapboxMap({
                             name="deforestation"
                           />
                         }
-                        label="Deforestation"
+                        label={t('maps:deforestation')}
                       />
                       <div
                         onClick={() => {
@@ -752,36 +758,30 @@ export default function MapboxMap({
                             name="projects"
                           />
                         }
-                        label="Projects"
+                        label={t('maps:projects')}
                       />
                     </div>
                   </FormGroup>
                 </div>
                 <div className={styles.exploreCaption}>
-                  <p>
-                    The world has about 3 trillion trees today (“Forests”). And
-                    space for up to a trillion more (“Reforestation Potential”).
-                  </p>
+                  <p>{t('maps:3trilliontrees')}</p>
                 </div>
               </div>
               {infoExpanded !== null ? (
                 <div className={styles.infoModal}>
                   <div className={styles.infoExpanded}>
-                    {infoExpanded === 'Current Forests' ? (
+                    {infoExpanded === 'Forests' ? (
                       <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoTitle}>
+                          {t('maps:forests')}
+                        </div>
                         <div className={styles.infoContent}>
                           <div className={styles.currentForestScale}>
-                            <p>Low</p>
+                            <p>{t('maps:low')}</p>
                             <div></div>
-                            <p>High</p>
+                            <p>{t('maps:high')}</p>
                           </div>
-                          <p>
-                            3.04 trillion trees currently exist globally. Down
-                            from six trillion trees before humans started
-                            cutting down forests, about 11,000 years ago. The
-                            map shows the number of trees per km<sup>2</sup>.
-                          </p>
+                          <p>{t('maps:forestInfo')}</p>
                           <a
                             href="https://www.nature.com/articles/nature14967"
                             target="_blank"
@@ -797,23 +797,18 @@ export default function MapboxMap({
                         </div>
                       </div>
                     ) : null}
-                    {infoExpanded === 'Reforestation Potential' ? (
+                    {infoExpanded === 'Restoration' ? (
                       <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoTitle}>
+                          {t('maps:restoration')}
+                        </div>
                         <div className={styles.infoContent}>
                           <div className={styles.reforestationScale}>
-                            <p>Low</p>
+                            <p>{t('maps:low')}</p>
                             <div></div>
-                            <p>High</p>
+                            <p>{t('maps:high')}</p>
                           </div>
-                          <p>
-                            Half a billion hectares are suitable for wide-scale
-                            restoration of closed forests. Further one and a
-                            half billion hectares are best sited for mosaic
-                            restoration, which combines forests with other land
-                            uses like agroforestry, smallholder agriculture, and
-                            settlements.
-                          </p>
+                          <p>{t('maps:restorationInfo')}</p>
                           <a
                             href="https://science.sciencemag.org/content/365/6448/76"
                             target="_blank"
@@ -831,7 +826,9 @@ export default function MapboxMap({
                     ) : null}
                     {infoExpanded === 'Deforestation' ? (
                       <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoTitle}>
+                          {t('maps:deforestation')}
+                        </div>
                         <div className={styles.infoContent}>
                           {/* <Legend collapsable={false} sortable={false}>
                           {layerLegend.map((layerGroup, i) => {
@@ -880,7 +877,7 @@ export default function MapboxMap({
                         </div>
                       </div>
                     ) : null}
-                    {infoExpanded === 'Planted Trees' ? (
+                    {infoExpanded === 'Planted' ? (
                       <div className={styles.infoContainer}>
                         <div className={styles.infoTitle}>{infoExpanded}</div>
                         <div className={styles.infoContent}></div>
