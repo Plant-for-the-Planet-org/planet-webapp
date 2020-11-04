@@ -110,7 +110,7 @@ export default function BasicDetails({
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const acceptDonations = watch('acceptDonations');
-  
+
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails = {
@@ -131,14 +131,16 @@ export default function BasicDetails({
           longitude: projectDetails.geoLongitude,
         },
       };
-      if(projectDetails.hasOwnProperty('geoLongitude') && projectDetails.hasOwnProperty('geoLatitude')){
-        setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
-        setViewPort({
-          ...viewport,
-          latitude: projectDetails.geoLatitude,
-          longitude: projectDetails.geoLongitude,
-          zoom: 7,
-        });
+      if (projectDetails.hasOwnProperty('geoLongitude') && projectDetails.hasOwnProperty('geoLatitude')) {
+        if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
+          setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
+          setViewPort({
+            ...viewport,
+            latitude: projectDetails.geoLatitude,
+            longitude: projectDetails.geoLongitude,
+            zoom: 7,
+          });
+        }
       }
       reset(basicDetails);
     }
