@@ -36,7 +36,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
                     </div>
                 ) : (
                 <div className={styles.formFieldLarge}>
-                    <div style={{height:'240px'}}>
+                    <div style={{height:'240px',width:'100%'}}>
                         <SubmitForReviewImage/>
                     </div>
                     <p style={{ textAlign: 'center',width:'100%',marginTop:'24px' }}>Great! <br />
