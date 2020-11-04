@@ -111,6 +111,11 @@ export default function BasicDetails({
 
   const acceptDonations = watch('acceptDonations');
 
+  // const treeCost = watch('treeCost');
+
+  // console.log('watch treeCost',parseFloat(treeCost));
+  
+
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails = {
@@ -147,6 +152,8 @@ export default function BasicDetails({
   }, [projectDetails]);
 
   const onSubmit = (data: any) => {
+    // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
+    
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -406,11 +413,11 @@ export default function BasicDetails({
                       value: true,
                       message: 'Please enter cost per tree',
                     },
-                    validate: (value) => parseFloat(value) > 0,
-                    // pattern: {
-                    //   value: /^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
-                    //   message: 'Please enter valid cost per tree',
-                    // }
+                    validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
+                    pattern: {
+                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
+                      message: 'Please enter valid cost per tree',
+                    }
                   })}
                   label={t('manageProjects:treeCost')}
                   variant="outlined"
@@ -432,7 +439,7 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.treeCost.message
                       ? errors.treeCost.message
-                      : 'Cost per tree should be more than €0'}
+                      : 'Cost per tree should be more than €0 or lesser than €100'}
                   </span>
                 )}
               </div>
