@@ -87,6 +87,7 @@ export default function MapboxMap({
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const [layersSettings, setLayersSettings] = useState({});
+  const infoRef = useRef(null);
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -659,7 +660,7 @@ export default function MapboxMap({
                         <InfoIcon />
                       </div>
                     </div>
-                    <div className={styles.exploreToggleRow}>
+                    {/* <div className={styles.exploreToggleRow}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -678,7 +679,7 @@ export default function MapboxMap({
                       >
                         <InfoIcon />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className={styles.exploreToggleRow}>
                       <FormControlLabel
@@ -768,8 +769,18 @@ export default function MapboxMap({
                 </div>
               </div>
               {infoExpanded !== null ? (
-                <div className={styles.infoModal}>
-                  <div className={styles.infoExpanded}>
+                <div
+                  onClick={(event) => {
+                    if (
+                      infoRef.current &&
+                      !infoRef.current.contains(event.target)
+                    ) {
+                      setInfoExpanded(null);
+                    }
+                  }}
+                  className={styles.infoModal}
+                >
+                  <div ref={infoRef} className={styles.infoExpanded}>
                     {infoExpanded === 'Forests' ? (
                       <div className={styles.infoContainer}>
                         <div className={styles.infoTitle}>
