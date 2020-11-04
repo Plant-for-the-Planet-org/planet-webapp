@@ -694,6 +694,43 @@ export default function MapboxMap({
                         <InfoIcon />
                       </div>
                     </div>
+                    {exploreDeforestation ? (
+                      <div className={styles.deforestionSlider}>
+                        <Icons />
+                        <Legend collapsable={false} sortable={false}>
+                          {layerLegend.map((layerGroup, i) => {
+                            return (
+                              <LegendListItem
+                                index={i}
+                                key={layerGroup.slug}
+                                layerGroup={layerGroup}
+                                className={styles.layerLegend}
+                              >
+                                {/* <LegendItemTypes /> */}
+                                <LegendItemTimeStep
+                                  defaultStyles={{
+                                    handleStyle: {
+                                      backgroundColor: 'white',
+                                      borderRadius: '50%',
+                                      boxShadow:
+                                        '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
+                                      border: '0px',
+                                      zIndex: 2,
+                                    },
+                                    railStyle: { backgroundColor: '#d6d6d9' },
+                                    dotStyle: {
+                                      visibility: 'hidden',
+                                      border: '0px',
+                                    },
+                                  }}
+                                  handleChange={onChangeLayerDate}
+                                />
+                              </LegendListItem>
+                            );
+                          })}
+                        </Legend>
+                      </div>
+                    ) : null}
                     {/* <div className={styles.exploreToggleRow}>
                     <FormControlLabel
                       control={
@@ -728,76 +765,75 @@ export default function MapboxMap({
                 </div>
               </div>
               {infoExpanded !== null ? (
-                <div className={styles.infoExpanded}>
-                  {infoExpanded === 'Current Forests' ? (
-                    <div className={styles.infoContainer}>
-                      <div className={styles.infoTitle}>{infoExpanded}</div>
-                      <div className={styles.infoContent}>
-                        <div className={styles.currentForestScale}>
-                          <p>Low</p>
-                          <div></div>
-                          <p>High</p>
-                        </div>
-                        <p>
-                          3.04 trillion trees currently exist globally. Down
-                          from six trillion trees before humans started cutting
-                          down forests, about 11,000 years ago. The map shows
-                          the number of trees per km<sup>2</sup>.
-                        </p>
-                        <a
-                          href="https://www.nature.com/articles/nature14967"
-                          target="_blank"
-                          style={{ paddingTop: 20 }}
-                        >
-                          <OpenLink />
+                <div className={styles.infoModal}>
+                  <div className={styles.infoExpanded}>
+                    {infoExpanded === 'Current Forests' ? (
+                      <div className={styles.infoContainer}>
+                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoContent}>
+                          <div className={styles.currentForestScale}>
+                            <p>Low</p>
+                            <div></div>
+                            <p>High</p>
+                          </div>
                           <p>
-                            Crowther, T. W. et al. (2015) Mapping tree
-                            <br /> density at a global scale. Nature 525,
-                            201–205.
+                            3.04 trillion trees currently exist globally. Down
+                            from six trillion trees before humans started
+                            cutting down forests, about 11,000 years ago. The
+                            map shows the number of trees per km<sup>2</sup>.
                           </p>
-                        </a>
-                      </div>
-                    </div>
-                  ) : null}
-                  {infoExpanded === 'Reforestation Potential' ? (
-                    <div className={styles.infoContainer}>
-                      <div className={styles.infoTitle}>{infoExpanded}</div>
-                      <div className={styles.infoContent}>
-                        <div className={styles.reforestationScale}>
-                          <p>Low</p>
-                          <div></div>
-                          <p>High</p>
+                          <a
+                            href="https://www.nature.com/articles/nature14967"
+                            target="_blank"
+                            style={{ paddingTop: 20 }}
+                          >
+                            <OpenLink />
+                            <p>
+                              Crowther, T. W. et al. (2015) Mapping tree
+                              <br /> density at a global scale. Nature 525,
+                              201–205.
+                            </p>
+                          </a>
                         </div>
-                        <p>
-                          Half a billion hectares are suitable for wide-scale
-                          restoration of closed forests. Further one and a half
-                          billion hectares are best sited for mosaic
-                          restoration, which combines forests with other land
-                          uses like agroforestry, smallholder agriculture, and
-                          settlements.
-                        </p>
-                        <a
-                          href="https://science.sciencemag.org/content/365/6448/76"
-                          target="_blank"
-                          style={{ paddingTop: 20 }}
-                        >
-                          <OpenLink />
-                          <p>
-                            Bastin, J. F. et al. (2019) The Global Tree
-                            <br /> Restoration Potential. Science 365(6448),
-                            76-79.
-                          </p>
-                        </a>
                       </div>
-                    </div>
-                  ) : null}
-                  {infoExpanded === 'Deforestation' ? (
-                    <div className={styles.infoContainer}>
-                      <Icons />
-                      <div className={styles.infoTitle}>{infoExpanded}</div>
-                      <div className={styles.infoContent}>
-                        {/* <div className="c-legend"> */}
-                        <Legend collapsable={false} sortable={false}>
+                    ) : null}
+                    {infoExpanded === 'Reforestation Potential' ? (
+                      <div className={styles.infoContainer}>
+                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoContent}>
+                          <div className={styles.reforestationScale}>
+                            <p>Low</p>
+                            <div></div>
+                            <p>High</p>
+                          </div>
+                          <p>
+                            Half a billion hectares are suitable for wide-scale
+                            restoration of closed forests. Further one and a
+                            half billion hectares are best sited for mosaic
+                            restoration, which combines forests with other land
+                            uses like agroforestry, smallholder agriculture, and
+                            settlements.
+                          </p>
+                          <a
+                            href="https://science.sciencemag.org/content/365/6448/76"
+                            target="_blank"
+                            style={{ paddingTop: 20 }}
+                          >
+                            <OpenLink />
+                            <p>
+                              Bastin, J. F. et al. (2019) The Global Tree
+                              <br /> Restoration Potential. Science 365(6448),
+                              76-79.
+                            </p>
+                          </a>
+                        </div>
+                      </div>
+                    ) : null}
+                    {infoExpanded === 'Deforestation' ? (
+                      <div className={styles.infoContainer}>
+                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoContent}>
+                          {/* <Legend collapsable={false} sortable={false}>
                           {layerLegend.map((layerGroup, i) => {
                             return (
                               <LegendListItem
@@ -806,7 +842,7 @@ export default function MapboxMap({
                                 layerGroup={layerGroup}
                                 className={styles.layerLegend}
                               >
-                                {/* <LegendItemTypes /> */}
+                                // <LegendItemTypes />
                                 <LegendItemTimeStep
                                   defaultStyles={{
                                     handleStyle: {
@@ -828,36 +864,36 @@ export default function MapboxMap({
                               </LegendListItem>
                             );
                           })}
-                        </Legend>
-                        {/* </div> */}
-                        <a
-                          href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
-                          target="_blank"
-                          style={{ paddingTop: 20 }}
-                        >
-                          <OpenLink />
-                          <p>
-                            Global Forest Watch
-                            <br />
-                            globalforestwatch.org
-                          </p>
-                        </a>
+                        </Legend> */}
+                          <a
+                            href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
+                            target="_blank"
+                            style={{ paddingTop: 20 }}
+                          >
+                            <OpenLink />
+                            <p>
+                              Global Forest Watch
+                              <br />
+                              globalforestwatch.org
+                            </p>
+                          </a>
+                        </div>
                       </div>
+                    ) : null}
+                    {infoExpanded === 'Planted Trees' ? (
+                      <div className={styles.infoContainer}>
+                        <div className={styles.infoTitle}>{infoExpanded}</div>
+                        <div className={styles.infoContent}></div>
+                      </div>
+                    ) : null}
+                    <div
+                      onClick={() => {
+                        setInfoExpanded(null);
+                      }}
+                      className={styles.infoClose}
+                    >
+                      <CancelIcon color="#d5d5d5" />
                     </div>
-                  ) : null}
-                  {infoExpanded === 'Planted Trees' ? (
-                    <div className={styles.infoContainer}>
-                      <div className={styles.infoTitle}>{infoExpanded}</div>
-                      <div className={styles.infoContent}></div>
-                    </div>
-                  ) : null}
-                  <div
-                    onClick={() => {
-                      setInfoExpanded(null);
-                    }}
-                    className={styles.infoClose}
-                  >
-                    <CancelIcon color="#d5d5d5" />
                   </div>
                 </div>
               ) : null}
