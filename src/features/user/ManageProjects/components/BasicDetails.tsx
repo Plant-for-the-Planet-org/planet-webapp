@@ -407,6 +407,10 @@ export default function BasicDetails({
                       message: 'Please enter cost per tree',
                     },
                     validate: (value) => parseFloat(value) > 0,
+                    // pattern: {
+                    //   value: /^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
+                    //   message: 'Please enter valid cost per tree',
+                    // }
                   })}
                   label={t('manageProjects:treeCost')}
                   variant="outlined"
