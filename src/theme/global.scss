@@ -158,10 +158,8 @@ video {
   vertical-align: baseline;
 }
 
-.vizzuality__legend-item-header {
-  display: none;
-}
-
-.vizzuality__open-legend .vizzuality__-active {
-  width: 200px;
+.rc-slider-mark-text {
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-size: 12px;
 }

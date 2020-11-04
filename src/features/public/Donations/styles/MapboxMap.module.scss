@@ -125,12 +125,20 @@
   margin: 0;
 }
 
+.exploreCaption {
+  border-top: 2px solid #d5d5d5;
+  padding-top: 15px;
+  width: 200px;
+  font-size: 10px;
+}
+
 .exploreInfo {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 10px;
+  cursor: pointer;
 }
 
 .infoExpanded {
@@ -141,7 +149,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 40px;
+  width: 375px;
+  max-width: 100%;
   background: #fff;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
@@ -153,6 +163,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
 }
 
 .infoTitle {
@@ -161,6 +172,12 @@
 }
 
 .infoContent {
+  width: 100%;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .infoContent > div {
@@ -170,26 +187,105 @@
   align-items: center;
   border: none;
 }
+.infoContent > a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: $primaryFontColor;
+}
 
 .infoContent > div > p {
   font-size: 10px;
 }
 
-.infoContent > div > svg {
+.infoContent > a > svg {
   width: 20px;
   margin-right: 6px;
 }
 
+.infoContent > div > div {
+  width: 100%;
+}
+
 .infoContent > div > div > ul > li {
-  width: 200px;
+  width: 100%;
+}
+
+.infoContent > div > div > ul > li > div {
+  padding: 15px 4px !important;
 }
 
 .infoContent > div > div > ul > li > div > div > header {
   display: none !important;
 }
 
+.reforestationScale {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.reforestationScale > div {
+  width: 240px !important;
+  height: 7px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #fadc2f 1.1%, #fadc2f 98.6%);
+}
+
+.reforestationScale > p:nth-child(1) {
+  font-size: 12px;
+  // color: #fadc2f;
+}
+
+.reforestationScale > p:nth-child(3) {
+  font-size: 12px;
+  // color: #fadc2f;
+}
+
+.currentForestScale {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.currentForestScale > div {
+  width: 240px !important;
+  height: 7px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #68b030 1.1%, #007a49 98.6%);
+}
+
+.currentForestScale > p:nth-child(1) {
+  font-size: 12px;
+  color: #68b030;
+}
+
+.currentForestScale > p:nth-child(3) {
+  font-size: 12px;
+  color: #007a49;
+}
+
 .layerLegend {
   width: 200px;
+}
+
+.infoClose {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+}
+
+.infoClose svg {
+  width: 20px;
 }
 
 .exploreExpanded {
