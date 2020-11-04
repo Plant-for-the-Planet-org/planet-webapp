@@ -18,9 +18,8 @@ export default function UserProfileOptions({
           title:'Check out Plant-for-the-Planet!',
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
         })
-        console.log('Share complete', response)
       } catch (error) {
-        console.error('Could not share at this time', error);
+        // console.error('Could not share at this time', error);
       }
   }
   

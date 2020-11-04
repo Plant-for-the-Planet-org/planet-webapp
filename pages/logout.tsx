@@ -20,17 +20,17 @@ export default function Logout() {
         removeUserExistsInDB();
         removeUserInfo();
         signOut();
-        console.log('application session cleared.....');
+        // console.log('application session cleared.....');
 
         // clear auth0 session
         const logoutEndpoint = `https://${process.env.AUTH0_CUSTOM_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.SCHEME}://${process.env.NEXTAUTH_URL}`;
-        console.log('auth0 logout endpoint:', logoutEndpoint);
+        // console.log('auth0 logout endpoint:', logoutEndpoint);
         if (typeof window !== 'undefined') {
           router.push(logoutEndpoint);
         }
-        console.log('auth0 session cleared.....');
+        // console.log('auth0 session cleared.....');
       } catch (e) {
-        console.log('error logout', e);
+        // console.log('error logout', e);
       }
     };
 

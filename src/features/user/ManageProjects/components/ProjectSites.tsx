@@ -110,8 +110,6 @@ export default function ProjectSites({
     postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, session).then((res) => {
       if (!res.code) {
 
-        console.log('res',res);
-        
         let temp = siteList;
         let submitData = {
           id: res.id,

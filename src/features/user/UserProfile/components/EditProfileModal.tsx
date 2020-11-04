@@ -109,7 +109,7 @@ export default function EditProfileModal({
     multiple: false,
     onDrop: onDrop,
     onDropAccepted: () => {
-      console.log('uploaded');
+      // console.log('uploaded');
     },
   });
 
@@ -119,7 +119,6 @@ export default function EditProfileModal({
       ...data,
       country: country
     }
-    console.log('bodyToSend', bodyToSend);
     if (!loading && session) {
       try {
         const res = await editProfile(session, bodyToSend)
@@ -135,7 +134,7 @@ export default function EditProfileModal({
           setSeverity('error')
           setSnackbarMessage('Error in updating profile')
           handleSnackbarOpen()
-          console.log('in 401-> unauthenticated user / invalid token')
+          // console.log('in 401-> unauthenticated user / invalid token')
           signOut()
           removeUserExistsInDB()
           removeUserInfo()

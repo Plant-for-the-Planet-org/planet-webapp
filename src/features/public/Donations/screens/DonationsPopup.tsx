@@ -67,7 +67,7 @@ function DonationsPopup({
         }
         setIsPaymentOptionsLoading(false);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
     loadPaymentSetup();
