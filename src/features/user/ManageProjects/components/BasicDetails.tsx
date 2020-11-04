@@ -111,6 +111,8 @@ export default function BasicDetails({
 
   const acceptDonations = watch('acceptDonations');
 
+  console.log('projectDetails',projectDetails);
+  
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails = {
@@ -120,7 +122,7 @@ export default function BasicDetails({
         countTarget: projectDetails.countTarget,
         website: projectDetails.website,
         description: projectDetails.description,
-        acceptDonations: projectDetails.allowDonations,
+        acceptDonations: projectDetails.acceptDonations,
         treeCost: projectDetails.treeCost,
         publish: projectDetails.publish,
         visitorAssistance: projectDetails.visitorAssistance,
@@ -385,7 +387,6 @@ export default function BasicDetails({
                 <Controller
                   name="acceptDonations"
                   control={control}
-                  defaultValue={true}
                   render={(props) => (
                     <ToggleSwitch
                       id="acceptDonations"
@@ -427,7 +428,7 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.treeCost.message
                       ? errors.treeCost.message
-                      : 'Cost per tree should be more than €0 and lesser than €3.4'}
+                      : 'Cost per tree should be more than €0'}
                   </span>
                 )}
               </div>
