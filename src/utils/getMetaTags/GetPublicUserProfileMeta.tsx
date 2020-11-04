@@ -24,30 +24,26 @@ export default function GetPublicUserProfileMeta({userprofile}: Props): ReactEle
               : config.meta.title
           }
         />
+        <meta property="og.image" content={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-77.0397,38.8974,0,0/300x200?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`} />
+        <meta property="og:title" content="Stop Scrolling. Start Planting" />
+        <meta property="og:description" content={`join ${userprofile.displayName} and thousands of others to plant a trillion trees to tackle the climate crisis.`} />
         <meta
           property="og:url"
-          content={`${process.env.SCHEME}://${config.tenantURL}`}
+          content={`${process.env.SCHEME}://${config.tenantURL}/${userprofile.displayName}`}
         />
-        <meta
-          property="og:title"
-          content={`${
-            userprofile
-              ? userprofile.displayName
-              : config.meta.title
-          }`}
-        />
-        <meta property="og:description" content={config.meta.description} />
-        <meta name="description" content={config.meta.description} />
         <meta property="og:type" content="profile" />
-        <meta property="og:image" content={config.meta.image} />
         {config.tenantName === 'planet' ? (
           <link rel="alternate" href="android-app://org.pftp/projects" />
         ) : null}
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={config.meta.title} />
+        <meta property="twitter.image" content={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-77.0397,38.8974,0,0/300x200?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`} />
+        <meta name="twitter:title" content="Stop Scrolling. Start Planting" />
+        <meta property="twitter:description" content={`join ${userprofile.displayName} and thousands of others to plant a trillion trees to tackle the climate crisis.`} />
+        <meta
+          property="twitter:url"
+          content={`${process.env.SCHEME}://${config.tenantURL}/${userprofile.displayName}`}
+        />
         <meta name="twitter:site" content={config.meta.twitterHandle} />
-        <meta name="twitter:url" content={config.tenantURL} />
-        <meta name="twitter:description" content={config.meta.description} />
         </Head>
     )
 }
