@@ -147,7 +147,7 @@ function MapCountry(props) {
             key={country.countryCode}
             value={country.countryCode}
             control={<GreenRadio />}
-            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
           />
         ))}
       </RadioGroup>
