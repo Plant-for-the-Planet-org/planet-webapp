@@ -50,7 +50,7 @@ export default function Login() {
         signOut()
         removeUserExistsInDB()
         removeUserInfo()
-        signIn('auth0', { callbackUrl: '/login' });
+        router.push('/');
       } else {
         console.log('in /login else -> any other error')
       }
