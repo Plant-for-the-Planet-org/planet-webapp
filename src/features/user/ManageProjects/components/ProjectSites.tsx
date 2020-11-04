@@ -109,11 +109,14 @@ export default function ProjectSites({
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, session).then((res) => {
       if (!res.code) {
+
+        console.log('res',res);
+        
         let temp = siteList;
         let submitData = {
           id: res.id,
           name: res.name,
-          geometry: JSON.parse(res.geometry),
+          geometry: res.geometry,
           status: res.status
         }
         temp.push(submitData);
