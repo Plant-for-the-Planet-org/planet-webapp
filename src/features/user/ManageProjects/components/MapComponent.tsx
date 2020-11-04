@@ -31,7 +31,9 @@ export default function MapComponent({
   features,
   setFeatures,
 }: Props): ReactElement {
-  const [modeHandler, setModeHandler] = React.useState(null);
+  const drawMode = new DrawPolygonMode();
+  const editMode = new EditingMode();
+  const [modeHandler, setModeHandler] = React.useState(drawMode);
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
@@ -42,15 +44,12 @@ export default function MapComponent({
     zoom: defaultZoom,
   });
   const reader = new FileReader();
-  const [expanded, setExpanded] = React.useState(false);
+  // const [expanded, setExpanded] = React.useState(false);
   const mapParentRef = React.useRef(null);
   const [selectedFeature, setSelectedFeature] = React.useState();
 
-  const drawMode = new DrawPolygonMode();
-  const editMode = new EditingMode();
-
   const _onViewportChange = (view: any) => setViewPort({ ...view });
-
+  
   const _renderToolbar = () => {
     return (
       <div
@@ -62,21 +61,22 @@ export default function MapComponent({
           borderRadius: '10px',
         }}
       >
-        <div
+        {/* <div
           onClick={() => {
             expanded ? setExpanded(false) : setExpanded(true);
           }}
           className={styles.mapTool}
         >
           <Expand color={'#000'} />
-        </div>
+        </div> */}
+       
         <div
           onClick={() => {
             setModeHandler(drawMode);
           }}
           className={styles.mapTool}
         >
-          <PolygonIcon color={'#000'} />
+          <PolygonIcon color={modeHandler._clickSequence ? '#68B030' :  '#000'} />
         </div>
         <div
           onClick={() => {
@@ -84,7 +84,7 @@ export default function MapComponent({
           }}
           className={styles.mapTool}
         >
-          <PencilIcon color={'#000'} />
+          <PencilIcon color={modeHandler.getEditHandles ? '#68B030' :'#000'} />
         </div>
         {/* <div
           onClick={() => {
@@ -182,7 +182,6 @@ export default function MapComponent({
           }}
           onUpdate={(data: any) => {
             setFeatures(data.data);
-            console.log(features);
             // setGeoJson({
             //   type: 'FeatureCollection',
             //   features: features,
@@ -206,7 +205,6 @@ export default function MapComponent({
                 file.name.length
               ) || file.name;
             if (fileType === 'kml') {
-              console.log('file: ', file);
               reader.readAsText(file);
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
@@ -216,11 +214,9 @@ export default function MapComponent({
                   'text/xml'
                 );
                 var geo = tj.kml(dom);
-                console.log('GeoJson', geo);
                 setGeoJson(geo);
               };
             } else if (fileType === 'geojson') {
-              console.log('file: ', file);
               reader.readAsText(file);
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
