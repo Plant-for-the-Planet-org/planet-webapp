@@ -170,7 +170,7 @@ export default function BasicDetails({
       website: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
-      treeCost: data.treeCost ? Number(data.treeCost) : 0,
+      treeCost: data.treeCost ? Number(data.treeCost.replace(/,/g, '.')) : 0,
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
