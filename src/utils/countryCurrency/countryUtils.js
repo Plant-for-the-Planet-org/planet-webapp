@@ -58,5 +58,5 @@ export function sortCountriesByTranslation(t, language) {
       return 0;
     });
   }
-  return sortedCountries[language];    
+  return sortedCountries[language];
 }

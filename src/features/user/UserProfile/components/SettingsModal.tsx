@@ -1,18 +1,25 @@
 import React from 'react';
+import { signOut, } from 'next-auth/client';
 import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
+import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 
 export default function SettingsModal({
+  userType,
+  userprofile,
   settingsModalOpen,
   handleSettingsModalClose,
   editProfileModalOpen,
   handleEditProfileModalClose,
   handleEditProfileModalOpen,
+  changeForceReload,
+  forceReload,
 }: any) {
+  const router = useRouter();
   return (
     <>
       <Modal
@@ -29,28 +36,41 @@ export default function SettingsModal({
       >
         <Fade in={settingsModalOpen}>
           <div className={styles.modal}>
-            <div className={styles.settingsItem}> Manage Projects </div>
+            {
+              userType == 'tpo' && 
+              <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> Manage Projects </a>
+            }
             <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> Edit Profile </div>
-            <div className={styles.settingsItem}> Change Password </div>
+            {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
-            <div className={styles.settingsItem}> Embed Widget </div>
-            <div className={styles.settingsItem}>
+            <div className={styles.settingsItem}> Embed Widget </div> */}
+            <div
+              className={styles.settingsItem}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  router.push(`/logout`);
+                }
+              }
+              }>
               <b> Logout </b>
             </div>
             <div
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
-              <p className={styles.cancelText}> Cancel</p>{' '}
+              <div className={styles.cancelText}> Cancel</div>
             </div>
           </div>
         </Fade>
       </Modal>
 
       <EditProfileModal
+        userprofile={userprofile}
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
+        changeForceReload={changeForceReload}
+        forceReload={forceReload}
       />
     </>
   );
