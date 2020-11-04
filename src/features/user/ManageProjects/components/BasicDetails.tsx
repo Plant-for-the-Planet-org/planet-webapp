@@ -110,8 +110,6 @@ export default function BasicDetails({
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const acceptDonations = watch('acceptDonations');
-
-  console.log('projectDetails',projectDetails);
   
   React.useEffect(() => {
     if (projectDetails) {

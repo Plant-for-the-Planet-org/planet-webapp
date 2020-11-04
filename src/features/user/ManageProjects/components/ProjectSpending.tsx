@@ -292,7 +292,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
                             onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> : "See Project"}
+                            {isUploadingData ? <div className={styles.spinner}></div> : "Save & Continue"}
                         </AnimatedButton>
                     </div>
                 </div>

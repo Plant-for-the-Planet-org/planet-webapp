@@ -2,26 +2,27 @@ import React from 'react'
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import BasicDetails from '../components/BasicDetails';
 import StepContent from '@material-ui/core/StepContent';
-import Paper from '@material-ui/core/Paper';
 import styles from './../styles/StepForm.module.scss'
 import ProjectMedia from '../components/ProjectMedia';
 import DetailedAnalysis from '../components/DetailedAnalysis';
 import ProjectSites from '../components/ProjectSites';
 import ProjectSpending from '../components/ProjectSpending';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import SubmitForReview from '../components/SubmitForReview';
+import { useRouter } from 'next/router';
 
 function getSteps() {
-    return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending'];
+    return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending', 'Review'];
 }
 
-export default function ManageProjects({GUID,session,project}:any) {
+export default function ManageProjects({ GUID, session, project }: any) {
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
     const steps = getSteps();
+    const [isUploadingData, setIsUploadingData] = React.useState(false)
+
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -36,16 +37,50 @@ export default function ManageProjects({GUID,session,project}:any) {
         setActiveStep(0);
     };
 
-    const [projectGUID,setProjectGUID] = React.useState(GUID?GUID:'')
-    const [projectDetails,setProjectDetails] = React.useState(project ? project: {})
+    const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '')
+    const [projectDetails, setProjectDetails] = React.useState(project ? project : {})
 
-    React.useEffect(()=>{
-        // Fetch details of the project 
-        if(projectGUID && session?.accessToken)
-        getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`,session).then((result)=>{
-            setProjectDetails(result)
+    const [reviewRequested, setReviewRequested] = React.useState(false)
+    const router = useRouter();
+
+    const submitForReview = () => {
+        setIsUploadingData(true)
+        const submitData = {
+            reviewRequested: true
+        }
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+            if (!res.code) {
+                setProjectDetails(res)
+                setErrorMessage('')
+                setIsUploadingData(false)
+                if (typeof window !== 'undefined') {
+                    router.push(`/${projectDetails.slug}`);
+                }
+            } else {
+                if (res.code === 404) {
+                    setErrorMessage('Project Not Found')
+                    setIsUploadingData(false)
+                }
+                else {
+                    setErrorMessage(res.message)
+                    setIsUploadingData(false)
+                }
+
+            }
         })
-    },[GUID,projectGUID])    
+    }
+    React.useEffect(() => {
+        if (projectDetails && projectDetails.reviewRequested) {
+            setReviewRequested(true)
+        }
+    }, [projectDetails])
+    React.useEffect(() => {
+        // Fetch details of the project 
+        if (projectGUID && session?.accessToken)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, session).then((result) => {
+                setProjectDetails(result)
+            })
+    }, [GUID, projectGUID])
 
     function getStepContent(step: number) {
         switch (step) {
@@ -59,6 +94,8 @@ export default function ManageProjects({GUID,session,project}:any) {
                 return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 4:
                 return <ProjectSpending handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+            case 5:
+                return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
             default:
                 return 'Unknown step';
         }
@@ -69,22 +106,13 @@ export default function ManageProjects({GUID,session,project}:any) {
             <Stepper activeStep={activeStep} orientation="vertical">
                 {steps.map((label, index) => (
                     <Step key={label}>
-                        <StepLabel onClick={()=>setActiveStep(index)}>{label}</StepLabel>
+                        <StepLabel onClick={() => setActiveStep(index)}>{label}</StepLabel>
                         <StepContent>
                             {getStepContent(index)}
                         </StepContent>
                     </Step>
                 ))}
             </Stepper>
-            {activeStep === steps.length && (
-                <Paper square elevation={0}>
-                    <Typography>All steps completed - you&apos;re finished</Typography>
-                    <Button onClick={handleReset}>
-                        Reset
-                    </Button>
-                </Paper>
-            )}
-
         </div>
     );
 }
