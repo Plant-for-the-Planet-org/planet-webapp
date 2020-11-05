@@ -644,6 +644,8 @@ export default function MapboxMap({
                     <FormControlLabel
                       control={
                         <Switch
+                          color="#448149"
+                          className={styles.toggleForest}
                           checked={exploreForests}
                           onChange={handleExploreForestsChange}
                           name="forest"
@@ -685,6 +687,7 @@ export default function MapboxMap({
                     <FormControlLabel
                       control={
                         <Switch
+                          color="#FF0000"
                           checked={exploreDeforestation}
                           onChange={handleExploreDeforestationChange}
                           name="deforestation"
@@ -742,6 +745,7 @@ export default function MapboxMap({
                     <FormControlLabel
                       control={
                         <Switch
+                         color="#E7C746"
                           checked={explorePlanted}
                           onChange={handleExplorePlantedChange}
                           name="planted"
