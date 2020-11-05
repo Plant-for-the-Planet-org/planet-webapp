@@ -16,6 +16,7 @@ import { MenuItem } from '@material-ui/core';
 import ProjectCertificates from './ProjectCertificates';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
@@ -36,8 +37,9 @@ interface Props {
     projectGUID: String;
     handleReset: Function;
     session: any;
+    userLang:String;
 }
-export default function DetailedAnalysis({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack,userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
@@ -167,7 +169,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
                                         <DatePicker
@@ -202,7 +204,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
                         </div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
 
@@ -402,7 +404,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                     </div>
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
                                         <DatePicker
@@ -428,7 +430,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
                                         <DatePicker
@@ -536,6 +538,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             projectGUID={projectGUID}
                             session={session}
                             setIsUploadingData={setIsUploadingData}
+                            userLang={userLang}
                         />
                     ) : null}
 

@@ -79,6 +79,14 @@ export default function ManageProjects({ GUID, session, project }: any) {
             })
     }, [GUID, projectGUID])
 
+    const [userLang,setUserLang] = React.useState('en')
+    React.useEffect(()=>{
+        if (localStorage.getItem('language')) {
+            let userLang = localStorage.getItem('language');
+            if (userLang) setUserLang(userLang);
+          }
+    },[])
+
     function getStepContent(step: number) {
         switch (step) {
             case 0:
@@ -86,11 +94,11 @@ export default function ManageProjects({ GUID, session, project }: any) {
             case 1:
                 return <ProjectMedia handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:
-                return <DetailedAnalysis handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <DetailedAnalysis userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 3:
                 return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 4:
-                return <ProjectSpending handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSpending userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 5:
                 return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
             default:

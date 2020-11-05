@@ -18,6 +18,7 @@ import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PD
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
@@ -29,9 +30,10 @@ interface Props {
     projectGUID: String;
     handleReset: Function;
     session: any;
+    userLang:String;
 }
 
-export default function ProjectSpending({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, session, handleNext,userLang, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -168,7 +170,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, proje
 
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                     <DatePicker
                                         inputRef={register({
                                             required: {

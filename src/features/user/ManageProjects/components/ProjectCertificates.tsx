@@ -16,6 +16,7 @@ import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDF
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
@@ -23,10 +24,11 @@ const { useTranslation } = i18next;
 interface Props {
     projectGUID: String;
     session: any;
-    setIsUploadingData: Function
+    setIsUploadingData: Function;
+    userLang:String;    
 }
 
-function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props): ReactElement {
+function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
@@ -168,7 +170,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <DatePicker
                                     value={issueDate}
                                     onChange={setIssueDate}
