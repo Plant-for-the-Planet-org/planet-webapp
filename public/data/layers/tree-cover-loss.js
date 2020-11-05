@@ -10,7 +10,7 @@ export default [
         tiles: [
           'https://storage.googleapis.com/wri-public/Hansen_16/tiles/hansen_world/v1/tc30/{z}/{x}/{y}.png',
         ],
-        minzoom: 1,
+        minzoom: 0,
         maxzoom: 12,
       },
     },

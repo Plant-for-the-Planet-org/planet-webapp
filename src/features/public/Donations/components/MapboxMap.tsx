@@ -42,6 +42,7 @@ import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import i18next from '../../../../../i18n';
+import { Modal } from '@material-ui/core';
 
 const { useTranslation } = i18next;
 
@@ -114,6 +115,14 @@ export default function MapboxMap({
   const [exploreProjects, setExploreProjects] = React.useState(true);
 
   const [infoExpanded, setInfoExpanded] = React.useState(null);
+
+  const [openModal, setModalOpen] = React.useState(false);
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
 
   const handleExploreForestsChange = (event) => {
     setExploreForests(event.target.checked);
@@ -656,6 +665,7 @@ export default function MapboxMap({
                     <div
                       onClick={() => {
                         setInfoExpanded('Forests');
+                        setModalOpen(true);
                       }}
                       className={styles.exploreInfo}
                     >
@@ -698,6 +708,7 @@ export default function MapboxMap({
                     <div
                       onClick={() => {
                         setInfoExpanded('Deforestation');
+                        setModalOpen(true);
                       }}
                       className={styles.exploreInfo}
                     >
@@ -772,143 +783,6 @@ export default function MapboxMap({
                   <p>{t('maps:3trilliontrees')}</p>
                 </div>
               </div>
-              {infoExpanded !== null ? (
-                <div
-                  onClick={(event) => {
-                    if (
-                      infoRef.current &&
-                      !infoRef.current.contains(event.target)
-                    ) {
-                      setInfoExpanded(null);
-                    }
-                  }}
-                  className={styles.infoModal}
-                >
-                  <div ref={infoRef} className={styles.infoExpanded}>
-                    {infoExpanded === 'Forests' ? (
-                      <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>
-                          {t('maps:forests')}
-                        </div>
-                        <div className={styles.infoContent}>
-                          <div className={styles.currentForestScale}>
-                            <p>{t('maps:low')}</p>
-                            <div></div>
-                            <p>{t('maps:high')}</p>
-                          </div>
-                          <p>{t('maps:forestInfo')}</p>
-                          <a
-                            href="https://www.nature.com/articles/nature14967"
-                            target="_blank"
-                            style={{ paddingTop: 20 }}
-                          >
-                            <OpenLink />
-                            <p>
-                              Crowther, T. W. et al. (2015) Mapping tree
-                              <br /> density at a global scale. Nature 525,
-                              201–205.
-                            </p>
-                          </a>
-                        </div>
-                      </div>
-                    ) : null}
-                    {infoExpanded === 'Restoration' ? (
-                      <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>
-                          {t('maps:restoration')}
-                        </div>
-                        <div className={styles.infoContent}>
-                          <div className={styles.reforestationScale}>
-                            <p>{t('maps:low')}</p>
-                            <div></div>
-                            <p>{t('maps:high')}</p>
-                          </div>
-                          <p>{t('maps:restorationInfo')}</p>
-                          <a
-                            href="https://science.sciencemag.org/content/365/6448/76"
-                            target="_blank"
-                            style={{ paddingTop: 20 }}
-                          >
-                            <OpenLink />
-                            <p>
-                              Bastin, J. F. et al. (2019) The Global Tree
-                              <br /> Restoration Potential. Science 365(6448),
-                              76-79.
-                            </p>
-                          </a>
-                        </div>
-                      </div>
-                    ) : null}
-                    {infoExpanded === 'Deforestation' ? (
-                      <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>
-                          {t('maps:deforestation')}
-                        </div>
-                        <div className={styles.infoContent}>
-                          {/* <Legend collapsable={false} sortable={false}>
-                          {layerLegend.map((layerGroup, i) => {
-                            return (
-                              <LegendListItem
-                                index={i}
-                                key={layerGroup.slug}
-                                layerGroup={layerGroup}
-                                className={styles.layerLegend}
-                              >
-                                // <LegendItemTypes />
-                                <LegendItemTimeStep
-                                  defaultStyles={{
-                                    handleStyle: {
-                                      backgroundColor: 'white',
-                                      borderRadius: '50%',
-                                      boxShadow:
-                                        '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
-                                      border: '0px',
-                                      zIndex: 2,
-                                    },
-                                    railStyle: { backgroundColor: '#d6d6d9' },
-                                    dotStyle: {
-                                      visibility: 'hidden',
-                                      border: '0px',
-                                    },
-                                  }}
-                                  handleChange={onChangeLayerDate}
-                                />
-                              </LegendListItem>
-                            );
-                          })}
-                        </Legend> */}
-                          <a
-                            href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
-                            target="_blank"
-                            style={{ paddingTop: 20 }}
-                          >
-                            <OpenLink />
-                            <p>
-                              Global Forest Watch
-                              <br />
-                              globalforestwatch.org
-                            </p>
-                          </a>
-                        </div>
-                      </div>
-                    ) : null}
-                    {infoExpanded === 'Planted' ? (
-                      <div className={styles.infoContainer}>
-                        <div className={styles.infoTitle}>{infoExpanded}</div>
-                        <div className={styles.infoContent}></div>
-                      </div>
-                    ) : null}
-                    <div
-                      onClick={() => {
-                        setInfoExpanded(null);
-                      }}
-                      className={styles.infoClose}
-                    >
-                      <CancelIcon color="#d5d5d5" />
-                    </div>
-                  </div>
-                </div>
-              ) : null}
             </>
           ) : null}
         </div>
@@ -947,6 +821,102 @@ export default function MapboxMap({
           ) : null
         ) : null}
       </MapGL>
+      {infoExpanded !== null ? (
+        <Modal
+          className={styles.modal}
+          open={openModal}
+          onClose={handleModalClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <div ref={infoRef} className={styles.infoExpanded}>
+            {infoExpanded === 'Forests' ? (
+              <div className={styles.infoContainer}>
+                <div className={styles.infoTitle}>{t('maps:forests')}</div>
+                <div className={styles.infoContent}>
+                  <div className={styles.currentForestScale}>
+                    <p>{t('maps:low')}</p>
+                    <div></div>
+                    <p>{t('maps:high')}</p>
+                  </div>
+                  <p>{t('maps:forestInfo')}</p>
+                  <a
+                    href="https://www.nature.com/articles/nature14967"
+                    target="_blank"
+                    style={{ paddingTop: 20 }}
+                  >
+                    <OpenLink />
+                    <p>
+                      Crowther, T. W. et al. (2015) Mapping tree
+                      <br /> density at a global scale. Nature 525, 201–205.
+                    </p>
+                  </a>
+                </div>
+              </div>
+            ) : null}
+            {infoExpanded === 'Restoration' ? (
+              <div className={styles.infoContainer}>
+                <div className={styles.infoTitle}>{t('maps:restoration')}</div>
+                <div className={styles.infoContent}>
+                  <div className={styles.reforestationScale}>
+                    <p>{t('maps:low')}</p>
+                    <div></div>
+                    <p>{t('maps:high')}</p>
+                  </div>
+                  <p>{t('maps:restorationInfo')}</p>
+                  <a
+                    href="https://science.sciencemag.org/content/365/6448/76"
+                    target="_blank"
+                    style={{ paddingTop: 20 }}
+                  >
+                    <OpenLink />
+                    <p>
+                      Bastin, J. F. et al. (2019) The Global Tree
+                      <br /> Restoration Potential. Science 365(6448), 76-79.
+                    </p>
+                  </a>
+                </div>
+              </div>
+            ) : null}
+            {infoExpanded === 'Deforestation' ? (
+              <div className={styles.infoContainer}>
+                <div className={styles.infoTitle}>
+                  {t('maps:deforestation')}
+                </div>
+                <div className={styles.infoContent}>
+                  <a
+                    href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
+                    target="_blank"
+                    style={{ paddingTop: 20 }}
+                  >
+                    <OpenLink />
+                    <p>
+                      Global Forest Watch
+                      <br />
+                      globalforestwatch.org
+                    </p>
+                  </a>
+                </div>
+              </div>
+            ) : null}
+            {infoExpanded === 'Planted' ? (
+              <div className={styles.infoContainer}>
+                <div className={styles.infoTitle}>{infoExpanded}</div>
+                <div className={styles.infoContent}></div>
+              </div>
+            ) : null}
+            <div
+              onClick={() => {
+                setInfoExpanded(null);
+                setModalOpen(false);
+              }}
+              className={styles.infoClose}
+            >
+              <CancelIcon color="#d5d5d5" />
+            </div>
+          </div>
+        </Modal>
+      ) : null}
     </div>
   );
 }

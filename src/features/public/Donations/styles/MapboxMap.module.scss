@@ -344,6 +344,14 @@
   }
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .exploreToggleRow {
   display: flex;
   flex-direction: row;
@@ -423,9 +431,5 @@
   }
   .projectControls {
     bottom: 80px;
-  }
-  .infoExpanded {
-    right: 0px;
-    top: 60px;
   }
 }
