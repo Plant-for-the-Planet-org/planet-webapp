@@ -107,7 +107,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-
+console.log(project);
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -198,7 +198,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     
                   </div> */}
                 </div>
-                <div className={styles.projectTPOName}>
+                <div className={styles.projectTPOName} onClick={() => {
+                  router.push(`/t/${project.tpo.slug}`);
+                }}>
                   {t('common:by')} {project.tpo.name}
                 </div>
               </div>

@@ -138,7 +138,9 @@ export default function ProjectSnippet({
               </span>
             </div>
           </div>
-          <div className={styles.projectTPOName}>
+          <div className={styles.projectTPOName} onClick={() => {
+                  router.push(`/t/${project.properties.tpo.slug}`);
+                }}>
             {t('common:by')} {project.properties.tpo.name}
           </div>
         </div>
