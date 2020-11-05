@@ -87,7 +87,7 @@ export default function ProjectSites({
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
-      handleReset('Please fill the Basic Details first')
+      handleReset(t('manageProjects:resetMessage'))
     }
   })
 

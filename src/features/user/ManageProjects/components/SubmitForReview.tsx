@@ -4,6 +4,9 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../styles/StepForm.module.scss'
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
+import i18next from './../../../../../i18n'
+
+const { useTranslation } = i18next;
 
 interface Props {
     handleBack: Function;
@@ -16,9 +19,11 @@ interface Props {
 
 function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploadingData, projectGUID, handleReset }: Props): ReactElement {
 
+    const { t, i18n } = useTranslation(['manageProjects']);
+
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset('Please fill the Basic Details first')
+            handleReset(t('manageProjects:resetMessage'))
         }
     })
 

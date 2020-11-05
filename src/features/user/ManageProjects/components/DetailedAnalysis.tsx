@@ -72,7 +72,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset('Please fill the Basic Details first')
+            handleReset(t('manageProjects:resetMessage'))
         }
     })
 

@@ -1,4 +1,10 @@
 {
+    "basicDetails":"Basic Details",
+    "projectMedia":"Project Media",
+    "detailedAnalysis":"Detailed Analysis",
+    "projectSites":"Project Sites",
+    "projectSpending":"Project Spending",
+    "review":"Review",
     "name":"Project Name",
     "nameValidation":"Please enter Project Name",
     "slug":"Project URL",
@@ -24,6 +30,8 @@
     "publishProject":"Publish Project",
     "saveAndContinue":"Save & Continue",
     "youtubeURL":"Youtube Video Link",
+    "youtubeURLValidation":"Invalid Youtube Video Link",
+    "addCaption":"Add Caption",
     "yearOfAbandonment":"Approx. year of Abandonment",
     "firstTreePlanted":"First tree planted",
     "plantingDensity":"Planting Density",
@@ -40,5 +48,9 @@
     "certifierName":"Certifier Name",
     "siteName":"Site Name",
     "spendingYear":"Year",
-    "spendingAmount":"Spending (in EUR)"
+    "spendingAmount":"Spending (in EUR)",
+    "resetMessage":"Please fill the Basic Details first",
+    "uploadPhotos":"Upload Photos",
+    "dragIn":"or drag them in",
+    "backToBasic":"Back to basic details"
 }

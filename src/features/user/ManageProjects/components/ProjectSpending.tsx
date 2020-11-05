@@ -44,7 +44,7 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
     const [uploadedFiles, setUploadedFiles] = React.useState([])
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset('Please fill the Basic Details first')
+            handleReset(t('manageProjects:resetMessage'))
         }
     })
 
