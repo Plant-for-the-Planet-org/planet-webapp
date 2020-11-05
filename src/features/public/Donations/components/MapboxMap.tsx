@@ -396,6 +396,7 @@ export default function MapboxMap({
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
+        minZoom={1}
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
