@@ -18,8 +18,6 @@ const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 interface Props {
   handleNext: Function;
   handleBack: Function;
-  projectDetails: Object;
-  setProjectDetails: Function;
   projectGUID: String;
   handleReset: Function;
   session: any
@@ -31,7 +29,7 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset
+  handleBack, session, handleNext, projectGUID, handleReset
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);

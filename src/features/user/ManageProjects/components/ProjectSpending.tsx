@@ -14,8 +14,6 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { getPDFFile } from '../../../../utils/getImageURL';
-import PDFIcon from '../../../../../public/assets/images/icons/manageProjects/PDFIcon';
-import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
@@ -25,15 +23,13 @@ const { useTranslation } = i18next;
 interface Props {
     handleNext: Function;
     handleBack: Function;
-    projectDetails: Object;
-    setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
     session: any;
     userLang:String;
 }
 
-export default function ProjectSpending({ handleBack, session, handleNext,userLang, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, session, handleNext,userLang, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -166,8 +162,6 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                 ) : null}
                 {showForm ? (
                     <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-
-
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>

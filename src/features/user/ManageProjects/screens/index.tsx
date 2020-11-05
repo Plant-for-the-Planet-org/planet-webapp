@@ -96,9 +96,9 @@ export default function ManageProjects({ GUID, session, project }: any) {
             case 2:
                 return <DetailedAnalysis userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 3:
-                return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 4:
-                return <ProjectSpending userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSpending userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 5:
                 return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
             default:
