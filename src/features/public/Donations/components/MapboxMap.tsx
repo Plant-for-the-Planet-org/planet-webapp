@@ -638,29 +638,29 @@ export default function MapboxMap({
           {exploreExpanded ? (
             <>
               <div className={styles.exploreExpanded}>
-                <div>
-                  <FormGroup>
-                    <div className={styles.exploreToggleRow}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={exploreForests}
-                            onChange={handleExploreForestsChange}
-                            name="forest"
-                          />
-                        }
-                        label={t('maps:forests')}
-                      />
-                      <div
-                        onClick={() => {
-                          setInfoExpanded('Forests');
-                        }}
-                        className={styles.exploreInfo}
-                      >
-                        <InfoIcon />
-                      </div>
+                {/* <div> */}
+                <FormGroup style={{ width: '100%' }}>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={exploreForests}
+                          onChange={handleExploreForestsChange}
+                          name="forest"
+                        />
+                      }
+                      label={t('maps:forests')}
+                    />
+                    <div
+                      onClick={() => {
+                        setInfoExpanded('Forests');
+                      }}
+                      className={styles.exploreInfo}
+                    >
+                      <InfoIcon />
                     </div>
-                    {/* <div className={styles.exploreToggleRow}>
+                  </div>
+                  {/* <div className={styles.exploreToggleRow}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -681,64 +681,64 @@ export default function MapboxMap({
                       </div>
                     </div> */}
 
-                    <div className={styles.exploreToggleRow}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={exploreDeforestation}
-                            onChange={handleExploreDeforestationChange}
-                            name="deforestation"
-                          />
-                        }
-                        label={t('maps:deforestation')}
-                      />
-                      <div
-                        onClick={() => {
-                          setInfoExpanded('Deforestation');
-                        }}
-                        className={styles.exploreInfo}
-                      >
-                        <InfoIcon />
-                      </div>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={exploreDeforestation}
+                          onChange={handleExploreDeforestationChange}
+                          name="deforestation"
+                        />
+                      }
+                      label={t('maps:deforestation')}
+                    />
+                    <div
+                      onClick={() => {
+                        setInfoExpanded('Deforestation');
+                      }}
+                      className={styles.exploreInfo}
+                    >
+                      <InfoIcon />
                     </div>
-                    {exploreDeforestation ? (
-                      <div className={styles.deforestionSlider}>
-                        <Icons />
-                        <Legend collapsable={false} sortable={false}>
-                          {layerLegend.map((layerGroup, i) => {
-                            return (
-                              <LegendListItem
-                                index={i}
-                                key={layerGroup.slug}
-                                layerGroup={layerGroup}
-                                className={styles.layerLegend}
-                              >
-                                {/* <LegendItemTypes /> */}
-                                <LegendItemTimeStep
-                                  defaultStyles={{
-                                    handleStyle: {
-                                      backgroundColor: 'white',
-                                      borderRadius: '50%',
-                                      boxShadow:
-                                        '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
-                                      border: '0px',
-                                      zIndex: 2,
-                                    },
-                                    railStyle: { backgroundColor: '#d6d6d9' },
-                                    dotStyle: {
-                                      visibility: 'hidden',
-                                      border: '0px',
-                                    },
-                                  }}
-                                  handleChange={onChangeLayerDate}
-                                />
-                              </LegendListItem>
-                            );
-                          })}
-                        </Legend>
-                      </div>
-                    ) : null}
-                    {/* <div className={styles.exploreToggleRow}>
+                  </div>
+                  {exploreDeforestation ? (
+                    <div className={styles.deforestionSlider}>
+                      <Icons />
+                      <Legend collapsable={false} sortable={false}>
+                        {layerLegend.map((layerGroup, i) => {
+                          return (
+                            <LegendListItem
+                              index={i}
+                              key={layerGroup.slug}
+                              layerGroup={layerGroup}
+                              className={styles.layerLegend}
+                            >
+                              {/* <LegendItemTypes /> */}
+                              <LegendItemTimeStep
+                                defaultStyles={{
+                                  handleStyle: {
+                                    backgroundColor: 'white',
+                                    borderRadius: '50%',
+                                    boxShadow:
+                                      '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
+                                    border: '0px',
+                                    zIndex: 2,
+                                  },
+                                  railStyle: { backgroundColor: '#d6d6d9' },
+                                  dotStyle: {
+                                    visibility: 'hidden',
+                                    border: '0px',
+                                  },
+                                }}
+                                handleChange={onChangeLayerDate}
+                              />
+                            </LegendListItem>
+                          );
+                        })}
+                      </Legend>
+                    </div>
+                  ) : null}
+                  {/* <div className={styles.exploreToggleRow}>
                     <FormControlLabel
                       control={
                         <Switch
@@ -750,20 +750,20 @@ export default function MapboxMap({
                       label="Planted Trees"
                     />
                   </div> */}
-                    <div className={styles.exploreToggleRow}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={exploreProjects}
-                            onChange={handleExploreProjectsChange}
-                            name="projects"
-                          />
-                        }
-                        label={t('maps:projects')}
-                      />
-                    </div>
-                  </FormGroup>
-                </div>
+                  <div className={styles.exploreToggleRow}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={exploreProjects}
+                          onChange={handleExploreProjectsChange}
+                          name="projects"
+                        />
+                      }
+                      label={t('maps:projects')}
+                    />
+                  </div>
+                </FormGroup>
+                {/* </div> */}
                 <div className={styles.exploreCaption}>
                   <p>{t('maps:3trilliontrees')}</p>
                 </div>
