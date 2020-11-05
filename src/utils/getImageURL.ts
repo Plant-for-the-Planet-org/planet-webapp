@@ -24,9 +24,8 @@ export function getS3Image(
   variant: string,
   imageName: any,
 ) {
-  const cdnURl = 'https://bucketeer-894cef84-0684-47b5-a5e7-917b8655836a.s3.eu-west-1.amazonaws.com/development';
   const cacheURl = 'media/cache';
-  return `${cdnURl}/${cacheURl}/${category}/${variant}/${imageName}`;
+  return `${process.env.CDN_URL}/${cacheURl}/${category}/${variant}/${imageName}`;
 
 }
 
@@ -35,7 +34,6 @@ export function getPDFFile(
   category: string,
   fileName: any,
 ) {
-  const cdnURl = 'https://bucketeer-894cef84-0684-47b5-a5e7-917b8655836a.s3.eu-west-1.amazonaws.com/development/media/uploads/pdfs';
-  return `${cdnURl}/${category}/${fileName}`;
+  return `${process.env.CDN_URL}/media/uploads/pdfs/${category}/${fileName}`;
 
 }
