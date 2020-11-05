@@ -27,6 +27,10 @@ const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
   ? process.env.SCHEME
   : 'https';
 
+const nextauthUrl = process.env.NEXTAUTH_URL === '' || process.env.NEXTAUTH_URL === 'null'
+  ? process.env.VERCEL_URL
+  : `${scheme}://${process.env.NEXTAUTH_URL}`;
+
 const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withSourceMaps({
@@ -91,7 +95,7 @@ module.exports = withSourceMaps({
     SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_URL: nextauthUrl,
   },
   trailingSlash: false,
   reactStrictMode: true,
