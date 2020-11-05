@@ -19,8 +19,6 @@ import { getUserExistsInDB, getUserInfo } from '../../../../utils/auth0/localSto
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
-console.log('NODE_ENV-----', process.env.NODE_ENV)
-console.log('NEXTAUTH_URL-------', process.env.NEXTAUTH_URL)
 export default function NavbarComponent(props: any) {
   // If there is a session we will use it
   const [session, loading] = useSession();
@@ -35,7 +33,6 @@ export default function NavbarComponent(props: any) {
    If in the signin flow, if the user is not existing, then we redirect to complete Signup flow */
   const checkWhichPath = () => {
 
-    console.log('session navbar ', session)
     if (typeof Storage !== 'undefined') {
       
     const userExistsInDB = getUserExistsInDB();
@@ -44,19 +41,16 @@ export default function NavbarComponent(props: any) {
       if (!loading && session && (userExistsInDB === true)) {
           var userslug = getUserInfo().slug;
           if (typeof window !== 'undefined') {
-            console.log('if user logged in, and already signed up -> /t/userSlug page');
             router.push(`/t/${userslug}`);
           }
        // if user logged in, not already signed up -> /complete-signup
       } else if ( !loading && session && (userExistsInDB === false)) {
           if (typeof window !== 'undefined') {
-              console.log('if user logged in, not already signed up -> /complete-signup');
               router.push('/complete-signup');
           }
       } else { 
         // if no user logged in  -> signIn()
         // or when no active session
-        console.log('if no user logged in  -> signIn()');
         signIn('auth0', { callbackUrl: `/login` });
       }
     }

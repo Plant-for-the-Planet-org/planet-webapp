@@ -231,7 +231,7 @@ export default function BasicDetails({
               inputRef={register({
                 required: {
                   value: true,
-                  message: 'Please enter Project Name',
+                  message: t('manageProjects:nameValidation'),
                 },
               })}
               label={t('manageProjects:name')}
@@ -249,7 +249,7 @@ export default function BasicDetails({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: 'Please enter Project URL',
+                    message: t('manageProjects:slugValidation'),
                   },
                 })}
                 label={t('manageProjects:slug')}
@@ -282,7 +282,7 @@ export default function BasicDetails({
                   </MaterialTextField>
                 }
                 name="classification"
-                rules={{ required: 'Please select Project type' }}
+                rules={{ required: t('manageProjects:classificationValidation') }}
                 control={control}
               />
               {errors.classification && (
@@ -299,7 +299,7 @@ export default function BasicDetails({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: 'Please enter Tree target',
+                    message: t('manageProjects:countTargetValidation'),
                   },
                   validate: (value) => parseInt(value, 10) > 1,
                 })}
@@ -315,7 +315,7 @@ export default function BasicDetails({
                 <span className={styles.formErrors}>
                   {errors.countTarget.message
                     ? errors.countTarget.message
-                    : 'Tree target should be more than 1'}
+                    : t('manageProjects:countTargetValidation2')}
                 </span>
               )}
             </div>
@@ -327,11 +327,11 @@ export default function BasicDetails({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: 'Please enter website URL',
+                    message: t('manageProjects:websiteValidationRequired'),
                   },
                   pattern: {
                     value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
-                    message: 'Invalid website URL',
+                    message: t('manageProjects:websiteValidationInvalid'),
                   },
                 })}
               />
@@ -352,7 +352,7 @@ export default function BasicDetails({
               inputRef={register({
                 required: {
                   value: true,
-                  message: 'Please enter About project',
+                  message: t('manageProjects:aboutProjectValidation'),
                 },
               })}
             />
@@ -370,7 +370,7 @@ export default function BasicDetails({
                   htmlFor="acceptDonations"
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
-                  Receive Donations{' '}
+                  {t('manageProjects:receiveDonations')}
                   <div
                     style={{ height: '13px', width: '13px', marginLeft: '6px' }}
                   >
@@ -381,10 +381,7 @@ export default function BasicDetails({
                         style={{ left: '-150px' }}
                       >
                         <p>
-                          Please activate once the project profile is complete.
-                          Plant-for-the-Planet will then review the profile and
-                          inform you if you are eligible to receive donations
-                          through this platform. This may take a few weeks.
+                        {t('manageProjects:receiveDonationsInfo')}
                         </p>
                       </div>
                     </div>
@@ -411,12 +408,12 @@ export default function BasicDetails({
                   inputRef={register({
                     required: {
                       value: true,
-                      message: 'Please enter cost per tree',
+                      message: t('manageProjects:treeCostValidaitonRequired'),
                     },
                     validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
                     pattern: {
                       value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
-                      message: 'Please enter valid cost per tree',
+                      message: t('manageProjects:treeCostValidationInvalid'),
                     }
                   })}
                   label={t('manageProjects:treeCost')}
@@ -439,7 +436,7 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.treeCost.message
                       ? errors.treeCost.message
-                      : 'Cost per tree should be more than €0 or lesser than €100'}
+                      : t("manageProjects:treeCostValidation")}
                   </span>
                 )}
               </div>
@@ -447,7 +444,9 @@ export default function BasicDetails({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-            <p>Project Location</p>
+            <p>
+              {t("manageProjects:projectLocation")}
+            </p>
             <MapGL
               {...viewport}
               ref={mapRef}
@@ -528,8 +527,7 @@ export default function BasicDetails({
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={styles.formFieldRadio}>
               <label htmlFor="visitorAssistance">
-                I will provide lodging, site access and local transport if a
-                reviewer is sent by Plant-for-the-Planet.
+                {t('manageProjects:visitorAssistanceLabel')}
               </label>
               <Controller
                 name="visitorAssistance"
@@ -548,7 +546,9 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'}>Publish Project</label>
+              <label htmlFor={'publish'}>
+                {t('manageProjects:publishProject')}
+              </label>
 
               <Controller
                 name="publish"
@@ -609,7 +609,7 @@ export default function BasicDetails({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  'Save & Continue'
+                  t('manageProjects:saveAndContinue')
                 )}
             </div>
           </div>

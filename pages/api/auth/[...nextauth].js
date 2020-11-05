@@ -22,7 +22,7 @@ const options = {
 
   callbacks: {
     redirect: async (url, baseUrl) => {
-      console.log('in redirect callback', url, baseUrl);
+      // console.log('in redirect callback', url, baseUrl);
       return Promise.resolve(url);
     },
 
@@ -43,7 +43,6 @@ const options = {
       session.accessToken = token.accessToken;
       session.userEmail = session.user.email;
       session.user = null;
-      console.log('.......session callback ran....');
       return session;
     },
   },

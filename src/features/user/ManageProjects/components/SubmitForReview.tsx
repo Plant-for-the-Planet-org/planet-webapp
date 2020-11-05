@@ -25,7 +25,6 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
     return (
         <div className={styles.stepContainer}>
             <div>
-            <div className={styles.formField}>
                 {reviewRequested ? (
                     <div className={styles.formFieldLarge}>
                         <div style={{height:'240px',width:'100%'}}>
@@ -44,7 +43,6 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
                 </div>
                 )}
                 
-            </div>
 
             <div className={styles.formField}>
                 <div className={`${styles.formFieldHalf}`}>
