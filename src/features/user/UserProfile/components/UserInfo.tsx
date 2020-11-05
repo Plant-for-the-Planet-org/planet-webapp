@@ -2,13 +2,16 @@ import React from 'react';
 import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
+import i18next from '../../../../../i18n';
 
+const {useTranslation} = i18next;
 export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
   authenticatedType,
   handleAddTargetModalOpen
 }: any) {
+  const {t} = useTranslation(['user', 'me']);
   return (
     <div className={styles.landingContent}>
       <TreeCounter
@@ -18,11 +21,14 @@ export default function UserInfo({
         planted={userprofile.score.personal}
       />
 
-      <h2 className={styles.treeCounterName}>{`${userprofile.displayName}`}</h2>
-
+      <h2 className={styles.treeCounterName}>{t('me:displayName', {
+        name: userprofile.displayName
+      })}</h2>
       {/* user bio */}
       <p className={styles.treeCounterDescription}>
-        {userprofile.bio}{' '}
+        {t('me:userBio', {
+          userBioName: userprofile.bio
+        })}
       </p>
 
       {/* three icons in a row */}

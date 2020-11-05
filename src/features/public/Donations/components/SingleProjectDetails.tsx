@@ -172,7 +172,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
               </div> */}
 
               <div className={styles.projectName}>
-                {Sugar.String.truncate(project.name, 60)}
+                {t('donate:projectName', {
+                  proj: Sugar.String.truncate(project.name, 60)
+                })}
               </div>
             </div>
           </div>
@@ -201,7 +203,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 <div className={styles.projectTPOName} onClick={() => {
                   router.push(`/t/${project.tpo.slug}`);
                 }}>
-                  {t('common:by')} {project.tpo.name}
+                  {t('common:by', {
+                    tpoName: project.tpo.name
+                  })} 
                 </div>
               </div>
 
@@ -240,7 +244,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 ideal={350}
                 max={400}
                 readMoreText={t('donate:readMore')}
-                text={project.description}
+                text={t('donate:readMoreHalfText', {
+                  readMore: project.description
+                })}
               />
             </div>
 
