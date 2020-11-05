@@ -107,7 +107,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-console.log(project);
+;
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
