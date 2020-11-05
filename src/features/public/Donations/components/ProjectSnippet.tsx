@@ -116,7 +116,9 @@ export default function ProjectSnippet({
 
 
           <div className={styles.projectName}>
-            {Sugar.String.truncate(project.properties.name, 54)}
+            {t('donate:projectName', {
+              proj: Sugar.String.truncate(project.properties.name, 54)
+            })}
           </div>
         </div>
       </div>
@@ -141,7 +143,9 @@ export default function ProjectSnippet({
           <div className={styles.projectTPOName} onClick={() => {
                   router.push(`/t/${project.properties.tpo.slug}`);
                 }}>
-            {t('common:by')} {project.properties.tpo.name}
+              {t('common:by', {
+                tpoName: project.properties.tpo.name
+              })}
           </div>
         </div>
 
