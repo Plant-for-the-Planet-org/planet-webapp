@@ -1,0 +1,12 @@
+{
+    "edit": "Edit Profile",
+    "privateAccount": "Private Account",
+    "privateAccountTxt": "Your profile is hidden and only your first name appears in the leaderboard",
+    "subscribe": "Subscribe to news via email",
+    "profileDescription": "Profile Desciption",
+    "descriptionRequired": "Please enter valid Description",
+    "website": "Website",
+    "websiteError": "Invalid website URL",
+    "websiteRequired": "Please enter valid Website URL",
+    "snackbarMessage": "{{message}}"
+}

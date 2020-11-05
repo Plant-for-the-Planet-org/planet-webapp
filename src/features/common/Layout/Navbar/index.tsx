@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSession, signIn } from 'next-auth/client';
 import tenantConfig from '../../../../../tenant.config';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
@@ -13,21 +14,68 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
-
+import {getS3Image} from '../../../../utils/getImageURL'
+import { getUserExistsInDB, getUserInfo } from '../../../../utils/auth0/localStorageUtils'
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
-
 export default function NavbarComponent(props: any) {
-  const { t } = useTranslation(['common']);
+  // If there is a session we will use it
+  const [session, loading] = useSession();
+
+  const { t, ready } = useTranslation(['common']);
   const router = useRouter();
 
-  const { toggleTheme } = React.useContext(ThemeContext);
-  const [initialized, setInitialized] = React.useState(false);
+  /* Works when user clicks on Me
+   If the user is logged in, redirect to t/userSlug
+   If user is not logged in we will redirect to singin page with Auth0
+   If in the signin flow, if the user is already existing, we login the user and  redirect to t/userSlug
+   If in the signin flow, if the user is not existing, then we redirect to complete Signup flow */
+  const checkWhichPath = () => {
 
-  React.useEffect(() => {
-    i18next.initPromise.then(() => setInitialized(true));
-  }, []);
+    if (typeof Storage !== 'undefined') {
+      
+    const userExistsInDB = getUserExistsInDB();
+  
+    // if user logged in, and already signed up -> /t/userSlug page
+      if (!loading && session && (userExistsInDB === true)) {
+          var userslug = getUserInfo().slug;
+          if (typeof window !== 'undefined') {
+            router.push(`/t/${userslug}`);
+          }
+       // if user logged in, not already signed up -> /complete-signup
+      } else if ( !loading && session && (userExistsInDB === false)) {
+          if (typeof window !== 'undefined') {
+              router.push('/complete-signup');
+          }
+      } else { 
+        // if no user logged in  -> signIn()
+        // or when no active session
+        signIn('auth0', { callbackUrl: `/login` });
+      }
+    }
+  };
+
+  const checkWhichIcon = () => {
+    if (typeof Storage !== 'undefined') {
+      const userProfilePic = getUserInfo()?.profilePic;
+      const userSlug = getUserInfo()?.slug;
+      //if logged in user && exist in db && profilepic is set -> show profile pic
+      if (!loading && session && userProfilePic) {
+        return <img src={getS3Image('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
+      } 
+      // if no session -> icon depending on path
+      // If complete-signup or it's private profile page
+      else if (router.pathname === '/complete-signup' || router.pathname === `/t/${userSlug}`){
+        return <MeSelected color={styles.primaryColor}/>
+      } else {
+        return <Me color={styles.primaryFontColor} />
+      }
+    }
+    return null;
+  }
+
+  const { toggleTheme } = React.useContext(ThemeContext);
 
   return (
     <>
@@ -114,7 +162,7 @@ export default function NavbarComponent(props: any) {
                               <Donate color={styles.primaryFontColor} />
                           )}
                         </div>
-                        {initialized ? (
+                        {ready ? (
                           <p
                             className={
                               router.pathname === item.onclick
@@ -140,7 +188,7 @@ export default function NavbarComponent(props: any) {
                               <Leaderboard color={styles.primaryFontColor} />
                           )}
                         </div>
-                        {initialized ? (
+                        {ready ? (
                           <p
                             className={
                               router.pathname === item.onclick
@@ -156,16 +204,12 @@ export default function NavbarComponent(props: any) {
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                    <Link key={item.id} href={item.onclick}>
+                <div key={item.id} onClick={checkWhichPath}>
                       <div className={styles.link_container}>
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
-                            <MeSelected color={styles.primaryColor} />
-                          ) : (
-                              <Me color={styles.primaryFontColor} />
-                          )}
+                          {checkWhichIcon()}
                         </div>
-                        {initialized ? (
+                        {ready ? (
                           <p
                             className={
                               router.pathname === item.onclick
@@ -177,7 +221,7 @@ export default function NavbarComponent(props: any) {
                           </p>
                         ) : null}
                       </div>
-                  </Link>
+                  </div>
                 ) : null}
               </div>
           ))}
@@ -264,7 +308,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
@@ -289,7 +333,7 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
@@ -314,23 +358,22 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
                   </Link>
                 ) : null}
 
                 {item.key === 'me' && item.visible === true ? (
-                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                <div
+                  key={item.id}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                  onClick={checkWhichPath}
+                >
                       <div
-                        className={styles.link_container}
-                      >
+                    className={styles.link_container} >
                         <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
-                            <MeSelected color={styles.primaryColor} />
-                          ) : (
-                              <Me color={styles.primaryFontColor} />
-                          )}
+                          {checkWhichIcon()}
                         </div>
                         <p
                           className={
@@ -339,10 +382,10 @@ export default function NavbarComponent(props: any) {
                               : ''
                           }
                         >
-                          {item.title}
+                          {t('common:'+ item.title)}
                         </p>
                       </div>
-                    </Link>
+                  </div>
                 ) : null}
               </div>
           ))}

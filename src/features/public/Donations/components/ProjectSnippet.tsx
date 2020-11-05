@@ -8,8 +8,10 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
 import { useRouter } from 'next/router';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
+import Link from 'next/link';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -17,6 +19,7 @@ interface Props {
   key: number;
   directGift: any;
   setDirectGift: any;
+  editMode: Boolean;
 }
 
 export default function ProjectSnippet({
@@ -24,6 +27,7 @@ export default function ProjectSnippet({
   key,
   directGift,
   setDirectGift,
+  editMode
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation(['donate', 'common', 'country']);
@@ -76,6 +80,13 @@ export default function ProjectSnippet({
         </Elements>
       </Modal>
 
+      {editMode ? (
+        <Link href={`/manage-projects/${project.properties.id}`}>
+          <div className={styles.projectEditBlock}>
+            <EditIcon></EditIcon>
+          </div>
+        </Link>
+      ) : null}
       <div
         onClick={() => {
           router.push('/[p]', `/${project.properties.slug}`, {
@@ -85,20 +96,24 @@ export default function ProjectSnippet({
         className={styles.projectImage}
       >
         {project.properties.image &&
-        typeof project.properties.image !== 'undefined' ? (
-          <div
-            className={styles.projectImageFile}
-            style={{
-              backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
-              backgroundPosition: 'center',
-            }}
-          ></div>
-        ) : null}
+          typeof project.properties.image !== 'undefined' ? (
+            <div
+              className={styles.projectImageFile}
+              style={{
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
+                backgroundPosition: 'center',
+              }}
+            ></div>
+          ) : null}
+
+
 
         <div className={styles.projectImageBlock}>
           {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
+
+
 
           <div className={styles.projectName}>
             {Sugar.String.truncate(project.properties.name, 54)}

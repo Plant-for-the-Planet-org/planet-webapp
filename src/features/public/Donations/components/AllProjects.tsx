@@ -4,7 +4,7 @@ import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import styles from './../styles/Projects.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 
 const { useTranslation } = i18next;
 const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
@@ -66,6 +66,7 @@ function AllProjects({
                   project={project}
                   directGift={directGift}
                   setDirectGift={setDirectGift}
+                  editMode={false}
                 />
               );
             })}

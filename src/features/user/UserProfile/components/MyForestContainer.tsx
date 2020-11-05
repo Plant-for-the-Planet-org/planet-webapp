@@ -13,9 +13,9 @@ export default function MyForestContainer({ userprofile }: any) {
     zoom: 1.4,
   });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
-  // console.log('viewport', window.innerHeight, window.innerWidth, window.outerHeight, outerWidth)
-  const userForests = userprofile.myForest.map((forest: any) => {
-    return <MyForestItem key={forest.id} forest={forest} />;
+
+  const userForests = userprofile.projects.map((forest: any) => {
+    return <MyForestItem key={forest.id} forest={forest.name} />;
   });
   return (
     // the text and two boxes
