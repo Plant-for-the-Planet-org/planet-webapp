@@ -53,9 +53,6 @@ export default function ManageProjects({ GUID, session, project }: any) {
                 setProjectDetails(res)
                 setErrorMessage('')
                 setIsUploadingData(false)
-                if (typeof window !== 'undefined') {
-                    router.push(`/${projectDetails.slug}`);
-                }
             } else {
                 if (res.code === 404) {
                     setErrorMessage('Project Not Found')

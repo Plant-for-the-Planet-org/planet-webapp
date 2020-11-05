@@ -124,7 +124,7 @@ export default function CompleteSignup() {
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
-        console.log('in 401-> unauthenticated user / invalid token')
+        // console.log('in 401-> unauthenticated user / invalid token')
         signOut()
         removeUserExistsInDB()
         removeUserInfo()

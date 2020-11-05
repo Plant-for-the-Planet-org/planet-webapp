@@ -11,8 +11,6 @@ import AddTargetModal from '../components/AddTargetModal'
 
 export default function IndividualProfile({ userprofile, changeForceReload,
   forceReload, authenticatedType }: any) {
-    console.log('userprofile Individual - ', userprofile)
-    console.log('authenticatedType individual - ', authenticatedType)
 
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
