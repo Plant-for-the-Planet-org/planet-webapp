@@ -1,0 +1,7 @@
+{
+  "loginTitle": "{{{log}} - Connexion",
+  "signUpText": "Inscription complète",
+  "profileTypes": "{{{pub.title}}",
+  "profileName": "Nom de {{type}}",
+  "createAccount": "Créer un compte"
+}
