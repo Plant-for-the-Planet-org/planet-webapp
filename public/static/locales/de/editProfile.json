@@ -1,12 +1,11 @@
 {
-    "edit": "Profil beabeiten",
-    "privateAccount": "Privates Konto",
-    "privateAccountTxt": "Dein Profile ist versteckt und nur dein Vorname erscheint in der Bestenliste",
-    "subscribe": "News per E-Mail abonnieren",
-    "profileDescription": "Profilbeschreibung",
-    "descriptionRequired": "Bitte gibt eine gültige Beschreibung ein",
-    "website": "Website",
-    "websiteError": "Ungültige Website-URL",
-    "websiteRequired": "Bitte gibt eine gültige Website-URL ein",
-    "snackbarMessage": "{{message}}"
+  "edit": "Profil bearbeiten",
+  "privateAccount": "Privatkonto",
+  "privateAccountTxt": "Dein Profil wird ausgeblendet und nur Dein Vorname erscheint in der Bestenliste",
+  "subscribe": "Nachrichten per E-Mail abonnieren",
+  "profileDescription": "Profilbeschreibung",
+  "descriptionRequired": "Bitte gültige Beschreibung eingeben",
+  "websiteError": "Ungültige Website-URL",
+  "websiteRequired": "Bitte geben Sie eine gültige Website-URL ein",
+  "snackbarMessage": "{{message}}"
 }

@@ -1,7 +1,7 @@
 {
-    "loginTitle": "{{log}} - Login",
-    "signUpText": "Registrierung vervollständigen",
-    "profileTypes": "{{item.title}}",
-    "profileName": "Name von {{type}}",
-    "createAccount": "Konto erzeugen"
+  "loginTitle": "{{log}} - Anmeldung",
+  "signUpText": "Registrierung vervollständigen",
+  "profileTypes": "{{item.title}}",
+  "profileName": "Name von {{type}}",
+  "createAccount": "Konto erstellen"
 }
