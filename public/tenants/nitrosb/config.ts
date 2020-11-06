@@ -3,7 +3,7 @@ const config = {
   tenantURL: 'forest.nitrosnowboards.com',
   languages: ['en'],
   fallbackCurrency: 'EUR',
-  tenantGoal:0,
+  tenantGoal:1000000,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
