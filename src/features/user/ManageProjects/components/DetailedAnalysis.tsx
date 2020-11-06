@@ -33,7 +33,7 @@ interface Props {
     userLang:String;
 }
 export default function DetailedAnalysis({ handleBack,userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n } = useTranslation(['manageProjects','common']);
 
     const siteOwners = [
         { id: 1, title: t('manageProjects:siteOwnerPrivate') , value: 'private' },
@@ -47,18 +47,18 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
     const [plantingSeasons, setPlantingSeasons] = React.useState([
-        { id: 0, title: 'January', isSet: false },
-        { id: 1, title: 'Febuary', isSet: false },
-        { id: 2, title: 'March', isSet: false },
-        { id: 3, title: 'April', isSet: false },
-        { id: 4, title: 'May', isSet: false },
-        { id: 5, title: 'June', isSet: false },
-        { id: 6, title: 'July', isSet: false },
-        { id: 7, title: 'August', isSet: false },
-        { id: 8, title: 'September', isSet: false },
-        { id: 9, title: 'October', isSet: false },
-        { id: 10, title: 'November', isSet: false },
-        { id: 11, title: 'December', isSet: false }
+        { id: 0, title: t('common:january') , isSet: false },
+        { id: 1, title: t('common:february') , isSet: false },
+        { id: 2, title: t('common:march') , isSet: false },
+        { id: 3, title: t('common:april') , isSet: false },
+        { id: 4, title: t('common:may') , isSet: false },
+        { id: 5, title: t('common:june') , isSet: false },
+        { id: 6, title: t('common:july') , isSet: false },
+        { id: 7, title: t('common:august') , isSet: false },
+        { id: 8, title: t('common:september') , isSet: false },
+        { id: 9, title: t('common:october') , isSet: false },
+        { id: 10, title: t('common:november') , isSet: false },
+        { id: 11, title: t('common:december') , isSet: false }
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
