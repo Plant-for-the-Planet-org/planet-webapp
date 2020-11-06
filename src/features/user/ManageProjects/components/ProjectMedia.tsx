@@ -50,16 +50,16 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       "isDefault": false
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, session).then((res) => {
-      if(!res.code){
+      if (!res.code) {
         let newUploadedImages = uploadedImages;
         newUploadedImages.push(res)
         setUploadedImages(newUploadedImages)
         setIsUploadingData(false)
         setErrorMessage('')
-      }else {
+      } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
@@ -67,14 +67,14 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
         }
 
       }
-      
+
 
     })
   };
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
-      handleReset('Please fill the Basic Details first')
+      handleReset(t('manageProjects:resetMessage'))
     }
   })
 
@@ -139,7 +139,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
@@ -174,14 +174,14 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
           setErrorMessage(res.message)
         }
       }
-      })
+    })
   }
 
   const uploadCaption = (id: any, index: any, e: any) => {
@@ -199,7 +199,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
@@ -223,7 +223,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
               inputRef={register({
                 pattern: {
                   value: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/,
-                  message: "Invalid Youtube Video Link"
+                  message: t('manageProjects:youtubeURLValidation')
                 }
               })}
               label={t('manageProjects:youtubeURL')}
@@ -255,7 +255,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
                         <input
                           onBlur={(e) => uploadCaption(image.id, index, e)}
                           type="text"
-                          placeholder="Add Caption"
+                          placeholder={t('manageProjects:addCaption')}
                           defaultValue={image.description}
                         />
 
@@ -282,12 +282,12 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
                 className={styles.continueButton}
               >
                 <input {...getInputProps()} />
-                            Upload Photos
+                {t('manageProjects:uploadPhotos')}
 
-                        </AnimatedButton>
+              </AnimatedButton>
               <p style={{ marginTop: '18px' }}>
-                or drag them in
-                        </p>
+                {t('manageProjects:dragIn')}
+              </p>
             </label>
 
             {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
@@ -307,13 +307,15 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
               className={styles.secondaryButton}
             >
               <BackArrow />
-              <p>Back to basic details</p>
+              <p>
+                {t('manageProjects:backToBasic')}
+              </p>
             </AnimatedButton>
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
             <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
-              {isUploadingData ? <div className={styles.spinner}></div> : "Save & Continue"}
+              {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </div>
           </div>
         </div>
