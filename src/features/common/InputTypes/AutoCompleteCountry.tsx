@@ -42,7 +42,7 @@ export default function CountrySelect(props: {
   ) => void)
   | undefined;
 }) {
-  const { t } = useTranslation(['country']);
+  const { t, ready } = useTranslation(['country']);
 
   const classes = useStyles();
 
@@ -73,18 +73,20 @@ export default function CountrySelect(props: {
     }
   }, [value]);
   
-  countries.sort((a, b) => {
-      const nameA = t(`country:${a.code.toLowerCase()}`);
-      const nameB = t(`country:${b.code.toLowerCase()}`);
-      if (nameA > nameB) {
-        return 1;
-      } if (nameA < nameB) {
-        return -1;
-      }
-      return 0;
-    });
+  if (ready) {
+    countries.sort((a, b) => {
+        const nameA = t(`country:${a.code.toLowerCase()}`);
+        const nameB = t(`country:${b.code.toLowerCase()}`);
+        if (nameA > nameB) {
+          return 1;
+        } if (nameA < nameB) {
+          return -1;
+        }
+        return 0;
+      });    
+  }
 
-  return value ? (
+  return value && ready ? (
     <Autocomplete
       id="country-select"
       style={{ width: '100%' }}
@@ -117,7 +119,7 @@ export default function CountrySelect(props: {
             autoComplete: 'new-password', // disable autocomplete and autofill
           }}
           inputRef={props.inputRef}
-          // name={props.name}
+          name={'countrydropdown'}
         />
       )}
     />

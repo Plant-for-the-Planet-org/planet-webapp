@@ -24,11 +24,12 @@
   
   .settingsItem {
       padding: 10px 0px;
+      text-decoration: none;
+      color: rgba(0, 0, 0, 0.87);
   }
 
   .settingsItem:hover {
       cursor: pointer;
-      background-color:'red';
   }
 
   .cancelText {

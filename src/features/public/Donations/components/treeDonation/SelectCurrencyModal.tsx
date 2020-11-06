@@ -129,10 +129,10 @@ const FormControlNew = withStyles({
 
 // Maps the radio buttons for currency
 function MapCurrency(props: any) {
-  const { t } = useTranslation(['country']);
+  const { t, i18n } = useTranslation(['country']);
   
   const { value, handleChange } = props;
-  const sortedCountriesData = sortCountriesByTranslation(t);
+  const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
   return (
     <FormControlNew component="fieldset">
       <RadioGroup
@@ -147,7 +147,7 @@ function MapCurrency(props: any) {
             key={country.countryCode + '-' + index}
             value={`${country.countryCode},${country.currencyCode}`} // need both info
             control={<GreenRadio />}
-            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
           />
         ))}
       </RadioGroup>

@@ -5,7 +5,7 @@ import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 
 const { useTranslation } = i18next;
 interface Props {
@@ -44,7 +44,7 @@ export default function ProjectsContainer({
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
-
+  
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
@@ -55,7 +55,7 @@ export default function ProjectsContainer({
       );
     } else if (type === 'all') {
       return projects;
-    }
+    } 
   }
 
   function getSearchProjects(projects: Array<any>, keyword: string) {
@@ -84,9 +84,12 @@ export default function ProjectsContainer({
           return false;
         }
       });
+      setSearchedProjects(resultProjects);
+      return resultProjects;
+    } else {
+      setSearchedProjects(projects);
     }
-    setSearchedProjects(resultProjects);
-    return resultProjects;
+    
   }
 
   const allProjects = React.useMemo(() => getProjects(projects, 'all'), [

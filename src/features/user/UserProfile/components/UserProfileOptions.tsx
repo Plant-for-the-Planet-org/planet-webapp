@@ -4,7 +4,6 @@ import Share from '../../../../../public/assets/images/icons/userProfileIcons/Sh
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
-import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
@@ -19,14 +18,13 @@ export default function UserProfileOptions({
           title:'Check out Plant-for-the-Planet!',
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
         })
-        console.log('Share complete', response)
       } catch (error) {
-        console.error('Could not share at this time', error);
+        // console.error('Could not share at this time', error);
       }
   }
   
   const onShareClicked = () => {
-    if(navigator.share!== undefined) {
+    if(navigator.share) {
       // if in phone and web share API supported
       webShareMobile();
     } else {

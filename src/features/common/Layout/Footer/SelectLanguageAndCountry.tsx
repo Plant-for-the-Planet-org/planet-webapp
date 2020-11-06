@@ -15,9 +15,14 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 let styles = require('./SelectLanguageAndCountry.module.scss');
 import i18next from '../../../../../i18n';
+import tenantConfig from '../../../../../tenant.config';
 
+const config = tenantConfig();
 const { useTranslation } = i18next;
 
+// reduce the allowed languages to the languages listed in the tenants config file
+const selectableLanguages = supportedLanguages.filter(lang => config.languages.includes(lang.langCode));
+        
 export default function TransitionsModal(props) {
   const {
     openModal,
@@ -29,7 +34,7 @@ export default function TransitionsModal(props) {
     setSelectedCountry,
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
-  const [selectedModalCountry, setSelectedModalCountry] = useState('AF');
+  const [selectedModalCountry, setSelectedModalCountry] = useState('US');
 
   const { i18n } = useTranslation();
   const { t } = useTranslation(['common', 'country']);
@@ -129,10 +134,10 @@ export default function TransitionsModal(props) {
 
 // Maps the radio buttons for countries
 function MapCountry(props) {
-  const { t } = useTranslation(['country']);
+  const { t, i18n } = useTranslation(['country']);
   
   const { value, handleChange } = props;
-  const sortedCountriesData = sortCountriesByTranslation(t);
+  const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
   return (
     <FormControl component="fieldset">
       <RadioGroup
@@ -144,9 +149,10 @@ function MapCountry(props) {
       >
         {sortedCountriesData.map((country) => (
           <FormControlLabel
+            key={country.countryCode}
             value={country.countryCode}
             control={<GreenRadio />}
-            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.countryCode}
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
           />
         ))}
       </RadioGroup>
@@ -166,8 +172,9 @@ function MapLanguage(props) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {supportedLanguages.map((lang) => (
+        {selectableLanguages.map((lang) => (
           <FormControlLabel
+            key={lang.langCode}
             value={lang.langCode}
             control={<GreenRadio />}
             label={lang.languageName}

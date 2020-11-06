@@ -25,14 +25,13 @@ export default function Donate({
   }, []);
 
   React.useEffect(() => {
-   
-      async function loadProject() {
-        let currencyCode = getStoredCurrency();
-        const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
-        setProject(project);
-        setShowSingleProject(true);
-      }
-      if(router.query.p !== undefined) {
+    async function loadProject() {
+      let currencyCode = getStoredCurrency();
+      const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
+      setProject(project);
+      setShowSingleProject(true);
+    }
+    if(router.query.p) {
       loadProject();
     }
   }, [router.query.p]);

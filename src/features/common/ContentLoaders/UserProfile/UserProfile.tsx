@@ -1,5 +1,5 @@
 import React from "react";
-function UserProfleLoader() {
+function UserProfileLoader() {
     return (
         <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
             <svg
@@ -13,7 +13,7 @@ function UserProfleLoader() {
                     width="100%"
                     height="100%"
                     fill='url("#fill")'
-                    clip-path="url(#clip-path)"
+                    clipPath="url(#clip-path)"
                 ></rect>
                 <defs>
                     <clipPath id="clip-path">
@@ -55,4 +55,4 @@ function UserProfleLoader() {
     )
 }
 
-export default UserProfleLoader;
+export default UserProfileLoader;

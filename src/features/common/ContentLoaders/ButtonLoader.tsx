@@ -14,7 +14,7 @@ function ButtonLoader() {
             y="0"
             width="100%"
             height="100%"
-            clip-path="url(#clip-path)"
+            clipPath="url(#clip-path)"
             fill='url("#fill")'
         ></rect>
         <defs>
@@ -24,8 +24,8 @@ function ButtonLoader() {
             <linearGradient id="fill">
                 <stop
                     offset="0.599964"
-                    stop-color="#f3f3f3"
-                    stop-opacity="1"
+                    stopColor="#f3f3f3"
+                    stopOpacity="1"
                 >
                     <animate
                         attributeName="offset"
@@ -37,8 +37,8 @@ function ButtonLoader() {
                 </stop>
                 <stop
                     offset="1.59996"
-                    stop-color="#ecebeb"
-                    stop-opacity="1"
+                    stopColor="#ecebeb"
+                    stopOpacity="1"
                 >
                     <animate
                         attributeName="offset"
@@ -50,8 +50,8 @@ function ButtonLoader() {
                 </stop>
                 <stop
                     offset="2.59996"
-                    stop-color="#f3f3f3"
-                    stop-opacity="1"
+                    stopColor="#f3f3f3"
+                    stopOpacity="1"
                 >
                     <animate
                         attributeName="offset"

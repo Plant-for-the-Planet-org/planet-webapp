@@ -2,6 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import { Provider as AuthProvider } from 'next-auth/client'
 import '../src/features/public/Donations/styles/Maps.scss';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/theme/themeContext';
@@ -34,8 +35,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
+  const [showProjects, setShowProjects] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
+  const [searchedProject, setsearchedProjects] = React.useState([]);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -56,12 +59,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, [router]);
 
   React.useEffect(() => {
-    if (
-      process.env.NEXT_PUBLIC_GA_TRACKING_ID &&
-      (process.env.NEXT_PUBLIC_GA_TRACKING_ID !== undefined ||
-        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== '' ||
-        process.env.NEXT_PUBLIC_GA_TRACKING_ID !== null)
-    ) {
+    if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
       TagManager.initialize(tagManagerArgs);
     }
   }, []);
@@ -75,19 +73,24 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setShowSingleProject,
     pageProps,
     initialized,
+    showProjects,
+    setShowProjects,
+    searchedProject,
+    setsearchedProjects,
   };
 
   return (
+    <AuthProvider session={pageProps.session}>
     <ThemeProvider>
       <CssBaseline />
       <Layout>
         {isMap ? (
-          project !== null ? (
+          project ? (
             <MapLayout
               {...ProjectProps}
               mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
             />
-          ) : projects !== null ? (
+          ) : projects ? (
             <MapLayout
               {...ProjectProps}
               mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
@@ -97,5 +100,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <Component {...ProjectProps} />
       </Layout>
     </ThemeProvider>
+    </AuthProvider>
   );
 }

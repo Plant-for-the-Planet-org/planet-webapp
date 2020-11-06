@@ -40,7 +40,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               {t('leaderboard:mostTrees')}
             </div>
           </div>
-          {leaderboardData !== null &&
+          {leaderboardData &&
           leaderboardData.mostRecent &&
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (

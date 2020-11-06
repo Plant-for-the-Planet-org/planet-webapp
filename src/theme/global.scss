@@ -1,4 +1,5 @@
 @import './theme';
+@import '~vizzuality-components/dist/bundle';
 
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
@@ -10,6 +11,15 @@
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
   background: transparent;
+}
+
+.MuiTypography-body1 {
+  font-size: 14px !important;
+  font-family: $primaryFontFamily !important;
+}
+
+.MuiFormControlLabel-root {
+  margin: 0;
 }
 
 html {
@@ -37,15 +47,26 @@ body {
   outline: none !important;
 }
 
+.planet-links {
+  color: $primaryColor;
+}
+
+.planet-links:hover {
+  color: $primaryColor;
+}
+
+.planet-links:visited {
+  color: $primaryColor;
+}
+
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
 }
 
-a{
+a {
   text-decoration: none;
 }
-
 
 // Reseting User agent styles to maintain cross browser interferences
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,  figure, figcaption, footer, header, hgroup,  menu, nav, output, ruby, section, summary, time, mark, audio, video {  
@@ -55,4 +76,15 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   font-size: 100%;  
   font: inherit;  
   vertical-align: baseline; 
+}
+
+.rc-slider-mark-text {
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  font-size: 12px;
+}
+
+// Stepper Connector
+.MuiStepIcon-root.MuiStepIcon-active,.MuiStepIcon-root.MuiStepIcon-completed {
+  color: $primaryColor!important;
 }

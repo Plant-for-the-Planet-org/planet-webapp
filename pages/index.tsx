@@ -13,6 +13,9 @@ interface Props {
   setProject: Function;
   setProjects: Function;
   setShowSingleProject: Function;
+  showProjects: Boolean;
+  setShowProjects: Function;
+  setsearchedProjects: any
 }
 
 export default function Donate({
@@ -21,6 +24,9 @@ export default function Donate({
   setProject,
   setProjects,
   setShowSingleProject,
+  showProjects,
+  setShowProjects,
+  setsearchedProjects,
 }: Props) {
   const router = useRouter();
   const [directGift, setDirectGift] = React.useState(null);
@@ -30,21 +36,21 @@ export default function Donate({
   }, []);
 
   React.useEffect(() => {
-    var getdirectGift = localStorage.getItem('directGift');
-    if (getdirectGift !== null) {
+    const getdirectGift = localStorage.getItem('directGift');
+    if (getdirectGift) {
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
 
   React.useEffect(() => {
-    if (directGift !== null) {
+    if (directGift) {
       if (directGift.show === false) {
         setShowDirectGift(false);
       }
     }
   }, [directGift]);
 
-  //Deprecation Notice: This route will be removed in next major version
+  // Deprecation Notice: This route will be removed in next major version
   React.useEffect(() => {
     if (router.query.p) {
       router.push('/[p]', `/${router.query.p}`, {
@@ -56,9 +62,9 @@ export default function Donate({
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      let currencyCode = getStoredCurrency();
+      const currencyCode = getStoredCurrency();
       const projects = await getRequest(
-        `/app/projects?_scope=map&currency=${currencyCode}`
+        `/app/projects?_scope=map&currency=${currencyCode}`,
       );
       setProjects(projects);
       setProject(null);
@@ -66,11 +72,13 @@ export default function Donate({
     }
     loadProjects();
   }, []);
-
   const ProjectsProps = {
     projects,
     directGift,
     setDirectGift,
+    showProjects,
+    setShowProjects,
+    setsearchedProjects,
   };
 
   const GiftProps = {
@@ -85,7 +93,7 @@ export default function Donate({
         projects && initialized ? (
           <>
             <ProjectsList {...ProjectsProps} />
-            {directGift !== null ? (
+            {directGift ? (
               showdirectGift ? (
                 <DirectGift {...GiftProps} />
               ) : null
