@@ -27,9 +27,9 @@ const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
   ? process.env.SCHEME
   : 'https';
 
-const nextauthUrl = process.env.NEXTAUTH_URL === '' || process.env.NEXTAUTH_URL === 'null'
+const nextauthUrl = process.env.NEXTAUTH_URL === '' || process.env.NEXTAUTH_URL === null
   ? process.env.VERCEL_URL
-  : `${scheme}://${process.env.NEXTAUTH_URL}`;
+  : `${process.env.NEXTAUTH_URL}`;
 
 const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
