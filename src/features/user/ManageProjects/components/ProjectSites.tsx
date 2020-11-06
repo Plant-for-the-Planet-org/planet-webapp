@@ -152,10 +152,10 @@ export default function ProjectSites({
   }
 
   const status = [
-    { label: 'Planting', value: 'planting' },
-    { label: 'Planted', value: 'planted' },
-    { label: 'Barren', value: 'barren' },
-    { label: 'Reforestation', value: 'reforestation' },
+    { label: t('manageProjects:Planting') , value: 'planting' },
+    { label: t('manageProjects:Planted') , value: 'planted' },
+    { label: t('manageProjects:Barren') , value: 'barren' },
+    { label: t('manageProjects:Reforestation') , value: 'reforestation' },
   ];
 
   React.useEffect(() => {
@@ -285,7 +285,7 @@ export default function ProjectSites({
                     </MaterialTextField>
                   }
                   name="status"
-                  rules={{ required: "Please select Project Status" }}
+                  rules={{ required: t('manageProjects:selectProjectStatus') }}
                   control={control}
                   defaultValue={siteDetails.status ? siteDetails.status : ""}
                 />
@@ -304,7 +304,9 @@ export default function ProjectSites({
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.formFieldLarge}
             >
-              <p className={styles.inlineLinkButton}>Save & Add another site</p>
+              <p className={styles.inlineLinkButton}>
+                  {t('manageProjects:saveAndAddSite')}
+              </p>
             </div>
 
           </div>
@@ -313,7 +315,9 @@ export default function ProjectSites({
               onClick={() => setShowForm(true)}
               className={styles.formFieldLarge}
             >
-              <p className={styles.inlineLinkButton}>Add another site</p>
+              <p className={styles.inlineLinkButton}>
+              {t('manageProjects:addSite')}
+              </p>
             </div>
           )}
 
@@ -330,7 +334,9 @@ export default function ProjectSites({
               className={styles.secondaryButton}
             >
               <BackArrow />
-              <p>Back to detailed analysis</p>
+              <p>
+                {t('manageProjects:backToAnalysis')}
+              </p>
             </AnimatedButton>
           </div>
           <div style={{ width: '20px' }}></div>
@@ -341,7 +347,7 @@ export default function ProjectSites({
               }
               className={styles.continueButton}
             >
-              {isUploadingData ? <div className={styles.spinner}></div> : "Save & Continue"}
+              {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </AnimatedButton>
           </div>
         </div>

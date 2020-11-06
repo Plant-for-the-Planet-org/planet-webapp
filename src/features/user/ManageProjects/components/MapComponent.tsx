@@ -14,8 +14,9 @@ import PencilIcon from '../../../../../public/assets/images/icons/manageProjects
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import Expand from '../../../../../public/assets/images/icons/manageProjects/Expand';
-import { relative } from 'path';
+import i18next from './../../../../../i18n'
 
+const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
@@ -36,6 +37,7 @@ export default function MapComponent({
   const [modeHandler, setModeHandler] = React.useState(drawMode);
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
+  const { t, i18n } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
     width: 700,
     height: 400,
@@ -233,7 +235,7 @@ export default function MapComponent({
         {({ getRootProps, getInputProps }) => (
           <div {...getRootProps()} className={styles.dropZone}>
             <input {...getInputProps()} />
-            Drop .geojson or .kml
+            {t('manageProjects:dropGeoJson')}
           </div>
         )}
       </Dropzone>

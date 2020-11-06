@@ -26,10 +26,10 @@ interface Props {
     projectGUID: String;
     handleReset: Function;
     session: any;
-    userLang:String;
+    userLang: String;
 }
 
-export default function ProjectSpending({ handleBack, session, handleNext,userLang, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, session, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -169,7 +169,7 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                                         inputRef={register({
                                             required: {
                                                 value: true,
-                                                message: 'Please add Spending Year'
+                                                message: t('manageProjects:spendingYearValidation')
                                             }
                                         })}
                                         views={["year"]}
@@ -201,7 +201,7 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                                             parseFloat(value) > 0,
                                         required: {
                                             value: true,
-                                            message: 'Please enter the Amount Spent'
+                                            message: t('manageProjects:spendingAmountValidation')
                                         }
                                     })}
                                     label={t('manageProjects:spendingAmount')}
@@ -236,11 +236,11 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                                     <AnimatedButton
                                         className={styles.continueButton}
                                     >
-                                        Upload Report
-                            </AnimatedButton>
+                                        {t('manageProjects:uploadReport')}
+                                    </AnimatedButton>
                                     <p style={{ marginTop: '18px' }}>
-                                        or drag in a pdf
-                                </p>
+                                        {t('manageProjects:dragInPdf')}
+                                    </p>
                                 </div>
                             </div>
                         ) : (
@@ -251,18 +251,20 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                                             className={styles.continueButton}
                                         >
                                             <input {...getInputProps()} />
-                                    Upload Report
-                                </AnimatedButton>
+                                            {t('manageProjects:uploadReport')}
+                                        </AnimatedButton>
                                         <p style={{ marginTop: '18px' }}>
-                                            or drag in a pdf
-                                </p>
+                                            {t('manageProjects:dragInPdf')}
+                                        </p>
                                     </div>
                                 </div>
                             )}
                     </div>
                 ) : (
                         <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
-                            <p className={styles.inlineLinkButton}>Add another year</p>
+                            <p className={styles.inlineLinkButton}>
+                            {t('manageProjects:addAnotherYear')}
+                            </p>
                         </div>
                     )}
 
@@ -279,7 +281,9 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                             className={styles.secondaryButton}
                         >
                             <BackArrow />
-                            <p>Back to project sites</p>
+                            <p>
+                            {t('manageProjects:backToSites')}
+                            </p>
                         </AnimatedButton>
                     </div>
                     <div style={{ width: '20px' }}></div>
@@ -288,7 +292,7 @@ export default function ProjectSpending({ handleBack, session, handleNext,userLa
                             onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> : "Save & Continue"}
+                            {isUploadingData ? <div className={styles.spinner}></div> :t('manageProjects:saveAndContinue')}
                         </AnimatedButton>
                     </div>
                 </div>

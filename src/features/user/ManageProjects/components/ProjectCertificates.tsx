@@ -134,8 +134,8 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
                                     <PDFRed />
                                 </a>
                                 <div className={styles.reportPDFDetails}>
-                                    <p style={{ fontWeight: 'bold' }}>Certified By {report.certifierName} </p>
-                                    <p>on {report.issueDate} </p>
+                                    <p style={{ fontWeight: 'bold' }}> {t('manageProjects:certifiedBy')} {report.certifierName} </p>
+                                    <p>{report.issueDate} </p>
                                 </div>
                                 {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                     <PencilIcon color={"#000"} />
@@ -185,7 +185,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
                                     inputRef={register({
                                         required: {
                                             value: true,
-                                            message: 'Please add Certification date'
+                                            message: t('manageProjects:certificationDateValidation')
                                         }
                                     })}
                                     maxDate={new Date()}
@@ -214,10 +214,10 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
                                 <AnimatedButton
                                     className={styles.continueButton}
                                 >
-                                    Upload Certificate
+                                    {t('manageProjects:uploadCertificate')}
                             </AnimatedButton>
                                 <p style={{ marginTop: '18px' }}>
-                                    or drag in a pdf
+                                    {t('manageProjects:dragIn')}
                         </p>
                             </div>
                         </div>
@@ -229,17 +229,19 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
                                         className={styles.continueButton}
                                     >
                                         <input {...getInputProps()} />
-                                    Upload Certificate
+                                    {t('manageProjects:uploadCertificate')}
                                 </AnimatedButton>
                                     <p style={{ marginTop: '18px' }}>
-                                        or drag in a pdf
+                                        {t('manageProjects:dragIn')}
                                 </p>
                                 </div>
                             </div>
                         )}
                 </>) : (
                     <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
-                        <p className={styles.inlineLinkButton}>Add another cerification</p>
+                        <p className={styles.inlineLinkButton}>
+                            {t('manageProjects:addCertificate')}
+                        </p>
                     </div>)}
 
         </div>
