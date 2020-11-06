@@ -14,7 +14,7 @@ const config = {
     title: 'Nitro Snowboards ❤️ Trees',
     description:
       'Nitro Snowboards set a goal to support and mobilize the conservation, restoration, and growth of a forest.',
-    image: `/tenants/${config.tenantName}/background.jpeg`,
+    image: `/tenants/nitrosb/background.jpeg`,
     twitterHandle: '',
     locale: 'en_US',
   },
