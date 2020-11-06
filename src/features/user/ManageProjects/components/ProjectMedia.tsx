@@ -7,7 +7,7 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { getS3Image } from '../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 
@@ -249,7 +249,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
                   return (
                     <div key={image.id} className={styles.formFieldHalf}>
                       <div className={styles.uploadedImageContainer}>
-                        <img src={getS3Image('project', 'medium', image.image)} />
+                        <img src={getImageUrl('project', 'medium', image.image)} />
                         <div className={styles.uploadedImageOverlay}></div>
 
                         <input

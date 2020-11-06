@@ -12,7 +12,7 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { removeUserExistsInDB, getUserInfo, removeUserInfo, setUserInfo } from '../../../../utils/auth0/localStorageUtils'
-import { getS3Image } from '../../../../utils/getImageURL'
+import getImageUrl from '../../../../utils/getImageURL'
 import { editProfile } from '../../../../utils/auth0/apiRequests'
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
@@ -190,7 +190,7 @@ export default function EditProfileModal({
                 <div
                   className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {userprofile.image ? <img src={getS3Image('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : <Camera color="white" />}
+                  {userprofile.image ? <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : <Camera color="white" />}
                 </div>
               </label>
             </div>
