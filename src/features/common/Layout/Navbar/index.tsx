@@ -14,7 +14,7 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
-import {getS3Image} from '../../../../utils/getImageURL'
+import getImageUrl from '../../../../utils/getImageURL'
 import { getUserExistsInDB, getUserInfo } from '../../../../utils/auth0/localStorageUtils'
 
 const { useTranslation } = i18next;
@@ -62,7 +62,7 @@ export default function NavbarComponent(props: any) {
       const userSlug = getUserInfo()?.slug;
       //if logged in user && exist in db && profilepic is set -> show profile pic
       if (!loading && session && userProfilePic) {
-        return <img src={getS3Image('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
+        return <img src={getImageUrl('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
       } 
       // if no session -> icon depending on path
       // If complete-signup or it's private profile page

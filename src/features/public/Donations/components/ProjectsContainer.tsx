@@ -44,7 +44,7 @@ export default function ProjectsContainer({
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
-
+  
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {

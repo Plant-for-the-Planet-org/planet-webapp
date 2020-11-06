@@ -16,17 +16,11 @@ import { MenuItem } from '@material-ui/core';
 import ProjectCertificates from './ProjectCertificates';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
-const siteOwners = [
-    { id: 1, title: 'Private', value: 'private' },
-    { id: 2, title: 'Public Property', value: 'public-property' },
-    { id: 3, title: 'Small Holding', value: 'smallholding' },
-    { id: 4, title: 'Communal Land', value: 'communal-land' },
-    { id: 5, title: 'Owned by Owner', value: 'owned-by-owner' },
-    { id: 6, title: 'Other', value: 'other' }
-]
+
 
 interface Props {
     handleNext: Function;
@@ -36,25 +30,35 @@ interface Props {
     projectGUID: String;
     handleReset: Function;
     session: any;
+    userLang: String;
 }
-export default function DetailedAnalysis({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects']);
+export default function DetailedAnalysis({ handleBack, userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+    const { t, i18n } = useTranslation(['manageProjects', 'common']);
+
+    const [siteOwners, setSiteOwners] = React.useState([
+        { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private', isSet: false },
+        { id: 2, title: t('manageProjects:siteOwnerPublic'), value: 'public-property', isSet: false },
+        { id: 3, title: t('manageProjects:siteOwnerSmallHolding'), value: 'smallholding', isSet: false },
+        { id: 4, title: t('manageProjects:siteOwnerCommunal'), value: 'communal-land', isSet: false },
+        { id: 5, title: t('manageProjects:siteOwnerOwned'), value: 'owned-by-owner', isSet: false },
+        { id: 6, title: t('manageProjects:siteOwnerOther'), value: 'other', isSet: false }
+    ])
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
     const [plantingSeasons, setPlantingSeasons] = React.useState([
-        { id: 0, title: 'January', isSet: false },
-        { id: 1, title: 'Febuary', isSet: false },
-        { id: 2, title: 'March', isSet: false },
-        { id: 3, title: 'April', isSet: false },
-        { id: 4, title: 'May', isSet: false },
-        { id: 5, title: 'June', isSet: false },
-        { id: 6, title: 'July', isSet: false },
-        { id: 7, title: 'August', isSet: false },
-        { id: 8, title: 'September', isSet: false },
-        { id: 9, title: 'October', isSet: false },
-        { id: 10, title: 'November', isSet: false },
-        { id: 11, title: 'December', isSet: false }
+        { id: 0, title: t('common:january'), isSet: false },
+        { id: 1, title: t('common:february'), isSet: false },
+        { id: 2, title: t('common:march'), isSet: false },
+        { id: 3, title: t('common:april'), isSet: false },
+        { id: 4, title: t('common:may'), isSet: false },
+        { id: 5, title: t('common:june'), isSet: false },
+        { id: 6, title: t('common:july'), isSet: false },
+        { id: 7, title: t('common:august'), isSet: false },
+        { id: 8, title: t('common:september'), isSet: false },
+        { id: 9, title: t('common:october'), isSet: false },
+        { id: 10, title: t('common:november'), isSet: false },
+        { id: 11, title: t('common:december'), isSet: false }
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
@@ -66,15 +70,20 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
         setPlantingSeasons([...plantingSeasonsNew]);
     }
 
-
+    const handleSetSiteOwner = (id: any) => {
+        let owner = siteOwners[id - 1];
+        let newOwner = owner;
+        newOwner.isSet = !owner.isSet;
+        let newSiteOwners = siteOwners;
+        newSiteOwners[id - 1] = newOwner;
+        setSiteOwners([...newSiteOwners]);
+    }
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset('Please fill the Basic Details first')
+            handleReset(t('manageProjects:resetMessage'))
         }
     })
-
-
 
     const [isCertified, setisCertified] = React.useState(true)
 
@@ -90,6 +99,13 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
             }
         }
 
+        let owners = [];
+        for (let i = 0; i < siteOwners.length; i++) {
+            if (siteOwners[i].isSet) {
+                owners.push(siteOwners[i].value)
+            }
+        }
+
         const submitData = {
             yearAbandoned: data.yearAbandoned.getFullYear(),
             firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
@@ -97,7 +113,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
             motivation: data.motivation,
-            siteOwnerType: data.siteOwnerType.value,
+            siteOwnerType: owners,
             siteOwnerName: data.siteOwnerName,
             acquisitionYear: data.acquisitionYear.getFullYear(),
             degradationYear: data.degradationYear.getFullYear(),
@@ -113,15 +129,15 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                 setErrorMessage('')
                 handleNext()
             } else {
-                if(res.code === 404){
+                if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage('Project Not Found')
+                    setErrorMessage(t('manageProjects:projectNotFound'))
                 }
-                else{
+                else {
                     setIsUploadingData(false)
                     setErrorMessage(res.message)
                 }
-                
+
             }
         })
     };
@@ -139,7 +155,6 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                 employeesCount: projectDetails.employeesCount,
                 mainChallenge: projectDetails.mainChallenge,
                 motivation: projectDetails.motivation,
-                siteOwnerType: siteOwners.find(element => element.value === projectDetails.siteOwnerType),  // Format with object to set it again
                 siteOwnerName: projectDetails.siteOwnerName,
                 acquisitionYear: projectDetails.acquisitionYear ? new Date(new Date().setFullYear(projectDetails.acquisitionYear)) : new Date(),
                 degradationYear: projectDetails.degradationYear ? new Date(new Date().setFullYear(projectDetails.degradationYear)) : new Date(),
@@ -157,6 +172,20 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                 }
             }
 
+            // set owner type
+            if (projectDetails.siteOwnerType && projectDetails.siteOwnerType.length > 0) {
+                let newSiteOwners = siteOwners
+                for (let i = 0; i < projectDetails.siteOwnerType.length; i++) {
+                    for (let j = 0; j < newSiteOwners.length; j++) {
+                        if (newSiteOwners[j].value === projectDetails.siteOwnerType[i]) {
+                            newSiteOwners[j].isSet = true;
+                        }
+                    }
+
+                }
+                setSiteOwners(newSiteOwners)
+            }
+
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
@@ -167,7 +196,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
 
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
                                         <DatePicker
@@ -195,14 +224,16 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                        <p>When was the last significant human intervention in the site? Incl. logging, agriculture, cattle grazing, human induced burning.</p>
+                                        <p>
+                                            {t('manageProjects:yearAbandonedInfo')}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
 
@@ -243,7 +274,9 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                         <p
                                             className={styles.inputEndAdornment}
                                             style={{ marginLeft: '4px', width: '100%', textAlign: 'right', fontSize: '14px' }}
-                                        >{`trees per ha`}</p>
+                                        >
+                                            {t('manageProjects:treePerHa')}
+                                        </p>
                                     ),
                                 }}
                             />
@@ -271,7 +304,9 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                        <p>Equivalent of a 40 hour week. I.e. two half time employees count as one.</p>
+                                        <p>
+                                            {t('manageProjects:employeesCountInfo')}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -279,9 +314,8 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                     </div>
 
                     <div className={styles.formFieldLarge}>
-
                         <div className={styles.plantingSeasons}>
-                            <p className={styles.plantingSeasonsLabel}>Planting Seasons</p>
+                            <p className={styles.plantingSeasonsLabel}> {t('manageProjects:plantingSeasons')} </p>
                             {plantingSeasons.map((month) => {
                                 return (
                                     <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
@@ -294,7 +328,6 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     </div>
                                 )
                             })}
-
                         </div>
                     </div>
 
@@ -308,7 +341,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 inputRef={register({
                                     maxLength: {
                                         value: 300,
-                                        message: 'Maximum 300 characters allowed'
+                                        message: t('manageProjects:max300Chars')
                                     }
                                 })}
                                 label={t('manageProjects:mainChallenge')}
@@ -322,13 +355,15 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 </span>
                             )}
                             <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                            <div className={styles.popover}>
-                                <InfoIcon />
-                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>Maximum 300 characters allowed</p>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:max300Chars')}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
 
                         <div style={{ width: '20px' }}></div>
@@ -338,7 +373,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 inputRef={register({
                                     maxLength: {
                                         value: 300,
-                                        message: 'Maximum 300 characters allowed'
+                                        message: t('manageProjects:max300Chars')
                                     }
                                 })}
                                 label={t('manageProjects:whyThisSite')}
@@ -352,13 +387,15 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                 </span>
                             )}
                             <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                            <div className={styles.popover}>
-                                <InfoIcon />
-                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>Maximum 300 characters allowed</p>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:max300Chars')}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
 
@@ -366,29 +403,21 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
 
-                            <Controller
-                                as={
-                                    <MaterialTextField
-                                        label={t('manageProjects:siteOwner')}
-                                        variant="outlined"
-                                        select
-                                    >
-                                        {siteOwners.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.title}
-                                            </MenuItem>
-                                        ))}
-                                    </MaterialTextField>
-                                }
-                                name="siteOwnerType"
-                                control={control}
-                                defaultValue=""
-                            />
-                            {errors.siteOwnerType && (
-                                <span className={styles.formErrors}>
-                                    {errors.siteOwnerType.message}
-                                </span>
-                            )}
+                            <div className={styles.plantingSeasons}>
+                                <p className={styles.plantingSeasonsLabel}> {t('manageProjects:siteOwner')} </p>
+                                {siteOwners.map((owner) => {
+                                    return (
+                                        <div className={styles.multiSelectInput} style={{ width: 'fit-content' }} key={owner.id} onClick={() => handleSetSiteOwner(owner.id)}>
+                                            <div className={`${styles.multiSelectInputCheck} ${owner.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
+                                                    <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
+                                                </svg>
+                                            </div>
+                                            <p>{owner.title}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
@@ -402,7 +431,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                     </div>
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
                                         <DatePicker
@@ -421,14 +450,14 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                                     name="acquisitionYear"
                                     control={control}
                                     defaultValue=""
-                                    
+
                                 />
                             </MuiPickersUtilsProvider>
 
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
                                     render={props => (
                                         <DatePicker
@@ -462,7 +491,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             inputRef={register({
                                 maxLength: {
                                     value: 300,
-                                    message: 'Maximum 300 characters allowed'
+                                    message: t('manageProjects:max300Chars')
                                 }
                             })}
                         />
@@ -475,7 +504,9 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             <div className={styles.popover}>
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>Maximum 300 characters allowed</p>
+                                    <p>
+                                        {t('manageProjects:max300Chars')}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -489,7 +520,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             inputRef={register({
                                 maxLength: {
                                     value: 300,
-                                    message: 'Maximum 300 characters allowed'
+                                    message: t('manageProjects:max300Chars')
                                 }
                             })}
                         />
@@ -502,9 +533,11 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             <div className={styles.popover}>
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?</p>
-                                    <br/>
-                                    <p>Maximum 300 characters allowed</p>
+                                    <p>
+                                        {t('manageProjects:longTermPlanInfo')}
+                                    </p>
+                                    <br />
+                                    <p>{t('manageProjects:max300Chars')}</p>
                                 </div>
                             </div>
                         </div>
@@ -536,6 +569,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             projectGUID={projectGUID}
                             session={session}
                             setIsUploadingData={setIsUploadingData}
+                            userLang={userLang}
                         />
                     ) : null}
 
@@ -554,7 +588,9 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             className={styles.secondaryButton}
                         >
                             <BackArrow />
-                            <p>Back to project media</p>
+                            <p>
+                                {t('manageProjects:backToMedia')}
+                            </p>
                         </AnimatedButton>
                     </div>
                     <div style={{ width: '20px' }}></div>
@@ -563,7 +599,7 @@ export default function DetailedAnalysis({ handleBack, session, handleNext, proj
                             onClick={handleSubmit(onSubmit)}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> : "Save and Continue"}
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </AnimatedButton>
                     </div>
                 </div>
