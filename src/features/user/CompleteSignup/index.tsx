@@ -59,7 +59,7 @@ export default function CompleteSignup() {
   const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
   const [isSubscribed, setIsSubscribed] = React.useState(true);
   const [accountType, setAccountType] = useState('individual');
-  const [firstName, setFirstName] = useState('');
+  const [firstname, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [nameOfOrg, setNameOfOrg] = useState('');
   const [address, setAddress] = useState('');
@@ -152,11 +152,11 @@ export default function CompleteSignup() {
     var allValidated;
     switch (accountType) {
       case 'individual':
-        allValidated = checkIfEmpty([firstName, lastName, country]);
+        allValidated = checkIfEmpty([firstname, lastName, country]);
         if (allValidated && !loading && session) {
           bodyToSend = {
             type: 'individual',
-            firstname: firstName,
+            firstname: firstname,
             lastname: lastName,
             country: country,
             isPrivate: isPrivateAccount,
@@ -169,7 +169,7 @@ export default function CompleteSignup() {
         break;
       case 'tpo':
         allValidated = checkIfEmpty([
-          firstName,
+          firstname,
           lastName,
           country,
           nameOfOrg,
@@ -180,7 +180,7 @@ export default function CompleteSignup() {
         if (allValidated && !loading && session) {
           bodyToSend = {
             type: 'tpo',
-            firstname: firstName,
+            firstname: firstname,
             lastname: lastName,
             name: nameOfOrg,
             address: address,
@@ -195,11 +195,11 @@ export default function CompleteSignup() {
         }
         break;
       case 'education':
-        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg]);
+        allValidated = checkIfEmpty([firstname, lastName, country, nameOfOrg]);
         if (allValidated && !loading && session) {
           bodyToSend = {
             type: 'education',
-            firstname: firstName,
+            firstname: firstname,
             lastname: lastName,
             name: nameOfOrg,
             country: country,
@@ -211,11 +211,11 @@ export default function CompleteSignup() {
         }
         break;
       case 'organisation':
-        allValidated = checkIfEmpty([firstName, lastName, country, nameOfOrg]);
+        allValidated = checkIfEmpty([firstname, lastName, country, nameOfOrg]);
         if (allValidated && !loading && session) {
           bodyToSend = {
             type: 'organization',
-            firstname: firstName,
+            firstname: firstname,
             lastname: lastName,
             name: nameOfOrg,
             country: country,
@@ -303,7 +303,7 @@ export default function CompleteSignup() {
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                label={t('donate:firstName')}
+                label={t('donate:firstname')}
                 variant="outlined"
                 onChange={(e) => setFirstName(e.target.value)}
               />

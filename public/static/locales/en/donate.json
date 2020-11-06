@@ -14,7 +14,7 @@
   "youWillReceiveTaxDeduction": "You will receive a tax deduction receipt for ",
   "toProjectByOrganization": "To {{projectName}} by {{organizationName}}",
   "fortreeCountTrees": "for {{treeCount}} Trees",
-  "firstName": "First Name",
+  "firstname": "First Name",
   "lastName": "Last Name",
   "email": "Email",
   "address": "Address",
