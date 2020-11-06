@@ -102,10 +102,309 @@
   padding-left: 20px;
 }
 
+.exploreButton {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 9px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+  line-height: 16px;
+}
+.exploreButton > svg {
+  width: 17px;
+}
+
+.exploreText {
+  padding-left: 4px;
+  margin: 0;
+}
+
+.exploreCaption {
+  border-top: 2px solid #d5d5d5;
+  padding-top: 15px;
+  width: 200px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.exploreInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+  cursor: pointer;
+}
+
+.deforestionSlider > div {
+  border: none;
+}
+
+.deforestionSlider > div > div > ul > li > div > div > header {
+  display: none !important;
+}
+
+.deforestionSlider > div > div {
+  width: 100%;
+}
+
+.deforestionSlider > div > div > ul > li {
+  width: 100%;
+}
+
+.deforestionSlider > div > div > ul > li > div {
+  padding: 0px 4px 10px 4px !important;
+}
+
+.infoModal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.infoExpanded {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  width: 375px;
+  max-width: 100%;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+  animation: fade_in_show 0.5s;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.infoTitle {
+  font-weight: 600;
+  color: $primaryFontColor;
+}
+
+.infoContent {
+  width: 100%;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.infoContent > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+.infoContent > a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: $primaryFontColor;
+}
+
+.infoContent > div > p {
+  font-size: 10px;
+}
+
+.infoContent > a > svg {
+  width: 20px;
+  margin-right: 6px;
+}
+
+.infoContent > div > div {
+  width: 100%;
+}
+
+.infoContent > div > div > ul > li {
+  width: 100%;
+}
+
+.infoContent > div > div > ul > li > div {
+  padding: 15px 4px !important;
+}
+
+.infoContent > div > div > ul > li > div > div > header {
+  display: none !important;
+}
+
+.reforestationScale {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.reforestationScale > div {
+  width: 240px !important;
+  height: 7px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #fadc2f 1.1%, #fadc2f 98.6%);
+}
+
+.reforestationScale > p:nth-child(1) {
+  font-size: 12px;
+  // color: #fadc2f;
+}
+
+.reforestationScale > p:nth-child(3) {
+  font-size: 12px;
+  // color: #fadc2f;
+}
+
+.currentForestScale {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.currentForestScale > div {
+  width: 240px !important;
+  height: 7px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #68b030 1.1%, #007a49 98.6%);
+}
+
+.currentForestScale > p:nth-child(1) {
+  font-size: 12px;
+  color: #68b030;
+}
+
+.currentForestScale > p:nth-child(3) {
+  font-size: 12px;
+  color: #007a49;
+}
+
+.layerLegend {
+  width: 200px;
+}
+
+.infoClose {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+}
+
+.infoClose svg {
+  width: 20px;
+}
+
+.exploreExpanded {
+  position: fixed;
+  right: 70px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+  animation: fade_in_show 0.5s;
+}
+
+@keyframes fade_in_show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.exploreToggleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px 0px;
+}
+
+.exploreToggleRow svg {
+  width: 15px;
+}
+
+.exploreExpanded hr {
+  margin-top: 10px;
+}
+
+.exploreNote {
+  padding-top: 10px;
+  text-align: center;
+  width: 200px;
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+}
+
+.exploreNote a {
+  color: $primaryColor;
+}
+
+.exploreNote a:visited {
+  color: $primaryColor;
+}
+
+.exploreNote a:hover {
+  color: $primaryColor;
+}
+
 @include smTabletView {
   .projectControls {
     top: 90px;
   }
+
+  .exploreButton {
+    top: 100px;
+    flex-direction: row;
+  }
+
+  .exploreExpanded {
+    top: 100px;
+  }
+
+  // .infoExpanded {
+  //   top: 100px;
+  // }
 }
 
 @include mdTabletView {

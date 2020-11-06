@@ -35,6 +35,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
+  const [showProjects, setShowProjects] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
@@ -72,6 +73,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setShowSingleProject,
     pageProps,
     initialized,
+    showProjects,
+    setShowProjects,
     searchedProject,
     setsearchedProjects,
   };
