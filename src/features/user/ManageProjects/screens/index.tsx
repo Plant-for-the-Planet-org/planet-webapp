@@ -12,12 +12,16 @@ import ProjectSpending from '../components/ProjectSpending';
 import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import SubmitForReview from '../components/SubmitForReview';
 import { useRouter } from 'next/router';
+import i18next from './../../../../../i18n';
 
-function getSteps() {
-    return ['Basic Details', 'Project Media', 'Detailed Analysis', 'Project Sites', 'Project Spending', 'Review'];
-}
+const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, session, project }: any) {
+    const { t, i18n } = useTranslation(['manageProjects']);
+
+    function getSteps() {
+        return [t('manageProjects:basicDetails'), t('manageProjects:projectMedia'), t('manageProjects:detailedAnalysis'), t('manageProjects:projectSites'), t('manageProjects:projectSpending'), t('manageProjects:review')];
+    }
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
     const steps = getSteps();
@@ -55,7 +59,7 @@ export default function ManageProjects({ GUID, session, project }: any) {
                 setIsUploadingData(false)
             } else {
                 if (res.code === 404) {
-                    setErrorMessage('Project Not Found')
+                    setErrorMessage(t('manageProjects:projectNotFound'))
                     setIsUploadingData(false)
                 }
                 else {
@@ -79,6 +83,14 @@ export default function ManageProjects({ GUID, session, project }: any) {
             })
     }, [GUID, projectGUID])
 
+    const [userLang,setUserLang] = React.useState('en')
+    React.useEffect(()=>{
+        if (localStorage.getItem('language')) {
+            let userLang = localStorage.getItem('language');
+            if (userLang) setUserLang(userLang);
+          }
+    },[])
+
     function getStepContent(step: number) {
         switch (step) {
             case 0:
@@ -86,15 +98,15 @@ export default function ManageProjects({ GUID, session, project }: any) {
             case 1:
                 return <ProjectMedia handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:
-                return <DetailedAnalysis handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <DetailedAnalysis userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 3:
-                return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 4:
-                return <ProjectSpending handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSpending userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 5:
                 return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
             default:
-                return 'Unknown step';
+                return <BasicDetails handleNext={handleNext} session={session} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
         }
     }
 

@@ -16,6 +16,7 @@ import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDF
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
@@ -23,10 +24,11 @@ const { useTranslation } = i18next;
 interface Props {
     projectGUID: String;
     session: any;
-    setIsUploadingData: Function
+    setIsUploadingData: Function;
+    userLang:String;    
 }
 
-function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props): ReactElement {
+function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
@@ -84,7 +86,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage('Project Not Found')
+                    setErrorMessage(t('manageProjects:projectNotFound'))
                 }
                 else {
                     setIsUploadingData(false)
@@ -132,8 +134,8 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                                     <PDFRed />
                                 </a>
                                 <div className={styles.reportPDFDetails}>
-                                    <p style={{ fontWeight: 'bold' }}>Certified By {report.certifierName} </p>
-                                    <p>on {report.issueDate} </p>
+                                    <p style={{ fontWeight: 'bold' }}> {t('manageProjects:certifiedBy')} {report.certifierName} </p>
+                                    <p>{report.issueDate} </p>
                                 </div>
                                 {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                     <PencilIcon color={"#000"} />
@@ -168,7 +170,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <DatePicker
                                     value={issueDate}
                                     onChange={setIssueDate}
@@ -183,7 +185,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                                     inputRef={register({
                                         required: {
                                             value: true,
-                                            message: 'Please add Certification date'
+                                            message: t('manageProjects:certificationDateValidation')
                                         }
                                     })}
                                     maxDate={new Date()}
@@ -212,10 +214,10 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                                 <AnimatedButton
                                     className={styles.continueButton}
                                 >
-                                    Upload Certificate
+                                    {t('manageProjects:uploadCertificate')}
                             </AnimatedButton>
                                 <p style={{ marginTop: '18px' }}>
-                                    or drag in a pdf
+                                    {t('manageProjects:dragIn')}
                         </p>
                             </div>
                         </div>
@@ -227,17 +229,19 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData }: Props
                                         className={styles.continueButton}
                                     >
                                         <input {...getInputProps()} />
-                                    Upload Certificate
+                                    {t('manageProjects:uploadCertificate')}
                                 </AnimatedButton>
                                     <p style={{ marginTop: '18px' }}>
-                                        or drag in a pdf
+                                        {t('manageProjects:dragIn')}
                                 </p>
                                 </div>
                             </div>
                         )}
                 </>) : (
                     <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
-                        <p className={styles.inlineLinkButton}>Add another cerification</p>
+                        <p className={styles.inlineLinkButton}>
+                            {t('manageProjects:addCertificate')}
+                        </p>
                     </div>)}
 
         </div>
