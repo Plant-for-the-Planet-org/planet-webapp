@@ -41,3 +41,20 @@
   top: 10px;
   opacity: 0.7;
 }
+
+.addTargetButton {
+  margin: 20px 0px;
+  background-color: $highlightBackground;
+  opacity:0.8;
+  padding: 10px 20px;
+  border-radius: 10px; 
+}
+
+.addTargetButton:hover{
+  cursor: pointer;
+}
+.addTargetButton > p {
+  color:$light;
+  opacity: 1;
+  font-size: 18px;
+}
