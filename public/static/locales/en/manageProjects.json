@@ -52,5 +52,19 @@
     "resetMessage":"Please fill the Basic Details first",
     "uploadPhotos":"Upload Photos",
     "dragIn":"or drag them in",
-    "backToBasic":"Back to basic details"
+    "backToBasic":"Back to basic details",
+    "projectNotFound":"Project Not Found",
+    "siteOwnerPrivate":"Private",
+    "siteOwnerPublic":"Public Property",
+    "siteOwnerSmallHolding":"Small Holding",
+    "siteOwnerCommunal":"Communal Land",
+    "siteOwnerOwned":"Owned by Owner",
+    "siteOwnerOther":"Other",
+    "yearAbandonedInfo":"When was the last significant human intervention in the site? Incl. logging, agriculture, cattle grazing, human induced burning.",
+    "treePerHa":"trees per ha",
+    "employeesCountInfo":"Equivalent of a 40 hour week. I.e. two half time employees count as one.",
+    "plantingSeasons":"Planting Seasons",
+    "max300Chars":"Maximum 300 characters allowed",
+    "longTermPlanInfo":"What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?",
+    "backToMedia":"Back to project media"
 }

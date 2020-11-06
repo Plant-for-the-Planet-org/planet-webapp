@@ -20,14 +20,7 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
-const siteOwners = [
-    { id: 1, title: 'Private', value: 'private' },
-    { id: 2, title: 'Public Property', value: 'public-property' },
-    { id: 3, title: 'Small Holding', value: 'smallholding' },
-    { id: 4, title: 'Communal Land', value: 'communal-land' },
-    { id: 5, title: 'Owned by Owner', value: 'owned-by-owner' },
-    { id: 6, title: 'Other', value: 'other' }
-]
+
 
 interface Props {
     handleNext: Function;
@@ -41,6 +34,15 @@ interface Props {
 }
 export default function DetailedAnalysis({ handleBack,userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
+
+    const siteOwners = [
+        { id: 1, title: t('manageProjects:siteOwnerPrivate') , value: 'private' },
+        { id: 2, title:t('manageProjects:siteOwnerPublic') , value: 'public-property' },
+        { id: 3, title:t('manageProjects:siteOwnerSmallHolding') , value: 'smallholding' },
+        { id: 4, title:t('manageProjects:siteOwnerCommunal') , value: 'communal-land' },
+        { id: 5, title:t('manageProjects:siteOwnerOwned') , value: 'owned-by-owner' },
+        { id: 6, title:t('manageProjects:siteOwnerOther') , value: 'other' }
+    ]
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
@@ -68,15 +70,11 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
         setPlantingSeasons([...plantingSeasonsNew]);
     }
 
-
-
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
             handleReset(t('manageProjects:resetMessage'))
         }
     })
-
-
 
     const [isCertified, setisCertified] = React.useState(true)
 
@@ -117,7 +115,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
             } else {
                 if(res.code === 404){
                     setIsUploadingData(false)
-                    setErrorMessage('Project Not Found')
+                    setErrorMessage(t('manageProjects:projectNotFound'))
                 }
                 else{
                     setIsUploadingData(false)
@@ -197,7 +195,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                        <p>When was the last significant human intervention in the site? Incl. logging, agriculture, cattle grazing, human induced burning.</p>
+                                        <p>
+                                            {t('manageProjects:yearAbandonedInfo')}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -245,7 +245,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                         <p
                                             className={styles.inputEndAdornment}
                                             style={{ marginLeft: '4px', width: '100%', textAlign: 'right', fontSize: '14px' }}
-                                        >{`trees per ha`}</p>
+                                        >
+                                            {t('manageProjects:treePerHa')}
+                                        </p>
                                     ),
                                 }}
                             />
@@ -273,7 +275,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                        <p>Equivalent of a 40 hour week. I.e. two half time employees count as one.</p>
+                                        <p>
+                                        {t('manageProjects:employeesCountInfo')}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +287,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                     <div className={styles.formFieldLarge}>
 
                         <div className={styles.plantingSeasons}>
-                            <p className={styles.plantingSeasonsLabel}>Planting Seasons</p>
+                            <p className={styles.plantingSeasonsLabel}> {t('manageProjects:plantingSeasons')} </p>
                             {plantingSeasons.map((month) => {
                                 return (
                                     <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
@@ -310,7 +314,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 inputRef={register({
                                     maxLength: {
                                         value: 300,
-                                        message: 'Maximum 300 characters allowed'
+                                        message: t('manageProjects:max300Chars')
                                     }
                                 })}
                                 label={t('manageProjects:mainChallenge')}
@@ -327,7 +331,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             <div className={styles.popover}>
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>Maximum 300 characters allowed</p>
+                                    <p>
+                                    {t('manageProjects:max300Chars')}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -340,7 +346,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 inputRef={register({
                                     maxLength: {
                                         value: 300,
-                                        message: 'Maximum 300 characters allowed'
+                                        message: t('manageProjects:max300Chars')
                                     }
                                 })}
                                 label={t('manageProjects:whyThisSite')}
@@ -357,7 +363,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             <div className={styles.popover}>
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>Maximum 300 characters allowed</p>
+                                    <p>
+                                    {t('manageProjects:max300Chars')}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -464,7 +472,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             inputRef={register({
                                 maxLength: {
                                     value: 300,
-                                    message: 'Maximum 300 characters allowed'
+                                    message: t('manageProjects:max300Chars')
                                 }
                             })}
                         />
@@ -477,7 +485,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             <div className={styles.popover}>
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>Maximum 300 characters allowed</p>
+                                    <p>
+                                    {t('manageProjects:max300Chars')}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -491,7 +501,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             inputRef={register({
                                 maxLength: {
                                     value: 300,
-                                    message: 'Maximum 300 characters allowed'
+                                    message: t('manageProjects:max300Chars')
                                 }
                             })}
                         />
@@ -504,9 +514,11 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             <div className={styles.popover}>
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?</p>
+                                    <p>
+                                    {t('manageProjects:longTermPlanInfo')}
+                                    </p>
                                     <br/>
-                                    <p>Maximum 300 characters allowed</p>
+                                    <p>{t('manageProjects:max300Chars')}</p>
                                 </div>
                             </div>
                         </div>
@@ -557,7 +569,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             className={styles.secondaryButton}
                         >
                             <BackArrow />
-                            <p>Back to project media</p>
+                            <p>
+                                {t('manageProjects:backToMedia')}
+                            </p>
                         </AnimatedButton>
                     </div>
                     <div style={{ width: '20px' }}></div>
@@ -566,7 +580,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             onClick={handleSubmit(onSubmit)}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> : "Save and Continue"}
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue') }
                         </AnimatedButton>
                     </div>
                 </div>

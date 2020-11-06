@@ -59,7 +59,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
@@ -139,7 +139,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
@@ -174,7 +174,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)
@@ -199,7 +199,7 @@ export default function ProjectMedia({ handleBack, session, handleNext, projectD
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)

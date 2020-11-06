@@ -86,7 +86,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage('Project Not Found')
+                    setErrorMessage(t('manageProjects:projectNotFound'))
                 }
                 else {
                     setIsUploadingData(false)

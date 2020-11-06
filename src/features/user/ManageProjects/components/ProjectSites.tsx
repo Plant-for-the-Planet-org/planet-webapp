@@ -125,7 +125,7 @@ export default function ProjectSites({
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage('Project Not Found')
+          setErrorMessage(t('manageProjects:projectNotFound'))
         }
         else {
           setIsUploadingData(false)

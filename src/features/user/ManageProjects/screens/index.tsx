@@ -16,8 +16,6 @@ import i18next from './../../../../../i18n';
 
 const { useTranslation } = i18next;
 
-
-
 export default function ManageProjects({ GUID, session, project }: any) {
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -61,7 +59,7 @@ export default function ManageProjects({ GUID, session, project }: any) {
                 setIsUploadingData(false)
             } else {
                 if (res.code === 404) {
-                    setErrorMessage('Project Not Found')
+                    setErrorMessage(t('manageProjects:projectNotFound'))
                     setIsUploadingData(false)
                 }
                 else {
