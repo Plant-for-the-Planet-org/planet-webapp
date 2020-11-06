@@ -11,10 +11,10 @@ const config = {
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
   meta: {
-    title: 'Nitro Snow Boards ❤️ Trees',
+    title: 'Nitro Snowboards ❤️ Trees',
     description:
-      'Nitro Snow Boards set a goal to support and mobilize the conservation, restoration, and growth of a forest.',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+      'Nitro Snowboards set a goal to support and mobilize the conservation, restoration, and growth of a forest.',
+    image: `/tenants/${config.tenantName}/background.jpeg`,
     twitterHandle: '',
     locale: 'en_US',
   },

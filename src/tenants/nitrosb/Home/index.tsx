@@ -15,12 +15,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
   return (
     <main>
       <LandingSection
-        imageSrc={
-          process.env.CDN_URL
-            ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
-            : 'https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg'
-        }
-      >
+        imageSrc={config.meta.image}>
         <div style={{ marginTop:'64px' }} />
         {tenantScore && tenantScore.total
           && (
@@ -30,9 +25,9 @@ export default function About({ leaderboard, tenantScore }: Props) {
           />
           ) }
 
-        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>Plant Trees with Nitro Snow Boards</p>
+        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>Plant Trees with Nitro Snowboards</p>
         <p className={styles.publicUserDescription} style={{ marginTop: '8px' }}>
-        Nitro Snow Boards set a goal to support and mobilize the conservation, restoration, and growth of a forest.
+        Nitro Snowboards set a goal to support and mobilize the conservation, restoration, and growth of a forest.
         </p>
       </LandingSection>
       <LeaderBoard leaderboard={leaderboard} />
