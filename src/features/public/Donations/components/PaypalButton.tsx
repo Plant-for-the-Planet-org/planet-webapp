@@ -15,7 +15,6 @@ class PaypalButton extends React.Component<PaypalButtonProps, State> {
     }
 
     componentDidMount() {
-        console.log("here")
         this.setState({isEnabled: true} as State)
         paypal.Button.render({
             style:{
@@ -41,11 +40,11 @@ class PaypalButton extends React.Component<PaypalButtonProps, State> {
             commit: true, 
             onAuthorize: function(data: any, actions: any){
                 return actions.payment.execute().then(function(response: any) {
-                    console.log("The payment complete")
+                    // console.log("The payment complete")
                 })
             },
             onCancel: function(data: any) {
-                console.log("payment canceled")
+                // console.log("payment canceled")
             }
         }, 
         '#paypal-btn')

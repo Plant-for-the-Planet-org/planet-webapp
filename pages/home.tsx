@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
+import NitroSBHome from '../src/tenants/nitrosb/Home';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -48,6 +49,9 @@ export default function Home(initialized: Props) {
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'stern':
         HomePage = SternHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'nitrosb':
+        HomePage = NitroSBHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       default:
         HomePage = null;

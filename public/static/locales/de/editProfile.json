@@ -1,0 +1,12 @@
+{
+  "edit": "Profil bearbeiten",
+  "privateAccount": "Privatkonto",
+  "privateAccountTxt": "Dein Profil wird ausgeblendet und nur Dein Vorname erscheint in der Bestenliste",
+  "subscribe": "Nachrichten per E-Mail abonnieren",
+  "profileDescription": "Profilbeschreibung",
+  "descriptionRequired": "Bitte gültige Beschreibung eingeben",
+  "website": "Website",
+  "websiteError": "Ungültige Website-URL",
+  "websiteRequired": "Bitte geben Sie eine gültige Website-URL ein",
+  "snackbarMessage": "{{message}}"
+}

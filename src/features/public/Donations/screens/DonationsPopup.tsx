@@ -67,7 +67,7 @@ function DonationsPopup({
         }
         setIsPaymentOptionsLoading(false);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
     loadPaymentSetup();
@@ -165,7 +165,7 @@ function DonationsPopup({
   };
 
   React.useEffect(() => {
-    if (directGift !== null) {
+    if (directGift) {
       setIsGift(true);
       setGiftDetails({
         type: 'direct',

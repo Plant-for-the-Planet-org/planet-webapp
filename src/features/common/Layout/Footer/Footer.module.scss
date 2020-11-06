@@ -2,7 +2,12 @@
 
 .footerMainContainer {
   max-width: 950px;
-  margin: auto 20px 76px 20px;
+  margin: auto 20px 0px 20px;
+}
+@media screen and (min-width: 480px) {
+  .footerMainContainer {
+    margin: auto 20px 60px 20px;
+  }
 }
 @media screen and (min-width: 950px) {
   .footerMainContainer {

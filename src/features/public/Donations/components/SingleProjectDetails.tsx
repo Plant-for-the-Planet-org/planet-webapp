@@ -18,7 +18,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
@@ -52,6 +52,13 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     ? getImageUrl('project', 'large', project.image)
     : '';
 
+  const contactAddress = project.tpo && project.tpo.address 
+    ? (project.tpo.address.address ? project.tpo.address.address + ', ' : '') 
+      + (project.tpo.address.city ? project.tpo.address.city + ', ' : '')        
+      + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') 
+      + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
+    : t('donate:unavailable');
+    
   const contactDetails = [
     {
       id: 1,
@@ -68,13 +75,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     {
       id: 3,
       icon: <Location color={styles.highlightBackground} />,
-      text:
-        project.tpo && project.tpo.address
-          ? project.tpo.address
-          : t('donate:unavailable'),
-
+      text: contactAddress,
       link: project.coordinates
-        ? `https://maps.google.com/?q=${project.tpo.address}`
+        ? `https://maps.google.com/?q=${contactAddress}`
         : null,
     },
     {
@@ -104,7 +107,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-
+;
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -195,7 +198,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     
                   </div> */}
                 </div>
-                <div className={styles.projectTPOName}>
+                <div className={styles.projectTPOName} onClick={() => {
+                  router.push(`/t/${project.tpo.slug}`);
+                }}>
                   {t('common:by')} {project.tpo.name}
                 </div>
               </div>
