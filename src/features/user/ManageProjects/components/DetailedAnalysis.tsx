@@ -30,35 +30,35 @@ interface Props {
     projectGUID: String;
     handleReset: Function;
     session: any;
-    userLang:String;
+    userLang: String;
 }
-export default function DetailedAnalysis({ handleBack,userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects','common']);
+export default function DetailedAnalysis({ handleBack, userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+    const { t, i18n } = useTranslation(['manageProjects', 'common']);
 
-    const siteOwners = [
-        { id: 1, title: t('manageProjects:siteOwnerPrivate') , value: 'private' },
-        { id: 2, title:t('manageProjects:siteOwnerPublic') , value: 'public-property' },
-        { id: 3, title:t('manageProjects:siteOwnerSmallHolding') , value: 'smallholding' },
-        { id: 4, title:t('manageProjects:siteOwnerCommunal') , value: 'communal-land' },
-        { id: 5, title:t('manageProjects:siteOwnerOwned') , value: 'owned-by-owner' },
-        { id: 6, title:t('manageProjects:siteOwnerOther') , value: 'other' }
-    ]
+    const [siteOwners, setSiteOwners] = React.useState([
+        { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private', isSet: false },
+        { id: 2, title: t('manageProjects:siteOwnerPublic'), value: 'public-property', isSet: false },
+        { id: 3, title: t('manageProjects:siteOwnerSmallHolding'), value: 'smallholding', isSet: false },
+        { id: 4, title: t('manageProjects:siteOwnerCommunal'), value: 'communal-land', isSet: false },
+        { id: 5, title: t('manageProjects:siteOwnerOwned'), value: 'owned-by-owner', isSet: false },
+        { id: 6, title: t('manageProjects:siteOwnerOther'), value: 'other', isSet: false }
+    ])
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
     const [plantingSeasons, setPlantingSeasons] = React.useState([
-        { id: 0, title: t('common:january') , isSet: false },
-        { id: 1, title: t('common:february') , isSet: false },
-        { id: 2, title: t('common:march') , isSet: false },
-        { id: 3, title: t('common:april') , isSet: false },
-        { id: 4, title: t('common:may') , isSet: false },
-        { id: 5, title: t('common:june') , isSet: false },
-        { id: 6, title: t('common:july') , isSet: false },
-        { id: 7, title: t('common:august') , isSet: false },
-        { id: 8, title: t('common:september') , isSet: false },
-        { id: 9, title: t('common:october') , isSet: false },
-        { id: 10, title: t('common:november') , isSet: false },
-        { id: 11, title: t('common:december') , isSet: false }
+        { id: 0, title: t('common:january'), isSet: false },
+        { id: 1, title: t('common:february'), isSet: false },
+        { id: 2, title: t('common:march'), isSet: false },
+        { id: 3, title: t('common:april'), isSet: false },
+        { id: 4, title: t('common:may'), isSet: false },
+        { id: 5, title: t('common:june'), isSet: false },
+        { id: 6, title: t('common:july'), isSet: false },
+        { id: 7, title: t('common:august'), isSet: false },
+        { id: 8, title: t('common:september'), isSet: false },
+        { id: 9, title: t('common:october'), isSet: false },
+        { id: 10, title: t('common:november'), isSet: false },
+        { id: 11, title: t('common:december'), isSet: false }
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
@@ -68,6 +68,15 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
         let plantingSeasonsNew = plantingSeasons;
         plantingSeasonsNew[id] = newMonth;
         setPlantingSeasons([...plantingSeasonsNew]);
+    }
+
+    const handleSetSiteOwner = (id: any) => {
+        let owner = siteOwners[id - 1];
+        let newOwner = owner;
+        newOwner.isSet = !owner.isSet;
+        let newSiteOwners = siteOwners;
+        newSiteOwners[id - 1] = newOwner;
+        setSiteOwners([...newSiteOwners]);
     }
 
     React.useEffect(() => {
@@ -90,6 +99,13 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
             }
         }
 
+        let owners = [];
+        for (let i = 0; i < siteOwners.length; i++) {
+            if (siteOwners[i].isSet) {
+                owners.push(siteOwners[i].value)
+            }
+        }
+
         const submitData = {
             yearAbandoned: data.yearAbandoned.getFullYear(),
             firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
@@ -97,7 +113,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
             motivation: data.motivation,
-            siteOwnerType: data.siteOwnerType.value,
+            siteOwnerType: owners,
             siteOwnerName: data.siteOwnerName,
             acquisitionYear: data.acquisitionYear.getFullYear(),
             degradationYear: data.degradationYear.getFullYear(),
@@ -113,15 +129,15 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                 setErrorMessage('')
                 handleNext()
             } else {
-                if(res.code === 404){
+                if (res.code === 404) {
                     setIsUploadingData(false)
                     setErrorMessage(t('manageProjects:projectNotFound'))
                 }
-                else{
+                else {
                     setIsUploadingData(false)
                     setErrorMessage(res.message)
                 }
-                
+
             }
         })
     };
@@ -139,7 +155,6 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                 employeesCount: projectDetails.employeesCount,
                 mainChallenge: projectDetails.mainChallenge,
                 motivation: projectDetails.motivation,
-                siteOwnerType: siteOwners.find(element => element.value === projectDetails.siteOwnerType),  // Format with object to set it again
                 siteOwnerName: projectDetails.siteOwnerName,
                 acquisitionYear: projectDetails.acquisitionYear ? new Date(new Date().setFullYear(projectDetails.acquisitionYear)) : new Date(),
                 degradationYear: projectDetails.degradationYear ? new Date(new Date().setFullYear(projectDetails.degradationYear)) : new Date(),
@@ -155,6 +170,20 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                         handleSetPlantingSeasons(j)
                     }
                 }
+            }
+
+            // set owner type
+            if (projectDetails.siteOwnerType && projectDetails.siteOwnerType.length > 0) {
+                let newSiteOwners = siteOwners
+                for (let i = 0; i < projectDetails.siteOwnerType.length; i++) {
+                    for (let j = 0; j < newSiteOwners.length; j++) {
+                        if (newSiteOwners[j].value === projectDetails.siteOwnerType[i]) {
+                            newSiteOwners[j].isSet = true;
+                        }
+                    }
+
+                }
+                setSiteOwners(newSiteOwners)
             }
 
             reset(defaultDetailedAnalysisData)
@@ -276,7 +305,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
                                         <p>
-                                        {t('manageProjects:employeesCountInfo')}
+                                            {t('manageProjects:employeesCountInfo')}
                                         </p>
                                     </div>
                                 </div>
@@ -285,7 +314,6 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                     </div>
 
                     <div className={styles.formFieldLarge}>
-
                         <div className={styles.plantingSeasons}>
                             <p className={styles.plantingSeasonsLabel}> {t('manageProjects:plantingSeasons')} </p>
                             {plantingSeasons.map((month) => {
@@ -300,7 +328,6 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                     </div>
                                 )
                             })}
-
                         </div>
                     </div>
 
@@ -328,15 +355,15 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 </span>
                             )}
                             <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                            <div className={styles.popover}>
-                                <InfoIcon />
-                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>
-                                    {t('manageProjects:max300Chars')}
-                                    </p>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:max300Chars')}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
 
                         <div style={{ width: '20px' }}></div>
@@ -360,15 +387,15 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 </span>
                             )}
                             <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                            <div className={styles.popover}>
-                                <InfoIcon />
-                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>
-                                    {t('manageProjects:max300Chars')}
-                                    </p>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:max300Chars')}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
 
@@ -376,29 +403,21 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
 
-                            <Controller
-                                as={
-                                    <MaterialTextField
-                                        label={t('manageProjects:siteOwner')}
-                                        variant="outlined"
-                                        select
-                                    >
-                                        {siteOwners.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.title}
-                                            </MenuItem>
-                                        ))}
-                                    </MaterialTextField>
-                                }
-                                name="siteOwnerType"
-                                control={control}
-                                defaultValue=""
-                            />
-                            {errors.siteOwnerType && (
-                                <span className={styles.formErrors}>
-                                    {errors.siteOwnerType.message}
-                                </span>
-                            )}
+                            <div className={styles.plantingSeasons}>
+                                <p className={styles.plantingSeasonsLabel}> {t('manageProjects:siteOwner')} </p>
+                                {siteOwners.map((owner) => {
+                                    return (
+                                        <div className={styles.multiSelectInput} style={{ width: 'fit-content' }} key={owner.id} onClick={() => handleSetSiteOwner(owner.id)}>
+                                            <div className={`${styles.multiSelectInputCheck} ${owner.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
+                                                    <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
+                                                </svg>
+                                            </div>
+                                            <p>{owner.title}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
@@ -431,7 +450,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                     name="acquisitionYear"
                                     control={control}
                                     defaultValue=""
-                                    
+
                                 />
                             </MuiPickersUtilsProvider>
 
@@ -486,7 +505,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
                                     <p>
-                                    {t('manageProjects:max300Chars')}
+                                        {t('manageProjects:max300Chars')}
                                     </p>
                                 </div>
                             </div>
@@ -515,9 +534,9 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                                 <InfoIcon />
                                 <div className={styles.popoverContent} style={{ left: '-290px' }}>
                                     <p>
-                                    {t('manageProjects:longTermPlanInfo')}
+                                        {t('manageProjects:longTermPlanInfo')}
                                     </p>
-                                    <br/>
+                                    <br />
                                     <p>{t('manageProjects:max300Chars')}</p>
                                 </div>
                             </div>
@@ -580,7 +599,7 @@ export default function DetailedAnalysis({ handleBack,userLang, session, handleN
                             onClick={handleSubmit(onSubmit)}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue') }
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </AnimatedButton>
                     </div>
                 </div>
