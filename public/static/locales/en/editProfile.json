@@ -5,6 +5,7 @@
   "subscribe": "Subscribe to news via email",
   "profileDescription": "Profile Desciption",
   "descriptionRequired": "Please enter valid Description",
+  "website": "Website",
   "websiteError": "Invalid website URL",
   "websiteRequired": "Please enter valid Website URL",
   "snackbarMessage": "{{message}}"

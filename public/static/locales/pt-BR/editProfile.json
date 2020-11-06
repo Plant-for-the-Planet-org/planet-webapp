@@ -5,6 +5,7 @@
   "subscribe": "Inscreva-se para receber notícias por e-mail",
   "profileDescription": "Descipção de Perfil",
   "descriptionRequired": "Por favor insira uma descrição válida",
+  "website": "Website",
   "websiteError": "URL do site inválido",
   "websiteRequired": "Por favor, digite o URL válido do site",
   "snackbarMessage": "{mensagem}}"
