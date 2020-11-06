@@ -1,0 +1,6 @@
+{
+    "myForest": "MY FOREST",
+    "forestName": "{{name}}",
+    "forestCountry": "{{country}}",
+    "forestGift": "{{gift}}"
+}

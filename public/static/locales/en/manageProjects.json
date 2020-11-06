@@ -40,5 +40,6 @@
     "certifierName":"Certifier Name",
     "siteName":"Site Name",
     "spendingYear":"Year",
-    "spendingAmount":"Spending (in EUR)"
+    "spendingAmount":"Spending (in EUR)",
+    "addProject": "Add Project"
 }

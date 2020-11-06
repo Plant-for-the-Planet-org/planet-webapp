@@ -12,6 +12,7 @@ export default function UserInfo({
   handleAddTargetModalOpen
 }: any) {
   const {t} = useTranslation(['user', 'me']);
+  console.log(userprofile);
   return (
     <div className={styles.landingContent}>
       <TreeCounter
