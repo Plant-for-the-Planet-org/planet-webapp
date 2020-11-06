@@ -8,7 +8,7 @@ export default function DirectGift({}: Props): ReactElement {
   const router = useRouter();
   //   const [profile, setProfile] = React.useState(null);
   React.useEffect(() => {
-    if (router.query.id !== undefined) {
+    if (router && router.query.id) {
       async function loadPublicUserData() {
         const newProfile = await getRequest(
           `/public/v1.0/en/treecounter/${router.query.id}`

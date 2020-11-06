@@ -132,6 +132,7 @@
 
 .singleProject {
   margin-top: 20px;
+  position: relative;
 }
 
 .modal {
@@ -181,6 +182,7 @@
   color: $primaryFontColor;
   margin-top: 10px;
   line-height: 14px;
+  cursor: pointer;
 }
 
 .location {
@@ -267,6 +269,26 @@
   position: absolute;
   bottom: 12px;
   left: 7px;
+}
+
+.projectEditBlock {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  height: 24px;
+  width: 24px;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  z-index: 9;
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .projectType {
