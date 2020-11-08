@@ -1,6 +1,4 @@
 {
-  "by": "Bielorrússia",
-  "to": "Tonga",
   "for": "para",
   "trees": "Árvores",
   "planted": "plantadas",
@@ -10,7 +8,6 @@
   "supportUs": "Apoie-nos",
   "leaders": "Líderes",
   "leaderboard": "Ranking",
-  "me": "Montenegro",
   "home": "Início",
   "donate_gift": "Doar/Presente",
   "plant": "Plantar",
@@ -24,17 +21,5 @@
   "thankYou": "Obrigado",
   "privacyPolicyNotice": "Ao utilizar este site, você concorda com a nossa",
   "privacyPolicy": "política de privacidade",
-  "about_pftp": "Sobre Plant-for-the-Planet",
-  "january": "Janeiro",
-  "february": "Fevereiro",
-  "march": "Março",
-  "april": "Abril",
-  "may": "Maio",
-  "june": "Junho",
-  "july": "Julho",
-  "august": "Agosto",
-  "september": "Setembro",
-  "october": "Outubro",
-  "november": "Novembro",
-  "december": "Dezembro"
+  "about_pftp": "Sobre Plant-for-the-Planet"
 }
