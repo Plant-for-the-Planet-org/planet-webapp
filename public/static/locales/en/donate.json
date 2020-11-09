@@ -22,7 +22,7 @@
   "zipCode": "Postal/Zip Code",
   "zipCodeAlphaNumValidation": "ZipCode is invalid",
   "country": "Country",
-  "isACompanyDonation": "This is a company donation",
+  "isACompanyDonation": "This donation is made by a company",
   "companyName": "Company Name",
   "giftRecipient": "Gift Recipient",
   "directGiftRecipient": "This donation supports",

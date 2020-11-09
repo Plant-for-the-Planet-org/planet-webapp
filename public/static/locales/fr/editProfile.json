@@ -1,0 +1,11 @@
+{
+  "edit": "Modifier le profil",
+  "privateAccount": "Compte privé",
+  "privateAccountTxt": "Votre profil est caché et seul votre prénom apparaît dans le classement",
+  "subscribe": "S'abonner aux actualités par email",
+  "profileDescription": "Descriptif du profil",
+  "descriptionRequired": "Entrer une description valide",
+  "website": "Site web",
+  "websiteError": "URL du site web invalide",
+  "websiteRequired": "Veuillez entrer une URL de site web valide"
+}
