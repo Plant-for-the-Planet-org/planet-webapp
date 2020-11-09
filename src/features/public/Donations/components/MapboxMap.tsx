@@ -53,6 +53,7 @@ interface mapProps {
   mapboxToken: any;
   setShowProjects: Function;
   searchedProject: any;
+  showProjects: any;
 }
 export default function MapboxMap({
   projects,
@@ -61,6 +62,7 @@ export default function MapboxMap({
   mapboxToken,
   setShowProjects,
   searchedProject,
+  showProjects,
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -152,6 +154,9 @@ export default function MapboxMap({
       };
       setViewPort(newViewport);
     } else {
+      const newMapState = {
+        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -161,7 +166,11 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
+      setMapState(newMapState);
       setViewPort(newViewport);
+      router.push('/', undefined, {
+        shallow: true,
+      });
     }
   };
 
@@ -200,7 +209,11 @@ export default function MapboxMap({
           ]);
         }
       }
+      setExploreProjects(false);
+      setShowProjects(false);
     } else {
+      setExploreProjects(true);
+      setShowProjects(true);
     }
   }, [showSingleProject, project]);
 
