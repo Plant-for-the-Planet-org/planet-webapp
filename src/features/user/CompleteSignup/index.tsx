@@ -272,13 +272,13 @@ export default function CompleteSignup() {
                   <MaterialTextField
                     label={t('donate:zipCode')}
                     variant="outlined"
-                    name="zipcode"
+                    name="zipCode"
                     inputRef={register({
                       pattern: postalRegex,
                       required:true
                     })}
                   />
-                  {errors.zipcode && (
+                  {errors.zipCode && (
                     <span className={styles.formErrors}>
                       {t('donate:zipCodeAlphaNumValidation')}
                     </span>
