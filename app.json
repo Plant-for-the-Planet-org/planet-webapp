@@ -57,7 +57,8 @@
           },
         "AUTH0_CUSTOM_DOMAIN": {
           "required": false,
-          "description": "Auth0 custom domain"
+          "description": "Auth0 custom domain",
+          "value":"pftp.eu.auth0.com"
         },
         "NEXTAUTH_URL": {
             "required": false,
