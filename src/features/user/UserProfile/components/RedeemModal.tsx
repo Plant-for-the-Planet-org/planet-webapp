@@ -5,7 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 
-export default function SettingsModal({
+export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: any) {

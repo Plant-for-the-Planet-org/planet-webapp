@@ -1,0 +1,80 @@
+@import './../../../../theme/theme';
+
+.textCopiedSnackbar {
+  z-index: 5000;
+}
+
+.settingsIcon {
+  display: flex;
+  position: absolute;
+  right: 50px;
+  top: 80px;
+  padding: 20px;
+  z-index: 2;
+}
+
+.settingsIcon:hover {
+  cursor: pointer;
+}
+
+.downIcon {
+  display: flex;
+  position: fixed;
+  right: 50px;
+  bottom: 40px;
+  z-index: 2;
+  padding: 20px;
+}
+
+.downIcon:hover {
+  cursor: pointer;
+}
+
+// mobile view
+@media only screen and (max-width: 768px) {
+  .settingsIcon {
+    top: 80px;
+    right: 20px;
+    border-radius: 50px;
+    background-color: rgba(0,0,0,0.2);
+    padding: 16px;
+  }
+  .downIcon {
+    display: none;
+  }
+}
+
+/* My Forest Section - for ME Page*/
+
+// the outer white background
+.myForestContainer {
+  padding: 0px;
+  background-color: $light;
+  display: flex;
+  position: relative;
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: 5;
+  top: 180px;
+  flex-direction: column;
+  align-items: center; //>>>  for vertically centre
+  justify-content: center; // >>>  for horizontally center
+}
+
+
+
+/* Footer */
+.footerDiv {
+  z-index: 2; //more than myForestContainer
+  position: relative;
+  padding: 1px;
+  width: 100vw;
+  background-color: $light;
+  top: 180px;
+}
+
+@media only screen and (max-width: 768px) {
+  .footerDiv {
+    display: none;
+  }
+}

@@ -4,6 +4,7 @@ const withSourceMaps = require('@zeit/next-source-maps')();
 
 // Use the SentryWebpack plugin to upload the source maps during build step
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+
 const {
   NEXT_PUBLIC_SENTRY_DSN: SENTRY_DSN,
   SENTRY_ORG,
@@ -15,21 +16,20 @@ const {
   VERCEL_BITBUCKET_COMMIT_SHA,
 } = process.env;
 
-const COMMIT_SHA =
-  VERCEL_GITHUB_COMMIT_SHA ||
-  VERCEL_GITLAB_COMMIT_SHA ||
-  VERCEL_BITBUCKET_COMMIT_SHA;
+const COMMIT_SHA = VERCEL_GITHUB_COMMIT_SHA
+  || VERCEL_GITLAB_COMMIT_SHA
+  || VERCEL_BITBUCKET_COMMIT_SHA;
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';
 
-const scheme =
-  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-    ? process.env.SCHEME
-    : 'https';
+const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+  ? process.env.SCHEME
+  : 'https';
 
-const hasAssetPrefix =
-  process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
+const nextauthUrl = process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}` : `${scheme}://${process.env.VERCEL_URL}`;
+
+const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withSourceMaps({
   serverRuntimeConfig: {
@@ -60,12 +60,12 @@ module.exports = withSourceMaps({
     // This is an alternative to manually uploading the source maps
     // Note: This is disabled in development mode.
     if (
-      SENTRY_DSN &&
-      SENTRY_ORG &&
-      SENTRY_PROJECT &&
-      SENTRY_AUTH_TOKEN &&
-      COMMIT_SHA &&
-      NODE_ENV === 'production'
+      SENTRY_DSN
+      && SENTRY_ORG
+      && SENTRY_PROJECT
+      && SENTRY_AUTH_TOKEN
+      && COMMIT_SHA
+      && NODE_ENV === 'production'
     ) {
       config.plugins.push(
         new SentryWebpackPlugin({
@@ -74,7 +74,7 @@ module.exports = withSourceMaps({
           stripPrefix: ['webpack://_N_E/'],
           urlPrefix: `~${basePath}/_next`,
           release: COMMIT_SHA,
-        })
+        }),
       );
     }
     return config;
@@ -86,11 +86,14 @@ module.exports = withSourceMaps({
   },
   env: {
     MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
+    AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
+    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
     TENANT: process.env.TENANT,
     TENANTID: process.env.TENANTID,
     SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
+    NEXTAUTH_URL: nextauthUrl,
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -101,15 +104,6 @@ module.exports = withSourceMaps({
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
-  },
-  async redirects() {
-    return [
-      {
-        source: '/me',
-        destination: '/',
-        permanent: true,
-      },
-    ];
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files

@@ -18,7 +18,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
@@ -107,7 +107,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-
+;
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -198,7 +198,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     
                   </div> */}
                 </div>
-                <div className={styles.projectTPOName}>
+                <div className={styles.projectTPOName} onClick={() => {
+                  router.push(`/t/${project.tpo.slug}`);
+                }}>
                   {t('common:by')} {project.tpo.name}
                 </div>
               </div>
