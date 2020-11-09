@@ -16,12 +16,12 @@
       "API_ENDPOINT": {
         "required": true,
         "description": "API Endpoint",
-        "value":"app.plant-for-the-planet.org"
+        "value":"app-staging.plant-for-the-planet.org"
       },
         "CDN_URL": {
             "required": true,
             "description": "CDN URL",
-            "value":"cdn.plant-for-the-planet.org"
+            "value":"cdn.plant-for-the-planet.org/staging"
       },
         "NEXT_PUBLIC_FEATURED_LIST": {
             "required": false,
@@ -47,10 +47,6 @@
             "required": true,
             "description": "Tenant ID"
           },
-        "ASSET_PREFIX": {
-            "required": false,
-            "description": "http or https"
-          },
         "AUTH0_CLIENT_ID": {
             "required": false,
             "description": "Auth0 client ID"
@@ -58,11 +54,11 @@
         "AUTH0_CUSTOM_DOMAIN": {
           "required": false,
           "description": "Auth0 custom domain",
-          "value":"pftp.eu.auth0.com"
+          "value":"accounts.plant-for-the-planet.org"
         },
         "NEXTAUTH_URL": {
             "required": false,
-            "description": "Next Auth URL"
+            "description": "Next Auth URL is required to enable Login Feature"
           },
         "SENTRY_ORG": {
             "required": false,
