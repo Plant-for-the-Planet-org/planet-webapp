@@ -26,6 +26,53 @@
   scrollbar-width: none;
 }
 
+.modalClose {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  z-index: 99999;
+}
+.modalClose svg {
+  width: 20px;
+}
+
+.modalOpen {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  z-index: 99999;
+}
+
+.modalOpen svg {
+  width: 20px;
+}
+
+.modalWrapper {
+  position: relative;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  animation: fade_in_show 0.5s;
+  overflow: hidden;
+  :nth-child(2) {
+    :first-child {
+      bottom: 2px;
+      > div {
+        background: rgba(0, 0, 0, 0.4) !important;
+        height: 4px !important;
+        > div {
+          background: rgba(255, 255, 255, 0.8) !important;
+        }
+      }
+    }
+  }
+}
+
 .modal::-webkit-scrollbar {
   width: 0px;
 }
@@ -260,11 +307,12 @@
 }
 
 .projectImageSliderContainer {
+  position: relative;
   margin-top: 10px;
   width: 100%;
   // border-radius: 0.6em;
   overflow: hidden;
-  :first-child {
+  :nth-child(2) {
     :first-child {
       bottom: 2px;
       > div {

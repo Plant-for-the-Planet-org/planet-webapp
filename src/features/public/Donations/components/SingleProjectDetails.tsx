@@ -20,6 +20,8 @@ import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
 import i18next from '../../../../../i18n/';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import ExpandIcon from '../../../../../public/assets/images/icons/ExpandIcon';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -153,7 +155,12 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <ImageSlider project={project} height={400} />
+        <div className={styles.modalWrapper}>
+          <div onClick={handleModalClose} className={styles.modalClose}>
+            <CancelIcon color="#fff" />
+          </div>
+          <ImageSlider project={project} height={600} />
+        </div>
       </Modal>
       <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
@@ -286,8 +293,10 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 />
               ) : null}
               <div className={styles.projectImageSliderContainer}>
-                <div onClick={handleModalOpen}>fullscreen</div>
-                {project.images.length > 0 ? (
+                <div onClick={handleModalOpen} className={styles.modalOpen}>
+                  <ExpandIcon color="#fff" />
+                </div>
+                {project.images.length > 0 && !openModal ? (
                   <ImageSlider project={project} height={233} />
                 ) : null}
               </div>
