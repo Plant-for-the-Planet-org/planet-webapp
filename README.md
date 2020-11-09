@@ -19,7 +19,6 @@
 <a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
     <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack&labelColor=4B124C" />
 </a>
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Plant-for-the-Planet-org/planet-webapp)
 
 <br/>
 <br/>
@@ -33,6 +32,8 @@
 <img src="https://img.shields.io/github/issues/Plant-for-the-Planet/planet-webapp?color=%23141619&style=for-the-badge" />
 
 </p>
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Plant-for-the-Planet-org/planet-webapp)
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plant-for-the-Planet&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
