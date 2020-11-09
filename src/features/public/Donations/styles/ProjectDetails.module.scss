@@ -17,6 +17,15 @@
   scrollbar-width: none;
 }
 
+.imageModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .modal::-webkit-scrollbar {
   width: 0px;
 }

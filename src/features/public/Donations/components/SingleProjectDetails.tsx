@@ -18,7 +18,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n/'
+import i18next from '../../../../../i18n/';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
@@ -52,13 +52,18 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     ? getImageUrl('project', 'large', project.image)
     : '';
 
-  const contactAddress = project.tpo && project.tpo.address 
-    ? (project.tpo.address.address ? project.tpo.address.address + ', ' : '') 
-      + (project.tpo.address.city ? project.tpo.address.city + ', ' : '')        
-      + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') 
-      + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
-    : t('donate:unavailable');
-    
+  const contactAddress =
+    project.tpo && project.tpo.address
+      ? (project.tpo.address.address
+          ? project.tpo.address.address + ', '
+          : '') +
+        (project.tpo.address.city ? project.tpo.address.city + ', ' : '') +
+        (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') +
+        (project.tpo.address.country
+          ? t('country:' + project.tpo.address.country.toLowerCase())
+          : '')
+      : t('donate:unavailable');
+
   const contactDetails = [
     {
       id: 1,
@@ -107,7 +112,14 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-;
+
+  const [openModal, setModalOpen] = React.useState(false);
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -133,6 +145,15 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         <Elements stripe={getStripe()}>
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
+      </Modal>
+      <Modal
+        className={styles.imageModal}
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <ImageSlider project={project} height={400} />
       </Modal>
       <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
@@ -198,9 +219,12 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     
                   </div> */}
                 </div>
-                <div className={styles.projectTPOName} onClick={() => {
-                  router.push(`/t/${project.tpo.slug}`);
-                }}>
+                <div
+                  className={styles.projectTPOName}
+                  onClick={() => {
+                    router.push(`/t/${project.tpo.slug}`);
+                  }}
+                >
                   {t('common:by')} {project.tpo.name}
                 </div>
               </div>
@@ -262,8 +286,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 />
               ) : null}
               <div className={styles.projectImageSliderContainer}>
+                <div onClick={handleModalOpen}>fullscreen</div>
                 {project.images.length > 0 ? (
-                  <ImageSlider project={project} />
+                  <ImageSlider project={project} height={233} />
                 ) : null}
               </div>
               {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
