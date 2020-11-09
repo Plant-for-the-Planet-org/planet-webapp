@@ -5,7 +5,7 @@ import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import MuiAlert from '@material-ui/lab/Alert';
 import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
@@ -14,24 +14,23 @@ import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 
-const {useTranslation} = i18next;
+const { useTranslation } = i18next;
 export default function CompleteSignup() {
   const [session, loading] = useSession();
   const router = useRouter();
-  const {t} = useTranslation(['editProfile', 'donate', 'login']); 
+  const { t } = useTranslation(['editProfile', 'donate', 'login']);
 
   const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
 
+  const isPrivate = watch('isPrivate');
+
 
   React.useEffect(() => {
-
     // if accessed by unauthenticated user
     if (!loading && !session) {
       signIn('auth0', { callbackUrl: '/login' });
     }
-
     const userExistsInDB = getUserExistsInDB();
-
     // if accessed by a registered user
     if (!loading && session && userExistsInDB) {
       const userSlug = getUserInfo().slug;
@@ -56,20 +55,12 @@ export default function CompleteSignup() {
     setSnackbarOpen(false);
   };
 
-  const [isPrivateAccount, setIsPrivateAccount] = React.useState(false);
-  const [isSubscribed, setIsSubscribed] = React.useState(true);
-  const [accountType, setAccountType] = useState('individual');
-  const [firstname, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [nameOfOrg, setNameOfOrg] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [country, setCountry] = useState('');
+  const [type, setAccountType] = useState('individual');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
 
+  const [country, setCountry] = useState('');
   let defaultCountry;
   if (typeof window !== 'undefined') { defaultCountry = localStorage.getItem('countryCode') } else { defaultCountry = 'DE' }
 
@@ -79,24 +70,6 @@ export default function CompleteSignup() {
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
-  const checkIfEmpty = (params: any[]) => {
-    var param;
-    var flag = false;
-    for (param of params) {
-      if (!param || param.trim() === '') {
-        flag = true;
-        setSnackbarMessage('Please fill all the details');
-        setSeverity("warning")
-        handleSnackbarOpen();
-        break;
-      }
-    }
-    if (!flag) {
-      return true;
-    } else {
-      return false;
-    }
-  };
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
@@ -147,113 +120,22 @@ export default function CompleteSignup() {
     { id: 3, title: 'Reforestation Organisation', value: 'tpo' },
     { id: 4, title: 'Education', value: 'education' }
   ]
-  const createButtonClicked = async () => {
-    var bodyToSend;
-    var allValidated;
-    switch (accountType) {
-      case 'individual':
-        allValidated = checkIfEmpty([firstname, lastName, country]);
-        if (allValidated && !loading && session) {
-          bodyToSend = {
-            type: 'individual',
-            firstname: firstname,
-            lastname: lastName,
-            country: country,
-            isPrivate: isPrivateAccount,
-            getNews: isSubscribed,
-            oAuthAccessToken: session.accessToken,
-          };
-          sendRequest(bodyToSend);
-        }
 
-        break;
-      case 'tpo':
-        allValidated = checkIfEmpty([
-          firstname,
-          lastName,
-          country,
-          nameOfOrg,
-          address,
-          city,
-          zipCode,
-        ]);
-        if (allValidated && !loading && session) {
-          bodyToSend = {
-            type: 'tpo',
-            firstname: firstname,
-            lastname: lastName,
-            name: nameOfOrg,
-            address: address,
-            zipCode: zipCode,
-            city: city,
-            country: country,
-            isPrivate: isPrivateAccount,
-            getNews: isSubscribed,
-            oAuthAccessToken: session.accessToken,
-          };
-          sendRequest(bodyToSend);
-        }
-        break;
-      case 'education':
-        allValidated = checkIfEmpty([firstname, lastName, country, nameOfOrg]);
-        if (allValidated && !loading && session) {
-          bodyToSend = {
-            type: 'education',
-            firstname: firstname,
-            lastname: lastName,
-            name: nameOfOrg,
-            country: country,
-            isPrivate: isPrivateAccount,
-            getNews: isSubscribed,
-            oAuthAccessToken: session.accessToken,
-          };
-          sendRequest(bodyToSend);
-        }
-        break;
-      case 'organisation':
-        allValidated = checkIfEmpty([firstname, lastName, country, nameOfOrg]);
-        if (allValidated && !loading && session) {
-          bodyToSend = {
-            type: 'organization',
-            firstname: firstname,
-            lastname: lastName,
-            name: nameOfOrg,
-            country: country,
-            isPrivate: isPrivateAccount,
-            getNews: isSubscribed,
-            oAuthAccessToken: session.accessToken,
-          };
-          sendRequest(bodyToSend);
-        }
-        break;
-      default:
-        setSnackbarMessage('Some Error has occured');
-        setSeverity("error")
-        handleSnackbarOpen();
-        break;
-    }
-  };
+  React.useEffect(()=>{
+    // This will remove field values which do not exist for the new type
+    reset()
+  },[type])
 
-  const SelectType = (type: any) => {
-    let name;
-    switch (type) {
-      case 'individual':
-        name = 'Individual';
-        break;
-      case 'tpo':
-        name = 'Reforestation Organisation';
-        break;
-      case 'education':
-        name = 'School';
-        break;
-      case 'organisation':
-        name = 'Company';
-        break;
-      default:
-        name = 'Reforestation Organisation';
-        break;
+  const createButtonClicked = async (data: any) => {
+    if(!loading && session){
+      let submitData = {
+        ...data,
+        country,
+        type,
+        oAuthAccessToken: session.accessToken
+      }
+      sendRequest(submitData)
     }
-    return name;
   };
 
   if (
@@ -279,19 +161,19 @@ export default function CompleteSignup() {
                 if (typeof window !== 'undefined') {
                   router.push(`/logout`);
                 }
-              }
-              }
+              }}
               className={styles.headerBackIcon}
             >
               <BackArrow color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>{t('login:signUpText')}</div>
           </div>
+
           {/* type of account buttons */}
           <div className={styles.profileTypesContainer}>
             {profileTypes.map(item => {
               return (
-                <p key={item.id} className={`${styles.profileTypes} ${accountType === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
+                <p key={item.id} className={`${styles.profileTypes} ${type === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
                   {t('login:profileTypes', {
                     item: item
                   })}
@@ -303,31 +185,47 @@ export default function CompleteSignup() {
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
               <MaterialTextField
-                label={t('donate:firstname')}
+                label={t('donate:firstName')}
                 variant="outlined"
-                onChange={(e) => setFirstName(e.target.value)}
+                inputRef={register({required:true})}
+                name={"firstname"}
               />
+              {errors.firstname && (
+                    <span className={styles.formErrors}>
+                      {t('donate:firstNameRequired')}
+                    </span>
+                  )}
             </div>
 
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 label={t('donate:lastName')}
                 variant="outlined"
-                onChange={(e) => setLastName(e.target.value)}
+                inputRef={register({required:true})}
+                name={"lastname"}
               />
+              {errors.lastname && (
+                    <span className={styles.formErrors}>
+                      {t('donate:lastNameRequired')}
+                    </span>
+                  )}
             </div>
           </div>
-          {accountType === 'education' ||
-            accountType === 'organisation' ||
-            accountType === 'tpo' ? (
+          {type !== 'individual' ? (
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
                   label={t('login:profileName', {
-                    type: SelectType(accountType)
+                    type: SelectType(type)
                   })}
                   variant="outlined"
-                  onChange={(e) => setNameOfOrg(e.target.value)}
+                  inputRef={register({required:true})}
+                  name={"name"}
                 />
+                {errors.name && (
+                <span className={styles.formErrors}>
+                 {t('editProfile:orgNameValidation')}
+                </span>
+              )}
               </div>
             ) : null}
 
@@ -340,14 +238,20 @@ export default function CompleteSignup() {
             />
           </div>
 
-          {accountType === 'tpo' ? (
+          {type === 'tpo' ? (
             <>
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
                   label={t('donate:address')}
                   variant="outlined"
-                  onChange={(e) => setAddress(e.target.value)}
+                  inputRef={register({required:true})}
+                  name={"address"}
                 />
+                {errors.address && (
+                <span className={styles.formErrors}>
+                  {t('donate:addressRequired')}
+                </span>
+              )}
               </div>
 
               <div className={styles.formField}>
@@ -355,17 +259,23 @@ export default function CompleteSignup() {
                   <MaterialTextField
                     label={t('donate:city')}
                     variant="outlined"
-                    onChange={(e) => setCity(e.target.value)}
+                    inputRef={register({required:true})}
+                    name={"city"}
                   />
+                  {errors.city && (
+                  <span className={styles.formErrors}>
+                    {t('donate:cityRequired')}
+                  </span>
+                )}
                 </div>
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
                     label={t('donate:zipCode')}
                     variant="outlined"
                     name="zipcode"
-                    onChange={(e) => setZipCode(e.target.value)}
                     inputRef={register({
-                      pattern: postalRegex
+                      pattern: postalRegex,
+                      required:true
                     })}
                   />
                   {errors.zipcode && (
@@ -388,40 +298,67 @@ export default function CompleteSignup() {
               onChange={(country) => setCountry(country)}
               defaultValue={defaultCountry}
             />
+            {errors.country && (
+                <span className={styles.formErrors}>
+                 {t('donate:countryRequired')}
+                </span>
+              )}
           </div>
 
           <div className={styles.isPrivateAccountDiv}>
             <div>
-                  <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
-              {isPrivateAccount &&
+              <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
+              {isPrivate &&
                 <div className={styles.isPrivateAccountText}>
+                  <label htmlFor={'isPrivate'}>
                   {t('editProfile:privateAccountTxt')}
-              </div>
+                  </label>
+                </div>
               }
             </div>
-            <ToggleSwitch
-              checked={isPrivateAccount}
-              onChange={() => setIsPrivateAccount(!isPrivateAccount)}
-              name="checkedA"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            <Controller
+              name="isPrivate"
+              id="isPrivate"
+              control={control}
+              inputRef={register()}
+              defaultValue={false}
+              render={props => (
+                <ToggleSwitch
+                  checked={props.value}
+                  onChange={e => props.onChange(e.target.checked)}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              )}
             />
           </div>
 
           <div className={styles.isPrivateAccountDiv}>
-            <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
-            <ToggleSwitch
-              checked={isSubscribed}
-              onChange={() => setIsSubscribed(!isSubscribed)}
-              name="checkedB"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            <div className={styles.mainText}>
+              <label htmlFor={'getNews'}>
+                {t('editProfile:subscribe')}
+              </label>
+            </div>
+            <Controller
+              name="getNews"
+              id="getNews"
+              control={control}
+              inputRef={register()}
+              defaultValue={true}
+              render={props => (
+                <ToggleSwitch
+                  checked={props.value}
+                  onChange={e => props.onChange(e.target.checked)}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              )}
             />
           </div>
 
           <div className={styles.horizontalLine} />
 
-          <div className={styles.saveButton} onClick={createButtonClicked}>
+          <div className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
             {t('login:createAccount')}
-        </div>
+          </div>
         </div>
         {/* snackbar */}
         <Snackbar
@@ -445,3 +382,25 @@ export default function CompleteSignup() {
   }
   return null;
 }
+
+const SelectType = (type: any) => {
+  let name;
+  switch (type) {
+    case 'individual':
+      name = 'Individual';
+      break;
+    case 'tpo':
+      name = 'Reforestation Organisation';
+      break;
+    case 'education':
+      name = 'School';
+      break;
+    case 'organisation':
+      name = 'Company';
+      break;
+    default:
+      name = 'Reforestation Organisation';
+      break;
+  }
+  return name;
+};
