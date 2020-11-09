@@ -27,8 +27,8 @@ export default function UserInfo({
       })}</h2>
       {/* user bio */}
       <p className={styles.treeCounterDescription}>
-        {t('me:userBio', {
-          userBioName: userprofile.bio
+        {t('me:displayName', {
+          name: userprofile.bio
         })}
       </p>
 

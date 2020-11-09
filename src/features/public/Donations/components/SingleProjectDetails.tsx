@@ -244,9 +244,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 ideal={350}
                 max={400}
                 readMoreText={t('donate:readMore')}
-                text={t('donate:readMoreHalfText', {
-                  readMore: project.description
-                })}
+                text={project.description}
               />
             </div>
 
