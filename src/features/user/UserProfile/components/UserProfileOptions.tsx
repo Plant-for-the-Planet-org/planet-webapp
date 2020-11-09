@@ -15,7 +15,7 @@ export default function UserProfileOptions({
   handleTextCopiedSnackbarOpen
  }: any) {
 
-  const {t} = useTranslation(['user', 'me']);
+  const {t} = useTranslation(['me']);
   const webShareMobile = async() => {
       try {
         const response = await navigator.share({

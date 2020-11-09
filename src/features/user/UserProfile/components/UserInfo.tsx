@@ -11,7 +11,7 @@ export default function UserInfo({
   authenticatedType,
   handleAddTargetModalOpen
 }: any) {
-  const {t} = useTranslation(['user', 'me']);
+  const {t} = useTranslation(['me']);
   console.log(userprofile);
   return (
     <div className={styles.landingContent}>
