@@ -19,6 +19,7 @@
 <a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
     <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack&labelColor=4B124C" />
 </a>
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Plant-for-the-Planet-org/planet-webapp)
 
 <br/>
 <br/>
@@ -140,10 +141,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 This project uses GitFlow (https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) with Master-Branch `master` and Development-Branch `develop`. The Master-Branch will be automatically released by Vercel bot to the production system. There are currently some more protected branches also build by Vercel bot automatically and mapped to test backends using the branch name as subdomain.
 
 ---
+
 ## Reporting a Vulnerability
 
 If you have found a vulnerability, you could write us at: support@plant-for-the-planet.org with details or create a PR for the fix.
-
 
 ## Important Links
 
@@ -154,11 +155,12 @@ If you have found a vulnerability, you could write us at: support@plant-for-the-
 [Backend APIs](https://plant-for-the-planet.stoplight.io/docs/treecounter-platform/)
 
 ## Thank You
+
 The deployment and management of this application is possible with support from open source contributors and following partners.
 
 <a href="https://www.vercel.com?utm_source=planetapp&utm_medium=web&utm_campaign=oss">
 <img src="https://cdn.pp.eco/logo/svg/powered-by-vercel.svg" height="26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## Legal
+
 Any brand-images/logo/iconography used in this project, including of Plant-for-the-Planet, are registered trademark(s) of respective parties. Please contact partner at plant-for-the-planet d0t org for approval to use the Plant-for-the-Planet Logo.
