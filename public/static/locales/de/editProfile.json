@@ -8,6 +8,5 @@
   "website": "Website",
   "websiteError": "Ungültige Website-URL",
   "websiteRequired": "Bitte geben Sie eine gültige Website-URL ein",
-  "snackbarMessage": "{{message}}",
   "save": "Speichern"
 }

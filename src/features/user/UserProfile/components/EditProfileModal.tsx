@@ -389,7 +389,7 @@ export default function EditProfileModal({
           onClose={handleSnackbarClose}
           severity={severity}
         >
-          {t('editProfile:snackbarMessage', {message: snackbarMessage})}
+          {snackbarMessage}
         </MuiAlert>
       </Snackbar>
     </React.Fragment>
