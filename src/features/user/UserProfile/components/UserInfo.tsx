@@ -29,8 +29,8 @@ export default function UserInfo({
       {
         authenticatedType === 'private' &&
         <UserProfileOptions
-              userprofile={userprofile}
-              handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+        userprofile={userprofile}
+        handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
         />
       }
     </div>

@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react'
 import tenantConfig from '../../../tenant.config';
 import Head from 'next/head';
+import {getComponentImage} from '../getImageURL';
 
 const config = tenantConfig();
 
 interface Props {
     userprofile:any
 }
-
 export default function GetPublicUserProfileMeta({userprofile}: Props): ReactElement {
+
     return (
         <Head>
           <title>{`${
@@ -24,7 +25,7 @@ export default function GetPublicUserProfileMeta({userprofile}: Props): ReactEle
               : config.meta.title
           }
         />
-        <meta property="og.image" content={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-77.0397,38.8974,0,0/300x200?access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`} />
+        <meta property="og.image" content={getComponentImage} />
         <meta property="og:title" content="Stop Scrolling. Start Planting" />
         <meta property="og:description" content={`Join ${userprofile.displayName} and thousands of others to plant a trillion trees to tackle the climate crisis.`} />
         <meta
