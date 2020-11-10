@@ -5,8 +5,6 @@ import { getUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import styles from '../styles/UserInfo.module.scss';
 
 export default function UserShareAndSupport({ userprofile }: any) {
-  console.log(getUserInfo());
-
   return (
     <div className={styles.bottomIconsRow}>
       {getUserInfo() === null || getUserInfo().type !== 'tpo' ? (
