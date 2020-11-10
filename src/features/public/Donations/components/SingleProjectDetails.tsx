@@ -203,7 +203,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 <div className={styles.projectTPOName} onClick={() => {
                   router.push(`/t/${project.tpo.slug}`);
                 }}>
-                  {t('common:by')} {project.tpo.name}
+                  {t('common:by', {
+                    tpoName: project.tpo.name
+                  })} 
                 </div>
               </div>
 

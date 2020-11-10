@@ -100,5 +100,7 @@
   "externalCertifications":"External certifications",
   "projectSpendingFinancial":"Project spending & Financial Reports",
   "acquisitionYear":"Acquisition Year",
-  "issueDate":"Date issued"
+  "issueDate":"Date issued",
+  "addProject": "Add Project"
 }
+
