@@ -106,19 +106,12 @@ export default function ProjectSnippet({
             ></div>
           ) : null}
 
-
-
         <div className={styles.projectImageBlock}>
           {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
-
-
-
           <div className={styles.projectName}>
-            {t('donate:projectName', {
-              proj: Sugar.String.truncate(project.properties.name, 54)
-            })}
+            {Sugar.String.truncate(project.properties.name, 54)}
           </div>
         </div>
       </div>

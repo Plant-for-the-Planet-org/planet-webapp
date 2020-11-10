@@ -172,9 +172,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
               </div> */}
 
               <div className={styles.projectName}>
-                {t('donate:projectName', {
-                  proj: Sugar.String.truncate(project.name, 60)
-                })}
+                {Sugar.String.truncate(project.name, 60)}
               </div>
             </div>
           </div>
