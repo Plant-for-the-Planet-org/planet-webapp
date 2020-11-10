@@ -90,5 +90,13 @@
   "projectForReview": "You can now submit the project for review.",
   "backToSpending": "Back to project spending",
   "pendingReview": "Pending Review",
-  "submitForReview": "Submit for Review"
+  "submitForReview": "Submit for Review",
+  "abandonment":"Abandonment",
+  "survivalRate":"Survival rate",
+  "employees":"Employees",
+  "siteOwnership":"Site ownership",
+  "causeOfDegredation":"Cause of Degredation",
+  "longTermProtection":"How is the forest protected long term?",
+  "externalCertifications":"External certifications",
+  "projectSpendingFinancial":"Project spending & Financial Reports"
 }

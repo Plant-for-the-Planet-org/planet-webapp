@@ -198,6 +198,12 @@
 
 /* Additional Information */
 
+.projectMoreInfoHalfContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .projectMoreInfoHalf {
   width: 50%;
   margin-top: 35px;
