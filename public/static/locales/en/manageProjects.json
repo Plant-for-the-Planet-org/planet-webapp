@@ -90,5 +90,6 @@
   "projectForReview": "You can now submit the project for review.",
   "backToSpending": "Back to project spending",
   "pendingReview": "Pending Review",
-  "submitForReview": "Submit for Review"
+  "submitForReview": "Submit for Review",
+  "addProject": "Add Project"
 }
