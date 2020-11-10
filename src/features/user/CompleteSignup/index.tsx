@@ -372,9 +372,7 @@ export default function CompleteSignup() {
             onClose={handleSnackbarClose}
             severity={severity}
           >
-            {t('editProfile:snackbarMessage', {
-              message: snackbarMessage
-            })}
+            {snackbarMessage}
           </MuiAlert>
         </Snackbar>
       </div>

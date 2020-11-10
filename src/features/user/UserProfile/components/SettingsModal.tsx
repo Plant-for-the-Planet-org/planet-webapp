@@ -7,7 +7,10 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
+import i18next from '../../../../../i18n';
 
+
+const {useTranslation} = i18next;
 export default function SettingsModal({
   userType,
   userprofile,
@@ -20,6 +23,7 @@ export default function SettingsModal({
   forceReload,
 }: any) {
   const router = useRouter();
+  const {t} = useTranslation(['me', 'common', 'editProfile']);
   return (
     <>
       <Modal
@@ -38,9 +42,9 @@ export default function SettingsModal({
           <div className={styles.modal}>
             {
               userType == 'tpo' && 
-              <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> Manage Projects </a>
+              <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> {t('me:settingManageProject')} </a>
             }
-            <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> Edit Profile </div>
+            <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </div>
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
@@ -52,13 +56,13 @@ export default function SettingsModal({
                 }
               }
               }>
-              <b> Logout </b>
+              <b>{t('me:logout')} </b>
             </div>
             <div
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
-              <div className={styles.cancelText}> Cancel</div>
+              <div className={styles.cancelText}> {t('common:cancel')}</div>
             </div>
           </div>
         </Fade>
