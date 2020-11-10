@@ -33,8 +33,8 @@ const config = {
       {
         id: 3,
         title: 'leaderboard',
-        onclick: '/',
-        visible: false,
+        onclick: '/all',
+        visible: true,
         key: 'leaderboard',
       },
 
