@@ -15,7 +15,7 @@ export default function MyForestContainer({ userprofile }: any) {
     zoom: 1.4,
   });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
-  const {t} = useTranslation(['forest']);
+  const { t } = useTranslation(['me']);
 
   const userForests = userprofile.projects.map((forest: any) => {
     return <MyForestItem key={forest.id} forest={forest.name} />;
@@ -23,7 +23,7 @@ export default function MyForestContainer({ userprofile }: any) {
   return (
     // the text and two boxes
     <div className={styles.outerMyForestContainer}>
-      <h6 className={styles.myForestTitleText}> {t('forest:myForest')} </h6>
+      <h6 className={styles.myForestTitleText}> {t('me:myForest')} </h6>
 
       {/* the two boxes */}
       <div className={styles.innerMyForestContainer}>

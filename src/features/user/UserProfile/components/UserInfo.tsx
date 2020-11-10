@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
-import i18next from '../../../../../i18n';
 
 const {useTranslation} = i18next;
 export default function UserInfo({
@@ -11,8 +10,6 @@ export default function UserInfo({
   authenticatedType,
   handleAddTargetModalOpen
 }: any) {
-  const {t} = useTranslation(['me']);
-  console.log(userprofile);
   return (
     <div className={styles.landingContent}>
       <TreeCounter
