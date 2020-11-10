@@ -399,7 +399,6 @@
 
   .exploreButton {
     top: 100px;
-    flex-direction: row;
   }
 
   .exploreExpanded {
@@ -420,6 +419,9 @@
     top: auto;
     bottom: 30px;
     left: 300px;
+  }
+  .exploreButton {
+    flex-direction: row;
   }
 }
 
