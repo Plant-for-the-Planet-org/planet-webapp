@@ -84,7 +84,7 @@ export default function TpoProfile(props: any) {
           <h2>{t('me:treesPlanted')}</h2>
         </div>
         {
-          !(props.target == 0) &&
+          (props.target && props.target !== 0) &&
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
             <h2>{t('me:target')}</h2>
@@ -92,7 +92,7 @@ export default function TpoProfile(props: any) {
         }
         {
           props.authenticatedType === 'private' 
-          && (props.target == 0) &&
+          && (props.target === 0) &&
           <div onClick={()=> props.handleAddTargetModalOpen()} 
           className={treeCounterStyles.addTargetButton}>
             <p>Add Target </p>
