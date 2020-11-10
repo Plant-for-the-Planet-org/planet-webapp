@@ -53,7 +53,7 @@ export default function UserProfileOptions({
           <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
             <Redeem color="white" />
           </div>
-        <p className={styles.bottomRowText}> {t('me:reedem')}</p>
+        <p className={styles.bottomRowText}> {t('me:redeem')}</p>
         </div>
 
         <RedeemModal
