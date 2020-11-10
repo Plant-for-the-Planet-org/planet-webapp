@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
+import UserShareAndSupport from './UserShareAndSupport';
 
 export default function UserInfo({
   userprofile,
@@ -9,6 +10,7 @@ export default function UserInfo({
   authenticatedType,
   handleAddTargetModalOpen
 }: any) {
+  console.log(authenticatedType)
   return (
     <div className={styles.landingContent}>
       <TreeCounter
@@ -24,7 +26,9 @@ export default function UserInfo({
       <p className={styles.treeCounterDescription}>
         {userprofile.bio}{' '}
       </p>
-
+      {/* icon for public view */}
+      {authenticatedType === 'public' && <UserShareAndSupport userprofile={userprofile}/>}
+      {/* <UserShareAndSupport /> */}
       {/* three icons in a row */}
       {
         authenticatedType === 'private' &&

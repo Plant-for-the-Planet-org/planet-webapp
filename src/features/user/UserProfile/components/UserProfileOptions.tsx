@@ -42,7 +42,7 @@ export default function UserProfileOptions({
   const handleRedeemModalOpen = () => {
     setRedeemModalOpen(true);
   };
-
+console.log(userprofile);
   return (
       <div className={styles.bottomIconsRow}>
         <div className={styles.iconTextColumn}>
