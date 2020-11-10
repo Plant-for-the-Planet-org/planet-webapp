@@ -22,7 +22,7 @@ export default function Stats({}: Props): ReactElement {
                 <h3 className={styles.statText}>Trees planted globally since 2006</h3>
             </div>
             <div className={styles.statCard}>
-                <h2 className={styles.statNumber}>10b</h2>
+                <h2 className={styles.statNumber} style={{color:'#E86F56'}}>10b</h2>
                 <h3 className={styles.statText}>Net forest loss in the past 12 months </h3>
             </div>
         </div>

@@ -1,153 +1,150 @@
-@import './../../../../theme/theme';
+@import "./../../../../theme/theme";
 .leaderBoardSection {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    margin-top: 80px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 40px;
-    padding-bottom: 0px;
-    position: relative;
-  }
-  
-  .leaderBoard {
-    align-self: center;
-    text-align: center;
-  }
-  
-  .leaderBoard > h3 {
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 21px;
-    text-align: center;
-    color: #080707;
-  }
-  
-  .leaderBoard > h2 {
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 40px;
-    text-align: center;
-    letter-spacing: -0.4px;
-    color: #080707;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  margin-top: 60px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+  padding-bottom: 0px;
+  position: relative;
+}
+
+.leaderBoard {
+  align-self: center;
+  text-align: center;
+}
+
+.leaderBoard > h3 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #080707;
+}
+
+.leaderBoard > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #080707;
+}
+
+.leaderBoardTable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 26px;
+}
+
+.leaderBoardTableHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaderBoardTableHeaderTitle {
+  padding: 8px;
+  border-bottom: 1px solid #dddbda;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitleSelected {
+  padding: 8px;
+  border-bottom: 2px solid #68b030;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitle:hover {
+  cursor: pointer;
+}
+.leaderBoardBody {
+  width: 90%;
+  margin-top: 46px;
+  margin-bottom: 46px;
+}
+.leaderBoardBodyRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 0px;
+  border-bottom: 1px solid #dddbda;
+}
+
+.leaderBoardDonorName {
+  flex-grow: 1;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #080707;
+  font-family: $primaryFontFamily;
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+.leaderBoardDonorTrees {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  color: #3e3e3c;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardDonorTime {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: #706e6b;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardBushImage,
+.leaderBoardGroupTreeImage {
+  display: none;
+}
+.leaderBoardBushImageMobile {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+@include smTabletView {
+  .leaderBoardBody {
+    width: 528px;
   }
 
-  .leaderBoardTable{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .leaderBoardTableHeader {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .leaderBoardTableHeaderTitle {
-    padding: 8px;
-    border-bottom: 1px solid #dddbda;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    color: #080707;
-  }
-  
-  .leaderBoardTableHeaderTitleSelected {
-    padding: 8px;
-    border-bottom: 2px solid #68B030;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 13px;
-    color: #080707;
-  }
-  
-  .leaderBoardTableHeaderTitle:hover {
-    cursor: pointer;
-  }
-  .leaderBoardBody {
-    width: 90%;
-    margin-top: 60px;
-    margin-bottom: 46px;
-  }
-  .leaderBoardBodyRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 16px 0px;
-    border-bottom: 1px solid #dddbda;
-  }
-  
-  .leaderBoardDonorName {
-    flex-grow: 1;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    color: #080707;
-    font-family: $primaryFontFamily;
-    text-align: left;
-    margin-bottom: 0px;
-  }
-  
-  .leaderBoardDonorTrees {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    color: #3e3e3c;
-    flex: none;
-    align-self: center;
-    margin-right: 16px;
-    margin-bottom: 0px;
-    font-family: $primaryFontFamily;
-  }
-  
-  .leaderBoardDonorTime {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    color: #706e6b;
-    mix-blend-mode: normal;
-    opacity: 0.9;
-    flex: none;
-    align-self: center;
-    margin-right: 16px;
-    margin-bottom: 0px;
-    font-family: $primaryFontFamily;
-  }
-  
-  .leaderBoardBushImage, .leaderBoardGroupTreeImage {
+  .leaderBoardBushImageMobile {
     display: none;
   }
-  .leaderBoardBushImageMobile {
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-  }
-@include smTabletView {
-  
-    .leaderBoardBody {
-        width: 528px;
-        margin-top: 60px;
-      }
-    
-      .leaderBoardSection {
-        // margin-top: 0px;
-      }
-    
-      .leaderBoardBushImageMobile {
-        display: none;
-      }
 }
 
 @include lgLaptopView {

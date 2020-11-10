@@ -1,11 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import {
-  PullDownContent,
-  PullToRefresh,
-  RefreshContent,
-  ReleaseContent,
-} from 'react-js-pull-to-refresh';
 import Head from 'next/head';
 import Layout from '../src/features/common/Layout';
 import LeaderBoard from '../src/tenants/planet/LeaderBoard'
@@ -23,7 +17,7 @@ export default function Home() {
   }, []);
 
   const [leaderboard, setLeaderboard] = React.useState(null);
-    console.log(leaderboard);
+  console.log(leaderboard);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
@@ -48,11 +42,11 @@ export default function Home() {
     });
   }
 
-//   if (!config.header.items[0].visible) {
-//     if (typeof window !== 'undefined') {
-//       router.push('/');
-//     }
-//   }
+  //   if (!config.header.items[0].visible) {
+  //     if (typeof window !== 'undefined') {
+  //       router.push('/');
+  //     }
+  //   }
 
   let AllPage;
   function getAllPage() {
@@ -89,18 +83,8 @@ export default function Home() {
         <meta name="twitter:url" content={config.tenantURL} />
         <meta name="twitter:description" content={config.meta.description} />
       </Head>
-      <PullToRefresh
-        pullDownContent={<PullDownContent />}
-        releaseContent={<ReleaseContent />}
-        refreshContent={<RefreshContent />}
-        pullDownThreshold={150}
-        onRefresh={onRefresh}
-        triggerHeight={isMobile ? 150 : 0}
-        backgroundColor="white"
-        startInvisible
-      >
-        <Layout>{getAllPage()}</Layout>
-      </PullToRefresh>
+
+      <Layout>{getAllPage()}</Layout>
     </>
   );
 }
