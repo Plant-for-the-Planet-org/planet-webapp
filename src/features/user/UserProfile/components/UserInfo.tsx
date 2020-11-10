@@ -3,7 +3,6 @@ import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
 
-const {useTranslation} = i18next;
 export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
