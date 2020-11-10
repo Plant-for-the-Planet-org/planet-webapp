@@ -28,7 +28,7 @@ export default function UserInfo({
       </p>
       {/* icon for public view */}
       {authenticatedType === 'public' && <UserShareAndSupport userprofile={userprofile}/>}
-      {/* <UserShareAndSupport /> */}
+      
       {/* three icons in a row */}
       {
         authenticatedType === 'private' &&
