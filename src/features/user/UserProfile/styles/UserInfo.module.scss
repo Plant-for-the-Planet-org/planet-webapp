@@ -66,12 +66,12 @@
 }
 
 .bottomIconBgSupport {
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: #303B31;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 54px;
+  width: 161px;
+  height: 60px;
   border-radius: 70px;
   justify-content: space-around;
 }
@@ -93,8 +93,8 @@
 
 .bottomRowTextSupport {
   color: $light;
-  font-size: 22px;
-  font-family: $primaryFontFamily;
+  font-size: 14px;
+  font-family: $fontSubTitleSize;
   text-align: center;
   padding-right: 15px;
 }

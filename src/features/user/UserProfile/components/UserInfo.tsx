@@ -1,4 +1,5 @@
 import React from 'react';
+import ReadMoreReact from 'read-more-react';
 import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
@@ -8,9 +9,8 @@ export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
   authenticatedType,
-  handleAddTargetModalOpen
+  handleAddTargetModalOpen,
 }: any) {
-  console.log(authenticatedType)
   return (
     <div className={styles.landingContent}>
       <TreeCounter
@@ -23,19 +23,29 @@ export default function UserInfo({
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
       <p className={styles.treeCounterDescription}>
-        {userprofile.bio}{' '}
+        {userprofile.bio &&
+        <ReadMoreReact
+          min={300}
+          ideal={350}
+          max={450}
+          readMoreText="read more"
+          text={userprofile.bio}
+        />
+}
+        {/* {userprofile.bio}{' '} */}
       </p>
       {/* icon for public view */}
-      {authenticatedType === 'public' && <UserShareAndSupport userprofile={userprofile}/>}
-      
+      {authenticatedType === 'public' && (
+        <UserShareAndSupport userprofile={userprofile} />
+      )}
+
       {/* three icons in a row */}
-      {
-        authenticatedType === 'private' &&
+      {authenticatedType === 'private' && (
         <UserProfileOptions
-              userprofile={userprofile}
-              handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+          userprofile={userprofile}
+          handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
         />
-      }
+      )}
     </div>
   );
 }
