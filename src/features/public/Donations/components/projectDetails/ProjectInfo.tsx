@@ -66,7 +66,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )}
 
-                {project.firstTreePlanted && (
+                {project.firstTreePlanted && project.firstTreePlanted.date && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:firstTreePlanted')}
