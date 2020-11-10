@@ -98,5 +98,7 @@
   "causeOfDegredation":"Cause of Degredation",
   "longTermProtection":"How is the forest protected long term?",
   "externalCertifications":"External certifications",
-  "projectSpendingFinancial":"Project spending & Financial Reports"
+  "projectSpendingFinancial":"Project spending & Financial Reports",
+  "acquisitionYear":"Acquisition Year",
+  "issueDate":"Date issued"
 }
