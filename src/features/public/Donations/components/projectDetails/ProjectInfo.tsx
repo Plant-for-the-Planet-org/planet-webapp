@@ -3,6 +3,8 @@ import styles from './../../styles/ProjectDetails.module.scss'
 import i18next from '../../../../../../i18n'
 import { getPDFFile } from '../../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
+import { format } from 'date-fns/fp';
+
 interface Props {
     project: any
 }
@@ -72,7 +74,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {t('manageProjects:firstTreePlanted')}
                         </div>
                         <div className={styles.infoText}>
-                            {String(new Date(new Date(project.firstTreePlanted.date)).getFullYear())}
+                            {format('LLLL d, yyyy',new Date(project.firstTreePlanted.date))}
                         </div>
                     </div>
                 )}
