@@ -159,7 +159,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
           <div onClick={handleModalClose} className={styles.modalClose}>
             <CancelIcon color="#fff" />
           </div>
-          <ImageSlider project={project} height={600} />
+          <ImageSlider project={project} height={600} imageSize="large" />
         </div>
       </Modal>
       <div className={styles.projectContainer}>
@@ -297,7 +297,11 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                   <ExpandIcon color="#fff" />
                 </div>
                 {project.images.length > 0 && !openModal ? (
-                  <ImageSlider project={project} height={233} />
+                  <ImageSlider
+                    project={project}
+                    height={233}
+                    imageSize="medium"
+                  />
                 ) : null}
               </div>
               {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}

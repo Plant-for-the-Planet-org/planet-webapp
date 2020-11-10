@@ -6,14 +6,15 @@ import styles from './../styles/ProjectDetails.module.scss';
 interface Props {
   project: any;
   height: any;
+  imageSize: any;
 }
 
-export default function ImageSlider({ project, height }: Props) {
+export default function ImageSlider({ project, height, imageSize }: Props) {
   const [slider, setSlider] = React.useState();
   let projectImages: { content: () => JSX.Element }[] = [];
 
   const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'medium', image);
+    const ImageSource = getImageUrl('project', imageSize, image);
     return ImageSource;
   };
 
