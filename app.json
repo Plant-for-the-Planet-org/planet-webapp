@@ -49,7 +49,8 @@
           },
         "ASSET_PREFIX": {
             "required": false,
-            "description": "http or https"
+            "description": "http or https",
+            "value":"https"
           },
         "AUTH0_CLIENT_ID": {
             "required": false,
@@ -58,7 +59,7 @@
         "AUTH0_CUSTOM_DOMAIN": {
           "required": false,
           "description": "Auth0 custom domain",
-          "value":"pftp.eu.auth0.com"
+          "value":"accounts.plant-for-the-planet.org"
         },
         "NEXTAUTH_URL": {
             "required": false,
