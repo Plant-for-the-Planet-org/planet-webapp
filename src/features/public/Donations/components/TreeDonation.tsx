@@ -137,8 +137,9 @@ function TreeDonation({
         </div>
 
         <div className={styles.plantProjectName}>
-          {t('common:to')} {project.name} {t('common:by').toLowerCase()}{' '}
-          {project.tpo.name}
+          {t('common:to')} {project.name} {t('common:by', {
+            tpoName: project.tpo.name
+          }).toLowerCase()}{' '}
         </div>
 
         <div

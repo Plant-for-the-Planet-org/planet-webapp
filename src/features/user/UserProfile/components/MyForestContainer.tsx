@@ -3,7 +3,9 @@ import styles from '../styles/MyForestContainer.module.scss';
 import MyForestItem from '../components/MyForestItem';
 import LazyLoad from 'react-lazyload';
 import MapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
+import i18next from '../../../../../i18n';
 
+const {useTranslation} = i18next;
 export default function MyForestContainer({ userprofile }: any) {
   const [viewport, setViewPort] = useState({
     width: window.innerWidth,
@@ -13,6 +15,7 @@ export default function MyForestContainer({ userprofile }: any) {
     zoom: 1.4,
   });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
+  const { t } = useTranslation(['me']);
 
   const userForests = userprofile.projects.map((forest: any) => {
     return <MyForestItem key={forest.id} forest={forest.name} />;
@@ -20,7 +23,7 @@ export default function MyForestContainer({ userprofile }: any) {
   return (
     // the text and two boxes
     <div className={styles.outerMyForestContainer}>
-      <h6 className={styles.myForestTitleText}> MY FOREST </h6>
+      <h6 className={styles.myForestTitleText}> {t('me:myForest')} </h6>
 
       {/* the two boxes */}
       <div className={styles.innerMyForestContainer}>

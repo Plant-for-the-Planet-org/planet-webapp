@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../styles/MyForestItem.module.scss';
 
+
 export default function MyForestItem({ forest }: any) {
   return (
     <div className={styles.forestItem}>

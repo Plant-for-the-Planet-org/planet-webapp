@@ -17,7 +17,7 @@ const ProjectSnippet = dynamic(() => import('./../../../public/Donations/compone
 });
 
 export default function ProjectsContainer({ authenticatedType, userprofile }: any) {
-  const { t } = useTranslation(['donate']);
+  const { t } = useTranslation(['donate', 'manageProjects']);
   const [session, loading] = useSession();
   const [projects, setProjects] = React.useState([])
 
@@ -52,7 +52,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             <div className={styles.singleProject}>
               <div className={styles.projectNotFound}>
                 <AddProject />
-                <h2>Add Project</h2>
+                <h2>{t('manageProjects:addProject')}</h2>
               </div>
             </div>
           </Link>
@@ -80,7 +80,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
                   <div className={styles.singleProject}>
                     <div className={styles.projectNotFound}>
                       <AddProject />
-                      <h2>Add Project</h2>
+                      <h2>{t('manageProjects:addProject')}</h2>
                     </div>
                   </div>
                 </Link>
