@@ -47,6 +47,14 @@
   flex-direction: column;
 }
 
+.iconTextColumnSupport {
+  margin: 0px 20px;
+  max-width: 160px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .bottomIconBg {
   background-color: rgba(255, 255, 255, 0.35);
   display: flex;
@@ -55,6 +63,17 @@
   width: 54px;
   height: 54px;
   border-radius: 70px;
+}
+
+.bottomIconBgSupport {
+  background-color: rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 54px;
+  border-radius: 70px;
+  justify-content: space-around;
 }
 
 .bottomIconBg:hover {
@@ -67,6 +86,14 @@
   font-family: $primaryFontFamily;
   margin-top: 12px;
   text-align: center;
+}
+
+.bottomRowTextSupport {
+  color: $light;
+  font-size: 22px;
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding-right: 15px;
 }
 
 // mobile view
