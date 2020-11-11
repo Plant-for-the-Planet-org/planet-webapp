@@ -22,7 +22,7 @@ export default function UserInfo({
 
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
-      <p className={styles.treeCounterDescription}>
+      <div className={styles.treeCounterDescription}>
         {userprofile.bio &&
         <ReadMoreReact
           min={300}
@@ -33,7 +33,7 @@ export default function UserInfo({
         />
 }
         {/* {userprofile.bio}{' '} */}
-      </p>
+      </div>
       {/* icon for public view */}
       {authenticatedType === 'public' && (
         <UserShareAndSupport userprofile={userprofile} />
