@@ -6,31 +6,30 @@ import UserProfileOptions from './UserProfileOptions';
 export default function UserInfo({
   userprofile,
   handleTextCopiedSnackbarOpen,
+  authenticatedType,
+  handleAddTargetModalOpen
 }: any) {
   return (
     <div className={styles.landingContent}>
       <TreeCounter
-        target={userprofile.countTarget}
-        planted={userprofile.countPlanted}
+        handleAddTargetModalOpen={handleAddTargetModalOpen}
+        authenticatedType={authenticatedType}
+        target={userprofile.score.target}
+        planted={userprofile.score.personal}
       />
 
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
+      {/* user bio */}
+      <p className={styles.treeCounterDescription}>{userprofile.bio}</p>
 
-      {/* will render only if it is ME page */}
-      {userprofile.isMe && (
-        <React.Fragment>
-          {/* user description */}
-          <p className={styles.treeCounterDescription}>
-            {userprofile.description}{' '}
-          </p>
-
-          {/* three icons in a row */}
-          <UserProfileOptions
-            userprofile={userprofile}
-            handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-          />
-        </React.Fragment>
-      )}
+      {/* three icons in a row */}
+      {
+        authenticatedType === 'private' &&
+        <UserProfileOptions
+              userprofile={userprofile}
+              handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+        />
+      }
     </div>
   );
 }

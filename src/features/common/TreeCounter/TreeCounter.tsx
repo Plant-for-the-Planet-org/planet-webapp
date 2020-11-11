@@ -50,19 +50,24 @@ export default function TpoProfile(props: any) {
   const { t } = useTranslation(['me']);
 
   React.useEffect(() => {
-    let percentage = (props.planted / props.target) * 100;
-    if (props.planted === 0) percentage = 0.1;
-    else if (props.target === 0) {
-      if (props.planted === 0) percentage = 0.1;
+    let percentage = 0;
+    if (props.target > 0) {
+      percentage = (props.planted / props.target) * 100;
+    } else {
+      if (props.planted === '0.00' || props.planted=== 0.00) percentage = 0.1;
       else percentage = 100;
     }
     if (percentage > 100) {
       percentage = 100;
     }
     const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= percentage ? percentage : prevProgress + 5
-      );
+      if (percentage === 0.1) {
+        setProgress(0.1)
+      } else {
+        setProgress((prevProgress) =>
+          prevProgress >= percentage ? percentage : prevProgress + 5
+        );
+      }
     }, 100);
 
     return () => {
@@ -78,13 +83,21 @@ export default function TpoProfile(props: any) {
           <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
           <h2>{t('me:treesPlanted')}</h2>
         </div>
-        {props.hideTarget ? null : (
+        {
+          (props.target && props.target !== 0) &&
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
             <h2>{t('me:target')}</h2>
           </div>
-        )}
-
+        }
+        {
+          props.authenticatedType === 'private' 
+          && (props.target === 0) &&
+          <div onClick={()=> props.handleAddTargetModalOpen()} 
+          className={treeCounterStyles.addTargetButton}>
+            <p>Add Target </p>
+          </div>
+        }
       </div>
     </div>
   );

@@ -7,6 +7,7 @@
 
 # testing
 /coverage
+.vercel
 
 # next.js
 /.next/
@@ -30,7 +31,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# certificates 
+# certificates
 ./certificates/localhost.crt
 ./certificates/localhost.key
 

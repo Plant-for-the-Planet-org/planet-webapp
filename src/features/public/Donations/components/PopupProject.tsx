@@ -7,7 +7,7 @@ import getStripe from '../../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../../theme/themeContext';
 import DonationsPopup from './../screens/DonationsPopup';
 import styles from './../styles/Projects.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
@@ -95,7 +95,9 @@ export default function PopupProject({
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            {t('common:by')} {project.properties.tpo.name}
+            {t('common:by', {
+              tpoName: project.properties.tpo.name
+            })}
           </div>
         </div>
         {project.properties.allowDonations && (

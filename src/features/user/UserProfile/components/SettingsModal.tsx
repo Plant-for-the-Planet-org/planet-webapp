@@ -1,18 +1,29 @@
 import React from 'react';
+import { signOut, } from 'next-auth/client';
 import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
+import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
+import i18next from '../../../../../i18n';
 
+
+const {useTranslation} = i18next;
 export default function SettingsModal({
+  userType,
+  userprofile,
   settingsModalOpen,
   handleSettingsModalClose,
   editProfileModalOpen,
   handleEditProfileModalClose,
   handleEditProfileModalOpen,
+  changeForceReload,
+  forceReload,
 }: any) {
+  const router = useRouter();
+  const {t} = useTranslation(['me', 'common', 'editProfile']);
   return (
     <>
       <Modal
@@ -29,28 +40,41 @@ export default function SettingsModal({
       >
         <Fade in={settingsModalOpen}>
           <div className={styles.modal}>
-            <div className={styles.settingsItem}> Manage Projects </div>
-            <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> Edit Profile </div>
-            <div className={styles.settingsItem}> Change Password </div>
+            {
+              userType == 'tpo' && 
+              <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> {t('me:settingManageProject')} </a>
+            }
+            <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </div>
+            {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
-            <div className={styles.settingsItem}> Embed Widget </div>
-            <div className={styles.settingsItem}>
-              <b> Logout </b>
+            <div className={styles.settingsItem}> Embed Widget </div> */}
+            <div
+              className={styles.settingsItem}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  router.push(`/logout`);
+                }
+              }
+              }>
+              <b>{t('me:logout')} </b>
             </div>
             <div
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
-              <p className={styles.cancelText}> Cancel</p>{' '}
+              <div className={styles.cancelText}> {t('common:cancel')}</div>
             </div>
           </div>
         </Fade>
       </Modal>
 
       <EditProfileModal
+        userprofile={userprofile}
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
+        changeForceReload={changeForceReload}
+        forceReload={forceReload}
       />
     </>
   );

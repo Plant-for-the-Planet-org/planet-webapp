@@ -18,7 +18,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n';
+import i18next from '../../../../../i18n/'
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
@@ -58,7 +58,8 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') 
       + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
     : t('donate:unavailable');
-    
+    const projectWebsiteLink = project.website ? project.website.includes("http") || project.website.includes("https") ? project.website : `http://${project.website}` : t('donate:unavailable')
+
   const contactDetails = [
     {
       id: 1,
@@ -70,7 +71,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       id: 2,
       icon: <WorldWeb color={styles.highlightBackground} />,
       text: project.website ? project.website : t('donate:unavailable'),
-      link: project.website,
+      link: projectWebsiteLink,
     },
     {
       id: 3,
@@ -107,7 +108,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-
+;
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -198,8 +199,12 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     
                   </div> */}
                 </div>
-                <div className={styles.projectTPOName}>
-                  {t('common:by')} {project.tpo.name}
+                <div className={styles.projectTPOName} onClick={() => {
+                  router.push(`/t/${project.tpo.slug}`);
+                }}>
+                  {t('common:by', {
+                    tpoName: project.tpo.name
+                  })} 
                 </div>
               </div>
 

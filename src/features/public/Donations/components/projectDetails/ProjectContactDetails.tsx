@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../../i18n';
+import i18next from '../../../../../../i18n/'
 
 const { useTranslation } = i18next;
 interface Props {

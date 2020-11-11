@@ -1,5 +1,5 @@
 {
-  "by": "Von",
+  "by": "Von {{tpoName}}",
   "to": "An",
   "for": "für",
   "trees": "Bäume",
@@ -24,5 +24,17 @@
   "thankYou": "Vielen Dank",
   "privacyPolicyNotice": "Durch die Nutzung dieser Website akzeptierst Du unsere",
   "privacyPolicy": "Datenschutz-Erklärung",
-  "about_pftp": "Über Plant-for-the-Planet"
+  "about_pftp": "Über Plant-for-the-Planet",
+  "january": "Januar",
+  "february": "Februar",
+  "march": "März",
+  "april": "April",
+  "may": "Mai",
+  "june": "Juni",
+  "july": "Juli",
+  "august": "August",
+  "september": "September",
+  "october": "Oktober",
+  "november": "November",
+  "december": "Dezember"
 }

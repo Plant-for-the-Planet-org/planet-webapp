@@ -13,6 +13,8 @@ interface Props {
   setProject: Function;
   setProjects: Function;
   setShowSingleProject: Function;
+  showProjects: Boolean;
+  setShowProjects: Function;
   setsearchedProjects: any
 }
 
@@ -22,6 +24,8 @@ export default function Donate({
   setProject,
   setProjects,
   setShowSingleProject,
+  showProjects,
+  setShowProjects,
   setsearchedProjects,
 }: Props) {
   const router = useRouter();
@@ -72,6 +76,8 @@ export default function Donate({
     projects,
     directGift,
     setDirectGift,
+    showProjects,
+    setShowProjects,
     setsearchedProjects,
   };
 

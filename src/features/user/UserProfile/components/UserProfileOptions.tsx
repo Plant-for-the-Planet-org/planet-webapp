@@ -4,24 +4,26 @@ import Share from '../../../../../public/assets/images/icons/userProfileIcons/Sh
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
-import { isMobileBrowser } from '../../../../utils/isMobileBrowser';
+import i18next from '../../../../../i18n'
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
+
+const {useTranslation} = i18next;
 export default function UserProfileOptions({ 
   userprofile,
   handleTextCopiedSnackbarOpen
  }: any) {
 
+  const {t} = useTranslation(['me']);
   const webShareMobile = async() => {
       try {
         const response = await navigator.share({
           title:'Check out Plant-for-the-Planet!',
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
         })
-        console.log('Share complete', response)
       } catch (error) {
-        console.error('Could not share at this time', error);
+        // console.error('Could not share at this time', error);
       }
   }
   
@@ -51,7 +53,7 @@ export default function UserProfileOptions({
           <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
             <Redeem color="white" />
           </div>
-          <p className={styles.bottomRowText}> Redeem</p>
+        <p className={styles.bottomRowText}> {t('me:redeem')}</p>
         </div>
 
         <RedeemModal
@@ -64,14 +66,14 @@ export default function UserProfileOptions({
             <Shovel color="white" />
           </div>
 
-          <p className={styles.bottomRowText}> Register Trees</p>
+        <p className={styles.bottomRowText}> {t('me:registerTrees')}</p>
         </div>
 
         <div className={styles.iconTextColumn} onClick={onShareClicked}>
           <div className={styles.bottomIconBg}>
             <Share color="white" />
           </div>
-          <p className={styles.bottomRowText}> Share </p>
+          <p className={styles.bottomRowText}> {t('me:share')} </p>
         </div>
       </div>
   );

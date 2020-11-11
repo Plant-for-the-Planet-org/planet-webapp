@@ -16,6 +16,8 @@ Type of Tenant [Please select all that apply]
 
 - [ ] Multiple Language (please list languages )
 
+- [ ] Tenant Description on the Leaderboard Page (If default template) and the tree target:
+
 - [ ] If hosting at subdirectory, current server type (NGINX/APACHE)?
 
 **Checklist for Developer**
@@ -27,3 +29,4 @@ Type of Tenant [Please select all that apply]
 - [ ] Custom fonts (woff, woff2) url:
 - [ ] Generate new maxbox token
 - [ ] Use ASSET_PREFIX with maxcdn if high traffic site
+- [ ] Generate Favicons at: https://iconifier.net
