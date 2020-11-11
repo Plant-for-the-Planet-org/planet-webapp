@@ -5,7 +5,6 @@ import { getPDFFile } from '../../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { format } from 'date-fns/fp';
 import InfoIcon from '../../../../../../public/assets/images/icons/manageProjects/Info';
-import { HorizontalBar } from 'react-chartjs-2'
 
 interface Props {
     project: any
