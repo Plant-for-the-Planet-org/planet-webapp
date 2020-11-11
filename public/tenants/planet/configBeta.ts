@@ -42,7 +42,7 @@ const config = {
         id: 4,
         title: 'me',
         onclick: '/me',
-        visible: false,
+        visible: true,
         key: 'me',
       },
     ],
