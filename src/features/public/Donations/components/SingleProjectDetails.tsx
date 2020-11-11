@@ -59,8 +59,8 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '')
     + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
     : t('donate:unavailable');
+    const projectWebsiteLink = project.website ? project.website.includes("http") || project.website.includes("https") ? project.website : `http://${project.website}` : t('donate:unavailable')
 
-  const projectWebsiteLink = project.website ? project.website.includes("http") || project.website.includes("https") ? project.website : `http://${project.website}` : t('donate:unavailable')
   const contactDetails = [
     {
       id: 1,
