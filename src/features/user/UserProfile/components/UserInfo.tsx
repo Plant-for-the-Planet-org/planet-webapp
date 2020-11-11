@@ -25,9 +25,9 @@ export default function UserInfo({
       <div className={styles.treeCounterDescription}>
         {userprofile.bio &&
         <ReadMoreReact
-          min={300}
-          ideal={350}
-          max={450}
+          min={100}
+          ideal={120}
+          max={150}
           readMoreText="read more"
           text={userprofile.bio}
         />

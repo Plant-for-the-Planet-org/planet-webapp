@@ -32,6 +32,13 @@
   text-align: center;
 }
 
+.treeCounterDescription > div > span > div  {
+  color: var(--primary-color);
+  display: inline;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
 .bottomIconsRow {
   display: flex;
   flex-direction: row;
