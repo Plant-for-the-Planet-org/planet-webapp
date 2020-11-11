@@ -1,39 +1,53 @@
 import getsessionId from '../../../../../utils/apiRequests/getSessionId';
 import { PayWithCardTypes } from '../../../../common/types/donations';
 
-export async function createDonation(data: any) {
+export async function createDonation(data: any,session:any) {
+  let headers = {
+    'Content-Type': 'application/json',
+    'tenant-key': `${process.env.TENANTID}`,
+    'X-SESSION-ID': await getsessionId(),
+    'x-locale': `${
+      localStorage.getItem('language')
+        ? localStorage.getItem('language')
+        : 'en'
+    }`
+  }
+  if(session){
+    headers = {
+      ...headers,
+      'Authorization': `OAuth ${session.accessToken}`
+    }
+  }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations`, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
+    headers: headers,
   });
   const donation = await res.json();
   return donation;
 }
 
-export async function payDonation(data: any, id: any) {
+export async function payDonation(data: any, id: any,session:any) {
+  let headers = {
+    'Content-Type': 'application/json',
+    'tenant-key': `${process.env.TENANTID}`,
+    'X-SESSION-ID': await getsessionId(),
+    'x-locale': `${
+      localStorage.getItem('language')
+        ? localStorage.getItem('language')
+        : 'en'
+    }`,
+  }
+  if(session){
+    headers = {
+      ...headers,
+      'Authorization': `OAuth ${session.accessToken}`
+    }
+  }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
+    headers:headers ,
   });
   const contribution = await res.json();
   return contribution;
@@ -78,6 +92,7 @@ export function payWithCard({
   window,
   donorDetails,
   taxDeductionCountry,
+  session
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
 
@@ -125,7 +140,7 @@ export function payWithCard({
   }
   }
 
-  createDonation(createDonationData)
+  createDonation(createDonationData,session)
     .then((res) => {
       // Code for Payment API
 
@@ -152,7 +167,7 @@ export function payWithCard({
           },
         };
 
-        payDonation(payDonationData, res.id)
+        payDonation(payDonationData, res.id,session)
           .then(async (res) => {
             if (res.code === 400) {
               setIsPaymentProcessing(false);
@@ -200,7 +215,7 @@ export function payWithCard({
                         },
                       },
                     };
-                    payDonation(payDonationData, donationID).then((res) => {
+                    payDonation(payDonationData, donationID,session).then((res) => {
                       if (res.paymentStatus === 'success') {
                         setIsPaymentProcessing(false);
                         setDonationStep(4);
