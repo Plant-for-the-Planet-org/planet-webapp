@@ -7,6 +7,7 @@ import i18next from './../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
 import StaticMap, { Source, Layer, WebMercatorViewport } from 'react-map-gl';
+import ReactMapboxGl, { GeoJSONLayer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
@@ -19,6 +20,12 @@ import {
 
 const { useTranslation } = i18next;
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
+
+const MapStatic = ReactMapboxGl({
+  accessToken: MAPBOX_TOKEN,
+  interactive: false,
+});
+
 interface Props {
   handleNext: Function;
   handleBack: Function;
@@ -72,11 +79,10 @@ export default function ProjectSites({
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
-    width: 320,
-    height: 200,
-    latitude: defaultMapCenter[0],
-    longitude: defaultMapCenter[1],
-    zoom: defaultZoom,
+    height: 320,
+    width: 200,
+    center: defaultMapCenter,
+    zoom: [defaultZoom],
   });
 
   const [showForm, setShowForm] = React.useState(true);
@@ -223,46 +229,28 @@ export default function ProjectSites({
                     >
                       <TrashIcon color={'#000'} />
                     </div>
-                    <StaticMap
+                    <MapStatic
                       {...viewport}
-                      longitude={longitude}
-                      latitude={latitude}
-                      zoom={zoom}
-                      mapboxApiAccessToken={MAPBOX_TOKEN}
-                      mapStyle={'mapbox://styles/mapbox/satellite-v9'}
-                      onViewportChange={_onViewportChange}
-                      dragPan={true}
-                      dragRotate={false}
-                      touchRotate={false}
-                      doubleClickZoom={false}
-                      scrollZoom={true}
-                      touchZoom={false}
+                      center={[longitude, latitude]}
+                      zoom={[zoom]}
+                      style="mapbox://styles/mapbox/satellite-v9" // eslint-disable-line
+                      containerStyle={{
+                        height: 200,
+                        width: 320,
+                      }}
                     >
-                      <Source
-                        id="singleSite"
-                        type="geojson"
+                      <GeoJSONLayer
                         data={site.geometry}
-                      >
-                        <Layer
-                          id="ploygonLayer"
-                          type="fill"
-                          source="singleProject"
-                          paint={{
-                            'fill-color': '#fff',
-                            'fill-opacity': 0.2,
-                          }}
-                        />
-                        <Layer
-                          id="ploygonOutline"
-                          type="line"
-                          source="singleProject"
-                          paint={{
-                            'line-color': '#89b54a',
-                            'line-width': 2,
-                          }}
-                        />
-                      </Source>
-                    </StaticMap>
+                        fillPaint={{
+                          'fill-color': '#fff',
+                          'fill-opacity': 0.2,
+                        }}
+                        linePaint={{
+                          'line-color': '#89b54a',
+                          'line-width': 2,
+                        }}
+                      />
+                    </MapStatic>
                   </div>
                 </div>
               );
