@@ -5,10 +5,10 @@ const config = {
   fallbackCurrency: 'GBP',
   tenantGoal:0,
   font: {
-    primaryFontFamily: '"Libre Baskersville",Helvetica,Arial,serif',
+    primaryFontFamily: '"Libre Baskerville",Helvetica,Arial,serif',
     primaryFontURL: 'https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap',
-    secondaryFontFamily: '"Lato",Helvetica,Arial,sans-serif',
-    secondaryFontURL: 'https://fonts.googleapis.com/css2?family=Lato&display=swap',
+    secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
+    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
   meta: {
     title: 'La Coqueta ❤️ Trees',
