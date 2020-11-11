@@ -1,0 +1,92 @@
+@import '../../../theme/theme';
+
+.redeem{
+  display:flex;
+  position: relative;
+  display:flex;
+  flex-direction:column;
+  height: 100vh; 
+}
+.redeemContainer{
+    position: absolute;
+    top: 220px;
+
+    overflow-y: scroll;
+    margin-bottom: 60px;
+    border: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+.redeemUserName{
+    font-family: $primaryFontFamily;
+    font-size: 41px;
+    font-weight: bold;
+    line-height: 0.66;
+    text-align: center;
+    color: $light;
+}
+
+.mapContainer{
+    width: 300px;
+    height: 251px;
+    border-radius: 13px;
+    margin-top: 12px;
+    background-color: lightgray; // To be removed later
+}
+.plantedGiftMessage{
+    max-width: 440px;
+    margin-top: 20px;
+    font-family: $primaryFontFamily;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: $light;
+    font-weight: normal;  
+}
+.signupMessage{
+    max-width: 440px;
+    margin-top: 20px;
+    font-family: $primaryFontFamily;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: $light;
+    font-weight: normal;
+}
+.authButtonsContainer{
+    margin: auto 20px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    :nth-child(2){
+        margin-left: 26px;
+    }
+    .authButton{
+        height: 52px;
+        padding: 15px 60px;
+        border-radius: 100px;
+        border: solid 1px $light;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.38;
+        letter-spacing: 0.21px;
+        text-align: center;
+        color: #ffffff;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+
+@include smTabletView{
+    .mapContainer{
+        width: 440px;
+        
+    }
+}
