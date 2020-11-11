@@ -8,10 +8,10 @@ interface Props {
 }
 
 function Video({}: Props): ReactElement {
-    const { useTranslation } = i18next;
+  const { useTranslation } = i18next;
   const { t } = useTranslation(['leaderboard', 'common']);
 
-  const videoUrl = 'https://www.youtube.com/watch?v=RKK7wGAYP6k'
+  const videoUrl = 'https://www.youtube.com/watch?v=9V981RXcmH8'
     return (
         <div className={styles.videoSection}>
             <h2>{t('leaderboard:videoTitle')}</h2>
