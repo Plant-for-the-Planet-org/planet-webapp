@@ -6,6 +6,7 @@ import React from 'react';
 import Sugar from 'sugar';
 import treeCounterStyles from './TreeCounter.module.scss';
 import i18next from '../../../../i18n';
+import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 
 const { useTranslation } = i18next;
 
@@ -48,7 +49,6 @@ export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
 
   const { t } = useTranslation(['me']);
-
   React.useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -87,7 +87,15 @@ export default function TpoProfile(props: any) {
           (props.target && props.target !== 0) &&
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
-            <h2>{t('me:target')}</h2>
+            <div className={treeCounterStyles.target}>
+            <h2 className={props.authenticatedType === 'public' ? treeCounterStyles.targetText : treeCounterStyles.targetTextForPrivate}>{t('me:target')}</h2>
+            {props.authenticatedType === 'private' &&
+            <div className={treeCounterStyles.editTragetContainer} onClick={() => props.handleAddTargetModalOpen()}>
+            <EditIcon color="white"></EditIcon>
+
+            </div>
+}
+            </div>
           </div>
         }
         {

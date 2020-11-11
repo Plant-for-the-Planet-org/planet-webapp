@@ -32,6 +32,36 @@
   text-align: center;
   font-size: 14px;
 }
+
+.targetTextForPrivate {
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  padding-left: 25px;
+  
+}
+
+.targetText {
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+}
+
+.target {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.editTragetContainer {
+  padding-right: 15px;
+  cursor: pointer;
+  padding-left: 7px;
+}
+
 .backgroundCircle {
   border: 5px solid white;
   border-radius: 50%;
