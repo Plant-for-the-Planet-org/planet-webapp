@@ -219,6 +219,7 @@
   color: $primaryFontColor;
   font-weight: bold;
   text-transform: uppercase;
+  position: relative;
 }
 .infoText {
   margin-top: 9px;
@@ -326,5 +327,32 @@
     margin-top: 90px;
     width: 360px;
     padding-bottom: 16px;
+  }
+}
+
+// Popover
+
+.popover {
+  position: relative;
+  width: fit-content !important;
+  .popoverContent {
+    position: absolute;
+    z-index: 10;
+    background-color: $light;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    border: 2px solid $primaryColor;
+    display: none;
+    text-transform: none;
+    font-weight: normal;
+    font-size: 14px;
+  }
+  &:hover,
+  &:active {
+    cursor: pointer;
+    .popoverContent {
+      display: block;
+    }
   }
 }

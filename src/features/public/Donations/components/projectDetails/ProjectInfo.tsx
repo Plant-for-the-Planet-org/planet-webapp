@@ -4,6 +4,7 @@ import i18next from '../../../../../../i18n'
 import { getPDFFile } from '../../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { format } from 'date-fns/fp';
+import InfoIcon from '../../../../../../public/assets/images/icons/manageProjects/Info';
 
 interface Props {
     project: any
@@ -14,7 +15,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects', 'common']);
 
-    const plantingSeasons= [
+    const plantingSeasons = [
         { id: 0, title: t('common:january') },
         { id: 1, title: t('common:february') },
         { id: 2, title: t('common:march') },
@@ -29,7 +30,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         { id: 11, title: t('common:december') }
     ]
 
-    const siteOwners= [
+    const siteOwners = [
         { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private' },
         { id: 2, title: t('manageProjects:siteOwnerPublic'), value: 'public-property' },
         { id: 3, title: t('manageProjects:siteOwnerSmallHolding'), value: 'smallholding' },
@@ -60,10 +61,20 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project.yearAbandoned && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
-                        {t('manageProjects:abandonment')}
-                   </div>
+                            {t('manageProjects:abandonment')}
+                            <div style={{ position: 'absolute', width: 'fit-content',top:'0px',right:'18px' }}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-140px' }}>
+                                        <p>
+                                            {t('manageProjects:abandonmentInfo')}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className={styles.infoText}>
-                        {t('common:approx')} {project.yearAbandoned}
+                            {t('common:approx')} {project.yearAbandoned}
                         </div>
                     </div>
                 )}
@@ -74,7 +85,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {t('manageProjects:firstTreePlanted')}
                         </div>
                         <div className={styles.infoText}>
-                            {format('LLLL d, yyyy',new Date(project.firstTreePlanted.date))}
+                            {format('LLLL d, yyyy', new Date(project.firstTreePlanted.date))}
                         </div>
                     </div>
                 )}
@@ -82,10 +93,10 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project.plantingDensity && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
-                        {t('manageProjects:plantingDensity')} 
+                            {t('manageProjects:plantingDensity')}
                         </div>
                         <div className={styles.infoText}>
-                            {project.plantingDensity} {t('manageProjects:treePerHa')} 
+                            {project.plantingDensity} {t('manageProjects:treePerHa')}
                         </div>
                     </div>
                 )}
@@ -93,7 +104,17 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project.survivalRate && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
-                        {t('manageProjects:survivalRate')}
+                            {t('manageProjects:survivalRate')}
+                            <div style={{ position: 'absolute', width: 'fit-content',top:'0px',right:'18px' }}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-160px' }}>
+                                        <p>
+                                            {t('manageProjects:survivalRateInfo')}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className={styles.infoText}>
                             {project.survivalRate} %
@@ -104,7 +125,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project.employeesCount && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
-                        {t('manageProjects:employees')}  
+                            {t('manageProjects:employees')}
                         </div>
                         <div className={styles.infoText}>
                             {project.employeesCount}
@@ -115,7 +136,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project.plantingSeasons && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
-                        {t('manageProjects:plantingSeasons')}  
+                            {t('manageProjects:plantingSeasons')}
                         </div>
                         <div className={styles.infoText}>
                             {project.plantingSeasons.map((season: any, index: any) => {
@@ -135,7 +156,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.mainChallenge && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:mainChallenge')}  
+                        {t('manageProjects:mainChallenge')}
                     </div>
                     <div className={styles.infoText}>
                         {project.mainChallenge}
@@ -147,8 +168,8 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.siteOwnerName && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:siteOwnership')}  
-                </div>
+                        {t('manageProjects:siteOwnership')}
+                    </div>
                     {project.siteOwnerType && (
                         <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
                             {ownerTypes.map((ownerType: any, index: any) => {
@@ -171,7 +192,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:causeOfDegredation')}  
+                        {t('manageProjects:causeOfDegredation')}
                     </div>
                     <div className={styles.infoText}>
                         {project.degradationCause}
@@ -183,8 +204,8 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.motivation && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:whyThisSite')}  
-                        </div>
+                        {t('manageProjects:whyThisSite')}
+                    </div>
                     <div className={styles.infoText}>
                         {project.motivation}
                     </div>
@@ -194,7 +215,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.longTermPlan && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:longTermProtection')}   
+                        {t('manageProjects:longTermProtection')}
                     </div>
                     <div className={styles.infoText}>
                         {project.longTermPlan}
@@ -205,7 +226,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.certificates && project.certificates.length > 0 && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:externalCertifications')}   
+                        {t('manageProjects:externalCertifications')}
                     </div>
 
                     {project.certificates.map((certificate: any) => {
@@ -213,7 +234,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             <div className={styles.infoText}>
                                 {certificate.certifierName}
                                 <a className={styles.infoTextButton} target={"_blank"} href={getPDFFile('projectCertificate', certificate.pdf)}>
-                                {t('common:view')}   
+                                    {t('common:view')}
                                 </a>
                             </div>
                         )
@@ -225,7 +246,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.expenses && project.expenses.length > 0 && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                    {t('manageProjects:projectSpendingFinancial')}      
+                        {t('manageProjects:projectSpendingFinancial')}
                     </div>
 
                     {project.expenses.map((expense: any) => {
@@ -235,15 +256,15 @@ function ProjectInfo({ project }: Props): ReactElement {
                                     {expense.year}
                                 </span>
                                 <span>
-                                {getFormatedCurrency(
-                                    i18n.language,
-                                    'EUR',
-                                    expense.amount
-                                )}
+                                    {getFormatedCurrency(
+                                        i18n.language,
+                                        'EUR',
+                                        expense.amount
+                                    )}
                                 </span>
 
                                 <a className={styles.infoTextButton} target={"_blank"} href={getPDFFile('projectExpense', expense.pdf)}>
-                                {t('common:view')}  
+                                    {t('common:view')}
                                 </a>
                             </div>
                         )
