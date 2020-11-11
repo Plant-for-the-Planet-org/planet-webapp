@@ -16,20 +16,25 @@ const {
   VERCEL_BITBUCKET_COMMIT_SHA,
 } = process.env;
 
-const COMMIT_SHA = VERCEL_GITHUB_COMMIT_SHA
-  || VERCEL_GITLAB_COMMIT_SHA
-  || VERCEL_BITBUCKET_COMMIT_SHA;
+const COMMIT_SHA =
+  VERCEL_GITHUB_COMMIT_SHA ||
+  VERCEL_GITLAB_COMMIT_SHA ||
+  VERCEL_BITBUCKET_COMMIT_SHA;
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';
 
-const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-  ? process.env.SCHEME
-  : 'https';
+const scheme =
+  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+    ? process.env.SCHEME
+    : 'https';
 
-const nextauthUrl = process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}` : `${scheme}://${process.env.VERCEL_URL}`;
+const nextauthUrl = process.env.NEXTAUTH_URL
+  ? `${process.env.NEXTAUTH_URL}`
+  : `${scheme}://${process.env.VERCEL_URL}`;
 
-const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
+const hasAssetPrefix =
+  process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withSourceMaps({
   serverRuntimeConfig: {
@@ -53,6 +58,9 @@ module.exports = withSourceMaps({
     if (!options.isServer) {
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
+    config.node = {
+      fs: 'empty',
+    };
 
     // When all the Sentry configuration env variables are available/configured
     // The Sentry webpack plugin gets pushed to the webpack plugins to build
@@ -60,12 +68,12 @@ module.exports = withSourceMaps({
     // This is an alternative to manually uploading the source maps
     // Note: This is disabled in development mode.
     if (
-      SENTRY_DSN
-      && SENTRY_ORG
-      && SENTRY_PROJECT
-      && SENTRY_AUTH_TOKEN
-      && COMMIT_SHA
-      && NODE_ENV === 'production'
+      SENTRY_DSN &&
+      SENTRY_ORG &&
+      SENTRY_PROJECT &&
+      SENTRY_AUTH_TOKEN &&
+      COMMIT_SHA &&
+      NODE_ENV === 'production'
     ) {
       config.plugins.push(
         new SentryWebpackPlugin({
@@ -74,7 +82,7 @@ module.exports = withSourceMaps({
           stripPrefix: ['webpack://_N_E/'],
           urlPrefix: `~${basePath}/_next`,
           release: COMMIT_SHA,
-        }),
+        })
       );
     }
     return config;
