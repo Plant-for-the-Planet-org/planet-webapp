@@ -18,12 +18,9 @@ export default function UserInfo({
         planted={userprofile.score.personal}
       />
 
-      <h2 className={styles.treeCounterName}>{`${userprofile.displayName}`}</h2>
-
+      <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
-      <p className={styles.treeCounterDescription}>
-        {userprofile.bio}{' '}
-      </p>
+      <p className={styles.treeCounterDescription}>{userprofile.bio}</p>
 
       {/* three icons in a row */}
       {

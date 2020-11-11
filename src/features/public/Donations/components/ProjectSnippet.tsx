@@ -106,15 +106,10 @@ export default function ProjectSnippet({
             ></div>
           ) : null}
 
-
-
         <div className={styles.projectImageBlock}>
           {/* <div className={styles.projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
-
-
-
           <div className={styles.projectName}>
             {Sugar.String.truncate(project.properties.name, 54)}
           </div>
@@ -141,7 +136,9 @@ export default function ProjectSnippet({
           <div className={styles.projectTPOName} onClick={() => {
                   router.push(`/t/${project.properties.tpo.slug}`);
                 }}>
-            {t('common:by')} {project.properties.tpo.name}
+              {t('common:by', {
+                tpoName: project.properties.tpo.name
+              })}
           </div>
         </div>
 

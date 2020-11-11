@@ -8,5 +8,6 @@
   "website": "Website",
   "websiteError": "Invalid website URL",
   "websiteRequired": "Please enter valid Website URL",
-  "snackbarMessage": "{{message}}"
+  "save": "Save",
+  "orgNameValidation":"Please enter Organization Name"
 }

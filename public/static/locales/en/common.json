@@ -1,5 +1,5 @@
 {
-  "by": "By",
+  "by": "By {{tpoName}}",
   "to": "To",
   "for": "for",
   "trees": "Trees",

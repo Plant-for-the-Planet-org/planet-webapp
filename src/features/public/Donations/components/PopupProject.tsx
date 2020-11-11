@@ -95,7 +95,9 @@ export default function PopupProject({
             </div>
           </div>
           <div className={styles.projectTPOName}>
-            {t('common:by')} {project.properties.tpo.name}
+            {t('common:by', {
+              tpoName: project.properties.tpo.name
+            })}
           </div>
         </div>
         {project.properties.allowDonations && (
