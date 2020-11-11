@@ -5,6 +5,7 @@ import { getPDFFile } from '../../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { format } from 'date-fns/fp';
 import InfoIcon from '../../../../../../public/assets/images/icons/manageProjects/Info';
+import { HorizontalBar } from 'react-chartjs-2'
 
 interface Props {
     project: any
@@ -53,6 +54,15 @@ function ProjectInfo({ project }: Props): ReactElement {
             setOwnerTypes(newSiteOwners)
         }
     }, [])
+
+
+    let expenseAmount = project.expenses.map((expense:any)=>expense.amount);    
+    const calculatePercentage =(amount:any)=>{
+        const maxAmount = Math.max(...expenseAmount)
+        let percentage = (amount/maxAmount) * 100;
+        return `${percentage}%`
+    }
+    
 
     return (
         <div>
@@ -243,6 +253,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 </div>
             )}
 
+           
             {project.expenses && project.expenses.length > 0 && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
@@ -251,21 +262,25 @@ function ProjectInfo({ project }: Props): ReactElement {
 
                     {project.expenses.map((expense: any) => {
                         return (
-                            <div className={styles.infoText}>
-                                <span>
+                            <div className={styles.infoText} style={{justifyContent:'normal'}}>
+                                 <span>
                                     {expense.year}
                                 </span>
-                                <span>
-                                    {getFormatedCurrency(
-                                        i18n.language,
-                                        'EUR',
-                                        expense.amount
-                                    )}
-                                </span>
+                                <div style={{marginLeft:'6px',display:'flex',flexDirection:'row',position:'relative',width:'100%'}}>
+                                <div style={{backgroundColor:'#F2F2F7',width:calculatePercentage(expense.amount),height:'20px',position:'absolute',zIndex:1}}></div>
 
-                                <a className={styles.infoTextButton} target={"_blank"} href={getPDFFile('projectExpense', expense.pdf)}>
-                                    {t('common:view')}
-                                </a>
+                                    <span style={{flexGrow:1,textAlign:'center',zIndex:2}}>
+                                        {getFormatedCurrency(
+                                            i18n.language,
+                                            'EUR',
+                                            expense.amount
+                                        )}
+                                    </span>
+
+                                    <a className={styles.infoTextButton} target={"_blank"} href={getPDFFile('projectExpense', expense.pdf)} style={{zIndex:2}}>
+                                        {t('common:view')}
+                                    </a>
+                                </div>
                             </div>
                         )
                     })}
