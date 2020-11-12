@@ -34,7 +34,13 @@
     height: 251px;
     border-radius: 13px;
     margin-top: 12px;
-    background-color: lightgray; // To be removed later
+    > div {
+        height: 100%;
+        width: 100%;
+        > div > div {
+            border-radius: 13px;
+        }
+    }
 }
 .plantedGiftMessage{
     max-width: 440px;
@@ -87,6 +93,5 @@
 @include smTabletView{
     .mapContainer{
         width: 440px;
-        
     }
 }
