@@ -84,12 +84,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
       </div>
       <img
         className={styles.leaderBoardBushImage}
-        src="/tenants/planet/images/leaderboard/leaderboard.svg"
+        src="/tenants/planet/images/leaderboard/Person.svg"
         alt=""
       />
       <img
         className={styles.leaderBoardGroupTreeImage}
-        src="/tenants/planet/images/leaderboard/treeGroup.svg"
+        src="/tenants/planet/images/leaderboard/Trees.svg"
         alt=""
       />
     </section>
