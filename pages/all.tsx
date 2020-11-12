@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Layout from '../src/features/common/Layout';
 import LeaderBoard from '../src/tenants/planet/LeaderBoard'
 import tenantConfig from '../tenant.config';
+import { getRequest } from '../src/utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -21,17 +22,8 @@ export default function Home() {
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      await fetch(`${process.env.API_ENDPOINT}/app/leaderboard`, {
-        headers: { 'tenant-key': `${process.env.TENANTID}` },
-      })
-        .then(async (res) => {
-          const newLeaderboard = res.status === 200 ? await res.json() : null;
-          if (res.status !== 200) {
-            router.push('/404', undefined, { shallow: true });
-          }
-          setLeaderboard(newLeaderboard);
-        })
-        .catch((err) => console.log(`Something went wrong: ${err}`));
+      const newLeaderboard = await getRequest('/app/leaderboard');
+      setLeaderboard(newLeaderboard);
     }
     loadLeaderboard();
   }, []);
@@ -41,12 +33,6 @@ export default function Home() {
       setTimeout(resolve, 2000);
     });
   }
-
-  //   if (!config.header.items[0].visible) {
-  //     if (typeof window !== 'undefined') {
-  //       router.push('/');
-  //     }
-  //   }
 
   let AllPage;
   function getAllPage() {
