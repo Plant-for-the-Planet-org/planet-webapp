@@ -1,14 +1,18 @@
 import React from 'react'
 import Footer from '../../common/Layout/Footer'
 import LandingSection from '../../common/Layout/LandingSection'
-import styles from './Redeem.module.scss'
+import styles from './Redeem.module.scss';
+import { useSession, signIn, signOut } from 'next-auth/client';
+
 interface Props {
     
 }
 
 const Redeem = (props: Props) => {
+
+    const [session, loading] = useSession();
     const isGift= false;
-    const byOrg= true;
+    const byOrg= false;
     const isPlanted = true;
     return (
         <>
@@ -31,29 +35,30 @@ const Redeem = (props: Props) => {
                 <div className={styles.plantedGiftMessage}>
                     {isGift ? 'Felix gifted you 5 trees! Your trees are being planted in Yucatan, Mexico '  : byOrg ? 'Congratulations on your 5 trees from Salesforce! Your trees are being planted in Yucatan, Mexico': 'You’ve planted X trees!'}
                 </div>
-                {!byOrg ? (
+                {!byOrg && !session ? (
                     <div className={styles.signupMessage}>
                         {isPlanted ?  'These trees have already been added to an account.':'Sign up to keep track of your trees as they grow – and maybe even plant more trees yourself.'}
                     </div>
                 ) :null}
 
-{!byOrg ? (
+                {!byOrg && !session ? (
+                    <div className={styles.authButtonsContainer}>
+                        <div className={styles.authButton}>
+                            Sign Up
+                        </div>
+                        <div className={styles.authButton}>
+                            Log in
+                        </div>
+                    </div>
+                ) : !isPlanted ? (
+                    <div className={styles.authButtonsContainer}>
+                        <div className={styles.authButton}>
+                            Add to my profile
+                        </div>
+                    </div>
+                ) : null
+                }
                 
-                <div className={styles.authButtonsContainer}>
-                    <div className={styles.authButton}>
-                        Sign Up
-                    </div>
-                    <div className={styles.authButton}>
-                        Log in
-                    </div>
-                </div>
-
-) :null}
-                <div className={styles.authButtonsContainer}>
-                    <div className={styles.authButton}>
-                        Add to my profile
-                    </div>
-                </div>
             </div>
            
         </div>
