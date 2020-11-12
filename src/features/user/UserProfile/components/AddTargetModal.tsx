@@ -59,6 +59,7 @@ export default function AddTargetModal({
                 placeholder="100000" 
                 InputProps={{ inputProps: { min: 0 } }}
                 label="" 
+                defaultValue={userprofile.score.target ? userprofile.score.target : null}
                 type="number" 
                 onChange={(e) => setTarget(e.target.value)}
                 variant="outlined" />
