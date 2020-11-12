@@ -95,3 +95,27 @@
         width: 440px;
     }
 }
+
+.marker {
+    height: 30px;
+    border-radius: 4px;
+    background: $primaryColor;
+    margin: -20px 0 0 -20px;
+    padding: 4px 16px;
+    box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+    cursor: pointer;
+    position: relative;
+    color: white;
+    &::after{
+        content: '';
+        position: absolute;
+        top: 100%;
+        width: 0;
+        height: 0;
+        left: 42%;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid $primaryColor;
+        clear: both;
+    }
+  }

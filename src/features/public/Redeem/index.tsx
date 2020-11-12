@@ -19,9 +19,8 @@ const Redeem = (props: Props) => {
     const byOrg= false;
     const isPlanted = true;
 
-    const isMobile = window.innerWidth <= 767;
-    const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
-    const defaultZoom = isMobile ? 1 : 1.4;
+    const defaultMapCenter =  [20.9802115, -89.702959];
+    const defaultZoom = 7;
     const [viewport, setViewPort] = React.useState({
         width: Number('100%'),
         height: Number('100%'),
@@ -50,6 +49,14 @@ const Redeem = (props: Props) => {
                     // onViewportChange={_onViewportChange}
                     mapStyle={'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7'}
                 >
+                    <Marker
+                        latitude={20.9802115}
+                        longitude={-89.702959}
+                        >
+                        <div className={styles.marker}>
+                            500 Trees
+                        </div>
+                        </Marker>
                  </MapGL>
                 </div>
 
