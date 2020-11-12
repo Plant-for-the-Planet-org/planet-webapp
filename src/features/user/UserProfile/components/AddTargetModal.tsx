@@ -60,6 +60,7 @@ export default function AddTargetModal({
                 InputProps={{ inputProps: { min: 0 } }}
                 label="" 
                 type="number" 
+                defaultValue={userprofile.score.target ? userprofile.score.target : null}
                 onChange={(e) => setTarget(e.target.value)}
                 variant="outlined" />
           </div>
