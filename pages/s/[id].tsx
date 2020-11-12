@@ -10,9 +10,7 @@ export default function DirectGift({}: Props): ReactElement {
   React.useEffect(() => {
     if (router && router.query.id) {
       async function loadPublicUserData() {
-        const newProfile = await getRequest(
-          `/public/v1.0/en/treecounter/${router.query.id}`
-        );
+        const newProfile = await getRequest(`/app/profiles/${router.query.id}`);
         // console.log(newProfile);
         localStorage.setItem(
           'directGift',
