@@ -56,10 +56,9 @@ export default function AddTargetModal({
           </h4>
           <div className={styles.inputField}>
             <MaterialTextField 
-                placeholder="100000" 
+                placeholder={userprofile.score.target ? userprofile.score.target : '10000'}
                 InputProps={{ inputProps: { min: 0 } }}
                 label="" 
-                defaultValue={userprofile.score.target ? userprofile.score.target : null}
                 type="number" 
                 onChange={(e) => setTarget(e.target.value)}
                 variant="outlined" />
