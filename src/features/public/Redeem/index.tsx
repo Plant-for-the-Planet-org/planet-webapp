@@ -2,7 +2,7 @@ import React from 'react'
 import Footer from '../../common/Layout/Footer'
 import LandingSection from '../../common/Layout/LandingSection'
 import styles from './Redeem.module.scss';
-import { useSession, signIn, signOut } from 'next-auth/client';
+import { useSession, signIn } from 'next-auth/client';
 import MapGL, {
     Marker,
     Popup,
@@ -28,6 +28,8 @@ const Redeem = (props: Props) => {
         longitude: defaultMapCenter[1],
         zoom: defaultZoom,
       });
+
+
     return (
         <>
         <div className={styles.redeem}>
@@ -71,10 +73,10 @@ const Redeem = (props: Props) => {
 
                 {!byOrg && !session ? (
                     <div className={styles.authButtonsContainer}>
-                        <div className={styles.authButton}>
+                        <div onClick={()=>signIn('auth0', { callbackUrl: '/login' })} className={styles.authButton}>
                             Sign Up
                         </div>
-                        <div className={styles.authButton}>
+                        <div onClick={()=>signIn('auth0', { callbackUrl: '/login' })} className={styles.authButton}>
                             Log in
                         </div>
                     </div>
