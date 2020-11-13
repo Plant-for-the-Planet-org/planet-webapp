@@ -25,6 +25,7 @@ import RightIcon from '../../../../../public/assets/images/icons/RightIcon';
 import PopupProject from './PopupProject';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
+import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 
 import {
   Icons,
@@ -43,6 +44,7 @@ import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import i18next from '../../../../../i18n';
 import { Modal } from '@material-ui/core';
+import getLanguageName from '../../../../utils/language/getLanguageName';
 
 const { useTranslation } = i18next;
 
@@ -104,6 +106,18 @@ export default function MapboxMap({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+
+  const [language, setLanguage] = useState(i18n.language);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('US');
+
+  const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
+  const handleLanguageModalClose = () => {
+    setLanguageModalOpen(false);
+  };
+  const handleLanguageModalOpen = () => {
+    setLanguageModalOpen(true);
+  };
 
   const [exploreExpanded, setExploreExpanded] = React.useState(false);
 
@@ -174,6 +188,27 @@ export default function MapboxMap({
       });
     }
   };
+
+  React.useEffect(() => {
+    let langCode;
+    let currencyCode;
+    let countryCode;
+
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -826,6 +861,8 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
+
+        <div onClick={()=>{setLanguageModalOpen(true)}} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${getLanguageName(language)} · ${selectedCurrency}`}</div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -923,6 +960,15 @@ export default function MapboxMap({
           </div>
         </Modal>
       ) : null}
+      <SelectLanguageAndCountry
+          openModal={openLanguageModal}
+          handleModalClose={handleLanguageModalClose}
+          language={language}
+          setLanguage={setLanguage}
+          setSelectedCurrency={setSelectedCurrency}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+        />
     </div>
   );
 }
