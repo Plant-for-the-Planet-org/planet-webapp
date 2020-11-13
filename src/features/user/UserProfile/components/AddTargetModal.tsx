@@ -52,7 +52,7 @@ export default function AddTargetModal({
       <Fade in={addTargetModalOpen}>
         <div className={styles.modal}>
           <h4>
-            <b> {t('target:AddTarget')} </b>
+            <b> {t('target:setTarget')} </b>
           </h4>
           <div className={styles.inputField}>
             <MaterialTextField 
