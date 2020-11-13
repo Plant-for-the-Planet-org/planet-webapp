@@ -1,6 +1,6 @@
 {
   "by": "Von {{tpoName}}",
-  "to": "An",
+  "to_project_by_tpo": "An {{projectName}} von {{tpoName}}",
   "for": "für",
   "trees": "Bäume",
   "planted": "gepflanzt",

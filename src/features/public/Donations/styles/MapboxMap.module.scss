@@ -115,6 +115,7 @@
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   line-height: 16px;
+  cursor: pointer;
 }
 .exploreButton > svg {
   width: 17px;
@@ -160,6 +161,10 @@
 
 .deforestionSlider > div > div > ul > li > div {
   padding: 0px 4px 10px 4px !important;
+}
+
+.deforestionSlider > div > div > ul > li > div > div > div > div > button {
+  background-color: transparent;
 }
 
 .infoModal {
@@ -395,7 +400,6 @@
 
   .exploreButton {
     top: 100px;
-    flex-direction: row;
   }
 
   .exploreExpanded {
@@ -416,6 +420,9 @@
     top: auto;
     bottom: 30px;
     left: 300px;
+  }
+  .exploreButton {
+    flex-direction: row;
   }
 }
 
