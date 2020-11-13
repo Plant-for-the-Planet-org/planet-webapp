@@ -52,14 +52,15 @@ export default function AddTargetModal({
       <Fade in={addTargetModalOpen}>
         <div className={styles.modal}>
           <h4>
-            <b> {t('target:AddTarget')} </b>
+            <b> {t('target:setTarget')} </b>
           </h4>
           <div className={styles.inputField}>
             <MaterialTextField 
-                placeholder="100000" 
+                placeholder={userprofile.score.target ? userprofile.score.target : '10000'}
                 InputProps={{ inputProps: { min: 0 } }}
                 label="" 
                 type="number" 
+                defaultValue={userprofile.score.target ? userprofile.score.target : null}
                 onChange={(e) => setTarget(e.target.value)}
                 variant="outlined" />
           </div>

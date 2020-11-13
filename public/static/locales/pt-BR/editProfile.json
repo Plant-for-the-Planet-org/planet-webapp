@@ -1,1 +1,13 @@
-{ }
+{
+  "edit": "Editar Perfil",
+  "privateAccount": "Conta Privada",
+  "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
+  "subscribe": "Inscreva-se para receber notícias por e-mail",
+  "profileDescription": "Descrição de Perfil",
+  "descriptionRequired": "Por favor insira uma descrição válida",
+  "website": "Website",
+  "websiteError": "URL do site inválido",
+  "websiteRequired": "Por favor, digite o URL válido do site",
+  "save": "Salvar",
+  "orgNameValidation": "Por favor, introduza o nome da organização"
+}

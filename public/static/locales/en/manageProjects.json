@@ -103,6 +103,6 @@
   "issueDate":"Date issued",
   "addProject": "Add Project",
   "abandonmentInfo":"The last significant human intervention in the site. Incl. logging, agriculture, cattle grazing, human induced burning.",
-  "survivalRateInfo":"Percentage of trees that survive the first year of plantation."
+  "survivalRateInfo":"Percentage of trees that survive the first year of plantation.",
+  "addProject": "Add Project"
 }
-
