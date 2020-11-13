@@ -113,3 +113,53 @@
     margin-top: 140px;
   }
 }
+
+// share button
+.shareBtnContainer {
+  // display: inline-grid
+  position: relative;
+  transition-timing-function: ease-in;
+}
+.shareIconFacebook {
+  position: relative;
+}
+.shareIconFacebook svg {
+  position: absolute;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    left: 84px;
+    bottom: 50px;
+    top: -3px;
+}
+
+.shareIconInstagram {
+  position: relative;
+}
+
+.shareIconInstagram svg {
+  position: absolute;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    left: 84px;
+    bottom: 50px;
+    top: -46px;
+}
+
+.shareIconTwitter {
+  position: relative;
+}
+
+.shareIconTwitter svg {
+  position: absolute;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    left: 84px;
+    bottom: 50px;
+    top: -80px;
+}
+.shareBtnContainer > button.react-share__ShareButton {
+  padding: 0px 10px;
+}
