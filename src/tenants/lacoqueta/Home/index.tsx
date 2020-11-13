@@ -34,13 +34,13 @@ export default function About({ leaderboard, tenantScore }: Props) {
           className={styles.publicUserDescription}
           style={{ fontWeight: 'bold', marginBottom: '0px' }}
         >
-          Plant Trees
+          Plant Trees with Lacoqueta
         </p>
         <p
           className={styles.publicUserDescription}
           style={{ marginTop: '8px' }}
         >
-          Add Description
+        Seeing her own children grow up and become increasingly interested in the climate crisis has inspired Celia to use her brand as a platform for positive change. After learning that trees are the most economical and effective means of binding CO2, allowing more time to reduce greenhouse gas emissions to zero and mitigate the climate crisis, they decided to embark on this exciting journey with Plant-for-the-Planet. You can also become part of that journey and donate some trees – in Granada, the hometown of Celia, or other areas around the world.
         </p>
       </LandingSection>
       <LeaderBoard leaderboard={leaderboard} />
