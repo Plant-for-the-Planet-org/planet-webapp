@@ -183,7 +183,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {ownerTypes.map((ownerType: any, index: any) => {
                                 return (
                                     <>
-                                        {ownerType}
+                                        {t(`manageProjects:${ownerType}`)}
                                         {index === (ownerTypes.length - 2) ? ' and ' : index === (ownerTypes.length - 1) ? '.' : ', '}
                                     </>
                                 )
