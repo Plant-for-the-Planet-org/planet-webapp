@@ -54,7 +54,7 @@ export default function TpoProfile(props: any) {
     if (props.target > 0) {
       percentage = (props.planted / props.target) * 100;
     } else {
-      if (props.planted === '0.00' || props.planted=== 0.00) percentage = 0.1;
+      if (props.planted === '0.00' || props.planted === 0.0) percentage = 0.1;
       else percentage = 100;
     }
     if (percentage > 100) {
@@ -62,7 +62,7 @@ export default function TpoProfile(props: any) {
     }
     const timer = setInterval(() => {
       if (percentage === 0.1) {
-        setProgress(0.1)
+        setProgress(0.1);
       } else {
         setProgress((prevProgress) =>
           prevProgress >= percentage ? percentage : prevProgress + 5
@@ -83,34 +83,43 @@ export default function TpoProfile(props: any) {
           <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
           <h2>{t('me:treesPlanted')}</h2>
         </div>
-        {
-          ( props.target !== 0) &&
+        {props.target !== 0 && (
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
             <div className={treeCounterStyles.target}>
-            <h2 className={props.authenticatedType === 'public' ? treeCounterStyles.targetText : treeCounterStyles.targetTextForPrivate}>{t('me:target')}</h2>
-            {props.authenticatedType === 'private' &&
-            <div className={treeCounterStyles.editTragetContainer} onClick={() => props.handleAddTargetModalOpen()}>
-            <EditIcon color="white"></EditIcon>
-
-            </div>
-}
+              <h2
+                className={
+                  props.authenticatedType === 'public'
+                    ? treeCounterStyles.targetText
+                    : treeCounterStyles.targetTextForPrivate
+                }
+              >
+                {t('me:target')}
+              </h2>
+              {props.authenticatedType === 'private' && (
+                <div
+                  className={treeCounterStyles.editTragetContainer}
+                  onClick={() => props.handleAddTargetModalOpen()}
+                >
+                  <EditIcon color="white"></EditIcon>
+                </div>
+              )}
             </div>
           </div>
-        }
+        )}
         {props.target === 0 && (
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
           </div>
         )}
-        {
-          props.authenticatedType === 'private' 
-          && (props.target === 0) &&
-          <div onClick={()=> props.handleAddTargetModalOpen()} 
-          className={treeCounterStyles.addTargetButton}>
-            <p>Add Target </p>
+        {props.authenticatedType === 'private' && props.target === 0 && (
+          <div
+            onClick={() => props.handleAddTargetModalOpen()}
+            className={treeCounterStyles.addTargetButton}
+          >
+            <p>{t('me:addTarget')} </p>
           </div>
-        }
+        )}
       </div>
     </div>
   );
