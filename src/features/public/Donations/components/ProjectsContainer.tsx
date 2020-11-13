@@ -6,20 +6,19 @@ import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
 import i18next from '../../../../../i18n/'
+import LazyLoad from 'react-lazyload';
+import NotFound from '../../../../../public/assets/images/NotFound';
 
 const { useTranslation } = i18next;
+const ProjectSnippet = dynamic(() => import('./ProjectSnippet'), {
+  loading: () => <ProjectLoader />,
+});
 interface Props {
   projects: any;
   setSearchedProjects: Function;
   directGift: any;
   setDirectGift: Function;
 }
-
-const AllProjects = dynamic(() => import('../components/AllProjects'), {
-  ssr: false,
-  loading: () => <ProjectLoader />,
-});
-
 export default function ProjectsContainer({
   projects,
   setSearchedProjects,
@@ -40,11 +39,9 @@ export default function ProjectsContainer({
 
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
-    // showFeaturedList ? null : setSearchMode(true);
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
-  
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
@@ -55,7 +52,7 @@ export default function ProjectsContainer({
       );
     } else if (type === 'all') {
       return projects;
-    } 
+    }
   }
 
   function getSearchProjects(projects: Array<any>, keyword: string) {
@@ -89,7 +86,6 @@ export default function ProjectsContainer({
     } else {
       setSearchedProjects(projects);
     }
-    
   }
 
   const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
@@ -106,27 +102,38 @@ export default function ProjectsContainer({
     [projects]
   );
 
-  const AllProjectsProps = {
-    projects: allProjects,
-    directGift,
-    setDirectGift,
-  };
-  const SearchResultProjectsProps = {
-    projects: searchProjectResults,
-    directGift,
-    setDirectGift,
-  };
-  const FeaturedProjectsProps = {
-    projects: featuredProjects,
-    directGift,
-    setDirectGift,
-  };
+  const AllProjects = (projects:any)=>{   
+    if (projects.projects.length < 1) {
+      return (
+        <div className={styles.projectNotFound}>
+          <LazyLoad>
+            <NotFound className={styles.projectNotFoundImage} />
+            <h5>{t('donate:noProjectsFound')}</h5>
+          </LazyLoad>
+        </div>
+      );
+    }
+    else {
+      return (
+        projects.projects.map((project: any) => {
+          return (
+            <ProjectSnippet
+              key={project.properties.id}
+              project={project}
+              directGift={directGift}
+              setDirectGift={setDirectGift}
+              editMode={false}
+            />
+          );
+        })
+      ) 
+    } 
+  }
 
-  return (
-    <>
-      {searchMode ? (
-        <div className={styles.headerSearchMode}>
-          <div className={styles.searchIcon}>
+  const SearchField =()=>{
+    return(
+      <>
+      <div className={styles.searchIcon}>
             <SearchIcon color={styles.primaryFontColor} />
           </div>
 
@@ -149,77 +156,85 @@ export default function ProjectsContainer({
           >
             <CancelIcon color={styles.primaryFontColor} />
           </div>
-        </div>
-      ) : (
-        <div
-          className={styles.header}
-          style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
-        >
-          {isMobile ? <div className={styles.dragBar}></div> : null}
-          {showFeaturedList ? (
-            <div className={styles.tabButtonContainer}>
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('featured')}
-              >
-                <div
-                  className={
-                    selectedTab === 'featured'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
-                >
-                  {t('donate:topProjects')}
-                </div>
-                {selectedTab === 'featured' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
-              </div>
+      </>
+    )
+  }
 
-              <div
-                className={styles.tabButton}
-                onClick={() => setSelectedTab('all')}
-              >
+  const Header =()=>{
+    return(
+      <div className={styles.header}>
+            {showFeaturedList ? (
+              <div className={styles.tabButtonContainer}>
                 <div
-                  className={
-                    selectedTab === 'all'
-                      ? styles.tabButtonSelected
-                      : styles.tabButtonText
-                  }
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('featured')}
                 >
-                  {t('donate:allCountProjects', {
-                    projectCount: projects.length,
-                  })}
+                  <div
+                    className={
+                      selectedTab === 'featured'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    {t('donate:topProjects')}
+                  </div>
+                  {selectedTab === 'featured' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
                 </div>
-                {selectedTab === 'all' ? (
-                  <div className={styles.tabButtonSelectedIndicator} />
-                ) : null}
+
+                <div
+                  className={styles.tabButton}
+                  onClick={() => setSelectedTab('all')}
+                >
+                  <div
+                    className={
+                      selectedTab === 'all'
+                        ? styles.tabButtonSelected
+                        : styles.tabButtonText
+                    }
+                  >
+                    {t('donate:allCountProjects', {
+                      projectCount: projects.length,
+                    })}
+                  </div>
+                  {selectedTab === 'all' ? (
+                    <div className={styles.tabButtonSelectedIndicator} />
+                  ) : null}
+                </div>
               </div>
+            ) : (
+                <p className={styles.headerText}>
+                  {t('donate:stopTalkingStartPlanting')}
+                </p>
+              )}
+
+            <div
+              className={styles.searchIcon}
+              onClick={() => setSearchMode(true)}
+            >
+              <SearchIcon />
             </div>
-          ) : (
-            <p className={styles.headerText}>
-              {t('donate:stopTalkingStartPlanting')}
-            </p>
-          )}
-
-          <div
-            className={styles.searchIcon}
-            onClick={() => setSearchMode(true)}
-          >
-            <SearchIcon />
           </div>
-        </div>
-      )}
+    )
+  }
+  return (
+    <>
+     <div className={styles.header} style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}>
+      {isMobile ? <div className={styles.dragBar}></div> : null}
+      {searchMode ? <SearchField/> :<Header/>}
+      </div>
       {/* till here is header */}
       <div className={styles.projectsContainer}>
-        {searchValue !== '' ? (
-          <AllProjects {...SearchResultProjectsProps} />
-        ) : selectedTab === 'all' ? (
-          <AllProjects {...AllProjectsProps} />
-        ) : (
-          <AllProjects {...FeaturedProjectsProps} />
-        )}
+        <div className={styles.projectsContainerChild}>
+        {searchValue !== '' ?
+          <AllProjects projects={searchProjectResults} />
+          : selectedTab === 'all' ? 
+            <AllProjects projects={allProjects} /> : 
+            <AllProjects projects={featuredProjects} />}
+        </div>        
       </div>
+      
     </>
   );
 }

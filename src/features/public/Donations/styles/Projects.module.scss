@@ -17,7 +17,9 @@
   border-radius: 13px 13px 0px 0px;
   height: 50px;
   width: 100%;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 20;
 }
 
 .headerText {
@@ -66,16 +68,6 @@
   align-self: flex-end;
 }
 
-.headerSearchMode {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: $backgroundColor;
-  border-radius: 13px 13px 0px 0px;
-  width: 100%;
-  height: 50px;
-}
-
 .searchIcon {
   margin-left: 6px;
   padding: 10px;
@@ -108,26 +100,16 @@
   display: flex;
   flex-direction: column;
   background-color: $backgroundColor;
-  margin-top: 0px;
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  height: auto;
   overflow-x: hidden;
-  overflow-y: hidden;
-}
-
-.projectsContainer::-webkit-scrollbar {
-  width: 6px;
-}
-
-.projectsContainer::-webkit-scrollbar-track {
-  background-color: $dividerColor;
-}
-
-.projectsContainer::-webkit-scrollbar-thumb {
-  background-color: $primaryColor;
+  margin-top: 5px;
+  overflow-y: auto;
+  max-height: calc(100vh - 145px);
+  position: sticky;
+  top: 145px;
 }
 
 .singleProject {
@@ -305,10 +287,6 @@
   color: #fff;
 }
 
-.allProjectsContainer {
-  padding-bottom: 12px;
-}
-
 .projectNotFound {
   font-family: $primaryFontFamily;
   text-align: center;
@@ -369,18 +347,16 @@
     grid-template-columns: auto auto;
     column-gap: 16px;
   }
-
   .container {
     padding-bottom: 0px;
   }
 }
 
 @include mdTabletView {
-  .mainContainer {
-    max-height: calc(100vh - 60px);
-    position: relative;
-    // top: 60px;
-    overflow-y: visible;
+
+  .header{
+    top: 90px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
   }
 
   .container {
@@ -388,20 +364,16 @@
     padding-top: 0px;
     margin-top: 90px;
     margin-left: 24px;
-    // padding-bottom: 0px;
     width: fit-content;
-    // z-index: 2;
     bottom: 0px;
     position: relative;
     -ms-overflow-style: none;
     scrollbar-color: transparent transparent;
     z-index: 2;
   }
-
-  // .container::-webkit-scrollbar {
-  //   display: none;
-  // }
-
+  .container::-webkit-scrollbar {
+    display: none;
+  }
   .allProjectsContainer > div > div {
     display: block;
   }
@@ -411,16 +383,9 @@
     left: 24px;
   }
   .projectsContainer {
-    margin-top: 5px;
     width: 360px;
-    overflow-y: hidden;
-    padding-bottom: 0px;
   }
   .header {
-    width: 360px;
-  }
-
-  .headerSearchMode {
     width: 360px;
   }
 
