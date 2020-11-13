@@ -61,7 +61,6 @@ function ProjectInfo({ project }: Props): ReactElement {
         let percentage = (amount/maxAmount) * 100;
         return `${percentage}%`
     }
-    
 
     return (
         <div>
@@ -94,7 +93,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {t('manageProjects:firstTreePlanted')}
                         </div>
                         <div className={styles.infoText}>
-                            {format('LLLL d, yyyy', new Date(project.firstTreePlanted.date))}
+                            {format('LLLL d, yyyy',new Date(Date.parse(project.firstTreePlanted.date.replace(/ /g,"T"))))}
                         </div>
                     </div>
                 )}
