@@ -223,7 +223,7 @@ function TreeDonation({
                 ? styles.treeCountOptionSelected
                 : styles.treeCountOption
             }
-            style={{ minWidth: '65%', flexDirection: 'row' }}
+            style={{ width: '65%', flexDirection: 'row' }}
             onClick={() => setIsCustomTrees(true)}
           >
             <input

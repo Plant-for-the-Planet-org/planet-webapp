@@ -334,3 +334,71 @@
   primaryFontColor: $primaryFontColor;
   primaryColor: $primaryColor;
 }
+
+@media only screen and (width: 320px) {
+  .cardContainer {
+    background-color: $backgroundColor;
+    border-radius: 7px;
+    padding: 26px;
+    height: max-content;
+    z-index: 10;
+    max-width: 320px;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 70px;
+  }
+
+}
+
+@media only screen and (width: 360px) {
+  .cardContainer {
+    background-color: $backgroundColor;
+    border-radius: 7px;
+    padding: 26px;
+    height: max-content;
+    z-index: 10;
+    max-width: 360px;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 10px;
+  }
+  
+}
+
+@media only screen and (min-width: 375px) and (max-width: 400px) {
+  .cardContainer {
+    background-color: $backgroundColor;
+    border-radius: 7px;
+    padding: 26px;
+    width: 375px;
+    height: max-content;
+    z-index: 10;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .cardContainer {
+    background-color: $backgroundColor;
+    border-radius: 7px;
+    padding: 26px;
+    width: 290px;
+    height: max-content;
+    z-index: 10;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
