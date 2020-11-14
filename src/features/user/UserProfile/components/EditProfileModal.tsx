@@ -188,9 +188,15 @@ export default function EditProfileModal({
             <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center',width:'100%' }}>
               <label htmlFor="upload" >
                 <div
-                  className={styles.profilePicDiv}>
+                  className={styles.profilePicDiv}
+                  style={{width: userprofile.image ? '100px' : '100%'}}
+                  >
                   <input {...getInputProps()} />
-                  {userprofile.image ? <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : <Camera color="white" />}
+                  {userprofile.image ? <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : 
+                  <div style={{textAlign: 'center'}}>
+                    <Camera color="white" />
+                    <p>{t('editProfile:addPhoto')}</p>
+                  </div>}
                 </div>
               </label>
             </div>
@@ -333,6 +339,7 @@ export default function EditProfileModal({
               <MaterialTextField
                 label={t('editProfile:profileDescription')}
                 variant="outlined"
+                multiline
                 name="bio"
                 inputRef={register()}
               />
