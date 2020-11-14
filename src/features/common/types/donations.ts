@@ -100,4 +100,5 @@ export interface PayWithCardTypes {
   paymentMethod: Object;
   donorDetails: Object;
   taxDeductionCountry: string | null;
+  session: any | null;
 }

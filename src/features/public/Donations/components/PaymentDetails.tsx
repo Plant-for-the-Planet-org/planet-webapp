@@ -20,6 +20,7 @@ import styles from './../styles/PaymentDetails.module.scss';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import {useSession} from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
@@ -90,7 +91,7 @@ function PaymentDetails({
   isTaxDeductible,
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common']);
-
+  const [session] = useSession();
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
@@ -211,6 +212,7 @@ function PaymentDetails({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
+      session:session?session : null
     };
     payWithCard({ ...payWithCardProps });
   };
