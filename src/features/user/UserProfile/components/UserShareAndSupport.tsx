@@ -11,6 +11,7 @@ import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import i18next from '../../../../../i18n';
 
 const config = tenantConfig();
+
 export default function UserShareAndSupport({ userprofile }: any) {
   const { useTranslation } = i18next;
   const { t } = useTranslation(['donate', 'me']);
@@ -45,18 +46,17 @@ export default function UserShareAndSupport({ userprofile }: any) {
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
   };
+
   return (
     <div>
       {showSocialBtn && (
         <div className={styles.shareBtnContainer}>
           <div
             className={styles.shareIconFacebook}
-            onClick={() =>
-              shareClicked(
-                `https://www.facebook.com/sharer.php?u=${config.tenantURL}&quote=${textToShare}`,
-                '_blank'
-              )
-            }
+            onClick={() => shareClicked(
+              `https://www.facebook.com/sharer.php?u=${config.tenantURL}&quote=${textToShare}`,
+              '_blank',
+            )}
             onMouseOver={() => setCurrentHover(1)}
             onTouchMove={() => setCurrentHover(1)}
           >
@@ -65,11 +65,9 @@ export default function UserShareAndSupport({ userprofile }: any) {
           <div
             className={styles.shareIconInstagram}
             onMouseOver={() => setCurrentHover(2)}
-            onClick={() =>
-              shareClicked(
-                'https://www.instagram.com/plantfortheplanet_official/'
-              )
-            }
+            onClick={() => shareClicked(
+              'https://www.instagram.com/plantfortheplanet_official/',
+            )}
             onTouchMove={() => setCurrentHover(2)}
           >
             <InstagramIcon color={currentHover === 2 ? '#dd217b' : '#f2f2f7'} />
@@ -78,11 +76,9 @@ export default function UserShareAndSupport({ userprofile }: any) {
             className={styles.shareIconTwitter}
             onMouseOver={() => setCurrentHover(3)}
             onTouchMove={() => setCurrentHover(3)}
-            onClick={() =>
-              shareClicked(
-                `https://twitter.com/intent/tweet?text=${textToShare}`
-              )
-            }
+            onClick={() => shareClicked(
+              `https://twitter.com/intent/tweet?text=${textToShare}`,
+            )}
           >
             <TwitterIcon color={currentHover === 3 ? '#00acee' : '#f2f2f7'} />
           </div>
