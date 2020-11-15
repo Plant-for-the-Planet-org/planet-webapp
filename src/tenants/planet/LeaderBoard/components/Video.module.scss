@@ -1,0 +1,49 @@
+@import "./../../../../theme/theme";
+.videoSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 0px;
+  align-items: center;
+}
+
+.videoSection > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #080707;
+}
+
+.videoContainerWrapper{
+  width: 100%;
+}
+.videoContainer{
+  margin-top: 36px;
+  width: 100%;
+  position: relative;
+  padding-top: 56.25% 
+}
+
+.video{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@include smTabletView{
+  .videoContainerWrapper{
+    width: 80%;
+  }
+}
+
+@include lgLaptopView{
+  .videoContainerWrapper{
+    width: 66.66%;
+  }
+}
