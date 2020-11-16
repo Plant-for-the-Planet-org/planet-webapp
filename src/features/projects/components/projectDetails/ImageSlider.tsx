@@ -1,7 +1,7 @@
 import React from 'react';
 import Stories from 'react-insta-stories';
 import getImageUrl from '../../../../utils/getImageURL';
-import styles from './../styles/ProjectDetails.module.scss';
+import styles from './../../styles/ProjectDetails.module.scss';
 
 interface Props {
   project: any;
