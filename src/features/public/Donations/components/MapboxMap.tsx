@@ -580,7 +580,7 @@ export default function MapboxMap({
             id="potential"
             type="raster"
             tiles={[
-              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V2/MapServer/tile/{z}/{y}/{x}',
+              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
             ]}
             tileSize={128}
           >
@@ -682,7 +682,7 @@ export default function MapboxMap({
                       <FormControlLabel
                         control={
                           <Switch
-                          color="#E7C746"
+                          color="#3B00FF"
                             checked={explorePotential}
                             onChange={handleExplorePotentialChange}
                             name="potential"
