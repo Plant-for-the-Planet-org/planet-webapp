@@ -21,7 +21,7 @@ export default function Stories({}: Props): ReactElement {
             <div className={styles.storyCard}>
                 <img src={'/tenants/planet/images/leaderboard/selectProjects.svg'} />
                 <div className={styles.storyContent}>
-                    <h2>How do we select projects</h2>
+                    <h2>How we select projects</h2>
                     <div>
                         <img src={'/tenants/planet/images/leaderboard/mapIcon.svg'} />
                         <p>Learn More</p>
