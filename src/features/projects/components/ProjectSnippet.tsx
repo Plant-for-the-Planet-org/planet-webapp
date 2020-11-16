@@ -8,7 +8,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import styles from './../styles/Projects.module.scss';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n/server'
+import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';

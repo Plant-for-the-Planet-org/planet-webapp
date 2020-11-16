@@ -15,7 +15,7 @@ import { PaymentRequestCustomButton } from '../components/PaymentRequestForm';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
 import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n/server';
+import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import {useSession} from 'next-auth/client';
 

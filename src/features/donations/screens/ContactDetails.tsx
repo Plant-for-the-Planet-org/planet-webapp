@@ -8,7 +8,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from '../../common/types/donations';
 import styles from '../styles/ContactDetails.module.scss';
-import i18next from '../../../../i18n/server';
+import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 

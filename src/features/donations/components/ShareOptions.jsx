@@ -10,7 +10,7 @@ import InstagramIcon from '../../../../public/assets/images/icons/share/Instagra
 import tenantConfig from '../../../../tenant.config';
 import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
-import i18next from '../../../../i18n/server';
+import i18next from '../../../../i18n/';
 
 const ShareOptions = (props) => {
   const { useTranslation } = i18next;

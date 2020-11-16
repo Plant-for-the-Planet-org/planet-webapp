@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import styles from './../../styles/ProjectDetails.module.scss'
-import i18next from '../../../../../i18n/server'
+import i18next from '../../../../../i18n/'
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { format } from 'date-fns/fp';

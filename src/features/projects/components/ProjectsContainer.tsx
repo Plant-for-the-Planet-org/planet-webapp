@@ -5,7 +5,7 @@ import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../public/assets/images/icons/SearchIcon';
 import styles from './../styles/Projects.module.scss';
-import i18next from '../../../../i18n/server'
+import i18next from '../../../../i18n/'
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 

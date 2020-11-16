@@ -5,7 +5,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import styles from './../styles/TreeDonation.module.scss';
-import i18next from '../../../../i18n/server';
+import i18next from '../../../../i18n/';
 
 const { useTranslation } = i18next;
 

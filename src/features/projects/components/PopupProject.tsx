@@ -7,7 +7,7 @@ import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import styles from './../styles/Projects.module.scss';
-import i18next from '../../../../i18n/server'
+import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;

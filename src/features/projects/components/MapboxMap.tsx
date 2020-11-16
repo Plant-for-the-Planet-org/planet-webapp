@@ -41,7 +41,7 @@ import styles from '../styles/MapboxMap.module.scss';
 import InfoIcon from '../../../../public/assets/images/icons/InfoIcon';
 import OpenLink from '../../../../public/assets/images/icons/OpenLink';
 import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
-import i18next from '../../../../i18n/server';
+import i18next from '../../../../i18n/';
 import { Modal } from '@material-ui/core';
 
 const { useTranslation } = i18next;

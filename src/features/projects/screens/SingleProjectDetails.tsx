@@ -18,7 +18,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../../donations';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../i18n/server';
+import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
