@@ -16,9 +16,9 @@ import getImageUrl from '../../../../utils/getImageURL';
 import getStripe from '../../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import DonationsPopup from '../screens/DonationsPopup';
+import DonationsPopup from './DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n/'
+import i18next from '../../../../../i18n/server'
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
@@ -26,7 +26,7 @@ interface Props {
   project: any;
 }
 
-const ImageSlider = dynamic(() => import('./ImageSlider'), {
+const ImageSlider = dynamic(() => import('../components/ImageSlider'), {
   ssr: false,
   loading: () => <p>Images</p>,
 });

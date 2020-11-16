@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import SingleProjectDetails from '../src/features/public/Donations/components/SingleProjectDetails';
+import SingleProjectDetails from '../src/features/public/Donations/screens/SingleProjectDetails';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from "../src/utils/countryCurrency/getStoredCurrency";
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';

@@ -88,10 +88,10 @@ export default function Donate({
 
   return (
     <>
-      {projects ? <GetAllProjectsMeta /> : null}
       {initialized ? (
         projects && initialized ? (
           <>
+          <GetAllProjectsMeta />
             <ProjectsList {...ProjectsProps} />
             {directGift ? (
               showdirectGift ? (
