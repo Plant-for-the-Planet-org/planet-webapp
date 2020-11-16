@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import ProjectsList from '../src/features/public/Donations/screens/Projects';
+import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
 import storeConfig from '../src/utils/storeConfig';
-import DirectGift from '../src/features/public/Donations/components/DirectGift';
+import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
 
 interface Props {
   initialized: Boolean;

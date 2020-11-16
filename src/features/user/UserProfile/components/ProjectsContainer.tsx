@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 const { useTranslation } = i18next;
 
-const ProjectSnippet = dynamic(() => import('./../../../public/Donations/components/ProjectSnippet'), {
+const ProjectSnippet = dynamic(() => import('../../../projects/components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
