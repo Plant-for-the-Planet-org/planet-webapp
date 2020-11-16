@@ -682,6 +682,7 @@ export default function MapboxMap({
                       <FormControlLabel
                         control={
                           <Switch
+                          color="#E7C746"
                             checked={explorePotential}
                             onChange={handleExplorePotentialChange}
                             name="potential"

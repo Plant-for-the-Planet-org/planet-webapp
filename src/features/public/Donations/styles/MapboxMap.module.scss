@@ -268,7 +268,8 @@
 }
 
 .reforestationScale > div {
-  width: 240px !important;
+  width: 230px !important;
+  margin: 0 5px;
   height: 7px;
   border-radius: 50px;
   background: linear-gradient(90deg, #fadc2f 1.1%, #fadc2f 98.6%);
@@ -294,7 +295,8 @@
 }
 
 .currentForestScale > div {
-  width: 240px !important;
+  width: 230px !important;
+  margin: 0 5px;
   height: 7px;
   border-radius: 50px;
   background: linear-gradient(90deg, #68b030 1.1%, #007a49 98.6%);
