@@ -575,18 +575,18 @@ export default function MapboxMap({
           </Source>
         ) : null}
 
-        {/* {explorePotential ? (
+        {explorePotential ? (
           <Source
             id="potential"
             type="raster"
             tiles={[
-              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V3/MapServer/tile/{z}/{y}/{x}',
+              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019/MapServer/tile/{z}/{y}/{x}',
             ]}
             tileSize={128}
           >
             <Layer id="potential-layer" source="potential" type="raster" />
           </Source>
-        ) : null} */}
+        ) : null}
 
         {loaded ? (
           <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
@@ -678,7 +678,7 @@ export default function MapboxMap({
                       <InfoIcon />
                     </div>
                   </div>
-                  {/* <div className={styles.exploreToggleRow}>
+                  <div className={styles.exploreToggleRow}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -697,7 +697,7 @@ export default function MapboxMap({
                       >
                         <InfoIcon />
                       </div>
-                    </div> */}
+                    </div>
 
                   <div className={styles.exploreToggleRow}>
                     <FormControlLabel
