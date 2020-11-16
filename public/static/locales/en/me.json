@@ -5,5 +5,9 @@
   "registerTrees": "Register Trees",
   "redeem": "Redeem",
   "myForest": "My Forest",
-  "giftToGiftee": "Gift to ${gifteeName}"
+  "giftToGiftee": "Gift to ${gifteeName}",
+  "settingManageProject": "Manage Projects",
+  "userTree": "Register Trees",
+  "logout": "Logout",
+  "addTarget": "Add Target"
 }

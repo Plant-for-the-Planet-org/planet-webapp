@@ -15,15 +15,12 @@ export default function UserInfo({
         handleAddTargetModalOpen={handleAddTargetModalOpen}
         authenticatedType={authenticatedType}
         target={userprofile.score.target}
-        planted={userprofile.score.personal}
+        planted={userprofile.score.personal+userprofile.score.received}
       />
 
-      <h2 className={styles.treeCounterName}>{`${userprofile.displayName}`}</h2>
-
+      <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
-      <p className={styles.treeCounterDescription}>
-        {userprofile.bio}{' '}
-      </p>
+      <p className={styles.treeCounterDescription}>{userprofile.bio}</p>
 
       {/* three icons in a row */}
       {

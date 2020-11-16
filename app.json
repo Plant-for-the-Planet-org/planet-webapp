@@ -1,0 +1,96 @@
+{
+    "name": "Plant-for-the-Planet Webapp 2.0",
+    "description": "Plant-for-the-Planet Webapp 2.0",
+    "keywords": [
+      "planet",
+      "treemapper",
+      "trilliontreecampaign",
+      "startplanting",
+      "treecounter"
+    ],
+    "website": "https://www.plant-for-the-planet.org",
+    "repository": "https://github.com/Plant-for-the-Planet-org/planet-webapp",
+    "success_url": "/",
+    "stack": "heroku-18",
+    "env": {
+      "API_ENDPOINT": {
+        "required": true,
+        "description": "API Endpoint",
+        "value":"app-staging.plant-for-the-planet.org"
+      },
+        "CDN_URL": {
+            "required": true,
+            "description": "CDN URL",
+            "value":"cdn.plant-for-the-planet.org/staging"
+      },
+       "WEB_MEMORY": {
+            "required": true,
+            "description": "Memory for a Node Worker (128 is recommended)",
+            "value":"128"
+      }, 
+        "NEXT_PUBLIC_FEATURED_LIST": {
+            "required": false,
+            "description": "Enable Featured list tab"
+      },
+      "MAPBOXGL_ACCESS_TOKEN": {
+          "required": false,
+          "description": "Mapbox Token"
+        },
+        "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": {
+          "required": false,
+          "description": "Stripe Publishable Key"
+        },
+        "NEXT_PUBLIC_GA_TRACKING_ID": {
+          "required": false,
+          "description": "Google Tag Manager ID"
+        },
+        "TENANT": {
+          "required": true,
+          "description": "Tenant Slug"
+        },
+        "TENANTID": {
+            "required": true,
+            "description": "Tenant ID"
+          },
+        "AUTH0_CLIENT_ID": {
+            "required": false,
+            "description": "Auth0 client ID"
+          },
+        "AUTH0_CUSTOM_DOMAIN": {
+          "required": false,
+          "description": "Auth0 custom domain",
+          "value":"accounts.plant-for-the-planet.org"
+        },
+        "NEXTAUTH_URL": {
+            "required": false,
+            "description": "Next Auth URL is required to enable Login Feature"
+          },
+        "SENTRY_ORG": {
+            "required": false,
+            "description": "Sentry Organization"
+          },
+        "SENTRY_PROJECT": {
+            "required": false,
+            "description": "Sentry Project"
+          },
+          "SENTRY_AUTH_TOKEN": {
+            "required": false,
+            "description": "Sentry Auth Token"
+          },
+          "NEXT_PUBLIC_SENTRY_DSN": {
+            "required": false,
+            "description": "Sentry DSN"
+          }
+    },
+    "formation": {
+      "web": {
+        "quantity": 1,
+        "size": "free"
+      }
+    },
+    "buildpacks": [
+      {
+        "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+      }
+    ]
+}

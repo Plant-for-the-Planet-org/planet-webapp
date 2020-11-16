@@ -369,7 +369,7 @@ export default function EditProfileModal({
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
-               {isUploadingData ? <div className={styles.spinner}></div> : t('target:save')}
+               {isUploadingData ? <div className={styles.spinner}></div> : t('editProfile:save')}
               </div>
             </div>
 
@@ -389,7 +389,7 @@ export default function EditProfileModal({
           onClose={handleSnackbarClose}
           severity={severity}
         >
-          {t('editProfile:snackbarMessage', {message: snackbarMessage})}
+          {snackbarMessage}
         </MuiAlert>
       </Snackbar>
     </React.Fragment>

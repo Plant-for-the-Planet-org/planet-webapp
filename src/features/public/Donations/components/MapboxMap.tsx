@@ -53,6 +53,7 @@ interface mapProps {
   mapboxToken: any;
   setShowProjects: Function;
   searchedProject: any;
+  showProjects: any;
 }
 export default function MapboxMap({
   projects,
@@ -61,6 +62,7 @@ export default function MapboxMap({
   mapboxToken,
   setShowProjects,
   searchedProject,
+  showProjects,
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -92,6 +94,7 @@ export default function MapboxMap({
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    dragPan: true,
   });
 
   const [viewport, setViewPort] = useState({
@@ -152,6 +155,9 @@ export default function MapboxMap({
       };
       setViewPort(newViewport);
     } else {
+      const newMapState = {
+        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -161,7 +167,11 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
+      setMapState(newMapState);
       setViewPort(newViewport);
+      router.push('/', undefined, {
+        shallow: true,
+      });
     }
   };
 
@@ -200,7 +210,11 @@ export default function MapboxMap({
           ]);
         }
       }
+      setExploreProjects(false);
+      setShowProjects(false);
     } else {
+      setExploreProjects(true);
+      setShowProjects(true);
     }
   }, [showSingleProject, project]);
 
@@ -284,21 +298,25 @@ export default function MapboxMap({
   ]);
 
   React.useEffect(() => {
-    document.addEventListener(
-      'mousedown',
-      (event) => {
-        if (exploreExpanded) {
-          if (
-            exploreContainerRef &&
-            !exploreContainerRef.current.contains(event.target)
-          ) {
-            setExploreExpanded(false);
-          }
+    document.addEventListener('mousedown', (event) => {
+      if (exploreExpanded) {
+        if (
+          exploreContainerRef &&
+          !exploreContainerRef.current.contains(event.target)
+        ) {
+          setExploreExpanded(false);
         }
-      },
-      false
-    );
+      }
+    });
   });
+
+  React.useEffect(() => {
+    if (exploreExpanded) {
+      setMapState({ ...mapState, dragPan: false });
+    } else {
+      setMapState({ ...mapState, dragPan: true });
+    }
+  }, [exploreExpanded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -392,7 +410,6 @@ export default function MapboxMap({
           customAttribution:
             '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
         }}
-        // onLoad={() => setLoaded(true)}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
@@ -558,7 +575,7 @@ export default function MapboxMap({
           </Source>
         ) : null}
 
-        {explorePotential ? (
+        {/* {explorePotential ? (
           <Source
             id="potential"
             type="raster"
@@ -569,7 +586,7 @@ export default function MapboxMap({
           >
             <Layer id="potential-layer" source="potential" type="raster" />
           </Source>
-        ) : null}
+        ) : null} */}
 
         {loaded ? (
           <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
@@ -577,8 +594,6 @@ export default function MapboxMap({
               TreeCoverLoss.map((layer) => {
                 const {
                   id,
-                  // paramsConfig,
-                  // sqlConfig,
                   decodeConfig,
                   timelineConfig,
                   decodeFunction,
@@ -590,16 +605,6 @@ export default function MapboxMap({
                   ...layer,
                   ...layer.config,
                   ...lSettings,
-                  // ...(!!paramsConfig && {
-                  //   params: getParams(paramsConfig, { ...lSettings.params }),
-                  // }),
-
-                  // ...(!!sqlConfig && {
-                  //   sqlParams: getParams(sqlConfig, {
-                  //     ...lSettings.sqlParams,
-                  //   }),
-                  // }),
-
                   ...(!!decodeConfig && {
                     decodeParams: getParams(decodeConfig, {
                       ...timelineConfig,

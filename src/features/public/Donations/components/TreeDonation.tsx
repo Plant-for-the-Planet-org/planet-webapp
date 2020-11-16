@@ -17,6 +17,7 @@ import DirectGiftForm from './treeDonation/DirectGiftForm';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import {useSession} from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
@@ -44,7 +45,7 @@ function TreeDonation({
   isPaymentOptionsLoading,
 }: TreeDonationProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common', 'country']);
-
+  const [session] = useSession();
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
@@ -110,6 +111,7 @@ function TreeDonation({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
+      session: session ? session: null
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -137,8 +139,10 @@ function TreeDonation({
         </div>
 
         <div className={styles.plantProjectName}>
-          {t('common:to')} {project.name} {t('common:by').toLowerCase()}{' '}
-          {project.tpo.name}
+          {t('common:to_project_by_tpo', {
+            projectName: project.name,
+            tpoName: project.tpo.name            
+          })}
         </div>
 
         <div
