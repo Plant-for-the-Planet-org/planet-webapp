@@ -692,6 +692,7 @@ export default function MapboxMap({
                       <div
                         onClick={() => {
                           setInfoExpanded('Restoration');
+                          setModalOpen(true);
                         }}
                         className={styles.exploreInfo}
                       >
