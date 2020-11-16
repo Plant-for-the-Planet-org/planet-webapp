@@ -5,5 +5,8 @@
   "registerTrees": "Enregistrer les arbres",
   "redeem": "Redeem",
   "myForest": "Ma forêt",
-  "giftToGiftee": "Cadeau à ${gifteeName}"
+  "giftToGiftee": "Cadeau à ${gifteeName}",
+  "settingManageProject": "Gérer les projets",
+  "userTree": "Enregistrer les arbres",
+  "logout": "Déconnexion"
 }

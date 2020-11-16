@@ -18,8 +18,11 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
 import DonationsPopup from '../screens/DonationsPopup';
 import styles from './../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n/'
+import i18next from '../../../../../i18n/';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import ExpandIcon from '../../../../../public/assets/images/icons/ExpandIcon';
+import ProjectInfo from './projectDetails/ProjectInfo';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -52,11 +55,11 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     ? getImageUrl('project', 'large', project.image)
     : '';
 
-  const contactAddress = project.tpo && project.tpo.address 
-    ? (project.tpo.address.address ? project.tpo.address.address + ', ' : '') 
-      + (project.tpo.address.city ? project.tpo.address.city + ', ' : '')        
-      + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') 
-      + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
+  const contactAddress = project.tpo && project.tpo.address
+    ? (project.tpo.address.address ? project.tpo.address.address + ', ' : '')
+    + (project.tpo.address.city ? project.tpo.address.city + ', ' : '')
+    + (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '')
+    + (project.tpo.address.country ? t('country:' + project.tpo.address.country.toLowerCase()) : '')
     : t('donate:unavailable');
     const projectWebsiteLink = project.website ? project.website.includes("http") || project.website.includes("https") ? project.website : `http://${project.website}` : t('donate:unavailable')
 
@@ -108,7 +111,14 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleOpen = () => {
     setOpen(true);
   };
-;
+
+  const [openModal, setModalOpen] = React.useState(false);
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
   return (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
@@ -135,6 +145,20 @@ function SingleProjectDetails({ project }: Props): ReactElement {
           <DonationsPopup project={project} onClose={handleClose} />
         </Elements>
       </Modal>
+      <Modal
+        className={styles.imageModal}
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={styles.modalWrapper}>
+          <div onClick={handleModalClose} className={styles.modalClose}>
+            <CancelIcon color="#fff" />
+          </div>
+          <ImageSlider project={project} height={600} imageSize="large" />
+        </div>
+      </Modal>
       <div className={styles.projectContainer}>
         <div className={styles.singleProject}>
           <div className={styles.projectImage}>
@@ -156,16 +180,16 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 </div>
               </div>
             ) : (
-              // </LazyLoad>
-              <div
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  router.push('/', undefined, { shallow: true });
-                }}
-              >
-                <BackButton />
-              </div>
-            )}
+                // </LazyLoad>
+                <div
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    router.push('/', undefined, { shallow: true });
+                  }}
+                >
+                  <BackButton />
+                </div>
+              )}
 
             <div className={styles.projectImageBlock}>
               {/* <div className={styles.projectType}>
@@ -199,12 +223,13 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     
                   </div> */}
                 </div>
-                <div className={styles.projectTPOName} onClick={() => {
-                  router.push(`/t/${project.tpo.slug}`);
-                }}>
-                  {t('common:by', {
-                    tpoName: project.tpo.name
-                  })} 
+                <div
+                  className={styles.projectTPOName}
+                  onClick={() => {
+                    router.push(`/t/${project.tpo.slug}`);
+                  }}
+                >
+                  {t('common:by')} {project.tpo.name}
                 </div>
               </div>
 
@@ -265,14 +290,21 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 />
               ) : null}
               <div className={styles.projectImageSliderContainer}>
-                {project.images.length > 0 ? (
-                  <ImageSlider project={project} />
+                <div onClick={handleModalOpen} className={styles.modalOpen}>
+                  <ExpandIcon color="#fff" />
+                </div>
+                {project.images.length > 0 && !openModal ? (
+                  <ImageSlider
+                    project={project}
+                    height={233}
+                    imageSize="medium"
+                  />
                 ) : null}
               </div>
-              {/* {infoProperties ? <ProjectInfo infoProperties={infoProperties} /> : null}
-                            {financialReports? <FinancialReports financialReports={financialReports} /> : null}
-                            {species ? <PlantSpecies species={species} /> : null }
-                            {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
+              <ProjectInfo project={project} />
+              {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
+                    {species ? <PlantSpecies species={species} /> : null }
+                    {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
 
               {contactDetails ? (
                 <ProjectContactDetails contactDetails={contactDetails} />

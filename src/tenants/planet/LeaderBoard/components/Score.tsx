@@ -1,7 +1,7 @@
 import React from 'react';
 import Sugar from 'sugar';
 import styles from './LeaderBoard.module.scss';
-import i18next from '../../../../i18n';
+import i18next from '../../../../../i18n';
 
 interface Props {
   leaderboard: any;
@@ -40,42 +40,46 @@ export default function LeaderBoardSection(leaderboard: Props) {
               {t('leaderboard:mostTrees')}
             </div>
           </div>
-          {leaderboardData &&
-          leaderboardData.mostRecent &&
-          leaderboardData.mostDonated ? (
-            selectedTab === 'recent' ? (
-              <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
-                    <p className={styles.leaderBoardDonorName}>
-                      {leader.donorName}
-                    </p>
-                    <p className={styles.leaderBoardDonorTrees}>
-                      {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
-                    </p>
-                    {/* <p className={styles.leaderBoardDonorTime}>
+          {leaderboardData !== null
+            && leaderboardData.mostRecent
+            && leaderboardData.mostDonated ? (
+              selectedTab === 'recent' ? (
+                <div className={styles.leaderBoardBody}>
+                  {leaderboardData.mostRecent.map((leader: any) => (
+                    <div className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {Sugar.Number.format(Number(leader.treeCount))}
+                        {' '}
+                        {t('common:trees')}
+                      </p>
+                      {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
                         </p> */}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                  <div className={styles.leaderBoardBody}>
+                    {leaderboardData.mostDonated.map((leader: any) => (
+                      <div className={styles.leaderBoardBodyRow}>
+                        <p className={styles.leaderBoardDonorName}>
+                          {leader.donorName}
+                        </p>
+                        <p className={styles.leaderBoardDonorTrees}>
+                          {Sugar.Number.format(Number(leader.treeCount))}
+                          {' '}
+                          {t('common:trees')}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                )
             ) : (
-              <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
-                    <p className={styles.leaderBoardDonorName}>
-                      {leader.donorName}
-                    </p>
-                    <p className={styles.leaderBoardDonorTrees}>
-                      {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )
-          ) : (
-            <p>loading</p>
-          )}
+              <p>loading</p>
+            )}
         </div>
       </div>
       <img
@@ -88,11 +92,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
         src="/tenants/planet/images/leaderboard/Trees.svg"
         alt=""
       />
-      {/* <img
-        className={styles.leaderBoardBushImageMobile}
-        src={'/tenants/salesforce/images/mobile/Bush.png'}
-        alt=""
-      /> */}
     </section>
   );
 }

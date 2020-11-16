@@ -18,7 +18,9 @@ if (!dev && cluster.isMaster) {
   console.log(`Node cluster master ${process.pid} is running`);
 
   // Fork workers.
-  for (let i = 0; i < numCPUs; i += 1) {
+  const WORKERS = process.env.WEB_CONCURRENCY || numCPUs;
+  console.log('Number of workers calculated:', WORKERS);
+  for (let i = 0; i < WORKERS; i++) {
     cluster.fork();
   }
 

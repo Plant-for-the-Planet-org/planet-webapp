@@ -5,19 +5,21 @@ import styles from './../styles/ProjectDetails.module.scss';
 
 interface Props {
   project: any;
+  height: any;
+  imageSize: any;
 }
 
-export default function ImageSlider(project: Props) {
+export default function ImageSlider({ project, height, imageSize }: Props) {
   const [slider, setSlider] = React.useState();
   let projectImages: { content: () => JSX.Element }[] = [];
 
   const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', 'medium', image);
+    const ImageSource = getImageUrl('project', imageSize, image);
     return ImageSource;
   };
 
   React.useEffect(() => {
-    project.project.images.forEach((image: any) => {
+    project.images.forEach((image: any) => {
       let imageURL = loadImageSource(image.image);
       projectImages.push({
         content: () => (
@@ -41,7 +43,7 @@ export default function ImageSlider(project: Props) {
         stories={projectImages}
         defaultInterval={7000}
         width="100%"
-        height={233}
+        height={height}
         loop={true}
       />
     );
