@@ -306,6 +306,11 @@
 .contactDetailsRow {
   display: flex;
   align-items: center;
+  > span {
+    margin-left: 16px;
+    flex-grow: 1;
+    word-wrap: break-word;
+  }
 }
 
 .projectVideoContainer {
