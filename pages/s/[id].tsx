@@ -15,7 +15,7 @@ export default function DirectGift({}: Props): ReactElement {
         localStorage.setItem(
           'directGift',
           JSON.stringify({
-            id: newProfile.id,
+            id: newProfile.slug,
             displayName: newProfile.displayName,
             show: true,
           })
