@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-import styles from '../../styles/Projects.module.scss';
 import i18next from '../../../../../i18n/'
 
 interface Props {
@@ -15,36 +14,36 @@ const { useTranslation } = i18next;
 function Header({showFeaturedList,setSelectedTab,selectedTab,setSearchMode,projects}: Props): ReactElement {
     const { t } = useTranslation(['donate']);
     return (
-        <div className={styles.header}>
+        <div className={'header'}>
             {showFeaturedList ? (
-              <div className={styles.tabButtonContainer}>
+              <div className={'tabButtonContainer'}>
                 <div
-                  className={styles.tabButton}
+                  className={'tabButton'}
                   onClick={() => setSelectedTab('featured')}
                 >
                   <div
                     className={
                       selectedTab === 'featured'
-                        ? styles.tabButtonSelected
-                        : styles.tabButtonText
+                        ? 'tabButtonSelected'
+                        : 'tabButtonText'
                     }
                   >
                     {t('donate:topProjects')}
                   </div>
                   {selectedTab === 'featured' ? (
-                    <div className={styles.tabButtonSelectedIndicator} />
+                    <div className={'tabButtonSelectedIndicator'} />
                   ) : null}
                 </div>
 
                 <div
-                  className={styles.tabButton}
+                  className={'tabButton'}
                   onClick={() => setSelectedTab('all')}
                 >
                   <div
                     className={
                       selectedTab === 'all'
-                        ? styles.tabButtonSelected
-                        : styles.tabButtonText
+                        ? 'tabButtonSelected'
+                        : 'tabButtonText'
                     }
                   >
                     {t('donate:allCountProjects', {
@@ -52,18 +51,18 @@ function Header({showFeaturedList,setSelectedTab,selectedTab,setSearchMode,proje
                     })}
                   </div>
                   {selectedTab === 'all' ? (
-                    <div className={styles.tabButtonSelectedIndicator} />
+                    <div className={'tabButtonSelectedIndicator'} />
                   ) : null}
                 </div>
               </div>
             ) : (
-                <p className={styles.headerText}>
+                <p className={'headerText'}>
                   {t('donate:stopTalkingStartPlanting')}
                 </p>
               )}
 
             <div
-              className={styles.searchIcon}
+              className={'searchIcon'}
               onClick={() => setSearchMode(true)}
             >
               <SearchIcon />

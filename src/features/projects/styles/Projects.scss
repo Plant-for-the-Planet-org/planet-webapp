@@ -1,4 +1,6 @@
 @import './../../../theme/theme';
+@import './ProjectSnippet.module.scss';
+@import './ProjectDetails.module.scss';
 
 .container {
   position: absolute;
@@ -116,6 +118,10 @@
   height: auto;
   overflow-x: hidden;
   overflow-y: hidden;
+  > div {
+    margin-top: 20px;
+    position: relative;
+  }
 }
 
 .projectsContainer::-webkit-scrollbar {
@@ -130,179 +136,11 @@
   background-color: $primaryColor;
 }
 
-.singleProject {
-  margin-top: 20px;
-  position: relative;
-}
-
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.modal::-webkit-scrollbar {
-  width: 0px;
-}
-
 .popupProject {
   margin-top: 0px;
-}
-
-.targetLocation {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-}
-
-.projectInfo {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.target {
-  font-family: $primaryFontFamily;
-  font-size: 12px;
-  color: $primaryFontColor;
-  font-weight: bold;
-  margin-right: 4px;
-}
-
-.projectTPOName {
-  font-family: $primaryFontFamily;
-  font-size: 12px;
-  color: $primaryFontColor;
-  margin-top: 10px;
-  line-height: 14px;
   cursor: pointer;
-}
-
-.location {
-  font-family: $primaryFontFamily;
-  font-size: 12px;
-  color: $primaryFontColor;
-  line-height: 14px;
-}
-
-.donateButton {
-  background-color: $primaryColor;
-  min-width: 75px;
-  max-width: 150px;
-  padding: 0 4px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 11px;
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.donateButton:hover {
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.perTreeCost {
-  font-family: $secondaryFontFamily;
-  font-size: 10px;
-  color: $primaryFontColor;
-  margin-top: 5px;
-  font-weight: 400;
-}
-
-.perTreeCost > span {
-  font-family: $primaryFontFamily;
-}
-
-.projectCost {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Progress Bar */
-.progressBar {
-  height: 4px;
-  width: 100%;
-  background-color: $dividerColor;
-}
-
-.progressBarHighlight {
-  height: 4px;
-  background-color: $primaryColor;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.projectImage {
-  height: 160px;
-  width: 100%;
-  background-color: $primaryColor;
-  position: relative;
-}
-
-.projectImage:hover {
-  cursor: pointer;
-}
-
-.projectImageFile {
-  height: 160px;
-  width: 100%;
-  position: relative;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.projectImageBlock {
-  position: absolute;
-  bottom: 12px;
-  left: 7px;
-}
-
-.projectEditBlock {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background-color: white;
-  border-radius: 50%;
-  font-size: 12px;
-  display: flex;
-  flex-direction: row;
-  height: 24px;
-  width: 24px;
-  justify-content: center;
-  align-items: center;
-  padding: 4px;
-  z-index: 9;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.projectType {
-  font-family: $primaryFontFamily;
-  font-size: 10px;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.projectName {
-  font-family: $primaryFontFamily;
-  font-size: 18px;
-  color: #fff;
+  z-index: 5;
+  background-color: $backgroundColor;
 }
 
 .allProjectsContainer {
@@ -437,3 +275,4 @@
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
 }
+

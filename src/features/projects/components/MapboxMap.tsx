@@ -22,27 +22,21 @@ import ExploreIcon from '../../../assets/images/icons/ExploreIcon';
 import Switch from '../../common/InputTypes/ToggleSwitch';
 import LeftIcon from '../../../../public/assets/images/icons/LeftIcon';
 import RightIcon from '../../../../public/assets/images/icons/RightIcon';
-import PopupProject from './PopupProject';
 import { getParams } from '../../../utils/LayerManagerUtils';
 import TreeCoverLoss from '../../../../public/data/layers/tree-cover-loss';
-
 import {
   Icons,
   Legend,
   LegendListItem,
-  LegendItemTypes,
   LegendItemTimeStep,
-  LegendItemToolbar,
-  LegendItemButtonOpacity,
-  LegendItemButtonVisibility,
 } from 'vizzuality-components';
 
 import styles from '../styles/MapboxMap.module.scss';
 import InfoIcon from '../../../../public/assets/images/icons/InfoIcon';
 import OpenLink from '../../../../public/assets/images/icons/OpenLink';
-import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
 import i18next from '../../../../i18n/';
 import { Modal } from '@material-ui/core';
+import ProjectSnippet from './ProjectSnippet';
 
 const { useTranslation } = i18next;
 
@@ -550,14 +544,12 @@ export default function MapboxMap({
                 }
               }}
             >
-              <PopupProject
+              <ProjectSnippet 
                 key={popupData.project.properties.id}
-                project={popupData.project}
-                buttonRef={buttonRef}
-                popupRef={popupRef}
-                open={open}
-                handleOpen={handleOpen}
-                handleClose={handleClose}
+                project={popupData.project.properties}
+                directGift={null}
+                setDirectGift={null}
+                editMode={false}
               />
             </div>
           </Popup>

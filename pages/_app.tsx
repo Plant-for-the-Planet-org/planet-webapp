@@ -5,6 +5,7 @@ import TagManager from 'react-gtm-module';
 import { Provider as AuthProvider } from 'next-auth/client'
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
+import './../src/features/projects/styles/Projects.scss'
 import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';

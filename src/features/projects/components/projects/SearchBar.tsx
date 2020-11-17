@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import styles from '../../styles/Projects.module.scss';
 import i18next from '../../../../../i18n/'
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
@@ -17,11 +16,11 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
     const { t } = useTranslation(['donate']);
     return (
         <>
-            <div className={styles.searchIcon}>
-                <SearchIcon color={styles.primaryFontColor} />
+            <div className={'searchIcon'}>
+                <SearchIcon color={'primaryFontColor'} />
             </div>
 
-            <div className={styles.searchInput}>
+            <div className={'searchInput'}>
                 <TextField
                     ref={searchRef}
                     fullWidth={true}
@@ -32,13 +31,13 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
                 />
             </div>
             <div
-                className={styles.cancelIcon}
+                className={'cancelIcon'}
                 onClick={() => {
                     setSearchMode(false);
                     setSearchValue('');
                 }}
             >
-                <CancelIcon color={styles.primaryFontColor} />
+                <CancelIcon color={'primaryFontColor'} />
             </div>
         </>
     )

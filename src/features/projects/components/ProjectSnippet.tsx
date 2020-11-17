@@ -6,7 +6,6 @@ import getImageUrl from '../../../utils/getImageURL';
 import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
-import styles from './../styles/Projects.module.scss';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -31,15 +30,14 @@ export default function ProjectSnippet({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation(['donate', 'common', 'country']);
-  const [countryCode, setCountryCode] = React.useState<string>('DE');
 
-  const ImageSource = project.properties.image
-    ? getImageUrl('project', 'medium', project.properties.image)
+  const ImageSource = project.image
+    ? getImageUrl('project', 'medium', project.image)
     : '';
 
   const { theme } = React.useContext(ThemeContext);
   let progressPercentage =
-    (project.properties.countPlanted / project.properties.countTarget) * 100;
+    (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
@@ -53,17 +51,10 @@ export default function ProjectSnippet({
     setOpen(true);
   };
 
-  React.useEffect(() => {
-    const code = window.localStorage.getItem('countryCode') || 'DE';
-    setCountryCode(code);
-  });
-
-  const projectDetails = project.properties;
-
   return (
-    <div className={styles.singleProject} key={key}>
+    <div className={'singleProject'} key={key}>
       <Modal
-        className={styles.modal + ' ' + theme}
+        className={`modal ${theme}`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
@@ -72,7 +63,7 @@ export default function ProjectSnippet({
       >
         <Elements stripe={getStripe()}>
           <DonationsPopup
-            project={projectDetails}
+            project={project}
             directGift={directGift}
             setDirectGift={setDirectGift}
             onClose={handleClose}
@@ -81,24 +72,24 @@ export default function ProjectSnippet({
       </Modal>
 
       {editMode ? (
-        <Link href={`/manage-projects/${project.properties.id}`}>
-          <div className={styles.projectEditBlock}>
+        <Link href={`/manage-projects/${project.id}`}>
+          <div className={'projectEditBlock'}>
             <EditIcon></EditIcon>
           </div>
         </Link>
       ) : null}
       <div
         onClick={() => {
-          router.push('/[p]', `/${project.properties.slug}`, {
+          router.push('/[p]', `/${project.slug}`, {
             shallow: true,
           });
         }}
-        className={styles.projectImage}
+        className={'projectImage'}
       >
-        {project.properties.image &&
-          typeof project.properties.image !== 'undefined' ? (
+        {project.image &&
+          typeof project.image !== 'undefined' ? (
             <div
-              className={styles.projectImageFile}
+              className={'projectImageFile'}
               style={{
                 backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
                 backgroundPosition: 'center',
@@ -106,54 +97,54 @@ export default function ProjectSnippet({
             ></div>
           ) : null}
 
-        <div className={styles.projectImageBlock}>
-          {/* <div className={styles.projectType}>
-                {GetProjectClassification(project.properties.classification)}
+        <div className={'projectImageBlock'}>
+          {/* <div className={'projectType}>
+                {GetProjectClassification(project.classification)}
               </div> */}
-          <div className={styles.projectName}>
-            {Sugar.String.truncate(project.properties.name, 54)}
+          <div className={'projectName'}>
+            {Sugar.String.truncate(project.name, 54)}
           </div>
         </div>
       </div>
 
-      <div className={styles.progressBar}>
+      <div className={'progressBar'}>
         <div
-          className={styles.progressBarHighlight}
+          className={'progressBarHighlight'}
           style={{ width: progressPercentage + '%' }}
         />
       </div>
-      <div className={styles.projectInfo}>
-        <div className={styles.projectData}>
-          <div className={styles.targetLocation}>
-            <div className={styles.target}>
-              {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
+      <div className={'projectInfo'}>
+        <div className={'projectData'}>
+          <div className={'targetLocation'}>
+            <div className={'target'}>
+              {Sugar.Number.abbr(Number(project.countPlanted), 1)}{' '}
               {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
-                {t('country:' + project.properties.country.toLowerCase())}
+                {t('country:' + project.country.toLowerCase())}
               </span>
             </div>
           </div>
-          <div className={styles.projectTPOName} onClick={() => {
-                  router.push(`/t/${project.properties.tpo.slug}`);
+          <div className={'projectTPOName'} onClick={() => {
+                  router.push(`/t/${project.tpo.slug}`);
                 }}>
               {t('common:by', {
-                tpoName: project.properties.tpo.name
+                tpoName: project.tpo.name
               })}
           </div>
         </div>
 
-        {project.properties.allowDonations && (
-          <div className={styles.projectCost}>
-            {project.properties.treeCost ? (
+        {project.allowDonations && (
+          <div className={'projectCost'}>
+            {project.treeCost ? (
               <>
-                <div onClick={handleOpen} className={styles.donateButton}>
+                <div onClick={handleOpen} className={'donateButton'}>
                   {t('common:donate')}
                 </div>
-                <div className={styles.perTreeCost}>
+                <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
-                    project.properties.currency,
-                    project.properties.treeCost
+                    project.currency,
+                    project.treeCost
                   )}{' '}
                   <span>{t('donate:perTree')}</span>
                 </div>

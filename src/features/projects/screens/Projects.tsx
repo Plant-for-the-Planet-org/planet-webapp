@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import styles from '../styles/Projects.module.scss';
 import dynamic from 'next/dynamic';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n/'
@@ -115,9 +114,9 @@ function ProjectsList({
   const AllProjects = (projects:any)=>{   
     if (projects.projects.length < 1) {
       return (
-        <div className={styles.projectNotFound}>
+        <div className={'projectNotFound'}>
           <LazyLoad>
-            <NotFound className={styles.projectNotFoundImage} />
+            <NotFound className={'projectNotFoundImage'} />
             <h5>{t('donate:noProjectsFound')}</h5>
           </LazyLoad>
         </div>
@@ -129,7 +128,7 @@ function ProjectsList({
           return (
             <ProjectSnippet
               key={project.properties.id}
-              project={project}
+              project={project.properties}
               directGift={directGift}
               setDirectGift={setDirectGift}
               editMode={false}
@@ -145,7 +144,7 @@ function ProjectsList({
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
-          className={styles.container}
+          className={'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -156,8 +155,8 @@ function ProjectsList({
             }
           }}
         >
-          <div className={styles.header} style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}>
-            {isMobile ? <div className={styles.dragBar}></div> : null}
+          <div className={'header'} style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}>
+            {isMobile ? <div className={'dragBar'}></div> : null}
             {searchMode ? 
               <SearchBar 
                 setSearchValue={setSearchValue} 
@@ -174,14 +173,12 @@ function ProjectsList({
               />}
             </div>
             {/* till here is header */}
-            <div className={styles.projectsContainer}>
-              <div className={styles.projectsContainerChild}>
+            <div className={'projectsContainer'}>
               {searchValue !== '' ?
                 <AllProjects projects={searchProjectResults} />
                 : selectedTab === 'all' ? 
                   <AllProjects projects={allProjects} /> : 
                   <AllProjects projects={featuredProjects} />}
-              </div>        
             </div>
         </div>
       ) : null}

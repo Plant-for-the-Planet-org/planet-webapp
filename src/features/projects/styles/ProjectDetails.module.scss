@@ -8,15 +8,6 @@
   margin-top: 50vh;
 }
 
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 .imageModal {
   display: flex;
   justify-content: center;
@@ -89,6 +80,7 @@
   border-top-left-radius: 13px;
   overflow-x: hidden;
   overflow-y: hidden;
+  position: relative;
 }
 
 .projectContainer::-webkit-scrollbar {
@@ -104,128 +96,17 @@
   background-color: $primaryColor;
 }
 
-.targetLocation {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-}
 .projectCompleteInfo {
   margin-top: 10px;
   margin-left: 16px;
   margin-right: 16px;
 }
-.projectInfo {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-}
 
-.target {
-  font-family: $primaryFontFamily;
-  font-size: 12px;
-  color: $primaryFontColor;
-  font-weight: bold;
-  margin-right: 4px;
-}
-.projectTPOName,
-.location {
-  font-family: $primaryFontFamily;
-  font-size: 12px;
-  color: $primaryFontColor;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.donateButton {
-  background-color: $primaryColor;
-  min-width: 75px;
-  max-width: 150px;
-  padding: 0 4px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 11px;
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.donateButton:hover {
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.perTreeCost {
-  font-family: $secondaryFontFamily;
-  font-size: 10px;
-  color: $primaryFontColor;
-  margin-top: 5px;
-}
-
-.perTreeCost > span {
-  font-family: $primaryFontFamily;
-}
-
-.projectCost {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Progress Bar */
-.progressBar {
-  height: 4px;
-  width: 100%;
-  background-color: $dividerColor;
-}
-
-.progressBarHighlight {
-  height: 4px;
-  background-color: $primaryColor;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.projectImage {
-  height: 160px;
-  width: 100%;
-  background-color: $primaryColor;
-  position: relative;
-  border-top-right-radius: 13px;
-  border-top-left-radius: 13px;
-}
-
-.projectImageFile {
-  height: 160px;
-  width: 100%;
-  position: relative;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.projectImageBlock {
-  position: absolute;
-  bottom: 12px;
-  left: 16px;
-}
-
-.projectType {
-  font-family: $primaryFontFamily;
-  font-size: 10px;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.projectName {
-  font-family: $primaryFontFamily;
-  font-size: 18px;
-  color: $light;
+.projectSnippetContainer{
+  .projectInfo{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 .ratings {

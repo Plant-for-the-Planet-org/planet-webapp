@@ -6,7 +6,6 @@ import getImageUrl from '../../../utils/getImageURL';
 import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
-import styles from './../styles/Projects.module.scss';
 import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 
@@ -44,7 +43,7 @@ export default function PopupProject({
     <>
       <Modal
         ref={popupRef}
-        className={styles.modal + ' ' + theme}
+        className={'modal theme'}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
@@ -54,11 +53,11 @@ export default function PopupProject({
           <DonationsPopup project={projectDetails} onClose={handleClose} />
         </Elements>
       </Modal>
-      <div className={styles.projectImage}>
+      <div className={'projectImage'}>
         {project.properties.image &&
         typeof project.properties.image !== 'undefined' ? (
           <div
-            className={styles.projectImageFile}
+            className={'projectImageFile'}
             style={{
               backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)),url(${ImageSource})`,
               backgroundPosition: 'center',
@@ -66,27 +65,27 @@ export default function PopupProject({
           ></div>
         ) : null}
 
-        <div className={styles.projectImageBlock}>
-          {/* <div className={styles.projectType}>
+        <div className={'projectImageBlock'}>
+          {/* <div className={'projectType}>
                 {GetProjectClassification(project.properties.classification)}
               </div> */}
 
-          <div className={styles.projectName}>
+          <div className={'projectName'}>
             {Sugar.String.truncate(project.properties.name, 54)}
           </div>
         </div>
       </div>
 
-      <div className={styles.progressBar}>
+      <div className={'progressBar'}>
         <div
-          className={styles.progressBarHighlight}
+          className={'progressBarHighlight'}
           style={{ width: progressPercentage }}
         />
       </div>
-      <div className={styles.projectInfo}>
-        <div className={styles.projectData}>
-          <div className={styles.targetLocation}>
-            <div className={styles.target}>
+      <div className={'projectInfo'}>
+        <div className={'projectData'}>
+          <div className={'targetLocation'}>
+            <div className={'target'}>
               {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
               {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
@@ -94,24 +93,24 @@ export default function PopupProject({
               </span>
             </div>
           </div>
-          <div className={styles.projectTPOName}>
+          <div className={'projectTPOName'}>
             {t('common:by', {
               tpoName: project.properties.tpo.name
             })}
           </div>
         </div>
         {project.properties.allowDonations && (
-          <div className={styles.projectCost}>
+          <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
                 <div
                   ref={buttonRef}
                   onClick={handleOpen}
-                  className={styles.donateButton}
+                  className={'donateButton'}
                 >
                   {t('common:donate')}
                 </div>
-                <div className={styles.perTreeCost}>
+                <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.properties.currency,
