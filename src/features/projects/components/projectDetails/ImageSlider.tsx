@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function ImageSlider({ project, height, imageSize }: Props) {
-  const [slider, setSlider] = React.useState();
+  const [slider, setSlider] = React.useState<JSX.Element>();
   let projectImages: { content: () => JSX.Element }[] = [];
 
   const loadImageSource = (image: any) => {
@@ -37,6 +37,7 @@ export default function ImageSlider({ project, height, imageSize }: Props) {
       });
     });
   }, [project]);
+
   React.useEffect(() => {
     setSlider(
       <Stories
@@ -48,5 +49,5 @@ export default function ImageSlider({ project, height, imageSize }: Props) {
       />
     );
   }, []);
-  return <>{slider}</>;
+  return <>{slider}</>;;
 }
