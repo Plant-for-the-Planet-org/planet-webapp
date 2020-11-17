@@ -34,7 +34,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
           className={styles.publicUserDescription}
           style={{ fontWeight: 'bold', marginBottom: '0px' }}
         >
-          Plant Trees with Lacoqueta
+          Plant Trees with La Coqueta
         </p>
         <p
           className={styles.publicUserDescription}
