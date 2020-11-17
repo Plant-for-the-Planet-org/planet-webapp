@@ -8,5 +8,6 @@
   "giftToGiftee": "Gift to ${gifteeName}",
   "settingManageProject": "Manage Projects",
   "userTree": "Register Trees",
-  "logout": "Logout"
+  "logout": "Logout",
+  "addTarget": "Add Target"
 }

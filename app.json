@@ -23,6 +23,11 @@
             "description": "CDN URL",
             "value":"cdn.plant-for-the-planet.org/staging"
       },
+       "WEB_MEMORY": {
+            "required": true,
+            "description": "Memory for a Node Worker (128 is recommended)",
+            "value":"128"
+      }, 
         "NEXT_PUBLIC_FEATURED_LIST": {
             "required": false,
             "description": "Enable Featured list tab"

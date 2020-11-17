@@ -9,5 +9,5 @@
   "websiteError": "Invalid website URL",
   "websiteRequired": "Please enter valid Website URL",
   "save": "Save",
-  "orgNameValidation":"Please enter Organization Name"
+  "orgNameValidation": "Please enter Organization Name"
 }
