@@ -5,9 +5,11 @@ import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/S
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
 import i18next from '../../../../../i18n'
+import tenantConfig from '../../../../../tenant.config';
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
+const config = tenantConfig();
 
 const {useTranslation} = i18next;
 export default function UserProfileOptions({ 
@@ -16,11 +18,14 @@ export default function UserProfileOptions({
  }: any) {
 
   const {t} = useTranslation(['me']);
+  const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
+  const textToShare = t('donate:textToShare', { linkToShare });
   const webShareMobile = async() => {
       try {
         const response = await navigator.share({
-          title:'Check out Plant-for-the-Planet!',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+          title: userprofile.slug,
+          url: window.location.href,
+          text: textToShare,
         })
       } catch (error) {
         // console.error('Could not share at this time', error);
@@ -33,7 +38,7 @@ export default function UserProfileOptions({
       webShareMobile();
     } else {
       // in desktop
-      navigator.clipboard.writeText('Dummy text copied to clipboard!');
+      navigator.clipboard.writeText(window.location.href);
       handleTextCopiedSnackbarOpen();
     }
   };

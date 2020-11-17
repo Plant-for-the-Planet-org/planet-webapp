@@ -37,7 +37,6 @@ export default function UserShareAndSupport({ userprofile }: any) {
         });
     } else {
       setShowSocialBtn(true);
-      console.log('not supported');
     }
   };
   const shareClicked = async (shareUrl) => {
