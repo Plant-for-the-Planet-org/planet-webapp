@@ -3,7 +3,6 @@
   min-height: 100vh;
   width: 100%;
   display: flex;
-  margin-top: 60px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -144,6 +143,9 @@
 
   .leaderBoardBushImageMobile {
     display: none;
+  }
+  .leaderBoardSection{
+    margin-top: 60px;
   }
 }
 
