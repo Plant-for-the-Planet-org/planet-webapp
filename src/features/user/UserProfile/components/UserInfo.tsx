@@ -4,6 +4,7 @@ import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
 import UserShareAndSupport from './UserShareAndSupport';
+import trimwords from '../../../../utils/TruncateText';
 
 export default function UserInfo({
   userprofile,
@@ -11,6 +12,12 @@ export default function UserInfo({
   authenticatedType,
   handleAddTargetModalOpen,
 }: any) {
+  const [readMore, setReadMore] = React.useState(false);
+  React.useEffect(() => {
+    if (userprofile.bio && userprofile.bio.length <= 120) {
+      setReadMore(true);
+    }
+  })
   return (
     <div className={styles.landingContent}>
       <TreeCounter
@@ -23,15 +30,8 @@ export default function UserInfo({
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
       <div className={styles.treeCounterDescription}>
-        {userprofile.bio &&
-        <ReadMoreReact
-          min={100}
-          ideal={120}
-          max={150}
-          readMoreText="read more"
-          text={userprofile.bio}
-        />
-}
+        {userprofile.bio && trimwords(userprofile.bio, 120, readMore)}
+        {userprofile.bio && !readMore && <p onClick={()=>setReadMore(true)}>read more</p>}
         {/* {userprofile.bio}{' '} */}
       </div>
       {/* icon for public view */}
