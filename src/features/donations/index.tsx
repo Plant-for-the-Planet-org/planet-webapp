@@ -40,19 +40,7 @@ function DonationsPopup({
   >(false);
 
   const [paymentType, setPaymentType] = React.useState('');
-
-  // to get country and currency from local storage
-  // React.useEffect(() => {
-  //   async function loadData() {
-  //     if (typeof Storage !== 'undefined') {
-  //       if (localStorage.getItem('countryCode')) {
-  //         setCountry(localStorage.getItem('countryCode'));
-  //       }
-  //     }
-  //   }
-  //   loadData();
-  // }, []);
-
+  
   //  to load payment data
   React.useEffect(() => {
     async function loadPaymentSetup() {
