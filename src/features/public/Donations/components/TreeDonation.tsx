@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import Sugar from 'sugar';
+import { useSession } from 'next-auth/client';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import { formatAmountForStripe } from '../../../../utils/stripe/stripeHelpers';
@@ -17,7 +18,6 @@ import DirectGiftForm from './treeDonation/DirectGiftForm';
 import { payWithCard } from './treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import {useSession} from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
@@ -49,11 +49,13 @@ function TreeDonation({
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
-    false
+    false,
   );
   const [paymentError, setPaymentError] = React.useState('');
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
+
+  const [screenWidth, setScreenWidth] = React.useState('');
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '' || e.target.value < 1) {
@@ -73,6 +75,11 @@ function TreeDonation({
       setIsTaxDeductible(true);
     } else {
       setIsTaxDeductible(false);
+    }
+    if (window.screen.width <= 412) {
+      setScreenWidth(window.screen.width);
+    } else {
+      setScreenWidth(412);
     }
   }, [country]);
 
@@ -111,7 +118,7 @@ function TreeDonation({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      session: session ? session: null
+      session: session || null,
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -123,7 +130,7 @@ function TreeDonation({
     <>
       <div
         className={styles.cardContainer}
-        style={{ alignSelf: isGift ? 'start' : 'center' }}
+        style={{ alignSelf: isGift ? 'start' : 'center', width: `${screenWidth}px` }}
       >
         <div className={styles.header}>
           <div
@@ -141,7 +148,7 @@ function TreeDonation({
         <div className={styles.plantProjectName}>
           {t('common:to_project_by_tpo', {
             projectName: project.name,
-            tpoName: project.tpo.name            
+            tpoName: project.tpo.name,
           })}
         </div>
 
@@ -157,7 +164,8 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-            {getFormatedCurrency(i18n.language, currency, treeCost)}{' '}
+            {getFormatedCurrency(i18n.language, currency, treeCost)}
+{' '}
             {t('donate:perTree')}
           </div>
         </div>
@@ -263,7 +271,7 @@ function TreeDonation({
               tabIndex={0}
             >
               <div className={styles.taxDeductibleCountry}>
-                {t('country:' + country.toLowerCase())}
+                {t(`country:${country.toLowerCase()}`)}
               </div>
               <div className={styles.downArrow}>
                 <DownArrow color="#87B738" />
@@ -309,25 +317,25 @@ function TreeDonation({
           </div>
         </div>
 
-        {!isPaymentOptionsLoading &&
-        paymentSetup?.gateways?.stripe?.account &&
-        currency ? (
+        {!isPaymentOptionsLoading
+        && paymentSetup?.gateways?.stripe?.account
+        && currency ? (
           <PaymentRequestCustomButton
             country={country}
             currency={currency}
             amount={formatAmountForStripe(
               treeCost * treeCount,
-              currency.toLowerCase()
+              currency.toLowerCase(),
             )}
             onPaymentFunction={onPaymentFunction}
             continueNext={continueNext}
           />
-        ) : (
+          ) : (
           <div className={styles.actionButtonsContainer}>
             <ButtonLoader />
             <ButtonLoader />
           </div>
-        )}
+          )}
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}
