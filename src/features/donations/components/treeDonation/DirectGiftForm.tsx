@@ -1,6 +1,4 @@
 import React, { ReactElement } from 'react';
-import { useForm } from 'react-hook-form';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import styles from './../../styles/TreeDonation.module.scss';
 import i18next from '../../../../../i18n/';
 
@@ -14,18 +12,10 @@ interface Props {
 }
 
 export default function GiftForm({
-  setGiftDetails,
   giftDetails,
-  isGift,
-  directGift,
   setDirectGift,
 }: Props): ReactElement {
   const { t } = useTranslation(['donate', 'common']);
-
-  const { register, handleSubmit, errors } = useForm();
-  const changeGiftDetails = (e: any) => {
-    setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
-  };
   return (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>

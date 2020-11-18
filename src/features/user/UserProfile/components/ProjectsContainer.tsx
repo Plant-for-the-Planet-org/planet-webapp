@@ -72,9 +72,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
                 <div className={styles.singleProject} key={project.properties.id}>
                   <ProjectSnippet 
                     key={project.properties.id} 
-                    project={project.properties} 
-                    directGift={null} 
-                    setDirectGift={null} 
+                    project={project.properties}
                     editMode={authenticatedType === 'private' ? true : false} />
                 </div>
               );

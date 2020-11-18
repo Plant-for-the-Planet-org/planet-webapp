@@ -9,15 +9,11 @@ import TreeDonation from './screens/TreeDonation';
 interface Props {
   onClose: any;
   project: any;
-  directGift: any;
-  setDirectGift: any;
 }
 
 function DonationsPopup({
   onClose,
   project,
-  directGift,
-  setDirectGift,
 }: Props): ReactElement {
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
@@ -41,6 +37,15 @@ function DonationsPopup({
 
   const [paymentType, setPaymentType] = React.useState('');
   
+
+  const [directGift, setDirectGift] = React.useState(null);
+  React.useEffect(() => {
+    const getdirectGift = localStorage.getItem('directGift');
+    if (getdirectGift) {
+      setDirectGift(JSON.parse(getdirectGift));
+    }
+  }, []);
+
   //  to load payment data
   React.useEffect(() => {
     async function loadPaymentSetup() {

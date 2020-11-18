@@ -9,8 +9,6 @@ import SearchBar from '../components/projects/SearchBar';
 
 interface Props {
   projects: any;
-  directGift: any;
-  setDirectGift: Function;
   showProjects: Boolean;
   setShowProjects: Function;
   setsearchedProjects: any
@@ -23,8 +21,6 @@ const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
 
 function ProjectsList({
   projects,
-  directGift,
-  setDirectGift,
   showProjects,
   setShowProjects,
   setsearchedProjects,
@@ -129,8 +125,6 @@ function ProjectsList({
             <ProjectSnippet
               key={project.properties.id}
               project={project.properties}
-              directGift={directGift}
-              setDirectGift={setDirectGift}
               editMode={false}
             />
           );

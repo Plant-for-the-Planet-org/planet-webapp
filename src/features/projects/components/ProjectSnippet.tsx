@@ -16,16 +16,12 @@ const { useTranslation } = i18next;
 interface Props {
   project: any;
   key: number;
-  directGift: any;
-  setDirectGift: any;
   editMode: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
   key,
-  directGift,
-  setDirectGift,
   editMode
 }: Props): ReactElement {
   const router = useRouter();
@@ -64,8 +60,6 @@ export default function ProjectSnippet({
         <Elements stripe={getStripe()}>
           <DonationsPopup
             project={project}
-            directGift={directGift}
-            setDirectGift={setDirectGift}
             onClose={handleClose}
           />
         </Elements>

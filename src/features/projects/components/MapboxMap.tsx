@@ -547,8 +547,6 @@ export default function MapboxMap({
               <ProjectSnippet 
                 key={popupData.project.properties.id}
                 project={popupData.project.properties}
-                directGift={null}
-                setDirectGift={null}
                 editMode={false}
               />
             </div>

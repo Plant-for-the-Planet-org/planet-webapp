@@ -89,8 +89,6 @@ function SingleProjectDetails({ project }: Props): ReactElement {
           <ProjectSnippet
             key={project.id}
             project={project}
-            directGift={null}
-            setDirectGift={null}
             editMode={false}
           />
         </div>
