@@ -77,9 +77,7 @@ function TreeDonation({
       setIsTaxDeductible(false);
     }
     if (window.screen.width <= 412) {
-      setScreenWidth(window.screen.width);
-    } else {
-      setScreenWidth(412);
+      setScreenWidth(100);
     }
   }, [country]);
 
@@ -130,7 +128,7 @@ function TreeDonation({
     <>
       <div
         className={styles.cardContainer}
-        style={{ alignSelf: isGift ? 'start' : 'center', width: `${screenWidth}px` }}
+        style={{ alignSelf: isGift ? 'start' : 'center', width: `${screenWidth}%` }}
       >
         <div className={styles.header}>
           <div
