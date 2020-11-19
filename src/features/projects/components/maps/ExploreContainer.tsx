@@ -159,18 +159,18 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                 </LayerManager>
             ) : null}
 
-            {/* {explorePotential ? (
-          <Source
-            id="potential"
-            type="raster"
-            tiles={[
-              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V3/MapServer/tile/{z}/{y}/{x}',
-            ]}
-            tileSize={128}
-          >
-            <Layer id="potential-layer" source="potential" type="raster" />
-          </Source>
-        ) : null} */}
+            {explorePotential ? (
+                <Source
+                    id="potential"
+                    type="raster"
+                    tiles={[
+                        'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
+                    ]}
+                    tileSize={128}
+                >
+                    <Layer id="potential-layer" source="potential" type="raster" />
+                </Source>
+            ) : null}
 
 
             <div ref={exploreContainerRef}>
@@ -217,26 +217,28 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         <InfoIcon />
                                     </div>
                                 </div>
-                                {/* <div className={styles.exploreToggleRow}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={explorePotential}
-                            onChange={handleExplorePotentialChange}
-                            name="potential"
-                          />
-                        }
-                        label={t('maps:restoration')}
-                      />
-                      <div
-                        onClick={() => {
-                          setInfoExpanded('Restoration');
-                        }}
-                        className={styles.exploreInfo}
-                      >
-                        <InfoIcon />
-                      </div>
-                    </div> */}
+                                <div className={styles.exploreToggleRow}>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={explorePotential}
+                                                onChange={handleExplorePotentialChange}
+                                                name="potential"
+                                                color="#3B00FF"
+                                            />
+                                        }
+                                        label={t('maps:restoration')}
+                                    />
+                                    <div
+                                        onClick={() => {
+                                            setInfoExpanded('Restoration');
+                                            setModalOpen(true);
+                                        }}
+                                        className={styles.exploreInfo}
+                                    >
+                                        <InfoIcon />
+                                    </div>
+                                </div>
 
                                 <div className={styles.exploreToggleRow}>
                                     <FormControlLabel
@@ -298,18 +300,18 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                     </div>
                                 ) : null}
                                 {/* <div className={styles.exploreToggleRow}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                         color="#E7C746"
-                          checked={explorePlanted}
-                          onChange={handleExplorePlantedChange}
-                          name="planted"
-                        />
-                      }
-                      label="Planted Trees"
-                    />
-                  </div> */}
+                                    <FormControlLabel
+                                    control={
+                                        <Switch
+                                        color="#E7C746"
+                                        checked={explorePlanted}
+                                        onChange={handleExplorePlantedChange}
+                                        name="planted"
+                                        />
+                                    }
+                                    label="Planted Trees"
+                                    />
+                                </div> */}
                                 <div className={styles.exploreToggleRow}>
                                     <FormControlLabel
                                         control={

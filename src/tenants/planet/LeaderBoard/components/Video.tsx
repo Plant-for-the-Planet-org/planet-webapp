@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import styles from './Video.module.scss'
 import i18next from '../../../../../i18n';
 import ReactPlayer from 'react-player/lazy';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
 interface Props {
     
@@ -14,7 +15,10 @@ function Video({}: Props): ReactElement {
   const videoUrl = 'https://www.youtube.com/watch?v=9V981RXcmH8'
     return (
         <div className={styles.videoSection}>
-            <h2>{t('leaderboard:videoTitle')}</h2>
+          <div className={styles.videoTitle}>
+            <h2>{t('leaderboard:videoTitle')}</h2> 
+            <BackArrow />
+          </div>
             <div className={styles.videoContainerWrapper}>
             <div className={styles.videoContainer}>
                 {ReactPlayer.canPlay(videoUrl) ? (
