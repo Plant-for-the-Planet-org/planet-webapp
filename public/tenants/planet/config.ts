@@ -34,7 +34,7 @@ const config = {
       {
         id: 3,
         title: 'leaderboard',
-        onclick: '/leaderboard',
+        onclick: '/all',
         visible: true,
         key: 'leaderboard',
       },
