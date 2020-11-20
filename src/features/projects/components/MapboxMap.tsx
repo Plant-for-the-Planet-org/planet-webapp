@@ -20,6 +20,8 @@ import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './maps/ExploreInfoModal';
 import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
+import { getVegetationChange } from '../../../utils/apiRequests/api';
+import VegetationChange from './maps/VegetationChange';
 
 interface mapProps {
   projects: any;
@@ -63,6 +65,7 @@ export default function MapboxMap({
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
+  const [siteVegetationChange, setSiteVegetationChange] = useState(null);
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -125,6 +128,13 @@ export default function MapboxMap({
       });
     }
   };
+
+  async function getSiteVegetationChange(data: any) {
+    const siteVgData = await getVegetationChange(data);
+    siteVgData ? setSiteVegetationChange(siteVgData.data) : null;
+    console.log(siteVgData);
+  }
+
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -203,6 +213,8 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
+
+            getSiteVegetationChange(geoJson);
             setViewPort(newViewport);
             setMapState(newMapState);
           }
@@ -326,27 +338,27 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonLayer"
-                type="fill"
-                source="singleProject"
-                paint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-              />
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#89b54a',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
-          )
+              <Source id="singleProject" type="geojson" data={geoJson}>
+                <Layer
+                  id="ploygonLayer"
+                  type="fill"
+                  source="singleProject"
+                  paint={{
+                    'fill-color': '#fff',
+                    'fill-opacity': 0.2,
+                  }}
+                />
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#89b54a',
+                    'line-width': 2,
+                  }}
+                />
+              </Source>
+            )
         ) : null}
 
         {!showSingleProject &&
@@ -387,7 +399,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => {}}
+                onFocus={() => { }}
               />
             </Marker>
           ))}
@@ -442,30 +454,32 @@ export default function MapboxMap({
                 }
               }}
             >
-              <PopupProject	              
-                key={popupData.project.properties.id}	              
-                project={popupData.project}	             
-                buttonRef={buttonRef}	             
-                popupRef={popupRef}	     
-                open={open}	 
-                handleOpen={handleOpen}	
-                handleClose={handleClose}	
+              <PopupProject
+                key={popupData.project.properties.id}
+                project={popupData.project}
+                buttonRef={buttonRef}
+                popupRef={popupRef}
+                open={open}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
               />
             </div>
           </Popup>
         )}
 
+        <VegetationChange siteVegetationChange={siteVegetationChange} />
+
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
 
-        <ExploreContainer 
-          exploreContainerRef={exploreContainerRef} 
-          setExploreExpanded={setExploreExpanded} 
-          exploreExpanded={exploreExpanded} 
-          isMobile={isMobile} 
-          setInfoExpanded={setInfoExpanded} 
-          setModalOpen={setModalOpen} 
+        <ExploreContainer
+          exploreContainerRef={exploreContainerRef}
+          setExploreExpanded={setExploreExpanded}
+          exploreExpanded={exploreExpanded}
+          isMobile={isMobile}
+          setInfoExpanded={setInfoExpanded}
+          setModalOpen={setModalOpen}
           loaded={loaded}
           mapRef={mapRef}
           handleExploreProjectsChange={handleExploreProjectsChange}
@@ -487,9 +501,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                siteExists &&
-                project.sites.length !== 0 &&
-                geoJson.features[currentSite]
+                  siteExists &&
+                  project.sites.length !== 0 &&
+                  geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -514,8 +528,8 @@ export default function MapboxMap({
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          <ExploreInfoModal 
-            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen} 
+          <ExploreInfoModal
+            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen}
           />
         </Modal>
       ) : null}

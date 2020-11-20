@@ -135,10 +135,9 @@ export async function getVegetationChange(data: any) {
     },
   })
     .then(async (res) => {
-      const result = res.status === 200 ? await res.json() : null;
+      result = res.status === 200 ? await res.json() : null;
       return result;
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
-
   return result;
 }
