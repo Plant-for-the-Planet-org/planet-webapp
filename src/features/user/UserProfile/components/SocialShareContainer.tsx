@@ -7,7 +7,7 @@ import tenantConfig from '../../../../../tenant.config';
 import i18next from '../../../../../i18n';
 
 const config = tenantConfig()
-export default function SocialShareContainer({userprofile}:any) {
+export default function SocialShareContainer({userprofile, type}:any) {
     const { useTranslation } = i18next;
     const { t } = useTranslation(['donate', 'me']);
   const [currentHover, setCurrentHover] = React.useState(-1);
@@ -21,7 +21,8 @@ export default function SocialShareContainer({userprofile}:any) {
     window.open(shareUrl, '_blank');
   };
   return (
-    <div className={styles.shareBtnContainer}>
+    <div className={styles.shareBtnContainer} 
+    style={{display: type === 'private' ? 'flex' : null, justifyContent: type === 'private' ? 'space-evenly' : null}}>
       <div
         className={styles.shareIcon}
           onClick={() => shareClicked(
@@ -30,8 +31,9 @@ export default function SocialShareContainer({userprofile}:any) {
           )}
         onMouseOver={() => setCurrentHover(1)}
         onTouchMove={() => setCurrentHover(1)}
+        style={{padding: type === 'private' ? '10px' : null}}
       >
-        <div className={styles.shareIconFacebookContainer}>
+        <div className={type === 'private' ? styles.shareIconFacebookContainerPrivate : styles.shareIconFacebookContainer}>
           <FacebookIcon color={currentHover === 1 ? '#fff' : '#fff'} />
         </div>
       </div>
@@ -42,8 +44,9 @@ export default function SocialShareContainer({userprofile}:any) {
           shareClicked('https://www.instagram.com/plantfortheplanet_official/')
         }
         onTouchMove={() => setCurrentHover(2)}
+        style={{padding: type === 'private' ? '10px' : null}}
       >
-        <div className={styles.shareIconInstagramContainer}>
+        <div className={type === 'private' ? styles.shareIconFacebookContainerPrivate : styles.shareIconInstagramContainer}>
           <InstagramIcon color={currentHover === 2 ? '#fff' : '#fff'} />
         </div>
       </div>
@@ -54,8 +57,9 @@ export default function SocialShareContainer({userprofile}:any) {
           onClick={() => shareClicked(
             `https://twitter.com/intent/tweet?text=${textToShare}`,
           )}
+          style={{padding: type === 'private' ? '10px' : null}}
       >
-        <div className={styles.shareIconTwitterContainer}>
+        <div className={type === 'private' ? styles.shareIconFacebookContainerPrivate : styles.shareIconTwitterContainer}>
           <TwitterIcon color={currentHover === 3 ? '#fff' : '#fff'} />
         </div>
       </div>

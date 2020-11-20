@@ -13,6 +13,7 @@ import SocialShareContainer from './SocialShareContainer';
 
 const config = tenantConfig();
 
+
 const { useTranslation } = i18next;
 export default function UserProfileOptions({
   userprofile,
@@ -22,6 +23,7 @@ export default function UserProfileOptions({
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = t('donate:textToShare', { linkToShare });
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
+  const [screenWidth, setScreenWidth] = React.useState(null);
   const webShareMobile = async () => {
     try {
       const response = await navigator.share({
@@ -33,7 +35,9 @@ export default function UserProfileOptions({
       // console.error('Could not share at this time', error);
     }
   };
-
+  React.useEffect(() => {
+    setScreenWidth(window.screen.width);
+  })
   const onShareClicked = () => {
     if (navigator.share) {
       // if in phone and web share API supported
@@ -45,7 +49,7 @@ export default function UserProfileOptions({
       // handleTextCopiedSnackbarOpen();
     }
   };
-
+  
   // redeem modal
   const [redeemModalOpen, setRedeemModalOpen] = React.useState(false);
   const handleRedeemModalClose = () => {
@@ -57,7 +61,7 @@ export default function UserProfileOptions({
   // console.log(userprofile);
   return (
     <div>
-      {showSocialBtn && (
+      {showSocialBtn && (screenWidth < 600) && (
         <div style={{ paddingLeft: '118px' }}>
           <SocialShareContainer userprofile={userprofile} />
         </div>
@@ -96,13 +100,18 @@ export default function UserProfileOptions({
           </div>
           {showSocialBtn ? <p className={styles.bottomRowText}>{t('me:close')}</p>
             : (
-<p className={styles.bottomRowText}>
-{' '}
+            <p className={styles.bottomRowText}>
+            {' '}
 {t('me:share')}
 {' '}
 </p>
             )}
         </div>
+        {showSocialBtn && (screenWidth > 600) &&
+        <div >
+          <SocialShareContainer userprofile={userprofile} type="private" />
+        </div>
+}
       </div>
     </div>
   );
