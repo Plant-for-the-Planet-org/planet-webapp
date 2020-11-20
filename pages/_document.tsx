@@ -13,7 +13,11 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <script src="https://www.paypalobjects.com/api/checkout.js">
+            
+          </script>
+        </Head>
         <body style={{ overscrollBehavior: 'contain' }}>
           <Main />
           <NextScript />
