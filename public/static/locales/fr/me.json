@@ -8,5 +8,6 @@
   "giftToGiftee": "Cadeau à ${gifteeName}",
   "settingManageProject": "Gérer les projets",
   "userTree": "Enregistrer les arbres",
-  "logout": "Déconnexion"
+  "logout": "Déconnexion",
+  "addTarget": "Ajouter une cible"
 }

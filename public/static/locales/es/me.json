@@ -5,5 +5,9 @@
   "registerTrees": "Registra los árboles",
   "redeem": "Canjear",
   "myForest": "Mi bosque",
-  "giftToGiftee": "Regalo a ${gifteeName}"
+  "giftToGiftee": "Regalo a ${gifteeName}",
+  "settingManageProject": "Administrar los proyectos",
+  "userTree": "Registro de árboles",
+  "logout": "Cierre de sesión",
+  "addTarget": "Agregar objetivo"
 }
