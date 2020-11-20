@@ -43,6 +43,7 @@ import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import i18next from '../../../../../i18n';
 import { Modal } from '@material-ui/core';
+import { getVegetationChange } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 
@@ -91,7 +92,7 @@ export default function MapboxMap({
   const [loaded, setLoaded] = useState(false);
   const [layersSettings, setLayersSettings] = useState({});
   const infoRef = useRef(null);
-
+const [siteVegetationChange, setSiteVegetationChange] = useState(null);
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
     dragPan: true,
@@ -175,6 +176,11 @@ export default function MapboxMap({
     }
   };
 
+  async function getSiteVegetationChange(data:any) {
+    const siteVgData = await getVegetationChange(data);
+    siteVgData?setSiteVegetationChange(siteVgData.data):null;
+  }
+
   React.useEffect(() => {
     if (showSingleProject) {
       if (project) {
@@ -252,6 +258,7 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
+            getSiteVegetationChange(geoJson);
             setViewPort(newViewport);
             setMapState(newMapState);
           }
@@ -588,6 +595,16 @@ export default function MapboxMap({
           </Source>
         ) : null}
 
+{siteVegetationChange?
+          <Source
+            id="ndvi"
+            type="raster"
+            tiles={[`${siteVegetationChange}`,]}
+            tileSize={128}
+          >
+            <Layer id="ndvi-layer" source="ndvi" type="raster" />
+          </Source>
+          :null}
         {loaded ? (
           <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
             {exploreDeforestation &&

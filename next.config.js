@@ -94,6 +94,7 @@ module.exports = withSourceMaps({
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
     NEXTAUTH_URL: nextauthUrl,
+    GEE_API_URL: process.env.GEE_API_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
