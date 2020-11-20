@@ -193,9 +193,8 @@ export default function EditProfileModal({
                   >
                   <input {...getInputProps()} />
                   {userprofile.image ? <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : 
-                  <div style={{textAlign: 'center'}}>
+                  <div className={styles.noProfilePic}>
                     <Camera color="white" />
-                    <p>{t('editProfile:addPhoto')}</p>
                   </div>}
                 </div>
               </label>

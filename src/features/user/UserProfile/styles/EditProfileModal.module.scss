@@ -207,3 +207,14 @@
   100% { transform: rotate(360deg); }
 }
 
+.noProfilePic{
+  text-align: center;
+  background-color: #F2F2F7;
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
