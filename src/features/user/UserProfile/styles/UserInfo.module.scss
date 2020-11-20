@@ -124,42 +124,67 @@
 .shareIconFacebook {
   position: relative;
 }
-.shareIconFacebook svg {
+// .shareIconFacebook svg {
+//     width: 30px;
+//     height: 30px;
+// }
+.shareIconFacebookContainer{
   position: absolute;
-    top: 10px;
-    width: 30px;
-    height: 30px;
-    left: 84px;
-    bottom: 50px;
-    top: -3px;
+  width: 40px;
+  height: 40px;
+  left: 84px;
+  bottom: 50px;
+  top: -10px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
 }
 
 .shareIconInstagram {
   position: relative;
 }
 
-.shareIconInstagram svg {
+// .shareIconInstagram svg {
+//     width: 30px;
+//     height: 30px;
+// }
+.shareIconInstagramContainer {
   position: absolute;
-    top: 10px;
-    width: 30px;
-    height: 30px;
-    left: 84px;
-    bottom: 50px;
-    top: -46px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  left: 84px;
+  top: -60px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
 }
 
 .shareIconTwitter {
   position: relative;
 }
 
-.shareIconTwitter svg {
-  position: absolute;
-    top: 10px;
+.shareIcon svg {
     width: 30px;
     height: 30px;
-    left: 84px;
-    bottom: 50px;
-    top: -80px;
+}
+.shareIconTwitterContainer {
+  position: absolute;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  left: 84px;
+  bottom: 50px;
+  top: -105px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
 }
 .shareBtnContainer > button.react-share__ShareButton {
   padding: 0px 10px;
