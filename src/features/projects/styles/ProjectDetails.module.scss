@@ -1,0 +1,301 @@
+@import './../../../theme/theme';
+
+.container {
+  position: relative;
+  z-index: 6;
+  transition: all 0.3s ease-in-out;
+  width: 100vw;
+  margin-top: 50vh;
+}
+
+.imageModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.modalClose {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  z-index: 99999;
+}
+.modalClose svg {
+  width: 20px;
+}
+
+.modalOpen {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  z-index: 99999;
+}
+
+.modalOpen svg {
+  width: 20px;
+}
+
+.modalWrapper {
+  position: relative;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  animation: fade_in_show 0.5s;
+  overflow: hidden;
+  :nth-child(2) {
+    :first-child {
+      bottom: 2px;
+      > div {
+        background: rgba(0, 0, 0, 0.4) !important;
+        height: 4px !important;
+        > div {
+          background: rgba(255, 255, 255, 0.8) !important;
+        }
+      }
+    }
+  }
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Projects */
+.projectContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: $backgroundColor;
+  width: 100%;
+  padding-bottom: 76px;
+  height: auto;
+  border-top-right-radius: 13px;
+  border-top-left-radius: 13px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.projectContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projectContainer::-webkit-scrollbar-track {
+  background-color: $dividerColor;
+  border-top-right-radius: 13px;
+}
+
+.projectContainer::-webkit-scrollbar-thumb {
+  background-color: $primaryColor;
+}
+
+.projectCompleteInfo {
+  margin-top: 10px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.projectSnippetContainer{
+  .projectInfo{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.ratings {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.calculatedRating {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: bold;
+  color: $primaryFontColor;
+}
+
+.ratingButton {
+  margin-left: 5px;
+}
+
+.projectDescription {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  line-height: 21px;
+  margin-top: 24px;
+}
+
+/* Additional Information */
+
+.projectMoreInfoHalfContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.projectMoreInfoHalf {
+  width: 50%;
+  margin-top: 35px;
+}
+
+.projectMoreInfo {
+  width: 100%;
+  margin-top: 35px;
+}
+.infoTitle {
+  font-family: $primaryFontFamily;
+  font-size: 10px;
+  color: $primaryFontColor;
+  font-weight: bold;
+  text-transform: uppercase;
+  position: relative;
+}
+.infoText {
+  margin-top: 9px;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.infoTextButton {
+  color: $primaryColor;
+}
+.infoTextButton:hover {
+  cursor: pointer;
+}
+
+.speciesProgress {
+  background-color: $primaryColor;
+  height: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  margin-bottom: -6px;
+  margin-top: $fontSubTitleSize;
+}
+
+.contactDetailsRow {
+  display: flex;
+  align-items: center;
+  > span {
+    margin-left: 16px;
+    flex-grow: 1;
+    word-wrap: break-word;
+  }
+}
+
+.projectVideoContainer {
+  padding: 20px 0px 10px 0px;
+}
+
+.projectImageSliderContainer {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+  // border-radius: 0.6em;
+  overflow: hidden;
+  :nth-child(2) {
+    :first-child {
+      bottom: 2px;
+      > div {
+        background: rgba(0, 0, 0, 0.4) !important;
+        height: 4px !important;
+        > div {
+          background: rgba(255, 255, 255, 0.8) !important;
+        }
+      }
+    }
+  }
+}
+
+.projectImageSliderContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: bottom;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+
+.projectImageSliderContentText {
+  bottom: 10;
+  color: white;
+  font-size: 14;
+  font-family: $primaryFontFamily;
+  padding: 14px 12px;
+}
+
+.projectDescription > div > span > div {
+  color: $primaryColor;
+  display: inline;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
+:export {
+  highlightBackground: $highlightBackground;
+}
+
+@include smTabletView {
+  .container {
+    padding-bottom: 0px;
+  }
+}
+
+@include mdTabletView {
+  .container {
+    padding-top: 0px;
+    width: fit-content;
+    left: 24px;
+    margin-top: 0px;
+  }
+
+  .container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projectContainer {
+    margin-top: 90px;
+    width: 360px;
+    padding-bottom: 16px;
+  }
+}
+
+// Popover
+
+.popover {
+  position: relative;
+  width: fit-content !important;
+  .popoverContent {
+    position: absolute;
+    z-index: 10;
+    background-color: $light;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    border: 2px solid $primaryColor;
+    display: none;
+    text-transform: none;
+    font-weight: normal;
+    font-size: 14px;
+  }
+  &:hover,
+  &:active {
+    cursor: pointer;
+    .popoverContent {
+      display: block;
+    }
+  }
+}

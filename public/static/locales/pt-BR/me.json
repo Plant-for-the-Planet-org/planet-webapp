@@ -8,5 +8,6 @@
   "giftToGiftee": "Presente para ${gifteeName}",
   "settingManageProject": "Gerenciar Projetos",
   "userTree": "Registrar Árvores",
-  "logout": "Sair"
+  "logout": "Sair",
+  "addTarget": "Adicionar Meta"
 }
