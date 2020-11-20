@@ -8,5 +8,6 @@
   "giftToGiftee": "Geschenk an {gifteeName}",
   "settingManageProject": "Projekte verwalten",
   "userTree": "Bäume registrieren",
-  "logout": "Abmelden"
+  "logout": "Abmelden",
+  "addTarget": "Ziel hinzufügen"
 }
