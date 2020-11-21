@@ -14,12 +14,15 @@
   border: 0px;
   border-radius: 8px;
   padding: 30px 56px;
-  max-width: 80vw;
   overflow: hidden;
   outline: none;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
+  max-width: 768px;
+  width: 100%;
+  justify-content: center;
 }
 
 .inputField {
@@ -38,8 +41,144 @@
   font-size: $fontSubTitleSize;
   font-weight: 600;
   margin-top: 30px;
+  max-width: fit-content;
+  margin: 20px auto 0;
 }
 
 .continueButton:hover {
   cursor: pointer;
+}
+
+.tabButtonContainer {
+  flex-grow: 1;
+  display: flex;
+  width: 100%;
+}
+
+.tabButton {
+  background-color: transparent;
+  border: none;
+  margin-left: 16px;
+  margin-top: 18px;
+}
+
+.tabButton:hover {
+  cursor: pointer;
+}
+
+.tabButtonText {
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  color: $primaryFontColor;
+  margin-bottom: 10px;
+}
+
+.tabButtonSelected {
+  color: $primaryColor;
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tabButtonSelectedIndicator {
+  height: 3px;
+  background-color: $primaryColor;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  align-self: flex-end;
+}
+
+.formContainer {
+  font-family: $primaryFontFamily;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.formContainer > form {
+  width: 100%;
+}
+
+.formField {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 320px;
+  justify-content: space-between;
+  align-items: center;
+}
+.formFieldHalf {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  div,
+  input {
+    width: 320px;
+  }
+}
+.formFieldLarge {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 320px;
+  min-width: 320px;
+}
+
+.fileUploadContainer {
+  height: 128px;
+  border-radius: 10px;
+  border: dashed 1px #2f3336;
+  background-color: #f2f2f7;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.locationMap > div {
+  width: 100%;
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.mapNavigation {
+  position: absolute;
+  right: 10px;
+  bottom: 20px;
+}
+
+@include mdTabletView {
+  .modal {
+    max-width: 780px;
+  }
+  .formField {
+    max-width: 660px;
+  }
+  .formFieldLarge {
+    max-width: 660px;
+  }
 }
