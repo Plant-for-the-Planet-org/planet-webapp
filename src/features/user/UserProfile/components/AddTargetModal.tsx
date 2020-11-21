@@ -7,6 +7,7 @@ import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { editProfile } from '../../../../utils/auth0/apiRequests';
 import i18next from '../../../../../i18n';
+import { useForm } from 'react-hook-form';
 
 const { useTranslation } = i18next;
 
@@ -20,6 +21,7 @@ export default function AddTargetModal({
   const [target, setTarget] = React.useState(0);
   const [session, loading] = useSession();
   const { t } = useTranslation(['target']);
+  const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
 
   const apiCallChangeTarget = async () => {
     if (!loading && session) {
@@ -67,9 +69,14 @@ export default function AddTargetModal({
               defaultValue={userprofile.score.target ? userprofile.score.target : null}
               onChange={(e) => setTarget(e.target.value)}
               variant="outlined"
+              inputRef={register({
+                min: 0
+              })}
+              name="addTarget"
             />
           </div>
-          <div className={styles.continueButton} onClick={() => apiCallChangeTarget()}>{t('target:targetSave')}</div>
+          {errors.addTarget && <span>invalid</span>}
+          <div className={styles.continueButton} onClick={() => handleSubmit(apiCallChangeTarget())}>{t('target:targetSave')}</div>
         </div>
       </Fade>
     </Modal>
