@@ -50,7 +50,9 @@ console.log(userprofile)
   return (
     <div>
       {showSocialBtn && (
-        <SocialShareContainer userprofile={userprofile} />
+        <div style={{paddingLeft: userprofile.type !== 'tpo' ? '191px' : null }}>
+          <SocialShareContainer userprofile={userprofile} />
+        </div>
         // <div className={styles.shareBtnContainer}>
         //   <div
         //     className={styles.shareIcon}

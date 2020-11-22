@@ -60,7 +60,7 @@ export default function UserProfileOptions({
   };
   // console.log(userprofile);
   return (
-    <div>
+    <div style={{position: 'relative'}}>
       {showSocialBtn && (screenWidth < 600) && (
         <div style={{ paddingLeft: '118px' }}>
           <SocialShareContainer userprofile={userprofile} />
@@ -93,7 +93,7 @@ export default function UserProfileOptions({
         </p>
         </div>
 
-        <div className={styles.iconTextColumn} onClick={onShareClicked}>
+        <div className={styles.iconTextColumn} onClick={onShareClicked} onMouseEnter={onShareClicked} onMouseLeave={onShareClicked}>
           <div className={styles.bottomIconBg}>
             {showSocialBtn ? <CancelIcon color="white" width="25px" />
               : <Share color="white" />}
@@ -107,12 +107,12 @@ export default function UserProfileOptions({
 </p>
             )}
         </div>
+      </div>
         {showSocialBtn && (screenWidth > 600) &&
-        <div >
+        <div style={{position: 'absolute', top: '35px', left: '251px'}}>
           <SocialShareContainer userprofile={userprofile} type="private" />
         </div>
 }
-      </div>
     </div>
   );
 }
