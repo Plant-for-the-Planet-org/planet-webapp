@@ -114,7 +114,7 @@ export default function BasicDetails({
   // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
-  
+
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -153,7 +153,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
-    
+
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -381,7 +381,7 @@ export default function BasicDetails({
                         style={{ left: '-150px' }}
                       >
                         <p>
-                        {t('manageProjects:receiveDonationsInfo')}
+                          {t('manageProjects:receiveDonationsInfo')}
                         </p>
                       </div>
                     </div>

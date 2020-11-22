@@ -5,7 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useDropzone } from 'react-dropzone';
 import MapGL, {
@@ -14,6 +14,8 @@ import MapGL, {
   NavigationControl,
   WebMercatorViewport,
 } from 'react-map-gl';
+import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 
 const { useTranslation } = i18next;
 export default function RegisterModal({
@@ -83,6 +85,9 @@ export default function RegisterModal({
     //     alert('no file selected')
     // }
   });
+
+  const classification = watch('classification');
+
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   return (
@@ -230,6 +235,56 @@ export default function RegisterModal({
                     or drag here
                       </p>
                 </label>
+              </div>
+
+              <div className={styles.formField}>
+                <div className={`${styles.formFieldHalf}`}>
+                  <div className={`${styles.formFieldRadio}`}>
+                    <label
+                      htmlFor="classification"
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      {t('manageProjects:receiveDonations')}
+                      <div
+                        style={{ height: '13px', width: '13px', marginLeft: '6px' }}
+                      >
+                        <div className={styles.popover}>
+                          <InfoIcon />
+                          <div
+                            className={styles.popoverContent}
+                            style={{ left: '-150px' }}
+                          >
+                            <p>
+                              {t('manageProjects:receiveDonationsInfo')}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </label>
+
+                    <Controller
+                      name="classification"
+                      control={control}
+                      render={(props) => (
+                        <ToggleSwitch
+                          id="classification"
+                          checked={props.value}
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          inputProps={{ 'aria-label': 'secondary checkbox' }}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+                {classification ? (
+                  <div className={styles.formFieldHalf}>
+                    <MaterialTextField
+                      placeholder="20 Nov 2020"
+                      label="Date Planted"
+                      variant="outlined"
+                    />
+                  </div>
+                ) : null}
               </div>
 
               <div className={styles.continueButton}>{t('common:continue')}</div>

@@ -129,6 +129,14 @@
   min-width: 320px;
 }
 
+.formFieldRadio {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .fileUploadContainer {
   height: 128px;
   border-radius: 10px;
