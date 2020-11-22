@@ -1,4 +1,5 @@
 import React from 'react';
+import {motion} from 'framer-motion';
 import styles from '../styles/UserInfo.module.scss';
 import TwitterIcon from '../../../../../public/assets/images/icons/share/Twitter';
 import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebook';
@@ -6,7 +7,9 @@ import InstagramIcon from '../../../../../public/assets/images/icons/share/Insta
 import tenantConfig from '../../../../../tenant.config';
 import i18next from '../../../../../i18n';
 
-const config = tenantConfig()
+const config = tenantConfig();
+
+
 export default function SocialShareContainer({userprofile, type}:any) {
     const { useTranslation } = i18next;
     const { t } = useTranslation(['donate', 'me']);
@@ -21,6 +24,9 @@ export default function SocialShareContainer({userprofile, type}:any) {
     window.open(shareUrl, '_blank');
   };
   return (
+    // <motion.div
+    // initial={false}
+    // animate={}
     <div className={styles.shareBtnContainer} 
     style={{display: type === 'private' ? 'flex' : null, justifyContent: type === 'private' ? 'space-evenly' : null}}>
       <div

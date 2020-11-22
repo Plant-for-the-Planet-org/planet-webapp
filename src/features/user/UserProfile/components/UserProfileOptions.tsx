@@ -10,10 +10,33 @@ import tenantConfig from '../../../../../tenant.config';
 
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SocialShareContainer from './SocialShareContainer';
+import { motion } from 'framer-motion';
 
 const config = tenantConfig();
 
-
+const socialIconAnimate = {
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      delay: 0.2, stiffness: 150, type:"spring"
+    }
+},
+  closed: {
+    y: -100,
+    opacity: 0,
+    rotateX: -15,
+    transition: {
+      delay: 0.8,
+      duration: 0.3
+    }
+  }, 
+  init: {
+    x: -100,
+    opacity: 0
+  }
+// }
+}
 const { useTranslation } = i18next;
 export default function UserProfileOptions({
   userprofile,
@@ -60,11 +83,24 @@ export default function UserProfileOptions({
   };
   // console.log(userprofile);
   return (
-    <div>
+    <div style={{position: 'relative'}}>
       {showSocialBtn && (screenWidth < 600) && (
-        <div style={{ paddingLeft: '118px' }}>
+        <motion.div 
+        // style={{ paddingLeft: '118px' }}
+        // animate={{paddingLeft: '118px'}}
+        initial={{
+          y: 100,
+          opacity: 0
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+          paddingLeft: '118px'
+        }}
+        transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+        >
           <SocialShareContainer userprofile={userprofile} />
-        </div>
+        </motion.div>
       )}
       <div className={styles.bottomIconsRow}>
         <div className={styles.iconTextColumn}>
@@ -107,12 +143,22 @@ export default function UserProfileOptions({
 </p>
             )}
         </div>
-        {showSocialBtn && (screenWidth > 600) &&
-        <div >
-          <SocialShareContainer userprofile={userprofile} type="private" />
-        </div>
-}
       </div>
+        {showSocialBtn && (screenWidth > 600) &&
+        <motion.div
+          animate={{position: 'absolute', top: '35px', left: '251px'}}
+        >
+          <motion.div
+                initial='init'
+                animate={showSocialBtn ? 'open' : 'closed'}
+                // transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+                variants={socialIconAnimate}
+          >
+          <SocialShareContainer userprofile={userprofile} type="private" />
+
+          </motion.div>
+        </motion.div>
+}
     </div>
   );
 }

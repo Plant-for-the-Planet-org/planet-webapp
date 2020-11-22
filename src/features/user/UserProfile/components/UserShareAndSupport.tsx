@@ -10,6 +10,7 @@ import tenantConfig from '../../../../../tenant.config';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import i18next from '../../../../../i18n';
 import SocialShareContainer from './SocialShareContainer';
+import { motion } from 'framer-motion';
 
 const config = tenantConfig();
 
@@ -50,49 +51,20 @@ console.log(userprofile)
   return (
     <div>
       {showSocialBtn && (
-        <SocialShareContainer userprofile={userprofile} />
-        // <div className={styles.shareBtnContainer}>
-        //   <div
-        //     className={styles.shareIcon}
-        //     onClick={() => shareClicked(
-        //       `https://www.facebook.com/sharer.php?u=${config.tenantURL}&quote=${textToShare}`,
-        //       '_blank',
-        //     )}
-        //     onMouseOver={() => setCurrentHover(1)}
-        //     onTouchMove={() => setCurrentHover(1)}
-        //   >
-        //     <div className={styles.shareIconFacebookContainer}>
-        //     <FacebookIcon color={currentHover === 1 ? '#3b5998' : '#000'} />
-
-        //     </div>
-        //   </div>
-        //   <div
-        //     className={styles.shareIcon}
-        //     onMouseOver={() => setCurrentHover(2)}
-        //     onClick={() => shareClicked(
-        //       'https://www.instagram.com/plantfortheplanet_official/',
-        //     )}
-        //     onTouchMove={() => setCurrentHover(2)}
-        //   >
-        //     <div className={styles.shareIconInstagramContainer}>
-        //     <InstagramIcon color={currentHover === 2 ? '#dd217b' : '#000'} />
-
-        //     </div>
-        //   </div>
-        //   <div
-        //     className={styles.shareIcon}
-        //     onMouseOver={() => setCurrentHover(3)}
-        //     onTouchMove={() => setCurrentHover(3)}
-        //     onClick={() => shareClicked(
-        //       `https://twitter.com/intent/tweet?text=${textToShare}`,
-        //     )}
-        //   >
-        //     <div className={styles.shareIconTwitterContainer}>
-        //     <TwitterIcon color={currentHover === 3 ? '#00acee' : '#000'} />
-
-        //     </div>
-        //   </div>
-        // </div>
+        <motion.div 
+          animate={{
+            paddingLeft: userprofile.type !== 'tpo' ? '191px' : null,
+            y: 0,
+            opacity: 1,
+          }}
+          transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+          initial={{
+            y: -100,
+            opacity: 0
+          }}
+        >
+          <SocialShareContainer userprofile={userprofile} />
+        </motion.div>
       )}
       <div className={styles.bottomIconsRow}>
         {userprofile.type !== 'tpo' && (
