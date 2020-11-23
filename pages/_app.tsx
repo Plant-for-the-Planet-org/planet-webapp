@@ -2,7 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
-import { Provider as AuthProvider } from 'next-auth/client'
+import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss'
@@ -81,26 +81,30 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   };
 
   return (
-    <AuthProvider session={pageProps.session}>
-    <ThemeProvider>
-      <CssBaseline />
-      <Layout>
-        {isMap ? (
-          project ? (
-            <MapLayout
-              {...ProjectProps}
-              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-            />
-          ) : projects ? (
-            <MapLayout
-              {...ProjectProps}
-              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-            />
-          ) : null
-        ) : null}
-        <Component {...ProjectProps} />
-      </Layout>
-    </ThemeProvider>
-    </AuthProvider>
+    <Auth0Provider
+      domain={process.env.AUTH0_CUSTOM_DOMAIN}
+      clientId={process.env.AUTH0_CLIENT_ID}
+      redirectUri={process.env.NEXTAUTH_URL}
+    >
+      <ThemeProvider>
+        <CssBaseline />
+        <Layout>
+          {isMap ? (
+            project ? (
+              <MapLayout
+                {...ProjectProps}
+                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+              />
+            ) : projects ? (
+              <MapLayout
+                {...ProjectProps}
+                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+              />
+            ) : null
+          ) : null}
+          <Component {...ProjectProps} />
+        </Layout>
+      </ThemeProvider>
+    </Auth0Provider>
   );
 }

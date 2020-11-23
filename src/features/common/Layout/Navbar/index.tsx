@@ -16,6 +16,8 @@ import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL'
 import { getUserExistsInDB, getUserInfo } from '../../../../utils/auth0/localStorageUtils'
+import { useAuth0 } from '@auth0/auth0-react';
+import getAuthToken from '../../../../utils/auth0/getAuthToken';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -26,6 +28,27 @@ export default function NavbarComponent(props: any) {
   const { t, ready } = useTranslation(['common']);
   const router = useRouter();
 
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+
+  const [token, setToken] = React.useState(null)
+  React.useEffect(() => {
+    async function CallToken() {
+      const token = getAuthToken();
+      setToken(token);
+    }
+    if (isAuthenticated) {
+      CallToken();
+    }
+  }, [isAuthenticated])
+
+
   /* Works when user clicks on Me
    If the user is logged in, redirect to t/userSlug
    If user is not logged in we will redirect to singin page with Auth0
@@ -34,21 +57,21 @@ export default function NavbarComponent(props: any) {
   const checkWhichPath = () => {
 
     if (typeof Storage !== 'undefined') {
-      
-    const userExistsInDB = getUserExistsInDB();
-  
-    // if user logged in, and already signed up -> /t/userSlug page
+
+      const userExistsInDB = getUserExistsInDB();
+
+      // if user logged in, and already signed up -> /t/userSlug page
       if (!loading && session && (userExistsInDB === true)) {
-          var userslug = getUserInfo().slug;
-          if (typeof window !== 'undefined') {
-            router.push(`/t/${userslug}`);
-          }
-       // if user logged in, not already signed up -> /complete-signup
-      } else if ( !loading && session && (userExistsInDB === false)) {
-          if (typeof window !== 'undefined') {
-              router.push('/complete-signup');
-          }
-      } else { 
+        var userslug = getUserInfo().slug;
+        if (typeof window !== 'undefined') {
+          router.push(`/t/${userslug}`);
+        }
+        // if user logged in, not already signed up -> /complete-signup
+      } else if (!loading && session && (userExistsInDB === false)) {
+        if (typeof window !== 'undefined') {
+          router.push('/complete-signup');
+        }
+      } else {
         // if no user logged in  -> signIn()
         // or when no active session
         signIn('auth0', { callbackUrl: `/login` });
@@ -63,15 +86,15 @@ export default function NavbarComponent(props: any) {
       //if logged in user && exist in db && profilepic is set -> show profile pic
       if (!loading && session && userProfilePic) {
         return (
-          <div style={{backgroundColor:'#fff',borderRadius:'50%',height:'27px',width:'27px',border:'1px solid #F2F2F7'}}>
-          <img src={getImageUrl('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
+          <div style={{ backgroundColor: '#fff', borderRadius: '50%', height: '27px', width: '27px', border: '1px solid #F2F2F7' }}>
+            <img src={getImageUrl('profile', 'avatar', userProfilePic)} height="26px" width="26px" style={{ borderRadius: '40px' }} />
           </div>
         )
-      } 
+      }
       // if no session -> icon depending on path
       // If complete-signup or it's private profile page
-      else if (router.pathname === '/complete-signup' || router.pathname === `/t/${userSlug}`){
-        return <MeSelected color={styles.primaryColor}/>
+      else if (router.pathname === '/complete-signup' || router.pathname === `/t/${userSlug}`) {
+        return <MeSelected color={styles.primaryColor} />
       } else {
         return <Me color={styles.primaryFontColor} />
       }
@@ -79,7 +102,32 @@ export default function NavbarComponent(props: any) {
     return null;
   }
 
+  // const { getAccessTokenSilently } = useAuth0();
+
+  // if(isAuthenticated){
+  //   console.log('getAccessTokenSilently',getAccessTokenSilently);
+  //   async function CallToken() {
+  //     const token = await getAccessTokenSilently({
+  //       audience: 'https://pftp.eu.auth0.com/api/v2/',
+  //       scope: 'read:users',
+  //     });
+  //     console.log('token',token);
+  //   }
+  //   CallToken();
+
+  // }
+
+
+
+
   const { toggleTheme } = React.useContext(ThemeContext);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
 
   return (
     <>
@@ -129,106 +177,110 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </div>
               </div>
-          )}
+            )}
 
           {config.header?.items.map((item) => (
-              <div key={item.id} style={{marginTop:'8px'}}>
-                {item.key === 'home' && item.visible === true ? (
-                    <Link key={item.id} href={item.onclick}>
-                      <div className={styles.link_container}>
-                        <div className={styles.link_icon}>
-                          {/* <i className="fas fa-ad"></i> */}
-                          {router.pathname === item.onclick ? (
-                            <GlobeSelected color={styles.primaryColor} />
-                          ) : (
-                              <Globe color={styles.primaryFontColor} />
-                          )}
-                        </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
-                      </div>
-                    </Link>
-                ) : null}
-                {item.key === 'donate' && item.visible === true ? (
-                    <Link key={item.id} href={item.onclick}>
-                      <div className={styles.link_container}>
-                        <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
-                            <DonateSelected color={styles.primaryColor} />
-                          ) : (
-                              <Donate color={styles.primaryFontColor} />
-                          )}
-                        </div>
-                        {ready ? (
-                          <p
-                            className={
-                              router.pathname === item.onclick
-                                ? styles.active_icon
-                                : ''
-                            }
-                          >
-                            {t('common:'+ item.title)}
-                          </p>
-                        ) : null}
-                      </div>
-                    </Link>
-                ) : null}
-
-                {item.key === 'leaderboard' && item.visible === true ? (
-                    <Link key={item.id} href={item.onclick}>
-                      <div className={styles.link_container}>
-                        <div className={styles.link_icon}>
-                          {/* <i className="fas fa-ad"></i> */}
-                          {router.pathname === item.onclick ? (
-                            <LeaderboardSelected color={styles.primaryColor} />
-                          ) : (
-                              <Leaderboard color={styles.primaryFontColor} />
-                          )}
-                        </div>
-                        {ready ? (
-                          <p
-                            className={
-                              router.pathname === item.onclick
-                                ? styles.active_icon
-                                : ''
-                            }
-                          >
-                            {t('common:'+ item.title)}
-                          </p>
-                        ) : null}
-                      </div>
-                  </Link>
-                ) : null}
-
-                {item.key === 'me' && item.visible === true ? (
-                <div key={item.id} onClick={checkWhichPath}>
-                      <div className={styles.link_container}>
-                        <div className={styles.link_icon}>
-                          {checkWhichIcon()}
-                        </div>
-                        {ready ? (
-                          <p
-                            className={
-                              router.pathname === item.onclick
-                                ? styles.active_icon
-                                : ''
-                            }
-                          >
-                            {t('common:'+ item.title)}
-                          </p>
-                        ) : null}
-                      </div>
+            <div key={item.id} style={{ marginTop: '8px' }}>
+              {item.key === 'home' && item.visible === true ? (
+                <Link key={item.id} href={item.onclick}>
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>
+                      {/* <i className="fas fa-ad"></i> */}
+                      {router.pathname === item.onclick ? (
+                        <GlobeSelected color={styles.primaryColor} />
+                      ) : (
+                          <Globe color={styles.primaryFontColor} />
+                        )}
+                    </div>
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
-                ) : null}
-              </div>
+                </Link>
+              ) : null}
+              {item.key === 'donate' && item.visible === true ? (
+                <Link key={item.id} href={item.onclick}>
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>
+                      {router.pathname === item.onclick ? (
+                        <DonateSelected color={styles.primaryColor} />
+                      ) : (
+                          <Donate color={styles.primaryFontColor} />
+                        )}
+                    </div>
+                    {ready ? (
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
+                  </div>
+                </Link>
+              ) : null}
+
+              {item.key === 'leaderboard' && item.visible === true ? (
+                <Link key={item.id} href={item.onclick}>
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>
+                      {/* <i className="fas fa-ad"></i> */}
+                      {router.pathname === item.onclick ? (
+                        <LeaderboardSelected color={styles.primaryColor} />
+                      ) : (
+                          <Leaderboard color={styles.primaryFontColor} />
+                        )}
+                    </div>
+                    {ready ? (
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
+                  </div>
+                </Link>
+              ) : null}
+
+              {item.key === 'me' && item.visible === true ? (
+                <div key={item.id} onClick={checkWhichPath}>
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>
+                      {checkWhichIcon()}
+                    </div>
+                    {ready ? (
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+             
+            </div>
           ))}
+
+<button onClick={loginWithRedirect}>Log in</button>
           {/* <div
             className={`${styles.theme_icon} ${styles.link_container}`}
             onClick={toggleTheme}
@@ -288,110 +340,110 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </Link>
               </div>
-          )}
+            )}
 
           {config.header?.items.map((item) => (
-              <div key={item.id}>
-                {item.key === 'home' && item.visible === true ? (
-                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                      <div
-                        className={styles.link_container}
-                        style={{ margin: '0px 8px' }}
-                      >
-                        <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
-                            <GlobeSelected color={styles.primaryColor} />
-                          ) : (
-                              <Globe color={styles.primaryFontColor} />
-                          )}
-                        </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
-                      </div>
-                  </Link>
-                ) : null}
-                {item.key === 'donate' && item.visible === true ? (
-                  <Link key={item.id} href={item.onclick} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                      <div
-                        className={styles.link_container}
-                        // style={{ margin: '0px 8px' }}
-                      >
-                        <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
-                            <DonateSelected color={styles.primaryColor} />
-                          ) : (
-                              <Donate color={styles.primaryFontColor} />
-                          )}
-                        </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
-                      </div>
-                  </Link>
-                ) : null}
+            <div key={item.id}>
+              {item.key === 'home' && item.visible === true ? (
+                <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                  <div
+                    className={styles.link_container}
+                    style={{ margin: '0px 8px' }}
+                  >
+                    <div className={styles.link_icon}>
+                      {router.pathname === item.onclick ? (
+                        <GlobeSelected color={styles.primaryColor} />
+                      ) : (
+                          <Globe color={styles.primaryFontColor} />
+                        )}
+                    </div>
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
+                  </div>
+                </Link>
+              ) : null}
+              {item.key === 'donate' && item.visible === true ? (
+                <Link key={item.id} href={item.onclick} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                  <div
+                    className={styles.link_container}
+                  // style={{ margin: '0px 8px' }}
+                  >
+                    <div className={styles.link_icon}>
+                      {router.pathname === item.onclick ? (
+                        <DonateSelected color={styles.primaryColor} />
+                      ) : (
+                          <Donate color={styles.primaryFontColor} />
+                        )}
+                    </div>
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
+                  </div>
+                </Link>
+              ) : null}
 
-                {item.key === 'leaderboard' && item.visible === true ? (
-                  <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                      <div
-                        className={styles.link_container}
-                      >
-                        <div className={styles.link_icon}>
-                          {router.pathname === item.onclick ? (
-                            <LeaderboardSelected color={styles.primaryColor} />
-                          ) : (
-                              <Leaderboard color={styles.primaryFontColor} />
-                          )}
-                        </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
-                      </div>
-                  </Link>
-                ) : null}
+              {item.key === 'leaderboard' && item.visible === true ? (
+                <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                  <div
+                    className={styles.link_container}
+                  >
+                    <div className={styles.link_icon}>
+                      {router.pathname === item.onclick ? (
+                        <LeaderboardSelected color={styles.primaryColor} />
+                      ) : (
+                          <Leaderboard color={styles.primaryFontColor} />
+                        )}
+                    </div>
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
+                  </div>
+                </Link>
+              ) : null}
 
-                {item.key === 'me' && item.visible === true ? (
+              {item.key === 'me' && item.visible === true ? (
                 <div
                   key={item.id}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                   onClick={checkWhichPath}
                 >
-                      <div
+                  <div
                     className={styles.link_container} >
-                        <div className={styles.link_icon}>
-                          {checkWhichIcon()}
-                        </div>
-                        <p
-                          className={
-                            router.pathname === item.onclick
-                              ? styles.active_icon
-                              : ''
-                          }
-                        >
-                          {t('common:'+ item.title)}
-                        </p>
-                      </div>
+                    <div className={styles.link_icon}>
+                      {checkWhichIcon()}
+                    </div>
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
+            </div>
           ))}
         </div>
       </div>
