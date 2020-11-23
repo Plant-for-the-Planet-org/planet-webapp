@@ -35,17 +35,26 @@ export default function NavbarComponent(props: any) {
     user,
     loginWithRedirect,
     logout,
+    getAccessTokenSilently
   } = useAuth0();
 
   const [token, setToken] = React.useState(null)
+
   React.useEffect(() => {
+    
+
+  if(isAuthenticated){
+
     async function CallToken() {
-      const token = getAuthToken();
-      setToken(token);
+      const token = await getAccessTokenSilently({
+        audience: 'https://pftp.eu.auth0.com/api/v2/',
+        scope: 'openid profile',
+      });
+      console.log('token',token);
     }
-    if (isAuthenticated) {
-      CallToken();
-    }
+    CallToken();
+  }
+
   }, [isAuthenticated])
 
 
@@ -102,20 +111,7 @@ export default function NavbarComponent(props: any) {
     return null;
   }
 
-  // const { getAccessTokenSilently } = useAuth0();
 
-  // if(isAuthenticated){
-  //   console.log('getAccessTokenSilently',getAccessTokenSilently);
-  //   async function CallToken() {
-  //     const token = await getAccessTokenSilently({
-  //       audience: 'https://pftp.eu.auth0.com/api/v2/',
-  //       scope: 'read:users',
-  //     });
-  //     console.log('token',token);
-  //   }
-  //   CallToken();
-
-  // }
 
 
 
