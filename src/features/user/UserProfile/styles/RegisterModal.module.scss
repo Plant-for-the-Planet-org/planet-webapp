@@ -13,13 +13,13 @@
   background-color: #ffffff;
   border: 0px;
   border-radius: 8px;
-  padding: 30px 56px;
+  padding: 50px 56px;
   overflow: hidden;
   outline: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: auto;
+  margin: 60px auto auto;
   max-width: 768px;
   width: 100%;
   justify-content: center;
@@ -50,9 +50,9 @@
 }
 
 .tabButtonContainer {
+  width: 100%;
   flex-grow: 1;
   display: flex;
-  width: 100%;
 }
 
 .tabButton {
@@ -153,6 +153,7 @@
   width: 100%;
   border-radius: 13px;
   overflow: hidden;
+  cursor: pointer !important;
 }
 
 .marker {

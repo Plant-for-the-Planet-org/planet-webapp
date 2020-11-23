@@ -7,13 +7,14 @@ import RedeemModal from './RedeemModal';
 import i18next from '../../../../../i18n';
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import RegisterModal from './RegisterModal';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 export default function UserProfileOptions({
   userprofile,
   handleTextCopiedSnackbarOpen,
 }: any) {
+  const router = useRouter();
   const { t } = useTranslation(['me']);
   const webShareMobile = async () => {
     try {
@@ -47,15 +48,6 @@ export default function UserProfileOptions({
     setRedeemModalOpen(true);
   };
 
-  // register modal
-  const [registerModalOpen, setRegisterModalOpen] = React.useState(false);
-  const handleRegisterModalClose = () => {
-    setRegisterModalOpen(false);
-  };
-  const handleRegisterModalOpen = () => {
-    setRegisterModalOpen(true);
-  };
-
   return (
     <div className={styles.bottomIconsRow}>
       <div className={styles.iconTextColumn}>
@@ -70,14 +62,10 @@ export default function UserProfileOptions({
         handleRedeemModalClose={handleRedeemModalClose}
       />
 
-      <div className={styles.iconTextColumn} onClick={handleRegisterModalOpen}>
+      <div className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>
         <div className={styles.bottomIconBg}>
           <Shovel color="white" />
         </div>
-        <RegisterModal
-          registerModalOpen={registerModalOpen}
-          handleRegisterModalClose={handleRegisterModalClose}
-        />
         <p className={styles.bottomRowText}> {t('me:registerTrees')}</p>
       </div>
 
