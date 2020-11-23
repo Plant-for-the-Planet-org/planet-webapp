@@ -109,7 +109,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )}
 
-                {project.survivalRate && (
+                {/* {project.survivalRate && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:survivalRate')}
@@ -128,7 +128,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {project.survivalRate} %
                         </div>
                     </div>
-                )}
+                )} */}
 
                 {project.employeesCount && (
                     <div className={styles.projectMoreInfoHalf}>
