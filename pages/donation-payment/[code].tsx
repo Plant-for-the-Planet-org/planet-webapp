@@ -1,12 +1,8 @@
 import Footer from '../../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import { Elements } from '@stripe/react-stripe-js';
-import { ThemeContext } from '../../src/theme/themeContext';
-import getStripe from '../../src/utils/stripe/getStripe';
-import DonationsPopup from '../../src/features/donations';
-
+import LegacyDonations from '../../src/features/legacyDonations';
+import styles from './../../src/features/legacyDonations/styles/PaymentDetails.module.scss'
 interface Props {
     initialized: Boolean;
 }
@@ -15,7 +11,7 @@ interface Props {
 function PaymentPage({ initialized }: Props) {
     const router = useRouter();
 
-    const [paymentDate, setPaymentData] = React.useState(null);
+    const [paymentData, setPaymentData] = React.useState(null);
 
     React.useEffect(() => {
         async function loadProjects() {
@@ -24,61 +20,48 @@ function PaymentPage({ initialized }: Props) {
                 setPaymentData(data);
             })
         }
-        if(router.query.code){
+        if (router.query.code) {
             loadProjects();
         }
-        
+
     }, [router.query.code]);
-    const styles = {
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-    }
 
-    const [open, setOpen] = React.useState(false);
-    const handleClose = () => {
-        setOpen(false);
-    };
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    let projectDetails = {};
 
-  const { theme } = React.useContext(ThemeContext);
+    // Need to pass - 
+    // treeCost
+    // currency
+    // project id (GUID)
+    // taxDeductionCountries Array
+    // project name
+    // project tpo name
+    // country
 
-  let projectDetails = {};
+    // donation id 
+    // paymentSetup.gateways.stripe.account
+    // paymentMethod.id (generated from the stripe card)
 
-  // Need to pass - 
-  // treeCost
-  // currency
-  // project id (GUID)
-  // taxDeductionCountries Array
-  // project name
-  // project tpo name
-  // country
-  
+    console.log('paymentData', paymentData);
     return (
         <>
-        <Modal
-        className={`modal ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <Elements stripe={getStripe()}>
-          <DonationsPopup project={projectDetails} onClose={handleClose} />
-        </Elements>
-      </Modal>
-            {initialized && (
-                <div style={styles}>
-                    <h2>{router.query.code}</h2>
-                </div>
+        <div className={styles.donationPaymentSection}>
+
+            {initialized && paymentData && (
+                <LegacyDonations paymentData={paymentData}/>
             )}
+            <img
+                className={styles.leaderBoardBushImage}
+                src="/tenants/planet/images/leaderboard/Person.svg"
+                alt=""
+            />
+            <img
+                className={styles.leaderBoardGroupTreeImage}
+                src="/tenants/planet/images/leaderboard/Trees.svg"
+                alt=""
+            />
             
-            <Footer />
+        </div>
+        <Footer />
         </>
     );
 }
