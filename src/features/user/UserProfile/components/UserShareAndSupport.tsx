@@ -47,7 +47,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
   };
-console.log(userprofile)
+
   return (
     <div>
       {showSocialBtn && (
@@ -57,7 +57,7 @@ console.log(userprofile)
             y: 0,
             opacity: 1,
           }}
-          transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+          transition={{stiffness: 150, type:"spring"}}
           initial={{
             y: 100,
             opacity: 0

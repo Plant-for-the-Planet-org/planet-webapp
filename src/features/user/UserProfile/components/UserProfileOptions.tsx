@@ -19,7 +19,7 @@ const socialIconAnimate = {
     x: 0,
     opacity: 1,
     transition: {
-      delay: 0.2, stiffness: 150, type:"spring"
+      stiffness: 150, type:"spring"
     }
 },
   closed: {
@@ -129,7 +129,7 @@ export default function UserProfileOptions({
         </p>
         </div>
 
-        <div className={styles.iconTextColumn} onClick={onShareClicked} onMouseEnter={onShareClicked} onMouseLeave={onShareClicked}>
+        <div className={styles.iconTextColumn} onClick={onShareClicked}>
           <div className={styles.bottomIconBg}>
             {showSocialBtn ? <CancelIcon color="white" width="25px" />
               : <Share color="white" />}
