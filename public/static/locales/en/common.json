@@ -1,6 +1,6 @@
 {
   "by": "By {{tpoName}}",
-  "to": "To",
+  "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",
   "trees": "Trees",
   "planted": "planted",
@@ -36,5 +36,7 @@
   "september": "September",
   "october": "October",
   "november": "November",
-  "december": "December"
+  "december": "December",
+  "approx": "Approx.",
+  "view": "View"
 }

@@ -94,6 +94,7 @@ export default function MapboxMap({
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    dragPan: true,
   });
 
   const [viewport, setViewPort] = useState({
@@ -297,21 +298,25 @@ export default function MapboxMap({
   ]);
 
   React.useEffect(() => {
-    document.addEventListener(
-      'mousedown',
-      (event) => {
-        if (exploreExpanded) {
-          if (
-            exploreContainerRef &&
-            !exploreContainerRef.current.contains(event.target)
-          ) {
-            setExploreExpanded(false);
-          }
+    document.addEventListener('mousedown', (event) => {
+      if (exploreExpanded) {
+        if (
+          exploreContainerRef && exploreContainerRef.current &&
+          !exploreContainerRef.current.contains(event.target)
+        ) {
+          setExploreExpanded(false);
         }
-      },
-      false
-    );
+      }
+    });
   });
+
+  React.useEffect(() => {
+    if (exploreExpanded) {
+      setMapState({ ...mapState, dragPan: false });
+    } else {
+      setMapState({ ...mapState, dragPan: true });
+    }
+  }, [exploreExpanded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -405,7 +410,6 @@ export default function MapboxMap({
           customAttribution:
             '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
         }}
-        // onLoad={() => setLoaded(true)}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
@@ -576,7 +580,7 @@ export default function MapboxMap({
             id="potential"
             type="raster"
             tiles={[
-              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V3/MapServer/tile/{z}/{y}/{x}',
+              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
             ]}
             tileSize={128}
           >
@@ -590,8 +594,6 @@ export default function MapboxMap({
               TreeCoverLoss.map((layer) => {
                 const {
                   id,
-                  // paramsConfig,
-                  // sqlConfig,
                   decodeConfig,
                   timelineConfig,
                   decodeFunction,
@@ -603,16 +605,6 @@ export default function MapboxMap({
                   ...layer,
                   ...layer.config,
                   ...lSettings,
-                  // ...(!!paramsConfig && {
-                  //   params: getParams(paramsConfig, { ...lSettings.params }),
-                  // }),
-
-                  // ...(!!sqlConfig && {
-                  //   sqlParams: getParams(sqlConfig, {
-                  //     ...lSettings.sqlParams,
-                  //   }),
-                  // }),
-
                   ...(!!decodeConfig && {
                     decodeParams: getParams(decodeConfig, {
                       ...timelineConfig,
@@ -686,10 +678,11 @@ export default function MapboxMap({
                       <InfoIcon />
                     </div>
                   </div>
-                  {/* <div className={styles.exploreToggleRow}>
+                  <div className={styles.exploreToggleRow}>
                       <FormControlLabel
                         control={
                           <Switch
+                          color="#3B00FF"
                             checked={explorePotential}
                             onChange={handleExplorePotentialChange}
                             name="potential"
@@ -700,12 +693,13 @@ export default function MapboxMap({
                       <div
                         onClick={() => {
                           setInfoExpanded('Restoration');
+                          setModalOpen(true);
                         }}
                         className={styles.exploreInfo}
                       >
                         <InfoIcon />
                       </div>
-                    </div> */}
+                    </div>
 
                   <div className={styles.exploreToggleRow}>
                     <FormControlLabel
@@ -856,7 +850,7 @@ export default function MapboxMap({
                   <p>{t('maps:forestInfo')}</p>
                   <a
                     href="https://www.nature.com/articles/nature14967"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
@@ -880,7 +874,7 @@ export default function MapboxMap({
                   <p>{t('maps:restorationInfo')}</p>
                   <a
                     href="https://science.sciencemag.org/content/365/6448/76"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
@@ -900,7 +894,7 @@ export default function MapboxMap({
                 <div className={styles.infoContent}>
                   <a
                     href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />

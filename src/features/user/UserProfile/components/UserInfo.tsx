@@ -15,7 +15,7 @@ export default function UserInfo({
         handleAddTargetModalOpen={handleAddTargetModalOpen}
         authenticatedType={authenticatedType}
         target={userprofile.score.target}
-        planted={userprofile.score.personal}
+        planted={userprofile.score.personal+userprofile.score.received}
       />
 
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
