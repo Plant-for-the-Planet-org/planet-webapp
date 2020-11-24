@@ -47,6 +47,8 @@ if (!dev && cluster.isMaster) {
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
+            'X-Frame-Options': 'DENY',
+            'Content-Security-Policy': 'frame-ancestors \'none\'',
           });
           return next();
         }

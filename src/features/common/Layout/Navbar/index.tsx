@@ -62,7 +62,11 @@ export default function NavbarComponent(props: any) {
       const userSlug = getUserInfo()?.slug;
       //if logged in user && exist in db && profilepic is set -> show profile pic
       if (!loading && session && userProfilePic) {
-        return <img src={getImageUrl('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
+        return (
+          <div style={{backgroundColor:'#fff',borderRadius:'50%',height:'27px',width:'27px',border:'1px solid #F2F2F7'}}>
+          <img src={getImageUrl('profile','avatar',userProfilePic)} height="26px" width="26px" style={{borderRadius: '40px'}}/>
+          </div>
+        )
       } 
       // if no session -> icon depending on path
       // If complete-signup or it's private profile page

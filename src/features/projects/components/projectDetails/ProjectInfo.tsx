@@ -109,7 +109,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )}
 
-                {project.survivalRate && (
+                {/* {project.survivalRate && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:survivalRate')}
@@ -128,7 +128,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {project.survivalRate} %
                         </div>
                     </div>
-                )}
+                )} */}
 
                 {project.employeesCount && (
                     <div className={styles.projectMoreInfoHalf}>
@@ -241,7 +241,8 @@ function ProjectInfo({ project }: Props): ReactElement {
                         return (
                             <div className={styles.infoText}>
                                 {certificate.certifierName}
-                                <a className={styles.infoTextButton} target={"_blank"} href={getPDFFile('projectCertificate', certificate.pdf)}>
+                                <a className={styles.infoTextButton} target="_blank" rel="noopener noreferrer"
+                                  href={getPDFFile('projectCertificate', certificate.pdf)}>
                                     {t('common:view')}
                                 </a>
                             </div>
@@ -275,7 +276,8 @@ function ProjectInfo({ project }: Props): ReactElement {
                                         )}
                                     </span>
 
-                                    <a className={styles.infoTextButton} target={"_blank"} href={getPDFFile('projectExpense', expense.pdf)} style={{zIndex:2}}>
+                                    <a className={styles.infoTextButton} target="_blank" rel="noopener noreferrer"
+                                      href={getPDFFile('projectExpense', expense.pdf)} style={{zIndex:2}}>
                                         {t('common:view')}
                                     </a>
                                 </div>
