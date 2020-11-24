@@ -59,7 +59,7 @@ console.log(userprofile)
           }}
           transition={{delay: 0.2, stiffness: 150, type:"spring"}}
           initial={{
-            y: -100,
+            y: 100,
             opacity: 0
           }}
         >

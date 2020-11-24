@@ -4,6 +4,7 @@ import styles from '../styles/UserInfo.module.scss';
 import TwitterIcon from '../../../../../public/assets/images/icons/share/Twitter';
 import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebook';
 import InstagramIcon from '../../../../../public/assets/images/icons/share/Instagram';
+import LinkedIn from '../../../../../public/assets/images/icons/share/Linkedin';
 import tenantConfig from '../../../../../tenant.config';
 import i18next from '../../../../../i18n';
 
@@ -16,6 +17,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
   const [currentHover, setCurrentHover] = React.useState(-1);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = t('donate:textToShare', { name: userprofile.displayName });
+  const textToShareLinkedin = t('donate:textToShareLinkedin', { name: userprofile.displayName });
 
   const shareClicked = async (shareUrl) => {
     openWindowLinks(shareUrl);
@@ -32,7 +34,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
       <div
         className={styles.shareIcon}
           onClick={() => shareClicked(
-            `https://www.facebook.com/sharer.php?u=${config.tenantURL}&quote=${textToShare}`,
+            `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShare}`,
             '_blank',
           )}
         onMouseOver={() => setCurrentHover(1)}
@@ -47,13 +49,13 @@ export default function SocialShareContainer({userprofile, type}:any) {
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(2)}
         onClick={() =>
-          shareClicked('https://www.instagram.com/plantfortheplanet_official/')
+          shareClicked(`https://linkedin.com/shareArticle?mini=true&title=${textToShareLinkedin}&url=${linkToShare}`)
         }
         onTouchMove={() => setCurrentHover(2)}
         style={{padding: type === 'private' ? '10px' : null}}
       >
         <div className={type === 'private' ? styles.shareIconFacebookContainerPrivate : styles.shareIconInstagramContainer}>
-          <InstagramIcon color={currentHover === 2 ? '#fff' : '#fff'} />
+          <LinkedIn color={currentHover === 2 ? '#fff' : '#fff'} />
         </div>
       </div>
       <div
