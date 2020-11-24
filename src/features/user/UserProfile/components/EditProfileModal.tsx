@@ -78,7 +78,8 @@ export default function EditProfileModal({
   // the form values
   const [session, loading] = useSession()
   const [severity, setSeverity] = useState('success')
-  const [snackbarMessage, setSnackbarMessage] = useState("OK")
+  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const watchIsPrivate = watch('isPrivate');
 
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
@@ -296,9 +297,10 @@ export default function EditProfileModal({
             <div className={styles.isPrivateAccountDiv}>
               <div>
                 <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
+                {watchIsPrivate && 
                 <div className={styles.isPrivateAccountText}>
                   {t('editProfile:privateAccountTxt')}
-                </div>
+                </div>}
               </div>
               <Controller
                 name="isPrivate"
@@ -339,9 +341,10 @@ export default function EditProfileModal({
                 variant="outlined"
                 multiline
                 name="bio"
-                inputRef={register()}
+                inputRef={register({
+                  maxLength: 300
+                })}
               />
-
             </div>
             {errors.bio && (
               <span className={styles.formErrors}>
