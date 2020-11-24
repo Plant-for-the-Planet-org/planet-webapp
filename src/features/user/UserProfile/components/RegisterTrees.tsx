@@ -1,8 +1,5 @@
 import React from 'react';
 import styles from '../styles/RegisterModal.module.scss';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { Controller, useForm } from 'react-hook-form';
@@ -17,15 +14,39 @@ import MapGL, {
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 import * as d3 from 'd3-ease';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import { localeMapForDate } from '../../../../utils/language/getLanguageName';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { useRouter } from 'next/router';
+import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import BasicDetailsStep from './RegisterTrees/BasicDetails';
+import UploadImagesStep from './RegisterTrees/UploadImages';
+import MoreDetailsStep from './RegisterTrees/MoreDetails';
+import { Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
+
+interface Props {
+  slug: any;
+  session: any;
+}
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({
-}: any) {
+export default function RegisterTrees({ slug, session
+}: Props) {
+  const router = useRouter();
   const { t } = useTranslation(['me', 'common']);
-  const [selectedTab, setSelectedTab] = React.useState('single');
+  const [isMultiple, setIsMultiple] = React.useState(false);
+  function getSteps() {
+    if (!isMultiple) {
+      return ['Basic', 'Upload Images', 'Optional'];
+    } else {
+      return ['Basic', 'Upload Images'];
+    }
+  }
+  const [contributionGUID, setContributionGUID] = React.useState('');
+  const [contributionDetails, setContributionDetails] = React.useState({});
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const steps = getSteps();
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
+
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
@@ -37,7 +58,7 @@ export default function RegisterTrees({
 
   const [viewport, setViewPort] = React.useState({
     width: '100%',
-    height: 400,
+    height: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
@@ -49,315 +70,131 @@ export default function RegisterTrees({
       let userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
-  }, [])
+  }, []);
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-  } = useForm({ mode: 'onBlur' });
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
 
-  const onSubmit = (data: any) => {
-    console.log('submitted');
-  }
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
-  const uploadPhotos = (image: any) => {
-    console.log('uploading');
-  }
+  const handleReset = (message) => {
+    setErrorMessage(message)
+    setActiveStep(0);
+  };
 
-  const onDrop = React.useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: any) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file);
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
-      reader.onload = (event) => {
-        uploadPhotos(event.target.result);
+  const submitRegisterTrees = () => {
+    setIsUploadingData(true)
+    const submitData = {
+      reviewRequested: true
+    }
+    putAuthenticatedRequest(`/app/projects/${contributionGUID}`, submitData, session).then((res) => {
+      if (!res.code) {
+        setContributionDetails(res)
+        setErrorMessage('')
+        setIsUploadingData(false)
+      } else {
+        if (res.code === 404) {
+          setErrorMessage(t('manageProjects:projectNotFound'))
+          setIsUploadingData(false)
+        }
+        else {
+          setErrorMessage(res.message)
+          setIsUploadingData(false)
+        }
+
       }
     })
+  }
 
-  }, [])
+  React.useEffect(() => {
+    // Fetch details of the contribution 
+    if (contributionGUID && session?.accessToken)
+      getAuthenticatedRequest(`/app/profile/projects/${contributionGUID}`, session).then((result: any) => {
+        setContributionDetails(result)
+      })
+  }, [contributionGUID]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: 'image/*',
-    multiple: true,
-    onDrop: onDrop,
-    onDropAccepted: () => {
-      console.log('uploaded');
-
-    },
-
-    // onFileDialogCancel: () => {
-    //     alert('no file selected')
-    // }
-  });
-
-  const classification = watch('classification');
-  const mesurements = watch('mesurements');
+  function getStepContent(step: number) {
+    switch (step) {
+      case 0:
+        return <BasicDetailsStep handleNext={handleNext} lang={userLang} />;
+      case 1:
+        return <UploadImagesStep handleNext={handleNext} />;
+      case 2:
+        return <MoreDetailsStep />;
+      default:
+        return <BasicDetailsStep handleNext={handleNext} lang={userLang} />;
+    }
+  }
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   return (
 
     <div className={styles.modal}>
-      <h4>
-        <b> {t('me:registerTrees')} </b>
-      </h4>
-      <div className={styles.tabButtonContainer}>
-        <div
-          className={'tabButton'}
-          onClick={() => setSelectedTab('single')}
-        >
-          <div
-            className={
-              selectedTab === 'single'
-                ? 'tabButtonSelected'
-                : 'tabButtonText'
-            }
-          >
-            Single Tree
-              </div>
-          {selectedTab === 'single' ? (
-            <div className={'tabButtonSelectedIndicator'} />
-          ) : null}
-        </div>
 
-        <div
-          className={'tabButton'}
-          onClick={() => setSelectedTab('many')}
-        >
-          <div
-            className={
-              selectedTab === 'many'
-                ? 'tabButtonSelected'
-                : 'tabButtonText'
-            }
-          >
-            Many Trees
-              </div>
-          {selectedTab === 'many' ? (
-            <div className={'tabButtonSelectedIndicator'} />
-          ) : null}
-        </div>
-      </div>
       <div className={styles.formContainer}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
-              <MaterialTextField
-                placeholder="Mangifera indica"
-                label="Name of Tree"
-                variant="outlined"
-              />
-            </div>
-            {selectedTab === 'many' ?
-              <div className={styles.formFieldHalf}>
-                <MaterialTextField
-                  placeholder="50"
-                  label="Number of Trees"
-                  variant="outlined"
-                />
-              </div>
-              : null
-            }
-            <div className={styles.formFieldHalf}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                <Controller
-                  render={props => (
 
-                    <DatePicker
-                      label="Date Planted"
-                      value={props.value}
-                      onChange={props.onChange}
-                      inputVariant="outlined"
-                      TextFieldComponent={MaterialTextField}
-                      autoOk
-                      disableFuture
-                      minDate={new Date(new Date().setFullYear(1950))}
-                      format="d MMMM yyyy"
-                      maxDate={new Date()}
-                    />)
-                  }
-                  name="data-planted"
-                  control={control}
-                  defaultValue=""
-                />
-              </MuiPickersUtilsProvider>
-            </div>
+        <h2 className={styles.title}>
+          <div
+            style={{ cursor: 'pointer', marginLeft: -10, paddingRight: 10 }}
+            onClick={() => {
+              router.push(`/t/${slug}`, undefined, { shallow: true });
+            }}
+          >
+            <BackButton />
           </div>
+          <b> {t('me:registerTrees')} </b>
+        </h2>
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel onClick={() => setActiveStep(index)}>{label}</StepLabel>
+              <StepContent>
+                {getStepContent(index)}
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
 
-          <div className={`${styles.formFieldLarge} ${styles.locationMap}`}>
-            <MapGL
-              {...viewport}
-              mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              mapStyle='mapbox://styles/mapbox/streets-v11'
-              onViewportChange={_onViewportChange}
-              onClick={(event) => {
-                setplantLocation(event.lngLat);
-                setViewPort({
-                  ...viewport,
-                  latitude: event.lngLat[1],
-                  longitude: event.lngLat[0],
-                  transitionDuration: 400,
-                  transitionInterpolator: new FlyToInterpolator(),
-                  transitionEasing: d3.easeCubic,
-                });
-              }}
-            >
-              <Marker
-                latitude={plantLocation[1]}
-                longitude={plantLocation[0]}
-                offsetLeft={5}
-                offsetTop={-16}
-                style={{ left: '28px' }}
-              >
-                <div className={styles.marker}></div>
-              </Marker>
-              <div className={styles.mapNavigation}>
-                <NavigationControl showCompass={false} />
-              </div>
-            </MapGL>
-          </div>
-          <div className={styles.formFieldLarge} {...getRootProps()}>
-            <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <AnimatedButton
-                onClick={uploadPhotos}
-                className={styles.continueButton}
-              >
-                <input {...getInputProps()} />
-                      Upload Photos
-
-                    </AnimatedButton>
-              <p style={{ marginTop: '18px' }}>
-                or drag here
-                      </p>
-            </label>
-          </div>
-          {selectedTab === 'single' ?
-            <>
-              <div className={styles.formField}>
-                <div className={`${styles.formFieldHalf}`}>
-                  <div className={`${styles.formFieldRadio}`}>
-                    <label
-                      htmlFor="classification"
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      Classification
-                  <div
-                        style={{ height: '13px', width: '13px', marginLeft: '6px' }}
-                      >
-                        {/* <div className={styles.popover}>
-                      <InfoIcon />
-                      <div
-                        className={styles.popoverContent}
-                        style={{ left: '-150px' }}
-                      >
-                        <p>
-                          Classification
-                        </p>
-                      </div>
-                    </div> */}
-                      </div>
-                    </label>
-
-                    <Controller
-                      name="classification"
-                      control={control}
-                      render={(props) => (
-                        <ToggleSwitch
-                          id="classification"
-                          checked={props.value}
-                          onChange={(e) => props.onChange(e.target.checked)}
-                          inputProps={{ 'aria-label': 'secondary checkbox' }}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
-              {classification ? (
-                <div className={styles.formField}>
-                  <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                      placeholder="20 Nov 2020"
-                      label="Tree Classification"
-                      variant="outlined"
-                    />
-                  </div>
-                  <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                      placeholder="20 Nov 2020"
-                      label="Tree Scientific Name"
-                      variant="outlined"
-                    />
-                  </div>
-                </div>
-              ) : null}
-
-              <div className={styles.formField}>
-                <div className={`${styles.formFieldHalf}`}>
-                  <div className={`${styles.formFieldRadio}`}>
-                    <label
-                      htmlFor="mesurements"
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      Mesurements
-                  <div
-                        style={{ height: '13px', width: '13px', marginLeft: '6px' }}
-                      >
-                      </div>
-                    </label>
-
-                    <Controller
-                      name="mesurements"
-                      control={control}
-                      render={(props) => (
-                        <ToggleSwitch
-                          id="mesurements"
-                          checked={props.value}
-                          onChange={(e) => props.onChange(e.target.checked)}
-                          inputProps={{ 'aria-label': 'secondary checkbox' }}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
-              {mesurements ? (
-                <div className={styles.formField}>
-                  <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                      placeholder="20 Nov 2020"
-                      label="Diameter"
-                      variant="outlined"
-                    />
-                  </div>
-                  <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                      placeholder="20 Nov 2020"
-                      label="Height"
-                      variant="outlined"
-                    />
-                  </div>
-                  <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                      placeholder="20 Nov 2020"
-                      label="Mesurement Date"
-                      variant="outlined"
-                    />
-                  </div>
-                </div>
-              ) : null}
-            </>
-            : null}
-
-          <div className={styles.continueButton}>{t('common:continue')}</div>
-        </form>
       </div>
+      <div className={`${styles.locationMap}`}>
+        <MapGL
+          {...viewport}
+          mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+          mapStyle='mapbox://styles/mapbox/streets-v11'
+          onViewportChange={_onViewportChange}
+          onClick={(event) => {
+            setplantLocation(event.lngLat);
+            setViewPort({
+              ...viewport,
+              latitude: event.lngLat[1],
+              longitude: event.lngLat[0],
+              transitionDuration: 400,
+              transitionInterpolator: new FlyToInterpolator(),
+              transitionEasing: d3.easeCubic,
+            });
+          }}
+        >
+          <Marker
+            latitude={plantLocation[1]}
+            longitude={plantLocation[0]}
+            offsetLeft={5}
+            offsetTop={-16}
+            style={{ left: '28px' }}
+          >
+            <div className={styles.marker}></div>
+          </Marker>
+          <div className={styles.mapNavigation}>
+            <NavigationControl showCompass={false} />
+          </div>
+        </MapGL>
+      </div>
+
+
     </div>
   );
 }

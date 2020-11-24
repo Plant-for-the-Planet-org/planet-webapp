@@ -10,19 +10,33 @@
 
 // white modal
 .modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: #ffffff;
   border: 0px;
   border-radius: 8px;
-  padding: 50px 56px;
+  padding: 50px 50px;
   overflow: hidden;
   outline: none;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  margin: 60px auto auto;
-  max-width: 768px;
+  margin: auto;
+  max-width: 80vw;
+  height: 80vh;
   width: 100%;
   justify-content: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  font-size: 22px;
 }
 
 .inputField {
@@ -40,9 +54,8 @@
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
-  margin-top: 30px;
+  margin-top: 10px;
   max-width: fit-content;
-  margin: 20px auto 0;
 }
 
 .continueButton:hover {
@@ -95,6 +108,7 @@
   display: flex;
   width: 100%;
   justify-content: center;
+  flex-direction: column;
 }
 
 .formContainer > form {
@@ -149,8 +163,14 @@
   justify-content: center;
 }
 
+.locationMap {
+  width: 100%;
+  height: 100%;
+}
+
 .locationMap > div {
   width: 100%;
+  height: 100%;
   border-radius: 13px;
   overflow: hidden;
   cursor: pointer !important;
@@ -180,10 +200,15 @@
   bottom: 20px;
 }
 
+.nextButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+}
+
 @include mdTabletView {
-  .modal {
-    max-width: 780px;
-  }
   .formField {
     max-width: 660px;
   }
