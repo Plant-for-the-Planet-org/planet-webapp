@@ -11,6 +11,7 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
+import storeConfig from '../../../utils/storeConfig';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -39,6 +40,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
+    storeConfig();
   }, []);
 
   const [openModal, setModalOpen] = React.useState(false);
