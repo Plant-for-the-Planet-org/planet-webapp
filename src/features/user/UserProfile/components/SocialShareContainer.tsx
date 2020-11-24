@@ -34,7 +34,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
       <div
         className={styles.shareIcon}
           onClick={() => shareClicked(
-            `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShare}`,
+            `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`,
             '_blank',
           )}
         onMouseOver={() => setCurrentHover(1)}
@@ -49,7 +49,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(2)}
         onClick={() =>
-          shareClicked(`https://linkedin.com/shareArticle?mini=true&title=${textToShareLinkedin}&url=${linkToShare}`)
+          shareClicked(`https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`)
         }
         onTouchMove={() => setCurrentHover(2)}
         style={{padding: type === 'private' ? '10px' : null}}
@@ -63,7 +63,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
         onMouseOver={() => setCurrentHover(3)}
         onTouchMove={() => setCurrentHover(3)}
           onClick={() => shareClicked(
-            `https://twitter.com/intent/tweet?text=${textToShare}`,
+            `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=PftP_int&url=${linkToShare}&text=${textToShare}`,
           )}
           style={{padding: type === 'private' ? '10px' : null}}
       >

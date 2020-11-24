@@ -22,6 +22,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = t('donate:textToShare', { name: userprofile.displayName });
+  const [screenWidth, setScreenWidth] = React.useState(null);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -41,6 +42,9 @@ export default function UserShareAndSupport({ userprofile }: any) {
       setShowSocialBtn(true);
     }
   };
+  React.useEffect(() => {
+    setScreenWidth(window.screen.width);
+  })
   const shareClicked = async (shareUrl) => {
     openWindowLinks(shareUrl);
   };
@@ -49,8 +53,26 @@ export default function UserShareAndSupport({ userprofile }: any) {
   };
 
   return (
-    <div>
-      {showSocialBtn && (
+    <div style={{position: "relative"}}>
+      {showSocialBtn && (screenWidth > 600) && (
+        <motion.div 
+          animate={{
+            x: 0,
+            opacity: 1,
+            position: 'absolute', 
+            top: '35px', 
+            left: userprofile.type !== 'tpo' ? '380px' : '181px'
+          }}
+          transition={{stiffness: 150, type:"spring"}}
+          initial={{
+            x: -180,
+            opacity: 0
+          }}
+        >
+          <SocialShareContainer userprofile={userprofile} type="private" />
+        </motion.div>
+      )}
+      {showSocialBtn && (screenWidth < 600) && (
         <motion.div 
           animate={{
             paddingLeft: userprofile.type !== 'tpo' ? '191px' : null,
@@ -79,7 +101,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
               <p className={styles.bottomRowTextSupport}>{t('me:support')}</p>
             </div>
           </div>
-        )}
+         )}
         <div className={styles.iconTextColumnSupport}>
           {showSocialBtn ? (
             <div

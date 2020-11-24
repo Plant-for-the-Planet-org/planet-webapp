@@ -81,7 +81,7 @@ export default function UserProfileOptions({
   const handleRedeemModalOpen = () => {
     setRedeemModalOpen(true);
   };
-  // console.log(userprofile);
+
   return (
     <div style={{position: 'relative'}}>
       {showSocialBtn && (screenWidth < 600) && (
