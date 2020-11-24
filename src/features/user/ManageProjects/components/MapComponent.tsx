@@ -9,6 +9,7 @@ import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
+import gjv from "geojson-validation";
 
 const { useTranslation } = i18next;
 interface Props {
@@ -45,6 +46,7 @@ export default function MapComponent({
   });
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
+  const [geoJsonError, setGeoJsonError] = React.useState(false);
 
   const onDrawCreate = ({ features }: any) => {
     console.log(features);
@@ -69,7 +71,13 @@ export default function MapComponent({
         zoom: [zoom],
       };
       if (drawControlRef.current) {
-        drawControlRef.current.draw.add(geoJson);
+        try {
+          drawControlRef.current.draw.add(geoJson);
+        }
+        catch (e) {
+          setGeoJsonError(true);
+          console.log('We only support feature collection for now', e);
+        }
       }
       setViewPort(newViewport);
     } else {
@@ -112,6 +120,9 @@ export default function MapComponent({
         accept={['.geojson', '.kml']}
         multiple={false}
         onDrop={(acceptedFiles) => {
+          if (drawControlRef.current) {
+            drawControlRef.current.draw.deleteAll();
+          }
           acceptedFiles.forEach((file: any) => {
             var fileType =
               file.name.substring(
@@ -128,7 +139,13 @@ export default function MapComponent({
                   'text/xml'
                 );
                 var geo = tj.kml(dom);
-                setGeoJson(geo);
+                if (gjv.isGeoJSONObject(geo)) {
+                  setGeoJsonError(false);
+                  setGeoJson(geo);
+                } else {
+                  setGeoJsonError(true);
+                  console.log('invalid kml');
+                }
               };
             } else if (fileType === 'geojson') {
               reader.readAsText(file);
@@ -136,7 +153,13 @@ export default function MapComponent({
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
                 var geo = JSON.parse(event.target.result);
-                setGeoJson(geo);
+                if (gjv.isGeoJSONObject(geo)) {
+                  setGeoJsonError(false);
+                  setGeoJson(geo);
+                } else {
+                  setGeoJsonError(true);
+                  console.log('invalid geojson');
+                }
               };
 
               // Upload the base 64 to API and use the response to show preview to the user
@@ -151,6 +174,8 @@ export default function MapComponent({
           </div>
         )}
       </Dropzone>
+      {geoJsonError ?
+        <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
     </div>
   );
 }

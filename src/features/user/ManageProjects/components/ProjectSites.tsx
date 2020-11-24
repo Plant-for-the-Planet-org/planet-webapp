@@ -312,15 +312,15 @@ export default function ProjectSites({
             </div>
           </div>
         ) : (
-          <div
-            onClick={() => setShowForm(true)}
-            className={styles.formFieldLarge}
-          >
-            <p className={styles.inlineLinkButton}>
-              {t('manageProjects:addSite')}
-            </p>
-          </div>
-        )}
+            <div
+              onClick={() => setShowForm(true)}
+              className={styles.formFieldLarge}
+            >
+              <p className={styles.inlineLinkButton}>
+                {t('manageProjects:addSite')}
+              </p>
+            </div>
+          )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -347,8 +347,8 @@ export default function ProjectSites({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('manageProjects:saveAndContinue')
-              )}
+                  t('manageProjects:saveAndContinue')
+                )}
             </AnimatedButton>
           </div>
         </div>
