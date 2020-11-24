@@ -96,7 +96,7 @@ export default function MapComponent({
     >
       <Map
         {...viewport}
-        style="mapbox://styles/mapbox/satellite-v9" // eslint-disable-line
+        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
         containerStyle={{
           height: '400px',
           width: '100%',

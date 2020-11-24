@@ -114,7 +114,7 @@ export default function BasicDetails({
   // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
-  
+
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -153,7 +153,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
-    
+
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -382,7 +382,7 @@ export default function BasicDetails({
                         style={{ left: '-150px' }}
                       >
                         <p>
-                        {t('manageProjects:receiveDonationsInfo')}
+                          {t('manageProjects:receiveDonationsInfo')}
                         </p>
                       </div>
                     </div>
@@ -451,7 +451,7 @@ export default function BasicDetails({
             <MapGL
               {...viewport}
               ref={mapRef}
-              mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+              mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
               mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
               onViewportChange={_onViewportChange}
               onClick={(event) => {
