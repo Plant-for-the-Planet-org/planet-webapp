@@ -14,6 +14,7 @@ import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
+import storeConfig from '../src/utils/storeConfig';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -47,6 +48,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [initialized, setInitialized] = React.useState(false);
 
+  React.useEffect(() => {
+    storeConfig();
+  }, []);
   React.useEffect(() => {
     i18next.initPromise.then(() => setInitialized(true));
   }, []);
