@@ -46,19 +46,16 @@ export default function NavbarComponent(props: any) {
   if(isAuthenticated){
 
     async function CallToken() {
-      const token = await getAccessTokenSilently({
-        audience: 'https://pftp.eu.auth0.com/api/v2/',
-        scope: 'openid profile',
-      });
+      const token = await getAccessTokenSilently();
       console.log('token',token);
     }
     CallToken();
   }
-
   }, [isAuthenticated])
 
 
   /* Works when user clicks on Me
+   If token expires redirect to auth0 
    If the user is logged in, redirect to t/userSlug
    If user is not logged in we will redirect to singin page with Auth0
    If in the signin flow, if the user is already existing, we login the user and  redirect to t/userSlug
@@ -276,7 +273,7 @@ export default function NavbarComponent(props: any) {
             </div>
           ))}
 
-<button onClick={loginWithRedirect}>Log in</button>
+          <button onClick={loginWithRedirect}>Log in</button>
           {/* <div
             className={`${styles.theme_icon} ${styles.link_container}`}
             onClick={toggleTheme}
