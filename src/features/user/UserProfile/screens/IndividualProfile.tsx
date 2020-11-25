@@ -8,6 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SettingsModal from '../components/SettingsModal';
 import AddTargetModal from '../components/AddTargetModal'
+import Settings1 from '../components/Settings1';
 
 export default function IndividualProfile({ userprofile, changeForceReload,
   forceReload, authenticatedType }: any) {
@@ -35,7 +36,7 @@ export default function IndividualProfile({ userprofile, changeForceReload,
     setSettingsModalOpen(false);
   };
   const handleSettingsModalOpen = () => {
-    setSettingsModalOpen(true);
+    setSettingsModalOpen(!settingsModalOpen);
   };
 
   // editProfile modal  (from settings modal)
@@ -69,7 +70,7 @@ export default function IndividualProfile({ userprofile, changeForceReload,
             >
               <Settings color="white" />
             </div>
-            <SettingsModal
+            {/* <SettingsModal
               userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
@@ -78,7 +79,7 @@ export default function IndividualProfile({ userprofile, changeForceReload,
               handleEditProfileModalOpen={handleEditProfileModalOpen}
               changeForceReload={changeForceReload}
               forceReload={forceReload}
-            />
+            /> */}
             </>
           )
         }  
@@ -90,6 +91,17 @@ export default function IndividualProfile({ userprofile, changeForceReload,
               : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
           }
         >
+          {settingsModalOpen && <Settings1 
+                          userprofile={userprofile}
+                          settingsModalOpen={settingsModalOpen}
+                          handleSettingsModalClose={handleSettingsModalClose}
+                          editProfileModalOpen={editProfileModalOpen}
+                          handleEditProfileModalClose={handleEditProfileModalClose}
+                          handleEditProfileModalOpen={handleEditProfileModalOpen}
+                          changeForceReload={changeForceReload}
+                          forceReload={forceReload}
+          />}
+          
           <UserInfo
             userprofile={userprofile}
             authenticatedType={authenticatedType}
