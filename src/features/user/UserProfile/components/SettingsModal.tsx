@@ -1,5 +1,4 @@
 import React from 'react';
-import { signOut, } from 'next-auth/client';
 import styles from '../styles/SettingsModal.module.scss';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
@@ -8,9 +7,10 @@ import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
-const {useTranslation} = i18next;
+const { useTranslation } = i18next;
 export default function SettingsModal({
   userType,
   userprofile,
@@ -23,7 +23,15 @@ export default function SettingsModal({
   forceReload,
 }: any) {
   const router = useRouter();
-  const {t} = useTranslation(['me', 'common', 'editProfile']);
+  const { t } = useTranslation(['me', 'common', 'editProfile']);
+  const {
+    logout,
+  } = useAuth0();
+
+  const logoutUser = () => {
+    localStorage.removeItem('userInfo');
+    logout();
+  }
   return (
     <>
       <Modal
@@ -41,7 +49,7 @@ export default function SettingsModal({
         <Fade in={settingsModalOpen}>
           <div className={styles.modal}>
             {
-              userType == 'tpo' && 
+              userType == 'tpo' &&
               <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> {t('me:settingManageProject')} </a>
             }
             <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </div>
@@ -50,12 +58,7 @@ export default function SettingsModal({
             <div className={styles.settingsItem}> Embed Widget </div> */}
             <div
               className={styles.settingsItem}
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  router.push(`/logout`);
-                }
-              }
-              }>
+              onClick={logoutUser}>
               <b>{t('me:logout')} </b>
             </div>
             <div

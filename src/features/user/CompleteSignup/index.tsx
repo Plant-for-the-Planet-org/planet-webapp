@@ -13,9 +13,15 @@ import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getUserInfo
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
+
+  const {
+    logout,
+  } = useAuth0();
+
   const [session, loading] = useSession();
   const router = useRouter();
   const { t } = useTranslation(['editProfile', 'donate', 'login']);
@@ -138,6 +144,11 @@ export default function CompleteSignup() {
     }
   };
 
+  const logoutUser = ()=> {
+    localStorage.removeItem('userInfo');
+    logout();
+  }
+
   if (
     loading ||
     (!loading && session && (getUserExistsInDB() === true)) ||
@@ -157,11 +168,7 @@ export default function CompleteSignup() {
           {/* header */}
           <div className={styles.header}>
             <div
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  router.push(`/logout`);
-                }
-              }}
+              onClick={logoutUser}
               className={styles.headerBackIcon}
             >
               <BackArrow color={styles.primaryFontColor} />
