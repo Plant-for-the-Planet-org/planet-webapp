@@ -97,16 +97,19 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                 </div>
             </div>
 
-            <div className={styles.horizontalLine} />
 
             <Elements stripe={getStripe()}>
                 <CardPayments paymentType={paymentType} setPaymentType={setPaymentType} />
             </Elements>
 
+            
+
             <Elements stripe={getStripe()}>
                 {!isPaymentOptionsLoading
                     && paymentSetup?.gateways?.stripe?.account
                     && currency ? (
+                        <>
+                        <div className={styles.horizontalLine} />
                         <PaymentRequestCustomButton
                             country={country}
                             currency={currency}
@@ -116,6 +119,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                             )}
                             onPaymentFunction={onPaymentFunction}
                         />
+                        </>
                     ) : (
                         <div className={styles.actionButtonsContainer}>
                             <ButtonLoader />

@@ -1,10 +1,11 @@
 @import './../../../theme/theme';
 
+// Used as the entire section container
 .donationPaymentSection {
   min-height: 100vh;
   width: 100%;
   display: flex;
-  margin-top: 50px;
+  margin-top: 0px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -41,14 +42,26 @@
     left: 0px;
   }
 }
+
+// Container of the Payment options
 .container {
   background-color: $backgroundColor;
   border-radius: 7px;
   padding: 20px;
-  width: 412px;
+  width: 320px;
   margin: auto;
-  margin-top: 60px;
+  margin-top: 0px;
 }
+@include smTabletView {
+  .container {
+    width: 412px;
+    margin-top: 60px;
+  }
+  .donationPaymentSection {
+    margin-top: 60px;
+  }
+}
+
 
 .header {
   display: flex;

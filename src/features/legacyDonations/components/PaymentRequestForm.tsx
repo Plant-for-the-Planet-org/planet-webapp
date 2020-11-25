@@ -3,7 +3,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
-import styles from './../styles/TreeDonation.module.scss';
+import styles from './../styles/PaymentDetails.module.scss';
 import i18next from '../../../../i18n/';
 
 const { useTranslation } = i18next;
