@@ -1,11 +1,12 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import ManageProjects from '../../src/features/user/ManageProjects/screens'
-import { signIn, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import GlobeContentLoader from '../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../src/features/common/Layout/Footer';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 interface Props {
 
@@ -54,10 +55,6 @@ function ManageSingleProject({ }: Props): ReactElement {
     }
   }, [ready, loading])
 
-  if (!loading && !session) {
-    signIn('auth0', { callbackUrl: `/login` });
-  }
-
   if (accessDenied && setupAccess) {
     return (
       <>
@@ -82,4 +79,7 @@ function ManageSingleProject({ }: Props): ReactElement {
     )
 }
 
-export default ManageSingleProject
+export default withAuthenticationRequired(ManageSingleProject, {
+  // Show a message while the user waits to be redirected to the login page.
+  onRedirecting: () => <div>Only Reforestation Organizations can access this page</div>,
+});

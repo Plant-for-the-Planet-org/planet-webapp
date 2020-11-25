@@ -5,12 +5,13 @@ import { getUserInfo } from '../../../src/utils/auth0/localStorageUtils';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 interface Props {
 
 }
 
-export default function ManageProjectsPage({ }: Props): ReactElement {
+function ManageProjectsPage({ }: Props): ReactElement {
   const [session, loading] = useSession();
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
@@ -35,12 +36,6 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
     }
   }, [loading]);
 
-
-  // User is not logged in
-  if (!loading && !session) {
-    signIn('auth0', { callbackUrl: `/login` });
-  }
-
   // User is not TPO
   if (accessDenied && setupAccess) {
     return (
@@ -62,3 +57,8 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
     </>
   )
 }
+
+export default withAuthenticationRequired(ManageProjectsPage, {
+  // Show a message while the user waits to be redirected to the login page.
+  onRedirecting: () => <div>Only Reforestation Organizations can access this page</div>,
+});
