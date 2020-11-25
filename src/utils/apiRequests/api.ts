@@ -127,7 +127,7 @@ export async function putAuthenticatedRequest(
 
 export async function getVegetationChange(data: any) {
   let result;
-  const res = await fetch(process.env.GEE_API_URL + '/vegetation-change', {
+  const res = await fetch('/api/vegetation-change', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
