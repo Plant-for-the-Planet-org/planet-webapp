@@ -14,12 +14,12 @@ export async function editProfile(session:any, bodyToSend:any) {
 }
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(session:any) {
+export async function getAccountInfo(token:any) {
     const response = await fetch(
         `${process.env.API_ENDPOINT}/app/profile`,
         {
           headers: {
-            Authorization: `OAuth ${session.accessToken}`,
+            Authorization: `OAuth ${token}`,
           },
           method: 'GET',
         }

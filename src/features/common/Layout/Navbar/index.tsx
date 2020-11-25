@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSession, signIn } from 'next-auth/client';
 import tenantConfig from '../../../../../tenant.config';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
@@ -15,15 +14,12 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL'
-import { getUserExistsInDB, getUserInfo } from '../../../../utils/auth0/localStorageUtils'
 import { useAuth0 } from '@auth0/auth0-react';
-import getAuthToken from '../../../../utils/auth0/getAuthToken';
+import { getUserInfo } from '../../../../utils/auth0/userInfo';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
-  // If there is a session we will use it
-  const [session, loading] = useSession();
 
   const { t, ready } = useTranslation(['common']);
   const router = useRouter();
@@ -38,88 +34,93 @@ export default function NavbarComponent(props: any) {
     getAccessTokenSilently
   } = useAuth0();
 
-  const [token, setToken] = React.useState(null)
+  const [token, setToken] = React.useState('')
+  const [userInfo, setUserInfo] = React.useState({})
+  
+  async function getUserInfoWithToken() {
+    let userInfo;
+      if(!token){
+        const token = getAccessTokenSilently();
+        setToken(token);
+      }
+      userInfo = await getUserInfo(token)
+      // Error handling
+      if(userInfo.code){
+        // Complete Signup
+        if(userInfo.code === 303){
+          if (typeof window !== 'undefined') {
+            router.push('/complete-signup');
+          }
+        }
+        // Invalid Token
+        else if(userInfo.code === 401){
+          logout();
+          if (typeof window !== 'undefined') {
+            router.push('/');
+          }
+        } 
+        // Some other Error
+        else {
+          logout();
+          if (typeof window !== 'undefined') {
+            router.push('/404');
+          }
+        }
+      }
+      else {
+        setUserInfo(userInfo);
+      }
+  }
 
   React.useEffect(() => {
-    
-
-  if(isAuthenticated){
-
-    async function CallToken() {
-      const token = await getAccessTokenSilently();
-      console.log('token',token);
+    if (isAuthenticated) {
+      getUserInfoWithToken();
     }
-    CallToken();
-  }
   }, [isAuthenticated])
 
-
-  /* Works when user clicks on Me
-   If token expires redirect to auth0 
-   If the user is logged in, redirect to t/userSlug
-   If user is not logged in we will redirect to singin page with Auth0
-   If in the signin flow, if the user is already existing, we login the user and  redirect to t/userSlug
-   If in the signin flow, if the user is not existing, then we redirect to complete Signup flow */
-  const checkWhichPath = () => {
-
-    if (typeof Storage !== 'undefined') {
-
-      const userExistsInDB = getUserExistsInDB();
-
-      // if user logged in, and already signed up -> /t/userSlug page
-      if (!loading && session && (userExistsInDB === true)) {
-        var userslug = getUserInfo().slug;
-        if (typeof window !== 'undefined') {
-          router.push(`/t/${userslug}`);
-        }
-        // if user logged in, not already signed up -> /complete-signup
-      } else if (!loading && session && (userExistsInDB === false)) {
-        if (typeof window !== 'undefined') {
-          router.push('/complete-signup');
-        }
-      } else {
-        // if no user logged in  -> signIn()
-        // or when no active session
-        signIn('auth0', { callbackUrl: `/login` });
+  const gotoUserPage =()=>{
+    if(userInfo && isAuthenticated){
+      if(!userInfo.slug) {
+        getUserInfoWithToken();
+      }
+      if (typeof window !== 'undefined') {
+        router.push(`/t/${userInfo.slug}`);
       }
     }
-  };
-
-  const checkWhichIcon = () => {
-    if (typeof Storage !== 'undefined') {
-      const userProfilePic = getUserInfo()?.profilePic;
-      const userSlug = getUserInfo()?.slug;
-      //if logged in user && exist in db && profilepic is set -> show profile pic
-      if (!loading && session && userProfilePic) {
-        return (
-          <div style={{ backgroundColor: '#fff', borderRadius: '50%', height: '27px', width: '27px', border: '1px solid #F2F2F7' }}>
-            <img src={getImageUrl('profile', 'avatar', userProfilePic)} height="26px" width="26px" style={{ borderRadius: '40px' }} />
-          </div>
-        )
-      }
-      // if no session -> icon depending on path
-      // If complete-signup or it's private profile page
-      else if (router.pathname === '/complete-signup' || router.pathname === `/t/${userSlug}`) {
-        return <MeSelected color={styles.primaryColor} />
-      } else {
-        return <Me color={styles.primaryFontColor} />
-      }
+    else{
+      loginWithRedirect()
     }
-    return null;
   }
 
-
-
-
-
+  const logoutUser = ()=> {
+    localStorage.removeItem('userInfo');
+    logout();
+  }
 
   const { toggleTheme } = React.useContext(ThemeContext);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
   if (error) {
-    return <div>Oops... {error.message}</div>;
+    return <div>{error.message}</div>;
+  }
+
+  const UserProfileIcon= ()=>{
+    return(
+      isAuthenticated && userInfo && userInfo.profilePic ?
+        (
+          <div style={{ backgroundColor: '#fff', borderRadius: '50%', height: '27px', width: '27px', border: '1px solid #F2F2F7' }}>
+            <img src={getImageUrl('profile', 'avatar', userInfo.profilePic)} height="26px" width="26px" style={{ borderRadius: '40px' }} />
+          </div>
+        ): 
+          router.pathname === '/complete-signup' || router.pathname === `/t/${userInfo.slug}` ? (
+            <MeSelected color={styles.primaryColor} />
+          ): (
+            <Me color={styles.primaryFontColor} />
+          )
+        
+    )
   }
 
   return (
@@ -249,10 +250,10 @@ export default function NavbarComponent(props: any) {
               ) : null}
 
               {item.key === 'me' && item.visible === true ? (
-                <div key={item.id} onClick={checkWhichPath}>
+                <div key={item.id} onClick={gotoUserPage}>
                   <div className={styles.link_container}>
                     <div className={styles.link_icon}>
-                      {checkWhichIcon()}
+                      <UserProfileIcon/>
                     </div>
                     {ready ? (
                       <p
@@ -269,11 +270,11 @@ export default function NavbarComponent(props: any) {
                 </div>
               ) : null}
 
-             
             </div>
           ))}
 
-          <button onClick={loginWithRedirect}>Log in</button>
+          <button onClick={logoutUser}>Log Out</button>
+          
           {/* <div
             className={`${styles.theme_icon} ${styles.link_container}`}
             onClick={toggleTheme}
@@ -417,20 +418,14 @@ export default function NavbarComponent(props: any) {
                 <div
                   key={item.id}
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                  onClick={checkWhichPath}
+                  onClick={gotoUserPage}
                 >
                   <div
                     className={styles.link_container} >
                     <div className={styles.link_icon}>
-                      {checkWhichIcon()}
+                    <UserProfileIcon/>
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
+                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
