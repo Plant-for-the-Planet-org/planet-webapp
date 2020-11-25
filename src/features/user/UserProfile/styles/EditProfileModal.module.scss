@@ -144,7 +144,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 320px;
+  // max-width: 320px;
   justify-content: space-between;
   align-items: center;
 }
@@ -163,7 +163,7 @@
   flex-direction: row;
   align-items: flex-start;
   flex-wrap: wrap;
-  max-width: 280px;
+  // max-width: 280px;
   min-width: 280px;
 }
 
@@ -178,7 +178,7 @@
     }
   }
   .formFieldLarge {
-    max-width: 420px;
+    // max-width: 420px;
   }
   .modal {
     width: 480px;
@@ -241,4 +241,13 @@
   justify-content: center;
   align-items: center;
   align-self: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .formFieldHalf {
+    div,
+    input {
+      width: 370px;
+    }
+  }
 }

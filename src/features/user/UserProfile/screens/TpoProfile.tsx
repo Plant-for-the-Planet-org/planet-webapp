@@ -2,12 +2,13 @@ import React from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import ProjectsContainer from '../components/ProjectsContainer';
 import UserInfo from '../components/UserInfo';
-import SettingsModal from '../components/SettingsModal';
+// import SettingsModal from '../components/SettingsModal';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 import styles from '../styles/UserProfile.module.scss';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import AddTargetModal from '../components/AddTargetModal'
+import SettingsContainer from '../components/Settings';
 
 export default function TpoProfile({ userprofile,authenticatedType, changeForceReload,
   forceReload }: any) {
@@ -33,10 +34,10 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
     // settings modal
     const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
     const handleSettingsModalClose = () => {
-      setSettingsModalOpen(false);
+      setSettingsModalOpen(!settingsModalOpen);
     };
     const handleSettingsModalOpen = () => {
-      setSettingsModalOpen(true);
+      setSettingsModalOpen(!settingsModalOpen);
     };
 
       // editProfile modal  (from settings modal)
@@ -69,7 +70,8 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
             >
               <Settings color="white" />
             </div>
-            <SettingsModal
+            {/* {settingsModalOpen &&
+            <Settings1
               userType="tpo"
               userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
@@ -79,7 +81,7 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
               handleEditProfileModalOpen={handleEditProfileModalOpen}
               changeForceReload={changeForceReload}
               forceReload={forceReload}
-            />
+            />} */}
             </>
           )
         }  
@@ -90,6 +92,18 @@ export default function TpoProfile({ userprofile,authenticatedType, changeForceR
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
       >
+          {settingsModalOpen &&
+            <SettingsContainer
+              userType="tpo"
+              userprofile={userprofile}
+              settingsModalOpen={settingsModalOpen}
+              handleSettingsModalClose={handleSettingsModalClose}
+              editProfileModalOpen={editProfileModalOpen}
+              handleEditProfileModalClose={handleEditProfileModalClose}
+              handleEditProfileModalOpen={handleEditProfileModalOpen}
+              changeForceReload={changeForceReload}
+              forceReload={forceReload}
+            />}
         <UserInfo
             userprofile={userprofile}
             authenticatedType={authenticatedType}

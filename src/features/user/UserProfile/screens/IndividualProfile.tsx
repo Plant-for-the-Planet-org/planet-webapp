@@ -6,13 +6,16 @@ import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import SettingsModal from '../components/SettingsModal';
-import AddTargetModal from '../components/AddTargetModal'
-import Settings1 from '../components/Settings1';
+// import SettingsModal from '../components/SettingsModal';
+import AddTargetModal from '../components/AddTargetModal';
+import SettingsContainer from '../components/Settings';
 
-export default function IndividualProfile({ userprofile, changeForceReload,
-  forceReload, authenticatedType }: any) {
-
+export default function IndividualProfile({
+  userprofile,
+  changeForceReload,
+  forceReload,
+  authenticatedType,
+}: any) {
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
   );
@@ -60,10 +63,8 @@ export default function IndividualProfile({ userprofile, changeForceReload,
   return (
     <React.Fragment>
       <main>
-        {
-          authenticatedType === 'private' &&
-          (
-            <>
+        {authenticatedType === 'private' && (
+          <>
             <div
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
@@ -80,9 +81,8 @@ export default function IndividualProfile({ userprofile, changeForceReload,
               changeForceReload={changeForceReload}
               forceReload={forceReload}
             /> */}
-            </>
-          )
-        }  
+          </>
+        )}
         {/* userinfo section */}
         <LandingSection
           imageSrc={
@@ -91,17 +91,19 @@ export default function IndividualProfile({ userprofile, changeForceReload,
               : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
           }
         >
-          {settingsModalOpen && <Settings1 
-                          userprofile={userprofile}
-                          settingsModalOpen={settingsModalOpen}
-                          handleSettingsModalClose={handleSettingsModalClose}
-                          editProfileModalOpen={editProfileModalOpen}
-                          handleEditProfileModalClose={handleEditProfileModalClose}
-                          handleEditProfileModalOpen={handleEditProfileModalOpen}
-                          changeForceReload={changeForceReload}
-                          forceReload={forceReload}
-          />}
-          
+          {settingsModalOpen && (
+            <SettingsContainer
+              userprofile={userprofile}
+              settingsModalOpen={settingsModalOpen}
+              handleSettingsModalClose={handleSettingsModalClose}
+              editProfileModalOpen={editProfileModalOpen}
+              handleEditProfileModalClose={handleEditProfileModalClose}
+              handleEditProfileModalOpen={handleEditProfileModalOpen}
+              changeForceReload={changeForceReload}
+              forceReload={forceReload}
+            />
+          )}
+
           <UserInfo
             userprofile={userprofile}
             authenticatedType={authenticatedType}
@@ -116,7 +118,6 @@ export default function IndividualProfile({ userprofile, changeForceReload,
             <MyForestContainer userprofile={userprofile} />
           </div>
         )}
-
       </main>
 
       {/* snackbar for showing text copied to clipboard */}
@@ -125,11 +126,11 @@ export default function IndividualProfile({ userprofile, changeForceReload,
         autoHideDuration={4000}
         onClose={handleTextCopiedSnackbarClose}
       >
-        <MuiAlert 
-        elevation={6} 
-        variant="filled"
-        onClose={handleTextCopiedSnackbarClose} 
-        severity="success"
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleTextCopiedSnackbarClose}
+          severity="success"
         >
           Text Copied to Clipboard!
         </MuiAlert>

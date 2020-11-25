@@ -1,9 +1,10 @@
 import React from 'react'
+import { useRouter } from 'next/router';
 import styles from '../styles/SettingsModal.module.scss';
-import i18next from '../../../../../i18n';
-import EditProfileModal from '../components/EditProfileModal';
+import i18next from '../../../../../i18n/server';
+import EditProfileModal from './EditProfileModal';
 
-export default function Settings1({
+export default function SettingsContainer({
   userType,
   userprofile,
   settingsModalOpen,
@@ -16,8 +17,11 @@ export default function Settings1({
 }) {
     const {useTranslation} = i18next;
     const {t} = useTranslation(['me', 'common', 'editProfile']);
+    const router = useRouter();
     return (
-        <div className={styles.modal}>
+        <div className={styles.modal}
+        style={{top: window.screen.width <= 768 && userType=='tpo' ? '10px' : null}}
+        >
             {
               userType == 'tpo' && 
               <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> {t('me:settingManageProject')} </a>
@@ -52,6 +56,7 @@ export default function Settings1({
             handleEditProfileModalOpen={handleEditProfileModalOpen}
             changeForceReload={changeForceReload}
             forceReload={forceReload}
+            handleSettingsModalClose={handleSettingsModalClose}
           />
         </div>
     )
