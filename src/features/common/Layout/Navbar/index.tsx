@@ -36,63 +36,68 @@ export default function NavbarComponent(props: any) {
 
   const [token, setToken] = React.useState('')
   const [userInfo, setUserInfo] = React.useState({})
-  
-  async function getUserInfoWithToken() {
-    let userInfo;
-      if(!token){
-        const token = getAccessTokenSilently();
-        setToken(token);
-      }
-      userInfo = await getUserInfo(token)
-      // Error handling
-      if(userInfo.code){
-        // Complete Signup
-        if(userInfo.code === 303){
-          if (typeof window !== 'undefined') {
-            router.push('/complete-signup');
-          }
-        }
-        // Invalid Token
-        else if(userInfo.code === 401){
-          logout();
-          if (typeof window !== 'undefined') {
-            router.push('/');
-          }
-        } 
-        // Some other Error
-        else {
-          logout();
-          if (typeof window !== 'undefined') {
-            router.push('/404');
-          }
+
+  function settingUserInfo(userInfo) {
+    // Error handling
+    if (userInfo.code) {
+      // Complete Signup
+      if (userInfo.code === 303) {
+        if (typeof window !== 'undefined') {
+          router.push('/complete-signup');
         }
       }
+      // Invalid Token
+      else if (userInfo.code === 401) {
+        logout();
+        if (typeof window !== 'undefined') {
+          router.push('/');
+        }
+      }
+      // Some other Error
       else {
-        setUserInfo(userInfo);
+        logout();
+        if (typeof window !== 'undefined') {
+          router.push('/404');
+        }
       }
+    }
+    else {
+      setUserInfo(userInfo);
+    }
+  }
+  
+  async function getUserInfoWithToken(token) {
+    let userInfo;
+    userInfo = await getUserInfo(token)
+    settingUserInfo(userInfo)
   }
 
   React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+      getUserInfoWithToken(token);
+    }
     if (isAuthenticated) {
-      getUserInfoWithToken();
+      loadFunction()
     }
   }, [isAuthenticated])
 
-  const gotoUserPage =()=>{
-    if(userInfo && isAuthenticated){
-      if(!userInfo.slug) {
-        getUserInfoWithToken();
+  const gotoUserPage = () => {
+    if (userInfo && isAuthenticated) {
+      if (!userInfo.slug) {
+        getUserInfoWithToken(token);
       }
       if (typeof window !== 'undefined') {
         router.push(`/t/${userInfo.slug}`);
       }
     }
-    else{
+    else {
       loginWithRedirect()
     }
   }
 
-  const logoutUser = ()=> {
+  const logoutUser = () => {
     localStorage.removeItem('userInfo');
     logout();
   }
@@ -106,20 +111,20 @@ export default function NavbarComponent(props: any) {
     return <div>{error.message}</div>;
   }
 
-  const UserProfileIcon= ()=>{
-    return(
+  const UserProfileIcon = () => {
+    return (
       isAuthenticated && userInfo && userInfo.profilePic ?
         (
           <div style={{ backgroundColor: '#fff', borderRadius: '50%', height: '27px', width: '27px', border: '1px solid #F2F2F7' }}>
             <img src={getImageUrl('profile', 'avatar', userInfo.profilePic)} height="26px" width="26px" style={{ borderRadius: '40px' }} />
           </div>
-        ): 
-          router.pathname === '/complete-signup' || router.pathname === `/t/${userInfo.slug}` ? (
-            <MeSelected color={styles.primaryColor} />
-          ): (
+        ) :
+        router.pathname === '/complete-signup' || router.pathname === `/t/${userInfo.slug}` ? (
+          <MeSelected color={styles.primaryColor} />
+        ) : (
             <Me color={styles.primaryFontColor} />
           )
-        
+
     )
   }
 
@@ -253,7 +258,7 @@ export default function NavbarComponent(props: any) {
                 <div key={item.id} onClick={gotoUserPage}>
                   <div className={styles.link_container}>
                     <div className={styles.link_icon}>
-                      <UserProfileIcon/>
+                      <UserProfileIcon />
                     </div>
                     {ready ? (
                       <p
@@ -274,7 +279,7 @@ export default function NavbarComponent(props: any) {
           ))}
 
           <button onClick={logoutUser}>Log Out</button>
-          
+
           {/* <div
             className={`${styles.theme_icon} ${styles.link_container}`}
             onClick={toggleTheme}
@@ -423,7 +428,7 @@ export default function NavbarComponent(props: any) {
                   <div
                     className={styles.link_container} >
                     <div className={styles.link_icon}>
-                    <UserProfileIcon/>
+                      <UserProfileIcon />
                     </div>
                     <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
