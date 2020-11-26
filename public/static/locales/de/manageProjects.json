@@ -93,12 +93,13 @@
   "submitForReview": "Zur Überprüfung einreichen",
   "addProject": "Projekt hinzufügen",
   "abandonment": "Aufgabe",
-  "abandonmentInfo": "Information zur Aufgabe",
   "survivalRate": "Überlebensrate",
-  "survivalRateInfo": "Information zur Überlebensrate",
+  "survivalRateInfo": "Prozentsatz von Bäumen, die das erste Jahr nach der Pflanzung überleben.",
   "employees": "Angestellte",
   "siteOwnership": "Standortbesitz",
   "longTermProtection": "Langzeitschutz",
   "externalCertifications": "Externe Zertifizierungen",
-  "projectSpendingFinancial": "Finanzielle Projektausgaben"
+  "projectSpendingFinancial": "Finanzielle Projektausgaben",
+  "issueDate": "Ausgabedatum",
+  "acquisitionYear": "Erwerbsjahr"
 }

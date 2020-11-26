@@ -93,12 +93,13 @@
   "submitForReview": "Submit for Review",
   "addProject": "Add Project",
   "abandonment": "Abandonment",
-  "abandonmentInfo": "Abandonment Information",
-  "survivalRate": "Survival Rate",
-  "survivalRateInfo": "Survival Rate Information",
+  "survivalRate": "Survival rate",
+  "survivalRateInfo": "Percentage of trees that survive the first year of plantation",
   "employees": "Employees",
-  "siteOwnership": "Site Ownership",
-  "longTermProtection": "Long Termn Protection",
+  "siteOwnership": "Site ownership",
+  "longTermProtection": "Long Term Protection",
   "externalCertifications": "External Certifications",
-  "projectSpendingFinancial": "Financial Project Spendings"
+  "projectSpendingFinancial": "Financial Project Spendings",
+  "issueDate": "Date issued",
+  "acquisitionYear": "Acquisition Year"
 }
