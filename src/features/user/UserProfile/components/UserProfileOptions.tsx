@@ -19,24 +19,25 @@ const socialIconAnimate = {
     x: 0,
     opacity: 1,
     transition: {
-      stiffness: 150, type:"spring"
-    }
-},
+      stiffness: 150,
+      type: 'spring',
+    },
+  },
   closed: {
     y: -100,
     opacity: 0,
     rotateX: -15,
     transition: {
       delay: 0.8,
-      duration: 0.3
-    }
-  }, 
+      duration: 0.3,
+    },
+  },
   init: {
     x: -100,
-    opacity: 0
-  }
-// }
-}
+    opacity: 0,
+  },
+  // }
+};
 const { useTranslation } = i18next;
 export default function UserProfileOptions({
   userprofile,
@@ -47,6 +48,8 @@ export default function UserProfileOptions({
   const textToShare = t('donate:textToShare', { linkToShare });
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const [screenWidth, setScreenWidth] = React.useState(null);
+  const [divWidth, setDivWidth] = React.useState(null);
+  const elementRef = React.useRef(null);
   const webShareMobile = async () => {
     try {
       const response = await navigator.share({
@@ -60,7 +63,8 @@ export default function UserProfileOptions({
   };
   React.useEffect(() => {
     setScreenWidth(window.screen.width);
-  })
+    setDivWidth(elementRef.current.getBoundingClientRect().width);
+  });
   const onShareClicked = () => {
     if (navigator.share) {
       // if in phone and web share API supported
@@ -72,7 +76,7 @@ export default function UserProfileOptions({
       // handleTextCopiedSnackbarOpen();
     }
   };
-  
+
   // redeem modal
   const [redeemModalOpen, setRedeemModalOpen] = React.useState(false);
   const handleRedeemModalClose = () => {
@@ -83,34 +87,29 @@ export default function UserProfileOptions({
   };
 
   return (
-    <div style={{position: 'relative'}}>
-      {showSocialBtn && (screenWidth < 600) && (
-        <motion.div 
-        // style={{ paddingLeft: '118px' }}
-        // animate={{paddingLeft: '118px'}}
-        initial={{
-          y: 100,
-          opacity: 0
-        }}
-        animate={{
-          y: 0,
-          opacity: 1,
-          paddingLeft: '118px'
-        }}
-        transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+    <div style={{ position: 'relative' }}>
+      {showSocialBtn && screenWidth < 600 && (
+        <motion.div
+          initial={{
+            y: 100,
+            opacity: 0,
+          }}
+          animate={{
+            y: 0,
+            opacity: 1,
+            paddingLeft: '118px',
+          }}
+          transition={{ delay: 0.2, stiffness: 150, type: 'spring' }}
         >
           <SocialShareContainer userprofile={userprofile} />
         </motion.div>
       )}
-      <div className={styles.bottomIconsRow}>
+      <div className={styles.bottomIconsRow} ref={elementRef}>
         <div className={styles.iconTextColumn}>
           <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
             <Redeem color="white" />
           </div>
-        <p className={styles.bottomRowText}>
-{' '}
-{t('me:redeem')}
-        </p>
+          <p className={styles.bottomRowText}> {t('me:redeem')}</p>
         </div>
 
         <RedeemModal
@@ -123,42 +122,42 @@ export default function UserProfileOptions({
             <Shovel color="white" />
           </div>
 
-        <p className={styles.bottomRowText}>
-{' '}
-{t('me:registerTrees')}
-        </p>
+          <p className={styles.bottomRowText}> {t('me:registerTrees')}</p>
         </div>
 
         <div className={styles.iconTextColumn} onClick={onShareClicked}>
           <div className={styles.bottomIconBg}>
-            {showSocialBtn ? <CancelIcon color="white" width="25px" />
-              : <Share color="white" />}
-          </div>
-          {showSocialBtn ? <p className={styles.bottomRowText}>{t('me:close')}</p>
-            : (
-            <p className={styles.bottomRowText}>
-            {' '}
-{t('me:share')}
-{' '}
-</p>
+            {showSocialBtn ? (
+              <CancelIcon color="white" width="25px" />
+            ) : (
+              <Share color="white" />
             )}
+          </div>
+          {showSocialBtn ? (
+            <p className={styles.bottomRowText}>{t('me:close')}</p>
+          ) : (
+            <p className={styles.bottomRowText}> {t('me:share')} </p>
+          )}
         </div>
       </div>
-        {showSocialBtn && (screenWidth > 600) &&
+      {showSocialBtn && screenWidth > 600 && (
         <motion.div
-          animate={{position: 'absolute', top: '35px', left: '251px'}}
+          animate={{
+            position: 'absolute',
+            top: '35px',
+            left: divWidth > 291 ? '290px' : '251px',
+          }}
         >
           <motion.div
-                initial='init'
-                animate={showSocialBtn ? 'open' : 'closed'}
-                // transition={{delay: 0.2, stiffness: 150, type:"spring"}}
-                variants={socialIconAnimate}
+            initial="init"
+            animate={showSocialBtn ? 'open' : 'closed'}
+            // transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+            variants={socialIconAnimate}
           >
-          <SocialShareContainer userprofile={userprofile} type="private" />
-
+            <SocialShareContainer userprofile={userprofile} type="private" />
           </motion.div>
         </motion.div>
-}
+      )}
     </div>
   );
 }
