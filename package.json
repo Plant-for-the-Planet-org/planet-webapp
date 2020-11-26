@@ -38,7 +38,7 @@
     "@sentry/integrations": "5.27.1",
     "@sentry/webpack-plugin": "^1.13.0",
     "@stripe/react-stripe-js": "1.1.2",
-    "@stripe/stripe-js": "1.10.0",
+    "@stripe/stripe-js": "1.11.0",
     "@turf/turf": "^5.1.6",
     "@types/image-to-base64": "^2.1.0",
     "@types/react-gtm-module": "^2.0.0",
