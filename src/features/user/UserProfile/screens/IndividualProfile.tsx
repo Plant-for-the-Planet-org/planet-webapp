@@ -6,7 +6,6 @@ import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-// import SettingsModal from '../components/SettingsModal';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsContainer from '../components/Settings';
 
@@ -71,16 +70,6 @@ export default function IndividualProfile({
             >
               <Settings color="white" />
             </div>
-            {/* <SettingsModal
-              userprofile={userprofile}
-              settingsModalOpen={settingsModalOpen}
-              handleSettingsModalClose={handleSettingsModalClose}
-              editProfileModalOpen={editProfileModalOpen}
-              handleEditProfileModalClose={handleEditProfileModalClose}
-              handleEditProfileModalOpen={handleEditProfileModalOpen}
-              changeForceReload={changeForceReload}
-              forceReload={forceReload}
-            /> */}
           </>
         )}
         {/* userinfo section */}
