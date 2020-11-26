@@ -55,7 +55,9 @@ export default function MapComponent({
   };
 
   const onDrawUpdate = ({ features }: any) => {
-    console.log(features);
+    if (drawControlRef.current) {
+      setGeoJson(drawControlRef.current.draw.getAll());
+    }
   };
 
   React.useEffect(() => {
