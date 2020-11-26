@@ -41,6 +41,7 @@ export interface TreeDonationProps {
   paymentType: String;
   setPaymentType: Function;
   isPaymentOptionsLoading: boolean;
+  token:any;
 }
 
 export interface PaymentDetailsProps {
@@ -57,6 +58,7 @@ export interface PaymentDetailsProps {
   setPaymentType: Function;
   country: string;
   isTaxDeductible: Boolean;
+  token:any;
 }
 
 export interface ContactDetailsPageProps {
@@ -100,5 +102,5 @@ export interface PayWithCardTypes {
   paymentMethod: Object;
   donorDetails: Object;
   taxDeductionCountry: string | null;
-  session: any | null;
+  token: any | null;
 }

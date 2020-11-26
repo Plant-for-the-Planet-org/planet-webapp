@@ -1,7 +1,7 @@
 import getsessionId from '../../../../utils/apiRequests/getSessionId';
 import { PayWithCardTypes } from '../../../common/types/donations';
 
-export async function createDonation(data: any,session:any) {
+export async function createDonation(data: any,token:any) {
   let headers = {
     'Content-Type': 'application/json',
     'tenant-key': `${process.env.TENANTID}`,
@@ -12,10 +12,10 @@ export async function createDonation(data: any,session:any) {
         : 'en'
     }`
   }
-  if(session){
+  if(token && token !== ''){
     headers = {
       ...headers,
-      'Authorization': `OAuth ${session.accessToken}`
+      'Authorization': `OAuth ${token}`
     }
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations`, {
@@ -27,7 +27,7 @@ export async function createDonation(data: any,session:any) {
   return donation;
 }
 
-export async function payDonation(data: any, id: any,session:any) {
+export async function payDonation(data: any, id: any,token:any) {
   let headers = {
     'Content-Type': 'application/json',
     'tenant-key': `${process.env.TENANTID}`,
@@ -38,10 +38,10 @@ export async function payDonation(data: any, id: any,session:any) {
         : 'en'
     }`,
   }
-  if(session){
+  if(token && token !== ''){
     headers = {
       ...headers,
-      'Authorization': `OAuth ${session.accessToken}`
+      'Authorization': `OAuth ${token}`
     }
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
@@ -92,7 +92,7 @@ export function payWithCard({
   window,
   donorDetails,
   taxDeductionCountry,
-  session
+  token
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
 
@@ -140,7 +140,7 @@ export function payWithCard({
   }
   }
 
-  createDonation(createDonationData,session)
+  createDonation(createDonationData,token)
     .then((res) => {
       // Code for Payment API
 
@@ -167,7 +167,7 @@ export function payWithCard({
           },
         };
 
-        payDonation(payDonationData, res.id,session)
+        payDonation(payDonationData, res.id,token)
           .then(async (res) => {
             if (res.code === 400) {
               setIsPaymentProcessing(false);
@@ -215,7 +215,7 @@ export function payWithCard({
                         },
                       },
                     };
-                    payDonation(payDonationData, donationID,session).then((res) => {
+                    payDonation(payDonationData, donationID,token).then((res) => {
                       if (res.paymentStatus === 'success') {
                         setIsPaymentProcessing(false);
                         setDonationStep(4);
