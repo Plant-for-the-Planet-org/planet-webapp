@@ -1,6 +1,6 @@
 {
-  "by": "Par",
-  "to": "A",
+  "by": "Par {{tpoName}}",
+  "to_project_by_tpo": "Au {{projectName}} par {{tpoName}}",
   "for": "pour",
   "trees": "Arbres",
   "planted": "planté",
@@ -10,6 +10,7 @@
   "supportUs": "Nous soutenir",
   "leaders": "Leaders",
   "leaderboard": "Classement",
+  "me": "Moi",
   "home": "Accueil",
   "donate_gift": "Dons/Cadeau",
   "plant": "Planter",
@@ -35,5 +36,7 @@
   "september": "Septembre",
   "october": "Octobre",
   "november": "Novembre",
-  "december": "Décembre"
+  "december": "Décembre",
+  "approx": "Approx.",
+  "view": "Voir"
 }

@@ -1,4 +1,6 @@
 {
+  "by": "Por {{tpoName}}",
+  "to_project_by_tpo": "Para {{projectName}} por {{tpoName}}",
   "for": "para",
   "trees": "Árboles",
   "planted": "plantado",
@@ -8,6 +10,7 @@
   "supportUs": "Ayúdanos",
   "leaders": "Líderes",
   "leaderboard": "Clasificación",
+  "me": "Yo",
   "home": "Inicio",
   "donate_gift": "Donaciones/Regalos",
   "plant": "Planta",
@@ -21,5 +24,19 @@
   "thankYou": "Muchas gracias",
   "privacyPolicyNotice": "Al usar este sitio web, aceptas nuestra",
   "privacyPolicy": "política de privacidad",
-  "about_pftp": "Sobre Plant-for-the-Planet"
+  "about_pftp": "Sobre Plant-for-the-Planet",
+  "january": "Enero",
+  "february": "Febrero",
+  "march": "Marzo",
+  "april": "Abril",
+  "may": "Mayo",
+  "june": "Junio",
+  "july": "Julio",
+  "august": "Agosto",
+  "september": "Septiembre",
+  "october": "Octubre",
+  "november": "Noviembre",
+  "december": "Diciembre",
+  "approx": "Aproximadamente",
+  "view": "Ver"
 }

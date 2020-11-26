@@ -1,1 +1,13 @@
-{ }
+{
+  "explore": "Explorar",
+  "forests": "Florestas atuais",
+  "restoration": "Potencial de Restauração",
+  "deforestation": "Desmatamento",
+  "planted": "Plantado",
+  "projects": "Projetos",
+  "3trilliontrees": "O mundo tem hoje cerca de 3 trilhões de árvores (\"Florestas\"). E espaço para até um trilhão de árvores a mais (\"Potencial de Reflorestamento\").",
+  "high": "Alto",
+  "low": "Baixo",
+  "forestInfo": "3,04 trilhões de árvores existem atualmente no mundo. Existiam cerca de seis trilhões de árvores antes dos humanos começarem a derrubar florestas, cerca de 11.000 anos atrás. ",
+  "restorationInfo": "Meio bilhão de hectares são adequados para a restauração em larga escala de florestas fechadas. Mais um bilhão e meio de hectares são mais adequados à restauração de mosaicos, que combina florestas com outros usos da terra como agroflorestas, agricultura de pequenos proprietários e assentamentos."
+}

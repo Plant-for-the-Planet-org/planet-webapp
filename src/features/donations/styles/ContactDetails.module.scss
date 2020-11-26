@@ -1,0 +1,139 @@
+@import './../../../theme/theme';
+
+.container {
+  background-color: $backgroundColor;
+  border-radius: 7px;
+  padding: 20px;
+  max-width: 412px;
+  margin-bottom: 100px;
+  margin-top: 200px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.headerBackIcon:hover {
+  cursor: pointer;
+}
+
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 20px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Is Company */
+.isCompany {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.isCompanyText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+}
+
+/* Tree Count and Cost  */
+
+.finalTreeCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.totalCost {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryColor;
+}
+
+.totalCostText {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryFontColor;
+  margin-left: 6px;
+}
+
+.actionButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.actionButtonsText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-left: 6px;
+}
+.continueButton {
+  background-color: $primaryColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  border: 0px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.continueButtonDisabled {
+  background-color: $dividerColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  // &:hover {
+  //   cursor: pointer;
+  // }
+}
+
+.horizontalLine {
+  height: 1px;
+  background-color: $dividerColor;
+  margin-top: 20px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
+}
