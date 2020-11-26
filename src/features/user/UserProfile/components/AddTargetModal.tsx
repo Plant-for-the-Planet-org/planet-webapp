@@ -67,7 +67,7 @@ export default function AddTargetModal({
               placeholder={
                 userprofile.score.target ? userprofile.score.target : '10000'
               }
-              InputProps={{ inputProps: { min: 0 } }}
+              InputProps={{ inputProps: { min: 1 } }}
               label=""
               type="number"
               defaultValue={
