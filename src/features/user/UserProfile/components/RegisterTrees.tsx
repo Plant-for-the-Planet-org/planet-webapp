@@ -1,18 +1,12 @@
 import React from 'react';
 import styles from '../styles/RegisterModal.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
-import { Controller, useForm } from 'react-hook-form';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import { useDropzone } from 'react-dropzone';
 import MapGL, {
   FlyToInterpolator,
   Marker,
   NavigationControl,
   WebMercatorViewport,
 } from 'react-map-gl';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
@@ -21,6 +15,12 @@ import BasicDetailsStep from './RegisterTrees/BasicDetails';
 import UploadImagesStep from './RegisterTrees/UploadImages';
 import MoreDetailsStep from './RegisterTrees/MoreDetails';
 import { Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
+import dynamic from 'next/dynamic';
+
+const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
+  ssr: false,
+  loading: () => <p></p>,
+});
 
 interface Props {
   slug: any;
@@ -34,27 +34,25 @@ export default function RegisterTrees({ slug, session
   const { t } = useTranslation(['me', 'common']);
   const [isMultiple, setIsMultiple] = React.useState(false);
   function getSteps() {
-    if (!isMultiple) {
-      return ['Basic', 'Upload Images', 'Optional'];
-    } else {
-      return ['Basic', 'Upload Images'];
-    }
+    // if (!isMultiple) {
+    //   return ['Basic', 'Upload Images', 'Optional'];
+    // } else {
+    return ['Basic', 'Upload Images'];
+    // }
   }
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+
 
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState([
-    defaultMapCenter[0],
-    defaultMapCenter[1],
-  ]);
+  const [plantLocation, setplantLocation] = React.useState([0, 0]);
+  const [geometry, setGeometry] = React.useState();
 
   const [viewport, setViewPort] = React.useState({
     width: '100%',
@@ -85,48 +83,33 @@ export default function RegisterTrees({ slug, session
     setActiveStep(0);
   };
 
-  const submitRegisterTrees = () => {
-    setIsUploadingData(true)
-    const submitData = {
-      reviewRequested: true
-    }
-    putAuthenticatedRequest(`/app/projects/${contributionGUID}`, submitData, session).then((res) => {
-      if (!res.code) {
-        setContributionDetails(res)
-        setErrorMessage('')
-        setIsUploadingData(false)
-      } else {
-        if (res.code === 404) {
-          setErrorMessage(t('manageProjects:projectNotFound'))
-          setIsUploadingData(false)
-        }
-        else {
-          setErrorMessage(res.message)
-          setIsUploadingData(false)
-        }
-
-      }
-    })
-  }
-
   React.useEffect(() => {
     // Fetch details of the contribution 
     if (contributionGUID && session?.accessToken)
-      getAuthenticatedRequest(`/app/profile/projects/${contributionGUID}`, session).then((result: any) => {
+      getAuthenticatedRequest(`/app/contributions/${contributionGUID}`, session).then((result: any) => {
         setContributionDetails(result)
       })
   }, [contributionGUID]);
 
+  const BasicDetailsProps = {
+    errorMessage, setErrorMessage, contributionDetails, setContributionDetails, isMultiple, setIsMultiple, contributionGUID, setContributionGUID, handleNext, lang: userLang, session, geometry
+  }
+
+  const UploadImagesProps = {
+    errorMessage, setErrorMessage, contributionDetails, setContributionDetails, contributionGUID, setContributionGUID, handleNext, session
+  }
+
+
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <BasicDetailsStep handleNext={handleNext} lang={userLang} />;
+        return <BasicDetailsStep {...BasicDetailsProps} />;
       case 1:
-        return <UploadImagesStep handleNext={handleNext} />;
+        return <UploadImagesStep {...UploadImagesProps} />;
       case 2:
         return <MoreDetailsStep />;
       default:
-        return <BasicDetailsStep handleNext={handleNext} lang={userLang} />;
+        return <BasicDetailsStep {...BasicDetailsProps} />;
     }
   }
 
@@ -162,36 +145,46 @@ export default function RegisterTrees({ slug, session
 
       </div>
       <div className={`${styles.locationMap}`}>
-        <MapGL
-          {...viewport}
-          mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-          mapStyle='mapbox://styles/mapbox/streets-v11'
-          onViewportChange={_onViewportChange}
-          onClick={(event) => {
-            setplantLocation(event.lngLat);
-            setViewPort({
-              ...viewport,
-              latitude: event.lngLat[1],
-              longitude: event.lngLat[0],
-              transitionDuration: 400,
-              transitionInterpolator: new FlyToInterpolator(),
-              transitionEasing: d3.easeCubic,
-            });
-          }}
-        >
-          <Marker
-            latitude={plantLocation[1]}
-            longitude={plantLocation[0]}
-            offsetLeft={5}
-            offsetTop={-16}
-            style={{ left: '28px' }}
+        {isMultiple ?
+          <DrawMap setGeometry={setGeometry} />
+          :
+          <MapGL
+            {...viewport}
+            mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+            mapStyle='mapbox://styles/mapbox/streets-v11'
+            onViewportChange={_onViewportChange}
+            onClick={(event) => {
+              setplantLocation(event.lngLat);
+              setGeometry(
+                {
+                  type: "Point",
+                  coordinates: event.lngLat
+                }
+              );
+              setViewPort({
+                ...viewport,
+                latitude: event.lngLat[1],
+                longitude: event.lngLat[0],
+                transitionDuration: 400,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic,
+              });
+            }}
           >
-            <div className={styles.marker}></div>
-          </Marker>
-          <div className={styles.mapNavigation}>
-            <NavigationControl showCompass={false} />
-          </div>
-        </MapGL>
+            <Marker
+              latitude={plantLocation[1]}
+              longitude={plantLocation[0]}
+              offsetLeft={5}
+              offsetTop={-16}
+              style={{ left: '28px' }}
+            >
+              <div className={styles.marker}></div>
+            </Marker>
+            <div className={styles.mapNavigation}>
+              <NavigationControl showCompass={false} />
+            </div>
+          </MapGL>
+        }
       </div>
 
 
