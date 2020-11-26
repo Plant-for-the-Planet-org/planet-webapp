@@ -91,5 +91,14 @@
   "backToSpending": "Zurück zu Projektausgaben",
   "pendingReview": "Ausstehende Überprüfung",
   "submitForReview": "Zur Überprüfung einreichen",
-  "addProject": "Projekt hinzufügen"
+  "addProject": "Projekt hinzufügen",
+  "abandonment": "Aufgabe",
+  "abandonmentInfo": "Information zur Aufgabe",
+  "survivalRate": "Überlebensrate",
+  "survivalRateInfo": "Information zur Überlebensrate",
+  "employees": "Angestellte",
+  "siteOwnership": "Standortbesitz",
+  "longTermProtection": "Langzeitschutz",
+  "externalCertifications": "Externe Zertifizierungen",
+  "projectSpendingFinancial": "Finanzielle Projektausgaben"
 }

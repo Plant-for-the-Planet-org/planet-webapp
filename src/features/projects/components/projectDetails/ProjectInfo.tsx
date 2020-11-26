@@ -200,7 +200,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                        {t('manageProjects:causeOfDegredation')}
+                        {t('manageProjects:causeOfDegradation')}
                     </div>
                     <div className={styles.infoText}>
                         {project.degradationCause}
