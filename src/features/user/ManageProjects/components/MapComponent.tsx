@@ -15,7 +15,8 @@ const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
-  drawControlRef: any;
+  geoJsonError: any;
+  setGeoJsonError: Function;
 }
 
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
@@ -27,7 +28,8 @@ const Map = ReactMapboxGl({
 export default function MapComponent({
   geoJson,
   setGeoJson,
-  drawControlRef,
+  geoJsonError,
+  setGeoJsonError
 }: Props): ReactElement {
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -46,7 +48,8 @@ export default function MapComponent({
   });
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
-  const [geoJsonError, setGeoJsonError] = React.useState(false);
+
+  const drawControlRef = React.useRef(null);
 
   const onDrawCreate = ({ features }: any) => {
     if (drawControlRef.current) {

@@ -49,9 +49,8 @@ export default function ProjectSites({
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
-  const drawControlRef = React.useRef(null);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-
+  const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
   const defaultSiteDetails = {
@@ -90,7 +89,8 @@ export default function ProjectSites({
   const MapProps = {
     geoJson,
     setGeoJson,
-    drawControlRef,
+    geoJsonError,
+    setGeoJsonError
   };
 
   const onSubmit = (data: any) => {
@@ -106,12 +106,12 @@ export default function ProjectSites({
   });
 
   const uploadProjectSite = (data: any) => {
-    if (drawControlRef.current) {
+    if (geoJson && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       let submitData;
       submitData = {
         name: siteDetails.name,
-        geometry: geoJson ? geoJson : drawControlRef.current.draw.getAll(),
+        geometry: geoJson,
         status: data.status,
       };
       postAuthenticatedRequest(
@@ -144,6 +144,8 @@ export default function ProjectSites({
           }
         }
       });
+    } else {
+      setErrorMessage('Polygon is required');
     }
   };
 
