@@ -20,7 +20,7 @@ interface Props {
   handleBack: Function;
   projectGUID: String;
   handleReset: Function;
-  session: any
+  token: any
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -29,7 +29,7 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack, session, handleNext, projectGUID, handleReset
+  handleBack, token, handleNext, projectGUID, handleReset
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
@@ -105,7 +105,7 @@ export default function ProjectSites({
       },
       status: data.status
     }
-    postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, session).then((res) => {
+    postAuthenticatedRequest(`/app/projects/${projectGUID}/sites`, submitData, token).then((res) => {
       if (!res.code) {
 
         let temp = siteList;
@@ -142,7 +142,7 @@ export default function ProjectSites({
 
   const deleteProjectSite = (id: any) => {
     setIsUploadingData(true)
-    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/sites/${id}`, session).then(res => {
+    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/sites/${id}`, token).then(res => {
       if (res !== 404) {
         let siteListTemp = siteList.filter(item => item.id !== id);
         setSiteList(siteListTemp)
@@ -160,8 +160,8 @@ export default function ProjectSites({
 
   React.useEffect(() => {
     // Fetch sites of the project 
-    if (projectGUID && session?.accessToken)
-      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`, session).then((result) => {
+    if (projectGUID && token)
+      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=sites`, token).then((result) => {
         if (result.sites.length > 0) {
           setShowForm(false)
         }

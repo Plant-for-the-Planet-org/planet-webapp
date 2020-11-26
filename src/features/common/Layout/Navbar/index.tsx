@@ -28,7 +28,6 @@ export default function NavbarComponent(props: any) {
     isLoading,
     isAuthenticated,
     error,
-    user,
     loginWithRedirect,
     logout,
     getAccessTokenSilently
@@ -37,23 +36,21 @@ export default function NavbarComponent(props: any) {
   const [token, setToken] = React.useState('')
   const [userInfo, setUserInfo] = React.useState({})
 
-  function settingUserInfo(userInfo) {
-    // Error handling
+  // This function handles the errors related to changes in the userinfo.
+  // If the userInfo has no errors, it will set the user info.
+  function handleUserInfoChange(userInfo) {
     if (userInfo.code) {
-      // Complete Signup
       if (userInfo.code === 303) {
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
         }
       }
-      // Invalid Token
       else if (userInfo.code === 401) {
         logout();
         if (typeof window !== 'undefined') {
           router.push('/');
         }
       }
-      // Some other Error
       else {
         logout();
         if (typeof window !== 'undefined') {
@@ -65,13 +62,15 @@ export default function NavbarComponent(props: any) {
       setUserInfo(userInfo);
     }
   }
-  
+
+  // This function fetches the userInfo
   async function getUserInfoWithToken(token) {
     let userInfo;
     userInfo = await getUserInfo(token)
-    settingUserInfo(userInfo)
+    handleUserInfoChange(userInfo)
   }
 
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
@@ -83,6 +82,7 @@ export default function NavbarComponent(props: any) {
     }
   }, [isAuthenticated])
 
+  // This function controls the path for the user when they click on Me
   const gotoUserPage = () => {
     if (userInfo && isAuthenticated) {
       if (!userInfo.slug) {
@@ -93,6 +93,8 @@ export default function NavbarComponent(props: any) {
       }
     }
     else {
+      //----------------- To do - redirect to slug -----------------
+      // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect()
     }
   }
@@ -124,7 +126,6 @@ export default function NavbarComponent(props: any) {
         ) : (
             <Me color={styles.primaryFontColor} />
           )
-
     )
   }
 
@@ -191,13 +192,7 @@ export default function NavbarComponent(props: any) {
                           <Globe color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
+                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
@@ -214,13 +209,7 @@ export default function NavbarComponent(props: any) {
                         )}
                     </div>
                     {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
+                      <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -240,13 +229,7 @@ export default function NavbarComponent(props: any) {
                         )}
                     </div>
                     {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
+                      <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -261,13 +244,7 @@ export default function NavbarComponent(props: any) {
                       <UserProfileIcon />
                     </div>
                     {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
+                      <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -356,13 +333,7 @@ export default function NavbarComponent(props: any) {
                           <Globe color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
+                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
@@ -381,13 +352,7 @@ export default function NavbarComponent(props: any) {
                           <Donate color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
+                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
@@ -406,13 +371,7 @@ export default function NavbarComponent(props: any) {
                           <Leaderboard color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
+                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>

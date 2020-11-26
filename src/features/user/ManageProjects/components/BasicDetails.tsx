@@ -30,12 +30,12 @@ interface Props {
   setProjectGUID: Function;
   setErrorMessage: Function;
   projectGUID: any;
-  session: any;
+  token: any;
 }
 
 export default function BasicDetails({
   handleNext,
-  session,
+  token,
   projectDetails,
   setProjectDetails,
   errorMessage,
@@ -182,7 +182,7 @@ export default function BasicDetails({
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        session
+        token
       ).then((res) => {
         if (!res.code) {
           setErrorMessage('');
@@ -200,7 +200,7 @@ export default function BasicDetails({
         }
       });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, session).then(
+      postAuthenticatedRequest(`/app/projects`, submitData, token).then(
         (res) => {
           if (!res.code) {
             setErrorMessage('');

@@ -29,10 +29,10 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
-    session: any;
+    token: any;
     userLang: String;
 }
-export default function DetailedAnalysis({ handleBack, userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects', 'common']);
 
     const [siteOwners, setSiteOwners] = React.useState([
@@ -122,7 +122,7 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
             plantingSeasons: months
         }
 
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)
@@ -567,7 +567,7 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
                     {isCertified ? (
                         <ProjectCertificates
                             projectGUID={projectGUID}
-                            session={session}
+                            token={token}
                             setIsUploadingData={setIsUploadingData}
                             userLang={userLang}
                         />
