@@ -49,7 +49,9 @@ export default function MapComponent({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
 
   const onDrawCreate = ({ features }: any) => {
-    console.log(features);
+    if (drawControlRef.current) {
+      setGeoJson(drawControlRef.current.draw.getAll());
+    }
   };
 
   const onDrawUpdate = ({ features }: any) => {
