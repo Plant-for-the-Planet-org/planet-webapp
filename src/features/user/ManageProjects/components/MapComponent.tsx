@@ -83,6 +83,7 @@ export default function MapComponent({
         }
         catch (e) {
           setGeoJsonError(true);
+          setGeoJson(null);
           console.log('We only support feature collection for now', e);
         }
       }
