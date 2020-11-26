@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/client';
 import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
@@ -11,13 +10,14 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { removeUserExistsInDB, getUserInfo, removeUserInfo, setUserInfo } from '../../../../utils/auth0/localStorageUtils'
+import {  getUserInfo, setUserInfo } from '../../../../utils/auth0/localStorageUtils'
 import getImageUrl from '../../../../utils/getImageURL'
-import { editProfile } from '../../../../utils/auth0/apiRequests'
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import i18next from '../../../../../i18n';
+import { useAuth0 } from '@auth0/auth0-react';
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 
 const { useTranslation } = i18next;
@@ -28,6 +28,23 @@ export default function EditProfileModal({
   changeForceReload,
   forceReload,
 }: any) {
+
+  const [token, setToken] = React.useState('')
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently
+  } = useAuth0();
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated && !isLoading) {
+      loadFunction()
+    }
+  }, [isAuthenticated, isLoading])
 
   const [snackbarOpen, setSnackbarOpen] = useState(
     false
@@ -76,7 +93,6 @@ export default function EditProfileModal({
   }, [country]);
 
   // the form values
-  const [session, loading] = useSession()
   const [severity, setSeverity] = useState('success')
   const [snackbarMessage, setSnackbarMessage] = useState("OK")
 
@@ -87,18 +103,21 @@ export default function EditProfileModal({
       reader.onabort = () => console.log('file reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = async (event) => {
-        if (!loading && session) {
+        if (!isLoading && token) {
           const bodyToSend = {
             imageFile: event.target.result
           }
           setSeverity('info')
           setSnackbarMessage('Profile pic is being updated...')
           handleSnackbarOpen()
-          const res = await editProfile(session, bodyToSend)
-          const resJson = await res.json()
-          const userInfo = getUserInfo()
-          const newUserInfo = { ...userInfo, profilePic: resJson.image }
-          setUserInfo(newUserInfo)
+
+          putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
+            const userInfo = getUserInfo()
+            const newUserInfo = { ...userInfo, profilePic: res.image }
+            setUserInfo(newUserInfo)
+          }).catch(error => {
+            console.log(error);
+          })
         }
       }
     })
@@ -119,33 +138,22 @@ export default function EditProfileModal({
       ...data,
       country: country
     }
-    if (!loading && session) {
+    if (!isLoading && token) {
       try {
-        const res = await editProfile(session, bodyToSend)
-        if (res.status === 200) {
+        putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
           setSeverity('success')
           setSnackbarMessage('Saved Successfully!')
           handleSnackbarOpen()
           changeForceReload(!forceReload),
-            handleEditProfileModalClose()
+          handleEditProfileModalClose()
           setIsUploadingData(false)
-        } else if (res.status === 401) {
-          // in case of 401 - invalid token: signIn()
-          setSeverity('error')
-          setSnackbarMessage('Error in updating profile')
-          handleSnackbarOpen()
-          // console.log('in 401-> unauthenticated user / invalid token')
-          signOut()
-          removeUserExistsInDB()
-          removeUserInfo()
-          signIn('auth0', { callbackUrl: '/login' });
-          setIsUploadingData(false)
-        } else {
+        }).catch(error => {
           setSeverity('error')
           setSnackbarMessage('Error in updating profile')
           handleSnackbarOpen()
           setIsUploadingData(false)
-        }
+          console.log(error);
+        })
       } catch (e) {
         setSeverity('error')
         setSnackbarMessage('Error in updating profile')

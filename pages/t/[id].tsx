@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { signIn, signOut, useSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
@@ -11,17 +10,16 @@ import {
   getUserExistsInDB,
   setUserExistsInDB,
   removeUserExistsInDB,
-  removeUserInfo,
   getUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
 import {getAccountInfo } from '../../src/utils/auth0/apiRequests'
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
   initialized: Boolean;
 }
 
 export default function PublicUser(initialized: Props) {
-  const [session, loading] = useSession();
 
   // Whether public or private
   const [authenticatedType,setAuthenticatedType] = React.useState('');
@@ -30,6 +28,25 @@ export default function PublicUser(initialized: Props) {
 
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+
+  const [token, setToken] = React.useState('')
+  const {
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+    logout
+  } = useAuth0();
+    // This effect is used to get and update UserInfo if the isAuthenticated changes
+    React.useEffect(() => {
+      async function loadFunction() {
+        const token = await getAccessTokenSilently();
+        setToken(token);
+      }
+      if (isAuthenticated && !isLoading) {
+        loadFunction()
+      }
+    }, [isAuthenticated,isLoading])
   
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
@@ -39,6 +56,11 @@ export default function PublicUser(initialized: Props) {
     forceReload,
     authenticatedType,
   };
+
+  const logoutUser = () => {
+    localStorage.removeItem('userInfo');
+    logout();
+  }
 
   useEffect(() => {
     if (router && router.query.id) {
@@ -54,10 +76,10 @@ export default function PublicUser(initialized: Props) {
         const currentUserSlug = getUserInfo() && getUserInfo().slug ? getUserInfo().slug : null ;
 
         // some user logged in and slug matches -> private profile
-        if (!loading && session && userExistsInDB && currentUserSlug === slug) {
+        if (!isLoading && token && userExistsInDB && currentUserSlug === slug) {
           try {
             
-            const res = await getAccountInfo(session)
+            const res = await getAccountInfo(token)
             if (res.status === 200) {
               // console.log('in 200-> user exists in our DB');
               const resJson = await res.json();
@@ -73,10 +95,9 @@ export default function PublicUser(initialized: Props) {
             } else if (res.status === 401){
               // in case of 401 - invalid token: signIn()
               // console.log('in 401-> unauthenticated user / invalid token')
-              signOut()
+              logoutUser();
               removeUserExistsInDB()
-              removeUserInfo()
-              signIn('auth0', { callbackUrl: '/login' });
+              loginWithRedirect();
             } else {
               // any other error
               // console.log('in else -> other error')
@@ -94,10 +115,10 @@ export default function PublicUser(initialized: Props) {
     }
 
     // ready is for router, loading is for session
-    if (ready && !loading) {
+    if (ready && !isLoading) {
       loadUserData();
     }
-  }, [ready, loading, forceReload]);
+  }, [ready, isLoading, forceReload]);
   
   function getUserProfile() {
     switch (userprofile?.type) {

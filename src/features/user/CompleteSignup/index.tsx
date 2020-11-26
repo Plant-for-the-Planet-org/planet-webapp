@@ -1,4 +1,3 @@
-import { useSession, signIn } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
@@ -6,7 +5,6 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getUserInfo, setUserInfo, removeUserInfo } from '../../../utils/auth0/localStorageUtils'
@@ -19,10 +17,13 @@ const { useTranslation } = i18next;
 export default function CompleteSignup() {
 
   const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently,
     logout,
+    loginWithRedirect
   } = useAuth0();
 
-  const [session, loading] = useSession();
   const router = useRouter();
   const { t } = useTranslation(['editProfile', 'donate', 'login']);
 
@@ -30,21 +31,32 @@ export default function CompleteSignup() {
 
   const isPrivate = watch('isPrivate');
 
+  const [token, setToken] = React.useState('')
+
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated && !isLoading) {
+      loadFunction()
+    }
+  }, [isAuthenticated,isLoading])
 
   React.useEffect(() => {
     // if accessed by unauthenticated user
-    if (!loading && !session) {
-      signIn('auth0', { callbackUrl: '/login' });
+    if (!isLoading && !token) {
+      loginWithRedirect();
     }
     const userExistsInDB = getUserExistsInDB();
     // if accessed by a registered user
-    if (!loading && session && userExistsInDB) {
+    if (!isLoading && token && userExistsInDB) {
       const userSlug = getUserInfo().slug;
       if (typeof window !== 'undefined') {
         router.push(`/t/${userSlug}`);
       }
     }
-  }, [loading]);
+  }, [isLoading]);
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -104,10 +116,11 @@ export default function CompleteSignup() {
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         // console.log('in 401-> unauthenticated user / invalid token')
-        signOut()
+          localStorage.removeItem('userInfo');
+          logout();
+
         removeUserExistsInDB()
-        removeUserInfo()
-        signIn('auth0', { callbackUrl: '/login' });
+        loginWithRedirect();
       } else {
         setSnackbarMessage('Error in creating profile. Please try again');
         setSeverity("error")
@@ -133,12 +146,12 @@ export default function CompleteSignup() {
   },[type])
 
   const createButtonClicked = async (data: any) => {
-    if(!loading && session){
+    if(!isLoading && token){
       let submitData = {
         ...data,
         country,
         type,
-        oAuthAccessToken: session.accessToken
+        oAuthAccessToken: token
       }
       sendRequest(submitData)
     }
@@ -150,13 +163,13 @@ export default function CompleteSignup() {
   }
 
   if (
-    loading ||
-    (!loading && session && (getUserExistsInDB() === true)) ||
-    (!loading && !session)
+    isLoading ||
+    (!isLoading && token && (getUserExistsInDB() === true)) ||
+    (!isLoading && !token)
   ) {
     return null;
   }
-  if (!loading && session && (getUserExistsInDB() === false)) {
+  if (!isLoading && token && (getUserExistsInDB() === false)) {
     return (
       <div
         className={styles.signUpPage}
@@ -238,7 +251,8 @@ export default function CompleteSignup() {
 
           <div className={styles.formFieldLarge}>
             <MaterialTextField
-              defaultValue={session.userEmail}
+
+              defaultValue={''} // TO DO get email from user (auth0)
               label={t('donate:email')}
               variant="outlined"
               disabled

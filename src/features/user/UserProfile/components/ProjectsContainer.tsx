@@ -6,9 +6,9 @@ import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader
 import i18next from '../../../../../i18n';
 import styles from '../styles/ProjectsContainer.module.scss';
 import { getAuthenticatedRequest, getRequest } from '../../../../utils/apiRequests/api';
-import { useSession } from 'next-auth/client';
 import AddProject from '../../../../../public/assets/images/icons/manageProjects/AddProject';
 import Link from 'next/link';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const { useTranslation } = i18next;
 
@@ -18,8 +18,27 @@ const ProjectSnippet = dynamic(() => import('../../../projects/components/Projec
 
 export default function ProjectsContainer({ authenticatedType, userprofile }: any) {
   const { t } = useTranslation(['donate', 'manageProjects']);
-  const [session, loading] = useSession();
   const [projects, setProjects] = React.useState([])
+
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently
+  } = useAuth0();
+
+  const [token, setToken] = React.useState('')
+
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated && !isLoading) {
+      loadFunction()
+    }
+  }, [isAuthenticated,isLoading])
+
 
   React.useEffect(() => {
     async function loadProjects() {
@@ -29,7 +48,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
 
       if (authenticatedType === 'private') {
         await getAuthenticatedRequest(
-          privateURL, session
+          privateURL, token
         ).then(projects => {
           setProjects(projects);
         })

@@ -61,7 +61,7 @@ function DonationsPopup({
       const token = await getAccessTokenSilently();
       setToken(token);
     }
-    if (isLoading && isAuthenticated) {
+    if (!isLoading && isAuthenticated) {
       loadFunction()
     }
   }, [isAuthenticated, isLoading])
