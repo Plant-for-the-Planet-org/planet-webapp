@@ -1,1 +1,13 @@
-{ }
+{
+  "explore": "Explora",
+  "forests": "Bosques actuales",
+  "restoration": "Potencial de restauración",
+  "deforestation": "Deforestación",
+  "planted": "Plantado",
+  "projects": "Proyectos",
+  "3trilliontrees": "El mundo tiene alrededor de 3 billones de árboles hoy en día (\"Bosques\"). Y espacio para hasta un billón más (\"Potencial de Reforestación\").",
+  "high": "Alto",
+  "low": "Bajo",
+  "forestInfo": "Actualmente existen 3,04 billones de árboles en todo el mundo. Muchos menos de los seis billones de árboles que existían antes de que los humanos empezaran a talar los bosques, hace unos 11.000 años. El mapa muestra el número de árboles por km2.",
+  "restorationInfo": "500 millones de hectáreas reúnen los requisitos para la restauración a gran escala de bosques cerrados. Otros quinientos millones de hectáreas tienen condiciones mejores para la restauración en mosaico, combinando los bosques con otros usos de la tierra como la agrosilvicultura, la agricultura a pequeña escala y los asentamientos."
+}

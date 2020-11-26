@@ -129,7 +129,8 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
                     {uploadedFiles.map((report) => {
                         return (
                             <div key={report.id} className={` ${styles.reportPDFContainer}`}>
-                                <a target={"_blank"} href={getPDFFile('projectCertificate', report.pdf)}>
+                                <a target="_blank" rel="noopener noreferrer"
+                                  href={getPDFFile('projectCertificate', report.pdf)}>
                                     {/* <PDFIcon color="#2F3336" /> */}
                                     <PDFRed />
                                 </a>

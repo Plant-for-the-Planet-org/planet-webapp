@@ -3,16 +3,18 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import { Provider as AuthProvider } from 'next-auth/client'
-import '../src/features/public/Donations/styles/Maps.scss';
+import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
+import './../src/features/projects/styles/Projects.scss'
 import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
-import MapLayout from '../src/features/public/Donations/components/MapboxMap';
+import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
+import storeConfig from '../src/utils/storeConfig';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -46,6 +48,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [initialized, setInitialized] = React.useState(false);
 
+  React.useEffect(() => {
+    storeConfig();
+  }, []);
   React.useEffect(() => {
     i18next.initPromise.then(() => setInitialized(true));
   }, []);

@@ -301,7 +301,7 @@ export default function MapboxMap({
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
-          exploreContainerRef &&
+          exploreContainerRef && exploreContainerRef.current &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);
@@ -575,18 +575,18 @@ export default function MapboxMap({
           </Source>
         ) : null}
 
-        {/* {explorePotential ? (
+        {explorePotential ? (
           <Source
             id="potential"
             type="raster"
             tiles={[
-              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/WWF_Restoration_V3/MapServer/tile/{z}/{y}/{x}',
+              'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
             ]}
             tileSize={128}
           >
             <Layer id="potential-layer" source="potential" type="raster" />
           </Source>
-        ) : null} */}
+        ) : null}
 
         {loaded ? (
           <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
@@ -678,10 +678,11 @@ export default function MapboxMap({
                       <InfoIcon />
                     </div>
                   </div>
-                  {/* <div className={styles.exploreToggleRow}>
+                  <div className={styles.exploreToggleRow}>
                       <FormControlLabel
                         control={
                           <Switch
+                          color="#3B00FF"
                             checked={explorePotential}
                             onChange={handleExplorePotentialChange}
                             name="potential"
@@ -692,12 +693,13 @@ export default function MapboxMap({
                       <div
                         onClick={() => {
                           setInfoExpanded('Restoration');
+                          setModalOpen(true);
                         }}
                         className={styles.exploreInfo}
                       >
                         <InfoIcon />
                       </div>
-                    </div> */}
+                    </div>
 
                   <div className={styles.exploreToggleRow}>
                     <FormControlLabel
@@ -848,7 +850,7 @@ export default function MapboxMap({
                   <p>{t('maps:forestInfo')}</p>
                   <a
                     href="https://www.nature.com/articles/nature14967"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
@@ -872,7 +874,7 @@ export default function MapboxMap({
                   <p>{t('maps:restorationInfo')}</p>
                   <a
                     href="https://science.sciencemag.org/content/365/6448/76"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
@@ -892,7 +894,7 @@ export default function MapboxMap({
                 <div className={styles.infoContent}>
                   <a
                     href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
