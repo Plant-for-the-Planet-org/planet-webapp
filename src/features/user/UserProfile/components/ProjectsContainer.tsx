@@ -28,6 +28,27 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
 
   const [token, setToken] = React.useState('')
 
+  async function loadProjects() {
+    // const currencyCode = getStoredCurrency();
+    const privateURL = '/app/profile/projects';
+    const publicURL = `/app/profiles/${userprofile.id}/projects`;
+
+    if (authenticatedType === 'private') {
+      const token = await getAccessTokenSilently();
+      await getAuthenticatedRequest(
+        privateURL, token
+      ).then(projects => {
+        setProjects(projects);
+      })
+    } else {
+      await getRequest(
+        publicURL,
+      ).then(projects => {
+        setProjects(projects);
+      })
+    }
+  }
+  
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -37,31 +58,10 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
     if (isAuthenticated && !isLoading) {
       loadFunction()
     }
-  }, [isAuthenticated,isLoading])
-
-
-  React.useEffect(() => {
-    async function loadProjects() {
-      // const currencyCode = getStoredCurrency();
-      const privateURL = '/app/profile/projects';
-      const publicURL = `/app/profiles/${userprofile.id}/projects`;
-
-      if (authenticatedType === 'private') {
-        await getAuthenticatedRequest(
-          privateURL, token
-        ).then(projects => {
-          setProjects(projects);
-        })
-      } else {
-        await getRequest(
-          publicURL,
-        ).then(projects => {
-          setProjects(projects);
-        })
-      }
+    if(!isLoading){
+      loadProjects();
     }
-    loadProjects();
-  }, [])
+  }, [isAuthenticated,isLoading])
 
   return (
     <div style={{ margin: 'auto', maxWidth: '950px' }} id="projectsContainer">
@@ -112,8 +112,6 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             }
           </div>
         )}
-
-
     </div>
   );
 }
