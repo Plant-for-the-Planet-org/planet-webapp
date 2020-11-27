@@ -169,7 +169,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     }
     const project = {
         name:paymentData.plantProjectName,
-        country:''
+        country:paymentData.plantProjectCountry
     }
     const ThankYouProps = {
         project,
@@ -213,7 +213,8 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
 
             <div className={styles.finalTreeCount}>
                 <div className={styles.totalCost}>
-                    {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+               { !isPaymentOptionsLoading ? getFormatedCurrency(i18n.language, currency, treeCount * treeCost) : null}
+                    
                     {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
                 </div>
                 <div className={styles.totalCostText}>
