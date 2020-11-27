@@ -5,7 +5,7 @@ import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import GlobeContentLoader from '../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../src/features/common/Layout/Footer';
-import { withAuthenticationRequired,useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
 
@@ -96,7 +96,4 @@ function ManageSingleProject({ }: Props): ReactElement {
     )
 }
 
-export default withAuthenticationRequired(ManageSingleProject, {
-  // Show a message while the user waits to be redirected to the login page.
-  onRedirecting: () => <div>Only Reforestation Organizations can access this page</div>,
-});
+export default ManageSingleProject;
