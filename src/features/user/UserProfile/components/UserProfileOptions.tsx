@@ -1,40 +1,79 @@
 import React from 'react';
+// import { makeStyles, Theme } from '@material-ui/core/styles';
 import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
 import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
-import i18next from '../../../../../i18n'
+import i18next from '../../../../../i18n';
+import tenantConfig from '../../../../../tenant.config';
 
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import SocialShareContainer from './SocialShareContainer';
+import { motion } from 'framer-motion';
 
+const config = tenantConfig();
 
-const {useTranslation} = i18next;
-export default function UserProfileOptions({ 
+const socialIconAnimate = {
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      stiffness: 150,
+      type: 'spring',
+    },
+  },
+  closed: {
+    y: -100,
+    opacity: 0,
+    rotateX: -15,
+    transition: {
+      delay: 0.8,
+      duration: 0.3,
+    },
+  },
+  init: {
+    x: -100,
+    opacity: 0,
+  },
+  // }
+};
+const { useTranslation } = i18next;
+export default function UserProfileOptions({
   userprofile,
-  handleTextCopiedSnackbarOpen
- }: any) {
-
-  const {t} = useTranslation(['me']);
-  const webShareMobile = async() => {
-      try {
-        const response = await navigator.share({
-          title:'Check out Plant-for-the-Planet!',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-        })
-      } catch (error) {
-        // console.error('Could not share at this time', error);
-      }
-  }
-  
+  handleTextCopiedSnackbarOpen,
+}: any) {
+  const { t } = useTranslation(['me']);
+  const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
+  const textToShare = t('donate:textToShare', { linkToShare });
+  const [showSocialBtn, setShowSocialBtn] = React.useState(false);
+  const [screenWidth, setScreenWidth] = React.useState(null);
+  const [divWidth, setDivWidth] = React.useState(null);
+  const elementRef = React.useRef(null);
+  const webShareMobile = async () => {
+    try {
+      const response = await navigator.share({
+        title: t('donate:shareTextTitle'),
+        url: window.location.href,
+        text: textToShare,
+      });
+    } catch (error) {
+      // console.error('Could not share at this time', error);
+    }
+  };
+  React.useEffect(() => {
+    setScreenWidth(window.screen.width);
+    setDivWidth(elementRef.current.getBoundingClientRect().width);
+  });
   const onShareClicked = () => {
-    if(navigator.share) {
+    if (navigator.share) {
       // if in phone and web share API supported
       webShareMobile();
     } else {
+      setShowSocialBtn(!showSocialBtn);
       // in desktop
-      navigator.clipboard.writeText('Dummy text copied to clipboard!');
-      handleTextCopiedSnackbarOpen();
+      // navigator.clipboard.writeText(window.location.href);
+      // handleTextCopiedSnackbarOpen();
     }
   };
 
@@ -48,12 +87,29 @@ export default function UserProfileOptions({
   };
 
   return (
-      <div className={styles.bottomIconsRow}>
+    <div style={{ position: 'relative' }}>
+      {showSocialBtn && screenWidth < 600 && (
+        <motion.div
+          initial={{
+            y: 100,
+            opacity: 0,
+          }}
+          animate={{
+            y: 0,
+            opacity: 1,
+            paddingLeft: '118px',
+          }}
+          transition={{ delay: 0.2, stiffness: 150, type: 'spring' }}
+        >
+          <SocialShareContainer userprofile={userprofile} />
+        </motion.div>
+      )}
+      <div className={styles.bottomIconsRow} ref={elementRef}>
         <div className={styles.iconTextColumn}>
           <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
             <Redeem color="white" />
           </div>
-        <p className={styles.bottomRowText}> {t('me:redeem')}</p>
+          <p className={styles.bottomRowText}> {t('me:redeem')}</p>
         </div>
 
         <RedeemModal
@@ -66,15 +122,42 @@ export default function UserProfileOptions({
             <Shovel color="white" />
           </div>
 
-        <p className={styles.bottomRowText}> {t('me:registerTrees')}</p>
+          <p className={styles.bottomRowText}> {t('me:registerTrees')}</p>
         </div>
 
         <div className={styles.iconTextColumn} onClick={onShareClicked}>
           <div className={styles.bottomIconBg}>
-            <Share color="white" />
+            {showSocialBtn ? (
+              <CancelIcon color="white" width="25px" />
+            ) : (
+              <Share color="white" />
+            )}
           </div>
-          <p className={styles.bottomRowText}> {t('me:share')} </p>
+          {showSocialBtn ? (
+            <p className={styles.bottomRowText}>{t('me:close')}</p>
+          ) : (
+            <p className={styles.bottomRowText}> {t('me:share')} </p>
+          )}
         </div>
       </div>
+      {showSocialBtn && screenWidth > 600 && (
+        <motion.div
+          animate={{
+            position: 'absolute',
+            top: '35px',
+            left: divWidth > 291 ? '290px' : '251px',
+          }}
+        >
+          <motion.div
+            initial="init"
+            animate={showSocialBtn ? 'open' : 'closed'}
+            // transition={{delay: 0.2, stiffness: 150, type:"spring"}}
+            variants={socialIconAnimate}
+          >
+            <SocialShareContainer userprofile={userprofile} type="private" />
+          </motion.div>
+        </motion.div>
+      )}
+    </div>
   );
 }
