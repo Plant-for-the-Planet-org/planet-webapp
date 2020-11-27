@@ -1,23 +1,34 @@
 import Footer from '../../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import React from 'react';
+import i18next from './../../i18n'
 import LegacyDonations from '../../src/features/legacyDonations';
 import styles from './../../src/features/legacyDonations/styles/PaymentDetails.module.scss'
 interface Props {
     initialized: Boolean;
 }
+const { useTranslation } = i18next;
 
 
 function PaymentPage({ initialized }: Props) {
     const router = useRouter();
 
     const [paymentData, setPaymentData] = React.useState(null);
+    const { t } = useTranslation(['donate']);
 
     React.useEffect(() => {
         async function loadProjects() {
             await fetch(`${process.env.API_ENDPOINT}/public/v1.3/en/paymentInfo/${router.query.code}`).then(async (res) => {
-                const data = await res.json();
-                setPaymentData(data);
+                if(res.status !== 200){
+                    setPaymentData(null)
+                }
+                else{
+                    const data = await res.json();
+                    setPaymentData(data);   
+                }
+                
+            }).catch((err)=>{
+                console.log(err);
             })
         }
         if (router.query.code) {
@@ -42,7 +53,7 @@ function PaymentPage({ initialized }: Props) {
     // paymentMethod.id (generated from the stripe card)
 
     console.log('paymentData', paymentData);
-    return (
+    return paymentData ? (
         <>
         <div className={styles.donationPaymentSection}>
 
@@ -63,7 +74,14 @@ function PaymentPage({ initialized }: Props) {
         </div>
         <Footer />
         </>
-    );
+    ) : <>
+    <div className={styles.donationPaymentSection}>
+        <h2>
+        {t('donate:donationTokenInvalid')}
+        </h2>
+    </div>
+    <Footer />
+    </>;
 }
 
 export default PaymentPage

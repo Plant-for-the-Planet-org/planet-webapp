@@ -202,10 +202,10 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                 {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
                     paymentData.giftRecipient ? 
                     (<div className={styles.headerText}>
-                       Gift to {paymentData.giftRecipient}
+                       {t('donate:giftTo')} {paymentData.giftRecipient}
                     </div>) : 
                     (<div className={styles.headerText}>
-                        Supporting {paymentData.supportedTreecounterName}
+                        {t('donate:supporting')} {paymentData.supportedTreecounterName}
                     </div>)
                 ) : null}
 
