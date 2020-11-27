@@ -10,6 +10,8 @@ import { getRequest } from '../../utils/apiRequests/api';
 import i18next from '../../../i18n/';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
 import Sugar from 'sugar';
+import { payDonation } from '../donations/components/treeDonation/PaymentFunctions';
+import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress';
 
 const { useTranslation } = i18next;
 
@@ -29,6 +31,10 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
 
     const [totalAmount, setTotalAmount] = React.useState(paymentData.amount)
     const treeCount = paymentData.treeCount;
+
+    const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
+    const [paymentError, setPaymentError] = React.useState('');
+
     const [country, setCountry] = React.useState(
         localStorage.getItem('countryCode')!
     );
@@ -45,7 +51,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
             try {
                 setIsPaymentOptionsLoading(true);
 
-                const paymentSetupData = await getRequest(`/app/projects/proj_evbM6c4YBGX2hNS1Bc2ORWPq/paymentOptions?country=${country}`);
+                const paymentSetupData = await getRequest(`/app/projects/${paymentData.plantProjectGuid}/paymentOptions?country=${country}`);
                 if (paymentSetupData) {
                     setPaymentSetup(paymentSetupData);
 
@@ -60,11 +66,90 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         loadPaymentSetup();
     }, [paymentData, country]);
 
-    const onPaymentFunction = () => {
+    const onPaymentFunction = (paymentMethod:any) => {
         console.log('Google/apple pay');
+        const payDonationData = {
+            paymentProviderRequest: {
+              account: paymentSetup.gateways.stripe.account,
+              gateway: 'stripe_pi',
+              source: {
+                id: paymentMethod.id,
+                object: 'payment_method',
+              },
+            },
+          };
+          payDonation(payDonationData, paymentData.guid, null)
+            .then(async (res) => {
+              if (res.code === 400) {
+                setIsPaymentProcessing(false);
+                setPaymentError(res.message);
+                return;
+              } if (res.code === 500) {
+                setIsPaymentProcessing(false);
+                setPaymentError('Something went wrong please try again soon!');
+                return;
+              } if (res.code === 503) {
+                setIsPaymentProcessing(false);
+                setPaymentError(
+                  'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+                );
+                return;
+              }
+              if (res.status === 'failed') {
+                setIsPaymentProcessing(false);
+                setPaymentError(res.message);
+              } else if (res.paymentStatus === 'success') {
+                setIsPaymentProcessing(false);
+              } else if (res.status === 'action_required') {
+                const clientSecret = res.response.payment_intent_client_secret;
+                const donationID = res.id;
+                const stripe = window.Stripe(
+                  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+                  {
+                    stripeAccount: res.response.account,
+                  },
+                );
+                if (stripe) {
+                  await stripe.handleCardAction(clientSecret).then((res) => {
+                    if (res.error) {
+                      setIsPaymentProcessing(false);
+                      setPaymentError(res.error.message);
+                    } else {
+                      const payDonationData = {
+                        paymentProviderRequest: {
+                          account: paymentSetup.gateways.stripe.account,
+                          gateway: 'stripe_pi',
+                          source: {
+                            id: res.paymentIntent.id,
+                            object: 'payment_intent',
+                          },
+                        },
+                      };
+                      payDonation(payDonationData, donationID, null).then((res) => {
+                        if (res.paymentStatus === 'success') {
+                          setIsPaymentProcessing(false);
+                        } else {
+                          setIsPaymentProcessing(false);
+                          setPaymentError(res.error ? res.error.message : res.message);
+                        }
+                      });
+                    }
+                  });
+                }
+              }
+            })
+            .catch((error) => {
+              setIsPaymentProcessing(false);
+              setPaymentError(error.message);
+            }); 
     }
-    return (
+    return isPaymentProcessing ? (
+        <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+      ) : (
         <div className={styles.container}>
+            {paymentError && (
+          <div className={styles.paymentError}>{paymentError}</div>
+        )}
             <div className={styles.header}>
                 <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
                 <div className={styles.headerText}>
@@ -97,13 +182,11 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                 </div>
             </div>
 
-
             <Elements stripe={getStripe()}>
-                <CardPayments paymentType={paymentType} setPaymentType={setPaymentType} />
+                <CardPayments onPaymentFunction={onPaymentFunction} paymentType={paymentType} setPaymentType={setPaymentType} />
             </Elements>
 
             
-
             <Elements stripe={getStripe()}>
                 {!isPaymentOptionsLoading
                     && paymentSetup?.gateways?.stripe?.account

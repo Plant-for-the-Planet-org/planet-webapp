@@ -10,7 +10,6 @@ import {
 import React, { ReactElement } from 'react';
 import CreditCard from '../../../../public/assets/images/icons/donation/CreditCard';
 import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
-import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import styles from './../styles/PaymentDetails.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
@@ -55,6 +54,7 @@ const getInputOptions = (placeholder: string) => {
 function CardPayments({
   paymentType,
   setPaymentType,
+  onPaymentFunction
 }: any): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common']);
   const stripe = useStripe();
@@ -63,7 +63,6 @@ function CardPayments({
   const [cardCvv, setCardCvv] = React.useState(false);
   const [cardDate, setCardDate] = React.useState(false);
 
-  const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
   React.useEffect(() => {
     setPaymentType('CARD');
@@ -134,8 +133,8 @@ function CardPayments({
       // Add payload error if failed
     }
 
-    console.log('paymentMethod', paymentMethod);
-
+    onPaymentFunction(paymentMethod)
+    
   };
 
   const handleChange = (change) => {
@@ -172,9 +171,7 @@ function CardPayments({
     validateCard();
   }, [cardDate, cardNumber, cardCvv]);
 
-  return isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  return (
       <div>
 
         {paymentError && (
@@ -239,7 +236,7 @@ function CardPayments({
               </AnimatedButton>
             </div>
           )}
-          
+
       </div>
     );
 }

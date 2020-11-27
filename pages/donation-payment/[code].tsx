@@ -15,7 +15,7 @@ function PaymentPage({ initialized }: Props) {
 
     React.useEffect(() => {
         async function loadProjects() {
-            await fetch(`https://app.plant-for-the-planet.org/public/v1.3/en/paymentInfo/${router.query.code}`).then(async (res) => {
+            await fetch(`${process.env.API_ENDPOINT}/public/v1.3/en/paymentInfo/${router.query.code}`).then(async (res) => {
                 const data = await res.json();
                 setPaymentData(data);
             })
