@@ -36,7 +36,7 @@ function ManageSingleProject({ }: Props): ReactElement {
 
 
   const [project, setProject] = React.useState({})
-  
+
   const [token, setToken] = React.useState('')
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
@@ -50,7 +50,7 @@ function ManageSingleProject({ }: Props): ReactElement {
   }, [isAuthenticated])
 
   useEffect(() => {
-    async function loadProject() {      
+    async function loadProject() {
       const token = await getAccessTokenSilently();
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, token).then((result) => {
         if (result.status === 401) {
@@ -87,7 +87,11 @@ function ManageSingleProject({ }: Props): ReactElement {
       <ManageProjects GUID={projectGUID} token={token} project={project} />
       <Footer />
     </>
-  ) : (<h2>NO Project ID FOUND</h2>) :
+  ) : (
+  <>
+    <GlobeContentLoader />
+    <Footer />
+  </>) :
     (
       <>
         <GlobeContentLoader />
