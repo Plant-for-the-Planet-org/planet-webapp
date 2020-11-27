@@ -1,5 +1,4 @@
 import React from 'react';
-import ReadMoreReact from 'read-more-react';
 import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
