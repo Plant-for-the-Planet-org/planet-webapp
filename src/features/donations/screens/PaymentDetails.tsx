@@ -17,6 +17,7 @@ import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgre
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
+// import styles from '../styles/PaymentDetails.module.scss';
 import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
