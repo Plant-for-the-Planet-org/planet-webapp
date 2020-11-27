@@ -32,6 +32,13 @@
   text-align: center;
 }
 
+.treeCounterDescription > p  {
+  color: var(--primary-color);
+  display: inline;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
 .bottomIconsRow {
   display: flex;
   flex-direction: row;
@@ -47,6 +54,15 @@
   flex-direction: column;
 }
 
+.iconTextColumnSupport {
+  margin: 0px 20px;
+  max-width: 160px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
 .bottomIconBg {
   background-color: rgba(255, 255, 255, 0.35);
   display: flex;
@@ -57,6 +73,20 @@
   border-radius: 70px;
 }
 
+.bottomIconBgSupport {
+  background-color: #303B31;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 161px;
+  height: 60px;
+  border-radius: 70px;
+  justify-content: space-around;
+}
+
+.bottomIconBgSupport svg {
+  padding-left: 10px;
+}
 .bottomIconBg:hover {
   cursor: pointer;
 }
@@ -69,9 +99,107 @@
   text-align: center;
 }
 
+.bottomRowTextSupport {
+  color: $light;
+  font-size: 14px;
+  font-family: $fontSubTitleSize;
+  text-align: center;
+  padding-right: 15px;
+  text-transform: capitalize;
+}
+
 // mobile view
 @media only screen and (max-width: 768px) {
   .landingContent {
     margin-top: 140px;
   }
+}
+
+// share button
+.shareBtnContainer {
+  // display: inline-grid
+  position: relative;
+  transition-timing-function: ease-in;
+}
+.shareIconFacebook {
+  position: relative;
+}
+// .shareIconFacebook svg {
+//     width: 30px;
+//     height: 30px;
+// }
+.shareIconFacebookContainer{
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 84px;
+  bottom: 50px;
+  top: -10px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
+}
+
+.shareIconInstagram {
+  position: relative;
+}
+
+// .shareIconInstagram svg {
+//     width: 30px;
+//     height: 30px;
+// }
+.shareIconInstagramContainer {
+  position: absolute;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  left: 84px;
+  top: -60px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
+}
+
+.shareIconTwitter {
+  position: relative;
+}
+
+.shareIcon svg {
+    width: 30px;
+    height: 30px;
+}
+.shareIconTwitterContainer {
+  position: absolute;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  left: 84px;
+  bottom: 50px;
+  top: -105px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
+}
+.shareBtnContainer > button.react-share__ShareButton {
+  padding: 0px 10px;
+}
+
+// .shareIcon {
+//   padding: 10px;
+// }
+
+.shareIconFacebookContainerPrivate {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  padding-top: 7px;
+  border-radius: 20px;
+  background-color: #303B31;
+  cursor: pointer;
 }

@@ -91,5 +91,15 @@
   "backToSpending": "Back to project spending",
   "pendingReview": "Pending Review",
   "submitForReview": "Submit for Review",
-  "addProject": "Add Project"
+  "addProject": "Add Project",
+  "abandonment": "Abandonment",
+  "survivalRate": "Survival rate",
+  "survivalRateInfo": "Percentage of trees that survive the first year of plantation",
+  "employees": "Employees",
+  "siteOwnership": "Site ownership",
+  "longTermProtection": "Long Term Protection",
+  "externalCertifications": "External Certifications",
+  "projectSpendingFinancial": "Financial Project Spendings",
+  "issueDate": "Date issued",
+  "acquisitionYear": "Acquisition Year"
 }
