@@ -21,8 +21,9 @@ export default function CompleteSignup() {
     isAuthenticated,
     getAccessTokenSilently,
     logout,
-    loginWithRedirect
-  } = useAuth0();
+    loginWithRedirect,
+    user
+  } = useAuth0();  
 
   const router = useRouter();
   const { t } = useTranslation(['editProfile', 'donate', 'login']);
@@ -37,26 +38,23 @@ export default function CompleteSignup() {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
+      if(!token){
+        loginWithRedirect();
+      }
+      const userExistsInDB = getUserExistsInDB();
+      if (token && userExistsInDB) {
+        if (getUserInfo().slug) {
+          const userSlug = getUserInfo().slug;
+          if (typeof window !== 'undefined') {
+            router.push(`/t/${userSlug}`);
+          }
+        }
+      }      
     }
     if (isAuthenticated && !isLoading) {
       loadFunction()
     }
-  }, [isAuthenticated,isLoading])
-
-  React.useEffect(() => {
-    // if accessed by unauthenticated user
-    if (!isLoading && !token) {
-      loginWithRedirect();
-    }
-    const userExistsInDB = getUserExistsInDB();
-    // if accessed by a registered user
-    if (!isLoading && token && userExistsInDB) {
-      const userSlug = getUserInfo().slug;
-      if (typeof window !== 'undefined') {
-        router.push(`/t/${userSlug}`);
-      }
-    }
-  }, [isLoading]);
+  }, [isAuthenticated, isLoading])
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -115,9 +113,9 @@ export default function CompleteSignup() {
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
-        // console.log('in 401-> unauthenticated user / invalid token')
-          localStorage.removeItem('userInfo');
-          logout();
+        console.log('in 401-> unauthenticated user / invalid token')
+        localStorage.removeItem('userInfo');
+        logout();
 
         removeUserExistsInDB()
         loginWithRedirect();
@@ -140,13 +138,13 @@ export default function CompleteSignup() {
     { id: 4, title: 'Education', value: 'education' }
   ]
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset()
-  },[type])
+  }, [type])
 
   const createButtonClicked = async (data: any) => {
-    if(!isLoading && token){
+    if (!isLoading && token) {
       let submitData = {
         ...data,
         country,
@@ -157,7 +155,7 @@ export default function CompleteSignup() {
     }
   };
 
-  const logoutUser = ()=> {
+  const logoutUser = () => {
     localStorage.removeItem('userInfo');
     logout();
   }
@@ -207,52 +205,51 @@ export default function CompleteSignup() {
               <MaterialTextField
                 label={t('donate:firstName')}
                 variant="outlined"
-                inputRef={register({required:true})}
+                inputRef={register({ required: true })}
                 name={"firstname"}
               />
               {errors.firstname && (
-                    <span className={styles.formErrors}>
-                      {t('donate:firstNameRequired')}
-                    </span>
-                  )}
+                <span className={styles.formErrors}>
+                  {t('donate:firstNameRequired')}
+                </span>
+              )}
             </div>
 
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 label={t('donate:lastName')}
                 variant="outlined"
-                inputRef={register({required:true})}
+                inputRef={register({ required: true })}
                 name={"lastname"}
               />
               {errors.lastname && (
-                    <span className={styles.formErrors}>
-                      {t('donate:lastNameRequired')}
-                    </span>
-                  )}
+                <span className={styles.formErrors}>
+                  {t('donate:lastNameRequired')}
+                </span>
+              )}
             </div>
           </div>
           {type !== 'individual' ? (
-              <div className={styles.formFieldLarge}>
-                <MaterialTextField
-                  label={t('login:profileName', {
-                    type: SelectType(type)
-                  })}
-                  variant="outlined"
-                  inputRef={register({required:true})}
-                  name={"name"}
-                />
-                {errors.name && (
+            <div className={styles.formFieldLarge}>
+              <MaterialTextField
+                label={t('login:profileName', {
+                  type: SelectType(type)
+                })}
+                variant="outlined"
+                inputRef={register({ required: true })}
+                name={"name"}
+              />
+              {errors.name && (
                 <span className={styles.formErrors}>
-                 {t('editProfile:orgNameValidation')}
+                  {t('editProfile:orgNameValidation')}
                 </span>
               )}
-              </div>
-            ) : null}
+            </div>
+          ) : null}
 
           <div className={styles.formFieldLarge}>
             <MaterialTextField
-
-              defaultValue={''} // TO DO get email from user (auth0)
+              defaultValue={user.email}
               label={t('donate:email')}
               variant="outlined"
               disabled
@@ -265,14 +262,14 @@ export default function CompleteSignup() {
                 <MaterialTextField
                   label={t('donate:address')}
                   variant="outlined"
-                  inputRef={register({required:true})}
+                  inputRef={register({ required: true })}
                   name={"address"}
                 />
                 {errors.address && (
-                <span className={styles.formErrors}>
-                  {t('donate:addressRequired')}
-                </span>
-              )}
+                  <span className={styles.formErrors}>
+                    {t('donate:addressRequired')}
+                  </span>
+                )}
               </div>
 
               <div className={styles.formField}>
@@ -280,14 +277,14 @@ export default function CompleteSignup() {
                   <MaterialTextField
                     label={t('donate:city')}
                     variant="outlined"
-                    inputRef={register({required:true})}
+                    inputRef={register({ required: true })}
                     name={"city"}
                   />
                   {errors.city && (
-                  <span className={styles.formErrors}>
-                    {t('donate:cityRequired')}
-                  </span>
-                )}
+                    <span className={styles.formErrors}>
+                      {t('donate:cityRequired')}
+                    </span>
+                  )}
                 </div>
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
@@ -296,7 +293,7 @@ export default function CompleteSignup() {
                     name="zipCode"
                     inputRef={register({
                       pattern: postalRegex,
-                      required:true
+                      required: true
                     })}
                   />
                   {errors.zipCode && (
@@ -320,10 +317,10 @@ export default function CompleteSignup() {
               defaultValue={defaultCountry}
             />
             {errors.country && (
-                <span className={styles.formErrors}>
-                 {t('donate:countryRequired')}
-                </span>
-              )}
+              <span className={styles.formErrors}>
+                {t('donate:countryRequired')}
+              </span>
+            )}
           </div>
 
           <div className={styles.isPrivateAccountDiv}>
@@ -332,7 +329,7 @@ export default function CompleteSignup() {
               {isPrivate &&
                 <div className={styles.isPrivateAccountText}>
                   <label htmlFor={'isPrivate'}>
-                  {t('editProfile:privateAccountTxt')}
+                    {t('editProfile:privateAccountTxt')}
                   </label>
                 </div>
               }

@@ -1,4 +1,5 @@
 import { getAccountInfo } from "./apiRequests";
+import { setUserExistsInDB } from "./localStorageUtils";
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations
 let userInfo: any;
@@ -23,6 +24,7 @@ export async function getUserInfo(token: any, router: any, logout: any) {
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
       } else if (res.status === 303) {
+        setUserExistsInDB(false)
         if (typeof window !== 'undefined') {
           router.push('/complete-signup');
         }

@@ -86,7 +86,7 @@ export default function NavbarComponent(props: any) {
             <img src={getImageUrl('profile', 'avatar', userInfo.profilePic)} height="26px" width="26px" style={{ borderRadius: '40px' }} />
           </div>
         ) :
-        router.pathname === '/complete-signup' || router.pathname === `/t/${userInfo.slug}` ? (
+        router.pathname === '/complete-signup' || userInfo && router.pathname === `/t/${userInfo.slug}` ? (
           <MeSelected color={styles.primaryColor} />
         ) : (
             <Me color={styles.primaryFontColor} />
