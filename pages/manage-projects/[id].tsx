@@ -51,6 +51,7 @@ function ManageSingleProject({ }: Props): ReactElement {
 
   useEffect(() => {
     async function loadProject() {      
+      const token = await getAccessTokenSilently();
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, token).then((result) => {
         if (result.status === 401) {
           setAccessDenied(true)
