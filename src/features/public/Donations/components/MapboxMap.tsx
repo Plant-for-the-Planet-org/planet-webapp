@@ -850,7 +850,7 @@ export default function MapboxMap({
                   <p>{t('maps:forestInfo')}</p>
                   <a
                     href="https://www.nature.com/articles/nature14967"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
@@ -874,7 +874,7 @@ export default function MapboxMap({
                   <p>{t('maps:restorationInfo')}</p>
                   <a
                     href="https://science.sciencemag.org/content/365/6448/76"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />
@@ -894,7 +894,7 @@ export default function MapboxMap({
                 <div className={styles.infoContent}>
                   <a
                     href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
-                    target="_blank"
+                    target="_blank" rel="noopener noreferrer"
                     style={{ paddingTop: 20 }}
                   >
                     <OpenLink />

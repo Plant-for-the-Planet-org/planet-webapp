@@ -364,7 +364,8 @@ export default function EditProfileModal({
                 name="url"
                 inputRef={register({
                   pattern: {
-                    value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+                    //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=\*]*)$/,
                     message: t('editProfile:websiteError'),
                   },
                 })}
@@ -408,3 +409,4 @@ export default function EditProfileModal({
     </React.Fragment>
   );
 }
+
