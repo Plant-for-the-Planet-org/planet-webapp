@@ -115,22 +115,6 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                     )}
                 </div>
                 <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                        inputRef={register({
-                            required: {
-                                value: true,
-                                message: 'Species is required',
-                            },
-                        })}
-                        label="Tree Species"
-                        variant="outlined"
-                        name="species"
-                    />
-                    {errors.species && (
-                        <span className={styles.formErrors}>{errors.species.message}</span>
-                    )}
-                </div>
-                <div className={styles.formFieldHalf}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[lang] ? localeMapForDate[lang] : localeMapForDate['en']}>
                         <Controller
                             render={props => (
@@ -154,18 +138,35 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                         />
                     </MuiPickersUtilsProvider>
                 </div>
-                {isMultiple ?
-                    <p>Draw a polygon on the map</p>
-                    : <p>Click on the map to mark a location</p>}
-                {errorMessage ?
-                    <p className={styles.formErrors}>{errorMessage}</p> : null
-                }
-                <div className={styles.nextButton}>
-                    <div onClick={handleSubmit(submitRegisterTrees)} className={styles.continueButton}>  {isUploadingData ? (
-                        <div className={styles.spinner}></div>
-                    ) : 'Next'}</div>
-                </div>
             </div>
+            <div className={styles.formFieldLarge}>
+                <MaterialTextField
+                    inputRef={register({
+                        required: {
+                            value: true,
+                            message: 'Species is required',
+                        },
+                    })}
+                    label="Tree Species"
+                    variant="outlined"
+                    name="species"
+                />
+                {errors.species && (
+                    <span className={styles.formErrors}>{errors.species.message}</span>
+                )}
+            </div>
+            {isMultiple ?
+                <p>Draw a polygon on the map</p>
+                : <p>Click on the map to mark a location</p>}
+            {errorMessage ?
+                <p className={styles.formErrors}>{errorMessage}</p> : null
+            }
+            <div className={styles.nextButton}>
+                <div onClick={handleSubmit(submitRegisterTrees)} className={styles.continueButton}>  {isUploadingData ? (
+                    <div className={styles.spinner}></div>
+                ) : 'Next'}</div>
+            </div>
+
         </form>
     )
 }

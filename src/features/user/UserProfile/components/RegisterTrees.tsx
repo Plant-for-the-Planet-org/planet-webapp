@@ -10,12 +10,17 @@ import MapGL, {
 import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
-import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import BasicDetailsStep from './RegisterTrees/BasicDetails';
+import { getAuthenticatedRequest, postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import UploadImagesStep from './RegisterTrees/UploadImages';
-import MoreDetailsStep from './RegisterTrees/MoreDetails';
 import { Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
 import dynamic from 'next/dynamic';
+import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { Controller, useForm } from 'react-hook-form';
+import DateFnsUtils from '@date-io/date-fns';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
+import getStoredConfig from '../../../../utils/getConfig/getStoredConfig';
+import SingleContribution from './RegisterTrees/SingleContribution';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -33,161 +38,285 @@ export default function RegisterTrees({ slug, session
   const router = useRouter();
   const { t } = useTranslation(['me', 'common']);
   const [isMultiple, setIsMultiple] = React.useState(false);
-  function getSteps() {
-    // if (!isMultiple) {
-    //   return ['Basic', 'Upload Images', 'Optional'];
-    // } else {
-    return ['Basic', 'Upload Images'];
-    // }
-  }
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
-  const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const steps = getSteps();
-
-
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState([0, 0]);
+  const [plantLocation, setplantLocation] = React.useState();
   const [geometry, setGeometry] = React.useState();
-
   const [viewport, setViewPort] = React.useState({
-    width: '100%',
     height: '100%',
+    width: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+  const [userLang, setUserLang] = React.useState('en');
+  const [countryBbox, setCountryBbox] = React.useState();
+  const [registered, setRegistered] = React.useState(false);
 
-  const [userLang, setUserLang] = React.useState('en')
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       let userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
+
+    async function getUserCountryBbox() {
+      var country = getStoredConfig('country');
+      const result = await fetch(`http://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`);
+      const geoCodingAPI = result.status === 200 ? await result.json() : null;
+      setCountryBbox(geoCodingAPI.features[0].bbox);
+    }
+    getUserCountryBbox();
   }, []);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = (message) => {
-    setErrorMessage(message)
-    setActiveStep(0);
-  };
-
   React.useEffect(() => {
-    // Fetch details of the contribution 
-    if (contributionGUID && session?.accessToken)
-      getAuthenticatedRequest(`/app/contributions/${contributionGUID}`, session).then((result: any) => {
-        setContributionDetails(result)
-      })
-  }, [contributionGUID]);
+    if (countryBbox) {
+      const { longitude, latitude, zoom } = new WebMercatorViewport(
+        viewport
+      ).fitBounds([
+        [countryBbox[0], countryBbox[1]],
+        [countryBbox[2], countryBbox[3]],
+      ]);
+      const newViewport = {
+        ...viewport,
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 2000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setViewPort(newViewport);
+    }
+  }, [countryBbox]);
 
-  const BasicDetailsProps = {
-    errorMessage, setErrorMessage, contributionDetails, setContributionDetails, isMultiple, setIsMultiple, contributionGUID, setContributionGUID, handleNext, lang: userLang, session, geometry
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const defaultBasicDetails = {
+    treeCount: 0,
+    species: '',
+    plantDate: new Date(),
+    geometry: {}
+  }
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+    watch,
+  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+
+  const treeCount = watch('treeCount');
+
+  const onTreeCountChange = (e) => {
+    if (Number(e.target.value) < 25) {
+      setIsMultiple(false);
+    } else {
+      setIsMultiple(true);
+    }
   }
 
-  const UploadImagesProps = {
-    errorMessage, setErrorMessage, contributionDetails, setContributionDetails, contributionGUID, setContributionGUID, handleNext, session
-  }
+  const submitRegisterTrees = (data: any) => {
+    if (geometry) {
+      setIsUploadingData(true)
+      const submitData = {
+        treeCount: data.treeCount,
+        treeSpecies: data.species,
+        plantDate: new Date(data.plantDate),
+        geometry: geometry
+      }
+      postAuthenticatedRequest(`/app/contributions`, submitData, session).then(
+        (res) => {
+          if (!res.code) {
+            console.log(res);
+            setErrorMessage('');
+            setContributionGUID(res.id);
+            setContributionDetails(res)
+            setIsUploadingData(false);
+            setErrorMessage(null);
+            setRegistered(true);
+            // router.push('/c/[id]', `/c/${res.id}`);
+          } else {
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+              setRegistered(false);
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+              setRegistered(false);
+            }
+          }
+        }
+      );
 
-
-  function getStepContent(step: number) {
-    switch (step) {
-      case 0:
-        return <BasicDetailsStep {...BasicDetailsProps} />;
-      case 1:
-        return <UploadImagesStep {...UploadImagesProps} />;
-      case 2:
-        return <MoreDetailsStep />;
-      default:
-        return <BasicDetailsStep {...BasicDetailsProps} />;
+      // handleNext();
+    } else {
+      setErrorMessage('select location on map');
     }
   }
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  const ContributionProps = {
+    session,
+    contribution: contributionDetails,
+    contributionGUID,
+    currentUserSlug: slug
+  }
+
   return (
+    <>
 
-    <div className={styles.modal}>
+      <div className={styles.modal}>
+        {!registered ?
+          <div className={styles.formContainer}>
+            <h2 className={styles.title}>
+              <div
+                style={{ cursor: 'pointer', marginLeft: -10, paddingRight: 10 }}
+                onClick={() => {
+                  router.push(`/t/${slug}`, undefined, { shallow: true });
+                }}
+              >
+                <BackButton />
+              </div>
+              <b> {t('me:registerTrees')} </b>
+            </h2>
+            <form onSubmit={handleSubmit(submitRegisterTrees)}>
+              <div className={styles.formField}>
+                <div className={styles.formFieldHalf}>
+                  <MaterialTextField
+                    inputRef={register({
+                      required: {
+                        value: true,
+                        message: 'Number of Trees is required',
+                      },
+                      validate: (value) => parseInt(value, 10) >= 1 && parseInt(value, 10) <= 50,
+                    })}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      e.target.value = e.target.value > 50 ? 50 : e.target.value;
+                    }}
+                    onChange={onTreeCountChange}
+                    label="Number of Trees"
+                    variant="outlined"
+                    name="treeCount"
+                    placeholder={'0'}
+                  />
+                  {errors.treeCount && (
+                    <span className={styles.formErrors}>{errors.treeCount.message}</span>
+                  )}
+                </div>
+                <div className={styles.formFieldHalf}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                    <Controller
+                      render={props => (
 
-      <div className={styles.formContainer}>
+                        <DatePicker
+                          label="Date Planted"
+                          value={props.value}
+                          onChange={props.onChange}
+                          inputVariant="outlined"
+                          TextFieldComponent={MaterialTextField}
+                          autoOk
+                          disableFuture
+                          minDate={new Date(new Date().setFullYear(1950))}
+                          format="dd MMMM yyyy"
+                          maxDate={new Date()}
+                        />)
+                      }
+                      name="plantDate"
+                      control={control}
+                      defaultValue=""
+                    />
+                  </MuiPickersUtilsProvider>
+                </div>
+              </div>
+              <div className={styles.formFieldLarge}>
+                <MaterialTextField
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: 'Species is required',
+                    },
+                  })}
+                  label="Tree Species"
+                  variant="outlined"
+                  name="species"
+                />
+                {errors.species && (
+                  <span className={styles.formErrors}>{errors.species.message}</span>
+                )}
+              </div>
+              <div className={styles.mapNote}>
+                {isMultiple ?
+                  <p>Draw a polygon on the map</p>
+                  : <p>Click on the map to mark a location</p>}
 
-        <h2 className={styles.title}>
-          <div
-            style={{ cursor: 'pointer', marginLeft: -10, paddingRight: 10 }}
-            onClick={() => {
-              router.push(`/t/${slug}`, undefined, { shallow: true });
-            }}
-          >
-            <BackButton />
-          </div>
-          <b> {t('me:registerTrees')} </b>
-        </h2>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel onClick={() => setActiveStep(index)}>{label}</StepLabel>
-              <StepContent>
-                {getStepContent(index)}
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
+              </div>
 
-      </div>
-      <div className={`${styles.locationMap}`}>
-        {isMultiple ?
-          <DrawMap setGeometry={setGeometry} />
-          :
-          <MapGL
-            {...viewport}
-            mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-            mapStyle='mapbox://styles/mapbox/streets-v11'
-            onViewportChange={_onViewportChange}
-            onClick={(event) => {
-              setplantLocation(event.lngLat);
-              setGeometry(
-                {
-                  type: "Point",
-                  coordinates: event.lngLat
+              <div className={`${styles.locationMap}`}>
+                {isMultiple ?
+                  <DrawMap setGeometry={setGeometry} countryBbox={countryBbox} />
+                  :
+                  <MapGL
+                    {...viewport}
+                    mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+                    mapStyle='mapbox://styles/mapbox/streets-v11'
+                    onViewportChange={_onViewportChange}
+                    onClick={(event) => {
+                      setplantLocation(event.lngLat);
+                      setGeometry(
+                        {
+                          type: "Point",
+                          coordinates: event.lngLat
+                        }
+                      );
+                      setViewPort({
+                        ...viewport,
+                        latitude: event.lngLat[1],
+                        longitude: event.lngLat[0],
+                        transitionDuration: 400,
+                        transitionInterpolator: new FlyToInterpolator(),
+                        transitionEasing: d3.easeCubic,
+                      });
+                    }}
+                  >
+                    {plantLocation ?
+                      <Marker
+                        latitude={plantLocation[1]}
+                        longitude={plantLocation[0]}
+                        offsetLeft={5}
+                        offsetTop={-16}
+                        style={{ left: '28px' }}
+                      >
+                        <div className={styles.marker}></div>
+                      </Marker>
+                      : null}
+                    <div className={styles.mapNavigation}>
+                      <NavigationControl showCompass={false} />
+                    </div>
+                  </MapGL>
                 }
-              );
-              setViewPort({
-                ...viewport,
-                latitude: event.lngLat[1],
-                longitude: event.lngLat[0],
-                transitionDuration: 400,
-                transitionInterpolator: new FlyToInterpolator(),
-                transitionEasing: d3.easeCubic,
-              });
-            }}
-          >
-            <Marker
-              latitude={plantLocation[1]}
-              longitude={plantLocation[0]}
-              offsetLeft={5}
-              offsetTop={-16}
-              style={{ left: '28px' }}
-            >
-              <div className={styles.marker}></div>
-            </Marker>
-            <div className={styles.mapNavigation}>
-              <NavigationControl showCompass={false} />
-            </div>
-          </MapGL>
-        }
+              </div>
+              {errorMessage ?
+                <p className={styles.formErrors}>{errorMessage}</p> : null
+              }
+              <div className={styles.nextButton}>
+                <div onClick={handleSubmit(submitRegisterTrees)} className={styles.continueButton}>  {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : 'Register'}</div>
+              </div>
+            </form>
+          </div>
+          : <SingleContribution {...ContributionProps} />}
       </div>
 
-
-    </div>
+    </>
   );
 }

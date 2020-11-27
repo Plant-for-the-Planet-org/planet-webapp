@@ -10,19 +10,27 @@ const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 
 interface Props {
     setGeometry: Function;
+    countryBbox: any;
 }
 
 const Map = ReactMapboxGl({
     accessToken: MAPBOX_TOKEN,
 });
 
-export default function MapComponent({ setGeometry
+export default function MapComponent({ setGeometry, countryBbox
 }: Props): ReactElement {
     const defaultMapCenter = [-28.5, 36.96];
     const defaultZoom = 1.4;
     const [viewport, setViewPort] = React.useState({
         height: '100%',
         width: '100%',
+        center: defaultMapCenter,
+        zoom: [defaultZoom],
+    });
+
+    const [viewport2, setViewPort2] = React.useState({
+        height: 400,
+        width: 700,
         center: defaultMapCenter,
         zoom: [defaultZoom],
     });
@@ -42,6 +50,23 @@ export default function MapComponent({ setGeometry
         }
         setGeometry(drawControlRef.current.draw.getAll());
     };
+
+    React.useEffect(() => {
+        if (countryBbox) {
+            const { longitude, latitude, zoom } = new WebMercatorViewport(
+                viewport2
+            ).fitBounds([
+                [countryBbox[0], countryBbox[1]],
+                [countryBbox[2], countryBbox[3]],
+            ]);
+            const newViewport = {
+                ...viewport,
+                center: [longitude, latitude],
+                zoom: [zoom],
+            };
+            setViewPort(newViewport);
+        }
+    }, [countryBbox]);
 
     // React.useEffect(()=>{},[]);
     // console.log(drawControlRef.current?.draw.getAll().features.length);

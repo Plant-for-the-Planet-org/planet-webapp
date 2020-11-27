@@ -2,26 +2,21 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/RegisterModal.module.scss';
 import AnimatedButton from '../../../../common/InputTypes/AnimatedButton';
 import { useDropzone } from 'react-dropzone';
-import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { deleteAuthenticatedRequest, postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 
 interface Props {
-    contributionDetail: any;
-    setContributionDetails: any;
+    contribution: any;
     contributionGUID: any;
-    setContributionGUID: any;
     session: any;
-    handleNext: Function;
-    errorMessage: any;
-    setErrorMessage: Function;
 }
 
-export default function UploadImages({ contributionDetails, setContributionDetails, contributionGUID, setContributionGUID, handleNext, session, errorMessage, setErrorMessage, }: Props): ReactElement {
-
+export default function UploadImages({ contributionGUID, session, contribution }: Props): ReactElement {
     const [uploadedImages, setUploadedImages] = React.useState([]);
     const [isUploadingData, setIsUploadingData] = React.useState(false);
     const [files, setFiles] = React.useState([]);
+    const [errorMessage, setErrorMessage] = React.useState(null);
 
     const onDrop = React.useCallback((acceptedFiles) => {
         acceptedFiles.forEach((file: any) => {
@@ -33,20 +28,15 @@ export default function UploadImages({ contributionDetails, setContributionDetai
                 uploadPhotos(event.target.result);
             }
         })
-
     }, [])
 
     React.useEffect(() => {
         // Fetch images of the project 
-        if (contributionGUID && session?.accessToken)
-            getAuthenticatedRequest(`/app/profile/contributions/${contributionGUID}?_scope=images`, session).then((result) => {
-                setUploadedImages(result.images)
-            })
-    }, [contributionGUID]);
+        setUploadedImages(contribution.contributionImages);
+    }, [contribution]);
 
     const uploadPhotos = (image: any) => {
         setIsUploadingData(true)
-
         const submitData = {
             "imageFile": image,
             "description": '',
@@ -57,7 +47,7 @@ export default function UploadImages({ contributionDetails, setContributionDetai
                 newUploadedImages.push(res)
                 setUploadedImages(newUploadedImages)
                 setIsUploadingData(false)
-                setErrorMessage('')
+                setErrorMessage(null)
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
@@ -65,13 +55,11 @@ export default function UploadImages({ contributionDetails, setContributionDetai
                 }
                 else {
                     setIsUploadingData(false)
-                    setErrorMessage(res.message)
+                    setErrorMessage('Error Occured')
+                    console.log(res.message)
                 }
-
             }
-
-
-        })
+        }).catch((e) => console.log(e));
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -80,12 +68,7 @@ export default function UploadImages({ contributionDetails, setContributionDetai
         onDrop: onDrop,
         onDropAccepted: () => {
             console.log('uploaded');
-
         },
-
-        // onFileDialogCancel: () => {
-        //     alert('no file selected')
-        // }
     });
 
     const deleteContributionImage = (id: any) => {
@@ -96,6 +79,7 @@ export default function UploadImages({ contributionDetails, setContributionDetai
             }
         })
     }
+
     return (
         <>
             {/* Change to field array of react hook form  */}
@@ -127,16 +111,13 @@ export default function UploadImages({ contributionDetails, setContributionDetai
                         className={styles.continueButton}
                     >
                         <input {...getInputProps()} />
-                Upload Photos
+                        {isUploadingData ? <div className={styles.spinner}></div> : 'Upload Photos'}
 
-              </AnimatedButton>
+                    </AnimatedButton>
                     <p style={{ marginTop: '18px' }}>
                         or drag here
                 </p>
                 </label>
-                <div className={styles.formFieldLarge}>
-                    <div onClick={handleNext} className={styles.continueButton}>Submit</div>
-                </div>
             </div>
         </>
     )
