@@ -84,7 +84,7 @@ export default function TpoProfile(props: any) {
           <h2>{t('me:treesPlanted')}</h2>
         </div>
         
-        {props.target ? props.target !== 0 && (
+        {props.target ? (
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
             <div className={treeCounterStyles.target}>
