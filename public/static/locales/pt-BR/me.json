@@ -5,5 +5,9 @@
   "registerTrees": "Registrar Árvores",
   "redeem": "Resgate",
   "myForest": "Minha Floresta",
-  "giftToGiftee": "Presente para ${gifteeName}"
+  "giftToGiftee": "Presente para ${gifteeName}",
+  "settingManageProject": "Gerenciar Projetos",
+  "userTree": "Registrar Árvores",
+  "logout": "Sair",
+  "addTarget": "Adicionar Meta"
 }

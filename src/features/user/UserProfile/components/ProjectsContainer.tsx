@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 const { useTranslation } = i18next;
 
-const ProjectSnippet = dynamic(() => import('./../../../public/Donations/components/ProjectSnippet'), {
+const ProjectSnippet = dynamic(() => import('../../../projects/components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
@@ -70,7 +70,10 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             {projects.map((project: any) => {
               return (
                 <div className={styles.singleProject} key={project.properties.id}>
-                  <ProjectSnippet key={project.properties.id} project={project} directGift={null} setDirectGift={null} editMode={authenticatedType === 'private' ? true : false} />
+                  <ProjectSnippet 
+                    key={project.properties.id} 
+                    project={project.properties}
+                    editMode={authenticatedType === 'private' ? true : false} />
                 </div>
               );
             })}

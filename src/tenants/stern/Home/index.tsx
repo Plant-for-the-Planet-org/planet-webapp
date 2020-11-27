@@ -46,7 +46,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
           Organisation Plant-For-The-Planet ins Leben gerufen haben. Pro
           verkauftem Exemplar der #KeinGradWeiter-Ausgabe sowie für jeden
           Besucher auf{' '}
-          <a className="planet-links" href="https://stern.de" target="_blank">
+          <a className="planet-links" href="https://stern.de" target="_blank" rel="noopener noreferrer">
             stern.de
           </a>{' '}
           am Weltklimatag spendete die Redaktion des STERN einen Baum – und

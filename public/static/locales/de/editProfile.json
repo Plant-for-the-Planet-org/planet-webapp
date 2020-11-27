@@ -8,5 +8,7 @@
   "website": "Website",
   "websiteError": "Ungültige Website-URL",
   "websiteRequired": "Bitte geben Sie eine gültige Website-URL ein",
-  "save": "Speichern"
+  "save": "Speichern",
+  "orgNameValidation": "Bitte den Namen der Organisation eingeben",
+  "addPhoto": "Ein Titelbild hinzufügen"
 }
