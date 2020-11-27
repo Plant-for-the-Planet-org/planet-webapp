@@ -40,8 +40,7 @@ const socialIconAnimate = {
 };
 const { useTranslation } = i18next;
 export default function UserProfileOptions({
-  userprofile,
-  handleTextCopiedSnackbarOpen,
+  userprofile
 }: any) {
   const { t } = useTranslation(['me']);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
