@@ -12,7 +12,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 const {useTranslation} = i18next;
 export default function UserProfileOptions({ 
   userprofile,
-  handleTextCopiedSnackbarOpen
  }: any) {
 
   const {t} = useTranslation(['me']);
@@ -34,7 +33,6 @@ export default function UserProfileOptions({
     } else {
       // in desktop
       navigator.clipboard.writeText('Dummy text copied to clipboard!');
-      handleTextCopiedSnackbarOpen();
     }
   };
 

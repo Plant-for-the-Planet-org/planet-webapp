@@ -5,9 +5,8 @@ import UserProfileOptions from './UserProfileOptions';
 
 export default function UserInfo({
   userprofile,
-  handleTextCopiedSnackbarOpen,
   authenticatedType,
-  handleAddTargetModalOpen
+  handleAddTargetModalOpen,
 }: any) {
   return (
     <div className={styles.landingContent}>
@@ -15,7 +14,7 @@ export default function UserInfo({
         handleAddTargetModalOpen={handleAddTargetModalOpen}
         authenticatedType={authenticatedType}
         target={userprofile.score.target}
-        planted={userprofile.score.personal+userprofile.score.received}
+        planted={userprofile.score.personal + userprofile.score.received}
       />
 
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
@@ -23,13 +22,9 @@ export default function UserInfo({
       <p className={styles.treeCounterDescription}>{userprofile.bio}</p>
 
       {/* three icons in a row */}
-      {
-        authenticatedType === 'private' &&
-        <UserProfileOptions
-              userprofile={userprofile}
-              handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-        />
-      }
+      {authenticatedType === 'private' && (
+        <UserProfileOptions userprofile={userprofile} />
+      )}
     </div>
   );
 }

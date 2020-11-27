@@ -4,8 +4,6 @@ import styles from '../styles/UserProfile.module.scss';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsContainer from '../components/Settings';
 
@@ -15,23 +13,6 @@ export default function IndividualProfile({
   forceReload,
   authenticatedType,
 }: any) {
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false
-  );
-
-  const handleTextCopiedSnackbarOpen = () => {
-    setTextCopiedSnackbarOpen(true);
-  };
-  const handleTextCopiedSnackbarClose = (
-    event?: React.SyntheticEvent,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setTextCopiedSnackbarOpen(false);
-  };
-
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
   const handleSettingsModalClose = () => {
@@ -80,6 +61,7 @@ export default function IndividualProfile({
               : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
           }
         >
+          {/* Open setting component */}
           {settingsModalOpen && (
             <SettingsContainer
               userprofile={userprofile}
@@ -96,7 +78,6 @@ export default function IndividualProfile({
           <UserInfo
             userprofile={userprofile}
             authenticatedType={authenticatedType}
-            handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
             handleAddTargetModalOpen={handleAddTargetModalOpen}
           />
         </LandingSection>
@@ -108,22 +89,6 @@ export default function IndividualProfile({
           </div>
         )}
       </main>
-
-      {/* snackbar for showing text copied to clipboard */}
-      <Snackbar
-        open={textCopiedsnackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleTextCopiedSnackbarClose}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={handleTextCopiedSnackbarClose}
-          severity="success"
-        >
-          Text Copied to Clipboard!
-        </MuiAlert>
-      </Snackbar>
 
       {/* add target modal */}
       <AddTargetModal
