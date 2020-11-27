@@ -4,7 +4,6 @@ import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
-import storeConfig from '../src/utils/storeConfig';
 import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
 
 interface Props {
@@ -31,9 +30,6 @@ export default function Donate({
   const router = useRouter();
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
-  React.useEffect(() => {
-    storeConfig();
-  }, []);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');

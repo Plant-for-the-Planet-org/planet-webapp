@@ -16,7 +16,7 @@
       "API_ENDPOINT": {
         "required": true,
         "description": "API Endpoint",
-        "value":"app-staging.plant-for-the-planet.org"
+        "value":"app.plant-for-the-planet.org"
       },
         "CDN_URL": {
             "required": true,
@@ -27,7 +27,7 @@
             "required": true,
             "description": "Memory for a Node Worker (128 is recommended)",
             "value":"128"
-      }, 
+      },
         "NEXT_PUBLIC_FEATURED_LIST": {
             "required": false,
             "description": "Enable Featured list tab"
@@ -56,31 +56,14 @@
             "required": false,
             "description": "Auth0 client ID"
           },
-        "AUTH0_CUSTOM_DOMAIN": {
-          "required": false,
-          "description": "Auth0 custom domain",
-          "value":"accounts.plant-for-the-planet.org"
-        },
         "NEXTAUTH_URL": {
             "required": false,
             "description": "Next Auth URL is required to enable Login Feature"
-          },
-        "SENTRY_ORG": {
-            "required": false,
-            "description": "Sentry Organization"
-          },
-        "SENTRY_PROJECT": {
-            "required": false,
-            "description": "Sentry Project"
           },
           "SENTRY_AUTH_TOKEN": {
             "required": false,
             "description": "Sentry Auth Token"
           },
-          "NEXT_PUBLIC_SENTRY_DSN": {
-            "required": false,
-            "description": "Sentry DSN"
-          }
     },
     "formation": {
       "web": {

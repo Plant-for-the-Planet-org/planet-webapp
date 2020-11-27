@@ -103,7 +103,7 @@ export default function Footer() {
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {FooterLinks.map((link) => {
                 return (
-                  <a key={link.title} href={link.link} target="_blank">
+                  <a key={link.title} href={link.link} target="_blank" rel="noopener noreferrer">
                     <p className={styles.footer_links}>{link.title}</p>
                   </a>
                 );
@@ -112,7 +112,7 @@ export default function Footer() {
           </div>
           <div className={styles.logo_container}>
             <div className={styles.pfp_logo}>
-              <a href="http://www.plant-for-the-planet.org/" target="_blank">
+              <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
                 <img
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
                   alt={t('common:about_pftp')}
