@@ -91,5 +91,15 @@
   "backToSpending": "Zurück zu Projektausgaben",
   "pendingReview": "Ausstehende Überprüfung",
   "submitForReview": "Zur Überprüfung einreichen",
-  "addProject": "Projekt hinzufügen"
+  "addProject": "Projekt hinzufügen",
+  "abandonment": "Aufgabe",
+  "survivalRate": "Überlebensrate",
+  "survivalRateInfo": "Prozentsatz von Bäumen, die das erste Jahr nach der Pflanzung überleben.",
+  "employees": "Angestellte",
+  "siteOwnership": "Standortbesitz",
+  "longTermProtection": "Langzeitschutz",
+  "externalCertifications": "Externe Zertifizierungen",
+  "projectSpendingFinancial": "Finanzielle Projektausgaben",
+  "issueDate": "Ausgabedatum",
+  "acquisitionYear": "Erwerbsjahr"
 }
