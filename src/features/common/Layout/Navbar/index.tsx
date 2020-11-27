@@ -36,46 +36,14 @@ export default function NavbarComponent(props: any) {
   const [token, setToken] = React.useState('')
   const [userInfo, setUserInfo] = React.useState({})
 
-  // This function handles the errors related to changes in the userinfo.
-  // If the userInfo has no errors, it will set the user info.
-  function handleUserInfoChange(userInfo) {
-    if (userInfo.code) {
-      if (userInfo.code === 303) {
-        if (typeof window !== 'undefined') {
-          router.push('/complete-signup');
-        }
-      }
-      else if (userInfo.code === 401) {
-        logout();
-        if (typeof window !== 'undefined') {
-          router.push('/');
-        }
-      }
-      else {
-        logout();
-        if (typeof window !== 'undefined') {
-          router.push('/404');
-        }
-      }
-    }
-    else {
-      setUserInfo(userInfo);
-    }
-  }
-
-  // This function fetches the userInfo
-  async function getUserInfoWithToken(token) {
-    let userInfo;
-    userInfo = await getUserInfo(token)
-    handleUserInfoChange(userInfo)
-  }
-
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
-      getUserInfoWithToken(token);
+      let userInfo;
+      userInfo = await getUserInfo(token, router, logout);
+      setUserInfo(userInfo);
     }
     if (isAuthenticated) {
       loadFunction()
@@ -83,10 +51,12 @@ export default function NavbarComponent(props: any) {
   }, [isAuthenticated])
 
   // This function controls the path for the user when they click on Me
-  const gotoUserPage = () => {
+  async function gotoUserPage (){
     if (userInfo && isAuthenticated) {
       if (!userInfo.slug) {
-        getUserInfoWithToken(token);
+        let userInfo;
+        userInfo = await getUserInfo(token, router, logout)
+        setUserInfo(userInfo);
       }
       if (typeof window !== 'undefined') {
         router.push(`/t/${userInfo.slug}`);
@@ -97,11 +67,6 @@ export default function NavbarComponent(props: any) {
       // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect()
     }
-  }
-
-  const logoutUser = () => {
-    localStorage.removeItem('userInfo');
-    logout();
   }
 
   const { toggleTheme } = React.useContext(ThemeContext);
@@ -192,7 +157,7 @@ export default function NavbarComponent(props: any) {
                           <Globe color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
@@ -209,7 +174,7 @@ export default function NavbarComponent(props: any) {
                         )}
                     </div>
                     {ready ? (
-                      <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -229,7 +194,7 @@ export default function NavbarComponent(props: any) {
                         )}
                     </div>
                     {ready ? (
-                      <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -244,7 +209,7 @@ export default function NavbarComponent(props: any) {
                       <UserProfileIcon />
                     </div>
                     {ready ? (
-                      <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -254,8 +219,6 @@ export default function NavbarComponent(props: any) {
 
             </div>
           ))}
-
-          <button onClick={logoutUser}>Log Out</button>
 
           {/* <div
             className={`${styles.theme_icon} ${styles.link_container}`}
@@ -333,7 +296,7 @@ export default function NavbarComponent(props: any) {
                           <Globe color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
@@ -352,7 +315,7 @@ export default function NavbarComponent(props: any) {
                           <Donate color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>
@@ -371,7 +334,7 @@ export default function NavbarComponent(props: any) {
                           <Leaderboard color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={ router.pathname === item.onclick ? styles.active_icon : ''}>
+                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
                       {t('common:' + item.title)}
                     </p>
                   </div>

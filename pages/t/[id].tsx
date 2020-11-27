@@ -7,13 +7,12 @@ import Footer from '../../src/features/common/Layout/Footer';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import {
-  getUserExistsInDB,
   setUserExistsInDB,
   removeUserExistsInDB,
-  getUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
-import {getAccountInfo } from '../../src/utils/auth0/apiRequests'
+import { getAccountInfo } from '../../src/utils/auth0/apiRequests'
 import { useAuth0 } from '@auth0/auth0-react';
+import { getUserInfo } from '../../src/utils/auth0/userInfo';
 
 interface Props {
   initialized: Boolean;
@@ -22,7 +21,7 @@ interface Props {
 export default function PublicUser(initialized: Props) {
 
   // Whether public or private
-  const [authenticatedType,setAuthenticatedType] = React.useState('');
+  const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   const [userprofile, setUserprofile] = React.useState();
 
@@ -37,17 +36,17 @@ export default function PublicUser(initialized: Props) {
     getAccessTokenSilently,
     logout
   } = useAuth0();
-    // This effect is used to get and update UserInfo if the isAuthenticated changes
-    React.useEffect(() => {
-      async function loadFunction() {
-        const token = await getAccessTokenSilently();
-        setToken(token);
-      }
-      if (isAuthenticated && !isLoading) {
-        loadFunction()
-      }
-    }, [isAuthenticated,isLoading])
-  
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated && !isLoading) {
+      loadFunction()
+    }
+  }, [isAuthenticated, isLoading])
+
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
   const PublicUserProps = {
@@ -71,14 +70,17 @@ export default function PublicUser(initialized: Props) {
   useEffect(() => {
     async function loadUserData() {
       if (typeof Storage !== 'undefined') {
-        const userExistsInDB = getUserExistsInDB();
-
-        const currentUserSlug = getUserInfo() && getUserInfo().slug ? getUserInfo().slug : null ;
-
+        let token = null; 
+        if(isAuthenticated){
+          token = await getAccessTokenSilently();
+        }
+        let userInfo;
+        userInfo = await getUserInfo(token, router, logout)
+        let currentUserSlug = userInfo.slug ? userInfo.slug : null;
+        
         // some user logged in and slug matches -> private profile
-        if (!isLoading && token && userExistsInDB && currentUserSlug === slug) {
+        if (!isLoading && token && currentUserSlug === slug) {          
           try {
-            
             const res = await getAccountInfo(token)
             if (res.status === 200) {
               // console.log('in 200-> user exists in our DB');
@@ -92,7 +94,7 @@ export default function PublicUser(initialized: Props) {
               if (typeof window !== 'undefined') {
                 router.push('/complete-signup');
               }
-            } else if (res.status === 401){
+            } else if (res.status === 401) {
               // in case of 401 - invalid token: signIn()
               // console.log('in 401-> unauthenticated user / invalid token')
               logoutUser();
@@ -102,7 +104,7 @@ export default function PublicUser(initialized: Props) {
               // any other error
               // console.log('in else -> other error')
             }
-          } catch (e) {}
+          } catch (e) { }
         } else {
           //no user logged in or slug mismatch -> public profile
           const newPublicUserprofile = await getRequest(
@@ -118,8 +120,8 @@ export default function PublicUser(initialized: Props) {
     if (ready && !isLoading) {
       loadUserData();
     }
-  }, [ready, isLoading, forceReload]);
-  
+  }, [ready, isLoading, forceReload, isAuthenticated]);
+
   function getUserProfile() {
     switch (userprofile?.type) {
       case 'tpo':
