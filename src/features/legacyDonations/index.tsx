@@ -12,6 +12,8 @@ import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrenc
 import Sugar from 'sugar';
 import { payDonation } from '../donations/components/treeDonation/PaymentFunctions';
 import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress';
+import ThankYou from '../donations/screens/ThankYou';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -27,10 +29,10 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     const [paymentSetup, setPaymentSetup] = React.useState();
 
     const [currency, setCurrency] = React.useState(paymentData.currency);
-    const [treeCost, setTreeCost] = React.useState(paymentData.treeCost);
+    const [treeCost, setTreeCost] = React.useState();
+    const [treeCount, setTreeCount] = React.useState(paymentData.treeCount);
 
-    const [totalAmount, setTotalAmount] = React.useState(paymentData.amount)
-    const treeCount = paymentData.treeCount;
+    const [isDonationComplete, setIsDonationComplete] = React.useState(false)
 
     const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
     const [paymentError, setPaymentError] = React.useState('');
@@ -67,7 +69,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     }, [paymentData, country]);
 
     const onPaymentFunction = (paymentMethod:any) => {
-        console.log('Google/apple pay');
+        setIsPaymentProcessing(true);
         const payDonationData = {
             paymentProviderRequest: {
               account: paymentSetup.gateways.stripe.account,
@@ -100,6 +102,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                 setPaymentError(res.message);
               } else if (res.paymentStatus === 'success') {
                 setIsPaymentProcessing(false);
+                setIsDonationComplete(true);
               } else if (res.status === 'action_required') {
                 const clientSecret = res.response.payment_intent_client_secret;
                 const donationID = res.id;
@@ -128,6 +131,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                       payDonation(payDonationData, donationID, null).then((res) => {
                         if (res.paymentStatus === 'success') {
                           setIsPaymentProcessing(false);
+                          setIsDonationComplete(true);
                         } else {
                           setIsPaymentProcessing(false);
                           setPaymentError(res.error ? res.error.message : res.message);
@@ -143,7 +147,44 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
               setPaymentError(error.message);
             }); 
     }
-    return isPaymentProcessing ? (
+
+    const router = useRouter();
+    const onClose = ()=>{
+        if (typeof window !== 'undefined') {
+            router.push('/');
+          }
+    }
+    let isGift = false;
+    let giftDetails = {
+        recipientName:null
+    };
+    if(paymentData.giftRecipient || paymentData.supportedTreecounterName){
+        isGift = true;
+        if(paymentData.giftRecipient){
+            giftDetails.recipientName = paymentData.giftRecipient;
+        }
+        if(paymentData.supportedTreecounterName){
+            giftDetails.recipientName = paymentData.supportedTreecounterName;
+        }
+    }
+    const project = {
+        name:paymentData.plantProjectName,
+        country:''
+    }
+    const ThankYouProps = {
+        project,
+        treeCount,
+        treeCost,
+        currency,
+        contactDetails: {},
+        isGift,
+        giftDetails,
+        onClose,
+        paymentType,
+        setDonationStep:null
+      };
+    
+    return !isDonationComplete ?  isPaymentProcessing ? (
         <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
       ) : (
         <div className={styles.container}>
@@ -172,7 +213,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
 
             <div className={styles.finalTreeCount}>
                 <div className={styles.totalCost}>
-                    {getFormatedCurrency(i18n.language, currency, totalAmount)}
+                    {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
                     {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
                 </div>
                 <div className={styles.totalCostText}>
@@ -210,6 +251,8 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                     )}
             </Elements>
         </div>
+    ) : (
+        <ThankYou {...ThankYouProps}  />
     )
 }
 
