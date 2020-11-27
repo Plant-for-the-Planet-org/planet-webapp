@@ -91,7 +91,7 @@ export default function UploadImages({ contributionGUID, session, contribution }
                                 <div key={image.id} className={styles.formFieldHalf}>
                                     <div className={styles.uploadedImageContainer}>
                                         <img src={getImageUrl('contribution', 'medium', image.image)} />
-                                        <div className={styles.uploadedImageOverlay}></div>
+                                        {/* <div className={styles.uploadedImageOverlay}></div> */}
                                         <div className={styles.uploadedImageButtonContainer}>
                                             <div onClick={() => deleteContributionImage(image.id)}>
                                                 <DeleteIcon />
