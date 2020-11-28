@@ -45,35 +45,45 @@ var runAnalysis = function (req, res) {
       console.log('Earth Engine library initialized.');
       //Start Server
       try {
-        console.log('request');
-        // ... run analysis ...
+        console.log('request - ', req.body);
         const sitePolygon = ee.FeatureCollection(req.body);
-        var evi_2015 = ee
-          .ImageCollection('LANDSAT/LC08/C01/T1_ANNUAL_EVI')
-          .filterDate('2015-01-01', '2015-10-31');
-        var evi_2020 = ee
-          .ImageCollection('LANDSAT/LC08/C01/T1_ANNUAL_EVI')
-          .filterDate('2020-01-01', '2020-10-31');
+        // ... run analysis ...
+        /**
+         * Function to mask clouds based on the pixel_qa band of Landsat 8 SR data.
+         * @param {ee.Image} image input Landsat 8 SR image
+         * @return {ee.Image} cloudmasked Landsat 8 image
+         */
+        function maskL8sr(image) {
+          // Bits 3 and 5 are cloud shadow and cloud, respectively.
+          var cloudShadowBitMask = 1 << 3;
+          var cloudsBitMask = 1 << 5;
+          // Get the pixel QA band.
+          var qa = image.select('pixel_qa');
+          // Both flags should be set to zero, indicating clear conditions.
+          var mask = qa
+            .bitwiseAnd(cloudShadowBitMask)
+            .eq(0)
+            .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+          return image.updateMask(mask);
+        }
 
-        var evi_2015_clipped = evi_2015
-          .filterBounds(sitePolygon)
-          .mean()
-          .clip(sitePolygon)
-          .rename('EVI');
-        var evi_2020_clipped = evi_2020
-          .filterBounds(sitePolygon)
-          .mean()
-          .clip(sitePolygon)
-          .rename('EVI');
+        var dataset = ee
+          .ImageCollection('LANDSAT/LC08/C01/T1_SR')
+          .filterDate('2020-01-01', '2020-12-31')
+          .map(maskL8sr);
 
-        //un masked
-        var evi_difference = evi_2015_clipped.subtract(evi_2020_clipped);
+        var image = dataset.median().clip(sitePolygon);
 
-        const mapId = await evi_difference.getMap({
-          min: -1,
-          max: 1,
-          palette: ['FFFFFF', 'FFFFFF', '00FF00'],
-        });
+        var visParams = {
+          bands: ['B4', 'B3', 'B2'],
+          min: 0,
+          max: 3000,
+          gamma: 1.4,
+        };
+        // Map.addLayer(dataset.median(), visParams);
+
+        const mapId = await image.getMap(visParams);
+
         console.log('response sent - ' + mapId.urlFormat);
         return res.status(200).json({
           data: mapId.urlFormat,

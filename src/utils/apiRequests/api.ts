@@ -125,9 +125,9 @@ export async function putAuthenticatedRequest(
   return result;
 }
 
-export async function getVegetationChange(data: any) {
+export async function getEarthEngineLayer(url: any, data: any) {
   let result;
-  const res = await fetch('/api/vegetation-change', {
+  const res = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {

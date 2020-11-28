@@ -20,7 +20,7 @@ import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './maps/ExploreInfoModal';
 import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
-import { getVegetationChange } from '../../../utils/apiRequests/api';
+import { getEarthEngineLayer } from '../../../utils/apiRequests/api';
 import VegetationChange from './maps/VegetationChange';
 
 interface mapProps {
@@ -66,6 +66,8 @@ export default function MapboxMap({
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
   const [siteVegetationChange, setSiteVegetationChange] = useState(null);
+  const [siteImagery, setSiteImagery] = useState(null);
+  const [selectedOption, setSelectedState] = React.useState('imagery');
 
   const [mapState, setMapState] = useState({
     mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
@@ -129,10 +131,20 @@ export default function MapboxMap({
     }
   };
 
+  const VegetationChangeProps = {
+    selectedOption, setSelectedState, siteVegetationChange, siteImagery
+  }
+
   async function getSiteVegetationChange(data: any) {
-    const siteVgData = await getVegetationChange(data);
+    const siteVgData = await getEarthEngineLayer('/api/vegetation-change', data);
     siteVgData ? setSiteVegetationChange(siteVgData.data) : null;
     console.log(siteVgData);
+  }
+
+  async function getSiteImagery(data: any) {
+    const siteImageryData = await getEarthEngineLayer('/api/landsat-imagery', data);
+    siteImageryData ? setSiteImagery(siteImageryData.data) : null;
+    console.log(siteImageryData);
   }
 
 
@@ -215,8 +227,9 @@ export default function MapboxMap({
             };
 
             getSiteVegetationChange(geoJson);
+            getSiteImagery(geoJson);
             setViewPort(newViewport);
-            setMapState(newMapState);
+            // setMapState(newMapState);
           }
         } else {
           const newMapState = {
@@ -467,7 +480,9 @@ export default function MapboxMap({
           </Popup>
         )}
 
-        <VegetationChange siteVegetationChange={siteVegetationChange} />
+        {showSingleProject ?
+          <VegetationChange {...VegetationChangeProps} />
+          : null}
 
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
