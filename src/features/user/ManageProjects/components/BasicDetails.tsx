@@ -4,7 +4,8 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker, NavigationControl } from 'react-map-gl';
+import MapGL, { Marker, NavigationControl, FlyToInterpolator } from 'react-map-gl';
+import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
@@ -464,7 +465,9 @@ export default function BasicDetails({
                   ...viewport,
                   latitude: event.lngLat[1],
                   longitude: event.lngLat[0],
-                  zoom: 7,
+                  transitionDuration: 400,
+                  transitionInterpolator: new FlyToInterpolator(),
+                  transitionEasing: d3.easeCubic,
                 });
                 setValue('projectCoords', latLong);
               }}

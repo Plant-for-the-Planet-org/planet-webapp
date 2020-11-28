@@ -235,7 +235,7 @@ export default function ProjectSites({
                       {...viewport}
                       center={[longitude, latitude]}
                       zoom={[zoom]}
-                      style="mapbox://styles/mapbox/satellite-v9" // eslint-disable-line
+                      style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
                       containerStyle={{
                         height: 200,
                         width: 320,
