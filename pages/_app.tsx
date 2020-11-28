@@ -2,6 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
@@ -32,6 +33,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   });
 }
+
+const onRedirectCallback = (appState) => {
+  // Use Next.js's Router.replace method to replace the url
+  Router.replace(appState?.returnTo || '/');
+};
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
@@ -90,6 +96,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       clientId={process.env.AUTH0_CLIENT_ID}
       redirectUri={process.env.NEXTAUTH_URL}
       cacheLocation={"localstorage"}
+      onRedirectCallback={onRedirectCallback}
     >
       <ThemeProvider>
         <CssBaseline />

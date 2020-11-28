@@ -157,7 +157,7 @@ export default function CompleteSignup() {
 
   const logoutUser = () => {
     localStorage.removeItem('userInfo');
-    logout();
+    logout({returnTo:process.env.NEXTAUTH_URL});
   }
 
   if (
