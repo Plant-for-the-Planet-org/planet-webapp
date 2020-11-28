@@ -37,22 +37,6 @@ function PaymentPage({ initialized }: Props) {
 
     }, [router.query.code]);
 
-    let projectDetails = {};
-
-    // Need to pass - 
-    // treeCost
-    // currency
-    // project id (GUID)
-    // taxDeductionCountries Array
-    // project name
-    // project tpo name
-    // country
-
-    // donation id 
-    // paymentSetup.gateways.stripe.account
-    // paymentMethod.id (generated from the stripe card)
-
-    console.log('paymentData', paymentData);
     return paymentData ? (
         <>
         <div className={styles.donationPaymentSection}>

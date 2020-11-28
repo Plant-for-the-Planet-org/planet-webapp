@@ -214,9 +214,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
             <div className={styles.finalTreeCount}>
                 <div className={styles.totalCost}>
                { !isPaymentOptionsLoading ? getFormatedCurrency(i18n.language, currency, treeCount * treeCost) : null}
-                    
-                    {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
-                </div>
+                 </div>
                 <div className={styles.totalCostText}>
                     {t('donate:fortreeCountTrees', {
                         treeCount: Sugar.Number.format(Number(treeCount)),
