@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../styles/StepForm.module.scss';
@@ -123,6 +123,7 @@ export default function MapComponent({
             uncombine_features: false,
           }}
         />
+        <ZoomControl position='bottom-right' />
       </Map>
       <Dropzone
         accept={['.geojson', '.kml']}
