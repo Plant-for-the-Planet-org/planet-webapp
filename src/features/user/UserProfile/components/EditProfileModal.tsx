@@ -3,7 +3,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow'
 import { useDropzone } from 'react-dropzone';
 import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
@@ -94,7 +94,8 @@ export default function EditProfileModal({
 
   // the form values
   const [severity, setSeverity] = useState('success')
-  const [snackbarMessage, setSnackbarMessage] = useState("OK")
+  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const watchIsPrivate = watch('isPrivate');
 
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
@@ -292,9 +293,9 @@ export default function EditProfileModal({
                 defaultValue={country}
                 onChange={setCountry}
                 label={t('donate:country')}
-                name="country"
+                name="editProfile"
               />
-              {errors.country && (
+              {errors.editProfile && (
                 <span className={styles.formErrors}>
                   {t('donate:countryRequired')}
                 </span>
@@ -304,9 +305,10 @@ export default function EditProfileModal({
             <div className={styles.isPrivateAccountDiv}>
               <div>
                 <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
+                {watchIsPrivate && 
                 <div className={styles.isPrivateAccountText}>
                   {t('editProfile:privateAccountTxt')}
-                </div>
+                </div>}
               </div>
               <Controller
                 name="isPrivate"
@@ -347,9 +349,10 @@ export default function EditProfileModal({
                 variant="outlined"
                 multiline
                 name="bio"
-                inputRef={register()}
+                inputRef={register({
+                  maxLength: 300
+                })}
               />
-
             </div>
             {errors.bio && (
               <span className={styles.formErrors}>

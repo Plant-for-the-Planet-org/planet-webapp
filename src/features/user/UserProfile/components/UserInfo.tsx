@@ -1,5 +1,4 @@
 import React from 'react';
-import ReadMoreReact from 'read-more-react';
 import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
@@ -8,7 +7,6 @@ import trimwords from '../../../../utils/TruncateText';
 
 export default function UserInfo({
   userprofile,
-  handleTextCopiedSnackbarOpen,
   authenticatedType,
   handleAddTargetModalOpen,
 }: any) {
@@ -24,7 +22,7 @@ export default function UserInfo({
         handleAddTargetModalOpen={handleAddTargetModalOpen}
         authenticatedType={authenticatedType}
         target={userprofile.score.target}
-        planted={userprofile.score.personal+userprofile.score.received}
+        planted={userprofile.score.personal + userprofile.score.received}
       />
 
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
@@ -43,7 +41,6 @@ export default function UserInfo({
       {authenticatedType === 'private' && (
         <UserProfileOptions
           userprofile={userprofile}
-          handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
         />
       )}
     </div>
