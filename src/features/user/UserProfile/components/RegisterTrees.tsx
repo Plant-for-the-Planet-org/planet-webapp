@@ -122,42 +122,46 @@ export default function RegisterTrees({ slug, session
   }
 
   const submitRegisterTrees = (data: any) => {
-    if (geometry) {
-      setIsUploadingData(true)
-      const submitData = {
-        treeCount: data.treeCount,
-        treeSpecies: data.species,
-        plantDate: new Date(data.plantDate),
-        geometry: geometry
-      }
-      postAuthenticatedRequest(`/app/contributions`, submitData, session).then(
-        (res) => {
-          if (!res.code) {
-            console.log(res);
-            setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res)
-            setIsUploadingData(false);
-            setErrorMessage(null);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
+    if (data.treeCount < 10000000) {
+      if (geometry && (geometry.type === 'Point' || geometry.length >= 1)) {
+        setIsUploadingData(true)
+        const submitData = {
+          treeCount: data.treeCount,
+          treeSpecies: data.species,
+          plantDate: new Date(data.plantDate),
+          geometry: geometry
+        }
+        postAuthenticatedRequest(`/app/contributions`, submitData, session).then(
+          (res) => {
+            if (!res.code) {
+              console.log(res);
+              setErrorMessage('');
+              setContributionGUID(res.id);
+              setContributionDetails(res)
               setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              setRegistered(true);
+              // router.push('/c/[id]', `/c/${res.id}`);
             } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              if (res.code === 404) {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              } else {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              }
             }
           }
-        }
-      );
+        );
 
-      // handleNext();
+        // handleNext();
+      } else {
+        setErrorMessage('select location on map');
+      }
     } else {
-      setErrorMessage('select location on map');
+      setErrorMessage("Something went wrong. Please contact support@plant-for-the-planet.org");
+      console.log(errorMessage);
     }
   }
 
@@ -196,11 +200,10 @@ export default function RegisterTrees({ slug, session
                         value: true,
                         message: 'Number of Trees is required',
                       },
-                      validate: (value) => parseInt(value, 10) >= 1 && parseInt(value, 10) <= 50,
+                      validate: (value) => parseInt(value, 10) >= 1,
                     })}
                     onInput={(e) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                      e.target.value = e.target.value > 50 ? 50 : e.target.value;
                     }}
                     onChange={onTreeCountChange}
                     label="Number of Trees"
@@ -304,9 +307,11 @@ export default function RegisterTrees({ slug, session
                   </MapGL>
                 }
               </div>
-              {errorMessage ?
-                <p className={styles.formErrors}>{errorMessage}</p> : null
-              }
+
+              {/* {errorMessage !== '' ? */}
+              <div className={`${styles.formFieldLarge} ${styles.center}`}><p className={styles.formErrors}>{`${errorMessage}`}</p></div>
+              {/* : null
+              } */}
               <div className={styles.nextButton}>
                 <div onClick={handleSubmit(submitRegisterTrees)} className={styles.continueButton}>  {isUploadingData ? (
                   <div className={styles.spinner}></div>

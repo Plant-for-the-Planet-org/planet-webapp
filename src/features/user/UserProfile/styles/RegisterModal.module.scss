@@ -334,6 +334,21 @@
   }
 }
 
+.formErrors {
+  // position: absolute;
+  font-family: $primaryFontFamily;
+  font-size: 14px;
+  color: #e74c3c;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+  text-align: center;
+}
+
+.center {
+  justify-content: center;
+}
+
 // Loader for Buttons
 .spinner {
   border: 2px solid #f3f3f3;

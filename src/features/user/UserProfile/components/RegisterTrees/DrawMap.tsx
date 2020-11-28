@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
@@ -36,19 +36,23 @@ export default function MapComponent({ setGeometry, countryBbox
     });
 
     const drawControlRef = React.useRef();
-    const [drawPolygon, setDrawPolygon] = React.useState(true);
-    console.log(drawPolygon);
     const onDrawCreate = ({ features }: any) => {
         console.log(features);
-        // setDrawPolygon(false);
-        if (drawControlRef.current?.draw.getAll().features.length < 1) {
-            console.log('no polygon');
-            setDrawPolygon(true);
-        } else {
-            setDrawPolygon(false);
-            console.log('1 polygon');
+        if (drawControlRef.current) {
+            setGeometry(drawControlRef.current.draw.getAll());
         }
-        setGeometry(drawControlRef.current.draw.getAll());
+    };
+    const onDrawUpdate = ({ features }: any) => {
+        console.log(features);
+        if (drawControlRef.current) {
+            setGeometry(drawControlRef.current.draw.getAll());
+        }
+    };
+    const onDrawDelete = ({ features }: any) => {
+        console.log(features);
+        if (drawControlRef.current) {
+            setGeometry(drawControlRef.current.draw.getAll());
+        }
     };
 
     React.useEffect(() => {
@@ -68,12 +72,6 @@ export default function MapComponent({ setGeometry, countryBbox
         }
     }, [countryBbox]);
 
-    // React.useEffect(()=>{},[]);
-    // console.log(drawControlRef.current?.draw.getAll().features.length);
-    const onDrawUpdate = ({ features }: any) => {
-        console.log(features);
-    };
-
     return (
         <div>
             <Map
@@ -88,16 +86,18 @@ export default function MapComponent({ setGeometry, countryBbox
                     ref={drawControlRef}
                     onDrawCreate={onDrawCreate}
                     onDrawUpdate={onDrawUpdate}
+                    onDrawDelete={onDrawDelete}
                     on
                     controls={{
                         point: false,
                         line_string: false,
-                        polygon: drawPolygon,
+                        polygon: true,
                         trash: true,
                         combine_features: false,
                         uncombine_features: false,
                     }}
                 />
+                <ZoomControl position='bottom-right' />
             </Map>
 
         </div>
