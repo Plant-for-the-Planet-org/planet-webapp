@@ -89,6 +89,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       domain={process.env.AUTH0_CUSTOM_DOMAIN}
       clientId={process.env.AUTH0_CLIENT_ID}
       redirectUri={process.env.NEXTAUTH_URL}
+      cacheLocation={"localstorage"}
     >
       <ThemeProvider>
         <CssBaseline />
