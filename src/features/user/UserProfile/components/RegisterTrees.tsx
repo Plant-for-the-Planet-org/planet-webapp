@@ -18,7 +18,7 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Controller, useForm } from 'react-hook-form';
 import DateFnsUtils from '@date-io/date-fns';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import getStoredConfig from '../../../../utils/getConfig/getStoredConfig';
+import { getStoredConfig } from '../../../../utils/storeConfig';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
