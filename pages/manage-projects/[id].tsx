@@ -13,11 +13,8 @@ interface Props {
 
 function ManageSingleProject({ }: Props): ReactElement {
   const [projectGUID, setProjectGUID] = React.useState(null);
-
   const [ready, setReady] = React.useState(false);
-
   const router = useRouter();
-
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
 
@@ -33,7 +30,6 @@ function ManageSingleProject({ }: Props): ReactElement {
       setReady(true);
     }
   }, [router]);
-
 
   const [project, setProject] = React.useState({})
 
