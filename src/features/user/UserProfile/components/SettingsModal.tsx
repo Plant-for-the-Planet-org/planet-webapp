@@ -30,7 +30,9 @@ export default function SettingsModal({
 
   const logoutUser = () => {
     localStorage.removeItem('userInfo');
-    logout();
+    if (typeof window !== 'undefined') {
+      logout({returnTo:window.location.href});
+    }
   }
   return (
     <>
