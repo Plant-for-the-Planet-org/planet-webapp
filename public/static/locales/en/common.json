@@ -38,5 +38,7 @@
   "november": "November",
   "december": "December",
   "approx": "Approx.",
-  "view": "View"
+  "view": "View",
+  "offlineMessage": "You are currently offline.",
+  "refresh": "Refresh"
 }

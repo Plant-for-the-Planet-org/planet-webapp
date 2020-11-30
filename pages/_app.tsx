@@ -2,19 +2,20 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
-import { Provider as AuthProvider } from 'next-auth/client'
+import { Provider as AuthProvider } from 'next-auth/client';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
-import './../src/features/projects/styles/Projects.scss'
-import ThemeProvider from '../src/theme/themeContext';
-import i18next from '../i18n';
+import '../src/features/projects/styles/Projects.scss';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
+import { useRouter } from 'next/router';
+import ThemeProvider from '../src/theme/themeContext';
+import i18next from '../i18n';
 import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
-import { useRouter } from 'next/router';
 import storeConfig from '../src/utils/storeConfig';
+import NetworkFailure from '../src/features/common/ErrorComponents/NetworkFailure';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -41,6 +42,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
+  const [network, setNetwork] = React.useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -49,8 +51,20 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    storeConfig();
+    // storeConfig().catch((err) => {
+    //   console.log(err, 'component');
+    //   setNetwork(true);
+    // });
+    getStoreConfig();
   }, []);
+  const getStoreConfig = () => {
+    storeConfig().then(() => {
+      setNetwork(false);
+    })
+      .catch((err) => {
+        setNetwork(true);
+      });
+  };
   React.useEffect(() => {
     i18next.initPromise.then(() => setInitialized(true));
   }, []);
@@ -68,6 +82,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       TagManager.initialize(tagManagerArgs);
     }
   }, []);
+
+  const handleNetwork = () => {
+    setNetwork(!network)
+  }
 
   const ProjectProps = {
     projects,
@@ -102,6 +120,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             />
           ) : null
         ) : null}
+        {network && (
+          <div
+            style={{ position: 'fixed', bottom: 0, left: 0 }}
+          >
+            <NetworkFailure refresh={getStoreConfig} handleNetwork={handleNetwork} />
+          </div>
+        )}
         <Component {...ProjectProps} />
       </Layout>
     </ThemeProvider>

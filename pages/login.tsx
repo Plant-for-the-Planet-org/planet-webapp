@@ -8,6 +8,7 @@ import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile
 import {setUserExistsInDB, removeUserExistsInDB, setUserInfo, removeUserInfo} from '../src/utils/auth0/localStorageUtils'
 import { getAccountInfo } from '../src/utils/auth0/apiRequests'
 import i18next from '../i18n'
+import NetworkFailure from '../src/features/common/ErrorComponents/NetworkFailure';
 
 const config = tenantConfig();
 
@@ -16,10 +17,9 @@ const { useTranslation } = i18next;
 export default function Login() {
   const [session, loading] = useSession();
   const router = useRouter();
+  const [network, setNetwork] = React.useState(false);
 
   const { t } = useTranslation(['login']);
-
-  React.useEffect(()=> {
 
   const fetchInfoFromBackend = async () => {
     try {
@@ -55,10 +55,13 @@ export default function Login() {
         // console.log('in /login else -> any other error')
       }
     } catch (e){
-      
+      setNetwork(true)
+      console.log(e, 'login')
     }
   }
+  React.useEffect(()=> {
 
+    fetchInfoFromBackend();
   // no user present -> start login flow
     if (!loading && !session) {
       signIn('auth0', { callbackUrl: '/login' });
@@ -70,6 +73,10 @@ export default function Login() {
   }
   }, [loading])
 
+  const handleNetwork = () => {
+    setNetwork(!network);
+  };
+
   return (
     <>
       <Head>
@@ -80,6 +87,13 @@ export default function Login() {
       </Head>
       <Layout>
         <UserProfileLoader />
+        {network && (
+          <div
+            style={{ position: 'fixed', bottom: 0, left: 0 }}
+          >
+            <NetworkFailure refresh={fetchInfoFromBackend()} handleNetwork={handleNetwork} />
+          </div>
+        )}
       </Layout>
     </>
   );

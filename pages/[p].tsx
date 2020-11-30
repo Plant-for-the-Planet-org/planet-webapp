@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import NetworkFailure from '../src/features/common/ErrorComponents/NetworkFailure';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { getRequest } from '../src/utils/apiRequests/api';
-import getStoredCurrency from "../src/utils/countryCurrency/getStoredCurrency";
+import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 
 interface Props {
@@ -19,6 +20,7 @@ export default function Donate({
   setShowSingleProject,
 }: Props) {
   const router = useRouter();
+  const [network, setNetwork] = React.useState(false);
 
   React.useEffect(() => {
     setShowSingleProject(true);
@@ -27,14 +29,26 @@ export default function Donate({
   React.useEffect(() => {
     async function loadProject() {
       let currencyCode = getStoredCurrency();
-      const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
-      setProject(project);
-      setShowSingleProject(true);
+      await getRequest(
+        `/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`
+      )
+        .then((data) => {
+          setProject(data);
+          setShowSingleProject(true);
+          setNetwork(false);
+        })
+        .catch((err) => {
+          setNetwork(true);
+        });
     }
-    if(router.query.p) {
+    if (router.query.p) {
       loadProject();
     }
   }, [router.query.p]);
+
+  const handleNetwork = () => {
+    setNetwork(!network);
+  };
 
   const ProjectProps = {
     project,
@@ -50,6 +64,11 @@ export default function Donate({
           <></>
         )
       ) : null}
+      {network && (
+        <div style={{ position: 'fixed', bottom: 0, left: 0 }}>
+          <NetworkFailure refresh handleNetwork={handleNetwork} />
+        </div>
+      )}
     </>
   );
 }

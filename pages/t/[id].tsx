@@ -15,6 +15,7 @@ import {
   getUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
 import {getAccountInfo } from '../../src/utils/auth0/apiRequests'
+import NetworkFailure from '../../src/features/common/ErrorComponents/NetworkFailure';
 
 interface Props {
   initialized: Boolean;
@@ -30,6 +31,7 @@ export default function PublicUser(initialized: Props) {
 
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+  const [network, setNetwork] = React.useState(false);
   
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
@@ -63,12 +65,14 @@ export default function PublicUser(initialized: Props) {
               const resJson = await res.json();
               setAuthenticatedType('private')
               setUserprofile(resJson);
+              setNetwork(false);
             } else if (res.status === 303) {
               // if 303 -> user doesn not exist in db
               // console.log('in 303-> user does not exist in our DB')
               setUserExistsInDB(false)
               if (typeof window !== 'undefined') {
                 router.push('/complete-signup');
+                setNetwork(false);
               }
             } else if (res.status === 401){
               // in case of 401 - invalid token: signIn()
@@ -77,11 +81,14 @@ export default function PublicUser(initialized: Props) {
               removeUserExistsInDB()
               removeUserInfo()
               signIn('auth0', { callbackUrl: '/login' });
+              setNetwork(!false);
             } else {
               // any other error
               // console.log('in else -> other error')
             }
-          } catch (e) {}
+          } catch (e) {
+            setNetwork(true);
+          }
         } else {
           //no user logged in or slug mismatch -> public profile
           const newPublicUserprofile = await getRequest(
@@ -98,6 +105,10 @@ export default function PublicUser(initialized: Props) {
       loadUserData();
     }
   }, [ready, loading, forceReload]);
+
+  const handleNetwork = () => {
+    setNetwork(!network)
+  }
   
   function getUserProfile() {
     switch (userprofile?.type) {
@@ -106,6 +117,13 @@ export default function PublicUser(initialized: Props) {
           <>
             <GetPublicUserProfileMeta userprofile={userprofile} />
             <TPOProfile {...PublicUserProps} />
+            {network && (
+          <div
+            style={{ position: 'fixed', bottom: 0, left: 0 }}
+          >
+            <NetworkFailure refresh handleNetwork={handleNetwork} />
+          </div>
+        )}
             <Footer />
           </>
         );
@@ -114,10 +132,19 @@ export default function PublicUser(initialized: Props) {
           <>
             <GetPublicUserProfileMeta userprofile={userprofile} />
             <IndividualProfile {...PublicUserProps} />
+            {network && (
+          <div
+            style={{ position: 'fixed', bottom: 0, left: 0 }}
+          >
+            <NetworkFailure refresh handleNetwork={handleNetwork} />
+          </div>
+        )}
             <Footer />
           </>
         );
+        
       default: return null;
+      
     }
   }
 

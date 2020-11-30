@@ -23,8 +23,12 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(`/app/tenantScore`);
-      setTenantScore(newTenantScore);
+      const newTenantScore = await getRequest(`/app/tenantScore`).then((data) => {
+
+        setTenantScore(data);
+      }).catch((err) => {
+        console.log(err, 'home')
+      })
     }
     loadTenantScore();
   }, []);

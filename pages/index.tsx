@@ -58,13 +58,17 @@ export default function Donate({
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      const currencyCode = getStoredCurrency();
-      const projects = await getRequest(
-        `/app/projects?_scope=map&currency=${currencyCode}`,
-      );
-      setProjects(projects);
-      setProject(null);
-      setShowSingleProject(false);
+      try {
+        const currencyCode = getStoredCurrency();
+        const projects = await getRequest(
+          `/app/projects?_scope=map&currency=${currencyCode}`,
+        );
+        setProjects(projects);
+        setProject(null);
+        setShowSingleProject(false);
+      } catch (error) {
+        console.log(error, 'index page')
+      }
     }
     loadProjects();
   }, []);
