@@ -64,6 +64,7 @@ export default function PublicUser(initialized: Props) {
 
   useEffect(() => {
     if (router && router.query.id) {
+      setUserprofile(null)
       setSlug(router.query.id);
       setReady(true);
     }
@@ -123,7 +124,7 @@ export default function PublicUser(initialized: Props) {
     if (ready && !isLoading) {
       loadUserData();
     }
-  }, [ready, isLoading, forceReload, isAuthenticated, router]);
+  }, [ready, isLoading, forceReload, isAuthenticated, router,slug]);
 
   function getUserProfile() {
     if(userprofile?.type === 'tpo'){
