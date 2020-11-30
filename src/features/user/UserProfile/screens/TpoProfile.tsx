@@ -5,7 +5,7 @@ import UserInfo from '../components/UserInfo';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 import styles from '../styles/UserProfile.module.scss';
 import AddTargetModal from '../components/AddTargetModal';
-import SettingsContainer from '../components/Settings';
+import SettingsModal from '../components/SettingsModal';
 
 export default function TpoProfile({
   userprofile,
@@ -61,7 +61,7 @@ export default function TpoProfile({
       >
         {/* Open setting component */}
         {settingsModalOpen && (
-          <SettingsContainer
+          <SettingsModal
             userType="tpo"
             userprofile={userprofile}
             settingsModalOpen={settingsModalOpen}
