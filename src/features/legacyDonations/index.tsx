@@ -15,6 +15,7 @@ import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress'
 import ThankYou from '../donations/screens/ThankYou';
 import { useRouter } from 'next/router';
 import Paypal from './components/Paypal';
+import { paypalCurrencies } from './components/paypalCurrencies';
 const { useTranslation } = i18next;
 
 interface Props {
@@ -56,7 +57,6 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         const paymentSetupData = await getRequest(`/app/projects/${paymentData.plantProjectGuid}/paymentOptions?country=${country}`);
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
-
           setTreeCost(paymentSetupData.treeCost);
           setCurrency(paymentSetupData.currency);
         }
@@ -68,18 +68,34 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     loadPaymentSetup();
   }, [paymentData, country]);
 
-  const onPaymentFunction = (paymentMethod: any) => {
+  const onPaymentFunction = (gateway:any,paymentMethod: any) => {
     setIsPaymentProcessing(true);
-    const payDonationData = {
-      paymentProviderRequest: {
-        account: paymentSetup.gateways.stripe.account,
-        gateway: 'stripe_pi',
-        source: {
-          id: paymentMethod.id,
-          object: 'payment_method',
+
+    let payDonationData;
+    if(gateway==='stripe'){
+      payDonationData = {
+        paymentProviderRequest: {
+          account: paymentSetup.gateways.stripe.account,
+          gateway: 'stripe_pi',
+          source: {
+            id: paymentMethod.id,
+            object: 'payment_method',
+          },
         },
-      },
-    };
+      };
+    }
+    else if(gateway === 'paypal'){
+      payDonationData = {
+        paymentProviderRequest: {
+          account: paymentSetup.gateways.paypal.account,
+          gateway: 'paypal',
+          source: {
+            ...paymentMethod
+          },
+        },
+      };
+    }
+
     payDonation(payDonationData, paymentData.guid, null)
       .then(async (res) => {
         if (res.code === 400) {
@@ -167,9 +183,15 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       giftDetails.recipientName = paymentData.supportedTreecounterName;
     }
   }
+  
 
- console.log(paymentSetup,'paymentSetup');
- 
+const paypalSuccess =(data:any)=>{
+  if(data.error){
+    setPaymentError(data.error.message)
+  }else{
+    onPaymentFunction('paypal',data);
+  }
+} 
 
   const project = {
     name: paymentData.plantProjectName,
@@ -227,7 +249,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         </div>
 
         <Elements stripe={getStripe()}>
-          <CardPayments onPaymentFunction={onPaymentFunction} paymentType={paymentType} setPaymentType={setPaymentType} />
+          <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
         </Elements>
 
 
@@ -244,7 +266,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                     treeCost * treeCount,
                     currency.toLowerCase(),
                   )}
-                  onPaymentFunction={onPaymentFunction}
+                  onPaymentFunction={(data)=> onPaymentFunction('stripe',data)}
                 />
               </>
             ) : (
@@ -254,10 +276,10 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
             )}
         </Elements>
 
-        { paymentSetup?.gateways.paypal &&
+        { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
         <Paypal
           onSuccess={data => {
-            console.log('Success', data);
+            paypalSuccess(data);
           }}
           amount={treeCost * treeCount}
           currency={currency}
