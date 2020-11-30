@@ -209,7 +209,7 @@ const paypalSuccess =(data:any)=>{
     paymentType,
     setDonationStep: null
   };
-
+  
   return !isDonationComplete ? isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
   ) : (
@@ -284,7 +284,7 @@ const paypalSuccess =(data:any)=>{
           amount={treeCost * treeCount}
           currency={currency}
           donationId={paymentData.guid}
-          mode={'sandbox'}
+          mode={paymentSetup?.gateways.paypal.isLive ? 'live' : 'sandbox'}
           clientID={paymentSetup?.gateways.paypal.authorization.client_id}
         /> }
       </div>
