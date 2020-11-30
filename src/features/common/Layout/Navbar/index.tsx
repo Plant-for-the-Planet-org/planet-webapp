@@ -45,10 +45,10 @@ export default function NavbarComponent(props: any) {
       userInfo = await getUserInfo(token, router, logout);
       setUserInfo(userInfo);
     }
-    if (isAuthenticated) {
+    if (!isLoading && isAuthenticated) {
       loadFunction()
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated,isLoading])
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage (){
