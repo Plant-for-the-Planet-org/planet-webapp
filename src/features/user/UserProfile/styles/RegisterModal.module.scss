@@ -1,27 +1,47 @@
 @import './../../../../theme/theme';
 
+// modal container for black opacity
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 100vh;
+  overflow-y: scroll;
+}
+
 // white modal
 .modal {
-  // position: absolute;
-  // top: 0;
-  // bottom: 0;
-  // left: 0;
-  // right: 0;
-  background-color: #ffffff;
+  top: 80px;
+  margin-bottom: 60px;
+  background-color: #fff;
   border: 0px;
   border-radius: 8px;
-  padding: 50px 20px 80px;
-  overflow-y: scroll;
+  position: absolute;
+  padding: 20px 20px;
+  width: 412px;
   outline: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: auto;
-  max-width: 100%;
-  width: 800px;
-  justify-content: flex-start;
-  position: relative;
+  align-items: left;
 }
+// white modal
+// .modal {
+//   background-color: #ffffff;
+//   border: 0px;
+//   border-radius: 8px;
+//   padding: 50px 20px 80px;
+//   overflow-y: scroll;
+//   outline: none;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin: auto;
+//   max-width: 100%;
+//   width: 800px;
+//   justify-content: flex-start;
+//   position: relative;
+// }
 
 .title {
   display: flex;
@@ -130,7 +150,7 @@
 }
 .formFieldHalf {
   display: flex;
-  width: 700px;
+  width: 100%;
   max-width: 100%;
   padding: 5px;
   flex-direction: column;
@@ -282,6 +302,14 @@
   width: 20px;
 }
 
+.checkMark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
 .uploadedImageContainer {
   position: relative;
   height: min-content;
@@ -349,6 +377,24 @@
   justify-content: center;
 }
 
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.overlayButton {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
 // Loader for Buttons
 .spinner {
   border: 2px solid #f3f3f3;
@@ -378,24 +424,16 @@
   }
 }
 
-@include smTabletView {
-  .modal {
-    padding: 100px 50px 50px;
-  }
-}
-
 @include mdTabletView {
-  .modal {
-    padding: 50px 50px;
+  .formFieldHalf {
+    width: 50%;
   }
 }
 
-@include lgLaptopView {
-  .modal {
-    overflow: auto;
-  }
-  .formFieldHalf {
-    width: 350px;
-    max-width: 100%;
-  }
+:export {
+  primaryColor: $primaryColor;
+  light: $light;
+  dark: $dark;
+  primaryFontColor: $primaryFontColor;
+  dividerColor: $dividerColor;
 }
