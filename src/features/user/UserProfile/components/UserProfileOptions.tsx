@@ -7,10 +7,10 @@ import styles from '../styles/UserInfo.module.scss';
 import RedeemModal from './RedeemModal';
 import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
-
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 const config = tenantConfig();
 
@@ -42,6 +42,7 @@ const { useTranslation } = i18next;
 export default function UserProfileOptions({
   userprofile
 }: any) {
+  const router = useRouter();
   const { t } = useTranslation(['me']);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = t('donate:textToShare', { linkToShare });
@@ -116,7 +117,7 @@ export default function UserProfileOptions({
           handleRedeemModalClose={handleRedeemModalClose}
         />
 
-        <div className={styles.iconTextColumn}>
+        <div className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>
           <div className={styles.bottomIconBg}>
             <Shovel color="white" />
           </div>
