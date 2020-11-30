@@ -48,7 +48,7 @@ export default function SingleContribution({
         <CancelIcon />
       </div>
       <div className={styles.checkMark}>
-        <CheckCircle width="70px" color={`${styles.primaryColor}`} />
+        <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div>
       <h2 className={styles.contribTitle}>
         <b>

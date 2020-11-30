@@ -286,7 +286,9 @@ export default function RegisterTrees({
                     />
                     {errors.treeCount && (
                       <span className={styles.formErrors}>
-                        {errors.treeCount.message}
+                        {errors.treeCount.message
+                          ? errors.treeCount.message
+                          : t('me:moreThanOne')}
                       </span>
                     )}
                   </div>

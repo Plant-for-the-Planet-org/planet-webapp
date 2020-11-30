@@ -40,10 +40,10 @@ export default function UploadImages({
     });
   }, []);
 
-  React.useEffect(() => {
-    // Fetch images of the project
-    setUploadedImages(contribution.contributionImages);
-  }, [contribution]);
+  // React.useEffect(() => {
+  //   // Fetch images of the project
+  //   setUploadedImages(contribution.contributionImages);
+  // }, [contribution]);
 
   const uploadPhotos = (image: any) => {
     setIsUploadingData(true);
@@ -88,13 +88,22 @@ export default function UploadImages({
   });
 
   const deleteContributionImage = (id: any) => {
+    console.log(id);
     deleteAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images/${id}`,
       session
     ).then((res) => {
       if (res !== 404) {
-        let uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
-        setUploadedImages(uploadedFilesTemp);
+        let uploadedImagesTemp = uploadedImages;
+        let index = uploadedImagesTemp.findIndex((item) => {
+          return item.id === id;
+        });
+        if (index !== -1) {
+          uploadedImagesTemp.splice(index, 1);
+          setUploadedImages(uploadedImagesTemp);
+        } else {
+          console.log('image not found');
+        }
       }
     });
   };

@@ -28,5 +28,6 @@
   "dragHere": "or drag here",
   "contribNotFound": "Contribution Not Found",
   "errorOccured": "Error Occured",
-  "contribSuccess": "Successfully added {{treeCount}} {{treeSpecies}} 🌳 from {{plantDate}}"
+  "contribSuccess": "Successfully added {{treeCount}} {{treeSpecies}} 🌳 from {{plantDate}}",
+  "moreThanOne": "minimum 1 tree required"
 }
