@@ -20,6 +20,11 @@ import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './maps/ExploreInfoModal';
 import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
+import getLanguageName from '../../../utils/language/getLanguageName';
+import i18next from '../../../../i18n';
+import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+
+const { useTranslation } = i18next;
 
 interface mapProps {
   projects: any;
@@ -42,6 +47,8 @@ export default function MapboxMap({
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
+
+  const { t, i18n } = useTranslation(['maps']);
 
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
@@ -77,6 +84,18 @@ export default function MapboxMap({
     zoom: defaultZoom,
   });
 
+  const [language, setLanguage] = useState(i18n.language);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('US');
+
+  const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
+  const handleLanguageModalClose = () => {
+    setLanguageModalOpen(false);
+  };
+  const handleLanguageModalOpen = () => {
+    setLanguageModalOpen(true);
+  };
+
   const [exploreExpanded, setExploreExpanded] = React.useState(false);
 
   const [exploreProjects, setExploreProjects] = React.useState(true);
@@ -107,6 +126,7 @@ export default function MapboxMap({
       setViewPort(newViewport);
     } else {
       const newMapState = {
+        ...mapState,
         mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
       };
       const newViewport = {
@@ -192,6 +212,7 @@ export default function MapboxMap({
               }
             );
             const newMapState = {
+              ...mapState,
               mapStyle: 'mapbox://styles/mapbox/satellite-v9',
             };
             const newViewport = {
@@ -203,11 +224,12 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
-            setViewPort(newViewport);
             setMapState(newMapState);
+            setViewPort(newViewport);
           }
         } else {
           const newMapState = {
+            ...mapState,
             mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
           };
           const newViewport = {
@@ -219,11 +241,12 @@ export default function MapboxMap({
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
           };
-          setViewPort(newViewport);
           setMapState(newMapState);
+          setViewPort(newViewport);
         }
       } else {
         const newMapState = {
+          ...mapState,
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
         };
         const newViewport = {
@@ -238,6 +261,22 @@ export default function MapboxMap({
         setMapState(newMapState);
         setViewPort(newViewport);
       }
+    } else {
+      const newMapState = {
+        ...mapState,
+        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      };
+      const newViewport = {
+        ...viewport,
+        latitude: defaultMapCenter[0],
+        longitude: defaultMapCenter[1],
+        zoom: 1.4,
+        transitionDuration: 2400,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setMapState(newMapState);
+      setViewPort(newViewport);
     }
   }, [
     project,
@@ -252,7 +291,7 @@ export default function MapboxMap({
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
-          exploreContainerRef &&
+          exploreContainerRef && exploreContainerRef.current &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);
@@ -326,27 +365,27 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonLayer"
-                type="fill"
-                source="singleProject"
-                paint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-              />
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#89b54a',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
-          )
+              <Source id="singleProject" type="geojson" data={geoJson}>
+                <Layer
+                  id="ploygonLayer"
+                  type="fill"
+                  source="singleProject"
+                  paint={{
+                    'fill-color': '#fff',
+                    'fill-opacity': 0.2,
+                  }}
+                />
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#89b54a',
+                    'line-width': 2,
+                  }}
+                />
+              </Source>
+            )
         ) : null}
 
         {!showSingleProject &&
@@ -387,7 +426,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => {}}
+                onFocus={() => { }}
               />
             </Marker>
           ))}
@@ -442,14 +481,14 @@ export default function MapboxMap({
                 }
               }}
             >
-              <PopupProject	              
-                key={popupData.project.properties.id}	              
-                project={popupData.project}	             
-                buttonRef={buttonRef}	             
-                popupRef={popupRef}	     
-                open={open}	 
-                handleOpen={handleOpen}	
-                handleClose={handleClose}	
+              <PopupProject
+                key={popupData.project.properties.id}
+                project={popupData.project}
+                buttonRef={buttonRef}
+                popupRef={popupRef}
+                open={open}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
               />
             </div>
           </Popup>
@@ -459,13 +498,13 @@ export default function MapboxMap({
           <NavigationControl showCompass={false} />
         </div>
 
-        <ExploreContainer 
-          exploreContainerRef={exploreContainerRef} 
-          setExploreExpanded={setExploreExpanded} 
-          exploreExpanded={exploreExpanded} 
-          isMobile={isMobile} 
-          setInfoExpanded={setInfoExpanded} 
-          setModalOpen={setModalOpen} 
+        <ExploreContainer
+          exploreContainerRef={exploreContainerRef}
+          setExploreExpanded={setExploreExpanded}
+          exploreExpanded={exploreExpanded}
+          isMobile={isMobile}
+          setInfoExpanded={setInfoExpanded}
+          setModalOpen={setModalOpen}
           loaded={loaded}
           mapRef={mapRef}
           handleExploreProjectsChange={handleExploreProjectsChange}
@@ -487,9 +526,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                siteExists &&
-                project.sites.length !== 0 &&
-                geoJson.features[currentSite]
+                  siteExists &&
+                  project.sites.length !== 0 &&
+                  geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -505,6 +544,7 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
+        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${getLanguageName(language)} · ${selectedCurrency}`}</div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -514,11 +554,20 @@ export default function MapboxMap({
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          <ExploreInfoModal 
-            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen} 
+          <ExploreInfoModal
+            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen}
           />
         </Modal>
       ) : null}
+      <SelectLanguageAndCountry
+        openModal={openLanguageModal}
+        handleModalClose={handleLanguageModalClose}
+        language={language}
+        setLanguage={setLanguage}
+        setSelectedCurrency={setSelectedCurrency}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      />
     </div>
   );
 }

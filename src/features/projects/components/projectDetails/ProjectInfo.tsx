@@ -75,7 +75,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-140px' }}>
                                         <p>
-                                            {t('manageProjects:abandonmentInfo')}
+                                            {t('manageProjects:yearAbandonedInfo')}
                                         </p>
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                        {t('manageProjects:causeOfDegredation')}
+                        {t('manageProjects:causeOfDegradation')}
                     </div>
                     <div className={styles.infoText}>
                         {project.degradationCause}

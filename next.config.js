@@ -14,12 +14,14 @@ const {
   VERCEL_GITHUB_COMMIT_SHA,
   VERCEL_GITLAB_COMMIT_SHA,
   VERCEL_BITBUCKET_COMMIT_SHA,
+  SOURCE_VERSION,
 } = process.env;
 
 const COMMIT_SHA =
   VERCEL_GITHUB_COMMIT_SHA ||
   VERCEL_GITLAB_COMMIT_SHA ||
-  VERCEL_BITBUCKET_COMMIT_SHA;
+  VERCEL_BITBUCKET_COMMIT_SHA ||
+  SOURCE_VERSION;
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';
@@ -58,6 +60,9 @@ module.exports = withSourceMaps({
     if (!options.isServer) {
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
+    config.node = {
+      fs: 'empty',
+    };
 
     config.node = {
       fs: 'empty',
