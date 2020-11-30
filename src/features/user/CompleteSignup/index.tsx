@@ -133,7 +133,7 @@ export default function CompleteSignup() {
 
   const profileTypes = [
     { id: 1, title: 'Individual', value: 'individual' },
-    { id: 2, title: 'Organisation', value: 'organisation' },
+    { id: 2, title: 'Organisation', value: 'organization' },
     { id: 3, title: 'Reforestation Organisation', value: 'tpo' },
     { id: 4, title: 'Education', value: 'education' }
   ]
@@ -411,7 +411,7 @@ const SelectType = (type: any) => {
     case 'education':
       name = 'School';
       break;
-    case 'organisation':
+    case 'organization':
       name = 'Company';
       break;
     default:

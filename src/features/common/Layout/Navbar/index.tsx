@@ -75,7 +75,7 @@ export default function NavbarComponent(props: any) {
     return <div></div>;
   }
   if (error) {
-    return <div>{error.message}</div>;
+    alert(error.message);
   }
 
   const UserProfileIcon = () => {
