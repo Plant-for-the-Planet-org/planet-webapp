@@ -79,7 +79,7 @@ export default function SingleContribution({
           }
           className={styles.continueButton}
         >
-          {t('me:goToProfile')}
+          {t('me:save')}
         </div>
       </div>
     </>
