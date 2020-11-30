@@ -71,9 +71,13 @@ export default function NavbarComponent(props: any) {
 
   const { toggleTheme } = React.useContext(ThemeContext);
 
-  if (isLoading) {
-    return <div></div>;
-  }
+  // if (isLoading) {
+  //   return <div></div>;
+  // }
+  // this two gives different view
+  // if (isLoading) {
+  //   return <p>loading</p>;
+  // }
   if (error) {
     alert(error.message);
   }
