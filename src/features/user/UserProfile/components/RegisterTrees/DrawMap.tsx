@@ -6,6 +6,7 @@ import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../../styles/RegisterModal.module.scss';
+import i18next from '../../../../../../i18n';
 
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 
@@ -18,6 +19,7 @@ const Map = ReactMapboxGl({
   accessToken: MAPBOX_TOKEN,
 });
 
+const { useTranslation } = i18next;
 export default function MapComponent({
   setGeometry,
   countryBbox,
@@ -37,6 +39,7 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
+  const { t } = useTranslation(['me', 'common']);
   const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef();
   const onDrawCreate = ({ features }: any) => {
@@ -86,7 +89,7 @@ export default function MapComponent({
             }}
             className={styles.continueButton}
           >
-            Start Drawing
+            {t('me:startDrawing')}
           </div>
         </div>
       ) : null}

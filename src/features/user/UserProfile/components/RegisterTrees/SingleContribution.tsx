@@ -5,6 +5,7 @@ import CancelIcon from '../../../../../../public/assets/images/icons/CancelIcon'
 import CheckCircle from '../../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../../styles/RegisterModal.module.scss';
 import UploadImages from './UploadImages';
+import i18next from '../../../../../../i18n';
 
 interface Props {
   session: any;
@@ -13,6 +14,7 @@ interface Props {
   currentUserSlug: any;
 }
 
+const { useTranslation } = i18next;
 const StaticMap = dynamic(() => import('./StaticMap'), {
   ssr: false,
   loading: () => <p></p>,
@@ -30,7 +32,7 @@ export default function SingleContribution({
     contributionGUID,
     session,
   };
-
+  const { t } = useTranslation(['me', 'common']);
   const formatDate = (dateString: any) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -50,8 +52,11 @@ export default function SingleContribution({
       </div>
       <h2 className={styles.contribTitle}>
         <b>
-          Successfully added {contribution.treeCount} {contribution.treeSpecies}{' '}
-          🌳 from {formatDate(contribution.plantDate)}{' '}
+          {t('me:contribSuccess', {
+            treeCount: contribution.treeCount,
+            treeSpecies: contribution.treeSpecies,
+            plantDate: formatDate(contribution.plantDate),
+          })}
         </b>
       </h2>
       <div className={styles.contributionInfo}>
@@ -74,7 +79,7 @@ export default function SingleContribution({
           }
           className={styles.continueButton}
         >
-          Go to Profile
+          {t('me:goToProfile')}
         </div>
       </div>
     </>

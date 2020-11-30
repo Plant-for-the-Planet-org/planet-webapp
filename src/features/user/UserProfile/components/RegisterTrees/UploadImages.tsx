@@ -8,12 +8,15 @@ import {
 } from '../../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
+import i18next from '../../../../../../i18n';
 
 interface Props {
   contribution: any;
   contributionGUID: any;
   session: any;
 }
+
+const { useTranslation } = i18next;
 
 export default function UploadImages({
   contributionGUID,
@@ -24,7 +27,7 @@ export default function UploadImages({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [files, setFiles] = React.useState([]);
   const [errorMessage, setErrorMessage] = React.useState(null);
-
+  const { t } = useTranslation(['me', 'common']);
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -63,10 +66,10 @@ export default function UploadImages({
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
-            setErrorMessage('Contribution not found');
+            setErrorMessage(t('me:contribNotFound'));
           } else {
             setIsUploadingData(false);
-            setErrorMessage('Error Occured');
+            setErrorMessage(t('me:errorOccured'));
             console.log(res.message);
           }
         }
@@ -134,10 +137,10 @@ export default function UploadImages({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              'Upload Photos'
+              t('me:uploadPhotos')
             )}
           </AnimatedButton>
-          <p style={{ marginTop: '18px' }}>or drag here</p>
+          <p style={{ marginTop: '18px' }}>{t('me:dragHere')}</p>
         </label>
       </div>
     </>

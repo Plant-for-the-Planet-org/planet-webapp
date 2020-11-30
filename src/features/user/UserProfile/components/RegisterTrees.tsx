@@ -10,20 +10,8 @@ import MapGL, {
 import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
-import {
-  getAuthenticatedRequest,
-  postAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
-import UploadImagesStep from './RegisterTrees/UploadImages';
-import {
-  Backdrop,
-  Modal,
-  Step,
-  StepContent,
-  StepLabel,
-  Stepper,
-} from '@material-ui/core';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { Backdrop, Modal } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -32,7 +20,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import getStoredConfig from '../../../../utils/getConfig/getStoredConfig';
 import SingleContribution from './RegisterTrees/SingleContribution';
-import { Overrides } from '@material-ui/core/styles/overrides';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -229,12 +216,10 @@ export default function RegisterTrees({
 
         // handleNext();
       } else {
-        setErrorMessage('select location on map');
+        setErrorMessage(t('me:locationMissing'));
       }
     } else {
-      setErrorMessage(
-        'Something went wrong. Please contact support@plant-for-the-planet.org'
-      );
+      setErrorMessage(t('me:wentWrong'));
       console.log(errorMessage);
     }
   };
@@ -287,7 +272,7 @@ export default function RegisterTrees({
                       inputRef={register({
                         required: {
                           value: true,
-                          message: 'Number of Trees is required',
+                          message: t('me:treesRequired'),
                         },
                         validate: (value) => parseInt(value, 10) >= 1,
                       })}
@@ -295,7 +280,7 @@ export default function RegisterTrees({
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       }}
                       onChange={onTreeCountChange}
-                      label="Number of Trees"
+                      label={t('me:noOfTrees')}
                       variant="outlined"
                       name="treeCount"
                     />
@@ -318,7 +303,7 @@ export default function RegisterTrees({
                         <Controller
                           render={(props) => (
                             <DatePicker
-                              label="Date Planted"
+                              label={t('me:datePlanted')}
                               value={props.value}
                               onChange={props.onChange}
                               inputVariant="outlined"
@@ -343,10 +328,10 @@ export default function RegisterTrees({
                     inputRef={register({
                       required: {
                         value: true,
-                        message: 'Species is required',
+                        message: t('me:speciesIsRequired'),
                       },
                     })}
-                    label="Tree Species"
+                    label={t('me:treeSpecies')}
                     variant="outlined"
                     name="species"
                   />
@@ -358,9 +343,9 @@ export default function RegisterTrees({
                 </div>
                 <div className={styles.mapNote}>
                   {isMultiple ? (
-                    <p>Please draw a polygon to locate your trees</p>
+                    <p>{t('me:drawPolygon')}</p>
                   ) : (
-                    <p>Select tree planting location on the map</p>
+                    <p>{t('me:selectLocation')}</p>
                   )}
                 </div>
 
@@ -425,7 +410,7 @@ export default function RegisterTrees({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                      'Register'
+                      t('me:registerButton')
                     )}
                   </div>
                 </div>
