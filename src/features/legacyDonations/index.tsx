@@ -15,7 +15,7 @@ import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress'
 import ThankYou from '../donations/screens/ThankYou';
 import { useRouter } from 'next/router';
 import Paypal from './components/Paypal';
-import { paypalCurrencies } from './components/paypalCurrencies';
+import { paypalCurrencies } from '../../utils/paypalCurrencies';
 const { useTranslation } = i18next;
 
 interface Props {
