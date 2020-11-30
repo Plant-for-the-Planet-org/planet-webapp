@@ -32,6 +32,17 @@ import DateFnsUtils from '@date-io/date-fns';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import getStoredConfig from '../../../../utils/getConfig/getStoredConfig';
 import SingleContribution from './RegisterTrees/SingleContribution';
+import { Overrides } from '@material-ui/core/styles/overrides';
+import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
+import { createMuiTheme } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
+
+type overridesNameToClassKey = {
+  [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
+};
+declare module '@material-ui/core/styles/overrides' {
+  export interface ComponentNameToClassKey extends overridesNameToClassKey {}
+}
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -72,6 +83,45 @@ export default function RegisterTrees({
   const [userLang, setUserLang] = React.useState('en');
   const [countryBbox, setCountryBbox] = React.useState();
   const [registered, setRegistered] = React.useState(false);
+
+  const materialTheme = createMuiTheme({
+    overrides: {
+      MuiPickersToolbar: {
+        toolbar: {
+          backgroundColor: styles.primaryColor,
+        },
+      },
+      MuiPickersCalendarHeader: {
+        switchHeader: {
+          // backgroundColor: lightBlue.A200,
+          // color: "white",
+        },
+      },
+      MuiPickersDay: {
+        daySelected: {
+          backgroundColor: styles.primaryColor,
+        },
+        current: {
+          color: styles.primaryColor,
+        },
+      },
+      MuiPickersYear: {
+        yearSelected: {
+          color: styles.primaryColor,
+        },
+      },
+      MuiPickersModal: {
+        dialogAction: {
+          color: styles.primaryColor,
+        },
+      },
+      MuiButton: {
+        label: {
+          color: styles.primaryColor,
+        },
+      },
+    },
+  });
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -256,34 +306,36 @@ export default function RegisterTrees({
                     )}
                   </div>
                   <div className={styles.formFieldHalf}>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
-                      locale={
-                        localeMapForDate[userLang]
-                          ? localeMapForDate[userLang]
-                          : localeMapForDate['en']
-                      }
-                    >
-                      <Controller
-                        render={(props) => (
-                          <DatePicker
-                            label="Date Planted"
-                            value={props.value}
-                            onChange={props.onChange}
-                            inputVariant="outlined"
-                            TextFieldComponent={MaterialTextField}
-                            autoOk
-                            disableFuture
-                            minDate={new Date(new Date().setFullYear(1950))}
-                            format="dd MMMM yyyy"
-                            maxDate={new Date()}
-                          />
-                        )}
-                        name="plantDate"
-                        control={control}
-                        defaultValue=""
-                      />
-                    </MuiPickersUtilsProvider>
+                    <ThemeProvider theme={materialTheme}>
+                      <MuiPickersUtilsProvider
+                        utils={DateFnsUtils}
+                        locale={
+                          localeMapForDate[userLang]
+                            ? localeMapForDate[userLang]
+                            : localeMapForDate['en']
+                        }
+                      >
+                        <Controller
+                          render={(props) => (
+                            <DatePicker
+                              label="Date Planted"
+                              value={props.value}
+                              onChange={props.onChange}
+                              inputVariant="outlined"
+                              TextFieldComponent={MaterialTextField}
+                              autoOk
+                              disableFuture
+                              minDate={new Date(new Date().setFullYear(1950))}
+                              format="dd MMMM yyyy"
+                              maxDate={new Date()}
+                            />
+                          )}
+                          name="plantDate"
+                          control={control}
+                          defaultValue=""
+                        />
+                      </MuiPickersUtilsProvider>
+                    </ThemeProvider>
                   </div>
                 </div>
                 <div className={styles.formFieldLarge}>
