@@ -1,14 +1,14 @@
+import Footer from '../../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import React from 'react';
 import i18next from './../../i18n'
-import Footer from '../../src/features/common/Layout/Footer';
 import LegacyDonations from '../../src/features/legacyDonations';
 import styles from './../../src/features/legacyDonations/styles/PaymentDetails.module.scss'
-
 interface Props {
     initialized: Boolean;
 }
 const { useTranslation } = i18next;
+
 
 function PaymentPage({ initialized }: Props) {
     const router = useRouter();
@@ -38,7 +38,7 @@ function PaymentPage({ initialized }: Props) {
     }, [router.query.code]);
 
     return paymentData ? (
-      <planetapp>
+        <>
         <div className={styles.donationPaymentSection}>
 
             {initialized && paymentData && (
@@ -57,15 +57,15 @@ function PaymentPage({ initialized }: Props) {
             
         </div>
         <Footer />
-      </planetapp>
-    ) : <planetapp>
-      <div className={styles.donationPaymentSection}>
+        </>
+    ) : <>
+    <div className={styles.donationPaymentSection}>
         <h2>
         {t('donate:donationTokenInvalid')}
         </h2>
-      </div>
-      <Footer />
-    </planetapp>;
+    </div>
+    <Footer />
+    </>;
 }
 
 export default PaymentPage
