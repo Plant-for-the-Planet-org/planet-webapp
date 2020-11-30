@@ -94,12 +94,12 @@
   "addProject": "Projekt hinzufügen",
   "abandonment": "Aufgabe",
   "survivalRate": "Überlebensrate",
-  "survivalRateInfo": "Prozentsatz von Bäumen, die das erste Jahr nach der Pflanzung überleben.",
-  "employees": "Angestellte",
+  "survivalRateInfo": "Prozentualer Anteil der Bäume, die das erste Jahr der Pflanzung überleben",
+  "employees": "Mitarbeiter",
   "siteOwnership": "Standortbesitz",
-  "longTermProtection": "Langzeitschutz",
+  "longTermProtection": "Langfristiger Schutz",
   "externalCertifications": "Externe Zertifizierungen",
   "projectSpendingFinancial": "Finanzielle Projektausgaben",
-  "issueDate": "Ausgabedatum",
-  "acquisitionYear": "Erwerbsjahr"
+  "issueDate": "Ausstellungsdatum",
+  "acquisitionYear": "Jahr des Erwerbs"
 }

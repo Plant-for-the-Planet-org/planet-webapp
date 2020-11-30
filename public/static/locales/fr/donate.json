@@ -59,6 +59,8 @@
   "noProjectsFound": "Aucun projet trouvé",
   "inTimeOfTaxReturns": "à temps pour les déclarations d'impôts.",
   "titleToShare": "Planter des arbres contre la crise climatique !",
-  "textToShare": "La prévention de la crise climatique passe par une réduction drastique des émissions de carbone et par la plantation d'arbres. C'est pourquoi je viens d'en planter. Consultez le site {{linkToShare}} si vous voulez en planter aussi ! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
-  "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>"
+  "textToShare": "Rejoignez {{name}} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
+  "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
+  "shareTextTitle": "Arrêtez de parler. Commencer à planter",
+  "textToShareLinkedin": "Rejoignez  {{name}} et des milliers d'autres  pour planter un mille milliards d'arbres afin de lutter contre la crise climatique"
 }
