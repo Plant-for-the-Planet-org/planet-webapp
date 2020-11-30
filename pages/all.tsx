@@ -34,9 +34,9 @@ export default function Home() {
   }
 
   return (
-    <>
+    <planetapp>
       <GetLeaderboardMeta/>
-      <Layout>{getAllPage()}</Layout>
-    </>
+      {getAllPage()}
+    </planetapp>
   );
 }
