@@ -119,7 +119,7 @@ export default function RegisterTrees({
     async function getUserCountryBbox() {
       var country = getStoredConfig('country');
       const result = await fetch(
-        `http://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
       );
       const geoCodingAPI = result.status === 200 ? await result.json() : null;
       setCountryBbox(geoCodingAPI.features[0].bbox);
