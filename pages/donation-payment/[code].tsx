@@ -14,20 +14,24 @@ function PaymentPage({ initialized }: Props) {
     const router = useRouter();
 
     const [paymentData, setPaymentData] = React.useState(null);
+
+    const [isLoaded, setIsLoaded] = React.useState(false);
     const { t } = useTranslation(['donate']);
 
     React.useEffect(() => {
         async function loadProjects() {
             await fetch(`${process.env.API_ENDPOINT}/public/v1.3/en/paymentInfo/${router.query.code}`).then(async (res) => {
-                if(res.status !== 200){
+                if (res.status !== 200) {
                     setPaymentData(null)
+                    setIsLoaded(true)
                 }
-                else{
+                else {
                     const data = await res.json();
-                    setPaymentData(data);   
+                    setPaymentData(data);
+                    setIsLoaded(true)
                 }
-                
-            }).catch((err)=>{
+
+            }).catch((err) => {
                 console.log(err);
             })
         }
@@ -37,35 +41,41 @@ function PaymentPage({ initialized }: Props) {
 
     }, [router.query.code]);
 
-    return paymentData ? (
+    return isLoaded ? paymentData ? (
         <>
-        <div className={styles.donationPaymentSection}>
+            <div className={styles.donationPaymentSection}>
 
-            {initialized && paymentData && (
-                <LegacyDonations paymentData={paymentData}/>
-            )}
-            <img
-                className={styles.leaderBoardBushImage}
-                src="/tenants/planet/images/leaderboard/Person.svg"
-                alt=""
-            />
-            <img
-                className={styles.leaderBoardGroupTreeImage}
-                src="/tenants/planet/images/leaderboard/Trees.svg"
-                alt=""
-            />
-            
-        </div>
-        <Footer />
+                {initialized && paymentData && (
+                    <LegacyDonations paymentData={paymentData} />
+                )}
+                <img
+                    className={styles.leaderBoardBushImage}
+                    src="/tenants/planet/images/leaderboard/Person.svg"
+                    alt=""
+                />
+                <img
+                    className={styles.leaderBoardGroupTreeImage}
+                    src="/tenants/planet/images/leaderboard/Trees.svg"
+                    alt=""
+                />
+
+            </div>
+            <Footer />
         </>
     ) : <>
-    <div className={styles.donationPaymentSection}>
-        <h2>
-        {t('donate:donationTokenInvalid')}
-        </h2>
-    </div>
-    <Footer />
-    </>;
+            <div className={styles.donationPaymentSection}>
+                <h2>
+                    {t('donate:donationTokenInvalid')}
+                </h2>
+            </div>
+            <Footer />
+        </> : <>
+            <div className={styles.donationPaymentSection}>
+                <div className={styles.donationPaymentLoader} />
+            </div>
+
+            <Footer />
+        </>;
 }
 
 export default PaymentPage
