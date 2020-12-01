@@ -3,22 +3,25 @@ import { useSession, signIn, signOut } from 'next-auth/client';
 import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow'
+import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useDropzone } from 'react-dropzone';
 import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { removeUserExistsInDB, getUserInfo, removeUserInfo, setUserInfo } from '../../../../utils/auth0/localStorageUtils'
-import getImageUrl from '../../../../utils/getImageURL'
-import { editProfile } from '../../../../utils/auth0/apiRequests'
+import {
+  removeUserExistsInDB,
+  getUserInfo,
+  removeUserInfo,
+  setUserInfo,
+} from '../../../../utils/auth0/localStorageUtils';
+import getImageUrl from '../../../../utils/getImageURL';
+import { editProfile } from '../../../../utils/auth0/apiRequests';
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import i18next from '../../../../../i18n';
-
 
 const { useTranslation } = i18next;
 export default function EditProfileModal({
@@ -28,12 +31,9 @@ export default function EditProfileModal({
   changeForceReload,
   forceReload,
 }: any) {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const [snackbarOpen, setSnackbarOpen] = useState(
-    false
-  );
-
-  const [isUploadingData, setIsUploadingData] = React.useState(false)
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t } = useTranslation(['editProfile', 'donate', 'target']);
 
   const handleSnackbarOpen = () => {
@@ -60,50 +60,63 @@ export default function EditProfileModal({
       isPrivate: userprofile.isPrivate ? userprofile.isPrivate : false,
       getNews: userprofile.getNews ? userprofile.getNews : false,
       bio: userprofile.bio ? userprofile.bio : '',
-      url: userprofile.url ? userprofile.url : ''
-    }
-    reset(defaultProfileDetails)
-  }, [userprofile])
+      url: userprofile.url ? userprofile.url : '',
+    };
+    reset(defaultProfileDetails);
+  }, [userprofile]);
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+    watch,
+    getValues,
+  } = useForm({ mode: 'onBlur' });
 
-  const [country, setCountry] = React.useState(userprofile.country)
+  const [country, setCountry] = React.useState(userprofile.country);
 
-  const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal)
+  const [postalRegex, setPostalRegex] = React.useState(
+    COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
+  );
   React.useEffect(() => {
-    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country);
+    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter(
+      (item) => item.abbrev === country
+    );
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
   // the form values
-  const [session, loading] = useSession()
-  const [severity, setSeverity] = useState('success')
-  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const [session, loading] = useSession();
+  const [severity, setSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
 
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
       reader.onload = async (event) => {
         if (!loading && session) {
           const bodyToSend = {
-            imageFile: event.target.result
-          }
-          setSeverity('info')
-          setSnackbarMessage('Profile pic is being updated...')
-          handleSnackbarOpen()
-          const res = await editProfile(session, bodyToSend)
-          const resJson = await res.json()
-          const userInfo = getUserInfo()
-          const newUserInfo = { ...userInfo, profilePic: resJson.image }
-          setUserInfo(newUserInfo)
+            imageFile: event.target.result,
+          };
+          setSeverity('info');
+          setSnackbarMessage('Profile pic is being updated...');
+          handleSnackbarOpen();
+          const res = await editProfile(session, bodyToSend);
+          const resJson = await res.json();
+          const userInfo = getUserInfo();
+          const newUserInfo = { ...userInfo, profilePic: resJson.image };
+          setUserInfo(newUserInfo);
         }
-      }
-    })
-  }, [])
+      };
+    });
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -115,46 +128,45 @@ export default function EditProfileModal({
   });
 
   const saveProfile = async (data: any) => {
-    setIsUploadingData(true)
+    setIsUploadingData(true);
     const bodyToSend = {
       ...data,
-      country: country
-    }
+      country: country,
+    };
     if (!loading && session) {
       try {
-        const res = await editProfile(session, bodyToSend)
+        const res = await editProfile(session, bodyToSend);
         if (res.status === 200) {
-          setSeverity('success')
-          setSnackbarMessage('Saved Successfully!')
-          handleSnackbarOpen()
-          changeForceReload(!forceReload),
-            handleEditProfileModalClose()
-          setIsUploadingData(false)
+          setSeverity('success');
+          setSnackbarMessage('Saved Successfully!');
+          handleSnackbarOpen();
+          changeForceReload(!forceReload), handleEditProfileModalClose();
+          setIsUploadingData(false);
         } else if (res.status === 401) {
           // in case of 401 - invalid token: signIn()
-          setSeverity('error')
-          setSnackbarMessage('Error in updating profile')
-          handleSnackbarOpen()
+          setSeverity('error');
+          setSnackbarMessage('Error in updating profile');
+          handleSnackbarOpen();
           // console.log('in 401-> unauthenticated user / invalid token')
-          signOut()
-          removeUserExistsInDB()
-          removeUserInfo()
+          signOut();
+          removeUserExistsInDB();
+          removeUserInfo();
           signIn('auth0', { callbackUrl: '/login' });
-          setIsUploadingData(false)
+          setIsUploadingData(false);
         } else {
-          setSeverity('error')
-          setSnackbarMessage('Error in updating profile')
-          handleSnackbarOpen()
-          setIsUploadingData(false)
+          setSeverity('error');
+          setSnackbarMessage('Error in updating profile');
+          handleSnackbarOpen();
+          setIsUploadingData(false);
         }
       } catch (e) {
-        setSeverity('error')
-        setSnackbarMessage('Error in updating profile')
-        handleSnackbarOpen()
-        setIsUploadingData(false)
+        setSeverity('error');
+        setSnackbarMessage('Error in updating profile');
+        handleSnackbarOpen();
+        setIsUploadingData(false);
       }
     }
-  }
+  };
   return (
     <React.Fragment>
       <Modal
@@ -164,16 +176,15 @@ export default function EditProfileModal({
         closeAfterTransition
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-bio"
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        hideBackdrop
       >
         <div className={styles.modal}>
           <div>
-
             <div className={styles.headerDiv}>
-              <div className={styles.backDiv} onClick={handleEditProfileModalClose}>
+              <div
+                className={styles.backDiv}
+                onClick={handleEditProfileModalClose}
+              >
                 <BackButton style={{}} />
               </div>
               <div className={styles.editProfileText}>
@@ -182,26 +193,40 @@ export default function EditProfileModal({
               </div>
             </div>
 
-
-            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <label htmlFor="upload" >
+            <div
+              {...getRootProps()}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              <label htmlFor="upload">
                 <div className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {userprofile.image ?
+                  {userprofile.image ? (
                     <div className={styles.profilePic}>
-                      <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} />
+                      <img
+                        src={getImageUrl(
+                          'profile',
+                          'thumb',
+                          getUserInfo().profilePic
+                        )}
+                        className={styles.profilePicImg}
+                      />
                       <div className={styles.profilePicOverlay} />
                       <CameraWhite />
                     </div>
-                    : <div className={styles.noProfilePic}>
+                  ) : (
+                    <div className={styles.noProfilePic}>
                       <Camera />
-                    </div>}
+                    </div>
+                  )}
                 </div>
               </label>
             </div>
 
             <div className={styles.formField}>
-
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   label={t('donate:firstName')}
@@ -230,8 +255,6 @@ export default function EditProfileModal({
                 )}
               </div>
             </div>
-
-
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
@@ -268,7 +291,7 @@ export default function EditProfileModal({
                   variant="outlined"
                   name="zipCode"
                   inputRef={register({
-                    pattern: postalRegex
+                    pattern: postalRegex,
                   })}
                 />
                 {errors.zipCode && (
@@ -296,20 +319,23 @@ export default function EditProfileModal({
 
             <div className={styles.isPrivateAccountDiv}>
               <div>
-                <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
-                {watchIsPrivate && 
-                <div className={styles.isPrivateAccountText}>
-                  {t('editProfile:privateAccountTxt')}
-                </div>}
+                <div className={styles.mainText}>
+                  {t('editProfile:privateAccount')}
+                </div>
+                {watchIsPrivate && (
+                  <div className={styles.isPrivateAccountText}>
+                    {t('editProfile:privateAccountTxt')}
+                  </div>
+                )}
               </div>
               <Controller
                 name="isPrivate"
                 control={control}
                 inputRef={register()}
-                render={props => (
+                render={(props) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 )}
@@ -317,16 +343,18 @@ export default function EditProfileModal({
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
-              <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
+              <div className={styles.mainText}>
+                {t('editProfile:subscribe')}
+              </div>
 
               <Controller
                 name="getNews"
                 control={control}
                 inputRef={register()}
-                render={props => (
+                render={(props) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 )}
@@ -342,7 +370,7 @@ export default function EditProfileModal({
                 multiline
                 name="bio"
                 inputRef={register({
-                  maxLength: 300
+                  maxLength: 300,
                 })}
               />
             </div>
@@ -365,7 +393,6 @@ export default function EditProfileModal({
                   },
                 })}
               />
-
             </div>
             {errors.url && (
               <span className={styles.formErrors}>
@@ -373,18 +400,23 @@ export default function EditProfileModal({
               </span>
             )}
 
-            <div className={styles.formFieldLarge} style={{ justifyContent: 'center' }}>
+            <div
+              className={styles.formFieldLarge}
+              style={{ justifyContent: 'center' }}
+            >
               <div
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
-                {isUploadingData ? <div className={styles.spinner}></div> : t('editProfile:save')}
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('editProfile:save')
+                )}
               </div>
             </div>
-
           </div>
         </div>
-
       </Modal>
       {/* snackbar for showing various messages */}
       <Snackbar
@@ -404,4 +436,3 @@ export default function EditProfileModal({
     </React.Fragment>
   );
 }
-
