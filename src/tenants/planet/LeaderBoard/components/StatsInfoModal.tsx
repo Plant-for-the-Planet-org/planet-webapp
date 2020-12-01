@@ -17,32 +17,44 @@ function ExploreInfoModal({
   setInfoExpanded,
   setModalOpen,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['maps']);
+  const { t, i18n } = useTranslation(['planet']);
 
   return (
     <div className={styles.infoExpanded}>
       {infoExpanded === 'donated' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{infoExpanded}</div>
-          <div className={styles.infoContent}>info</div>
+          <div className={styles.infoTitle}>{t('planet:treesDonated')}</div>
+          <div className={styles.infoContent}></div>
         </div>
       ) : null}
       {infoExpanded === 'planted' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{infoExpanded}</div>
-          <div className={styles.infoContent}>info</div>
+          <div className={styles.infoTitle}>{t('planet:plantedByTPO')}</div>
+          <div className={styles.infoContent}></div>
         </div>
       ) : null}
       {infoExpanded === 'global' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{infoExpanded}</div>
-          <div className={styles.infoContent}>info</div>
+          <div className={styles.infoTitle}>{t('planet:plantedGlobally')}</div>
+          <div className={styles.infoContent}>{t('planet:globallySince')}</div>
         </div>
       ) : null}
       {infoExpanded === 'loss' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{infoExpanded}</div>
-          <div className={styles.infoContent}>info</div>
+          <div className={styles.infoTitle}>{t('planet:forestLoss')}</div>
+          <div className={styles.infoContent}>
+            <div>
+              {t('planet:estimateOf')}{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.nature.com/articles/nature14967"
+              >
+                Crowther, T. W. et al. (2015) Mapping tree density at a global
+                scale. Nature 525, 201–205.
+              </a>
+            </div>
+          </div>
         </div>
       ) : null}
       <div
