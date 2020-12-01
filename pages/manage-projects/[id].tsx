@@ -17,7 +17,9 @@ function ManageSingleProject({ }: Props): ReactElement {
   const router = useRouter();
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
+  const [project, setProject] = React.useState({})
 
+  const [token, setToken] = React.useState('')
   const {
     isLoading,
     isAuthenticated,
@@ -31,9 +33,6 @@ function ManageSingleProject({ }: Props): ReactElement {
     }
   }, [router]);
 
-  const [project, setProject] = React.useState({})
-
-  const [token, setToken] = React.useState('')
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -66,7 +65,7 @@ function ManageSingleProject({ }: Props): ReactElement {
     if (ready && !isLoading && isAuthenticated) {
       loadProject();
     }
-  }, [ready, isLoading])
+  }, [ready, isAuthenticated, isLoading])
 
   if (accessDenied && setupAccess) {
     return (
