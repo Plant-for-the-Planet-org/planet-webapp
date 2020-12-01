@@ -45,10 +45,6 @@ export default function EditProfileModal({
     }
   }, [isAuthenticated, isLoading])
 
-  const [snackbarOpen, setSnackbarOpen] = useState(
-    false
-  );
-
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const { t } = useTranslation(['editProfile', 'donate', 'target']);
 
