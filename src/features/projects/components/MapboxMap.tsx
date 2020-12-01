@@ -23,6 +23,7 @@ import PopupProject from './PopupProject';
 import getLanguageName from '../../../utils/language/getLanguageName';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+import currencyContext from '../../../utils/Context/CurrencyContext';
 
 const { useTranslation } = i18next;
 
@@ -49,7 +50,7 @@ export default function MapboxMap({
   const router = useRouter();
 
   const { t, i18n } = useTranslation(['maps']);
-
+  const { currency, setCurrency } = React.useContext(currencyContext);
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
   const screenWidth = window.innerWidth;
@@ -85,7 +86,7 @@ export default function MapboxMap({
   });
 
   const [language, setLanguage] = useState(i18n.language);
-  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+
   const [selectedCountry, setSelectedCountry] = useState('US');
 
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
@@ -291,7 +292,8 @@ export default function MapboxMap({
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
-          exploreContainerRef && exploreContainerRef.current &&
+          exploreContainerRef &&
+          exploreContainerRef.current &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);
@@ -365,27 +367,27 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-              <Source id="singleProject" type="geojson" data={geoJson}>
-                <Layer
-                  id="ploygonLayer"
-                  type="fill"
-                  source="singleProject"
-                  paint={{
-                    'fill-color': '#fff',
-                    'fill-opacity': 0.2,
-                  }}
-                />
-                <Layer
-                  id="ploygonOutline"
-                  type="line"
-                  source="singleProject"
-                  paint={{
-                    'line-color': '#89b54a',
-                    'line-width': 2,
-                  }}
-                />
-              </Source>
-            )
+            <Source id="singleProject" type="geojson" data={geoJson}>
+              <Layer
+                id="ploygonLayer"
+                type="fill"
+                source="singleProject"
+                paint={{
+                  'fill-color': '#fff',
+                  'fill-opacity': 0.2,
+                }}
+              />
+              <Layer
+                id="ploygonOutline"
+                type="line"
+                source="singleProject"
+                paint={{
+                  'line-color': '#89b54a',
+                  'line-width': 2,
+                }}
+              />
+            </Source>
+          )
         ) : null}
 
         {!showSingleProject &&
@@ -426,7 +428,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => { }}
+                onFocus={() => {}}
               />
             </Marker>
           ))}
@@ -526,9 +528,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                  siteExists &&
-                  project.sites.length !== 0 &&
-                  geoJson.features[currentSite]
+                siteExists &&
+                project.sites.length !== 0 &&
+                geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -544,7 +546,12 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
-        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${getLanguageName(language)} · ${selectedCurrency}`}</div>
+        <div
+          onClick={() => {
+            setLanguageModalOpen(true);
+          }}
+          className={styles.lngSwitcher + ' mapboxgl-map'}
+        >{`🌐 ${getLanguageName(language)} · ${currency}`}</div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -555,7 +562,10 @@ export default function MapboxMap({
           aria-describedby="simple-modal-description"
         >
           <ExploreInfoModal
-            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen}
+            infoRef={infoRef}
+            infoExpanded={infoExpanded}
+            setInfoExpanded={setInfoExpanded}
+            setModalOpen={setModalOpen}
           />
         </Modal>
       ) : null}
@@ -564,7 +574,7 @@ export default function MapboxMap({
         handleModalClose={handleLanguageModalClose}
         language={language}
         setLanguage={setLanguage}
-        setSelectedCurrency={setSelectedCurrency}
+        setSelectedCurrency={setCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
       />

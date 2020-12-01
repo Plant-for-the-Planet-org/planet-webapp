@@ -15,6 +15,8 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
+import currencyContext from '../src/utils/Context/CurrencyContext';
+import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -35,6 +37,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
+  const [currency, setCurrency] = React.useState('USD');
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
   const [showProjects, setShowProjects] = React.useState(true);
@@ -69,6 +72,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, []);
 
+  React.useEffect(() => {
+    const storedCurrency = getStoredCurrency();
+    if (storedCurrency) {
+      setCurrency(storedCurrency);
+    }
+  }, []);
+
   const ProjectProps = {
     projects,
     project,
@@ -87,23 +97,25 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   return (
     <AuthProvider session={pageProps.session}>
       <ThemeProvider>
-        <CssBaseline />
-        <Layout>
-          {isMap ? (
-            project ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
-            ) : projects ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
-            ) : null
-          ) : null}
-          <Component {...ProjectProps} />
-        </Layout>
+        <currencyContext.Provider value={{ currency, setCurrency }}>
+          <CssBaseline />
+          <Layout>
+            {isMap ? (
+              project ? (
+                <MapLayout
+                  {...ProjectProps}
+                  mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+                />
+              ) : projects ? (
+                <MapLayout
+                  {...ProjectProps}
+                  mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+                />
+              ) : null
+            ) : null}
+            <Component {...ProjectProps} />
+          </Layout>
+        </currencyContext.Provider>
       </ThemeProvider>
     </AuthProvider>
   );

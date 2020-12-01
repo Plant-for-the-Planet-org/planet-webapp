@@ -5,6 +5,7 @@ import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
 import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
+import currencyContext from '../src/utils/Context/CurrencyContext';
 
 interface Props {
   initialized: Boolean;
@@ -14,7 +15,7 @@ interface Props {
   setShowSingleProject: Function;
   showProjects: Boolean;
   setShowProjects: Function;
-  setsearchedProjects: any
+  setsearchedProjects: any;
 }
 
 export default function Donate({
@@ -28,6 +29,7 @@ export default function Donate({
   setsearchedProjects,
 }: Props) {
   const router = useRouter();
+  const { currency } = React.useContext(currencyContext);
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
 
@@ -60,14 +62,14 @@ export default function Donate({
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       const projects = await getRequest(
-        `/app/projects?_scope=map&currency=${currencyCode}`,
+        `/app/projects?_scope=map&currency=${currency}`
       );
       setProjects(projects);
       setProject(null);
       setShowSingleProject(false);
     }
     loadProjects();
-  }, []);
+  }, [currency]);
   const ProjectsProps = {
     projects,
     showProjects,
@@ -85,7 +87,7 @@ export default function Donate({
       {initialized ? (
         projects && initialized ? (
           <>
-          <GetAllProjectsMeta />
+            <GetAllProjectsMeta />
             <ProjectsList {...ProjectsProps} />
             {directGift ? (
               showdirectGift ? (

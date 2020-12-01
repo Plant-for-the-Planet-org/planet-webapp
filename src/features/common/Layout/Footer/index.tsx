@@ -7,16 +7,16 @@ import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import i18next from '../../../../../i18n';
+import currencyContext from '../../../../utils/Context/CurrencyContext';
 
 const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
   const { t, i18n } = useTranslation(['common']);
-
+  const { currency, setCurrency } = React.useContext(currencyContext);
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
-  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('US');
 
   const handleModalOpen = () => {
@@ -57,10 +57,10 @@ export default function Footer() {
     let countryCode;
 
     if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('currencyCode')) {
-        currencyCode = localStorage.getItem('currencyCode');
-        if (currencyCode) setSelectedCurrency(currencyCode);
-      }
+      // if (localStorage.getItem('currencyCode')) {
+      //   currencyCode = localStorage.getItem('currencyCode');
+      //   if (currencyCode) setSelectedCurrency(currencyCode);
+      // }
       if (localStorage.getItem('countryCode')) {
         countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
@@ -83,7 +83,7 @@ export default function Footer() {
               <div onClick={handleModalOpen} className={styles.footer_button}>
                 <World color={styles.primaryFontColor} />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(language)} · ${selectedCurrency}`}
+                  {`${getLanguageName(language)} · ${currency}`}
                 </p>
               </div>
               <a href="https://play.google.com/store/apps/details?id=org.pftp">
@@ -103,7 +103,12 @@ export default function Footer() {
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {FooterLinks.map((link) => {
                 return (
-                  <a key={link.title} href={link.link} target="_blank" rel="noopener noreferrer">
+                  <a
+                    key={link.title}
+                    href={link.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <p className={styles.footer_links}>{link.title}</p>
                   </a>
                 );
@@ -112,7 +117,11 @@ export default function Footer() {
           </div>
           <div className={styles.logo_container}>
             <div className={styles.pfp_logo}>
-              <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="http://www.plant-for-the-planet.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
                   alt={t('common:about_pftp')}
@@ -135,7 +144,7 @@ export default function Footer() {
           handleModalClose={handleModalClose}
           language={language}
           setLanguage={setLanguage}
-          setSelectedCurrency={setSelectedCurrency}
+          setSelectedCurrency={setCurrency}
           selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}
         />
