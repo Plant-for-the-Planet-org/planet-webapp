@@ -1,7 +1,7 @@
 import React from 'react';
-import Sugar from 'sugar';
 import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../../i18n';
+import getFormattedNumber from '../../../../utils/getFormattedNumber';
 
 interface Props {
   leaderboard: any;
@@ -11,7 +11,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard', 'common']);
+  const { t, i18n } = useTranslation(['leaderboard', 'common']);
 
   return (
     <section className={styles.leaderBoardSection}>
@@ -51,7 +51,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                         {leader.donorName}
                       </p>
                       <p className={styles.leaderBoardDonorTrees}>
-                        {Sugar.Number.format(Number(leader.treeCount))}
+                        {getFormattedNumber(i18n.language, Number(leader.treeCount))}
                         {' '}
                         {t('common:trees')}
                       </p>
@@ -69,7 +69,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {Sugar.Number.format(Number(leader.treeCount))}
+                          {getFormattedNumber(i18n.language, Number(leader.treeCount))}
                           {' '}
                           {t('common:trees')}
                         </p>
