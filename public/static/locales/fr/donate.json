@@ -62,5 +62,8 @@
   "textToShare": "Rejoignez {{name}} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
   "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
   "shareTextTitle": "Arrêtez de parler. Commencer à planter",
-  "textToShareLinkedin": "Rejoignez  {{name}} et des milliers d'autres  pour planter un mille milliards d'arbres afin de lutter contre la crise climatique"
+  "textToShareLinkedin": "Rejoignez  {{name}} et des milliers d'autres  pour planter un mille milliards d'arbres afin de lutter contre la crise climatique",
+  "donationTokenInvalid": "Le jeton de don fourni n'est pas valable.",
+  "giftTo": "Cadeau à",
+  "supporting": "Soutenir"
 }
