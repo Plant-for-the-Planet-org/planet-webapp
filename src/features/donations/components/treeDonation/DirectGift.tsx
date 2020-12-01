@@ -18,9 +18,11 @@ export default function DirectGift({
     <div className={styles.giftContainer}>
       <div className={styles.textContainer}>
         <div className={styles.giftTo}>
-          {t('donate:giftToName', { name: directGift.displayName })}
+          {directGift.type === 'individual'
+            ? t('donate:giftToName', { name: directGift.displayName })
+            : t('donate:plantTreesWith', { name: directGift.displayName })}
         </div>
-        <div className={styles.selectProject}>{t('donate:plantTrees')}</div>
+        <div className={styles.selectProject}>{t('donate:selectProject')}</div>
       </div>
       <div
         onClick={() => {
