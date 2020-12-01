@@ -79,12 +79,12 @@ export default function PublicUser(initialized: Props) {
       
       if (typeof Storage !== 'undefined') {
         let token = null; 
-        if(isAuthenticated){
+        if (isAuthenticated) {
           token = await getAccessTokenSilently();
         }
         let userInfo;
         userInfo = await getUserInfo()
-        let currentUserSlug = userInfo.slug ? userInfo.slug : null;
+        let currentUserSlug = userInfo?.slug ? userInfo.slug : null;
         
         // some user logged in and slug matches -> private profile
         if (!isLoading && token && currentUserSlug === slug) {          
