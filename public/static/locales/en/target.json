@@ -1,5 +1,5 @@
 {
   "setTarget": "Set Target",
   "targetSave": "Save",
-  "targetErrorMessage": "Number must be postive or greater than zero"
+  "targetErrorMessage": "Number must be greater than zero"
 }

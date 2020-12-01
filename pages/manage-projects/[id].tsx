@@ -13,12 +13,9 @@ interface Props {
 
 function ManageSingleProject({ }: Props): ReactElement {
   const [projectGUID, setProjectGUID] = React.useState(null);
-
   const [ready, setReady] = React.useState(false);
   const [session, loading] = useSession();
-
   const router = useRouter();
-
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
 
@@ -29,11 +26,10 @@ function ManageSingleProject({ }: Props): ReactElement {
     }
   }, [router]);
 
-
   const [project, setProject] = React.useState({})
 
   useEffect(() => {
-    async function loadProject() {      
+    async function loadProject() {
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, session).then((result) => {
         if (result.status === 401) {
           setAccessDenied(true)
