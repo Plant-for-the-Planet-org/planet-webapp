@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow'
+import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useDropzone } from 'react-dropzone';
 import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
@@ -19,7 +18,6 @@ import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
-
 const { useTranslation } = i18next;
 export default function EditProfileModal({
   userprofile,
@@ -28,6 +26,7 @@ export default function EditProfileModal({
   changeForceReload,
   forceReload,
 }: any) {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const [token, setToken] = React.useState('')
   const {
@@ -77,18 +76,31 @@ export default function EditProfileModal({
       isPrivate: userprofile.isPrivate ? userprofile.isPrivate : false,
       getNews: userprofile.getNews ? userprofile.getNews : false,
       bio: userprofile.bio ? userprofile.bio : '',
-      url: userprofile.url ? userprofile.url : ''
-    }
-    reset(defaultProfileDetails)
-  }, [userprofile])
+      url: userprofile.url ? userprofile.url : '',
+    };
+    reset(defaultProfileDetails);
+  }, [userprofile]);
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+    watch,
+    getValues,
+  } = useForm({ mode: 'onBlur' });
 
-  const [country, setCountry] = React.useState(userprofile.country)
+  const [country, setCountry] = React.useState(userprofile.country);
 
-  const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal)
+  const [postalRegex, setPostalRegex] = React.useState(
+    COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
+  );
   React.useEffect(() => {
-    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country);
+    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter(
+      (item) => item.abbrev === country
+    );
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
@@ -99,10 +111,10 @@ export default function EditProfileModal({
 
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
       reader.onload = async (event) => {
         if (!isLoading && token) {
           const bodyToSend = {
@@ -120,9 +132,9 @@ export default function EditProfileModal({
             console.log(error);
           })
         }
-      }
-    })
-  }, [])
+      };
+    });
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -134,7 +146,7 @@ export default function EditProfileModal({
   });
 
   const saveProfile = async (data: any) => {
-    setIsUploadingData(true)
+    setIsUploadingData(true);
     const bodyToSend = {
       ...data,
       country: country
@@ -156,13 +168,13 @@ export default function EditProfileModal({
           console.log(error);
         })
       } catch (e) {
-        setSeverity('error')
-        setSnackbarMessage('Error in updating profile')
-        handleSnackbarOpen()
-        setIsUploadingData(false)
+        setSeverity('error');
+        setSnackbarMessage('Error in updating profile');
+        handleSnackbarOpen();
+        setIsUploadingData(false);
       }
     }
-  }
+  };
   return (
     <React.Fragment>
       <Modal
@@ -172,16 +184,15 @@ export default function EditProfileModal({
         closeAfterTransition
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-bio"
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        hideBackdrop
       >
         <div className={styles.modal}>
           <div>
-
             <div className={styles.headerDiv}>
-              <div className={styles.backDiv} onClick={handleEditProfileModalClose}>
+              <div
+                className={styles.backDiv}
+                onClick={handleEditProfileModalClose}
+              >
                 <BackButton style={{}} />
               </div>
               <div className={styles.editProfileText}>
@@ -190,26 +201,40 @@ export default function EditProfileModal({
               </div>
             </div>
 
-
-            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <label htmlFor="upload" >
+            <div
+              {...getRootProps()}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              <label htmlFor="upload">
                 <div className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {userprofile.image ?
+                  {userprofile.image ? (
                     <div className={styles.profilePic}>
-                      <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} />
+                      <img
+                        src={getImageUrl(
+                          'profile',
+                          'thumb',
+                          getUserInfo().profilePic
+                        )}
+                        className={styles.profilePicImg}
+                      />
                       <div className={styles.profilePicOverlay} />
                       <CameraWhite />
                     </div>
-                    : <div className={styles.noProfilePic}>
+                  ) : (
+                    <div className={styles.noProfilePic}>
                       <Camera />
-                    </div>}
+                    </div>
+                  )}
                 </div>
               </label>
             </div>
 
             <div className={styles.formField}>
-
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   label={t('donate:firstName')}
@@ -238,8 +263,6 @@ export default function EditProfileModal({
                 )}
               </div>
             </div>
-
-
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
@@ -276,7 +299,7 @@ export default function EditProfileModal({
                   variant="outlined"
                   name="zipCode"
                   inputRef={register({
-                    pattern: postalRegex
+                    pattern: postalRegex,
                   })}
                 />
                 {errors.zipCode && (
@@ -304,20 +327,23 @@ export default function EditProfileModal({
 
             <div className={styles.isPrivateAccountDiv}>
               <div>
-                <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
-                {watchIsPrivate && 
-                <div className={styles.isPrivateAccountText}>
-                  {t('editProfile:privateAccountTxt')}
-                </div>}
+                <div className={styles.mainText}>
+                  {t('editProfile:privateAccount')}
+                </div>
+                {watchIsPrivate && (
+                  <div className={styles.isPrivateAccountText}>
+                    {t('editProfile:privateAccountTxt')}
+                  </div>
+                )}
               </div>
               <Controller
                 name="isPrivate"
                 control={control}
                 inputRef={register()}
-                render={props => (
+                render={(props) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 )}
@@ -325,16 +351,18 @@ export default function EditProfileModal({
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
-              <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
+              <div className={styles.mainText}>
+                {t('editProfile:subscribe')}
+              </div>
 
               <Controller
                 name="getNews"
                 control={control}
                 inputRef={register()}
-                render={props => (
+                render={(props) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 )}
@@ -350,7 +378,7 @@ export default function EditProfileModal({
                 multiline
                 name="bio"
                 inputRef={register({
-                  maxLength: 300
+                  maxLength: 300,
                 })}
               />
             </div>
@@ -373,7 +401,6 @@ export default function EditProfileModal({
                   },
                 })}
               />
-
             </div>
             {errors.url && (
               <span className={styles.formErrors}>
@@ -381,18 +408,23 @@ export default function EditProfileModal({
               </span>
             )}
 
-            <div className={styles.formFieldLarge} style={{ justifyContent: 'center' }}>
+            <div
+              className={styles.formFieldLarge}
+              style={{ justifyContent: 'center' }}
+            >
               <div
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
-                {isUploadingData ? <div className={styles.spinner}></div> : t('editProfile:save')}
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('editProfile:save')
+                )}
               </div>
             </div>
-
           </div>
         </div>
-
       </Modal>
       {/* snackbar for showing various messages */}
       <Snackbar
@@ -412,4 +444,3 @@ export default function EditProfileModal({
     </React.Fragment>
   );
 }
-

@@ -240,12 +240,9 @@ export default function RegisterTrees({
         open={registerTreesModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition
+        hideBackdrop
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-bio"
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
       >
         <div className={styles.modal}>
           {!registered ? (

@@ -48,7 +48,7 @@ function TreeDonation({
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
-    false,
+    false
   );
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -132,8 +132,13 @@ function TreeDonation({
   ) : (
     <>
       <div
-        className={styles.cardContainer}
-        style={{ alignSelf: isGift ? 'start' : 'center', width: `${screenWidth}%` }}
+        className={`${styles.cardContainer} ${
+          isGift ? styles.giftExpanded : null
+        }`}
+        style={{
+          alignSelf: isGift ? 'start' : 'center',
+          width: `${screenWidth}%`,
+        }}
       >
         <div className={styles.header}>
           <div
@@ -319,25 +324,25 @@ function TreeDonation({
           </div>
         </div>
 
-        {!isPaymentOptionsLoading
-        && paymentSetup?.gateways?.stripe?.account
-        && currency ? (
+        {!isPaymentOptionsLoading &&
+        paymentSetup?.gateways?.stripe?.account &&
+        currency ? (
           <PaymentRequestCustomButton
             country={country}
             currency={currency}
             amount={formatAmountForStripe(
               treeCost * treeCount,
-              currency.toLowerCase(),
+              currency.toLowerCase()
             )}
             onPaymentFunction={onPaymentFunction}
             continueNext={continueNext}
           />
-          ) : (
+        ) : (
           <div className={styles.actionButtonsContainer}>
             <ButtonLoader />
             <ButtonLoader />
           </div>
-          )}
+        )}
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}
