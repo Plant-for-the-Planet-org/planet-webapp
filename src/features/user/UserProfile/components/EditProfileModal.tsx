@@ -4,9 +4,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow'
 import { useDropzone } from 'react-dropzone';
+import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
@@ -20,7 +20,7 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import i18next from '../../../../../i18n';
 
 
-const {useTranslation} = i18next;
+const { useTranslation } = i18next;
 export default function EditProfileModal({
   userprofile,
   editProfileModalOpen,
@@ -34,7 +34,7 @@ export default function EditProfileModal({
   );
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
-  const {t} = useTranslation(['editProfile', 'donate', 'target']); 
+  const { t } = useTranslation(['editProfile', 'donate', 'target']);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -78,7 +78,8 @@ export default function EditProfileModal({
   // the form values
   const [session, loading] = useSession()
   const [severity, setSeverity] = useState('success')
-  const [snackbarMessage, setSnackbarMessage] = useState("OK")
+  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const watchIsPrivate = watch('isPrivate');
 
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
@@ -127,7 +128,7 @@ export default function EditProfileModal({
           setSnackbarMessage('Saved Successfully!')
           handleSnackbarOpen()
           changeForceReload(!forceReload),
-          handleEditProfileModalClose()
+            handleEditProfileModalClose()
           setIsUploadingData(false)
         } else if (res.status === 401) {
           // in case of 401 - invalid token: signIn()
@@ -168,11 +169,8 @@ export default function EditProfileModal({
           timeout: 500,
         }}
       >
-          <div className={styles.modal}>
-
-            
-
-            <div>
+        <div className={styles.modal}>
+          <div>
 
             <div className={styles.headerDiv}>
               <div className={styles.backDiv} onClick={handleEditProfileModalClose}>
@@ -185,54 +183,55 @@ export default function EditProfileModal({
             </div>
 
 
-            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center',width:'100%' }}>
+            <div {...getRootProps()} style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
               <label htmlFor="upload" >
-                <div
-                  className={styles.profilePicDiv}
-                  style={{width: userprofile.image ? '100px' : '100%'}}
-                  >
+                <div className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {userprofile.image ? <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} /> : 
-                  <div style={{textAlign: 'center'}}>
-                    <Camera color="white" />
-                    <p>{t('editProfile:addPhoto')}</p>
-                  </div>}
+                  {userprofile.image ?
+                    <div className={styles.profilePic}>
+                      <img src={getImageUrl('profile', 'thumb', getUserInfo().profilePic)} className={styles.profilePicImg} />
+                      <div className={styles.profilePicOverlay} />
+                      <CameraWhite />
+                    </div>
+                    : <div className={styles.noProfilePic}>
+                      <Camera />
+                    </div>}
                 </div>
               </label>
             </div>
 
-              <div className={styles.formField}>
+            <div className={styles.formField}>
 
-                <div className={styles.formFieldHalf}>
-                  <MaterialTextField
-                    label={t('donate:firstName')}
-                    variant="outlined"
-                    name="firstname"
-                    inputRef={register()}
-                  />
-                  {errors.firstname && (
-                    <span className={styles.formErrors}>
-                      {t('donate:firstNameRequired')}
-                    </span>
-                  )}
-                </div>
-                <div style={{ width: '20px' }}></div>
-                <div className={styles.formFieldHalf}>
-                  <MaterialTextField
-                    label={t('donate:lastName')}
-                    variant="outlined"
-                    name="lastname"
-                    inputRef={register()}
-                  />
-                  {errors.lastname && (
-                    <span className={styles.formErrors}>
-                      {t('donate:lastNameRequired')}
-                    </span>
-                  )}
-                </div>
+              <div className={styles.formFieldHalf}>
+                <MaterialTextField
+                  label={t('donate:firstName')}
+                  variant="outlined"
+                  name="firstname"
+                  inputRef={register()}
+                />
+                {errors.firstname && (
+                  <span className={styles.formErrors}>
+                    {t('donate:firstNameRequired')}
+                  </span>
+                )}
               </div>
+              <div style={{ width: '20px' }}></div>
+              <div className={styles.formFieldHalf}>
+                <MaterialTextField
+                  label={t('donate:lastName')}
+                  variant="outlined"
+                  name="lastname"
+                  inputRef={register()}
+                />
+                {errors.lastname && (
+                  <span className={styles.formErrors}>
+                    {t('donate:lastNameRequired')}
+                  </span>
+                )}
+              </div>
+            </div>
 
-          
+
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField
@@ -286,21 +285,22 @@ export default function EditProfileModal({
                 defaultValue={country}
                 onChange={setCountry}
                 label={t('donate:country')}
-                name="country"
+                name="editProfile"
               />
-              {errors.country && (
+              {errors.editProfile && (
                 <span className={styles.formErrors}>
-                 {t('donate:countryRequired')}
+                  {t('donate:countryRequired')}
                 </span>
               )}
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
               <div>
-              <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
+                <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
+                {watchIsPrivate && 
                 <div className={styles.isPrivateAccountText}>
                   {t('editProfile:privateAccountTxt')}
-              </div>
+                </div>}
               </div>
               <Controller
                 name="isPrivate"
@@ -317,7 +317,7 @@ export default function EditProfileModal({
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
-                <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
+              <div className={styles.mainText}>{t('editProfile:subscribe')}</div>
 
               <Controller
                 name="getNews"
@@ -341,9 +341,10 @@ export default function EditProfileModal({
                 variant="outlined"
                 multiline
                 name="bio"
-                inputRef={register()}
+                inputRef={register({
+                  maxLength: 300
+                })}
               />
-
             </div>
             {errors.bio && (
               <span className={styles.formErrors}>
@@ -358,7 +359,8 @@ export default function EditProfileModal({
                 name="url"
                 inputRef={register({
                   pattern: {
-                    value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+                    //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=\*]*)$/,
                     message: t('editProfile:websiteError'),
                   },
                 })}
@@ -367,21 +369,21 @@ export default function EditProfileModal({
             </div>
             {errors.url && (
               <span className={styles.formErrors}>
-               {t('editProfile:websiteRequired')}
+                {t('editProfile:websiteRequired')}
               </span>
             )}
 
-            <div className={styles.formFieldLarge} style={{justifyContent:'center'}}>
+            <div className={styles.formFieldLarge} style={{ justifyContent: 'center' }}>
               <div
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
-               {isUploadingData ? <div className={styles.spinner}></div> : t('editProfile:save')}
+                {isUploadingData ? <div className={styles.spinner}></div> : t('editProfile:save')}
               </div>
             </div>
 
           </div>
-          </div>
+        </div>
 
       </Modal>
       {/* snackbar for showing various messages */}
@@ -402,3 +404,4 @@ export default function EditProfileModal({
     </React.Fragment>
   );
 }
+

@@ -18,7 +18,7 @@ export default function DirectGift({
     <div className={styles.giftContainer}>
       <div className={styles.textContainer}>
         <div className={styles.giftTo}>
-          {t('donate:giftTo', { name: directGift.displayName })}
+          {t('donate:giftToName', { name: directGift.displayName })}
         </div>
         <div className={styles.selectProject}>{t('donate:plantTrees')}</div>
       </div>

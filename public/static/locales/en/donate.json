@@ -59,8 +59,13 @@
   "noProjectsFound": "No projects found",
   "inTimeOfTaxReturns": "in time for tax returns.",
   "titleToShare": "Planting trees against the climate crisis!",
-  "textToShare": "Preventing the climate crisis requires drastically reducing carbon emissions and planting trees. That’s why I just planted some. Check out {{linkToShare}} if you want to plant some too! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
+  "giftToName": "Gift to {{name}}",
+  "plantTrees": "Plant trees with other profile type",
+  "textToShare": "Join {{name}} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @PftP_int",
   "thankyouHeaderText": "We're on the road to a \n <h1>Trillion Trees</h1>",
-  "giftTo": "Gift to {{name}}",
-  "plantTrees": "Plant trees with other profile type"
+  "shareTextTitle": "Stop Talking. Start Plant",
+  "textToShareLinkedin": "Join {{name}} and thousand of others to plant a trillion trees to tackle the climate crisis",
+  "donationTokenInvalid": "The provided donation token is invalid.",
+  "giftTo": "Gift to",
+  "supporting": "Supporting"
 }
