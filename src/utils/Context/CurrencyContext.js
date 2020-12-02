@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 const currencyContext = createContext({
-  currency: 'USD',
+  currency: 'EUR',
   setCurrency: (currency) => {},
 });
 

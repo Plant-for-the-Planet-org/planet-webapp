@@ -37,7 +37,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
-  const [currency, setCurrency] = React.useState('USD');
+  const [currency, setCurrency] = React.useState('EUR');
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
   const [showProjects, setShowProjects] = React.useState(true);
