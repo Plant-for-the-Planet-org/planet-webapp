@@ -5,6 +5,7 @@ import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
 import i18next from '../../../../i18n';
+import {sortCountriesByTranslation } from '../../../utils/countryCurrency/countryUtils';
 
 const config = tenantConfig();
 const { useTranslation } = i18next;
@@ -42,7 +43,7 @@ export default function CountrySelect(props: {
   ) => void)
   | undefined;
 }) {
-  const { t, ready } = useTranslation(['country']);
+  const { t, ready, i18n } = useTranslation(['country']);
 
   const classes = useStyles();
 
@@ -57,26 +58,27 @@ export default function CountrySelect(props: {
   React.useEffect(() => {
     let defaultCountry;
     // create default object
-    defaultCountry = countries.filter((data) => data.code === defaultValue);
+    console.log(defaultValue);
+    defaultCountry = sortCountriesByTranslation(t, i18n.language).filter((data) => data.countryCode === defaultValue);
     if (defaultCountry) {
       // set initial value
       setValue(defaultCountry[0]);
       // set contact details
-      onChange(defaultCountry[0].code);
+      onChange(defaultCountry[0].countryCode);
     }
   }, []);
-
+  
   // Set contact details everytime value changes
   React.useEffect(() => {
     if (value) {
-      onChange(value.code);
+      onChange(value.countryCode);
     }
   }, [value]);
   
   if (ready) {
-    countries.sort((a, b) => {
-        const nameA = t(`country:${a.code.toLowerCase()}`);
-        const nameB = t(`country:${b.code.toLowerCase()}`);
+    sortCountriesByTranslation(t, i18n.language).sort((a, b) => {
+        const nameA = t(`country:${a.countryCode.toLowerCase()}`);
+        const nameB = t(`country:${b.countryCode.toLowerCase()}`);
         if (nameA > nameB) {
           return 1;
         } if (nameA < nameB) {
@@ -90,17 +92,17 @@ export default function CountrySelect(props: {
     <Autocomplete
       id="country-select"
       style={{ width: '100%' }}
-      options={countries as CountryType[]}
+      options={sortCountriesByTranslation(t, i18n.language) as CountryType[]}
       classes={{
         option: classes.option,
       }}
       value={value}
       autoHighlight
-      getOptionLabel={(option) => t(`country:${option.code.toLowerCase()}`)}
+      getOptionLabel={(option) => t(`country:${option.countryCode.toLowerCase()}`)}
       renderOption={(option) => (
         <>
-          <span>{countryToFlag(option.code)}</span>
-          {props.name === 'editProfile' ? (t(`country:${option.code.toLowerCase()}`)) : (t(`country:${option.code.toLowerCase()}`) + ' ' + option.code)}
+          <span>{countryToFlag(option.countryCode)}</span>
+          {(t(`country:${option.countryCode.toLowerCase()}`) + ' ' + option.currencyCode)}
         </>
       )}
       onChange={(event: any, newValue: CountryType | null) => {
