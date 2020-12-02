@@ -58,7 +58,6 @@ export default function CountrySelect(props: {
   React.useEffect(() => {
     let defaultCountry;
     // create default object
-    console.log(defaultValue);
     defaultCountry = sortCountriesByTranslation(t, i18n.language).filter((data) => data.countryCode === defaultValue);
     if (defaultCountry) {
       // set initial value
