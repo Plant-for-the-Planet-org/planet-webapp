@@ -7,6 +7,8 @@
   left: 0;
   right: 0;
   width: fit-content;
+  min-width: 240px;
+  max-width: 100%;
   margin: auto;
   background-color: #fff;
   flex-direction: row;
@@ -24,13 +26,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-width: 170px;
+  text-align: center;
 }
 
 .giftTo {
+  min-width: 150px;
 }
 
 .selectProject {
   font-size: 20px;
+  min-width: 150px;
 }
 
 .closeButton {
