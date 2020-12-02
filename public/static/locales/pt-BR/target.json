@@ -1,4 +1,5 @@
 {
-  "AddTarget": "Adicionar Meta",
-  "targetSave": "Salvar"
+  "setTarget": "Estabelecer Meta",
+  "targetSave": "Salvar",
+  "targetErrorMessage": "O número deve ser positivo ou maior que zero"
 }

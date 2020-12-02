@@ -91,5 +91,15 @@
   "backToSpending": "Voltar aos gastos do projeto",
   "pendingReview": "Revisão Pendente",
   "submitForReview": "Submeter para revisão",
-  "addProject": "Adicionar Projeto"
+  "addProject": "Adicionar Projeto",
+  "abandonment": "Abandono",
+  "survivalRate": "Taxa de Sobrevivência",
+  "survivalRateInfo": "Porcentagem de árvores que sobrevivem ao primeiro ano de plantio",
+  "employees": "Empregados",
+  "siteOwnership": "Propriedade do site",
+  "longTermProtection": "Proteção a Longo Prazo",
+  "externalCertifications": "Certificações externas",
+  "projectSpendingFinancial": "Gastos financeiros em projetos",
+  "issueDate": "Data de emissão",
+  "acquisitionYear": "Ano de Aquisição"
 }

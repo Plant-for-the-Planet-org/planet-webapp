@@ -5,6 +5,10 @@
   padding-left: 20px;
 }
 
+.mapboxgl-ctrl-bottom-right {
+  right: 80px;
+}
+
 .mapboxgl-ctrl-attrib-inner > a {
   font-size: 10px;
 }
@@ -25,7 +29,7 @@
 html {
   overflow-x: hidden;
   overflow-y: scroll;
-  background-color: #c8def4;
+  // background-color: #c8def4;
 }
 
 body {
@@ -36,7 +40,7 @@ body {
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: 0.01071em;
-  background-color: #c8def4;
+  // background-color: #c8def4;
 }
 
 .MuiInput-underline:after {
@@ -69,15 +73,96 @@ a {
 }
 
 // Reseting User agent styles to maintain cross browser interferences
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,  figure, figcaption, footer, header, hgroup,  menu, nav, output, ruby, section, summary, time, mark, audio, video {  
-  margin: 0;  
-  padding: 0;  
-  border: 0;  
-  font-size: 100%;  
-  font: inherit;  
-  vertical-align: baseline; 
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 
+// Deforestation slider
 .rc-slider-mark-text {
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
@@ -85,6 +170,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 
 // Stepper Connector
-.MuiStepIcon-root.MuiStepIcon-active,.MuiStepIcon-root.MuiStepIcon-completed {
-  color: $primaryColor!important;
+.MuiStepIcon-root.MuiStepIcon-active,
+.MuiStepIcon-root.MuiStepIcon-completed {
+  color: $primaryColor !important;
 }

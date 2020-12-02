@@ -4,7 +4,8 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker, NavigationControl } from 'react-map-gl';
+import MapGL, { Marker, NavigationControl, FlyToInterpolator } from 'react-map-gl';
+import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
@@ -114,7 +115,7 @@ export default function BasicDetails({
   // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
-  
+
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -153,7 +154,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
-    
+
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -330,7 +331,8 @@ export default function BasicDetails({
                     message: t('manageProjects:websiteValidationRequired'),
                   },
                   pattern: {
-                    value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+                    //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=\*]*)$/,
                     message: t('manageProjects:websiteValidationInvalid'),
                   },
                 })}
@@ -381,7 +383,7 @@ export default function BasicDetails({
                         style={{ left: '-150px' }}
                       >
                         <p>
-                        {t('manageProjects:receiveDonationsInfo')}
+                          {t('manageProjects:receiveDonationsInfo')}
                         </p>
                       </div>
                     </div>
@@ -450,7 +452,7 @@ export default function BasicDetails({
             <MapGL
               {...viewport}
               ref={mapRef}
-              mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+              mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
               mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
               onViewportChange={_onViewportChange}
               onClick={(event) => {
@@ -463,7 +465,9 @@ export default function BasicDetails({
                   ...viewport,
                   latitude: event.lngLat[1],
                   longitude: event.lngLat[0],
-                  zoom: 7,
+                  transitionDuration: 400,
+                  transitionInterpolator: new FlyToInterpolator(),
+                  transitionEasing: d3.easeCubic,
                 });
                 setValue('projectCoords', latLong);
               }}
