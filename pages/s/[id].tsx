@@ -11,15 +11,17 @@ export default function DirectGift({}: Props): ReactElement {
     if (router && router.query.id) {
       async function loadPublicUserData() {
         const newProfile = await getRequest(`/app/profiles/${router.query.id}`);
-        // console.log(newProfile);
-        localStorage.setItem(
-          'directGift',
-          JSON.stringify({
-            id: newProfile.slug,
-            displayName: newProfile.displayName,
-            show: true,
-          })
-        );
+        if (newProfile.type !== 'tpo') {
+          localStorage.setItem(
+            'directGift',
+            JSON.stringify({
+              id: newProfile.slug,
+              displayName: newProfile.displayName,
+              type: newProfile.type,
+              show: true,
+            })
+          );
+        }
         router.push('/', undefined, {
           shallow: true,
         });
