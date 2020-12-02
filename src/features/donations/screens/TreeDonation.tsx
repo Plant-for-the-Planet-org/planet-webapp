@@ -267,6 +267,7 @@ function TreeDonation({
               onKeyPress={() => setOpenTaxDeductionModal(true)}
               role="button"
               tabIndex={0}
+              data-testid="taxDeductionId"
             >
               <div className={styles.taxDeductibleCountry}>
                 {t(`country:${country.toLowerCase()}`)}
