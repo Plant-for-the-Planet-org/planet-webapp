@@ -278,14 +278,14 @@ export default function EditProfileModal({
             {userprofile.type === 'tpo' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label={t('donate:companyName')}
+                label={t('donate:nameOfOrg')}
                 variant="outlined"
                 name="name"
                 inputRef={register()}
               />
               {errors.name && (
                 <span className={styles.formErrors}>
-                  {t('donate:companyRequired')}
+                  {t('donate:nameOfOrgIsRequired')}
                 </span>
               )}
             </div>
