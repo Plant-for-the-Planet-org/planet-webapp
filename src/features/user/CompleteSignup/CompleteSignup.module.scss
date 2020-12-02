@@ -60,6 +60,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
+  > svg {
+    width: 16px;
+  }
 }
 .headerBackIcon:hover {
   cursor: pointer;
@@ -252,4 +255,8 @@
   max-width: 320px;
   position: absolute;
   bottom: -18px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
 }

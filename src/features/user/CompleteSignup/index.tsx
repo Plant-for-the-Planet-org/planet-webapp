@@ -12,6 +12,7 @@ import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
+import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
@@ -39,7 +40,7 @@ export default function CompleteSignup() {
       const token = await getAccessTokenSilently();
       setToken(token);
       if(!token){
-        loginWithRedirect();
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
       }
       const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
@@ -118,7 +119,7 @@ export default function CompleteSignup() {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
-        loginWithRedirect();
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
       } else {
         setSnackbarMessage('Error in creating profile. Please try again');
         setSeverity("error")
@@ -182,7 +183,7 @@ export default function CompleteSignup() {
               onClick={logoutUser}
               className={styles.headerBackIcon}
             >
-              <BackArrow color={styles.primaryFontColor} />
+              <CancelIcon color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>{t('login:signUpText')}</div>
           </div>
