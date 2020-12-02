@@ -11,7 +11,7 @@ import {
   removeUserExistsInDB,
   getUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
-import { getAccountInfo } from '../../src/utils/auth0/apiRequests'
+import { getAccountInfo } from '../../src/utils/apiRequests/api'
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {

@@ -1,11 +1,36 @@
 import getsessionId from "./getSessionId";
 
+//  API call to private /profile endpoint
+export async function getAccountInfo(token:any) {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+      method: 'GET',
+      headers: {
+        'tenant-key': `${process.env.TENANTID}`,
+        'X-SESSION-ID': await getsessionId(),
+        'Authorization': `OAuth ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`
+      },
+    }
+  );
+  return response;
+}
+
 export async function getRequest(url: any) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
+      method: 'GET',
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
-        'X-SESSION-ID': await getsessionId()
+        'X-SESSION-ID': await getsessionId(),
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`
       },
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -27,10 +52,16 @@ export async function getRequest(url: any) {
 export async function getAuthenticatedRequest(url: any,token:any) {
   let result= {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
+      method: 'GET',
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
         'X-SESSION-ID': await getsessionId(),
         'Authorization': `OAuth ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`
       },
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
