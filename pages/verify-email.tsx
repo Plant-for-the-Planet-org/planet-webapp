@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 import Footer from '../src/features/common/Layout/Footer'
+import LandingSection from '../src/features/common/Layout/LandingSection'
 import VerifyEmailComponent from './../src/features/common/VerifyEmail/VerifyEmail'
 
 interface Props {
@@ -7,11 +8,13 @@ interface Props {
 }
 
 function VerifyEmail({ }: Props): ReactElement {
-    
 
     return (
         <div>
-            <VerifyEmailComponent />
+            <LandingSection>
+                <VerifyEmailComponent />
+            </LandingSection>
+
             <Footer />
         </div>
     )
