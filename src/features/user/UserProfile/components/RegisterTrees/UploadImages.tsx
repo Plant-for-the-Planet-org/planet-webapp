@@ -13,14 +13,14 @@ import i18next from '../../../../../../i18n';
 interface Props {
   contribution: any;
   contributionGUID: any;
-  session: any;
+  token: any;
 }
 
 const { useTranslation } = i18next;
 
 export default function UploadImages({
   contributionGUID,
-  session,
+  token,
   contribution,
 }: Props): ReactElement {
   const [uploadedImages, setUploadedImages] = React.useState([]);
@@ -54,7 +54,7 @@ export default function UploadImages({
     postAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images`,
       submitData,
-      session
+      token
     )
       .then((res) => {
         if (!res.code) {
@@ -91,7 +91,7 @@ export default function UploadImages({
     console.log(id);
     deleteAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images/${id}`,
-      session
+      token
     ).then((res) => {
       if (res !== 404) {
         let uploadedImagesTemp = uploadedImages;

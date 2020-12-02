@@ -5,7 +5,7 @@ import Settings from '../../../../../public/assets/images/icons/userProfileIcons
 import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import AddTargetModal from '../components/AddTargetModal';
-import SettingsContainer from '../components/Settings';
+import SettingsModal from '../components/SettingsModal';
 
 export default function IndividualProfile({
   userprofile,
@@ -63,7 +63,7 @@ export default function IndividualProfile({
         >
           {/* Open setting component */}
           {settingsModalOpen && (
-            <SettingsContainer
+            <SettingsModal
               userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}

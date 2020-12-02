@@ -1,4 +1,3 @@
-import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react'
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
@@ -8,16 +7,23 @@ import LandingSection from '../../src/features/common/Layout/LandingSection';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import SingleContribution from '../../src/features/user/UserProfile/components/RegisterTrees/SingleContribution';
 import { getUserInfo } from '../../src/utils/auth0/localStorageUtils';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function SingleContributionPage(): ReactElement {
     const [contributionGUID, setContributionGUID] = React.useState(null);
     const [ready, setReady] = React.useState(false);
-    const [session, loading] = useSession();
     const router = useRouter();
     const [accessDenied, setAccessDenied] = React.useState(false);
     const [setupAccess, setSetupAccess] = React.useState(false);
     const [contribution, setContribution] = React.useState({});
     const [currentUserSlug, setCurrentUserSlug] = React.useState();
+
+    const [token, setToken] = React.useState('')
+    const {
+      isLoading,
+      isAuthenticated,
+      getAccessTokenSilently
+    } = useAuth0();
 
     React.useEffect(() => {
         if (router && router.query.id) {
@@ -25,35 +31,42 @@ export default function SingleContributionPage(): ReactElement {
             setReady(true);
         }
     }, [router]);
-
+    
+    // This effect is used to get and update UserInfo if the isAuthenticated changes
     React.useEffect(() => {
-        getUserInfo() && getUserInfo().slug ? setCurrentUserSlug(getUserInfo().slug) : null;
-    }, [loading]);
+      async function loadFunction() {
+        const token = await getAccessTokenSilently();
+        setToken(token);
+        getUserInfo() && getUserInfo().slug
+          ? setCurrentUserSlug(getUserInfo().slug)
+          : null;
+        };
+      if (isAuthenticated && !isLoading) {
+        loadFunction()
+      }
+    }, [isAuthenticated, isLoading])
 
+    // This effect is used to get and update contribution if the isAuthenticated changes
     React.useEffect(() => {
-        async function loadContribution() {
-            getAuthenticatedRequest(`/app/contribution/${contributionGUID}`, session).then((result) => {
-                if (result.status === 401) {
-                    setAccessDenied(true)
-                    setSetupAccess(true)
-                } else {
-                    setContribution(result)
-                    setSetupAccess(true)
-                }
-            }).catch(() => {
+      async function loadFunction() {
+        const token = await getAccessTokenSilently();
+        getAuthenticatedRequest(`/app/contribution/${contributionGUID}`, token).then((result) => {
+            if (result.status === 401) {
                 setAccessDenied(true)
                 setSetupAccess(true)
-            })
-        }
-        // ready is for router, loading is for session
-        if (ready && !loading) {
-            loadContribution();
-        }
-    }, [ready, loading]);
-
-    if (!loading && !session) {
-        signIn('auth0', { callbackUrl: `/login` });
-    }
+            } else {
+                setContribution(result)
+                setSetupAccess(true)
+            }
+        }).catch(() => {
+            setAccessDenied(true)
+            setSetupAccess(true)
+        })};
+      // ready is for router, loading is for session
+      if (ready && isAuthenticated && !isLoading) {
+        loadFunction()
+      }
+    }, [ready, isAuthenticated, isLoading])
 
     if (accessDenied && setupAccess) {
         return (
@@ -65,14 +78,14 @@ export default function SingleContributionPage(): ReactElement {
     }
 
     const ContributionProps = {
-        session,
+        token,
         contribution,
         contributionGUID,
         currentUserSlug
     }
 
     // Showing error to other TPOs is left
-    return setupAccess ? (ready && session && !accessDenied) ? (
+    return setupAccess ? (ready && token && !accessDenied) ? (
         <>
             <LandingSection
                 fixedBg={true}

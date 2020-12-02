@@ -8,7 +8,7 @@ import UploadImages from './UploadImages';
 import i18next from '../../../../../../i18n';
 
 interface Props {
-  session: any;
+  token: any;
   contributionGUID: any;
   contribution: any;
   currentUserSlug: any;
@@ -21,7 +21,7 @@ const StaticMap = dynamic(() => import('./StaticMap'), {
 });
 
 export default function SingleContribution({
-  session,
+  token,
   contribution,
   contributionGUID,
   currentUserSlug,
@@ -30,7 +30,7 @@ export default function SingleContribution({
   const UploadProps = {
     contribution,
     contributionGUID,
-    session,
+    token,
   };
   const { t } = useTranslation(['me', 'common']);
   const formatDate = (dateString: any) => {
