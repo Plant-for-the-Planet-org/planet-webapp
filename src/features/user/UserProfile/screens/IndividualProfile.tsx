@@ -6,6 +6,7 @@ import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsModal from '../components/SettingsModal';
+import MyTrees from '../components/MyTrees/MyTrees';
 
 export default function IndividualProfile({
   userprofile,
@@ -21,6 +22,8 @@ export default function IndividualProfile({
   const handleSettingsModalOpen = () => {
     setSettingsModalOpen(!settingsModalOpen);
   };
+
+  console.log(userprofile);
 
   // editProfile modal  (from settings modal)
   const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
@@ -83,11 +86,12 @@ export default function IndividualProfile({
         </LandingSection>
 
         {/* my forest section  - if contains projects field*/}
-        {authenticatedType === 'private' && userprofile.projects && (
+        {/* {authenticatedType === 'private' && userprofile.projects && (
           <div className={styles.myForestContainer}>
             <MyForestContainer userprofile={userprofile} />
           </div>
-        )}
+        )} */}
+        <MyTrees profile={userprofile} />
       </main>
 
       {/* add target modal */}

@@ -1,0 +1,164 @@
+@import './../../../../theme/theme';
+
+.myTreesSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  //   height: auto;
+}
+
+.myTreesTitle {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  padding: 20px 0;
+  font-weight: 700;
+  font-family: $primaryFontFamily;
+}
+
+.myTreesContainer {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.treesList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto;
+  height: 100%;
+  width: 400px;
+  max-width: 100%;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.dateRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  font-size: 12px;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #f7f7f7;
+  padding: 3px 15px;
+}
+
+.treeRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+}
+
+.textCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: $primaryFontFamily;
+  padding: 3px 0;
+}
+
+.country {
+  padding: 3px 0;
+}
+
+.source {
+  padding: 3px 0;
+}
+
+.numberCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100px;
+  height: 100%;
+}
+
+.treeIcon {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.number {
+  font-size: 22px;
+  font-weight: 600;
+  color: $primaryColor;
+}
+
+.icon {
+  padding-left: 5px;
+  svg {
+    width: 22px;
+  }
+}
+.mapContainer {
+  height: 400px;
+  width: 100%;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  pointer-events: none;
+}
+
+@include mdTabletView {
+  .myTreesSection {
+    height: 80vh;
+    max-height: 1000px;
+  }
+
+  .myTreesTitle {
+    text-align: left;
+  }
+
+  .myTreesContainer {
+    flex-direction: row;
+  }
+
+  .mapContainer {
+    height: 100%;
+  }
+}

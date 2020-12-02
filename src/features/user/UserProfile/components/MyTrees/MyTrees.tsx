@@ -1,26 +1,117 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
+import dynamic from 'next/dynamic';
+import { getRequest } from '../../../../../utils/apiRequests/api';
+import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import i18next from '../../../../../../i18n';
+import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 
-interface Props {}
+const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
+  loading: () => <p>loading</p>,
+});
 
-export default function MyTrees({}: Props): ReactElement {
+const { useTranslation } = i18next;
+
+interface Props {
+  profile: any;
+}
+
+export default function MyTrees({ profile }: Props): ReactElement {
+  const { t } = useTranslation(['common', 'country']);
+  const [contributions, setContributions] = React.useState();
+  React.useEffect(() => {
+    async function loadFunction() {
+      getRequest(`/app/profiles/${profile.id}/contributions`)
+        .then((result: any) => {
+          console.log(result);
+
+          setContributions(result);
+        })
+        .catch((e: any) => {
+          console.log('error occured :', e);
+        });
+    }
+    loadFunction();
+  }, []);
+
+  const MapProps = {
+    contributions,
+  };
   return (
-    <div>
-      <div className={styles.treesList}>
-        <div className={styles.tree}>
-          <div className={styles.dateRow}></div>
-          <div className={styles.treeRow}>
-            <div className={styles.infoCol}></div>
-            <div className={styles.numberCol}>
-              <div className={styles.treeIcon}>
-                <div className={styles.number}></div>
-                <div className={styles.icon}></div>
-              </div>
-            </div>
+    <div className={styles.myTreesSection}>
+      <div className={styles.myTreesTitle}>My Forest</div>
+      {contributions ? (
+        <div className={styles.myTreesContainer}>
+          <div className={styles.treesList}>
+            {contributions.map((item: any) => {
+              return (
+                <div className={styles.tree}>
+                  <div className={styles.dateRow}>
+                    {formatDate(item.properties.plantDate)}
+                  </div>
+                  <div className={styles.treeRow}>
+                    <div className={styles.textCol}>
+                      <div className={styles.title}>
+                        {item.properties.type === 'registration'
+                          ? 'Registered'
+                          : item.properties.project?.name}
+                      </div>
+                      <div className={styles.country}>
+                        {item.properties.country
+                          ? t(
+                              'country:' + item.properties.country.toLowerCase()
+                            )
+                          : null}
+                      </div>
+                      {item.properties.type === 'gift' ? (
+                        <div className={styles.source}>Received Trees</div>
+                      ) : null}
+                      {item.properties.type === 'redeem' ? (
+                        <div className={styles.source}>Redeemed Trees</div>
+                      ) : null}
+                    </div>
+                    <div className={styles.numberCol}>
+                      <div className={styles.treeIcon}>
+                        <div
+                          style={
+                            item.properties.type === 'registration'
+                              ? { color: '#3D67B1' }
+                              : {}
+                          }
+                          className={styles.number}
+                        >
+                          {item.properties.treeCount}
+                        </div>
+                        <div className={styles.icon}>
+                          {item.properties.treeCount > 1 ? (
+                            <TreesIcon
+                              color={
+                                item.properties.type === 'registration'
+                                  ? '#3D67B1'
+                                  : null
+                              }
+                            />
+                          ) : (
+                            <TreeIcon
+                              color={
+                                item.properties.type === 'registration'
+                                  ? '#3D67B1'
+                                  : null
+                              }
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+          <MyTreesMap {...MapProps} />
         </div>
-      </div>
-      <div className={styles.mapContainer}></div>
+      ) : null}
     </div>
   );
 }
