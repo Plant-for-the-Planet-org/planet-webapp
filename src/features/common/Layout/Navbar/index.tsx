@@ -48,10 +48,10 @@ export default function NavbarComponent(props: any) {
     if (!isLoading && isAuthenticated) {
       loadFunction()
     }
-  }, [isAuthenticated,isLoading])
+  }, [isAuthenticated, isLoading])
 
   // This function controls the path for the user when they click on Me
-  async function gotoUserPage (){
+  async function gotoUserPage() {
     if (userInfo && isAuthenticated) {
       if (!userInfo.slug) {
         let userInfo;
@@ -79,7 +79,17 @@ export default function NavbarComponent(props: any) {
   //   return <p>loading</p>;
   // }
   if (error) {
-    alert(error.message);
+    if (error.message === '401') {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('userInfo');
+        logout({ returnTo: `${process.env.NEXTAUTH_URL}/verify-email` });
+      }
+    }
+    else {
+      alert(error.message);
+      localStorage.removeItem('userInfo');
+      logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
+    }
   }
 
   const UserProfileIcon = () => {
@@ -129,20 +139,20 @@ export default function NavbarComponent(props: any) {
               </div>
             </div>
           ) : (
-            <div
-              className={`${styles.first_icon} ${styles.tenant_logo}`}
-              style={{ padding: '0rem 0.5rem' }}
-            >
-              <div className={styles.tenant_logo_container}>
-                <div style={{ padding: '0.4rem 0.5rem' }}>
-                  <a href="https://www.plant-for-the-planet.org">
-                    <img
-                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                      alt={t('common:about_pftp')}
-                    />
-                  </a>
+              <div
+                className={`${styles.first_icon} ${styles.tenant_logo}`}
+                style={{ padding: '0rem 0.5rem' }}
+              >
+                <div className={styles.tenant_logo_container}>
+                  <div style={{ padding: '0.4rem 0.5rem' }}>
+                    <a href="https://www.plant-for-the-planet.org">
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt={t('common:about_pftp')}
+                      />
+                    </a>
+                  </div>
                 </div>
-              </div>
               </div>
             )}
 
@@ -258,23 +268,23 @@ export default function NavbarComponent(props: any) {
               </Link>
             </div>
           ) : (
-            <div className={styles.bottomLogo}>
-              <Link
-                href="https://www.plant-for-the-planet.org"
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
-                <div
-                  className={styles.link_container}
-                  style={{ margin: '0px 8px' }}
+              <div className={styles.bottomLogo}>
+                <Link
+                  href="https://www.plant-for-the-planet.org"
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                 >
-                  <img
-                    src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                    alt="About Plant-for-the-Planet"
-                  />
-                </div>
-              </Link>
-            </div>
-          )}
+                  <div
+                    className={styles.link_container}
+                    style={{ margin: '0px 8px' }}
+                  >
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt="About Plant-for-the-Planet"
+                    />
+                  </div>
+                </Link>
+              </div>
+            )}
 
           {config.header?.items.map((item) => (
             <div key={item.id}>
@@ -292,8 +302,8 @@ export default function NavbarComponent(props: any) {
                       {router.pathname === item.onclick ? (
                         <GlobeSelected color={styles.primaryColor} />
                       ) : (
-                        <Globe color={styles.primaryFontColor} />
-                      )}
+                          <Globe color={styles.primaryFontColor} />
+                        )}
                     </div>
                     <p
                       className={
@@ -306,8 +316,8 @@ export default function NavbarComponent(props: any) {
                     </p>
                   </div>
                 </Link>
-                ):null}
-              </div>
+              ) : null}
+            </div>
           ))}
 
           {config.header?.items.map((item) => (

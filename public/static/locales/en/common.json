@@ -38,5 +38,6 @@
   "november": "November",
   "december": "December",
   "approx": "Approx.",
-  "view": "View"
+  "view": "View",
+  "verifyEmail":"Please check for verification email and follow link before logging in."
 }
