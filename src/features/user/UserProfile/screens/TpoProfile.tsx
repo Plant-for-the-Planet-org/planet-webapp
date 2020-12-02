@@ -58,6 +58,7 @@ export default function TpoProfile({
             ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
+        backgroundAttach="fixed"
       >
         {/* Open setting component */}
         {settingsModalOpen && (
