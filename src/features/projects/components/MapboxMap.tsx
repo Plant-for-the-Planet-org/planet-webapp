@@ -319,6 +319,24 @@ export default function MapboxMap({
     setOpen(false);
   };
 
+  // changes the language and selected country as found in local storage
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        let currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        let countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        let langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
+      }
+    }
+  }, []);
+
   function goToNextProject() {
     if (currentSite < maxSites - 1) {
       setCurrentSite(currentSite + 1);
