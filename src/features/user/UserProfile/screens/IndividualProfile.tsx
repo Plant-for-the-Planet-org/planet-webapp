@@ -23,8 +23,6 @@ export default function IndividualProfile({
     setSettingsModalOpen(!settingsModalOpen);
   };
 
-  console.log(userprofile);
-
   // editProfile modal  (from settings modal)
   const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
   const handleEditProfileModalClose = () => {
