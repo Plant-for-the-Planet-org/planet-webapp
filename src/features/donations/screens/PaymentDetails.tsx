@@ -219,7 +219,7 @@ function PaymentDetails({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      token:token?token : null
+      token: token
     };
     payWithCard({ ...payWithCardProps });
   };
