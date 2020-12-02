@@ -24,7 +24,11 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
   const [geoJson, setGeoJson] = React.useState();
 
   React.useEffect(() => {
-    if (contributions) {
+    if (
+      contributions &&
+      Array.isArray(contributions) &&
+      contributions.length !== 0
+    ) {
       setGeoJson({
         type: 'FeatureCollection',
         features: contributions,
@@ -41,7 +45,9 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
           width: '100%',
         }}
       >
-        {contributions
+        {contributions &&
+        Array.isArray(contributions) &&
+        contributions.length !== 0
           ? contributions
               .filter((feature: any) => {
                 return feature.geometry?.type === 'Point';
