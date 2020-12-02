@@ -85,12 +85,6 @@ export default function IndividualProfile({
           />
         </LandingSection>
 
-        {/* my forest section  - if contains projects field*/}
-        {/* {authenticatedType === 'private' && userprofile.projects && (
-          <div className={styles.myForestContainer}>
-            <MyForestContainer userprofile={userprofile} />
-          </div>
-        )} */}
         <MyTrees profile={userprofile} />
       </main>
 

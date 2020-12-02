@@ -40,7 +40,7 @@ export default function MyTrees({ profile }: Props): ReactElement {
   };
   return (
     <div className={styles.myTreesSection}>
-      <div className={styles.myTreesTitle}>My Forest</div>
+      <div className={styles.myTreesTitle}>{t('me:myForest')}</div>
       {contributions ? (
         <div className={styles.myTreesContainer}>
           <div className={styles.treesList}>
@@ -54,7 +54,7 @@ export default function MyTrees({ profile }: Props): ReactElement {
                     <div className={styles.textCol}>
                       <div className={styles.title}>
                         {item.properties.type === 'registration'
-                          ? 'Registered'
+                          ? t('me:registered')
                           : item.properties.project?.name}
                       </div>
                       <div className={styles.country}>
@@ -65,10 +65,14 @@ export default function MyTrees({ profile }: Props): ReactElement {
                           : null}
                       </div>
                       {item.properties.type === 'gift' ? (
-                        <div className={styles.source}>Received Trees</div>
+                        <div className={styles.source}>
+                          {t('me:receivedTrees')}
+                        </div>
                       ) : null}
                       {item.properties.type === 'redeem' ? (
-                        <div className={styles.source}>Redeemed Trees</div>
+                        <div className={styles.source}>
+                          {t('me:redeemedTrees')}
+                        </div>
                       ) : null}
                     </div>
                     <div className={styles.numberCol}>

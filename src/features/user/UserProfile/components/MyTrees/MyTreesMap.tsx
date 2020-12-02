@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
-import { features } from 'process';
 
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 
