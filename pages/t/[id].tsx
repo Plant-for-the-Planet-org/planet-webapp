@@ -59,7 +59,7 @@ export default function PublicUser(initialized: Props) {
 
   const logoutUser = () => {
     localStorage.removeItem('userInfo');
-    logout();
+    logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 
   useEffect(() => {

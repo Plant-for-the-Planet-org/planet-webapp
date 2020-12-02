@@ -30,7 +30,7 @@ export default function SettingsModal({
 
   const logoutUser = () => {
     localStorage.removeItem('userInfo');
-    logout({returnTo:process.env.NEXTAUTH_URL});
+    logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
   return (
     <>

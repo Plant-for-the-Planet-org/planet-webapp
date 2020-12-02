@@ -29,13 +29,13 @@ export async function getUserInfo(token: any, router: any, logout: any) {
           router.push('/complete-signup');
         }
       } else if (res.status === 401) {
-        logout();
+        logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
         if (typeof window !== 'undefined') {
           router.push('/');
         }
         localStorage.removeItem('userInfo');
       } else {
-        logout();
+        logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
         if (typeof window !== 'undefined') {
           router.push('/404');
         }
