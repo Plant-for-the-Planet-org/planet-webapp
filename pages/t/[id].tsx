@@ -104,7 +104,7 @@ export default function PublicUser(initialized: Props) {
               // in case of 401 - invalid token: signIn()
               logoutUser();
               removeUserExistsInDB()
-              loginWithRedirect();
+              loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
             } else {
               // any other error
             }

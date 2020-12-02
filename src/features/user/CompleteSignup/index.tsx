@@ -40,7 +40,7 @@ export default function CompleteSignup() {
       const token = await getAccessTokenSilently();
       setToken(token);
       if(!token){
-        loginWithRedirect();
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
       }
       const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
@@ -119,7 +119,7 @@ export default function CompleteSignup() {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
-        loginWithRedirect();
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
       } else {
         setSnackbarMessage('Error in creating profile. Please try again');
         setSeverity("error")
