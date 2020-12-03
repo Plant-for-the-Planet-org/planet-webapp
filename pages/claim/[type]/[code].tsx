@@ -108,13 +108,23 @@ function ClaimDonation({ }: Props): ReactElement {
         }
     }
 
+    // Check if the user is logged in or not.
     React.useEffect(() => {
+        // If the user is logged in -
+        // Validate the code automatically
+        // Once validated ask user to claim their donation
+        // Once claimed user can share the donation
+        // From here user can go back to home by clicking X
         if (!isLoading && isAuthenticated) {
             // validate code
             if (ready && code && type) {
                 validateCode(code, type)
             }
         }
+
+        // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.
+        // When the user logs in, redirect user to the claim link from the localstorage and clear the localstorage.
+        // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
         else if (!isLoading && !isAuthenticated) {
             // store the claim link in localstorage
             if (ready && typeof window !== 'undefined') {
