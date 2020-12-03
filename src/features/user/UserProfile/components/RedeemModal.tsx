@@ -105,7 +105,6 @@ export default function RedeemModal({
       let token = await getAccessTokenSilently();
       let userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
-        console.log('Result', res);
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false)
