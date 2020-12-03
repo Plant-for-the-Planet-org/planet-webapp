@@ -9,6 +9,7 @@ import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
+import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 
 const { useTranslation } = i18next;
 
@@ -118,10 +119,7 @@ export default function Footer() {
             
             <div className={styles.pfp_logo}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
-                <img
-                  src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                  alt={t('common:about_pftp')}
-                />
+                <PlanetCJLogo/>
               </a>
             </div>
 
