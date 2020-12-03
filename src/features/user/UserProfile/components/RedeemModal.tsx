@@ -152,7 +152,7 @@ export default function RedeemModal({
                   <Close />
                 </div>
                 <div className={styles.headerTitle}>
-                {t('redeem:congratulations')}
+                  {t('redeem:congratulations')}
                 </div>
               </div>
 
@@ -162,7 +162,7 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <div className={styles.donationCount}>
-                  {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
+                    {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
                     <p className={styles.donationTenant}>
                       {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                     </p>
@@ -177,7 +177,7 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <p className={styles.tempDonationCount}>
-                  {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
+                    {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
                   </p>
                   <p className={styles.tempDonationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -235,7 +235,7 @@ export default function RedeemModal({
                       <MaterialTextField inputRef={register({
                         required: {
                           value: true,
-                          message: 'Please enter a code to redeem.',
+                          message: t('redeem:enterRedeemCode'),
                         }
                       })} name={'code'} placeholder="XAD-1SA-5F1-A" label="" variant="outlined" />
 
@@ -250,9 +250,7 @@ export default function RedeemModal({
                     <div onClick={handleSubmit(validateCode)} className={styles.continueButton}>
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
-                      ) : (
-                        t('redeem:validateCode')
-                        )}
+                      ) : (t('redeem:validateCode'))}
                     </div>
                   </>
                 )}
