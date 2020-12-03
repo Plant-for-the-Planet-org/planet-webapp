@@ -9,7 +9,6 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
-import Sugar from 'sugar';
 import CreditCard from '../../../../public/assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
@@ -20,6 +19,7 @@ import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
+import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
 import Paypal from '../../legacyDonations/components/Paypal';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
@@ -219,7 +219,7 @@ function PaymentDetails({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      token:token?token : null
+      token: token
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -307,7 +307,7 @@ function PaymentDetails({
       }
     }
 
-    createDonation(createDonationData, session)
+    createDonation(createDonationData, token)
       .then((res) => {
         if (res.code === 400) {
           setIsPaymentProcessing(false);
@@ -350,7 +350,7 @@ function PaymentDetails({
         },
       };
 
-      payDonation(payDonationData, donationID, null)
+      payDonation(payDonationData, donationID, token)
         .then(async (res) => {
           if (res.code === 400) {
             setIsPaymentProcessing(false);
@@ -400,7 +400,7 @@ function PaymentDetails({
                       },
                     },
                   };
-                  payDonation(payDonationData, donationID, null).then((res) => {
+                  payDonation(payDonationData, donationID, token).then((res) => {
                     if (res.paymentStatus === 'success') {
                       setIsPaymentProcessing(false);
                       setPaymentType('Paypal')
@@ -446,7 +446,7 @@ function PaymentDetails({
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
-              treeCount: Sugar.Number.format(Number(treeCount)),
+              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
             })}
           </div>
         </div>

@@ -29,5 +29,8 @@
   "contribNotFound": "Contribution Not Found",
   "errorOccured": "Error Occured",
   "contribSuccess": "Successfully added {{treeCount}} {{treeSpecies}} 🌳 from {{plantDate}}",
-  "moreThanOne": "minimum 1 tree required"
+  "moreThanOne": "minimum 1 tree required",
+  "registered": "Registered",
+  "receivedTrees": "Received Trees",
+  "redeemedTrees": "Redeemed Trees"
 }

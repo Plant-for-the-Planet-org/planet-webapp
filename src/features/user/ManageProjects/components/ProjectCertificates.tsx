@@ -1,4 +1,3 @@
-import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
