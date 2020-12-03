@@ -62,7 +62,7 @@ export default function index({ leaderboard }: Props): ReactElement {
 
       <Stats />
 
-      <Stories />
+      {/* <Stories /> */}
 
       {!blockedCountries.includes(userCountry) ? <Video /> : null}
 
