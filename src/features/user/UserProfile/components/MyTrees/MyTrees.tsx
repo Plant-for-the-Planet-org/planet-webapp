@@ -6,6 +6,7 @@ import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import i18next from '../../../../../../i18n';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
+import { format } from 'date-fns';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export default function MyTrees({ profile }: Props): ReactElement {
-  const { t } = useTranslation(['common', 'country']);
+  const { i18n, t } = useTranslation(['common', 'country']);
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {
     async function loadFunction() {
@@ -43,14 +44,20 @@ export default function MyTrees({ profile }: Props): ReactElement {
       contributions.length !== 0 ? (
         <div className={styles.myTreesSection}>
           <div className={styles.myTreesTitle}>{t('me:myForest')}</div>
-
           <div className={styles.myTreesContainer}>
             <div className={styles.treesList}>
               {contributions.map((item: any) => {
                 return (
                   <div className={styles.tree}>
                     <div className={styles.dateRow}>
-                      {formatDate(item.properties.plantDate)}
+                      {format(
+                        new Date(
+                          Date.parse(
+                            item.properties.plantDate.replace(/ /g, 'T')
+                          )
+                        ),
+                        'LLLL d, yyyy'
+                      )}
                     </div>
                     <div className={styles.treeRow}>
                       <div className={styles.textCol}>
