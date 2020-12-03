@@ -7,17 +7,21 @@ const localizedAbbr = {
   },
 };
 
+function getLocalizedAbbreviation(langCode: string, abbr: string) {
+  return localizedAbbr[langCode] ? localizedAbbr[langCode][abbr] : localizedAbbr['en'][abbr];
+}
+
 export function localizedAbbreviatedNumber(
   langCode: string,
   number: number,
   fractionDigits: number,
 ) {
   if (number >= 1000000000)
-    return getFormattedRoundedNumber(langCode, number/1000000000, fractionDigits) + localizedAbbr[langCode]['b'];
+    return getFormattedRoundedNumber(langCode, number/1000000000, fractionDigits) + getLocalizedAbbreviation(langCode, 'b');
   if (number >= 1000000)
-    return getFormattedRoundedNumber(langCode, number/1000000, fractionDigits) + localizedAbbr[langCode]['m'];
+    return getFormattedRoundedNumber(langCode, number/1000000, fractionDigits) + getLocalizedAbbreviation(langCode, 'm');
   if (number >= 1000)
-    return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + localizedAbbr[langCode]['k'];
+    return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
 
   return getFormattedRoundedNumber(langCode, number, fractionDigits);
 }
