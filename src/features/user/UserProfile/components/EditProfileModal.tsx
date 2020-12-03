@@ -261,20 +261,6 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            <div className={styles.formFieldLarge}>
-              <MaterialTextField
-                label={t('donate:address')}
-                variant="outlined"
-                name="address"
-                inputRef={register()}
-              />
-              {errors.address && (
-                <span className={styles.formErrors}>
-                  {t('donate:addressRequired')}
-                </span>
-              )}
-            </div>
-
             {userprofile.type === 'tpo' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
@@ -290,6 +276,20 @@ export default function EditProfileModal({
               )}
             </div>
             )}
+
+            <div className={styles.formFieldLarge}>
+              <MaterialTextField
+                label={t('donate:address')}
+                variant="outlined"
+                name="address"
+                inputRef={register()}
+              />
+              {errors.address && (
+                <span className={styles.formErrors}>
+                  {t('donate:addressRequired')}
+                </span>
+              )}
+            </div>
 
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
