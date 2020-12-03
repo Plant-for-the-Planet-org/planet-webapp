@@ -1,5 +1,5 @@
 const config = {
-  tenantName: 'planettc',
+  tenantName: 'ttc',
   tenantURL: 'trilliontreecampaign.org',
   tenantLogoURL: 'https://www.trilliontreecampaign.org',
   languages: ['en', 'de'],

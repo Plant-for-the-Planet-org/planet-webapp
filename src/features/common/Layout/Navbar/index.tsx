@@ -247,7 +247,7 @@ export default function NavbarComponent(props: any) {
         <div className={`${styles.mobile_nav}`}>
           {config.header?.isSecondaryTenant ? (
             <div className={styles.bottomLogo}>
-              {config.tenantName !== 'planettc' && (
+              {config.tenantName !== 'ttc' && (
               <Link
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
