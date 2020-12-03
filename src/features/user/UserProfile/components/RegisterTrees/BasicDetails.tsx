@@ -6,6 +6,8 @@ import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { Controller, useForm } from 'react-hook-form';
 import styles from '../../styles/RegisterModal.module.scss';
 import { postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import i18next from '../../../../../../i18n';
+const { useTranslation } = i18next;
 
 interface Props {
     lang: any;
@@ -23,6 +25,8 @@ interface Props {
 }
 
 export default function BasicDetails({ lang, handleNext, errorMessage, setErrorMessage, contributionDetails, setContributionDetails, isMultiple, setIsMultiple, contributionGUID, setContributionGUID, token, geometry }: Props): ReactElement {
+
+  const { t } = useTranslation(['registerTrees']);
 
     const [isUploadingData, setIsUploadingData] = React.useState(false);
     const defaultBasicDetails = {
@@ -84,7 +88,7 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
 
             // handleNext();
         } else {
-            setErrorMessage('select location on map');
+            setErrorMessage(t('registerTrees:selectLocationMap'));
         }
     }
 
@@ -96,7 +100,7 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                         inputRef={register({
                             required: {
                                 value: true,
-                                message: 'Number of Trees is required',
+                                message: t('registerTrees:requiredNumberOfTrees'),
                             },
                             validate: (value) => parseInt(value, 10) >= 1 && parseInt(value, 10) <= 50,
                         })}
@@ -105,7 +109,7 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                             e.target.value = e.target.value > 50 ? 50 : e.target.value;
                         }}
                         onChange={onTreeCountChange}
-                        label="Number of Trees"
+                        label={t('registerTrees:numberOfTrees')}
                         variant="outlined"
                         name="treeCount"
                         placeholder={'0'}
@@ -120,7 +124,7 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                             render={props => (
 
                                 <DatePicker
-                                    label="Date Planted"
+                                    label={t('registerTrees:datePlanted')}
                                     value={props.value}
                                     onChange={props.onChange}
                                     inputVariant="outlined"
@@ -144,10 +148,10 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                     inputRef={register({
                         required: {
                             value: true,
-                            message: 'Species is required',
+                            message:t('registerTrees:speciesRequired'),
                         },
                     })}
-                    label="Tree Species"
+                    label={t('registerTrees:treeSpecies')}
                     variant="outlined"
                     name="species"
                 />
@@ -156,15 +160,15 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                 )}
             </div>
             {isMultiple ?
-                <p>Draw a polygon on the map</p>
-                : <p>Click on the map to mark a location</p>}
+                <p> {t('registerTrees:drawPolygonMap')} </p>
+                : <p> {t('registerTrees:clickMapMark')} </p>}
             {errorMessage ?
                 <p className={styles.formErrors}>{errorMessage}</p> : null
             }
             <div className={styles.nextButton}>
                 <div onClick={handleSubmit(submitRegisterTrees)} className={styles.continueButton}>  {isUploadingData ? (
                     <div className={styles.spinner}></div>
-                ) : 'Next'}</div>
+                ) : t('registerTrees:next')}</div>
             </div>
 
         </form>
