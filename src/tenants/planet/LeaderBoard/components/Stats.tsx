@@ -4,7 +4,7 @@ import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
 import i18next from '../../../../../i18n';
-import getFormattedNumber from '../../../../utils/getFormattedNumber';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 interface Props {}
 

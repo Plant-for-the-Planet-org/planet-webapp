@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../../i18n';
-import getFormattedNumber from '../../../../utils/getFormattedNumber';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 interface Props {
   leaderboard: any;
