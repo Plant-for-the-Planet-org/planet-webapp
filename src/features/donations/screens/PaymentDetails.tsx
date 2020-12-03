@@ -219,7 +219,7 @@ function PaymentDetails({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      token:token?token : null
+      token: token
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -307,7 +307,7 @@ function PaymentDetails({
       }
     }
 
-    createDonation(createDonationData, session)
+    createDonation(createDonationData, token)
       .then((res) => {
         if (res.code === 400) {
           setIsPaymentProcessing(false);
@@ -350,7 +350,7 @@ function PaymentDetails({
         },
       };
 
-      payDonation(payDonationData, donationID, null)
+      payDonation(payDonationData, donationID, token)
         .then(async (res) => {
           if (res.code === 400) {
             setIsPaymentProcessing(false);
@@ -400,7 +400,7 @@ function PaymentDetails({
                       },
                     },
                   };
-                  payDonation(payDonationData, donationID, null).then((res) => {
+                  payDonation(payDonationData, donationID, token).then((res) => {
                     if (res.paymentStatus === 'success') {
                       setIsPaymentProcessing(false);
                       setPaymentType('Paypal')
