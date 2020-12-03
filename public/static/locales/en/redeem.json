@@ -4,5 +4,7 @@
     "congratulations":"Congratulations!",
     "addToMyTrees":"Add to my trees",
     "validateCode":"Validate Code",
-    "enterRedeemCode": "Please enter a code to redeem"
+    "enterRedeemCode": "Please enter a code to redeem",
+    "validating":"Validating",
+    "invalidType":"Invalid type, please check the link again"
 }
