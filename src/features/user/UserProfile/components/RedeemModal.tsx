@@ -34,18 +34,11 @@ export default function RedeemModal({
   const sendRef = () => imageRef;
 
   const [errorMessage, setErrorMessage] = React.useState()
-
   const [codeValidated, setCodeValidated] = React.useState(false)
-
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-
   const [validCodeData, setValidCodeData] = React.useState();
-
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
-
-
   const [code, setCode] = React.useState();
-
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false,
   );
@@ -130,7 +123,6 @@ export default function RedeemModal({
     }
   }
 
-
   const closeRedeem = () => {
     setCodeValidated(false);
     setCodeRedeemed(false);
@@ -164,14 +156,13 @@ export default function RedeemModal({
                 </div>
               </div>
 
-
               <div className={styles.thankyouImageContainer}>
                 <div className={styles.thankyouImage}>
                   <div className={styles.thankyouImageHeader}>
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <div className={styles.donationCount}>
-                  {t('redeem:myPlantedTreesByOrg', { treeCount: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
+                  {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
                     <p className={styles.donationTenant}>
                       {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                     </p>
@@ -186,7 +177,7 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <p className={styles.tempDonationCount}>
-                  {t('redeem:myPlantedTreesByOrg', { treeCount: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
+                  {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
                   </p>
                   <p className={styles.tempDonationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -201,7 +192,6 @@ export default function RedeemModal({
                   handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
                 />
               </div>
-
 
               <Snackbar
                 open={textCopiedsnackbarOpen}
@@ -229,18 +219,11 @@ export default function RedeemModal({
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
-
                   <div onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
-                    ) : (
-                      t('redeem:addToMyTrees')
-                        
-                      )}
+                    ) : (t('redeem:addToMyTrees'))}
                   </div>
-
-
-
                 </>
               ) : (
                   <>
