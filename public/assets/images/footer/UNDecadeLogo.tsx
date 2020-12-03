@@ -4,8 +4,8 @@ function UNDecadeLogo() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="239.32"
-      height="85"
+      width="197"
+      height="70"
       viewBox="0 0 835.503 296.747"
     >
       <defs>

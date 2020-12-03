@@ -4,14 +4,31 @@
   max-width: 950px;
   margin: auto 20px 0px 20px;
 }
+
+
+.logo_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+  justify-content: center;
+  > div {
+    margin-top: 40px;
+  }
+}
+
 @media screen and (min-width: 480px) {
   .footerMainContainer {
     margin: auto 20px 60px 20px;
+  }
+  .logo_container{
+    margin-bottom: 0px;
   }
 }
 @media screen and (min-width: 950px) {
   .footerMainContainer {
     margin: auto;
+    margin-bottom: 60px;
   }
 }
 
@@ -24,13 +41,14 @@
 .footer_container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
 }
 .footer_links_container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .footer_links {
@@ -46,6 +64,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .footer_button {
@@ -92,12 +111,6 @@
   margin-left: 8px !important;
 }
 
-.logo_container {
-  display: flex;
-  flex-direction: row;
-  margin-top: 16.8px;
-  margin-bottom: 80px;
-}
 
 .pfp_logo {
   margin-right: 30px;
@@ -115,6 +128,28 @@
   letter-spacing: 0.18px;
   color: $primaryFontColor;
   margin-bottom: 10px;
+}
+
+.footer_social_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.social_button {
+  text-decoration: none;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+  margin-top: 18.8px;
+}
+
+.social_button:hover {
+  cursor: pointer;
+  text-decoration: none;
 }
 
 :export {
