@@ -108,6 +108,7 @@ module.exports = withSourceMaps({
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
     NEXTAUTH_URL: nextauthUrl,
+    VERCEL_URL:`${scheme}://${process.env.VERCEL_URL}`
   },
   trailingSlash: false,
   reactStrictMode: true,
