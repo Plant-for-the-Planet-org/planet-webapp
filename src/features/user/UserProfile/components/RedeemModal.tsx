@@ -20,7 +20,7 @@ export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: any) {
-  const { t } = useTranslation(['me', 'common', 'donate']);
+  const { t } = useTranslation(['me', 'common', 'donate','redeem']);
 
   const config = tenantConfig();
 
@@ -82,7 +82,8 @@ export default function RedeemModal({
     }
     if (!isLoading && isAuthenticated) {
       let token = await getAccessTokenSilently();
-      postAuthenticatedRequest('/api/v1.3/en/validateCode', submitData, token).then((res) => {
+      let userLang = localStorage.getItem('language') || 'en';
+      postAuthenticatedRequest(`/api/v1.3/${userLang}/validateCode`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false)
@@ -109,7 +110,8 @@ export default function RedeemModal({
     }
     if (!isLoading && isAuthenticated) {
       let token = await getAccessTokenSilently();
-      postAuthenticatedRequest('/api/v1.3/en/convertCode', submitData, token).then((res) => {
+      let userLang = localStorage.getItem('language') || 'en';
+      postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
         console.log('Result', res);
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -158,7 +160,7 @@ export default function RedeemModal({
                   <Close />
                 </div>
                 <div className={styles.headerTitle}>
-                  Congratulations!
+                {t('redeem:congratulations')}
                 </div>
               </div>
 
@@ -169,7 +171,7 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <div className={styles.donationCount}>
-                    My {validCodeData.treeCount} trees will be planted by {validCodeData.tpos[0].tpoName}
+                  {t('redeem:myPlantedTreesByOrg', { treeCount: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
                     <p className={styles.donationTenant}>
                       {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                     </p>
@@ -184,7 +186,7 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <p className={styles.tempDonationCount}>
-                    My {validCodeData.treeCount} trees will be planted by {validCodeData.tpos[0].tpoName}
+                  {t('redeem:myPlantedTreesByOrg', { treeCount: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
                   </p>
                   <p className={styles.tempDonationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -219,11 +221,11 @@ export default function RedeemModal({
                 <>
                   <div className={styles.codeTreeCount}>
                     {validCodeData.treeCount}
-                    <span>trees</span>
+                    <span>{t('common:trees')}</span>
                   </div>
 
                   <div className={styles.plantedBy}>
-                    <span>Planted by</span>
+                    <span>{t('common:plantedBy')}</span>
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
@@ -232,7 +234,8 @@ export default function RedeemModal({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                        'Add to my trees'
+                      t('redeem:addToMyTrees')
+                        
                       )}
                   </div>
 
@@ -265,7 +268,7 @@ export default function RedeemModal({
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (
-                          'Validate Code'
+                        t('redeem:validateCode')
                         )}
                     </div>
                   </>
