@@ -13,8 +13,8 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/ttc/logo.png`,
-    tenantLogoLink: 'https://www.plant-for-the-planet.org',
+    tenantLogoURL: `tenants/ttc/logo.png`,
+    tenantLogoLink: 'https://www.trilliontreecampaign.org',
     items: [
       {
         id: 1,
@@ -48,7 +48,7 @@ const config = {
     ],
   },
   meta: {
-    title: 'Plant trees around the world - Plant-for-the-Planet',
+    title: "Together let's plant a Trillion Trees!",
     description:
       "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
