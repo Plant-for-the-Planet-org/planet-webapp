@@ -59,6 +59,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }
 
+  
+  if(typeof window !== 'undefined'){
+    console.log('Vercel URL',process.env.VERCEL_URL);
+    console.log('Host URL',window.location.hostname);
+  }
+  
 
   const [initialized, setInitialized] = React.useState(false);
 
