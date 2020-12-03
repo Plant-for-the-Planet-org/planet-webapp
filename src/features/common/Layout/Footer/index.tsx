@@ -7,12 +7,16 @@ import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import i18next from '../../../../../i18n';
+import tenantConfig from '../../../../../tenant.config';
+import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 
 const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
   const { t, i18n } = useTranslation(['common']);
+  const config = tenantConfig();
+
 
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
@@ -111,6 +115,7 @@ export default function Footer() {
             </div>
           </div>
           <div className={styles.logo_container}>
+            
             <div className={styles.pfp_logo}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
                 <img
@@ -119,15 +124,23 @@ export default function Footer() {
                 />
               </a>
             </div>
-            {process.env.TENANT === 'planet' ||
-              (!process.env.TENANT && (
-                <div className={styles.unep_logo_container}>
-                  <div>
-                    <p className={styles.unep_logo_text}>Supports the UNEP</p>
-                    <UNEPLogo />
-                  </div>
-                </div>
-              ))}
+
+            {config.showUNEPLogo && (
+              <div className={styles.unep_logo_container}>
+                <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
+                <p className={styles.unep_logo_text}>Supports the UNEP</p>
+                  <UNEPLogo height={"65px"} />
+                </a>
+              </div>
+            )}
+
+            {config.showUNDecadeLogo && (
+              <div className={styles.other_logo}>
+                 <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
+                  <UNDecadeLogo/>
+                 </a>
+              </div>
+            )}
           </div>
         </div>
         <SelectLanguageAndCountry
