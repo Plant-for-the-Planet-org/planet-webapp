@@ -3,5 +3,6 @@
     "myPlantedTreesByOrg_plural": "My {{count}} trees will be planted by {{tpoName}}",
     "congratulations":"Congratulations!",
     "addToMyTrees":"Add to my trees",
-    "validateCode":"Validate Code"
+    "validateCode":"Validate Code",
+    "enterRedeemCode": "Please enter a code to redeem"
 }
