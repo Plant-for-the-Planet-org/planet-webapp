@@ -127,8 +127,8 @@ export default function Footer() {
 
             {config.showUNEPLogo && (
               <div className={styles.unep_logo_container}>
-                <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
-                <p className={styles.unep_logo_text}>Supports the UNEP</p>
+                <a href="https://www.unep.org/" target="_blank" rel="noopener noreferrer">
+                <p className={styles.unep_logo_text}>{t('common:supportsUNEP')} </p>
                   <UNEPLogo height={"65px"} />
                 </a>
               </div>
@@ -136,7 +136,7 @@ export default function Footer() {
 
             {config.showUNDecadeLogo && (
               <div className={styles.other_logo}>
-                 <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
+                 <a href="https://www.decadeonrestoration.org/" target="_blank" rel="noopener noreferrer">
                   <UNDecadeLogo/>
                  </a>
               </div>

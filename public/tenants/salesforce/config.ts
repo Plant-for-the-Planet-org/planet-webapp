@@ -4,6 +4,7 @@ const config = {
   languages: ['en'],
   fallbackCurrency: 'USD',
   tenantGoal:null,
+  showUNDecadeLogo:true,
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
