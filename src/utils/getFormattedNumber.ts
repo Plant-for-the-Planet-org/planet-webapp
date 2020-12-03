@@ -1,8 +1,9 @@
+// change 'de-disabled' to 'de' if you want to enable custom abbreviations for German
 const localizedAbbr = {
   'en': {
     'b': 'b', 'm': 'm', 'k': 'k',
   },
-  'de': {
+  'de-disabled': {
     'b': 'Mrd.', 'm': 'Mio.', 'k': 'Tsd.',
   },
 };
