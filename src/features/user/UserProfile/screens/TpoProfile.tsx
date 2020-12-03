@@ -6,6 +6,7 @@ import Settings from '../../../../../public/assets/images/icons/userProfileIcons
 import styles from '../styles/UserProfile.module.scss';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsModal from '../components/SettingsModal';
+import MyTrees from '../components/MyTrees/MyTrees';
 
 export default function TpoProfile({
   userprofile,
@@ -84,6 +85,8 @@ export default function TpoProfile({
         userprofile={userprofile}
         authenticatedType={authenticatedType}
       />
+
+      <MyTrees profile={userprofile} />
 
       {/* add target modal */}
       <AddTargetModal
