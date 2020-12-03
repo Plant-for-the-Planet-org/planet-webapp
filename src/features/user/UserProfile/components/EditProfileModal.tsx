@@ -73,6 +73,7 @@ export default function EditProfileModal({
       getNews: userprofile.getNews ? userprofile.getNews : false,
       bio: userprofile.bio ? userprofile.bio : '',
       url: userprofile.url ? userprofile.url : '',
+      name: userprofile.name ? userprofile.name : ''
     };
     reset(defaultProfileDetails);
   }, [userprofile]);
@@ -259,6 +260,22 @@ export default function EditProfileModal({
                 )}
               </div>
             </div>
+
+            {userprofile.type === 'tpo' && (
+              <div className={styles.formFieldLarge}>
+              <MaterialTextField
+                label={t('donate:nameOfOrg')}
+                variant="outlined"
+                name="name"
+                inputRef={register()}
+              />
+              {errors.name && (
+                <span className={styles.formErrors}>
+                  {t('donate:nameOfOrgIsRequired')}
+                </span>
+              )}
+            </div>
+            )}
 
             <div className={styles.formFieldLarge}>
               <MaterialTextField

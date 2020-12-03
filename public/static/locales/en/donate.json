@@ -68,5 +68,7 @@
   "donationTokenInvalid": "The provided donation token is invalid.",
   "giftTo": "Gift to",
   "supporting": "Supporting",
-  "selectProject": "Select a project"
+  "selectProject": "Select a project",
+  "nameOfOrg": "Organisation Name",
+  "nameOfOrgIsRequired": "Organisation name is required"
 }
