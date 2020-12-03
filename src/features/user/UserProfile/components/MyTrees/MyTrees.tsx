@@ -3,10 +3,9 @@ import styles from '../../styles/MyTrees.module.scss';
 import dynamic from 'next/dynamic';
 import { getRequestWithoutRedirecting } from '../../../../../utils/apiRequests/api';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
+import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import i18next from '../../../../../../i18n';
-import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
-import { format } from 'date-fns';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -50,14 +49,7 @@ export default function MyTrees({ profile }: Props): ReactElement {
                 return (
                   <div className={styles.tree}>
                     <div className={styles.dateRow}>
-                      {format(
-                        new Date(
-                          Date.parse(
-                            item.properties.plantDate.replace(/ /g, 'T')
-                          )
-                        ),
-                        'LLLL d, yyyy'
-                      )}
+                      {formatDate(item.properties.plantDate)}
                     </div>
                     <div className={styles.treeRow}>
                       <div className={styles.textCol}>
