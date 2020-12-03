@@ -38,14 +38,14 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
 
 interface Props {
   slug: any;
-  session: any;
+  token: any;
   registerTreesModalOpen: any;
 }
 
 const { useTranslation } = i18next;
 export default function RegisterTrees({
   slug,
-  session,
+  token,
   registerTreesModalOpen,
 }: Props) {
   const router = useRouter();
@@ -191,7 +191,7 @@ export default function RegisterTrees({
         postAuthenticatedRequest(
           `/app/contributions`,
           submitData,
-          session
+          token
         ).then((res) => {
           if (!res.code) {
             console.log(res);
@@ -227,7 +227,7 @@ export default function RegisterTrees({
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   const ContributionProps = {
-    session,
+    token,
     contribution: contributionDetails,
     contributionGUID,
     currentUserSlug: slug,

@@ -24,13 +24,13 @@ export async function getRequest(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequest(url: any,session:any) {
+export async function getAuthenticatedRequest(url: any,token:any) {
   let result= {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
         'X-SESSION-ID': await getsessionId(),
-        'Authorization': `OAuth ${session.accessToken}`,
+        'Authorization': `OAuth ${token}`,
       },
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -57,7 +57,7 @@ export async function getAuthenticatedRequest(url: any,session:any) {
 }
 
 
-export async function postAuthenticatedRequest(url:any,data:any,session:any) {
+export async function postAuthenticatedRequest(url:any,data:any,token:any) {
 
   const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'POST',
@@ -66,7 +66,7 @@ export async function postAuthenticatedRequest(url:any,data:any,session:any) {
           'Content-Type': 'application/json',
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
-          'Authorization': `OAuth ${session.accessToken}`,
+          'Authorization': `OAuth ${token}`,
           'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
@@ -77,7 +77,7 @@ export async function postAuthenticatedRequest(url:any,data:any,session:any) {
   return result;
 }
 
-export async function deleteAuthenticatedRequest(url:any,session:any) {
+export async function deleteAuthenticatedRequest(url:any,token:any) {
   let result;
    await fetch(process.env.API_ENDPOINT + url, {
       method: 'DELETE',
@@ -85,7 +85,7 @@ export async function deleteAuthenticatedRequest(url:any,session:any) {
           'Content-Type': 'application/json',
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
-          'Authorization': `OAuth ${session.accessToken}`,
+          'Authorization': `OAuth ${token}`,
           'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
@@ -97,7 +97,7 @@ export async function deleteAuthenticatedRequest(url:any,session:any) {
   return result;
 }
 
-export async function putAuthenticatedRequest(url:any,data:any,session:any) {
+export async function putAuthenticatedRequest(url:any,data:any,token:any) {
 
   const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
@@ -106,7 +106,7 @@ export async function putAuthenticatedRequest(url:any,data:any,session:any) {
           'Content-Type': 'application/json',
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
-          'Authorization': `OAuth ${session.accessToken}`,
+          'Authorization': `OAuth ${token}`,
           'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'

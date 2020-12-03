@@ -38,5 +38,9 @@
   "november": "November",
   "december": "December",
   "approx": "Approx.",
-  "view": "View"
+  "view": "View",
+  "verifyEmailHeader":"Please confirm your email.",
+  "verifyEmailText":"To secure your account, we need to verify your email. Please check your inbox or spam/junk folder for a confirmation email and then continue to login.",
+  "verifyEmailInfo":"If you didn’t receive an email please try logging in again and we’ll send you another email.",
+  "continueToLogin":"Continue to Login"
 }

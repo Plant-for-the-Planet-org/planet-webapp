@@ -19,10 +19,10 @@ interface Props {
     contributionGUID: any;
     setContributionGUID: Function;
     geometry: any;
-    session: any;
+    token: any;
 }
 
-export default function BasicDetails({ lang, handleNext, errorMessage, setErrorMessage, contributionDetails, setContributionDetails, isMultiple, setIsMultiple, contributionGUID, setContributionGUID, session, geometry }: Props): ReactElement {
+export default function BasicDetails({ lang, handleNext, errorMessage, setErrorMessage, contributionDetails, setContributionDetails, isMultiple, setIsMultiple, contributionGUID, setContributionGUID, token, geometry }: Props): ReactElement {
 
     const [isUploadingData, setIsUploadingData] = React.useState(false);
     const defaultBasicDetails = {
@@ -60,7 +60,7 @@ export default function BasicDetails({ lang, handleNext, errorMessage, setErrorM
                 plantDate: data.plantDate,
                 geometry: geometry
             }
-            postAuthenticatedRequest(`/app/contributions`, submitData, session).then(
+            postAuthenticatedRequest(`/app/contributions`, submitData, token).then(
                 (res) => {
                     if (!res.code) {
                         console.log(res);

@@ -17,7 +17,6 @@ import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
 import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { useSession } from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
@@ -43,9 +42,9 @@ function TreeDonation({
   setDirectGift,
   setPaymentType,
   isPaymentOptionsLoading,
+  token
 }: TreeDonationProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common', 'country']);
-  const [session] = useSession();
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
@@ -116,10 +115,16 @@ function TreeDonation({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      session: session || null,
+      token: token || null,
     };
     payWithCard({ ...payWithCardProps });
   };
+
+  const formatter = new Intl.NumberFormat(i18n.language, {
+    // These options are needed to round to whole numbers if that's what you want.
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   return isPaymentProcessing ? (
@@ -167,7 +172,7 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-            {getFormatedCurrency(i18n.language, currency, treeCost)}{' '}
+          {formatter.format(treeCost)}{' '}
             {t('donate:perTree')}
           </div>
         </div>

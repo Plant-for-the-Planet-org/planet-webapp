@@ -40,7 +40,7 @@
   "validationFailed": "Validation Failed",
   "seedingYourDonation": "Seeding your donation",
   "pleaseDoNotCloseThisTab": "Please do not close this tab!",
-  "perTree": "/ tree",
+  "perTree": "per tree",
   "stopTalkingStartPlanting": "Stop Talking. Start Planting.",
   "creditDebitCard": "Credit/Debit Card",
   "cardNumber": "Card Number",
@@ -59,11 +59,16 @@
   "noProjectsFound": "No projects found",
   "inTimeOfTaxReturns": "in time for tax returns.",
   "titleToShare": "Planting trees against the climate crisis!",
+  "giftToName": "Gift to {{name}}",
+  "plantTreesWith": "Plant trees with {{name}}",
   "textToShare": "Join {{name}} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees @PftP_int",
   "thankyouHeaderText": "We're on the road to a \n <h1>Trillion Trees</h1>",
   "shareTextTitle": "Stop Talking. Start Plant",
   "textToShareLinkedin": "Join {{name}} and thousand of others to plant a trillion trees to tackle the climate crisis",
   "donationTokenInvalid": "The provided donation token is invalid.",
   "giftTo": "Gift to",
-  "supporting": "Supporting"
+  "supporting": "Supporting",
+  "selectProject": "Select a project",
+  "nameOfOrg": "Organisation Name",
+  "nameOfOrgIsRequired": "Organisation name is required"
 }

@@ -1,13 +1,13 @@
 import React from 'react';
-import { useSession } from 'next-auth/client';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useForm } from 'react-hook-form';
 import Fade from '@material-ui/core/Fade';
 import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { editProfile } from '../../../../utils/auth0/apiRequests';
 import i18next from '../../../../../i18n';
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { useAuth0 } from '@auth0/auth0-react';
 import formStyles from '../styles/EditProfileModal.module.scss';
 import spinnerStyle from '../../ManageProjects/styles/StepForm.module.scss';
 
@@ -21,27 +21,41 @@ export default function AddTargetModal({
   forceReload,
 }: any) {
   const [target, setTarget] = React.useState(0);
-  const [session, loading] = useSession();
   const { t } = useTranslation(['target']);
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingForm, setIsLoading] = React.useState(false);
+
+  const [token, setToken] = React.useState('')
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently
+  } = useAuth0();
+    // This effect is used to get and update UserInfo if the isAuthenticated changes
+    React.useEffect(() => {
+      async function loadFunction() {
+        const token = await getAccessTokenSilently();
+        setToken(token);
+      }
+      if (isAuthenticated && !isLoading) {
+        loadFunction()
+      }
+    }, [isAuthenticated,isLoading])
 
   const apiCallChangeTarget = async () => {
     setIsLoading(true);
-    if (!loading && session) {
+    if (isAuthenticated && token) {
       const bodyToSend = {
         target: !target ? userprofile.score.target : target,
       };
-      const res = await editProfile(session, bodyToSend);
-      if (res.status === 200) {
+      putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
         handleAddTargetModalClose();
         changeForceReload(!forceReload);
-        setIsLoading(false);
-      } else {
-        console.log('edit target failed');
+      }).catch(error => {
         handleAddTargetModalClose();
+        console.log(error);
         setIsLoading(false);
-      }
+      })
     }
   };
   return (
@@ -95,7 +109,7 @@ export default function AddTargetModal({
               className={styles.continueButton}
               onClick={() => handleSubmit(apiCallChangeTarget())}
             >
-              {isLoading ? (
+              {isLoadingForm ? (
                 <div className={spinnerStyle.spinner}></div>
               ) : (
                 t('target:targetSave')

@@ -20,7 +20,6 @@ import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { useSession } from 'next-auth/client';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
 import Paypal from '../../legacyDonations/components/Paypal';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
@@ -92,9 +91,9 @@ function PaymentDetails({
   setPaymentType,
   country,
   isTaxDeductible,
+  token
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common']);
-  const [session] = useSession();
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
@@ -220,7 +219,7 @@ function PaymentDetails({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      session: session ? session : null
+      token: token
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -308,7 +307,7 @@ function PaymentDetails({
       }
     }
 
-    createDonation(createDonationData, session)
+    createDonation(createDonationData, token)
       .then((res) => {
         if (res.code === 400) {
           setIsPaymentProcessing(false);
@@ -351,7 +350,7 @@ function PaymentDetails({
         },
       };
 
-      payDonation(payDonationData, donationID, null)
+      payDonation(payDonationData, donationID, token)
         .then(async (res) => {
           if (res.code === 400) {
             setIsPaymentProcessing(false);
@@ -401,7 +400,7 @@ function PaymentDetails({
                       },
                     },
                   };
-                  payDonation(payDonationData, donationID, null).then((res) => {
+                  payDonation(payDonationData, donationID, token).then((res) => {
                     if (res.paymentStatus === 'success') {
                       setIsPaymentProcessing(false);
                       setPaymentType('Paypal')
