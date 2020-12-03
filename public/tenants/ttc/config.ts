@@ -12,8 +12,8 @@ const config = {
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
   header: {
-    isSecondaryTenant: false,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
+    isSecondaryTenant: true,
+    tenantLogoURL: `/tenants/ttc/logo.png`,
     tenantLogoLink: 'https://www.plant-for-the-planet.org',
     items: [
       {

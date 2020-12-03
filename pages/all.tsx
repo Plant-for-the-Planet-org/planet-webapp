@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../src/features/common/Layout';
-import LeaderBoard from '../src/tenants/planet/LeaderBoard'
+import LeaderBoard from '../src/tenants/planet/LeaderBoard';
 import tenantConfig from '../tenant.config';
 import { getRequest } from '../src/utils/apiRequests/api';
-import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta'
+import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 const config = tenantConfig();
 
 export default function Home() {
@@ -27,6 +27,9 @@ export default function Home() {
       case 'planet':
         AllPage = <LeaderBoard leaderboard={leaderboard} />;
         return AllPage;
+      case 'ttc':
+        AllPage = <LeaderBoard leaderboard={leaderboard} />;
+        return AllPage;
       default:
         AllPage = null;
         return AllPage;
@@ -35,7 +38,7 @@ export default function Home() {
 
   return (
     <>
-      <GetLeaderboardMeta/>
+      <GetLeaderboardMeta />
       <Layout>{getAllPage()}</Layout>
     </>
   );
