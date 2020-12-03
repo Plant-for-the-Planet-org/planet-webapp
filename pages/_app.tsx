@@ -54,15 +54,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
 
   if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-    if (process.env.VERCEL_URL !== window.location.hostname) {
-      router.replace(process.env.VERCEL_URL);
-    }
-  }
-
-  
-  if(typeof window !== 'undefined'){
     console.log('Vercel URL',process.env.VERCEL_URL);
     console.log('Host URL',window.location.hostname);
+    if (process.env.VERCEL_URL !== window.location.hostname) {
+      console.log('Replace');
+      
+      // router.replace(process.env.VERCEL_URL);
+      
+    }
   }
   
 
