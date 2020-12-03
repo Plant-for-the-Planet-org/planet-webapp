@@ -52,14 +52,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-  React.useEffect(()=>{
-    if(process.env.VERCEL_URL && typeof window !== 'undefined'){
-      if(process.env.VERCEL_URL !== window.location.hostname){
-        router.replace(process.env.VERCEL_URL);
-      }
+
+  if (process.env.VERCEL_URL && typeof window !== 'undefined') {
+    if (process.env.VERCEL_URL !== window.location.hostname) {
+      router.replace(process.env.VERCEL_URL);
     }
-  },[])
-  
+  }
+
+
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
