@@ -38,83 +38,83 @@ export default function MyTrees({ profile }: Props): ReactElement {
   };
   return (
     <>
-      {contributions ? (
+      {contributions &&
+      Array.isArray(contributions) &&
+      contributions.length !== 0 ? (
         <div className={styles.myTreesSection}>
           <div className={styles.myTreesTitle}>{t('me:myForest')}</div>
 
           <div className={styles.myTreesContainer}>
             <div className={styles.treesList}>
-              {Array.isArray(contributions) && contributions.length !== 0
-                ? contributions.map((item: any) => {
-                    return (
-                      <div className={styles.tree}>
-                        <div className={styles.dateRow}>
-                          {formatDate(item.properties.plantDate)}
+              {contributions.map((item: any) => {
+                return (
+                  <div className={styles.tree}>
+                    <div className={styles.dateRow}>
+                      {formatDate(item.properties.plantDate)}
+                    </div>
+                    <div className={styles.treeRow}>
+                      <div className={styles.textCol}>
+                        <div className={styles.title}>
+                          {item.properties.type === 'registration'
+                            ? t('me:registered')
+                            : item.properties.project?.name}
                         </div>
-                        <div className={styles.treeRow}>
-                          <div className={styles.textCol}>
-                            <div className={styles.title}>
-                              {item.properties.type === 'registration'
-                                ? t('me:registered')
-                                : item.properties.project?.name}
-                            </div>
-                            <div className={styles.country}>
-                              {item.properties.country
-                                ? t(
-                                    'country:' +
-                                      item.properties.country.toLowerCase()
-                                  )
-                                : null}
-                            </div>
-                            {item.properties.type === 'gift' ? (
-                              <div className={styles.source}>
-                                {t('me:receivedTrees')}
-                              </div>
-                            ) : null}
-                            {item.properties.type === 'redeem' ? (
-                              <div className={styles.source}>
-                                {t('me:redeemedTrees')}
-                              </div>
-                            ) : null}
+                        <div className={styles.country}>
+                          {item.properties.country
+                            ? t(
+                                'country:' +
+                                  item.properties.country.toLowerCase()
+                              )
+                            : null}
+                        </div>
+                        {item.properties.type === 'gift' ? (
+                          <div className={styles.source}>
+                            {t('me:receivedTrees')}
                           </div>
-                          <div className={styles.numberCol}>
-                            <div className={styles.treeIcon}>
-                              <div
-                                style={
+                        ) : null}
+                        {item.properties.type === 'redeem' ? (
+                          <div className={styles.source}>
+                            {t('me:redeemedTrees')}
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className={styles.numberCol}>
+                        <div className={styles.treeIcon}>
+                          <div
+                            style={
+                              item.properties.type === 'registration'
+                                ? { color: '#3D67B1' }
+                                : {}
+                            }
+                            className={styles.number}
+                          >
+                            {item.properties.treeCount}
+                          </div>
+                          <div className={styles.icon}>
+                            {item.properties.treeCount > 1 ? (
+                              <TreesIcon
+                                color={
                                   item.properties.type === 'registration'
-                                    ? { color: '#3D67B1' }
-                                    : {}
+                                    ? '#3D67B1'
+                                    : null
                                 }
-                                className={styles.number}
-                              >
-                                {item.properties.treeCount}
-                              </div>
-                              <div className={styles.icon}>
-                                {item.properties.treeCount > 1 ? (
-                                  <TreesIcon
-                                    color={
-                                      item.properties.type === 'registration'
-                                        ? '#3D67B1'
-                                        : null
-                                    }
-                                  />
-                                ) : (
-                                  <TreeIcon
-                                    color={
-                                      item.properties.type === 'registration'
-                                        ? '#3D67B1'
-                                        : null
-                                    }
-                                  />
-                                )}
-                              </div>
-                            </div>
+                              />
+                            ) : (
+                              <TreeIcon
+                                color={
+                                  item.properties.type === 'registration'
+                                    ? '#3D67B1'
+                                    : null
+                                }
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
-                    );
-                  })
-                : 'No Contributions Yet'}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             <MyTreesMap {...MapProps} />
           </div>
