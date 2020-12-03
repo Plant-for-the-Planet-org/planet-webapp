@@ -153,7 +153,12 @@ export async function getRequestWithoutRedirecting(url: any) {
   await fetch(`${process.env.API_ENDPOINT}` + url, {
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
-        'X-SESSION-ID': await getsessionId()
+        'X-SESSION-ID': await getsessionId(),
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
       },
     }, ).then(async(res) => {
         result = res.status === 200 ? await res.json() : res.status;
