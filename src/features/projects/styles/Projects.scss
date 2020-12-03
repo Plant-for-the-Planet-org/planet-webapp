@@ -19,7 +19,6 @@
   border-radius: 13px 13px 0px 0px;
   height: 50px;
   width: 100%;
-  
 }
 
 .headerText {
@@ -201,6 +200,10 @@
   border-radius: 100px;
 }
 
+.modalContainer {
+  background: rgba(0, 0, 0, 0.6);
+}
+
 @include smTabletView {
   .allProjectsContainer > div > div {
     display: grid;
@@ -274,4 +277,3 @@
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;
 }
-

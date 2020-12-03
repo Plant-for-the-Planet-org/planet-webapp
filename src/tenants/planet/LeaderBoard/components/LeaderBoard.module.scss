@@ -1,6 +1,6 @@
-@import "./../../../../theme/theme";
+@import './../../../../theme/theme';
 .leaderBoardSection {
-  min-height: 100vh;
+  min-height: fit-content;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -144,7 +144,7 @@
   .leaderBoardBushImageMobile {
     display: none;
   }
-  .leaderBoardSection{
+  .leaderBoardSection {
     margin-top: 60px;
   }
 }

@@ -4,11 +4,10 @@
   "privateAccountTxt": "Dein Profil wird ausgeblendet und nur Dein Vorname erscheint in der Bestenliste",
   "subscribe": "Nachrichten per E-Mail abonnieren",
   "profileDescription": "Profilbeschreibung",
-  "descriptionRequired": "Bitte gültige Beschreibung eingeben",
+  "descriptionRequired": "Du hast die maximale Länge überschritten",
   "website": "Website",
   "websiteError": "Ungültige Website-URL",
-  "websiteRequired": "Bitte geben Sie eine gültige Website-URL ein",
+  "websiteRequired": "Bitte gib eine gültige Website-URL ein",
   "save": "Speichern",
-  "orgNameValidation": "Bitte den Namen der Organisation eingeben",
-  "addPhoto": "Ein Titelbild hinzufügen"
+  "orgNameValidation": "Bitte den Namen der Organisation eingeben"
 }

@@ -14,7 +14,8 @@
   justify-content: center;
   position: relative;
   min-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 // white modal
@@ -26,13 +27,12 @@
   border-radius: 8px;
   position: absolute;
   padding: 20px 20px;
-  width: 320px;
+  width: 412px;
   outline: none;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
-  
 
 // header div
 .headerDiv {
@@ -43,17 +43,17 @@
 }
 
 .backDiv:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .editProfileText {
-    font-size: 22px;
-    margin-left: 20px;
+  font-size: 22px;
+  margin-left: 20px;
 }
 
 //profile pic div
 .profilePicDiv {
-  background-color:#fff;
+  background-color: #fff;
   height: 100px;
   border-radius: 100px;
   display: flex;
@@ -63,11 +63,11 @@
   align-self: center;
 }
 
-.profilePicDiv:hover{
+.profilePicDiv:hover {
   cursor: pointer;
 }
 
-.profilePicImg{
+.profilePicImg {
   height: 100%;
   width: 100%;
   border-radius: 100%;
@@ -92,17 +92,17 @@
 }
 
 .isPrivateAccountText {
-    margin-top: 6px;
+  margin-top: 6px;
   font-family: $primaryFontFamily;
   font-size: 12px;
   color: $highlightBackground;
 }
 
 .horizontalLine {
-    border-top: 1px solid $primaryColor;
-    width: 100%;
-    opacity: 0.5;
-    margin-top: 20px;
+  border-top: 1px solid $primaryColor;
+  width: 100%;
+  opacity: 0.5;
+  margin-top: 20px;
 }
 
 // save button
@@ -137,14 +137,13 @@
   max-width: 320px;
 }
 
-
 /// Form Styles
 
 .formField {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 320px;
+  // max-width: 320px;
   justify-content: space-between;
   align-items: center;
 }
@@ -163,11 +162,11 @@
   flex-direction: row;
   align-items: flex-start;
   flex-wrap: wrap;
-  max-width: 280px;
+  // max-width: 280px;
   min-width: 280px;
 }
 
-@include smTabletView{
+@include smTabletView {
   .formField {
     max-width: 420px;
   }
@@ -178,7 +177,7 @@
     }
   }
   .formFieldLarge {
-    max-width: 420px;
+    // max-width: 420px;
   }
   .modal {
     width: 480px;
@@ -187,27 +186,35 @@
 }
 
 // Loader for Buttons
-.spinner{
+.spinner {
   border: 2px solid #f3f3f3;
   border-radius: 50%;
   border-top: 2px solid transparent;
-  width: 16px!important;
-  height: 16px!important;
+  width: 16px !important;
+  height: 16px !important;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }
 
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.profilePic{
+.profilePic {
   position: relative;
   height: 100px;
   width: 100px;
@@ -216,24 +223,24 @@
   justify-content: center;
   align-items: center;
   align-self: center;
-    .profilePicOverlay{
-      height: 100%;
-      width: 100%;
-      background-color: black;
-      opacity: 0.25;
-      border-radius: 100px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-    }
+  .profilePicOverlay {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.25;
+    border-radius: 100px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
   > svg {
     position: absolute;
   }
 }
 
-.noProfilePic{
+.noProfilePic {
   text-align: center;
-  background-color: #F2F2F7;
+  background-color: #f2f2f7;
   height: 100px;
   width: 100px;
   border-radius: 100px;
@@ -241,4 +248,13 @@
   justify-content: center;
   align-items: center;
   align-self: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .formFieldHalf {
+    div,
+    input {
+      width: 370px;
+    }
+  }
 }

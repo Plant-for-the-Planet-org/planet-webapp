@@ -1,25 +1,41 @@
 import React, { ReactElement } from 'react'
 import ManageProjects from '../../../src/features/user/ManageProjects/screens'
-import { signIn, useSession } from 'next-auth/client';
 import { getUserInfo } from '../../../src/utils/auth0/localStorageUtils';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import {  useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
 
 }
 
-export default function ManageProjectsPage({ }: Props): ReactElement {
-  const [session, loading] = useSession();
+function ManageProjectsPage({ }: Props): ReactElement {
+
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
 
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently
+  } = useAuth0();
+
+  const [token, setToken] = React.useState('')
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated) {
+      loadFunction()
+    }
+  }, [isAuthenticated])
+
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = getUserInfo().type;
-      console.log('usertype',usertype);
-      
+      const usertype = getUserInfo().type;      
       if (usertype === 'tpo') {
         setAccessDenied(false)
         setSetupAccess(true)
@@ -29,17 +45,10 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
       }
     }
 
-    // loading is for session
-    if (!loading) {
+    if (!isLoading && isAuthenticated) {
       loadUserData();
     }
-  }, [loading]);
-
-
-  // User is not logged in
-  if (!loading && !session) {
-    signIn('auth0', { callbackUrl: `/login` });
-  }
+  }, [isLoading, isAuthenticated]);
 
   // User is not TPO
   if (accessDenied && setupAccess) {
@@ -52,7 +61,7 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
   }
   return setupAccess ? (
     <>
-      <ManageProjects session={session} />
+      <ManageProjects token={token} />
       <Footer />
     </>
   ) : (
@@ -62,3 +71,5 @@ export default function ManageProjectsPage({ }: Props): ReactElement {
     </>
   )
 }
+
+export default ManageProjectsPage;
