@@ -7,8 +7,7 @@ export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);
   const { useTranslation } = i18next;
   const { t, ready } = useTranslation(['leaderboard']);
-  const [session, loading] = useSession();
-  
+
   React.useEffect(() => {
     let prev = localStorage.getItem('cookieNotice');
     if (prev === 'false') {
@@ -16,12 +15,6 @@ export default function CookiePolicy() {
     }
     localStorage.setItem('cookieNotice', showCookieNotice.toString());
   }, [showCookieNotice]);
-  
-  React.useEffect(() => {
-     if (!loading && session) {
-       setShowCookieNotice(false);
-     }
-   }, [loading, session]);
 
   return showCookieNotice ? (
     <div className={styles.cookieContainer}>
