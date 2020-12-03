@@ -237,7 +237,7 @@ export default function RedeemModal({
                           value: true,
                           message: 'Please enter a code to redeem.',
                         }
-                      })} name={'code'} placeholder="pp.eco/XADSA-DS-AS" label="" variant="outlined" />
+                      })} name={'code'} placeholder="XAD-1SA-5F1-A" label="" variant="outlined" />
 
                     </div>
                     {errors.code && (
