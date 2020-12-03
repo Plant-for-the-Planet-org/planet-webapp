@@ -14,7 +14,6 @@ export default function LandingSection(props: any) {
           }) 0% 0% no-repeat padding-box`,
         mixBlendMode: 'darken',
         backgroundSize: 'cover',
-        backgroundAttachment: props.backgroundAttach ? props.backgroundAttach : null
       }}
     >
       {props.children}
