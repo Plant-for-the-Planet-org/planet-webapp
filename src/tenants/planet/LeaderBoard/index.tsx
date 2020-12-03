@@ -7,9 +7,10 @@ import Video from './components/Video';
 
 interface Props {
   leaderboard: any;
+  tenantScore: any;
 }
 
-export default function index({ leaderboard }: Props): ReactElement {
+export default function index({ leaderboard, tenantScore }: Props): ReactElement {
   const blockedCountries = [
     'CK',
     'TH',
@@ -60,7 +61,8 @@ export default function index({ leaderboard }: Props): ReactElement {
     <div>
       <Score leaderboard={leaderboard} />
 
-      <Stats />
+      {tenantScore && <Stats tenantScore={tenantScore} />}
+
 
       {/* <Stories /> */}
 
