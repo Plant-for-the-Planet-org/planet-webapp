@@ -25,6 +25,9 @@ export default function Home() {
       case 'planet':
         AllPage = <LeaderBoard leaderboard={leaderboard} />;
         return AllPage;
+      case 'ttc':
+        AllPage = <LeaderBoard leaderboard={leaderboard} />;
+        return AllPage;
       default:
         AllPage = null;
         return AllPage;

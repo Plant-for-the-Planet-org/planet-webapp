@@ -219,7 +219,7 @@ function CardPayments({
         </div>
         <div className={styles.totalCostText}>
           {t('donate:fortreeCountTrees', {
-            treeCount: Sugar.Number.format(Number(treeCount)),
+            treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
           })}
         </div>
       </div> */}
