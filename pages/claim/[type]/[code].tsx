@@ -10,6 +10,7 @@ import Close from '../../../public/assets/images/icons/headerIcons/close';
 import i18next from './../../../i18n'
 import tenantConfig from './../../../tenant.config'
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
+import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
@@ -18,7 +19,7 @@ interface Props {
 }
 
 function ClaimDonation({ }: Props): ReactElement {
-    const { t } = useTranslation(['me', 'common', 'donate', 'redeem']);
+    const { t, i18n } = useTranslation(['me', 'common', 'donate', 'redeem']);
 
     const config = tenantConfig();
 
@@ -179,7 +180,10 @@ function ClaimDonation({ }: Props): ReactElement {
                                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                                 </div>
                                 <div className={styles.donationCount}>
-                                    {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount, tpoName: validCodeData.tpos[0].tpoName })}
+                                    {t('redeem:myPlantedTreesByOrg', {
+                                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
+                                      tpoName: validCodeData.tpos[0].tpoName
+                                    })}
                                     <p className={styles.donationTenant}>
                                         {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                                     </p>
@@ -194,7 +198,10 @@ function ClaimDonation({ }: Props): ReactElement {
                                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                                 </div>
                                 <p className={styles.tempDonationCount}>
-                                    {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount, tpoName: validCodeData.tpos[0].tpoName })}
+                                    {t('redeem:myPlantedTreesByOrg', {
+                                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
+                                      tpoName: validCodeData.tpos[0].tpoName
+                                    })}
                                 </p>
                                 <p className={styles.tempDonationTenant}>
                                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -204,7 +211,7 @@ function ClaimDonation({ }: Props): ReactElement {
 
                         <div className={styles.shareOptions}>
                             <ShareOptions
-                                treeCount={validCodeData.treeCount}
+                                treeCount={getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
                                 sendRef={sendRef}
                                 handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
                             />
@@ -232,7 +239,7 @@ function ClaimDonation({ }: Props): ReactElement {
                                 )}
 
                                 <div className={styles.codeTreeCount}>
-                                    {validCodeData.treeCount}
+                                    {getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
                                     <span>{t('common:trees')}</span>
                                 </div>
 
