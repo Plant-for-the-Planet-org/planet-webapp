@@ -535,7 +535,7 @@ function PaymentDetails({
                   amount={treeCost * treeCount}
                   currency={currency}
                   donationId={donationID}
-                  mode={paymentSetup?.gateways.paypal.isLive ? 'live' : 'sandbox'}
+                  mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
                   clientID={paymentSetup?.gateways.paypal.authorization.client_id}
                 />
               )
