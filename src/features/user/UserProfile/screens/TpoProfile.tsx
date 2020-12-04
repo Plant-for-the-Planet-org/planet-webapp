@@ -86,7 +86,9 @@ export default function TpoProfile({
         authenticatedType={authenticatedType}
       />
 
-      <MyTrees profile={userprofile} />
+      {authenticatedType === 'private' ? (
+        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
+      ) : null}
 
       {/* add target modal */}
       <AddTargetModal
