@@ -55,23 +55,19 @@ export default function Footer() {
     },
   ];
 
-  // changes the language and selected currency id found in local storage
+  // changes the language and selected country as found in local storage
   useEffect(() => {
-    let langCode;
-    let currencyCode;
-    let countryCode;
-
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
-        currencyCode = localStorage.getItem('currencyCode');
+        let currencyCode = localStorage.getItem('currencyCode');
         if (currencyCode) setSelectedCurrency(currencyCode);
       }
       if (localStorage.getItem('countryCode')) {
-        countryCode = localStorage.getItem('countryCode');
+        let countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
       }
       if (localStorage.getItem('language')) {
-        langCode = localStorage.getItem('language');
+        let langCode = localStorage.getItem('language');
         if (langCode) setLanguage(langCode);
       }
     }
