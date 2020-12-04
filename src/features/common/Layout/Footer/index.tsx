@@ -151,7 +151,9 @@ export default function Footer() {
               })}
             </div>
           </div>
-          <div className={styles.logo_container}>
+          
+        </div>
+        <div className={styles.logo_container}>
 
             <div className={styles.pfp_logo}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
@@ -169,14 +171,13 @@ export default function Footer() {
             )}
 
             {config.showUNDecadeLogo && (
-              <div>
+              <div style={{marginLeft:'75px'}}>
                 <a href="https://www.decadeonrestoration.org/" target="_blank" rel="noopener noreferrer">
                   <UNDecadeLogo />
                 </a>
               </div>
             )}
           </div>
-        </div>
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}
