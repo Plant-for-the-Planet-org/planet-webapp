@@ -20,7 +20,6 @@ import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './maps/ExploreInfoModal';
 import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
-import getLanguageName from '../../../utils/language/getLanguageName';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
 
@@ -319,6 +318,24 @@ export default function MapboxMap({
     setOpen(false);
   };
 
+  // changes the language and selected country as found in local storage
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        let currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        let countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        let langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
+      }
+    }
+  }, []);
+
   function goToNextProject() {
     if (currentSite < maxSites - 1) {
       setCurrentSite(currentSite + 1);
@@ -544,7 +561,7 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
-        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${getLanguageName(language)} · ${selectedCurrency}`}</div>
+        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${language ? language.toUpperCase() : ''} · ${selectedCurrency}`}</div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal

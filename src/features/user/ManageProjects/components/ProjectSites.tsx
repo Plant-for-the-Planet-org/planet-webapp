@@ -165,10 +165,10 @@ export default function ProjectSites({
   };
 
   const status = [
-    { label: t('manageProjects:Planting'), value: 'planting' },
-    { label: t('manageProjects:Planted'), value: 'planted' },
-    { label: t('manageProjects:Barren'), value: 'barren' },
-    { label: t('manageProjects:Reforestation'), value: 'reforestation' },
+    { label: t('manageProjects:siteStatusPlanting'), value: 'planting' },
+    { label: t('manageProjects:siteStatusPlanted'), value: 'planted' },
+    { label: t('manageProjects:siteStatusBarren'), value: 'barren' },
+    { label: t('manageProjects:siteStatusReforestation'), value: 'reforestation' },
   ];
 
   React.useEffect(() => {

@@ -13,14 +13,14 @@ import ShareOptions from '../../../donations/components/ShareOptions';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import tenantConfig from '../../../../../tenant.config';
-
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: any) {
-  const { t } = useTranslation(['me', 'common', 'donate','redeem']);
+  const { t, i18n } = useTranslation(['me', 'common', 'donate','redeem']);
 
   const config = tenantConfig();
 
@@ -105,7 +105,6 @@ export default function RedeemModal({
       let token = await getAccessTokenSilently();
       let userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
-        console.log('Result', res);
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false)
@@ -162,7 +161,10 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <div className={styles.donationCount}>
-                    {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
+                    {t('redeem:myPlantedTreesByOrg', { 
+                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
+                      tpoName:validCodeData.tpos[0].tpoName 
+                    })}
                     <p className={styles.donationTenant}>
                       {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                     </p>
@@ -177,7 +179,10 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <p className={styles.tempDonationCount}>
-                    {t('redeem:myPlantedTreesByOrg', { count: validCodeData.treeCount,tpoName:validCodeData.tpos[0].tpoName  })}
+                    {t('redeem:myPlantedTreesByOrg', {
+                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
+                      tpoName:validCodeData.tpos[0].tpoName
+                    })}
                   </p>
                   <p className={styles.tempDonationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -187,7 +192,7 @@ export default function RedeemModal({
 
               <div className={styles.shareOptions}>
                 <ShareOptions
-                  treeCount={validCodeData.treeCount}
+                  treeCount={getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
                   sendRef={sendRef}
                   handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
                 />
@@ -210,7 +215,7 @@ export default function RedeemModal({
               {codeValidated && validCodeData ? (
                 <>
                   <div className={styles.codeTreeCount}>
-                    {validCodeData.treeCount}
+                    {getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
                     <span>{t('common:trees')}</span>
                   </div>
 

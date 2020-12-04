@@ -2,11 +2,12 @@
   "treesDonated": "Trees donated since 2019",
   "plantedByTPO": "Planted by the 101 participating organisations",
   "plantedGlobally": "Trees planted globally since 2006",
-  "forestLoss": "Net forest loss in the past 12 months",
+  "forestLoss": "Net tree loss per year",
   "estimateOf": "Estimate of annual tree loss by",
   "globallySince": "Number of trees self-reported to the Billion Tree Campaign (later Trillion Tree Campaign) since its founding by the UNEP in 2006",
   "restoreTrees": "How do we restore a trillion trees?",
   "watchVideo": "Watch Video",
   "selectProjects": "How we select projects",
-  "learnMore": "Learn More"
+  "learnMore": "Learn More",
+  "projects": "Projects"
 }

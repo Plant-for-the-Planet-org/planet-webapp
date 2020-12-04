@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
-import { getRequest } from '../../utils/apiRequests/api';
+import { getRequest, getAccountInfo } from '../../utils/apiRequests/api';
 import ContactDetails from './screens/ContactDetails';
 import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
@@ -26,7 +26,7 @@ function DonationsPopup({
     isAuthenticated,
     getAccessTokenSilently
   } = useAuth0();
-
+  
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
 
@@ -53,18 +53,9 @@ function DonationsPopup({
     }
   }, []);
 
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState('');
 
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-    if (!isLoading && isAuthenticated) {
-      loadFunction()
-    }
-  }, [isAuthenticated, isLoading])
+  const [userProfile,setUserprofile] = React.useState(null)
 
   //  to load payment data
   React.useEffect(() => {
@@ -109,6 +100,35 @@ function DonationsPopup({
     country: '',
     companyName: '',
   });
+
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+      const res = await getAccountInfo(token)
+      if (res.status === 200) {
+        const resJson = await res.json();
+        setUserprofile(resJson);
+        if(resJson){
+          let defaultDetails = {
+            firstName:resJson.firstname ? resJson.firstname: '',
+            lastName: resJson.lastname ? resJson.lastname:'',
+            email: resJson.email ? resJson.email: '',
+            address: resJson.address.address ? resJson.address.address: '',
+            city: resJson.address.city ? resJson.address.city:'',
+            zipCode: resJson.address.zipCode ? resJson.address.zipCode:'',
+            country: '',
+            companyName: '',
+          }
+          setContactDetails(defaultDetails)
+        }
+      } 
+    }
+    if (!isLoading && isAuthenticated) {
+      loadFunction()
+    }
+  }, [isAuthenticated, isLoading])
 
   const TreeDonationProps = {
     project,

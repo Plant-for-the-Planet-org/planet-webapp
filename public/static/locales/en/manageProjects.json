@@ -71,6 +71,7 @@
   "siteStatusPlanted": "Planted",
   "siteStatusBarren": "Barren",
   "siteStatusReforestation": "Reforestation",
+  "projectStatus": "Project Status",
   "selectProjectStatus": "Please select Project Status",
   "saveAndAddSite": "Save & Add another site",
   "addSite": "Add another site",
