@@ -1,4 +1,3 @@
-import { propEach } from '@turf/turf';
 import React from 'react';
 
 function Globe(props: any) {

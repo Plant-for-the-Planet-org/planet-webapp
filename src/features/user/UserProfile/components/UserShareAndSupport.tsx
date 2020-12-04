@@ -111,11 +111,12 @@ export default function UserShareAndSupport({ userprofile }: any) {
             className={styles.iconTextColumn}
             href={userprofile.url}
             target="_blank"
+            style={{marginLeft:'12px'}}
           >
             <div className={styles.bottomIconBg}>
             <GlobeSelected color={'white'} width={'24px'} />
             </div>
-            <p className={styles.bottomRowText}>URL</p>
+            <p className={styles.bottomRowText}>{userprofile.urlText ?userprofile.urlText:'URL'}</p>
           </a>
          )}
 
@@ -124,11 +125,12 @@ export default function UserShareAndSupport({ userprofile }: any) {
             <div
               className={styles.bottomIconBg}
               onClick={() => setShowSocialBtn(false)}
+              style={{marginLeft:'12px'}}
             >
               <CancelIcon color="white" width="25px" />
             </div>
           ) : (
-            <div className={styles.bottomIconBg} onClick={handleShare}>
+            <div className={styles.bottomIconBg} style={{marginLeft:'12px'}} onClick={handleShare}>
               <Share width="39px" paddingLeft="10px" color="white" solid />
             </div>
           )}
