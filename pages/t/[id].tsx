@@ -4,14 +4,13 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import { getRequest } from '../../src/utils/apiRequests/api';
+import { getRequest, getAccountInfo } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import {
   setUserExistsInDB,
   removeUserExistsInDB,
   getUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
-import { getAccountInfo } from '../../src/utils/apiRequests/api'
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
