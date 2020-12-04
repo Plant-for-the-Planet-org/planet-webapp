@@ -10,6 +10,7 @@
   flex-direction:column;
   height: 100vh; 
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 // the white form
@@ -28,6 +29,7 @@
   border-radius: 8px;
   align-self: center;
   padding:20px;
+  overflow-y: auto;
 }
 
 // when request sent, opacity low
