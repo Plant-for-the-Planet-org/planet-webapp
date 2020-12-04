@@ -15,7 +15,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `tenants/ttc/logo.png`,
+    tenantLogoURL: `/tenants/ttc/logo.png`,
     tenantLogoLink: 'https://www.trilliontreecampaign.org',
     items: [
       {
