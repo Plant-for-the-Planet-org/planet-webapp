@@ -188,31 +188,29 @@ export default function RegisterTrees({
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(
-          `/app/contributions`,
-          submitData,
-          token
-        ).then((res) => {
-          if (!res.code) {
-            console.log(res);
-            setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res);
-            setIsUploadingData(false);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
+        postAuthenticatedRequest(`/app/contributions`, submitData, token).then(
+          (res) => {
+            if (!res.code) {
+              console.log(res);
+              setErrorMessage('');
+              setContributionGUID(res.id);
+              setContributionDetails(res);
               setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              setRegistered(true);
+              // router.push('/c/[id]', `/c/${res.id}`);
             } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              if (res.code === 404) {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              } else {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              }
             }
           }
-        });
+        );
 
         // handleNext();
       } else {
@@ -310,7 +308,7 @@ export default function RegisterTrees({
                               autoOk
                               disableFuture
                               minDate={new Date(new Date().setFullYear(1950))}
-                              format="dd MMMM yyyy"
+                              format="MMMM d, yyyy"
                               maxDate={new Date()}
                             />
                           )}
