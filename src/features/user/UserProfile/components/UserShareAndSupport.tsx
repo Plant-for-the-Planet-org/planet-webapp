@@ -54,17 +54,17 @@ export default function UserShareAndSupport({ userprofile }: any) {
   };
 
   return (
-    <div style={{position: "relative"}}>
+    <div style={{ position: "relative" }}>
       {showSocialBtn && (screenWidth > 600) && (
-        <motion.div 
+        <motion.div
           animate={{
             x: 0,
             opacity: 1,
-            position: 'absolute', 
-            top: '35px', 
+            position: 'absolute',
+            top: '35px',
             left: userprofile.type !== 'tpo' ? '180px' : '181px'
           }}
-          transition={{stiffness: 150, type:"spring"}}
+          transition={{ stiffness: 150, type: "spring" }}
           initial={{
             x: -180,
             opacity: 0
@@ -74,13 +74,13 @@ export default function UserShareAndSupport({ userprofile }: any) {
         </motion.div>
       )}
       {showSocialBtn && (screenWidth < 600) && (
-        <motion.div 
+        <motion.div
           animate={{
             paddingLeft: userprofile.type !== 'tpo' ? '191px' : null,
             y: 0,
             opacity: 1,
           }}
-          transition={{stiffness: 150, type:"spring"}}
+          transition={{ stiffness: 150, type: "spring" }}
           initial={{
             y: 100,
             opacity: 0
@@ -91,7 +91,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
       )}
 
       <div className={styles.bottomIconsRow}>
-        
+
         {userprofile.type !== 'tpo' && (
           <div
             className={styles.iconTextColumn}
@@ -104,42 +104,42 @@ export default function UserShareAndSupport({ userprofile }: any) {
             </div>
             <p className={styles.bottomRowText}>{t('me:support')}</p>
           </div>
-         )}
+        )}
 
-{userprofile.url && (
+        {userprofile.url && (
           <a
             className={styles.iconTextColumn}
             href={userprofile.url}
             target="_blank"
-            style={{marginLeft:'12px'}}
+            style={{ marginLeft: '12px' }}
           >
             <div className={styles.bottomIconBg}>
-            <GlobeSelected color={'white'} width={'24px'} />
+              <GlobeSelected color={'white'} width={'24px'} />
             </div>
-            <p className={styles.bottomRowText}>{userprofile.urlText ?userprofile.urlText:'URL'}</p>
+            <p className={styles.bottomRowText}>{userprofile.urlText ? userprofile.urlText : 'URL'}</p>
           </a>
-         )}
+        )}
 
-        <div className={styles.iconTextColumn}>
+        <div style={{ marginLeft: '12px' }} className={styles.iconTextColumn}>
           {showSocialBtn ? (
             <div
               className={styles.bottomIconBg}
               onClick={() => setShowSocialBtn(false)}
-              style={{marginLeft:'12px'}}
+
             >
               <CancelIcon color="white" width="25px" />
             </div>
           ) : (
-            <div className={styles.bottomIconBg} style={{marginLeft:'12px'}} onClick={handleShare}>
-              <Share width="39px" paddingLeft="10px" color="white" solid />
-            </div>
-          )}
+              <div className={styles.bottomIconBg} onClick={handleShare}>
+                <Share width="39px" paddingLeft="10px" color="white" solid />
+              </div>
+            )}
           {showSocialBtn ? (
             <p className={styles.bottomRowText}>{t('me:close')}</p>
           ) : (
-            <p className={styles.bottomRowText}> {t('me:share')} </p>
-          )}
-        </div>        
+              <p className={styles.bottomRowText}> {t('me:share')} </p>
+            )}
+        </div>
       </div>
     </div>
   );
