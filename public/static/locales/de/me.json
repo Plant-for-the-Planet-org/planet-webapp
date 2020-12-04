@@ -29,5 +29,8 @@
   "contribNotFound": "Beitrag nicht gefunden",
   "errorOccured": "Aufgetretener Fehler",
   "contribSuccess": "Erfolgreich hinzugefügt {{treeCount}} {{treeSpecies}} 🌳 vom {{plantDate}}",
-  "moreThanOne": "mindestens 1 Baum erforderlich"
+  "moreThanOne": "mindestens 1 Baum erforderlich",
+  "registered": "Registriert",
+  "receivedTrees": "Empfangene Bäume",
+  "redeemedTrees": "Eingelöste Bäume"
 }
