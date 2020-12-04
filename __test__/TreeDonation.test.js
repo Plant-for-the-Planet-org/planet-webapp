@@ -10,10 +10,10 @@ describe('tree donation', () => {
     expect(getByText('donate:treeDonation')).toBeInTheDocument();
   });
   it('it expects component to be click', () => {
-    const set = jest.fn(()=> 'addd');
-    const { getByTestId } = render(<TreeDonation project={project} country="NG" setIsTaxDeductible={setIsTaxDeductible} treeCost="3" currency="NGN" />);
+    const setOpenTaxDeductionModal = jest.fn();
+    const { getByTestId } = render(<TreeDonation project={project} country="NG" setIsTaxDeductible={setIsTaxDeductible} treeCost="3" currency="NGN" onClick={setOpenTaxDeductionModal()} />);
     expect(getByTestId('taxDeductionId')).toBeTruthy();
     fireEvent.click(screen.getByTestId('taxDeductionId'));
-    expect(set).toBeCalledTimes(1);
+    expect(setOpenTaxDeductionModal).toBeCalledTimes(1);
   });
 });
