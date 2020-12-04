@@ -86,7 +86,7 @@ export default function TpoProfile({
         authenticatedType={authenticatedType}
       />
 
-      <MyTrees profile={userprofile} />
+      <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
 
       {/* add target modal */}
       <AddTargetModal

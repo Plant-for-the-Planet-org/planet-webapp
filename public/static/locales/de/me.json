@@ -12,16 +12,16 @@
   "close": "Schließen",
   "support": "Unterstütze",
   "addTarget": "Ziel hinzufügen",
-  "noOfTrees": "Anzahl Bäume",
+  "noOfTrees": "Wieviele Bäume?",
   "datePlanted": "Pflanzdatum",
   "speciesIsRequired": "Art ist erforderlich",
   "treeSpecies": "Baumarten",
-  "drawPolygon": "Bitte zeichne ein Polygon, um deine Bäume zu lokalisieren",
+  "drawPolygon": "Bitte zeichne das Gebiet ein, in dem Du die Bäume gepflanzt hast. Wenn Du fertig bist, klicke wieder auf den ersten Standort.",
   "selectLocation": "Baumpflanzungsort auf der Karte auswählen",
   "registerButton": "Registrieren",
   "startDrawing": "Zeichnung beginnen",
   "save": "Speichern",
-  "treesRequired": "Anzahl der Bäume ist erforderlich",
+  "treesRequired": "Anzahl Bäume ist erforderlich",
   "wentWrong": "Etwas ging schief. Bitte kontaktiere support@plant-for-the-planet.org",
   "locationMissing": "Standort auf der Karte auswählen",
   "uploadPhotos": "Fotos hochladen",
@@ -32,5 +32,6 @@
   "moreThanOne": "mindestens 1 Baum erforderlich",
   "registered": "Registriert",
   "receivedTrees": "Empfangene Bäume",
-  "redeemedTrees": "Eingelöste Bäume"
+  "redeemedTrees": "Eingelöste Bäume",
+  "nameForest": "{{name}}'s Wald"
 }
