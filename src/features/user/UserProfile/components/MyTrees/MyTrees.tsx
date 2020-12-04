@@ -16,9 +16,13 @@ const { useTranslation } = i18next;
 
 interface Props {
   profile: any;
+  authenticatedType: any;
 }
 
-export default function MyTrees({ profile }: Props): ReactElement {
+export default function MyTrees({
+  profile,
+  authenticatedType,
+}: Props): ReactElement {
   const { i18n, t } = useTranslation(['common', 'country']);
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {
@@ -32,7 +36,7 @@ export default function MyTrees({ profile }: Props): ReactElement {
         });
     }
     loadFunction();
-  }, []);
+  }, [profile]);
 
   const MapProps = {
     contributions,
@@ -43,7 +47,11 @@ export default function MyTrees({ profile }: Props): ReactElement {
       Array.isArray(contributions) &&
       contributions.length !== 0 ? (
         <div className={styles.myTreesSection}>
-          <div className={styles.myTreesTitle}>{t('me:myForest')}</div>
+          <div className={styles.myTreesTitle}>
+            {authenticatedType === 'private'
+              ? t('me:myForest')
+              : t('me:nameForest', { name: profile.displayName })}
+          </div>
           <div className={styles.myTreesContainer}>
             <div className={styles.treesList}>
               {contributions.map((item: any) => {
@@ -88,7 +96,10 @@ export default function MyTrees({ profile }: Props): ReactElement {
                             }
                             className={styles.number}
                           >
-                            {getFormattedNumber(i18n.language, Number(item.properties.treeCount))}
+                            {getFormattedNumber(
+                              i18n.language,
+                              Number(item.properties.treeCount)
+                            )}
                           </div>
                           <div className={styles.icon}>
                             {item.properties.treeCount > 1 ? (

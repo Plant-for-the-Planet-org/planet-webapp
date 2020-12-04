@@ -32,5 +32,6 @@
   "moreThanOne": "minimum 1 tree required",
   "registered": "Registered",
   "receivedTrees": "Received Trees",
-  "redeemedTrees": "Redeemed Trees"
+  "redeemedTrees": "Redeemed Trees",
+  "nameForest": "{{name}}'s Forest"
 }
