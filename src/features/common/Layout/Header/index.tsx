@@ -21,11 +21,18 @@ export default function Header() {
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
       />
       <meta property="og:locale" content={config.meta.locale} />
-      {locales.map((locale) => {
-        if (locale !== config.meta.locale) {
-          return <meta key="og:locale:alternate" property="og:locale:alternate" content={locale} />;
-        }
-      })}
+      {locales &&
+        locales.map((locale) => {
+          if (locale !== config.meta.locale) {
+            return (
+              <meta
+                key="og:locale:alternate"
+                property="og:locale:alternate"
+                content={locale}
+              />
+            );
+          }
+        })}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="application-name" content={config.meta.title} />

@@ -31,7 +31,7 @@ interface Props {
   handleBack: Function;
   projectGUID: String;
   handleReset: Function;
-  token: any
+  token: any;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -40,7 +40,11 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack, token, handleNext, projectGUID, handleReset
+  handleBack,
+  token,
+  handleNext,
+  projectGUID,
+  handleReset,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
@@ -86,7 +90,7 @@ export default function ProjectSites({
     geoJson,
     setGeoJson,
     geoJsonError,
-    setGeoJsonError
+    setGeoJsonError,
   };
 
   const onSubmit = (data: any) => {
@@ -168,7 +172,10 @@ export default function ProjectSites({
     { label: t('manageProjects:siteStatusPlanting'), value: 'planting' },
     { label: t('manageProjects:siteStatusPlanted'), value: 'planted' },
     { label: t('manageProjects:siteStatusBarren'), value: 'barren' },
-    { label: t('manageProjects:siteStatusReforestation'), value: 'reforestation' },
+    {
+      label: t('manageProjects:siteStatusReforestation'),
+      value: 'reforestation',
+    },
   ];
 
   React.useEffect(() => {
@@ -189,70 +196,71 @@ export default function ProjectSites({
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formField}>
-          {siteList
-            .filter((site) => {
-              return site.geometry !== null;
-            })
-            .map((site) => {
-              const bbox = turf.bbox(site.geometry);
-              const { longitude, latitude, zoom } = new WebMercatorViewport(
-                viewport
-              ).fitBounds(
-                [
-                  [bbox[0], bbox[1]],
-                  [bbox[2], bbox[3]],
-                ],
-                {
-                  padding: {
-                    top: 50,
-                    bottom: 50,
-                    left: 50,
-                    right: 50,
-                  },
-                }
-              );
+          {siteList &&
+            siteList
+              .filter((site) => {
+                return site.geometry !== null;
+              })
+              .map((site) => {
+                const bbox = turf.bbox(site.geometry);
+                const { longitude, latitude, zoom } = new WebMercatorViewport(
+                  viewport
+                ).fitBounds(
+                  [
+                    [bbox[0], bbox[1]],
+                    [bbox[2], bbox[3]],
+                  ],
+                  {
+                    padding: {
+                      top: 50,
+                      bottom: 50,
+                      left: 50,
+                      right: 50,
+                    },
+                  }
+                );
 
-              return (
-                <div key={site.id} className={`${styles.formFieldHalf}`}>
-                  <div className={styles.mapboxContainer}>
-                    <div className={styles.uploadedMapName}>{site.name}</div>
-                    <div className={styles.uploadedMapStatus}>
-                      {String(site.status).toUpperCase()}
-                    </div>
-                    <div
-                      onClick={() => {
-                        deleteProjectSite(site.id);
-                      }}
-                      className={styles.uploadedMapDeleteButton}
-                    >
-                      <TrashIcon color={'#000'} />
-                    </div>
-                    <MapStatic
-                      {...viewport}
-                      center={[longitude, latitude]}
-                      zoom={[zoom]}
-                      style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
-                      containerStyle={{
-                        height: 200,
-                        width: 320,
-                      }}
-                    >
-                      <GeoJSONLayer
-                        data={site.geometry}
-                        fillPaint={{
-                          'fill-color': '#fff',
-                          'fill-opacity': 0.2,
+                return (
+                  <div key={site.id} className={`${styles.formFieldHalf}`}>
+                    <div className={styles.mapboxContainer}>
+                      <div className={styles.uploadedMapName}>{site.name}</div>
+                      <div className={styles.uploadedMapStatus}>
+                        {String(site.status).toUpperCase()}
+                      </div>
+                      <div
+                        onClick={() => {
+                          deleteProjectSite(site.id);
                         }}
-                        linePaint={{
-                          'line-color': '#89b54a',
-                          'line-width': 2,
+                        className={styles.uploadedMapDeleteButton}
+                      >
+                        <TrashIcon color={'#000'} />
+                      </div>
+                      <MapStatic
+                        {...viewport}
+                        center={[longitude, latitude]}
+                        zoom={[zoom]}
+                        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+                        containerStyle={{
+                          height: 200,
+                          width: 320,
                         }}
-                      />
-                    </MapStatic>
+                      >
+                        <GeoJSONLayer
+                          data={site.geometry}
+                          fillPaint={{
+                            'fill-color': '#fff',
+                            'fill-opacity': 0.2,
+                          }}
+                          linePaint={{
+                            'line-color': '#89b54a',
+                            'line-width': 2,
+                          }}
+                        />
+                      </MapStatic>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
         </div>
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -310,15 +318,15 @@ export default function ProjectSites({
             </div>
           </div>
         ) : (
-            <div
-              onClick={() => setShowForm(true)}
-              className={styles.formFieldLarge}
-            >
-              <p className={styles.inlineLinkButton}>
-                {t('manageProjects:addSite')}
-              </p>
-            </div>
-          )}
+          <div
+            onClick={() => setShowForm(true)}
+            className={styles.formFieldLarge}
+          >
+            <p className={styles.inlineLinkButton}>
+              {t('manageProjects:addSite')}
+            </p>
+          </div>
+        )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -345,8 +353,8 @@ export default function ProjectSites({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
+                t('manageProjects:saveAndContinue')
+              )}
             </AnimatedButton>
           </div>
         </div>

@@ -4,7 +4,11 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker, NavigationControl, FlyToInterpolator } from 'react-map-gl';
+import MapGL, {
+  Marker,
+  NavigationControl,
+  FlyToInterpolator,
+} from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
@@ -116,7 +120,6 @@ export default function BasicDetails({
 
   // console.log('watch treeCost',parseFloat(treeCost));
 
-
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails = {
@@ -137,9 +140,15 @@ export default function BasicDetails({
           longitude: projectDetails.geoLongitude,
         },
       };
-      if (projectDetails.hasOwnProperty('geoLongitude') && projectDetails.hasOwnProperty('geoLatitude')) {
+      if (
+        projectDetails.hasOwnProperty('geoLongitude') &&
+        projectDetails.hasOwnProperty('geoLatitude')
+      ) {
         if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
-          setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
+          setProjectCoords([
+            projectDetails.geoLongitude,
+            projectDetails.geoLatitude,
+          ]);
           setViewPort({
             ...viewport,
             latitude: projectDetails.geoLatitude,
@@ -275,15 +284,18 @@ export default function BasicDetails({
                     variant="outlined"
                     select
                   >
-                    {classifications.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+                    {classifications &&
+                      classifications.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
                   </MaterialTextField>
                 }
                 name="classification"
-                rules={{ required: t('manageProjects:classificationValidation') }}
+                rules={{
+                  required: t('manageProjects:classificationValidation'),
+                }}
                 control={control}
               />
               {errors.classification && (
@@ -382,9 +394,7 @@ export default function BasicDetails({
                         className={styles.popoverContent}
                         style={{ left: '-150px' }}
                       >
-                        <p>
-                          {t('manageProjects:receiveDonationsInfo')}
-                        </p>
+                        <p>{t('manageProjects:receiveDonationsInfo')}</p>
                       </div>
                     </div>
                   </div>
@@ -412,11 +422,12 @@ export default function BasicDetails({
                       value: true,
                       message: t('manageProjects:treeCostValidaitonRequired'),
                     },
-                    validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
+                    validate: (value) =>
+                      parseFloat(value) > 0 && parseFloat(value) <= 100,
                     pattern: {
                       value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
                       message: t('manageProjects:treeCostValidationInvalid'),
-                    }
+                    },
                   })}
                   label={t('manageProjects:treeCost')}
                   variant="outlined"
@@ -438,7 +449,7 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.treeCost.message
                       ? errors.treeCost.message
-                      : t("manageProjects:treeCostValidation")}
+                      : t('manageProjects:treeCostValidation')}
                   </span>
                 )}
               </div>
@@ -446,9 +457,7 @@ export default function BasicDetails({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-            <p>
-              {t("manageProjects:projectLocation")}
-            </p>
+            <p>{t('manageProjects:projectLocation')}</p>
             <MapGL
               {...viewport}
               ref={mapRef}
@@ -613,8 +622,8 @@ export default function BasicDetails({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
+                t('manageProjects:saveAndContinue')
+              )}
             </div>
           </div>
         </div>

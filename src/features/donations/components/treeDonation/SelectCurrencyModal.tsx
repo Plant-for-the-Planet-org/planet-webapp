@@ -130,7 +130,7 @@ const FormControlNew = withStyles({
 // Maps the radio buttons for currency
 function MapCurrency(props: any) {
   const { t, i18n } = useTranslation(['country']);
-  
+
   const { value, handleChange } = props;
   const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
   return (
@@ -142,14 +142,19 @@ function MapCurrency(props: any) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country: any, index: number) => (
-          <FormControlLabel
-            key={country.countryCode + '-' + index}
-            value={`${country.countryCode},${country.currencyCode}`} // need both info
-            control={<GreenRadio />}
-            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
-          />
-        ))}
+        {sortedCountriesData &&
+          sortedCountriesData.map((country: any, index: number) => (
+            <FormControlLabel
+              key={country.countryCode + '-' + index}
+              value={`${country.countryCode},${country.currencyCode}`} // need both info
+              control={<GreenRadio />}
+              label={
+                t('country:' + country.countryCode.toLowerCase()) +
+                ' · ' +
+                country.currencyCode
+              }
+            />
+          ))}
       </RadioGroup>
     </FormControlNew>
   );

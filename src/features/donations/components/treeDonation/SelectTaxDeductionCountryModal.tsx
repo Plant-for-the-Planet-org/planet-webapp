@@ -107,7 +107,7 @@ export default function TransitionsModal(props: any) {
 // Maps the radio buttons for currency
 function MapCountry(props: any) {
   const { t } = useTranslation(['country']);
-  
+
   const { countriesData, value, handleChange } = props;
   return (
     <FormControl component="fieldset">
@@ -117,14 +117,19 @@ function MapCountry(props: any) {
         value={value}
         onChange={handleChange}
       >
-        {countriesData.map((country: any, index: number) => (
-          <FormControlLabel
-            key={country.countryCode + '-' + index}
-            value={`${country.countryCode},${country.currencyCode}`} // need both info
-            control={<GreenRadio />}
-            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
-          />
-        ))}
+        {countriesData &&
+          countriesData.map((country: any, index: number) => (
+            <FormControlLabel
+              key={country.countryCode + '-' + index}
+              value={`${country.countryCode},${country.currencyCode}`} // need both info
+              control={<GreenRadio />}
+              label={
+                t('country:' + country.countryCode.toLowerCase()) +
+                ' · ' +
+                country.currencyCode
+              }
+            />
+          ))}
       </RadioGroup>
     </FormControl>
   );
