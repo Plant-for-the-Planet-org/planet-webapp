@@ -83,7 +83,7 @@ export default function IndividualProfile({
           />
         </LandingSection>
 
-        <MyTrees profile={userprofile} />
+        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
       </main>
 
       {/* add target modal */}
