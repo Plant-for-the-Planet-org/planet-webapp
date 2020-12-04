@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
-import { getRequest } from '../../utils/apiRequests/api';
+import { getRequest, getAccountInfo } from '../../utils/apiRequests/api';
 import ContactDetails from './screens/ContactDetails';
 import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
 import TreeDonation from './screens/TreeDonation';
 import { useAuth0 } from '@auth0/auth0-react';
-import { getAccountInfo } from '../../utils/auth0/apiRequests';
 
 interface Props {
   onClose: any;

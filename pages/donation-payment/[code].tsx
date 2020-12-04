@@ -20,7 +20,8 @@ function PaymentPage({ initialized }: Props) {
 
     React.useEffect(() => {
         async function loadProjects() {
-            await fetch(`${process.env.API_ENDPOINT}/public/v1.3/en/paymentInfo/${router.query.code}`).then(async (res) => {
+            let userLang = localStorage.getItem('language') || 'en';
+            await fetch(`${process.env.API_ENDPOINT}/public/v1.3/${userLang}/paymentInfo/${router.query.code}`).then(async (res) => {
                 if (res.status !== 200) {
                     setPaymentData(null)
                     setIsLoaded(true)

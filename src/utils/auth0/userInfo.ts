@@ -1,4 +1,4 @@
-import { getAccountInfo } from "./apiRequests";
+import { getAccountInfo } from "../apiRequests/api";
 import { setUserExistsInDB } from "./localStorageUtils";
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations

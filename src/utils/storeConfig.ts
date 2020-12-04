@@ -1,7 +1,8 @@
 import getsessionId from './apiRequests/getSessionId';
 
-export async function storeConfig(){
-    await fetch(`${process.env.API_ENDPOINT}/public/v1.2/en/config`, {
+export async function storeConfig() {
+    let userLang = localStorage.getItem('language') || 'en';
+    await fetch(`${process.env.API_ENDPOINT}/public/v1.2/${userLang}/config`, {
         headers: {
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
