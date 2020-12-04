@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../../i18n';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 
 interface Props {
   leaderboard: any;
@@ -78,7 +79,18 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   </div>
                 )
             ) : (
-              <p>loading</p>
+              <>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+              </>
             )}
         </div>
       </div>

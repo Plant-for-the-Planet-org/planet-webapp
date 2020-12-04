@@ -6,9 +6,11 @@ import StatsInfoModal from './StatsInfoModal';
 import i18next from '../../../../../i18n';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 
-interface Props {}
+interface Props {
+  tenantScore:any;
+}
 
-export default function Stats({}: Props): ReactElement {
+export default function Stats({tenantScore}: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const { useTranslation } = i18next;
   const { t, i18n } = useTranslation(['leaderboard', 'common', 'planet']);
@@ -27,11 +29,11 @@ export default function Stats({}: Props): ReactElement {
           <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(63000000), 2)}</h2>
-          <h3 className={styles.statText}>{t('planet:plantedByTPO')}</h3>
+          <h2 className={styles.statNumber}>130+</h2>
+          <h3 className={styles.statText}>{t('planet:projects')}</h3>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(13480000000), 2)}</h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(tenantScore.total), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:plantedGlobally')}</h3>
           <div
             onClick={() => {

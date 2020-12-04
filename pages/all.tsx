@@ -19,14 +19,25 @@ export default function Home() {
     loadLeaderboard();
   }, []);
 
+  const [tenantScore, setTenantScore] = React.useState(null);
+
+  React.useEffect(() => {
+    async function loadTenantScore() {
+      const newTenantScore = await getRequest(`/app/tenantScore`);
+      setTenantScore(newTenantScore);
+    }
+    loadTenantScore();
+  }, []);
+  
+
   let AllPage;
   function getAllPage() {
     switch (process.env.TENANT) {
       case 'planet':
-        AllPage = <LeaderBoard leaderboard={leaderboard} />;
+        AllPage = <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} />;
         return AllPage;
       case 'ttc':
-        AllPage = <LeaderBoard leaderboard={leaderboard} />;
+        AllPage = <LeaderBoard leaderboard={leaderboard} tenantScore={tenantScore} />;
         return AllPage;
       default:
         AllPage = null;

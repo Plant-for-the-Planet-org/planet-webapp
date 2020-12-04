@@ -5,6 +5,8 @@ const config = {
   languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
+  showUNEPLogo:true,
+  showUNDecadeLogo:true,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,

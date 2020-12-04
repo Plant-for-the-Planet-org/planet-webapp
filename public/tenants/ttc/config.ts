@@ -1,10 +1,12 @@
 const config = {
-  tenantName: 'planettc',
+  tenantName: 'ttc',
   tenantURL: 'trilliontreecampaign.org',
   tenantLogoURL: 'https://www.trilliontreecampaign.org',
   languages: ['en', 'de'],
   fallbackCurrency: 'EUR',
   tenantGoal:1000000000000,
+  showUNEPLogo:true,
+  showUNDecadeLogo:true,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
@@ -13,7 +15,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `tenants/ttc/logo.png`,
+    tenantLogoURL: `/tenants/ttc/logo.png`,
     tenantLogoLink: 'https://www.trilliontreecampaign.org',
     items: [
       {

@@ -129,7 +129,7 @@ function ThankYou({
       </div>
 
       <ShareOptions
-        treeCount={treeCount}
+        treeCount={getFormattedNumber(i18n.language, Number(treeCount))}
         sendRef={sendRef}
         handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
       />

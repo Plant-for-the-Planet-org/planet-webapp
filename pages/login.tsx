@@ -30,7 +30,15 @@ function Login({ }: Props): ReactElement {
           // redirect
 
           if (typeof window !== 'undefined' && userInfo) {
-            router.push(`/t/${userInfo.slug}`);
+            if(localStorage.getItem('redirectLink')){
+              const redirectLink = localStorage.getItem('redirectLink');
+              if(redirectLink){
+                localStorage.removeItem("redirectLink");
+                router.replace(redirectLink);
+              }
+            }else{
+              router.push(`/t/${userInfo.slug}`);
+            }
           }
         }
         if (!isLoading && isAuthenticated) {

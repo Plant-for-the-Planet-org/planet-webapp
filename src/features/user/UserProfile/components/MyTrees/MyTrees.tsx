@@ -5,6 +5,7 @@ import { getRequestWithoutRedirecting } from '../../../../../utils/apiRequests/a
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
@@ -87,7 +88,7 @@ export default function MyTrees({ profile }: Props): ReactElement {
                             }
                             className={styles.number}
                           >
-                            {item.properties.treeCount}
+                            {getFormattedNumber(i18n.language, Number(item.properties.treeCount))}
                           </div>
                           <div className={styles.icon}>
                             {item.properties.treeCount > 1 ? (

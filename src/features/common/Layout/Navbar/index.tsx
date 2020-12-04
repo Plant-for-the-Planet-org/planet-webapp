@@ -247,6 +247,7 @@ export default function NavbarComponent(props: any) {
         <div className={`${styles.mobile_nav}`}>
           {config.header?.isSecondaryTenant ? (
             <div className={styles.bottomLogo}>
+              {config.tenantName !== 'ttc' && (
               <Link
                 href={config.header?.tenantLogoLink}
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
@@ -255,6 +256,7 @@ export default function NavbarComponent(props: any) {
                   <img src={config.header.tenantLogoURL} />
                 </div>
               </Link>
+              )}
               <Link
                 href="https://www.plant-for-the-planet.org"
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
