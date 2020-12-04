@@ -31,7 +31,7 @@ interface Props {
   handleBack: Function;
   projectGUID: String;
   handleReset: Function;
-  token: any
+  token: any;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -40,7 +40,11 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack, token, handleNext, projectGUID, handleReset
+  handleBack,
+  token,
+  handleNext,
+  projectGUID,
+  handleReset,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
@@ -86,7 +90,7 @@ export default function ProjectSites({
     geoJson,
     setGeoJson,
     geoJsonError,
-    setGeoJsonError
+    setGeoJsonError,
   };
 
   const onSubmit = (data: any) => {
@@ -168,7 +172,10 @@ export default function ProjectSites({
     { label: t('manageProjects:siteStatusPlanting'), value: 'planting' },
     { label: t('manageProjects:siteStatusPlanted'), value: 'planted' },
     { label: t('manageProjects:siteStatusBarren'), value: 'barren' },
-    { label: t('manageProjects:siteStatusReforestation'), value: 'reforestation' },
+    {
+      label: t('manageProjects:siteStatusReforestation'),
+      value: 'reforestation',
+    },
   ];
 
   React.useEffect(() => {
@@ -244,7 +251,7 @@ export default function ProjectSites({
                           'fill-opacity': 0.2,
                         }}
                         linePaint={{
-                          'line-color': '#89b54a',
+                          'line-color': '#68B030',
                           'line-width': 2,
                         }}
                       />
@@ -310,15 +317,15 @@ export default function ProjectSites({
             </div>
           </div>
         ) : (
-            <div
-              onClick={() => setShowForm(true)}
-              className={styles.formFieldLarge}
-            >
-              <p className={styles.inlineLinkButton}>
-                {t('manageProjects:addSite')}
-              </p>
-            </div>
-          )}
+          <div
+            onClick={() => setShowForm(true)}
+            className={styles.formFieldLarge}
+          >
+            <p className={styles.inlineLinkButton}>
+              {t('manageProjects:addSite')}
+            </p>
+          </div>
+        )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -345,8 +352,8 @@ export default function ProjectSites({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
+                t('manageProjects:saveAndContinue')
+              )}
             </AnimatedButton>
           </div>
         </div>
