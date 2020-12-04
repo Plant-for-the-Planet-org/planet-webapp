@@ -11,6 +11,7 @@ import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import i18next from '../../../../../i18n';
 import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
+import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 
 const config = tenantConfig();
 
@@ -61,7 +62,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
             opacity: 1,
             position: 'absolute', 
             top: '35px', 
-            left: userprofile.type !== 'tpo' ? '380px' : '181px'
+            left: userprofile.type !== 'tpo' ? '180px' : '181px'
           }}
           transition={{stiffness: 150, type:"spring"}}
           initial={{
@@ -88,36 +89,55 @@ export default function UserShareAndSupport({ userprofile }: any) {
           <SocialShareContainer userprofile={userprofile} />
         </motion.div>
       )}
+
       <div className={styles.bottomIconsRow}>
+        
         {userprofile.type !== 'tpo' && (
           <div
-            className={styles.iconTextColumnSupport}
+            className={styles.iconTextColumn}
             onClick={() => {
               router.push(`/s/${userprofile.slug}`);
             }}
           >
-            <div className={styles.bottomIconBgSupport}>
-              <Support width="37px" paddingLeft="10px" />
-              <p className={styles.bottomRowTextSupport}>{t('me:support')}</p>
+            <div className={styles.bottomIconBg}>
+              <Support width="39px" />
             </div>
+            <p className={styles.bottomRowText}>{t('me:support')}</p>
           </div>
          )}
-        <div className={styles.iconTextColumnSupport}>
+
+{userprofile.url && (
+          <a
+            className={styles.iconTextColumn}
+            href={userprofile.url}
+            target="_blank"
+          >
+            <div className={styles.bottomIconBg}>
+            <GlobeSelected color={'white'} width={'24px'} />
+            </div>
+            <p className={styles.bottomRowText}>URL</p>
+          </a>
+         )}
+
+        <div className={styles.iconTextColumn}>
           {showSocialBtn ? (
             <div
-              className={styles.bottomIconBgSupport}
+              className={styles.bottomIconBg}
               onClick={() => setShowSocialBtn(false)}
             >
               <CancelIcon color="white" width="25px" />
-              <p className={styles.bottomRowTextSupport}>{t('me:close')}</p>
             </div>
           ) : (
-            <div className={styles.bottomIconBgSupport} onClick={handleShare}>
+            <div className={styles.bottomIconBg} onClick={handleShare}>
               <Share width="39px" paddingLeft="10px" color="white" solid />
-              <p className={styles.bottomRowTextSupport}>{t('me:share')}</p>
             </div>
           )}
-        </div>
+          {showSocialBtn ? (
+            <p className={styles.bottomRowText}>{t('me:close')}</p>
+          ) : (
+            <p className={styles.bottomRowText}> {t('me:share')} </p>
+          )}
+        </div>        
       </div>
     </div>
   );
