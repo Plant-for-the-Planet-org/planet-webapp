@@ -3,7 +3,7 @@ import styles from './../../styles/ProjectDetails.module.scss'
 import i18next from '../../../../../i18n/'
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { format } from 'date-fns/fp';
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 
 interface Props {
@@ -93,7 +93,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {t('manageProjects:firstTreePlanted')}
                         </div>
                         <div className={styles.infoText}>
-                            {format('LLLL d, yyyy',new Date(Date.parse(project.firstTreePlanted.date.replace(/ /g,"T"))))}
+                            {formatDate(project.firstTreePlanted.date)}
                         </div>
                     </div>
                 )}

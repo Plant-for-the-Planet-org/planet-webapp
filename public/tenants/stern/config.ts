@@ -4,6 +4,7 @@ const config = {
   languages: ['de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
+  showUNDecadeLogo:true,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,

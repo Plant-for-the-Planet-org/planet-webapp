@@ -5,7 +5,8 @@ import UserInfo from '../components/UserInfo';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 import styles from '../styles/UserProfile.module.scss';
 import AddTargetModal from '../components/AddTargetModal';
-import SettingsContainer from '../components/Settings';
+import SettingsModal from '../components/SettingsModal';
+import MyTrees from '../components/MyTrees/MyTrees';
 
 export default function TpoProfile({
   userprofile,
@@ -61,7 +62,7 @@ export default function TpoProfile({
       >
         {/* Open setting component */}
         {settingsModalOpen && (
-          <SettingsContainer
+          <SettingsModal
             userType="tpo"
             userprofile={userprofile}
             settingsModalOpen={settingsModalOpen}
@@ -84,6 +85,10 @@ export default function TpoProfile({
         userprofile={userprofile}
         authenticatedType={authenticatedType}
       />
+
+      {authenticatedType === 'private' ? (
+        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
+      ) : null}
 
       {/* add target modal */}
       <AddTargetModal

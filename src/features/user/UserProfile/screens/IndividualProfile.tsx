@@ -5,7 +5,8 @@ import Settings from '../../../../../public/assets/images/icons/userProfileIcons
 import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import AddTargetModal from '../components/AddTargetModal';
-import SettingsContainer from '../components/Settings';
+import SettingsModal from '../components/SettingsModal';
+import MyTrees from '../components/MyTrees/MyTrees';
 
 export default function IndividualProfile({
   userprofile,
@@ -63,7 +64,7 @@ export default function IndividualProfile({
         >
           {/* Open setting component */}
           {settingsModalOpen && (
-            <SettingsContainer
+            <SettingsModal
               userprofile={userprofile}
               settingsModalOpen={settingsModalOpen}
               handleSettingsModalClose={handleSettingsModalClose}
@@ -82,12 +83,7 @@ export default function IndividualProfile({
           />
         </LandingSection>
 
-        {/* my forest section  - if contains projects field*/}
-        {authenticatedType === 'private' && userprofile.projects && (
-          <div className={styles.myForestContainer}>
-            <MyForestContainer userprofile={userprofile} />
-          </div>
-        )}
+        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
       </main>
 
       {/* add target modal */}

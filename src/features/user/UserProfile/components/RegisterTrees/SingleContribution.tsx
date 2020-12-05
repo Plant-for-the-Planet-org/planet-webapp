@@ -6,9 +6,10 @@ import CheckCircle from '../../../../../../public/assets/images/icons/CheckCircl
 import styles from '../../styles/RegisterModal.module.scss';
 import UploadImages from './UploadImages';
 import i18next from '../../../../../../i18n';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 interface Props {
-  session: any;
+  token: any;
   contributionGUID: any;
   contribution: any;
   currentUserSlug: any;
@@ -21,7 +22,7 @@ const StaticMap = dynamic(() => import('./StaticMap'), {
 });
 
 export default function SingleContribution({
-  session,
+  token,
   contribution,
   contributionGUID,
   currentUserSlug,
@@ -30,13 +31,10 @@ export default function SingleContribution({
   const UploadProps = {
     contribution,
     contributionGUID,
-    session,
+    token,
   };
   const { t } = useTranslation(['me', 'common']);
-  const formatDate = (dateString: any) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+
   return (
     <>
       <div

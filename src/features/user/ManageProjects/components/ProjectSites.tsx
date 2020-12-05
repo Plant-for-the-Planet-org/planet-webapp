@@ -31,7 +31,7 @@ interface Props {
   handleBack: Function;
   projectGUID: String;
   handleReset: Function;
-  session: any;
+  token: any;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -41,7 +41,7 @@ const Map = dynamic(() => import('./MapComponent'), {
 
 export default function ProjectSites({
   handleBack,
-  session,
+  token,
   handleNext,
   projectGUID,
   handleReset,
@@ -90,7 +90,7 @@ export default function ProjectSites({
     geoJson,
     setGeoJson,
     geoJsonError,
-    setGeoJsonError
+    setGeoJsonError,
   };
 
   const onSubmit = (data: any) => {
@@ -117,7 +117,7 @@ export default function ProjectSites({
       postAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites`,
         submitData,
-        session
+        token
       ).then((res) => {
         if (!res.code) {
           let temp = siteList;
@@ -158,7 +158,7 @@ export default function ProjectSites({
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
-      session
+      token
     ).then((res) => {
       if (res !== 404) {
         let siteListTemp = siteList.filter((item) => item.id !== id);
@@ -169,18 +169,21 @@ export default function ProjectSites({
   };
 
   const status = [
-    { label: t('manageProjects:Planting'), value: 'planting' },
-    { label: t('manageProjects:Planted'), value: 'planted' },
-    { label: t('manageProjects:Barren'), value: 'barren' },
-    { label: t('manageProjects:Reforestation'), value: 'reforestation' },
+    { label: t('manageProjects:siteStatusPlanting'), value: 'planting' },
+    { label: t('manageProjects:siteStatusPlanted'), value: 'planted' },
+    { label: t('manageProjects:siteStatusBarren'), value: 'barren' },
+    {
+      label: t('manageProjects:siteStatusReforestation'),
+      value: 'reforestation',
+    },
   ];
 
   React.useEffect(() => {
     // Fetch sites of the project
-    if (projectGUID && session?.accessToken)
+    if (projectGUID)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=sites`,
-        session
+        token
       ).then((result) => {
         if (result.sites.length > 0) {
           setShowForm(false);
@@ -248,7 +251,7 @@ export default function ProjectSites({
                           'fill-opacity': 0.2,
                         }}
                         linePaint={{
-                          'line-color': '#89b54a',
+                          'line-color': '#68B030',
                           'line-width': 2,
                         }}
                       />
@@ -314,15 +317,15 @@ export default function ProjectSites({
             </div>
           </div>
         ) : (
-            <div
-              onClick={() => setShowForm(true)}
-              className={styles.formFieldLarge}
-            >
-              <p className={styles.inlineLinkButton}>
-                {t('manageProjects:addSite')}
-              </p>
-            </div>
-          )}
+          <div
+            onClick={() => setShowForm(true)}
+            className={styles.formFieldLarge}
+          >
+            <p className={styles.inlineLinkButton}>
+              {t('manageProjects:addSite')}
+            </p>
+          </div>
+        )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -349,8 +352,8 @@ export default function ProjectSites({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
+                t('manageProjects:saveAndContinue')
+              )}
             </AnimatedButton>
           </div>
         </div>

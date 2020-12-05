@@ -3,7 +3,7 @@ import styles from '../styles/UserInfo.module.scss';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
 import UserShareAndSupport from './UserShareAndSupport';
-import trimwords from '../../../../utils/TruncateText';
+import { trimwords } from '../../../../utils/TruncateText';
 
 export default function UserInfo({
   userprofile,

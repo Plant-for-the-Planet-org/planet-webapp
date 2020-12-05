@@ -9,7 +9,7 @@ import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
 import i18next from '../../../i18n/';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
-import Sugar from 'sugar';
+import { getFormattedNumber } from '../../utils/getFormattedNumber';
 import { payDonation } from '../donations/components/treeDonation/PaymentFunctions';
 import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress';
 import ThankYou from '../donations/screens/ThankYou';
@@ -208,7 +208,7 @@ const paypalSuccess =(data:any)=>{
     onClose,
     paymentType,
     setDonationStep: null
-  };
+  };  
   
   return !isDonationComplete ? isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -243,7 +243,7 @@ const paypalSuccess =(data:any)=>{
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
-              treeCount: Sugar.Number.format(Number(treeCount)),
+              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
             })}
           </div>
         </div>
@@ -284,7 +284,7 @@ const paypalSuccess =(data:any)=>{
           amount={treeCost * treeCount}
           currency={currency}
           donationId={paymentData.guid}
-          mode={paymentSetup?.gateways.paypal.isLive ? 'live' : 'sandbox'}
+          mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
           clientID={paymentSetup?.gateways.paypal.authorization.client_id}
         /> }
       </div>

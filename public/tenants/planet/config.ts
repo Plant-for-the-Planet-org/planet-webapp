@@ -3,6 +3,8 @@ const config = {
   tenantName: 'planet',
   // url of tenant home page
   tenantURL: 'trilliontreecampaign.org',
+  showUNEPLogo:true,
+  showUNDecadeLogo:true,
   // font family and it's property particular to tenant
   tenantGoal:null,
   font: {
@@ -11,7 +13,7 @@ const config = {
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
-  languages: ['en', 'de'],
+  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,

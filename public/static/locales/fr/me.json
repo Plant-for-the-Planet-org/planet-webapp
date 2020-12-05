@@ -12,11 +12,11 @@
   "close": "Fermer",
   "support": "Soutien",
   "addTarget": "Ajouter une cible",
-  "noOfTrees": "Nombre d'arbres",
+  "noOfTrees": "Combien d'arbres?",
   "datePlanted": "Date de plantation",
   "speciesIsRequired": "L'espèce est obligatoire",
   "treeSpecies": "Espèces d'arbres",
-  "drawPolygon": "Veuillez dessiner un polygone pour localiser vos arbres",
+  "drawPolygon": "Dessiner la zone où vous avez planté les arbres. Cliquer à nouveau sur le premier emplacement lorsque vous avez terminé.",
   "selectLocation": "Sélectionner le lieu de plantation des arbres sur la carte",
   "registerButton": "S'inscrire",
   "startDrawing": "Commencer à dessiner",
@@ -29,5 +29,9 @@
   "contribNotFound": "Contribution non trouvée",
   "errorOccured": "Erreur commise",
   "contribSuccess": "Ajouté avec succès {{treeCount}} {{treeSpecies}} 🌳 de  {{plantDate}}",
-  "moreThanOne": "1 arbre minimum requis"
+  "moreThanOne": "1 arbre minimum requis",
+  "registered": "Enregistré",
+  "receivedTrees": "Arbres reçus",
+  "redeemedTrees": "Arbres rachetés",
+  "nameForest": "La forêt des {{name}}"
 }

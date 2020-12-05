@@ -40,7 +40,7 @@
   "validationFailed": "Validation Failed",
   "seedingYourDonation": "Seeding your donation",
   "pleaseDoNotCloseThisTab": "Please do not close this tab!",
-  "perTree": "/ tree",
+  "perTree": "per tree",
   "stopTalkingStartPlanting": "Stop Talking. Start Planting.",
   "creditDebitCard": "Credit/Debit Card",
   "cardNumber": "Card Number",
@@ -68,5 +68,7 @@
   "donationTokenInvalid": "The provided donation token is invalid.",
   "giftTo": "Gift to",
   "supporting": "Supporting",
-  "selectProject": "Select a project"
+  "selectProject": "Select a project",
+  "nameOfOrg": "Organisation Name",
+  "nameOfOrgIsRequired": "Organisation name is required"
 }

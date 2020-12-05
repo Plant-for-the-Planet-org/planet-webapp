@@ -4,13 +4,16 @@ import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
 import i18next from '../../../../../i18n';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 
-interface Props {}
+interface Props {
+  tenantScore:any;
+}
 
-export default function Stats({}: Props): ReactElement {
+export default function Stats({tenantScore}: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard', 'common', 'planet']);
+  const { t, i18n } = useTranslation(['leaderboard', 'common', 'planet']);
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
@@ -22,15 +25,15 @@ export default function Stats({}: Props): ReactElement {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>14.76m</h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(14760000), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>63m</h2>
+          <h2 className={styles.statNumber}> {localizedAbbreviatedNumber(i18n.language, Number(63000000), 2)} </h2>
           <h3 className={styles.statText}>{t('planet:plantedByTPO')}</h3>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>13.48b</h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(tenantScore.total), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:plantedGlobally')}</h3>
           <div
             onClick={() => {
@@ -44,7 +47,7 @@ export default function Stats({}: Props): ReactElement {
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber} style={{ color: '#E86F56' }}>
-            10b
+            {localizedAbbreviatedNumber(i18n.language, Number(10000000000), 2)}
           </h2>
           <h3 className={styles.statText}>{t('planet:forestLoss')}</h3>
           <div
