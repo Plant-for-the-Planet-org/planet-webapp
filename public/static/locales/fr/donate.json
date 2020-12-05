@@ -59,6 +59,7 @@
   "noProjectsFound": "Aucun projet trouvé",
   "inTimeOfTaxReturns": "à temps pour les déclarations d'impôts.",
   "titleToShare": "Planter des arbres contre la crise climatique !",
+  "giftToName": "Don à {{name}}",
   "plantTreesWith": "Planter des arbres avec {{name}}",
   "textToShare": "Rejoignez {{name}} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
   "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
