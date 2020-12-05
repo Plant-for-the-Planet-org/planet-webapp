@@ -132,6 +132,7 @@ function ThankYou({
         treeCount={getFormattedNumber(i18n.language, Number(treeCount))}
         sendRef={sendRef}
         handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+        contactDetails={contactDetails}
       />
 
       {/* snackbar for showing text copied to clipboard */}
