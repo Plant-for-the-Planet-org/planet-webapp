@@ -30,6 +30,7 @@
   padding:20px;
   overflow-y: auto;
   min-height: calc(100vh - 150px);
+  z-index: 100;
 }
 
 // when request sent, opacity low
