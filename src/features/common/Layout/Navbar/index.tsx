@@ -85,6 +85,9 @@ export default function NavbarComponent(props: any) {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/verify-email` });
       }
     }
+    else if(error.message === 'Invalid state'){
+      localStorage.removeItem('userInfo');
+    }
     else {
       alert(error.message);
       localStorage.removeItem('userInfo');

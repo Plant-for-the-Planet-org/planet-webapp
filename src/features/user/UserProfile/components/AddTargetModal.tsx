@@ -51,6 +51,7 @@ export default function AddTargetModal({
       putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
         handleAddTargetModalClose();
         changeForceReload(!forceReload);
+        setIsLoading(false);
       }).catch(error => {
         handleAddTargetModalClose();
         console.log(error);
