@@ -83,10 +83,16 @@ var runAnalysis = function (req, res) {
         });
       } catch (err) {
         console.log(err);
+        return res.status(500).json({
+          data: 'Something went wrong',
+        });
       }
     },
     function (e) {
       console.error('Initialization error: ' + e);
+      return res.status(500).json({
+        data: 'Something went wrong',
+      });
     }
   );
 };
