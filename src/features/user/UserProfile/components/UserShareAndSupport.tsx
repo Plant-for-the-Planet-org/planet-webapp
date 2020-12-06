@@ -110,7 +110,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
           <a
             className={styles.iconTextColumn}
             href={userprofile.url}
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             style={{ marginLeft: '12px' }}
           >
             <div className={styles.bottomIconBg}>
