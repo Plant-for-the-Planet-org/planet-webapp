@@ -291,39 +291,6 @@ export default function NavbarComponent(props: any) {
               </div>
             )}
 
-          {config.header?.items.map((item) => (
-            <div key={item.id}>
-              {item.key === 'home' && item.visible === true ? (
-                <Link
-                  href={item.onclick}
-                  key={item.id}
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-                >
-                  <div
-                    className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
-                  >
-                    <div className={styles.link_icon}>
-                      {router.pathname === item.onclick ? (
-                        <GlobeSelected color={styles.primaryColor} />
-                      ) : (
-                          <Globe color={styles.primaryFontColor} />
-                        )}
-                    </div>
-                    <p
-                      className={
-                        router.pathname === item.onclick
-                          ? styles.active_icon
-                          : ''
-                      }
-                    >
-                      {t('common:' + item.title)}
-                    </p>
-                  </div>
-                </Link>
-              ) : null}
-            </div>
-          ))}
 
           {config.header?.items.map((item) => (
             <div key={item.id}>
@@ -346,6 +313,8 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </Link>
               ) : null}
+
+
               {item.key === 'donate' && item.visible === true ? (
                 <Link key={item.id} href={item.onclick} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
                   <div
