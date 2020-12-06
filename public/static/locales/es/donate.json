@@ -40,6 +40,7 @@
   "validationFailed": "La validación falló",
   "seedingYourDonation": "Sembrando su donación",
   "pleaseDoNotCloseThisTab": "¡Por favor no cierres esta pestaña!",
+  "perTree": "/ árbol",
   "stopTalkingStartPlanting": "Deja de hablar. Empieza a plantar.",
   "creditDebitCard": "Tarjeta de crédito/débito",
   "cardNumber": "Número de tarjeta",
@@ -58,11 +59,16 @@
   "noProjectsFound": "No se han encontrado proyectos",
   "inTimeOfTaxReturns": "a tiempo para la declaración de impuestos.",
   "titleToShare": "Plantando árboles contra la crisis climática!",
+  "giftToName": "Regalo a {{name}}",
+  "plantTreesWith": "Plantar árboles con {{name}}",
   "textToShare": "Únete a {{name}} y miles de otros para plantar un trillón de árboles para hacer frente a la crisis climática #Dejar de hablar, empezar a plantar... TrillionTrees @PftP_int",
   "thankyouHeaderText": "Vamos hacia un\n <h1>Trillón de árboles</h1>",
   "shareTextTitle": "Deja de hablar. Inicie la planta",
   "textToShareLinkedin": "Únete a {{name}} y miles de otros para plantar un trillón de árboles para hacer frente a la crisis climática",
   "donationTokenInvalid": "La ficha de donación proporcionada es inválida.",
   "giftTo": "Regalo a",
-  "supporting": "Apoyando"
+  "supporting": "Apoyando",
+  "selectProject": "Seleccione un proyecto",
+  "nameOfOrg": "Nombre de la organización",
+  "nameOfOrgIsRequired": "Se requiere el nombre de la organización"
 }
