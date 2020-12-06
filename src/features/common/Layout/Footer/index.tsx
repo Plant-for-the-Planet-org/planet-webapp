@@ -105,7 +105,7 @@ export default function Footer() {
                 <a className={styles.social_button} target="_blank" href="https://www.facebook.com/plantfortheplanet">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3315" data-name="Group 3315" transform="translate(-393.342 -502.758)">
-                      <g id="Ellipse_1312" data-name="Ellipse 1312" transform="translate(393.342 502.758)" fill="none" stroke="#2f3336" stroke-width="1">
+                      <g id="Ellipse_1312" data-name="Ellipse 1312" transform="translate(393.342 502.758)" fill="none" stroke="#2f3336" strokeWidth="1">
                         <circle cx="23" cy="23" r="23" stroke="none" />
                         <circle cx="23" cy="23" r="22.5" fill="none" />
                       </g>
@@ -117,7 +117,7 @@ export default function Footer() {
                 <a className={styles.social_button} target="_blank" href="https://twitter.com/pftp_int">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3318" data-name="Group 3318" transform="translate(-449.175 -500.555)">
-                      <g id="Ellipse_1309" data-name="Ellipse 1309" transform="translate(449.175 500.555)" fill="none" stroke="#2f3336" stroke-width="1">
+                      <g id="Ellipse_1309" data-name="Ellipse 1309" transform="translate(449.175 500.555)" fill="none" stroke="#2f3336" strokeWidth="1">
                         <circle cx="23" cy="23" r="23" stroke="none" />
                         <circle cx="23" cy="23" r="22.5" fill="none" />
                       </g>
@@ -129,7 +129,7 @@ export default function Footer() {
                 <a className={styles.social_button} target="_blank" href="https://www.instagram.com/plantfortheplanet_official/">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3317" data-name="Group 3317" transform="translate(-548.604 -496.605)">
-                      <g id="Ellipse_1311" data-name="Ellipse 1311" transform="translate(548.604 496.605)" fill="none" stroke="#2f3336" stroke-width="1">
+                      <g id="Ellipse_1311" data-name="Ellipse 1311" transform="translate(548.604 496.605)" fill="none" stroke="#2f3336" strokeWidth="1">
                         <circle cx="23" cy="23" r="23" stroke="none" />
                         <circle cx="23" cy="23" r="22.5" fill="none" />
                       </g>
@@ -151,7 +151,9 @@ export default function Footer() {
               })}
             </div>
           </div>
-          <div className={styles.logo_container}>
+          
+        </div>
+        <div className={styles.logo_container}>
 
             <div className={styles.pfp_logo}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
@@ -169,14 +171,13 @@ export default function Footer() {
             )}
 
             {config.showUNDecadeLogo && (
-              <div>
+              <div style={{marginLeft:'75px'}}>
                 <a href="https://www.decadeonrestoration.org/" target="_blank" rel="noopener noreferrer">
                   <UNDecadeLogo />
                 </a>
               </div>
             )}
           </div>
-        </div>
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}

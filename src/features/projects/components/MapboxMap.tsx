@@ -315,7 +315,8 @@ export default function MapboxMap({
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
-          exploreContainerRef && exploreContainerRef.current &&
+          exploreContainerRef &&
+          exploreContainerRef.current &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);
@@ -407,27 +408,27 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-              <Source id="singleProject" type="geojson" data={geoJson}>
-                <Layer
-                  id="ploygonLayer"
-                  type="fill"
-                  source="singleProject"
-                  paint={{
-                    'fill-color': '#fff',
-                    'fill-opacity': 0.2,
-                  }}
-                />
-                <Layer
-                  id="ploygonOutline"
-                  type="line"
-                  source="singleProject"
-                  paint={{
-                    'line-color': '#89b54a',
-                    'line-width': 2,
-                  }}
-                />
-              </Source>
-            )
+            <Source id="singleProject" type="geojson" data={geoJson}>
+              <Layer
+                id="ploygonLayer"
+                type="fill"
+                source="singleProject"
+                paint={{
+                  'fill-color': '#fff',
+                  'fill-opacity': 0.2,
+                }}
+              />
+              <Layer
+                id="ploygonOutline"
+                type="line"
+                source="singleProject"
+                paint={{
+                  'line-color': '#68B030',
+                  'line-width': 2,
+                }}
+              />
+            </Source>
+          )
         ) : null}
 
         {!showSingleProject &&
@@ -468,7 +469,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => { }}
+                onFocus={() => {}}
               />
             </Marker>
           ))}
@@ -572,9 +573,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                  siteExists &&
-                  project.sites.length !== 0 &&
-                  geoJson.features[currentSite]
+                siteExists &&
+                project.sites.length !== 0 &&
+                geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -590,7 +591,14 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
-        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${language ? language.toUpperCase() : ''} · ${selectedCurrency}`}</div>
+        <div
+          onClick={() => {
+            setLanguageModalOpen(true);
+          }}
+          className={styles.lngSwitcher + ' mapboxgl-map'}
+        >{`🌐 ${
+          language ? language.toUpperCase() : ''
+        } · ${selectedCurrency}`}</div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -601,7 +609,10 @@ export default function MapboxMap({
           aria-describedby="simple-modal-description"
         >
           <ExploreInfoModal
-            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen}
+            infoRef={infoRef}
+            infoExpanded={infoExpanded}
+            setInfoExpanded={setInfoExpanded}
+            setModalOpen={setModalOpen}
           />
         </Modal>
       ) : null}

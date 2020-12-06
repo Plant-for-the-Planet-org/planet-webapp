@@ -6,9 +6,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 100vh;
   overflow-y: scroll;
   background: rgba(0, 0, 0, 0.6);
+  min-height: calc(100vh - 100px);
 }
 
 // white modal
@@ -25,6 +25,7 @@
   display: flex;
   flex-direction: column;
   align-items: left;
+  overflow-y: auto;
 }
 // white modal
 // .modal {
