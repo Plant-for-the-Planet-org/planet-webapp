@@ -288,7 +288,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MaterialTextField
-                                inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
+                                inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
                                 label={t('manageProjects:employeeCount')}
                                 variant="outlined"
                                 name="employeesCount"

@@ -304,6 +304,7 @@
     width: fit-content;
     font-weight: bold;
     font-size: 10px;
+    min-width: 100px;
   }
   .uploadedMapDeleteButton {
     background-color: $light;
@@ -318,7 +319,6 @@
     align-items: center;
     z-index: 999;
     right: 5%;
-    width: fit-content;
     > svg {
       height: 12px;
       &:hover {
