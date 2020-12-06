@@ -45,7 +45,7 @@ export default function UserProfileOptions({
   const router = useRouter();
   const { t } = useTranslation(['me']);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { linkToShare });
+  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const [screenWidth, setScreenWidth] = React.useState(null);
   const [divWidth, setDivWidth] = React.useState(null);
