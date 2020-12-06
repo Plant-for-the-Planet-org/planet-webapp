@@ -71,6 +71,7 @@
   "siteStatusPlanted": "Plantado",
   "siteStatusBarren": "Estéril",
   "siteStatusReforestation": "Reforestación",
+  "projectStatus": "Estado del proyecto",
   "selectProjectStatus": "Por favor, seleccione el estado del proyecto",
   "saveAndAddSite": "Guardar y añadir otro sitio",
   "addSite": "Añadir otro sitio",
