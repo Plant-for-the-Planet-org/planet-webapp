@@ -133,10 +133,12 @@ export default function NavbarComponent(props: any) {
                 <div className={styles.logo_divider} />
                 <div className={styles.navlink}>
                   <a href="https://www.plant-for-the-planet.org">
-                    <img
-                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                      alt={t('common:about_pftp')}
-                    />
+                    {ready ? (
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt={t('common:about_pftp')}
+                      />
+                    ) : null}
                   </a>
                 </div>
               </div>
@@ -149,10 +151,12 @@ export default function NavbarComponent(props: any) {
                 <div className={styles.tenant_logo_container}>
                   <div style={{ padding: '0.4rem 0.5rem' }}>
                     <a href="https://www.plant-for-the-planet.org">
-                      <img
-                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                        alt={t('common:about_pftp')}
-                      />
+                      {ready ? (
+                        <img
+                          src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                          alt={t('common:about_pftp')}
+                        />
+                      ) : null}
                     </a>
                   </div>
                 </div>
@@ -172,9 +176,11 @@ export default function NavbarComponent(props: any) {
                           <Globe color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
-                      {t('common:' + item.title)}
-                    </p>
+                    {ready ? (
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
                   </div>
                 </Link>
               ) : null}
@@ -291,7 +297,6 @@ export default function NavbarComponent(props: any) {
               </div>
             )}
 
-
           {config.header?.items.map((item) => (
             <div key={item.id}>
               {item.key === 'home' && item.visible === true ? (
@@ -307,9 +312,11 @@ export default function NavbarComponent(props: any) {
                           <Globe color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
-                      {t('common:' + item.title)}
-                    </p>
+                    {ready ? (
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                        {t('common:' + item.title)}
+                        </p>
+                    ) : null}
                   </div>
                 </Link>
               ) : null}
@@ -328,9 +335,11 @@ export default function NavbarComponent(props: any) {
                           <Donate color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
-                      {t('common:' + item.title)}
-                    </p>
+                    {ready ? (
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}  
                   </div>
                 </Link>
               ) : null}
@@ -347,9 +356,11 @@ export default function NavbarComponent(props: any) {
                           <Leaderboard color={styles.primaryFontColor} />
                         )}
                     </div>
-                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
-                      {t('common:' + item.title)}
-                    </p>
+                    {ready ? (
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
                   </div>
                 </Link>
               ) : null}
@@ -365,9 +376,11 @@ export default function NavbarComponent(props: any) {
                     <div className={styles.link_icon}>
                       <UserProfileIcon />
                     </div>
-                    <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
-                      {t('common:' + item.title)}
-                    </p>
+                    {ready ? (
+                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               ) : null}
