@@ -16,7 +16,7 @@ import i18next from './../../../../../i18n';
 
 const { useTranslation } = i18next;
 
-export default function ManageProjects({ GUID, session, project }: any) {
+export default function ManageProjects({ GUID, token, project }: any) {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     function getSteps() {
@@ -52,7 +52,7 @@ export default function ManageProjects({ GUID, session, project }: any) {
         const submitData = {
             reviewRequested: true
         }
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setErrorMessage('')
@@ -77,8 +77,8 @@ export default function ManageProjects({ GUID, session, project }: any) {
     }, [projectDetails])
     React.useEffect(() => {
         // Fetch details of the project 
-        if (projectGUID && session?.accessToken)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, session).then((result) => {
+        if (projectGUID && token)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, token).then((result) => {
                 setProjectDetails(result)
             })
     }, [GUID, projectGUID])
@@ -94,19 +94,19 @@ export default function ManageProjects({ GUID, session, project }: any) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <BasicDetails handleNext={handleNext} session={session} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+                return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
             case 1:
-                return <ProjectMedia handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectMedia handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 2:
-                return <DetailedAnalysis userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <DetailedAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
             case 3:
-                return <ProjectSites handleNext={handleNext} session={session} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSites handleNext={handleNext} token={token} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 4:
-                return <ProjectSpending userLang={userLang} handleNext={handleNext} session={session} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <ProjectSpending userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 5:
                 return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
             default:
-                return <BasicDetails handleNext={handleNext} session={session} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+                return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
         }
     }
 

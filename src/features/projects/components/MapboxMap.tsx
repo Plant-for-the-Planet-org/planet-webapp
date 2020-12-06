@@ -22,6 +22,10 @@ import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
 import { getEarthEngineLayer } from '../../../utils/apiRequests/api';
 import VegetationChange from './maps/VegetationChange';
+import i18next from '../../../../i18n';
+import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+
+const { useTranslation } = i18next;
 
 interface mapProps {
   projects: any;
@@ -44,6 +48,8 @@ export default function MapboxMap({
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
+
+  const { t, i18n } = useTranslation(['maps']);
 
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
@@ -82,6 +88,18 @@ export default function MapboxMap({
     zoom: defaultZoom,
   });
 
+  const [language, setLanguage] = useState(i18n.language);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('US');
+
+  const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
+  const handleLanguageModalClose = () => {
+    setLanguageModalOpen(false);
+  };
+  const handleLanguageModalOpen = () => {
+    setLanguageModalOpen(true);
+  };
+
   const [exploreExpanded, setExploreExpanded] = React.useState(false);
 
   const [exploreProjects, setExploreProjects] = React.useState(true);
@@ -112,6 +130,7 @@ export default function MapboxMap({
       setViewPort(newViewport);
     } else {
       const newMapState = {
+        ...mapState,
         mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
       };
       const newViewport = {
@@ -214,6 +233,7 @@ export default function MapboxMap({
               }
             );
             const newMapState = {
+              ...mapState,
               mapStyle: 'mapbox://styles/mapbox/satellite-v9',
             };
             const newViewport = {
@@ -233,6 +253,7 @@ export default function MapboxMap({
           }
         } else {
           const newMapState = {
+            ...mapState,
             mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
           };
           const newViewport = {
@@ -244,11 +265,12 @@ export default function MapboxMap({
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
           };
-          setViewPort(newViewport);
           setMapState(newMapState);
+          setViewPort(newViewport);
         }
       } else {
         const newMapState = {
+          ...mapState,
           mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
         };
         const newViewport = {
@@ -263,6 +285,22 @@ export default function MapboxMap({
         setMapState(newMapState);
         setViewPort(newViewport);
       }
+    } else {
+      const newMapState = {
+        ...mapState,
+        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      };
+      const newViewport = {
+        ...viewport,
+        latitude: defaultMapCenter[0],
+        longitude: defaultMapCenter[1],
+        zoom: 1.4,
+        transitionDuration: 2400,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setMapState(newMapState);
+      setViewPort(newViewport);
     }
   }, [
     project,
@@ -277,7 +315,7 @@ export default function MapboxMap({
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
-          exploreContainerRef &&
+          exploreContainerRef && exploreContainerRef.current &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);
@@ -304,6 +342,24 @@ export default function MapboxMap({
   const handleClose = () => {
     setOpen(false);
   };
+
+  // changes the language and selected country as found in local storage
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        let currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        let countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+      if (localStorage.getItem('language')) {
+        let langCode = localStorage.getItem('language');
+        if (langCode) setLanguage(langCode);
+      }
+    }
+  }, []);
 
   function goToNextProject() {
     if (currentSite < maxSites - 1) {
@@ -534,6 +590,7 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
+        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${language ? language.toUpperCase() : ''} · ${selectedCurrency}`}</div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -548,6 +605,15 @@ export default function MapboxMap({
           />
         </Modal>
       ) : null}
+      <SelectLanguageAndCountry
+        openModal={openLanguageModal}
+        handleModalClose={handleLanguageModalClose}
+        language={language}
+        setLanguage={setLanguage}
+        setSelectedCurrency={setSelectedCurrency}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      />
     </div>
   );
 }

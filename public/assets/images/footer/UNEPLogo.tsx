@@ -1,11 +1,11 @@
 import React from "react";
 
-function UNEPLogo() {
+function UNEPLogo(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="89.143"
-      height="46.4"
+      width={props.width ? props.width :"89.143"}
+      height={props.height ? props.height :"46.4"}
       data-name="UNEP Logo"
       viewBox="0 0 89.143 46.4"
     >

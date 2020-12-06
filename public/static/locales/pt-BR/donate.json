@@ -40,7 +40,6 @@
   "validationFailed": "Validação Falhou",
   "seedingYourDonation": "Semeando a sua doação",
   "pleaseDoNotCloseThisTab": "Por favor, não feche esta aba!",
-  "perTree": "/ árvore",
   "stopTalkingStartPlanting": "Pare de falar. Comece a plantar.",
   "creditDebitCard": "Cartão de Crédito/Débito",
   "cardNumber": "Número do cartão",
@@ -59,6 +58,13 @@
   "noProjectsFound": "Nenhum projeto encontrado",
   "inTimeOfTaxReturns": "a tempo das declarações de impostos.",
   "titleToShare": "Plantar árvores contra a crise climática!",
-  "textToShare": "Para prevenir a crise climática é necessário reduzir drasticamente as emissões de carbono e plantar árvores. É por isso que acabei de plantar algumas. Confira {{linkToShare}} se você quiser plantar algumas também! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
-  "thankyouHeaderText": "Estamos a caminho de um \n <h1>Trilhão de Árvores</h1>"
+  "giftToName": "Presente para {{name}}",
+  "plantTreesWith": "Plante árvores com {{name}}",
+  "textToShare": "Junte-se a {{name}} e a milhares de outras pessoas que estão plantando um trilhão de árvores para enfrentar a crise climática #StopTalkingStartPlanting #TrillionTrees @PftP_int",
+  "thankyouHeaderText": "Estamos a caminho de um \n <h1>Trilhão de Árvores</h1>",
+  "shareTextTitle": "Pare de falar. Comece a plantar",
+  "textToShareLinkedin": "Junte-se a {{name}} e a milhares de outras pessoas que estão plantando um trilhão de árvores para enfrentar a crise climática",
+  "donationTokenInvalid": "O token de doação fornecido é inválida.",
+  "giftTo": "Presente para",
+  "supporting": "Apoiando"
 }

@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
-import { getRequest } from '../../utils/apiRequests/api';
+import { getRequest, getAccountInfo } from '../../utils/apiRequests/api';
 import ContactDetails from './screens/ContactDetails';
 import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
 import TreeDonation from './screens/TreeDonation';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
   onClose: any;
@@ -20,6 +21,12 @@ function DonationsPopup({
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
   const [paymentSetup, setPaymentSetup] = React.useState();
 
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently
+  } = useAuth0();
+  
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
 
@@ -36,7 +43,7 @@ function DonationsPopup({
   >(false);
 
   const [paymentType, setPaymentType] = React.useState('');
-  
+
 
   const [directGift, setDirectGift] = React.useState(null);
   React.useEffect(() => {
@@ -45,6 +52,10 @@ function DonationsPopup({
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
+
+  const [token, setToken] = React.useState('');
+
+  const [userProfile,setUserprofile] = React.useState(null)
 
   //  to load payment data
   React.useEffect(() => {
@@ -90,6 +101,35 @@ function DonationsPopup({
     companyName: '',
   });
 
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+      const res = await getAccountInfo(token)
+      if (res.status === 200) {
+        const resJson = await res.json();
+        setUserprofile(resJson);
+        if(resJson){
+          let defaultDetails = {
+            firstName:resJson.firstname ? resJson.firstname: '',
+            lastName: resJson.lastname ? resJson.lastname:'',
+            email: resJson.email ? resJson.email: '',
+            address: resJson.address.address ? resJson.address.address: '',
+            city: resJson.address.city ? resJson.address.city:'',
+            zipCode: resJson.address.zipCode ? resJson.address.zipCode:'',
+            country: '',
+            companyName: '',
+          }
+          setContactDetails(defaultDetails)
+        }
+      } 
+    }
+    if (!isLoading && isAuthenticated) {
+      loadFunction()
+    }
+  }, [isAuthenticated, isLoading])
+
   const TreeDonationProps = {
     project,
     onClose,
@@ -113,6 +153,7 @@ function DonationsPopup({
     paymentType,
     setPaymentType,
     isPaymentOptionsLoading,
+    token
   };
 
   const ContactDetailsProps = {
@@ -142,6 +183,7 @@ function DonationsPopup({
     setPaymentType,
     country,
     isTaxDeductible,
+    token
   };
 
   const ThankYouProps = {
