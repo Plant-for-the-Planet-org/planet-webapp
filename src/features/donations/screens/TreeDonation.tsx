@@ -120,12 +120,6 @@ function TreeDonation({
     payWithCard({ ...payWithCardProps });
   };
 
-  const formatter = new Intl.NumberFormat(i18n.language, {
-    // These options are needed to round to whole numbers if that's what you want.
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   return isPaymentProcessing ? (
     <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -172,7 +166,7 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-          {formatter.format(treeCost)}{' '}
+          {getFormatedCurrency(i18n.language, '', Number(treeCost))}{' '}
             {t('donate:perTree')}
           </div>
         </div>
