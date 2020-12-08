@@ -85,6 +85,7 @@
   "certifiedBy": "Certifié par",
   "certificationDateValidation": "Veuillez ajouter la date de certification",
   "uploadCertificate": "Télécharger le certificat",
+  "addCertificate": "Ajouter une autre certification",
   "dropGeoJson": "Supprimerr .geojson ou .kml",
   "projectUnderReview": "Votre projet est en cours d'examen, veuillez patienter.",
   "projectForReview": "Vous pouvez maintenant soumettre le projet pour examen.",
