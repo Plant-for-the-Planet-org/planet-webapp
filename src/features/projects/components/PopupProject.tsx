@@ -8,7 +8,7 @@ import DonationsPopup from '../../donations';
 import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-import { truncateString } from '../../../utils/TruncateText';
+import { truncateString } from '../../../utils/getTruncatedString';
 
 const { useTranslation } = i18next;
 interface Props {

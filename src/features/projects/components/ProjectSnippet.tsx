@@ -11,7 +11,7 @@ import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurr
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-import { truncateString } from '../../../utils/TruncateText';
+import { truncateString } from '../../../utils/getTruncatedString';
 
 const { useTranslation } = i18next;
 interface Props {
