@@ -13,14 +13,13 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './Navbar.module.scss';
 import i18next from '../../../../../i18n';
-import getImageUrl from '../../../../utils/getImageURL'
+import getImageUrl from '../../../../utils/getImageURL';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserInfo } from '../../../../utils/auth0/userInfo';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
-
   const { t, ready } = useTranslation(['common']);
   const router = useRouter();
 
@@ -30,11 +29,11 @@ export default function NavbarComponent(props: any) {
     error,
     loginWithRedirect,
     logout,
-    getAccessTokenSilently
+    getAccessTokenSilently,
   } = useAuth0();
 
-  const [token, setToken] = React.useState('')
-  const [userInfo, setUserInfo] = React.useState({})
+  const [token, setToken] = React.useState('');
+  const [userInfo, setUserInfo] = React.useState({});
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
@@ -46,26 +45,25 @@ export default function NavbarComponent(props: any) {
       setUserInfo(userInfo);
     }
     if (!isLoading && isAuthenticated) {
-      loadFunction()
+      loadFunction();
     }
-  }, [isAuthenticated, isLoading])
+  }, [isAuthenticated, isLoading]);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
     if (userInfo && isAuthenticated) {
       if (!userInfo.slug) {
         let userInfo;
-        userInfo = await getUserInfo(token, router, logout)
+        userInfo = await getUserInfo(token, router, logout);
         setUserInfo(userInfo);
       }
       if (typeof window !== 'undefined') {
         router.push(`/t/${userInfo.slug}`);
       }
-    }
-    else {
+    } else {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
-      loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`})
+      loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login` });
     }
   }
 
@@ -84,11 +82,9 @@ export default function NavbarComponent(props: any) {
         localStorage.removeItem('userInfo');
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/verify-email` });
       }
-    }
-    else if(error.message === 'Invalid state'){
+    } else if (error.message === 'Invalid state') {
       localStorage.removeItem('userInfo');
-    }
-    else {
+    } else {
       alert(error.message);
       localStorage.removeItem('userInfo');
       logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
@@ -96,20 +92,30 @@ export default function NavbarComponent(props: any) {
   }
 
   const UserProfileIcon = () => {
-    return (
-      isAuthenticated && userInfo && userInfo.profilePic ?
-        (
-          <div style={{ backgroundColor: '#fff', borderRadius: '50%', height: '27px', width: '27px', border: '1px solid #F2F2F7' }}>
-            <img src={getImageUrl('profile', 'avatar', userInfo.profilePic)} height="26px" width="26px" style={{ borderRadius: '40px' }} />
-          </div>
-        ) :
-        router.pathname === '/complete-signup' || userInfo && router.pathname === `/t/${userInfo.slug}` ? (
-          <MeSelected color={styles.primaryColor} />
-        ) : (
-            <Me color={styles.primaryFontColor} />
-          )
-    )
-  }
+    return isAuthenticated && userInfo && userInfo.profilePic ? (
+      <div
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: '50%',
+          height: '27px',
+          width: '27px',
+          border: '1px solid #F2F2F7',
+        }}
+      >
+        <img
+          src={getImageUrl('profile', 'avatar', userInfo.profilePic)}
+          height="26px"
+          width="26px"
+          style={{ borderRadius: '40px' }}
+        />
+      </div>
+    ) : router.pathname === '/complete-signup' ||
+      (userInfo && router.pathname === `/t/${userInfo.slug}`) ? (
+      <MeSelected color={styles.primaryColor} />
+    ) : (
+      <Me color={styles.primaryFontColor} />
+    );
+  };
 
   return (
     <>
@@ -144,24 +150,24 @@ export default function NavbarComponent(props: any) {
               </div>
             </div>
           ) : (
-              <div
-                className={`${styles.first_icon} ${styles.tenant_logo}`}
-                style={{ padding: '0rem 0.5rem' }}
-              >
-                <div className={styles.tenant_logo_container}>
-                  <div style={{ padding: '0.4rem 0.5rem' }}>
-                    <a href="https://www.plant-for-the-planet.org">
-                      {ready ? (
-                        <img
-                          src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                          alt={t('common:about_pftp')}
-                        />
-                      ) : null}
-                    </a>
-                  </div>
+            <div
+              className={`${styles.first_icon} ${styles.tenant_logo}`}
+              style={{ padding: '0rem 0.5rem' }}
+            >
+              <div className={styles.tenant_logo_container}>
+                <div style={{ padding: '0.4rem 0.5rem' }}>
+                  <a href="https://www.plant-for-the-planet.org">
+                    {ready ? (
+                      <img
+                        src="/assets/images/planet.svg"
+                        alt={t('common:about_pftp')}
+                      />
+                    ) : null}
+                  </a>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
           {config.header?.items.map((item) => (
             <div key={item.id} style={{ marginTop: '8px' }}>
@@ -173,11 +179,17 @@ export default function NavbarComponent(props: any) {
                       {router.pathname === item.onclick ? (
                         <GlobeSelected color={styles.primaryColor} />
                       ) : (
-                          <Globe color={styles.primaryFontColor} />
-                        )}
+                        <Globe color={styles.primaryFontColor} />
+                      )}
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -191,11 +203,17 @@ export default function NavbarComponent(props: any) {
                       {router.pathname === item.onclick ? (
                         <DonateSelected color={styles.primaryColor} />
                       ) : (
-                          <Donate color={styles.primaryFontColor} />
-                        )}
+                        <Donate color={styles.primaryFontColor} />
+                      )}
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -211,11 +229,17 @@ export default function NavbarComponent(props: any) {
                       {router.pathname === item.onclick ? (
                         <LeaderboardSelected color={styles.primaryColor} />
                       ) : (
-                          <Leaderboard color={styles.primaryFontColor} />
-                        )}
+                        <Leaderboard color={styles.primaryFontColor} />
+                      )}
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -230,7 +254,13 @@ export default function NavbarComponent(props: any) {
                       <UserProfileIcon />
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -257,14 +287,14 @@ export default function NavbarComponent(props: any) {
           {config.header?.isSecondaryTenant ? (
             <div className={styles.bottomLogo}>
               {config.tenantName !== 'ttc' && (
-              <Link
-                href={config.header?.tenantLogoLink}
-                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
-              >
-                <div className={styles.link_container}>
-                  <img src={config.header.tenantLogoURL} />
-                </div>
-              </Link>
+                <Link
+                  href={config.header?.tenantLogoLink}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
+                  <div className={styles.link_container}>
+                    <img src={config.header.tenantLogoURL} />
+                  </div>
+                </Link>
               )}
               <Link
                 href="https://www.plant-for-the-planet.org"
@@ -279,28 +309,32 @@ export default function NavbarComponent(props: any) {
               </Link>
             </div>
           ) : (
-              <div className={styles.bottomLogo}>
-                <Link
-                  href="https://www.plant-for-the-planet.org"
-                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+            <div className={styles.bottomLogo}>
+              <Link
+                href="https://www.plant-for-the-planet.org"
+                style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+              >
+                <div
+                  className={styles.link_container}
+                  style={{ margin: '0px 8px' }}
                 >
-                  <div
-                    className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
-                  >
-                    <img
-                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                      alt="About Plant-for-the-Planet"
-                    />
-                  </div>
-                </Link>
-              </div>
-            )}
+                  <img
+                    src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                    alt="About Plant-for-the-Planet"
+                  />
+                </div>
+              </Link>
+            </div>
+          )}
 
           {config.header?.items.map((item) => (
             <div key={item.id}>
               {item.key === 'home' && item.visible === true ? (
-                <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                <Link
+                  href={item.onclick}
+                  key={item.id}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
                   <div
                     className={styles.link_container}
                     style={{ margin: '0px 8px' }}
@@ -309,55 +343,78 @@ export default function NavbarComponent(props: any) {
                       {router.pathname === item.onclick ? (
                         <GlobeSelected color={styles.primaryColor} />
                       ) : (
-                          <Globe color={styles.primaryFontColor} />
-                        )}
+                        <Globe color={styles.primaryFontColor} />
+                      )}
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
-                        </p>
+                      </p>
                     ) : null}
                   </div>
                 </Link>
               ) : null}
 
-
               {item.key === 'donate' && item.visible === true ? (
-                <Link key={item.id} href={item.onclick} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
+                <Link
+                  key={item.id}
+                  href={item.onclick}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
                   <div
                     className={styles.link_container}
-                  // style={{ margin: '0px 8px' }}
+                    // style={{ margin: '0px 8px' }}
                   >
                     <div className={styles.link_icon}>
                       {router.pathname === item.onclick ? (
                         <DonateSelected color={styles.primaryColor} />
                       ) : (
-                          <Donate color={styles.primaryFontColor} />
-                        )}
+                        <Donate color={styles.primaryFontColor} />
+                      )}
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
-                    ) : null}  
+                    ) : null}
                   </div>
                 </Link>
               ) : null}
 
               {item.key === 'leaderboard' && item.visible === true ? (
-                <Link href={item.onclick} key={item.id} style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}>
-                  <div
-                    className={styles.link_container}
-                  >
+                <Link
+                  href={item.onclick}
+                  key={item.id}
+                  style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
+                >
+                  <div className={styles.link_container}>
                     <div className={styles.link_icon}>
                       {router.pathname === item.onclick ? (
                         <LeaderboardSelected color={styles.primaryColor} />
                       ) : (
-                          <Leaderboard color={styles.primaryFontColor} />
-                        )}
+                        <Leaderboard color={styles.primaryFontColor} />
+                      )}
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
@@ -371,13 +428,18 @@ export default function NavbarComponent(props: any) {
                   style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
                   onClick={gotoUserPage}
                 >
-                  <div
-                    className={styles.link_container} >
+                  <div className={styles.link_container}>
                     <div className={styles.link_icon}>
                       <UserProfileIcon />
                     </div>
                     {ready ? (
-                      <p className={router.pathname === item.onclick ? styles.active_icon : ''}>
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
                         {t('common:' + item.title)}
                       </p>
                     ) : null}
