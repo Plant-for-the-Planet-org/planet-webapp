@@ -14,9 +14,8 @@ import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 
 const config = tenantConfig();
-
+const { useTranslation } = i18next;
 export default function UserShareAndSupport({ userprofile }: any) {
-  const { useTranslation } = i18next;
   const { t } = useTranslation(['donate', 'me']);
   const router = useRouter();
   const [currentHover, setCurrentHover] = React.useState(-1);
