@@ -73,19 +73,19 @@ export default function BasicDetails({
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   const classifications = [
-    { label: t('manageProjects:largeScalePlanting'), value: 'large-scale-planting' },
-    { label: t('manageProjects:agroforestry'), value: 'agroforestry' },
-    { label: t('manageProjects:naturalRegeneration'), value: 'natural-regeneration' },
-    { label: t('manageProjects:managedRegeneration'), value: 'managed-regeneration' },
-    { label: t('manageProjects:urbanPlanting'), value: 'urban-planting' },
-    { label: t('manageProjects:otherPlanting'), value: 'other-planting' },
+    { label: ready ? t('manageProjects:largeScalePlanting') : '', value: 'large-scale-planting' },
+    { label: ready ? t('manageProjects:agroforestry') : '', value: 'agroforestry' },
+    { label: ready ? t('manageProjects:naturalRegeneration') : '', value: 'natural-regeneration' },
+    { label: ready ? t('manageProjects:managedRegeneration') : '', value: 'managed-regeneration' },
+    { label: ready ? t('manageProjects:urbanPlanting') : '', value: 'urban-planting' },
+    { label: ready ? t('manageProjects:otherPlanting') : '', value: 'other-planting' },
   ];
 
   // Default Form Fields
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: { label:  t('manageProjects:projectType'), value: null },
+    classification: { label: ready ? t('manageProjects:projectType') : '', value: null },
     countTarget: 0,
     website: '',
     description: '',

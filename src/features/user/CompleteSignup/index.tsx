@@ -105,7 +105,7 @@ export default function CompleteSignup() {
         const userInfo = getUserInfo();
         const newUserInfo = { ...userInfo, slug: resJson.slug, type: resJson.type }
         setUserInfo(newUserInfo)
-        setSnackbarMessage(t('login:profileCreated'));
+        setSnackbarMessage(ready ? t('login:profileCreated') : '');
         setSeverity("success")
         handleSnackbarOpen();
 
@@ -121,12 +121,12 @@ export default function CompleteSignup() {
         removeUserExistsInDB()
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
       } else {
-        setSnackbarMessage(t('login:profileCreationFailed'));
+        setSnackbarMessage(ready ? t('login:profileCreationFailed') : '');
         setSeverity("error")
         handleSnackbarOpen();
       }
     } catch {
-      setSnackbarMessage(t('login:profileCreationError'));
+      setSnackbarMessage(ready ? t('login:profileCreationError') : '');
       setSeverity("error")
       handleSnackbarOpen();
     }
