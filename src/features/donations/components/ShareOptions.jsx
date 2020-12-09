@@ -155,7 +155,7 @@ ShareOptions.propTypes = {
   treeCount: PropTypes.string.isRequired,
   sendRef: PropTypes.node.isRequired,
   handleTextCopiedSnackbarOpen: PropTypes.func,
-  contactDetails: PropTypes.node
+  contactDetails: PropTypes.array
 };
 
 export default ShareOptions;
