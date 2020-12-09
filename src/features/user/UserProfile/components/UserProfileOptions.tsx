@@ -115,6 +115,7 @@ export default function UserProfileOptions({
         <RedeemModal
           redeemModalOpen={redeemModalOpen}
           handleRedeemModalClose={handleRedeemModalClose}
+          userprofile={userprofile}
         />
 
         <div className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>

@@ -10,9 +10,16 @@ import InstagramIcon from '../../../../public/assets/images/icons/share/Instagra
 import tenantConfig from '../../../../tenant.config';
 import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n/server';
 
-const ShareOptions = (props) => {
+interface Props {
+  treeCount:any;
+        sendRef:any;
+        handleTextCopiedSnackbarOpen:Function
+        contactDetails:Object
+}
+
+const ShareOptions = ({treeCount,sendRef,handleTextCopiedSnackbarOpen,contactDetails}:Props) => {
   const { useTranslation } = i18next;
   const { t, i18n } = useTranslation(['donate', 'common']);
   const config = tenantConfig();
@@ -20,7 +27,7 @@ const ShareOptions = (props) => {
   const titleToShare = t('donate:titleToShare');
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
-  const userName = props.contactDetails.firstName + ' ' + props.contactDetails.lastName;
+  const userName = contactDetails.firstName + ' ' + contactDetails.lastName;
   const textToShare = t('donate:textToShareLinkedin', { name: userName});
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
@@ -47,7 +54,7 @@ const ShareOptions = (props) => {
 
   const exportComponentAsJPEG = (
     node,
-    fileName = `My_${props.treeCount}_tree_donation.jpeg`,
+    fileName = `My_${treeCount}_tree_donation.jpeg`,
     backgroundColor = null,
     type = 'image/jpeg'
   ) => {
@@ -73,10 +80,10 @@ const ShareOptions = (props) => {
       <div
         className={styles.shareIcon}
         onClick={() => {
-          if (props.sendRef) {
+          if (sendRef) {
             exportComponentAsJPEG(
-              props.sendRef(),
-              `My_${props.treeCount}_tree_donation.jpeg`
+              sendRef(),
+              `My_${treeCount}_tree_donation.jpeg`
             );
           }
         }}
