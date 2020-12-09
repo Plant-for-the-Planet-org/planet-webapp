@@ -14,14 +14,6 @@ import {
 } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
-const classifications = [
-  { label: 'Large scale planting', value: 'large-scale-planting' },
-  { label: 'Agroforestry', value: 'agroforestry' },
-  { label: 'Natural Regeneration', value: 'natural-regeneration' },
-  { label: 'Managed Regeneration', value: 'managed-regeneration' },
-  { label: 'Urban Planting', value: 'urban-planting' },
-  { label: 'Other Planting', value: 'other-planting' },
-];
 
 interface Props {
   handleNext: Function;
@@ -80,11 +72,20 @@ export default function BasicDetails({
   };
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  const classifications = [
+    { label: t('manageProjects:largeScalePlanting'), value: 'large-scale-planting' },
+    { label: t('manageProjects:agroforestry'), value: 'agroforestry' },
+    { label: t('manageProjects:naturalRegeneration'), value: 'natural-regeneration' },
+    { label: t('manageProjects:managedRegeneration'), value: 'managed-regeneration' },
+    { label: t('manageProjects:urbanPlanting'), value: 'urban-planting' },
+    { label: t('manageProjects:otherPlanting'), value: 'other-planting' },
+  ];
+
   // Default Form Fields
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: { label: 'Project Type', value: null },
+    classification: { label:  t('manageProjects:projectType'), value: null },
     countTarget: 0,
     website: '',
     description: '',
