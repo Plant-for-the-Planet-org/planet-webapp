@@ -17,7 +17,7 @@ const config = {
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
-    tenantLogoLink: 'https://www.plant-for-the-planet.org',
+    tenantLogoLink: 'https://a.plant-for-the-planet.org',
     items: [
       {
         id: 1,
