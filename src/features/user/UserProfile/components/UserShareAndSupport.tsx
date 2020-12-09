@@ -52,6 +52,8 @@ export default function UserShareAndSupport({ userprofile }: any) {
     window.open(shareUrl, '_blank');
   };
 
+  const profileURL = userprofile.url ? userprofile.url.includes("http") || userprofile.url.includes("https") ? userprofile.url : `http://${userprofile.url}` : '';
+
   return ready ? (
     <div style={{ position: "relative" }}>
       {showSocialBtn && (screenWidth > 600) && (
@@ -105,10 +107,10 @@ export default function UserShareAndSupport({ userprofile }: any) {
           </div>
         )}
 
-        {userprofile.url && (
+        {profileURL && (
           <a
             className={styles.iconTextColumn}
-            href={userprofile.url}
+            href={profileURL}
             target="_blank" rel="noopener noreferrer"
             style={{ marginLeft: '12px' }}
           >

@@ -414,7 +414,7 @@ export default function BasicDetails({
                     },
                     validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
                     pattern: {
-                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
+                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|(?:\.[0-9]{3})*(?:,[0-9]{1,2})?)$/,
                       message: t('manageProjects:treeCostValidationInvalid'),
                     }
                   })}
