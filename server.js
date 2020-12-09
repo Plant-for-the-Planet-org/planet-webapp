@@ -47,8 +47,8 @@ if (!dev && cluster.isMaster) {
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
-            'X-Frame-Options': 'DENY',
-            'Content-Security-Policy': 'frame-ancestors \'none\'',
+            'X-Frame-Options': 'allow-from https://www.planetspain.org',
+            'Content-Security-Policy': 'frame-ancestors https://www.planetspain.org',
           });
           return next();
         }
