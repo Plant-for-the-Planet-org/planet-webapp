@@ -33,25 +33,62 @@ export default function Footer() {
 
   const FooterLinks = [
     {
-      id: 1,
-      title: ready ? t('common:privacyAndTerms') : '',
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
+      id:1,
+      title: ready ? t('common:shop') : '',
+      link:'https://www.thegoodshop.org/'
     },
     {
       id: 2,
-      title: ready ? t('common:imprint') : '',
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
+      title: ready ? t('common:privacyAndTerms') : '',
+      link: 'https://a.plant-for-the-planet.org/privacy-terms',
     },
     {
       id: 3,
-      title: ready ? t('common:contact') : '',
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
+      title: ready ? t('common:imprint') : '',
+      link: 'https://a.plant-for-the-planet.org/imprint',
     },
     {
-      id: 6,
+      id: 4,
+      title: ready ? t('common:contact') : '',
+      link: 'mailto:support@plant-for-the-planet.org',
+    },
+    {
+      id:5,
+      title: ready ? t('common:downloads') : '',
+      link:'https://a.plant-for-the-planet.org/download'
+    },
+    {
+      id:6,
+      title: ready ? t('common:annualReports') : '',
+      link:'https://a.plant-for-the-planet.org/download'
+    },
+    {
+      id:7,
+      title: ready ? t('common:team') : '',
+      link:'https://a.plant-for-the-planet.org/structure'
+    },
+    {
+      id:8,
+      title: ready ? t('common:jobs') : '',
+      link:'https://a.plant-for-the-planet.org/careers'
+    },
+    {
+      id: 9,
       title: ready ? t('common:supportUs') : '',
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
+    
+    {
+      id:10,
+      title: ready ? t('common:blogs') : '',
+      link:'https://blog.plant-for-the-planet.org/'
+    },
+    {
+      id:11,
+      title: ready ? t('common:faqs') : '',
+      link:'https://a.plant-for-the-planet.org/faq'
+    },
+    
   ];
 
   // changes the language and selected country as found in local storage
