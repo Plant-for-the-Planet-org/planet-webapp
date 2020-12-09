@@ -21,14 +21,14 @@ export default function UserShareAndSupport({ userprofile }: any) {
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
+  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
   const [screenWidth, setScreenWidth] = React.useState(null);
 
   const handleShare = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: t('donate:shareTextTitle'),
+          title: ready ? t('donate:shareTextTitle') : '',
           url: window.location.href,
           text: textToShare,
         })

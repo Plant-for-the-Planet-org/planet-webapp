@@ -20,7 +20,14 @@ export default function ManageProjects({ GUID, token, project }: any) {
     const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     function getSteps() {
-        return [t('manageProjects:basicDetails'), t('manageProjects:projectMedia'), t('manageProjects:detailedAnalysis'), t('manageProjects:projectSites'), t('manageProjects:projectSpending'), t('manageProjects:review')];
+        return [
+          ready ? t('manageProjects:basicDetails') : '',
+          ready ? t('manageProjects:projectMedia') : '',
+          ready ? t('manageProjects:detailedAnalysis') : '',
+          ready ? t('manageProjects:projectSites') : '',
+          ready ? t('manageProjects:projectSpending') : '',
+          ready ? t('manageProjects:review') : ''
+        ];
     }
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
@@ -59,7 +66,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
                 setIsUploadingData(false)
             } else {
                 if (res.code === 404) {
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                     setIsUploadingData(false)
                 }
                 else {

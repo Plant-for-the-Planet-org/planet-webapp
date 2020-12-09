@@ -17,11 +17,11 @@ const ShareOptions = (props) => {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const config = tenantConfig();
 
-  const titleToShare = t('donate:titleToShare');
+  const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
   const userName = props.contactDetails.firstName + ' ' + props.contactDetails.lastName;
-  const textToShare = t('donate:textToShareLinkedin', { name: userName});
+  const textToShare = ready ? t('donate:textToShareLinkedin', { name: userName}) : '';
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);

@@ -108,7 +108,7 @@ export const PaymentRequestCustomButton = ({
         country: country,
         currency: currency.toLowerCase(),
         total: {
-          label: t('donate:treeDonationWithPFP'),
+          label: ready ? t('donate:treeDonationWithPFP') : '',
           amount: amount,
         },
         requestPayerName: true,

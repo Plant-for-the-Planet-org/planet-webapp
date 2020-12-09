@@ -109,14 +109,14 @@ function ProjectsList({
 
   const AllProjects = (projects:any)=>{   
     if (projects.projects.length < 1) {
-      return (
+      return ready ? (
         <div className={'projectNotFound'}>
           <LazyLoad>
             <NotFound className={'projectNotFoundImage'} />
             <h5>{t('donate:noProjectsFound')}</h5>
           </LazyLoad>
         </div>
-      );
+      ) : null;
     }
     else {
       return (

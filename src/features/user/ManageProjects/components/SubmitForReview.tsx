@@ -23,7 +23,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset(t('manageProjects:resetMessage'))
+            handleReset(ready ? t('manageProjects:resetMessage') : '')
         }
     })
 

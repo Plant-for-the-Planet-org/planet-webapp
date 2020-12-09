@@ -72,7 +72,7 @@ function ClaimDonation({ }: Props): ReactElement {
     React.useEffect(() => {
         if (router && router.query.type && router.query.code) {            
             if (router.query.type !== 'donation' && router.query.type !== 'donor' && router.query.type !== 'gift') {
-                setErrorMessage(t('redeem:invalidType'))
+                setErrorMessage(ready ? t('redeem:invalidType') : '')
             }
             else{
                 setCode(router.query.code);

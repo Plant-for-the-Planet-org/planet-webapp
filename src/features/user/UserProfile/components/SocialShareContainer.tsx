@@ -16,8 +16,8 @@ export default function SocialShareContainer({userprofile, type}:any) {
   const { t, ready } = useTranslation(['donate', 'me']);
   const [currentHover, setCurrentHover] = React.useState(-1);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
-  const textToShareLinkedin = t('donate:textToShareLinkedin', { name: userprofile.displayName });
+  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
+  const textToShareLinkedin = ready ? t('donate:textToShareLinkedin', { name: userprofile.displayName }) : '';
 
   const shareClicked = async (shareUrl) => {
     openWindowLinks(shareUrl);

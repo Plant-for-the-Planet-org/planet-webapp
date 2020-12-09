@@ -66,10 +66,10 @@ export default function UploadImages({
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
-            setErrorMessage(t('me:contribNotFound'));
+            setErrorMessage(ready ? t('me:contribNotFound') : '');
           } else {
             setIsUploadingData(false);
-            setErrorMessage(t('me:errorOccured'));
+            setErrorMessage(ready ? t('me:errorOccured') : '');
             console.log(res.message);
           }
         }

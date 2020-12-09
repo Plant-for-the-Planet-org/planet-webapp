@@ -34,22 +34,22 @@ export default function Footer() {
   const FooterLinks = [
     {
       id: 1,
-      title: t('common:privacyAndTerms'),
+      title: ready ? t('common:privacyAndTerms') : '',
       link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
     },
     {
       id: 2,
-      title: t('common:imprint'),
+      title: ready ? t('common:imprint') : '',
       link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
     },
     {
       id: 3,
-      title: t('common:contact'),
+      title: ready ? t('common:contact') : '',
       link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
     },
     {
       id: 6,
-      title: t('common:supportUs'),
+      title: ready ? t('common:supportUs') : '',
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
   ];

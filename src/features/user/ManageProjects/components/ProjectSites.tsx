@@ -101,7 +101,7 @@ export default function ProjectSites({
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
-      handleReset(t('manageProjects:resetMessage'));
+      handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
 
@@ -137,7 +137,7 @@ export default function ProjectSites({
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
-            setErrorMessage(t('manageProjects:projectNotFound'));
+            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
           } else {
             setIsUploadingData(false);
             setErrorMessage(res.message);
@@ -169,11 +169,11 @@ export default function ProjectSites({
   };
 
   const status = [
-    { label: t('manageProjects:siteStatusPlanting'), value: 'planting' },
-    { label: t('manageProjects:siteStatusPlanted'), value: 'planted' },
-    { label: t('manageProjects:siteStatusBarren'), value: 'barren' },
+    { label: ready ? t('manageProjects:siteStatusPlanting') : '', value: 'planting' },
+    { label: ready ? t('manageProjects:siteStatusPlanted') : '', value: 'planted' },
+    { label: ready ? t('manageProjects:siteStatusBarren') : '', value: 'barren' },
     {
-      label: t('manageProjects:siteStatusReforestation'),
+      label: ready ? t('manageProjects:siteStatusReforestation') : '',
       value: 'reforestation',
     },
   ];

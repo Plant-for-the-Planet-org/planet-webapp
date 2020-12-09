@@ -132,7 +132,7 @@ function MapCurrency(props: any) {
   const { t, i18n, ready } = useTranslation(['country']);
   
   const { value, handleChange } = props;
-  const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
+  const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language) : {};
   return ready ? (
     <FormControlNew component="fieldset">
       <RadioGroup

@@ -45,7 +45,7 @@ export default function UserProfileOptions({
   const router = useRouter();
   const { t, ready } = useTranslation(['me']);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
+  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const [screenWidth, setScreenWidth] = React.useState(null);
   const [divWidth, setDivWidth] = React.useState(null);
@@ -53,7 +53,7 @@ export default function UserProfileOptions({
   const webShareMobile = async () => {
     try {
       const response = await navigator.share({
-        title: t('donate:shareTextTitle'),
+        title: ready ? t('donate:shareTextTitle') : '',
         url: window.location.href,
         text: textToShare,
       });

@@ -133,10 +133,10 @@ export default function CompleteSignup() {
   };
 
   const profileTypes = [
-    { id: 1, title: t('login:individual'), value: 'individual' },
-    { id: 2, title: t('login:organization'), value: 'organization' },
-    { id: 3, title: t('login:tpo'), value: 'tpo' },
-    { id: 4, title: t('login:education'), value: 'education' }
+    { id: 1, title: ready ? t('login:individual') : '', value: 'individual' },
+    { id: 2, title: ready ? t('login:organization') : '', value: 'organization' },
+    { id: 3, title: ready ? t('login:tpo') : '', value: 'tpo' },
+    { id: 4, title: ready ? t('login:education') : '', value: 'education' }
   ]
 
   React.useEffect(() => {

@@ -59,7 +59,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage(t('manageProjects:projectNotFound'))
+          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
         }
         else {
           setIsUploadingData(false)
@@ -74,7 +74,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
-      handleReset(t('manageProjects:resetMessage'))
+      handleReset(ready ? t('manageProjects:resetMessage') : '')
     }
   })
 
@@ -139,7 +139,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage(t('manageProjects:projectNotFound'))
+          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
         }
         else {
           setIsUploadingData(false)
@@ -174,7 +174,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage(t('manageProjects:projectNotFound'))
+          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
         }
         else {
           setIsUploadingData(false)
@@ -199,7 +199,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       } else {
         if (res.code === 404) {
           setIsUploadingData(false)
-          setErrorMessage(t('manageProjects:projectNotFound'))
+          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
         }
         else {
           setIsUploadingData(false)

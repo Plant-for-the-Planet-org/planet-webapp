@@ -214,10 +214,10 @@ export default function RegisterTrees({
 
         // handleNext();
       } else {
-        setErrorMessage(t('me:locationMissing'));
+        setErrorMessage(ready ? t('me:locationMissing') : '');
       }
     } else {
-      setErrorMessage(t('me:wentWrong'));
+      setErrorMessage(ready ? t('me:wentWrong') : '');
       console.log(errorMessage);
     }
   };
