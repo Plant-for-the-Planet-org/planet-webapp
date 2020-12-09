@@ -25,7 +25,7 @@ interface Props {
 function LegacyDonations({ paymentData }: Props): ReactElement {
 
   const [paymentType, setPaymentType] = React.useState('CARD')
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const [paymentSetup, setPaymentSetup] = React.useState();
 
@@ -210,9 +210,10 @@ const paypalSuccess =(data:any)=>{
     setDonationStep: null
   };  
   
-  return !isDonationComplete ? isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  return ready ? (
+    !isDonationComplete ? isPaymentProcessing ? (
+      <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+    ) : (
       <div className={styles.container}>
         {paymentError && (
           <div className={styles.paymentError}>{paymentError}</div>
@@ -291,6 +292,7 @@ const paypalSuccess =(data:any)=>{
     ) : (
       <ThankYou {...ThankYouProps} />
     )
+  ) : null;
 }
 
 export default LegacyDonations

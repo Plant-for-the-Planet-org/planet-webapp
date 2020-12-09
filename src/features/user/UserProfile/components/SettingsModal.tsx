@@ -23,7 +23,7 @@ export default function SettingsModal({
   forceReload,
 }: any) {
   const router = useRouter();
-  const { t } = useTranslation(['me', 'common', 'editProfile']);
+  const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const {
     logout,
   } = useAuth0();
@@ -32,7 +32,7 @@ export default function SettingsModal({
     localStorage.removeItem('userInfo');
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
-  return (
+  return ready ? (
     <>
       <Modal
         className={styles.modalContainer}
@@ -80,5 +80,5 @@ export default function SettingsModal({
         forceReload={forceReload}
       />
     </>
-  );
+  ) : null;
 }

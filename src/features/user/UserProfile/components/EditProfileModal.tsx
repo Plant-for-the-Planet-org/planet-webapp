@@ -46,7 +46,7 @@ export default function EditProfileModal({
   }, [isAuthenticated, isLoading])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
-  const { t } = useTranslation(['editProfile', 'donate', 'target']);
+  const { t, ready } = useTranslation(['editProfile', 'donate', 'target']);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -118,7 +118,7 @@ export default function EditProfileModal({
             imageFile: event.target.result
           }
           setSeverity('info')
-          setSnackbarMessage(t('editProfile:profilePicUpdated'))
+          setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '')
           handleSnackbarOpen()
 
           putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
@@ -152,27 +152,27 @@ export default function EditProfileModal({
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
           setSeverity('success')
-          setSnackbarMessage(t('editProfile:profileSaved'))
+          setSnackbarMessage(ready ? t('editProfile:profileSaved') : '')
           handleSnackbarOpen()
           changeForceReload(!forceReload),
           handleEditProfileModalClose()
           setIsUploadingData(false)
         }).catch(error => {
           setSeverity('error')
-          setSnackbarMessage(t('editProfile:profileSaveFailed'))
+          setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '')
           handleSnackbarOpen()
           setIsUploadingData(false)
           console.log(error);
         })
       } catch (e) {
         setSeverity('error');
-        setSnackbarMessage(t('editProfile:profileSaveFailed'));
+        setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
         handleSnackbarOpen();
         setIsUploadingData(false);
       }
     }
   };
-  return (
+  return ready ? (
     <React.Fragment>
       <Modal
         className={styles.modalContainer}
@@ -455,5 +455,5 @@ export default function EditProfileModal({
         </MuiAlert>
       </Snackbar>
     </React.Fragment>
-  );
+  ) : null;
 }

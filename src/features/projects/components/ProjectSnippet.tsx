@@ -26,7 +26,7 @@ export default function ProjectSnippet({
   editMode,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -47,7 +47,7 @@ export default function ProjectSnippet({
     setOpen(true);
   };
 
-  return (
+  return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
         className={`modal ${theme} modalContainer`}
@@ -148,5 +148,5 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  );
+  ) : null;
 }

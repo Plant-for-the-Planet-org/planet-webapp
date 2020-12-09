@@ -13,8 +13,8 @@ interface Props {
 
 const { useTranslation } = i18next;
 function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Props): ReactElement {
-    const { t } = useTranslation(['donate']);
-    return (
+    const { t, ready } = useTranslation(['donate']);
+    return ready ? (
         <>
             <div className={'searchIcon'}>
                 <SearchIcon color={'primaryFontColor'} />
@@ -40,7 +40,7 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
                 <CancelIcon color={'primaryFontColor'} />
             </div>
         </>
-    )
+    ) : null;
 }
 
 export default SearchBar

@@ -12,16 +12,16 @@ import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
 import i18next from '../../../../i18n/';
 
+const { useTranslation } = i18next;
 const ShareOptions = (props) => {
-  const { useTranslation } = i18next;
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const config = tenantConfig();
 
-  const titleToShare = t('donate:titleToShare');
+  const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
   const userName = props.contactDetails.firstName + ' ' + props.contactDetails.lastName;
-  const textToShare = t('donate:textToShareLinkedin', { name: userName});
+  const textToShare = ready ? t('donate:textToShareLinkedin', { name: userName}) : '';
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
@@ -64,7 +64,7 @@ const ShareOptions = (props) => {
     openWindowLinks(shareUrl);
   };
 
-  return (
+  return ready ? (
     <div
       className={styles.shareRow}
       onMouseOut={() => setCurrentHover(-1)}
@@ -142,7 +142,7 @@ const ShareOptions = (props) => {
         )}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default ShareOptions;

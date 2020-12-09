@@ -44,7 +44,7 @@ function TreeDonation({
   isPaymentOptionsLoading,
   token
 }: TreeDonationProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
@@ -121,9 +121,10 @@ function TreeDonation({
   };
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
-  return isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  return ready ? (
+    isPaymentProcessing ? (
+      <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+    ) : (
     <>
       <div
         className={`${styles.cardContainer} ${
@@ -356,7 +357,8 @@ function TreeDonation({
         country={country}
       />
     </>
-  );
+    )
+  ) : null;
 }
 
 export default TreeDonation;

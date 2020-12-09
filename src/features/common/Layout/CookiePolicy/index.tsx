@@ -4,9 +4,9 @@ import styles from './CookiePolicy.module.scss';
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 
+const { useTranslation } = i18next;
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);
-  const { useTranslation } = i18next;
   const { t, ready } = useTranslation(['leaderboard']);
 
   const {

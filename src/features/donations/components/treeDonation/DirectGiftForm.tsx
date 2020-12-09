@@ -15,8 +15,8 @@ export default function GiftForm({
   giftDetails,
   setDirectGift,
 }: Props): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
-  return (
+  const { t, ready } = useTranslation(['donate', 'common']);
+  return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
         <div className={styles.singleGiftTitleContainer}>
@@ -36,5 +36,5 @@ export default function GiftForm({
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

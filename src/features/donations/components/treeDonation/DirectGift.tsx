@@ -13,8 +13,8 @@ export default function DirectGift({
   directGift,
   setShowDirectGift,
 }: Props): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
-  return (
+  const { t, ready } = useTranslation(['donate', 'common']);
+  return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.textContainer}>
         <div className={styles.giftTo}>
@@ -35,5 +35,5 @@ export default function DirectGift({
         <CancelIcon color={styles.primaryFontColor} />
       </div>
     </div>
-  );
+  ) : null;
 }

@@ -24,7 +24,7 @@ export default function TransitionsModal(props: any) {
     currency,
   } = props;
 
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, ready } = useTranslation(['donate', 'common']);
 
   const [countriesData, setCountriesData] = useState([]);
   const [selectedModalValue, setSelectedModalValue] = useState(
@@ -59,7 +59,7 @@ export default function TransitionsModal(props: any) {
     setCountriesData(tempCountriesData);
   }, []);
 
-  return (
+  return ready ? (
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -101,15 +101,15 @@ export default function TransitionsModal(props: any) {
         </Fade>
       </Modal>
     </div>
-  );
+  ) : null;
 }
 
 // Maps the radio buttons for currency
 function MapCountry(props: any) {
-  const { t } = useTranslation(['country']);
+  const { t, ready } = useTranslation(['country']);
   
   const { countriesData, value, handleChange } = props;
-  return (
+  return ready ? (
     <FormControl component="fieldset">
       <RadioGroup
         aria-label="language"
@@ -127,5 +127,5 @@ function MapCountry(props: any) {
         ))}
       </RadioGroup>
     </FormControl>
-  );
+  ) : null;
 }
