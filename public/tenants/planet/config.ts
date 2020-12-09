@@ -28,7 +28,7 @@ const config = {
       },
       {
         id: 2,
-        title: 'donate_gift',
+        title: 'home',
         onclick: '/',
         visible: true,
         key: 'donate',
