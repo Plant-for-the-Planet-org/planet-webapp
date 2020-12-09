@@ -27,7 +27,7 @@ export default function CompleteSignup() {
   } = useAuth0();  
 
   const router = useRouter();
-  const { t } = useTranslation(['editProfile', 'donate', 'login']);
+  const { t, ready } = useTranslation(['editProfile', 'donate', 'login']);
 
   const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
 
@@ -169,7 +169,7 @@ export default function CompleteSignup() {
     return null;
   }
   if (!isLoading && token && (getUserExistsInDB() === false)) {
-    return (
+    return ready ? (
       <div
         className={styles.signUpPage}
         style={{
@@ -395,7 +395,7 @@ export default function CompleteSignup() {
           </MuiAlert>
         </Snackbar>
       </div>
-    );
+    ) : null;
   }
   return null;
 }

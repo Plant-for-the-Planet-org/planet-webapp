@@ -20,7 +20,7 @@ export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: any) {
-  const { t, i18n } = useTranslation(['me', 'common', 'donate','redeem']);
+  const { t, i18n, ready } = useTranslation(['me', 'common', 'donate','redeem']);
 
   const config = tenantConfig();
 
@@ -128,7 +128,7 @@ export default function RedeemModal({
     handleRedeemModalClose()
   }
 
-  return (
+  return ready ? (
     <Modal
       className={styles.modalContainer}
       open={redeemModalOpen}
@@ -265,5 +265,5 @@ export default function RedeemModal({
 
       </Fade>
     </Modal>
-  );
+  ) : null;
 }

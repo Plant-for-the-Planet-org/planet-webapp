@@ -15,9 +15,8 @@ const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
-  const { t, i18n } = useTranslation(['common']);
+  const { t, i18n, ready } = useTranslation(['common']);
   const config = tenantConfig();
-
 
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
@@ -73,7 +72,7 @@ export default function Footer() {
     }
   }, []);
 
-  return (
+  return ready ? (
     <footer>
       <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
@@ -189,5 +188,5 @@ export default function Footer() {
         />
       </div>
     </footer>
-  );
+  ) : null;
 }

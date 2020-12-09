@@ -46,7 +46,7 @@ export default function ProjectSites({
   projectGUID,
   handleReset,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -192,7 +192,7 @@ export default function ProjectSites({
       });
   }, [projectGUID]);
 
-  return (
+  return ready ? (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formField}>
@@ -359,5 +359,5 @@ export default function ProjectSites({
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }

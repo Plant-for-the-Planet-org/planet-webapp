@@ -12,7 +12,7 @@ interface Props {
 }
 
 function ProjectContactDetails({ project }: Props): ReactElement {
-  const { t } = useTranslation(['donate']);
+  const { t, ready } = useTranslation(['donate']);
 
   const contactAddress = project.tpo && project.tpo.address
     ? (project.tpo.address.address ? project.tpo.address.address + ', ' : '')
@@ -56,7 +56,7 @@ function ProjectContactDetails({ project }: Props): ReactElement {
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     }
   ];
-  return (
+  return ready ? (
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
       <Link
@@ -84,7 +84,7 @@ function ProjectContactDetails({ project }: Props): ReactElement {
       })}
 
     </div>
-  );
+  ) : null;
 }
 
 export default ProjectContactDetails;

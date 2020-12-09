@@ -13,7 +13,7 @@ interface Props {
 function ProjectInfo({ project }: Props): ReactElement {
     const { useTranslation } = i18next;
 
-    const { t, i18n } = useTranslation(['manageProjects', 'common']);
+    const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
     const plantingSeasons = [
         { id: 0, title: t('common:january') },
@@ -62,7 +62,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         return `${percentage}%`
     }
 
-    return (
+    return ready ? (
         <div>
             <div className={styles.projectMoreInfoHalfContainer}>
 
@@ -289,7 +289,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
         </div>
-    )
+    ) : null;
 }
 
 export default ProjectInfo

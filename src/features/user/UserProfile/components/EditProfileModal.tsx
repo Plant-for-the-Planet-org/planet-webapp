@@ -46,7 +46,7 @@ export default function EditProfileModal({
   }, [isAuthenticated, isLoading])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
-  const { t } = useTranslation(['editProfile', 'donate', 'target']);
+  const { t, ready } = useTranslation(['editProfile', 'donate', 'target']);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -172,7 +172,7 @@ export default function EditProfileModal({
       }
     }
   };
-  return (
+  return ready ? (
     <React.Fragment>
       <Modal
         className={styles.modalContainer}
@@ -455,5 +455,5 @@ export default function EditProfileModal({
         </MuiAlert>
       </Snackbar>
     </React.Fragment>
-  );
+  ) : null;
 }

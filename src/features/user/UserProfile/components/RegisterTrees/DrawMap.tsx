@@ -39,7 +39,7 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-  const { t } = useTranslation(['me', 'common']);
+  const { t, ready } = useTranslation(['me', 'common']);
   const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef();
   const onDrawCreate = ({ features }: any) => {
@@ -78,7 +78,7 @@ export default function MapComponent({
     }
   }, [countryBbox]);
 
-  return (
+  return ready ? (
     <div className={styles.mapContainer}>
       {!drawing ? (
         <div className={styles.overlayButton}>
@@ -119,5 +119,5 @@ export default function MapComponent({
         <ZoomControl position="bottom-right" />
       </Map>
     </div>
-  );
+  ) : null;
 }

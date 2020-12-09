@@ -17,7 +17,7 @@ import i18next from './../../../../../i18n';
 const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     function getSteps() {
         return [t('manageProjects:basicDetails'), t('manageProjects:projectMedia'), t('manageProjects:detailedAnalysis'), t('manageProjects:projectSites'), t('manageProjects:projectSpending'), t('manageProjects:review')];
@@ -110,7 +110,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         }
     }
 
-    return (
+    return ready ? (
         <div className={styles.mainContainer}>
             <Stepper activeStep={activeStep} orientation="vertical">
                 {steps.map((label, index) => (
@@ -123,5 +123,5 @@ export default function ManageProjects({ GUID, token, project }: any) {
                 ))}
             </Stepper>
         </div>
-    );
+    ) : null;
 }

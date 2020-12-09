@@ -42,7 +42,7 @@ export const PaymentRequestCustomButton = ({
   onPaymentFunction,
   continueNext,
 }: PaymentButtonProps) => {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, ready } = useTranslation(['donate', 'common']);
 
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -169,7 +169,8 @@ export const PaymentRequestCustomButton = ({
 
   const options = useOptions(paymentRequest);
 
-  return stripeAllowedCountries.includes(country) &&
+  return ready ? (
+    stripeAllowedCountries.includes(country) &&
     canMakePayment &&
     paymentRequest ? (
     <div className={styles.actionButtonsContainer}>
@@ -211,5 +212,5 @@ export const PaymentRequestCustomButton = ({
         {t('common:continue')}
       </AnimatedButton>
     </div>
-  );
+  )) : null;
 };

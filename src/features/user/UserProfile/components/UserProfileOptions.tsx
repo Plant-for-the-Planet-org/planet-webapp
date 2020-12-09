@@ -43,7 +43,7 @@ export default function UserProfileOptions({
   userprofile
 }: any) {
   const router = useRouter();
-  const { t } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['me']);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = t('donate:textToShare', { name: userprofile.displayName });
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
@@ -62,8 +62,10 @@ export default function UserProfileOptions({
     }
   };
   React.useEffect(() => {
-    setScreenWidth(window.screen.width);
-    setDivWidth(elementRef.current.getBoundingClientRect().width);
+    if (ready) {
+      setScreenWidth(window.screen.width);
+      setDivWidth(elementRef.current.getBoundingClientRect().width);      
+    }
   });
   const onShareClicked = () => {
     if (navigator.share) {
@@ -86,7 +88,7 @@ export default function UserProfileOptions({
     setRedeemModalOpen(true);
   };
 
-  return (
+  return ready ? (
     <div style={{ position: 'relative' }}>
       {showSocialBtn && screenWidth < 600 && (
         <motion.div
@@ -159,5 +161,5 @@ export default function UserProfileOptions({
         </motion.div>
       )}
     </div>
-  );
+  ) : null;
 }

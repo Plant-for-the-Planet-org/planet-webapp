@@ -19,7 +19,7 @@ interface Props {
 }
 
 function ClaimDonation({ }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['me', 'common', 'donate', 'redeem']);
+    const { t, i18n, ready } = useTranslation(['me', 'common', 'donate', 'redeem']);
 
     const config = tenantConfig();
 
@@ -39,7 +39,7 @@ function ClaimDonation({ }: Props): ReactElement {
     const [codeValidated, setCodeValidated] = React.useState(false)
     const [validCodeData, setValidCodeData] = React.useState();
 
-    const [ready, setReady] = React.useState(false);
+    const [routerReady, setRouterReady] = React.useState(false);
 
     const imageRef = React.createRef();
     const sendRef = () => imageRef;
@@ -77,7 +77,7 @@ function ClaimDonation({ }: Props): ReactElement {
             else{
                 setCode(router.query.code);
                 setType(router.query.type)
-                setReady(true);
+                setRouterReady(true);
                 setErrorMessage('')
             }
         }
@@ -119,7 +119,7 @@ function ClaimDonation({ }: Props): ReactElement {
         // From here user can go back to home by clicking X
         if (!isLoading && isAuthenticated) {
             // validate code
-            if (ready && code && type) {
+            if (routerReady && code && type) {
                 validateCode(code, type)
             }
         }
@@ -129,7 +129,7 @@ function ClaimDonation({ }: Props): ReactElement {
         // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
         else if (!isLoading && !isAuthenticated) {
             // store the claim link in localstorage
-            if (ready && typeof window !== 'undefined') {
+            if (routerReady && typeof window !== 'undefined') {
                 localStorage.setItem('redirectLink', window.location.href);
                 loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login` });
             }
@@ -171,7 +171,7 @@ function ClaimDonation({ }: Props): ReactElement {
         }
     }
 
-    return ready ? (
+    return ready ? ( routerReady ? (
         <LandingSection>
             {codeRedeemed && validCodeData ? (
                 <>
@@ -285,7 +285,7 @@ function ClaimDonation({ }: Props): ReactElement {
                     </div>
                 )}
         </LandingSection>
-    ) : (
+      ) : (
             <LandingSection>
                 <div className={styles.modalFinal}>
                 <div className={styles.header}>
@@ -301,7 +301,8 @@ function ClaimDonation({ }: Props): ReactElement {
                     
                 </div>
             </LandingSection>
-        )
+      )
+    ) : null;
 }
 
 export default ClaimDonation

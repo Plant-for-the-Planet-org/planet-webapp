@@ -16,7 +16,7 @@ import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeS
 const config = tenantConfig();
 const { useTranslation } = i18next;
 export default function UserShareAndSupport({ userprofile }: any) {
-  const { t } = useTranslation(['donate', 'me']);
+  const { t, ready } = useTranslation(['donate', 'me']);
   const router = useRouter();
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
@@ -52,7 +52,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
     window.open(shareUrl, '_blank');
   };
 
-  return (
+  return ready ? (
     <div style={{ position: "relative" }}>
       {showSocialBtn && (screenWidth > 600) && (
         <motion.div
@@ -141,5 +141,5 @@ export default function UserShareAndSupport({ userprofile }: any) {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

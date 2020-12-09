@@ -32,7 +32,7 @@ interface Props {
     userLang: String;
 }
 export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects', 'common']);
+    const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
     const [siteOwners, setSiteOwners] = React.useState([
         { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private', isSet: false },
@@ -188,7 +188,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -605,5 +605,5 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             </form>
 
         </div>
-    )
+    ) : null;
 }

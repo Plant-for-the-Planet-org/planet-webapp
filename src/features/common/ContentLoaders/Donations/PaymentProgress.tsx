@@ -6,9 +6,9 @@ import styles from './PaymentProgress.module.scss';
 const { useTranslation } = i18next;
 
 export default function PaymentProgress(isPaymentProcessing: any) {
-  const { t } = useTranslation(['donate']);
+  const { t, ready } = useTranslation(['donate']);
 
-  return (
+  return ready ? (
     <Backdrop className={styles.progressBackdrop} open={isPaymentProcessing}>
       <CircularProgress color="inherit" />
       <h2 className={styles.progressBackdropHeader}>
@@ -18,5 +18,5 @@ export default function PaymentProgress(isPaymentProcessing: any) {
         {t('donate:pleaseDoNotCloseThisTab')}
       </h4>
     </Backdrop>
-  );
+  ) : null;
 }

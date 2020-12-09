@@ -19,7 +19,7 @@ interface Props {
 
 function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploadingData, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
@@ -27,7 +27,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
         }
     })
 
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
             <div>
                 <div className={styles.formFieldLarge}>
@@ -76,7 +76,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
             </div>
 
         </div>
-    )
+    ) : null;
 }
 
 export default SubmitForReview

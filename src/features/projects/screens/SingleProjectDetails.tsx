@@ -28,7 +28,7 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -52,7 +52,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleModalOpen = () => {
     setModalOpen(true);
   };
-  return (
+  return ready ? (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
       className={'container'}
@@ -163,7 +163,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default SingleProjectDetails;

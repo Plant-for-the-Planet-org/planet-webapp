@@ -24,7 +24,7 @@ interface Props {
 }
 
 export default function ProjectMedia({ handleBack, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
@@ -209,7 +209,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       }
     })
   }
-  return (
+  return ready ? (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -321,5 +321,5 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }

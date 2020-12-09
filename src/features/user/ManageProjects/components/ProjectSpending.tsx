@@ -30,7 +30,7 @@ interface Props {
 
 export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
 
@@ -130,7 +130,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     var fiveYearsAgo = new Date();
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
@@ -298,5 +298,5 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                 </div>
             </form>
         </div>
-    )
+    ) : null;
 }

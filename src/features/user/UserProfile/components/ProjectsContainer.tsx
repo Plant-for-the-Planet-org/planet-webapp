@@ -17,7 +17,7 @@ const ProjectSnippet = dynamic(() => import('../../../projects/components/Projec
 });
 
 export default function ProjectsContainer({ authenticatedType, userprofile }: any) {
-  const { t } = useTranslation(['donate', 'manageProjects']);
+  const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([])
 
   const {
@@ -63,7 +63,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
     }
   }, [isAuthenticated,isLoading])
 
-  return (
+  return ready ? (
     <div style={{ margin: 'auto', maxWidth: '950px' }} id="projectsContainer">
       {projects.length < 1 ? (
         authenticatedType === 'private' ? (
@@ -113,5 +113,5 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
           </div>
         )}
     </div>
-  );
+  ) : null;
 }

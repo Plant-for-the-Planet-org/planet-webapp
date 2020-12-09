@@ -44,7 +44,7 @@ export default function BasicDetails({
   setErrorMessage,
   projectGUID,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
@@ -223,7 +223,7 @@ export default function BasicDetails({
     }
   };
 
-  return (
+  return ready ? (
     <div className={`${styles.stepContainer} `}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -620,5 +620,5 @@ export default function BasicDetails({
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }

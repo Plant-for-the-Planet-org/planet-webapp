@@ -28,7 +28,7 @@ export default function PopupProject({
   buttonRef,
   popupRef,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { theme } = React.useContext(ThemeContext);
 
   const ImageSource = project.properties.image
@@ -40,7 +40,7 @@ export default function PopupProject({
 
   const projectDetails = project.properties;
 
-  return (
+  return ready ? (
     <>
       <Modal
         ref={popupRef}
@@ -125,5 +125,5 @@ export default function PopupProject({
         )}
       </div>
     </>
-  );
+  ) : null;
 }
