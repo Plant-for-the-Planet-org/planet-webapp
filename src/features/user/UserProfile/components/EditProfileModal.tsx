@@ -118,7 +118,7 @@ export default function EditProfileModal({
             imageFile: event.target.result
           }
           setSeverity('info')
-          setSnackbarMessage('Profile pic is being updated...')
+          setSnackbarMessage(t('editProfile:profilePicUpdated'))
           handleSnackbarOpen()
 
           putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
@@ -152,21 +152,21 @@ export default function EditProfileModal({
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
           setSeverity('success')
-          setSnackbarMessage('Saved Successfully!')
+          setSnackbarMessage(t('editProfile:profileSaved'))
           handleSnackbarOpen()
           changeForceReload(!forceReload),
           handleEditProfileModalClose()
           setIsUploadingData(false)
         }).catch(error => {
           setSeverity('error')
-          setSnackbarMessage('Error in updating profile')
+          setSnackbarMessage(t('editProfile:profileSaveFailed'))
           handleSnackbarOpen()
           setIsUploadingData(false)
           console.log(error);
         })
       } catch (e) {
         setSeverity('error');
-        setSnackbarMessage('Error in updating profile');
+        setSnackbarMessage(t('editProfile:profileSaveFailed'));
         handleSnackbarOpen();
         setIsUploadingData(false);
       }
