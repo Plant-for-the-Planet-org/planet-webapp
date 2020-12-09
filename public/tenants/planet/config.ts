@@ -2,7 +2,7 @@ const config = {
   // name of tenant
   tenantName: 'planet',
   // url of tenant home page
-  tenantURL: 'trilliontreecampaign.org',
+  tenantURL: 'www.plant-for-the-planet.org',
   showUNEPLogo:true,
   showUNDecadeLogo:true,
   // font family and it's property particular to tenant
