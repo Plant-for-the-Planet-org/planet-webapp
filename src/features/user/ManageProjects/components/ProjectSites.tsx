@@ -145,7 +145,7 @@ export default function ProjectSites({
         }
       });
     } else {
-      setErrorMessage('Polygon is required');
+      setErrorMessage(t('manageProjects:polygonRequired'));
     }
   };
 
