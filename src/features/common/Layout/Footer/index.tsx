@@ -30,7 +30,14 @@ export default function Footer() {
   const handleModalClose = () => {
     setOpenModal(false);
   };
-  let userLang = localStorage.getItem('language') || 'en';
+
+  const [userLang,setUserLang] = React.useState('en');
+  React.useEffect(()=>{
+    if (typeof window !== 'undefined') {
+      let userLang = localStorage.getItem('language') || 'en';
+      setUserLang(userLang)
+    }
+  },[])
   const FooterLinks = [
     {
       id:1,
