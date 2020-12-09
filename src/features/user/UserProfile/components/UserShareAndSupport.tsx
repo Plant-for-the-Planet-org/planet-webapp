@@ -12,6 +12,7 @@ import i18next from '../../../../../i18n';
 import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
+import { truncateString } from '../../../../utils/getTruncatedString';
 
 const config = tenantConfig();
 
@@ -118,7 +119,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
             <div className={styles.bottomIconBg}>
               <GlobeSelected color={'white'} width={'24px'} />
             </div>
-            <p className={styles.bottomRowText}>{userprofile.urlText ? userprofile.urlText : 'URL'}</p>
+            <p className={styles.bottomRowText}>{userprofile.urlText ? truncateString(userprofile.urlText, 20) : 'URL'}</p>
           </a>
         )}
 
