@@ -30,22 +30,22 @@ export default function Footer() {
   const handleModalClose = () => {
     setOpenModal(false);
   };
-
+  let userLang = localStorage.getItem('language') || 'en';
   const FooterLinks = [
     {
       id:1,
       title: ready ? t('common:shop') : '',
-      link:'https://www.thegoodshop.org/'
+      link:`https://www.thegoodshop.org/${userLang}`
     },
     {
       id: 2,
       title: ready ? t('common:privacyAndTerms') : '',
-      link: 'https://a.plant-for-the-planet.org/privacy-terms',
+      link: `https://a.plant-for-the-planet.org/${userLang}/privacy-terms`,
     },
     {
       id: 3,
       title: ready ? t('common:imprint') : '',
-      link: 'https://a.plant-for-the-planet.org/imprint',
+      link: `https://a.plant-for-the-planet.org/${userLang}/imprint`,
     },
     {
       id: 4,
@@ -55,38 +55,37 @@ export default function Footer() {
     {
       id:5,
       title: ready ? t('common:downloads') : '',
-      link:'https://a.plant-for-the-planet.org/download'
+      link:`https://a.plant-for-the-planet.org/${userLang}/download`
     },
     {
       id:6,
       title: ready ? t('common:annualReports') : '',
-      link:'https://a.plant-for-the-planet.org/download'
+      link:`https://a.plant-for-the-planet.org/${userLang}/download`
     },
     {
       id:7,
       title: ready ? t('common:team') : '',
-      link:'https://a.plant-for-the-planet.org/structure'
+      link:`https://a.plant-for-the-planet.org/${userLang}/structure`
     },
     {
       id:8,
       title: ready ? t('common:jobs') : '',
-      link:'https://a.plant-for-the-planet.org/careers'
+      link:`https://a.plant-for-the-planet.org/${userLang}careers`
     },
     {
       id: 9,
       title: ready ? t('common:supportUs') : '',
-      link: 'https://www.plant-for-the-planet.org/en/donation',
+      link: `https://a.plant-for-the-planet.org/${userLang}/donation`,
     },
-    
     {
       id:10,
       title: ready ? t('common:blogs') : '',
-      link:'https://blog.plant-for-the-planet.org/'
+      link:`https://blog.plant-for-the-planet.org/${userLang}`
     },
     {
       id:11,
       title: ready ? t('common:faqs') : '',
-      link:'https://a.plant-for-the-planet.org/faq'
+      link:`https://a.plant-for-the-planet.org/${userLang}/faq`
     },
     
   ];
