@@ -12,6 +12,7 @@ import {
   postAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
+import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
 
 const { useTranslation } = i18next;
 
@@ -109,6 +110,7 @@ export default function BasicDetails({
     reset,
     setValue,
     watch,
+    setError
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const acceptDonations = watch('acceptDonations');
@@ -195,7 +197,14 @@ export default function BasicDetails({
           if (res.code === 404) {
             setIsUploadingData(false);
             setErrorMessage(res.message);
-          } else {
+          } 
+          else if (res.code === 400) {
+            setIsUploadingData(false)
+            if (res.errors && res.errors.children) {
+              addServerErrors(res.errors.children,setError);
+            }
+          }
+          else {
             setIsUploadingData(false);
             setErrorMessage(res.message);
           }
@@ -214,7 +223,14 @@ export default function BasicDetails({
             if (res.code === 404) {
               setIsUploadingData(false);
               setErrorMessage(res.message);
-            } else {
+            }
+            else if (res.code === 400) {
+              setIsUploadingData(false)
+              if (res.errors && res.errors.children) {
+                addServerErrors(res.errors.children,setError);
+              }
+            }
+            else {
               setIsUploadingData(false);
               setErrorMessage(res.message);
             }

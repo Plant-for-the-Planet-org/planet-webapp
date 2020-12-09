@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
@@ -32,9 +32,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     const { t, i18n, ready } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
+    const { register, handleSubmit, errors, formState, getValues, setValue, control } = useForm({ mode: 'all' });
 
-    const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
@@ -74,6 +73,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     const onSubmit = (pdf: any) => {
         setIsUploadingData(true)
         const updatedAmount = getValues("amount");
+        const year = getValues("year");
+
         const submitData = {
             year: year.getFullYear(),
             amount: updatedAmount,
@@ -139,7 +140,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             return (
                                 <div key={report.id} className={` ${styles.reportPDFContainer}`}>
                                     <a target="_blank" rel="noopener noreferrer"
-                                      href={getPDFFile('projectExpense', report.pdf)}>
+                                        href={getPDFFile('projectExpense', report.pdf)}>
                                         {/* <PDFIcon color="#2F3336" /> */}
                                         <PDFRed />
                                     </a>
@@ -165,26 +166,32 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                    <DatePicker
-                                        inputRef={register({
-                                            required: {
-                                                value: true,
-                                                message: t('manageProjects:spendingYearValidation')
-                                            }
-                                        })}
-                                        views={["year"]}
-                                        value={year}
-                                        onChange={(value) => setYear(value)}
-                                        label={t('manageProjects:spendingYear')}
+                                    <Controller
+                                        render={props => (
+                                            <DatePicker
+                                                inputRef={register({
+                                                    required: {
+                                                        value: true,
+                                                        message: t('manageProjects:spendingYearValidation')
+                                                    }
+                                                })}
+                                                views={["year"]}
+                                                value={props.value}
+                                                onChange={props.onChange}
+                                                label={t('manageProjects:spendingYear')}
+                                                inputVariant="outlined"
+                                                variant="inline"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                clearable
+                                                disableFuture
+                                                minDate={fiveYearsAgo}
+                                                maxDate={new Date()}
+                                                defaultValue={new Date()}
+                                            />
+                                        )}
                                         name="year"
-                                        inputVariant="outlined"
-                                        variant="inline"
-                                        TextFieldComponent={MaterialTextField}
-                                        autoOk
-                                        clearable
-                                        disableFuture
-                                        minDate={fiveYearsAgo}
-                                        maxDate={new Date()}
+                                        control={control}
                                     />
                                 </MuiPickersUtilsProvider>
                                 {errors.year && (
@@ -263,7 +270,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                 ) : (
                         <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
                             <p className={styles.inlineLinkButton}>
-                            {t('manageProjects:addAnotherYear')}
+                                {t('manageProjects:addAnotherYear')}
                             </p>
                         </div>
                     )}
@@ -282,7 +289,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         >
                             <BackArrow />
                             <p>
-                            {t('manageProjects:backToSites')}
+                                {t('manageProjects:backToSites')}
                             </p>
                         </AnimatedButton>
                     </div>
