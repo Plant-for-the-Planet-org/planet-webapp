@@ -27,7 +27,7 @@ export default function UploadImages({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [files, setFiles] = React.useState([]);
   const [errorMessage, setErrorMessage] = React.useState(null);
-  const { t } = useTranslation(['me', 'common']);
+  const { t, ready } = useTranslation(['me', 'common']);
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -66,10 +66,10 @@ export default function UploadImages({
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
-            setErrorMessage(t('me:contribNotFound'));
+            setErrorMessage(ready ? t('me:contribNotFound') : '');
           } else {
             setIsUploadingData(false);
-            setErrorMessage(t('me:errorOccured'));
+            setErrorMessage(ready ? t('me:errorOccured') : '');
             console.log(res.message);
           }
         }
@@ -108,7 +108,7 @@ export default function UploadImages({
     });
   };
 
-  return (
+  return ready ? (
     <>
       {/* Change to field array of react hook form  */}
       {uploadedImages && uploadedImages.length > 0 ? (
@@ -153,5 +153,5 @@ export default function UploadImages({
         </label>
       </div>
     </>
-  );
+  ) : null;
 }

@@ -12,24 +12,24 @@ import i18next from '../../../../../i18n';
 import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
+import { truncateString } from '../../../../utils/getTruncatedString';
 
 const config = tenantConfig();
-
+const { useTranslation } = i18next;
 export default function UserShareAndSupport({ userprofile }: any) {
-  const { useTranslation } = i18next;
-  const { t } = useTranslation(['donate', 'me']);
+  const { t, ready } = useTranslation(['donate', 'me']);
   const router = useRouter();
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
+  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
   const [screenWidth, setScreenWidth] = React.useState(null);
 
   const handleShare = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: t('donate:shareTextTitle'),
+          title: ready ? t('donate:shareTextTitle') : '',
           url: window.location.href,
           text: textToShare,
         })
@@ -55,7 +55,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
 
   const profileURL = userprofile.url ? userprofile.url.includes("http") || userprofile.url.includes("https") ? userprofile.url : `http://${userprofile.url}` : '';
 
-  return (
+  return ready ? (
     <div style={{ position: "relative" }}>
       {showSocialBtn && (screenWidth > 600) && (
         <motion.div
@@ -118,7 +118,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
             <div className={styles.bottomIconBg}>
               <GlobeSelected color={'white'} width={'24px'} />
             </div>
-            <p className={styles.bottomRowText}>{userprofile.urlText ? userprofile.urlText : 'URL'}</p>
+            <p className={styles.bottomRowText}>{userprofile.urlText ? truncateString(userprofile.urlText, 20) : 'URL'}</p>
           </a>
         )}
 
@@ -144,5 +144,5 @@ export default function UserShareAndSupport({ userprofile }: any) {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

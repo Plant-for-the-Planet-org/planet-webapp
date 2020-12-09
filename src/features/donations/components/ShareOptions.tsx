@@ -18,17 +18,17 @@ interface Props {
         handleTextCopiedSnackbarOpen:Function
         contactDetails:Object
 }
+const { useTranslation } = i18next;
 
 const ShareOptions = ({treeCount,sendRef,handleTextCopiedSnackbarOpen,contactDetails}:Props) => {
-  const { useTranslation } = i18next;
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n,ready } = useTranslation(['donate', 'common']);
   const config = tenantConfig();
 
-  const titleToShare = t('donate:titleToShare');
+  const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
   const userName = contactDetails.firstName + ' ' + contactDetails.lastName;
-  const textToShare = t('donate:textToShareLinkedin', { name: userName});
+  const textToShare = ready ? t('donate:textToShareLinkedin', { name: userName}) : '';
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
@@ -71,7 +71,7 @@ const ShareOptions = ({treeCount,sendRef,handleTextCopiedSnackbarOpen,contactDet
     openWindowLinks(shareUrl);
   };
 
-  return (
+  return ready ? (
     <div
       className={styles.shareRow}
       onMouseOut={() => setCurrentHover(-1)}
@@ -149,7 +149,7 @@ const ShareOptions = ({treeCount,sendRef,handleTextCopiedSnackbarOpen,contactDet
         )}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default ShareOptions;

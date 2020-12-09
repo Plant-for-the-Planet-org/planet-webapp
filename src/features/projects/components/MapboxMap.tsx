@@ -47,7 +47,7 @@ export default function MapboxMap({
   let timer: NodeJS.Timeout;
   const router = useRouter();
 
-  const { t, i18n } = useTranslation(['maps']);
+  const { i18n } = useTranslation();
 
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
