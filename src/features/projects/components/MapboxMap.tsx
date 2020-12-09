@@ -425,13 +425,6 @@ export default function MapboxMap({
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
-        {/* <Source
-          id="basemap"
-          type="vector"
-          url="https://www.arcgis.com/sharing/rest/content/items/3e1a00aeae81496587988075fe529f71/resources/styles/root.json"
-        >
-          <Layer id="basemap-layer" source="basemap" type="background" />
-        </Source> */}
         {showSingleProject ? (
           !siteExists ? (
             <Marker
@@ -444,26 +437,38 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonLayer"
-                type="fill"
-                source="singleProject"
-                paint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-              />
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#68B030',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
+            <>
+              {/* <Source
+                    id="satellite"
+                    type="raster"
+                    tiles={[
+                        'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
+                    ]}
+                    tileSize={128}
+                >
+                    <Layer id="satellite-layer" source="satellite" type="raster" />
+                </Source> */}
+              <Source id="singleProject" type="geojson" data={geoJson}>
+                <Layer
+                  id="ploygonLayer"
+                  type="fill"
+                  source="singleProject"
+                  paint={{
+                    'fill-color': '#fff',
+                    'fill-opacity': 0.2,
+                  }}
+                />
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#68B030',
+                    'line-width': 2,
+                  }}
+                />
+              </Source>
+            </>
           )
         ) : null}
 
