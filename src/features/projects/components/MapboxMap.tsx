@@ -22,6 +22,7 @@ import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+import style from '../../../../public/data/styles/root.json';
 
 const { useTranslation } = i18next;
 
@@ -69,9 +70,53 @@ export default function MapboxMap({
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
+  const [mapstyle, setMapStyle] = React.useState('');
+
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+
+  // first fetch the esri style file
+  // https://www.mapbox.com/mapbox-gl-js/style-spec
+
+  React.useEffect(() => {
+    const metadataUrl = style.sources.esri.url;
+    fetch(metadataUrl)
+      .then((response) => {
+        return response.json().then((metadata) => {
+          const ready = format(style, metadata);
+          setMapStyle(ready);
+        });
+      })
+      .catch((e) => {
+        console.log('Error:', e);
+      });
+
+    function format(style: any, metadata: any) {
+      // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
+      style.sources.esri = {
+        type: 'vector',
+        scheme: 'xyz',
+        tilejson: metadata.tilejson || '2.0.0',
+        format: (metadata.tileInfo && metadata.tileInfo.format) || 'pbf',
+        /* mapbox-gl-js does not respect the indexing of esri tiles
+      because we cache to different zoom levels depending on feature density, in rural areas 404s will still be encountered.
+      more info: https://github.com/mapbox/mapbox-gl-js/pull/1377
+      */
+        // index: metadata.tileMap ? style.sources.esri.url + '/' + metadata.tileMap : null,
+        maxzoom: 15,
+        tiles: [style.sources.esri.url + '/' + metadata.tiles[0]],
+        description: metadata.description,
+        name: metadata.name,
+      };
+      return style;
+    }
+  }, []);
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    mapStyle: EMPTY_STYLE,
     dragPan: true,
   });
 
@@ -124,10 +169,10 @@ export default function MapboxMap({
       };
       setViewPort(newViewport);
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -137,13 +182,22 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
       router.push('/', undefined, {
         shallow: true,
       });
     }
   };
+
+  React.useEffect(() => {
+    if (mapstyle) {
+      setMapState({
+        ...mapState,
+        mapStyle: mapstyle,
+      });
+    }
+  }, [mapstyle]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -210,10 +264,10 @@ export default function MapboxMap({
                 },
               }
             );
-            const newMapState = {
-              ...mapState,
-              mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-            };
+            // const newMapState = {
+            //   ...mapState,
+            //   mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+            // };
             const newViewport = {
               ...viewport,
               longitude,
@@ -223,14 +277,14 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
-            setMapState(newMapState);
+            // setMapState(newMapState);
             setViewPort(newViewport);
           }
         } else {
-          const newMapState = {
-            ...mapState,
-            mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-          };
+          // const newMapState = {
+          //   ...mapState,
+          //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          // };
           const newViewport = {
             ...viewport,
             longitude: singleProjectLatLong[1],
@@ -240,14 +294,14 @@ export default function MapboxMap({
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
           };
-          setMapState(newMapState);
+          // setMapState(newMapState);
           setViewPort(newViewport);
         }
       } else {
-        const newMapState = {
-          ...mapState,
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-        };
+        // const newMapState = {
+        //   ...mapState,
+        //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        // };
         const newViewport = {
           ...viewport,
           latitude: defaultMapCenter[0],
@@ -257,14 +311,14 @@ export default function MapboxMap({
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
-        setMapState(newMapState);
+        // setMapState(newMapState);
         setViewPort(newViewport);
       }
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -274,7 +328,7 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
     }
   }, [
@@ -371,6 +425,13 @@ export default function MapboxMap({
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
+        {/* <Source
+          id="basemap"
+          type="vector"
+          url="https://www.arcgis.com/sharing/rest/content/items/3e1a00aeae81496587988075fe529f71/resources/styles/root.json"
+        >
+          <Layer id="basemap-layer" source="basemap" type="background" />
+        </Source> */}
         {showSingleProject ? (
           !siteExists ? (
             <Marker
