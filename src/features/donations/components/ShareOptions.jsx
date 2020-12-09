@@ -1,4 +1,7 @@
 import React, { useRef } from 'react';
+import ReactDOM from 'react-dom';
+import domtoimage from 'dom-to-image';
+import PropTypes from 'prop-types';
 import styles from './../styles/ThankYou.module.scss';
 import EmailIcon from '../../../../public/assets/images/icons/share/Email';
 import EmailSolid from '../../../../public/assets/images/icons/share/EmailSolid';
@@ -8,20 +11,23 @@ import DownloadIcon from '../../../../public/assets/images/icons/share/Download'
 import DownloadSolid from '../../../../public/assets/images/icons/share/DownloadSolid';
 import InstagramIcon from '../../../../public/assets/images/icons/share/Instagram';
 import tenantConfig from '../../../../tenant.config';
-import ReactDOM from 'react-dom';
-import domtoimage from 'dom-to-image';
 import i18next from '../../../../i18n/';
 
 const { useTranslation } = i18next;
 const ShareOptions = (props) => {
-  const { t, i18n, ready } = useTranslation(['donate', 'common']);
+  const { t, ready } = useTranslation(['donate', 'common']);
   const config = tenantConfig();
 
   const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
-  const userName = props.contactDetails.firstName + ' ' + props.contactDetails.lastName;
-  const textToShare = ready ? t('donate:textToShareLinkedin', { name: userName}) : '';
+  let textToShare = '';
+  // props.contactDetails may be undefined or empty for legacy donations or redeem
+  if (props.contactDetails && (props.contactDetails.firstName || props.contactDetails.lastName)) {
+    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${props.contactDetails.firstName} ${props.contactDetails.lastName}` }) : '';
+  } else {
+    textToShare = ready ? t('donate:textToShareForMe') : '';
+  }
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
@@ -143,6 +149,13 @@ const ShareOptions = (props) => {
       </div>
     </div>
   ) : null;
+};
+
+ShareOptions.propTypes = {
+  treeCount: PropTypes.string.isRequired,
+  sendRef: PropTypes.node.isRequired,
+  handleTextCopiedSnackbarOpen: PropTypes.func,
+  contactDetails: PropTypes.node
 };
 
 export default ShareOptions;
