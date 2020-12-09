@@ -506,6 +506,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 />
               </div>
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
@@ -523,6 +524,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 />
               </div>
             </div>
