@@ -16,13 +16,6 @@
 }
 
 .marker {
-  border-radius: 50%;
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
-}
-
-.marker {
   width: 30px;
   height: 30px;
   border-radius: 50% 50% 50% 10%;
@@ -266,7 +259,11 @@
   margin: 0 5px;
   height: 7px;
   border-radius: 50px;
-  background: linear-gradient(90deg, rgba(126,212,230,1) 20%, rgba(59,0,255,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(126, 212, 230, 1) 20%,
+    rgba(59, 0, 255, 1) 100%
+  );
 }
 
 .reforestationScale > p:nth-child(1) {
@@ -387,6 +384,15 @@
 
 .exploreNote a:hover {
   color: $primaryColor;
+}
+
+.lngSwitcher {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 10px;
+  color: rgba(0,0,0,.75);
+  cursor: pointer;
 }
 
 @include smTabletView {

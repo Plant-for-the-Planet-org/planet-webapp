@@ -38,5 +38,11 @@
   "november": "Novembre",
   "december": "Décembre",
   "approx": "Approx.",
-  "view": "Voir"
+  "view": "Voir",
+  "verifyEmailHeader": "Veuillez confirmer votre email.",
+  "verifyEmailText": "Pour sécuriser votre compte, nous devons vérifier votre email. Vérifier votre boîte de réception ou votre dossier spam/corbeille pour trouver un email de confirmation, puis reconnectez vous.",
+  "verifyEmailInfo": "Si vous n'avez pas reçu d'email, reconnectez vous et nous vous enverrons un autre email.",
+  "continueToLogin": "Continuer à se connecter",
+  "supportsUNEP": "Soutient le PNUE",
+  "plantedBy": "Planté par"
 }

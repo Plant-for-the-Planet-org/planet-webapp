@@ -38,5 +38,11 @@
   "november": "Noviembre",
   "december": "Diciembre",
   "approx": "Aproximadamente",
-  "view": "Ver"
+  "view": "Ver",
+  "verifyEmailHeader": "Por favor, confirma tu correo electrónico.",
+  "verifyEmailText": "Para asegurar su cuenta, necesitamos verificar su correo electrónico. Por favor, compruebe su bandeja de entrada o la carpeta de spam/junk para un correo electrónico de confirmación y luego continúe con el inicio de sesión.",
+  "verifyEmailInfo": "Si no recibiste un correo electrónico, por favor, intenta iniciar sesión de nuevo y te enviaremos otro correo electrónico.",
+  "continueToLogin": "Continuar con el inicio de sesión",
+  "supportsUNEP": "Apoya al PNUMA",
+  "plantedBy": "Plantado por"
 }

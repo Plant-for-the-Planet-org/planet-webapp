@@ -8,7 +8,7 @@ const config = {
     primaryFontFamily: '"Libre Baskerville",Helvetica,Arial,serif',
     primaryFontURL: 'https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap',
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   meta: {
     title: 'La Coqueta ❤️ Trees',

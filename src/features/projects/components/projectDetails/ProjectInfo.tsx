@@ -3,7 +3,7 @@ import styles from './../../styles/ProjectDetails.module.scss'
 import i18next from '../../../../../i18n/'
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { format } from 'date-fns/fp';
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 
 interface Props {
@@ -75,7 +75,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-140px' }}>
                                         <p>
-                                            {t('manageProjects:abandonmentInfo')}
+                                            {t('manageProjects:yearAbandonedInfo')}
                                         </p>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {t('manageProjects:firstTreePlanted')}
                         </div>
                         <div className={styles.infoText}>
-                            {format('LLLL d, yyyy',new Date(Date.parse(project.firstTreePlanted.date.replace(/ /g,"T"))))}
+                            {formatDate(project.firstTreePlanted.date)}
                         </div>
                     </div>
                 )}
@@ -200,7 +200,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                        {t('manageProjects:causeOfDegredation')}
+                        {t('manageProjects:causeOfDegradation')}
                     </div>
                     <div className={styles.infoText}>
                         {project.degradationCause}
