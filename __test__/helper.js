@@ -1,6 +1,5 @@
 import webdriver from 'selenium-webdriver'
 import dotenv from 'dotenv';
-import { process } from 'babel-jest';
 dotenv.config({path: '../.env.local'})
 
 const capabilities = {
