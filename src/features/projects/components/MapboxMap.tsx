@@ -416,7 +416,7 @@ export default function MapboxMap({
         mapboxApiAccessToken={mapboxToken}
         mapOptions={{
           customAttribution:
-            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
+            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a> <a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
         }}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
@@ -438,16 +438,17 @@ export default function MapboxMap({
             </Marker>
           ) : (
             <>
-              {/* <Source
-                    id="satellite"
-                    type="raster"
-                    tiles={[
-                        'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
-                    ]}
-                    tileSize={128}
-                >
-                    <Layer id="satellite-layer" source="satellite" type="raster" />
-                </Source> */}
+              <Source
+                id="satellite"
+                type="raster"
+                attribution="Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community"
+                tiles={[
+                  'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                ]}
+                tileSize={128}
+              >
+                <Layer id="satellite-layer" source="satellite" type="raster" />
+              </Source>
               <Source id="singleProject" type="geojson" data={geoJson}>
                 <Layer
                   id="ploygonLayer"
