@@ -154,18 +154,17 @@ export default function NavbarComponent(props: any) {
               className={`${styles.first_icon} ${styles.tenant_logo}`}
               style={{ padding: '0rem 0.5rem' }}
             >
-              <div className={styles.tenant_logo_container}>
-                <div style={{ padding: '0.4rem 0.5rem' }}>
-                  <a href="https://www.plant-for-the-planet.org">
-                    {ready ? (
-                      <img
-                        src="/assets/images/planet.svg"
-                        alt={t('common:about_pftp')}
-                      />
-                    ) : null}
-                  </a>
+              <Link href="https://www.plant-for-the-planet.org">
+                <div className={styles.link_container}>
+                  <div className={styles.link_icon}>
+                    <img
+                      src="/assets/images/planet.svg"
+                      alt={t('common:about_pftp')}
+                    />
+                  </div>
+                  {ready ? <p>{t('common:aboutUs')}</p> : null}
                 </div>
-              </div>
+              </Link>
             </div>
           )}
 
