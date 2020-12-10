@@ -1,8 +1,7 @@
 import { driver } from './helper';
-import { load } from './Pages/index';
 
-describe('homepage', () => {
-  let testStatus = false;
+describe('hompage', () => {
+    let testStatus = false;
   afterEach(() => {
     if (testStatus) {
       driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Yaay! my sample test passed"}}');
@@ -11,9 +10,23 @@ describe('homepage', () => {
     }
     testStatus = false;
   });
-  it('should show the right title', async () => {
-    await load();
-    expect(await driver.getTitle()).toBe("Together let's plant a Trillion Trees!");
-    testStatus = true;
+//   });
+  it('should load homepage', () => {
+    driver.get('https://www.trilliontreecampaign.org/').then(function () {
+  driver.getTitle().then(function (title) {
+    console.log(title);
+    expect(title).toBe("Together let's plant a Trillion Trees!");
+    testStatus = true
+    driver.quit();
   });
 });
+  })
+})
+// HTTP Server should be running on 8099 port of GitHub runner
+// driver.get('https://www.trilliontreecampaign.org/').then(function () {
+//   driver.getTitle().then(function (title) {
+//     console.log(title);
+//     expect(title).toBe("Together let's plant a Trillion Trees!");
+//     driver.quit();
+//   });
+// });

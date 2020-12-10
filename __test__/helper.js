@@ -1,5 +1,6 @@
-import {Builder} from 'selenium-webdriver'
+import webdriver from 'selenium-webdriver'
 import dotenv from 'dotenv';
+import { process } from 'babel-jest';
 dotenv.config({path: '../.env.local'})
 
 const capabilities = {
@@ -15,7 +16,7 @@ const capabilities = {
 }
 
 
-export const driver = new Builder()
+export const driver = new webdriver.Builder()
   .forBrowser('chrome')
   .usingServer('https://hub-cloud.browserstack.com/wd/hub')
   .withCapabilities(capabilities)
