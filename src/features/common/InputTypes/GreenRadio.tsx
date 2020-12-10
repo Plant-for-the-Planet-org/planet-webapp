@@ -5,7 +5,7 @@ const GreenRadio = withStyles({
   root: {
     color: '#000000',
     '&$checked': {
-      color: '#68B030',
+      color: '#89B53A',
     },
   },
   checked: {},

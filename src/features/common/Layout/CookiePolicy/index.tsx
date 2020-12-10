@@ -2,23 +2,11 @@ import React, { useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import i18next from '../../../../../i18n';
-import { useAuth0 } from '@auth0/auth0-react';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(true);
   const { useTranslation } = i18next;
   const { t, ready } = useTranslation(['leaderboard']);
-
-  const {
-    isLoading,
-    isAuthenticated
-  } = useAuth0();
-
-  React.useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      setShowCookieNotice(false);
-    }
-  }, [isAuthenticated, isLoading])
 
   React.useEffect(() => {
     let prev = localStorage.getItem('cookieNotice');

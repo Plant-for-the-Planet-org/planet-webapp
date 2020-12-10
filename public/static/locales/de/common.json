@@ -38,12 +38,5 @@
   "november": "November",
   "december": "Dezember",
   "approx": "Ungefähr",
-  "view": "Ansehen",
-  "opening_native_app": "Diese Seite ist nur in unserer iOS- oder Android-App verfügbar.",
-  "verifyEmailHeader": "Bitte bestätige Deine E-Mail.",
-  "verifyEmailText": "Um Dein Konto zu sichern, müssen wir Deine E-Mail verifizieren. Bitte überprüfe Deinen Posteingang oder Deinen Spam- bzw. Junk-Ordner auf eine Bestätigungs-E-Mail und fahre dann mit dem Login fort.",
-  "verifyEmailInfo": "Wenn Du keine E-Mail erhalten hast, versuche bitte erneut, Dich anzumelden, und wir senden Dir eine weitere E-Mail.",
-  "continueToLogin": "Weiter zum Login",
-  "supportsUNEP": "Unterstützt das UNEP",
-  "plantedBy": "Gepflanzt von"
+  "view": "Ansehen"
 }

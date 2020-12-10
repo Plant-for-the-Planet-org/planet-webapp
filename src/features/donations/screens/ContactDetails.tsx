@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
+import Sugar from 'sugar';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
@@ -9,7 +10,6 @@ import { ContactDetailsPageProps } from '../../common/types/donations';
 import styles from '../styles/ContactDetails.module.scss';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 
 const { useTranslation } = i18next;
@@ -234,7 +234,7 @@ function ContactDetails({
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+              treeCount: Sugar.Number.format(Number(treeCount)),
             })}
           </div>
         </div>

@@ -20,8 +20,7 @@ const ShareOptions = (props) => {
   const titleToShare = t('donate:titleToShare');
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
-  const userName = props.contactDetails.firstName + ' ' + props.contactDetails.lastName;
-  const textToShare = t('donate:textToShareLinkedin', { name: userName});
+  const textToShare = t('donate:textToShare', { linkToShare: linkToShare });
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
@@ -93,7 +92,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(
-            `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}&hashtag=%23StopTalkingStartPlanting`,
+            `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
             '_blank'
           )
         }
@@ -120,7 +119,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
-          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=PftP_int&url=${linkToShare}&text=${textToShare}`)
+          shareClicked(`https://twitter.com/intent/tweet?text=${textToShare}`)
         }
       >
         <TwitterIcon

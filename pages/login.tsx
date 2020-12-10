@@ -1,59 +1,86 @@
-import React, { ReactElement } from 'react'
-import { useAuth0 } from '@auth0/auth0-react';
-import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import { getUserInfo } from '../src/utils/auth0/userInfo';
+import { useSession, signIn, signOut } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import Layout from '../src/features/common/Layout';
+import tenantConfig from '../tenant.config';
+import Head from 'next/head';
+import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import {setUserExistsInDB, removeUserExistsInDB, setUserInfo, removeUserInfo} from '../src/utils/auth0/localStorageUtils'
+import { getAccountInfo } from '../src/utils/auth0/apiRequests'
+import i18next from '../i18n'
 
-interface Props {
+const config = tenantConfig();
 
-}
+const { useTranslation } = i18next;
 
-function Login({ }: Props): ReactElement {
-
+export default function Login() {
+  const [session, loading] = useSession();
   const router = useRouter();
 
-    // if the user is authenticated check if we have slug, and if we do, send user to slug
-    // else send user to login flow
-    const {
-        isAuthenticated,
-        isLoading,
-        loginWithRedirect,
-        getAccessTokenSilently,
-        logout
-    } = useAuth0();
+  const { t } = useTranslation(['login']);
 
-    React.useEffect(() => {
-        async function loadFunction() {
-          const token = await getAccessTokenSilently();
-          let userInfo;
-          userInfo = await getUserInfo(token, router, logout);            
-          // redirect
+  React.useEffect(()=> {
 
-          if (typeof window !== 'undefined' && userInfo) {
-            if(localStorage.getItem('redirectLink')){
-              const redirectLink = localStorage.getItem('redirectLink');
-              if(redirectLink){
-                localStorage.removeItem("redirectLink");
-                router.replace(redirectLink);
-              }
-            }else{
-              router.push(`/t/${userInfo.slug}`);
-            }
-          }
+  const fetchInfoFromBackend = async () => {
+    try {
+      const res = await getAccountInfo(session);
+      if (res.status === 200) {
+        // console.log('in 200-> user exists in our DB')
+        //if 200-> user exists in db
+        const resJson = await res.json();
+        setUserExistsInDB(true)
+        const userInfo = {
+          slug: resJson.slug,
+          profilePic: resJson.image,
+          type: resJson.type
         }
-        if (!isLoading && isAuthenticated) {
-          loadFunction()
-        }else if(!isLoading && !isAuthenticated){
-            loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+        setUserInfo(userInfo)
+        if (typeof window !== 'undefined') {
+          router.push(`/t/${resJson.slug}`);
         }
-      }, [isAuthenticated, isLoading])
+      } else if (res.status === 303) {
+        // if 303 -> user doesn not exist in db
+        // console.log('in 303-> user does not exist in our DB')
+        setUserExistsInDB(false)
+        if (typeof window !== 'undefined') {
+          router.push('/complete-signup');
+        }
+      } else if (res.status === 401){
+        // console.log('in 401-> unauthenticated user / invalid token')
+        signOut()
+        removeUserExistsInDB()
+        removeUserInfo()
+        router.push('/');
+      } else {
+        // console.log('in /login else -> any other error')
+      }
+    } catch (e){
+      
+    }
+  }
 
-    
-    return (
-        <div>
-            <UserProfileLoader/>
-        </div>
-    )
+  // no user present -> start login flow
+    if (!loading && !session) {
+      signIn('auth0', { callbackUrl: '/login' });
+    }
+
+  // some user present
+  if (!loading && session){
+    fetchInfoFromBackend()
+  }
+  }, [loading])
+
+  return (
+    <>
+      <Head>
+        {/* <title>{t('login:loginTitle', {
+          log: config.meta.title
+        })}</title> */}
+        <title>{`${config.meta.title} - Login`}</title>
+      </Head>
+      <Layout>
+        <UserProfileLoader />
+      </Layout>
+    </>
+  );
 }
-
-export default Login

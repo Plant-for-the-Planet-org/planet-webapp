@@ -1,5 +1,4 @@
 {
   "setTarget": "Fijar el objetivo..",
-  "targetSave": "Guardar",
-  "targetErrorMessage": "El número debe ser positivo o mayor que cero"
+  "targetSave": "Guardar"
 }

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
+import Sugar from 'sugar';
 import DownArrow from '../../../../public/assets/images/icons/DownArrow';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { formatAmountForStripe } from '../../../utils/stripe/stripeHelpers';
@@ -16,7 +17,7 @@ import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
 import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import {useSession} from 'next-auth/client';
 
 const { useTranslation } = i18next;
 
@@ -42,13 +43,13 @@ function TreeDonation({
   setDirectGift,
   setPaymentType,
   isPaymentOptionsLoading,
-  token
 }: TreeDonationProps): ReactElement {
   const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const [session] = useSession();
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
-    false
+    false,
   );
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -115,16 +116,10 @@ function TreeDonation({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      token: token || null,
+      session: session || null,
     };
     payWithCard({ ...payWithCardProps });
   };
-
-  const formatter = new Intl.NumberFormat(i18n.language, {
-    // These options are needed to round to whole numbers if that's what you want.
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   return isPaymentProcessing ? (
@@ -132,13 +127,8 @@ function TreeDonation({
   ) : (
     <>
       <div
-        className={`${styles.cardContainer} ${
-          isGift ? styles.giftExpanded : null
-        }`}
-        style={{
-          alignSelf: isGift ? 'start' : 'center',
-          width: `${screenWidth}%`,
-        }}
+        className={styles.cardContainer}
+        style={{ alignSelf: isGift ? 'start' : 'center', width: `${screenWidth}%` }}
       >
         <div className={styles.header}>
           <div
@@ -172,7 +162,8 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-          {formatter.format(treeCost)}{' '}
+            {getFormatedCurrency(i18n.language, currency, treeCost)}
+{' '}
             {t('donate:perTree')}
           </div>
         </div>
@@ -320,30 +311,30 @@ function TreeDonation({
           </div>
           <div className={styles.totalCostText}>
             {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+              treeCount: Sugar.Number.format(Number(treeCount)),
             })}
           </div>
         </div>
 
-        {!isPaymentOptionsLoading &&
-        paymentSetup?.gateways?.stripe?.account &&
-        currency ? (
+        {!isPaymentOptionsLoading
+        && paymentSetup?.gateways?.stripe?.account
+        && currency ? (
           <PaymentRequestCustomButton
             country={country}
             currency={currency}
             amount={formatAmountForStripe(
               treeCost * treeCount,
-              currency.toLowerCase()
+              currency.toLowerCase(),
             )}
             onPaymentFunction={onPaymentFunction}
             continueNext={continueNext}
           />
-        ) : (
+          ) : (
           <div className={styles.actionButtonsContainer}>
             <ButtonLoader />
             <ButtonLoader />
           </div>
-        )}
+          )}
       </div>
       <SelectTaxDeductionCountryModal
         openModal={openTaxDeductionModal}

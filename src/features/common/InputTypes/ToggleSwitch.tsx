@@ -6,10 +6,10 @@ export default function ToggleSwitch(props: any) {
     switchBase: {
       color: '#fff',
       '&$checked': {
-        color: props.color ? props.color : '#68B030',
+        color: props.color ? props.color : '#89B53A',
       },
       '&$checked + $track': {
-        backgroundColor: props.color ? props.color : '#68B030',
+        backgroundColor: props.color ? props.color : '#89B53A',
       },
     },
     checked: {},

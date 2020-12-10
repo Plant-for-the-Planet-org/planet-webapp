@@ -1,3 +1,4 @@
+import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
@@ -22,12 +23,12 @@ const { useTranslation } = i18next;
 
 interface Props {
     projectGUID: String;
-    token: any;
+    session: any;
     setIsUploadingData: Function;
     userLang:String;    
 }
 
-function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }: Props): ReactElement {
+function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
@@ -72,7 +73,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, token).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, session).then((res) => {
             if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res)
@@ -97,7 +98,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
     };
 
     const deleteProjectCertificate = (id: any) => {
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/certificates/${id}`, token).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/certificates/${id}`, session).then(res => {
             if (res !== 404) {
                 let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
@@ -107,8 +108,8 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
 
     React.useEffect(() => {
         // Fetch certificates of the project 
-        if (projectGUID && token?.accessToken)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`, token).then((result) => {
+        if (projectGUID && session?.accessToken)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`, session).then((result) => {
                 if (result.certificates.length > 0) {
                     setShowForm(false)
                 }

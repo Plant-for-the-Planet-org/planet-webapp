@@ -71,7 +71,6 @@
   "siteStatusPlanted": "Plantado",
   "siteStatusBarren": "Árido",
   "siteStatusReforestation": "Reflorestamento",
-  "projectStatus": "Status do projeto",
   "selectProjectStatus": "Por favor, selecione Status do Projeto",
   "saveAndAddSite": "Salvar & Adicionar outro local",
   "addSite": "Adicionar outro local",
@@ -92,15 +91,5 @@
   "backToSpending": "Voltar aos gastos do projeto",
   "pendingReview": "Revisão Pendente",
   "submitForReview": "Submeter para revisão",
-  "addProject": "Adicionar Projeto",
-  "abandonment": "Abandono",
-  "survivalRate": "Taxa de Sobrevivência",
-  "survivalRateInfo": "Porcentagem de árvores que sobrevivem ao primeiro ano de plantio",
-  "employees": "Empregados",
-  "siteOwnership": "Propriedade do site",
-  "longTermProtection": "Proteção a Longo Prazo",
-  "externalCertifications": "Certificações externas",
-  "projectSpendingFinancial": "Gastos financeiros em projetos",
-  "issueDate": "Data de emissão",
-  "acquisitionYear": "Ano de Aquisição"
+  "addProject": "Adicionar Projeto"
 }

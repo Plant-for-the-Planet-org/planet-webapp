@@ -4,8 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker, NavigationControl, FlyToInterpolator } from 'react-map-gl';
-import * as d3 from 'd3-ease';
+import MapGL, { Marker, NavigationControl } from 'react-map-gl';
 import { MenuItem } from '@material-ui/core';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
@@ -31,12 +30,12 @@ interface Props {
   setProjectGUID: Function;
   setErrorMessage: Function;
   projectGUID: any;
-  token: any;
+  session: any;
 }
 
 export default function BasicDetails({
   handleNext,
-  token,
+  session,
   projectDetails,
   setProjectDetails,
   errorMessage,
@@ -115,7 +114,7 @@ export default function BasicDetails({
   // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
-
+  
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -154,7 +153,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
-
+    
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -183,7 +182,7 @@ export default function BasicDetails({
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token
+        session
       ).then((res) => {
         if (!res.code) {
           setErrorMessage('');
@@ -201,7 +200,7 @@ export default function BasicDetails({
         }
       });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token).then(
+      postAuthenticatedRequest(`/app/projects`, submitData, session).then(
         (res) => {
           if (!res.code) {
             setErrorMessage('');
@@ -383,7 +382,7 @@ export default function BasicDetails({
                         style={{ left: '-150px' }}
                       >
                         <p>
-                          {t('manageProjects:receiveDonationsInfo')}
+                        {t('manageProjects:receiveDonationsInfo')}
                         </p>
                       </div>
                     </div>
@@ -452,7 +451,7 @@ export default function BasicDetails({
             <MapGL
               {...viewport}
               ref={mapRef}
-              mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
+              mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
               mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
               onViewportChange={_onViewportChange}
               onClick={(event) => {
@@ -465,9 +464,7 @@ export default function BasicDetails({
                   ...viewport,
                   latitude: event.lngLat[1],
                   longitude: event.lngLat[0],
-                  transitionDuration: 400,
-                  transitionInterpolator: new FlyToInterpolator(),
-                  transitionEasing: d3.easeCubic,
+                  zoom: 7,
                 });
                 setValue('projectCoords', latLong);
               }}

@@ -1,6 +1,7 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { ReactElement } from 'react';
+import Sugar from 'sugar';
 import tenantConfig from '../../../../tenant.config';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../common/types/donations';
@@ -9,7 +10,6 @@ import ShareOptions from '../components/ShareOptions';
 import { getPaymentType } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
@@ -81,7 +81,7 @@ function ThankYou({
           })}
 {' '}
         {t('donate:yourTreesPlantedByOnLocation', {
-          treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+          treeCount: Sugar.Number.format(Number(treeCount)),
           projectName: project.name,
           location: t('country:' + project.country.toLowerCase()),
         })}
@@ -101,7 +101,7 @@ function ThankYou({
           </div>
             <p className={styles.tempDonationCount}>
               {t('donate:myTreesPlantedByOnLocation', {
-                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+                treeCount: Sugar.Number.format(Number(treeCount)),
                 location: t('country:' + project.country.toLowerCase()),
               })}
             </p>
@@ -118,7 +118,7 @@ function ThankYou({
           </div>
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+              treeCount: Sugar.Number.format(Number(treeCount)),
               location: t('country:' + project.country.toLowerCase()),
             })}
             <p className={styles.donationTenant}>
@@ -129,10 +129,9 @@ function ThankYou({
       </div>
 
       <ShareOptions
-        treeCount={getFormattedNumber(i18n.language, Number(treeCount))}
+        treeCount={treeCount}
         sendRef={sendRef}
         handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-        contactDetails={contactDetails}
       />
 
       {/* snackbar for showing text copied to clipboard */}

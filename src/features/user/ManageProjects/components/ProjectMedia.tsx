@@ -20,10 +20,10 @@ interface Props {
   setProjectDetails: Function;
   projectGUID: String;
   handleReset: Function;
-  token: any;
+  session: any;
 }
 
-export default function ProjectMedia({ handleBack, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectMedia({ handleBack, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
   const { t, i18n } = useTranslation(['manageProjects']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
@@ -35,8 +35,8 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   React.useEffect(() => {
     // Fetch images of the project 
-    if (projectGUID && token)
-      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, token).then((result) => {
+    if (projectGUID && session?.accessToken)
+      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, session).then((result) => {
         setUploadedImages(result.images)
       })
   }, [projectGUID]);
@@ -49,7 +49,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       "description": null,
       "isDefault": false
     }
-    postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
+    postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, session).then((res) => {
       if (!res.code) {
         let newUploadedImages = uploadedImages;
         newUploadedImages.push(res)
@@ -115,7 +115,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   }, [files]);
 
   const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, token).then(res => {
+    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, session).then(res => {
       if (res !== 404) {
         let uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
         setUploadedImages(uploadedFilesTemp)
@@ -130,7 +130,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     const submitData = {
       videoUrl: data.youtubeURL
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
+    putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
       if (!res.code) {
         setProjectDetails(res)
         setIsUploadingData(false)
@@ -161,7 +161,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     const submitData = {
       isDefault: true
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token).then((res) => {
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, session).then((res) => {
       if (!res.code) {
         let tempUploadedData = uploadedImages;
         tempUploadedData.forEach((image) => {
@@ -189,7 +189,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     const submitData = {
       description: e.target.value
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token).then((res) => {
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, session).then((res) => {
       if (!res.code) {
         let tempUploadedData = uploadedImages;
         tempUploadedData[index].description = res.description;

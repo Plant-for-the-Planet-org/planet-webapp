@@ -71,7 +71,6 @@
   "siteStatusPlanted": "Planted",
   "siteStatusBarren": "Barren",
   "siteStatusReforestation": "Reforestation",
-  "projectStatus": "Project Status",
   "selectProjectStatus": "Please select Project Status",
   "saveAndAddSite": "Save & Add another site",
   "addSite": "Add another site",
@@ -92,15 +91,5 @@
   "backToSpending": "Back to project spending",
   "pendingReview": "Pending Review",
   "submitForReview": "Submit for Review",
-  "addProject": "Add Project",
-  "abandonment": "Abandonment",
-  "survivalRate": "Survival rate",
-  "survivalRateInfo": "Percentage of trees that survive the first year of plantation",
-  "employees": "Employees",
-  "siteOwnership": "Site ownership",
-  "longTermProtection": "Long Term Protection",
-  "externalCertifications": "External Certifications",
-  "projectSpendingFinancial": "Financial Project Spendings",
-  "issueDate": "Date issued",
-  "acquisitionYear": "Acquisition Year"
+  "addProject": "Add Project"
 }

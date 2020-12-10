@@ -100,7 +100,7 @@ export default function CountrySelect(props: {
       renderOption={(option) => (
         <>
           <span>{countryToFlag(option.code)}</span>
-          {props.name === 'editProfile' ? (t(`country:${option.code.toLowerCase()}`)) : (t(`country:${option.code.toLowerCase()}`) + ' ' + option.code)}
+          {t(`country:${option.code.toLowerCase()}`) + ' ' + option.code}
         </>
       )}
       onChange={(event: any, newValue: CountryType | null) => {

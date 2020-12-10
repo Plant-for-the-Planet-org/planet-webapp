@@ -304,7 +304,6 @@
     width: fit-content;
     font-weight: bold;
     font-size: 10px;
-    min-width: 100px;
   }
   .uploadedMapDeleteButton {
     background-color: $light;
@@ -319,6 +318,7 @@
     align-items: center;
     z-index: 999;
     right: 5%;
+    width: fit-content;
     > svg {
       height: 12px;
       &:hover {
@@ -456,16 +456,6 @@
 
 /*  error */
 .errorMessage {
-  font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  color: #e74c3c;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.geoJsonError {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: #e74c3c;

@@ -3,17 +3,15 @@ const config = {
   tenantName: 'planet',
   // url of tenant home page
   tenantURL: 'trilliontreecampaign.org',
-  showUNEPLogo:true,
-  showUNDecadeLogo:true,
   // font family and it's property particular to tenant
   tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
+    primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
+    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
   },
-  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
+  languages: ['en', 'de'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,

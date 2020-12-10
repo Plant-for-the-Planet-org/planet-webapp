@@ -1,6 +1,6 @@
 import React from 'react';
+import Sugar from 'sugar';
 import treeCounterStyles from './TreeCounter.module.scss';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 
 export default function TpoProfile(props: any) {
   return (
@@ -8,7 +8,7 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.backgroundCircle}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h2 className={treeCounterStyles.countNumber}>
-            {getFormattedNumber('en', Number(props.planted))}
+            {Sugar.Number.format(Number(props.planted))}
           </h2>
           <h2 className={treeCounterStyles.countLabel}>
           trees supported by the Salesforce community through the projects on this platform

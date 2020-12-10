@@ -1,14 +1,13 @@
 import Modal from '@material-ui/core/Modal';
 import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement, Ref } from 'react';
+import Sugar from 'sugar';
 import getImageUrl from '../../../utils/getImageURL';
 import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-import { truncateString } from '../../../utils/TruncateText';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -72,7 +71,7 @@ export default function PopupProject({
               </div> */}
 
           <div className={'projectName'}>
-            {truncateString(project.properties.name, 54)}
+            {Sugar.String.truncate(project.properties.name, 54)}
           </div>
         </div>
       </div>
@@ -87,7 +86,7 @@ export default function PopupProject({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
+              {Sugar.Number.abbr(Number(project.properties.countPlanted), 1)}{' '}
               {t('common:planted')} •{' '}
               <span style={{ fontWeight: 400 }}>
               {t('country:' + project.properties.country.toLowerCase())}

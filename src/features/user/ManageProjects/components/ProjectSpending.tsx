@@ -1,3 +1,4 @@
+import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
@@ -24,11 +25,11 @@ interface Props {
     handleBack: Function;
     projectGUID: String;
     handleReset: Function;
-    token: any;
+    session: any;
     userLang: String;
 }
 
-export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, session, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n } = useTranslation(['manageProjects']);
 
@@ -80,7 +81,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
 
             if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
@@ -107,7 +108,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     const deleteProjectSpending = (id: any) => {
         setIsUploadingData(true)
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, session).then(res => {
             if (res !== 404) {
                 let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
@@ -119,8 +120,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     React.useEffect(() => {
         // Fetch spending of the project 
-        if (projectGUID && token)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
+        if (projectGUID && session?.accessToken)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
                 if (result.expenses.length > 0) {
                     setShowForm(false)
                 }

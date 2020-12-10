@@ -1,4 +1,4 @@
-@import './../../../../theme/theme';
+@import "./../../../../theme/theme";
 .videoSection {
   width: 100%;
   display: flex;
@@ -21,39 +21,38 @@
 }
 
 .videoTitle {
-  display: flex;
-  align-items: center;
-  > svg {
-    transform: rotate(-90deg);
-    margin-left: 12px;
+  display:flex;
+  align-items:center;
+  > svg{
+    transform:rotate(-90deg);
+    margin-left:12px
   }
 }
 
-.videoContainerWrapper {
+.videoContainerWrapper{
   width: 100%;
-  max-width: 1280px;
 }
-.videoContainer {
+.videoContainer{
   margin-top: 36px;
   width: 100%;
   position: relative;
-  padding-top: 56.25%;
+  padding-top: 56.25% 
 }
 
-.video {
+.video{
   position: absolute;
   top: 0;
   left: 0;
 }
 
-@include smTabletView {
-  .videoContainerWrapper {
+@include smTabletView{
+  .videoContainerWrapper{
     width: 80%;
   }
 }
 
-@include lgLaptopView {
-  .videoContainerWrapper {
+@include lgLaptopView{
+  .videoContainerWrapper{
     width: 66.66%;
   }
 }

@@ -1,36 +1,11 @@
 import getsessionId from "./getSessionId";
 
-//  API call to private /profile endpoint
-export async function getAccountInfo(token:any) {
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-      method: 'GET',
-      headers: {
-        'tenant-key': `${process.env.TENANTID}`,
-        'X-SESSION-ID': await getsessionId(),
-        'Authorization': `OAuth ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`
-      },
-    }
-  );
-  return response;
-}
-
 export async function getRequest(url: any) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
-      method: 'GET',
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
-        'X-SESSION-ID': await getsessionId(),
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`
+        'X-SESSION-ID': await getsessionId()
       },
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -49,19 +24,13 @@ export async function getRequest(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequest(url: any,token:any) {
+export async function getAuthenticatedRequest(url: any,session:any) {
   let result= {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
-      method: 'GET',
       headers: {
         'tenant-key': `${process.env.TENANTID}`,
         'X-SESSION-ID': await getsessionId(),
-        'Authorization': `OAuth ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`
+        'Authorization': `OAuth ${session.accessToken}`,
       },
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -88,7 +57,7 @@ export async function getAuthenticatedRequest(url: any,token:any) {
 }
 
 
-export async function postAuthenticatedRequest(url:any,data:any,token:any) {
+export async function postAuthenticatedRequest(url:any,data:any,session:any) {
 
   const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'POST',
@@ -97,7 +66,7 @@ export async function postAuthenticatedRequest(url:any,data:any,token:any) {
           'Content-Type': 'application/json',
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
-          'Authorization': `OAuth ${token}`,
+          'Authorization': `OAuth ${session.accessToken}`,
           'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
@@ -108,7 +77,7 @@ export async function postAuthenticatedRequest(url:any,data:any,token:any) {
   return result;
 }
 
-export async function deleteAuthenticatedRequest(url:any,token:any) {
+export async function deleteAuthenticatedRequest(url:any,session:any) {
   let result;
    await fetch(process.env.API_ENDPOINT + url, {
       method: 'DELETE',
@@ -116,7 +85,7 @@ export async function deleteAuthenticatedRequest(url:any,token:any) {
           'Content-Type': 'application/json',
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
-          'Authorization': `OAuth ${token}`,
+          'Authorization': `OAuth ${session.accessToken}`,
           'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
@@ -128,7 +97,7 @@ export async function deleteAuthenticatedRequest(url:any,token:any) {
   return result;
 }
 
-export async function putAuthenticatedRequest(url:any,data:any,token:any) {
+export async function putAuthenticatedRequest(url:any,data:any,session:any) {
 
   const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
@@ -137,7 +106,7 @@ export async function putAuthenticatedRequest(url:any,data:any,token:any) {
           'Content-Type': 'application/json',
           'tenant-key': `${process.env.TENANTID}`,
           'X-SESSION-ID': await getsessionId(),
-          'Authorization': `OAuth ${token}`,
+          'Authorization': `OAuth ${session.accessToken}`,
           'x-locale': `${localStorage.getItem('language')
                   ? localStorage.getItem('language')
                   : 'en'
@@ -145,25 +114,5 @@ export async function putAuthenticatedRequest(url:any,data:any,token:any) {
       },
   });
   const result = await res.json();
-  return result;
-}
-
-export async function getRequestWithoutRedirecting(url: any) {
-  let result;
-  await fetch(`${process.env.API_ENDPOINT}` + url, {
-      headers: {
-        'tenant-key': `${process.env.TENANTID}`,
-        'X-SESSION-ID': await getsessionId(),
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-      },
-    }, ).then(async(res) => {
-        result = res.status === 200 ? await res.json() : res.status;
-        return result;
-    })
-    .catch((err) => console.log(`Something went wrong: ${err}`));
   return result;
 }

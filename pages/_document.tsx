@@ -13,7 +13,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head/>
+        <Head />
         <body style={{ overscrollBehavior: 'contain' }}>
           <Main />
           <NextScript />

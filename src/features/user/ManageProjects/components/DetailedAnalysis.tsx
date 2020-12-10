@@ -1,3 +1,4 @@
+import 'date-fns'
 import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -28,10 +29,10 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
-    token: any;
+    session: any;
     userLang: String;
 }
-export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack, userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n } = useTranslation(['manageProjects', 'common']);
 
     const [siteOwners, setSiteOwners] = React.useState([
@@ -121,7 +122,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             plantingSeasons: months
         }
 
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)
@@ -288,7 +289,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MaterialTextField
-                                inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
+                                inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
                                 label={t('manageProjects:employeeCount')}
                                 variant="outlined"
                                 name="employeesCount"
@@ -566,7 +567,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     {isCertified ? (
                         <ProjectCertificates
                             projectGUID={projectGUID}
-                            token={token}
+                            session={session}
                             setIsUploadingData={setIsUploadingData}
                             userLang={userLang}
                         />

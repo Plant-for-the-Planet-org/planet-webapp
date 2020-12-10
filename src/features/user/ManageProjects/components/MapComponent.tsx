@@ -1,137 +1,205 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
-import DrawControl from 'react-mapbox-gl-draw';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import MapGL, {
+  FlyToInterpolator,
+  NavigationControl,
+  WebMercatorViewport,
+} from 'react-map-gl';
+import { Editor, DrawPolygonMode, EditingMode } from 'react-map-gl-draw';
 import styles from './../styles/StepForm.module.scss';
+import PolygonIcon from '../../../../../public/assets/images/icons/manageProjects/Polygon';
+import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
+import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
-import i18next from './../../../../../i18n';
-import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from "geojson-validation";
+import Expand from '../../../../../public/assets/images/icons/manageProjects/Expand';
+import i18next from './../../../../../i18n'
 
 const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
-  geoJsonError: any;
-  setGeoJsonError: Function;
+  features: any;
+  setFeatures: Function;
 }
 
 const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
-
 export default function MapComponent({
   geoJson,
   setGeoJson,
-  geoJsonError,
-  setGeoJsonError
+  features,
+  setFeatures,
 }: Props): ReactElement {
-  const defaultMapCenter = [-28.5, 36.96];
+  const drawMode = new DrawPolygonMode();
+  const editMode = new EditingMode();
+  const [modeHandler, setModeHandler] = React.useState(drawMode);
+  const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
   const { t, i18n } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
-    height: '400px',
-    width: '100%',
-    center: defaultMapCenter,
-    zoom: [defaultZoom],
-  });
-  const [viewport2, setViewPort2] = React.useState({
+    width: 700,
     height: 400,
-    width: 500,
-    center: defaultMapCenter,
+    latitude: defaultMapCenter[0],
+    longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
   const reader = new FileReader();
+  // const [expanded, setExpanded] = React.useState(false);
   const mapParentRef = React.useRef(null);
+  const [selectedFeature, setSelectedFeature] = React.useState();
 
-  const drawControlRef = React.useRef(null);
-
-  const onDrawCreate = ({ features }: any) => {
-    if (drawControlRef.current) {
-      setGeoJson(drawControlRef.current.draw.getAll());
-    }
+  const _onViewportChange = (view: any) => setViewPort({ ...view });
+  
+  const _renderToolbar = () => {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          maxWidth: '320px',
+          borderRadius: '10px',
+        }}
+      >
+        {/* <div
+          onClick={() => {
+            expanded ? setExpanded(false) : setExpanded(true);
+          }}
+          className={styles.mapTool}
+        >
+          <Expand color={'#000'} />
+        </div> */}
+       
+        <div
+          onClick={() => {
+            setModeHandler(drawMode);
+          }}
+          className={styles.mapTool}
+        >
+          <PolygonIcon color={modeHandler._clickSequence ? '#68B030' :  '#000'} />
+        </div>
+        <div
+          onClick={() => {
+            setModeHandler(editMode);
+          }}
+          className={styles.mapTool}
+        >
+          <PencilIcon color={modeHandler.getEditHandles ? '#68B030' :'#000'} />
+        </div>
+        {/* <div
+          onClick={() => {
+            var temp = features;
+            delete features[selectedFeature.selectedFeatureIndex];
+            setFeatures(temp);
+          }}
+          className={styles.mapTool}
+        >
+          Delete Selected
+        </div> */}
+        <div
+          onClick={() => {
+            setFeatures([]);
+          }}
+          className={styles.mapTool}
+        >
+          <TrashIcon color={'#000'} />
+        </div>
+      </div>
+    );
   };
 
-  const onDrawUpdate = ({ features }: any) => {
-    if (drawControlRef.current) {
-      setGeoJson(drawControlRef.current.draw.getAll());
+  React.useEffect(() => {
+    if (mapParentRef.current !== null) {
+      setViewPort({
+        ...viewport,
+        height: mapParentRef.current.clientHeight,
+        width: mapParentRef.current.clientWidth,
+      });
     }
-  };
+  }, [mapParentRef]);
 
   React.useEffect(() => {
     if (geoJson) {
       const bbox = turf.bbox(geoJson);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport2
-      ).fitBounds([
-        [bbox[0], bbox[1]],
-        [bbox[2], bbox[3]],
-      ]);
+        viewport
+      ).fitBounds(
+        [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ],
+        {
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: 50,
+            right: 50,
+          },
+        }
+      );
       const newViewport = {
         ...viewport,
-        center: [longitude, latitude],
-        zoom: [zoom],
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 2000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
       };
-      if (drawControlRef.current) {
-        try {
-          drawControlRef.current.draw.add(geoJson);
-        }
-        catch (e) {
-          setGeoJsonError(true);
-          setGeoJson(null);
-          console.log('We only support feature collection for now', e);
-        }
-      }
       setViewPort(newViewport);
+      setFeatures(geoJson);
     } else {
       setViewPort({
         ...viewport,
-        center: defaultMapCenter,
-        zoom: [defaultZoom],
+        latitude: defaultMapCenter[0],
+        longitude: defaultMapCenter[1],
+        zoom: defaultZoom,
       });
     }
   }, [geoJson]);
 
   return (
     <div
+      // style={
+      //   expanded ? { position: 'fixed', height: '100vh', width: '100vw' } : {}
+      // }
       ref={mapParentRef}
       className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
     >
-      <Map
+      <MapGL
         {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
-        containerStyle={{
-          height: '400px',
-          width: '100%',
-        }}
+        mapboxApiAccessToken={MAPBOX_TOKEN}
+        mapStyle={'mapbox://styles/mapbox/satellite-v9'}
+        onViewportChange={_onViewportChange}
       >
-        <DrawControl
-          ref={drawControlRef}
-          onDrawCreate={onDrawCreate}
-          onDrawUpdate={onDrawUpdate}
-          controls={{
-            point: false,
-            line_string: false,
-            polygon: true,
-            trash: true,
-            combine_features: false,
-            uncombine_features: false,
+        <Editor
+          // to make the lines/vertices easier to interact with
+          clickRadius={12}
+          mode={modeHandler}
+          features={features}
+          onSelect={(selected: any) => {
+            setSelectedFeature(selected);
+          }}
+          onUpdate={(data: any) => {
+            setFeatures(data.data);
+            // setGeoJson({
+            //   type: 'FeatureCollection',
+            //   features: features,
+            // });
+            // console.log(geoJson);
           }}
         />
-        <ZoomControl position='bottom-right' />
-      </Map>
+        {_renderToolbar()}
+        <div className={styles.mapNavigation}>
+          <NavigationControl showCompass={false} />
+        </div>
+      </MapGL>
       <Dropzone
         accept={['.geojson', '.kml']}
         multiple={false}
         onDrop={(acceptedFiles) => {
-          if (drawControlRef.current) {
-            drawControlRef.current.draw.deleteAll();
-          }
           acceptedFiles.forEach((file: any) => {
             var fileType =
               file.name.substring(
@@ -148,13 +216,7 @@ export default function MapComponent({
                   'text/xml'
                 );
                 var geo = tj.kml(dom);
-                if (gjv.isGeoJSONObject(geo)) {
-                  setGeoJsonError(false);
-                  setGeoJson(geo);
-                } else {
-                  setGeoJsonError(true);
-                  console.log('invalid kml');
-                }
+                setGeoJson(geo);
               };
             } else if (fileType === 'geojson') {
               reader.readAsText(file);
@@ -162,13 +224,7 @@ export default function MapComponent({
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
                 var geo = JSON.parse(event.target.result);
-                if (gjv.isGeoJSONObject(geo)) {
-                  setGeoJsonError(false);
-                  setGeoJson(geo);
-                } else {
-                  setGeoJsonError(true);
-                  console.log('invalid geojson');
-                }
+                setGeoJson(geo);
               };
 
               // Upload the base 64 to API and use the response to show preview to the user
@@ -183,8 +239,6 @@ export default function MapComponent({
           </div>
         )}
       </Dropzone>
-      {geoJsonError ?
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
     </div>
   );
 }

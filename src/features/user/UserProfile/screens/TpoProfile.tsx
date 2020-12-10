@@ -2,37 +2,53 @@ import React from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import ProjectsContainer from '../components/ProjectsContainer';
 import UserInfo from '../components/UserInfo';
+import SettingsModal from '../components/SettingsModal';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 import styles from '../styles/UserProfile.module.scss';
-import AddTargetModal from '../components/AddTargetModal';
-import SettingsModal from '../components/SettingsModal';
-import MyTrees from '../components/MyTrees/MyTrees';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import AddTargetModal from '../components/AddTargetModal'
 
-export default function TpoProfile({
-  userprofile,
-  authenticatedType,
-  changeForceReload,
-  forceReload,
-}: any) {
-  // settings modal
-  const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
-  const handleSettingsModalClose = () => {
-    setSettingsModalOpen(!settingsModalOpen);
-  };
-  const handleSettingsModalOpen = () => {
-    setSettingsModalOpen(!settingsModalOpen);
-  };
+export default function TpoProfile({ userprofile,authenticatedType, changeForceReload,
+  forceReload }: any) {
 
-  // editProfile modal  (from settings modal)
-  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
-  const handleEditProfileModalClose = () => {
-    setEditProfileModalOpen(false);
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
+    false
+  );
+
+  const handleTextCopiedSnackbarOpen = () => {
+    setTextCopiedSnackbarOpen(true);
   };
-  const handleEditProfileModalOpen = () => {
-    setEditProfileModalOpen(true);
+  const handleTextCopiedSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setTextCopiedSnackbarOpen(false);
   };
 
-  // add target modal
+
+    // settings modal
+    const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
+    const handleSettingsModalClose = () => {
+      setSettingsModalOpen(false);
+    };
+    const handleSettingsModalOpen = () => {
+      setSettingsModalOpen(true);
+    };
+
+      // editProfile modal  (from settings modal)
+    const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
+    const handleEditProfileModalClose = () => {
+      setEditProfileModalOpen(false);
+    };
+    const handleEditProfileModalOpen = () => {
+      setEditProfileModalOpen(true);
+    };
+
+      // add target modal
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
   const handleAddTargetModalClose = () => {
     setAddTargetModalOpen(false);
@@ -40,19 +56,33 @@ export default function TpoProfile({
   const handleAddTargetModalOpen = () => {
     setAddTargetModalOpen(true);
   };
-
+  
   return (
     <>
-      {authenticatedType === 'private' && (
-        <>
-          <div
-            className={styles.settingsIcon}
-            onClick={handleSettingsModalOpen}
-          >
-            <Settings color="white" />
-          </div>
-        </>
-      )}
+    {
+          authenticatedType === 'private' &&
+          (
+            <>
+            <div
+              className={styles.settingsIcon}
+              onClick={handleSettingsModalOpen}
+            >
+              <Settings color="white" />
+            </div>
+            <SettingsModal
+              userType="tpo"
+              userprofile={userprofile}
+              settingsModalOpen={settingsModalOpen}
+              handleSettingsModalClose={handleSettingsModalClose}
+              editProfileModalOpen={editProfileModalOpen}
+              handleEditProfileModalClose={handleEditProfileModalClose}
+              handleEditProfileModalOpen={handleEditProfileModalOpen}
+              changeForceReload={changeForceReload}
+              forceReload={forceReload}
+            />
+            </>
+          )
+        }  
       <LandingSection
         imageSrc={
           process.env.CDN_URL
@@ -60,38 +90,36 @@ export default function TpoProfile({
             : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
         }
       >
-        {/* Open setting component */}
-        {settingsModalOpen && (
-          <SettingsModal
-            userType="tpo"
-            userprofile={userprofile}
-            settingsModalOpen={settingsModalOpen}
-            handleSettingsModalClose={handleSettingsModalClose}
-            editProfileModalOpen={editProfileModalOpen}
-            handleEditProfileModalClose={handleEditProfileModalClose}
-            handleEditProfileModalOpen={handleEditProfileModalOpen}
-            changeForceReload={changeForceReload}
-            forceReload={forceReload}
-          />
-        )}
         <UserInfo
-          userprofile={userprofile}
-          authenticatedType={authenticatedType}
-          // handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-          handleAddTargetModalOpen={handleAddTargetModalOpen}
-        />
+            userprofile={userprofile}
+            authenticatedType={authenticatedType}
+            handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+            handleAddTargetModalOpen={handleAddTargetModalOpen}
+          />
       </LandingSection>
       <ProjectsContainer
         userprofile={userprofile}
         authenticatedType={authenticatedType}
       />
 
-      {authenticatedType === 'private' ? (
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
-      ) : null}
+      {/* snackbar for showing text copied to clipboard */}
+      <Snackbar
+        open={textCopiedsnackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleTextCopiedSnackbarClose}
+      >
+        <MuiAlert 
+        elevation={6} 
+        variant="filled"
+        onClose={handleTextCopiedSnackbarClose} 
+        severity="success"
+        >
+          Text Copied to Clipboard!
+        </MuiAlert>
+      </Snackbar>
 
-      {/* add target modal */}
-      <AddTargetModal
+          {/* add target modal */}
+          <AddTargetModal
         userprofile={userprofile}
         addTargetModalOpen={addTargetModalOpen}
         handleAddTargetModalClose={handleAddTargetModalClose}
