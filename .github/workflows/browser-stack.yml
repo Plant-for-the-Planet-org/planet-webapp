@@ -11,14 +11,26 @@ jobs:
         with:
           username:  ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          build-name: ${{secrets.BROWSERSTACK_BUILD_NAME}}
-          project-name: ${{secrets.BROWSERSTACK_PROJECT_NAME}}
+          build-name: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
+          project-name: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
 
       - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
         uses: browserstack/github-actions/setup-local@master
         with:
           local-testing: start
           local-identifier: random
+
+      - name: Setting Environment Variables
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY : ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          BROWSERSTACK_BUILD_NAME: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
+          BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
+        run: |
+          echo "BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME" >> .env
+          echo "BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY" >> .env
+          echo "BROWSERSTACK_BUILD_NAME=$BROWSERSTACK_BUILD_NAME" >> .env
+          echo "BROWSERSTACK_PROJECT_NAME=$BROWSERSTACK_PROJECT_NAME" >> .env
 
 # The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
 
