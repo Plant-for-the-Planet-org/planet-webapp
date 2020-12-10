@@ -22,6 +22,7 @@ import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+import style from '../../../../public/data/styles/root.json';
 
 const { useTranslation } = i18next;
 
@@ -69,9 +70,53 @@ export default function MapboxMap({
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
+  const [mapstyle, setMapStyle] = React.useState('');
+
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+
+  // first fetch the esri style file
+  // https://www.mapbox.com/mapbox-gl-js/style-spec
+
+  React.useEffect(() => {
+    const metadataUrl = style.sources.esri.url;
+    fetch(metadataUrl)
+      .then((response) => {
+        return response.json().then((metadata) => {
+          const ready = format(style, metadata);
+          setMapStyle(ready);
+        });
+      })
+      .catch((e) => {
+        console.log('Error:', e);
+      });
+
+    function format(style: any, metadata: any) {
+      // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
+      style.sources.esri = {
+        type: 'vector',
+        scheme: 'xyz',
+        tilejson: metadata.tilejson || '2.0.0',
+        format: (metadata.tileInfo && metadata.tileInfo.format) || 'pbf',
+        /* mapbox-gl-js does not respect the indexing of esri tiles
+      because we cache to different zoom levels depending on feature density, in rural areas 404s will still be encountered.
+      more info: https://github.com/mapbox/mapbox-gl-js/pull/1377
+      */
+        // index: metadata.tileMap ? style.sources.esri.url + '/' + metadata.tileMap : null,
+        maxzoom: 15,
+        tiles: [style.sources.esri.url + '/' + metadata.tiles[0]],
+        description: metadata.description,
+        name: metadata.name,
+      };
+      return style;
+    }
+  }, []);
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    mapStyle: EMPTY_STYLE,
     dragPan: true,
   });
 
@@ -124,10 +169,10 @@ export default function MapboxMap({
       };
       setViewPort(newViewport);
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -137,13 +182,22 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
       router.push('/', undefined, {
         shallow: true,
       });
     }
   };
+
+  React.useEffect(() => {
+    if (mapstyle) {
+      setMapState({
+        ...mapState,
+        mapStyle: mapstyle,
+      });
+    }
+  }, [mapstyle]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -210,10 +264,10 @@ export default function MapboxMap({
                 },
               }
             );
-            const newMapState = {
-              ...mapState,
-              mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-            };
+            // const newMapState = {
+            //   ...mapState,
+            //   mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+            // };
             const newViewport = {
               ...viewport,
               longitude,
@@ -223,14 +277,14 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
-            setMapState(newMapState);
+            // setMapState(newMapState);
             setViewPort(newViewport);
           }
         } else {
-          const newMapState = {
-            ...mapState,
-            mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-          };
+          // const newMapState = {
+          //   ...mapState,
+          //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          // };
           const newViewport = {
             ...viewport,
             longitude: singleProjectLatLong[1],
@@ -240,14 +294,14 @@ export default function MapboxMap({
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
           };
-          setMapState(newMapState);
+          // setMapState(newMapState);
           setViewPort(newViewport);
         }
       } else {
-        const newMapState = {
-          ...mapState,
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-        };
+        // const newMapState = {
+        //   ...mapState,
+        //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        // };
         const newViewport = {
           ...viewport,
           latitude: defaultMapCenter[0],
@@ -257,14 +311,14 @@ export default function MapboxMap({
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
-        setMapState(newMapState);
+        // setMapState(newMapState);
         setViewPort(newViewport);
       }
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -274,7 +328,7 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
     }
   }, [
@@ -362,7 +416,7 @@ export default function MapboxMap({
         mapboxApiAccessToken={mapboxToken}
         mapOptions={{
           customAttribution:
-            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
+            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a> <a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
         }}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
@@ -383,26 +437,39 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonLayer"
-                type="fill"
-                source="singleProject"
-                paint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-              />
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#68B030',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
+            <>
+              <Source
+                id="satellite"
+                type="raster"
+                attribution="<a>Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</a>"
+                tiles={[
+                  'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                ]}
+                tileSize={128}
+              >
+                <Layer id="satellite-layer" source="satellite" type="raster" />
+              </Source>
+              <Source id="singleProject" type="geojson" data={geoJson}>
+                <Layer
+                  id="ploygonLayer"
+                  type="fill"
+                  source="singleProject"
+                  paint={{
+                    'fill-color': '#fff',
+                    'fill-opacity': 0.2,
+                  }}
+                />
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#68B030',
+                    'line-width': 2,
+                  }}
+                />
+              </Source>
+            </>
           )
         ) : null}
 
