@@ -12,23 +12,33 @@ import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
 import i18next from '../../../../i18n/server';
 
-interface Props {
-  treeCount:any;
-        sendRef:any;
-        handleTextCopiedSnackbarOpen:Function
-        contactDetails:Object
-}
 const { useTranslation } = i18next;
 
-const ShareOptions = ({treeCount,sendRef,handleTextCopiedSnackbarOpen,contactDetails}:Props) => {
-  const { t, i18n,ready } = useTranslation(['donate', 'common']);
+interface ShareOptionsProps {
+  treeCount: String;
+  sendRef: any;
+  handleTextCopiedSnackbarOpen: Function
+  contactDetails: Object
+}
+const ShareOptions = ({
+  treeCount,
+  sendRef,
+  handleTextCopiedSnackbarOpen,
+  contactDetails,
+}: ShareOptionsProps) => {
+  const { t, ready } = useTranslation(['donate']);
   const config = tenantConfig();
 
   const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
-  const userName = contactDetails.firstName + ' ' + contactDetails.lastName;
-  const textToShare = ready ? t('donate:textToShareLinkedin', { name: userName}) : '';
+  let textToShare = '';
+  // contactDetails may be undefined or empty for legacy donations or redeem
+  if (contactDetails && (contactDetails.firstName || contactDetails.lastName)) {
+    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${contactDetails.firstName} ${contactDetails.lastName}` }) : '';
+  } else {
+    textToShare = ready ? t('donate:textToShareForMe') : '';
+  }
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
