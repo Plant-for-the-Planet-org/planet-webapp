@@ -9,5 +9,8 @@
   "websiteError": "Ungültige Website-URL",
   "websiteRequired": "Bitte gib eine gültige Website-URL ein",
   "save": "Speichern",
-  "orgNameValidation": "Bitte den Namen der Organisation eingeben"
+  "orgNameValidation": "Bitte den Namen der Organisation eingeben",
+  "profilePicUpdated": "Profilbild wird aktualisiert...",
+  "profileSaved": "Erfolgreich gespeichert!",
+  "profileSaveFailed": "Fehler beim Aktualisieren des Profils."
 }

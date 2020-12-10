@@ -2,10 +2,13 @@
   "loginTitle": "{{log}} - Anmeldung",
   "signUpText": "Registrierung vervollständigen",
   "profileTypes": "{{item.title}}",
-  "profileName": "Name der {{type}}",
+  "profileName": "Name von {{type}}",
   "createAccount": "Konto erstellen",
   "individual": "Einzelperson",
   "tpo": "Wiederaufforstung-Organisation",
   "education": "Schule",
-  "organization": "Firma"
+  "organization": "Unternehmen",
+  "profileCreated": "Profil erfolgreich erstellt!",
+  "profileCreationFailed": "Fehler bei der Profilerstellung. Bitte versuchen Sie es erneut.",
+  "profileCreationError": "Fehler bei der Profilerstellung."
 }
