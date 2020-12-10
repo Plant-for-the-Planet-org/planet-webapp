@@ -6,6 +6,6 @@ module.exports = {
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
     "globals": {
-      "__baseUrl__": "https://www.trilliontreecampaign.org"
+      "__baseUrl__": "https://www.trilliontreecampaign.org/"
     }
   }

@@ -40,9 +40,6 @@ jobs:
       - name: 'Building web application to be tested'
         run: npm install
 
-      - name: 'Running application under test'
-        run: ./node_modules/.bin/http-server -p 8099 &
-
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
         run: npm run test  # See sample test script above
 
