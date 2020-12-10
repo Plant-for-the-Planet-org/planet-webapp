@@ -3,7 +3,7 @@ import styles from './../../styles/ProjectDetails.module.scss'
 import i18next from '../../../../../i18n/'
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { format } from 'date-fns/fp';
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 
 interface Props {
@@ -13,30 +13,30 @@ interface Props {
 function ProjectInfo({ project }: Props): ReactElement {
     const { useTranslation } = i18next;
 
-    const { t, i18n } = useTranslation(['manageProjects', 'common']);
+    const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
     const plantingSeasons = [
-        { id: 0, title: t('common:january') },
-        { id: 1, title: t('common:february') },
-        { id: 2, title: t('common:march') },
-        { id: 3, title: t('common:april') },
-        { id: 4, title: t('common:may') },
-        { id: 5, title: t('common:june') },
-        { id: 6, title: t('common:july') },
-        { id: 7, title: t('common:august') },
-        { id: 8, title: t('common:september') },
-        { id: 9, title: t('common:october') },
-        { id: 10, title: t('common:november') },
-        { id: 11, title: t('common:december') }
+        { id: 0, title: ready ? t('common:january') : '' },
+        { id: 1, title: ready ? t('common:february') : '' },
+        { id: 2, title: ready ? t('common:march') : '' },
+        { id: 3, title: ready ? t('common:april') : '' },
+        { id: 4, title: ready ? t('common:may') : '' },
+        { id: 5, title: ready ? t('common:june') : '' },
+        { id: 6, title: ready ? t('common:july') : '' },
+        { id: 7, title: ready ? t('common:august') : '' },
+        { id: 8, title: ready ? t('common:september') : '' },
+        { id: 9, title: ready ? t('common:october') : '' },
+        { id: 10, title: ready ? t('common:november') : '' },
+        { id: 11, title: ready ? t('common:december') : '' }
     ]
 
     const siteOwners = [
-        { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private' },
-        { id: 2, title: t('manageProjects:siteOwnerPublic'), value: 'public-property' },
-        { id: 3, title: t('manageProjects:siteOwnerSmallHolding'), value: 'smallholding' },
-        { id: 4, title: t('manageProjects:siteOwnerCommunal'), value: 'communal-land' },
-        { id: 5, title: t('manageProjects:siteOwnerOwned'), value: 'owned-by-owner' },
-        { id: 6, title: t('manageProjects:siteOwnerOther'), value: 'other' }
+        { id: 1, title: ready ? t('manageProjects:siteOwnerPrivate') : '', value: 'private' },
+        { id: 2, title: ready ? t('manageProjects:siteOwnerPublic') : '', value: 'public-property' },
+        { id: 3, title: ready ? t('manageProjects:siteOwnerSmallHolding') : '', value: 'smallholding' },
+        { id: 4, title: ready ? t('manageProjects:siteOwnerCommunal') : '', value: 'communal-land' },
+        { id: 5, title: ready ? t('manageProjects:siteOwnerOwned') : '', value: 'owned-by-owner' },
+        { id: 6, title: ready ? t('manageProjects:siteOwnerOther') : '', value: 'other' }
     ]
 
     const [ownerTypes, setOwnerTypes] = React.useState([])
@@ -62,7 +62,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         return `${percentage}%`
     }
 
-    return (
+    return ready ? (
         <div>
             <div className={styles.projectMoreInfoHalfContainer}>
 
@@ -75,7 +75,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-140px' }}>
                                         <p>
-                                            {t('manageProjects:abandonmentInfo')}
+                                            {t('manageProjects:yearAbandonedInfo')}
                                         </p>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             {t('manageProjects:firstTreePlanted')}
                         </div>
                         <div className={styles.infoText}>
-                            {format('LLLL d, yyyy',new Date(Date.parse(project.firstTreePlanted.date.replace(/ /g,"T"))))}
+                            {formatDate(project.firstTreePlanted.date)}
                         </div>
                     </div>
                 )}
@@ -200,7 +200,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
-                        {t('manageProjects:causeOfDegredation')}
+                        {t('manageProjects:causeOfDegradation')}
                     </div>
                     <div className={styles.infoText}>
                         {project.degradationCause}
@@ -289,7 +289,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
         </div>
-    )
+    ) : null;
 }
 
 export default ProjectInfo

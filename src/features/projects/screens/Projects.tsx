@@ -30,7 +30,7 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
-  const { t } = useTranslation(['donate']);
+  const { t, ready } = useTranslation(['donate']);
 
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
@@ -109,14 +109,14 @@ function ProjectsList({
 
   const AllProjects = (projects:any)=>{   
     if (projects.projects.length < 1) {
-      return (
+      return ready ? (
         <div className={'projectNotFound'}>
           <LazyLoad>
             <NotFound className={'projectNotFoundImage'} />
             <h5>{t('donate:noProjectsFound')}</h5>
           </LazyLoad>
         </div>
-      );
+      ) : null;
     }
     else {
       return (
@@ -133,7 +133,7 @@ function ProjectsList({
     } 
   }
 
-  return (
+  return ready ? (
     <>
       {showProjects ? (
         <div
@@ -177,7 +177,7 @@ function ProjectsList({
         </div>
       ) : null}
     </>
-  );
+  ) : null;
 }
 
 export default ProjectsList;

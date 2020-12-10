@@ -4,6 +4,7 @@ import SalesforceHome from '../src/tenants/salesforce/Home';
 import SternHome from '../src/tenants/stern/Home';
 import LacoquetaHome from '../src/tenants/lacoqueta/Home';
 import NitroSBHome from '../src/tenants/nitrosb/Home';
+import BasicHome from '../src/tenants/basic/Home';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -56,6 +57,9 @@ export default function Home(initialized: Props) {
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'nitrosb':
         HomePage = NitroSBHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'energizer':
+        HomePage = BasicHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       default:
         HomePage = null;

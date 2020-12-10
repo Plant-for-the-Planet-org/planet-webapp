@@ -1,4 +1,3 @@
-import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
@@ -25,13 +24,13 @@ interface Props {
     handleBack: Function;
     projectGUID: String;
     handleReset: Function;
-    session: any;
+    token: any;
     userLang: String;
 }
 
-export default function ProjectSpending({ handleBack, session, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
 
@@ -44,7 +43,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
     const [uploadedFiles, setUploadedFiles] = React.useState([])
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset(t('manageProjects:resetMessage'))
+            handleReset(ready ? t('manageProjects:resetMessage') : '')
         }
     })
 
@@ -81,7 +80,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
 
             if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
@@ -95,7 +94,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                 }
                 else {
                     setIsUploadingData(false)
@@ -108,7 +107,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
 
     const deleteProjectSpending = (id: any) => {
         setIsUploadingData(true)
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, session).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
             if (res !== 404) {
                 let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
@@ -120,8 +119,8 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
 
     React.useEffect(() => {
         // Fetch spending of the project 
-        if (projectGUID && session?.accessToken)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
+        if (projectGUID && token)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
                 if (result.expenses.length > 0) {
                     setShowForm(false)
                 }
@@ -131,7 +130,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
 
     var fiveYearsAgo = new Date();
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
@@ -299,5 +298,5 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                 </div>
             </form>
         </div>
-    )
+    ) : null;
 }

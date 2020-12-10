@@ -35,7 +35,7 @@ interface Props {
 }
 
 function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpanded, isMobile, setInfoExpanded, setModalOpen, loaded, mapRef, exploreProjects, handleExploreProjectsChange }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['maps']);
+    const { t, i18n, ready } = useTranslation(['maps']);
     const [layersSettings, setLayersSettings] = React.useState({});
 
     const [exploreForests, setExploreForests] = React.useState(false);
@@ -113,7 +113,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
             },
         });
     };
-    return (
+    return ready ? (
         <>
             {exploreForests ? (
                 <Source
@@ -334,7 +334,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                 ) : null}
             </div>
         </>
-    )
+    ) : null;
 }
 
 export default ExploreContainer

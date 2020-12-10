@@ -59,6 +59,16 @@
   "noProjectsFound": "Keine Projekte gefunden",
   "inTimeOfTaxReturns": "rechtzeitig für deine Steuererklärung.",
   "titleToShare": "Bäume pflanzen gegen die Klimakrise!",
-  "textToShare": "Um die Klimakrise zu verhindern, müssen die Kohlenstoffemissionen drastisch reduziert und Bäume gepflanzt werden. Deshalb habe ich gerade einige gepflanzt. Schau unter {{linkToShare}} nach, wenn du auch welche pflanzen willst! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
-  "thankyouHeaderText": "Wir sind auf dem Weg zu einer \n <h1>Billionen Bäume</h1>"
+  "giftToName": "Geschenk an {{name}}",
+  "plantTreesWith": "Bäume pflanzen mit {{name}}",
+  "textToShare": "Schließe dich mit {{name}} und Tausenden anderen zusammen, um eine Billion Bäume zu pflanzen, um die Klimakrise zu bewältigen #StopTalkingStartPlanting #TrillionTrees @PftP_int",
+  "thankyouHeaderText": "Wir sind auf dem Weg zu einer \n <h1>Billionen Bäume</h1>",
+  "shareTextTitle": "Stop Talking. Start Plant",
+  "textToShareLinkedin": "Schließe dich mit {{name}} und Tausenden anderen zusammen, um eine Billion Bäume zu pflanzen, um die Klimakrise zu bewältigen",
+  "donationTokenInvalid": "Das bereitgestellte Spenden-Token ist ungültig.",
+  "giftTo": "Geschenk an",
+  "supporting": "Unterstützung von",
+  "selectProject": "Wähle ein Projekt aus",
+  "nameOfOrg": "Name der Organisation",
+  "nameOfOrgIsRequired": "Name der Organisation ist erforderlich"
 }

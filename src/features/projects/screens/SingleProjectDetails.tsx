@@ -11,20 +11,24 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
+import styles from '../styles/ProjectDetails.module.scss';
 
 const { useTranslation } = i18next;
 interface Props {
   project: any;
 }
 
-const ImageSlider = dynamic(() => import('../components/projectDetails/ImageSlider'), {
-  ssr: false,
-  loading: () => <p>Images</p>,
-});
+const ImageSlider = dynamic(
+  () => import('../components/projectDetails/ImageSlider'),
+  {
+    ssr: false,
+    loading: () => <p>Images</p>,
+  }
+);
 
 function SingleProjectDetails({ project }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -48,7 +52,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
   const handleModalOpen = () => {
     setModalOpen(true);
   };
-  return (
+  return ready ? (
     <div
       style={{ transform: `translate(0,${scrollY}px)` }}
       className={'container'}
@@ -68,6 +72,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         onClose={handleModalClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        hideBackdrop
       >
         <div className={'modalWrapper'}>
           <div onClick={handleModalClose} className={'modalClose'}>
@@ -78,7 +83,12 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       </Modal>
       <div className={'projectContainer'}>
         <div
-          style={{ cursor: 'pointer', width: 'fit-content',position:'absolute' ,zIndex:3333}}
+          style={{
+            cursor: 'pointer',
+            width: 'fit-content',
+            position: 'absolute',
+            zIndex: 3333,
+          }}
           onClick={() => {
             router.push('/', undefined, { shallow: true });
           }}
@@ -86,17 +96,11 @@ function SingleProjectDetails({ project }: Props): ReactElement {
           <BackButton />
         </div>
         <div className={'projectSnippetContainer'}>
-          <ProjectSnippet
-            key={project.id}
-            project={project}
-            editMode={false}
-          />
+          <ProjectSnippet key={project.id} project={project} editMode={false} />
         </div>
-        
+
         <div className={'singleProject'}>
           <div className={'projectCompleteInfo'}>
-            
-
             {/* <div className={'ratings}>
               <div className={'calculatedRating}>{rating}</div>
               <div className={'ratingButton}>
@@ -154,13 +158,12 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                     {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
 
               <ProjectContactDetails project={project} />
-
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default SingleProjectDetails;

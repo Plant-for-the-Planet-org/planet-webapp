@@ -12,8 +12,8 @@ interface Props {
 const { useTranslation } = i18next;
 
 function Header({showFeaturedList,setSelectedTab,selectedTab,setSearchMode,projects}: Props): ReactElement {
-    const { t } = useTranslation(['donate']);
-    return (
+    const { t, ready } = useTranslation(['donate']);
+    return ready ? (
         <div className={'header'}>
             {showFeaturedList ? (
               <div className={'tabButtonContainer'}>
@@ -68,7 +68,7 @@ function Header({showFeaturedList,setSelectedTab,selectedTab,setSearchMode,proje
               <SearchIcon />
             </div>
           </div>
-    )
+    ) : null;
 }
 
 export default Header

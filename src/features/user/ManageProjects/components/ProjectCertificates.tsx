@@ -1,4 +1,3 @@
-import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
@@ -23,13 +22,13 @@ const { useTranslation } = i18next;
 
 interface Props {
     projectGUID: String;
-    session: any;
+    token: any;
     setIsUploadingData: Function;
     userLang:String;    
 }
 
-function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects']);
+function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }: Props): ReactElement {
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
     const { isDirty } = formState;
@@ -73,7 +72,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, session).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, token).then((res) => {
             if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res)
@@ -86,7 +85,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                 }
                 else {
                     setIsUploadingData(false)
@@ -98,7 +97,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
     };
 
     const deleteProjectCertificate = (id: any) => {
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/certificates/${id}`, session).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/certificates/${id}`, token).then(res => {
             if (res !== 404) {
                 let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
@@ -108,8 +107,8 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
 
     React.useEffect(() => {
         // Fetch certificates of the project 
-        if (projectGUID && session?.accessToken)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`, session).then((result) => {
+        if (projectGUID && token?.accessToken)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=certificates`, token).then((result) => {
                 if (result.certificates.length > 0) {
                     setShowForm(false)
                 }
@@ -121,7 +120,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
     var tenYearsAgo = new Date();
     tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
 
-    return (
+    return ready ? (
         <div>
 
             {uploadedFiles && uploadedFiles.length > 0 ? (
@@ -246,7 +245,7 @@ function ProjectCertificates({ projectGUID, session, setIsUploadingData,userLang
                     </div>)}
 
         </div>
-    )
+    ) : null;
 }
 
 export default ProjectCertificates

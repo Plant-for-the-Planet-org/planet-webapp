@@ -1,7 +1,9 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/DirectGift.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import i18next from '../../../../../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   directGift: any;
   setShowDirectGift: Function;
@@ -11,11 +13,16 @@ export default function DirectGift({
   directGift,
   setShowDirectGift,
 }: Props): ReactElement {
-  return (
+  const { t, ready } = useTranslation(['donate', 'common']);
+  return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.textContainer}>
-        <div className={styles.giftTo}>Gift to {directGift.displayName}</div>
-        <div className={styles.selectProject}>Select a project</div>
+        <div className={styles.giftTo}>
+          {directGift.type === 'individual'
+            ? t('donate:giftToName', { name: directGift.displayName })
+            : t('donate:plantTreesWith', { name: directGift.displayName })}
+        </div>
+        <div className={styles.selectProject}>{t('donate:selectProject')}</div>
       </div>
       <div
         onClick={() => {
@@ -28,5 +35,5 @@ export default function DirectGift({
         <CancelIcon color={styles.primaryFontColor} />
       </div>
     </div>
-  );
+  ) : null;
 }

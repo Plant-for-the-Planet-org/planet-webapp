@@ -12,15 +12,16 @@ import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
 import i18next from '../../../../i18n/';
 
+const { useTranslation } = i18next;
 const ShareOptions = (props) => {
-  const { useTranslation } = i18next;
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const config = tenantConfig();
 
-  const titleToShare = t('donate:titleToShare');
+  const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
-  const textToShare = t('donate:textToShare', { linkToShare: linkToShare });
+  const userName = props.contactDetails.firstName + ' ' + props.contactDetails.lastName;
+  const textToShare = ready ? t('donate:textToShareLinkedin', { name: userName}) : '';
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
@@ -63,7 +64,7 @@ const ShareOptions = (props) => {
     openWindowLinks(shareUrl);
   };
 
-  return (
+  return ready ? (
     <div
       className={styles.shareRow}
       onMouseOut={() => setCurrentHover(-1)}
@@ -92,7 +93,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(
-            `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
+            `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}&hashtag=%23StopTalkingStartPlanting`,
             '_blank'
           )
         }
@@ -119,7 +120,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
-          shareClicked(`https://twitter.com/intent/tweet?text=${textToShare}`)
+          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=PftP_int&url=${linkToShare}&text=${textToShare}`)
         }
       >
         <TwitterIcon
@@ -141,7 +142,7 @@ const ShareOptions = (props) => {
         )}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default ShareOptions;

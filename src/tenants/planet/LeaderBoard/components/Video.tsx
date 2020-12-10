@@ -8,12 +8,12 @@ interface Props {
     
 }
 
+const { useTranslation } = i18next;
 function Video({}: Props): ReactElement {
-  const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard', 'common']);
+  const { t, ready } = useTranslation(['leaderboard', 'common']);
 
   const videoUrl = 'https://www.youtube.com/watch?v=9V981RXcmH8'
-    return (
+    return ready ? (
         <div className={styles.videoSection}>
           <div className={styles.videoTitle}>
             <h2>{t('leaderboard:videoTitle')}</h2> 
@@ -41,7 +41,7 @@ function Video({}: Props): ReactElement {
             </div>
            
         </div>
-    )
+    ) : null;
 }
 
 export default Video

@@ -2,10 +2,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
-import { Provider as AuthProvider } from 'next-auth/client'
+import Router from 'next/router';
+import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
-import './../src/features/projects/styles/Projects.scss'
+import './../src/features/projects/styles/Projects.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
@@ -14,7 +15,7 @@ import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
-import storeConfig from '../src/utils/storeConfig';
+import { storeConfig } from '../src/utils/storeConfig';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -33,6 +34,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   });
 }
 
+const onRedirectCallback = (appState) => {
+  // Use Next.js's Router.replace method to replace the url
+  Router.replace(appState?.returnTo || '/');
+};
+
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
   const [projects, setProjects] = React.useState(null);
@@ -45,6 +51,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
+
+
+  if (process.env.VERCEL_URL && typeof window !== 'undefined') {
+    if (process.env.VERCEL_URL !== window.location.hostname) {      
+      router.replace(`https://${process.env.VERCEL_URL}`);      
+    }
+  }
+  
 
   const [initialized, setInitialized] = React.useState(false);
 
@@ -85,26 +99,32 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   };
 
   return (
-    <AuthProvider session={pageProps.session}>
-    <ThemeProvider>
-      <CssBaseline />
-      <Layout>
-        {isMap ? (
-          project ? (
-            <MapLayout
-              {...ProjectProps}
-              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-            />
-          ) : projects ? (
-            <MapLayout
-              {...ProjectProps}
-              mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-            />
-          ) : null
-        ) : null}
-        <Component {...ProjectProps} />
-      </Layout>
-    </ThemeProvider>
-    </AuthProvider>
+    <Auth0Provider
+      domain={process.env.AUTH0_CUSTOM_DOMAIN}
+      clientId={process.env.AUTH0_CLIENT_ID}
+      redirectUri={process.env.NEXTAUTH_URL}
+      cacheLocation={"localstorage"}
+      onRedirectCallback={onRedirectCallback}
+    >
+      <ThemeProvider>
+        <CssBaseline />
+        <Layout>
+          {isMap ? (
+            project ? (
+              <MapLayout
+                {...ProjectProps}
+                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+              />
+            ) : projects ? (
+              <MapLayout
+                {...ProjectProps}
+                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+              />
+            ) : null
+          ) : null}
+          <Component {...ProjectProps} />
+        </Layout>
+      </ThemeProvider>
+    </Auth0Provider>
   );
 }

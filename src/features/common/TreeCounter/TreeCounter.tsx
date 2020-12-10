@@ -3,10 +3,10 @@ import CircularProgress, {
 } from '@material-ui/core/CircularProgress';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import Sugar from 'sugar';
 import treeCounterStyles from './TreeCounter.module.scss';
 import i18next from '../../../../i18n';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
+import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
@@ -48,7 +48,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
 
-  const { t } = useTranslation(['me']);
+  const { t, i18n, ready } = useTranslation(['me']);
   React.useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -74,18 +74,19 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
-  return (
+  return ready ? (
     <div className={treeCounterStyles.treeCounter}>
       <FacebookCircularProgress value={progress} />
       <div className={treeCounterStyles.backgroundCircle} />
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
-          <h1>{Sugar.Number.abbr(Number(props.planted), 1)}</h1>
+          <h1>{localizedAbbreviatedNumber(i18n.language, Number(props.planted), 1)}</h1>
           <h2>{t('me:treesPlanted')}</h2>
         </div>
-        {props.target && props.target !== 0 && (
+        
+        {props.target ? (
           <div className={treeCounterStyles.treeCounterDataField}>
-            <h1>{Sugar.Number.abbr(Number(props.target), 1)}</h1>
+            <h1>{localizedAbbreviatedNumber(i18n.language, Number(props.target), 1)}</h1>
             <div className={treeCounterStyles.target}>
               <h2
                 className={
@@ -106,7 +107,8 @@ export default function TpoProfile(props: any) {
               )}
             </div>
           </div>
-        )}
+        ) : null}
+
         {props.authenticatedType === 'private' && props.target === 0 && (
           <div
             onClick={() => props.handleAddTargetModalOpen()}
@@ -117,5 +119,5 @@ export default function TpoProfile(props: any) {
         )}
       </div>
     </div>
-  );
+  ) : null;
 }

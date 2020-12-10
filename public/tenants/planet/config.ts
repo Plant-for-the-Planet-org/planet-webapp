@@ -2,20 +2,22 @@ const config = {
   // name of tenant
   tenantName: 'planet',
   // url of tenant home page
-  tenantURL: 'trilliontreecampaign.org',
+  tenantURL: 'www.plant-for-the-planet.org',
+  showUNEPLogo:true,
+  showUNDecadeLogo:true,
   // font family and it's property particular to tenant
   tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
-  languages: ['en', 'de'],
+  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
-    tenantLogoLink: 'https://www.plant-for-the-planet.org',
+    tenantLogoLink: 'https://a.plant-for-the-planet.org',
     items: [
       {
         id: 1,
@@ -26,7 +28,7 @@ const config = {
       },
       {
         id: 2,
-        title: 'donate_gift',
+        title: 'home',
         onclick: '/',
         visible: true,
         key: 'donate',
