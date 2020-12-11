@@ -109,6 +109,6 @@
   "managedRegeneration": "Managed Regeneration",
   "urbanPlanting": "Urban Planting",
   "otherPlanting": "Other Planting",
-  "projectType" : "Project Type",
+  "projectType": "Project Type",
   "polygonRequired": "Polygon is required"
 }

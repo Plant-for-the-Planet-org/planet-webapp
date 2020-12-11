@@ -448,7 +448,6 @@ export default function MapboxMap({
               <Source
                 id="satellite"
                 type="raster"
-                attribution="<a>Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</a>"
                 tiles={[
                   'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                 ]}

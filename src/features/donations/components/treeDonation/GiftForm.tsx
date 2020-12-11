@@ -22,6 +22,14 @@ export default function GiftForm({
   const changeGiftDetails = (e: any) => {
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
   };
+
+  React.useEffect(()=>{
+    if(isGift){
+      setGiftDetails({...giftDetails, type:'invitation'})
+    }else{
+      setGiftDetails({...giftDetails, type:null})
+    }
+  },[isGift])
   return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
@@ -72,5 +80,5 @@ export default function GiftForm({
         </div>
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }
