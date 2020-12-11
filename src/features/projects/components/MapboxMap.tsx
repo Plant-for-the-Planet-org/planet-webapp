@@ -457,21 +457,12 @@ export default function MapboxMap({
               </Source>
               <Source id="singleProject" type="geojson" data={geoJson}>
                 <Layer
-                  id="ploygonLayer"
-                  type="fill"
-                  source="singleProject"
-                  paint={{
-                    'fill-color': '#fff',
-                    'fill-opacity': 0.2,
-                  }}
-                />
-                <Layer
                   id="ploygonOutline"
                   type="line"
                   source="singleProject"
                   paint={{
-                    'line-color': '#68B030',
-                    'line-width': 2,
+                    'line-color': '#fff',
+                    'line-width': 4,
                   }}
                 />
               </Source>
