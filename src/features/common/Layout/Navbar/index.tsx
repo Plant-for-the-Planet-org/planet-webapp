@@ -140,7 +140,7 @@ export default function NavbarComponent(props: any) {
                 </Link>
                 <div className={styles.logo_divider} />
                 <div className={styles.navlink}>
-                  <a href="https://www.plant-for-the-planet.org">
+                  <a href="https://a.plant-for-the-planet.org">
                     {ready ? (
                       <img
                         src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
@@ -342,7 +342,7 @@ export default function NavbarComponent(props: any) {
               >
                 <div
                   className={styles.link_container}
-                  style={{ margin: '0px 8px' }}
+                  style={{ margin: '0px 4px' }}
                 >
                   <img
                     src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
@@ -363,7 +363,7 @@ export default function NavbarComponent(props: any) {
                 >
                   <div
                     className={styles.link_container}
-                    style={{ margin: '0px 8px' }}
+                    style={{ margin: '0px 4px' }}
                   >
                     <div className={styles.link_icon}>
                       {router.pathname === item.onclick ? (
@@ -418,7 +418,31 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </Link>
               ) : null}
-
+              {item.key === 'about' && item.visible === true ? (
+                <Link key={item.id} href={item.onclick}>
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>
+                      {/* <i className="fas fa-ad"></i> */}
+                      {router.pathname === item.onclick ? (
+                        <LeafSelected color={styles.primaryColor} />
+                      ) : (
+                        <Leaf color={styles.primaryFontColor} />
+                      )}
+                    </div>
+                    {ready ? (
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
+                  </div>
+                </Link>
+              ) : null}
               {item.key === 'leaderboard' && item.visible === true ? (
                 <Link
                   href={item.onclick}
