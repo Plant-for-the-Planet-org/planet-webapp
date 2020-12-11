@@ -140,7 +140,7 @@ export default function NavbarComponent(props: any) {
                 </Link>
                 <div className={styles.logo_divider} />
                 <div className={styles.navlink}>
-                  <a href="https://www.plant-for-the-planet.org">
+                  <a href="https://a.plant-for-the-planet.org">
                     {ready ? (
                       <img
                         src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
