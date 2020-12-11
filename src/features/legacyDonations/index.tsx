@@ -76,7 +76,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       payDonationData = {
         paymentProviderRequest: {
           account: paymentSetup.gateways.stripe.account,
-          gateway: 'stripe_pi',
+          gateway: paymentSetup.gateways.stripe.methods[0],
           source: {
             id: paymentMethod.id,
             object: 'payment_method',
@@ -137,7 +137,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                 const payDonationData = {
                   paymentProviderRequest: {
                     account: paymentSetup.gateways.stripe.account,
-                    gateway: 'stripe_pi',
+                    gateway: paymentSetup.gateways.stripe.methods[0],
                     source: {
                       id: res.paymentIntent.id,
                       object: 'payment_intent',
