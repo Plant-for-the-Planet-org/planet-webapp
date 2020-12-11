@@ -45,5 +45,7 @@
   "verifyEmailInfo": "Wenn Du keine E-Mail erhalten hast, versuche bitte erneut, Dich anzumelden, und wir senden Dir eine weitere E-Mail.",
   "continueToLogin": "Weiter zum Login",
   "supportsUNEP": "Unterstützt das UNEP",
-  "plantedBy": "Gepflanzt von"
+  "plantedBy": "Gepflanzt von",
+  "mapInfo": "Esri Info",
+  "aboutUs": "Über uns"
 }
