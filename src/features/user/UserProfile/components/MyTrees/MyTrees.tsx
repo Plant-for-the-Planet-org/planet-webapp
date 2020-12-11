@@ -23,7 +23,7 @@ export default function MyTrees({
   profile,
   authenticatedType,
 }: Props): ReactElement {
-  const { i18n, t } = useTranslation(['common', 'country']);
+  const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {
     async function loadFunction() {
@@ -41,7 +41,7 @@ export default function MyTrees({
   const MapProps = {
     contributions,
   };
-  return (
+  return ready ? (
     <>
       {contributions &&
       Array.isArray(contributions) &&
@@ -132,5 +132,5 @@ export default function MyTrees({
         </div>
       ) : null}
     </>
-  );
+  ) : null;
 }

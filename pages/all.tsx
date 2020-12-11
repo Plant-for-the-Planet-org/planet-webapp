@@ -7,7 +7,13 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 const config = tenantConfig();
 
-export default function Home() {
+interface Props {
+  initialized: Boolean;
+}
+
+export default function Home({
+  initialized,
+}: Props) {
   const router = useRouter();
   const [leaderboard, setLeaderboard] = React.useState(null);
 
@@ -47,8 +53,12 @@ export default function Home() {
 
   return (
     <>
-      <GetLeaderboardMeta />
-      <Layout>{getAllPage()}</Layout>
+      {initialized ? (
+      <>
+        <GetLeaderboardMeta />
+        <Layout>{getAllPage()}</Layout>
+      </>
+      ) : null}
     </>
   );
 }

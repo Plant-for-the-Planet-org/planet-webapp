@@ -24,7 +24,7 @@ function ThankYou({
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const config = tenantConfig();
   const imageRef = React.createRef();
@@ -56,7 +56,7 @@ function ThankYou({
 
   const currencyFormat = () => getFormatedCurrency(i18n.language, currency, treeCost * treeCount);
 
-  return (
+  return ready ? (
     <div className={styles.container}>
       <div className={styles.header}>
         <div onClick={onClose} className={styles.headerCloseIcon}>
@@ -75,12 +75,12 @@ function ThankYou({
             paymentTypeUsed,
           },
         )}
-        {isGift
-          && t('donate:giftSentMessage', {
+        {isGift ? (
+          ' ' + t('donate:giftSentMessage', {
             recipientName: giftDetails.recipientName,
-          })}
-{' '}
-        {t('donate:yourTreesPlantedByOnLocation', {
+          })
+        ) : null }
+        {' ' + t('donate:yourTreesPlantedByOnLocation', {
           treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
           projectName: project.name,
           location: t('country:' + project.country.toLowerCase()),
@@ -146,7 +146,7 @@ function ThankYou({
         </Alert>
       </Snackbar>
     </div>
-  );
+  ) : null;
 }
 
 export default ThankYou;

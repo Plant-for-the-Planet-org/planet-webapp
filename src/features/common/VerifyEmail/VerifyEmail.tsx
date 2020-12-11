@@ -11,13 +11,13 @@ interface Props {
 }
 
 function VerifyEmailComponent({ }: Props): ReactElement {
-    const { t } = useTranslation(['common']);
+    const { t, ready } = useTranslation(['common']);
 
     const {
         loginWithRedirect,
       } = useAuth0();
 
-    return (
+    return ready ? (
         <div className={styles.verifyEmailSection}>
             <VerifyEmailIcon />
             <h2 className={styles.verifyEmailText}>
@@ -32,7 +32,7 @@ function VerifyEmailComponent({ }: Props): ReactElement {
                 {t('common:continueToLogin')}
             </div>
         </div>
-    )
+    ) : null;
 }
 
 export default VerifyEmailComponent

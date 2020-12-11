@@ -17,10 +17,17 @@ import i18next from './../../../../../i18n';
 const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     function getSteps() {
-        return [t('manageProjects:basicDetails'), t('manageProjects:projectMedia'), t('manageProjects:detailedAnalysis'), t('manageProjects:projectSites'), t('manageProjects:projectSpending'), t('manageProjects:review')];
+        return [
+          ready ? t('manageProjects:basicDetails') : '',
+          ready ? t('manageProjects:projectMedia') : '',
+          ready ? t('manageProjects:detailedAnalysis') : '',
+          ready ? t('manageProjects:projectSites') : '',
+          ready ? t('manageProjects:projectSpending') : '',
+          ready ? t('manageProjects:review') : ''
+        ];
     }
     const [activeStep, setActiveStep] = React.useState(0);
     const [errorMessage, setErrorMessage] = React.useState('');
@@ -59,7 +66,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
                 setIsUploadingData(false)
             } else {
                 if (res.code === 404) {
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                     setIsUploadingData(false)
                 }
                 else {
@@ -110,7 +117,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         }
     }
 
-    return (
+    return ready ? (
         <div className={styles.mainContainer}>
             <Stepper activeStep={activeStep} orientation="vertical">
                 {steps.map((label, index) => (
@@ -123,5 +130,5 @@ export default function ManageProjects({ GUID, token, project }: any) {
                 ))}
             </Stepper>
         </div>
-    );
+    ) : null;
 }

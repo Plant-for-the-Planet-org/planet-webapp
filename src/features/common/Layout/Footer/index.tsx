@@ -15,9 +15,8 @@ const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
-  const { t, i18n } = useTranslation(['common']);
+  const { t, i18n, ready } = useTranslation(['common']);
   const config = tenantConfig();
-
 
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
@@ -35,22 +34,22 @@ export default function Footer() {
   const FooterLinks = [
     {
       id: 1,
-      title: t('common:privacyAndTerms'),
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
+      title: ready ? t('common:privacyAndTerms') : '',
+      link: 'https://a.plant-for-the-planet.org/en/privacy-terms',
     },
     {
       id: 2,
-      title: t('common:imprint'),
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
+      title: ready ? t('common:imprint') : '',
+      link: 'https://a.plant-for-the-planet.org/imprint',
     },
     {
       id: 3,
-      title: t('common:contact'),
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
+      title: ready ? t('common:contact') : '',
+      link: 'mailto:support@plant-for-the-planet.org',
     },
     {
       id: 6,
-      title: t('common:supportUs'),
+      title: ready ? t('common:supportUs') : '',
       link: 'https://www.plant-for-the-planet.org/en/donation',
     },
   ];
@@ -73,7 +72,7 @@ export default function Footer() {
     }
   }, []);
 
-  return (
+  return ready ? (
     <footer>
       <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
@@ -151,11 +150,11 @@ export default function Footer() {
               })}
             </div>
           </div>
-          
+
         </div>
         <div className={styles.logo_container}>
 
-            <div className={styles.pfp_logo}>
+            <div className={styles.pfp_logo_container}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
                 <PlanetCJLogo />
               </a>
@@ -165,13 +164,13 @@ export default function Footer() {
               <div className={styles.unep_logo_container}>
                 <a href="https://www.unep.org/" target="_blank" rel="noopener noreferrer">
                   <p className={styles.unep_logo_text}>{t('common:supportsUNEP')} </p>
-                  <UNEPLogo height={"65px"} />
+                  <UNEPLogo />
                 </a>
               </div>
             )}
 
             {config.showUNDecadeLogo && (
-              <div style={{marginLeft:'75px'}}>
+              <div className={styles.undecade_logo_container}>
                 <a href="https://www.decadeonrestoration.org/" target="_blank" rel="noopener noreferrer">
                   <UNDecadeLogo />
                 </a>
@@ -189,5 +188,5 @@ export default function Footer() {
         />
       </div>
     </footer>
-  );
+  ) : null;
 }

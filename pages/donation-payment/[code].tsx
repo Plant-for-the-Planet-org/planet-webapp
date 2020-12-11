@@ -16,7 +16,7 @@ function PaymentPage({ initialized }: Props) {
     const [paymentData, setPaymentData] = React.useState(null);
 
     const [isLoaded, setIsLoaded] = React.useState(false);
-    const { t } = useTranslation(['donate']);
+    const { t, ready } = useTranslation(['donate']);
 
     React.useEffect(() => {
         async function loadProjects() {
@@ -42,7 +42,8 @@ function PaymentPage({ initialized }: Props) {
 
     }, [router.query.code]);
 
-    return isLoaded ? paymentData ? (
+    return ready ? (
+      isLoaded ? paymentData ? (
         <>
             <div className={styles.donationPaymentSection}>
 
@@ -63,7 +64,8 @@ function PaymentPage({ initialized }: Props) {
             </div>
             <Footer />
         </>
-    ) : <>
+      ) : 
+        <>
             <div className={styles.donationPaymentSection}>
                 <h2>
                     {t('donate:donationTokenInvalid')}
@@ -76,7 +78,8 @@ function PaymentPage({ initialized }: Props) {
             </div>
 
             <Footer />
-        </>;
+        </>
+    ) : null;
 }
 
 export default PaymentPage

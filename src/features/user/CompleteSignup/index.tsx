@@ -27,7 +27,7 @@ export default function CompleteSignup() {
   } = useAuth0();  
 
   const router = useRouter();
-  const { t } = useTranslation(['editProfile', 'donate', 'login']);
+  const { t, ready } = useTranslation(['editProfile', 'donate', 'login']);
 
   const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
 
@@ -105,7 +105,7 @@ export default function CompleteSignup() {
         const userInfo = getUserInfo();
         const newUserInfo = { ...userInfo, slug: resJson.slug, type: resJson.type }
         setUserInfo(newUserInfo)
-        setSnackbarMessage('Profile Successfully created!');
+        setSnackbarMessage(ready ? t('login:profileCreated') : '');
         setSeverity("success")
         handleSnackbarOpen();
 
@@ -121,22 +121,22 @@ export default function CompleteSignup() {
         removeUserExistsInDB()
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
       } else {
-        setSnackbarMessage('Error in creating profile. Please try again');
+        setSnackbarMessage(ready ? t('login:profileCreationFailed') : '');
         setSeverity("error")
         handleSnackbarOpen();
       }
     } catch {
-      setSnackbarMessage('Error in creating profile');
+      setSnackbarMessage(ready ? t('login:profileCreationError') : '');
       setSeverity("error")
       handleSnackbarOpen();
     }
   };
 
   const profileTypes = [
-    { id: 1, title: 'Individual', value: 'individual' },
-    { id: 2, title: 'Organisation', value: 'organization' },
-    { id: 3, title: 'Reforestation Organisation', value: 'tpo' },
-    { id: 4, title: 'Education', value: 'education' }
+    { id: 1, title: ready ? t('login:individual') : '', value: 'individual' },
+    { id: 2, title: ready ? t('login:organization') : '', value: 'organization' },
+    { id: 3, title: ready ? t('login:tpo') : '', value: 'tpo' },
+    { id: 4, title: ready ? t('login:education') : '', value: 'education' }
   ]
 
   React.useEffect(() => {
@@ -169,7 +169,7 @@ export default function CompleteSignup() {
     return null;
   }
   if (!isLoading && token && (getUserExistsInDB() === false)) {
-    return (
+    return ready ? (
       <div
         className={styles.signUpPage}
         style={{
@@ -234,7 +234,7 @@ export default function CompleteSignup() {
             <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('login:profileName', {
-                  type: SelectType(type)
+                  type: SelectType(type, t)
                 })}
                 variant="outlined"
                 inputRef={register({ required: true })}
@@ -395,28 +395,28 @@ export default function CompleteSignup() {
           </MuiAlert>
         </Snackbar>
       </div>
-    );
+    ) : null;
   }
   return null;
 }
 
-const SelectType = (type: any) => {
+const SelectType = (type: any, t: Function) => {
   let name;
   switch (type) {
     case 'individual':
-      name = 'Individual';
+      name = t('login:individual');
       break;
     case 'tpo':
-      name = 'Reforestation Organisation';
+      name = t('login:tpo');
       break;
     case 'education':
-      name = 'School';
+      name = t('login:education');
       break;
     case 'organization':
-      name = 'Company';
+      name = t('login:organization');
       break;
     default:
-      name = 'Reforestation Organisation';
+      name = t('login:tpo');
       break;
   }
   return name;
