@@ -56,7 +56,7 @@
     "express": "^4.17.1",
     "framer-motion": "^2.9.4",
     "geojson-validation": "^1.0.2",
-    "i18next": "^19.8.3",
+    "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
     "layer-manager": "^3.0.8",
     "luma.gl": "^7.3.2",
