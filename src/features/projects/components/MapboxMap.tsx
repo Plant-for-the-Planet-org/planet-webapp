@@ -48,7 +48,7 @@ export default function MapboxMap({
   let timer: NodeJS.Timeout;
   const router = useRouter();
 
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation(['common']);
 
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
@@ -407,6 +407,16 @@ export default function MapboxMap({
     }
   }
 
+  const [userLang, setUserLang] = React.useState('en');
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('language')) {
+        let userLang = localStorage.getItem('language');
+        if (userLang) setUserLang(userLang);
+      }
+    }
+  }, []);
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
@@ -414,14 +424,11 @@ export default function MapboxMap({
         {...mapState}
         {...viewport}
         mapboxApiAccessToken={mapboxToken}
-        mapOptions={{
-          customAttribution:
-            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a> <a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
-        }}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
         minZoom={1}
+        maxZoom={15}
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
@@ -628,14 +635,67 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
-        <div
-          onClick={() => {
-            setLanguageModalOpen(true);
-          }}
-          className={styles.lngSwitcher + ' mapboxgl-map'}
-        >{`🌐 ${
-          language ? language.toUpperCase() : ''
-        } · ${selectedCurrency}`}</div>
+        <div className={styles.lngSwitcher + ' mapboxgl-map'}>
+          <div
+            onClick={() => {
+              setLanguageModalOpen(true);
+            }}
+          >
+            {`🌐 ${
+              language ? language.toUpperCase() : ''
+            } • ${selectedCurrency}`}
+          </div>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/imprint`}
+            target={'_blank'}
+          >
+            {t('common:imprint')}
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`}
+            target={'_blank'}
+          >
+            {t('common:privacyAndTerms')}
+          </a>
+
+          <a
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              overflow: 'visible',
+            }}
+          >
+            <div style={{ width: 'fit-content' }}>
+              <div className={styles.popover}>
+                {t('common:mapInfo')}
+                <div
+                  className={styles.popoverContent}
+                  style={{ left: '-270px', top: '-140px' }}
+                >
+                  <a>
+                    Esri Community Maps Contributors, Esri, HERE, Garmin,
+                    METI/NASA, USGS
+                    <br />
+                    Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS,
+                    USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
+                    Community
+                  </a>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <a
+            rel="noopener noreferrer"
+            href="mailto:support@plant-for-the-planet.org"
+            target={'_blank'}
+          >
+            {t('common:contact')}
+          </a>
+        </div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
