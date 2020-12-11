@@ -71,5 +71,6 @@
   "supporting": "Supporting",
   "selectProject": "Select a project",
   "nameOfOrg": "Organisation Name",
-  "nameOfOrgIsRequired": "Organisation name is required"
+  "nameOfOrgIsRequired": "Organisation name is required",
+  "giftValidation":"Please enter gift details"
 }

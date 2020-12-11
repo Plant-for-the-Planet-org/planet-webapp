@@ -9,17 +9,29 @@ interface Props {
   setGiftDetails: Function;
   isGift: Boolean;
   giftDetails: Object;
+  setGiftValidated: Function;
 }
 
 export default function GiftForm({
   setGiftDetails,
   giftDetails,
   isGift,
+  setGiftValidated
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors } = useForm({mode:'all'});
+  const { register, handleSubmit, errors, getValues } = useForm({mode:'all'});
+
   const changeGiftDetails = (e: any) => {
+    const recipientName = getValues("recipientName");
+    const email = getValues("email");
+
+    if(errors.recipientName || errors.email || !recipientName || !email ){
+      setGiftValidated(false)
+    }
+    else{
+      setGiftValidated(true)
+    }
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
   };
 
@@ -59,7 +71,10 @@ export default function GiftForm({
               onChange={changeGiftDetails}
               label={t('donate:email')}
               variant="outlined"
-              inputRef={ register({ required: true, pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i }) }
+              inputRef={register({
+                required: true,
+                pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
+              })}
             />
             {errors.email && (
               <span className={styles.formErrors}>
