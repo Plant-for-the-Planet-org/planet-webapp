@@ -17,7 +17,7 @@ const config = {
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
-    tenantLogoLink: 'https://a.plant-for-the-planet.org',
+    tenantLogoLink: '/',
     items: [
       {
         id: 1,
@@ -36,7 +36,7 @@ const config = {
       {
         id: 2,
         title: 'aboutUs',
-        onclick: 'https://plant-for-the-planet.org/',
+        onclick: 'https://a.plant-for-the-planet.org/',
         visible: true,
         key: 'about',
       },
@@ -59,7 +59,7 @@ const config = {
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
     description:
-      "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
+      "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '@pftp_int',
     locale: 'en_US',

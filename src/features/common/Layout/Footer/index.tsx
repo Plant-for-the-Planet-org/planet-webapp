@@ -35,17 +35,17 @@ export default function Footer() {
     {
       id: 1,
       title: ready ? t('common:privacyAndTerms') : '',
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
+      link: 'https://a.plant-for-the-planet.org/en/privacy-terms',
     },
     {
       id: 2,
       title: ready ? t('common:imprint') : '',
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
+      link: 'https://a.plant-for-the-planet.org/imprint',
     },
     {
       id: 3,
       title: ready ? t('common:contact') : '',
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
+      link: 'mailto:support@plant-for-the-planet.org',
     },
     {
       id: 6,
@@ -150,7 +150,7 @@ export default function Footer() {
               })}
             </div>
           </div>
-          
+
         </div>
         <div className={styles.logo_container}>
 
