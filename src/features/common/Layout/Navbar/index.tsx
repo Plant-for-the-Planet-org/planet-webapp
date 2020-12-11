@@ -16,6 +16,8 @@ import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserInfo } from '../../../../utils/auth0/userInfo';
+import LeafSelected from '../../../../../public/assets/images/navigation/LeafSelected';
+import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -154,17 +156,18 @@ export default function NavbarComponent(props: any) {
               className={`${styles.first_icon} ${styles.tenant_logo}`}
               style={{ padding: '0rem 0.5rem' }}
             >
-              <Link href="https://www.plant-for-the-planet.org">
-                <div className={styles.link_container}>
-                  <div className={styles.link_icon}>
-                    <img
-                      src="/assets/images/planet.svg"
-                      alt={t('common:about_pftp')}
-                    />
-                  </div>
-                  {ready ? <p>{t('common:aboutUs')}</p> : null}
+              <div className={styles.tenant_logo_container}>
+                <div style={{ padding: '0.4rem 0.5rem' }}>
+                  <a href="https://www.plant-for-the-planet.org">
+                    {ready ? (
+                      <img
+                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                        alt={t('common:about_pftp')}
+                      />
+                    ) : null}
+                  </a>
                 </div>
-              </Link>
+              </div>
             </div>
           )}
 
@@ -219,7 +222,31 @@ export default function NavbarComponent(props: any) {
                   </div>
                 </Link>
               ) : null}
-
+              {item.key === 'about' && item.visible === true ? (
+                <Link key={item.id} href={item.onclick}>
+                  <div className={styles.link_container}>
+                    <div className={styles.link_icon}>
+                      {/* <i className="fas fa-ad"></i> */}
+                      {router.pathname === item.onclick ? (
+                        <LeafSelected color={styles.primaryColor} />
+                      ) : (
+                        <Leaf color={styles.primaryFontColor} />
+                      )}
+                    </div>
+                    {ready ? (
+                      <p
+                        className={
+                          router.pathname === item.onclick
+                            ? styles.active_icon
+                            : ''
+                        }
+                      >
+                        {t('common:' + item.title)}
+                      </p>
+                    ) : null}
+                  </div>
+                </Link>
+              ) : null}
               {item.key === 'leaderboard' && item.visible === true ? (
                 <Link key={item.id} href={item.onclick}>
                   <div className={styles.link_container}>

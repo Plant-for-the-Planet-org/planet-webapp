@@ -34,6 +34,13 @@ const config = {
         key: 'donate',
       },
       {
+        id: 2,
+        title: 'aboutUs',
+        onclick: 'https://plant-for-the-planet.org/',
+        visible: true,
+        key: 'about',
+      },
+      {
         id: 3,
         title: 'leaderboard',
         onclick: '/all',
