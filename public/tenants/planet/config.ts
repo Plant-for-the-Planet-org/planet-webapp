@@ -42,7 +42,7 @@ const config = {
       },
       {
         id: 3,
-        title: 'leaderboard',
+        title: 'leaders',
         onclick: '/all',
         visible: true,
         key: 'leaderboard',

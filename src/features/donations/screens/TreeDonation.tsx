@@ -66,7 +66,16 @@ function TreeDonation({
   };
 
   const continueNext = () => {
-    setDonationStep(2);
+    if(isGift){
+      if(isGiftValidated ){
+        setDonationStep(2);
+      }else{
+        setPaymentError(t('donate:giftValidation'))
+      }
+    }else{
+      setDonationStep(2);
+    }
+    
   };
 
   React.useEffect(() => {
@@ -121,6 +130,7 @@ function TreeDonation({
   };
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
+  const [isGiftValidated,setGiftValidated] = React.useState(false);
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -192,12 +202,14 @@ function TreeDonation({
               setGiftDetails={setGiftDetails}
               directGift={directGift}
               setDirectGift={setDirectGift}
+              setGiftValidated={setGiftValidated}
             />
           ) : (
             <GiftForm
               isGift={isGift}
               giftDetails={giftDetails}
               setGiftDetails={setGiftDetails}
+              setGiftValidated={setGiftValidated}
             />
           )
         ) : null}
@@ -358,7 +370,7 @@ function TreeDonation({
       />
     </>
     )
-  ) : null;
+  ) : <></>;
 }
 
 export default TreeDonation;
