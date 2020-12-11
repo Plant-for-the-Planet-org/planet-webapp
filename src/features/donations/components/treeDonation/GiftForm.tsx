@@ -18,7 +18,7 @@ export default function GiftForm({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm({mode:'all'});
   const changeGiftDetails = (e: any) => {
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
   };
@@ -43,7 +43,7 @@ export default function GiftForm({
               onChange={changeGiftDetails}
               label={t('donate:recipientName')}
               variant="outlined"
-              inputRef={isGift ? register({ required: true }) : register({})}
+              inputRef={ register({ required: true })}
             />
             {errors.recipientName && (
               <span className={styles.formErrors}>
@@ -59,7 +59,7 @@ export default function GiftForm({
               onChange={changeGiftDetails}
               label={t('donate:email')}
               variant="outlined"
-              inputRef={isGift ? register({ required: true, pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i }) : register({})}
+              inputRef={ register({ required: true, pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i }) }
             />
             {errors.email && (
               <span className={styles.formErrors}>
