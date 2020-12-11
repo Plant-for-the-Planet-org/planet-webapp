@@ -20,7 +20,7 @@ export default function GiftForm({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors, getValues } = useForm({mode:'all'});
+  const { register, handleSubmit, errors, getValues,reset } = useForm({mode:'all'});
 
   const changeGiftDetails = (e: any) => {
     const recipientName = getValues("recipientName");
@@ -38,6 +38,12 @@ export default function GiftForm({
   React.useEffect(()=>{
     if(isGift){
       setGiftDetails({...giftDetails, type:'invitation'})
+      const defaultDeails = {
+        recipientName:giftDetails.recipientName,
+        email:giftDetails.email,
+        giftMessage:giftDetails.giftMessage
+      }
+      reset(defaultDeails)
     }else{
       setGiftDetails({...giftDetails, type:null})
     }
