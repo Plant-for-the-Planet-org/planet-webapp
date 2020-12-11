@@ -9,5 +9,8 @@
   "websiteError": "URL do site inválido",
   "websiteRequired": "Por favor, digite o URL válido do site",
   "save": "Salvar",
-  "orgNameValidation": "Por favor, introduza o nome da organização"
+  "orgNameValidation": "Por favor, introduza o nome da organização",
+  "profilePicUpdated": "A foto do perfil está sendo atualizada",
+  "profileSaved": "Salvo com sucesso!",
+  "profileSaveFailed": "Erro na atualização do perfil."
 }
