@@ -309,7 +309,7 @@ function PaymentDetails({
 
     createDonation(createDonationData, token)
       .then((res) => {
-        if (res.code === 400) {
+        if (res.code === 400 || res.code === 401) {
           setIsPaymentProcessing(false);
           setPaymentError(res.message);
           setPaypalProcessing(false)
