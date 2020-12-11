@@ -20,34 +20,40 @@ export default function GiftForm({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors, getValues,reset } = useForm({mode:'all'});
+  const defaultDeails = {
+    recipientName: giftDetails.recipientName,
+    email: giftDetails.email,
+    giftMessage: giftDetails.giftMessage
+  }
+
+  const { register, errors, getValues, reset } = useForm({ mode: 'all',defaultValues:defaultDeails });
 
   const changeGiftDetails = (e: any) => {
     const recipientName = getValues("recipientName");
     const email = getValues("email");
 
-    if(errors.recipientName || errors.email || !recipientName || !email ){
-      setGiftValidated(false)
-    }
-    else{
-      setGiftValidated(true)
-    }
+    
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
   };
 
-  React.useEffect(()=>{
-    if(isGift){
-      setGiftDetails({...giftDetails, type:'invitation'})
-      const defaultDeails = {
-        recipientName:giftDetails.recipientName,
-        email:giftDetails.email,
-        giftMessage:giftDetails.giftMessage
-      }
-      reset(defaultDeails)
-    }else{
-      setGiftDetails({...giftDetails, type:null})
+  React.useEffect(() => {
+    if (isGift) {
+      setGiftDetails({ ...giftDetails, type: 'invitation' })
+    } else {
+      setGiftDetails({ ...giftDetails, type: null })
     }
-  },[isGift])
+  }, [isGift])
+
+  React.useEffect(() => {
+    const recipientName = getValues("recipientName");
+    const email = getValues("email"); 
+    if (errors.recipientName || errors.email || !recipientName || !email) {
+      setGiftValidated(false)
+    }
+    else if (recipientName || email) {
+      setGiftValidated(true)
+    }
+  }, [giftDetails])
   return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
@@ -61,7 +67,7 @@ export default function GiftForm({
               onChange={changeGiftDetails}
               label={t('donate:recipientName')}
               variant="outlined"
-              inputRef={ register({ required: true })}
+              inputRef={register({ required: true })}
             />
             {errors.recipientName && (
               <span className={styles.formErrors}>
