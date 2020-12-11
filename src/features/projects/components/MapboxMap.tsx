@@ -407,7 +407,7 @@ export default function MapboxMap({
     }
   }
 
-  const [userLang, setUserLang] = React.useState('en')
+  const [userLang, setUserLang] = React.useState('en');
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (localStorage.getItem('language')) {
@@ -415,7 +415,7 @@ export default function MapboxMap({
         if (userLang) setUserLang(userLang);
       }
     }
-  }, [])
+  }, []);
 
   return (
     <div className={styles.mapContainer}>
@@ -444,40 +444,40 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-              <>
-                <Source
-                  id="satellite"
-                  type="raster"
-                  attribution="<a>Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</a>"
-                  tiles={[
-                    'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                  ]}
-                  tileSize={128}
-                >
-                  <Layer id="satellite-layer" source="satellite" type="raster" />
-                </Source>
-                <Source id="singleProject" type="geojson" data={geoJson}>
-                  <Layer
-                    id="ploygonLayer"
-                    type="fill"
-                    source="singleProject"
-                    paint={{
-                      'fill-color': '#fff',
-                      'fill-opacity': 0.2,
-                    }}
-                  />
-                  <Layer
-                    id="ploygonOutline"
-                    type="line"
-                    source="singleProject"
-                    paint={{
-                      'line-color': '#68B030',
-                      'line-width': 2,
-                    }}
-                  />
-                </Source>
-              </>
-            )
+            <>
+              <Source
+                id="satellite"
+                type="raster"
+                attribution="<a>Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</a>"
+                tiles={[
+                  'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                ]}
+                tileSize={128}
+              >
+                <Layer id="satellite-layer" source="satellite" type="raster" />
+              </Source>
+              <Source id="singleProject" type="geojson" data={geoJson}>
+                <Layer
+                  id="ploygonLayer"
+                  type="fill"
+                  source="singleProject"
+                  paint={{
+                    'fill-color': '#fff',
+                    'fill-opacity': 0.2,
+                  }}
+                />
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#68B030',
+                    'line-width': 2,
+                  }}
+                />
+              </Source>
+            </>
+          )
         ) : null}
 
         {!showSingleProject &&
@@ -518,7 +518,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => { }}
+                onFocus={() => {}}
               />
             </Marker>
           ))}
@@ -618,9 +618,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                  siteExists &&
-                  project.sites.length !== 0 &&
-                  geoJson.features[currentSite]
+                siteExists &&
+                project.sites.length !== 0 &&
+                geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -637,35 +637,65 @@ export default function MapboxMap({
           ) : null
         ) : null}
         <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-          <div onClick={() => {
-            setLanguageModalOpen(true);
-          }}>
-            {`🌐 ${language ? language.toUpperCase() : ''
-              } • ${selectedCurrency}`}
+          <div
+            onClick={() => {
+              setLanguageModalOpen(true);
+            }}
+          >
+            {`🌐 ${
+              language ? language.toUpperCase() : ''
+            } • ${selectedCurrency}`}
           </div>
-          <a rel="noopener noreferrer" href={`https://a.plant-for-the-planet.org/imprint`} target={"_blank"}>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/imprint`}
+            target={'_blank'}
+          >
             {t('common:imprint')}
           </a>
-          <a rel="noopener noreferrer" href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`} target={"_blank"}>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`}
+            target={'_blank'}
+          >
             {t('common:privacyAndTerms')}
           </a>
 
-          <a style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', overflow: 'visible' }}>
-
+          <a
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              overflow: 'visible',
+            }}
+          >
             <div style={{ width: 'fit-content' }}>
               <div className={styles.popover}>
                 {t('common:mapInfo')}
-                <div className={styles.popoverContent} style={{ left: '-270px', top: '-80px', }}>
-                  <a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>
+                <div
+                  className={styles.popoverContent}
+                  style={{ left: '-270px', top: '-140px' }}
+                >
+                  <a>
+                    Esri Community Maps Contributors, Esri, HERE, Garmin,
+                    METI/NASA, USGS
+                    <br />
+                    Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS,
+                    USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
+                    Community
+                  </a>
                 </div>
               </div>
             </div>
           </a>
 
-          <a rel="noopener noreferrer" href="mailto:support@plant-for-the-planet.org" target={"_blank"}>
+          <a
+            rel="noopener noreferrer"
+            href="mailto:support@plant-for-the-planet.org"
+            target={'_blank'}
+          >
             {t('common:contact')}
           </a>
-
         </div>
       </MapGL>
       {infoExpanded !== null ? (
