@@ -9,13 +9,19 @@ interface Props {
   giftDetails: any;
   directGift: any;
   setDirectGift: Function;
+  setGiftValidated:Function;
 }
 
 export default function GiftForm({
   giftDetails,
   setDirectGift,
+  setGiftValidated
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['donate', 'common']);
+
+  React.useEffect(()=>{
+    setGiftValidated(true);
+  },[])
   return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
@@ -36,5 +42,5 @@ export default function GiftForm({
         </div>
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }
