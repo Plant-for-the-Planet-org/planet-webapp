@@ -31,7 +31,7 @@ interface Props {
   handleBack: Function;
   projectGUID: String;
   handleReset: Function;
-  token: any
+  token: any;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -40,9 +40,13 @@ const Map = dynamic(() => import('./MapComponent'), {
 });
 
 export default function ProjectSites({
-  handleBack, token, handleNext, projectGUID, handleReset
+  handleBack,
+  token,
+  handleNext,
+  projectGUID,
+  handleReset,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -86,7 +90,7 @@ export default function ProjectSites({
     geoJson,
     setGeoJson,
     geoJsonError,
-    setGeoJsonError
+    setGeoJsonError,
   };
 
   const onSubmit = (data: any) => {
@@ -97,7 +101,7 @@ export default function ProjectSites({
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
-      handleReset(t('manageProjects:resetMessage'));
+      handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
 
@@ -133,7 +137,7 @@ export default function ProjectSites({
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
-            setErrorMessage(t('manageProjects:projectNotFound'));
+            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
           } else {
             setIsUploadingData(false);
             setErrorMessage(res.message);
@@ -141,7 +145,7 @@ export default function ProjectSites({
         }
       });
     } else {
-      setErrorMessage('Polygon is required');
+      setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
     }
   };
 
@@ -165,10 +169,13 @@ export default function ProjectSites({
   };
 
   const status = [
-    { label: t('manageProjects:siteStatusPlanting'), value: 'planting' },
-    { label: t('manageProjects:siteStatusPlanted'), value: 'planted' },
-    { label: t('manageProjects:siteStatusBarren'), value: 'barren' },
-    { label: t('manageProjects:siteStatusReforestation'), value: 'reforestation' },
+    { label: ready ? t('manageProjects:siteStatusPlanting') : '', value: 'planting' },
+    { label: ready ? t('manageProjects:siteStatusPlanted') : '', value: 'planted' },
+    { label: ready ? t('manageProjects:siteStatusBarren') : '', value: 'barren' },
+    {
+      label: ready ? t('manageProjects:siteStatusReforestation') : '',
+      value: 'reforestation',
+    },
   ];
 
   React.useEffect(() => {
@@ -185,7 +192,7 @@ export default function ProjectSites({
       });
   }, [projectGUID]);
 
-  return (
+  return ready ? (
     <div className={styles.stepContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formField}>
@@ -244,7 +251,7 @@ export default function ProjectSites({
                           'fill-opacity': 0.2,
                         }}
                         linePaint={{
-                          'line-color': '#89b54a',
+                          'line-color': '#68B030',
                           'line-width': 2,
                         }}
                       />
@@ -310,15 +317,15 @@ export default function ProjectSites({
             </div>
           </div>
         ) : (
-            <div
-              onClick={() => setShowForm(true)}
-              className={styles.formFieldLarge}
-            >
-              <p className={styles.inlineLinkButton}>
-                {t('manageProjects:addSite')}
-              </p>
-            </div>
-          )}
+          <div
+            onClick={() => setShowForm(true)}
+            className={styles.formFieldLarge}
+          >
+            <p className={styles.inlineLinkButton}>
+              {t('manageProjects:addSite')}
+            </p>
+          </div>
+        )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -345,12 +352,12 @@ export default function ProjectSites({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
+                t('manageProjects:saveAndContinue')
+              )}
             </AnimatedButton>
           </div>
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }

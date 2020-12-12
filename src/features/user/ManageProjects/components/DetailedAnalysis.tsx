@@ -32,32 +32,32 @@ interface Props {
     userLang: String;
 }
 export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects', 'common']);
+    const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
     const [siteOwners, setSiteOwners] = React.useState([
-        { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private', isSet: false },
-        { id: 2, title: t('manageProjects:siteOwnerPublic'), value: 'public-property', isSet: false },
-        { id: 3, title: t('manageProjects:siteOwnerSmallHolding'), value: 'smallholding', isSet: false },
-        { id: 4, title: t('manageProjects:siteOwnerCommunal'), value: 'communal-land', isSet: false },
-        { id: 5, title: t('manageProjects:siteOwnerOwned'), value: 'owned-by-owner', isSet: false },
-        { id: 6, title: t('manageProjects:siteOwnerOther'), value: 'other', isSet: false }
+        { id: 1, title: ready ? t('manageProjects:siteOwnerPrivate') : '', value: 'private', isSet: false },
+        { id: 2, title: ready ? t('manageProjects:siteOwnerPublic') : '', value: 'public-property', isSet: false },
+        { id: 3, title: ready ? t('manageProjects:siteOwnerSmallHolding') : '', value: 'smallholding', isSet: false },
+        { id: 4, title: ready ? t('manageProjects:siteOwnerCommunal') : '', value: 'communal-land', isSet: false },
+        { id: 5, title: ready ? t('manageProjects:siteOwnerOwned') : '', value: 'owned-by-owner', isSet: false },
+        { id: 6, title: ready ? t('manageProjects:siteOwnerOther') : '', value: 'other', isSet: false }
     ])
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
     const [plantingSeasons, setPlantingSeasons] = React.useState([
-        { id: 0, title: t('common:january'), isSet: false },
-        { id: 1, title: t('common:february'), isSet: false },
-        { id: 2, title: t('common:march'), isSet: false },
-        { id: 3, title: t('common:april'), isSet: false },
-        { id: 4, title: t('common:may'), isSet: false },
-        { id: 5, title: t('common:june'), isSet: false },
-        { id: 6, title: t('common:july'), isSet: false },
-        { id: 7, title: t('common:august'), isSet: false },
-        { id: 8, title: t('common:september'), isSet: false },
-        { id: 9, title: t('common:october'), isSet: false },
-        { id: 10, title: t('common:november'), isSet: false },
-        { id: 11, title: t('common:december'), isSet: false }
+        { id: 0, title: ready ? t('common:january') : '', isSet: false },
+        { id: 1, title: ready ? t('common:february') : '', isSet: false },
+        { id: 2, title: ready ? t('common:march') : '', isSet: false },
+        { id: 3, title: ready ? t('common:april') : '', isSet: false },
+        { id: 4, title: ready ? t('common:may') : '', isSet: false },
+        { id: 5, title: ready ? t('common:june') : '', isSet: false },
+        { id: 6, title: ready ? t('common:july') : '', isSet: false },
+        { id: 7, title: ready ? t('common:august') : '', isSet: false },
+        { id: 8, title: ready ? t('common:september') : '', isSet: false },
+        { id: 9, title: ready ? t('common:october') : '', isSet: false },
+        { id: 10, title: ready ? t('common:november') : '', isSet: false },
+        { id: 11, title: ready ? t('common:december') : '', isSet: false }
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
@@ -80,7 +80,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset(t('manageProjects:resetMessage'))
+            handleReset(ready ? t('manageProjects:resetMessage') : '')
         }
     })
 
@@ -130,7 +130,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                 }
                 else {
                     setIsUploadingData(false)
@@ -188,7 +188,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -288,7 +288,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MaterialTextField
-                                inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
+                                inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
                                 label={t('manageProjects:employeeCount')}
                                 variant="outlined"
                                 name="employeesCount"
@@ -605,5 +605,5 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             </form>
 
         </div>
-    )
+    ) : null;
 }

@@ -44,7 +44,7 @@ function TreeDonation({
   isPaymentOptionsLoading,
   token
 }: TreeDonationProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const treeCountOptions = [10, 20, 50, 150];
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
@@ -66,7 +66,16 @@ function TreeDonation({
   };
 
   const continueNext = () => {
-    setDonationStep(2);
+    if(isGift){
+      if(isGiftValidated ){
+        setDonationStep(2);
+      }else{
+        setPaymentError(t('donate:giftValidation'))
+      }
+    }else{
+      setDonationStep(2);
+    }
+    
   };
 
   React.useEffect(() => {
@@ -120,16 +129,12 @@ function TreeDonation({
     payWithCard({ ...payWithCardProps });
   };
 
-  const formatter = new Intl.NumberFormat(i18n.language, {
-    // These options are needed to round to whole numbers if that's what you want.
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
-  return isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  const [isGiftValidated,setGiftValidated] = React.useState(false);
+  return ready ? (
+    isPaymentProcessing ? (
+      <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+    ) : (
     <>
       <div
         className={`${styles.cardContainer} ${
@@ -172,7 +177,7 @@ function TreeDonation({
             <DownArrow color="#87B738" />
           </div>
           <div className={styles.rate}>
-          {formatter.format(treeCost)}{' '}
+          {getFormatedCurrency(i18n.language, '', Number(treeCost))}{' '}
             {t('donate:perTree')}
           </div>
         </div>
@@ -197,12 +202,14 @@ function TreeDonation({
               setGiftDetails={setGiftDetails}
               directGift={directGift}
               setDirectGift={setDirectGift}
+              setGiftValidated={setGiftValidated}
             />
           ) : (
             <GiftForm
               isGift={isGift}
               giftDetails={giftDetails}
               setGiftDetails={setGiftDetails}
+              setGiftValidated={setGiftValidated}
             />
           )
         ) : null}
@@ -362,7 +369,8 @@ function TreeDonation({
         country={country}
       />
     </>
-  );
+    )
+  ) : <></>;
 }
 
 export default TreeDonation;

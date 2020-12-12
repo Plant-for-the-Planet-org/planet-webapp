@@ -1,5 +1,6 @@
 import NextErrorComponent from 'next/error';
 import * as Sentry from '@sentry/node';
+import PropTypes from 'prop-types';
 
 const MyError = ({ statusCode, hasGetInitialPropsRun, err }) => {
   if (!hasGetInitialPropsRun && err) {
@@ -10,6 +11,12 @@ const MyError = ({ statusCode, hasGetInitialPropsRun, err }) => {
   }
 
   return <NextErrorComponent statusCode={statusCode} />;
+};
+
+MyError.propTypes = {
+  statusCode: PropTypes.number.isRequired,
+  hasGetInitialPropsRun: PropTypes.bool.isRequired,
+  err: PropTypes.node.isRequired,
 };
 
 MyError.getInitialProps = async ({ res, err, asPath }) => {

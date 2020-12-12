@@ -13,9 +13,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 100vh;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.6);
+  min-height: calc(100vh - 100px);
 }
 
 // white modal
@@ -32,6 +32,7 @@
   display: flex;
   flex-direction: column;
   align-items: left;
+  overflow-y: auto;
 }
 
 // header div

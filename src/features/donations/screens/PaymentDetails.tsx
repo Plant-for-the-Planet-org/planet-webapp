@@ -93,7 +93,7 @@ function PaymentDetails({
   isTaxDeductible,
   token
 }: PaymentDetailsProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
@@ -423,9 +423,10 @@ function PaymentDetails({
     }
   }
 
-  return isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  return ready ? (
+    isPaymentProcessing ? (
+      <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+    ) : (
       <div className={styles.container}>
         <div className={styles.header}>
           <div
@@ -535,7 +536,7 @@ function PaymentDetails({
                   amount={treeCost * treeCount}
                   currency={currency}
                   donationId={donationID}
-                  mode={paymentSetup?.gateways.paypal.isLive ? 'live' : 'sandbox'}
+                  mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
                   clientID={paymentSetup?.gateways.paypal.authorization.client_id}
                 />
               )
@@ -579,7 +580,8 @@ function PaymentDetails({
 
 
       </div>
-    );
+    )
+  ) : null;
 }
 
 export default PaymentDetails;

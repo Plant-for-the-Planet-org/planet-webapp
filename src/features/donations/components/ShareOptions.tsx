@@ -10,17 +10,35 @@ import InstagramIcon from '../../../../public/assets/images/icons/share/Instagra
 import tenantConfig from '../../../../tenant.config';
 import ReactDOM from 'react-dom';
 import domtoimage from 'dom-to-image';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n/server';
 
-const ShareOptions = (props) => {
-  const { useTranslation } = i18next;
-  const { t, i18n } = useTranslation(['donate', 'common']);
+const { useTranslation } = i18next;
+
+interface ShareOptionsProps {
+  treeCount: String;
+  sendRef: any;
+  handleTextCopiedSnackbarOpen: Function
+  contactDetails: Object
+}
+const ShareOptions = ({
+  treeCount,
+  sendRef,
+  handleTextCopiedSnackbarOpen,
+  contactDetails,
+}: ShareOptionsProps) => {
+  const { t, ready } = useTranslation(['donate']);
   const config = tenantConfig();
 
-  const titleToShare = t('donate:titleToShare');
+  const titleToShare = ready ? t('donate:titleToShare') : '';
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
-  const textToShare = t('donate:textToShare', { linkToShare: linkToShare });
+  let textToShare = '';
+  // contactDetails may be undefined or empty for legacy donations or redeem
+  if (contactDetails && (contactDetails.firstName || contactDetails.lastName)) {
+    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${contactDetails.firstName} ${contactDetails.lastName}` }) : '';
+  } else {
+    textToShare = ready ? t('donate:textToShareForMe') : '';
+  }
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
@@ -46,7 +64,7 @@ const ShareOptions = (props) => {
 
   const exportComponentAsJPEG = (
     node,
-    fileName = `My_${props.treeCount}_tree_donation.jpeg`,
+    fileName = `My_${treeCount}_tree_donation.jpeg`,
     backgroundColor = null,
     type = 'image/jpeg'
   ) => {
@@ -63,7 +81,7 @@ const ShareOptions = (props) => {
     openWindowLinks(shareUrl);
   };
 
-  return (
+  return ready ? (
     <div
       className={styles.shareRow}
       onMouseOut={() => setCurrentHover(-1)}
@@ -72,10 +90,10 @@ const ShareOptions = (props) => {
       <div
         className={styles.shareIcon}
         onClick={() => {
-          if (props.sendRef) {
+          if (sendRef) {
             exportComponentAsJPEG(
-              props.sendRef(),
-              `My_${props.treeCount}_tree_donation.jpeg`
+              sendRef(),
+              `My_${treeCount}_tree_donation.jpeg`
             );
           }
         }}
@@ -92,7 +110,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(
-            `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}`,
+            `https://www.facebook.com/sharer.php?u=${urlToShare}&quote=${textToShare}&hashtag=%23StopTalkingStartPlanting`,
             '_blank'
           )
         }
@@ -119,7 +137,7 @@ const ShareOptions = (props) => {
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
-          shareClicked(`https://twitter.com/intent/tweet?text=${textToShare}`)
+          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=PftP_int&url=${linkToShare}&text=${textToShare}`)
         }
       >
         <TwitterIcon
@@ -141,7 +159,7 @@ const ShareOptions = (props) => {
         )}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default ShareOptions;

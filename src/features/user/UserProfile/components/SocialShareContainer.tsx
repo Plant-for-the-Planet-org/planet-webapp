@@ -10,14 +10,14 @@ import i18next from '../../../../../i18n';
 
 const config = tenantConfig();
 
+const { useTranslation } = i18next;
 
 export default function SocialShareContainer({userprofile, type}:any) {
-    const { useTranslation } = i18next;
-    const { t } = useTranslation(['donate', 'me']);
+  const { t, ready } = useTranslation(['donate', 'me']);
   const [currentHover, setCurrentHover] = React.useState(-1);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
-  const textToShareLinkedin = t('donate:textToShareLinkedin', { name: userprofile.displayName });
+  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
+  const textToShareLinkedin = ready ? t('donate:textToShareLinkedin', { name: userprofile.displayName }) : '';
 
   const shareClicked = async (shareUrl) => {
     openWindowLinks(shareUrl);
@@ -25,7 +25,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
   const openWindowLinks = (shareUrl) => {
     window.open(shareUrl, '_blank');
   };
-  return (
+  return ready ? (
     // <motion.div
     // initial={false}
     // animate={}
@@ -72,5 +72,5 @@ export default function SocialShareContainer({userprofile, type}:any) {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

@@ -21,7 +21,7 @@ export default function AddTargetModal({
   forceReload,
 }: any) {
   const [target, setTarget] = React.useState(0);
-  const { t } = useTranslation(['target']);
+  const { t, ready } = useTranslation(['target']);
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
   const [isLoadingForm, setIsLoading] = React.useState(false);
 
@@ -51,6 +51,7 @@ export default function AddTargetModal({
       putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
         handleAddTargetModalClose();
         changeForceReload(!forceReload);
+        setIsLoading(false);
       }).catch(error => {
         handleAddTargetModalClose();
         console.log(error);
@@ -58,7 +59,7 @@ export default function AddTargetModal({
       })
     }
   };
-  return (
+  return ready ? (
     <Modal
       className={styles.modalContainer}
       open={addTargetModalOpen}
@@ -119,5 +120,5 @@ export default function AddTargetModal({
         </div>
       </Fade>
     </Modal>
-  );
+  ) : null;
 }

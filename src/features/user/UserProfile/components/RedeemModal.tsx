@@ -19,8 +19,9 @@ const { useTranslation } = i18next;
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
+  userprofile
 }: any) {
-  const { t, i18n } = useTranslation(['me', 'common', 'donate','redeem']);
+  const { t, i18n, ready } = useTranslation(['me', 'common', 'donate','redeem']);
 
   const config = tenantConfig();
 
@@ -128,7 +129,12 @@ export default function RedeemModal({
     handleRedeemModalClose()
   }
 
-  return (
+  const contactDetails =  {
+    firstName: userprofile.firstname,
+    lastName:userprofile.lastname
+  }
+
+  return ready ? (
     <Modal
       className={styles.modalContainer}
       open={redeemModalOpen}
@@ -195,6 +201,7 @@ export default function RedeemModal({
                   treeCount={getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
                   sendRef={sendRef}
                   handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+                  contactDetails={contactDetails}
                 />
               </div>
 
@@ -265,5 +272,5 @@ export default function RedeemModal({
 
       </Fade>
     </Modal>
-  );
+  ) : null;
 }

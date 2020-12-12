@@ -1,1 +1,8 @@
-{ }
+{
+  "congratulations": "¡Felicidades!",
+  "addToMyTrees": "Añadir a mis árboles",
+  "validateCode": "Validar el código",
+  "enterRedeemCode": "Por favor, introduzca un código para redimir",
+  "validating": "Validación",
+  "invalidType": "Tipo inválido, por favor, compruebe el enlace de nuevo"
+}

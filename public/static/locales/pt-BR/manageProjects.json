@@ -71,6 +71,7 @@
   "siteStatusPlanted": "Plantado",
   "siteStatusBarren": "Árido",
   "siteStatusReforestation": "Reflorestamento",
+  "projectStatus": "Status do projeto",
   "selectProjectStatus": "Por favor, selecione Status do Projeto",
   "saveAndAddSite": "Salvar & Adicionar outro local",
   "addSite": "Adicionar outro local",
@@ -101,5 +102,13 @@
   "externalCertifications": "Certificações externas",
   "projectSpendingFinancial": "Gastos financeiros em projetos",
   "issueDate": "Data de emissão",
-  "acquisitionYear": "Ano de Aquisição"
+  "acquisitionYear": "Ano de Aquisição",
+  "largeScalePlanting": "Plantio em larga Escala",
+  "agroforestry": "Agrofloresta",
+  "naturalRegeneration": "Regeneração Natural",
+  "managedRegeneration": "Regeneração com manejo",
+  "urbanPlanting": "Plantio Urbano",
+  "otherPlanting": "Outros plantios",
+  "projectType": "Tipo de projeto",
+  "polygonRequired": "O polígono é necessário"
 }

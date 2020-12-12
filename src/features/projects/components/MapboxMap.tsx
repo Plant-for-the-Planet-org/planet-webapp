@@ -22,6 +22,7 @@ import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+import style from '../../../../public/data/styles/root.json';
 
 const { useTranslation } = i18next;
 
@@ -47,7 +48,7 @@ export default function MapboxMap({
   let timer: NodeJS.Timeout;
   const router = useRouter();
 
-  const { t, i18n } = useTranslation(['maps']);
+  const { i18n, t } = useTranslation(['common']);
 
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
@@ -69,9 +70,53 @@ export default function MapboxMap({
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
+  const [mapstyle, setMapStyle] = React.useState('');
+
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+
+  // first fetch the esri style file
+  // https://www.mapbox.com/mapbox-gl-js/style-spec
+
+  React.useEffect(() => {
+    const metadataUrl = style.sources.esri.url;
+    fetch(metadataUrl)
+      .then((response) => {
+        return response.json().then((metadata) => {
+          const ready = format(style, metadata);
+          setMapStyle(ready);
+        });
+      })
+      .catch((e) => {
+        console.log('Error:', e);
+      });
+
+    function format(style: any, metadata: any) {
+      // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
+      style.sources.esri = {
+        type: 'vector',
+        scheme: 'xyz',
+        tilejson: metadata.tilejson || '2.0.0',
+        format: (metadata.tileInfo && metadata.tileInfo.format) || 'pbf',
+        /* mapbox-gl-js does not respect the indexing of esri tiles
+      because we cache to different zoom levels depending on feature density, in rural areas 404s will still be encountered.
+      more info: https://github.com/mapbox/mapbox-gl-js/pull/1377
+      */
+        // index: metadata.tileMap ? style.sources.esri.url + '/' + metadata.tileMap : null,
+        maxzoom: 15,
+        tiles: [style.sources.esri.url + '/' + metadata.tiles[0]],
+        description: metadata.description,
+        name: metadata.name,
+      };
+      return style;
+    }
+  }, []);
 
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    mapStyle: EMPTY_STYLE,
     dragPan: true,
   });
 
@@ -124,10 +169,10 @@ export default function MapboxMap({
       };
       setViewPort(newViewport);
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -137,13 +182,22 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
       router.push('/', undefined, {
         shallow: true,
       });
     }
   };
+
+  React.useEffect(() => {
+    if (mapstyle) {
+      setMapState({
+        ...mapState,
+        mapStyle: mapstyle,
+      });
+    }
+  }, [mapstyle]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -210,10 +264,10 @@ export default function MapboxMap({
                 },
               }
             );
-            const newMapState = {
-              ...mapState,
-              mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-            };
+            // const newMapState = {
+            //   ...mapState,
+            //   mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+            // };
             const newViewport = {
               ...viewport,
               longitude,
@@ -223,14 +277,14 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
-            setMapState(newMapState);
+            // setMapState(newMapState);
             setViewPort(newViewport);
           }
         } else {
-          const newMapState = {
-            ...mapState,
-            mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-          };
+          // const newMapState = {
+          //   ...mapState,
+          //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          // };
           const newViewport = {
             ...viewport,
             longitude: singleProjectLatLong[1],
@@ -240,14 +294,14 @@ export default function MapboxMap({
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
           };
-          setMapState(newMapState);
+          // setMapState(newMapState);
           setViewPort(newViewport);
         }
       } else {
-        const newMapState = {
-          ...mapState,
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-        };
+        // const newMapState = {
+        //   ...mapState,
+        //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        // };
         const newViewport = {
           ...viewport,
           latitude: defaultMapCenter[0],
@@ -257,14 +311,14 @@ export default function MapboxMap({
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
-        setMapState(newMapState);
+        // setMapState(newMapState);
         setViewPort(newViewport);
       }
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -274,7 +328,7 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
     }
   }, [
@@ -290,7 +344,8 @@ export default function MapboxMap({
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
-          exploreContainerRef && exploreContainerRef.current &&
+          exploreContainerRef &&
+          exploreContainerRef.current &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);
@@ -352,6 +407,16 @@ export default function MapboxMap({
     }
   }
 
+  const [userLang, setUserLang] = React.useState('en');
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('language')) {
+        let userLang = localStorage.getItem('language');
+        if (userLang) setUserLang(userLang);
+      }
+    }
+  }, []);
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
@@ -359,14 +424,11 @@ export default function MapboxMap({
         {...mapState}
         {...viewport}
         mapboxApiAccessToken={mapboxToken}
-        mapOptions={{
-          customAttribution:
-            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
-        }}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
         minZoom={1}
+        maxZoom={15}
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
@@ -382,27 +444,30 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
+            <>
+              <Source
+                id="satellite"
+                type="raster"
+                tiles={[
+                  'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                ]}
+                tileSize={128}
+              >
+                <Layer id="satellite-layer" source="satellite" type="raster" />
+              </Source>
               <Source id="singleProject" type="geojson" data={geoJson}>
-                <Layer
-                  id="ploygonLayer"
-                  type="fill"
-                  source="singleProject"
-                  paint={{
-                    'fill-color': '#fff',
-                    'fill-opacity': 0.2,
-                  }}
-                />
                 <Layer
                   id="ploygonOutline"
                   type="line"
                   source="singleProject"
                   paint={{
-                    'line-color': '#89b54a',
-                    'line-width': 2,
+                    'line-color': '#fff',
+                    'line-width': 4,
                   }}
                 />
               </Source>
-            )
+            </>
+          )
         ) : null}
 
         {!showSingleProject &&
@@ -443,7 +508,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => { }}
+                onFocus={() => {}}
               />
             </Marker>
           ))}
@@ -543,9 +608,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                  siteExists &&
-                  project.sites.length !== 0 &&
-                  geoJson.features[currentSite]
+                siteExists &&
+                project.sites.length !== 0 &&
+                geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -561,7 +626,67 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
-        <div onClick={() => { setLanguageModalOpen(true) }} className={styles.lngSwitcher + ' mapboxgl-map'}>{`🌐 ${language ? language.toUpperCase() : ''} · ${selectedCurrency}`}</div>
+        <div className={styles.lngSwitcher + ' mapboxgl-map'}>
+          <div
+            onClick={() => {
+              setLanguageModalOpen(true);
+            }}
+          >
+            {`🌐 ${
+              language ? language.toUpperCase() : ''
+            } • ${selectedCurrency}`}
+          </div>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/imprint`}
+            target={'_blank'}
+          >
+            {t('common:imprint')}
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`}
+            target={'_blank'}
+          >
+            {t('common:privacyAndTerms')}
+          </a>
+
+          <a
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              overflow: 'visible',
+            }}
+          >
+            <div style={{ width: 'fit-content' }}>
+              <div className={styles.popover}>
+                {t('common:mapInfo')}
+                <div
+                  className={styles.popoverContent}
+                  style={{ left: '-270px', top: '-140px' }}
+                >
+                  <a>
+                    Esri Community Maps Contributors, Esri, HERE, Garmin,
+                    METI/NASA, USGS
+                    <br />
+                    Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS,
+                    USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
+                    Community
+                  </a>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <a
+            rel="noopener noreferrer"
+            href="mailto:support@plant-for-the-planet.org"
+            target={'_blank'}
+          >
+            {t('common:contact')}
+          </a>
+        </div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -572,7 +697,10 @@ export default function MapboxMap({
           aria-describedby="simple-modal-description"
         >
           <ExploreInfoModal
-            infoRef={infoRef} infoExpanded={infoExpanded} setInfoExpanded={setInfoExpanded} setModalOpen={setModalOpen}
+            infoRef={infoRef}
+            infoExpanded={infoExpanded}
+            setInfoExpanded={setInfoExpanded}
+            setModalOpen={setModalOpen}
           />
         </Modal>
       ) : null}

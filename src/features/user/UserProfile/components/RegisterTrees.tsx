@@ -49,7 +49,7 @@ export default function RegisterTrees({
   registerTreesModalOpen,
 }: Props) {
   const router = useRouter();
-  const { t } = useTranslation(['me', 'common']);
+  const { t, ready } = useTranslation(['me', 'common']);
   const [isMultiple, setIsMultiple] = React.useState(false);
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
@@ -214,10 +214,10 @@ export default function RegisterTrees({
 
         // handleNext();
       } else {
-        setErrorMessage(t('me:locationMissing'));
+        setErrorMessage(ready ? t('me:locationMissing') : '');
       }
     } else {
-      setErrorMessage(t('me:wentWrong'));
+      setErrorMessage(ready ? t('me:wentWrong') : '');
       console.log(errorMessage);
     }
   };
@@ -231,7 +231,7 @@ export default function RegisterTrees({
     currentUserSlug: slug,
   };
 
-  return (
+  return ready ? (
     <>
       <Modal
         className={styles.modalContainer}
@@ -419,5 +419,5 @@ export default function RegisterTrees({
         </div>
       </Modal>
     </>
-  );
+  ) : null;
 }

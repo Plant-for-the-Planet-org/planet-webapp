@@ -12,6 +12,7 @@
   "close": "Fechar",
   "support": "Suporte",
   "addTarget": "Adicionar Meta",
+  "noOfTrees": "Nº de árvores",
   "datePlanted": "Data Plantada",
   "speciesIsRequired": "Espécie é necessária",
   "treeSpecies": "Espécies de Árvores",
@@ -28,5 +29,9 @@
   "contribNotFound": "Contribuição não encontrada",
   "errorOccured": "Erro Ocorrido",
   "contribSuccess": "Adicionado com sucesso {{treeCount}} {{treeSpecies}} 🌳 de {{plantDate}}",
-  "moreThanOne": "mínimo 1 árvore necessária"
+  "moreThanOne": "mínimo 1 árvore necessária",
+  "registered": "Registado em",
+  "receivedTrees": "Árvores Recebidas",
+  "redeemedTrees": "Árvores Redimidas",
+  "nameForest": "A Floresta de {{name}}"
 }

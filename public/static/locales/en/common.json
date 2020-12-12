@@ -39,10 +39,13 @@
   "december": "December",
   "approx": "Approx.",
   "view": "View",
+  "opening_native_app": "This page is only available in our iOS or Android app.",
   "verifyEmailHeader": "Please confirm your email.",
   "verifyEmailText": "To secure your account, we need to verify your email. Please check your inbox or spam/junk folder for a confirmation email and then continue to login.",
   "verifyEmailInfo": "If you didn’t receive an email please try logging in again and we’ll send you another email.",
   "continueToLogin": "Continue to Login",
   "supportsUNEP": "Supports the UNEP",
-  "plantedBy": "Planted by"
+  "plantedBy": "Planted by",
+  "mapInfo": "Esri Info",
+  "aboutUs": "About Us"
 }

@@ -11,24 +11,25 @@ import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import i18next from '../../../../../i18n';
 import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
+import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
+import { truncateString } from '../../../../utils/getTruncatedString';
 
 const config = tenantConfig();
-
+const { useTranslation } = i18next;
 export default function UserShareAndSupport({ userprofile }: any) {
-  const { useTranslation } = i18next;
-  const { t } = useTranslation(['donate', 'me']);
+  const { t, ready } = useTranslation(['donate', 'me']);
   const router = useRouter();
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = t('donate:textToShare', { name: userprofile.displayName });
+  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
   const [screenWidth, setScreenWidth] = React.useState(null);
 
   const handleShare = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: t('donate:shareTextTitle'),
+          title: ready ? t('donate:shareTextTitle') : '',
           url: window.location.href,
           text: textToShare,
         })
@@ -52,18 +53,20 @@ export default function UserShareAndSupport({ userprofile }: any) {
     window.open(shareUrl, '_blank');
   };
 
-  return (
-    <div style={{position: "relative"}}>
+  const profileURL = userprofile.url ? userprofile.url.includes("http") || userprofile.url.includes("https") ? userprofile.url : `http://${userprofile.url}` : '';
+
+  return ready ? (
+    <div style={{ position: "relative" }}>
       {showSocialBtn && (screenWidth > 600) && (
-        <motion.div 
+        <motion.div
           animate={{
             x: 0,
             opacity: 1,
-            position: 'absolute', 
-            top: '35px', 
-            left: userprofile.type !== 'tpo' ? '380px' : '181px'
+            position: 'absolute',
+            top: '35px',
+            left: userprofile.type !== 'tpo' ? '180px' : '181px'
           }}
-          transition={{stiffness: 150, type:"spring"}}
+          transition={{ stiffness: 150, type: "spring" }}
           initial={{
             x: -180,
             opacity: 0
@@ -73,13 +76,13 @@ export default function UserShareAndSupport({ userprofile }: any) {
         </motion.div>
       )}
       {showSocialBtn && (screenWidth < 600) && (
-        <motion.div 
+        <motion.div
           animate={{
             paddingLeft: userprofile.type !== 'tpo' ? '191px' : null,
             y: 0,
             opacity: 1,
           }}
-          transition={{stiffness: 150, type:"spring"}}
+          transition={{ stiffness: 150, type: "spring" }}
           initial={{
             y: 100,
             opacity: 0
@@ -88,37 +91,58 @@ export default function UserShareAndSupport({ userprofile }: any) {
           <SocialShareContainer userprofile={userprofile} />
         </motion.div>
       )}
+
       <div className={styles.bottomIconsRow}>
+
         {userprofile.type !== 'tpo' && (
           <div
-            className={styles.iconTextColumnSupport}
+            className={styles.iconTextColumn}
             onClick={() => {
               router.push(`/s/${userprofile.slug}`);
             }}
           >
-            <div className={styles.bottomIconBgSupport}>
-              <Support width="37px" paddingLeft="10px" />
-              <p className={styles.bottomRowTextSupport}>{t('me:support')}</p>
+            <div className={styles.bottomIconBg}>
+              <Support width="39px" />
             </div>
+            <p className={styles.bottomRowText}>{t('me:support')}</p>
           </div>
-         )}
-        <div className={styles.iconTextColumnSupport}>
+        )}
+
+        {profileURL && (
+          <a
+            className={styles.iconTextColumn}
+            href={profileURL}
+            target="_blank" rel="noopener noreferrer"
+            style={{ marginLeft: '12px' }}
+          >
+            <div className={styles.bottomIconBg}>
+              <GlobeSelected color={'white'} width={'24px'} />
+            </div>
+            <p className={styles.bottomRowText}>{userprofile.urlText ? truncateString(userprofile.urlText, 20) : 'URL'}</p>
+          </a>
+        )}
+
+        <div style={{ marginLeft: '12px' }} className={styles.iconTextColumn}>
           {showSocialBtn ? (
             <div
-              className={styles.bottomIconBgSupport}
+              className={styles.bottomIconBg}
               onClick={() => setShowSocialBtn(false)}
+
             >
               <CancelIcon color="white" width="25px" />
-              <p className={styles.bottomRowTextSupport}>{t('me:close')}</p>
             </div>
           ) : (
-            <div className={styles.bottomIconBgSupport} onClick={handleShare}>
-              <Share width="39px" paddingLeft="10px" color="white" solid />
-              <p className={styles.bottomRowTextSupport}>{t('me:share')}</p>
-            </div>
-          )}
+              <div className={styles.bottomIconBg} onClick={handleShare}>
+                <Share width="39px" paddingLeft="10px" color="white" solid />
+              </div>
+            )}
+          {showSocialBtn ? (
+            <p className={styles.bottomRowText}>{t('me:close')}</p>
+          ) : (
+              <p className={styles.bottomRowText}> {t('me:share')} </p>
+            )}
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

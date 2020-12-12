@@ -1,21 +1,18 @@
 import React from 'react';
+import ReadMoreReact from 'read-more-react';
 import styles from '../styles/UserInfo.module.scss';
+import i18next from '../../../../../i18n';
 import TreeCounter from './../../../common/TreeCounter/TreeCounter';
 import UserProfileOptions from './UserProfileOptions';
 import UserShareAndSupport from './UserShareAndSupport';
-import { trimwords } from '../../../../utils/TruncateText';
 
+const { useTranslation } = i18next;
 export default function UserInfo({
   userprofile,
   authenticatedType,
   handleAddTargetModalOpen,
 }: any) {
-  const [readMore, setReadMore] = React.useState(false);
-  React.useEffect(() => {
-    if (userprofile.bio && userprofile.bio.length <= 120) {
-      setReadMore(true);
-    }
-  })
+  const { t, ready } = useTranslation(['donate']);
   return (
     <div className={styles.landingContent}>
       <TreeCounter
@@ -28,9 +25,13 @@ export default function UserInfo({
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
       <div className={styles.treeCounterDescription}>
-        {userprofile.bio && trimwords(userprofile.bio, 120, readMore)}
-        {userprofile.bio && !readMore && <p onClick={()=>setReadMore(true)}>read more</p>}
-        {/* {userprofile.bio}{' '} */}
+      {ready ? (
+        <ReadMoreReact
+          ideal={120}
+          readMoreText={t('donate:readMore')}
+          text={userprofile.bio || ''}
+        />
+        ) : null}
       </div>
       {/* icon for public view */}
       {authenticatedType === 'public' && (

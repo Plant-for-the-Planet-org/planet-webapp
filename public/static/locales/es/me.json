@@ -12,6 +12,7 @@
   "close": "Cerrar",
   "support": "Apoyo",
   "addTarget": "Agregar objetivo",
+  "noOfTrees": "No de árboles",
   "datePlanted": "Fecha de plantación",
   "speciesIsRequired": "Se requiere una especie",
   "treeSpecies": "Especies de árboles",
@@ -28,5 +29,9 @@
   "contribNotFound": "Contribución no encontrada",
   "errorOccured": "Se produjo un error",
   "contribSuccess": "Añadido con éxito {{treeCount}} {{treeSpecies}} 🌳 de {{plantDate}}",
-  "moreThanOne": "se requiere un mínimo de 1 árbol"
+  "moreThanOne": "se requiere un mínimo de 1 árbol",
+  "registered": "Registrado",
+  "receivedTrees": "Árboles recibidos",
+  "redeemedTrees": "Árboles redimidos",
+  "nameForest": "El Bosque de {{name}}"
 }
