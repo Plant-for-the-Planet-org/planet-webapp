@@ -323,7 +323,7 @@ export default function NavbarComponent(props: any) {
                 </Link>
               )}
               <Link
-                href="https://www.plant-for-the-planet.org"
+                href="https://a.plant-for-the-planet.org"
                 style={{ paddingBottom: '0.4rem', paddingTop: '0.4rem' }}
               >
                 <div className={styles.link_container}>
