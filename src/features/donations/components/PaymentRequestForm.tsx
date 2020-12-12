@@ -196,7 +196,6 @@ export const PaymentRequestCustomButton = ({
       <AnimatedButton
         onClick={() => continueNext()}
         className={styles.continueButton}
-        id="treeDonateContinue"
       >
         {t('common:continue')}
       </AnimatedButton>
@@ -209,6 +208,7 @@ export const PaymentRequestCustomButton = ({
       <AnimatedButton
         onClick={() => continueNext()}
         className={styles.continueButton}
+        id="treeDonateContinue"
       >
         {t('common:continue')}
       </AnimatedButton>
