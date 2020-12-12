@@ -1,7 +1,7 @@
 @import './../../../../theme/theme';
 
 .landingSection {
-  height: 90vh;
+  min-height: 90vh;
   position: relative;
   display: flex;
   flex-direction: column;
