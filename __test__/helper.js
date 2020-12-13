@@ -8,10 +8,10 @@ const capabilities = {
   'browserName' : 'Chrome',
   'browser_version' : 'latest',
   'os' : 'Windows',
-  'name': process.env.BROWSERSTACK_PROJECT_NAME, // test name
-  'build': process.env.BROWSERSTACK_BUILD_NAME, // CI/CD job or build name
-  'browserstack.user' : process.env.BROWSERSTACK_USERNAME,
-  'browserstack.key' : process.env.BROWSERSTACK_ACCESS_KEY,
+  'name': 'BStack-[NodeJS] Sample Test', // test name
+  'build': 'Donation test', // CI/CD job or build name
+  'browserstack.user' : 'planetit1',
+  'browserstack.key' : 'i2275wnZsgMDpCtskfEq'
 }
 
 
