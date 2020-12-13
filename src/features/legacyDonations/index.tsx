@@ -7,7 +7,7 @@ import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
 import { PaymentRequestCustomButton } from './components/PaymentRequestForm';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
-import i18next from '../../../i18n/';
+import i18next from '../../../i18n';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../utils/getFormattedNumber';
 import { payDonation } from '../donations/components/treeDonation/PaymentFunctions';
