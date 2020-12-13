@@ -119,7 +119,7 @@ export default function NavbarComponent(props: any) {
     );
   };
 
-  return (
+  return ready ? (
     <>
       {/* Top Navbar */}
       <div className={styles.top_nav}>
@@ -501,5 +501,5 @@ export default function NavbarComponent(props: any) {
         </div>
       </div>
     </>
-  );
+  ) : null;
 }
