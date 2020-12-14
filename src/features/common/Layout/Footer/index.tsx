@@ -65,7 +65,7 @@ export default function Footer() {
     },
     team:{
       title: ready ? t('common:team') : '',
-      link:`https://a.plant-for-the-planet.org/${userLang}/structure`
+      link:`https://a.plant-for-the-planet.org/${userLang}/team`
     },
     jobs:{
       title: ready ? t('common:jobs') : '',
