@@ -638,7 +638,7 @@ export default function MapboxMap({
           </div>
           <a
             rel="noopener noreferrer"
-            href={`https://a.plant-for-the-planet.org/imprint`}
+            href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
             target={'_blank'}
           >
             {t('common:imprint')}
