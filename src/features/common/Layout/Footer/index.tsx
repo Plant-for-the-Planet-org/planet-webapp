@@ -21,7 +21,7 @@ export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const handleModalOpen = () => {
     setOpenModal(true);
