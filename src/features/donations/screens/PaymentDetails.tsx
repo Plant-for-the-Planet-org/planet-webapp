@@ -91,7 +91,8 @@ function PaymentDetails({
   setPaymentType,
   country,
   isTaxDeductible,
-  token
+  token,
+  recurrencyMnemonic
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
@@ -219,7 +220,8 @@ function PaymentDetails({
       paymentMethod,
       donorDetails,
       taxDeductionCountry: isTaxDeductible ? country : null,
-      token: token
+      token: token,
+      recurrencyMnemonic
     };
     payWithCard({ ...payWithCardProps });
   };
@@ -271,6 +273,13 @@ function PaymentDetails({
       donor: { ...donorDetails },
     };
     let taxDeductionCountry = isTaxDeductible ? country : null;
+    recurrencyMnemonic
+    if (recurrencyMnemonic) {
+      createDonationData = {
+        ...createDonationData,
+        recurrencyMnemonic,
+      };
+    }
     if (taxDeductionCountry) {
       createDonationData = {
         ...createDonationData,

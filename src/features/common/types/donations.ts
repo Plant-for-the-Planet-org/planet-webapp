@@ -42,6 +42,8 @@ export interface TreeDonationProps {
   setPaymentType: Function;
   isPaymentOptionsLoading: boolean;
   token:any;
+  recurrencyMnemonic:String;
+  setRecurrencyMnemonic:Function;
 }
 
 export interface PaymentDetailsProps {
@@ -59,6 +61,7 @@ export interface PaymentDetailsProps {
   country: string;
   isTaxDeductible: Boolean;
   token:any;
+  recurrencyMnemonic:String;
 }
 
 export interface ContactDetailsPageProps {
@@ -103,4 +106,5 @@ export interface PayWithCardTypes {
   donorDetails: Object;
   taxDeductionCountry: string | null;
   token: any | null;
+  recurrencyMnemonic:String;
 }

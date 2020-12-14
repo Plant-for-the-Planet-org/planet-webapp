@@ -72,5 +72,12 @@
   "selectProject": "Select a project",
   "nameOfOrg": "Organisation Name",
   "nameOfOrgIsRequired": "Organisation name is required",
-  "giftValidation":"Please enter gift details"
+  "giftValidation":"Please enter gift details",
+  "recurrency":"Donation Frequency",
+  "once":"Once",
+  "weekly":"Weekly",
+  "monthly":"Monthly",
+  "quaterly":"Quaterly",
+  "semiyearly":"Semi yearly",
+  "yearly":"Yearly"
 }

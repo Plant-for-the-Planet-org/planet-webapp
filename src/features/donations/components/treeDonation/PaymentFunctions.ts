@@ -92,7 +92,8 @@ export function payWithCard({
   window,
   donorDetails,
   taxDeductionCountry,
-  token
+  token,
+  recurrencyMnemonic
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
 
@@ -104,6 +105,12 @@ export function payWithCard({
     currency,
     donor: { ...donorDetails },
   };
+  if(recurrencyMnemonic){
+    createDonationData = {
+      ...createDonationData,
+      recurrencyMnemonic,
+    };
+  }
   if (taxDeductionCountry) {
     createDonationData = {
       ...createDonationData,

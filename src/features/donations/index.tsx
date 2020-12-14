@@ -55,6 +55,14 @@ function DonationsPopup({
 
   const [token, setToken] = React.useState('');
 
+  const [recurrencyMnemonic, setRecurrencyMnemonic] = React.useState<any>(null);
+
+  React.useEffect(()=>{
+    if(token){
+      setRecurrencyMnemonic('none')
+    }
+  },[token])
+
   const [userProfile,setUserprofile] = React.useState(null)
 
   //  to load payment data
@@ -153,7 +161,9 @@ function DonationsPopup({
     paymentType,
     setPaymentType,
     isPaymentOptionsLoading,
-    token
+    token,
+    recurrencyMnemonic, 
+    setRecurrencyMnemonic
   };
 
   const ContactDetailsProps = {
@@ -183,7 +193,8 @@ function DonationsPopup({
     setPaymentType,
     country,
     isTaxDeductible,
-    token
+    token,
+    recurrencyMnemonic
   };
 
   const ThankYouProps = {

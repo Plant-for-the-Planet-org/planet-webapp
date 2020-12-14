@@ -1,16 +1,20 @@
 @import './../../../theme/theme';
 
+.mainContainer{
+  position: relative;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 120px;
+}
+
 .cardContainer {
   background-color: $backgroundColor;
   border-radius: 7px;
   padding: 26px;
   width: 412px;
-  height: max-content;
   z-index: 10;
-}
-
-.giftExpanded {
-  margin-top: 100px;
 }
 
 .header {
@@ -102,6 +106,7 @@
   color: $highlightBackground;
 }
 
+// Tree Count Options
 .selectTreeCount {
   display: flex;
   flex-direction: row;
@@ -339,6 +344,61 @@
   font-size: 12px;
   color: #e74c3c;
   margin-left: 6px;
+}
+
+// Donation frequency Options
+
+
+.donationFrequencyTitle {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $highlightBackground;
+  margin-top: 20px;
+}
+
+
+.selectDonationFrequency {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.donationFrequencyOption,
+.donationFrequencyOptionSelected {
+  height: 36px;
+  border-radius: 7px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-width: 30%;
+  margin-top: 20px;
+}
+.donationFrequencyOption {
+  border: 1px solid #d5d5d5;
+}
+
+.donationFrequencyOptionSelected {
+  border: 1px solid $primaryColor;
+}
+.donationFrequencyOption:hover,
+.donationFrequencyOptionSelected:hover {
+  cursor: pointer;
+  border: 2px solid $primaryColor;
+}
+.donationFrequencyOption > .donationFrequencyOptionTrees {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+}
+
+.donationFrequencyOptionSelected > .donationFrequencyOptionTrees {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
 }
 
 :export {
