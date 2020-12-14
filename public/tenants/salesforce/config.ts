@@ -54,6 +54,7 @@ const config = {
     twitterHandle: '',
     locale: 'en_US',
   },
+  footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
 };
 
 export default config;
