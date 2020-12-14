@@ -39,7 +39,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
   const [paymentError, setPaymentError] = React.useState('');
 
   const [country, setCountry] = React.useState(
-    localStorage.getItem('countryCode')!
+    typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE'
   );
 
   // stores the value as boolean whether payment options is being fetched or not

@@ -34,7 +34,7 @@ export default function TransitionsModal(props) {
     setSelectedCountry,
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
-  const [selectedModalCountry, setSelectedModalCountry] = useState('US');
+  const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
 
   const { t, i18n, ready } = useTranslation(['common', 'country']);
 
