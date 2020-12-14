@@ -42,7 +42,7 @@ export default function Footer() {
   const FooterLinks = {
     shop:{
       title: ready ? t('common:shop') : '',
-      link:`https://www.thegoodshop.org/${footerLang}`
+      link:`https://www.thegoodshop.org/de`
     },
     privacyAndTerms:{
       title: ready ? t('common:privacyAndTerms') : '',
@@ -62,7 +62,7 @@ export default function Footer() {
     },
     annualReports:{
       title: ready ? t('common:annualReports') : '',
-      link:`https://a.plant-for-the-planet.org/${footerLang}/download`
+      link:`https://a.plant-for-the-planet.org/annual-reports`
     },
     team:{
       title: ready ? t('common:team') : '',
