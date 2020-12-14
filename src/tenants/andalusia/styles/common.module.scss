@@ -1,0 +1,69 @@
+@import "../../../theme/theme";
+
+.landingSection {
+    margin-top: 60px;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.landingImageSection {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > img {
+        max-width: 540px;
+    }
+}
+
+.landingTextSection {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 72px;
+    color: #232323;
+    > h2 {
+        font-size: 3.2rem;
+        font-weight: bold;
+        line-height: 1.2;
+        > span {
+            color: #568802;
+        }
+    }
+    > p {
+        margin-top: 24px;
+        font-size: 0.94rem;
+        line-height: 1.73;
+    }
+}
+
+.landingButtonContainer{
+    width: 100%;
+    align-items: left;
+}
+.continueButton {
+  height: 40px;
+  border-radius: 100px;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  border: 0px;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-top: 24px;
+  width: 200px;
+}
+.continueButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
