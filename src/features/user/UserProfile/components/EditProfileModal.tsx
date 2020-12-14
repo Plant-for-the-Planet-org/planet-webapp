@@ -90,6 +90,7 @@ export default function EditProfileModal({
   } = useForm({ mode: 'onBlur' });
 
   const [country, setCountry] = React.useState(userprofile.country);
+  const [updatingPic, setUpdatingPic] = React.useState(false);
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -106,7 +107,8 @@ export default function EditProfileModal({
   const [snackbarMessage, setSnackbarMessage] = useState("OK");
   const watchIsPrivate = watch('isPrivate');
 
-  const onDrop = React.useCallback((acceptedFiles) => {
+  const onDrop = React.useCallback((acceptedFiles, token) => {
+    setUpdatingPic(true);
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -125,7 +127,9 @@ export default function EditProfileModal({
             const userInfo = getUserInfo()
             const newUserInfo = { ...userInfo, profilePic: res.image }
             setUserInfo(newUserInfo)
+            setUpdatingPic(false);
           }).catch(error => {
+            setUpdatingPic(false);
             console.log(error);
           })
         }
@@ -209,7 +213,7 @@ export default function EditProfileModal({
               <label htmlFor="upload">
                 <div className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {userprofile.image ? (
+                  {updatingPic ? <div className={styles.spinnerImage}></div> : userprofile.image ? (
                     <div className={styles.profilePic}>
                       <img
                         src={getImageUrl(
