@@ -102,5 +102,13 @@
   "externalCertifications": "Certifications externes",
   "projectSpendingFinancial": "Dépenses financières des projets",
   "issueDate": "Date d'émission",
-  "acquisitionYear": "Année d'acquisition"
+  "acquisitionYear": "Année d'acquisition",
+  "largeScalePlanting": "Plantation à grande échelle",
+  "agroforestry": "Agroforesterie",
+  "naturalRegeneration": "Régénération naturelle",
+  "managedRegeneration": "Régénération artificielle",
+  "urbanPlanting": "Plantation urbaine",
+  "otherPlanting": "Autres plantations",
+  "projectType": "Type de projet",
+  "polygonRequired": "Le polygone est nécessaire"
 }
