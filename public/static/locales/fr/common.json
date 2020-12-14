@@ -45,5 +45,7 @@
   "verifyEmailInfo": "Si vous n'avez pas reçu d'email, reconnectez vous et nous vous enverrons un autre email.",
   "continueToLogin": "Continuer à se connecter",
   "supportsUNEP": "Soutient le PNUE",
-  "plantedBy": "Planté par"
+  "plantedBy": "Planté par",
+  "mapInfo": "Esri",
+  "aboutUs": "À propos de nous"
 }
