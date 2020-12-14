@@ -38,64 +38,52 @@ export default function Footer() {
       setUserLang(userLang)
     }
   },[])
-  const FooterLinks = [
-    {
-      id:1,
+  const FooterLinks = {
+    shop:{
       title: ready ? t('common:shop') : '',
       link:`https://www.thegoodshop.org/${userLang}`
     },
-    {
-      id: 2,
+    privacyAndTerms:{
       title: ready ? t('common:privacyAndTerms') : '',
       link: `https://a.plant-for-the-planet.org/${userLang}/privacy-terms`,
     },
-    {
-      id: 3,
+    imprint:{
       title: ready ? t('common:imprint') : '',
       link: `https://a.plant-for-the-planet.org/${userLang}/imprint`,
     },
-    {
-      id: 4,
+    contact:{
       title: ready ? t('common:contact') : '',
       link: 'mailto:support@plant-for-the-planet.org',
     },
-    {
-      id:5,
+    downloads:{
       title: ready ? t('common:downloads') : '',
       link:`https://a.plant-for-the-planet.org/${userLang}/download`
     },
-    {
-      id:6,
+    annualReports:{
       title: ready ? t('common:annualReports') : '',
       link:`https://a.plant-for-the-planet.org/${userLang}/download`
     },
-    {
-      id:7,
+    team:{
       title: ready ? t('common:team') : '',
       link:`https://a.plant-for-the-planet.org/${userLang}/structure`
     },
-    {
-      id:8,
+    jobs:{
       title: ready ? t('common:jobs') : '',
       link:`https://a.plant-for-the-planet.org/${userLang}careers`
     },
-    {
-      id: 9,
+    supportUs:{
       title: ready ? t('common:supportUs') : '',
       link: `https://a.plant-for-the-planet.org/${userLang}/donation`,
     },
-    {
-      id:10,
+    blogs: {
       title: ready ? t('common:blogs') : '',
       link:`https://blog.plant-for-the-planet.org/${userLang}`
     },
-    {
-      id:11,
+    faqs:{
       title: ready ? t('common:faqs') : '',
       link:`https://a.plant-for-the-planet.org/${userLang}/faq`
     },
-    
-  ];
+  };
 
   // changes the language and selected country as found in local storage
   useEffect(() => {
@@ -184,12 +172,12 @@ export default function Footer() {
             </div>
             <div className={styles.footer_links_container}>
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              {FooterLinks.map((link) => {
-                return (
-                  <a key={link.title} href={link.link} target="_blank" rel="noopener noreferrer">
-                    <p className={styles.footer_links}>{link.title}</p>
+              {config.footerLinks && config.footerLinks.map((key:any)=>{
+                return(
+                  <a key={FooterLinks[key].title} href={FooterLinks[key].link} target="_blank" rel="noopener noreferrer">
+                    <p className={styles.footer_links}>{FooterLinks[key].title}</p>
                   </a>
-                );
+                )
               })}
             </div>
           </div>
