@@ -6,6 +6,7 @@ import sternConfig from './public/tenants/stern/config';
 import nitrosbConfig from './public/tenants/nitrosb/config';
 import lacoquetaConfig from './public/tenants/lacoqueta/config';
 import energizerConfig from './public/tenants/energizer/config';
+import andalusiaConfig from './public/tenants/andalusia/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -17,6 +18,7 @@ export default function tenantConfig() {
     case 'nitrosb': return nitrosbConfig;
     case 'lacoqueta': return lacoquetaConfig;
     case 'energizer': return energizerConfig;
+    case 'andalusia': return andalusiaConfig;
     default: return planetConfig;
   }
 }
