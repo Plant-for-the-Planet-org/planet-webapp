@@ -50,12 +50,7 @@ export default function index({ leaderboard, tenantScore }: Props): ReactElement
     'SY',
   ];
 
-  let userCountry;
-  if (typeof window !== 'undefined') {
-    userCountry = localStorage.getItem('countryCode');
-  } else {
-    userCountry = 'DE';
-  }
+  const userCountry = typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE'
 
   return (
     <div>
