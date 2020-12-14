@@ -3,6 +3,7 @@
 .landingSection {
     margin-top: 60px;
     width: 100vw;
+    max-width: 1280px;
     min-height: 100vh;
     display: flex;
     flex-direction: row;
@@ -66,4 +67,50 @@
 .continueButton:hover {
   transform: scale(1.05);
   cursor: pointer;
+}
+
+.section2MainContainer{
+    background-image: url('/tenants/andalusia/images/parallaxCover.jpg') ;
+    width: 100vw;
+    height: 240px;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+    > .section2Overlay{
+        opacity: 0.7;
+        background-color: rgb(86, 136, 2);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+    }
+    > p {
+        font-size: 0.94rem;
+        line-height: 1.73;
+        margin-bottom: 12px;
+        font-weight: bold;
+        z-index: 2;
+    }
+    > h2 {
+        font-size: 1.6rem;
+        line-height: 1;
+        font-weight: bolder;
+        margin-bottom: 12px;
+        z-index: 2;
+    }
+    > span {
+        font-size: 1.3rem;
+        line-height: 1.06;
+        font-weight: bold;
+        font-style: italic;
+        z-index: 2;
+    }
 }
