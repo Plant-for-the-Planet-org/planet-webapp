@@ -69,7 +69,7 @@ export default function Footer() {
     },
     jobs:{
       title: ready ? t('common:jobs') : '',
-      link:`https://a.plant-for-the-planet.org/${userLang}careers`
+      link:`https://a.plant-for-the-planet.org/${userLang}/careers`
     },
     supportUs:{
       title: ready ? t('common:supportUs') : '',
