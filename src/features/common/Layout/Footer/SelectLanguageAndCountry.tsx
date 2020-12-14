@@ -53,7 +53,6 @@ export default function TransitionsModal(props) {
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-    i18n.changeLanguage(modalLanguage);
     // window.localStorage.setItem('language', modalLanguage);
     setLanguage(modalLanguage);
     i18n.changeLanguage(modalLanguage);

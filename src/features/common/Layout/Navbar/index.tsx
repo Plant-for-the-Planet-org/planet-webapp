@@ -119,7 +119,7 @@ export default function NavbarComponent(props: any) {
     );
   };
 
-  return (
+  return ready ? (
     <>
       {/* Top Navbar */}
       <div className={styles.top_nav}>
@@ -141,12 +141,10 @@ export default function NavbarComponent(props: any) {
                 <div className={styles.logo_divider} />
                 <div className={styles.navlink}>
                   <a href="https://a.plant-for-the-planet.org">
-                    {ready ? (
-                      <img
-                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                        alt={t('common:about_pftp')}
-                      />
-                    ) : null}
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt={t('common:about_pftp')}
+                    />
                   </a>
                 </div>
               </div>
@@ -159,12 +157,10 @@ export default function NavbarComponent(props: any) {
               <div className={styles.tenant_logo_container}>
                 <div style={{ padding: '0.4rem 0.5rem' }}>
                   <a href="https://www.plant-for-the-planet.org">
-                    {ready ? (
-                      <img
-                        src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                        alt={t('common:about_pftp')}
-                      />
-                    ) : null}
+                    <img
+                      src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                      alt={t('common:about_pftp')}
+                    />
                   </a>
                 </div>
               </div>
@@ -184,17 +180,15 @@ export default function NavbarComponent(props: any) {
                         <Globe color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -208,17 +202,15 @@ export default function NavbarComponent(props: any) {
                         <Donate color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -233,17 +225,15 @@ export default function NavbarComponent(props: any) {
                         <Leaf color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -258,17 +248,15 @@ export default function NavbarComponent(props: any) {
                         <Leaderboard color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -279,17 +267,15 @@ export default function NavbarComponent(props: any) {
                     <div className={styles.link_icon}>
                       <UserProfileIcon />
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </div>
               ) : null}
@@ -372,17 +358,15 @@ export default function NavbarComponent(props: any) {
                         <Globe color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -404,17 +388,15 @@ export default function NavbarComponent(props: any) {
                         <Donate color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -429,17 +411,15 @@ export default function NavbarComponent(props: any) {
                         <Leaf color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -457,17 +437,15 @@ export default function NavbarComponent(props: any) {
                         <Leaderboard color={styles.primaryFontColor} />
                       )}
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </Link>
               ) : null}
@@ -482,17 +460,15 @@ export default function NavbarComponent(props: any) {
                     <div className={styles.link_icon}>
                       <UserProfileIcon />
                     </div>
-                    {ready ? (
-                      <p
-                        className={
-                          router.pathname === item.onclick
-                            ? styles.active_icon
-                            : ''
-                        }
-                      >
-                        {t('common:' + item.title)}
-                      </p>
-                    ) : null}
+                    <p
+                      className={
+                        router.pathname === item.onclick
+                          ? styles.active_icon
+                          : ''
+                      }
+                    >
+                      {t('common:' + item.title)}
+                    </p>
                   </div>
                 </div>
               ) : null}
@@ -501,5 +477,5 @@ export default function NavbarComponent(props: any) {
         </div>
       </div>
     </>
-  );
+  ) : null;
 }
