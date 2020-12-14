@@ -47,5 +47,7 @@
   "supportsUNEP": "Supports the UNEP",
   "plantedBy": "Planted by",
   "mapInfo": "Esri Info",
-  "aboutUs": "About Us"
+  "aboutUs": "About Us",
+  "redeemPopup": "Received a Tree Gift? Please log in to see your trees",
+  "login": "Login"
 }

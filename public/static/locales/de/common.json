@@ -47,5 +47,7 @@
   "supportsUNEP": "Unterstützt das UNEP",
   "plantedBy": "Gepflanzt von",
   "mapInfo": "Esri Info",
-  "aboutUs": "Über uns"
+  "aboutUs": "Über uns",
+  "redeemPopup": "Baumgeschenk Bekommen? Log dich ein um den Code Einzulösen",
+  "login": "Anmeldung"
 }
