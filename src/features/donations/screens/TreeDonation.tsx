@@ -59,20 +59,8 @@ function TreeDonation({
       title: t('donate:daily')
     },
     {
-      value: 'weekly',
-      title: t('donate:weekly')
-    },
-    {
       value: 'monthly',
       title: t('donate:monthly')
-    },
-    {
-      value: 'quaterly',
-      title: t('donate:quaterly')
-    },
-    {
-      value: 'semiyearly',
-      title: t('donate:semiyearly')
     },
     {
       value: 'yearly',
