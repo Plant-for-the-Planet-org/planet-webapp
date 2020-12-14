@@ -423,7 +423,7 @@ export default function MapboxMap({
         ref={mapRef}
         {...mapState}
         {...viewport}
-        mapboxApiAccessToken={mapboxToken}
+        // mapboxApiAccessToken={mapboxToken}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
