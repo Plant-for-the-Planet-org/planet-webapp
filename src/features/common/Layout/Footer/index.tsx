@@ -181,7 +181,7 @@ export default function Footer() {
               })}
             </div>
           </div>
-          
+
         </div>
         <div className={styles.logo_container}>
 

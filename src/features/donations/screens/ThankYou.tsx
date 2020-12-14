@@ -75,12 +75,12 @@ function ThankYou({
             paymentTypeUsed,
           },
         )}
-        {isGift
-          && t('donate:giftSentMessage', {
+        {isGift ? (
+          ' ' + t('donate:giftSentMessage', {
             recipientName: giftDetails.recipientName,
-          })}
-{' '}
-        {t('donate:yourTreesPlantedByOnLocation', {
+          })
+        ) : null }
+        {' ' + t('donate:yourTreesPlantedByOnLocation', {
           treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
           projectName: project.name,
           location: t('country:' + project.country.toLowerCase()),
