@@ -107,7 +107,7 @@ export default function EditProfileModal({
   const [snackbarMessage, setSnackbarMessage] = useState("OK");
   const watchIsPrivate = watch('isPrivate');
 
-  const onDrop = React.useCallback((acceptedFiles, token) => {
+  const onDrop = React.useCallback((acceptedFiles) => {
     setUpdatingPic(true);
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
