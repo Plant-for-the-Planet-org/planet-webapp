@@ -4,7 +4,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './../styles/PaymentDetails.module.scss';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 

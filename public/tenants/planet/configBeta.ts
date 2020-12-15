@@ -58,6 +58,7 @@ const config = {
     twitterHandle: '@pftp_int',
     locale: 'en_US',
   },
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
 };
 
 export default config;

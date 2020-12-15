@@ -13,7 +13,7 @@ import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import styles from './../styles/PaymentDetails.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 

@@ -21,7 +21,7 @@ export default function Footer() {
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -31,28 +31,60 @@ export default function Footer() {
     setOpenModal(false);
   };
 
-  const FooterLinks = [
-    {
-      id: 1,
+  const [footerLang,setFooterLang] = React.useState('en');
+  React.useEffect(()=>{
+    if (typeof window !== 'undefined') {
+      let footerLang = localStorage.getItem('language') || 'en';
+      footerLang = footerLang.toLowerCase(); // need lowercase locals for Wordpress website links
+      setFooterLang(footerLang)
+    }
+  },[language])
+  const FooterLinks = {
+    shop:{
+      title: ready ? t('common:shop') : '',
+      link:`https://www.thegoodshop.org/de`
+    },
+    privacyAndTerms:{
       title: ready ? t('common:privacyAndTerms') : '',
-      link: 'https://a.plant-for-the-planet.org/en/privacy-terms',
+      link: `https://a.plant-for-the-planet.org/${footerLang}/privacy-terms`,
     },
-    {
-      id: 2,
+    imprint:{
       title: ready ? t('common:imprint') : '',
-      link: 'https://a.plant-for-the-planet.org/imprint',
+      link: `https://a.plant-for-the-planet.org/${footerLang}/imprint`,
     },
-    {
-      id: 3,
+    contact:{
       title: ready ? t('common:contact') : '',
       link: 'mailto:support@plant-for-the-planet.org',
     },
-    {
-      id: 6,
-      title: ready ? t('common:supportUs') : '',
-      link: 'https://www.plant-for-the-planet.org/en/donation',
+    downloads:{
+      title: ready ? t('common:downloads') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/download`
     },
-  ];
+    annualReports:{
+      title: ready ? t('common:annualReports') : '',
+      link:`https://a.plant-for-the-planet.org/annual-reports`
+    },
+    team:{
+      title: ready ? t('common:team') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/team`
+    },
+    jobs:{
+      title: ready ? t('common:jobs') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/careers`
+    },
+    supportUs:{
+      title: ready ? t('common:supportUs') : '',
+      link: `https://a.plant-for-the-planet.org/${footerLang}/donation`,
+    },
+    blogs: {
+      title: ready ? t('common:blogs') : '',
+      link:`https://blog.plant-for-the-planet.org/${footerLang}`
+    },
+    faqs:{
+      title: ready ? t('common:faqs') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/faq`
+    },
+  };
 
   // changes the language and selected country as found in local storage
   useEffect(() => {
@@ -141,12 +173,12 @@ export default function Footer() {
             </div>
             <div className={styles.footer_links_container}>
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              {FooterLinks.map((link) => {
-                return (
-                  <a key={link.title} href={link.link} target="_blank" rel="noopener noreferrer">
-                    <p className={styles.footer_links}>{link.title}</p>
+              {config.footerLinks && config.footerLinks.map((key:any)=>{
+                return(
+                  <a key={FooterLinks[key].title} href={FooterLinks[key].link} target="_blank" rel="noopener noreferrer">
+                    <p className={styles.footer_links}>{FooterLinks[key].title}</p>
                   </a>
-                );
+                )
               })}
             </div>
           </div>

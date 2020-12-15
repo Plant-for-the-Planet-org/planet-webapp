@@ -6,7 +6,7 @@ import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
