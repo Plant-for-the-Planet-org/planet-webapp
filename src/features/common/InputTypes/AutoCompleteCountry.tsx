@@ -379,7 +379,7 @@ const countries = [
   { code: 'TR', label: 'Turkey', phone: '90' },
   { code: 'TT', label: 'Trinidad and Tobago', phone: '1-868' },
   { code: 'TV', label: 'Tuvalu', phone: '688' },
-  { code: 'TW', label: 'Taiwan, Province of China', phone: '886' },
+  { code: 'TW', label: 'Taiwan', phone: '886' },
   { code: 'TZ', label: 'United Republic of Tanzania', phone: '255' },
   { code: 'UA', label: 'Ukraine', phone: '380' },
   { code: 'UG', label: 'Uganda', phone: '256' },
