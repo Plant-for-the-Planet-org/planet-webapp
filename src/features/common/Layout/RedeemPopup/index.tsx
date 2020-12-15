@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import i18next from '../../../../../i18n/server';
-import { useAuth0 } from '@auth0/auth0-react';
+import tenantConfig from '../../../../../tenant.config';
 
 const { useTranslation } = i18next;
 export default function RedeemPopup() {
-  const [showRedeemPopup, setShowRedeemPopup] = useState(false);
   const { t, ready } = useTranslation(['leaderboard']);
+  const config = tenantConfig();
+  
+  const [showRedeemPopup, setShowRedeemPopup] = useState(false);
   const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
 
   const sendUserToLogin = () => {
@@ -21,11 +24,13 @@ export default function RedeemPopup() {
   }, [isAuthenticated, isLoading]);
 
   React.useEffect(() => {
-    let prev = localStorage.getItem('redeemPopup');
-    if (!prev) {
-      setShowRedeemPopup(true);
-    } else {
-      setShowRedeemPopup(prev === 'true');
+    if (config.showRedeemHint) {
+      let prev = localStorage.getItem('redeemPopup');
+      if (!prev) {
+        setShowRedeemPopup(true);
+      } else {
+        setShowRedeemPopup(prev === 'true');
+      }      
     }
   }, []);
 
