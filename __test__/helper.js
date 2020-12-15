@@ -8,10 +8,10 @@ const capabilities = {
   'browserName' : 'Chrome',
   'browser_version' : 'latest',
   'os' : 'Windows',
-  'name': 'BStack-[NodeJS] Sample Test', // test name
-  'build': 'Donation test', // CI/CD job or build name
-  'browserstack.user' : 'planetit1',
-  'browserstack.key' : 'i2275wnZsgMDpCtskfEq'
+  'name': process.env.BROWSERSTACK_PROJECT_NAME, // test name
+  'build': process.env.BROWSERSTACK_BUILD_NAME, // CI/CD job or build name
+  'browserstack.user' : process.env.BROWSERSTACK_USERNAME,
+  'browserstack.key' : process.env.BROWSERSTACK_ACCESS_KEY,
 }
 
 
@@ -20,7 +20,8 @@ export const driver = new webdriver.Builder()
   .usingServer('https://hub-cloud.browserstack.com/wd/hub')
   .withCapabilities(capabilities)
   .build();
-
+  
+driver.manage().window().maximize() 
 afterAll(async () => {
   // Cleanup `process.on('exit')` event handlers to prevent a memory leak caused by the combination of `jest` & `tmp`.
   for (const listener of process.listeners('exit')) {
