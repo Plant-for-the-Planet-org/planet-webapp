@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
-import i18next from '../../../../../i18n/server';
+import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
 
 const { useTranslation } = i18next;
