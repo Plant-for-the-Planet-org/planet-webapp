@@ -40,7 +40,7 @@ describe('hompage', () => {
     await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
     await driver.findElement(By.name('address')).sendKeys('43 block');
     await driver.findElement(By.name('city')).sendKeys('surulere');
-    await driver.findElement(By.name('zipCode')).sendKeys('6176 ZG');
+    await driver.findElement(By.name('zipCode')).sendKeys('99501');
     const val1 = await driver.findElement(By.xpath("//*[text()='Continue']"));
     await val1.click();
     await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).sendKeys('4242424242424242');
