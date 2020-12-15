@@ -1,3 +1,4 @@
+import path  from 'path';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import NextI18Next from 'next-i18next';
 import { initReactI18next } from 'react-i18next';
@@ -7,6 +8,7 @@ const config = getConfig();
 
 export default new NextI18Next({
   use: [LanguageDetector, initReactI18next],
+  localePath: path.resolve('./public/static/locales'),
   defaultLanguage: config.languages[0] ? config.languages[0] : 'en',
   fallbackLng: config.languages[0] ? config.languages[0] : 'en',
   debug: false,
