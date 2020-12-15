@@ -135,7 +135,7 @@ export default function EditProfileModal({
         }
       };
     });
-  }, []);
+  }, [token]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
