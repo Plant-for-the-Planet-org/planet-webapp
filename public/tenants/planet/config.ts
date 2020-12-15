@@ -3,10 +3,11 @@ const config = {
   tenantName: 'planet',
   // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
+  tenantGoal:null,
   showUNEPLogo:true,
   showUNDecadeLogo:true,
+  showRedeemHint:true,
   // font family and it's property particular to tenant
-  tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
@@ -64,6 +65,7 @@ const config = {
     twitterHandle: '@pftp_int',
     locale: 'en_US',
   },
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
 };
 
 export default config;

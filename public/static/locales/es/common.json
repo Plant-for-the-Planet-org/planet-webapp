@@ -45,5 +45,6 @@
   "verifyEmailInfo": "Si no recibiste un correo electrónico, por favor, intenta iniciar sesión de nuevo y te enviaremos otro correo electrónico.",
   "continueToLogin": "Continuar con el inicio de sesión",
   "supportsUNEP": "Apoya al PNUMA",
-  "plantedBy": "Plantado por"
+  "plantedBy": "Plantado por",
+  "mapInfo": "Esri"
 }

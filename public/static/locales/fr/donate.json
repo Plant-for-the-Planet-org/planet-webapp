@@ -65,10 +65,12 @@
   "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
   "shareTextTitle": "Arrêtez de parler. Commencer à planter",
   "textToShareLinkedin": "Rejoignez  {{name}} et des milliers d'autres  pour planter un mille milliards d'arbres afin de lutter contre la crise climatique",
+  "textToShareForMe": "Rejoignez-moi ainsi que des milliers d'autres personnes pour planter mille milliards d'arbres et lutter contre la crise climatique",
   "donationTokenInvalid": "Le jeton de don fourni n'est pas valable.",
   "giftTo": "Cadeau à",
   "supporting": "Soutenir",
   "selectProject": "Sélectionner un projet",
   "nameOfOrg": "Nom de l'organisation",
-  "nameOfOrgIsRequired": "Le nom de l'organisation est requis"
+  "nameOfOrgIsRequired": "Le nom de l'organisation est requis",
+  "giftValidation": "Entrer les détails du cadeau"
 }

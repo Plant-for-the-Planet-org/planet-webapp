@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './Stories.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 
