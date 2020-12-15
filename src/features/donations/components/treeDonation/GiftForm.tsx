@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import styles from './../../styles/TreeDonation.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 interface Props {
