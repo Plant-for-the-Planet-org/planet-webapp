@@ -130,7 +130,7 @@ export default function MapboxMap({
 
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
   const handleLanguageModalClose = () => {
@@ -638,7 +638,7 @@ export default function MapboxMap({
           </div>
           <a
             rel="noopener noreferrer"
-            href={`https://a.plant-for-the-planet.org/imprint`}
+            href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
             target={'_blank'}
           >
             {t('common:imprint')}

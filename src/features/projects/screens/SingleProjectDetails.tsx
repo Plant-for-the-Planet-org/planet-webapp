@@ -6,7 +6,7 @@ import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';

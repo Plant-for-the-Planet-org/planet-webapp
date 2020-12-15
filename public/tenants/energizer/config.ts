@@ -59,6 +59,7 @@ const config = {
       },
     ],
   },
+  footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
 };
 
 export default config;
