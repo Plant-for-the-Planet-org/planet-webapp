@@ -14,7 +14,7 @@ export default function RedeemPopup() {
   const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
 
   const sendUserToLogin = () => {
-    loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login` });
+    loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
   };
 
   React.useEffect(() => {

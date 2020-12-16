@@ -58,7 +58,7 @@ export default function NavbarComponent(props: any) {
     } else {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
-      loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login` });
+      loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
     }
   }
 
