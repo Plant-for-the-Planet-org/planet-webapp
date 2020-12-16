@@ -127,6 +127,41 @@ module.exports = withSourceMaps({
         destination: '/open-app',
         permanent: true,
       },
+      {
+        source: '/signup/*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-trees',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-trees/*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/account-activate/*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/competition/*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/project/*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/reset-password/*',
+        destination: '/open-app',
+        permanent: true,
+      },
     ]
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
