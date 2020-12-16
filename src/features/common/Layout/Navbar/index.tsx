@@ -118,30 +118,33 @@ export default function NavbarComponent(props: any) {
       <div className={'menuItems'}>
         {links.map((link) => {
           let SingleLink = config.header.items[link];
-          if (link === 'me' && SingleLink.visible) {
-            return (
-              <div key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
-                <div className={'link_icon'}>
-                  <UserProfileIcon />
-                </div>
-                <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {t('common:' + SingleLink.title)}
-                </p>
-              </div>
-            )
-          }
-          return SingleLink.visible ? (
-            (
-              <Link key={link} href={SingleLink.onclick}>
-                <div className={'linkContainer'}>
-                  <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
+          if (SingleLink) {
+            if (link === 'me' && SingleLink.visible) {
+              return (
+                <div key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
+                  <div className={'link_icon'}>
+                    <UserProfileIcon />
+                  </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
                     {t('common:' + SingleLink.title)}
                   </p>
                 </div>
-              </Link>
-            )
-          ) : <></>;
+              )
+            }
+            return SingleLink.visible ? (
+              (
+                <Link key={link} href={SingleLink.onclick}>
+                  <div className={'linkContainer'}>
+                    <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
+                    <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+                      {t('common:' + SingleLink.title)}
+                    </p>
+                  </div>
+                </Link>
+              )
+            ) : <></>;
+          }
+
         })}
       </div>
     ) : <></>;
@@ -162,7 +165,7 @@ export default function NavbarComponent(props: any) {
 
           <a href="https://a.plant-for-the-planet.org">
             <img
-            className={'tenantLogo'}
+              className={'tenantLogo'}
               src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
               alt={t('common:about_pftp')}
             />
