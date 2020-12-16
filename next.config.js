@@ -128,7 +128,7 @@ module.exports = withSourceMaps({
         permanent: true,
       },
       {
-        source: '/signup/*',
+        source: '/signup/:slug*',
         destination: '/open-app',
         permanent: true,
       },
@@ -138,27 +138,27 @@ module.exports = withSourceMaps({
         permanent: true,
       },
       {
-        source: '/donate-trees/*',
+        source: '/donate-trees/:slug*',
         destination: '/open-app',
         permanent: true,
       },
       {
-        source: '/account-activate/*',
+        source: '/account-activate/:slug*',
         destination: '/open-app',
         permanent: true,
       },
       {
-        source: '/competition/*',
+        source: '/competition/:slug*',
         destination: '/open-app',
         permanent: true,
       },
       {
-        source: '/project/*',
+        source: '/project/:slug*',
         destination: '/open-app',
         permanent: true,
       },
       {
-        source: '/reset-password/*',
+        source: '/reset-password/:slug*',
         destination: '/open-app',
         permanent: true,
       },
