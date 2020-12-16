@@ -38,8 +38,6 @@ const nextauthUrl = process.env.NEXTAUTH_URL
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-
-const appLinks = ['/signup']
 module.exports = withSourceMaps({
   serverRuntimeConfig: {
     rootDir: __dirname,
@@ -110,7 +108,7 @@ module.exports = withSourceMaps({
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
     NEXTAUTH_URL: nextauthUrl,
-    VERCEL_URL:process.env.VERCEL_URL
+    VERCEL_URL: process.env.VERCEL_URL
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -125,7 +123,7 @@ module.exports = withSourceMaps({
   async redirects() {
     return [
       {
-        source: appLinks[0],
+        source: '/signup',
         destination: '/open-app',
         permanent: true,
       },
