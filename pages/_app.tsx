@@ -17,6 +17,9 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
+import { Modal } from '@material-ui/core';
+import ExploreInfoModal from '../src/features/projects/components/maps/ExploreInfoModal';
+import CancelIcon from '../public/assets/images/icons/CancelIcon';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -99,6 +102,37 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setsearchedProjects,
   };
 
+  const [openModal, setModalOpen] = React.useState(true);
+
+  const PlanetModal =()=> {
+    return(
+      <div style={{
+        backgroundColor:'white',
+        minHeight:'300px',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+        padding:'30px',
+        borderRadius:'10px',
+        width:'320px',
+        position:'relative',
+        flexDirection:'column',
+        
+      }}>
+        <h2 style={{fontWeight:'bold'}}>Title</h2>
+        <p style={{margin:'16px auto'}}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <a target="_blank" style={{fontWeight:'bold'}} rel="noopener noreferrer" href={"http://blog.plant-for-the-planet.org/"}>
+          Read Blog {'>'}
+        </a>
+        <div onClick={()=>setModalOpen(false)} style={{position:'absolute',right:'18px',top:'18px',cursor:'pointer'}}>
+          <CancelIcon width={'20px'} />
+        </div>
+
+      </div>
+    )
+  }
   return (
     <Auth0Provider
       domain={process.env.AUTH0_CUSTOM_DOMAIN}
@@ -110,6 +144,21 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <ThemeProvider>
         <CssBaseline />
         <Layout>
+        <Modal
+          style={{
+            display:'flex',
+            height:'100%',
+            width:'100%',
+            justifyContent:'center',
+            alignItems:'center'
+          }}
+          open={openModal}
+          onClose={()=>setModalOpen(false)}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <PlanetModal/>
+        </Modal>
           {isMap ? (
             project ? (
               <MapLayout
