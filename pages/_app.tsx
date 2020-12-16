@@ -126,7 +126,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <p style={{margin:'16px auto'}}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
-        <a target="_blank" style={{fontWeight:'bold'}} rel="noopener noreferrer" href={"http://blog.plant-for-the-planet.org/"}>
+        <a target="_blank" style={{fontWeight:'bold',color:'#68B030'}} rel="noopener noreferrer" href={"http://blog.plant-for-the-planet.org/"}>
           Read Blog {'>'}
         </a>
         <div onClick={()=>setModalOpen(false)} style={{position:'absolute',right:'18px',top:'18px',cursor:'pointer'}}>
@@ -135,6 +135,29 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
       </div>
     )
+  }
+
+  const [userLang,setUserLang] = React.useState('');
+  const [countryCode,setCountryCode] = React.useState('')
+  const [hidePlanetModal,setHidePlanetModal] = React.useState(false)
+
+  React.useEffect(()=>{
+    if (typeof window !== 'undefined') {
+      let userLang = localStorage.getItem('language');
+      let countryCode = localStorage.getItem('countryCode');
+      let hidePlanetModal = localStorage.getItem('hidePlanetModal');
+      setHidePlanetModal(hidePlanetModal);
+      setUserLang(userLang);
+      setCountryCode(countryCode);
+    }
+  },[])
+  React.useEffect(() => {
+    localStorage.setItem('hidePlanetModal', hidePlanetModal);
+  }, [hidePlanetModal]);
+
+  const closePlanetModal=()=>{
+    setHidePlanetModal(true)
+    setModalOpen(false);
   }
   return (
     <Auth0Provider
@@ -147,7 +170,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <ThemeProvider>
         <CssBaseline />
         <Layout>
-          {tenantConfiguration.tenantName === 'planet' && (
+          {tenantConfiguration.tenantName === 'planet' && (userLang === 'de' || countryCode === 'DE') && !hidePlanetModal && (
             <Modal
               style={{
                 display:'flex',
@@ -157,7 +180,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                 alignItems:'center'
               }}
               open={openModal}
-              onClose={()=>setModalOpen(false)}
+              onClose={()=>closePlanetModal()}
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"
             >
