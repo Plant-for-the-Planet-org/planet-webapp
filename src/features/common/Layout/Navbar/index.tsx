@@ -151,7 +151,7 @@ export default function NavbarComponent(props: any) {
   }
 
   return (
-    <>
+    <div className={'mainNavContainer'}>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>
           {config.header?.isSecondaryTenant && (
@@ -173,6 +173,6 @@ export default function NavbarComponent(props: any) {
         </div>
         {ready && <MenuItems />}
       </div>
-    </>
+    </div>
   );
 }
