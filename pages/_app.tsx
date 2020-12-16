@@ -122,12 +122,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         flexDirection:'column',
         
       }}>
-        <h2 style={{fontWeight:'bold'}}>Title</h2>
+        <h2 style={{fontWeight:'bold'}}>Liebe Unterstützerinnen und Unterstützer,</h2>
         <p style={{margin:'16px auto'}}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, der heute über Plant-for-the-Planet erschienen ist. Dieser Artikel trifft uns als Stiftung, er trifft mich persönlich als Gründer, weil er Dinge falsch darstellt, mit Vermutungen und Unterstellungen arbeitet, Erklärung und Fakten auslässt. Sein Ziel ist es, die Stiftung, die daran beteiligten Personen und unser gemeinsames Ziel, Milliarden Bäume zu pflanzen, zu beschädigen. 
         </p>
-        <a target="_blank" style={{fontWeight:'bold',color:'#68B030'}} rel="noopener noreferrer" href={"http://blog.plant-for-the-planet.org/"}>
-          Read Blog {'>'}
+        <a target="_blank" style={{fontWeight:'bold',color:'#68B030'}} rel="noopener noreferrer" href={"https://blog.plant-for-the-planet.org/de/2020/liebe-unterstuetzerinnen-und-unterstuetzer/"}>
+          Brief Lesen {'>'}
         </a>
         <div onClick={()=>setModalOpen(false)} style={{position:'absolute',right:'18px',top:'18px',cursor:'pointer'}}>
           <CancelIcon width={'20px'} />
