@@ -20,6 +20,9 @@ import { storeConfig } from '../src/utils/storeConfig';
 import { Modal } from '@material-ui/core';
 import ExploreInfoModal from '../src/features/projects/components/maps/ExploreInfoModal';
 import CancelIcon from '../public/assets/images/icons/CancelIcon';
+import tenantConfig from '../tenant.config';
+
+const tenantConfiguration = tenantConfig();
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -144,21 +147,24 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <ThemeProvider>
         <CssBaseline />
         <Layout>
-        <Modal
-          style={{
-            display:'flex',
-            height:'100%',
-            width:'100%',
-            justifyContent:'center',
-            alignItems:'center'
-          }}
-          open={openModal}
-          onClose={()=>setModalOpen(false)}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          <PlanetModal/>
-        </Modal>
+          {tenantConfiguration.tenantName === 'planet' && (
+            <Modal
+              style={{
+                display:'flex',
+                height:'100%',
+                width:'100%',
+                justifyContent:'center',
+                alignItems:'center'
+              }}
+              open={openModal}
+              onClose={()=>setModalOpen(false)}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              <PlanetModal/>
+            </Modal>
+          ) }
+        
           {isMap ? (
             project ? (
               <MapLayout
