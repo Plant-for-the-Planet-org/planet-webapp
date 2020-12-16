@@ -7,6 +7,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss';
+import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
