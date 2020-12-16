@@ -8,9 +8,9 @@ import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserInfo } from '../../../../utils/auth0/userInfo';
-import TopNavbar from './TopNavbar';
-import BottomNavbar from './BottomNavbar';
 import themeProperties from '../../../../theme/themeProperties';
+import Link from 'next/link';
+import GetNavBarIcon from './getNavBarIcon';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -112,22 +112,64 @@ export default function NavbarComponent(props: any) {
         );
   };
 
-  return ready ? (
+  const MenuItems = () => {
+    const links = Object.keys(config.header.items);
+    return links ? (
+      <div className={'menuItems'}>
+        {links.map((link) => {
+          let SingleLink = config.header.items[link];
+          if (link === 'me' && SingleLink.visible) {
+            return (
+              <div key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
+                <div className={'link_icon'}>
+                  <UserProfileIcon />
+                </div>
+                <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+                  {t('common:' + SingleLink.title)}
+                </p>
+              </div>
+            )
+          }
+          return SingleLink.visible ? (
+            (
+              <Link key={link} href={SingleLink.onclick}>
+                <div className={'linkContainer'}>
+                  <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
+                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+                    {t('common:' + SingleLink.title)}
+                  </p>
+                </div>
+              </Link>
+            )
+          ) : <></>;
+        })}
+      </div>
+    ) : <></>;
+  }
+
+  return (
     <>
-      {/* Top Navbar */}
-      <TopNavbar
-        config={config} 
-        router={router} 
-        UserProfileIcon={UserProfileIcon} 
-        gotoUserPage={gotoUserPage} />
+      <div className={'top_nav'}>
+        <div className={'brandLogos'}>
+          {config.header?.isSecondaryTenant && (
+            <div className={config.tenantName === 'ttc' ? 'hidePrimaryTenantLogo' : 'primaryTenantLogo'}>
+              <a href={config.header?.tenantLogoLink}>
+                <img className={'tenantLogo'} src={config.header.tenantLogoURL} />
+              </a>
+              <div className={'logo_divider'} />
+            </div>
+          )}
 
-      <BottomNavbar config={config} 
-        router={router} 
-        UserProfileIcon={UserProfileIcon} 
-        gotoUserPage={gotoUserPage} />
-
-      {/* Bottom navbar */}
-      
+          <a href="https://a.plant-for-the-planet.org">
+            <img
+            className={'tenantLogo'}
+              src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+              alt={t('common:about_pftp')}
+            />
+          </a>
+        </div>
+        {ready && <MenuItems />}
+      </div>
     </>
-  ) : null;
+  );
 }

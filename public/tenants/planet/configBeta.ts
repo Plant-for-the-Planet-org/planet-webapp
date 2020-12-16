@@ -17,37 +17,33 @@ const config = {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
     tenantLogoLink: 'https://www.plant-for-the-planet.org',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: false,
-        key: 'home',
       },
-      {
-        id: 2,
+      donate: {
         title: 'home',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 3,
-        title: 'leaderboard',
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
+        visible: true,
+      },
+      leaderboard: {
+        title: 'leaders',
         onclick: '/all',
-        visible: false,
-        key: 'leaderboard',
+        visible: true,
       },
-
-      {
-        id: 4,
+      me:{
         title: 'me',
         onclick: '/me',
         visible: true,
-        key: 'me',
-      },
-    ],
+      }
+    }
   },
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
