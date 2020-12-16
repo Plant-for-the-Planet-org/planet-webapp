@@ -38,6 +38,8 @@ const nextauthUrl = process.env.NEXTAUTH_URL
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
+
+const appLinks = ['/signup']
 module.exports = withSourceMaps({
   serverRuntimeConfig: {
     rootDir: __dirname,
@@ -119,6 +121,15 @@ module.exports = withSourceMaps({
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: appLinks[0],
+        destination: '/open-app',
+        permanent: true,
+      },
+    ]
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files
