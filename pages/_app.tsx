@@ -61,11 +61,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
 
   if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-    if (process.env.VERCEL_URL !== window.location.hostname) {      
-      router.replace(`https://${process.env.VERCEL_URL}`);      
+    if (process.env.VERCEL_URL !== window.location.hostname) {
+      router.replace(`https://${process.env.VERCEL_URL}`);
     }
   }
-  
+
 
   const [initialized, setInitialized] = React.useState(false);
 
@@ -117,14 +117,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         alignItems:'center',
         padding:'30px',
         borderRadius:'10px',
-        width:'320px',
+        maxWidth:'580px',
         position:'relative',
         flexDirection:'column',
-        
+
       }}>
         <h2 style={{fontWeight:'bold'}}>Liebe Unterstützerinnen und Unterstützer,</h2>
         <p style={{margin:'16px auto'}}>
-          viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, der heute über Plant-for-the-Planet erschienen ist. Dieser Artikel trifft uns als Stiftung, er trifft mich persönlich als Gründer, weil er Dinge falsch darstellt, mit Vermutungen und Unterstellungen arbeitet, Erklärung und Fakten auslässt. Sein Ziel ist es, die Stiftung, die daran beteiligten Personen und unser gemeinsames Ziel, Milliarden Bäume zu pflanzen, zu beschädigen. 
+          viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, der heute über Plant-for-the-Planet erschienen ist. Dieser Artikel trifft uns als Stiftung, er trifft mich persönlich als Gründer, weil er Dinge falsch darstellt, mit Vermutungen und Unterstellungen arbeitet, Erklärung und Fakten auslässt. Sein Ziel ist es, die Stiftung, die daran beteiligten Personen und unser gemeinsames Ziel, Milliarden Bäume zu pflanzen, zu beschädigen.
         </p>
         <a target="_blank" style={{fontWeight:'bold',color:'#68B030'}} rel="noopener noreferrer" href={"https://blog.plant-for-the-planet.org/de/2020/liebe-unterstuetzerinnen-und-unterstuetzer/"}>
           Brief Lesen {'>'}
@@ -170,7 +170,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <ThemeProvider>
         <CssBaseline />
         <Layout>
-          {tenantConfiguration.tenantName === 'planet' && (userLang === 'de' || countryCode === 'DE') && !hidePlanetModal && (
+          {tenantConfiguration.tenantName === 'planet' && (userLang === 'de' || countryCode === 'DE') && hidePlanetModal != 'true' && (
             <Modal
               style={{
                 display:'flex',
@@ -187,7 +187,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               <PlanetModal/>
             </Modal>
           ) }
-        
+
           {isMap ? (
             project ? (
               <MapLayout
