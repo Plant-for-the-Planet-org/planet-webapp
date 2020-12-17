@@ -2,8 +2,10 @@ import React, { ReactElement } from 'react';
 import { Modal } from '@material-ui/core';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import tenantConfig from '../../../../../tenant.config';
+import i18next from '../../../../../i18n';
 
 const tenantConfiguration = tenantConfig();
+const { useTranslation } = i18next;
 
 interface Props {}
 
@@ -12,6 +14,7 @@ export default function index({}: Props): ReactElement {
   const [openModal, setModalOpen] = React.useState(true);
   const [userLang, setUserLang] = React.useState('');
   const [countryCode, setCountryCode] = React.useState('');
+  const { t, ready } = useTranslation(['leaderboard']);
 
   React.useEffect(() => {
     let prev = localStorage.getItem('showPlanetModal');
@@ -41,7 +44,7 @@ export default function index({}: Props): ReactElement {
     setModalOpen(false);
     localStorage.setItem('showPlanetModal', 'false');
   };
-  return (
+  return ready ? (
     <>
       {tenantConfiguration.tenantName === 'planet' &&
         (countryCode === 'DE' || userLang === 'de') &&
@@ -113,5 +116,5 @@ export default function index({}: Props): ReactElement {
           </Modal>
         )}
     </>
-  );
+  ): <></>;
 }
