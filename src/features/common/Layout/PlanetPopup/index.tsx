@@ -85,6 +85,7 @@ export default function index({}: Props): ReactElement {
                 Dieser Artikel trifft uns als Stiftung und mich persönlich als 
                 Gründer sehr, weil er ein völliges Zerrbild zeichnet, Sachverhalte 
                 falsch darstellt und mit Vermutungen und Unterstellungen arbeitet.
+                <br/><br/>
                 Wir sind als Plant-for-the-Planet gewohnt, viele Fragen von 
                 Medienvertretern zu uns, den Projekten und den Pflanzgebieten zu 
                 bekommen. Diese Fragen beantworten wir immer, da wir seit 
