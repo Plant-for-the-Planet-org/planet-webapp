@@ -6,6 +6,6 @@ module.exports = {
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
     "globals": {
-      "__baseUrl__": "https://planet-webapp-72csy9aqa.vercel.app"
+      "__baseUrl__": "https://planet-webapp-oriagzlkz.vercel.app"
     }
   }
