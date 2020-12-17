@@ -6,9 +6,9 @@ export default function SustainableCity() {
         <div className={styles.sustainableSection}>
             <div className={styles.sustainableTextSection}>
                 <h2>Si amas Granada...</h2>
-                <p>
-                    <b>Plant-for-the-Planet</b>  propuso al Ayuntamiento de Granada en 2019 desarrollar el proyecto "Anillo verde de Granada" para crear un anillo natural reforestado que rodeará la ciudad.
-                </p>
+                <h3>Si deseas formar parte de su presente y futuro...</h3>
+                <h3 style={{color:'#568802'}}>Si quieres ayudar a crear una ciudad más verde y sostenible</h3>
+                
                 <div className={styles.sustainableButtonContainer}>
                     <AnimatedButton className={styles.continueButton}>
                         Plantar árboles
