@@ -28,36 +28,33 @@ const config = {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/energizer/logo.png`,
     tenantLogoLink: 'https://www.energizer.de',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: true,
-        key: 'home',
       },
-      {
-        id: 2,
+      donate: {
         title: 'plant',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 3,
-        title: 'leaderboard',
-        onclick: '/leaderboard',
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
         visible: false,
-        key: 'leaderboard',
       },
-      {
-        id: 4,
+      leaderboard: {
+        title: 'leaderboard',
+        onclick: '/all',
+        visible: false,
+      },
+      me:{
         title: 'me',
         onclick: '/me',
         visible: false,
-        key: 'me',
-      },
-    ],
+      }
+    }
   },
   footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
 };
