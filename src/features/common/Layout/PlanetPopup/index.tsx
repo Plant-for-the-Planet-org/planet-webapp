@@ -8,33 +8,44 @@ const tenantConfiguration = tenantConfig();
 interface Props {}
 
 export default function index({}: Props): ReactElement {
-  const [hidePlanetModal, setHidePlanetModal] = React.useState(false);
+  const [showPlanetModal, setShowPlanetModal] = React.useState(false);
   const [openModal, setModalOpen] = React.useState(true);
   const [userLang, setUserLang] = React.useState('');
   const [countryCode, setCountryCode] = React.useState('');
+
+  React.useEffect(() => {
+    let prev = localStorage.getItem('showPlanetModal');
+    if (!prev) {
+      setShowPlanetModal(true);      
+    } else {
+      setShowPlanetModal(prev === 'true');
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem('showPlanetModal', showPlanetModal);
+  }, [showPlanetModal]);
+
+
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       let userLang = localStorage.getItem('language');
       let countryCode = localStorage.getItem('countryCode');
-      let hidePlanetModal = localStorage.getItem('hidePlanetModal');
-      if (hidePlanetModal === 'true') {
-        setHidePlanetModal(true);
-      }
       setUserLang(userLang);
       setCountryCode(countryCode);
     }
   }, []);
 
   const closePlanetModal = () => {
-    setHidePlanetModal(true);
+    setShowPlanetModal(false);
     setModalOpen(false);
-    localStorage.setItem('hidePlanetModal', 'true');
+    localStorage.setItem('showPlanetModal', 'false');
   };
   return (
     <>
       {tenantConfiguration.tenantName === 'planet' &&
         (countryCode === 'DE' || userLang === 'de') &&
-        hidePlanetModal !== true && (
+        showPlanetModal && (
           <Modal
             style={{
               display: 'flex',
