@@ -108,7 +108,7 @@ module.exports = withSourceMaps({
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
     NEXTAUTH_URL: nextauthUrl,
-    VERCEL_URL:process.env.VERCEL_URL
+    VERCEL_URL: process.env.VERCEL_URL
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -119,6 +119,50 @@ module.exports = withSourceMaps({
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: '/account-activate/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/competition/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-trees',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-trees/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/project/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/reset-password/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/signup',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/signup/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+    ]
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files
