@@ -28,36 +28,33 @@ const config = {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
     tenantLogoLink: '/',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
-        visible: false,
-        key: 'home',
+        visible: true,
       },
-      {
-        id: 2,
-        title: 'home',
+      donate: {
+        title: 'donate_gift',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 3,
-        title: 'leaderboard',
-        onclick: '/leaderboard',
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
         visible: false,
-        key: 'leaderboard',
       },
-      {
-        id: 4,
+      leaderboard: {
+        title: 'leaderboard',
+        onclick: '/all',
+        visible: false,
+      },
+      me:{
         title: 'me',
         onclick: '/me',
-        visible: true,
-        key: 'me',
-      },
-    ],
+        visible: false,
+      }
+    }
   },
 };
 
