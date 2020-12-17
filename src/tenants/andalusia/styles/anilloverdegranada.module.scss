@@ -6,33 +6,37 @@
 }
 .landingSection {
     margin: auto;
-    margin-top: 60px;
     width: 100vw;
     max-width: 1280px;
     min-height: 100vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     flex-wrap: wrap;
     align-self: center;
-
     .landingImageSection {
-        width: 50%;
+        order: 1;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
         > img {
             max-width: 540px;
+            width: 90%;
+            margin: 48px;
         }
     }
 
     .landingTextSection {
-        width: 50%;
+        order: 2;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        padding: 72px;
+        padding: 24px;
         color: #232323;
+        text-align: center;
         > h2 {
             font-size: 3.2rem;
             font-weight: bold;
@@ -50,10 +54,36 @@
 
     .landingButtonContainer {
         width: 100%;
-        align-items: left;
+        display: flex;
+        justify-content: center;
     }
 }
 
+@include lgLaptopView{
+    .landingSection {
+        flex-direction: row;
+        .landingImageSection {
+            width: 50%;
+            order:2;
+        }
+        .landingTextSection {
+            width: 50%;
+            align-items: left;
+            text-align: left;
+            order: 1;
+            padding: 72px;
+        }
+        .landingButtonContainer {
+            justify-content: left;
+        }
+    }
+}
+    
+@include smTabletView{
+    .landingSection{
+        margin-top: 60px;
+    }
+}
 .continueButton, .secondaryButton {
     height: 40px;
     border-radius: 100px;
@@ -95,6 +125,7 @@
     align-items: center;
     color: white;
     position: relative;
+    text-align: center;
     > .section2Overlay {
         opacity: 0.7;
         background-color: rgb(86, 136, 2);
@@ -134,11 +165,13 @@
     display: flex;
     min-height: 100vh;
     padding: 64px;
+    flex-direction: row;
+    flex-wrap: wrap;
     .featuresContainerText {
-        width: 50%;
+        width: 100%;
         display: flex;
         flex-direction: column;
-        border-right: 2px solid rgb(86, 136, 2);
+        
         > div {
             max-width: 380px;
             > span {
@@ -165,7 +198,7 @@
         }
     }
     .featuresSection {
-        width: 50%;
+        width: 100%;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -188,8 +221,17 @@
     }
 }
 
-
-
+@include lgLaptopView{
+    .featuresMainContainer {
+        .featuresContainerText {
+            width: 50%;
+            border-right: 2px solid rgb(86, 136, 2);
+        }
+        .featuresSection {
+            width: 50%;
+        }
+    }
+}
 .sustainableSection {
     margin: auto;
     width: 100vw;
@@ -201,22 +243,27 @@
     align-self: center;
 
     .sustainableImageSection {
-        width: 50%;
+        order: 1;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         > img {
             max-width: 540px;
+            width: 90%;
+            margin: 48px;
         }
     }
 
     .sustainableTextSection {
-        width: 50%;
+        order: 2;
+        width: 100%;
         display: flex;
         justify-content: center;
         flex-direction: column;
-        padding: 72px;
+        padding: 24px;
         color: #232323;
+        text-align: center;
         > h2 {
             font-size: 3.2rem;
             font-weight: bold;
@@ -233,7 +280,34 @@
 
     .sustainableButtonContainer {
         width: 100%;
-        align-items: left;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@include lgLaptopView{
+    .sustainableSection {
+        flex-direction: row;
+        .sustainableImageSection {
+            width: 50%;
+            order:2;
+        }
+        .sustainableTextSection {
+            width: 50%;
+            align-items: left;
+            text-align: left;
+            order: 1;
+            padding: 72px;
+        }
+        .sustainableButtonContainer {
+            justify-content: left;
+        }
+    }
+}
+    
+@include smTabletView{
+    .sustainableSection{
+        margin-top: 60px;
     }
 }
 
@@ -246,6 +320,7 @@
     align-items: center;
     padding-top:48px;
     padding-bottom:48px;
+    text-align: center;
     > h2 {
         color: #ffe161;
         font-size: 25.6px;
