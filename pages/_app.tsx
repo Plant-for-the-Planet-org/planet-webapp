@@ -170,7 +170,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       <ThemeProvider>
         <CssBaseline />
         <Layout>
-          {tenantConfiguration.tenantName === 'planet' && (userLang === 'de' || countryCode === 'DE') && hidePlanetModal != 'true' && (
+          {tenantConfiguration.tenantName === 'planet' && (countryCode === 'DE' || userLang === 'de') && hidePlanetModal !== 'true' && (
             <Modal
               style={{
                 display:'flex',
