@@ -1,6 +1,4 @@
 import webdriver from 'selenium-webdriver'
-import dotenv from 'dotenv';
-dotenv.config({path: '../.env.local'})
 
 const capabilities = {
   'os_version' : '10',
@@ -12,8 +10,8 @@ const capabilities = {
   'build': process.env.BROWSERSTACK_BUILD_NAME, // CI/CD job or build name
   'browserstack.user' : process.env.BROWSERSTACK_USERNAME,
   'browserstack.key' : process.env.BROWSERSTACK_ACCESS_KEY,
+  'browserstack.debug' : 'true',
 }
-
 
 export const driver = new webdriver.Builder()
   .forBrowser('chrome')

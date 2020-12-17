@@ -30,7 +30,7 @@ describe('hompage', () => {
       });
     // });
   });
-  it('shoulc click on donate', async () => {
+  it('should click on donate', async () => {
     const val = await donateButton();
     await val.click();
     await driver.switchTo().activeElement();

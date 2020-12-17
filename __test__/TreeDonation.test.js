@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import TreeDonation from '../src/features/donations/screens/TreeDonation';
 import { project } from './mockData/projectData';
 
-
 describe('tree donation', () => {
   const setIsTaxDeductible = jest.fn();
   it('it expects component to have some text', async() => {
