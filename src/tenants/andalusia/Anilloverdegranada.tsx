@@ -3,6 +3,7 @@ import Footer from '../../features/common/Layout/Footer'
 import FeaturesSection from './components/FeaturesSection'
 import LandingSection from './components/LandingSection'
 import Objective from './components/Objective'
+import SustainableCity from './components/SustainableCity'
 import styles from './styles/anilloverdegranada.module.scss'
 
 interface Props {
@@ -15,6 +16,7 @@ function Anilloverdegranada({ }: Props): ReactElement {
             <LandingSection />
             <Objective />
             <FeaturesSection/>
+            <SustainableCity/>
             <Footer/>
         </div>
     )
