@@ -14,19 +14,24 @@ export default function index({}: Props): ReactElement {
   const [openModal, setModalOpen] = React.useState(true);
   const [userLang, setUserLang] = React.useState('');
   const [countryCode, setCountryCode] = React.useState('');
-  const { t, ready } = useTranslation(['leaderboard']);
+  const { t, ready, i18n } = useTranslation(['leaderboard']);
 
-  const [loading,setLoading] = React.useState(true)
-  function loadCondition(){
-    let prev = localStorage.getItem('showPlanetModal');    
+  const [loading, setLoading] = React.useState(true);
+  console.log(i18n.language);
+  function loadCondition() {
+    let prev = localStorage.getItem('showPlanetModal');
     if (!prev) {
-      setShowPlanetModal(true);      
+      setShowPlanetModal(true);
       localStorage.setItem('showPlanetModal', 'true');
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
     } else {
       setShowPlanetModal(prev === 'true');
       localStorage.setItem('showPlanetModal', prev === 'true');
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
     }
   }
 
@@ -46,12 +51,10 @@ export default function index({}: Props): ReactElement {
     localStorage.setItem('showPlanetModal', 'false');
   };
 
-  
-  
   return ready && !loading ? (
     <>
       {tenantConfiguration.tenantName === 'planet' &&
-        (countryCode === 'DE' || userLang === 'de') &&
+        // (countryCode === 'DE' || i18n.language === 'de') &&
         showPlanetModal && (
           <Modal
             style={{
@@ -84,16 +87,18 @@ export default function index({}: Props): ReactElement {
                 Liebe Unterstützerinnen und Unterstützer,
               </h2>
               <p style={{ margin: '16px auto' }}>
-                viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, 
-                der am 16. Dezember über Plant-for-the-Planet erschienen ist. 
-                Dieser Artikel trifft uns als Stiftung und mich persönlich als 
-                Gründer sehr, weil er ein völliges Zerrbild zeichnet, Sachverhalte 
-                falsch darstellt und mit Vermutungen und Unterstellungen arbeitet.
-                <br/><br/>
-                Wir sind als Plant-for-the-Planet gewohnt, viele Fragen von 
-                Medienvertretern zu uns, den Projekten und den Pflanzgebieten zu 
-                bekommen. Diese Fragen beantworten wir immer, da wir seit 
-                Gründungsbeginn transparent arbeiten und wissen, wie wichtig das 
+                viele von Ihnen und euch haben den Artikel in der ZEIT gelesen,
+                der am 16. Dezember über Plant-for-the-Planet erschienen ist.
+                Dieser Artikel trifft uns als Stiftung und mich persönlich als
+                Gründer sehr, weil er ein völliges Zerrbild zeichnet,
+                Sachverhalte falsch darstellt und mit Vermutungen und
+                Unterstellungen arbeitet.
+                <br />
+                <br />
+                Wir sind als Plant-for-the-Planet gewohnt, viele Fragen von
+                Medienvertretern zu uns, den Projekten und den Pflanzgebieten zu
+                bekommen. Diese Fragen beantworten wir immer, da wir seit
+                Gründungsbeginn transparent arbeiten und wissen, wie wichtig das
                 Vertrauen in unser Tun ist.
               </p>
               <a
@@ -121,5 +126,7 @@ export default function index({}: Props): ReactElement {
           </Modal>
         )}
     </>
-  ): <></>;
+  ) : (
+    <></>
+  );
 }
