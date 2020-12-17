@@ -15,7 +15,7 @@ export default function LandingSection() {
                 <div className={styles.landingButtonContainer}>
                     <AnimatedButton className={styles.continueButton}>
                         Plantar árboles
-                </AnimatedButton>
+                    </AnimatedButton>
                 </div>
             </div>
             <div className={styles.landingImageSection}>
