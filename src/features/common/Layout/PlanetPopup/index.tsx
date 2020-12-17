@@ -77,14 +77,16 @@ export default function index({}: Props): ReactElement {
                 Liebe Unterstützerinnen und Unterstützer,
               </h2>
               <p style={{ margin: '16px auto' }}>
-                viele von Ihnen und euch haben den Artikel in der ZEIT gelesen,
-                der heute über Plant-for-the-Planet erschienen ist. Dieser
-                Artikel trifft uns als Stiftung, er trifft mich persönlich als
-                Gründer, weil er Dinge falsch darstellt, mit Vermutungen und
-                Unterstellungen arbeitet, Erklärung und Fakten auslässt. Sein
-                Ziel ist es, die Stiftung, die daran beteiligten Personen und
-                unser gemeinsames Ziel, Milliarden Bäume zu pflanzen, zu
-                beschädigen.
+                viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, 
+                der am 16. Dezember über Plant-for-the-Planet erschienen ist. 
+                Dieser Artikel trifft uns als Stiftung und mich persönlich als 
+                Gründer sehr, weil er ein völliges Zerrbild zeichnet, Sachverhalte 
+                falsch darstellt und mit Vermutungen und Unterstellungen arbeitet.
+                Wir sind als Plant-for-the-Planet gewohnt, viele Fragen von 
+                Medienvertretern zu uns, den Projekten und den Pflanzgebieten zu 
+                bekommen. Diese Fragen beantworten wir immer, da wir seit 
+                Gründungsbeginn transparent arbeiten und wissen, wie wichtig das 
+                Vertrauen in unser Tun ist.
               </p>
               <a
                 target="_blank"
