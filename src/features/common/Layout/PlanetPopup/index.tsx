@@ -16,14 +16,17 @@ export default function index({}: Props): ReactElement {
   const [countryCode, setCountryCode] = React.useState('');
   const { t, ready } = useTranslation(['leaderboard']);
 
+  const [loading,setLoading] = React.useState(true)
   function loadCondition(){
     let prev = localStorage.getItem('showPlanetModal');    
     if (!prev) {
       setShowPlanetModal(true);      
-      localStorage.setItem('showPlanetModal', showPlanetModal);
+      localStorage.setItem('showPlanetModal', 'true');
+      setLoading(false)
     } else {
       setShowPlanetModal(prev === 'true');
-      localStorage.setItem('showPlanetModal', showPlanetModal);
+      localStorage.setItem('showPlanetModal', prev === 'true');
+      setLoading(false)
     }
   }
 
@@ -42,8 +45,10 @@ export default function index({}: Props): ReactElement {
     setModalOpen(false);
     localStorage.setItem('showPlanetModal', 'false');
   };
+
   
-  return ready ? (
+  
+  return ready && !loading ? (
     <>
       {tenantConfiguration.tenantName === 'planet' &&
         (countryCode === 'DE' || userLang === 'de') &&
