@@ -8,8 +8,8 @@
   background-size:cover;
   display:flex;
   flex-direction:column;
-  height: 100vh; 
-  overflow-x: hidden;
+  overflow-y: auto;
+  // min-height: calc(100vh - 150px);
 }
 
 // the white form
@@ -28,6 +28,9 @@
   border-radius: 8px;
   align-self: center;
   padding:20px;
+  overflow-y: auto;
+  // min-height: calc(100vh - 150px);
+  z-index: 100;
 }
 
 // when request sent, opacity low
@@ -60,6 +63,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
+  > svg {
+    width: 16px;
+  }
 }
 .headerBackIcon:hover {
   cursor: pointer;
@@ -252,4 +258,18 @@
   max-width: 320px;
   position: absolute;
   bottom: -18px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
+}
+
+// for mobile view
+@media only screen and (max-width: 768px) {
+  .signup {
+      min-height: calc(100vh - 150px);
+  }
+  .signUpPage {
+    min-height: calc(100vh - 150px);
+  }
 }

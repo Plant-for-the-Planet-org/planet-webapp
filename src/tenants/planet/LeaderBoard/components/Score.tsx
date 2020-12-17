@@ -1,19 +1,20 @@
 import React from 'react';
-import Sugar from 'sugar';
 import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../../i18n';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 
 interface Props {
   leaderboard: any;
 }
 
+const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
-  const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard', 'common']);
+  const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
-  return (
+  return ready ? ( 
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
@@ -40,7 +41,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               {t('leaderboard:mostTrees')}
             </div>
           </div>
-          {leaderboardData !== null
+          {leaderboardData
             && leaderboardData.mostRecent
             && leaderboardData.mostDonated ? (
               selectedTab === 'recent' ? (
@@ -51,7 +52,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                         {leader.donorName}
                       </p>
                       <p className={styles.leaderBoardDonorTrees}>
-                        {Sugar.Number.format(Number(leader.treeCount))}
+                        {getFormattedNumber(i18n.language, Number(leader.treeCount))}
                         {' '}
                         {t('common:trees')}
                       </p>
@@ -69,7 +70,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {Sugar.Number.format(Number(leader.treeCount))}
+                          {getFormattedNumber(i18n.language, Number(leader.treeCount))}
                           {' '}
                           {t('common:trees')}
                         </p>
@@ -78,7 +79,18 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   </div>
                 )
             ) : (
-              <p>loading</p>
+              <>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+                <LeaderboardLoader/>
+              </>
             )}
         </div>
       </div>
@@ -93,5 +105,5 @@ export default function LeaderBoardSection(leaderboard: Props) {
         alt=""
       />
     </section>
-  );
+  ) : null;
 }

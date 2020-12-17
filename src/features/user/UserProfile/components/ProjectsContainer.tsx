@@ -6,45 +6,64 @@ import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader
 import i18next from '../../../../../i18n';
 import styles from '../styles/ProjectsContainer.module.scss';
 import { getAuthenticatedRequest, getRequest } from '../../../../utils/apiRequests/api';
-import { useSession } from 'next-auth/client';
 import AddProject from '../../../../../public/assets/images/icons/manageProjects/AddProject';
 import Link from 'next/link';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const { useTranslation } = i18next;
 
-const ProjectSnippet = dynamic(() => import('./../../../public/Donations/components/ProjectSnippet'), {
+const ProjectSnippet = dynamic(() => import('../../../projects/components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
 export default function ProjectsContainer({ authenticatedType, userprofile }: any) {
-  const { t } = useTranslation(['donate', 'manageProjects']);
-  const [session, loading] = useSession();
+  const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([])
 
-  React.useEffect(() => {
-    async function loadProjects() {
-      // const currencyCode = getStoredCurrency();
-      const privateURL = '/app/profile/projects';
-      const publicURL = `/app/profiles/${userprofile.id}/projects`;
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently
+  } = useAuth0();
 
-      if (authenticatedType === 'private') {
-        await getAuthenticatedRequest(
-          privateURL, session
-        ).then(projects => {
-          setProjects(projects);
-        })
-      } else {
-        await getRequest(
-          publicURL,
-        ).then(projects => {
-          setProjects(projects);
-        })
-      }
+  const [token, setToken] = React.useState('')
+
+  async function loadProjects() {
+    // const currencyCode = getStoredCurrency();
+    const privateURL = '/app/profile/projects';
+    const publicURL = `/app/profiles/${userprofile.id}/projects`;
+
+    if (authenticatedType === 'private') {
+      const token = await getAccessTokenSilently();
+      await getAuthenticatedRequest(
+        privateURL, token
+      ).then(projects => {
+        setProjects(projects);
+      })
+    } else {
+      await getRequest(
+        publicURL,
+      ).then(projects => {
+        setProjects(projects);
+      })
     }
-    loadProjects();
-  }, [])
+  }
+  
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated && !isLoading) {
+      loadFunction()
+    }
+    if(!isLoading){
+      loadProjects();
+    }
+  }, [isAuthenticated,isLoading])
 
-  return (
+  return ready ? (
     <div style={{ margin: 'auto', maxWidth: '950px' }} id="projectsContainer">
       {projects.length < 1 ? (
         authenticatedType === 'private' ? (
@@ -70,7 +89,10 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             {projects.map((project: any) => {
               return (
                 <div className={styles.singleProject} key={project.properties.id}>
-                  <ProjectSnippet key={project.properties.id} project={project} directGift={null} setDirectGift={null} editMode={authenticatedType === 'private' ? true : false} />
+                  <ProjectSnippet 
+                    key={project.properties.id} 
+                    project={project.properties}
+                    editMode={authenticatedType === 'private' ? true : false} />
                 </div>
               );
             })}
@@ -90,8 +112,6 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             }
           </div>
         )}
-
-
     </div>
-  );
+  ) : null;
 }

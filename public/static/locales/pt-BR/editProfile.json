@@ -4,10 +4,13 @@
   "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
   "subscribe": "Inscreva-se para receber notícias por e-mail",
   "profileDescription": "Descrição de Perfil",
-  "descriptionRequired": "Por favor insira uma descrição válida",
+  "descriptionRequired": "Você excedeu o limite máximo",
   "website": "Website",
   "websiteError": "URL do site inválido",
   "websiteRequired": "Por favor, digite o URL válido do site",
   "save": "Salvar",
-  "orgNameValidation": "Por favor, introduza o nome da organização"
+  "orgNameValidation": "Por favor, introduza o nome da organização",
+  "profilePicUpdated": "A foto do perfil está sendo atualizada",
+  "profileSaved": "Salvo com sucesso!",
+  "profileSaveFailed": "Erro na atualização do perfil."
 }

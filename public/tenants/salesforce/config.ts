@@ -4,46 +4,44 @@ const config = {
   languages: ['en'],
   fallbackCurrency: 'USD',
   tenantGoal:null,
+  showUNDecadeLogo:true,
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
     tenantLogoLink: 'https://www.salesforce.com/sustainability/',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: true,
-        key: 'home',
       },
-      {
-        id: 3,
+      donate: {
         title: 'donate_gift',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 2,
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
+        visible: false,
+      },
+      leaderboard: {
         title: 'leaderboard',
-        onclick: '/',
-        visible: false, // Leaders is false for Salesforce
-        key: 'leaderboard',
+        onclick: '/all',
+        visible: false,
       },
-      {
-        id: 4,
+      me:{
         title: 'me',
         onclick: '/me',
-        visible: false, // Me is false for Salesforce
-        key: 'me',
-      },
-    ],
+        visible: false,
+      }
+    }
   },
   meta: {
     title: 'Salesforce ❤️ Trees',
@@ -53,6 +51,7 @@ const config = {
     twitterHandle: '',
     locale: 'en_US',
   },
+  footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
 };
 
 export default config;

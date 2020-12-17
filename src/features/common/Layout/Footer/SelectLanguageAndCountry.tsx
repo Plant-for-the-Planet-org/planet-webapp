@@ -34,10 +34,9 @@ export default function TransitionsModal(props) {
     setSelectedCountry,
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
-  const [selectedModalCountry, setSelectedModalCountry] = useState('US');
+  const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
 
-  const { i18n } = useTranslation();
-  const { t } = useTranslation(['common', 'country']);
+  const { t, i18n, ready } = useTranslation(['common', 'country']);
 
   const { theme } = React.useContext(ThemeContext);
 
@@ -54,7 +53,6 @@ export default function TransitionsModal(props) {
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-    i18n.changeLanguage(modalLanguage);
     // window.localStorage.setItem('language', modalLanguage);
     setLanguage(modalLanguage);
     i18n.changeLanguage(modalLanguage);
@@ -84,7 +82,7 @@ export default function TransitionsModal(props) {
     }
   }, [selectedCountry]);
 
-  return (
+  return ready ? (
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -129,16 +127,16 @@ export default function TransitionsModal(props) {
         </Fade>
       </Modal>
     </div>
-  );
+  ) : null;
 }
 
 // Maps the radio buttons for countries
 function MapCountry(props) {
-  const { t, i18n } = useTranslation(['country']);
+  const { t, i18n, ready } = useTranslation(['country']);
   
   const { value, handleChange } = props;
-  const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
-  return (
+  const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language) : {};
+  return ready ? (
     <FormControl component="fieldset">
       <RadioGroup
         aria-label="language"
@@ -157,7 +155,7 @@ function MapCountry(props) {
         ))}
       </RadioGroup>
     </FormControl>
-  );
+  ) : null;
 }
 
 // Maps the radio buttons for language

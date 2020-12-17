@@ -36,5 +36,16 @@
   "september": "Setembro",
   "october": "Outubro",
   "november": "Novembro",
-  "december": "Dezembro"
+  "december": "Dezembro",
+  "approx": "Aprox.",
+  "view": "Ver",
+  "opening_native_app": "Esta página só está disponível no nosso aplicativo iOS ou Android.",
+  "verifyEmailHeader": "Por favor, confirme o seu e-mail.",
+  "verifyEmailText": "Para proteger a sua conta, precisamos de verificar o seu e-mail. Por favor verifique a sua caixa de entrada ou pasta de spam/junk para um e-mail de confirmação e depois continue a fazer login.",
+  "verifyEmailInfo": "Se você não recebeu um e-mail, por favor tente entrar novamente e nós lhe enviaremos outro e-mail.",
+  "continueToLogin": "Continuar para Iniciar Sessão",
+  "supportsUNEP": "Apoia o PNUMA",
+  "plantedBy": "Plantado por",
+  "mapInfo": "Esri",
+  "aboutUs": "Sobre nós"
 }

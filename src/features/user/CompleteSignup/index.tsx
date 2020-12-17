@@ -1,4 +1,3 @@
-import { useSession, signIn } from 'next-auth/client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
@@ -6,39 +5,57 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { signOut } from 'next-auth/client';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getUserInfo, setUserInfo, removeUserInfo } from '../../../utils/auth0/localStorageUtils'
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
+import { useAuth0 } from '@auth0/auth0-react';
+import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
-  const [session, loading] = useSession();
+
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently,
+    logout,
+    loginWithRedirect,
+    user
+  } = useAuth0();  
+
   const router = useRouter();
-  const { t } = useTranslation(['editProfile', 'donate', 'login']);
+  const { t, ready } = useTranslation(['editProfile', 'donate', 'login']);
 
   const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
 
   const isPrivate = watch('isPrivate');
 
+  const [token, setToken] = React.useState('')
 
   React.useEffect(() => {
-    // if accessed by unauthenticated user
-    if (!loading && !session) {
-      signIn('auth0', { callbackUrl: '/login' });
-    }
-    const userExistsInDB = getUserExistsInDB();
-    // if accessed by a registered user
-    if (!loading && session && userExistsInDB) {
-      const userSlug = getUserInfo().slug;
-      if (typeof window !== 'undefined') {
-        router.push(`/t/${userSlug}`);
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+      if(!token){
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       }
+      const userExistsInDB = getUserExistsInDB();
+      if (token && userExistsInDB) {
+        if (getUserInfo().slug) {
+          const userSlug = getUserInfo().slug;
+          if (typeof window !== 'undefined') {
+            router.push(`/t/${userSlug}`);
+          }
+        }
+      }      
     }
-  }, [loading]);
+    if (isAuthenticated && !isLoading) {
+      loadFunction()
+    }
+  }, [isAuthenticated, isLoading])
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -61,8 +78,7 @@ export default function CompleteSignup() {
   const [requestSent, setRequestSent] = useState(false);
 
   const [country, setCountry] = useState('');
-  let defaultCountry;
-  if (typeof window !== 'undefined') { defaultCountry = localStorage.getItem('countryCode') } else { defaultCountry = 'DE' }
+  const defaultCountry = typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
 
   const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal)
   React.useEffect(() => {
@@ -88,7 +104,7 @@ export default function CompleteSignup() {
         const userInfo = getUserInfo();
         const newUserInfo = { ...userInfo, slug: resJson.slug, type: resJson.type }
         setUserInfo(newUserInfo)
-        setSnackbarMessage('Profile Successfully created!');
+        setSnackbarMessage(ready ? t('login:profileCreated') : '');
         setSeverity("success")
         handleSnackbarOpen();
 
@@ -97,56 +113,62 @@ export default function CompleteSignup() {
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
-        // console.log('in 401-> unauthenticated user / invalid token')
-        signOut()
+        console.log('in 401-> unauthenticated user / invalid token')
+        localStorage.removeItem('userInfo');
+        logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
+
         removeUserExistsInDB()
-        removeUserInfo()
-        signIn('auth0', { callbackUrl: '/login' });
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
-        setSnackbarMessage('Error in creating profile. Please try again');
+        setSnackbarMessage(ready ? t('login:profileCreationFailed') : '');
         setSeverity("error")
         handleSnackbarOpen();
       }
     } catch {
-      setSnackbarMessage('Error in creating profile');
+      setSnackbarMessage(ready ? t('login:profileCreationError') : '');
       setSeverity("error")
       handleSnackbarOpen();
     }
   };
 
   const profileTypes = [
-    { id: 1, title: 'Individual', value: 'individual' },
-    { id: 2, title: 'Organisation', value: 'organisation' },
-    { id: 3, title: 'Reforestation Organisation', value: 'tpo' },
-    { id: 4, title: 'Education', value: 'education' }
+    { id: 1, title: ready ? t('login:individual') : '', value: 'individual' },
+    { id: 2, title: ready ? t('login:organization') : '', value: 'organization' },
+    { id: 3, title: ready ? t('login:tpo') : '', value: 'tpo' },
+    { id: 4, title: ready ? t('login:education') : '', value: 'education' }
   ]
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset()
-  },[type])
+  }, [type])
 
   const createButtonClicked = async (data: any) => {
-    if(!loading && session){
+    if (!isLoading && token) {
       let submitData = {
         ...data,
         country,
         type,
-        oAuthAccessToken: session.accessToken
+        oAuthAccessToken: token
       }
       sendRequest(submitData)
     }
   };
 
+  const logoutUser = () => {
+    localStorage.removeItem('userInfo');
+    logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
+  }
+
   if (
-    loading ||
-    (!loading && session && (getUserExistsInDB() === true)) ||
-    (!loading && !session)
+    isLoading ||
+    (!isLoading && token && (getUserExistsInDB() === true)) ||
+    (!isLoading && !token)
   ) {
     return null;
   }
-  if (!loading && session && (getUserExistsInDB() === false)) {
-    return (
+  if (!isLoading && token && (getUserExistsInDB() === false)) {
+    return ready ? (
       <div
         className={styles.signUpPage}
         style={{
@@ -157,14 +179,10 @@ export default function CompleteSignup() {
           {/* header */}
           <div className={styles.header}>
             <div
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  router.push(`/logout`);
-                }
-              }}
+              onClick={logoutUser}
               className={styles.headerBackIcon}
             >
-              <BackArrow color={styles.primaryFontColor} />
+              <CancelIcon color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>{t('login:signUpText')}</div>
           </div>
@@ -187,51 +205,51 @@ export default function CompleteSignup() {
               <MaterialTextField
                 label={t('donate:firstName')}
                 variant="outlined"
-                inputRef={register({required:true})}
+                inputRef={register({ required: true })}
                 name={"firstname"}
               />
               {errors.firstname && (
-                    <span className={styles.formErrors}>
-                      {t('donate:firstNameRequired')}
-                    </span>
-                  )}
+                <span className={styles.formErrors}>
+                  {t('donate:firstNameRequired')}
+                </span>
+              )}
             </div>
 
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 label={t('donate:lastName')}
                 variant="outlined"
-                inputRef={register({required:true})}
+                inputRef={register({ required: true })}
                 name={"lastname"}
               />
               {errors.lastname && (
-                    <span className={styles.formErrors}>
-                      {t('donate:lastNameRequired')}
-                    </span>
-                  )}
+                <span className={styles.formErrors}>
+                  {t('donate:lastNameRequired')}
+                </span>
+              )}
             </div>
           </div>
           {type !== 'individual' ? (
-              <div className={styles.formFieldLarge}>
-                <MaterialTextField
-                  label={t('login:profileName', {
-                    type: SelectType(type)
-                  })}
-                  variant="outlined"
-                  inputRef={register({required:true})}
-                  name={"name"}
-                />
-                {errors.name && (
+            <div className={styles.formFieldLarge}>
+              <MaterialTextField
+                label={t('login:profileName', {
+                  type: SelectType(type, t)
+                })}
+                variant="outlined"
+                inputRef={register({ required: true })}
+                name={"name"}
+              />
+              {errors.name && (
                 <span className={styles.formErrors}>
-                 {t('editProfile:orgNameValidation')}
+                  {t('editProfile:orgNameValidation')}
                 </span>
               )}
-              </div>
-            ) : null}
+            </div>
+          ) : null}
 
           <div className={styles.formFieldLarge}>
             <MaterialTextField
-              defaultValue={session.userEmail}
+              defaultValue={user.email}
               label={t('donate:email')}
               variant="outlined"
               disabled
@@ -244,14 +262,14 @@ export default function CompleteSignup() {
                 <MaterialTextField
                   label={t('donate:address')}
                   variant="outlined"
-                  inputRef={register({required:true})}
+                  inputRef={register({ required: true })}
                   name={"address"}
                 />
                 {errors.address && (
-                <span className={styles.formErrors}>
-                  {t('donate:addressRequired')}
-                </span>
-              )}
+                  <span className={styles.formErrors}>
+                    {t('donate:addressRequired')}
+                  </span>
+                )}
               </div>
 
               <div className={styles.formField}>
@@ -259,14 +277,14 @@ export default function CompleteSignup() {
                   <MaterialTextField
                     label={t('donate:city')}
                     variant="outlined"
-                    inputRef={register({required:true})}
+                    inputRef={register({ required: true })}
                     name={"city"}
                   />
                   {errors.city && (
-                  <span className={styles.formErrors}>
-                    {t('donate:cityRequired')}
-                  </span>
-                )}
+                    <span className={styles.formErrors}>
+                      {t('donate:cityRequired')}
+                    </span>
+                  )}
                 </div>
                 <div className={styles.formFieldHalf}>
                   <MaterialTextField
@@ -275,7 +293,7 @@ export default function CompleteSignup() {
                     name="zipCode"
                     inputRef={register({
                       pattern: postalRegex,
-                      required:true
+                      required: true
                     })}
                   />
                   {errors.zipCode && (
@@ -299,10 +317,10 @@ export default function CompleteSignup() {
               defaultValue={defaultCountry}
             />
             {errors.country && (
-                <span className={styles.formErrors}>
-                 {t('donate:countryRequired')}
-                </span>
-              )}
+              <span className={styles.formErrors}>
+                {t('donate:countryRequired')}
+              </span>
+            )}
           </div>
 
           <div className={styles.isPrivateAccountDiv}>
@@ -311,7 +329,7 @@ export default function CompleteSignup() {
               {isPrivate &&
                 <div className={styles.isPrivateAccountText}>
                   <label htmlFor={'isPrivate'}>
-                  {t('editProfile:privateAccountTxt')}
+                    {t('editProfile:privateAccountTxt')}
                   </label>
                 </div>
               }
@@ -376,28 +394,28 @@ export default function CompleteSignup() {
           </MuiAlert>
         </Snackbar>
       </div>
-    );
+    ) : null;
   }
   return null;
 }
 
-const SelectType = (type: any) => {
+const SelectType = (type: any, t: Function) => {
   let name;
   switch (type) {
     case 'individual':
-      name = 'Individual';
+      name = t('login:individual');
       break;
     case 'tpo':
-      name = 'Reforestation Organisation';
+      name = t('login:tpo');
       break;
     case 'education':
-      name = 'School';
+      name = t('login:education');
       break;
-    case 'organisation':
-      name = 'Company';
+    case 'organization':
+      name = t('login:organization');
       break;
     default:
-      name = 'Reforestation Organisation';
+      name = t('login:tpo');
       break;
   }
   return name;

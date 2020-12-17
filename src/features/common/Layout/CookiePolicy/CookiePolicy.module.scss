@@ -2,7 +2,7 @@
 
 .cookieContainer {
   position: fixed;
-  bottom: 50px;
+  bottom: 150px;
   right: 70px;
   min-width: 200px;
   border-radius: 8px;
@@ -43,6 +43,7 @@
 
 .cookieContent > a {
   color: $primaryColor;
+  cursor: pointer;
 }
 
 .cookieContent > a:visited {
@@ -57,7 +58,7 @@
     align-items: center;
     left: 0;
     right: 0;
-    bottom: 60px;
+    bottom: 140px;
     max-width: 100%;
     border-radius: 0px;
   }

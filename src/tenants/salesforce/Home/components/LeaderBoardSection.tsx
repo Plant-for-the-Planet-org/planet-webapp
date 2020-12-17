@@ -1,19 +1,19 @@
 import React from 'react';
-import Sugar from 'sugar';
 import styles from './../styles/LeaderBoardSection.module.scss';
 import i18next from '../../../../../i18n';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 interface Props {
   leaderboard: any;
 }
 
+const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
-  const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard', 'common']);
+  const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
-  return (
+  return ready ? ( 
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h3>Salesforce</h3>
@@ -53,7 +53,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                         {leader.donorName}
                       </p>
                       <p className={styles.leaderBoardDonorTrees}>
-                        {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
+                        {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:trees')}
                       </p>
                       {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -71,7 +71,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                         {leader.donorName}
                       </p>
                       <p className={styles.leaderBoardDonorTrees}>
-                        {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
+                        {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:trees')}
                       </p>
                     </div>
                   );
@@ -94,5 +94,5 @@ export default function LeaderBoardSection(leaderboard: Props) {
         alt=""
       />
     </section>
-  );
+  ) : null;
 }

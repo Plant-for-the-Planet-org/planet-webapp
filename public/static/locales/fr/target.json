@@ -1,4 +1,5 @@
 {
-  "AddTarget": "Ajouter une cible",
-  "targetSave": "Sauvegarder"
+  "setTarget": "Fixer un objectif",
+  "targetSave": "Sauvegarder",
+  "targetErrorMessage": "Le nombre doit être supérieur à zéro"
 }

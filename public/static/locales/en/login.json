@@ -3,5 +3,12 @@
   "signUpText": "Complete Signup",
   "profileTypes": "{{item.title}}",
   "profileName": "Name of {{type}}",
-  "createAccount": "Create Account"
+  "createAccount": "Create Account",
+  "individual": "Individual",
+  "tpo": "Reforestation Organisation",
+  "education": "School",
+  "organization": "Company",
+  "profileCreated": "Profile Successfully created!",
+  "profileCreationFailed": "Error in creating profile. Please try again.",
+  "profileCreationError": "Error in creating profile."
 }

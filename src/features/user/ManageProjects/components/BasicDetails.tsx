@@ -4,7 +4,8 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker, NavigationControl } from 'react-map-gl';
+import MapGL, { Marker, NavigationControl, FlyToInterpolator } from 'react-map-gl';
+import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
@@ -13,14 +14,6 @@ import {
 } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
-const classifications = [
-  { label: 'Large scale planting', value: 'large-scale-planting' },
-  { label: 'Agroforestry', value: 'agroforestry' },
-  { label: 'Natural Regeneration', value: 'natural-regeneration' },
-  { label: 'Managed Regeneration', value: 'managed-regeneration' },
-  { label: 'Urban Planting', value: 'urban-planting' },
-  { label: 'Other Planting', value: 'other-planting' },
-];
 
 interface Props {
   handleNext: Function;
@@ -30,12 +23,12 @@ interface Props {
   setProjectGUID: Function;
   setErrorMessage: Function;
   projectGUID: any;
-  session: any;
+  token: any;
 }
 
 export default function BasicDetails({
   handleNext,
-  session,
+  token,
   projectDetails,
   setProjectDetails,
   errorMessage,
@@ -43,7 +36,7 @@ export default function BasicDetails({
   setErrorMessage,
   projectGUID,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
@@ -79,11 +72,20 @@ export default function BasicDetails({
   };
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  const classifications = [
+    { label: ready ? t('manageProjects:largeScalePlanting') : '', value: 'large-scale-planting' },
+    { label: ready ? t('manageProjects:agroforestry') : '', value: 'agroforestry' },
+    { label: ready ? t('manageProjects:naturalRegeneration') : '', value: 'natural-regeneration' },
+    { label: ready ? t('manageProjects:managedRegeneration') : '', value: 'managed-regeneration' },
+    { label: ready ? t('manageProjects:urbanPlanting') : '', value: 'urban-planting' },
+    { label: ready ? t('manageProjects:otherPlanting') : '', value: 'other-planting' },
+  ];
+
   // Default Form Fields
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: { label: 'Project Type', value: null },
+    classification: { label: ready ? t('manageProjects:projectType') : '', value: null },
     countTarget: 0,
     website: '',
     description: '',
@@ -114,7 +116,7 @@ export default function BasicDetails({
   // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
-  
+
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -153,7 +155,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
-    
+
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -182,7 +184,7 @@ export default function BasicDetails({
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        session
+        token
       ).then((res) => {
         if (!res.code) {
           setErrorMessage('');
@@ -200,7 +202,7 @@ export default function BasicDetails({
         }
       });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, session).then(
+      postAuthenticatedRequest(`/app/projects`, submitData, token).then(
         (res) => {
           if (!res.code) {
             setErrorMessage('');
@@ -222,7 +224,7 @@ export default function BasicDetails({
     }
   };
 
-  return (
+  return ready ? (
     <div className={`${styles.stepContainer} `}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -330,7 +332,8 @@ export default function BasicDetails({
                     message: t('manageProjects:websiteValidationRequired'),
                   },
                   pattern: {
-                    value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+                    //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=\*]*)$/,
                     message: t('manageProjects:websiteValidationInvalid'),
                   },
                 })}
@@ -381,7 +384,7 @@ export default function BasicDetails({
                         style={{ left: '-150px' }}
                       >
                         <p>
-                        {t('manageProjects:receiveDonationsInfo')}
+                          {t('manageProjects:receiveDonationsInfo')}
                         </p>
                       </div>
                     </div>
@@ -412,7 +415,7 @@ export default function BasicDetails({
                     },
                     validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
                     pattern: {
-                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
+                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|(?:\.[0-9]{3})*(?:,[0-9]{1,2})?)$/,
                       message: t('manageProjects:treeCostValidationInvalid'),
                     }
                   })}
@@ -450,7 +453,7 @@ export default function BasicDetails({
             <MapGL
               {...viewport}
               ref={mapRef}
-              mapStyle="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7"
+              mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
               mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
               onViewportChange={_onViewportChange}
               onClick={(event) => {
@@ -463,7 +466,9 @@ export default function BasicDetails({
                   ...viewport,
                   latitude: event.lngLat[1],
                   longitude: event.lngLat[0],
-                  zoom: 7,
+                  transitionDuration: 400,
+                  transitionInterpolator: new FlyToInterpolator(),
+                  transitionEasing: d3.easeCubic,
                 });
                 setValue('projectCoords', latLong);
               }}
@@ -502,6 +507,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 />
               </div>
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
@@ -519,6 +525,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 />
               </div>
             </div>
@@ -616,5 +623,5 @@ export default function BasicDetails({
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }

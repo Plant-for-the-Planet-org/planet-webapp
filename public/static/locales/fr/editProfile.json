@@ -4,10 +4,13 @@
   "privateAccountTxt": "Votre profil est caché et seul votre prénom apparaît dans le classement",
   "subscribe": "S'abonner aux actualités par email",
   "profileDescription": "Descriptif du profil",
-  "descriptionRequired": "Entrer une description valide",
+  "descriptionRequired": "Vous avez dépassé la longueur maximale",
   "website": "Site web",
   "websiteError": "URL du site web invalide",
   "websiteRequired": "Veuillez entrer une URL de site web valide",
   "save": "Sauvegarder",
-  "orgNameValidation": "Entrer le nom de l'organisation"
+  "orgNameValidation": "Entrer le nom de l'organisation",
+  "profilePicUpdated": "La photo du profil est en cours d'actualisation...",
+  "profileSaved": "Sauvé avec succès !",
+  "profileSaveFailed": "Erreur dans la mise à jour du profil."
 }
