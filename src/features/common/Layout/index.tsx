@@ -4,6 +4,7 @@ import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
 import Header from './Header';
 import Navbar from './Navbar';
+import PlanetPopup from './PlanetPopup';
 import RedeemPopup from './RedeemPopup';
 
 export default function Layout(props: any) {
@@ -19,6 +20,7 @@ export default function Layout(props: any) {
         {props.children}
         <CookiePolicy />
         <RedeemPopup />
+        <PlanetPopup />
       </div>
     </>
   );
