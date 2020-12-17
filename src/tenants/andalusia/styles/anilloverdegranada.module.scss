@@ -164,7 +164,7 @@
 .featuresMainContainer {
     display: flex;
     min-height: 100vh;
-    padding: 64px;
+    padding: 24px;
     flex-direction: row;
     flex-wrap: wrap;
     .featuresContainerText {
@@ -223,6 +223,7 @@
 
 @include lgLaptopView{
     .featuresMainContainer {
+        padding: 64px;
         .featuresContainerText {
             width: 50%;
             border-right: 2px solid rgb(86, 136, 2);
