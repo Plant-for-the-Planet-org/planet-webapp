@@ -83,7 +83,7 @@
 
 // Sections 2
 .section2MainContainer {
-    // background-image: url('/tenants/andalusia/images/parallaxCover.jpg') ;
+    background-image: url('/tenants/andalusia/images/parallaxCover.jpg') ;
     width: 100vw;
     height: 240px;
     background-position: center;
@@ -258,4 +258,19 @@
         font-style: italic;
         margin-top: 24px;
     }
+}
+
+.projectMapContainer{
+    background-color: #C8DEF4;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     > div {
+         background-color: white;
+         border-radius: 10px;
+         width: 320px;
+         padding:10px;
+     }
 }
