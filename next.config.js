@@ -123,12 +123,12 @@ module.exports = withSourceMaps({
   async redirects() {
     return [
       {
-        source: '/signup',
+        source: '/account-activate/:slug*',
         destination: '/open-app',
         permanent: true,
       },
       {
-        source: '/signup/:slug*',
+        source: '/competition/:slug*',
         destination: '/open-app',
         permanent: true,
       },
@@ -143,22 +143,22 @@ module.exports = withSourceMaps({
         permanent: true,
       },
       {
-        source: '/account-activate/:slug*',
-        destination: '/open-app',
-        permanent: true,
-      },
-      {
-        source: '/competition/:slug*',
-        destination: '/open-app',
-        permanent: true,
-      },
-      {
         source: '/project/:slug*',
         destination: '/open-app',
         permanent: true,
       },
       {
         source: '/reset-password/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/signup',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/signup/:slug*',
         destination: '/open-app',
         permanent: true,
       },
