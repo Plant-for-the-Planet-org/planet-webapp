@@ -17,12 +17,6 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import { Modal } from '@material-ui/core';
-import ExploreInfoModal from '../src/features/projects/components/maps/ExploreInfoModal';
-import CancelIcon from '../public/assets/images/icons/CancelIcon';
-import tenantConfig from '../tenant.config';
-
-const tenantConfiguration = tenantConfig();
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -59,13 +53,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-
   if (process.env.VERCEL_URL && typeof window !== 'undefined') {
     if (process.env.VERCEL_URL !== window.location.hostname) {
       router.replace(`https://${process.env.VERCEL_URL}`);
     }
   }
-
 
   const [initialized, setInitialized] = React.useState(false);
 
@@ -105,89 +97,17 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setsearchedProjects,
   };
 
-  const [openModal, setModalOpen] = React.useState(true);
-
-  const PlanetModal =()=> {
-    return(
-      <div style={{
-        backgroundColor:'white',
-        minHeight:'300px',
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        padding:'30px',
-        borderRadius:'10px',
-        maxWidth:'580px',
-        position:'relative',
-        flexDirection:'column',
-
-      }}>
-        <h2 style={{fontWeight:'bold'}}>Liebe Unterstützerinnen und Unterstützer,</h2>
-        <p style={{margin:'16px auto'}}>
-          viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, der heute über Plant-for-the-Planet erschienen ist. Dieser Artikel trifft uns als Stiftung, er trifft mich persönlich als Gründer, weil er Dinge falsch darstellt, mit Vermutungen und Unterstellungen arbeitet, Erklärung und Fakten auslässt. Sein Ziel ist es, die Stiftung, die daran beteiligten Personen und unser gemeinsames Ziel, Milliarden Bäume zu pflanzen, zu beschädigen.
-        </p>
-        <a target="_blank" style={{fontWeight:'bold',color:'#68B030'}} rel="noopener noreferrer" href={"https://blog.plant-for-the-planet.org/de/2020/liebe-unterstuetzerinnen-und-unterstuetzer/?utm_source=planetapp&utm_medium=banner&utm_campaign=zeit"}>
-          Brief Lesen {'>'}
-        </a>
-        <div onClick={()=>setModalOpen(false)} style={{position:'absolute',right:'18px',top:'18px',cursor:'pointer'}}>
-          <CancelIcon width={'20px'} />
-        </div>
-
-      </div>
-    )
-  }
-
-  const [userLang,setUserLang] = React.useState('');
-  const [countryCode,setCountryCode] = React.useState('')
-  const [hidePlanetModal,setHidePlanetModal] = React.useState(false)
-
-  React.useEffect(()=>{
-    if (typeof window !== 'undefined') {
-      let userLang = localStorage.getItem('language');
-      let countryCode = localStorage.getItem('countryCode');
-      let hidePlanetModal = localStorage.getItem('hidePlanetModal');
-      setHidePlanetModal(hidePlanetModal);
-      setUserLang(userLang);
-      setCountryCode(countryCode);
-    }
-  },[])
-  React.useEffect(() => {
-    localStorage.setItem('hidePlanetModal', hidePlanetModal);
-  }, [hidePlanetModal]);
-
-  const closePlanetModal=()=>{
-    setHidePlanetModal(true)
-    setModalOpen(false);
-  }
   return (
     <Auth0Provider
       domain={process.env.AUTH0_CUSTOM_DOMAIN}
       clientId={process.env.AUTH0_CLIENT_ID}
       redirectUri={process.env.NEXTAUTH_URL}
-      cacheLocation={"localstorage"}
+      cacheLocation={'localstorage'}
       onRedirectCallback={onRedirectCallback}
     >
       <ThemeProvider>
         <CssBaseline />
         <Layout>
-          {tenantConfiguration.tenantName === 'planet' && (countryCode === 'DE' || userLang === 'de') && hidePlanetModal !== 'true' && (
-            <Modal
-              style={{
-                display:'flex',
-                height:'100%',
-                width:'100%',
-                justifyContent:'center',
-                alignItems:'center'
-              }}
-              open={openModal}
-              onClose={()=>closePlanetModal()}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-            >
-              <PlanetModal/>
-            </Modal>
-          ) }
-
           {isMap ? (
             project ? (
               <MapLayout
