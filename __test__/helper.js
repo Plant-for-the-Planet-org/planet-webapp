@@ -13,6 +13,7 @@ const capabilities = {
   'build': process.env.BROWSERSTACK_BUILD_NAME, // CI/CD job or build name
   'browserstack.user': process.env.BROWSERSTACK_USERNAME,
   'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
+  'browserstack.debug' : 'true',
 }
 
 
