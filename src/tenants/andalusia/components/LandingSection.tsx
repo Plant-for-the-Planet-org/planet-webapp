@@ -16,6 +16,9 @@ export default function LandingSection(props:any) {
                     <AnimatedButton onClick={()=>props.handleOpen()} className={styles.continueButton}>
                         Plantar árboles
                     </AnimatedButton>
+                    <AnimatedButton onClick={()=>props.handleViewProject()} className={styles.secondaryButton} style={{marginLeft:'24px'}}>
+                        Ver Proyecto {'>'}
+                    </AnimatedButton>
                 </div>
             </div>
             <div className={styles.landingImageSection}>

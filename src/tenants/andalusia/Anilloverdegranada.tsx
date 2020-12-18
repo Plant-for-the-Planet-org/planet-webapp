@@ -1,5 +1,6 @@
 import { Modal } from '@material-ui/core'
 import { Elements } from '@stripe/react-stripe-js'
+import { useRouter } from 'next/router'
 import React, { ReactElement } from 'react'
 import Footer from '../../features/common/Layout/Footer'
 import DonationsPopup from '../../features/donations'
@@ -20,6 +21,7 @@ interface Props {
 }
 
 function Anilloverdegranada({ }: Props): ReactElement {
+    const router = useRouter()
     const projectID = 'proj_0CgTQJMm5zX624sdpVDet93O';
 
     const LandingSectionData = {
@@ -79,6 +81,14 @@ function Anilloverdegranada({ }: Props): ReactElement {
         setOpen(true);
     };
 
+    const handleViewProject=()=>{
+        if( window!== undefined){
+            router.push('/[p]', `/${project.slug}`, {
+                shallow: true,
+              });
+        }
+    }
+
     return  project ? (
         <div className={styles.pageContainer}>
             <Modal
@@ -94,7 +104,7 @@ function Anilloverdegranada({ }: Props): ReactElement {
                     <DonationsPopup project={project} onClose={handleClose} />
                 </Elements>
             </Modal>
-            <LandingSection handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
+            <LandingSection handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
             <Objective />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
             {/* <ProjectMap projectID={projectID} /> */}
