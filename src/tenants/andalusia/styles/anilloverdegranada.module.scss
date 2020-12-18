@@ -265,18 +265,21 @@
         padding: 24px;
         color: #232323;
         text-align: center;
-        > h2 {
-            font-size: 3.2rem;
-            font-weight: bold;
-            line-height: 1.2;
-            color: #9e9e9e;
+        > div {
+            > h2 {
+                font-size: 3.2rem;
+                font-weight: bold;
+                line-height: 1.2;
+                color: #9e9e9e;
+            }
+            > h3 {
+                margin-top: 24px;
+                font-size: 25.6px;
+                line-height: 1;
+                font-weight: bolder;
+            }
         }
-        > h3 {
-            margin-top: 24px;
-            font-size: 25.6px;
-            line-height: 1;
-            font-weight: bolder;
-        }
+        
     }
 
     .sustainableButtonContainer {
