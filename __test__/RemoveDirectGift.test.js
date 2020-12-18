@@ -9,7 +9,7 @@ describe('remove', () => {
   });
   it('should remove gift direct', async () => {
     load().then(() => {
-      const url = await driver.getCurrentUrl().then(() => {
+      const url = driver.getCurrentUrl().then(() => {
         driver.navigate().to(`${url}s/sagar-aryal`).then(() => {
           const val = donateButton().then(() => {
             val.click().then(() => {
