@@ -223,13 +223,35 @@
 
 @include lgLaptopView{
     .featuresMainContainer {
+        min-height: 100vh;
         padding: 64px;
+        .featuresContainerText {
+            > div {
+                max-width: 540px;
+            }
+        }
         .featuresContainerText {
             width: 50%;
             border-right: 2px solid rgb(86, 136, 2);
         }
         .featuresSection {
             width: 50%;
+        }
+    }
+}
+
+@include xlDesktopView{
+    .featuresMainContainer {
+        min-height: auto;
+        .featuresSection {
+            .singleFeature {
+                width: 280px;
+                > svg {
+                    width: 100px;
+                    height: 100px;
+                    margin-bottom: 8px;
+                }
+            }
         }
     }
 }
@@ -306,6 +328,13 @@
         .sustainableButtonContainer {
             justify-content: left;
         }
+    }
+}
+
+@include xlDesktopView{
+    .sustainableSection{
+        min-height: auto;
+        margin-bottom: 80px;
     }
 }
     

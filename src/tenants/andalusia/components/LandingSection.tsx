@@ -13,7 +13,7 @@ export default function LandingSection(props:any) {
                     {props.LandingSectionData.para}
                 </p>
                 <div className={styles.landingButtonContainer}>
-                    <AnimatedButton className={styles.continueButton}>
+                    <AnimatedButton onClick={()=>props.handleOpen()} className={styles.continueButton}>
                         Plantar árboles
                     </AnimatedButton>
                 </div>
