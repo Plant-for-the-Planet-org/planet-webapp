@@ -1,7 +1,7 @@
 const config = {
   tenantName: 'andalusia',
-  tenantURL: 'wald.energizer.de',
-  languages: ['de','en'],
+  tenantURL: 'andalucia.plant-for-the-planet.org',
+  languages: ['es','de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
   AUTH0_CLIENT_ID: 'XIAxajivQpvZ5eX1BflXjxyrEKFJkfls',
@@ -14,15 +14,14 @@ const config = {
   meta: {
     title: 'Andalusia',
     description:
-      'Mit Plant-for-the-Planet pflanzen wir weltweit Bäume. So entsteht unser globaler EnergizerWald.',
+      'Plant trees with Plant-for-the-Planet in Andalusia',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
-    locale: 'de_DE',
+    locale: 'es_ES',
   },
   home: {
     title: 'Andalusia',
-    description:
-      '"Das Richtige tun" ist für uns der zentrale Leitgedanke, an dem wir unser Handeln ausrichten. Seit der ersten quecksilberfreien Batterie im Jahre 1989 gelingt es uns, unsere Batterien immer weiter zu verbessern, langlebiger und damit umweltfreundlicher zu machen. Unsere Partnerschaft mit Plant-for-the-Planet steht genau in dieser Tradition, die Umwelt zu schonen und für mehr Nachhaltigkeit einzustehen. Gemeinsam pflanzen wir Bäume und veranstalten Bildungsprogramme für Kinder und Jugendliche, um ein Bewusstsein für globale Gerechtigkeit und die Klimakrise zu schaffen. Einbinden wollen wir dabei auch unsere Konsumenten und den Handel, denn nur gemeinsam kann diese zentrale Herausforderung unserer Zeit gelöst werden. Bist du dabei?',
+    description: 'Plant trees with Plant-for-the-Planet in Andalusia',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
   },
   header: {
@@ -42,7 +41,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/es',
+        onclick: 'https://a.plant-for-the-planet.org/es-es',
         visible: true,
       },
       leaderboard: {
