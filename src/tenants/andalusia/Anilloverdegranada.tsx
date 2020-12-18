@@ -1,5 +1,12 @@
+import { Modal } from '@material-ui/core'
+import { Elements } from '@stripe/react-stripe-js'
 import React, { ReactElement } from 'react'
 import Footer from '../../features/common/Layout/Footer'
+import DonationsPopup from '../../features/donations'
+import { ThemeContext } from '../../theme/themeContext'
+import { getRequest } from '../../utils/apiRequests/api'
+import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency'
+import getStripe from '../../utils/stripe/getStripe'
 import FeaturesSection from './components/FeaturesSection'
 import LandingSection from './components/LandingSection'
 import Objective from './components/Objective'
@@ -49,18 +56,54 @@ function Anilloverdegranada({ }: Props): ReactElement {
         <h3 style={{color:'#568802'}}>Si quieres ayudar a crear una ciudad más verde y sostenible</h3></div>,
         imagePath:'/tenants/andalusia/images/sustainableCity.jpg'
     }
-    return (
+
+    const [project,setProject] = React.useState(null)
+    React.useEffect(() => {
+        async function loadProject() {
+          let currencyCode = getStoredCurrency();
+          const project = await getRequest(`/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`);
+          setProject(project);
+        }
+        if(projectID) {
+          loadProject();
+        }
+      }, [projectID]);
+
+    const { theme } = React.useContext(ThemeContext);
+
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    return  project ? (
         <div className={styles.pageContainer}>
-            <LandingSection LandingSectionData={LandingSectionData} />
+            <Modal
+                className={`modal ${theme} modalContainer`}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                disableBackdropClick
+                hideBackdrop
+            >
+                <Elements stripe={getStripe()}>
+                    <DonationsPopup project={project} onClose={handleClose} />
+                </Elements>
+            </Modal>
+            <LandingSection handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
             <Objective />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
-            <ProjectMap projectID={projectID} />
-            <SustainableCity SustainableCityData={SustainableCityData} />
+            {/* <ProjectMap projectID={projectID} /> */}
+            <SustainableCity handleOpen={handleOpen} SustainableCityData={SustainableCityData} />
             <ProjectBy/>
             
             <Footer/>
         </div>
-    )
+    ): <></>
 }
 
 

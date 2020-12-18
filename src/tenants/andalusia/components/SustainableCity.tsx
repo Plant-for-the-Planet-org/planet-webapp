@@ -8,7 +8,7 @@ export default function SustainableCity(props:any) {
                 {props.SustainableCityData.sustainableText}
                 
                 <div className={styles.sustainableButtonContainer}>
-                    <AnimatedButton className={styles.continueButton}>
+                    <AnimatedButton onClick={()=>props.handleOpen()} className={styles.continueButton}>
                         Plantar árboles
                     </AnimatedButton>
                 </div>
