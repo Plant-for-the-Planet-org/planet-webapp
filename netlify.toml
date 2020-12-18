@@ -41,3 +41,5 @@
   to = "/open-app"
   status = 301
   force = false
+[[plugins]]
+  package = "netlify-plugin-next-dynamic"
