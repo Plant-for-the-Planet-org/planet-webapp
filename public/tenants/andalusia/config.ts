@@ -4,6 +4,7 @@ const config = {
   languages: ['de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
+  AUTH0_CLIENT_ID: 'XIAxajivQpvZ5eX1BflXjxyrEKFJkfls',
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
@@ -41,8 +42,8 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
-        visible: false,
+        onclick: 'https://a.plant-for-the-planet.org/es',
+        visible: true,
       },
       leaderboard: {
         title: 'leaderboard',
@@ -52,7 +53,7 @@ const config = {
       me:{
         title: 'me',
         onclick: '/me',
-        visible: false,
+        visible: true,
       }
     }
   },

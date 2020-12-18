@@ -17,6 +17,9 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
+import tenantConfig from '../tenant.config';
+
+const configTenant = tenantConfig();
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -102,7 +105,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   return (
     <Auth0Provider
       domain={process.env.AUTH0_CUSTOM_DOMAIN}
-      clientId={process.env.AUTH0_CLIENT_ID}
+      clientId={process.env.AUTH0_CLIENT_ID ? process.env.AUTH0_CLIENT_ID : configTenant.AUTH0_CLIENT_ID }
       redirectUri={process.env.NEXTAUTH_URL}
       cacheLocation={"localstorage"}
       onRedirectCallback={onRedirectCallback}
