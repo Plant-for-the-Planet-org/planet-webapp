@@ -25,6 +25,10 @@
             width: 90%;
             margin: 48px;
             border-radius: 10px;
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
+            &:hover{
+                transform: translateY(-40px);
+            }
         }
     }
 
@@ -207,6 +211,10 @@
         justify-content: center;
         .singleFeature {
             width: 240px;
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
+            &:hover{
+                transform: translateY(-20px);
+            }
             > svg {
                 width: 80px;
                 height: 80px;
@@ -277,6 +285,10 @@
             width: 90%;
             margin: 48px;
             border-radius: 10px;
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
+            &:hover{
+                transform: translateY(-40px);
+            }
         }
     }
 
