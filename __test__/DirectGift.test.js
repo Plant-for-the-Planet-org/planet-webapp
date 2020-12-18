@@ -29,8 +29,8 @@ describe('direct gift', () => {
     await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input"))).sendKeys('11234');
     await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input"))).sendKeys('1111');
     (await driver).sleep(20);
-    // const val2 = await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000);
-    const val2 = await driver.findElement(By.className('PaymentDetails_continueButton__2eFJF'));
+    const val2 = await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000);
+    // const val2 = await driver.findElement(By.className('PaymentDetails_continueButton__2eFJF'));
     await val2.click();
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
       expect(title).toBe('Thank You');
