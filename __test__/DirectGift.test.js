@@ -24,11 +24,10 @@ describe('direct gift', () => {
     await val3.click();
     // await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).clear();
     // await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).click();
-    await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).sendKeys('4242424242424242');;
+    await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input[@name='cardnumber'"))).sendKeys('4242424242424242');
     // await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).sendKeys('4242424242424242');
-    await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input"))).sendKeys('11234');
-    await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input"))).sendKeys('1111');
-    (await driver).sleep(20);
+    await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input[@name='exp-date'"))).sendKeys('11234');
+    await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input[@name='cvc'"))).sendKeys('1111');
     const val2 = await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000);
     // const val2 = await driver.findElement(By.className('PaymentDetails_continueButton__2eFJF'));
     await val2.click();
