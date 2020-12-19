@@ -30,7 +30,6 @@ interface mapProps {
   projects: any;
   project: any;
   showSingleProject: Boolean;
-  mapboxToken: any;
   setShowProjects: Function;
   searchedProject: any;
   showProjects: any;
@@ -39,7 +38,6 @@ export default function MapboxMap({
   projects,
   project,
   showSingleProject,
-  mapboxToken,
   setShowProjects,
   searchedProject,
   showProjects,
@@ -386,7 +384,6 @@ export default function MapboxMap({
         ref={mapRef}
         {...mapState}
         {...viewport}
-        mapboxApiAccessToken={mapboxToken}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
