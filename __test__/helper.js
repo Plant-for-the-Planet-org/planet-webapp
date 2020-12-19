@@ -9,10 +9,10 @@ const capabilities = {
   'browser_version' : 'latest-beta',
   'os' : 'Windows',
   "browserstack.networkLogs" : 'true',
-  'name': 'Donation Test', // test name
-  'build': 'local', // CI/CD job or build name
-  'browserstack.user': 'planetit1',
-  'browserstack.key': 'i2275wnZsgMDpCtskfEq',
+  'name': process.env.BROWSERSTACK_PROJECT_NAME, // test name
+  'build': process.env.BROWSERSTACK_BUILD_NAME, // CI/CD job or build name
+  'browserstack.user': process.env.BROWSERSTACK_USERNAME,
+  'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
   'browserstack.debug': 'true',
 }
 
