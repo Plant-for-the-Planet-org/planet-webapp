@@ -28,7 +28,7 @@ function Anilloverdegranada({ }: Props): ReactElement {
         mainTitleText:'200.000 árboles para Granada,',
         mainTitleSubText:'1 Billón para el planeta.',
         para: <span><b>Plant-for-the-Planet</b> propuso al Ayuntamiento de Granada en 2019 desarrollar el proyecto "Anillo verde de Granada" para crear un anillo natural reforestado que rodeará la ciudad.</span>,
-        imagePath:'/tenants/andalusia/images/alhambra.jpg'
+        imagePath:'/tenants/andalucia/images/alhambra.jpg'
     }
 
     const FeaturesSectionData = {
@@ -56,7 +56,7 @@ function Anilloverdegranada({ }: Props): ReactElement {
         sustainableText: <div><h2>Si amas Granada...</h2>
         <h3>Si deseas formar parte de su presente y futuro...</h3>
         <h3 style={{color:'#568802'}}>Si quieres ayudar a crear una ciudad más verde y sostenible</h3></div>,
-        imagePath:'/tenants/andalusia/images/sustainableCity.jpg'
+        imagePath:'/tenants/andalucia/images/sustainableCity.jpg'
     }
 
     const [project,setProject] = React.useState(null)

@@ -28,7 +28,7 @@ function Andoalcala({ }: Props): ReactElement {
         mainTitleText:'200.000  Alcornoques para Cádiz, ',
         mainTitleSubText:'1 Billón de árboles para el planeta.',
         para: <span>Conjuntamente con el Ayuntamiento de Alcalá de los Gazules se propone desarrollar un proyecto de plantación y restauración de alcornoques (Quercus suber) y de recuperación de la biodiversidad y paisaje de su territorio.</span>,
-        imagePath:'/tenants/andalusia/images/andoalcala.jpg'
+        imagePath:'/tenants/andalucia/images/andoalcala.jpg'
     }
 
     const FeaturesSectionData = {

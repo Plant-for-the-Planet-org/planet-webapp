@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import Andodonana from '../src/tenants/andalusia/Andodonana'
+import Andodonana from '../src/tenants/andalucia/Andodonana'
 
 interface Props {
     

@@ -28,7 +28,7 @@ function Andodonana({ }: Props): ReactElement {
         mainTitleText:'600.000 árboles para Doñana,',
         mainTitleSubText:'1 Billón para el planeta.',
         para: <span>Un proyecto destinado a la recuperación del ecosistema del Parque Natural de Doñana después del incendio del año 2017 en la zona del Pinar de las Peñuelas (Mazagón, Huelva).</span>,
-        imagePath:'/tenants/andalusia/images/andodonana.jpg'
+        imagePath:'/tenants/andalucia/images/andodonana.jpg'
     }
 
     const FeaturesSectionData = {
