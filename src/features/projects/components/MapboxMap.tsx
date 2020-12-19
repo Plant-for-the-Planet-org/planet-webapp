@@ -82,7 +82,8 @@ export default function MapboxMap({
   // https://www.mapbox.com/mapbox-gl-js/style-spec
 
   React.useEffect(() => {
-    const metadataUrl = style.sources.esri.url;
+    const metadataUrl =
+      'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer';
     fetch(metadataUrl)
       .then((response) => {
         return response.json().then((metadata) => {
@@ -107,7 +108,7 @@ export default function MapboxMap({
       */
         // index: metadata.tileMap ? style.sources.esri.url + '/' + metadata.tileMap : null,
         maxzoom: 15,
-        tiles: [style.sources.esri.url + '/' + metadata.tiles[0]],
+        tiles: [metadataUrl + '/' + metadata.tiles[0]],
         description: metadata.description,
         name: metadata.name,
       };
