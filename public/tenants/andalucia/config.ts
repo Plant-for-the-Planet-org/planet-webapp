@@ -1,7 +1,7 @@
 const config = {
-  tenantName: 'andalusia',
+  tenantName: 'andalucia',
   tenantURL: 'andalucia.plant-for-the-planet.org',
-  languages: ['es','de','en'],
+  languages: ['es'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
   AUTH0_CLIENT_ID: 'XIAxajivQpvZ5eX1BflXjxyrEKFJkfls',
@@ -12,16 +12,16 @@ const config = {
     secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   meta: {
-    title: 'Andalusia',
+    title: 'andalucia',
     description:
-      'Plant trees with Plant-for-the-Planet in Andalusia',
+      'Plant trees with Plant-for-the-Planet in Andalucia',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'es_ES',
   },
   home: {
-    title: 'Andalusia',
-    description: 'Plant trees with Plant-for-the-Planet in Andalusia',
+    title: 'Andalucia',
+    description: 'Plant trees with Plant-for-the-Planet in Andalucia',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
   },
   header: {
@@ -32,10 +32,10 @@ const config = {
       home: {
         title: 'home',
         onclick: '/home',
-        visible: true,
+        visible: false,
       },
       donate: {
-        title: 'donate_gift',
+        title: 'home',
         onclick: '/',
         visible: true,
       },
@@ -45,7 +45,7 @@ const config = {
         visible: true,
       },
       leaderboard: {
-        title: 'leaderboard',
+        title: 'leaders',
         onclick: '/all',
         visible: false,
       },

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import Anilloverdegranada from '../src/tenants/andalusia/Anilloverdegranada'
+import Anilloverdegranada from '../src/tenants/andalucia/Anilloverdegranada'
 
 interface Props {
     
