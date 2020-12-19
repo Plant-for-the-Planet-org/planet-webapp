@@ -30,6 +30,6 @@ afterAll(async () => {
     listener();
     process.removeListener('exit', listener);
   }
-  // await driver.quit();
+  await driver.quit();
 });
 export const defaultTimeout = 10e9;

@@ -1,5 +1,11 @@
 name: 'BrowserStack Test'
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
