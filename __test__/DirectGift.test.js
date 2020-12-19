@@ -8,7 +8,7 @@ describe('direct gift', () => {
     await load();
   });
   it('should direct gift', async () => {
-    load().then(() => {
+    load().then(async () => {
       const url = await driver.getCurrentUrl();
       await driver.navigate().to(`${url}s/sagar-aryal`);
       const val = await donateButton();
