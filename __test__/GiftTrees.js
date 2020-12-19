@@ -23,19 +23,22 @@ describe('Gift Trees', () => {
     await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
     await driver.findElement(By.name('address')).sendKeys('43 block');
     await driver.findElement(By.name('city')).sendKeys('surulere');
-    await driver.findElement(By.name('zipCode')).sendKeys('99501'); //for netherland 6176 ZG
+    await driver.findElement(By.name('zipCode')).sendKeys('94203'); //for netherland 6176 ZG
     const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
     await val3.click();
-    // await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).clear();
-    // await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).click();
-    // await driver.wait(until.elementIsVisible(driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")))).sendKeys('4242424242424242');
-    // (await driver).sleep(20);
-    await driver.findElement(By.xpath("//div[@id='cardNumber']/div/input")).sendKeys('4242424242424242');
-    await driver.findElement(By.xpath("//div[@id='expiry']/div/input")).sendKeys('11234');
-    await driver.findElement(By.xpath("//div[@id='cvc']/div/input")).sendKeys('1111');
-    // const val2 = await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000);
-    const val2 = await driver.findElement(By.className('PaymentDetails_continueButton__2eFJF'));
-    await val2.click();
+    await driver.switchTo().activeElement();
+    driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).isEnabled().then((value) => {
+      value.sendKeys('4242424242424242');
+    });
+    driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input"))).isEnabled().then((value) => {
+      value.sendKeys('1123');
+    });
+    driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input"))).isEnabled().then((value) => {
+      value.sendKeys('1111');
+    });
+    driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF'))).isDisplayed().then((value) => {
+      value.click();
+    });
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {
