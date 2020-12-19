@@ -15,36 +15,33 @@ const config = {
     isSecondaryTenant: true,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
     tenantLogoLink: 'https://www.salesforce.com/sustainability/',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: true,
-        key: 'home',
       },
-      {
-        id: 3,
+      donate: {
         title: 'donate_gift',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 2,
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
+        visible: false,
+      },
+      leaderboard: {
         title: 'leaderboard',
-        onclick: '/',
-        visible: false, // Leaders is false for Salesforce
-        key: 'leaderboard',
+        onclick: '/all',
+        visible: false,
       },
-      {
-        id: 4,
+      me:{
         title: 'me',
         onclick: '/me',
-        visible: false, // Me is false for Salesforce
-        key: 'me',
-      },
-    ],
+        visible: false,
+      }
+    }
   },
   meta: {
     title: 'Salesforce ❤️ Trees',

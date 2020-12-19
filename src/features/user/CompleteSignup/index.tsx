@@ -40,7 +40,7 @@ export default function CompleteSignup() {
       const token = await getAccessTokenSilently();
       setToken(token);
       if(!token){
-        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       }
       const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
@@ -118,7 +118,7 @@ export default function CompleteSignup() {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
-        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
         setSnackbarMessage(ready ? t('login:profileCreationFailed') : '');
         setSeverity("error")
