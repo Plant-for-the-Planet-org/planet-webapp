@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "analyze": "ANALYZE=true npm run build",
+    "export": "next export",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
     "find:unused": "next-unused",
