@@ -25,8 +25,5 @@ describe('remove', () => {
         });
       });
     });
-    // await driver.quit();
-    // await val;
-    // console.log(val1);
   });
 });
