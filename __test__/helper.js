@@ -9,10 +9,10 @@ const capabilities = {
   'browser_version' : 'latest-beta',
   'os' : 'Windows',
   "browserstack.networkLogs" : 'true',
-  'name': process.env.BROWSERSTACK_PROJECT_NAME, // test name
-  'build': process.env.BROWSERSTACK_BUILD_NAME, // CI/CD job or build name
-  'browserstack.user': process.env.BROWSERSTACK_USERNAME,
-  'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
+  'name': 'Donation Test', // test name
+  'build': 'local', // CI/CD job or build name
+  'browserstack.user': 'planetit1',
+  'browserstack.key': 'i2275wnZsgMDpCtskfEq',
   'browserstack.debug': 'true',
 }
 
@@ -24,12 +24,12 @@ export const driver = new webdriver.Builder()
   .build();
   
 driver.manage().window().maximize() 
-afterAll(async () => {
-  // Cleanup `process.on('exit')` event handlers to prevent a memory leak caused by the combination of `jest` & `tmp`.
-  for (const listener of process.listeners('exit')) {
-    listener();
-    process.removeListener('exit', listener);
-  }
-  await driver.quit();
-});
+// afterAll(async () => {
+//   // Cleanup `process.on('exit')` event handlers to prevent a memory leak caused by the combination of `jest` & `tmp`.
+//   for (const listener of process.listeners('exit')) {
+//     listener();
+//     process.removeListener('exit', listener);
+//   }
+//   await driver.quit();
+// });
 export const defaultTimeout = 10e9;
