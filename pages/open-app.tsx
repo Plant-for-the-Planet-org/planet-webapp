@@ -1,5 +1,5 @@
-import Footer from './Layout/Footer';
-import i18next from '../../../i18n';
+import Footer from '../src/features/common/Layout/Footer';
+import i18next from '../i18n';
 
 const { useTranslation } = i18next;
 
