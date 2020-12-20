@@ -1,16 +1,12 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
-import * as d3 from 'd3-ease';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
-import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../../styles/RegisterModal.module.scss';
-
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
+import getMapStyle from '../../../../../utils/getMapStyle';
 
 const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
   interactive: false,
 });
 
@@ -34,6 +30,20 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
     zoom: defaultZoom,
   });
   const [isPoint, setIsPoint] = React.useState(false);
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     if (geoJson) {
@@ -73,7 +83,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
   return (
     <Map
       {...viewport}
-      style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+      style={style}
       containerStyle={{
         height: '100%',
         width: '100%',
