@@ -10,7 +10,9 @@ function AnilloverdegranadaPage({}: Props): ReactElement {
     const router = useRouter();
 
     if(process.env.TENANT !== 'andalucia'){
-        router.push('/')
+        if(typeof window !== 'undefined'){
+            router.push('/')
+        }
     }
     return (
         <Andoalcala/>
