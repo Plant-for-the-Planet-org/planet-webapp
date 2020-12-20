@@ -1,11 +1,17 @@
 import React, { ReactElement } from 'react'
 import Anilloverdegranada from '../src/tenants/andalucia/Anilloverdegranada'
+import { useRouter } from 'next/router';
 
 interface Props {
     
 }
 
 function AnilloverdegranadaPage({}: Props): ReactElement {
+  const router = useRouter();
+
+    if(process.env.TENANT !== 'andalucia'){
+        router.push('/')
+    }
     return (
         <Anilloverdegranada/>
     )

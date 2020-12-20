@@ -46,5 +46,15 @@
   "continueToLogin": "Continuar con el inicio de sesión",
   "supportsUNEP": "Apoya al PNUMA",
   "plantedBy": "Plantado por",
-  "mapInfo": "Esri"
+  "redeemPopup": "Received a Tree Gift? Please log in to redeem your trees.",
+  "login": "Iniciar sesión Registrarse",
+  "shop": "tienda",
+  "downloads": "Descargas",
+  "team": "Equipo",
+  "jobs": "Trabajos",
+  "blogs": "Blogs",
+  "faqs": "FAQs",
+  "annualReports": "Informes anuales",
+  "mapInfo": "Esri",
+  "aboutUs": "Acerca de"
 }

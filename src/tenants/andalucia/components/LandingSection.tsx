@@ -1,9 +1,10 @@
 import AnimatedButton from '../../../features/common/InputTypes/AnimatedButton'
 import styles from './../styles/anilloverdegranada.module.scss'
 
-export default function LandingSection(props:any) {
+export default function LandingSection(props: any) {
     return (
         <div className={styles.landingSection}>
+
             <div className={styles.landingTextSection}>
                 <h2>
                     {props.LandingSectionData.mainTitleText} <br />
@@ -13,10 +14,10 @@ export default function LandingSection(props:any) {
                     {props.LandingSectionData.para}
                 </p>
                 <div className={styles.landingButtonContainer}>
-                    <AnimatedButton onClick={()=>props.handleOpen()} className={styles.continueButton}>
+                    <AnimatedButton onClick={() => props.handleOpen()} className={styles.continueButton}>
                         Plantar árboles
                     </AnimatedButton>
-                    <AnimatedButton onClick={()=>props.handleViewProject()} className={styles.secondaryButton} style={{marginLeft:'24px'}}>
+                    <AnimatedButton onClick={() => props.handleViewProject()} className={styles.secondaryButton} style={{ marginLeft: '24px' }}>
                         Ver Proyecto {'>'}
                     </AnimatedButton>
                 </div>

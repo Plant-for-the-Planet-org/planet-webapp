@@ -56,6 +56,7 @@ const config = {
       }
     }
   },
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
 };
 
 export default config;
