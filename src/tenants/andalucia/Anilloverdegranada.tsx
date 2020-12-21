@@ -105,15 +105,16 @@ function Anilloverdegranada({ }: Props): ReactElement {
                 </Elements>
             </Modal>
             <LandingSection handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
+           
+            <Objective />
+            <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
+            {/* <ProjectMap projectID={projectID} /> */}
+            <SustainableCity handleOpen={handleOpen} SustainableCityData={SustainableCityData} />
             <div className={styles.logoContainer}>
                 <img src={'/tenants/andalucia/images/granadaLogo.png'} />
                 <img src={'/tenants/andalucia/images/grx.svg'} />
                 <img src={'/tenants/andalucia/images/anillo.svg'} />
             </div>
-            <Objective />
-            <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
-            {/* <ProjectMap projectID={projectID} /> */}
-            <SustainableCity handleOpen={handleOpen} SustainableCityData={SustainableCityData} />
             <ProjectBy/>
             
             <Footer/>
