@@ -8,6 +8,8 @@ import getMapStyle from '../../../../../utils/getMapStyle';
 
 const Map = ReactMapboxGl({
   interactive: false,
+  customAttribution:
+    '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
 });
 
 interface Props {

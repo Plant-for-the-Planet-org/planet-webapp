@@ -43,3 +43,5 @@
   force = false
 [[plugins]]
   package = "netlify-plugin-next-dynamic"
+[[plugins]]
+  package = "netlify-plugin-cache-nextjs"
