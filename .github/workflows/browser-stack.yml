@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest  # Can be self-hosted runner also
     steps:
 
+      - name: Wait for Vercel deployment # ${{ steps.deployment.outputs.url }} should return the Vercel deployment url
+        uses: SFDigitalServices/wait-for-deployment-action@v2
+
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
         with:
