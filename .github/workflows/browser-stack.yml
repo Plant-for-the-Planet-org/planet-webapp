@@ -55,6 +55,9 @@ jobs:
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
+      - name: 'Install Node Modules'
+        run: npm install
+
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
         run: npm run test  # See sample test script above
 
