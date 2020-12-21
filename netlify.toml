@@ -27,8 +27,18 @@
   status = 301
   force = false
 [[redirects]]
+  from = "/my-tress"
+  to = "/login"
+  status = 301
+  force = false
+[[redirects]]
   from = "/project/*"
   to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/redeem"
+  to = "/login"
   status = 301
   force = false
 [[redirects]]

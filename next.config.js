@@ -164,8 +164,18 @@ module.exports = withPlugins(
           permanent: true,
         },
         {
+          source: '/my-trees',
+          destination: '/login',
+          permanent: true,
+        },
+        {
           source: '/project/:slug*',
           destination: '/open-app',
+          permanent: true,
+        },
+        {
+          source: '/redeem',
+          destination: '/login',
           permanent: true,
         },
         {
