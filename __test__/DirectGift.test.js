@@ -11,8 +11,9 @@ describe('direct gift', () => {
     load().then(async () => {
       const url = await driver.getCurrentUrl();
       await driver.navigate().to(`${url}s/sagar-aryal`);
-      const val = await donateButton();
-      await val.click();
+      const val = donateButton().then(() => {
+        await val.click();
+      });
       await driver.switchTo().activeElement();
       await driver.wait(until.elementLocated(By.id('treeDonateContinue')), 10000).click();
       await driver.findElement(By.name('firstName')).sendKeys('Bright');
