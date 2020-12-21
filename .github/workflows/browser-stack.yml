@@ -14,6 +14,9 @@ jobs:
 
       - name: Wait for Vercel deployment # ${{ steps.deployment.outputs.url }} should return the Vercel deployment url
         uses: SFDigitalServices/wait-for-deployment-action@v2
+        with:
+          token: ${{ github.token }}
+          environment: Preview
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
