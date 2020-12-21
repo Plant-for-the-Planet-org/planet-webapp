@@ -74,7 +74,11 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                         </div>
                         {item.properties.type === 'gift' ? (
                           <div className={styles.source}>
-                            {t('me:receivedTrees')}
+                            {item.properties.giver.name
+                              ? t('me:receivedFrom', {
+                                  name: item.properties.giver.name,
+                                })
+                              : t('me:receivedTrees')}
                           </div>
                         ) : null}
                         {item.properties.type === 'redeem' ? (
