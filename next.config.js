@@ -149,6 +149,11 @@ module.exports = withPlugins(
           permanent: true,
         },
         {
+          source: '/donate-tree',
+          destination: '/open-app',
+          permanent: true,
+        },
+        {
           source: '/donate-trees',
           destination: '/open-app',
           permanent: true,
