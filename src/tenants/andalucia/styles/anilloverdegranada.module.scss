@@ -8,7 +8,6 @@
     margin: auto;
     width: 100vw;
     max-width: 1280px;
-    min-height: 100vh;
     display: flex;
     flex-direction: row-reverse;
     flex-wrap: wrap;
@@ -26,9 +25,9 @@
             margin: 48px;
             border-radius: 10px;
             transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-            &:hover{
-                transform: translateY(-40px);
-            }
+            // &:hover{
+            //     transform: translateY(-40px);
+            // }
         }
     }
 
@@ -64,12 +63,12 @@
     }
 }
 
-@include lgLaptopView{
+@include lgLaptopView {
     .landingSection {
         flex-direction: row;
         .landingImageSection {
             width: 50%;
-            order:2;
+            order: 2;
         }
         .landingTextSection {
             width: 50%;
@@ -83,13 +82,14 @@
         }
     }
 }
-    
-@include smTabletView{
-    .landingSection{
+
+@include smTabletView {
+    .landingSection {
         margin-top: 60px;
     }
 }
-.continueButton, .secondaryButton {
+.continueButton,
+.secondaryButton {
     height: 40px;
     border-radius: 100px;
     padding-left: 24px;
@@ -106,19 +106,20 @@
     margin-top: 24px;
     width: 200px;
 }
-.secondaryButton{
+.secondaryButton {
     background-image: none;
     background-color: white;
     color: $primaryFontColor;
 }
-.continueButton:hover, .secondaryButton:hover {
+.continueButton:hover,
+.secondaryButton:hover {
     transform: scale(1.05);
     cursor: pointer;
 }
 
 // Sections 2
 .section2MainContainer {
-    background-image: url('/tenants/andalucia/images/parallaxCover.jpg') ;
+    background-image: url("/tenants/andalucia/images/parallaxCover.jpg");
     width: 100vw;
     height: 240px;
     background-position: center;
@@ -176,7 +177,7 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        
+
         > div {
             max-width: 380px;
             > span {
@@ -212,7 +213,7 @@
         .singleFeature {
             width: 240px;
             transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-            &:hover{
+            &:hover {
                 transform: translateY(-20px);
             }
             > svg {
@@ -230,7 +231,7 @@
     }
 }
 
-@include lgLaptopView{
+@include lgLaptopView {
     .featuresMainContainer {
         min-height: 100vh;
         padding: 64px;
@@ -249,7 +250,7 @@
     }
 }
 
-@include xlDesktopView{
+@include xlDesktopView {
     .featuresMainContainer {
         min-height: auto;
         .featuresSection {
@@ -286,9 +287,9 @@
             margin: 48px;
             border-radius: 10px;
             transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-            &:hover{
-                transform: translateY(-40px);
-            }
+            // &:hover{
+            //     transform: translateY(-40px);
+            // }
         }
     }
 
@@ -315,7 +316,6 @@
                 font-weight: bolder;
             }
         }
-        
     }
 
     .sustainableButtonContainer {
@@ -325,12 +325,12 @@
     }
 }
 
-@include lgLaptopView{
+@include lgLaptopView {
     .sustainableSection {
         flex-direction: row;
         .sustainableImageSection {
             width: 50%;
-            order:2;
+            order: 2;
         }
         .sustainableTextSection {
             width: 50%;
@@ -345,28 +345,28 @@
     }
 }
 
-@include xlDesktopView{
-    .sustainableSection{
+@include xlDesktopView {
+    .sustainableSection {
         min-height: auto;
         margin-bottom: 80px;
     }
 }
-    
-@include smTabletView{
-    .sustainableSection{
+
+@include smTabletView {
+    .sustainableSection {
         margin-top: 60px;
     }
 }
 
-.projectBySection{
+.projectBySection {
     background-color: #568802;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top:48px;
-    padding-bottom:48px;
+    padding-top: 48px;
+    padding-bottom: 48px;
     text-align: center;
     > h2 {
         color: #ffe161;
@@ -382,17 +382,46 @@
     }
 }
 
-.projectMapContainer{
-    background-color: #C8DEF4;
+.projectMapContainer {
+    background-color: #c8def4;
     padding-top: 48px;
     padding-bottom: 48px;
     display: flex;
     justify-content: center;
     align-items: center;
-     > div {
-         background-color: white;
-         border-radius: 10px;
-         width: 320px;
-         padding:10px;
-     }
+    > div {
+        background-color: white;
+        border-radius: 10px;
+        width: 320px;
+        padding: 10px;
+    }
+}
+
+.logoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    > img {
+        height: 90px;
+        margin-right: 36px;
+        margin-bottom: 36px;
+        filter: grayscale(1);
+        transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
+        &:hover{
+            transform: translateY(-10px);
+            filter: grayscale(0);
+        }
+    }
+    :first-child {
+        height: 120px;
+    }
+}
+@include xsPhoneView {
+    .logoContainer {
+        > img {
+            margin-right: 0px;
+        }
+    }
 }
