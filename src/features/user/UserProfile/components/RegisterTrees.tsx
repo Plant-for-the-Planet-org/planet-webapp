@@ -394,6 +394,10 @@ export default function RegisterTrees({
                           transitionEasing: d3.easeCubic,
                         });
                       }}
+                      mapOptions={{
+                        customAttribution:
+                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+                      }}
                     >
                       {plantLocation ? (
                         <Marker

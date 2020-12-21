@@ -3,7 +3,10 @@ import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
 import getMapStyle from '../../../../../utils/getMapStyle';
 
-const Map = ReactMapboxGl({});
+const Map = ReactMapboxGl({
+  customAttribution:
+    '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
+});
 
 interface Props {
   contributions: any;
