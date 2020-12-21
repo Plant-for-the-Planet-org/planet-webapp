@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
     setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
     testPathIgnorePatterns: ['<rootDit>/.next/', '<rootDir>/node_modules/'],
