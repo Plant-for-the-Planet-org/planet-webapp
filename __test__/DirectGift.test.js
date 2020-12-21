@@ -1,20 +1,19 @@
 const { By, until } = require('selenium-webdriver');
 const { driver } = require('./helper');
 const { load } = require('./Pages');
-const { donateButton } = require('./Pages/homePage');
 
 describe('direct gift', () => {
   beforeEach(async () => {
     await load();
   });
   it('should direct gift', async () => {
-    console.log(process.env);
     load().then(async () => {
       const url = await driver.getCurrentUrl();
       await driver.navigate().to(`${url}s/sagar-aryal`);
-      const val = donateButton().then(async () => {
-        await val.click();
-      });
+      // const val = donateButton().then(async () => {
+      //   await val.click(); 
+      // });
+      await driver.wait(until.elementLocated(By.className('donateButton'))).click();
       await driver.switchTo().activeElement();
       await driver.wait(until.elementLocated(By.id('treeDonateContinue')), 10000).click();
       await driver.findElement(By.name('firstName')).sendKeys('Bright');
