@@ -187,9 +187,9 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                                 disableFuture
                                                 minDate={fiveYearsAgo}
                                                 maxDate={new Date()}
-                                                defaultValue={new Date()}
                                             />
                                         )}
+                                        defaultValue={new Date()}
                                         name="year"
                                         control={control}
                                     />
@@ -305,5 +305,5 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                 </div>
             </form>
         </div>
-    ) : null;
+    ) : <></>;
 }
