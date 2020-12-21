@@ -6,6 +6,6 @@ module.exports = {
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
     "globals": {
-      "__baseUrl__": `${process.env.BROWSERSTACK_TEST_URL}`
+      "__baseUrl__": process.env.BROWSERSTACK_TEST_URL
     }
   }
