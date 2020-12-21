@@ -53,13 +53,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-
   if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-    if (process.env.VERCEL_URL !== window.location.hostname) {      
-      router.replace(`https://${process.env.VERCEL_URL}`);      
+    if (process.env.VERCEL_URL !== window.location.hostname) {
+      router.replace(`https://${process.env.VERCEL_URL}`);
     }
   }
-  
 
   const [initialized, setInitialized] = React.useState(false);
 
@@ -104,7 +102,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       domain={process.env.AUTH0_CUSTOM_DOMAIN}
       clientId={process.env.AUTH0_CLIENT_ID}
       redirectUri={process.env.NEXTAUTH_URL}
-      cacheLocation={"localstorage"}
+      cacheLocation={'localstorage'}
       onRedirectCallback={onRedirectCallback}
     >
       <ThemeProvider>
@@ -112,15 +110,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <Layout>
           {isMap ? (
             project ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
+              <MapLayout {...ProjectProps} />
             ) : projects ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
+              <MapLayout {...ProjectProps} />
             ) : null
           ) : null}
           <Component {...ProjectProps} />
