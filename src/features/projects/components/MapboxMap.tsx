@@ -92,7 +92,6 @@ export default function MapboxMap({
     const promise = getMapStyle('default');
     promise.then((style) => {
       if (style) {
-        console.log(style);
         setMapState({ ...mapState, mapStyle: style });
       }
     });

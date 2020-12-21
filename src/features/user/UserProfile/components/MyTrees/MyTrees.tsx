@@ -19,10 +19,7 @@ interface Props {
   authenticatedType: any;
 }
 
-export default function MyTrees({
-  profile,
-  authenticatedType,
-}: Props): ReactElement {
+export default function MyTrees({ profile, authenticatedType }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {

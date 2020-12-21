@@ -14,7 +14,10 @@ interface Props {
   countryBbox: any;
 }
 
-const Map = ReactMapboxGl({});
+const Map = ReactMapboxGl({
+  customAttribution:
+    '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+});
 
 const { useTranslation } = i18next;
 export default function MapComponent({
