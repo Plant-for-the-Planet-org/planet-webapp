@@ -29,16 +29,16 @@ describe('direct gift', () => {
       const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
       await val3.click();
       await driver.switchTo().activeElement();
-      const cardNumber = driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).isEnabled().then((value) => {
+      const cardNumber = driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).then((value) => {
         cardNumber.sendKeys('4242424242424242');
       });
-      const expiryDate = driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input"))).isEnabled().then((value) => {
+      const expiryDate = driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input"))).then((value) => {
         expiryDate.sendKeys('1123');
       });
-      const cvc = driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input"))).isEnabled().then((value) => {
+      const cvc = driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input"))).then((value) => {
         cvc.sendKeys('1111');
       });
-      driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF'))).isDisplayed().then((value) => {
+      driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF'))).then((value) => {
         value.click();
       });
       driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
