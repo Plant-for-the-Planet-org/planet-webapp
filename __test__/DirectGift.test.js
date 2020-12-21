@@ -25,7 +25,7 @@ describe('direct gift', () => {
       await country.click();
       await country.clear();
       await country.sendKeys('Netherlands');
-      await driver.findElement(By.name('zipCode')).sendKeys('6176 ZG'); // for netherland 6176 ZG
+      await driver.findElement(By.name('zipCode')).sendKeys('94203'); // for netherland 6176 ZG
       const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
       await val3.click();
       await driver.switchTo().activeElement();
