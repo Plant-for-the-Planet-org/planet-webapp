@@ -21,6 +21,9 @@ describe('Gift Trees', () => {
       await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
       await driver.findElement(By.name('address')).sendKeys('43 block');
       await driver.findElement(By.name('city')).sendKeys('surulere');
+      const country = await driver.findElement(By.name('countrydropdown'));
+      await country.clear();
+      await country.sendKeys('Netherlands');
       await driver.findElement(By.name('zipCode')).sendKeys('94203'); // for netherland 6176 ZG
       const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
       await val3.click();
