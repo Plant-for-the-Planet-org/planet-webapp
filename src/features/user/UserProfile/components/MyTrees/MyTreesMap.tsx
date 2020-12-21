@@ -1,12 +1,9 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
+import getMapStyle from '../../../../../utils/getMapStyle';
 
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
-
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
+const Map = ReactMapboxGl({});
 
 interface Props {
   contributions: any;
@@ -22,6 +19,21 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
     zoom: [defaultZoom],
   });
   const [geoJson, setGeoJson] = React.useState();
+
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('default');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     if (
@@ -39,7 +51,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
     <div className={styles.mapContainer}>
       <Map
         {...viewport}
-        style="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7" // eslint-disable-line
+        style={style}
         containerStyle={{
           height: '100%',
           width: '100%',

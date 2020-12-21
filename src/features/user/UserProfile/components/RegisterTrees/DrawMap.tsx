@@ -7,17 +7,14 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../../styles/RegisterModal.module.scss';
 import i18next from '../../../../../../i18n';
-
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
+import getMapStyle from '../../../../../utils/getMapStyle';
 
 interface Props {
   setGeometry: Function;
   countryBbox: any;
 }
 
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
+const Map = ReactMapboxGl({});
 
 const { useTranslation } = i18next;
 export default function MapComponent({
@@ -39,6 +36,20 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
   const { t, ready } = useTranslation(['me', 'common']);
   const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef();
@@ -95,7 +106,7 @@ export default function MapComponent({
       ) : null}
       <Map
         {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+        style={style}
         containerStyle={{
           height: '100%',
           width: '100%',
