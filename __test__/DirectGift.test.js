@@ -3,9 +3,9 @@ const { driver } = require('./helper');
 const { load } = require('./Pages');
 
 describe('direct gift', () => {
-  beforeEach(async () => {
-    await load();
-  });
+  // beforeEach(async () => {
+  //   await load();
+  // });
   it('should direct gift', async () => {
     load().then(async () => {
       const url = await driver.getCurrentUrl();
@@ -21,7 +21,7 @@ describe('direct gift', () => {
       await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
       await driver.findElement(By.name('address')).sendKeys('43 block');
       await driver.findElement(By.name('city')).sendKeys('surulere');
-      await driver.findElement(By.name('zipCode')).sendKeys('94203'); // for netherland 6176 ZG
+      await driver.findElement(By.name('zipCode')).sendKeys('6176 ZG'); // for netherland 6176 ZG
       const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
       await val3.click();
       await driver.switchTo().activeElement();
