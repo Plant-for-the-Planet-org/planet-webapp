@@ -177,6 +177,8 @@
     padding: 24px;
     flex-direction: row;
     flex-wrap: wrap;
+    max-width: 1280px;
+    margin: auto;
     .featuresContainerText {
         width: 100%;
         display: flex;
