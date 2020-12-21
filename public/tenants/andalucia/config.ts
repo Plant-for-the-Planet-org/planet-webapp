@@ -4,6 +4,8 @@ const config = {
   languages: ['es'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
+  showUNEPLogo:true,
+  showUNDecadeLogo:true,
   AUTH0_CLIENT_ID: 'XIAxajivQpvZ5eX1BflXjxyrEKFJkfls',
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',

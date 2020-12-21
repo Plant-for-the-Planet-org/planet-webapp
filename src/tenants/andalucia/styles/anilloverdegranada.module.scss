@@ -110,6 +110,10 @@
     background-image: none;
     background-color: white;
     color: $primaryFontColor;
+    > a {
+        text-decoration: none;
+        color: $primaryFontColor;
+    }
 }
 .continueButton:hover,
 .secondaryButton:hover {
