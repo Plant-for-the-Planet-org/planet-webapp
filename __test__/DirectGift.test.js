@@ -12,7 +12,7 @@ describe('direct gift', () => {
     load().then(async () => {
       const url = await driver.getCurrentUrl();
       await driver.navigate().to(`${url}s/sagar-aryal`);
-      const val = donateButton().then(() => {
+      const val = donateButton().then(async () => {
         await val.click();
       });
       await driver.switchTo().activeElement();
