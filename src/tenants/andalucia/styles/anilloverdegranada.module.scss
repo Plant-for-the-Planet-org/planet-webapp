@@ -416,7 +416,7 @@
         filter: grayscale(1);
         transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
         &:hover{
-            transform: translateY(-10px);
+            // transform: translateY(-10px);
             filter: grayscale(0);
         }
     }

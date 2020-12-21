@@ -111,9 +111,9 @@ function Anilloverdegranada({ }: Props): ReactElement {
             {/* <ProjectMap projectID={projectID} /> */}
             <SustainableCity handleOpen={handleOpen} SustainableCityData={SustainableCityData} />
             <div className={styles.logoContainer}>
+                 <img src={'/tenants/andalucia/images/anillo.svg'} />
                 <img src={'/tenants/andalucia/images/granadaLogo.png'} />
                 <img src={'/tenants/andalucia/images/grx.svg'} />
-                <img src={'/tenants/andalucia/images/anillo.svg'} />
             </div>
             <ProjectBy/>
             
