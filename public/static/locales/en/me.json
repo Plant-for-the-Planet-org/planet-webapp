@@ -33,6 +33,7 @@
   "registered": "Registered",
   "receivedTrees": "Received Trees",
   "receivedFrom": "Received from {{name}}",
+  "giftTo": "Gifted to {{name}}",
   "redeemedTrees": "Redeemed Trees",
   "nameForest": "{{name}}'s Forest"
 }
