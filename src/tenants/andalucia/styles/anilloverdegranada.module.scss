@@ -110,6 +110,10 @@
     background-image: none;
     background-color: white;
     color: $primaryFontColor;
+    > a {
+        text-decoration: none;
+        color: $primaryFontColor;
+    }
 }
 .continueButton:hover,
 .secondaryButton:hover {
@@ -173,6 +177,8 @@
     padding: 24px;
     flex-direction: row;
     flex-wrap: wrap;
+    max-width: 1280px;
+    margin: auto;
     .featuresContainerText {
         width: 100%;
         display: flex;
@@ -410,7 +416,7 @@
         filter: grayscale(1);
         transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
         &:hover{
-            transform: translateY(-10px);
+            // transform: translateY(-10px);
             filter: grayscale(0);
         }
     }
