@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest  # Can be self-hosted runner also
     steps:
 
-      - name: Wait for Vercel deployment # ${{ steps.deployment.outputs.url }} should return the Vercel deployment url
+      - name: Wait for Vercel deployment # ${{ steps.waitForVercel.outputs.url }} should return the Vercel deployment url
         uses: patrickedqvist/wait-for-vercel-preview@master
         id: waitForVercel
         with:
@@ -39,11 +39,13 @@ jobs:
           BROWSERSTACK_ACCESS_KEY : ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           BROWSERSTACK_BUILD_NAME: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
           BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
+          BROWSERSTACK_TEST_URL: ${{ steps.waitForVercel.outputs.url }}
         run: |
           echo "BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME" >> .env
           echo "BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY" >> .env
           echo "BROWSERSTACK_BUILD_NAME=$BROWSERSTACK_BUILD_NAME" >> .env
           echo "BROWSERSTACK_PROJECT_NAME=$BROWSERSTACK_PROJECT_NAME" >> .env
+          echo "BROWSERSTACK_TEST_URL=$BROWSERSTACK_TEST_URL" >> .env
       - name: Fixes for BrowserStack Build
         run: |
           # fix problems with 'Error: ENOSPC: System limit for number of file watchers reached'
@@ -52,9 +54,6 @@ jobs:
 
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
-
-      - name: 'Building web application to be tested'
-        run: npm install
 
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
         run: npm run test  # See sample test script above
