@@ -33,6 +33,18 @@ jobs:
           local-testing: start
           local-identifier: random
 
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node Modules'
+        run: npm install
+
+      - name: Fixes for BrowserStack Build
+        run: |
+          # fix problems with 'Error: ENOSPC: System limit for number of file watchers reached'
+          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+# The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
+
       - name: Setting Environment Variables
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
@@ -46,20 +58,11 @@ jobs:
           echo "BROWSERSTACK_BUILD_NAME=$BROWSERSTACK_BUILD_NAME" >> .env
           echo "BROWSERSTACK_PROJECT_NAME=$BROWSERSTACK_PROJECT_NAME" >> .env
           echo "BROWSERSTACK_TEST_URL=$BROWSERSTACK_TEST_URL" >> .env
-      - name: Fixes for BrowserStack Build
-        run: |
-          # fix problems with 'Error: ENOSPC: System limit for number of file watchers reached'
-          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-# The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
-
-      - name: 'Checkout the repository'
-        uses: actions/checkout@v2
-
-      - name: 'Install Node Modules'
-        run: npm install
 
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
-        run: npm run test  # See sample test script above
+        run: |
+          cat .env
+          npm run test
 
       - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
         uses: browserstack/github-actions/setup-local@master
