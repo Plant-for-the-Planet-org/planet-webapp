@@ -24,12 +24,12 @@ export const driver = new webdriver.Builder()
   .build();
   
 driver.manage().window().maximize() 
-// afterAll(async () => {
-//   // Cleanup `process.on('exit')` event handlers to prevent a memory leak caused by the combination of `jest` & `tmp`.
-//   for (const listener of process.listeners('exit')) {
-//     listener();
-//     process.removeListener('exit', listener);
-//   }
-//   await driver.quit();
-// });
+afterAll(async () => {
+  // Cleanup `process.on('exit')` event handlers to prevent a memory leak caused by the combination of `jest` & `tmp`.
+  for (const listener of process.listeners('exit')) {
+    listener();
+    process.removeListener('exit', listener);
+  }
+  await driver.quit();
+});
 export const defaultTimeout = 10e9;
