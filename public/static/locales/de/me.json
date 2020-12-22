@@ -5,7 +5,7 @@
   "registerTrees": "Bäume registrieren",
   "redeem": "Einlösen",
   "myForest": "Mein Wald",
-  "giftToGiftee": "Geschenk an {gifteeName}",
+  "giftToGiftee": "Geschenk an {{gifteeName}}",
   "settingManageProject": "Projekte verwalten",
   "userTree": "Bäume registrieren",
   "logout": "Abmelden",
