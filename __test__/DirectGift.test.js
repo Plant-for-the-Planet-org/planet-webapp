@@ -29,7 +29,7 @@ describe('direct gift', () => {
       const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
       await val3.click();
       await driver.switchTo().activeElement();
-      await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).sendKeys('4242424242424242');
+      await driver.wait(until.elementLocated(By.xpath("/html/body/div/form/span[2]/div/div[2]/span/input"))).sendKeys('4242424242424242');
       await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input"))).sendKeys('1123');
       await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input"))).sendKeys('1111');
       await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF'))).click();
