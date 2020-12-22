@@ -39,7 +39,7 @@ describe('direct gift', () => {
       // cardEnable.clear();
       await cardEnable.sendKeys('424242424242424242');
       // }
-      const cardNo = '4';
+      const cardNo = '435';
       for (let i = 0; i < cardNo.length; i++) {
         cardEnable.sendKeys(cardNo.charAt(i));
       }
