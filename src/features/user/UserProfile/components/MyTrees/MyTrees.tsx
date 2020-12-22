@@ -9,6 +9,8 @@ import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
 import BackButton from '../../../../../../public/assets/images/icons/BackButton';
 import ProjectContactDetails from '../../../../projects/components/projectDetails/ProjectContactDetails';
+import DownloadIcon from '../../../../../../public/assets/images/icons/DownloadIcon';
+import SendIcon from '../../../../../../public/assets/images/icons/SendIcon';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -144,8 +146,14 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                           <ProjectContactDetails project={project} />
                         </div>
                         <div className={styles.buttons}>
-                          <div className={styles.certificate}>Certificate</div>
-                          <div className={styles.share}>Share</div>
+                          <div className={styles.certificate}>
+                            <DownloadIcon />
+                            <p>Certificate</p>
+                          </div>
+                          <div className={styles.share}>
+                            <SendIcon />
+                            <p>Share</p>
+                          </div>
                         </div>
                       </div>
                     ) : (

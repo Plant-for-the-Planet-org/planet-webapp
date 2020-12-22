@@ -200,30 +200,40 @@
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 20px;
+  font-size: 16px;
 }
 
 .certificate {
-  padding: 10px 20px;
+  padding: 14px 20px;
   border: 1px $primaryColor solid;
   border-radius: 100px;
   color: $primaryColor;
-  width: 130px;
+  width: 135px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-size: 16px;
+  > svg {
+    height: 13px;
+    margin-right: 2px;
+  }
 }
 
 .share {
-  padding: 10px 20px;
+  padding: 14px 20px;
   border-radius: 100px;
   color: #fff;
   background-color: $primaryColor;
-  width: 130px;
+  width: 135px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  > svg {
+    height: 12px;
+    margin-right: 2px;
+  }
 }
 
 @include mdTabletView {
