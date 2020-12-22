@@ -21,10 +21,6 @@ describe('direct gift', () => {
     await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
     await driver.findElement(By.name('address')).sendKeys('43 block');
     await driver.findElement(By.name('city')).sendKeys('surulere');
-    // const country = await driver.findElement(By.name('countrydropdown'));
-    // await country.click();
-    // await country.clear();
-    // await country.sendKeys('Netherlands');
     await driver.findElement(By.name('zipCode')).sendKeys('85001'); // for netherland 6176 ZG
     const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
     await val3.click();
@@ -34,20 +30,15 @@ describe('direct gift', () => {
     const cardNumber = await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input")), 10000);
     const cardEnable = await driver.wait(until.elementIsEnabled(cardNumber));
     (await driver).sleep(1000);
-    // if(cardNumber.isEnabled()) {
-      // cardEnable.click();
-      // cardEnable.clear();
-      await cardEnable.sendKeys('424242424242424242');
-      // }
-      const cardNo = '4';
-      for (let i = 0; i < cardNo.length; i++) {
-        cardEnable.sendKeys(cardNo.charAt(i));
-      }
+    await cardEnable.sendKeys('424242424242424242');
+    // }
+    const cardNo = '4';
+    for (let i = 0; i < cardNo.length; i++) {
+      cardEnable.sendKeys(cardNo.charAt(i));
+    }
     (await driver).sleep(100);
     const expiry = await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input")), 10000);
     const expiryDate = await driver.wait(until.elementIsEnabled(expiry));
-    // expiry.click();
-    // expiry.clear();
     const cardExpiry = '445';
     for (let i = 0; i < cardExpiry.length; i++) {
       expiryDate.sendKeys(cardExpiry.charAt(i));
@@ -55,8 +46,6 @@ describe('direct gift', () => {
     await expiryDate.sendKeys('4444');
     (await driver).sleep(100);
     const cvc = await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input")), 10000);
-    // cvc.click();
-    // cvc.clear();
     await cvc.sendKeys('1111');
     (await driver).sleep(100);
     await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000).click();
