@@ -90,8 +90,8 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                         {item.properties.type === 'donation' ? (
                           <div className={styles.source}>
                             {item.properties.recipient
-                              ? t('me:giftTo', {
-                                  name: item.properties.recipient.name,
+                              ? t('me:giftToGiftee', {
+                                gifteeName: item.properties.recipient.name,
                                 })
                               : null}
                           </div>
