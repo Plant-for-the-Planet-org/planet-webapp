@@ -50,6 +50,10 @@
   min-height: fit-content;
 }
 
+.tree:hover {
+  background-color: #f7f7f7;
+}
+
 .dateRow {
   display: flex;
   flex-direction: row;
@@ -143,6 +147,83 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   pointer-events: none;
+}
+
+.singleContribution {
+  width: 100%;
+  background-color: #f7f7f7;
+}
+
+.backButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+}
+
+.singleDate {
+  padding: 10px 20px;
+}
+
+.singleTreeCount {
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.plantedBy {
+  padding: 0px 20px;
+}
+
+.singleSource {
+  padding: 10px 20px;
+}
+
+.singleSource a {
+  color: $primaryColor;
+}
+
+.projectDetails {
+  margin-top: 10px;
+  padding: 20px 20px;
+  background-color: #f2f2f7;
+}
+
+.projectDetails > div {
+  margin: 0;
+}
+
+.buttons {
+  background-color: #f2f2f7;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.certificate {
+  padding: 10px 20px;
+  border: 1px $primaryColor solid;
+  border-radius: 100px;
+  color: $primaryColor;
+  width: 130px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.share {
+  padding: 10px 20px;
+  border-radius: 100px;
+  color: #fff;
+  background-color: $primaryColor;
+  width: 130px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 @include mdTabletView {
