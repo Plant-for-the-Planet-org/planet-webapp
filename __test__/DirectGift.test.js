@@ -39,7 +39,7 @@ describe('direct gift', () => {
       // cardEnable.clear();
       await cardEnable.sendKeys('424242424242424242');
       // }
-      const cardNo = '435';
+      const cardNo = '4';
       for (let i = 0; i < cardNo.length; i++) {
         cardEnable.sendKeys(cardNo.charAt(i));
       }
@@ -48,11 +48,11 @@ describe('direct gift', () => {
     const expiryDate = await driver.wait(until.elementIsEnabled(expiry));
     // expiry.click();
     // expiry.clear();
-    const cardExpiry = '4';
+    const cardExpiry = '445';
     for (let i = 0; i < cardExpiry.length; i++) {
       expiryDate.sendKeys(cardExpiry.charAt(i));
     }
-    await expiryDate.sendKeys('1124');
+    await expiryDate.sendKeys('4444');
     (await driver).sleep(100);
     const cvc = await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input")), 10000);
     // cvc.click();
