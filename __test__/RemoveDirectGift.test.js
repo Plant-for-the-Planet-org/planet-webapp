@@ -8,7 +8,7 @@ describe('remove', () => {
     await load();
   });
   it('should remove gift direct', async () => {
-    load().then(() => {
+    // load().then(() => {
       const url = driver.getCurrentUrl().then(() => {
         driver.navigate().to(`${url}s/sagar-aryal`).then(() => {
           const val = donateButton().then(() => {
@@ -24,6 +24,6 @@ describe('remove', () => {
           });
         });
       });
-    });
+    // });
   });
 });

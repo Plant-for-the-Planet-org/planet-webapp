@@ -31,7 +31,7 @@ describe('hompage', () => {
   //   // });
   // });
   it('should click on donate', async () => {
-    load().then(async () => {
+    // load().then(async () => {
       // const val = await donateButton();
       // await val.click();
       await driver.wait(until.elementLocated(By.className('donateButton'))).click();
@@ -46,7 +46,7 @@ describe('hompage', () => {
       // await country.click();
       // await country.clear();
       // await country.sendKeys('Netherlands');
-      await driver.findElement(By.name('zipCode')).sendKeys('94203'); // for netherland 6176 ZG
+      await driver.findElement(By.name('zipCode')).sendKeys('85001'); // for netherland 6176 ZG
       const val1 = await driver.findElement(By.xpath("//*[text()='Continue']"));
       await val1.click();
       await driver.switchTo().activeElement();
@@ -82,6 +82,6 @@ describe('hompage', () => {
           driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Title does not contain header!"}}');
         }
       });
-    });
+    // });
   });
 });
