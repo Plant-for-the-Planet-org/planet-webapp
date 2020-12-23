@@ -1,0 +1,111 @@
+[
+    {
+        "currencyCode": "AED",
+        "value": 4.473494
+    },
+    {
+        "currencyCode": "AFN",
+        "value": 93.967503
+    },
+    {
+        "currencyCode": "ALL",
+        "value": 123.686961
+    },  
+    {
+        "currencyCode": "AMD",
+        "value": 635.75389
+    },  
+    {
+        "currencyCode": "ALL",
+        "value": 123.686961
+    },  
+    {
+        "currencyCode": "ANG",
+        "value": 2.186605
+    },  
+    {
+        "currencyCode": "AOA",
+        "value": 798.124594
+    },  
+    {
+        "currencyCode": "ARS",
+        "value":101.382397
+    },
+    {
+        "currencyCode": "AUD",
+        "value": 1.614236
+    },
+    {
+        "currencyCode": "AWG",
+        "value": 2.192381
+    },
+    {
+        "currencyCode": "AZN",
+        "value": 2.073096
+    },
+    {
+        "currencyCode": "BAM",
+        "value": 1.946035
+    },
+    {
+        "currencyCode": "BBD",
+        "value": 2.459619
+    },
+    {
+        "currencyCode": "BDT",
+        "value":103.308097     
+    },
+    {
+        "currencyCode": "BGN",
+        "value":1.95829
+    },
+    {
+        "currencyCode": "BHD",
+        "value": 0.459203
+    },
+    {
+        "currencyCode": "BIF",
+        "value": 2371.425961
+    },
+    {
+        "currencyCode": "BND",
+        "value": 1.624543
+    },
+    {
+        "currencyCode": "BOB",
+        "value": 8.387242
+    },
+    {
+        "currencyCode": "BRL",
+        "value": 6.284973
+    },
+    {
+
+        "currencyCode": "BSD",
+        "value": 1.218219
+    },
+    {
+        "currencyCode": "BTC",
+        "value": 5.1339951e-5
+    },
+    {
+        "currencyCode": "BTN", 
+        "value": 89.979926       
+    },
+    {
+        "currencyCode": "BWP",
+        "value": 13.148283
+    },
+    {
+        "currencyCode": "BYN",
+        "value": 3.132235
+    },
+    {
+        "currencyCode": "BYR",
+        "value": 23872.598277
+    },
+    {
+        "currencyCode": "BZD",
+        "value":2.45562
+    }
+]

@@ -17,6 +17,7 @@ import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import {getExchangeValue} from '../../../utils/countryCurrency/getExchange';
 
 const { useTranslation } = i18next;
 
@@ -55,6 +56,7 @@ function TreeDonation({
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
   const [screenWidth, setScreenWidth] = React.useState('');
+  const [minAmt, setMinAmt] = React.useState('');
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '' || e.target.value < 1) {
@@ -87,6 +89,8 @@ function TreeDonation({
     if (window.screen.width <= 412) {
       setScreenWidth(100);
     }
+
+    setMinAmt(Math.round(getExchangeValue(currency) * 2));
   }, [country]);
 
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
@@ -330,24 +334,26 @@ function TreeDonation({
             })}
           </div>
         </div>
-
-        <div className={styles.finalTreeCount}
-        style={{marginTop: '5px'}}
-        >
-        <div className={styles.totalCostText}>
-          <p>{t('donate:minDonate')}</p>
-        </div>
-        <div className={styles.totalCostText}>
-          <p>  </p>
-        </div>
-        <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, 2)}
+        {(treeCost * treeCount) < minAmt &&
+          <div className={styles.finalTreeCount}
+          style={{marginTop: '5px'}}
+          >
+          <div className={styles.totalCostText}
+          style={{fontWeight: 'unset'}}
+          >
+            <p>{t('donate:minDonate')}</p>
           </div>
-        </div>
-        
+          <div className={styles.totalCostText}>
+            <p>  </p>
+          </div>
+          <div className={styles.totalCost}>
+              {getFormatedCurrency(i18n.language, currency, minAmt)}
+            </div>
+          </div>
+        }
         {!isPaymentOptionsLoading &&
         paymentSetup?.gateways?.stripe?.account &&
-        currency ? (
+        currency && ((treeCost * treeCount) > minAmt)? (
           <PaymentRequestCustomButton
             country={country}
             currency={currency}
