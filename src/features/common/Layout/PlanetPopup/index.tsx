@@ -87,26 +87,22 @@ export default function index({}: Props): ReactElement {
                 Liebe Unterstützerinnen und Unterstützer,
               </h2>
               <p style={{ margin: '16px auto' }}>
-                viele von Ihnen und euch haben den Artikel in der ZEIT gelesen,
-                der am 16. Dezember über Plant-for-the-Planet erschienen ist.
-                Dieser Artikel trifft uns als Stiftung und mich persönlich als
-                Gründer sehr, weil er ein völliges Zerrbild zeichnet,
-                Sachverhalte falsch darstellt und mit Vermutungen und
-                Unterstellungen arbeitet.
+                wir sind immer noch tief getroffen von der Berichterstattung 
+                der ‚Zeit’, weil unsere Arbeit in Constitución in großem Umfang 
+                in Zweifel gezogen wurde. Wir haben mittlerweile sehr viel 
+                Zuspruch bekommen, aber leider auch viel Kritik.
                 <br />
                 <br />
-                Wir sind als Plant-for-the-Planet gewohnt, viele Fragen von
-                Medienvertretern zu uns, den Projekten und den Pflanzgebieten zu
-                bekommen. Diese Fragen beantworten wir immer, da wir seit
-                Gründungsbeginn transparent arbeiten und wissen, wie wichtig das
-                Vertrauen in unser Tun ist.
+                Wir haben aus dem Bericht und den Reaktionen darauf die 
+                Schlussfolgerung gezogen, dass wir Dinge besser machen 
+                müssen – in der Dokumentation und der Kommunikation. 
               </p>
               <a
                 target="_blank"
                 style={{ fontWeight: 'bold', color: '#68B030' }}
                 rel="noopener noreferrer"
                 href={
-                  'https://blog.plant-for-the-planet.org/de/2020/liebe-unterstuetzerinnen-und-unterstuetzer/?utm_source=planetapp&utm_medium=banner&utm_campaign=zeit'
+                  'https://blog.plant-for-the-planet.org/de/2020/transparenz-durch-pwc-kamerateams-und-expertengremium/?utm_source=planetapp&utm_medium=banner&utm_campaign=transparency'
                 }
               >
                 Brief Lesen {'>'}
