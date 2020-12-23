@@ -46,6 +46,15 @@
   "continueToLogin": "Continuer à se connecter",
   "supportsUNEP": "Soutient le PNUE",
   "plantedBy": "Planté par",
+  "redeemPopup": "Vous avez reçu un cadeau pour un arbre ? Veuillez vous connecter pour échanger vos arbres.",
+  "login": "Connexion/S'inscrire",
+  "shop": "Boutique",
+  "downloads": "Téléchargements",
+  "team": "Équipe",
+  "jobs": "Emplois",
+  "blogs": "Blogs",
+  "faqs": "FAQs",
+  "annualReports": "Rapports annuels",
   "mapInfo": "Esri",
   "aboutUs": "À propos de nous"
 }

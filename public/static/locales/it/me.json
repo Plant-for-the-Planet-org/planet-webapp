@@ -1,1 +1,4 @@
-{ }
+{
+  "giftToGiftee": "Regalo a {{gifteeName}}",
+  "receivedFrom": "Ricevuto da {{name}}"
+}
