@@ -36,7 +36,7 @@ describe('Gift Trees', () => {
     // await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).sendKeys('4242424242424242');
     const cardNumber = await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input")), 10000);
     const cardEnabled = await driver.wait(until.elementIsEnabled(cardNumber));
-    await cardEnabled.sendKeys('424242424242424242');
+    await cardEnabled.sendKeys('4242424242424242');
     const expiryDate = await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input")), 10000);
     const expiryDateEnabled = await driver.wait(until.elementIsEnabled(expiryDate));
     await expiryDateEnabled.sendKeys('444');
