@@ -34,6 +34,15 @@
   min-width: 150px;
 }
 
+.giftTo a {
+  color: $primaryColor;
+  cursor: pointer;
+}
+
+.giftTo a:hover {
+  text-decoration: underline;
+}
+
 .selectProject {
   font-size: 20px;
   min-width: 150px;
