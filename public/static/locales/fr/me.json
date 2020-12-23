@@ -32,6 +32,7 @@
   "moreThanOne": "1 arbre minimum requis",
   "registered": "Enregistré",
   "receivedTrees": "Arbres reçus",
+  "receivedFrom": "Reçu de {{name}}",
   "redeemedTrees": "Arbres rachetés",
   "nameForest": "La forêt des {{name}}"
 }
