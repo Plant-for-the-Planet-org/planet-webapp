@@ -35,25 +35,14 @@ describe('direct gift', () => {
     (await driver).sleep(100);
     // await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).sendKeys('4242424242424242');
     const cardNumber = await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input")), 10000);
-    const cardEnable = await driver.wait(until.elementIsEnabled(cardNumber));
-    (await driver).sleep(3000);
-    await cardEnable.sendKeys('424242424242424242');
-    // }
-    const cardNo = '4';
-    for (let i = 0; i < cardNo.length; i++) {
-      cardEnable.sendKeys(cardNo.charAt(i));
-    }
-    (await driver).sleep(100);
-    const expiry = await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input")), 10000);
-    const expiryDate = await driver.wait(until.elementIsEnabled(expiry));
-    const cardExpiry = '445';
-    for (let i = 0; i < cardExpiry.length; i++) {
-      expiryDate.sendKeys(cardExpiry.charAt(i));
-    }
-    await expiryDate.sendKeys('4444');
-    (await driver).sleep(100);
+    const cardEnabled = await driver.wait(until.elementIsEnabled(cardNumber));
+    await cardEnabled.sendKeys('424242424242424242');
+    const expiryDate = await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input")), 10000);
+    const expiryDateEnabled = await driver.wait(until.elementIsEnabled(expiryDate));
+    await expiryDateEnabled.sendKeys('444');
     const cvc = await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input")), 10000);
-    await cvc.sendKeys('1111');
+    const cvcEnabled = await driver.wait(until.elementIsEnabled(cvc));
+    await cvcEnabled.sendKeys('111');
     (await driver).sleep(100);
     await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000).click();
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
