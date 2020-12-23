@@ -331,6 +331,20 @@ function TreeDonation({
           </div>
         </div>
 
+        <div className={styles.finalTreeCount}
+        style={{marginTop: '5px'}}
+        >
+        <div className={styles.totalCostText}>
+          <p>{t('donate:minDonate')}</p>
+        </div>
+        <div className={styles.totalCostText}>
+          <p>  </p>
+        </div>
+        <div className={styles.totalCost}>
+            {getFormatedCurrency(i18n.language, currency, 2)}
+          </div>
+        </div>
+        
         {!isPaymentOptionsLoading &&
         paymentSetup?.gateways?.stripe?.account &&
         currency ? (
