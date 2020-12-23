@@ -57,7 +57,7 @@ describe('hompage', () => {
       // await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).sendKeys('4242424242424242');
       const cardNumber = await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input")), 10000);
       const cardEnable = await driver.wait(until.elementIsEnabled(cardNumber));
-      (await driver).sleep(1000);
+      (await driver).sleep(3000);
       await cardEnable.sendKeys('424242424242424242');
       // }
       const cardNo = '4';
