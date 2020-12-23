@@ -1,4 +1,4 @@
-const { By, until } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver');
 const { driver } = require('./helper');
 const { load } = require('./Pages');
 
@@ -21,6 +21,13 @@ describe('direct gift', () => {
     await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
     await driver.findElement(By.name('address')).sendKeys('43 block');
     await driver.findElement(By.name('city')).sendKeys('surulere');
+    const country = await driver.findElement(By.name('countrydropdown'));
+    await country.click();
+    await country.clear();
+    await country.sendKeys(Key.CONTROL + "a");;
+    await country.sendKeys(Key.DELETE);
+    await country.sendKeys('United States of America');
+    await country.sendKeys(Key.RETURN);
     await driver.findElement(By.name('zipCode')).sendKeys('85001'); // for netherland 6176 ZG
     const val3 = await driver.findElement(By.xpath("//*[text()='Continue']"));
     await val3.click();
