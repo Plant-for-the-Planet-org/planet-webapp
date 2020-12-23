@@ -10,6 +10,8 @@ interface Props {
   project: any;
   setProject: Function;
   setShowSingleProject: Function;
+  currencyCode: any;
+  setCurrencyCode: Function;
 }
 
 export default function Donate({
@@ -17,8 +19,11 @@ export default function Donate({
   project,
   setProject,
   setShowSingleProject,
+  currencyCode,
+  setCurrencyCode
 }: Props) {
   const router = useRouter();
+  // const [currencyCode, setCurrencyCode] = React.useState('');
 
   React.useEffect(() => {
     setShowSingleProject(true);
@@ -26,7 +31,8 @@ export default function Donate({
 
   React.useEffect(() => {
     async function loadProject() {
-      let currencyCode = getStoredCurrency();
+      const currency = getStoredCurrency();
+      setCurrencyCode(currency);
       const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
       setProject(project);
       setShowSingleProject(true);
@@ -34,7 +40,8 @@ export default function Donate({
     if(router.query.p) {
       loadProject();
     }
-  }, [router.query.p]);
+    if (currencyCode) loadProject();
+  }, [router.query.p, currencyCode]);
 
   const ProjectProps = {
     project,

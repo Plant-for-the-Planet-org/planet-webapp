@@ -14,7 +14,9 @@ interface Props {
   setShowSingleProject: Function;
   showProjects: Boolean;
   setShowProjects: Function;
-  setsearchedProjects: any
+  setsearchedProjects: any;
+  currencyCode: any;
+  setCurrencyCode: Function;
 }
 
 export default function Donate({
@@ -26,6 +28,8 @@ export default function Donate({
   showProjects,
   setShowProjects,
   setsearchedProjects,
+  currencyCode,
+  setCurrencyCode
 }: Props) {
   const router = useRouter();
   const [directGift, setDirectGift] = React.useState(null);
@@ -58,7 +62,8 @@ export default function Donate({
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      const currencyCode = getStoredCurrency();
+      const currency = getStoredCurrency();
+      setCurrencyCode(currency);
       const projects = await getRequest(
         `/app/projects?_scope=map&currency=${currencyCode}`,
       );
@@ -67,7 +72,7 @@ export default function Donate({
       setShowSingleProject(false);
     }
     loadProjects();
-  }, []);
+  }, [currencyCode]);
   const ProjectsProps = {
     projects,
     showProjects,
