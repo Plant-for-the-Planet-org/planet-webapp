@@ -41,7 +41,7 @@
     "@next/bundle-analyzer": "^10.0.3",
     "@sentry/browser": "^5.27.6",
     "@sentry/integrations": "5.27.6",
-    "@sentry/node": "^5.27.6",
+    "@sentry/node": "^5.28.0",
     "@sentry/webpack-plugin": "^1.13.0",
     "@stripe/react-stripe-js": "1.1.2",
     "@stripe/stripe-js": "1.11.0",
