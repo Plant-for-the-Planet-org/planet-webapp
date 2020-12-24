@@ -51,7 +51,7 @@
     "@types/react-lazyload": "^2.6.0",
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-source-maps": "0.0.4-canary.1",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "d3-ease": "^2.0.0",
     "date-fns": "^2.16.1",
     "deck.gl": "^7.3.6",
