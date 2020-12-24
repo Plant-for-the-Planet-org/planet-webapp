@@ -87,15 +87,15 @@ export default function index({}: Props): ReactElement {
                 Liebe Unterstützerinnen und Unterstützer,
               </h2>
               <p style={{ margin: '16px auto' }}>
-                wir sind immer noch tief getroffen von der Berichterstattung 
-                der ‚Zeit’, weil unsere Arbeit in Constitución in großem Umfang 
-                in Zweifel gezogen wurde. Wir haben mittlerweile sehr viel 
+                wir sind immer noch tief getroffen von der Berichterstattung
+                der ‚Zeit’, weil unsere Arbeit in Constitución in großem Umfang
+                in Zweifel gezogen wurde. Wir haben mittlerweile sehr viel
                 Zuspruch bekommen, aber leider auch viel Kritik.
                 <br />
                 <br />
-                Wir haben aus dem Bericht und den Reaktionen darauf die 
-                Schlussfolgerung gezogen, dass wir Dinge besser machen 
-                müssen – in der Dokumentation und der Kommunikation. 
+                Wir haben aus dem Bericht und den Reaktionen darauf die
+                Schlussfolgerung gezogen, dass wir Dinge besser machen
+                müssen – in der Dokumentation und der Kommunikation.
               </p>
               <a
                 target="_blank"
@@ -107,6 +107,10 @@ export default function index({}: Props): ReactElement {
               >
                 Brief Lesen {'>'}
               </a>
+              <p style={{ margin: '16px auto' }}>
+              PS. Felix im Interview mit dem TV Moderatoren Franz Alt und Frank Farensi zu den Vorwürfen der Zeit <a href={'https://youtu.be/V_Kr3njVDpM'}>https://youtu.be/V_Kr3njVDpM</a>
+              </p>
+
               <div
                 onClick={closePlanetModal}
                 style={{
