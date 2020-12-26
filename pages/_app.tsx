@@ -110,15 +110,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <Layout>
           {isMap ? (
             project ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
+              <MapLayout {...ProjectProps} />
             ) : projects ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
+              <MapLayout {...ProjectProps} />
             ) : null
           ) : null}
           <Component {...ProjectProps} />

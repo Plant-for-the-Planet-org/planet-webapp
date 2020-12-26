@@ -46,6 +46,15 @@
   "continueToLogin": "Continuar para Iniciar Sessão",
   "supportsUNEP": "Apoia o PNUMA",
   "plantedBy": "Plantado por",
+  "redeemPopup": "Recebeu um presente de árvore? Por favor, faça o login para resgatar as suas árvores.",
+  "login": "Login/Signup",
+  "shop": "Loja",
+  "downloads": "Downloads",
+  "team": "Equipe",
+  "jobs": "Empregos",
+  "blogs": "Blogs",
+  "faqs": "FAQs",
+  "annualReports": "Relatórios anuais",
   "mapInfo": "Esri",
   "aboutUs": "Sobre nós"
 }
