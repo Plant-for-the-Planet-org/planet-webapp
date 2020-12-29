@@ -21,7 +21,7 @@ describe('remove', () => {
       //       val.click().then(() => {
       //         driver.switchTo().activeElement().then(() => {
       //           driver.findElement(By.xpath("//*[text()='Remove']")).click().then(() => {
-                  driver.findElement(By.name('checkedA')).click().then(() => {
+    await driver.findElement(By.name('checkedA')).click().then(() => {
                     driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Action successful"}}');
                   });
       //           });
@@ -31,5 +31,6 @@ describe('remove', () => {
       //   });
       // });
     // });
+    await driver.quit();
   });
 });
