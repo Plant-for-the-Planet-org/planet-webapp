@@ -54,16 +54,25 @@ describe('hompage', () => {
       await val1.click();
       await driver.switchTo().activeElement();
       (await driver).sleep(100);
-      // await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input"))).sendKeys('4242424242424242');
-      const cardNumber = await driver.wait(until.elementLocated(By.xpath("//div[@id='cardNumber']/div/input")), 10000);
+
+      await driver.switchTo().frame(driver.findElement(By.xpath("//*[@id='cardNumber']/div/iframe")));
+      const cardNumber = await driver.findElement(By.name('cardnumber'));
       const cardEnabled = await driver.wait(until.elementIsEnabled(cardNumber));
-      await cardEnabled.sendKeys('4242424242424242');
-      const expiryDate = await driver.wait(until.elementLocated(By.xpath("//div[@id='expiry']/div/input")), 10000);
+      await cardEnabled.sendKeys('4242424242424242');      
+      await driver.switchTo().defaultContent();
+
+      await driver.switchTo().frame(driver.findElement(By.xpath("//*[@id='expiry']/div/iframe"))); 
+      const expiryDate = await driver.findElement(By.name('exp-date'));
       const expiryDateEnabled = await driver.wait(until.elementIsEnabled(expiryDate));
-      await expiryDateEnabled.sendKeys('444');
-      const cvc = await driver.wait(until.elementLocated(By.xpath("//div[@id='cvc']/div/input")), 10000);
+      await expiryDateEnabled.sendKeys('424');
+      await driver.switchTo().defaultContent();
+      
+      await driver.switchTo().frame(driver.findElement(By.xpath("//*[@id='cvc']/div/iframe"))); 
+      const cvc = await driver.findElement(By.name('cvc'));
       const cvcEnabled = await driver.wait(until.elementIsEnabled(cvc));
-      await cvcEnabled.sendKeys('111');
+      await cvcEnabled.sendKeys('242');
+      await driver.switchTo().defaultContent();
+
       (await driver).sleep(100);
       await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000).click();
       await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
@@ -74,6 +83,6 @@ describe('hompage', () => {
           driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Title does not contain header!"}}');
         }
       });
-    // });
+      await driver.quit();
   });
 });
