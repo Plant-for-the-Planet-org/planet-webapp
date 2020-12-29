@@ -1,51 +1,51 @@
 [
     {
         "currencyCode": "AED",
-        "value": 4.473494
+        "value": 4.50
     },
     {
         "currencyCode": "AFN",
-        "value": 93.967503
+        "value": 94
     },
     {
         "currencyCode": "ALL",
-        "value": 123.686961
+        "value": 125
     },  
     {
         "currencyCode": "AMD",
-        "value": 635.75389
+        "value": 636
     },  
     {
         "currencyCode": "ALL",
-        "value": 123.686961
+        "value": 125
     },  
     {
         "currencyCode": "ANG",
-        "value": 2.186605
+        "value": 2.25
     },  
     {
         "currencyCode": "AOA",
-        "value": 798.124594
+        "value": 800
     },  
     {
         "currencyCode": "ARS",
-        "value":101.382397
+        "value": 100
     },
     {
         "currencyCode": "AUD",
-        "value": 1.614236
+        "value": 1.6
     },
     {
         "currencyCode": "AWG",
-        "value": 2.192381
+        "value": 2.25
     },
     {
         "currencyCode": "AZN",
-        "value": 2.073096
+        "value": 2
     },
     {
         "currencyCode": "BAM",
-        "value": 1.946035
+        "value": 2
     },
     {
         "currencyCode": "BBD",
@@ -53,124 +53,120 @@
     },
     {
         "currencyCode": "BDT",
-        "value":103.308097     
+        "value": 100
     },
     {
         "currencyCode": "BGN",
-        "value":1.95829
+        "value": 2
     },
     {
         "currencyCode": "BHD",
-        "value": 0.459203
+        "value": .5
     },
     {
         "currencyCode": "BIF",
-        "value": 2371.425961
+        "value": 2370
     },
     {
         "currencyCode": "BND",
-        "value": 1.624543
+        "value": 1.6
     },
     {
         "currencyCode": "BOB",
-        "value": 8.387242
+        "value": 8.5
     },
     {
         "currencyCode": "BRL",
-        "value": 6.284973
+        "value": 6.5
     },
     {
 
         "currencyCode": "BSD",
-        "value": 1.218219
-    },
-    {
-        "currencyCode": "BTC",
-        "value": 5.1339951e-5
+        "value": 1.2
     },
     {
         "currencyCode": "BTN", 
-        "value": 89.979926       
+        "value": 90       
     },
     {
         "currencyCode": "BWP",
-        "value": 13.148283
+        "value": 13
     },
     {
         "currencyCode": "BYN",
-        "value": 3.132235
+        "value": 3
     },
     {
         "currencyCode": "BYR",
-        "value": 23872.598277
+        "value": 23800
     },
     {
         "currencyCode": "BZD",
-        "value":2.45562
+        "value":2.45
     },
     {
         "currencyCode": "CAD",
-        "value": 1.57064
+        "value": 1.50
     },
     {
         "currencyCode": "CDF",
-        "value": 2399.439896
+        "value": 2400
     },
     {
         "currencyCode": "CHF",
-        "value": 1.08205
+        "value": 1.0
     },
     {
         "currencyCode": "CLF",
-        "value": 0.031901
+        "value": 0.032
     },
     {
         "currencyCode": "CLP",
-        "value": 880.261215
+        "value": 880.25
     },
     {
         "currencyCode": "CNY",
-        "value": 7.970277
+        "value": 8.0
     },
     {
         "currencyCode": "COP",
-        "value": 4220.334338
+        "value": 4220.0
     },
     {
         "currencyCode": "CRC",
-        "value": 738.32573
+        "value": 740.0
     },
     {
         "currencyCode": "CUC",
-        "value": 1.21799
+        "value": 1.20
     },
     {
         "currencyCode": "CUP",
-        "value": 32.276727
+        "value": 32.5
     },
     {
         "currencyCode": "CVE",
-        "value":110.897768
+        "value":110.0
     },
     {
         "currencyCode": "CZK",
-        "value":26.34049
+        "value":26.30
     },
     {
         "currencyCode": "DJF",
-        "value":216.461228
+        "value":216.5
     },
     {
         "currencyCode": "DKK",
-        "value": 7.439213
+        "value": 7.5
     },
     {
         "currencyCode": "DOP", 
-        "value": 70.734711
+        "value": 70.0
     },
     {
         "currencyCode": "DZD",
-        "value": 161.383511
+        "value": 160.0
     },
     {
         "currencyCode": "EGP",
@@ -600,7 +596,7 @@
     },
     {
         "currencyCode": "USD",
-        "value": 1.21799
+        "value": 1.0
     },
     {
         "currencyCode": "UYU",
