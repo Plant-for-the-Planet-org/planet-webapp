@@ -40,7 +40,7 @@ export default function Donate({
         setShowSingleProject(true);
       }
     }
-    if (router.query.p || (router.query.p && currencyCode)) {
+    if (router.query.p) {
       loadProject();
     }
   }, [router.query.p, currencyCode]);
