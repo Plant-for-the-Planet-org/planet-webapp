@@ -1,45 +1,20 @@
-import webdriver, { By, until, Key} from 'selenium-webdriver';
+import { By, until, Key} from 'selenium-webdriver';
 import {
   driver,
 } from './helper';
-import {
-  donateButton, header, donateContinue, firstName,
-} from './Pages/homePage';
 import { load } from './Pages/index';
 
 describe('hompage', () => {
   beforeEach(async () => {
     await load();
   });
-  // let testStatus = false;
-  // afterEach(() => {
-  //   if (testStatus) {
-  //     driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Yaay! my sample test passed"}}');
-  //   } else {
-  //     driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Test failed!"}}');
-  //   }
-  //   testStatus = false;
-  // });
-  // // });
-  // it('should load homepage', () => {
-  //   // driver.get('https://www.trilliontreecampaign.org/').then(() => {
-  //     driver.getTitle().then((title) => {
-  //       expect(title).toBe("Plant trees around the world - Plant-for-the-Planet");
-  //       testStatus = true;
-  //       // driver.quit();
-  //     });
-  //   // });
-  // });
   it('should click on donate', async () => {
-    // load().then(async () => {
-      // const val = await donateButton();
-      // await val.click();
       await driver.wait(until.elementLocated(By.className('donateButton'))).click();
       await driver.switchTo().activeElement();
       await driver.wait(until.elementLocated(By.id('treeDonateContinue')), 20000).click();
       await driver.findElement(By.name('firstName')).sendKeys('Bright');
       await driver.findElement(By.name('lastName')).sendKeys('Amidiagbe');
-      await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
+      await driver.findElement(By.name('email')).sendKeys('captainamiedi111@gmail.com');
       await driver.findElement(By.name('address')).sendKeys('43 block');
       await driver.findElement(By.name('city')).sendKeys('surulere');
       const country = await driver.findElement(By.name('countrydropdown'));

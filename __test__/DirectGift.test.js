@@ -7,18 +7,14 @@ describe('direct gift', () => {
     await load();
   });
   it('should direct gift', async () => {
-    // load().then(async () => {
     const url = await driver.getCurrentUrl();
     await driver.navigate().to(`${url}s/sagar-aryal`);
-    // const val = donateButton().then(async () => {
-    //   await val.click();
-    // });
     await driver.wait(until.elementLocated(By.className('donateButton'))).click();
     await driver.switchTo().activeElement();
     await driver.wait(until.elementLocated(By.id('treeDonateContinue')), 10000).click();
     await driver.findElement(By.name('firstName')).sendKeys('Bright');
     await driver.findElement(By.name('lastName')).sendKeys('Amidiagbe');
-    await driver.findElement(By.name('email')).sendKeys('captainamiedi1@gmail.com');
+    await driver.findElement(By.name('email')).sendKeys('captainamiedi1111@gmail.com');
     await driver.findElement(By.name('address')).sendKeys('43 block');
     await driver.findElement(By.name('city')).sendKeys('surulere');
     const country = await driver.findElement(By.name('countrydropdown'));
