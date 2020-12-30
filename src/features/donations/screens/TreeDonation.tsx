@@ -353,7 +353,7 @@ function TreeDonation({
         }
         {!isPaymentOptionsLoading &&
         paymentSetup?.gateways?.stripe?.account &&
-        currency && ((treeCost * treeCount) > minAmt)? (
+        currency && ((treeCost * treeCount) >= minAmt)? (
           <PaymentRequestCustomButton
             country={country}
             currency={currency}
