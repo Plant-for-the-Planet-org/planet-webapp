@@ -23,7 +23,7 @@ export default function Donate({
   setCurrencyCode
 }: Props) {
   const router = useRouter();
-  // const [currencyCode, setCurrencyCode] = React.useState('');
+  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
 
   React.useEffect(() => {
     setShowSingleProject(true);
@@ -31,16 +31,18 @@ export default function Donate({
 
   React.useEffect(() => {
     async function loadProject() {
-      const currency = getStoredCurrency();
-      setCurrencyCode(currency);
-      const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currencyCode}`);
-      setProject(project);
-      setShowSingleProject(true);
+      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode) {
+        const currency = getStoredCurrency();
+        setInternalCurrencyCode(currency);
+        setCurrencyCode(currency);
+        const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currency}`);
+        setProject(project);
+        setShowSingleProject(true);
+      }
     }
-    if(router.query.p) {
+    if (router.query.p || (router.query.p && currencyCode)) {
       loadProject();
     }
-    if (currencyCode) loadProject();
   }, [router.query.p, currencyCode]);
 
   const ProjectProps = {
