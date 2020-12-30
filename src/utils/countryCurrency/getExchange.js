@@ -1,6 +1,6 @@
 import countryExchange from './countryExchange.json';
 
-export const getExchangeValue = (curreny) => {
+export const getMinimumAmountForCurrency = (curreny) => {
   const exchange = countryExchange.find((element) => element.currencyCode === curreny);
-  return exchange.value;
+  return (Math.round(exchange.value) * 2);
 };

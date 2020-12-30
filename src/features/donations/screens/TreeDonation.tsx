@@ -17,7 +17,7 @@ import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
-import {getExchangeValue} from '../../../utils/countryCurrency/getExchange';
+import {getMinimumAmountForCurrency} from '../../../utils/countryCurrency/getExchange';
 
 const { useTranslation } = i18next;
 
@@ -90,7 +90,7 @@ function TreeDonation({
       setScreenWidth(100);
     }
 
-    setMinAmt(Math.round(getExchangeValue(currency) * 2));
+    setMinAmt(getMinimumAmountForCurrency(currency));
   }, [country]);
 
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
