@@ -7,13 +7,13 @@ interface Props {
   leaderboard: any;
 }
 
+const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
-  const { useTranslation } = i18next;
-  const { t, i18n } = useTranslation(['leaderboard', 'common']);
+  const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
-  return (
+  return ready ? ( 
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
@@ -94,5 +94,5 @@ export default function LeaderBoardSection(leaderboard: Props) {
         alt=""
       /> */}
     </section>
-  );
+  ) : null;
 }

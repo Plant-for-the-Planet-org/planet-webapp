@@ -6,9 +6,9 @@ const config = {
   tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   meta: {
     title: 'Energizer ❤️ Baeume',
@@ -28,37 +28,35 @@ const config = {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/energizer/logo.png`,
     tenantLogoLink: 'https://www.energizer.de',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: true,
-        key: 'home',
       },
-      {
-        id: 2,
+      donate: {
         title: 'plant',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 3,
-        title: 'leaderboard',
-        onclick: '/leaderboard',
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
         visible: false,
-        key: 'leaderboard',
       },
-      {
-        id: 4,
+      leaderboard: {
+        title: 'leaderboard',
+        onclick: '/all',
+        visible: false,
+      },
+      me:{
         title: 'me',
         onclick: '/me',
         visible: false,
-        key: 'me',
-      },
-    ],
+      }
+    }
   },
+  footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
 };
 
 export default config;

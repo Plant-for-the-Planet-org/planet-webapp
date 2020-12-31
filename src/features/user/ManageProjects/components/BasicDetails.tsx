@@ -12,16 +12,9 @@ import {
   postAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
+import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
 
 const { useTranslation } = i18next;
-const classifications = [
-  { label: 'Large scale planting', value: 'large-scale-planting' },
-  { label: 'Agroforestry', value: 'agroforestry' },
-  { label: 'Natural Regeneration', value: 'natural-regeneration' },
-  { label: 'Managed Regeneration', value: 'managed-regeneration' },
-  { label: 'Urban Planting', value: 'urban-planting' },
-  { label: 'Other Planting', value: 'other-planting' },
-];
 
 interface Props {
   handleNext: Function;
@@ -44,7 +37,7 @@ export default function BasicDetails({
   setErrorMessage,
   projectGUID,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
@@ -80,11 +73,20 @@ export default function BasicDetails({
   };
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  const classifications = [
+    { label: ready ? t('manageProjects:largeScalePlanting') : '', value: 'large-scale-planting' },
+    { label: ready ? t('manageProjects:agroforestry') : '', value: 'agroforestry' },
+    { label: ready ? t('manageProjects:naturalRegeneration') : '', value: 'natural-regeneration' },
+    { label: ready ? t('manageProjects:managedRegeneration') : '', value: 'managed-regeneration' },
+    { label: ready ? t('manageProjects:urbanPlanting') : '', value: 'urban-planting' },
+    { label: ready ? t('manageProjects:otherPlanting') : '', value: 'other-planting' },
+  ];
+
   // Default Form Fields
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: { label: 'Project Type', value: null },
+    classification: { label: ready ? t('manageProjects:projectType') : '', value: null },
     countTarget: 0,
     website: '',
     description: '',
@@ -108,6 +110,7 @@ export default function BasicDetails({
     reset,
     setValue,
     watch,
+    setError
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const acceptDonations = watch('acceptDonations');
@@ -194,7 +197,14 @@ export default function BasicDetails({
           if (res.code === 404) {
             setIsUploadingData(false);
             setErrorMessage(res.message);
-          } else {
+          } 
+          else if (res.code === 400) {
+            setIsUploadingData(false)
+            if (res.errors && res.errors.children) {
+              addServerErrors(res.errors.children,setError);
+            }
+          }
+          else {
             setIsUploadingData(false);
             setErrorMessage(res.message);
           }
@@ -213,7 +223,14 @@ export default function BasicDetails({
             if (res.code === 404) {
               setIsUploadingData(false);
               setErrorMessage(res.message);
-            } else {
+            }
+            else if (res.code === 400) {
+              setIsUploadingData(false)
+              if (res.errors && res.errors.children) {
+                addServerErrors(res.errors.children,setError);
+              }
+            }
+            else {
               setIsUploadingData(false);
               setErrorMessage(res.message);
             }
@@ -223,7 +240,7 @@ export default function BasicDetails({
     }
   };
 
-  return (
+  return ready ? (
     <div className={`${styles.stepContainer} `}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
@@ -414,7 +431,7 @@ export default function BasicDetails({
                     },
                     validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
                     pattern: {
-                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/,
+                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|(?:\.[0-9]{3})*(?:,[0-9]{1,2})?)$/,
                       message: t('manageProjects:treeCostValidationInvalid'),
                     }
                   })}
@@ -506,6 +523,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 />
               </div>
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
@@ -523,6 +541,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 />
               </div>
             </div>
@@ -620,5 +639,5 @@ export default function BasicDetails({
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }

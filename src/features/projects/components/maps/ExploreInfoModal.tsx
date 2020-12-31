@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import styles from '../../styles/MapboxMap.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 
@@ -14,9 +14,9 @@ interface Props {
 }
 
 function ExploreInfoModal({infoRef,infoExpanded,setInfoExpanded,setModalOpen}: Props): ReactElement {
-    const { t, i18n } = useTranslation(['maps']);
+    const { t, i18n, ready } = useTranslation(['maps']);
 
-    return (
+    return ready ? (
         <div ref={infoRef} className={styles.infoExpanded}>
             {infoExpanded === 'Forests' ? (
               <div className={styles.infoContainer}>
@@ -103,7 +103,7 @@ function ExploreInfoModal({infoRef,infoExpanded,setInfoExpanded,setModalOpen}: P
               <CancelIcon color="#d5d5d5" />
             </div>
           </div>
-    )
+    ) : null;
 }
 
 export default ExploreInfoModal

@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
 import styles from './Stories.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 
 interface Props {}
 
 export default function Stories({}: Props): ReactElement {
-  const { t, i18n } = useTranslation(['planet']);
-  return (
+  const { t, ready } = useTranslation(['planet']);
+  return ready ? (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.storyCard}>
@@ -33,5 +33,5 @@ export default function Stories({}: Props): ReactElement {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

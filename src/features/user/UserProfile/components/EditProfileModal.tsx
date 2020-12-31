@@ -46,7 +46,7 @@ export default function EditProfileModal({
   }, [isAuthenticated, isLoading])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
-  const { t } = useTranslation(['editProfile', 'donate', 'target']);
+  const { t, ready } = useTranslation(['editProfile', 'donate', 'target']);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -90,6 +90,7 @@ export default function EditProfileModal({
   } = useForm({ mode: 'onBlur' });
 
   const [country, setCountry] = React.useState(userprofile.country);
+  const [updatingPic, setUpdatingPic] = React.useState(false);
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -107,6 +108,7 @@ export default function EditProfileModal({
   const watchIsPrivate = watch('isPrivate');
 
   const onDrop = React.useCallback((acceptedFiles) => {
+    setUpdatingPic(true);
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -118,20 +120,22 @@ export default function EditProfileModal({
             imageFile: event.target.result
           }
           setSeverity('info')
-          setSnackbarMessage('Profile pic is being updated...')
+          setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '')
           handleSnackbarOpen()
 
           putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
             const userInfo = getUserInfo()
             const newUserInfo = { ...userInfo, profilePic: res.image }
             setUserInfo(newUserInfo)
+            setUpdatingPic(false);
           }).catch(error => {
+            setUpdatingPic(false);
             console.log(error);
           })
         }
       };
     });
-  }, []);
+  }, [token]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -152,27 +156,27 @@ export default function EditProfileModal({
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
           setSeverity('success')
-          setSnackbarMessage('Saved Successfully!')
+          setSnackbarMessage(ready ? t('editProfile:profileSaved') : '')
           handleSnackbarOpen()
           changeForceReload(!forceReload),
           handleEditProfileModalClose()
           setIsUploadingData(false)
         }).catch(error => {
           setSeverity('error')
-          setSnackbarMessage('Error in updating profile')
+          setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '')
           handleSnackbarOpen()
           setIsUploadingData(false)
           console.log(error);
         })
       } catch (e) {
         setSeverity('error');
-        setSnackbarMessage('Error in updating profile');
+        setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
         handleSnackbarOpen();
         setIsUploadingData(false);
       }
     }
   };
-  return (
+  return ready ? (
     <React.Fragment>
       <Modal
         className={styles.modalContainer}
@@ -209,7 +213,7 @@ export default function EditProfileModal({
               <label htmlFor="upload">
                 <div className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {userprofile.image ? (
+                  {updatingPic ? <div className={styles.spinnerImage}></div> : userprofile.image ? (
                     <div className={styles.profilePic}>
                       <img
                         src={getImageUrl(
@@ -455,5 +459,5 @@ export default function EditProfileModal({
         </MuiAlert>
       </Snackbar>
     </React.Fragment>
-  );
+  ) : null;
 }

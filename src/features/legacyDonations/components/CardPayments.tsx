@@ -13,7 +13,7 @@ import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import styles from './../styles/PaymentDetails.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 
@@ -56,7 +56,7 @@ function CardPayments({
   setPaymentType,
   onPaymentFunction
 }: any): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const stripe = useStripe();
   const elements = useElements();
   const [cardNumber, setCardNumber] = React.useState(false);
@@ -171,7 +171,7 @@ function CardPayments({
     validateCard();
   }, [cardDate, cardNumber, cardCvv]);
 
-  return (
+  return ready ? (
       <div>
 
         {paymentError && (
@@ -238,7 +238,7 @@ function CardPayments({
           )}
 
       </div>
-    );
+  ) : null;
 }
 
 export default CardPayments;

@@ -13,7 +13,7 @@ import {
 } from '../../../../utils/countryCurrency/countryUtils';
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 let styles = require('./../../styles/SelectCurrencyModal.module.scss');
 
 const { useTranslation } = i18next;
@@ -27,7 +27,7 @@ export default function TransitionsModal(props: any) {
     country,
   } = props;
 
-  const { t } = useTranslation(['donate', 'common', 'country']);
+  const { t, ready } = useTranslation(['donate', 'common', 'country']);
 
   //   const [selectedModalCurrency, setSelectedModalCurrency] = useState(currency)
   const [selectedModalValue, setSelectedModalValue] = useState(
@@ -70,7 +70,7 @@ export default function TransitionsModal(props: any) {
     handleModalClose();
   }
 
-  return (
+  return ready ? (
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -118,7 +118,7 @@ export default function TransitionsModal(props: any) {
         </Fade>
       </Modal>
     </div>
-  );
+  ) : null;
 }
 
 const FormControlNew = withStyles({
@@ -129,11 +129,11 @@ const FormControlNew = withStyles({
 
 // Maps the radio buttons for currency
 function MapCurrency(props: any) {
-  const { t, i18n } = useTranslation(['country']);
+  const { t, i18n, ready } = useTranslation(['country']);
   
   const { value, handleChange } = props;
-  const sortedCountriesData = sortCountriesByTranslation(t, i18n.language);
-  return (
+  const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language) : {};
+  return ready ? (
     <FormControlNew component="fieldset">
       <RadioGroup
         aria-label="language"
@@ -152,5 +152,5 @@ function MapCurrency(props: any) {
         ))}
       </RadioGroup>
     </FormControlNew>
-  );
+  ) : null;
 }

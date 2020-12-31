@@ -7,47 +7,44 @@ const config = {
   tenantGoal:1000000000000,
   showUNEPLogo:true,
   showUNDecadeLogo:true,
+  showRedeemHint:true,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: `${process.env.CDN_URL}/media/fonts/raleway/raleway.css?v1.0`,
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: `${process.env.CDN_URL}/media/fonts/opensans/open-sans.css?v1.0`,
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/ttc/logo.png`,
     tenantLogoLink: 'https://www.trilliontreecampaign.org',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: false,
-        key: 'home',
       },
-      {
-        id: 2,
+      donate: {
         title: 'home',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 3,
+      about: {
+        title: 'aboutUs',
+        onclick: 'https://a.plant-for-the-planet.org/',
+        visible: false,
+      },
+      leaderboard: {
         title: 'leaderboard',
         onclick: '/all',
         visible: true,
-        key: 'leaderboard',
       },
-
-      {
-        id: 4,
+      me:{
         title: 'me',
         onclick: '/me',
         visible: true,
-        key: 'me',
-      },
-    ],
+      }
+    }
   },
   meta: {
     title: "Together let's plant a Trillion Trees!",
@@ -57,6 +54,7 @@ const config = {
     twitterHandle: '@pftp_int',
     locale: 'en_US',
   },
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
 };
 
 export default config;

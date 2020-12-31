@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './Stats.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 
@@ -17,9 +17,9 @@ function ExploreInfoModal({
   setInfoExpanded,
   setModalOpen,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['planet']);
+  const { t, i18n, ready } = useTranslation(['planet']);
 
-  return (
+  return ready ? (
     <div className={styles.infoExpanded}>
       {infoExpanded === 'donated' ? (
         <div className={styles.infoContainer}>
@@ -67,7 +67,7 @@ function ExploreInfoModal({
         <CancelIcon color="#d5d5d5" />
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default ExploreInfoModal;

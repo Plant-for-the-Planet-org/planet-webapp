@@ -15,14 +15,13 @@ const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {
-  const { t, i18n } = useTranslation(['common']);
+  const { t, i18n, ready } = useTranslation(['common']);
   const config = tenantConfig();
-
 
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -32,28 +31,60 @@ export default function Footer() {
     setOpenModal(false);
   };
 
-  const FooterLinks = [
-    {
-      id: 1,
-      title: t('common:privacyAndTerms'),
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/privacy-policy',
+  const [footerLang,setFooterLang] = React.useState('en');
+  React.useEffect(()=>{
+    if (typeof window !== 'undefined') {
+      let footerLang = localStorage.getItem('language') || 'en';
+      footerLang = footerLang.toLowerCase(); // need lowercase locals for Wordpress website links
+      setFooterLang(footerLang)
+    }
+  },[language])
+  const FooterLinks = {
+    shop:{
+      title: ready ? t('common:shop') : '',
+      link:`https://www.thegoodshop.org/de`
     },
-    {
-      id: 2,
-      title: t('common:imprint'),
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/imprint',
+    privacyAndTerms:{
+      title: ready ? t('common:privacyAndTerms') : '',
+      link: `https://a.plant-for-the-planet.org/${footerLang}/privacy-terms`,
     },
-    {
-      id: 3,
-      title: t('common:contact'),
-      link: 'https://www.plant-for-the-planet.org/en/footermenu/form',
+    imprint:{
+      title: ready ? t('common:imprint') : '',
+      link: `https://a.plant-for-the-planet.org/${footerLang}/imprint`,
     },
-    {
-      id: 6,
-      title: t('common:supportUs'),
-      link: 'https://www.plant-for-the-planet.org/en/donation',
+    contact:{
+      title: ready ? t('common:contact') : '',
+      link: 'mailto:support@plant-for-the-planet.org',
     },
-  ];
+    downloads:{
+      title: ready ? t('common:downloads') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/download`
+    },
+    annualReports:{
+      title: ready ? t('common:annualReports') : '',
+      link:`https://a.plant-for-the-planet.org/annual-reports`
+    },
+    team:{
+      title: ready ? t('common:team') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/team`
+    },
+    jobs:{
+      title: ready ? t('common:jobs') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/careers`
+    },
+    supportUs:{
+      title: ready ? t('common:supportUs') : '',
+      link: `https://a.plant-for-the-planet.org/${footerLang}/donation`,
+    },
+    blogs: {
+      title: ready ? t('common:blogs') : '',
+      link:`https://blog.plant-for-the-planet.org/${footerLang}`
+    },
+    faqs:{
+      title: ready ? t('common:faqs') : '',
+      link:`https://a.plant-for-the-planet.org/${footerLang}/faq`
+    },
+  };
 
   // changes the language and selected country as found in local storage
   useEffect(() => {
@@ -73,7 +104,7 @@ export default function Footer() {
     }
   }, []);
 
-  return (
+  return ready ? (
     <footer>
       <div className={styles.footerMainContainer}>
         <div className={styles.hr} />
@@ -142,20 +173,20 @@ export default function Footer() {
             </div>
             <div className={styles.footer_links_container}>
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              {FooterLinks.map((link) => {
-                return (
-                  <a key={link.title} href={link.link} target="_blank" rel="noopener noreferrer">
-                    <p className={styles.footer_links}>{link.title}</p>
+              {config.footerLinks && config.footerLinks.map((key:any)=>{
+                return(
+                  <a key={FooterLinks[key].title} href={FooterLinks[key].link} target="_blank" rel="noopener noreferrer">
+                    <p className={styles.footer_links}>{FooterLinks[key].title}</p>
                   </a>
-                );
+                )
               })}
             </div>
           </div>
-          
+
         </div>
         <div className={styles.logo_container}>
 
-            <div className={styles.pfp_logo}>
+            <div className={styles.pfp_logo_container}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
                 <PlanetCJLogo />
               </a>
@@ -165,13 +196,13 @@ export default function Footer() {
               <div className={styles.unep_logo_container}>
                 <a href="https://www.unep.org/" target="_blank" rel="noopener noreferrer">
                   <p className={styles.unep_logo_text}>{t('common:supportsUNEP')} </p>
-                  <UNEPLogo height={"65px"} />
+                  <UNEPLogo />
                 </a>
               </div>
             )}
 
             {config.showUNDecadeLogo && (
-              <div style={{marginLeft:'75px'}}>
+              <div className={styles.undecade_logo_container}>
                 <a href="https://www.decadeonrestoration.org/" target="_blank" rel="noopener noreferrer">
                   <UNDecadeLogo />
                 </a>
@@ -189,5 +220,5 @@ export default function Footer() {
         />
       </div>
     </footer>
-  );
+  ) : null;
 }

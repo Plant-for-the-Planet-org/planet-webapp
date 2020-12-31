@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
-
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
+import getMapStyle from '../../../../../utils/getMapStyle';
 
 const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
+  customAttribution:
+    '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
 });
 
 interface Props {
@@ -23,6 +23,21 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
   });
   const [geoJson, setGeoJson] = React.useState();
 
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('default');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
+
   React.useEffect(() => {
     if (
       contributions &&
@@ -39,7 +54,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
     <div className={styles.mapContainer}>
       <Map
         {...viewport}
-        style="mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7" // eslint-disable-line
+        style={style}
         containerStyle={{
           height: '100%',
           width: '100%',

@@ -28,7 +28,7 @@ interface Props {
 }
 
 function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
     const { isDirty } = formState;
@@ -85,7 +85,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                 }
                 else {
                     setIsUploadingData(false)
@@ -120,7 +120,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
     var tenYearsAgo = new Date();
     tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
 
-    return (
+    return ready ? (
         <div>
 
             {uploadedFiles && uploadedFiles.length > 0 ? (
@@ -245,7 +245,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                     </div>)}
 
         </div>
-    )
+    ) : null;
 }
 
 export default ProjectCertificates

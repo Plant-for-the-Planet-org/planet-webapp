@@ -10,10 +10,10 @@ interface Props {
   tenantScore:any;
 }
 
+const { useTranslation } = i18next;
 export default function Stats({tenantScore}: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
-  const { useTranslation } = i18next;
-  const { t, i18n } = useTranslation(['leaderboard', 'common', 'planet']);
+  const { t, i18n, ready } = useTranslation(['leaderboard', 'common', 'planet']);
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
@@ -21,7 +21,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
   const handleModalOpen = () => {
     setModalOpen(true);
   };
-  return (
+  return ready ? (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.statCard}>
@@ -77,5 +77,5 @@ export default function Stats({tenantScore}: Props): ReactElement {
         </Modal>
       ) : null}
     </div>
-  );
+  ) : null;
 }
