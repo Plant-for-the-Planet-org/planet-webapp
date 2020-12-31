@@ -11,6 +11,7 @@ import BackButton from '../../../../../../public/assets/images/icons/BackButton'
 import ProjectContactDetails from '../../../../projects/components/projectDetails/ProjectContactDetails';
 import DownloadIcon from '../../../../../../public/assets/images/icons/DownloadIcon';
 import SendIcon from '../../../../../../public/assets/images/icons/SendIcon';
+import { useRouter } from 'next/router';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -21,6 +22,7 @@ const { useTranslation } = i18next;
 interface Props {
   profile: any;
   authenticatedType: any;
+  isAuthenticated: any;
 }
 
 const project = {
@@ -43,7 +45,12 @@ const project = {
   website: 'naturalcapitalpartners.com',
 };
 
-export default function MyTrees({ profile, authenticatedType }: Props) {
+export default function MyTrees({
+  profile,
+  authenticatedType,
+  isAuthenticated,
+}: Props) {
+  const router = useRouter();
   const { t, i18n, ready } = useTranslation(['country', 'me', 'donate']);
   const [contributions, setContributions] = React.useState(null);
   const [expandedContribution, setExpandedContribution] = React.useState();
@@ -64,6 +71,9 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
     setExpandedContribution(id);
   };
 
+  const handleProfileRedirect = (id: any) => {
+    router.push('/t/[id]', `/t/${id}`);
+  };
   const MapProps = {
     contributions,
   };
@@ -121,7 +131,16 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                         {item.properties.type === 'gift' ? (
                           item.properties.giver ? (
                             <div className={styles.singleSource}>
-                              From <a href="#">{item.properties.giver.name}</a>
+                              From{' '}
+                              <a
+                                onClick={() =>
+                                  handleProfileRedirect(
+                                    item.properties.giver.slug
+                                  )
+                                }
+                              >
+                                {item.properties.giver.name}
+                              </a>
                             </div>
                           ) : (
                             ''
@@ -133,7 +152,15 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                           item.properties.recipient ? (
                             <div className={styles.singleSource}>
                               To{' '}
-                              <a href="#">{item.properties.recipient.name}</a>
+                              <a
+                                onClick={() =>
+                                  handleProfileRedirect(
+                                    item.properties.recipient.slug
+                                  )
+                                }
+                              >
+                                {item.properties.recipient.name}
+                              </a>
                             </div>
                           ) : (
                             ''
@@ -143,18 +170,21 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                         )}
 
                         <div className={styles.projectDetails}>
+                          <div>{item.properties.project.name}</div>
                           <ProjectContactDetails project={project} />
                         </div>
-                        <div className={styles.buttons}>
-                          <div className={styles.certificate}>
-                            <DownloadIcon />
-                            <p>Certificate</p>
+                        {isAuthenticated ? (
+                          <div className={styles.buttons}>
+                            <div className={styles.certificate}>
+                              <DownloadIcon />
+                              <p>Certificate</p>
+                            </div>
+                            <div className={styles.share}>
+                              <SendIcon />
+                              <p>Share</p>
+                            </div>
                           </div>
-                          <div className={styles.share}>
-                            <SendIcon />
-                            <p>Share</p>
-                          </div>
-                        </div>
+                        ) : null}
                       </div>
                     ) : (
                       <>

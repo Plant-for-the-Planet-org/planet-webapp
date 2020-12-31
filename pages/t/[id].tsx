@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default function PublicUser(initialized: Props) {
-
   // Whether public or private
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
@@ -27,15 +26,15 @@ export default function PublicUser(initialized: Props) {
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
 
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState('');
   const {
     isLoading,
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
-    logout
+    logout,
   } = useAuth0();
- 
+
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -43,9 +42,9 @@ export default function PublicUser(initialized: Props) {
       setToken(token);
     }
     if (isAuthenticated && !isLoading) {
-      loadFunction()
+      loadFunction();
     }
-  }, [isAuthenticated, isLoading])
+  }, [isAuthenticated, isLoading]);
 
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
@@ -54,66 +53,68 @@ export default function PublicUser(initialized: Props) {
     changeForceReload,
     forceReload,
     authenticatedType,
+    isAuthenticated,
   };
 
   const logoutUser = () => {
     localStorage.removeItem('userInfo');
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  }
+  };
 
   useEffect(() => {
     if (router && router.query.id) {
-      setUserprofile(null)
+      setUserprofile(null);
       setSlug(router.query.id);
       setReady(true);
     }
   }, [router]);
-  
-  
+
   useEffect(() => {
     async function loadUserData() {
       // For loading user data we first have to decide whether user is trying to load their own profile or someone else's
       // To do this we first try to fetch the slug from the local storage
       // If the slug matches and also there is token in the session we fetch the user's private data, else the public data
-      
+
       if (typeof Storage !== 'undefined') {
-        let token = null; 
+        let token = null;
         if (isAuthenticated) {
           token = await getAccessTokenSilently();
         }
         let userInfo;
-        userInfo = await getUserInfo()
+        userInfo = await getUserInfo();
         let currentUserSlug = userInfo?.slug ? userInfo.slug : null;
-        
+
         // some user logged in and slug matches -> private profile
-        if (!isLoading && token && currentUserSlug === slug) {          
+        if (!isLoading && token && currentUserSlug === slug) {
           try {
-            const res = await getAccountInfo(token)
+            const res = await getAccountInfo(token);
             if (res.status === 200) {
               const resJson = await res.json();
-              setAuthenticatedType('private')
+              setAuthenticatedType('private');
               setUserprofile(resJson);
             } else if (res.status === 303) {
               // if 303 -> user doesn not exist in db
-              setUserExistsInDB(false)
+              setUserExistsInDB(false);
               if (typeof window !== 'undefined') {
                 router.push('/complete-signup');
               }
             } else if (res.status === 401) {
               // in case of 401 - invalid token: signIn()
               logoutUser();
-              removeUserExistsInDB()
-              loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+              removeUserExistsInDB();
+              loginWithRedirect({
+                redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+              });
             } else {
               // any other error
             }
-          } catch (e) { }
+          } catch (e) {}
         } else {
           //no user logged in or slug mismatch -> public profile
           const newPublicUserprofile = await getRequest(
             `/app/profiles/${slug}`
           );
-          setAuthenticatedType('public')
+          setAuthenticatedType('public');
           setUserprofile(newPublicUserprofile);
         }
       }
@@ -123,10 +124,10 @@ export default function PublicUser(initialized: Props) {
     if (ready && !isLoading) {
       loadUserData();
     }
-  }, [ready, isLoading, forceReload, isAuthenticated, router,slug]);
+  }, [ready, isLoading, forceReload, isAuthenticated, router, slug]);
 
   function getUserProfile() {
-    if(userprofile?.type === 'tpo'){
+    if (userprofile?.type === 'tpo') {
       return (
         <>
           <GetPublicUserProfileMeta userprofile={userprofile} />
@@ -134,8 +135,14 @@ export default function PublicUser(initialized: Props) {
           <Footer />
         </>
       );
-    }
-    else if(userprofile?.type === 'individual' || userprofile?.type === 'education' || userprofile?.type === 'company'|| userprofile?.type === 'organization' || userprofile?.type === 'children-youth' || userprofile?.type === 'government'){
+    } else if (
+      userprofile?.type === 'individual' ||
+      userprofile?.type === 'education' ||
+      userprofile?.type === 'company' ||
+      userprofile?.type === 'organization' ||
+      userprofile?.type === 'children-youth' ||
+      userprofile?.type === 'government'
+    ) {
       return (
         <>
           <GetPublicUserProfileMeta userprofile={userprofile} />
@@ -144,11 +151,10 @@ export default function PublicUser(initialized: Props) {
         </>
       );
     }
-    
   }
 
-  if (initialized && (userprofile) && ready) {
-    return getUserProfile()
+  if (initialized && userprofile && ready) {
+    return getUserProfile();
   } else {
     return <UserProfileLoader />;
   }
