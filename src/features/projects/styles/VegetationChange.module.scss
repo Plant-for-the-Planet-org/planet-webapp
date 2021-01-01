@@ -15,10 +15,11 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  z-index: 10;
+  max-width: 100%;
 }
 
 .options {
-  width: 200px;
   height: 100%;
   border: 1px solid #d5d5d5;
   display: flex;
@@ -27,8 +28,38 @@
   align-items: center;
   font-weight: 700;
   cursor: pointer;
+  width: 100px;
+}
+
+.options svg {
+  height: 14px;
+  padding-right: 4px;
+}
+
+.options p {
+  display: none;
 }
 
 :export {
   primaryColor: $primaryColor;
+}
+
+@include smTabletView {
+  .VegetationChangeContainer {
+    margin-left: 400px;
+  }
+}
+
+@include lgLaptopView {
+  .VegetationChangeContainer {
+    margin-left: auto;
+  }
+
+  .options {
+    width: 200px;
+  }
+
+  .options p {
+    display: block;
+  }
 }

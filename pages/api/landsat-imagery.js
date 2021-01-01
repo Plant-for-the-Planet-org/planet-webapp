@@ -67,12 +67,18 @@ var runAnalysis = function (req, res) {
           return image.updateMask(mask);
         }
 
-        var dataset = ee
+        var dataset1 = ee
+          .ImageCollection('LANDSAT/LC08/C01/T1_SR')
+          .filterDate('2015-01-01', '2015-12-31')
+          .map(maskL8sr);
+
+        var dataset2 = ee
           .ImageCollection('LANDSAT/LC08/C01/T1_SR')
           .filterDate('2020-01-01', '2020-12-31')
           .map(maskL8sr);
 
-        var image = dataset.median().clip(sitePolygon);
+        var image1 = dataset1.median().clip(sitePolygon);
+        var image2 = dataset2.median().clip(sitePolygon);
 
         var visParams = {
           bands: ['B4', 'B3', 'B2'],
@@ -80,13 +86,18 @@ var runAnalysis = function (req, res) {
           max: 3000,
           gamma: 1.4,
         };
-        // Map.addLayer(dataset.median(), visParams);
 
-        const mapId = await image.getMap(visParams);
+        const mapId1 = await image1.getMap(visParams);
+        const mapId2 = await image2.getMap(visParams);
 
-        console.log('response sent - ' + mapId.urlFormat);
+        console.log(
+          'response sent - Image 1 ' +
+            mapId1.urlFormat +
+            ' Image 2 ' +
+            mapId2.urlFormat
+        );
         return res.status(200).json({
-          data: mapId.urlFormat,
+          data: [mapId1.urlFormat, mapId2.urlFormat],
         });
       } catch (err) {
         console.log(err);

@@ -25,6 +25,9 @@ import VegetationChange from './maps/VegetationChange';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
 import getMapStyle from '../../../utils/getMapStyle';
+import dynamic from 'next/dynamic';
+
+const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
 const { useTranslation } = i18next;
 
@@ -72,7 +75,9 @@ export default function MapboxMap({
   const infoRef = useRef(null);
   const [siteVegetationChange, setSiteVegetationChange] = useState(null);
   const [siteImagery, setSiteImagery] = useState(null);
-  const [selectedOption, setSelectedState] = React.useState('imagery');
+  const [selectedOption, setSelectedState] = React.useState('none');
+  const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
+  const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
 
   const EMPTY_STYLE = {
     version: 8,
@@ -171,6 +176,13 @@ export default function MapboxMap({
     siteImagery,
   };
 
+  const CompareProps = {
+    siteImagery,
+    mapRef,
+    projectCenter,
+    projectZoom,
+  };
+
   async function getSiteVegetationChange(data: any) {
     const siteVgData = await getEarthEngineLayer(
       '/api/vegetation-change',
@@ -267,7 +279,8 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
-
+            setProjectCenter([longitude, latitude]);
+            setProjectZoom(zoom);
             getSiteVegetationChange(geoJson);
             getSiteImagery(geoJson);
             setViewPort(newViewport);
@@ -435,7 +448,7 @@ export default function MapboxMap({
             >
               <div className={styles.marker} />
             </Marker>
-          ) : (
+          ) : selectedOption === 'none' ? (
             <>
               <Source
                 id="satellite"
@@ -459,9 +472,32 @@ export default function MapboxMap({
                 />
               </Source>
             </>
+          ) : (
+            <Source id="singleProject" type="geojson" data={geoJson}>
+              <Layer
+                id="ploygonOutline"
+                type="line"
+                source="singleProject"
+                paint={{
+                  'line-color': '#fff',
+                  'line-width': 4,
+                }}
+              />
+            </Source>
           )
         ) : null}
-
+        {selectedOption === 'vegetation' ? (
+          siteVegetationChange ? (
+            <Source
+              id="ndvi"
+              type="raster"
+              tiles={[`${siteVegetationChange}`]}
+              tileSize={128}
+            >
+              <Layer id="ndvi-layer" source="ndvi" type="raster" />
+            </Source>
+          ) : null
+        ) : null}
         {!showSingleProject &&
           exploreProjects &&
           searchedProject.map((projectMarker: any, index: any) => (
@@ -684,6 +720,13 @@ export default function MapboxMap({
           </a>
         </div>
       </MapGL>
+      {showSingleProject &&
+      siteExists &&
+      selectedOption === 'imagery' &&
+      siteImagery ? (
+        <MapCompare {...CompareProps} />
+      ) : null}
+
       {infoExpanded !== null ? (
         <Modal
           className={styles.modal}

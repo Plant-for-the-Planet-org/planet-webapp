@@ -174,3 +174,15 @@ video {
 .MuiStepIcon-root.MuiStepIcon-completed {
   color: $primaryColor !important;
 }
+
+.comparison-map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.mapboxgl-compare .compare-swiper-vertical {
+  background-color: $primaryColor;
+}
