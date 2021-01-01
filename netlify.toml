@@ -27,7 +27,7 @@
   status = 301
   force = false
 [[redirects]]
-  from = "/my-tress"
+  from = "/my-trees"
   to = "/login"
   status = 301
   force = false
