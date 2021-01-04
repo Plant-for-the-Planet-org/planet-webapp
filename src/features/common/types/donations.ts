@@ -75,6 +75,7 @@ export interface ContactDetailsPageProps {
   setIsCompany: Function;
   country: string;
   isTaxDeductible: Boolean;
+  token:any;
 }
 
 export interface ThankYouProps {

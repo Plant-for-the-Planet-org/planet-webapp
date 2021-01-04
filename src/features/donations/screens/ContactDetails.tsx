@@ -25,6 +25,7 @@ function ContactDetails({
   setIsCompany,
   isTaxDeductible,
   country,
+  token
 }: ContactDetailsPageProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
@@ -108,6 +109,7 @@ function ContactDetails({
               name="email"
               onChange={changeContactDetails}
               defaultValue={contactDetails.email}
+              disabled={token ? true : false}
             />
             {errors.email && (
               <span className={styles.formErrors}>
@@ -258,7 +260,7 @@ function ContactDetails({
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default ContactDetails;
