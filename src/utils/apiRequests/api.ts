@@ -146,9 +146,10 @@ export async function putAuthenticatedRequest(url:any,data:any,token:any) {
   return result;
 }
 
-export async function getEarthEngineLayer(url: any, data: any) {
+export async function getEarthEngineLayer(data: any) {
   let result;
-  const res = await fetch(url, {
+  console.log(data,);
+  const res = await fetch(`${process.env.GEE_API_URL}`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -157,6 +158,7 @@ export async function getEarthEngineLayer(url: any, data: any) {
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
+      console.log(result);
       return result;
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));

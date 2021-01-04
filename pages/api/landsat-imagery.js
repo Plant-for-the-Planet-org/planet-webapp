@@ -69,12 +69,12 @@ var runAnalysis = function (req, res) {
 
         var dataset1 = ee
           .ImageCollection('LANDSAT/LC08/C01/T1_SR')
-          .filterDate('2015-01-01', '2015-12-31')
+          .filterDate('2015-04-01', '2015-05-31')
           .map(maskL8sr);
 
         var dataset2 = ee
           .ImageCollection('LANDSAT/LC08/C01/T1_SR')
-          .filterDate('2020-01-01', '2020-12-31')
+          .filterDate('2020-04-01', '2020-05-31')
           .map(maskL8sr);
 
         var image1 = dataset1.median().clip(sitePolygon);

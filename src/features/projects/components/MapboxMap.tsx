@@ -184,20 +184,14 @@ export default function MapboxMap({
   };
 
   async function getSiteVegetationChange(data: any) {
-    const siteVgData = await getEarthEngineLayer(
-      '/api/vegetation-change',
-      data
-    );
-    siteVgData ? setSiteVegetationChange(siteVgData.data) : null;
+    const siteVgData = await getEarthEngineLayer(data);
+    siteVgData ? setSiteVegetationChange(siteVgData.data.ndvi) : null;
     console.log(siteVgData);
   }
 
   async function getSiteImagery(data: any) {
-    const siteImageryData = await getEarthEngineLayer(
-      '/api/landsat-imagery',
-      data
-    );
-    siteImageryData ? setSiteImagery(siteImageryData.data) : null;
+    const siteImageryData = await getEarthEngineLayer(data);
+    siteImageryData ? setSiteImagery(siteImageryData.data.imagery) : null;
     console.log(siteImageryData);
   }
 
