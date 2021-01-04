@@ -10,5 +10,7 @@
   "organization": "Firma",
   "profileCreated": "Profil erfolgreich erstellt!",
   "profileCreationFailed": "Fehler bei der Profilerstellung. Bitte versuchen Sie es erneut.",
-  "profileCreationError": "Fehler bei der Profilerstellung."
+  "profileCreationError": "Fehler bei der Profilerstellung.",
+  "token": "Code zur Übernahme eines alten Baumzählers",
+  "tokenValidation": "Der Code konnte nicht erkannt werden."
 }

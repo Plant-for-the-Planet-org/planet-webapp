@@ -10,5 +10,7 @@
   "organization": "Company",
   "profileCreated": "Profile Successfully created!",
   "profileCreationFailed": "Error in creating profile. Please try again.",
-  "profileCreationError": "Error in creating profile."
+  "profileCreationError": "Error in creating profile.",
+  "token": "Optional code to claim an old tree counter",
+  "tokenValidation": "The given code can not be validated."
 }

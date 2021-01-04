@@ -323,6 +323,20 @@ export default function CompleteSignup() {
             )}
           </div>
 
+          <div className={styles.formFieldLarge}>
+            <MaterialTextField
+              label={t('login:token')}
+              variant="outlined"
+              inputRef={register({ required: false })}
+              name={"token"}
+            />
+            {errors.token && (
+              <span className={styles.formErrors}>
+                {t('login:tokenValidation')}
+              </span>
+            )}
+          </div>
+
           <div className={styles.isPrivateAccountDiv}>
             <div>
               <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
