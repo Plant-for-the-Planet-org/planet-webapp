@@ -32,9 +32,10 @@ export default function TransitionsModal(props) {
     setSelectedCurrency,
     selectedCountry,
     setSelectedCountry,
+    setCurrencyCode
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
-  const [selectedModalCountry, setSelectedModalCountry] = useState('US');
+  const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
 
   const { t, i18n, ready } = useTranslation(['common', 'country']);
 
@@ -53,7 +54,6 @@ export default function TransitionsModal(props) {
   // changes the language and currency code in footer state and local storage
   // when user clicks on OK
   function handleOKClick() {
-    i18n.changeLanguage(modalLanguage);
     // window.localStorage.setItem('language', modalLanguage);
     setLanguage(modalLanguage);
     i18n.changeLanguage(modalLanguage);
@@ -64,6 +64,7 @@ export default function TransitionsModal(props) {
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
       setSelectedCurrency(currencyCode);
+      setCurrencyCode(currencyCode)
     }
     handleModalClose();
   }

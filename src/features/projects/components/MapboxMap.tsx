@@ -22,7 +22,7 @@ import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
-import style from '../../../../public/data/styles/root.json';
+import getMapStyle from '../../../utils/getMapStyle';
 
 const { useTranslation } = i18next;
 
@@ -30,19 +30,20 @@ interface mapProps {
   projects: any;
   project: any;
   showSingleProject: Boolean;
-  mapboxToken: any;
   setShowProjects: Function;
   searchedProject: any;
   showProjects: any;
+  currencyCode: any;
+  setCurrencyCode: Function;
 }
 export default function MapboxMap({
   projects,
   project,
   showSingleProject,
-  mapboxToken,
   setShowProjects,
   searchedProject,
   showProjects,
+  setCurrencyCode
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -70,50 +71,12 @@ export default function MapboxMap({
   const popupRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
-  const [mapstyle, setMapStyle] = React.useState('');
 
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
     layers: [],
   };
-
-  // first fetch the esri style file
-  // https://www.mapbox.com/mapbox-gl-js/style-spec
-
-  React.useEffect(() => {
-    const metadataUrl = style.sources.esri.url;
-    fetch(metadataUrl)
-      .then((response) => {
-        return response.json().then((metadata) => {
-          const ready = format(style, metadata);
-          setMapStyle(ready);
-        });
-      })
-      .catch((e) => {
-        console.log('Error:', e);
-      });
-
-    function format(style: any, metadata: any) {
-      // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
-      style.sources.esri = {
-        type: 'vector',
-        scheme: 'xyz',
-        tilejson: metadata.tilejson || '2.0.0',
-        format: (metadata.tileInfo && metadata.tileInfo.format) || 'pbf',
-        /* mapbox-gl-js does not respect the indexing of esri tiles
-      because we cache to different zoom levels depending on feature density, in rural areas 404s will still be encountered.
-      more info: https://github.com/mapbox/mapbox-gl-js/pull/1377
-      */
-        // index: metadata.tileMap ? style.sources.esri.url + '/' + metadata.tileMap : null,
-        maxzoom: 15,
-        tiles: [style.sources.esri.url + '/' + metadata.tiles[0]],
-        description: metadata.description,
-        name: metadata.name,
-      };
-      return style;
-    }
-  }, []);
 
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
@@ -128,9 +91,18 @@ export default function MapboxMap({
     zoom: defaultZoom,
   });
 
+  React.useEffect(() => {
+    const promise = getMapStyle('default');
+    promise.then((style) => {
+      if (style) {
+        setMapState({ ...mapState, mapStyle: style });
+      }
+    });
+  }, []);
+
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
   const handleLanguageModalClose = () => {
@@ -189,15 +161,6 @@ export default function MapboxMap({
       });
     }
   };
-
-  React.useEffect(() => {
-    if (mapstyle) {
-      setMapState({
-        ...mapState,
-        mapStyle: mapstyle,
-      });
-    }
-  }, [mapstyle]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -389,7 +352,7 @@ export default function MapboxMap({
         if (langCode) setLanguage(langCode);
       }
     }
-  }, []);
+  }, [selectedCurrency]);
 
   function goToNextProject() {
     if (currentSite < maxSites - 1) {
@@ -423,7 +386,6 @@ export default function MapboxMap({
         ref={mapRef}
         {...mapState}
         {...viewport}
-        mapboxApiAccessToken={mapboxToken}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
@@ -638,7 +600,7 @@ export default function MapboxMap({
           </div>
           <a
             rel="noopener noreferrer"
-            href={`https://a.plant-for-the-planet.org/imprint`}
+            href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
             target={'_blank'}
           >
             {t('common:imprint')}
@@ -712,6 +674,7 @@ export default function MapboxMap({
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
+        setCurrencyCode={setCurrencyCode}
       />
     </div>
   );

@@ -37,7 +37,7 @@ export default function Home(initialized: Props) {
     loadLeaderboard();
   }, []);
 
-  if (!config.header.items[0].visible) {
+  if (!config.header.items['home'].visible) {
     if (typeof window !== 'undefined') {
       router.push('/');
     }

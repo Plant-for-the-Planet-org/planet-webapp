@@ -3,10 +3,11 @@ const config = {
   tenantName: 'planet',
   // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
+  tenantGoal:null,
   showUNEPLogo:true,
   showUNDecadeLogo:true,
+  showRedeemHint:true,
   // font family and it's property particular to tenant
-  tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
@@ -18,43 +19,33 @@ const config = {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
     tenantLogoLink: '/',
-    items: [
-      {
-        id: 1,
+    items: {
+      home: {
         title: 'home',
         onclick: '/home',
         visible: false,
-        key: 'home',
       },
-      {
-        id: 2,
+      donate: {
         title: 'home',
         onclick: '/',
         visible: true,
-        key: 'donate',
       },
-      {
-        id: 2,
+      about: {
         title: 'aboutUs',
         onclick: 'https://a.plant-for-the-planet.org/',
         visible: true,
-        key: 'about',
       },
-      {
-        id: 3,
+      leaderboard: {
         title: 'leaders',
         onclick: '/all',
         visible: true,
-        key: 'leaderboard',
       },
-      {
-        id: 4,
+      me:{
         title: 'me',
         onclick: '/me',
         visible: true,
-        key: 'me',
-      },
-    ],
+      }
+    }
   },
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
@@ -64,6 +55,7 @@ const config = {
     twitterHandle: '@pftp_int',
     locale: 'en_US',
   },
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
 };
 
 export default config;

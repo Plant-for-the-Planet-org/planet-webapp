@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/TreeDonation.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -35,9 +35,10 @@ export default function GiftForm({
               localStorage.removeItem('directGift');
               setDirectGift(null);
             }}
+            id='singleGiftRemoveId'
             className={styles.singleGiftRemove}
           >
-            Remove
+            {t('donate:removeRecipient')}
           </div>
         </div>
       </div>

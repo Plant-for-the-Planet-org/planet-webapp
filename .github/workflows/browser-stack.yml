@@ -1,0 +1,67 @@
+name: 'BrowserStack Test'
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  ubuntu-job:
+    name: 'BrowserStack Test on Ubuntu'
+    runs-on: ubuntu-latest  # Can be self-hosted runner also
+    steps:
+
+      - name: Wait for Vercel deployment # ${{ steps.waitForVercel.outputs.url }} should return the Vercel deployment url
+        uses: patrickedqvist/wait-for-vercel-preview@master
+        id: waitForVercel
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 180
+
+      - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
+        uses: browserstack/github-actions/setup-env@master
+        with:
+          username:  ${{ secrets.BROWSERSTACK_USERNAME }}
+          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          build-name: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
+          project-name: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
+
+      - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: start
+          local-identifier: random
+
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node Modules'
+        run: npm install
+
+      - name: Fixes for BrowserStack Build
+        run: |
+          # fix problems with 'Error: ENOSPC: System limit for number of file watchers reached'
+          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+# The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
+
+      - name: Setting Environment Variables
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY : ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          BROWSERSTACK_BUILD_NAME: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
+          BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
+          BROWSERSTACK_TEST_URL: ${{ steps.waitForVercel.outputs.url }}
+        run: |
+          echo "BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME" >> .env
+          echo "BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY" >> .env
+          echo "BROWSERSTACK_BUILD_NAME=$BROWSERSTACK_BUILD_NAME" >> .env
+          echo "BROWSERSTACK_PROJECT_NAME=$BROWSERSTACK_PROJECT_NAME" >> .env
+          echo "BROWSERSTACK_TEST_URL=$BROWSERSTACK_TEST_URL" >> .env
+
+      - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
+        run: |
+          cat .env
+          npm run test
+
+      - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: stop

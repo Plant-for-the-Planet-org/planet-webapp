@@ -40,7 +40,7 @@ export default function CompleteSignup() {
       const token = await getAccessTokenSilently();
       setToken(token);
       if(!token){
-        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       }
       const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
@@ -78,8 +78,7 @@ export default function CompleteSignup() {
   const [requestSent, setRequestSent] = useState(false);
 
   const [country, setCountry] = useState('');
-  let defaultCountry;
-  if (typeof window !== 'undefined') { defaultCountry = localStorage.getItem('countryCode') } else { defaultCountry = 'DE' }
+  const defaultCountry = typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
 
   const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal)
   React.useEffect(() => {
@@ -119,7 +118,7 @@ export default function CompleteSignup() {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
-        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
         setSnackbarMessage(ready ? t('login:profileCreationFailed') : '');
         setSeverity("error")

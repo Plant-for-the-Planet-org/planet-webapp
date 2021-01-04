@@ -14,7 +14,7 @@ import { PaymentRequestCustomButton } from '../components/PaymentRequestForm';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
 import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 
@@ -195,6 +195,7 @@ function TreeDonation({
               onKeyPress={() => setOpenCurrencyModal(true)}
               role="button"
               tabIndex={0}
+              data-testid="taxDeductionId"
             >
               <div className={styles.currency}>{currency}</div>
               <div className={styles.downArrow}>

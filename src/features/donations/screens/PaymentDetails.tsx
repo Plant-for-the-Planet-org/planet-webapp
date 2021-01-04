@@ -17,7 +17,7 @@ import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
