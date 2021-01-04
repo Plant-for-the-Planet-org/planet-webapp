@@ -17,6 +17,7 @@ import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const { useTranslation } = i18next;
 
@@ -48,6 +49,10 @@ function TreeDonation({
 }: TreeDonationProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const treeCountOptions = [10, 20, 50, 150];
+
+  const {
+    loginWithRedirect,
+  } = useAuth0();
 
   const recurrencyOptions = [
     {
@@ -153,13 +158,17 @@ function TreeDonation({
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   const [isGiftValidated, setGiftValidated] = React.useState(false);
+
+  const loginuser = () => {
+    loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+  }
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-        <div className={styles.mainContainer} 
+        <div className={styles.mainContainer}
           style={{
-            marginTop: token ? '360px' :'200px'
+            marginTop: token ? '360px' : '200px'
           }}
         >
           <div
@@ -362,6 +371,12 @@ function TreeDonation({
                   </div>
                 </div>
               )}
+
+            {!token && (
+              <div className={styles.loginHint} onClick={() => loginuser()}>
+                 Login to make a frequent donation.
+              </div>
+            )}
 
             <div className={styles.horizontalLine} />
 

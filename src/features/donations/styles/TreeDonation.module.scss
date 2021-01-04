@@ -401,7 +401,19 @@
   color: $primaryColor;
 }
 
+.loginHint{
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: $fontSubTitleSize;
+  color: $primaryColor;
+  margin-top: 20px;
+  &:hover{
+    cursor: pointer;
+  }
+}
+
 :export {
   primaryFontColor: $primaryFontColor;
   primaryColor: $primaryColor;
 }
+
