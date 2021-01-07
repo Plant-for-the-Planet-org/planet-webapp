@@ -48,7 +48,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
 
-  const { t, i18n } = useTranslation(['me']);
+  const { t, i18n, ready } = useTranslation(['me']);
   React.useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -74,7 +74,7 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
-  return (
+  return ready ? (
     <div className={treeCounterStyles.treeCounter}>
       <FacebookCircularProgress value={progress} />
       <div className={treeCounterStyles.backgroundCircle} />
@@ -119,5 +119,5 @@ export default function TpoProfile(props: any) {
         )}
       </div>
     </div>
-  );
+  ) : null;
 }

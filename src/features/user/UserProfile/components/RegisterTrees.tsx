@@ -23,6 +23,7 @@ import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
+import getMapStyle from '../../../../utils/getMapStyle';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -49,7 +50,15 @@ export default function RegisterTrees({
   registerTreesModalOpen,
 }: Props) {
   const router = useRouter();
-  const { t } = useTranslation(['me', 'common']);
+  const { t, ready } = useTranslation(['me', 'common']);
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+  const [mapState, setMapState] = React.useState({
+    mapStyle: EMPTY_STYLE,
+  });
   const [isMultiple, setIsMultiple] = React.useState(false);
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
@@ -70,6 +79,16 @@ export default function RegisterTrees({
   const [userLang, setUserLang] = React.useState('en');
   const [countryBbox, setCountryBbox] = React.useState();
   const [registered, setRegistered] = React.useState(false);
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style) => {
+      if (style) {
+        console.log(style);
+        setMapState({ ...mapState, mapStyle: style });
+      }
+    });
+  }, []);
 
   const materialTheme = createMuiTheme({
     overrides: {
@@ -214,13 +233,15 @@ export default function RegisterTrees({
 
         // handleNext();
       } else {
-        setErrorMessage(t('me:locationMissing'));
+        setErrorMessage(ready ? t('me:locationMissing') : '');
       }
     } else {
-      setErrorMessage(t('me:wentWrong'));
+      setErrorMessage(ready ? t('me:wentWrong') : '');
       console.log(errorMessage);
     }
   };
+
+  const _onStateChange = (state: any) => setMapState({ ...state });
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
@@ -231,7 +252,7 @@ export default function RegisterTrees({
     currentUserSlug: slug,
   };
 
-  return (
+  return ready ? (
     <>
       <Modal
         className={styles.modalContainer}
@@ -354,10 +375,10 @@ export default function RegisterTrees({
                     />
                   ) : (
                     <MapGL
+                      {...mapState}
                       {...viewport}
-                      mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-                      mapStyle="mapbox://styles/mapbox/streets-v11"
                       onViewportChange={_onViewportChange}
+                      onStateChange={_onStateChange}
                       onClick={(event) => {
                         setplantLocation(event.lngLat);
                         setGeometry({
@@ -372,6 +393,10 @@ export default function RegisterTrees({
                           transitionInterpolator: new FlyToInterpolator(),
                           transitionEasing: d3.easeCubic,
                         });
+                      }}
+                      mapOptions={{
+                        customAttribution:
+                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
                       }}
                     >
                       {plantLocation ? (
@@ -419,5 +444,5 @@ export default function RegisterTrees({
         </div>
       </Modal>
     </>
-  );
+  ) : null;
 }

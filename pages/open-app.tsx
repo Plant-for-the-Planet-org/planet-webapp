@@ -1,11 +1,11 @@
-import Footer from './Layout/Footer';
-import i18next from '../../../i18n';
+import Footer from '../src/features/common/Layout/Footer';
+import i18next from '../i18n';
 
 const { useTranslation } = i18next;
 
 export default function OpenApp() {
 
-  const { t } = useTranslation(['common']);
+  const { t, ready } = useTranslation(['common']);
 
   const styles = {
     width: '100vw',
@@ -16,12 +16,12 @@ export default function OpenApp() {
     flexDirection:'column'
   }
 
-  return (
+  return ready ? (
     <>
       <div style={styles}>
         <h2>{t('common:opening_native_app')}</h2>
       </div>
       <Footer/>
     </>
-  );
+  ) : null;
 }

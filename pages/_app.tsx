@@ -7,6 +7,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss';
+import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
@@ -47,18 +48,17 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
+  const [currencyCode, setCurrencyCode] = React.useState('');
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-
   if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-    if (process.env.VERCEL_URL !== window.location.hostname) {      
-      router.replace(`https://${process.env.VERCEL_URL}`);      
+    if (process.env.VERCEL_URL !== window.location.hostname) {
+      router.replace(`https://${process.env.VERCEL_URL}`);
     }
   }
-  
 
   const [initialized, setInitialized] = React.useState(false);
 
@@ -96,6 +96,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setShowProjects,
     searchedProject,
     setsearchedProjects,
+    currencyCode,
+    setCurrencyCode
   };
 
   return (
@@ -103,7 +105,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       domain={process.env.AUTH0_CUSTOM_DOMAIN}
       clientId={process.env.AUTH0_CLIENT_ID}
       redirectUri={process.env.NEXTAUTH_URL}
-      cacheLocation={"localstorage"}
+      cacheLocation={'localstorage'}
       onRedirectCallback={onRedirectCallback}
     >
       <ThemeProvider>
@@ -111,15 +113,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <Layout>
           {isMap ? (
             project ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
+              <MapLayout {...ProjectProps} />
             ) : projects ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
+              <MapLayout {...ProjectProps} />
             ) : null
           ) : null}
           <Component {...ProjectProps} />

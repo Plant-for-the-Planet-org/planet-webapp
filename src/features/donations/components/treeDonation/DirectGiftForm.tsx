@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/TreeDonation.module.scss';
-import i18next from '../../../../../i18n/';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -9,14 +9,20 @@ interface Props {
   giftDetails: any;
   directGift: any;
   setDirectGift: Function;
+  setGiftValidated:Function;
 }
 
 export default function GiftForm({
   giftDetails,
   setDirectGift,
+  setGiftValidated
 }: Props): ReactElement {
-  const { t } = useTranslation(['donate', 'common']);
-  return (
+  const { t, ready } = useTranslation(['donate', 'common']);
+
+  React.useEffect(()=>{
+    setGiftValidated(true);
+  },[])
+  return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
         <div className={styles.singleGiftTitleContainer}>
@@ -29,12 +35,13 @@ export default function GiftForm({
               localStorage.removeItem('directGift');
               setDirectGift(null);
             }}
+            id='singleGiftRemoveId'
             className={styles.singleGiftRemove}
           >
-            Remove
+            {t('donate:removeRecipient')}
           </div>
         </div>
       </div>
     </div>
-  );
+  ) : <></>;
 }

@@ -85,7 +85,7 @@
   "certifiedBy": "Certified By",
   "certificationDateValidation": "Please add Certification date",
   "uploadCertificate": "Upload Certificate",
-  "addCertificate": "Add another cerification",
+  "addCertificate": "Add another Certification",
   "dropGeoJson": "Drop .geojson or .kml",
   "projectUnderReview": "Your project is under review, kindly wait.",
   "projectForReview": "You can now submit the project for review.",
@@ -102,5 +102,13 @@
   "externalCertifications": "External Certifications",
   "projectSpendingFinancial": "Financial Project Spendings",
   "issueDate": "Date issued",
-  "acquisitionYear": "Acquisition Year"
+  "acquisitionYear": "Acquisition Year",
+  "largeScalePlanting": "Large Scale Planting",
+  "agroforestry": "Agroforestry",
+  "naturalRegeneration": "Natural Regeneration",
+  "managedRegeneration": "Managed Regeneration",
+  "urbanPlanting": "Urban Planting",
+  "otherPlanting": "Other Planting",
+  "projectType": "Project Type",
+  "polygonRequired": "Polygon is required"
 }

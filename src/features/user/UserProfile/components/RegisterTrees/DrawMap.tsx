@@ -7,8 +7,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../../styles/RegisterModal.module.scss';
 import i18next from '../../../../../../i18n';
-
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
+import getMapStyle from '../../../../../utils/getMapStyle';
 
 interface Props {
   setGeometry: Function;
@@ -16,7 +15,8 @@ interface Props {
 }
 
 const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
+  customAttribution:
+    '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
 });
 
 const { useTranslation } = i18next;
@@ -39,7 +39,21 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-  const { t } = useTranslation(['me', 'common']);
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
+  const { t, ready } = useTranslation(['me', 'common']);
   const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef();
   const onDrawCreate = ({ features }: any) => {
@@ -78,7 +92,7 @@ export default function MapComponent({
     }
   }, [countryBbox]);
 
-  return (
+  return ready ? (
     <div className={styles.mapContainer}>
       {!drawing ? (
         <div className={styles.overlayButton}>
@@ -95,7 +109,7 @@ export default function MapComponent({
       ) : null}
       <Map
         {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+        style={style}
         containerStyle={{
           height: '100%',
           width: '100%',
@@ -119,5 +133,5 @@ export default function MapComponent({
         <ZoomControl position="bottom-right" />
       </Map>
     </div>
-  );
+  ) : null;
 }

@@ -17,7 +17,7 @@ import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
@@ -93,7 +93,7 @@ function PaymentDetails({
   isTaxDeductible,
   token
 }: PaymentDetailsProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
   const stripe = useStripe();
@@ -423,9 +423,10 @@ function PaymentDetails({
     }
   }
 
-  return isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  return ready ? (
+    isPaymentProcessing ? (
+      <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+    ) : (
       <div className={styles.container}>
         <div className={styles.header}>
           <div
@@ -579,7 +580,8 @@ function PaymentDetails({
 
 
       </div>
-    );
+    )
+  ) : null;
 }
 
 export default PaymentDetails;

@@ -1,0 +1,84 @@
+@import '../../../../theme/theme';
+
+.cookieContainer {
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+  min-width: 200px;
+  border-radius: 8px;
+  background: $backgroundColor;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
+    0 8px 16px -8px rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  -webkit-box-align: center;
+  align-items: center;
+  max-width: 98%;
+  pointer-events: all;
+  z-index: 999;
+}
+
+.closeButton {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-style: none;
+  outline: none;
+  padding: 16px;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.closeButton > svg {
+  color: $primaryColor;
+  width: 20px;
+}
+
+.cookieContent {
+  padding: 16px 24px 16px 0;
+  max-width: 200px;
+  font-family: $primaryFontFamily;
+}
+
+.cookieContent > a {
+  color: $primaryColor;
+  cursor: pointer;
+}
+
+.cookieContent > a:visited {
+  color: $primaryColor;
+}
+
+@include xsPhoneView {
+  .cookieContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    max-width: 100%;
+    border-radius: 0px;
+  }
+
+  .cookieContent {
+    padding: 16px 24px 16px 24px;
+    max-width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    text-align: center;
+  }
+  .closeButton {
+    display: block;
+    position: absolute;
+    right: 0;
+  }
+}
+:export {
+  primaryColor: $primaryColor;
+  primaryFontColor: $primaryFontColor;
+}

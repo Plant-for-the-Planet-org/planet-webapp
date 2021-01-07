@@ -11,13 +11,13 @@ interface Props {
 }
 
 function VerifyEmailComponent({ }: Props): ReactElement {
-    const { t } = useTranslation(['common']);
+    const { t, ready } = useTranslation(['common']);
 
     const {
         loginWithRedirect,
       } = useAuth0();
 
-    return (
+    return ready ? (
         <div className={styles.verifyEmailSection}>
             <VerifyEmailIcon />
             <h2 className={styles.verifyEmailText}>
@@ -28,11 +28,11 @@ function VerifyEmailComponent({ }: Props): ReactElement {
             <span style={{ fontStyle: 'italic', marginTop: '12px' }}>
                 {t('common:verifyEmailInfo')}
             </span>
-            <div onClick={()=>loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`})} className={styles.continueButton}>
+            <div onClick={() => loginWithRedirect({redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={styles.continueButton}>
                 {t('common:continueToLogin')}
             </div>
         </div>
-    )
+    ) : null;
 }
 
 export default VerifyEmailComponent

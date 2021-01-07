@@ -5,7 +5,7 @@
   "registerTrees": "Register Trees",
   "redeem": "Redeem",
   "myForest": "My Forest",
-  "giftToGiftee": "Gift to ${gifteeName}",
+  "giftToGiftee": "Gift to {{gifteeName}}",
   "settingManageProject": "Manage Projects",
   "userTree": "Register Trees",
   "logout": "Logout",
@@ -32,6 +32,7 @@
   "moreThanOne": "minimum 1 tree required",
   "registered": "Registered",
   "receivedTrees": "Received Trees",
+  "receivedFrom": "Received from {{name}}",
   "redeemedTrees": "Redeemed Trees",
   "nameForest": "{{name}}'s Forest"
 }

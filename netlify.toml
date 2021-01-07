@@ -1,0 +1,62 @@
+[build]
+  command = "npm run build && npm run export"
+  publish = "out"
+[[redirects]]
+  from = "/account-activate/*"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/competition/*"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/donate-tree"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/donate-trees"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/donate-trees/*"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/my-trees"
+  to = "/login"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/project/*"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/redeem"
+  to = "/login"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/reset-password/*"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/signup"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/signup/*"
+  to = "/open-app"
+  status = 301
+  force = false
+[[plugins]]
+  package = "netlify-plugin-next-dynamic"
+[[plugins]]
+  package = "netlify-plugin-cache-nextjs"

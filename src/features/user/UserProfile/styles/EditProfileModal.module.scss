@@ -259,3 +259,13 @@
     }
   }
 }
+
+.spinnerImage {
+  border: 2px solid #2f3336;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}

@@ -33,9 +33,9 @@ export default function SingleContribution({
     contributionGUID,
     token,
   };
-  const { t } = useTranslation(['me', 'common']);
+  const { t, ready } = useTranslation(['me', 'common']);
 
-  return (
+  return ready ? (
     <>
       <div
         className={styles.closeButton}
@@ -81,5 +81,5 @@ export default function SingleContribution({
         </div>
       </div>
     </>
-  );
+  ) : null;
 }

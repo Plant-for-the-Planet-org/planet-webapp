@@ -7,7 +7,7 @@ import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
 import { PaymentRequestCustomButton } from './components/PaymentRequestForm';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
-import i18next from '../../../i18n/';
+import i18next from '../../../i18n';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../utils/getFormattedNumber';
 import { payDonation } from '../donations/components/treeDonation/PaymentFunctions';
@@ -25,7 +25,7 @@ interface Props {
 function LegacyDonations({ paymentData }: Props): ReactElement {
 
   const [paymentType, setPaymentType] = React.useState('CARD')
-  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const [paymentSetup, setPaymentSetup] = React.useState();
 
@@ -39,7 +39,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
   const [paymentError, setPaymentError] = React.useState('');
 
   const [country, setCountry] = React.useState(
-    localStorage.getItem('countryCode')!
+    typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE'
   );
 
   // stores the value as boolean whether payment options is being fetched or not
@@ -210,9 +210,10 @@ const paypalSuccess =(data:any)=>{
     setDonationStep: null
   };  
   
-  return !isDonationComplete ? isPaymentProcessing ? (
-    <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
-  ) : (
+  return ready ? (
+    !isDonationComplete ? isPaymentProcessing ? (
+      <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
+    ) : (
       <div className={styles.container}>
         {paymentError && (
           <div className={styles.paymentError}>{paymentError}</div>
@@ -291,6 +292,7 @@ const paypalSuccess =(data:any)=>{
     ) : (
       <ThankYou {...ThankYouProps} />
     )
+  ) : null;
 }
 
 export default LegacyDonations

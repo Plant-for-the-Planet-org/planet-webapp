@@ -7,7 +7,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from '../../common/types/donations';
 import styles from '../styles/ContactDetails.module.scss';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -26,7 +26,7 @@ function ContactDetails({
   isTaxDeductible,
   country,
 }: ContactDetailsPageProps): ReactElement {
-  const { t, i18n } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
   const onSubmit = (data: any) => {
@@ -50,7 +50,7 @@ function ContactDetails({
     const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country);
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [contactDetails.country])  
-  return (
+  return ready ? (
     <div className={styles.container}>
       <div className={styles.header}>
         <div
@@ -258,7 +258,7 @@ function ContactDetails({
         </div>
       </form>
     </div>
-  );
+  ) : null;
 }
 
 export default ContactDetails;

@@ -39,10 +39,22 @@
   "december": "Décembre",
   "approx": "Approx.",
   "view": "Voir",
+  "opening_native_app": "Cette page n'est disponible que dans notre application iOS ou Android.",
   "verifyEmailHeader": "Veuillez confirmer votre email.",
   "verifyEmailText": "Pour sécuriser votre compte, nous devons vérifier votre email. Vérifier votre boîte de réception ou votre dossier spam/corbeille pour trouver un email de confirmation, puis reconnectez vous.",
   "verifyEmailInfo": "Si vous n'avez pas reçu d'email, reconnectez vous et nous vous enverrons un autre email.",
   "continueToLogin": "Continuer à se connecter",
   "supportsUNEP": "Soutient le PNUE",
-  "plantedBy": "Planté par"
+  "plantedBy": "Planté par",
+  "redeemPopup": "Vous avez reçu un cadeau pour un arbre ? Veuillez vous connecter pour échanger vos arbres.",
+  "login": "Connexion/S'inscrire",
+  "shop": "Boutique",
+  "downloads": "Téléchargements",
+  "team": "Équipe",
+  "jobs": "Emplois",
+  "blogs": "Blogs",
+  "faqs": "FAQs",
+  "annualReports": "Rapports annuels",
+  "mapInfo": "Esri",
+  "aboutUs": "À propos de nous"
 }

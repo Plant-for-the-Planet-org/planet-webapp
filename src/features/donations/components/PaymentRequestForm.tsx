@@ -5,7 +5,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import styles from './../styles/TreeDonation.module.scss';
-import i18next from '../../../../i18n/';
+import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 
@@ -42,7 +42,7 @@ export const PaymentRequestCustomButton = ({
   onPaymentFunction,
   continueNext,
 }: PaymentButtonProps) => {
-  const { t } = useTranslation(['donate', 'common']);
+  const { t, ready } = useTranslation(['donate', 'common']);
 
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -111,7 +111,7 @@ export const PaymentRequestCustomButton = ({
         country: country,
         currency: currency.toLowerCase(),
         total: {
-          label: t('donate:treeDonationWithPFP'),
+          label: ready ? t('donate:treeDonationWithPFP') : '',
           amount: amount,
         },
         requestPayerName: true,
@@ -169,7 +169,8 @@ export const PaymentRequestCustomButton = ({
 
   const options = useOptions(paymentRequest);
 
-  return stripeAllowedCountries.includes(country) &&
+  return ready ? (
+    stripeAllowedCountries.includes(country) &&
     canMakePayment &&
     paymentRequest ? (
     <div className={styles.actionButtonsContainer}>
@@ -207,9 +208,10 @@ export const PaymentRequestCustomButton = ({
       <AnimatedButton
         onClick={() => continueNext()}
         className={styles.continueButton}
+        id="treeDonateContinue"
       >
         {t('common:continue')}
       </AnimatedButton>
     </div>
-  );
+  )) : null;
 };

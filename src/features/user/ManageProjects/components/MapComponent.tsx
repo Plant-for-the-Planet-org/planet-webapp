@@ -33,7 +33,7 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
-  const { t, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
     height: '400px',
     width: '100%',
@@ -97,7 +97,7 @@ export default function MapComponent({
     }
   }, [geoJson]);
 
-  return (
+  return ready ? (
     <div
       ref={mapParentRef}
       className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
@@ -186,5 +186,5 @@ export default function MapComponent({
       {geoJsonError ?
         <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
     </div>
-  );
+  ) : null;
 }

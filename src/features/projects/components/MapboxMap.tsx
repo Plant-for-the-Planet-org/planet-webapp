@@ -22,6 +22,7 @@ import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
+import getMapStyle from '../../../utils/getMapStyle';
 
 const { useTranslation } = i18next;
 
@@ -29,25 +30,26 @@ interface mapProps {
   projects: any;
   project: any;
   showSingleProject: Boolean;
-  mapboxToken: any;
   setShowProjects: Function;
   searchedProject: any;
   showProjects: any;
+  currencyCode: any;
+  setCurrencyCode: Function;
 }
 export default function MapboxMap({
   projects,
   project,
   showSingleProject,
-  mapboxToken,
   setShowProjects,
   searchedProject,
   showProjects,
+  setCurrencyCode
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
   const router = useRouter();
 
-  const { t, i18n } = useTranslation(['maps']);
+  const { i18n, t } = useTranslation(['common']);
 
   const mapRef = useRef(null);
   const exploreContainerRef = useRef(null);
@@ -70,8 +72,14 @@ export default function MapboxMap({
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
 
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+
   const [mapState, setMapState] = useState({
-    mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+    mapStyle: EMPTY_STYLE,
     dragPan: true,
   });
 
@@ -83,9 +91,18 @@ export default function MapboxMap({
     zoom: defaultZoom,
   });
 
+  React.useEffect(() => {
+    const promise = getMapStyle('default');
+    promise.then((style) => {
+      if (style) {
+        setMapState({ ...mapState, mapStyle: style });
+      }
+    });
+  }, []);
+
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
   const handleLanguageModalClose = () => {
@@ -124,10 +141,10 @@ export default function MapboxMap({
       };
       setViewPort(newViewport);
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -137,7 +154,7 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
       router.push('/', undefined, {
         shallow: true,
@@ -210,10 +227,10 @@ export default function MapboxMap({
                 },
               }
             );
-            const newMapState = {
-              ...mapState,
-              mapStyle: 'mapbox://styles/mapbox/satellite-v9',
-            };
+            // const newMapState = {
+            //   ...mapState,
+            //   mapStyle: 'mapbox://styles/mapbox/satellite-v9',
+            // };
             const newViewport = {
               ...viewport,
               longitude,
@@ -223,14 +240,14 @@ export default function MapboxMap({
               transitionInterpolator: new FlyToInterpolator(),
               transitionEasing: d3.easeCubic,
             };
-            setMapState(newMapState);
+            // setMapState(newMapState);
             setViewPort(newViewport);
           }
         } else {
-          const newMapState = {
-            ...mapState,
-            mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-          };
+          // const newMapState = {
+          //   ...mapState,
+          //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+          // };
           const newViewport = {
             ...viewport,
             longitude: singleProjectLatLong[1],
@@ -240,14 +257,14 @@ export default function MapboxMap({
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic,
           };
-          setMapState(newMapState);
+          // setMapState(newMapState);
           setViewPort(newViewport);
         }
       } else {
-        const newMapState = {
-          ...mapState,
-          mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-        };
+        // const newMapState = {
+        //   ...mapState,
+        //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+        // };
         const newViewport = {
           ...viewport,
           latitude: defaultMapCenter[0],
@@ -257,14 +274,14 @@ export default function MapboxMap({
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: d3.easeCubic,
         };
-        setMapState(newMapState);
+        // setMapState(newMapState);
         setViewPort(newViewport);
       }
     } else {
-      const newMapState = {
-        ...mapState,
-        mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      };
+      // const newMapState = {
+      //   ...mapState,
+      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
+      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -274,7 +291,7 @@ export default function MapboxMap({
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
-      setMapState(newMapState);
+      // setMapState(newMapState);
       setViewPort(newViewport);
     }
   }, [
@@ -335,7 +352,7 @@ export default function MapboxMap({
         if (langCode) setLanguage(langCode);
       }
     }
-  }, []);
+  }, [selectedCurrency]);
 
   function goToNextProject() {
     if (currentSite < maxSites - 1) {
@@ -353,21 +370,27 @@ export default function MapboxMap({
     }
   }
 
+  const [userLang, setUserLang] = React.useState('en');
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('language')) {
+        let userLang = localStorage.getItem('language');
+        if (userLang) setUserLang(userLang);
+      }
+    }
+  }, []);
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
         ref={mapRef}
         {...mapState}
         {...viewport}
-        mapboxApiAccessToken={mapboxToken}
-        mapOptions={{
-          customAttribution:
-            '<a href="https://plant-for-the-planet.org/en/footermenu/privacy-policy">Privacy & Terms</a> <a href="https://plant-for-the-planet.org/en/footermenu/imprint">Imprint</a> <a href="mailto:support@plant-for-the-planet.org">Contact</a>',
-        }}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         scrollZoom={false}
         minZoom={1}
+        maxZoom={15}
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
@@ -383,26 +406,29 @@ export default function MapboxMap({
               <div className={styles.marker} />
             </Marker>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonLayer"
-                type="fill"
-                source="singleProject"
-                paint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-              />
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#68B030',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
+            <>
+              <Source
+                id="satellite"
+                type="raster"
+                tiles={[
+                  'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                ]}
+                tileSize={128}
+              >
+                <Layer id="satellite-layer" source="satellite" type="raster" />
+              </Source>
+              <Source id="singleProject" type="geojson" data={geoJson}>
+                <Layer
+                  id="ploygonOutline"
+                  type="line"
+                  source="singleProject"
+                  paint={{
+                    'line-color': '#fff',
+                    'line-width': 4,
+                  }}
+                />
+              </Source>
+            </>
           )
         ) : null}
 
@@ -562,14 +588,67 @@ export default function MapboxMap({
             </div>
           ) : null
         ) : null}
-        <div
-          onClick={() => {
-            setLanguageModalOpen(true);
-          }}
-          className={styles.lngSwitcher + ' mapboxgl-map'}
-        >{`🌐 ${
-          language ? language.toUpperCase() : ''
-        } · ${selectedCurrency}`}</div>
+        <div className={styles.lngSwitcher + ' mapboxgl-map'}>
+          <div
+            onClick={() => {
+              setLanguageModalOpen(true);
+            }}
+          >
+            {`🌐 ${
+              language ? language.toUpperCase() : ''
+            } • ${selectedCurrency}`}
+          </div>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
+            target={'_blank'}
+          >
+            {t('common:imprint')}
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`}
+            target={'_blank'}
+          >
+            {t('common:privacyAndTerms')}
+          </a>
+
+          <a
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              overflow: 'visible',
+            }}
+          >
+            <div style={{ width: 'fit-content' }}>
+              <div className={styles.popover}>
+                {t('common:mapInfo')}
+                <div
+                  className={styles.popoverContent}
+                  style={{ left: '-270px', top: '-140px' }}
+                >
+                  <a>
+                    Esri Community Maps Contributors, Esri, HERE, Garmin,
+                    METI/NASA, USGS
+                    <br />
+                    Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS,
+                    USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
+                    Community
+                  </a>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <a
+            rel="noopener noreferrer"
+            href="mailto:support@plant-for-the-planet.org"
+            target={'_blank'}
+          >
+            {t('common:contact')}
+          </a>
+        </div>
       </MapGL>
       {infoExpanded !== null ? (
         <Modal
@@ -595,6 +674,7 @@ export default function MapboxMap({
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
+        setCurrencyCode={setCurrencyCode}
       />
     </div>
   );
