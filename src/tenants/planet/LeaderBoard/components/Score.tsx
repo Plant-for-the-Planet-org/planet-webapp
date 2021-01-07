@@ -20,7 +20,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const [users, setUsers] = React.useState([]);
 
   async function fetchUsers(query: any) {
-    postRequest('/suggest',{q:query}).then((res) => {
+    postRequest('/suggest.php',{q:query}).then((res) => {
       console.log(res);
       setUsers(res);
     })
