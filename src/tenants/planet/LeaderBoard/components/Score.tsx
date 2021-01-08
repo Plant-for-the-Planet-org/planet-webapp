@@ -23,8 +23,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
 
   async function fetchUsers(query: any) {
     postRequest('/suggest.php', { q: query }).then((res) => {
-      console.log(res);
-      setUsers(res);
+      const result = res.filter(item => item.type !== 'competition');
+      setUsers(result);
     })
   }
   const imageErrorSrc = 'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg'
