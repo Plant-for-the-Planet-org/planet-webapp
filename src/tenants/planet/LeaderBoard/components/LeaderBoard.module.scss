@@ -163,3 +163,13 @@
     right: 0px;
   }
 }
+
+.searchedUserCard{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  > img {
+    margin-right: 12px;
+  }
+}

@@ -6,6 +6,8 @@ import LeaderboardLoader from '../../../../features/common/ContentLoaders/Leader
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MaterialTextField from '../../../../features/common/InputTypes/MaterialTextField';
 import { getRequest, postRequest } from '../../../../utils/apiRequests/api';
+import Link from 'next/link';
+import getImageUrl from '../../../../utils/getImageURL';
 
 interface Props {
   leaderboard: any;
@@ -20,11 +22,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const [users, setUsers] = React.useState([]);
 
   async function fetchUsers(query: any) {
-    postRequest('/suggest.php',{q:query}).then((res) => {
+    postRequest('/suggest.php', { q: query }).then((res) => {
       console.log(res);
       setUsers(res);
     })
   }
+  const imageErrorSrc = 'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg'
   return ready ? (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
@@ -59,9 +62,25 @@ export default function LeaderBoardSection(leaderboard: Props) {
             <Autocomplete
               freeSolo
               disableClearable
-              getOptionLabel={(option) => (typeof option === 'object' ? option : option.name)}
+              getOptionLabel={(option) => (option.name)}
               options={users}
+              renderOption={(option) => (
+                <Link prefetch={false}
+                  href="/t/[id]"
+                  as={`/t/${option.slug}`}>
+                    <div className={styles.searchedUserCard}>
+                    <img
+                      src={getImageUrl('profile', 'avatar', option.image)}
+                      onError={(e) => (e.target.onerror = null, e.target.src = imageErrorSrc)}
+                      height="26px"
+                      width="26px"
+                      style={{ borderRadius: '40px' }}
+                    />
+                    <span>{option.name}</span>
+                    </div>
 
+                </Link>
+              )}
               renderInput={(params) => (
                 <MaterialTextField
                   {...params}
@@ -78,9 +97,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
               )}
             />
           </div>
-
-
-
           {leaderboardData
             && leaderboardData.mostRecent
             && leaderboardData.mostDonated ? (
