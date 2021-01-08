@@ -8,10 +8,24 @@ import MaterialTextField from '../../../../features/common/InputTypes/MaterialTe
 import { getRequest, postRequest } from '../../../../utils/apiRequests/api';
 import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
+import { makeStyles } from '@material-ui/core/styles';
+import tenantConfig from '../../../../../tenant.config';
 
 interface Props {
   leaderboard: any;
 }
+const config = tenantConfig();
+const useStyles = makeStyles({
+  option: {
+    color: '#2F3336',
+    fontFamily: config!.font.primaryFontFamily,
+    fontSize: '14px',
+    '& > span': {
+      marginRight: 10,
+      fontSize: 18,
+    },
+  },
+});
 
 const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
@@ -20,6 +34,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
   const [users, setUsers] = React.useState([]);
+  const classes = useStyles();
 
   async function fetchUsers(query: any) {
     postRequest('/suggest.php', { q: query }).then((res) => {
@@ -64,6 +79,9 @@ export default function LeaderBoardSection(leaderboard: Props) {
               disableClearable
               getOptionLabel={(option) => (option.name)}
               options={users}
+              classes={{
+                option: classes.option,
+              }}
               renderOption={(option) => (
                 <Link prefetch={false}
                   href="/t/[id]"
