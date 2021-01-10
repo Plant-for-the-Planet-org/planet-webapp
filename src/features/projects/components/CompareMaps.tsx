@@ -30,7 +30,7 @@ export default function MapCompare({
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: [`${siteImagery[0]}`],
+            tiles: [`${siteImagery[2017]}`],
             tileSize: 256,
             attribution:
               'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',
@@ -57,7 +57,7 @@ export default function MapCompare({
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: [`${siteImagery[1]}`],
+            tiles: [`${siteImagery[2020]}`],
             tileSize: 256,
             attribution:
               'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',

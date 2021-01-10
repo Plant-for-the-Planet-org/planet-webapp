@@ -55,7 +55,9 @@ export default function VegetationChange({
           className={styles.options}
         >
           <SatelliteIcon color={selectedOption === 'imagery' ? '#fff' : null} />{' '}
-          <p>Imagery Comparison</p>
+          <p>
+            Imagery Comparison<sup>BETA</sup>
+          </p>
         </div>
         <div
           onClick={() => {
@@ -73,7 +75,9 @@ export default function VegetationChange({
           className={styles.options}
         >
           <TreeIcon2 color={selectedOption === 'vegetation' ? '#fff' : null} />{' '}
-          <p>Vegetation Change</p>
+          <p>
+            Vegetation Change<sup>BETA</sup>
+          </p>
         </div>
       </div>
     </>
