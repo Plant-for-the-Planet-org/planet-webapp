@@ -28,6 +28,7 @@
   "directGiftRecipient": "Diese Spende unterstützt",
   "recipientName": "Name des Beschenkten",
   "recipientNameRequired": "Name des Beschenkten ist erforderlich",
+  "removeRecipient": "Löschen",
   "giftMessage": "Nachricht zum Geschenk",
   "firstNameRequired": "Vorname ist erforderlich",
   "lastNameRequired": "Nachname ist erforderlich",

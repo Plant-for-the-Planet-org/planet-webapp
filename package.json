@@ -14,7 +14,8 @@
     "heroku-postbuild": "npm run build",
     "find:unused": "next-unused",
     "lint": "eslint i18n pages src",
-    "lint:errors": "eslint i18n pages src --quiet"
+    "lint:errors": "eslint i18n pages src --quiet",
+    "test": "jest --config ./jest.config.js"
   },
   "engines": {
     "node": "12.x",
@@ -81,7 +82,7 @@
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.4",
     "react-gtm-module": "^2.0.11",
-    "react-hook-form": "^6.12.2",
+    "react-hook-form": "^6.13.1",
     "react-i18next": "^11.8.3",
     "react-insta-stories": "^2.1.2",
     "react-lazyload": "^3.1.0",
@@ -96,7 +97,13 @@
     "vizzuality-components": "^3.0.3"
   },
   "devDependencies": {
+    "@jest-environment-browserstack/selenium-webdriver": "^2.0.1",
+    "@testing-library/dom": "^7.28.1",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.2.2",
     "@types/d3-ease": "^1.0.9",
+    "@types/jest": "^26.0.15",
     "@types/node": "^14.0.26",
     "@types/react": "^16.9.43",
     "@types/react-map-gl": "^5.2.7",
@@ -104,7 +111,10 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^26.6.3",
     "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
     "eslint": "^7.9.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -113,7 +123,11 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.2",
+    "jest": "^26.6.3",
+    "jest-css-modules": "^2.1.0",
+    "jest-environment-browserstack": "^2.0.1",
     "prettier": "^2.0.5",
+    "selenium-webdriver": "^4.0.0-alpha.8",
     "typescript": "^3.9.7"
   }
 }
