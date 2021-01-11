@@ -102,7 +102,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               renderInput={(params) => (
                 <MaterialTextField
                   {...params}
-                  label="Search User"
+                  label={t("leaderboard:searchUser")}
                   variant="outlined"
                   name="searchUser"
                   onChange={(e) => {
