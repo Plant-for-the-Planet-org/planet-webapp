@@ -9,7 +9,7 @@ import IndividualProfile from '../../src/features/user/UserProfile/screens/Indiv
 import {
   setUserExistsInDB,
   removeUserExistsInDB,
-  getUserInfo,
+  getLocalUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -82,7 +82,7 @@ export default function PublicUser(initialized: Props) {
           token = await getAccessTokenSilently();
         }
         let userInfo;
-        userInfo = await getUserInfo()
+        userInfo = await getLocalUserInfo()
         let currentUserSlug = userInfo?.slug ? userInfo.slug : null;
         
         // some user logged in and slug matches -> private profile

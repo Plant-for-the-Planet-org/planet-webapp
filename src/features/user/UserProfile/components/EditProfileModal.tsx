@@ -9,7 +9,7 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import {  getUserInfo, setUserInfo } from '../../../../utils/auth0/localStorageUtils'
+import { getLocalUserInfo, setLocalUserInfo } from '../../../../utils/auth0/localStorageUtils'
 import getImageUrl from '../../../../utils/getImageURL'
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
@@ -124,9 +124,9 @@ export default function EditProfileModal({
           handleSnackbarOpen()
 
           putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
-            const userInfo = getUserInfo()
+            const userInfo = getLocalUserInfo()
             const newUserInfo = { ...userInfo, profilePic: res.image }
-            setUserInfo(newUserInfo)
+            setLocalUserInfo(newUserInfo)
             setUpdatingPic(false);
           }).catch(error => {
             setUpdatingPic(false);
@@ -219,7 +219,7 @@ export default function EditProfileModal({
                         src={getImageUrl(
                           'profile',
                           'thumb',
-                          getUserInfo().profilePic
+                          getLocalUserInfo().profilePic
                         )}
                         className={styles.profilePicImg}
                       />

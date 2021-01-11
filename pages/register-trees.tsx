@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import LandingSection from '../src/features/common/Layout/LandingSection';
 import RegisterTrees from '../src/features/user/UserProfile/components/RegisterTrees';
-import { getUserInfo } from '../src/utils/auth0/localStorageUtils';
+import { getLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {}
@@ -24,8 +24,8 @@ export default function Register({}: Props): ReactElement {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
-      getUserInfo() && getUserInfo().slug
-        ? setCurrentUserSlug(getUserInfo().slug)
+      getLocalUserInfo() && getLocalUserInfo().slug
+        ? setCurrentUserSlug(getLocalUserInfo().slug)
         : null;
     }
     if (isAuthenticated && !isLoading) {
