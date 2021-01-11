@@ -10,6 +10,7 @@ import {
   setUserExistsInDB,
   removeUserExistsInDB,
   getLocalUserInfo,
+  removeLocalUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -57,7 +58,7 @@ export default function PublicUser(initialized: Props) {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem('userInfo');
+    removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 

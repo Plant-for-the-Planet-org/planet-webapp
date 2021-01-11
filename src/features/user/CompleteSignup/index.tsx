@@ -114,7 +114,7 @@ export default function CompleteSignup() {
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         console.log('in 401-> unauthenticated user / invalid token')
-        localStorage.removeItem('userInfo');
+        removeLocalUserInfo();
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
@@ -156,7 +156,7 @@ export default function CompleteSignup() {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem('userInfo');
+    removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 
