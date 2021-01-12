@@ -1,4 +1,4 @@
-import path  from 'path';
+import path from 'path';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import NextI18Next from 'next-i18next';
 import { initReactI18next } from 'react-i18next';
