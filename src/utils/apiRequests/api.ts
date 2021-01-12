@@ -146,10 +146,10 @@ export async function putAuthenticatedRequest(url:any,data:any,token:any) {
   return result;
 }
 
-export async function getEarthEngineLayer(data: any) {
+export async function getEarthEngineLayer(url:any,data: any) {
   let result;
   console.log(data,);
-  const res = await fetch(`${process.env.GEE_API_URL}`, {
+  const res = await fetch(`${process.env.GEE_API_URL+url}`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {

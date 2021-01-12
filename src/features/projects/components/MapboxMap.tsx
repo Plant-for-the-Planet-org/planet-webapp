@@ -28,6 +28,7 @@ import getMapStyle from '../../../utils/getMapStyle';
 import dynamic from 'next/dynamic';
 import ImagerySwitcher from './maps/ImagerySwitcher';
 import { Image } from 'react-mapbox-gl';
+import MapLoading from '../../common/ContentLoaders/Maps/MapLoading';
 
 const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
@@ -83,8 +84,9 @@ export default function MapboxMap({
   const [selectedOption, setSelectedState] = React.useState('none');
   const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
   const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
-  const [selectedYear1, setSelectedYear1] = React.useState('2017');
+  const [selectedYear1, setSelectedYear1] = React.useState('2019');
   const [selectedYear2, setSelectedYear2] = React.useState('2020');
+  const [isMapDataLoading, setIsMapDataLoading] = React.useState(false);
 
   const EMPTY_STYLE = {
     version: 8,
@@ -203,16 +205,39 @@ export default function MapboxMap({
     style,
   };
 
-  async function fetchData(data: any) {
-    const siteVgData = await getEarthEngineLayer(data);
-    siteVgData
-      ? () => {
-          setSiteVegetationChange(siteVgData.data.ndvi);
-          setSiteImagery(siteImageryData.data.imagery);
-        }
-      : null;
-    console.log(siteVgData);
+  async function fetchImageryData(url: any, data: any) {
+    setIsMapDataLoading(true);
+    const siteVgData = await getEarthEngineLayer(url, data);
+    siteVgData ? setSiteImagery(siteVgData.data.imagery) : null;
+    setTimeout(() => setIsMapDataLoading(false), 1000);
   }
+
+  async function fetchVegetationData(url: any, data: any) {
+    setIsMapDataLoading(true);
+    const siteVgData = await getEarthEngineLayer(url, data);
+    siteVgData ? setSiteVegetationChange(siteVgData.data.ndvi) : null;
+    setTimeout(() => setIsMapDataLoading(false), 1000);
+  }
+
+  React.useEffect(() => {
+    if (showSingleProject) {
+      if (project) {
+        if (siteExists) {
+          if (geoJson) {
+            if (selectedOption === 'imagery')
+              if (!siteImagery) {
+                fetchImageryData('/imagery', geoJson);
+              }
+          }
+          if (selectedOption === 'vegetation') {
+            if (!siteVegetationChange) {
+              fetchVegetationData('/vegetation', geoJson);
+            }
+          }
+        }
+      }
+    }
+  }, [selectedOption]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -254,6 +279,8 @@ export default function MapboxMap({
     } else {
       setExploreProjects(true);
       setShowProjects(true);
+      setSiteVegetationChange(null);
+      setSiteImagery(null);
     }
   }, [showSingleProject, project]);
 
@@ -294,7 +321,6 @@ export default function MapboxMap({
             };
             setProjectCenter([longitude, latitude]);
             setProjectZoom(zoom);
-            fetchData(geoJson);
             setViewPort(newViewport);
             // setMapState(newMapState);
           }
@@ -769,6 +795,9 @@ export default function MapboxMap({
         setSelectedCountry={setSelectedCountry}
         setCurrencyCode={setCurrencyCode}
       />
+      {isMapDataLoading ? (
+        <MapLoading isMapDataLoading={isMapDataLoading} />
+      ) : null}
     </div>
   );
 }
