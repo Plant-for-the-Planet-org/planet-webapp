@@ -48,6 +48,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
+  const [currencyCode, setCurrencyCode] = React.useState('');
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -95,6 +96,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setShowProjects,
     searchedProject,
     setsearchedProjects,
+    currencyCode,
+    setCurrencyCode
   };
 
   return (

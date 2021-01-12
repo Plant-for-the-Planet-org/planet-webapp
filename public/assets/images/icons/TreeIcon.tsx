@@ -20,7 +20,7 @@ function TreeIcon(props: any) {
           transform="translate(13)"
           fill={props.color ? props.color : '#68B030'}
           stroke="#fff"
-          stroke-width="0.5"
+          strokeWidth="0.5"
         />
         <ellipse
           id="Ellipse_182"
