@@ -25,56 +25,45 @@ export default function MapCompare({
   React.useEffect(() => {
     var before = new mapboxgl.Map({
       container: 'before', // Container ID
-      style: {
-        version: 8,
-        sources: {
-          'raster-tiles': {
-            type: 'raster',
-            tiles: [`${siteImagery[2017]}`],
-            tileSize: 256,
-            attribution:
-              'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',
-          },
-        },
-        layers: [
-          {
-            id: 'simple-tiles',
-            type: 'raster',
-            source: 'raster-tiles',
-            minzoom: 0,
-            maxzoom: 22,
-          },
-        ],
-      },
+      style: EMPTY_STYLE,
       center: projectCenter,
       zoom: projectZoom,
     });
 
     var after = new mapboxgl.Map({
       container: 'after', // Container ID
-      style: {
-        version: 8,
-        sources: {
-          'raster-tiles': {
-            type: 'raster',
-            tiles: [`${siteImagery[2020]}`],
-            tileSize: 256,
-            attribution:
-              'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',
-          },
-        },
-        layers: [
-          {
-            id: 'simple-tiles',
-            type: 'raster',
-            source: 'raster-tiles',
-            minzoom: 0,
-            maxzoom: 22,
-          },
-        ],
-      },
+      style: EMPTY_STYLE,
       center: projectCenter,
       zoom: projectZoom,
+    });
+
+    before.on('load', function () {
+      before.addSource('basemap', {
+        type: 'raster',
+        tiles: [`${siteImagery[2017]}`],
+        tileSize: 256,
+        attribution: 'layer attribution'
+      });
+      before.addLayer({
+        'id': 'basemap-layer',
+        'type': 'raster',
+        'source': 'basemap',
+      });
+    });
+
+
+    after.on('load', function () {
+      after.addSource('basemap', {
+        type: 'raster',
+        tiles: [`${siteImagery[2020]}`],
+        tileSize: 256,
+        attribution: 'layer attribution'
+      });
+      after.addLayer({
+        'id': 'basemap-layer',
+        'type': 'raster',
+        'source': 'basemap',
+      });
     });
 
     // A selector or reference to HTML element

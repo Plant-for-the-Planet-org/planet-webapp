@@ -4,7 +4,7 @@
   height: 38px;
   border-radius: 13px;
   position: absolute;
-  top: 40px;
+  top: 100px;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -45,13 +45,59 @@
   font-size: 8px;
 }
 
+.dropdownContainer {
+  position: absolute;
+  top: 160px;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.beforeYear {
+  z-index: 10;
+  height: 38px;
+  border: 1px solid #d5d5d5;
+  border-radius: 13px;
+  background-color: $backgroundColor;
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.afterYear {
+  z-index: 10;
+  height: 38px;
+  border: 1px solid #d5d5d5;
+  border-radius: 13px;
+  background-color: $backgroundColor;
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 :export {
   primaryColor: $primaryColor;
 }
 
-@include smTabletView {
+@include mdTabletView {
   .VegetationChangeContainer {
+    top: 40px;
     margin-left: 400px;
+  }
+  .dropdownContainer {
+    padding: 0 20px 0 400px;
+    top: 98px;
   }
 }
 

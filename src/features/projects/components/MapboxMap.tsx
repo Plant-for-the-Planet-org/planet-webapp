@@ -26,6 +26,7 @@ import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
 import getMapStyle from '../../../utils/getMapStyle';
 import dynamic from 'next/dynamic';
+import ImagerySwitcher from './maps/ImagerySwitcher';
 
 const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
@@ -470,18 +471,18 @@ export default function MapboxMap({
               </Source>
             </>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#fff',
-                  'line-width': 4,
-                }}
-              />
-            </Source>
-          )
+                <Source id="singleProject" type="geojson" data={geoJson}>
+                  <Layer
+                    id="ploygonOutline"
+                    type="line"
+                    source="singleProject"
+                    paint={{
+                      'line-color': '#fff',
+                      'line-width': 4,
+                    }}
+                  />
+                </Source>
+              )
         ) : null}
         {selectedOption === 'vegetation' ? (
           siteVegetationChange ? (
@@ -533,7 +534,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => {}}
+                onFocus={() => { }}
               />
             </Marker>
           ))}
@@ -605,6 +606,10 @@ export default function MapboxMap({
           <VegetationChange {...VegetationChangeProps} />
         ) : null}
 
+        {showSingleProject ? (
+          <ImagerySwitcher />
+        ) : null}
+
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
@@ -637,9 +642,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                siteExists &&
-                project.sites.length !== 0 &&
-                geoJson.features[currentSite]
+                  siteExists &&
+                  project.sites.length !== 0 &&
+                  geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -661,9 +666,8 @@ export default function MapboxMap({
               setLanguageModalOpen(true);
             }}
           >
-            {`🌐 ${
-              language ? language.toUpperCase() : ''
-            } • ${selectedCurrency}`}
+            {`🌐 ${language ? language.toUpperCase() : ''
+              } • ${selectedCurrency}`}
           </div>
           <a
             rel="noopener noreferrer"
@@ -718,11 +722,11 @@ export default function MapboxMap({
         </div>
       </MapGL>
       {showSingleProject &&
-      siteExists &&
-      selectedOption === 'imagery' &&
-      siteImagery ? (
-        <MapCompare {...CompareProps} />
-      ) : null}
+        siteExists &&
+        selectedOption === 'imagery' &&
+        siteImagery ? (
+          <MapCompare {...CompareProps} />
+        ) : null}
 
       {infoExpanded !== null ? (
         <Modal
