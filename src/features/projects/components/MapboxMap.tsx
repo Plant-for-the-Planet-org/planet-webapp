@@ -27,6 +27,7 @@ import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageA
 import getMapStyle from '../../../utils/getMapStyle';
 import dynamic from 'next/dynamic';
 import ImagerySwitcher from './maps/ImagerySwitcher';
+import { Image } from 'react-mapbox-gl';
 
 const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
@@ -49,7 +50,7 @@ export default function MapboxMap({
   setShowProjects,
   searchedProject,
   showProjects,
-  setCurrencyCode
+  setCurrencyCode,
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -82,12 +83,16 @@ export default function MapboxMap({
   const [selectedOption, setSelectedState] = React.useState('none');
   const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
   const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
+  const [selectedYear1, setSelectedYear1] = React.useState('2017');
+  const [selectedYear2, setSelectedYear2] = React.useState('2020');
 
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
     layers: [],
   };
+
+  const [style, setStyle] = React.useState(EMPTY_STYLE);
 
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
@@ -107,6 +112,7 @@ export default function MapboxMap({
     promise.then((style) => {
       if (style) {
         setMapState({ ...mapState, mapStyle: style });
+        setStyle(style);
       }
     });
   }, []);
@@ -180,23 +186,32 @@ export default function MapboxMap({
     siteImagery,
   };
 
+  const ImagerySwitcherProps = {
+    selectedYear1,
+    setSelectedYear1,
+    selectedYear2,
+    setSelectedYear2,
+  };
+
   const CompareProps = {
     siteImagery,
     mapRef,
     projectCenter,
     projectZoom,
+    selectedYear1,
+    selectedYear2,
+    style,
   };
 
-  async function getSiteVegetationChange(data: any) {
+  async function fetchData(data: any) {
     const siteVgData = await getEarthEngineLayer(data);
-    siteVgData ? setSiteVegetationChange(siteVgData.data.ndvi) : null;
+    siteVgData
+      ? () => {
+          setSiteVegetationChange(siteVgData.data.ndvi);
+          setSiteImagery(siteImageryData.data.imagery);
+        }
+      : null;
     console.log(siteVgData);
-  }
-
-  async function getSiteImagery(data: any) {
-    const siteImageryData = await getEarthEngineLayer(data);
-    siteImageryData ? setSiteImagery(siteImageryData.data.imagery) : null;
-    console.log(siteImageryData);
   }
 
   React.useEffect(() => {
@@ -279,8 +294,7 @@ export default function MapboxMap({
             };
             setProjectCenter([longitude, latitude]);
             setProjectZoom(zoom);
-            getSiteVegetationChange(geoJson);
-            getSiteImagery(geoJson);
+            fetchData(geoJson);
             setViewPort(newViewport);
             // setMapState(newMapState);
           }
@@ -471,18 +485,18 @@ export default function MapboxMap({
               </Source>
             </>
           ) : (
-                <Source id="singleProject" type="geojson" data={geoJson}>
-                  <Layer
-                    id="ploygonOutline"
-                    type="line"
-                    source="singleProject"
-                    paint={{
-                      'line-color': '#fff',
-                      'line-width': 4,
-                    }}
-                  />
-                </Source>
-              )
+            <Source id="singleProject" type="geojson" data={geoJson}>
+              <Layer
+                id="ploygonOutline"
+                type="line"
+                source="singleProject"
+                paint={{
+                  'line-color': '#fff',
+                  'line-width': 4,
+                }}
+              />
+            </Source>
+          )
         ) : null}
         {selectedOption === 'vegetation' ? (
           siteVegetationChange ? (
@@ -534,7 +548,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => { }}
+                onFocus={() => {}}
               />
             </Marker>
           ))}
@@ -606,10 +620,6 @@ export default function MapboxMap({
           <VegetationChange {...VegetationChangeProps} />
         ) : null}
 
-        {showSingleProject ? (
-          <ImagerySwitcher />
-        ) : null}
-
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
@@ -642,9 +652,9 @@ export default function MapboxMap({
               <p className={styles.projectControlText}>
                 &nbsp;&nbsp;
                 {project &&
-                  siteExists &&
-                  project.sites.length !== 0 &&
-                  geoJson.features[currentSite]
+                siteExists &&
+                project.sites.length !== 0 &&
+                geoJson.features[currentSite]
                   ? geoJson.features[currentSite].properties.name
                   : null}
                 &nbsp;&nbsp;
@@ -666,8 +676,9 @@ export default function MapboxMap({
               setLanguageModalOpen(true);
             }}
           >
-            {`🌐 ${language ? language.toUpperCase() : ''
-              } • ${selectedCurrency}`}
+            {`🌐 ${
+              language ? language.toUpperCase() : ''
+            } • ${selectedCurrency}`}
           </div>
           <a
             rel="noopener noreferrer"
@@ -722,11 +733,15 @@ export default function MapboxMap({
         </div>
       </MapGL>
       {showSingleProject &&
-        siteExists &&
-        selectedOption === 'imagery' &&
-        siteImagery ? (
-          <MapCompare {...CompareProps} />
-        ) : null}
+      siteExists &&
+      selectedOption === 'imagery' &&
+      siteImagery ? (
+        <MapCompare {...CompareProps} />
+      ) : null}
+
+      {showSingleProject && selectedOption === 'imagery' ? (
+        <ImagerySwitcher {...ImagerySwitcherProps} />
+      ) : null}
 
       {infoExpanded !== null ? (
         <Modal

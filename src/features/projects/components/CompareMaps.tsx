@@ -8,6 +8,9 @@ interface Props {
   siteImagery: any;
   projectZoom: any;
   projectCenter: any;
+  selectedYear1: any;
+  selectedYear2: any;
+  style: any;
 }
 
 export default function MapCompare({
@@ -15,24 +18,21 @@ export default function MapCompare({
   siteImagery,
   projectCenter,
   projectZoom,
+  selectedYear1,
+  selectedYear2,
+  style,
 }: Props): ReactElement {
-  const accessToken = process.env.MAPBOXGL_ACCESS_TOKEN;
-  const EMPTY_STYLE = {
-    version: 8,
-    sources: {},
-    layers: [],
-  };
   React.useEffect(() => {
     var before = new mapboxgl.Map({
       container: 'before', // Container ID
-      style: EMPTY_STYLE,
+      style: style,
       center: projectCenter,
       zoom: projectZoom,
     });
 
     var after = new mapboxgl.Map({
       container: 'after', // Container ID
-      style: EMPTY_STYLE,
+      style: style,
       center: projectCenter,
       zoom: projectZoom,
     });
@@ -40,29 +40,28 @@ export default function MapCompare({
     before.on('load', function () {
       before.addSource('basemap', {
         type: 'raster',
-        tiles: [`${siteImagery[2017]}`],
+        tiles: [`${siteImagery[Number(selectedYear1)]}`],
         tileSize: 256,
-        attribution: 'layer attribution'
+        attribution: 'layer attribution',
       });
       before.addLayer({
-        'id': 'basemap-layer',
-        'type': 'raster',
-        'source': 'basemap',
+        id: 'basemap-layer',
+        type: 'raster',
+        source: 'basemap',
       });
     });
-
 
     after.on('load', function () {
       after.addSource('basemap', {
         type: 'raster',
-        tiles: [`${siteImagery[2020]}`],
+        tiles: [`${siteImagery[Number(selectedYear2)]}`],
         tileSize: 256,
-        attribution: 'layer attribution'
+        attribution: 'layer attribution',
       });
       after.addLayer({
-        'id': 'basemap-layer',
-        'type': 'raster',
-        'source': 'basemap',
+        id: 'basemap-layer',
+        type: 'raster',
+        source: 'basemap',
       });
     });
 
@@ -75,7 +74,7 @@ export default function MapCompare({
     });
 
     syncMove(before, mapRef.current.getMap());
-  }, []);
+  }, [selectedYear1, selectedYear2]);
   return (
     <div style={{ userSelect: 'none' }} id="comparison-container">
       <div className="comparison-map" id="before"></div>

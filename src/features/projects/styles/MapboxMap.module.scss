@@ -10,7 +10,7 @@
   padding-bottom: 60px;
 }
 
-.mapContainer > div {
+.mapContainer > div:first-child {
   height: 100% !important;
   width: 100% !important;
 }
