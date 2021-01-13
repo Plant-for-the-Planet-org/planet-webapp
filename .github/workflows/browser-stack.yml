@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - develop
+      - main
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
@@ -10,11 +11,11 @@ jobs:
     steps:
 
       - name: Wait for Vercel deployment # ${{ steps.waitForVercel.outputs.url }} should return the Vercel deployment url
-        uses: patrickedqvist/wait-for-vercel-preview@master
+        uses: patrickedqvist/wait-for-vercel-preview@v1.0.4
         id: waitForVercel
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 180
+          max_timeout: 600
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
