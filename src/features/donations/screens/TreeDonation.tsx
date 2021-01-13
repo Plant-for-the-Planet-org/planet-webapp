@@ -162,6 +162,9 @@ function TreeDonation({
   const loginuser = () => {
     loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
   }
+
+  console.log('Payment Setup', paymentSetup);
+  
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -304,7 +307,7 @@ function TreeDonation({
               </motion.div>
             </div>
 
-            {token && (
+            {token && paymentSetup.gateways.stripe.isCollect && (
               <>
                 <div className={styles.donationFrequencyTitle}>
                   {t('donate:recurrency')}

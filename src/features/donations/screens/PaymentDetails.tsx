@@ -527,7 +527,7 @@ function PaymentDetails({
           </div>
         }
 
-        { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
+        { paypalCurrencies.includes(currency) && recurrencyMnemonic === 'none' && paymentSetup?.gateways.paypal &&
           <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
             <div className={styles.paymentModeHeader}>
               <PaypalIcon />
@@ -590,7 +590,7 @@ function PaymentDetails({
 
       </div>
     )
-  ) : null;
+  ) : <></>;
 }
 
 export default PaymentDetails;
