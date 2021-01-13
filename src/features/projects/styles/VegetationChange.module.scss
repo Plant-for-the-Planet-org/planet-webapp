@@ -1,14 +1,14 @@
 @import './../../../theme/theme';
 
 .VegetationChangeContainer {
-  height: 38px;
-  border-radius: 13px;
   position: absolute;
   top: 100px;
   left: 0;
   right: 0;
   margin: 0 auto;
   width: fit-content;
+  height: 38px;
+  border-radius: 13px;
   background-color: $backgroundColor;
   display: flex;
   flex-direction: row;
@@ -83,8 +83,8 @@
 
 @include mdTabletView {
   .VegetationChangeContainer {
-    top: 40px;
-    margin-left: 400px;
+    left: 350px;
+    top: 110px;
   }
   .dropdownContainer {
     padding: 0 20px 0 400px;

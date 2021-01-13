@@ -11,6 +11,8 @@ interface Props {
   selectedYear1: any;
   selectedYear2: any;
   style: any;
+  isMapDataLoading: any;
+  selectedOption: any;
 }
 
 export default function MapCompare({
@@ -21,49 +23,33 @@ export default function MapCompare({
   selectedYear1,
   selectedYear2,
   style,
+  isMapDataLoading,
+  selectedOption
 }: Props): ReactElement {
+
+  const [before, setBefore] = React.useState();
+  const [after, setAfter] = React.useState();
+
   React.useEffect(() => {
     var before = new mapboxgl.Map({
       container: 'before', // Container ID
       style: style,
       center: projectCenter,
       zoom: projectZoom,
+      interactive: false
     });
+
+    setBefore(before);
 
     var after = new mapboxgl.Map({
       container: 'after', // Container ID
       style: style,
       center: projectCenter,
       zoom: projectZoom,
+      interactive: false
     });
 
-    before.on('load', function () {
-      before.addSource('basemap', {
-        type: 'raster',
-        tiles: [`${siteImagery[Number(selectedYear1)]}`],
-        tileSize: 256,
-        attribution: 'layer attribution',
-      });
-      before.addLayer({
-        id: 'basemap-layer',
-        type: 'raster',
-        source: 'basemap',
-      });
-    });
-
-    after.on('load', function () {
-      after.addSource('basemap', {
-        type: 'raster',
-        tiles: [`${siteImagery[Number(selectedYear2)]}`],
-        tileSize: 256,
-        attribution: 'layer attribution',
-      });
-      after.addLayer({
-        id: 'basemap-layer',
-        type: 'raster',
-        source: 'basemap',
-      });
-    });
+    setAfter(after);
 
     // A selector or reference to HTML element
     var container = '#comparison-container';
@@ -74,11 +60,82 @@ export default function MapCompare({
     });
 
     syncMove(before, mapRef.current.getMap());
-  }, [selectedYear1, selectedYear2]);
+  }, []);
+
+  React.useEffect(() => {
+    if (before && after) {
+      console.log('map loaded');
+      try {
+        siteImagery.map((year: any) => {
+          console.log('inside map');
+          if (year.year === selectedYear1) {
+            console.log('year exists');
+            if (before.isSourceLoaded(`before-imagery-${year.year}`)) {
+              console.log('source already loaded');
+              before.addLayer({
+                id: `before-imagery-${year.year}-layer`,
+                type: 'raster',
+                source: `before-imagery-${year.year}`,
+              });
+            } else {
+              before.addSource(`before-imagery-${year.year}`, {
+                type: 'raster',
+                tiles: [`${year.layer}`],
+                tileSize: 256,
+                attribution: 'layer attribution',
+              });
+              console.log('create source');
+              before.addLayer({
+                id: `before-imagery-${year.year}-layer`,
+                type: 'raster',
+                source: `before-imagery-${year.year}`,
+              });
+              console.log('create layer');
+            }
+          } else {
+            before.removeLayer(`before-imagery-${year.year}-layer`);
+          }
+
+          if (year.year === selectedYear2) {
+            if (after.isSourceLoaded(`after-imagery-${year.year}`)) {
+              after.addLayer({
+                id: `after-imagery-${year.year}-layer`,
+                type: 'raster',
+                source: `after-imagery-${year.year}`,
+              });
+            } else {
+              after.addSource(`after-imagery-${year.year}`, {
+                type: 'raster',
+                tiles: [`${year.layer}`],
+                tileSize: 256,
+                attribution: 'layer attribution',
+              });
+              after.addLayer({
+                id: `after-imagery-${year.year}-layer`,
+                type: 'raster',
+                source: `after-imagery-${year.year}`,
+              });
+            }
+          } else {
+            after.removeLayer(`after-imagery-${year.year}-layer`);
+          }
+        })
+      } catch (e: any) {
+        console.log('Error: ', e);
+      }
+    }
+  }, [selectedYear1, selectedYear2, isMapDataLoading, selectedOption]);
   return (
-    <div style={{ userSelect: 'none' }} id="comparison-container">
-      <div className="comparison-map" id="before"></div>
-      <div className="comparison-map" id="after"></div>
-    </div>
+    <>
+      {
+        // selectedOption === 'imagery' &&
+        //   siteImagery !== [] ? (
+        <div style={selectedOption === 'imagery' && siteImagery !== [] ? { userSelect: 'none' } : { display: 'none' }} id="comparison-container">
+          <div className="comparison-map" id="before"></div>
+          <div className="comparison-map" id="after"></div>
+        </div>
+        // ) : null
+      }
+    </>
   );
 }

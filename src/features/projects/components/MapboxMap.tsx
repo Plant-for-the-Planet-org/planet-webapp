@@ -80,7 +80,7 @@ export default function MapboxMap({
   const [loaded, setLoaded] = useState(false);
   const infoRef = useRef(null);
   const [siteVegetationChange, setSiteVegetationChange] = useState(null);
-  const [siteImagery, setSiteImagery] = useState(null);
+  const [siteImagery, setSiteImagery] = useState([]);
   const [selectedOption, setSelectedState] = React.useState('none');
   const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
   const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
@@ -203,20 +203,34 @@ export default function MapboxMap({
     selectedYear1,
     selectedYear2,
     style,
+    isMapDataLoading,
+    selectedOption
   };
 
   async function fetchImageryData(url: any, data: any) {
     setIsMapDataLoading(true);
-    const siteVgData = await getEarthEngineLayer(url, data);
-    siteVgData ? setSiteImagery(siteVgData.data.imagery) : null;
-    setTimeout(() => setIsMapDataLoading(false), 1000);
+    const payload = { year1: selectedYear1, year2: selectedYear2, geometry: data }
+    const siteVgData = await getEarthEngineLayer(url, payload);
+    siteVgData &&
+      siteVgData.data.imagery.map((year: any) => {
+        var temp = siteImagery;
+        temp.push(year);
+        setSiteImagery(temp);
+      });
+    setTimeout(() => setIsMapDataLoading(false), 2000);
   }
 
   async function fetchVegetationData(url: any, data: any) {
     setIsMapDataLoading(true);
     const siteVgData = await getEarthEngineLayer(url, data);
     siteVgData ? setSiteVegetationChange(siteVgData.data.ndvi) : null;
-    setTimeout(() => setIsMapDataLoading(false), 1000);
+    setTimeout(() => setIsMapDataLoading(false), 2000);
+  }
+
+  const yearExists = (year: any) => {
+    return siteImagery.some(function (el: any) {
+      return el.year === year;
+    });
   }
 
   React.useEffect(() => {
@@ -225,7 +239,7 @@ export default function MapboxMap({
         if (siteExists) {
           if (geoJson) {
             if (selectedOption === 'imagery')
-              if (!siteImagery) {
+              if (!yearExists(selectedYear1) || !yearExists(selectedYear2)) {
                 fetchImageryData('/imagery', geoJson);
               }
           }
@@ -237,7 +251,7 @@ export default function MapboxMap({
         }
       }
     }
-  }, [selectedOption]);
+  }, [selectedOption, selectedYear1, selectedYear2]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -280,7 +294,7 @@ export default function MapboxMap({
       setExploreProjects(true);
       setShowProjects(true);
       setSiteVegetationChange(null);
-      setSiteImagery(null);
+      setSiteImagery([]);
     }
   }, [showSingleProject, project]);
 
@@ -511,18 +525,18 @@ export default function MapboxMap({
               </Source>
             </>
           ) : (
-            <Source id="singleProject" type="geojson" data={geoJson}>
-              <Layer
-                id="ploygonOutline"
-                type="line"
-                source="singleProject"
-                paint={{
-                  'line-color': '#fff',
-                  'line-width': 4,
-                }}
-              />
-            </Source>
-          )
+                <Source id="singleProject" type="geojson" data={geoJson}>
+                  <Layer
+                    id="ploygonOutline"
+                    type="line"
+                    source="singleProject"
+                    paint={{
+                      'line-color': '#fff',
+                      'line-width': 4,
+                    }}
+                  />
+                </Source>
+              )
         ) : null}
         {selectedOption === 'vegetation' ? (
           siteVegetationChange ? (
@@ -574,7 +588,7 @@ export default function MapboxMap({
                 onMouseLeave={() => {
                   clearTimeout(timer);
                 }}
-                onFocus={() => {}}
+                onFocus={() => { }}
               />
             </Marker>
           ))}
@@ -642,10 +656,6 @@ export default function MapboxMap({
           </Popup>
         )}
 
-        {showSingleProject ? (
-          <VegetationChange {...VegetationChangeProps} />
-        ) : null}
-
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
@@ -663,48 +673,14 @@ export default function MapboxMap({
           exploreProjects={exploreProjects}
         />
 
-        {showSingleProject && siteExists ? (
-          maxSites! > 1 ? (
-            <div className={styles.projectControls}>
-              <div
-                onClick={goToPrevProject}
-                onKeyPress={goToPrevProject}
-                role="button"
-                tabIndex={0}
-              >
-                <LeftIcon />
-              </div>
-
-              <p className={styles.projectControlText}>
-                &nbsp;&nbsp;
-                {project &&
-                siteExists &&
-                project.sites.length !== 0 &&
-                geoJson.features[currentSite]
-                  ? geoJson.features[currentSite].properties.name
-                  : null}
-                &nbsp;&nbsp;
-              </p>
-              <div
-                onClick={goToNextProject}
-                onKeyPress={goToNextProject}
-                role="button"
-                tabIndex={0}
-              >
-                <RightIcon />
-              </div>
-            </div>
-          ) : null
-        ) : null}
         <div className={styles.lngSwitcher + ' mapboxgl-map'}>
           <div
             onClick={() => {
               setLanguageModalOpen(true);
             }}
           >
-            {`🌐 ${
-              language ? language.toUpperCase() : ''
-            } • ${selectedCurrency}`}
+            {`🌐 ${language ? language.toUpperCase() : ''
+              } • ${selectedCurrency}`}
           </div>
           <a
             rel="noopener noreferrer"
@@ -758,11 +734,46 @@ export default function MapboxMap({
           </a>
         </div>
       </MapGL>
-      {showSingleProject &&
-      siteExists &&
-      selectedOption === 'imagery' &&
-      siteImagery ? (
+      {showSingleProject && siteExists ?
         <MapCompare {...CompareProps} />
+        : null}
+
+      {showSingleProject && siteExists ? (
+        maxSites! > 1 ? (
+          <div className={styles.projectControls}>
+            <div
+              onClick={goToPrevProject}
+              onKeyPress={goToPrevProject}
+              role="button"
+              tabIndex={0}
+            >
+              <LeftIcon />
+            </div>
+
+            <p className={styles.projectControlText}>
+              &nbsp;&nbsp;
+                {project &&
+                siteExists &&
+                project.sites.length !== 0 &&
+                geoJson.features[currentSite]
+                ? geoJson.features[currentSite].properties.name
+                : null}
+                &nbsp;&nbsp;
+              </p>
+            <div
+              onClick={goToNextProject}
+              onKeyPress={goToNextProject}
+              role="button"
+              tabIndex={0}
+            >
+              <RightIcon />
+            </div>
+          </div>
+        ) : null
+      ) : null}
+
+      {showSingleProject ? (
+        <VegetationChange {...VegetationChangeProps} />
       ) : null}
 
       {showSingleProject && selectedOption === 'imagery' ? (

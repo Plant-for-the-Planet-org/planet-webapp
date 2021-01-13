@@ -441,18 +441,18 @@
   .projectControls {
     top: auto;
     bottom: 30px;
-    left: 300px;
+    left: 350px;
   }
   .exploreButton {
     flex-direction: row;
   }
 }
 
-@include lgLaptopView {
-  .projectControls {
-    left: 0px;
-  }
-}
+// @include lgLaptopView {
+//   .projectControls {
+//     left: 0px;
+//   }
+// }
 
 @include xsPhoneView {
   .mapNavigation {
