@@ -86,7 +86,7 @@
     "react-map-gl": "^5.2.10",
     "react-mapbox-gl": "^5.1.0",
     "react-mapbox-gl-draw": "^2.0.4",
-    "react-player": "^2.7.0",
+    "react-player": "^2.7.2",
     "read-more-react": "^1.0.10",
     "styled-jsx": "^3.3.2",
     "uuid": "^8.3.2",
