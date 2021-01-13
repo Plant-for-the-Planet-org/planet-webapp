@@ -10,6 +10,7 @@ import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
 import { makeStyles } from '@material-ui/core/styles';
 import tenantConfig from '../../../../../tenant.config';
+import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 
 interface Props {
   leaderboard: any;
@@ -71,9 +72,56 @@ export default function LeaderBoardSection(leaderboard: Props) {
             >
               {t('leaderboard:mostTrees')}
             </div>
+            <div
+              onClick={() => setSelectedTab('search')}
+              className={
+                selectedTab === 'search'
+                  ? styles.leaderBoardTableHeaderTitleSelected
+                  : styles.leaderBoardTableHeaderTitle
+              }
+            >
+               <SearchIcon/>
+            </div>
           </div>
 
-          <div style={{ width: '300px', marginTop: '24px' }}>
+          {leaderboardData
+            && leaderboardData.mostRecent
+            && leaderboardData.mostDonated ? (
+              selectedTab === 'recent' ? (
+                <div className={styles.leaderBoardBody}>
+                  {leaderboardData.mostRecent.map((leader: any) => (
+                    <div className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {getFormattedNumber(i18n.language, Number(leader.treeCount))}
+                        {' '}
+                        {t('common:trees')}
+                      </p>
+                      {/* <p className={styles.leaderBoardDonorTime}>
+                          {leader.created}
+                        </p> */}
+                    </div>
+                  ))}
+                </div>
+              ) : selectedTab === 'highest' ? (
+                  <div className={styles.leaderBoardBody}>
+                    {leaderboardData.mostDonated.map((leader: any) => (
+                      <div className={styles.leaderBoardBodyRow}>
+                        <p className={styles.leaderBoardDonorName}>
+                          {leader.donorName}
+                        </p>
+                        <p className={styles.leaderBoardDonorTrees}>
+                          {getFormattedNumber(i18n.language, Number(leader.treeCount))}
+                          {' '}
+                          {t('common:trees')}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+<div style={{ width: '300px', marginTop: '24px',marginBottom:'420px' }}>
             <Autocomplete
               freeSolo
               disableClearable
@@ -115,42 +163,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
               )}
             />
           </div>
-          {leaderboardData
-            && leaderboardData.mostRecent
-            && leaderboardData.mostDonated ? (
-              selectedTab === 'recent' ? (
-                <div className={styles.leaderBoardBody}>
-                  {leaderboardData.mostRecent.map((leader: any) => (
-                    <div className={styles.leaderBoardBodyRow}>
-                      <p className={styles.leaderBoardDonorName}>
-                        {leader.donorName}
-                      </p>
-                      <p className={styles.leaderBoardDonorTrees}>
-                        {getFormattedNumber(i18n.language, Number(leader.treeCount))}
-                        {' '}
-                        {t('common:trees')}
-                      </p>
-                      {/* <p className={styles.leaderBoardDonorTime}>
-                          {leader.created}
-                        </p> */}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                  <div className={styles.leaderBoardBody}>
-                    {leaderboardData.mostDonated.map((leader: any) => (
-                      <div className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(i18n.language, Number(leader.treeCount))}
-                          {' '}
-                          {t('common:trees')}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
                 )
             ) : (
               <>

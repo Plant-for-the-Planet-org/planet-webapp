@@ -60,6 +60,9 @@
   font-weight: normal;
   font-size: 13px;
   color: #080707;
+  > svg {
+    height: 13px;
+  }
 }
 
 .leaderBoardTableHeaderTitleSelected {
@@ -70,6 +73,10 @@
   font-weight: bold;
   font-size: 13px;
   color: #080707;
+  > svg {
+    height: 13px;
+    > path {fill: #68b030;}
+  }
 }
 
 .leaderBoardTableHeaderTitle:hover {
