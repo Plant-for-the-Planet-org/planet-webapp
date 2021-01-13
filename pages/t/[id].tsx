@@ -9,7 +9,8 @@ import IndividualProfile from '../../src/features/user/UserProfile/screens/Indiv
 import {
   setUserExistsInDB,
   removeUserExistsInDB,
-  getUserInfo,
+  getLocalUserInfo,
+  removeLocalUserInfo,
 } from '../../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -57,7 +58,7 @@ export default function PublicUser(initialized: Props) {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem('userInfo');
+    removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 
@@ -82,7 +83,7 @@ export default function PublicUser(initialized: Props) {
           token = await getAccessTokenSilently();
         }
         let userInfo;
-        userInfo = await getUserInfo()
+        userInfo = await getLocalUserInfo()
         let currentUserSlug = userInfo?.slug ? userInfo.slug : null;
         
         // some user logged in and slug matches -> private profile
@@ -103,7 +104,7 @@ export default function PublicUser(initialized: Props) {
               // in case of 401 - invalid token: signIn()
               logoutUser();
               removeUserExistsInDB()
-              loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+              loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
             } else {
               // any other error
             }

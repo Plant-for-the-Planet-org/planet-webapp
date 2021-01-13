@@ -7,7 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getUserInfo, setUserInfo, removeUserInfo } from '../../../utils/auth0/localStorageUtils'
+import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getLocalUserInfo, setLocalUserInfo, removeLocalUserInfo } from '../../../utils/auth0/localStorageUtils'
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
@@ -44,8 +44,8 @@ export default function CompleteSignup() {
       }
       const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
-        if (getUserInfo().slug) {
-          const userSlug = getUserInfo().slug;
+        if (getLocalUserInfo().slug) {
+          const userSlug = getLocalUserInfo().slug;
           if (typeof window !== 'undefined') {
             router.push(`/t/${userSlug}`);
           }
@@ -101,9 +101,9 @@ export default function CompleteSignup() {
         // successful signup -> goto me page
         const resJson = await res.json();
         setUserExistsInDB(true);
-        const userInfo = getUserInfo();
+        const userInfo = getLocalUserInfo();
         const newUserInfo = { ...userInfo, slug: resJson.slug, type: resJson.type }
-        setUserInfo(newUserInfo)
+        setLocalUserInfo(newUserInfo)
         setSnackbarMessage(ready ? t('login:profileCreated') : '');
         setSeverity("success")
         handleSnackbarOpen();
@@ -114,7 +114,7 @@ export default function CompleteSignup() {
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         console.log('in 401-> unauthenticated user / invalid token')
-        localStorage.removeItem('userInfo');
+        removeLocalUserInfo();
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
@@ -156,7 +156,7 @@ export default function CompleteSignup() {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem('userInfo');
+    removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 
