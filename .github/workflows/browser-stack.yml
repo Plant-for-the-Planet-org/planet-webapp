@@ -11,7 +11,7 @@ jobs:
     steps:
 
       - name: Wait for Vercel deployment # ${{ steps.waitForVercel.outputs.url }} should return the Vercel deployment url
-        uses: patrickedqvist/wait-for-vercel-preview@master
+        uses: patrickedqvist/wait-for-vercel-preview@v1.0.6
         id: waitForVercel
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
