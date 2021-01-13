@@ -29,38 +29,43 @@ export default function MapCompare({
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
+  const [firstRun, setFirstRun] = React.useState(true);
 
   React.useEffect(() => {
-    var before = new mapboxgl.Map({
-      container: 'before', // Container ID
-      style: style,
-      center: projectCenter,
-      zoom: projectZoom,
-      interactive: false
-    });
+    if (selectedOption === 'imagery' && firstRun) {
+      console.log('here');
+      var before = new mapboxgl.Map({
+        container: 'before', // Container ID
+        style: style,
+        center: projectCenter,
+        zoom: projectZoom,
+        interactive: false
+      });
 
-    setBefore(before);
+      setBefore(before);
 
-    var after = new mapboxgl.Map({
-      container: 'after', // Container ID
-      style: style,
-      center: projectCenter,
-      zoom: projectZoom,
-      interactive: false
-    });
+      var after = new mapboxgl.Map({
+        container: 'after', // Container ID
+        style: style,
+        center: projectCenter,
+        zoom: projectZoom,
+        interactive: false
+      });
 
-    setAfter(after);
+      setAfter(after);
 
-    // A selector or reference to HTML element
-    var container = '#comparison-container';
+      // A selector or reference to HTML element
+      var container = '#comparison-container';
 
-    new MapboxCompare(before, after, container, {
-      mousemove: true, // Optional. Set to true to enable swiping during cursor movement.
-      orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
-    });
+      new MapboxCompare(before, after, container, {
+        mousemove: true, // Optional. Set to true to enable swiping during cursor movement.
+        orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
+      });
 
-    syncMove(before, mapRef.current.getMap());
-  }, []);
+      syncMove(before, mapRef.current.getMap());
+      setFirstRun(false);
+    }
+  }, [selectedOption, siteImagery]);
 
   React.useEffect(() => {
     if (before && after) {
@@ -130,7 +135,7 @@ export default function MapCompare({
       {
         // selectedOption === 'imagery' &&
         //   siteImagery !== [] ? (
-        <div style={selectedOption === 'imagery' && siteImagery !== [] ? { userSelect: 'none' } : { display: 'none' }} id="comparison-container">
+        <div style={selectedOption === 'imagery' ? { userSelect: 'none' } : { display: 'none' }} id="comparison-container">
           <div className="comparison-map" id="before"></div>
           <div className="comparison-map" id="after"></div>
         </div>
