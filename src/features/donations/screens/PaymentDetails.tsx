@@ -375,45 +375,6 @@ function PaymentDetails({
             setPaymentType('Paypal')
             setDonationStep(4)
 
-          } else if (res.status === 'action_required') {
-            const clientSecret = res.response.payment_intent_client_secret;
-            const donationID = res.id;
-            const stripe = window.Stripe(
-              process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-              {
-                stripeAccount: res.response.account,
-              },
-            );
-            if (stripe) {
-              await stripe.handleCardAction(clientSecret).then((res) => {
-                if (res.error) {
-                  setIsPaymentProcessing(false);
-                  setPaymentError(res.error.message);
-                } else {
-                  const payDonationData = {
-                    paymentProviderRequest: {
-                      account: paymentSetup.gateways.stripe.account,
-                      gateway: 'stripe_pi',
-                      source: {
-                        id: res.paymentIntent.id,
-                        object: 'payment_intent',
-                      },
-                    },
-                  };
-                  payDonation(payDonationData, donationID, token).then((res) => {
-                    if (res.paymentStatus === 'success') {
-                      setIsPaymentProcessing(false);
-                      setPaymentType('Paypal')
-                      setDonationStep(4)
-
-                    } else {
-                      setIsPaymentProcessing(false);
-                      setPaymentError(res.error ? res.error.message : res.message);
-                    }
-                  });
-                }
-              });
-            }
           }
         })
         .catch((error) => {
@@ -581,7 +542,7 @@ function PaymentDetails({
 
       </div>
     )
-  ) : null;
+  ) : <></>;
 }
 
 export default PaymentDetails;
