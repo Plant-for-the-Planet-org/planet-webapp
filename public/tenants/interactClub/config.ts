@@ -1,5 +1,5 @@
 const config = {
-  tenantName: 'interactClud',
+  tenantName: 'interactClub',
   tenantURL: 'http://www.interact-club.de/wald',
   languages: ['de','en'],
   fallbackCurrency: 'EUR',
