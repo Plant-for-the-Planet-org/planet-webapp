@@ -1,4 +1,4 @@
-import countryExchange from './countryExchange.json';
+import countryExchange from './countryExchangeForMinimumDonationAmount.json';
 
 export const getMinimumAmountForCurrency = (curreny) => {
   const exchange = countryExchange.find((element) => element.currencyCode === curreny);
