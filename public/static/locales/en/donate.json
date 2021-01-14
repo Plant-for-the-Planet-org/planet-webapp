@@ -73,5 +73,6 @@
   "selectProject": "Select a project",
   "nameOfOrg": "Organisation Name",
   "nameOfOrgIsRequired": "Organisation name is required",
-  "giftValidation": "Please enter gift details"
+  "giftValidation": "Please enter gift details",
+  "minDonate": "Minimum donation amount is"
 }
