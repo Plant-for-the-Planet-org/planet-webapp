@@ -223,6 +223,7 @@ function DonationsPopup({
         receipients: null,
       });
     } else {
+      setIsGift(false);
       setGiftDetails({
         type: null,
         recipientName: null,

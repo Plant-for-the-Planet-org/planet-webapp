@@ -18,6 +18,7 @@ import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { useAuth0 } from '@auth0/auth0-react';
+import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
 
 const { useTranslation } = i18next;
 
@@ -81,6 +82,7 @@ function TreeDonation({
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
   const [screenWidth, setScreenWidth] = React.useState('');
+  const [minAmt, setMinAmt] = React.useState(0);
 
   const setCustomTreeValue = (e: any) => {
     if (e.target.value === '' || e.target.value < 1) {
@@ -113,6 +115,8 @@ function TreeDonation({
     if (window.screen.width <= 412) {
       setScreenWidth(100);
     }
+
+    setMinAmt(getMinimumAmountForCurrency(currency));
   }, [country]);
 
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
@@ -207,7 +211,6 @@ function TreeDonation({
               onKeyPress={() => setOpenCurrencyModal(true)}
               role="button"
               tabIndex={0}
-              data-testid="taxDeductionId"
             >
               <div className={styles.currency}>{currency}</div>
               <div className={styles.downArrow}>
@@ -404,7 +407,7 @@ function TreeDonation({
               </div>
             </div>
 
-            {!isPaymentOptionsLoading &&
+            {((treeCost * treeCount) >= minAmt) ? !isPaymentOptionsLoading &&
               paymentSetup?.gateways?.stripe?.account &&
               currency ? (
                 <PaymentRequestCustomButton
@@ -421,6 +424,19 @@ function TreeDonation({
                 <div className={styles.actionButtonsContainer}>
                   <ButtonLoader />
                   <ButtonLoader />
+                </div>
+              ) : (
+                <div className={styles.finalTreeCount}
+                  style={{ marginTop: '5px' }}
+                >
+                  <div className={styles.totalCostText}
+                    style={{ fontWeight: 'unset', marginRight: '6px' }}
+                  >
+                    <p>{t('donate:minDonate')}</p>
+                  </div>
+                  <div className={styles.totalCost}>
+                    {getFormatedCurrency(i18n.language, currency, minAmt)}
+                  </div>
                 </div>
               )}
           </div>

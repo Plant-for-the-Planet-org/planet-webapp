@@ -80,5 +80,6 @@
   "monthly":"Monthly",
   "quaterly":"Quaterly",
   "semiyearly":"Semi yearly",
-  "yearly":"Yearly"
+  "yearly":"Yearly",
+  "minDonate": "Minimum donation amount is"
 }
