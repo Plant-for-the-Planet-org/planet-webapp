@@ -1,6 +1,6 @@
 const config = {
   tenantName: 'senatDerWirtschaft',
-  tenantURL: 'http://www.senat-deutschland.de/wald',
+  tenantURL: 'wald.senat-deutschland.de',
   languages: ['de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
