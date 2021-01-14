@@ -32,6 +32,7 @@ export default function TransitionsModal(props) {
     setSelectedCurrency,
     selectedCountry,
     setSelectedCountry,
+    setCurrencyCode
   } = props;
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
@@ -63,6 +64,7 @@ export default function TransitionsModal(props) {
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
       setSelectedCurrency(currencyCode);
+      setCurrencyCode(currencyCode)
     }
     handleModalClose();
   }

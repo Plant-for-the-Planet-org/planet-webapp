@@ -49,10 +49,10 @@ function NotFound(props: any) {
           transform="translate(203.827 45.393)"
           fill="none"
           stroke="#729237"
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          stroke-width="1"
-          stroke-dasharray="7"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="1"
+          strokeDasharray="7"
         />
         <path
           id="Pfad_161"
@@ -61,10 +61,10 @@ function NotFound(props: any) {
           transform="translate(164.722 54.015)"
           fill="none"
           stroke="#69882c"
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          stroke-width="1"
-          stroke-dasharray="7"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="1"
+          strokeDasharray="7"
         />
         <g
           id="Gruppe_63"
@@ -98,9 +98,9 @@ function NotFound(props: any) {
             transform="translate(42.43 34.983)"
             fill="none"
             stroke="#1d1d1b"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="0.5"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="0.5"
           />
           <path
             id="Pfad_163"
@@ -109,9 +109,9 @@ function NotFound(props: any) {
             transform="translate(-277.18 -220.716)"
             fill="none"
             stroke="#1d1d1b"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="0.5"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="0.5"
           />
           <path
             id="Pfad_164"
@@ -120,9 +120,9 @@ function NotFound(props: any) {
             transform="translate(-272.219 -251.761)"
             fill="none"
             stroke="#1d1d1b"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="0.5"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="0.5"
           />
           <path
             id="Pfad_165"
@@ -131,9 +131,9 @@ function NotFound(props: any) {
             transform="translate(-265.436 -240.079)"
             fill="none"
             stroke="#1d1d1b"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="0.5"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="0.5"
           />
           <path
             id="Pfad_166"
@@ -173,9 +173,9 @@ function NotFound(props: any) {
             transform="translate(28.625)"
             fill="none"
             stroke="#fff"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="3"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="3"
           />
           <path
             id="Pfad_168"
@@ -184,9 +184,9 @@ function NotFound(props: any) {
             transform="translate(-370.254 -219.41)"
             fill="none"
             stroke="#fff"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="3"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="3"
           />
           <path
             id="Pfad_169"
@@ -195,9 +195,9 @@ function NotFound(props: any) {
             transform="translate(-367.391 -263.292)"
             fill="none"
             stroke="#fff"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="3"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="3"
           />
           <path
             id="Pfad_170"
@@ -206,9 +206,9 @@ function NotFound(props: any) {
             transform="translate(-353.965 -246.265)"
             fill="none"
             stroke="#fff"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="3"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="3"
           />
         </g>
         <path
@@ -225,9 +225,9 @@ function NotFound(props: any) {
           transform="translate(129.15 101.62)"
           fill="none"
           stroke="#2d5e30"
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          stroke-width="3"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="3"
         />
         <path
           id="Pfad_173"
@@ -236,9 +236,9 @@ function NotFound(props: any) {
           transform="translate(129.15 43.383)"
           fill="none"
           stroke="#2d5e30"
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          stroke-width="3"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="3"
         />
         <path
           id="Pfad_174"
@@ -247,9 +247,9 @@ function NotFound(props: any) {
           transform="translate(107.11 60.663)"
           fill="none"
           stroke="#2d5e30"
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          stroke-width="3"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="3"
         />
         <path
           id="Pfad_175"
@@ -293,9 +293,9 @@ function NotFound(props: any) {
           transform="translate(469.435 289.294)"
           fill="none"
           stroke="#2d5e30"
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          stroke-width="3"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="3"
         />
         <g
           id="Gruppe_220"

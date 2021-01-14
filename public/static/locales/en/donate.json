@@ -28,6 +28,7 @@
   "directGiftRecipient": "This donation supports",
   "recipientName": "Recipient Name",
   "recipientNameRequired": "Recipient Name is required",
+  "removeRecipient": "Remove",
   "giftMessage": "Gift Message",
   "firstNameRequired": "First Name field is required",
   "lastNameRequired": "Last Name field is required",
