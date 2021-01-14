@@ -307,7 +307,7 @@ function TreeDonation({
               </motion.div>
             </div>
 
-            {token && paymentSetup.gateways.stripe.isCollect && (
+            {token && paymentSetup?.gateways?.stripe?.isCollect && (
               <>
                 <div className={styles.donationFrequencyTitle}>
                   {t('donate:recurrency')}
