@@ -265,17 +265,19 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {userprofile.type === 'tpo' && (
+            {userprofile.type !== 'individual' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label={t('donate:nameOfOrg')}
+                label={t('editProfile:profileName', {
+                  type: SelectType(userprofile.type, t)
+                })}
                 variant="outlined"
                 name="name"
                 inputRef={register()}
               />
               {errors.name && (
                 <span className={styles.formErrors}>
-                  {t('donate:nameOfOrgIsRequired')}
+                  {t('editProfile:nameValidation')}
                 </span>
               )}
             </div>
@@ -461,3 +463,25 @@ export default function EditProfileModal({
     </React.Fragment>
   ) : null;
 }
+
+const SelectType = (type: any, t: Function) => {
+  let name;
+  switch (type) {
+    case 'individual':
+      name = t('editProfile:individual');
+      break;
+    case 'tpo':
+      name = t('editProfile:tpo');
+      break;
+    case 'education':
+      name = t('editProfile:education');
+      break;
+    case 'organization':
+      name = t('editProfile:organization');
+      break;
+    default:
+      name = t('editProfile:tpo');
+      break;
+  }
+  return name;
+};

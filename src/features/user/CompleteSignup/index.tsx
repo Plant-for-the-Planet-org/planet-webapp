@@ -27,7 +27,7 @@ export default function CompleteSignup() {
   } = useAuth0();  
 
   const router = useRouter();
-  const { t, ready } = useTranslation(['editProfile', 'donate', 'login']);
+  const { t, ready } = useTranslation(['editProfile', 'donate']);
 
   const { register, handleSubmit, errors, control, reset, setValue, watch, getValues } = useForm({ mode: 'onBlur' });
 
@@ -104,7 +104,7 @@ export default function CompleteSignup() {
         const userInfo = getLocalUserInfo();
         const newUserInfo = { ...userInfo, slug: resJson.slug, type: resJson.type }
         setLocalUserInfo(newUserInfo)
-        setSnackbarMessage(ready ? t('login:profileCreated') : '');
+        setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
         setSeverity("success")
         handleSnackbarOpen();
 
@@ -120,22 +120,22 @@ export default function CompleteSignup() {
         removeUserExistsInDB()
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
-        setSnackbarMessage(ready ? t('login:profileCreationFailed') : '');
+        setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
         setSeverity("error")
         handleSnackbarOpen();
       }
     } catch {
-      setSnackbarMessage(ready ? t('login:profileCreationError') : '');
+      setSnackbarMessage(ready ? t('editProfile:profileCreationError') : '');
       setSeverity("error")
       handleSnackbarOpen();
     }
   };
 
   const profileTypes = [
-    { id: 1, title: ready ? t('login:individual') : '', value: 'individual' },
-    { id: 2, title: ready ? t('login:organization') : '', value: 'organization' },
-    { id: 3, title: ready ? t('login:tpo') : '', value: 'tpo' },
-    { id: 4, title: ready ? t('login:education') : '', value: 'education' }
+    { id: 1, title: ready ? t('editProfile:individual') : '', value: 'individual' },
+    { id: 2, title: ready ? t('editProfile:organization') : '', value: 'organization' },
+    { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
+    { id: 4, title: ready ? t('editProfile:education') : '', value: 'education' }
   ]
 
   React.useEffect(() => {
@@ -184,7 +184,7 @@ export default function CompleteSignup() {
             >
               <CancelIcon color={styles.primaryFontColor} />
             </div>
-            <div className={styles.headerTitle}>{t('login:signUpText')}</div>
+            <div className={styles.headerTitle}>{t('editProfile:signUpText')}</div>
           </div>
 
           {/* type of account buttons */}
@@ -192,7 +192,7 @@ export default function CompleteSignup() {
             {profileTypes.map(item => {
               return (
                 <p key={item.id} className={`${styles.profileTypes} ${type === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
-                  {t('login:profileTypes', {
+                  {t('editProfile:profileTypes', {
                     item: item
                   })}
                 </p>
@@ -229,10 +229,11 @@ export default function CompleteSignup() {
               )}
             </div>
           </div>
+
           {type !== 'individual' ? (
             <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label={t('login:profileName', {
+                label={t('editProfile:profileName', {
                   type: SelectType(type, t)
                 })}
                 variant="outlined"
@@ -241,7 +242,7 @@ export default function CompleteSignup() {
               />
               {errors.name && (
                 <span className={styles.formErrors}>
-                  {t('editProfile:orgNameValidation')}
+                  {t('editProfile:nameValidation')}
                 </span>
               )}
             </div>
@@ -375,7 +376,7 @@ export default function CompleteSignup() {
           <div className={styles.horizontalLine} />
 
           <div className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
-            {t('login:createAccount')}
+            {t('editProfile:createAccount')}
           </div>
         </div>
         {/* snackbar */}
@@ -403,19 +404,19 @@ const SelectType = (type: any, t: Function) => {
   let name;
   switch (type) {
     case 'individual':
-      name = t('login:individual');
+      name = t('editProfile:individual');
       break;
     case 'tpo':
-      name = t('login:tpo');
+      name = t('editProfile:tpo');
       break;
     case 'education':
-      name = t('login:education');
+      name = t('editProfile:education');
       break;
     case 'organization':
-      name = t('login:organization');
+      name = t('editProfile:organization');
       break;
     default:
-      name = t('login:tpo');
+      name = t('editProfile:tpo');
       break;
   }
   return name;
