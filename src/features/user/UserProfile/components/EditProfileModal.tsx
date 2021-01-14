@@ -17,6 +17,7 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { selectUserType } from '../../../../utils/selectUserType';
 
 const { useTranslation } = i18next;
 export default function EditProfileModal({
@@ -269,7 +270,7 @@ export default function EditProfileModal({
               <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('editProfile:profileName', {
-                  type: SelectType(userprofile.type, t)
+                  type: selectUserType(userprofile.type, t)
                 })}
                 variant="outlined"
                 name="name"
@@ -463,25 +464,3 @@ export default function EditProfileModal({
     </React.Fragment>
   ) : null;
 }
-
-const SelectType = (type: any, t: Function) => {
-  let name;
-  switch (type) {
-    case 'individual':
-      name = t('editProfile:individual');
-      break;
-    case 'tpo':
-      name = t('editProfile:tpo');
-      break;
-    case 'education':
-      name = t('editProfile:education');
-      break;
-    case 'organization':
-      name = t('editProfile:organization');
-      break;
-    default:
-      name = t('editProfile:tpo');
-      break;
-  }
-  return name;
-};

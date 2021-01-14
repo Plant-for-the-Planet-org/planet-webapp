@@ -13,6 +13,7 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
+import { selectUserType } from '../../../utils/selectUserType';
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
@@ -234,7 +235,7 @@ export default function CompleteSignup() {
             <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('editProfile:profileName', {
-                  type: SelectType(type, t)
+                  type: selectUserType(type, t)
                 })}
                 variant="outlined"
                 inputRef={register({ required: true })}
@@ -399,25 +400,3 @@ export default function CompleteSignup() {
   }
   return null;
 }
-
-const SelectType = (type: any, t: Function) => {
-  let name;
-  switch (type) {
-    case 'individual':
-      name = t('editProfile:individual');
-      break;
-    case 'tpo':
-      name = t('editProfile:tpo');
-      break;
-    case 'education':
-      name = t('editProfile:education');
-      break;
-    case 'organization':
-      name = t('editProfile:organization');
-      break;
-    default:
-      name = t('editProfile:tpo');
-      break;
-  }
-  return name;
-};
