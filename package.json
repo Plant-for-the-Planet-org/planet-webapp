@@ -39,7 +39,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
     "@math.gl/web-mercator": "^3.3.2",
-    "@next/bundle-analyzer": "^10.0.3",
+    "@next/bundle-analyzer": "^10.0.4",
     "@sentry/node": "^5.28.0",
     "@sentry/browser": "^5.29.1",
     "@sentry/integrations": "5.29.1",
