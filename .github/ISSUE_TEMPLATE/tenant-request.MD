@@ -22,6 +22,8 @@ Type of Tenant [Please select all that apply]
 
 - [ ] Enable Login (Auth0 SPA App) get Client ID
 
+- [ ] SEO - Title and short description 
+
 Callback URLs : [tenantURL]/verify-email, [tenantURL]/login
 
 Logout URLs: [tenantURL]/verify-email, [tenantURL]/
