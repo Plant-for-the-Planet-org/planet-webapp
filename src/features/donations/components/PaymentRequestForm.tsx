@@ -158,7 +158,7 @@ export const PaymentRequestCustomButton = ({
       );
     }
     return () => {
-      if (paymentRequest) {
+      if (paymentRequest && !paymentLoading) {
         paymentRequest.off(
           'paymentmethod',
           ({ complete, paymentMethod, ...data }: any) => {
