@@ -358,7 +358,7 @@ function TreeDonation({
                   style={{ marginTop: '5px' }}
                 >
                   <div className={styles.totalCostText}
-                    style={{ fontWeight: 'unset' }}
+                    style={{ fontWeight: 'unset', marginRight: '6px' }}
                   >
                     <p>{t('donate:minDonate')}</p>
                   </div>
