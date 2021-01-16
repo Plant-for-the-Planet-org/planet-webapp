@@ -28,6 +28,7 @@
   "directGiftRecipient": "Ce don permet de soutenir",
   "recipientName": "Nom du bénéficiaire",
   "recipientNameRequired": "Le nom du bénéficiaire est requis",
+  "removeRecipient": "Supprimer",
   "giftMessage": "Message cadeau",
   "firstNameRequired": "Le champ Prénom est  requis",
   "lastNameRequired": "Le champ \"Nom\" est  requis",
