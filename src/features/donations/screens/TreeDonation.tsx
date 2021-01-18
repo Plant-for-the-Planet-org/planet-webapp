@@ -55,24 +55,6 @@ function TreeDonation({
     loginWithRedirect,
   } = useAuth0();
 
-  const recurrencyOptions = [
-    {
-      value: 'none',
-      title: t('donate:once')
-    },
-    {
-      value: 'daily',
-      title: t('donate:daily')
-    },
-    {
-      value: 'monthly',
-      title: t('donate:monthly')
-    },
-    {
-      value: 'yearly',
-      title: t('donate:yearly')
-    }
-  ]
   const [openCurrencyModal, setOpenCurrencyModal] = React.useState(false);
   const [openTaxDeductionModal, setOpenTaxDeductionModal] = React.useState(
     false
@@ -310,7 +292,7 @@ function TreeDonation({
               </motion.div>
             </div>
 
-            {token && paymentSetup?.gateways?.stripe?.isCollect && (
+            {token && paymentSetup?.gateways?.stripe?.recurrency?.enabled && (
               <>
                 <div className={styles.donationFrequencyTitle}>
                   {t('donate:recurrency')}
@@ -318,21 +300,23 @@ function TreeDonation({
 
                 <div className={styles.selectDonationFrequency}>
 
-                  {recurrencyOptions.map((option) => (
+                  {paymentSetup?.gateways?.stripe?.recurrency?.intervals.map((option) => (
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => {
-                        setRecurrencyMnemonic(option.value);
+                        setRecurrencyMnemonic(option);
                       }}
-                      key={option.value}
+                      key={option}
                       className={
-                        recurrencyMnemonic === option.value
+                        recurrencyMnemonic === option
                           ? styles.donationFrequencyOptionSelected
                           : styles.donationFrequencyOption
                       }
                     >
-                      <div className={styles.donationFrequencyOptionTrees}>{option.title}</div>
+                      <div className={styles.donationFrequencyOptionTrees}>
+                        {t(`donate:${option}`)}
+                      </div>
                     </motion.div>
                   ))}
                 </div>

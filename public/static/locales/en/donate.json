@@ -75,10 +75,11 @@
   "nameOfOrgIsRequired": "Organisation name is required",
   "giftValidation":"Please enter gift details",
   "recurrency":"Donation Frequency",
-  "once":"Once",
+  "none":"Once",
+  "daily":"Daily",
   "weekly":"Weekly",
   "monthly":"Monthly",
-  "quaterly":"Quaterly",
+  "quarterly":"Quaterly",
   "semiyearly":"Semi yearly",
   "yearly":"Yearly",
   "minDonate": "Minimum donation amount is"
