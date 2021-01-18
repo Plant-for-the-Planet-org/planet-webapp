@@ -68,7 +68,5 @@
   "donationTokenInvalid": "La ficha de donación proporcionada es inválida.",
   "giftTo": "Regalo a",
   "supporting": "Apoyando",
-  "selectProject": "Seleccione un proyecto",
-  "nameOfOrg": "Nombre de la organización",
-  "nameOfOrgIsRequired": "Se requiere el nombre de la organización"
+  "selectProject": "Seleccione un proyecto"
 }
