@@ -292,14 +292,12 @@ function TreeDonation({
               </motion.div>
             </div>
 
-            {token && paymentSetup?.gateways?.stripe?.recurrency?.enabled && (
+            {paymentSetup?.gateways?.stripe?.recurrency?.enabled ? token ? (
               <>
                 <div className={styles.donationFrequencyTitle}>
                   {t('donate:recurrency')}
                 </div>
-
                 <div className={styles.selectDonationFrequency}>
-
                   {paymentSetup?.gateways?.stripe?.recurrency?.intervals.map((option) => (
                     <motion.div
                       whileHover={{ scale: 1.05 }}
@@ -321,7 +319,11 @@ function TreeDonation({
                   ))}
                 </div>
               </>
-            )}
+            ) : (
+              <div className={styles.loginHint} onClick={() => loginuser()}>
+                 {t('donate:loginForRecurrency')}
+              </div>
+            ): <></>}
 
 
             {project.taxDeductionCountries.length > 0 ? (
@@ -361,12 +363,6 @@ function TreeDonation({
                   </div>
                 </div>
               )}
-
-            {!token && (
-              <div className={styles.loginHint} onClick={() => loginuser()}>
-                 Login to make a frequent donation.
-              </div>
-            )}
 
             <div className={styles.horizontalLine} />
 

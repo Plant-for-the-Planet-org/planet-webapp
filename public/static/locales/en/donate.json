@@ -82,5 +82,6 @@
   "quarterly":"Quaterly",
   "semiyearly":"Semi yearly",
   "yearly":"Yearly",
-  "minDonate": "Minimum donation amount is"
+  "minDonate": "Minimum donation amount is",
+  "loginForRecurrency":"Login to make a frequent donation."
 }
