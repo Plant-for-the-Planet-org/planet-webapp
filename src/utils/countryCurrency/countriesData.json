@@ -816,14 +816,6 @@
     "languageCode": "en"
   },
   {
-    "countryName": "Congo Republic of the Democratic",
-    "countryCode": "CG",
-    "currencyName": "CFA Franc BEAC",
-    "currencyCode": "XAF",
-    "currencyCountryFlag": "XA",
-    "languageCode": "en"
-  },
-  {
     "countryName": "Equatorial Guinea",
     "countryCode": "GQ",
     "currencyName": "CFA Franc BEAC",
@@ -885,14 +877,6 @@
     "currencyName": "Comoran Franc",
     "currencyCode": "KMF",
     "currencyCountryFlag": "KM",
-    "languageCode": "en"
-  },
-  {
-    "countryName": "Congo-Brazzaville",
-    "countryCode": "CD",
-    "currencyName": "Congolese Frank",
-    "currencyCode": "CDF",
-    "currencyCountryFlag": "CD",
     "languageCode": "en"
   },
   {
@@ -1917,14 +1901,6 @@
     "currencyName": "Manx pound",
     "currencyCode": "GBP",
     "currencyCountryFlag": "GB",
-    "languageCode": "en"
-  },
-  {
-    "countryName": "Macao S.A.R.",
-    "countryCode": "MO",
-    "currencyName": "Macanese pataca",
-    "currencyCode": "MOP",
-    "currencyCountryFlag": "MO",
     "languageCode": "en"
   },
   {
