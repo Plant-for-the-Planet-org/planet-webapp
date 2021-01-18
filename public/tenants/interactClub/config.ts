@@ -1,6 +1,6 @@
 const config = {
-  tenantName: 'interactClud',
-  tenantURL: 'http://www.interact-club.de/wald',
+  tenantName: 'interactClub',
+  tenantURL: 'wald.interact-club.de',
   languages: ['de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,
