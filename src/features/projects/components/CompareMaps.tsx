@@ -13,6 +13,8 @@ interface Props {
   style: any;
   isMapDataLoading: any;
   selectedOption: any;
+  setIsMapDataLoading: Function;
+  geoJson: any;
 }
 
 export default function MapCompare({
@@ -24,22 +26,44 @@ export default function MapCompare({
   selectedYear2,
   style,
   isMapDataLoading,
-  selectedOption
+  selectedOption,
+  setIsMapDataLoading,
+  geoJson
 }: Props): ReactElement {
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
   const [firstRun, setFirstRun] = React.useState(true);
 
+  const nicfi_data = [
+    {
+      year: '2017',
+      raster: 'planet_medres_normalized_analytic_2017-06_2017-11_mosaic',
+    },
+    {
+      year: '2018',
+      raster: 'planet_medres_normalized_analytic_2018-06_2018-11_mosaic',
+    },
+    {
+      year: '2019',
+      raster: 'planet_medres_normalized_analytic_2019-06_2019-11_mosaic',
+    },
+    {
+      year: '2020',
+      raster: 'planet_medres_normalized_analytic_2020-06_2020-08_mosaic',
+    }
+  ]
+
   React.useEffect(() => {
     if (selectedOption === 'imagery' && firstRun) {
+      setIsMapDataLoading(true);
       console.log('here');
       var before = new mapboxgl.Map({
         container: 'before', // Container ID
         style: style,
         center: projectCenter,
         zoom: projectZoom,
-        interactive: false
+        // interactive: false
       });
 
       setBefore(before);
@@ -49,7 +73,7 @@ export default function MapCompare({
         style: style,
         center: projectCenter,
         zoom: projectZoom,
-        interactive: false
+        // interactive: false
       });
 
       setAfter(after);
@@ -63,6 +87,8 @@ export default function MapCompare({
       });
 
       syncMove(before, mapRef.current.getMap());
+      setTimeout(() => { setIsMapDataLoading(false); }, 2000);
+
       setFirstRun(false);
     }
   }, [selectedOption, siteImagery]);
@@ -71,7 +97,7 @@ export default function MapCompare({
     if (before && after) {
       console.log('map loaded');
       try {
-        siteImagery.map((year: any) => {
+        nicfi_data.map((year: any) => {
           console.log('inside map');
           if (year.year === selectedYear1) {
             console.log('year exists');
@@ -82,10 +108,20 @@ export default function MapCompare({
                 type: 'raster',
                 source: `before-imagery-${year.year}`,
               });
+              before.addLayer({
+                'id': `project-polygon-layer-${year.year}`,
+                'type': 'line',
+                'source': `project-polygon-${year.year}`,
+                'layout': {},
+                'paint': {
+                  'line-color': '#fff',
+                  'line-width': 4,
+                }
+              });
             } else {
               before.addSource(`before-imagery-${year.year}`, {
                 type: 'raster',
-                tiles: [`${year.layer}`],
+                tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
               });
@@ -95,6 +131,21 @@ export default function MapCompare({
                 type: 'raster',
                 source: `before-imagery-${year.year}`,
               });
+              before.addSource(`project-polygon-${year.year}`, {
+                'type': 'geojson',
+                'data': geoJson
+              });
+              before.addLayer({
+                'id': `project-polygon-layer-${year.year}`,
+                'type': 'line',
+                'source': `project-polygon-${year.year}`,
+                'layout': {},
+                'paint': {
+                  'line-color': '#fff',
+                  'line-width': 4,
+                }
+              });
+
               console.log('create layer');
             }
           } else {
@@ -108,10 +159,20 @@ export default function MapCompare({
                 type: 'raster',
                 source: `after-imagery-${year.year}`,
               });
+              after.addLayer({
+                'id': `project-polygon-layer-${year.year}`,
+                'type': 'line',
+                'source': `project-polygon-${year.year}`,
+                'layout': {},
+                'paint': {
+                  'line-color': '#fff',
+                  'line-width': 4,
+                }
+              });
             } else {
               after.addSource(`after-imagery-${year.year}`, {
                 type: 'raster',
-                tiles: [`${year.layer}`],
+                tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
               });
@@ -120,11 +181,81 @@ export default function MapCompare({
                 type: 'raster',
                 source: `after-imagery-${year.year}`,
               });
+              after.addSource(`project-polygon-${year.year}`, {
+                'type': 'geojson',
+                'data': geoJson
+              });
+              after.addLayer({
+                'id': `project-polygon-layer-${year.year}`,
+                'type': 'line',
+                'source': `project-polygon-${year.year}`,
+                'layout': {},
+                'paint': {
+                  'line-color': '#fff',
+                  'line-width': 4,
+                }
+              });
             }
           } else {
-            after.removeLayer(`after-imagery-${year.year}-layer`);
+            // after.removeLayer(`after-imagery-${year.year}-layer`);
           }
         })
+        if (nicfiDataExists) {
+          siteImagery.map((year: any) => {
+            console.log('inside map');
+            if (year.year === selectedYear1) {
+              console.log('year exists');
+              if (before.isSourceLoaded(`before-imagery-${year.year}`)) {
+                console.log('source already loaded');
+                before.addLayer({
+                  id: `before-imagery-${year.year}-layer`,
+                  type: 'raster',
+                  source: `before-imagery-${year.year}`,
+                });
+              } else {
+                before.addSource(`before-imagery-${year.year}`, {
+                  type: 'raster',
+                  tiles: [`${year.layer}`],
+                  tileSize: 256,
+                  attribution: 'layer attribution',
+                });
+                console.log('create source');
+                before.addLayer({
+                  id: `before-imagery-${year.year}-layer`,
+                  type: 'raster',
+                  source: `before-imagery-${year.year}`,
+                });
+                console.log('create layer');
+              }
+            } else {
+              before.removeLayer(`before-imagery-${year.year}-layer`);
+            }
+
+            if (year.year === selectedYear2) {
+              if (after.isSourceLoaded(`after-imagery-${year.year}`)) {
+                after.addLayer({
+                  id: `after-imagery-${year.year}-layer`,
+                  type: 'raster',
+                  source: `after-imagery-${year.year}`,
+                });
+              } else {
+                after.addSource(`after-imagery-${year.year}`, {
+                  type: 'raster',
+                  tiles: [`${year.layer}`],
+                  tileSize: 256,
+                  attribution: 'layer attribution',
+                });
+                after.addLayer({
+                  id: `after-imagery-${year.year}-layer`,
+                  type: 'raster',
+                  source: `after-imagery-${year.year}`,
+                });
+              }
+            } else {
+              after.removeLayer(`after-imagery-${year.year}-layer`);
+            }
+          })
+        }
       } catch (e: any) {
         console.log('Error: ', e);
       }

@@ -27,8 +27,8 @@ import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageA
 import getMapStyle from '../../../utils/getMapStyle';
 import dynamic from 'next/dynamic';
 import ImagerySwitcher from './maps/ImagerySwitcher';
-import { Image } from 'react-mapbox-gl';
 import MapLoading from '../../common/ContentLoaders/Maps/MapLoading';
+import nicfi_coverage from '../../../../public/data/planet/aoi.json';
 
 const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
@@ -84,9 +84,10 @@ export default function MapboxMap({
   const [selectedOption, setSelectedState] = React.useState('none');
   const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
   const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
-  const [selectedYear1, setSelectedYear1] = React.useState('2019');
+  const [selectedYear1, setSelectedYear1] = React.useState('2017');
   const [selectedYear2, setSelectedYear2] = React.useState('2020');
   const [isMapDataLoading, setIsMapDataLoading] = React.useState(false);
+  const [nicfiDataExists, setNicfiDataExists] = React.useState(true);
 
   const EMPTY_STYLE = {
     version: 8,
@@ -204,7 +205,10 @@ export default function MapboxMap({
     selectedYear2,
     style,
     isMapDataLoading,
-    selectedOption
+    selectedOption,
+    setIsMapDataLoading,
+    geoJson,
+    nicfiDataExists
   };
 
   async function fetchImageryData(url: any, data: any) {
@@ -238,20 +242,21 @@ export default function MapboxMap({
       if (project) {
         if (siteExists) {
           if (geoJson) {
-            if (selectedOption === 'imagery')
+            if (selectedOption === 'imagery' && !nicfiDataExists)
               if (!yearExists(selectedYear1) || !yearExists(selectedYear2)) {
                 fetchImageryData('/imagery', geoJson);
               }
-          }
-          if (selectedOption === 'vegetation') {
-            if (!siteVegetationChange) {
-              fetchVegetationData('/vegetation', geoJson);
+            if (selectedOption === 'vegetation') {
+              if (!siteVegetationChange) {
+                fetchVegetationData('/vegetation', geoJson);
+              }
             }
           }
+
         }
       }
     }
-  }, [selectedOption, selectedYear1, selectedYear2]);
+  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -337,6 +342,9 @@ export default function MapboxMap({
             setProjectZoom(zoom);
             setViewPort(newViewport);
             // setMapState(newMapState);
+            if (!turf.intersect(nicfi_coverage, geoJson.features[currentSite])) {
+              setNicfiDataExists(false);
+            }
           }
         } else {
           // const newMapState = {
