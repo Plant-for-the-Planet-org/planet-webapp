@@ -300,6 +300,7 @@ export default function MapboxMap({
       setShowProjects(true);
       setSiteVegetationChange(null);
       setSiteImagery([]);
+      setSelectedState('none');
     }
   }, [showSingleProject, project]);
 
