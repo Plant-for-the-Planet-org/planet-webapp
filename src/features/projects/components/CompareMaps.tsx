@@ -124,7 +124,7 @@ export default function MapCompare({
             } else {
               before.addSource(`before-imagery-${year.year}`, {
                 type: 'raster',
-                tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
+                tiles: [`https://tile-s1.plant-for-the-planet.org/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
               });
@@ -175,7 +175,7 @@ export default function MapCompare({
             } else {
               after.addSource(`after-imagery-${year.year}`, {
                 type: 'raster',
-                tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
+                tiles: [`https://tile-s1.plant-for-the-planet.org/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
               });
