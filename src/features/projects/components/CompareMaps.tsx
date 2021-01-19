@@ -82,7 +82,7 @@ export default function MapCompare({
       var container = '#comparison-container';
 
       new MapboxCompare(before, after, container, {
-        mousemove: true, // Optional. Set to true to enable swiping during cursor movement.
+        mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
         orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
       });
 
