@@ -202,7 +202,10 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
-
+    if (!paymentMethod) {
+      setPaymentError('Could not process your payment, please try again.');
+      return;
+    }
 
     const payWithCardProps = {
       setDonationStep,

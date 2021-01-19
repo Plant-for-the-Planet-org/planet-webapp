@@ -132,9 +132,12 @@ function CardPayments({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
-
-    onPaymentFunction(paymentMethod)
-    
+    if (paymentMethod) {
+      onPaymentFunction(paymentMethod);
+    } else {
+      setPaymentError('Could not process your payment, please try again.');
+      return;
+    }
   };
 
   const handleChange = (change) => {
