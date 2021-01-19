@@ -120,6 +120,7 @@ export default function MapCompare({
                   'line-width': 4,
                 }
               });
+
             } else {
               before.addSource(`before-imagery-${year.year}`, {
                 type: 'raster',
