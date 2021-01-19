@@ -21,7 +21,7 @@
   "websiteError": "Ungültige Website-URL",
   "websiteRequired": "Bitte gib eine gültige Website-URL ein",
   "save": "Speichern",
-  "nameValidation": "Bitte einen Namen eingeben",
+  "nameValidation": "Bitte gib einen Namen ein",
   "profilePicUpdated": "Profilbild wird aktualisiert...",
   "profileSaved": "Erfolgreich gespeichert!",
   "profileSaveFailed": "Fehler beim Aktualisieren des Profils."
