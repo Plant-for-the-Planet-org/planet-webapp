@@ -15,6 +15,7 @@ interface Props {
   selectedOption: any;
   setIsMapDataLoading: Function;
   geoJson: any;
+  nicfiDataExists: any;
 }
 
 export default function MapCompare({
@@ -28,7 +29,8 @@ export default function MapCompare({
   isMapDataLoading,
   selectedOption,
   setIsMapDataLoading,
-  geoJson
+  geoJson,
+  nicfiDataExists
 }: Props): ReactElement {
 
   const [before, setBefore] = React.useState();
@@ -56,7 +58,7 @@ export default function MapCompare({
 
   React.useEffect(() => {
     if (selectedOption === 'imagery' && firstRun) {
-      setIsMapDataLoading(true);
+      // setIsMapDataLoading(true);
       console.log('here');
       var before = new mapboxgl.Map({
         container: 'before', // Container ID
@@ -87,7 +89,7 @@ export default function MapCompare({
       });
 
       syncMove(before, mapRef.current.getMap());
-      setTimeout(() => { setIsMapDataLoading(false); }, 2000);
+      // setTimeout(() => { setIsMapDataLoading(false); }, 2000);
 
       setFirstRun(false);
     }
@@ -200,20 +202,30 @@ export default function MapCompare({
             // after.removeLayer(`after-imagery-${year.year}-layer`);
           }
         })
-        if (nicfiDataExists) {
+        if (!nicfiDataExists) {
           siteImagery.map((year: any) => {
             console.log('inside map');
             if (year.year === selectedYear1) {
               console.log('year exists');
-              if (before.isSourceLoaded(`before-imagery-${year.year}`)) {
+              if (before.isSourceLoaded(`before-imagery-${year.year}-sentinel`)) {
                 console.log('source already loaded');
                 before.addLayer({
-                  id: `before-imagery-${year.year}-layer`,
+                  id: `before-imagery-${year.year}-sentinel-layer`,
                   type: 'raster',
-                  source: `before-imagery-${year.year}`,
+                  source: `before-imagery-${year.year}-sentinel`,
+                });
+                before.addLayer({
+                  'id': `project-polygon-layer-${year.year}`,
+                  'type': 'line',
+                  'source': `project-polygon-${year.year}`,
+                  'layout': {},
+                  'paint': {
+                    'line-color': '#fff',
+                    'line-width': 4,
+                  }
                 });
               } else {
-                before.addSource(`before-imagery-${year.year}`, {
+                before.addSource(`before-imagery-${year.year}-sentinel`, {
                   type: 'raster',
                   tiles: [`${year.layer}`],
                   tileSize: 256,
@@ -221,38 +233,76 @@ export default function MapCompare({
                 });
                 console.log('create source');
                 before.addLayer({
-                  id: `before-imagery-${year.year}-layer`,
+                  id: `before-imagery-${year.year}-sentinel-layer`,
                   type: 'raster',
-                  source: `before-imagery-${year.year}`,
+                  source: `before-imagery-${year.year}-sentinel`,
                 });
                 console.log('create layer');
+                before.addSource(`project-polygon-${year.year}`, {
+                  'type': 'geojson',
+                  'data': geoJson
+                });
+                before.addLayer({
+                  'id': `project-polygon-layer-${year.year}`,
+                  'type': 'line',
+                  'source': `project-polygon-${year.year}`,
+                  'layout': {},
+                  'paint': {
+                    'line-color': '#fff',
+                    'line-width': 4,
+                  }
+                });
               }
             } else {
-              before.removeLayer(`before-imagery-${year.year}-layer`);
+              before.removeLayer(`before-imagery-${year.year}-sentinel-layer`);
             }
 
             if (year.year === selectedYear2) {
-              if (after.isSourceLoaded(`after-imagery-${year.year}`)) {
+              if (after.isSourceLoaded(`after-imagery-${year.year}-sentinel`)) {
                 after.addLayer({
-                  id: `after-imagery-${year.year}-layer`,
+                  id: `after-imagery-${year.year}-sentinel-layer`,
                   type: 'raster',
-                  source: `after-imagery-${year.year}`,
+                  source: `after-imagery-${year.year}-sentinel`,
+                });
+                after.addLayer({
+                  'id': `project-polygon-layer-${year.year}`,
+                  'type': 'line',
+                  'source': `project-polygon-${year.year}`,
+                  'layout': {},
+                  'paint': {
+                    'line-color': '#fff',
+                    'line-width': 4,
+                  }
                 });
               } else {
-                after.addSource(`after-imagery-${year.year}`, {
+                after.addSource(`after-imagery-${year.year}-sentinel`, {
                   type: 'raster',
                   tiles: [`${year.layer}`],
                   tileSize: 256,
                   attribution: 'layer attribution',
                 });
                 after.addLayer({
-                  id: `after-imagery-${year.year}-layer`,
+                  id: `after-imagery-${year.year}-sentinel-layer`,
                   type: 'raster',
-                  source: `after-imagery-${year.year}`,
+                  source: `after-imagery-${year.year}-sentinel`,
+                });
+                after.addSource(`project-polygon-${year.year}`, {
+                  'type': 'geojson',
+                  'data': geoJson
+                });
+                after.addLayer({
+                  'id': `project-polygon-layer-${year.year}`,
+                  'type': 'line',
+                  'source': `project-polygon-${year.year}`,
+                  'layout': {},
+                  'paint': {
+                    'line-color': '#fff',
+                    'line-width': 4,
+                  }
                 });
               }
             } else {
-              after.removeLayer(`after-imagery-${year.year}-layer`);
+              after.removeLayer(`after-imagery-${year.year}-sentinel-layer`);
             }
           })
         }
@@ -260,7 +310,7 @@ export default function MapCompare({
         console.log('Error: ', e);
       }
     }
-  }, [selectedYear1, selectedYear2, isMapDataLoading, selectedOption]);
+  }, [selectedYear1, selectedYear2, isMapDataLoading, selectedOption, nicfiDataExists]);
   return (
     <>
       {
