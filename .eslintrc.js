@@ -30,7 +30,7 @@ module.exports = {
     'react/jsx-indent': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
-    'react/jsx-no-literals': 2,
+    //'react/jsx-no-literals': 2,
   },
   globals: {
     React: 'writable',
