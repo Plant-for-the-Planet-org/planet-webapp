@@ -1,4 +1,9 @@
 {
+  "loginTitle": "{{log}} - Ingresa en",
+  "signUpText": "Inscripción completa",
+  "profileTypes": "{{item.title}}",
+  "profileName": "Nombre de {{type}}",
+  "createAccount": "Crear una cuenta",
   "edit": "Editar el perfil",
   "privateAccount": "Cuenta privada",
   "privateAccountTxt": "Tu perfil está oculto y sólo tu nombre aparece en la tabla de clasificación",
@@ -8,6 +13,5 @@
   "website": "Página web",
   "websiteError": "URL inválido",
   "websiteRequired": "Por favor, introduzca una URL válida",
-  "save": "Guardar",
-  "orgNameValidation": "Por favor, introduce el nombre de la organización"
+  "save": "Guardar"
 }

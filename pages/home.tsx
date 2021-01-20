@@ -60,6 +60,7 @@ export default function Home(initialized: Props) {
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'energizer':
       case 'senatDerWirtschaft':
+      case 'interactClub':
         HomePage = BasicHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       default:

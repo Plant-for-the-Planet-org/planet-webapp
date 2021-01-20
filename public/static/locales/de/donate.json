@@ -28,7 +28,7 @@
   "directGiftRecipient": "Diese Spende unterstützt",
   "recipientName": "Name des Beschenkten",
   "recipientNameRequired": "Name des Beschenkten ist erforderlich",
-  "removeRecipient": "Löschen",
+  "removeRecipient": "Entfernen",
   "giftMessage": "Nachricht zum Geschenk",
   "firstNameRequired": "Vorname ist erforderlich",
   "lastNameRequired": "Nachname ist erforderlich",
@@ -71,8 +71,6 @@
   "giftTo": "Geschenk an",
   "supporting": "Unterstützung von",
   "selectProject": "Wähle ein Projekt aus",
-  "nameOfOrg": "Name der Organisation",
-  "nameOfOrgIsRequired": "Name der Organisation ist erforderlich",
   "giftValidation": "Bitte Geschenkdetails eingeben",
-  "minDonate": "Kleinster Spendenbetrag ist"
+  "minDonate": "Mindestspendenbetrag ist"
 }

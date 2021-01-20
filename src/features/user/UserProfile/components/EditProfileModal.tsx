@@ -17,6 +17,7 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { selectUserType } from '../../../../utils/selectUserType';
 
 const { useTranslation } = i18next;
 export default function EditProfileModal({
@@ -265,17 +266,19 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {userprofile.type === 'tpo' && (
+            {userprofile.type !== 'individual' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label={t('donate:nameOfOrg')}
+                label={t('editProfile:profileName', {
+                  type: selectUserType(userprofile.type, t)
+                })}
                 variant="outlined"
                 name="name"
                 inputRef={register()}
               />
               {errors.name && (
                 <span className={styles.formErrors}>
-                  {t('donate:nameOfOrgIsRequired')}
+                  {t('editProfile:nameValidation')}
                 </span>
               )}
             </div>
