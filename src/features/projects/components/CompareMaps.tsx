@@ -80,6 +80,9 @@ export default function MapCompare({
 
       setAfter(after);
 
+      // Add zoom and rotation controls to the map.
+      after.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right');
+
       // A selector or reference to HTML element
       var container = '#comparison-container';
 

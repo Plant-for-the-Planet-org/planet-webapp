@@ -188,3 +188,11 @@ video {
 .mapboxgl-compare .compare-swiper-vertical {
   background-color: $primaryColor;
 }
+
+.mapboxgl-ctrl-bottom-right {
+  margin: 0 10px 40px 0 !important;
+}
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
