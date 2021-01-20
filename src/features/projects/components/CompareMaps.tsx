@@ -58,7 +58,9 @@ export default function MapCompare({
 
   React.useEffect(() => {
     if (selectedOption === 'imagery' && firstRun) {
-      // setIsMapDataLoading(true);
+      if (nicfiDataExists) {
+        setIsMapDataLoading(true);
+      }
       console.log('here');
       var before = new mapboxgl.Map({
         container: 'before', // Container ID
@@ -92,7 +94,9 @@ export default function MapCompare({
       });
 
       syncMove(before, mapRef.current.getMap());
-      // setTimeout(() => { setIsMapDataLoading(false); }, 2000);
+      if (nicfiDataExists) {
+        setTimeout(() => { setIsMapDataLoading(false); }, 2000);
+      }
 
       setFirstRun(false);
     }
