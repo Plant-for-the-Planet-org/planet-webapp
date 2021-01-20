@@ -104,47 +104,33 @@ export default function MapCompare({
 
   React.useEffect(() => {
     if (before && after) {
-      console.log('map loaded');
       try {
         nicfi_data.map((year: any) => {
-          console.log('inside map');
           if (year.year === selectedYear1) {
-            console.log('year exists');
-            if (before.isSourceLoaded(`before-imagery-${year.year}`)) {
-              console.log('source already loaded');
-              before.addLayer({
-                id: `before-imagery-${year.year}-layer`,
-                type: 'raster',
-                source: `before-imagery-${year.year}`,
-              });
-              before.addLayer({
-                'id': `project-polygon-layer-${year.year}`,
-                'type': 'line',
-                'source': `project-polygon-${year.year}`,
-                'layout': {},
-                'paint': {
-                  'line-color': '#fff',
-                  'line-width': 4,
-                }
-              });
-
-            } else {
+            if (!before.getSource(`before-imagery-${year.year}`)) {
               before.addSource(`before-imagery-${year.year}`, {
                 type: 'raster',
                 tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
               });
-              console.log('create source');
+            }
+            if (!before.getLayer(`before-imagery-${year.year}-layer`)) {
               before.addLayer({
                 id: `before-imagery-${year.year}-layer`,
                 type: 'raster',
                 source: `before-imagery-${year.year}`,
               });
+            }
+
+            if (!before.getSource(`project-polygon-${year.year}`)) {
               before.addSource(`project-polygon-${year.year}`, {
                 'type': 'geojson',
                 'data': geoJson
               });
+            }
+
+            if (!before.getLayer(`project-polygon-layer-${year.year}`)) {
               before.addLayer({
                 'id': `project-polygon-layer-${year.year}`,
                 'type': 'line',
@@ -155,46 +141,42 @@ export default function MapCompare({
                   'line-width': 4,
                 }
               });
-
-              console.log('create layer');
             }
+
           } else {
-            before.removeLayer(`before-imagery-${year.year}-layer`);
+            if (before.getLayer(`project-polygon-layer-${year.year}`)) {
+              before.removeLayer(`project-polygon-layer-${year.year}`);
+            }
+            if (before.getLayer(`before-imagery-${year.year}-layer`)) {
+              before.removeLayer(`before-imagery-${year.year}-layer`);
+            }
           }
 
           if (year.year === selectedYear2) {
-            if (after.isSourceLoaded(`after-imagery-${year.year}`)) {
-              after.addLayer({
-                id: `after-imagery-${year.year}-layer`,
-                type: 'raster',
-                source: `after-imagery-${year.year}`,
-              });
-              after.addLayer({
-                'id': `project-polygon-layer-${year.year}`,
-                'type': 'line',
-                'source': `project-polygon-${year.year}`,
-                'layout': {},
-                'paint': {
-                  'line-color': '#fff',
-                  'line-width': 4,
-                }
-              });
-            } else {
+            if (!after.getSource(`after-imagery-${year.year}`)) {
               after.addSource(`after-imagery-${year.year}`, {
                 type: 'raster',
                 tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
               });
+            }
+            if (!after.getLayer(`after-imagery-${year.year}-layer`)) {
               after.addLayer({
                 id: `after-imagery-${year.year}-layer`,
                 type: 'raster',
                 source: `after-imagery-${year.year}`,
               });
+            }
+
+            if (!after.getSource(`project-polygon-${year.year}`)) {
               after.addSource(`project-polygon-${year.year}`, {
                 'type': 'geojson',
                 'data': geoJson
               });
+            }
+
+            if (!after.getLayer(`project-polygon-layer-${year.year}`)) {
               after.addLayer({
                 'id': `project-polygon-layer-${year.year}`,
                 'type': 'line',
@@ -207,53 +189,45 @@ export default function MapCompare({
               });
             }
           } else {
-            // after.removeLayer(`after-imagery-${year.year}-layer`);
+            if (after.getLayer(`project-polygon-layer-${year.year}`)) {
+              after.removeLayer(`project-polygon-layer-${year.year}`);
+            }
+            if (after.getLayer(`after-imagery-${year.year}-layer`)) {
+              after.removeLayer(`after-imagery-${year.year}-layer`);
+            }
           }
         })
         if (!nicfiDataExists) {
           siteImagery.map((year: any) => {
-            console.log('inside map');
             if (year.year === selectedYear1) {
-              console.log('year exists');
-              if (before.isSourceLoaded(`before-imagery-${year.year}-sentinel`)) {
-                console.log('source already loaded');
-                before.addLayer({
-                  id: `before-imagery-${year.year}-sentinel-layer`,
-                  type: 'raster',
-                  source: `before-imagery-${year.year}-sentinel`,
-                });
-                before.addLayer({
-                  'id': `project-polygon-layer-${year.year}`,
-                  'type': 'line',
-                  'source': `project-polygon-${year.year}`,
-                  'layout': {},
-                  'paint': {
-                    'line-color': '#fff',
-                    'line-width': 4,
-                  }
-                });
-              } else {
+              if (!before.getSource(`before-imagery-${year.year}-sentinel`)) {
                 before.addSource(`before-imagery-${year.year}-sentinel`, {
                   type: 'raster',
-                  tiles: [`${year.layer}`],
+                  tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                   tileSize: 256,
                   attribution: 'layer attribution',
                 });
-                console.log('create source');
+              }
+              if (!before.getLayer(`before-imagery-${year.year}-sentinel-layer`)) {
                 before.addLayer({
                   id: `before-imagery-${year.year}-sentinel-layer`,
                   type: 'raster',
                   source: `before-imagery-${year.year}-sentinel`,
                 });
-                console.log('create layer');
-                before.addSource(`project-polygon-${year.year}`, {
+              }
+
+              if (!before.getSource(`project-polygon-${year.year}-sentinel`)) {
+                before.addSource(`project-polygon-${year.year}-sentinel`, {
                   'type': 'geojson',
                   'data': geoJson
                 });
+              }
+
+              if (!before.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
                 before.addLayer({
-                  'id': `project-polygon-layer-${year.year}`,
+                  'id': `project-polygon-layer-${year.year}-sentinel`,
                   'type': 'line',
-                  'source': `project-polygon-${year.year}`,
+                  'source': `project-polygon-${year.year}-sentinel`,
                   'layout': {},
                   'paint': {
                     'line-color': '#fff',
@@ -261,47 +235,45 @@ export default function MapCompare({
                   }
                 });
               }
+
             } else {
-              before.removeLayer(`before-imagery-${year.year}-sentinel-layer`);
+              if (before.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
+                before.removeLayer(`project-polygon-layer-${year.year}-sentinel`);
+              }
+              if (before.getLayer(`before-imagery-${year.year}-sentinel-layer`)) {
+                before.removeLayer(`before-imagery-${year.year}-sentinel-layer`);
+              }
             }
 
             if (year.year === selectedYear2) {
-              if (after.isSourceLoaded(`after-imagery-${year.year}-sentinel`)) {
-                after.addLayer({
-                  id: `after-imagery-${year.year}-sentinel-layer`,
-                  type: 'raster',
-                  source: `after-imagery-${year.year}-sentinel`,
-                });
-                after.addLayer({
-                  'id': `project-polygon-layer-${year.year}`,
-                  'type': 'line',
-                  'source': `project-polygon-${year.year}`,
-                  'layout': {},
-                  'paint': {
-                    'line-color': '#fff',
-                    'line-width': 4,
-                  }
-                });
-              } else {
+              if (!after.getSource(`after-imagery-${year.year}-sentinel`)) {
                 after.addSource(`after-imagery-${year.year}-sentinel`, {
                   type: 'raster',
-                  tiles: [`${year.layer}`],
+                  tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                   tileSize: 256,
                   attribution: 'layer attribution',
                 });
+              }
+              if (!after.getLayer(`after-imagery-${year.year}-sentinel-layer`)) {
                 after.addLayer({
                   id: `after-imagery-${year.year}-sentinel-layer`,
                   type: 'raster',
                   source: `after-imagery-${year.year}-sentinel`,
                 });
-                after.addSource(`project-polygon-${year.year}`, {
+              }
+
+              if (!after.getSource(`project-polygon-${year.year}-sentinel`)) {
+                after.addSource(`project-polygon-${year.year}-sentinel`, {
                   'type': 'geojson',
                   'data': geoJson
                 });
+              }
+
+              if (!after.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
                 after.addLayer({
-                  'id': `project-polygon-layer-${year.year}`,
+                  'id': `project-polygon-layer-${year.year}-sentinel`,
                   'type': 'line',
-                  'source': `project-polygon-${year.year}`,
+                  'source': `project-polygon-${year.year}-sentinel`,
                   'layout': {},
                   'paint': {
                     'line-color': '#fff',
@@ -310,7 +282,12 @@ export default function MapCompare({
                 });
               }
             } else {
-              after.removeLayer(`after-imagery-${year.year}-sentinel-layer`);
+              if (after.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
+                after.removeLayer(`project-polygon-layer-${year.year}-sentinel`);
+              }
+              if (after.getLayer(`after-imagery-${year.year}-sentinel-layer`)) {
+                after.removeLayer(`after-imagery-${year.year}-sentinel-layer`);
+              }
             }
           })
         }

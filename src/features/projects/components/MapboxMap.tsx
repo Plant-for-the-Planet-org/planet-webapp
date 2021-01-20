@@ -252,7 +252,15 @@ export default function MapboxMap({
               }
             }
           }
-
+          if (selectedOption === 'none') {
+            if (mapRef.current && mapRef.current.getMap().getZoom() > 15) {
+              setViewPort({
+                ...viewport, zoom: 14.99, transitionDuration: 300,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic,
+              })
+            }
+          }
         }
       }
     }
@@ -343,7 +351,8 @@ export default function MapboxMap({
             setProjectZoom(zoom);
             setViewPort(newViewport);
             // setMapState(newMapState);
-            if (!turf.intersect(nicfi_coverage, geoJson.features[currentSite])) {
+            var siteCenter = turf.centroid(geoJson.features[currentSite]);
+            if (!turf.booleanPointInPolygon(siteCenter, nicfi_coverage)) {
               setNicfiDataExists(false);
             }
           }
