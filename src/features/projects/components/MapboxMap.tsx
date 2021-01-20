@@ -81,7 +81,7 @@ export default function MapboxMap({
   const infoRef = useRef(null);
   const [siteVegetationChange, setSiteVegetationChange] = useState(null);
   const [siteImagery, setSiteImagery] = useState([]);
-  const [selectedOption, setSelectedState] = React.useState('none');
+  const [selectedOption, setSelectedState] = React.useState('imagery');
   const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
   const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
   const [selectedYear1, setSelectedYear1] = React.useState('2017');
@@ -264,7 +264,7 @@ export default function MapboxMap({
         }
       }
     }
-  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists]);
+  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists, siteExists, geoJson]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -308,7 +308,7 @@ export default function MapboxMap({
       setShowProjects(true);
       setSiteVegetationChange(null);
       setSiteImagery([]);
-      setSelectedState('none');
+      setSelectedState('imagery');
     }
   }, [showSingleProject, project]);
 

@@ -203,7 +203,7 @@ export default function MapCompare({
               if (!before.getSource(`before-imagery-${year.year}-sentinel`)) {
                 before.addSource(`before-imagery-${year.year}-sentinel`, {
                   type: 'raster',
-                  tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
+                  tiles: [`${year.layer}`],
                   tileSize: 256,
                   attribution: 'layer attribution',
                 });
@@ -249,7 +249,7 @@ export default function MapCompare({
               if (!after.getSource(`after-imagery-${year.year}-sentinel`)) {
                 after.addSource(`after-imagery-${year.year}-sentinel`, {
                   type: 'raster',
-                  tiles: [`https://planet-tiles.planetapp.workers.dev/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
+                  tiles: [`${year.layer}`],
                   tileSize: 256,
                   attribution: 'layer attribution',
                 });
