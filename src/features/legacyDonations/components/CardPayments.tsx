@@ -116,7 +116,7 @@ function CardPayments({
       cardElement!.on('change', ({ error }) => {
         if (error) {
           // setPaymentError(error.message);
-          setPaymentError('Could not process your payment, please try again.');
+          setPaymentError(t('donate:noPaymentMethodError'));
           return;
         }
       });
@@ -126,7 +126,7 @@ function CardPayments({
           card: cardElement!,
         })
         .catch((error) => {
-          setPaymentError('Could not process your payment, please try again.');
+          setPaymentError(t('donate:noPaymentMethodError'));
           return;
         });
       paymentMethod = payload.paymentMethod;
@@ -135,7 +135,7 @@ function CardPayments({
     if (paymentMethod) {
       onPaymentFunction(paymentMethod);
     } else {
-      setPaymentError('Could not process your payment, please try again.');
+      setPaymentError(t('donate:noPaymentMethodError'));
       return;
     }
   };
@@ -241,7 +241,7 @@ function CardPayments({
           )}
 
       </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default CardPayments;
