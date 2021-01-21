@@ -177,7 +177,7 @@ function ProjectsList({
         </div>
       ) : null}
     </>
-  ) : null;
+  ) : <></>;
 }
 
 export default ProjectsList;

@@ -25,7 +25,8 @@ function ContactDetails({
   setIsCompany,
   isTaxDeductible,
   country,
-  token
+  token,
+  recurrencyMnemonic
 }: ContactDetailsPageProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
@@ -235,9 +236,9 @@ function ContactDetails({
             {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
           </div>
           <div className={styles.totalCostText}>
-            {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-            })}
+          {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
+                  treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+                })}
           </div>
         </div>
 

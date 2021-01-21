@@ -76,6 +76,7 @@ export interface ContactDetailsPageProps {
   country: string;
   isTaxDeductible: Boolean;
   token:any;
+  recurrencyMnemonic:String;
 }
 
 export interface ThankYouProps {

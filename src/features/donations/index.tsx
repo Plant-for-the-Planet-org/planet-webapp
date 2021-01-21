@@ -177,7 +177,8 @@ function DonationsPopup({
     setIsCompany,
     country,
     isTaxDeductible,
-    token
+    token,
+    recurrencyMnemonic, 
   };
 
   const PaymentDetailsProps = {

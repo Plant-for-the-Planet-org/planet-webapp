@@ -148,5 +148,5 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }

@@ -381,7 +381,7 @@ function TreeDonation({
                 {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
               </div>
               <div className={styles.totalCostText}>
-                {t('donate:fortreeCountTrees', {
+                {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
                   treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
                 })}
               </div>
