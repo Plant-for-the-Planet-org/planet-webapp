@@ -72,5 +72,8 @@
   "supporting": "Supporting",
   "selectProject": "Select a project",
   "giftValidation": "Please enter gift details",
-  "minDonate": "Minimum donation amount is"
+  "minDonate": "Minimum donation amount is",
+  "noPaymentMethodError":"Could not process your payment, please try again.",
+  "somethingWentWrong":"Something went wrong please try again soon!",
+  "underMaintenance":"App is undergoing maintenance, please check status.plant-for-the-planet.org for details"
 }
