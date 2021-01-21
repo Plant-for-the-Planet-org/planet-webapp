@@ -62,7 +62,7 @@
     "geojson-validation": "^1.0.2",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
-    "layer-manager": "^3.0.8",
+    "layer-manager": "^3.0.9",
     "luma.gl": "^7.3.2",
     "mapbox-gl": "^1.12.0",
     "mapbox-gl-draw": "^0.16.0",
