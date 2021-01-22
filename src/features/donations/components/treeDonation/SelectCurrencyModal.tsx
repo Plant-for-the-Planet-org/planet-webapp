@@ -11,6 +11,7 @@ import {
   getCountryDataBy,
   sortCountriesByTranslation,
 } from '../../../../utils/countryCurrency/countryUtils';
+import { getStoredConfig } from '../../../../utils/storeConfig';
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
 import i18next from '../../../../../i18n';
@@ -44,20 +45,22 @@ export default function TransitionsModal(props: any) {
   const [importantList, setImportantList] = React.useState<Array<Object>>([]);
 
   React.useEffect(() => {
-    // sets two default country as important country which is US(United States)
-    // and DE (Germany)
-    let impCountryList = [
-      getCountryDataBy('countryCode', 'US'),
-      getCountryDataBy('countryCode', 'DE'),
-    ];
+    // sets two default country as important country which is US(United States) and DE (Germany)
+    let impCountryList = ['US','DE'];
 
     // if the selected country is other than US and DE then add that country to important country list
-    if (country != 'US' && country != 'DE') {
-      impCountryList.push(getCountryDataBy('countryCode', country));
+    if (country && country != 'US' && country != 'DE') {
+      impCountryList.push(country);
+    }
+    // if there is a default country given in the config, also add that country
+    const countryConfig = getStoredConfig('country');
+    if (countryConfig && countryConfig != 'US' && countryConfig != 'DE') {
+      impCountryList.push(countryConfig);
     }
 
     // adds the important country list to state
     setImportantList(impCountryList);
+
     setSelectedModalValue(`${country},${currency}`);
   }, [currency]);
 
@@ -88,16 +91,10 @@ export default function TransitionsModal(props: any) {
           <div className={styles.modal}>
             <div className={styles.radioButtonsContainer}>
               <p className={styles.sectionHead}>{t('donate:selectCurrency')}</p>
-              {/* maps the radio button for currency */}
-              <MapCurrency
-                sortedCountriesData={importantList}
-                // this is selectedValue, country wala object
-                value={selectedModalValue}
-                handleChange={handleCurrencyChange}
-              />
               <hr style={{ margin: '0px 20px' }} />
               <MapCurrency
                 // this is selectedValue, country wala object
+                priorityCountries={importantList}
                 value={selectedModalValue}
                 handleChange={handleCurrencyChange}
               />
@@ -131,8 +128,8 @@ const FormControlNew = withStyles({
 function MapCurrency(props: any) {
   const { t, i18n, ready } = useTranslation(['country']);
   
-  const { value, handleChange } = props;
-  const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language) : {};
+  const { priorityCountries, value, handleChange } = props;
+  const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language, priorityCountries) : {};
   return ready ? (
     <FormControlNew component="fieldset">
       <RadioGroup
