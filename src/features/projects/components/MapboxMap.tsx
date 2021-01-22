@@ -88,6 +88,7 @@ export default function MapboxMap({
   const [selectedYear2, setSelectedYear2] = React.useState('2020');
   const [isMapDataLoading, setIsMapDataLoading] = React.useState(false);
   const [nicfiDataExists, setNicfiDataExists] = React.useState(true);
+  const [projectBbox, setProjectBbox] = React.useState([]);
 
   const EMPTY_STYLE = {
     version: 8,
@@ -208,7 +209,12 @@ export default function MapboxMap({
     selectedOption,
     setIsMapDataLoading,
     geoJson,
-    nicfiDataExists
+    nicfiDataExists,
+    projectBbox,
+    showSingleProject,
+    isMobile,
+    siteExists,
+    currentSite
   };
 
   async function fetchImageryData(url: any, data: any) {
@@ -307,7 +313,10 @@ export default function MapboxMap({
       setExploreProjects(true);
       setShowProjects(true);
       setSiteVegetationChange(null);
+      setsiteExists(false);
       setSiteImagery([]);
+      setProjectBbox([]);
+      setNicfiDataExists(false);
       setSelectedState('imagery');
     }
   }, [showSingleProject, project]);
@@ -318,6 +327,8 @@ export default function MapboxMap({
         if (siteExists) {
           if (geoJson) {
             const bbox = turf.bbox(geoJson.features[currentSite]);
+            const fullBbox = turf.bbox(geoJson);
+            setProjectBbox(fullBbox);
             const { longitude, latitude, zoom } = new WebMercatorViewport(
               viewport
             ).fitBounds(

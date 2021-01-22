@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import mapboxgl from 'mapbox-gl';
 import syncMove from '@mapbox/mapbox-gl-sync-move';
 import MapboxCompare from 'mapbox-gl-compare';
+import * as turf from '@turf/turf';
 
 interface Props {
   mapRef: any;
@@ -16,6 +17,10 @@ interface Props {
   setIsMapDataLoading: Function;
   geoJson: any;
   nicfiDataExists: any;
+  projectBbox: any;
+  showSingleProject: Boolean;
+  isMobile: Boolean;
+  currentSite: any;
 }
 
 export default function MapCompare({
@@ -30,12 +35,17 @@ export default function MapCompare({
   selectedOption,
   setIsMapDataLoading,
   geoJson,
-  nicfiDataExists
+  nicfiDataExists,
+  projectBbox,
+  showSingleProject,
+  isMobile,
+  currentSite
 }: Props): ReactElement {
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
   const [firstRun, setFirstRun] = React.useState(true);
+  const [imageryMask, setImageryMask] = React.useState(null);
 
   const nicfi_data = [
     {
@@ -104,6 +114,33 @@ export default function MapCompare({
 
   React.useEffect(() => {
     if (before && after) {
+      if (showSingleProject && geoJson && projectBbox !== [] && selectedOption === 'imagery') {
+        console.log(projectBbox);
+        var temp = projectBbox;
+        temp[0] = temp[0] - 0.1
+        temp[1] = temp[1] - 0.1
+        temp[2] = temp[2] + 0.1
+        temp[3] = temp[3] + 0.1
+        before.setMaxBounds(temp);
+        after.setMaxBounds(temp);
+        let bboxPolygon = turf.bboxPolygon(temp);
+        let tempMask = bboxPolygon;
+        geoJson.features.map((feature: any) => {
+          tempMask = turf.difference(tempMask, feature);
+        })
+        // /let mask = turf.difference(bboxPolygon, geoJson.features[currentSite]);
+        setImageryMask(tempMask);
+      } else {
+        before.setMaxBounds(null);
+        after.setMaxBounds(null);
+        setImageryMask(null);
+      }
+      console.log(temp);
+    }
+  }, [before, after, projectBbox, showSingleProject, geoJson]);
+
+  React.useEffect(() => {
+    if (before && after) {
       try {
         nicfi_data.map((year: any) => {
           if (year.year === selectedYear1) {
@@ -113,6 +150,7 @@ export default function MapCompare({
                 tiles: [`https://tile-s1.plant-for-the-planet.org/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
+                bounds: projectBbox
               });
             }
             if (!before.getLayer(`before-imagery-${year.year}-layer`)) {
@@ -143,12 +181,35 @@ export default function MapCompare({
               });
             }
 
+            if (imageryMask && !before.getSource(`project-mask-${year.year}`)) {
+              before.addSource(`project-mask-${year.year}`, {
+                'type': 'geojson',
+                'data': imageryMask
+              });
+            }
+
+            if (imageryMask && !before.getLayer(`project-mask-layer-${year.year}`)) {
+              before.addLayer({
+                'id': `project-mask-layer-${year.year}`,
+                'type': 'fill',
+                'source': `project-mask-${year.year}`,
+                'layout': {},
+                'paint': {
+                  'fill-color': '#fff',
+                  'fill-opacity': 1,
+                }
+              });
+            }
+
           } else {
             if (before.getLayer(`project-polygon-layer-${year.year}`)) {
               before.removeLayer(`project-polygon-layer-${year.year}`);
             }
             if (before.getLayer(`before-imagery-${year.year}-layer`)) {
               before.removeLayer(`before-imagery-${year.year}-layer`);
+            }
+            if (before.getLayer(`project-mask-layer-${year.year}`)) {
+              before.removeLayer(`project-mask-layer-${year.year}`);
             }
           }
 
@@ -159,6 +220,7 @@ export default function MapCompare({
                 tiles: [`https://tile-s1.plant-for-the-planet.org/basemaps/v1/planet-tiles/${year.raster}/gmap/{z}/{x}/{y}.png`],
                 tileSize: 256,
                 attribution: 'layer attribution',
+                bounds: projectBbox
               });
             }
             if (!after.getLayer(`after-imagery-${year.year}-layer`)) {
@@ -188,12 +250,35 @@ export default function MapCompare({
                 }
               });
             }
+
+            if (imageryMask && !after.getSource(`project-mask-${year.year}`)) {
+              after.addSource(`project-mask-${year.year}`, {
+                'type': 'geojson',
+                'data': imageryMask
+              });
+            }
+
+            if (imageryMask && !after.getLayer(`project-mask-layer-${year.year}`)) {
+              after.addLayer({
+                'id': `project-mask-layer-${year.year}`,
+                'type': 'fill',
+                'source': `project-mask-${year.year}`,
+                'layout': {},
+                'paint': {
+                  'fill-color': '#fff',
+                  'fill-opacity': 1,
+                }
+              });
+            }
           } else {
             if (after.getLayer(`project-polygon-layer-${year.year}`)) {
               after.removeLayer(`project-polygon-layer-${year.year}`);
             }
             if (after.getLayer(`after-imagery-${year.year}-layer`)) {
               after.removeLayer(`after-imagery-${year.year}-layer`);
+            }
+            if (after.getLayer(`project-mask-layer-${year.year}`)) {
+              after.removeLayer(`project-mask-layer-${year.year}`);
             }
           }
         })
@@ -206,6 +291,7 @@ export default function MapCompare({
                   tiles: [`${year.layer}`],
                   tileSize: 256,
                   attribution: 'layer attribution',
+                  bounds: projectBbox
                 });
               }
               if (!before.getLayer(`before-imagery-${year.year}-sentinel-layer`)) {
@@ -236,12 +322,35 @@ export default function MapCompare({
                 });
               }
 
+              if (imageryMask && !before.getSource(`project-mask-${year.year}-sentinel`)) {
+                before.addSource(`project-mask-${year.year}-sentinel`, {
+                  'type': 'geojson',
+                  'data': imageryMask
+                });
+              }
+
+              if (imageryMask && !before.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
+                before.addLayer({
+                  'id': `project-mask-layer-${year.year}-sentinel`,
+                  'type': 'fill',
+                  'source': `project-mask-${year.year}-sentinel`,
+                  'layout': {},
+                  'paint': {
+                    'fill-color': '#fff',
+                    'fill-opacity': 1,
+                  }
+                });
+              }
+
             } else {
               if (before.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
                 before.removeLayer(`project-polygon-layer-${year.year}-sentinel`);
               }
               if (before.getLayer(`before-imagery-${year.year}-sentinel-layer`)) {
                 before.removeLayer(`before-imagery-${year.year}-sentinel-layer`);
+              }
+              if (before.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
+                before.removeLayer(`project-mask-layer-${year.year}-sentinel`);
               }
             }
 
@@ -252,6 +361,7 @@ export default function MapCompare({
                   tiles: [`${year.layer}`],
                   tileSize: 256,
                   attribution: 'layer attribution',
+                  bounds: projectBbox
                 });
               }
               if (!after.getLayer(`after-imagery-${year.year}-sentinel-layer`)) {
@@ -281,12 +391,34 @@ export default function MapCompare({
                   }
                 });
               }
+              if (imageryMask && !after.getSource(`project-mask-${year.year}-sentinel`)) {
+                after.addSource(`project-mask-${year.year}-sentinel`, {
+                  'type': 'geojson',
+                  'data': imageryMask
+                });
+              }
+
+              if (imageryMask && !after.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
+                after.addLayer({
+                  'id': `project-mask-layer-${year.year}-sentinel`,
+                  'type': 'fill',
+                  'source': `project-mask-${year.year}-sentinel`,
+                  'layout': {},
+                  'paint': {
+                    'fill-color': '#fff',
+                    'fill-opacity': 1,
+                  }
+                });
+              }
             } else {
               if (after.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
                 after.removeLayer(`project-polygon-layer-${year.year}-sentinel`);
               }
               if (after.getLayer(`after-imagery-${year.year}-sentinel-layer`)) {
                 after.removeLayer(`after-imagery-${year.year}-sentinel-layer`);
+              }
+              if (after.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
+                after.removeLayer(`project-mask-layer-${year.year}-sentinel`);
               }
             }
           })
@@ -295,7 +427,7 @@ export default function MapCompare({
         console.log('Error: ', e);
       }
     }
-  }, [selectedYear1, selectedYear2, isMapDataLoading, selectedOption, nicfiDataExists]);
+  }, [selectedYear1, selectedYear2, isMapDataLoading, selectedOption, nicfiDataExists, projectBbox, imageryMask]);
   return (
     <>
       {
