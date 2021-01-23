@@ -125,11 +125,16 @@ export default function MapCompare({
         after.setMaxBounds(temp);
         let bboxPolygon = turf.bboxPolygon(temp);
         let tempMask = bboxPolygon;
-        geoJson.features.map((feature: any) => {
-          tempMask = turf.difference(tempMask, feature);
-        })
-        // /let mask = turf.difference(bboxPolygon, geoJson.features[currentSite]);
-        setImageryMask(tempMask);
+        try {
+          geoJson.features.map((feature: any) => {
+            tempMask = turf.difference(tempMask, feature);
+          })
+          // /let mask = turf.difference(bboxPolygon, geoJson.features[currentSite]);
+          setImageryMask(tempMask);
+        } catch (e: any) {
+          console.log('Error: ', e)
+        }
+
       } else {
         before.setMaxBounds(null);
         after.setMaxBounds(null);

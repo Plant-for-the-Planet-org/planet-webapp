@@ -326,6 +326,7 @@ export default function MapboxMap({
       if (project) {
         if (siteExists) {
           if (geoJson) {
+            console.log('geoJson', geoJson);
             const bbox = turf.bbox(geoJson.features[currentSite]);
             const fullBbox = turf.bbox(geoJson);
             setProjectBbox(fullBbox);
