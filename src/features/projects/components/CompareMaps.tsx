@@ -117,9 +117,9 @@ export default function MapCompare({
       if (showSingleProject && geoJson && projectBbox !== [] && selectedOption === 'imagery') {
         console.log(projectBbox);
         var temp = projectBbox;
-        temp[0] = temp[0] - 0.1
+        temp[0] = temp[0] - 0.2
         temp[1] = temp[1] - 0.1
-        temp[2] = temp[2] + 0.1
+        temp[2] = temp[2] + 0.2
         temp[3] = temp[3] + 0.1
         before.setMaxBounds(temp);
         after.setMaxBounds(temp);
