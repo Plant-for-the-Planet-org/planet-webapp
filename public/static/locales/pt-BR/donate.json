@@ -28,6 +28,7 @@
   "directGiftRecipient": "Esta doação apoia",
   "recipientName": "Nome do Destinatário",
   "recipientNameRequired": "Nome do Destinatário é necessário",
+  "removeRecipient": "Remover",
   "giftMessage": "Mensagem de Presente",
   "firstNameRequired": "O campo Nome é obrigatório",
   "lastNameRequired": "O campo Sobrenome é obrigatório",
@@ -70,7 +71,5 @@
   "giftTo": "Presente para",
   "supporting": "Apoiando",
   "selectProject": "Selecione um projeto",
-  "nameOfOrg": "Nome da organização",
-  "nameOfOrgIsRequired": "Nome da organização é obrigatório",
   "giftValidation": "Por favor, introduza os detalhes do presente"
 }

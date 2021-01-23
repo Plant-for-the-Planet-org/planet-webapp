@@ -30,24 +30,23 @@ function Login({ }: Props): ReactElement {
           // redirect
 
           if (typeof window !== 'undefined' && userInfo) {
-            if(localStorage.getItem('redirectLink')){
+            if (localStorage.getItem('redirectLink')) {
               const redirectLink = localStorage.getItem('redirectLink');
-              if(redirectLink){
+              if (redirectLink) {
                 localStorage.removeItem("redirectLink");
                 router.replace(redirectLink);
               }
-            }else{
+            } else {
               router.push(`/t/${userInfo.slug}`);
             }
           }
         }
         if (!isLoading && isAuthenticated) {
           loadFunction()
-        }else if(!isLoading && !isAuthenticated){
-            loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`});
+        } else if (!isLoading && !isAuthenticated) {
+          loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
         }
       }, [isAuthenticated, isLoading])
-
     
     return (
         <div>

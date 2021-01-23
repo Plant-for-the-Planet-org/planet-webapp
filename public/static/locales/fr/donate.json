@@ -28,6 +28,7 @@
   "directGiftRecipient": "Ce don permet de soutenir",
   "recipientName": "Nom du bénéficiaire",
   "recipientNameRequired": "Le nom du bénéficiaire est requis",
+  "removeRecipient": "Supprimer",
   "giftMessage": "Message cadeau",
   "firstNameRequired": "Le champ Prénom est  requis",
   "lastNameRequired": "Le champ \"Nom\" est  requis",
@@ -70,7 +71,5 @@
   "giftTo": "Cadeau à",
   "supporting": "Soutenir",
   "selectProject": "Sélectionner un projet",
-  "nameOfOrg": "Nom de l'organisation",
-  "nameOfOrgIsRequired": "Le nom de l'organisation est requis",
   "giftValidation": "Entrer les détails du cadeau"
 }

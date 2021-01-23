@@ -27,8 +27,8 @@ import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageA
 import getMapStyle from '../../../utils/getMapStyle';
 import dynamic from 'next/dynamic';
 import ImagerySwitcher from './maps/ImagerySwitcher';
-import { Image } from 'react-mapbox-gl';
 import MapLoading from '../../common/ContentLoaders/Maps/MapLoading';
+import nicfi_coverage from '../../../../public/data/planet/aoi.json';
 
 const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
@@ -81,12 +81,14 @@ export default function MapboxMap({
   const infoRef = useRef(null);
   const [siteVegetationChange, setSiteVegetationChange] = useState(null);
   const [siteImagery, setSiteImagery] = useState([]);
-  const [selectedOption, setSelectedState] = React.useState('none');
+  const [selectedOption, setSelectedState] = React.useState('imagery');
   const [projectCenter, setProjectCenter] = React.useState(defaultMapCenter);
   const [projectZoom, setProjectZoom] = React.useState(defaultZoom);
-  const [selectedYear1, setSelectedYear1] = React.useState('2019');
+  const [selectedYear1, setSelectedYear1] = React.useState('2017');
   const [selectedYear2, setSelectedYear2] = React.useState('2020');
   const [isMapDataLoading, setIsMapDataLoading] = React.useState(false);
+  const [nicfiDataExists, setNicfiDataExists] = React.useState(true);
+  const [projectBbox, setProjectBbox] = React.useState([]);
 
   const EMPTY_STYLE = {
     version: 8,
@@ -204,7 +206,15 @@ export default function MapboxMap({
     selectedYear2,
     style,
     isMapDataLoading,
-    selectedOption
+    selectedOption,
+    setIsMapDataLoading,
+    geoJson,
+    nicfiDataExists,
+    projectBbox,
+    showSingleProject,
+    isMobile,
+    siteExists,
+    currentSite
   };
 
   async function fetchImageryData(url: any, data: any) {
@@ -238,20 +248,29 @@ export default function MapboxMap({
       if (project) {
         if (siteExists) {
           if (geoJson) {
-            if (selectedOption === 'imagery')
+            if (selectedOption === 'imagery' && !nicfiDataExists)
               if (!yearExists(selectedYear1) || !yearExists(selectedYear2)) {
                 fetchImageryData('/imagery', geoJson);
               }
+            if (selectedOption === 'vegetation') {
+              if (!siteVegetationChange) {
+                fetchVegetationData('/vegetation', geoJson);
+              }
+            }
           }
-          if (selectedOption === 'vegetation') {
-            if (!siteVegetationChange) {
-              fetchVegetationData('/vegetation', geoJson);
+          if (selectedOption === 'none') {
+            if (mapRef.current && mapRef.current.getMap().getZoom() > 15) {
+              setViewPort({
+                ...viewport, zoom: 14.99, transitionDuration: 300,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic,
+              })
             }
           }
         }
       }
     }
-  }, [selectedOption, selectedYear1, selectedYear2]);
+  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists, siteExists, geoJson]);
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -294,7 +313,11 @@ export default function MapboxMap({
       setExploreProjects(true);
       setShowProjects(true);
       setSiteVegetationChange(null);
+      setsiteExists(false);
       setSiteImagery([]);
+      setProjectBbox([]);
+      setNicfiDataExists(false);
+      setSelectedState('imagery');
     }
   }, [showSingleProject, project]);
 
@@ -303,7 +326,10 @@ export default function MapboxMap({
       if (project) {
         if (siteExists) {
           if (geoJson) {
+            console.log('geoJson', geoJson);
             const bbox = turf.bbox(geoJson.features[currentSite]);
+            const fullBbox = turf.bbox(geoJson);
+            setProjectBbox(fullBbox);
             const { longitude, latitude, zoom } = new WebMercatorViewport(
               viewport
             ).fitBounds(
@@ -337,6 +363,10 @@ export default function MapboxMap({
             setProjectZoom(zoom);
             setViewPort(newViewport);
             // setMapState(newMapState);
+            var siteCenter = turf.centroid(geoJson.features[currentSite]);
+            if (!turf.booleanPointInPolygon(siteCenter, nicfi_coverage)) {
+              setNicfiDataExists(false);
+            }
           }
         } else {
           // const newMapState = {

@@ -170,7 +170,7 @@ function PaymentDetails({
       cardElement!.on('change', ({ error }) => {
         if (error) {
           // setPaymentError(error.message);
-          setPaymentError('Could not process your payment, please try again.');
+          setPaymentError(t('donate:noPaymentMethodError'));
           return;
         }
       });
@@ -180,7 +180,7 @@ function PaymentDetails({
           card: cardElement!,
         })
         .catch((error) => {
-          setPaymentError('Could not process your payment, please try again.');
+          setPaymentError(t('donate:noPaymentMethodError'));
           return;
         });
       paymentMethod = payload.paymentMethod;
@@ -202,7 +202,10 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
-
+    if (!paymentMethod) {
+      setPaymentError(t('donate:noPaymentMethodError'));
+      return;
+    }
 
     const payWithCardProps = {
       setDonationStep,
@@ -309,19 +312,19 @@ function PaymentDetails({
 
     createDonation(createDonationData, token)
       .then((res) => {
-        if (res.code === 400) {
+        if (res.code === 400 || res.code === 401) {
           setIsPaymentProcessing(false);
           setPaymentError(res.message);
           setPaypalProcessing(false)
         } else if (res.code === 500) {
           setIsPaymentProcessing(false);
           setPaypalProcessing(false);
-          setPaymentError('Something went wrong please try again soon!');
+          setPaymentError(t('donate:somethingWentWrong'));
         } else if (res.code === 503) {
           setIsPaymentProcessing(false);
           setPaypalProcessing(false);
           setPaymentError(
-            'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+            t('donate:underMaintenance'),
           );
         } else {
           setDonationID(res.id);
@@ -358,12 +361,12 @@ function PaymentDetails({
             return;
           } if (res.code === 500) {
             setIsPaymentProcessing(false);
-            setPaymentError('Something went wrong please try again soon!');
+            setPaymentError(t('donate:somethingWentWrong'));
             return;
           } if (res.code === 503) {
             setIsPaymentProcessing(false);
             setPaymentError(
-              'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+              t('donate:underMaintenance'),
             );
             return;
           }
@@ -375,45 +378,6 @@ function PaymentDetails({
             setPaymentType('Paypal')
             setDonationStep(4)
 
-          } else if (res.status === 'action_required') {
-            const clientSecret = res.response.payment_intent_client_secret;
-            const donationID = res.id;
-            const stripe = window.Stripe(
-              process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-              {
-                stripeAccount: res.response.account,
-              },
-            );
-            if (stripe) {
-              await stripe.handleCardAction(clientSecret).then((res) => {
-                if (res.error) {
-                  setIsPaymentProcessing(false);
-                  setPaymentError(res.error.message);
-                } else {
-                  const payDonationData = {
-                    paymentProviderRequest: {
-                      account: paymentSetup.gateways.stripe.account,
-                      gateway: 'stripe_pi',
-                      source: {
-                        id: res.paymentIntent.id,
-                        object: 'payment_intent',
-                      },
-                    },
-                  };
-                  payDonation(payDonationData, donationID, token).then((res) => {
-                    if (res.paymentStatus === 'success') {
-                      setIsPaymentProcessing(false);
-                      setPaymentType('Paypal')
-                      setDonationStep(4)
-
-                    } else {
-                      setIsPaymentProcessing(false);
-                      setPaymentError(res.error ? res.error.message : res.message);
-                    }
-                  });
-                }
-              });
-            }
           }
         })
         .catch((error) => {
@@ -581,7 +545,7 @@ function PaymentDetails({
 
       </div>
     )
-  ) : null;
+  ) : <></>;
 }
 
 export default PaymentDetails;

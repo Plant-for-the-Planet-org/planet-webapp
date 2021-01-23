@@ -6,7 +6,7 @@ import Footer from '../../src/features/common/Layout/Footer';
 import LandingSection from '../../src/features/common/Layout/LandingSection';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import SingleContribution from '../../src/features/user/UserProfile/components/RegisterTrees/SingleContribution';
-import { getUserInfo } from '../../src/utils/auth0/localStorageUtils';
+import { getLocalUserInfo } from '../../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function SingleContributionPage(): ReactElement {
@@ -37,8 +37,8 @@ export default function SingleContributionPage(): ReactElement {
       async function loadFunction() {
         const token = await getAccessTokenSilently();
         setToken(token);
-        getUserInfo() && getUserInfo().slug
-          ? setCurrentUserSlug(getUserInfo().slug)
+        getLocalUserInfo() && getLocalUserInfo().slug
+          ? setCurrentUserSlug(getLocalUserInfo().slug)
           : null;
         };
       if (isAuthenticated && !isLoading) {

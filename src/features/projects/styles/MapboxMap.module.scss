@@ -104,6 +104,7 @@
   border-radius: 9px;
   line-height: 16px;
   cursor: pointer;
+  z-index: 11;
 }
 .exploreButton > svg {
   width: 17px;
@@ -332,6 +333,7 @@
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   animation: fade_in_show 0.5s;
+  z-index: 11;
 }
 
 @keyframes fade_in_show {
