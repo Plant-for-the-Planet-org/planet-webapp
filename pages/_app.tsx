@@ -18,6 +18,7 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
+import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -37,6 +38,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 const onRedirectCallback = (appState) => {
+  removeLocalUserInfo();
   // Use Next.js's Router.replace method to replace the url
   Router.replace(appState?.returnTo || '/');
 };

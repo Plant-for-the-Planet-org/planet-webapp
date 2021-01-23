@@ -282,6 +282,9 @@ export default function RegisterTrees({
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
+                <div className={styles.note}>
+                  <p>{t('me:registerTreesDescription')}</p>
+                </div>
                 <div className={styles.formField}>
                   <div className={styles.formFieldHalf}>
                     <MaterialTextField

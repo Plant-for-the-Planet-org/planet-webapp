@@ -44,6 +44,9 @@ export const PaymentRequestCustomButton = ({
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
+
+  const [paymentLoading,setPaymentLoading] = useState(false)
+
   const stripeAllowedCountries = [
     'AE',
     'AT',
@@ -127,7 +130,7 @@ export const PaymentRequestCustomButton = ({
 
   useEffect(() => {
     let subscribed = true;
-    if (paymentRequest) {
+    if (paymentRequest && !paymentLoading) {
       paymentRequest.canMakePayment().then((res: any) => {
         if (res && subscribed) {
           setCanMakePayment(true);
@@ -142,22 +145,25 @@ export const PaymentRequestCustomButton = ({
   }, [paymentRequest]);
 
   useEffect(() => {
-    if (paymentRequest) {
+    if (paymentRequest && !paymentLoading) {
+      setPaymentLoading(true)
       paymentRequest.on(
         'paymentmethod',
         ({ complete, paymentMethod, ...data }: any) => {
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
+          setPaymentLoading(false)
         }
       );
     }
     return () => {
-      if (paymentRequest) {
+      if (paymentRequest  && !paymentLoading) {
         paymentRequest.off(
           'paymentmethod',
           ({ complete, paymentMethod, ...data }: any) => {
             onPaymentFunction(paymentMethod, paymentRequest);
             complete('success');
+            setPaymentLoading(false)
           }
         );
       }
