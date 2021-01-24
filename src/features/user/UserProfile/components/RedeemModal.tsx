@@ -244,7 +244,9 @@ export default function RedeemModal({
                     <h4>
                       {t('me:redeem')}
                     </h4>
-
+                    <div className={styles.note}>
+                      <p>{t('me:redeemDescription')}</p>
+                    </div>
                     <div className={styles.inputField}>
                       <MaterialTextField inputRef={register({
                         required: {

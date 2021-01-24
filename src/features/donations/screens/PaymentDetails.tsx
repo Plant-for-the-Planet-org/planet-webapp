@@ -171,7 +171,7 @@ function PaymentDetails({
       cardElement!.on('change', ({ error }) => {
         if (error) {
           // setPaymentError(error.message);
-          setPaymentError('Could not process your payment, please try again.');
+          setPaymentError(t('donate:noPaymentMethodError'));
           return;
         }
       });
@@ -181,7 +181,7 @@ function PaymentDetails({
           card: cardElement!,
         })
         .catch((error) => {
-          setPaymentError('Could not process your payment, please try again.');
+          setPaymentError(t('donate:noPaymentMethodError'));
           return;
         });
       paymentMethod = payload.paymentMethod;
@@ -203,7 +203,10 @@ function PaymentDetails({
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
-
+    if (!paymentMethod) {
+      setPaymentError(t('donate:noPaymentMethodError'));
+      return;
+    }
 
     const payWithCardProps = {
       setDonationStep,
@@ -318,19 +321,19 @@ function PaymentDetails({
 
     createDonation(createDonationData, token)
       .then((res) => {
-        if (res.code === 400) {
+        if (res.code === 400 || res.code === 401) {
           setIsPaymentProcessing(false);
           setPaymentError(res.message);
           setPaypalProcessing(false)
         } else if (res.code === 500) {
           setIsPaymentProcessing(false);
           setPaypalProcessing(false);
-          setPaymentError('Something went wrong please try again soon!');
+          setPaymentError(t('donate:somethingWentWrong'));
         } else if (res.code === 503) {
           setIsPaymentProcessing(false);
           setPaypalProcessing(false);
           setPaymentError(
-            'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+            t('donate:underMaintenance'),
           );
         } else {
           setDonationID(res.id);
@@ -367,12 +370,12 @@ function PaymentDetails({
             return;
           } if (res.code === 500) {
             setIsPaymentProcessing(false);
-            setPaymentError('Something went wrong please try again soon!');
+            setPaymentError(t('donate:somethingWentWrong'));
             return;
           } if (res.code === 503) {
             setIsPaymentProcessing(false);
             setPaymentError(
-              'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+              t('donate:underMaintenance'),
             );
             return;
           }

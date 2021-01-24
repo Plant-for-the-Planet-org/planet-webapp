@@ -11,6 +11,8 @@ import getImageUrl from '../../../../utils/getImageURL';
 import { makeStyles } from '@material-ui/core/styles';
 import tenantConfig from '../../../../../tenant.config';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
+import getRandomImage from '../../../../utils/getRandomImage';
+import Image from 'next/image'
 
 interface Props {
   leaderboard: any;
@@ -135,9 +137,16 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   href="/t/[id]"
                   as={`/t/${option.slug}`}>
                     <div className={styles.searchedUserCard}>
+                    {/* <Image
+                      loader={myLoader}
+                      src={getImageUrl('profile', 'avatar', option.image)}
+                      alt={option.name}
+                      width={26}
+                      height={26}
+                    /> */}
                     <img
                       src={getImageUrl('profile', 'avatar', option.image)}
-                      onError={(e) => (e.target.onerror = null, e.target.src = imageErrorSrc)}
+                      onError={(e) => (e.target.onerror = null, e.target.src = getRandomImage(option.name))}
                       height="26px"
                       width="26px"
                       style={{ borderRadius: '40px' }}

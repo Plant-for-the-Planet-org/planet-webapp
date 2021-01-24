@@ -89,5 +89,8 @@
   "semiyearly":"Semi yearly",
   "yearly":"Yearly",
   "minDonate": "Minimum donation amount is",
-  "loginForRecurrency":"Login to make a frequent donation."
+  "loginForRecurrency":"Login to make a frequent donation.",
+  "noPaymentMethodError":"Could not process your payment, please try again.",
+  "somethingWentWrong":"Something went wrong please try again soon!",
+  "underMaintenance":"App is undergoing maintenance, please check status.plant-for-the-planet.org for details"
 }
