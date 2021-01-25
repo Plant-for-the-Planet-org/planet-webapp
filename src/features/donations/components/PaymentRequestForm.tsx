@@ -33,7 +33,7 @@ interface PaymentButtonProps {
   currency: String;
   amount: number;
   onPaymentFunction: Function;
-  continueNext: Function;
+  continueNext: Function | null;
 }
 export const PaymentRequestCustomButton = ({
   country,
@@ -177,7 +177,8 @@ export const PaymentRequestCustomButton = ({
     stripeAllowedCountries.includes(country) &&
     canMakePayment &&
     paymentRequest ? (
-    <div className={styles.actionButtonsContainer}>
+    <div className={styles.actionButtonsContainer} 
+    style={{justifyContent: continueNext ? "space-between" : "center"}}>
       <div style={{ width: '150px' }}>
         <PaymentRequestButtonElement
           className="PaymentRequestButton"
@@ -196,15 +197,17 @@ export const PaymentRequestCustomButton = ({
           }}
         />
       </div>
-
-      <AnimatedButton
-        onClick={() => continueNext()}
-        className={styles.continueButton}
-      >
-        {t('common:continue')}
-      </AnimatedButton>
+       {continueNext && (
+            <AnimatedButton
+            onClick={() => continueNext()}
+            className={styles.continueButton}
+          >
+            {t('common:continue')}
+          </AnimatedButton>
+       )}   
+      
     </div>
-  ) : (
+  ) : continueNext ? (
     <div
       className={styles.actionButtonsContainer}
       style={{ justifyContent: 'center' }}
@@ -217,5 +220,5 @@ export const PaymentRequestCustomButton = ({
         {t('common:continue')}
       </AnimatedButton>
     </div>
-  )) : null;
+  ) : null) : null;
 };

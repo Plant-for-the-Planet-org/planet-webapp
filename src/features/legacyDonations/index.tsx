@@ -4,7 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../utils/stripe/getStripe';
 import styles from './styles/PaymentDetails.module.scss';
 import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
-import { PaymentRequestCustomButton } from './components/PaymentRequestForm';
+import { PaymentRequestCustomButton } from '../donations/components/PaymentRequestForm';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
 import i18next from '../../../i18n';
@@ -263,6 +263,7 @@ const paypalSuccess =(data:any)=>{
                 <PaymentRequestCustomButton
                   country={country}
                   currency={currency}
+                  continueNext={null}
                   amount={formatAmountForStripe(
                     treeCost * treeCount,
                     currency.toLowerCase(),
@@ -292,7 +293,7 @@ const paypalSuccess =(data:any)=>{
     ) : (
       <ThankYou {...ThankYouProps} />
     )
-  ) : null;
+  ) : <></>;
 }
 
 export default LegacyDonations
