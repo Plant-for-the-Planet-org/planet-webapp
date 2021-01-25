@@ -196,7 +196,7 @@ export default function EditProfileModal({
                 onClick={handleEditProfileModalClose}
               >
                 <BackButton style={{}} />
-              </div>
+              </button>
               <div className={styles.editProfileText}>
                 {' '}
                 <b> {t('editProfile:edit')} </b>

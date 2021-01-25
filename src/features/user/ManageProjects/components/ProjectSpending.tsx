@@ -280,7 +280,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                     : null}
 
                 <div className={styles.formField}>
-                    <button  id={'backArrowProjectSpend'} className={`${styles.formFieldHalf}`}>
+                    <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={handleBack}
                             className={styles.secondaryButton}

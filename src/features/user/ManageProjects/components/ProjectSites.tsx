@@ -334,7 +334,7 @@ export default function ProjectSites({
         ) : null}
 
         <div className={styles.formField}>
-          <button id={'backArrowProjectS'} className={`${styles.formFieldHalf}`}>
+          <div className={`${styles.formFieldHalf}`}>
             <AnimatedButton
               onClick={handleBack}
               className={styles.secondaryButton}
@@ -342,7 +342,7 @@ export default function ProjectSites({
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
             </AnimatedButton>
-          </button>
+          </div>
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
             <AnimatedButton

@@ -155,7 +155,7 @@ export default function RedeemModal({
               <div className={styles.header}>
                 <button id={'closeRedeemM'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                   <Close />
-                </div>
+                </button>
                 <div className={styles.headerTitle}>
                   {t('redeem:congratulations')}
                 </div>
