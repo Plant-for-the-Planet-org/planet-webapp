@@ -131,9 +131,9 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <div onClick={handleOpen} className={'donateButton'}>
+                <button id={'ProjSnipDonate'} onClick={handleOpen} className={'donateButton'}>
                   {t('common:donate')}
-                </div>
+                </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,

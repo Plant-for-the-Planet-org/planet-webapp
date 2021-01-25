@@ -88,14 +88,14 @@ export default function TransitionsModal(props: any) {
 
             {/* modal buttons */}
             <div className={styles.buttonContainer}>
-              <div className={styles.button} onClick={handleModalClose}>
+              <button id={'selectTaxDedCan'} className={styles.button} onClick={handleModalClose}>
                 <div></div>
                 <p>{t('common:cancel')}</p>
-              </div>
-              <div className={styles.button} onClick={handleOKClick}>
+              </button>
+              <button id={'selectTaxDedOk'} className={styles.button} onClick={handleOKClick}>
                 <div></div>
                 <p>{t('common:ok')}</p>
-              </div>
+              </button>
             </div>
           </div>
         </Fade>

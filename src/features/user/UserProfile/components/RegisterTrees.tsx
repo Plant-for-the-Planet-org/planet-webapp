@@ -427,7 +427,7 @@ export default function RegisterTrees({
                 {/* : null
               } */}
                 <div className={styles.nextButton}>
-                  <div
+                  <button id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
                     className={styles.continueButton}
                   >
@@ -437,7 +437,7 @@ export default function RegisterTrees({
                     ) : (
                       t('me:registerButton')
                     )}
-                  </div>
+                  </button>
                 </div>
               </form>
             </div>

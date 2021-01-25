@@ -432,7 +432,7 @@ export default function EditProfileModal({
               className={styles.formFieldLarge}
               style={{ justifyContent: 'center' }}
             >
-              <div
+              <button id={'editProfileSaveProfile'}
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
@@ -441,7 +441,7 @@ export default function EditProfileModal({
                 ) : (
                   t('editProfile:save')
                 )}
-              </div>
+              </button>
             </div>
           </div>
         </div>

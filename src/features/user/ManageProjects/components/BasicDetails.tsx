@@ -617,7 +617,7 @@ export default function BasicDetails({
           </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
-            <div
+            <button id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
               className={styles.continueButton}
             >
@@ -626,10 +626,10 @@ export default function BasicDetails({
               ) : (
                   t('manageProjects:saveAndContinue')
                 )}
-            </div>
+            </button>
           </div>
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

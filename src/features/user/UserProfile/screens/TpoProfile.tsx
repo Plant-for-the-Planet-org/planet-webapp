@@ -45,12 +45,12 @@ export default function TpoProfile({
     <>
       {authenticatedType === 'private' && (
         <>
-          <div
+          <button id={'tpoProfileSetting'}
             className={styles.settingsIcon}
             onClick={handleSettingsModalOpen}
           >
             <Settings color="white" />
-          </div>
+          </button>
         </>
       )}
       <LandingSection

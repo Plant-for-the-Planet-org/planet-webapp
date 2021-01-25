@@ -87,7 +87,7 @@ const ShareOptions = ({
       onMouseOut={() => setCurrentHover(-1)}
       style={{ cursor: 'pointer' }}
     >
-      <div
+      <button id={'shareButton'}
         className={styles.shareIcon}
         onClick={() => {
           if (sendRef) {
@@ -104,9 +104,9 @@ const ShareOptions = ({
         ) : (
           <DownloadIcon color={styles.blueishGrey} />
         )}
-      </div>
+      </button>
 
-      <div
+      <button id={'shareFacebook'}
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(
@@ -119,9 +119,9 @@ const ShareOptions = ({
         <FacebookIcon
           color={currentHover === 2 ? '#3b5998' : styles.blueishGrey}
         />
-      </div>
+      </button>
 
-      <div
+      <button id={'shareInstagram'}
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(3)}
         onClick={() =>
@@ -131,9 +131,9 @@ const ShareOptions = ({
         <InstagramIcon
           color={currentHover === 3 ? '#dd217b' : styles.blueishGrey}
         />
-      </div>
+      </button>
 
-      <div
+      <button id={'shareTwitter'}
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
@@ -143,9 +143,9 @@ const ShareOptions = ({
         <TwitterIcon
           color={currentHover === 4 ? '#00acee' : styles.blueishGrey}
         />
-      </div>
+      </button>
 
-      <div
+      <button id={'shareMail'}
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(`mailto:?subject=${titleToShare}&body=${textToShare}`)
@@ -157,7 +157,7 @@ const ShareOptions = ({
         ) : (
           <EmailIcon color={styles.blueishGrey} />
         )}
-      </div>
+      </button>
     </div>
   ) : null;
 };

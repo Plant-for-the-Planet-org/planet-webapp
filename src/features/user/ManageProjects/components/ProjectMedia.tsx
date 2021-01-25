@@ -260,12 +260,12 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
                         />
 
                         <div className={styles.uploadedImageButtonContainer}>
-                          <div onClick={() => deleteProjectCertificate(image.id)}>
+                          <button id={'DelProjCert'} onClick={() => deleteProjectCertificate(image.id)}>
                             <DeleteIcon />
-                          </div>
-                          <div onClick={() => setDefaultImage(image.id, index)}>
+                          </button>
+                          <button id={'setDefaultImg'} onClick={() => setDefaultImage(image.id, index)}>
                             <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
-                          </div>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -314,9 +314,9 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
-            </div>
+            </button>
           </div>
         </div>
       </form>

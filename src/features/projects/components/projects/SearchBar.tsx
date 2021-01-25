@@ -30,7 +30,7 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
                     value={searchValue}
                 />
             </div>
-            <div
+            <button id={'searchCancelIcon'}
                 className={'cancelIcon'}
                 onClick={() => {
                     setSearchMode(false);
@@ -38,7 +38,7 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
                 }}
             >
                 <CancelIcon color={'primaryFontColor'} />
-            </div>
+            </button>
         </>
     ) : null;
 }

@@ -75,9 +75,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         hideBackdrop
       >
         <div className={'modalWrapper'}>
-          <div onClick={handleModalClose} className={'modalClose'}>
+          <button id={'singleProjCloseModal'}  onClick={handleModalClose} className={'modalClose'}>
             <CancelIcon color="#fff" />
-          </div>
+          </button>
           <ImageSlider project={project} height={600} imageSize="large" />
         </div>
       </Modal>

@@ -245,7 +245,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                     </div>)}
 
         </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default ProjectCertificates

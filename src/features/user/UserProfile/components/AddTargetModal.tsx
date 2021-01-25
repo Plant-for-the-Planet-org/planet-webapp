@@ -106,16 +106,16 @@ export default function AddTargetModal({
               {t('target:targetSave')}
             </div>
           ) : (
-            <div
+            <button id={'AddTargetCont'}
               className={styles.continueButton}
               onClick={() => handleSubmit(apiCallChangeTarget())}
             >
               {isLoadingForm ? (
-                <div className={spinnerStyle.spinner}></div>
+                <button className={spinnerStyle.spinner}></div>
               ) : (
                 t('target:targetSave')
               )}
-            </div>
+            </button>
           )}
         </div>
       </Fade>
