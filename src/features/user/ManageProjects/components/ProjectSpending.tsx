@@ -150,11 +150,11 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                                    <div
+                                    <button id={'trashIconProjSpend'}
                                         onClick={() => deleteProjectSpending(report.id)}
                                         className={styles.reportEditButton}>
                                         <TrashIcon />
-                                    </div>
+                                    </button>
                                 </div>
                             )
                         })}
@@ -280,7 +280,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                     : null}
 
                 <div className={styles.formField}>
-                    <div className={`${styles.formFieldHalf}`}>
+                    <button  id={'backArrowProjectSpend'} className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={handleBack}
                             className={styles.secondaryButton}

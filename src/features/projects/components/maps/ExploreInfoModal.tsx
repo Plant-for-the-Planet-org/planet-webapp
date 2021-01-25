@@ -103,7 +103,7 @@ function ExploreInfoModal({infoRef,infoExpanded,setInfoExpanded,setModalOpen}: P
               <CancelIcon color="#d5d5d5" />
             </div>
           </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default ExploreInfoModal

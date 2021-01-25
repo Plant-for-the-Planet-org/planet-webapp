@@ -267,7 +267,7 @@ export default function RegisterTrees({
           {!registered ? (
             <div className={styles.formContainer}>
               <h2 className={styles.title}>
-                <div
+                <button id={'backButtonRegTree'}
                   style={{
                     cursor: 'pointer',
                     marginLeft: -10,
@@ -278,7 +278,7 @@ export default function RegisterTrees({
                   }}
                 >
                   <BackButton />
-                </div>
+                </button>
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>

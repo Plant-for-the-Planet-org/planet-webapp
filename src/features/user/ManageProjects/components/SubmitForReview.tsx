@@ -40,7 +40,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
                 </div>
 
                 <div className={styles.formField}>
-                    <div className={`${styles.formFieldHalf}`}>
+                    <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={handleBack}
                             className={styles.secondaryButton}
@@ -50,7 +50,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
                                 {t('manageProjects:backToSpending')}
                             </p>
                         </AnimatedButton>
-                    </div>
+                    </button>
                     <div style={{ width: '20px' }}></div>
                     {
                         reviewRequested ? (

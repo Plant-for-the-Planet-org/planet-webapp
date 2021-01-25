@@ -16,9 +16,9 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
     const { t, ready } = useTranslation(['donate']);
     return ready ? (
         <>
-            <div className={'searchIcon'}>
+            <button id={'searchIconSearchB'} className={'searchIcon'}>
                 <SearchIcon color={'primaryFontColor'} />
-            </div>
+            </button>
 
             <div className={'searchInput'}>
                 <TextField

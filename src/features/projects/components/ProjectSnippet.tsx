@@ -65,9 +65,9 @@ export default function ProjectSnippet({
 
       {editMode ? (
         <Link href={`/manage-projects/${project.id}`}>
-          <div className={'projectEditBlock'}>
+          <button id={'projectSnipEdit'} className={'projectEditBlock'}>
             <EditIcon></EditIcon>
-          </div>
+          </button>
         </Link>
       ) : null}
       <div
@@ -148,5 +148,5 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }

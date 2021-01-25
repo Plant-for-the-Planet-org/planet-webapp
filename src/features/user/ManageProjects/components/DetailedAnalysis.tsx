@@ -581,7 +581,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     : null}
 
                 <div className={styles.formField} style={{ marginTop: '48px' }}>
-                    <div className={`${styles.formFieldHalf}`}>
+                    <button id={'backArrowDetailA'} className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={handleBack}
                             className={styles.secondaryButton}
@@ -591,7 +591,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                 {t('manageProjects:backToMedia')}
                             </p>
                         </AnimatedButton>
-                    </div>
+                    </button>
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
@@ -605,5 +605,5 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             </form>
 
         </div>
-    ) : null;
+    ) : <></>;
 }

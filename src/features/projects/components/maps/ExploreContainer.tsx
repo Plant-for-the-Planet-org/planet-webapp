@@ -174,7 +174,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
 
 
             <div ref={exploreContainerRef}>
-                <div
+                <button id={'exploreButton'}
                     className={styles.exploreButton}
                     onClick={() => { setExploreExpanded(!exploreExpanded) }}
                     style={exploreExpanded ? { padding: '4px 10px' } : {}}
@@ -188,7 +188,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                             {isMobile ? null : t('maps:explore')}
                         </p>
                     )}
-                </div>
+                </button>
                 {exploreExpanded ? (
                     <>
                         <div className={styles.exploreExpanded}>

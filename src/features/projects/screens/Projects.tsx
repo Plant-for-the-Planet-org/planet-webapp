@@ -19,7 +19,7 @@ const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
-function ProjectsList({
+function  ProjectsList({
   projects,
   showProjects,
   setShowProjects,
@@ -177,7 +177,7 @@ function ProjectsList({
         </div>
       ) : null}
     </>
-  ) : null;
+  ) : <></>;
 }
 
 export default ProjectsList;

@@ -226,14 +226,14 @@ export default function ProjectSites({
                     <div className={styles.uploadedMapStatus}>
                       {String(site.status).toUpperCase()}
                     </div>
-                    <div
+                    <button id={'trashIconProjS'}
                       onClick={() => {
                         deleteProjectSite(site.id);
                       }}
                       className={styles.uploadedMapDeleteButton}
                     >
                       <TrashIcon color={'#000'} />
-                    </div>
+                    </button>
                     <MapStatic
                       {...viewport}
                       center={[longitude, latitude]}
@@ -334,7 +334,7 @@ export default function ProjectSites({
         ) : null}
 
         <div className={styles.formField}>
-          <div className={`${styles.formFieldHalf}`}>
+          <button id={'backArrowProjectS'} className={`${styles.formFieldHalf}`}>
             <AnimatedButton
               onClick={handleBack}
               className={styles.secondaryButton}
@@ -342,7 +342,7 @@ export default function ProjectSites({
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
             </AnimatedButton>
-          </div>
+          </button>
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
             <AnimatedButton
@@ -359,5 +359,5 @@ export default function ProjectSites({
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

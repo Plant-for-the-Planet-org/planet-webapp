@@ -191,7 +191,7 @@ export default function EditProfileModal({
         <div className={styles.modal}>
           <div>
             <div className={styles.headerDiv}>
-              <div
+              <button id={'backButtonEditP'}
                 className={styles.backDiv}
                 onClick={handleEditProfileModalClose}
               >
@@ -228,9 +228,9 @@ export default function EditProfileModal({
                       <CameraWhite />
                     </div>
                   ) : (
-                    <div className={styles.noProfilePic}>
+                    <button id={'userCamera'} className={styles.noProfilePic}>
                       <Camera />
-                    </div>
+                    </button>
                   )}
                 </div>
               </label>

@@ -74,7 +74,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
             >
               {t('leaderboard:mostTrees')}
             </div>
-            <div
+            <button id={'searchIconScore'}
               onClick={() => setSelectedTab('search')}
               className={
                 selectedTab === 'search'
@@ -83,7 +83,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
                <SearchIcon/>
-            </div>
+            </button>
           </div>
 
           {leaderboardData

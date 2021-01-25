@@ -69,10 +69,10 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
         authenticatedType === 'private' ? (
           <Link href='/manage-projects/add-project'>
             <div className={styles.singleProject}>
-              <div className={styles.projectNotFound}>
+              <button id={'addProjectBut'} className={styles.projectNotFound}>
                 <AddProject />
                 <h2>{t('manageProjects:addProject')}</h2>
-              </div>
+              </button>
             </div>
           </Link>
         ) : (

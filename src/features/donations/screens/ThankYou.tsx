@@ -59,9 +59,9 @@ function ThankYou({
   return ready ? (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div onClick={onClose} className={styles.headerCloseIcon}>
+        <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
           <Close />
-        </div>
+        </button>
         <div className={styles.headerTitle}>{t('common:thankYou')}</div>
       </div>
 
@@ -146,7 +146,7 @@ function ThankYou({
         </Alert>
       </Snackbar>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default ThankYou;

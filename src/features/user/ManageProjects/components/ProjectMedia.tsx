@@ -301,7 +301,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           : null}
 
         <div className={styles.formField}>
-          <div className={`${styles.formFieldHalf}`}>
+          <button id={'backArrowProjectM'} className={`${styles.formFieldHalf}`}>
             <AnimatedButton
               onClick={handleBack}
               className={styles.secondaryButton}
@@ -311,7 +311,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
                 {t('manageProjects:backToBasic')}
               </p>
             </AnimatedButton>
-          </div>
+          </button>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
             <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
@@ -321,5 +321,5 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

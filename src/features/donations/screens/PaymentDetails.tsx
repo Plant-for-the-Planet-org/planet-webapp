@@ -393,12 +393,12 @@ function PaymentDetails({
     ) : (
       <div className={styles.container}>
         <div className={styles.header}>
-          <div
+          <button id={'backArrowPayment'}
             onClick={() => setDonationStep(2)}
             className={styles.headerBackIcon}
           >
             <BackArrow />
-          </div>
+          </button>
           <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
         </div>
         {paymentError && (
