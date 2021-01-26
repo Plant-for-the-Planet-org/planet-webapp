@@ -17,7 +17,7 @@
   "fortreeCountTreesdaily": "for {{treeCount}} Trees every day",
   "fortreeCountTreesweekly": "for {{treeCount}} Trees every week",
   "fortreeCountTreesmonthly": "for {{treeCount}} Trees every month",
-  "fortreeCountTreesquaterly": "for {{treeCount}} Trees every three months",
+  "fortreeCountTreesquarterly": "for {{treeCount}} Trees every three months",
   "fortreeCountTreessemiyearly": "for {{treeCount}} Trees every six months",
   "fortreeCountTreesyearly": "for {{treeCount}} Trees every year",
   "firstName": "First Name",
