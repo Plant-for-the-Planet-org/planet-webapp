@@ -34,6 +34,8 @@ interface PaymentButtonProps {
   amount: number;
   onPaymentFunction: Function;
   continueNext: Function | null;
+  window: any;
+  paymentSetup: any;
 }
 export const PaymentRequestCustomButton = ({
   country,
@@ -41,13 +43,15 @@ export const PaymentRequestCustomButton = ({
   amount,
   onPaymentFunction,
   continueNext,
+  window,
+  paymentSetup
 }: PaymentButtonProps) => {
   const { t, ready } = useTranslation(['donate', 'common']);
 
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
-  const [paymentLoading,setPaymentLoading] = useState(false)
+  const [paymentLoading, setPaymentLoading] = useState(false)
   const stripeAllowedCountries = [
     'AE',
     'AT',
@@ -108,6 +112,13 @@ export const PaymentRequestCustomButton = ({
       !paymentRequest &&
       stripeAllowedCountries.includes(country)
     ) {
+
+      const stripe = window.Stripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+        {
+          stripeAccount: paymentSetup?.gateways?.stripe?.account,
+        },
+      );
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
@@ -175,50 +186,50 @@ export const PaymentRequestCustomButton = ({
 
   return ready ? (
     stripeAllowedCountries.includes(country) &&
-    canMakePayment &&
-    paymentRequest ? (
-    <div className={styles.actionButtonsContainer} 
-    style={{justifyContent: continueNext ? "space-between" : "center"}}>
-      <div style={{ width: '150px' }}>
-        <PaymentRequestButtonElement
-          className="PaymentRequestButton"
-          options={options}
-          onReady={() => {
-            // console.log('PaymentRequestButton [ready]');
-          }}
-          onClick={(event) => {
-            // console.log('PaymentRequestButton [click]', event);
-          }}
-          onBlur={() => {
-            // console.log('PaymentRequestButton [blur]');
-          }}
-          onFocus={() => {
-            // console.log('PaymentRequestButton [focus]');
-          }}
-        />
-      </div>
-       {continueNext && (
+      canMakePayment &&
+      paymentRequest ? (
+        <div className={styles.actionButtonsContainer}
+          style={{ justifyContent: continueNext ? "space-between" : "center" }}>
+          <div style={{ width: '150px' }}>
+            <PaymentRequestButtonElement
+              className="PaymentRequestButton"
+              options={options}
+              onReady={() => {
+                // console.log('PaymentRequestButton [ready]');
+              }}
+              onClick={(event) => {
+                // console.log('PaymentRequestButton [click]', event);
+              }}
+              onBlur={() => {
+                // console.log('PaymentRequestButton [blur]');
+              }}
+              onFocus={() => {
+                // console.log('PaymentRequestButton [focus]');
+              }}
+            />
+          </div>
+          {continueNext && (
             <AnimatedButton
+              onClick={() => continueNext()}
+              className={styles.continueButton}
+            >
+              {t('common:continue')}
+            </AnimatedButton>
+          )}
+
+        </div>
+      ) : continueNext ? (
+        <div
+          className={styles.actionButtonsContainer}
+          style={{ justifyContent: 'center' }}
+        >
+          <AnimatedButton
             onClick={() => continueNext()}
             className={styles.continueButton}
+            id="treeDonateContinue"
           >
             {t('common:continue')}
           </AnimatedButton>
-       )}   
-      
-    </div>
-  ) : continueNext ? (
-    <div
-      className={styles.actionButtonsContainer}
-      style={{ justifyContent: 'center' }}
-    >
-      <AnimatedButton
-        onClick={() => continueNext()}
-        className={styles.continueButton}
-        id="treeDonateContinue"
-      >
-        {t('common:continue')}
-      </AnimatedButton>
-    </div>
-  ) : null) : null;
+        </div>
+      ) : null) : null;
 };

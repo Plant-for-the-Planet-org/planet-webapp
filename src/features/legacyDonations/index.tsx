@@ -269,6 +269,8 @@ const paypalSuccess =(data:any)=>{
                     currency.toLowerCase(),
                   )}
                   onPaymentFunction={(data)=> onPaymentFunction('stripe',data)}
+                  window={window}
+                  paymentSetup={paymentSetup}
                 />
               </>
             ) : (

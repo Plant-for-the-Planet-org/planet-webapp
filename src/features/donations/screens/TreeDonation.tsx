@@ -347,6 +347,8 @@ function TreeDonation({
                   )}
                   onPaymentFunction={onPaymentFunction}
                   continueNext={continueNext}
+                  window={window}
+                  paymentSetup={paymentSetup}
                 />
               ) : (
                 <div className={styles.actionButtonsContainer}>
