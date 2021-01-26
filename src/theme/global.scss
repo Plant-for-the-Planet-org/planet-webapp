@@ -184,8 +184,15 @@ video {
 }
 
 @font-face {
-  font-family: 'HarmoniaSans';
-  src: url('/tenants/pampers/HarmoniaSans.woff') format('woff');
+  font-family: 'HarmoniaSansPro';
+  src: url('/tenants/pampers/HarmoniaSansPro-Regular.woff') format('woff');
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HarmoniaSansPro';
+  src: url('/tenants/pampers/HarmoniaSansPro-SemiBd.woff') format('woff');
+  font-weight: bold;
   font-style: normal;
 }

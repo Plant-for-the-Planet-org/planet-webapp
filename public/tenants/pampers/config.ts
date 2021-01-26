@@ -5,7 +5,7 @@ const config = {
   fallbackCurrency: 'EUR',
   tenantGoal:60000,
   font: {
-    primaryFontFamily: '"HarmoniaSans",Helvetica,Arial,sans-serif',
+    primaryFontFamily: '"HarmoniaSansPro",Helvetica,Arial,sans-serif',
     secondaryFontFamily: '"Pampers Script",Helvetica,Arial,sans-serif',
   },
   meta: {
