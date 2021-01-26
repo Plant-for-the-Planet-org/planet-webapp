@@ -59,6 +59,7 @@ export default function Home(initialized: Props) {
         HomePage = NitroSBHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'energizer':
+      case 'senatDerWirtschaft':
       case 'pampers':
       case 'interactClub':
         HomePage = BasicHome;

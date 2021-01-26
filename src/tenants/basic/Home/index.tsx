@@ -17,7 +17,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
       <LandingSection
         imageSrc={config.meta.image}>
         <div style={{ marginTop:'120px' }} />
-        {tenantScore && tenantScore.total
+        {tenantScore
           && (
           <TreeCounter
             target={config.tenantGoal}
@@ -26,6 +26,9 @@ export default function About({ leaderboard, tenantScore }: Props) {
           ) }
 
         <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>{config.home.title}</p>
+        {config.home.descriptionTitle && (
+        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>{config.home.descriptionTitle}</p>
+        )}
         <p className={styles.publicUserDescription} style={{ marginTop: '8px' }}>{config.home.description}</p>
         <div style={{ marginBottom:'60px' }} />
       </LandingSection>
