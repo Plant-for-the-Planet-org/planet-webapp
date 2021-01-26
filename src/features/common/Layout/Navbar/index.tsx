@@ -164,13 +164,13 @@ export default function NavbarComponent(props: any) {
             </div>
           )}
 
-          <button id={'brandLogoIcon'} href="https://a.plant-for-the-planet.org">
+          <a href="https://a.plant-for-the-planet.org">
             <img
               className={'tenantLogo'}
               src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
               alt={t('common:about_pftp')}
             />
-          </button>
+          </a>
         </div>
         {ready && <MenuItems />}
       </div>

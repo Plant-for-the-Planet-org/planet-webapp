@@ -228,9 +228,9 @@ export default function EditProfileModal({
                       <CameraWhite />
                     </div>
                   ) : (
-                    <button id={'userCamera'} className={styles.noProfilePic}>
+                    <div className={styles.noProfilePic}>
                       <Camera />
-                    </button>
+                    </div>
                   )}
                 </div>
               </label>

@@ -111,7 +111,7 @@ export default function AddTargetModal({
               onClick={() => handleSubmit(apiCallChangeTarget())}
             >
               {isLoadingForm ? (
-                <button className={spinnerStyle.spinner}></div>
+                <div className={spinnerStyle.spinner}></div>
               ) : (
                 t('target:targetSave')
               )}
