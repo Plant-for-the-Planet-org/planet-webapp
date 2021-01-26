@@ -129,30 +129,48 @@ function PaymentDetails({
     companyname: contactDetails.companyName,
   };
   React.useEffect(() => {
-    const cardNumberElement = elements!.getElement(CardNumberElement);
-    cardNumberElement!.on('change', ({ error, complete, brand }) => {
-      if (error) {
-        setShowContinue(false);
-      } else if (complete) {
-        setShowBrand(brand);
-        const cardExpiryElement = elements!.getElement(CardExpiryElement);
-        cardExpiryElement!.on('change', ({ error, complete }) => {
-          if (error) {
-            setShowContinue(false);
-          } else if (complete) {
-            const cardCvcElement = elements!.getElement(CardCvcElement);
-            cardCvcElement!.on('change', ({ error, complete }) => {
-              if (error) {
-                setShowContinue(false);
-              } else if (complete) {
-                setShowContinue(true);
-              }
-            });
-          }
-        });
-      }
-    });
+    if (elements) {
+      const cardNumberElement = elements!.getElement(CardNumberElement);
+      cardNumberElement!.on('change', ({ error, complete, brand }) => {
+        if (error) {
+          setShowContinue(false);
+        } else if (complete) {
+          setShowBrand(brand);
+          const cardExpiryElement = elements!.getElement(CardExpiryElement);
+          cardExpiryElement!.on('change', ({ error, complete }) => {
+            if (error) {
+              setShowContinue(false);
+            } else if (complete) {
+              const cardCvcElement = elements!.getElement(CardCvcElement);
+              cardCvcElement!.on('change', ({ error, complete }) => {
+                if (error) {
+                  setShowContinue(false);
+                } else if (complete) {
+                  setShowContinue(true);
+                }
+              });
+            }
+          });
+        }
+      });
+    }
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
+
+  const createPaymentMethodCC = (cardElement: any) => {
+    return stripe.createPaymentMethod('card', cardElement)
+  }
+
+  const createPaymentMethodSepa = (sepaElement: any, contactDetails: any) => {
+    return stripe?.createPaymentMethod({
+      type: 'sepa_debit',
+      sepa_debit: sepaElement,
+      billing_details: {
+        name: contactDetails.firstName,
+        email: contactDetails.email,
+      },
+    })
+  }
+
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);
     event.preventDefault();
@@ -174,31 +192,13 @@ function PaymentDetails({
           return;
         }
       });
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: cardElement!,
-        })
-        .catch((error) => {
-          setPaymentError(t('donate:noPaymentMethodError'));
-          return;
-        });
+
+      let payload = await createPaymentMethodCC(cardElement);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     } else if (paymentType === 'SEPA') {
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'sepa_debit',
-          sepa_debit: elements.getElement(IbanElement)!,
-          billing_details: {
-            name: contactDetails.firstName,
-            email: contactDetails.email,
-          },
-        })
-        .catch((error) => {
-          setPaymentError(error.message);
-          return;
-        });
+      const sepaElement = elements.getElement(IbanElement)!;
+      let payload = await createPaymentMethodSepa(sepaElement, contactDetails);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
@@ -206,7 +206,6 @@ function PaymentDetails({
       setPaymentError(t('donate:noPaymentMethodError'));
       return;
     }
-
     const payWithCardProps = {
       setDonationStep,
       setIsPaymentProcessing,
@@ -391,69 +390,69 @@ function PaymentDetails({
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div
-            onClick={() => setDonationStep(2)}
-            className={styles.headerBackIcon}
-          >
-            <BackArrow />
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <div
+              onClick={() => setDonationStep(2)}
+              className={styles.headerBackIcon}
+            >
+              <BackArrow />
+            </div>
+            <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
           </div>
-          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-        </div>
-        {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
-        )}
+          {paymentError && (
+            <div className={styles.paymentError}>{paymentError}</div>
+          )}
 
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+          <div className={styles.finalTreeCount}>
+            <div className={styles.totalCost}>
+              {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+            </div>
+            <div className={styles.totalCostText}>
+              {t('donate:fortreeCountTrees', {
+                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+              })}
+            </div>
           </div>
-          <div className={styles.totalCostText}>
-            {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-            })}
-          </div>
-        </div>
 
-        {
-          <div className={styles.paymentModeContainer} onClick={() => setShowPaymentForm('CARD')}>
-            <div className={styles.paymentModeHeader}>
-              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
-              <div className={styles.paymentModeTitle}>
-                {t('donate:creditDebitCard')}
-              </div>
-              {/* <div className={styles.paymentModeFee}>
+          {
+            <div className={styles.paymentModeContainer} onClick={() => setShowPaymentForm('CARD')}>
+              <div className={styles.paymentModeHeader}>
+                {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
+                <div className={styles.paymentModeTitle}>
+                  {t('donate:creditDebitCard')}
+                </div>
+                {/* <div className={styles.paymentModeFee}>
             <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
             <InfoIcon />
           </div> */}
-            </div>
+              </div>
 
-            {showPaymentForm === 'CARD' && (
-              <>
-                <div className={styles.formRow}>
-                  <FormControlNew variant="outlined">
-                    <CardNumberElement
-                      id="cardNumber"
-                      options={getInputOptions(t('donate:cardNumber'))}
-                      onChange={handleChange}
-                    />
-                  </FormControlNew>
-                </div>
-                <div className={styles.formRow}>
-                  <FormControlNew variant="outlined">
-                    <CardExpiryElement
-                      id="expiry"
-                      options={getInputOptions(t('donate:expDate'))}
-                      onChange={handleChangeCardDate}
-                    />
-                  </FormControlNew>
-                  <div style={{ width: '20px' }}></div>
-                  <FormControlNew variant="outlined">
-                    <CardCvcElement id="cvc" options={getInputOptions('CVV')} onChange={handleChangeCvv} />
-                  </FormControlNew>
-                </div>
-                {/* <div className={styles.saveCard}>
+              {showPaymentForm === 'CARD' && (
+                <>
+                  <div className={styles.formRow}>
+                    <FormControlNew variant="outlined">
+                      <CardNumberElement
+                        id="cardNumber"
+                        options={getInputOptions(t('donate:cardNumber'))}
+                        onChange={handleChange}
+                      />
+                    </FormControlNew>
+                  </div>
+                  <div className={styles.formRow}>
+                    <FormControlNew variant="outlined">
+                      <CardExpiryElement
+                        id="expiry"
+                        options={getInputOptions(t('donate:expDate'))}
+                        onChange={handleChangeCardDate}
+                      />
+                    </FormControlNew>
+                    <div style={{ width: '20px' }}></div>
+                    <FormControlNew variant="outlined">
+                      <CardCvcElement id="cvc" options={getInputOptions('CVV')} onChange={handleChangeCvv} />
+                    </FormControlNew>
+                  </div>
+                  {/* <div className={styles.saveCard}>
           <div className={styles.saveCardText}>
             Save card for future Donations
           </div>
@@ -464,52 +463,52 @@ function PaymentDetails({
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
         </div> */}
-                {showContinue ? (
-                  <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-                    <AnimatedButton className={styles.continueButton}>
-                      {t('common:donate')}
-                    </AnimatedButton>
-                  </div>
-                ) : (
-                    <div className={styles.actionButtonsContainer}>
-                      <AnimatedButton disabled className={styles.continueButtonDisabled}>
+                  {showContinue ? (
+                    <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
+                      <AnimatedButton className={styles.continueButton}>
                         {t('common:donate')}
                       </AnimatedButton>
                     </div>
-                  )}
-              </>
-            )}
-          </div>
-        }
+                  ) : (
+                      <div className={styles.actionButtonsContainer}>
+                        <AnimatedButton disabled className={styles.continueButtonDisabled}>
+                          {t('common:donate')}
+                        </AnimatedButton>
+                      </div>
+                    )}
+                </>
+              )}
+            </div>
+          }
 
-        { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
-          <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
-            <div className={styles.paymentModeHeader}>
-              <PaypalIcon />
-              <div className={styles.paymentModeTitle}>Paypal</div>
-              {paypalProcessing && <div className={styles.spinner} />}
+          { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
+            <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
+              <div className={styles.paymentModeHeader}>
+                <PaypalIcon />
+                <div className={styles.paymentModeTitle}>Paypal</div>
+                {paypalProcessing && <div className={styles.spinner} />}
+
+              </div>
+
+              {showPaymentForm === 'PAYPAL' && (
+                donationID && (
+                  <Paypal
+                    onSuccess={data => {
+                      paypalSuccess(data);
+                    }}
+                    amount={treeCost * treeCount}
+                    currency={currency}
+                    donationId={donationID}
+                    mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
+                    clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+                  />
+                )
+              )}
 
             </div>
+          }
 
-            {showPaymentForm === 'PAYPAL' && (
-              donationID && (
-                <Paypal
-                  onSuccess={data => {
-                    paypalSuccess(data);
-                  }}
-                  amount={treeCost * treeCount}
-                  currency={currency}
-                  donationId={donationID}
-                  mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
-                  clientID={paymentSetup?.gateways.paypal.authorization.client_id}
-                />
-              )
-            )}
-
-          </div>
-        }
-
-        {/* <div className={styles.paymentModeContainer}>
+          {/* <div className={styles.paymentModeContainer}>
         <div onClick={() => {
           setIsSepa(!isSepa), setPaymentType('SEPA')
         }} className={styles.paymentModeHeader}>
@@ -540,11 +539,11 @@ function PaymentDetails({
         </div>)}
       </div> */}
 
-        {/* <div className={styles.horizontalLine} /> */}
+          {/* <div className={styles.horizontalLine} /> */}
 
 
-      </div>
-    )
+        </div>
+      )
   ) : <></>;
 }
 

@@ -1,8 +1,6 @@
 import Modal from '@material-ui/core/Modal';
-import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement, Ref } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import i18next from '../../../../i18n/'
@@ -50,9 +48,7 @@ export default function PopupProject({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <Elements stripe={getStripe()}>
           <DonationsPopup project={projectDetails} onClose={handleClose} />
-        </Elements>
       </Modal>
       <div className={'projectImage'}>
         {project.properties.image &&
@@ -125,5 +121,5 @@ export default function PopupProject({
         )}
       </div>
     </>
-  ) : null;
+  ) : <></>;
 }

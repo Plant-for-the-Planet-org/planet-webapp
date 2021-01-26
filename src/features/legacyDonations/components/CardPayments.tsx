@@ -99,6 +99,10 @@ function CardPayments({
     }
 
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
+
+  const createPaymentMethodCC = (cardElement: any) => {
+    return stripe.createPaymentMethod('card', cardElement)
+  }
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);
     event.preventDefault();
@@ -120,15 +124,7 @@ function CardPayments({
           return;
         }
       });
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: cardElement!,
-        })
-        .catch((error) => {
-          setPaymentError(t('donate:noPaymentMethodError'));
-          return;
-        });
+      let payload = await createPaymentMethodCC(cardElement);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }

@@ -249,12 +249,12 @@ const paypalSuccess =(data:any)=>{
           </div>
         </div>
 
-        <Elements stripe={getStripe()}>
+        <Elements stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
           <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
         </Elements>
 
 
-        <Elements stripe={getStripe()}>
+        <Elements stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
           {!isPaymentOptionsLoading
             && paymentSetup?.gateways?.stripe?.account
             && currency ? (

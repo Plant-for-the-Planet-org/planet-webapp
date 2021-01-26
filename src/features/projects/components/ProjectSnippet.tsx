@@ -1,8 +1,6 @@
 import Modal from '@material-ui/core/Modal';
-import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
@@ -58,9 +56,7 @@ export default function ProjectSnippet({
         disableBackdropClick
         hideBackdrop
       >
-        <Elements stripe={getStripe()}>
           <DonationsPopup project={project} onClose={handleClose} />
-        </Elements>
       </Modal>
 
       {editMode ? (
@@ -148,5 +144,5 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }

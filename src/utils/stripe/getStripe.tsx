@@ -4,9 +4,9 @@
 import { Stripe, loadStripe } from '@stripe/stripe-js';
 
 let stripePromise: Promise<Stripe | null>;
-const getStripe = () => {
+const getStripe = (key:any,account:any) => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+    stripePromise = loadStripe(key,{stripeAccount:account});
   }
   return stripePromise;
 };

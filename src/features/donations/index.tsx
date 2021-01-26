@@ -6,6 +6,8 @@ import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
 import TreeDonation from './screens/TreeDonation';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Elements } from '@stripe/react-stripe-js';
+import getStripe from '../../utils/stripe/getStripe';
 
 interface Props {
   onClose: any;
@@ -26,7 +28,7 @@ function DonationsPopup({
     isAuthenticated,
     getAccessTokenSilently
   } = useAuth0();
-  
+
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
 
@@ -110,20 +112,20 @@ function DonationsPopup({
       if (res.status === 200) {
         const resJson = await res.json();
         setUserprofile(resJson);
-        if(resJson){
+        if (resJson) {
           let defaultDetails = {
-            firstName:resJson.firstname ? resJson.firstname: '',
-            lastName: resJson.lastname ? resJson.lastname:'',
-            email: resJson.email ? resJson.email: '',
-            address: resJson.address.address ? resJson.address.address: '',
-            city: resJson.address.city ? resJson.address.city:'',
-            zipCode: resJson.address.zipCode ? resJson.address.zipCode:'',
+            firstName: resJson.firstname ? resJson.firstname : '',
+            lastName: resJson.lastname ? resJson.lastname : '',
+            email: resJson.email ? resJson.email : '',
+            address: resJson.address.address ? resJson.address.address : '',
+            city: resJson.address.city ? resJson.address.city : '',
+            zipCode: resJson.address.zipCode ? resJson.address.zipCode : '',
             country: '',
             companyName: '',
           }
           setContactDetails(defaultDetails)
         }
-      } 
+      }
     }
     if (!isLoading && isAuthenticated) {
       loadFunction()
@@ -223,63 +225,76 @@ function DonationsPopup({
     }
   }, [directGift]);
 
-  switch (donationStep) {
-    case 1:
-      return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
-          <TreeDonation {...TreeDonationProps} />
-        </motion.div>
-      );
-    case 2:
-      return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.04, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
-          <ContactDetails {...ContactDetailsProps} />
-        </motion.div>
-      );
-    case 3:
-      return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
-          <PaymentDetails {...PaymentDetailsProps} />
-        </motion.div>
-      );
-    case 4:
-      return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.04, 1],
-            rotate: [-15, 5, 0],
-          }}
-          transition={{ duration: 0.8 }}
-        >
-          <ThankYou {...ThankYouProps} />
-        </motion.div>
-      );
-    default:
-      return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
-          <TreeDonation {...TreeDonationProps} />
-        </motion.div>
-      );
+  if(paymentSetup){
+    switch (donationStep) {
+      case 1:
+        return (
+          <Elements 
+            stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+            <motion.div
+              animate={{
+                scale: [0.94, 1.05, 1],
+              }}
+              transition={{ duration: 0.8 }}
+            >
+              <TreeDonation {...TreeDonationProps} />
+            </motion.div>
+          </Elements>
+        );
+      case 2:
+        return (
+          <motion.div
+            animate={{
+              scale: [0.94, 1.04, 1],
+            }}
+            transition={{ duration: 0.8 }}
+          >
+            <ContactDetails {...ContactDetailsProps} />
+          </motion.div>
+        );
+      case 3:
+        return (
+          <Elements 
+            stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+            <motion.div
+              animate={{
+                scale: [0.94, 1.05, 1],
+              }}
+              transition={{ duration: 0.8 }}
+            >
+              <PaymentDetails {...PaymentDetailsProps} />
+            </motion.div>
+          </Elements>
+        );
+      case 4:
+        return (
+          <motion.div
+            animate={{
+              scale: [0.94, 1.04, 1],
+              rotate: [-15, 5, 0],
+            }}
+            transition={{ duration: 0.8 }}
+          >
+            <ThankYou {...ThankYouProps} />
+          </motion.div>
+        );
+      default:
+        return (
+          <Elements 
+            stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+            <motion.div
+              animate={{
+                scale: [0.94, 1.05, 1],
+              }}
+              transition={{ duration: 0.8 }}
+            >
+              <TreeDonation {...TreeDonationProps} />
+            </motion.div>
+          </Elements>
+        );
+    }
+  }else{
+    return <></>;
   }
 }
 
