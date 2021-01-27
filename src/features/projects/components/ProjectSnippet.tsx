@@ -131,7 +131,7 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <button id={'ProjSnipDonate'} onClick={handleOpen} className={'donateButton'}>
+                <button id={`ProjSnippetDonate_${project.id}`} onClick={handleOpen} className={'donateButton'}>
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>
