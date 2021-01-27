@@ -71,5 +71,9 @@
   "giftTo": "Presente para",
   "supporting": "Apoiando",
   "selectProject": "Selecione um projeto",
-  "giftValidation": "Por favor, introduza os detalhes do presente"
+  "giftValidation": "Por favor, introduza os detalhes do presente",
+  "minDonate": "O valor mínimo de doação é",
+  "noPaymentMethodError": "Não conseguimos processar o seu pagamento, por favor tente novamente.",
+  "somethingWentWrong": "Algo deu errado, por favor tente novamente em breve!",
+  "underMaintenance": "App está em manutenção, por favor acesse status.plant-for-the-planet.org para mais detalhes"
 }

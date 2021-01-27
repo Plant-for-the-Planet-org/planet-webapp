@@ -71,5 +71,9 @@
   "giftTo": "Cadeau à",
   "supporting": "Soutenir",
   "selectProject": "Sélectionner un projet",
-  "giftValidation": "Entrer les détails du cadeau"
+  "giftValidation": "Entrer les détails du cadeau",
+  "minDonate": "Le montant minimum du don est de",
+  "noPaymentMethodError": "Impossible de traiter votre paiement, veuillez réessayer.",
+  "somethingWentWrong": "Quelque chose s'est mal passé, veuillez réessayer bientôt !",
+  "underMaintenance": "L'application est en cours de maintenance, veuillez consulter status.plant-for-the-planet.org pour plus de détails"
 }
