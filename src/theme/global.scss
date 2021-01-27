@@ -174,3 +174,25 @@ video {
 .MuiStepIcon-root.MuiStepIcon-completed {
   color: $primaryColor !important;
 }
+
+
+@font-face {
+  font-family: 'Pampers Script';
+  src: url('/tenants/pampers/Pampers Script.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HarmoniaSansPro';
+  src: url('/tenants/pampers/HarmoniaSansPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HarmoniaSansPro';
+  src: url('/tenants/pampers/HarmoniaSansPro-SemiBd.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}

@@ -49,8 +49,16 @@ export async function payDonation(data: any, id: any, token:any) {
     body: JSON.stringify(data),
     headers:headers ,
   });
-  const contribution = await res.json();
-  return contribution;
+  // having to patch this as API returns only a text error message on 401
+  if (res.status === 401) {
+    return {
+      code: res.status,
+      message: await res.json(),
+    }
+  } else {
+    const contribution = await res.json();
+    return contribution;
+  }
 }
 
 export function getPaymentType(paymentType: String) {
@@ -169,7 +177,7 @@ export function payWithCard({
 
         payDonation(payDonationData, res.id, token)
           .then(async (res) => {
-            if (res.code === 400) {
+            if (res.code === 400 || res.code === 401) {
               setIsPaymentProcessing(false);
               setPaymentError(res.message);
               return;

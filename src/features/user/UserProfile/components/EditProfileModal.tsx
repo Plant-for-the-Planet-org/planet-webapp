@@ -9,7 +9,7 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import {  getUserInfo, setUserInfo } from '../../../../utils/auth0/localStorageUtils'
+import { getLocalUserInfo, setLocalUserInfo } from '../../../../utils/auth0/localStorageUtils'
 import getImageUrl from '../../../../utils/getImageURL'
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
@@ -17,6 +17,7 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { selectUserType } from '../../../../utils/selectUserType';
 
 const { useTranslation } = i18next;
 export default function EditProfileModal({
@@ -124,9 +125,9 @@ export default function EditProfileModal({
           handleSnackbarOpen()
 
           putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
-            const userInfo = getUserInfo()
+            const userInfo = getLocalUserInfo()
             const newUserInfo = { ...userInfo, profilePic: res.image }
-            setUserInfo(newUserInfo)
+            setLocalUserInfo(newUserInfo)
             setUpdatingPic(false);
           }).catch(error => {
             setUpdatingPic(false);
@@ -219,7 +220,7 @@ export default function EditProfileModal({
                         src={getImageUrl(
                           'profile',
                           'thumb',
-                          getUserInfo().profilePic
+                          getLocalUserInfo().profilePic
                         )}
                         className={styles.profilePicImg}
                       />
@@ -265,17 +266,19 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {userprofile.type === 'tpo' && (
+            {userprofile.type !== 'individual' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
-                label={t('donate:nameOfOrg')}
+                label={t('editProfile:profileName', {
+                  type: selectUserType(userprofile.type, t)
+                })}
                 variant="outlined"
                 name="name"
                 inputRef={register()}
               />
               {errors.name && (
                 <span className={styles.formErrors}>
-                  {t('donate:nameOfOrgIsRequired')}
+                  {t('editProfile:nameValidation')}
                 </span>
               )}
             </div>

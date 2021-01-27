@@ -6,6 +6,9 @@ import sternConfig from './public/tenants/stern/config';
 import nitrosbConfig from './public/tenants/nitrosb/config';
 import lacoquetaConfig from './public/tenants/lacoqueta/config';
 import energizerConfig from './public/tenants/energizer/config';
+import senatDerWirtschaft from './public/tenants/senatDerWirtschaft/config';
+import pampersConfig from './public/tenants/pampers/config';
+import interactClub from './public/tenants/interactClub/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -17,6 +20,9 @@ export default function tenantConfig() {
     case 'nitrosb': return nitrosbConfig;
     case 'lacoqueta': return lacoquetaConfig;
     case 'energizer': return energizerConfig;
+    case 'senatDerWirtschaft': return senatDerWirtschaft;
+    case 'pampers': return pampersConfig;
+    case 'interactClub': return interactClub;
     default: return planetConfig;
   }
 }
