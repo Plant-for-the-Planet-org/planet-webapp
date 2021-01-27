@@ -114,7 +114,7 @@ export const PaymentRequestCustomButton = ({
     ) {
 
       const stripe = window.Stripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+        paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey,
         {
           stripeAccount: paymentSetup?.gateways?.stripe?.account,
         },

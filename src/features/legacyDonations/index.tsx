@@ -123,7 +123,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           const clientSecret = res.response.payment_intent_client_secret;
           const donationID = res.id;
           const stripe = window.Stripe(
-            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+            paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey,
             {
               stripeAccount: res.response.account,
             },
@@ -249,12 +249,12 @@ const paypalSuccess =(data:any)=>{
           </div>
         </div>
 
-        <Elements stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+        <Elements stripe={getStripe(paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey, paymentSetup?.gateways?.stripe?.authorization.accountId)}>
           <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
         </Elements>
 
 
-        <Elements stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+        <Elements stripe={getStripe(paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey, paymentSetup?.gateways?.stripe?.authorization.accountId)}>
           {!isPaymentOptionsLoading
             && paymentSetup?.gateways?.stripe?.account
             && currency ? (

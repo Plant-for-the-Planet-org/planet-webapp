@@ -230,7 +230,7 @@ function DonationsPopup({
       case 1:
         return (
           <Elements 
-            stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+            stripe={getStripe(paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey, paymentSetup?.gateways?.stripe?.authorization.accountId)}>
             <motion.div
               animate={{
                 scale: [0.94, 1.05, 1],
@@ -254,8 +254,7 @@ function DonationsPopup({
         );
       case 3:
         return (
-          <Elements 
-            stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+          
             <motion.div
               animate={{
                 scale: [0.94, 1.05, 1],
@@ -264,7 +263,6 @@ function DonationsPopup({
             >
               <PaymentDetails {...PaymentDetailsProps} />
             </motion.div>
-          </Elements>
         );
       case 4:
         return (
@@ -281,7 +279,7 @@ function DonationsPopup({
       default:
         return (
           <Elements 
-            stripe={getStripe(paymentSetup?.gateways?.stripe?.stripePublishableKey, paymentSetup?.gateways?.stripe?.account)}>
+            stripe={getStripe(paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey, paymentSetup?.gateways?.stripe?.authorization.accountId)}>
             <motion.div
               animate={{
                 scale: [0.94, 1.05, 1],

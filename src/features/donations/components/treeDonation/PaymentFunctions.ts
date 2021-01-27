@@ -194,7 +194,7 @@ export function payWithCard({
               const clientSecret = res.response.payment_intent_client_secret;
               const donationID = res.id;
               const stripe = window.Stripe(
-                  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+                paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey,
                   {
                     stripeAccount: res.response.account,
                   },
