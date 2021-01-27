@@ -72,5 +72,8 @@
   "supporting": "Unterstützung von",
   "selectProject": "Wähle ein Projekt aus",
   "giftValidation": "Bitte Geschenkdetails eingeben",
-  "minDonate": "Mindestspendenbetrag ist"
+  "minDonate": "Mindestspendenbetrag ist",
+  "noPaymentMethodError": "Deine Zahlung konnte nicht verarbeitet werden, bitte versuche es erneut.",
+  "somethingWentWrong": "Etwas ist schief gelaufen, bitte versuche es bald noch einmal!",
+  "underMaintenance": "Die App wird gerade gewartet, bitte prüfe status.plant-for-the-planet.org für Details"
 }
