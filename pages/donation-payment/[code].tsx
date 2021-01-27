@@ -2,7 +2,7 @@ import Footer from '../../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import React from 'react';
 import i18next from './../../i18n'
-import LegacyDonations from '../../src/features/legacyDonations';
+import LegacyDonations from '../../src/features/donations/legacyDonation';
 import styles from './../../src/features/legacyDonations/styles/PaymentDetails.module.scss'
 interface Props {
     initialized: Boolean;

@@ -3,14 +3,14 @@ import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackAr
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
-import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
+import { createDonation, payDonation, payWithCard } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
-import Paypal from '../../legacyDonations/components/Paypal';
+import Paypal from '../components/paymentMethods/Paypal';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
-import CardPayments from '../components/paymentDetails/CardPayments';
+import CardPayments from '../components/paymentMethods/CardPayments';
 import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../../utils/stripe/getStripe';
 
@@ -279,7 +279,7 @@ function PaymentDetails({
             </div>
           </div>
           <Elements 
-            stripe={getStripe(paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey, paymentSetup?.gateways?.stripe?.authorization.accountId)}>
+            stripe={getStripe(paymentSetup)}>
               <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
           </Elements>
 
@@ -340,9 +340,6 @@ function PaymentDetails({
           </FormControlNew>
         </div>)}
       </div> */}
-
-          {/* <div className={styles.horizontalLine} /> */}
-
 
         </div>
       )

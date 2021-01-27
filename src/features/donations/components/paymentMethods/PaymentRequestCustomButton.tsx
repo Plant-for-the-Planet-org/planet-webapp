@@ -3,9 +3,9 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
-import AnimatedButton from '../../common/InputTypes/AnimatedButton';
-import styles from './../styles/TreeDonation.module.scss';
-import i18next from '../../../../i18n';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
+import styles from './../../styles/TreeDonation.module.scss';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 
@@ -113,8 +113,9 @@ export const PaymentRequestCustomButton = ({
       stripeAllowedCountries.includes(country)
     ) {
 
+      let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
       const stripe = window.Stripe(
-        paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey,
+        key,
         {
           stripeAccount: paymentSetup?.gateways?.stripe?.account,
         },
