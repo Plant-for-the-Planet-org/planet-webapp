@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import { Layer, Source } from 'react-map-gl';
-import MarkerIcon from '../../../../../public/assets/images/icons/MarkerIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
-import TreeIcon2 from '../../../../../public/assets/images/icons/TreeIcon2';
 import styles from '../../styles/VegetationChange.module.scss';
+import i18next from '../../../../../i18n';
+import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
+import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 
 interface Props {
   siteVegetationChange: any;
@@ -12,10 +12,13 @@ interface Props {
   siteImagery: any;
 }
 
+const { useTranslation } = i18next;
+
 export default function VegetationChange({
   selectedOption,
   setSelectedState,
 }: Props): ReactElement {
+  const { i18n, t } = useTranslation(['maps']);
   return (
     <div className={styles.VegetationChangeContainer}>
       <div
@@ -33,8 +36,8 @@ export default function VegetationChange({
         }
         className={styles.options}
       >
-        <MarkerIcon color={selectedOption === 'none' ? '#fff' : null} />{' '}
-        <p>Location</p>
+        <LocationIcon color={selectedOption === 'none' ? '#fff' : null} />{' '}
+        <p>{t('maps:location')}</p>
       </div>
       <div
         onClick={() => {
@@ -53,7 +56,7 @@ export default function VegetationChange({
       >
         <SatelliteIcon color={selectedOption === 'imagery' ? '#fff' : null} />{' '}
         <p>
-          Imagery Comparison<sup>BETA</sup>
+          {t('maps:timeTravel')}<sup>{t('maps:beta')}</sup>
         </p>
       </div>
       <div
@@ -71,9 +74,9 @@ export default function VegetationChange({
         }
         className={styles.options}
       >
-        <TreeIcon2 color={selectedOption === 'vegetation' ? '#fff' : null} />{' '}
+        <ResearchIcon color={selectedOption === 'vegetation' ? '#fff' : null} />{' '}
         <p>
-          Vegetation Change<sup>BETA</sup>
+          {t('maps:vegetationChange')}<sup>{t('maps:beta')}</sup>
         </p>
       </div>
     </div>
