@@ -8,6 +8,7 @@ import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserInfo } from '../../../../utils/auth0/userInfo';
+import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
@@ -74,14 +75,14 @@ export default function NavbarComponent(props: any) {
   if (error) {
     if (error.message === '401') {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('userInfo');
+        removeLocalUserInfo();
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/verify-email` });
       }
     } else if (error.message === 'Invalid state') {
-      localStorage.removeItem('userInfo');
+      removeLocalUserInfo();
     } else {
       alert(error.message);
-      localStorage.removeItem('userInfo');
+      removeLocalUserInfo();
       logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
     }
   }

@@ -28,6 +28,7 @@
   "directGiftRecipient": "Ce don permet de soutenir",
   "recipientName": "Nom du bénéficiaire",
   "recipientNameRequired": "Le nom du bénéficiaire est requis",
+  "removeRecipient": "Supprimer",
   "giftMessage": "Message cadeau",
   "firstNameRequired": "Le champ Prénom est  requis",
   "lastNameRequired": "Le champ \"Nom\" est  requis",
@@ -59,8 +60,8 @@
   "noProjectsFound": "Aucun projet trouvé",
   "inTimeOfTaxReturns": "à temps pour les déclarations d'impôts.",
   "titleToShare": "Planter des arbres contre la crise climatique !",
-  "giftToName": "Don à {{name}}",
-  "plantTreesWith": "Planter des arbres avec {{name}}",
+  "giftToName": "Don à",
+  "plantTreesWith": "Planter des arbres avec",
   "textToShare": "Rejoignez {{name}} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees @PftP_int",
   "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
   "shareTextTitle": "Arrêtez de parler. Commencer à planter",
@@ -70,7 +71,5 @@
   "giftTo": "Cadeau à",
   "supporting": "Soutenir",
   "selectProject": "Sélectionner un projet",
-  "nameOfOrg": "Nom de l'organisation",
-  "nameOfOrgIsRequired": "Le nom de l'organisation est requis",
   "giftValidation": "Entrer les détails du cadeau"
 }

@@ -282,6 +282,9 @@ export default function RegisterTrees({
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
+                <div className={styles.note}>
+                  <p>{t('me:registerTreesDescription')}</p>
+                </div>
                 <div className={styles.formField}>
                   <div className={styles.formFieldHalf}>
                     <MaterialTextField
@@ -393,6 +396,10 @@ export default function RegisterTrees({
                           transitionInterpolator: new FlyToInterpolator(),
                           transitionEasing: d3.easeCubic,
                         });
+                      }}
+                      mapOptions={{
+                        customAttribution:
+                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
                       }}
                     >
                       {plantLocation ? (

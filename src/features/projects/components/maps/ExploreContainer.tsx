@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import styles from '../../styles/MapboxMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-import ExploreIcon from '../../../../assets/images/icons/ExploreIcon';
+import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
 import i18next from '../../../../../i18n';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -334,7 +334,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                 ) : null}
             </div>
         </>
-    ) : null;
+    ) : <></>;
 }
 
 export default ExploreContainer

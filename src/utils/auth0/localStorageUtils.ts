@@ -24,7 +24,7 @@ export function removeUserExistsInDB() {
 /* USER INFO */
 
 //  gets userType from the local storage
-export function getUserInfo() {
+export function getLocalUserInfo() {
   if (localStorage.getItem('userInfo')) {
     const stringUserInfo = localStorage.getItem('userInfo');
     const userInfo = JSON.parse(stringUserInfo);
@@ -34,11 +34,11 @@ export function getUserInfo() {
 }
 
 //  sets userType to the local storage
-export function setUserInfo(userInfo:any) {
+export function setLocalUserInfo(userInfo:any) {
   localStorage.setItem('userInfo', JSON.stringify(userInfo));
 }
 
 //  removes userInfo from local storage
-export function removeUserInfo() {
+export function removeLocalUserInfo() {
   localStorage.removeItem('userInfo');
 }

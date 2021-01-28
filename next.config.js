@@ -149,6 +149,11 @@ module.exports = withPlugins(
           permanent: true,
         },
         {
+          source: '/donate-tree',
+          destination: '/open-app',
+          permanent: true,
+        },
+        {
           source: '/donate-trees',
           destination: '/open-app',
           permanent: true,
@@ -159,8 +164,18 @@ module.exports = withPlugins(
           permanent: true,
         },
         {
+          source: '/my-trees',
+          destination: '/login',
+          permanent: true,
+        },
+        {
           source: '/project/:slug*',
           destination: '/open-app',
+          permanent: true,
+        },
+        {
+          source: '/redeem',
+          destination: '/login',
           permanent: true,
         },
         {

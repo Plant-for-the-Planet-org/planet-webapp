@@ -20,6 +20,7 @@ import { storeConfig } from '../src/utils/storeConfig';
 import tenantConfig from '../tenant.config';
 
 const configTenant = tenantConfig();
+import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -39,6 +40,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 const onRedirectCallback = (appState) => {
+  removeLocalUserInfo();
   // Use Next.js's Router.replace method to replace the url
   Router.replace(appState?.returnTo || '/');
 };
@@ -51,6 +53,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
+  const [currencyCode, setCurrencyCode] = React.useState('');
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -98,6 +101,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setShowProjects,
     searchedProject,
     setsearchedProjects,
+    currencyCode,
+    setCurrencyCode
   };
 
   return (

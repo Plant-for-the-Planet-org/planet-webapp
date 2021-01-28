@@ -33,6 +33,8 @@ interface mapProps {
   setShowProjects: Function;
   searchedProject: any;
   showProjects: any;
+  currencyCode: any;
+  setCurrencyCode: Function;
 }
 export default function MapboxMap({
   projects,
@@ -41,6 +43,7 @@ export default function MapboxMap({
   setShowProjects,
   searchedProject,
   showProjects,
+  setCurrencyCode
 }: mapProps) {
   // eslint-disable-next-line no-undef
   let timer: NodeJS.Timeout;
@@ -92,7 +95,6 @@ export default function MapboxMap({
     const promise = getMapStyle('default');
     promise.then((style) => {
       if (style) {
-        console.log(style);
         setMapState({ ...mapState, mapStyle: style });
       }
     });
@@ -350,7 +352,7 @@ export default function MapboxMap({
         if (langCode) setLanguage(langCode);
       }
     }
-  }, []);
+  }, [selectedCurrency]);
 
   function goToNextProject() {
     if (currentSite < maxSites - 1) {
@@ -672,6 +674,7 @@ export default function MapboxMap({
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
+        setCurrencyCode={setCurrencyCode}
       />
     </div>
   );

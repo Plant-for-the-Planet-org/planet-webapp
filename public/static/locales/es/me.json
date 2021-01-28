@@ -5,7 +5,7 @@
   "registerTrees": "Registra los árboles",
   "redeem": "Canjear",
   "myForest": "Mi bosque",
-  "giftToGiftee": "Regalo a ${gifteeName}",
+  "giftToGiftee": "Regalo a {{gifteeName}}",
   "settingManageProject": "Administrar los proyectos",
   "userTree": "Registro de árboles",
   "logout": "Cierre de sesión",
@@ -32,6 +32,7 @@
   "moreThanOne": "se requiere un mínimo de 1 árbol",
   "registered": "Registrado",
   "receivedTrees": "Árboles recibidos",
+  "receivedFrom": "Recibido de {{name}}",
   "redeemedTrees": "Árboles redimidos",
   "nameForest": "El Bosque de {{name}}"
 }

@@ -19,10 +19,7 @@ interface Props {
   authenticatedType: any;
 }
 
-export default function MyTrees({
-  profile,
-  authenticatedType,
-}: Props): ReactElement {
+export default function MyTrees({ profile, authenticatedType }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {
@@ -30,6 +27,7 @@ export default function MyTrees({
       getRequestWithoutRedirecting(`/app/profiles/${profile.id}/contributions`)
         .then((result: any) => {
           setContributions(result);
+          console.log(contributions);
         })
         .catch((e: any) => {
           console.log('error occured :', e);
@@ -77,12 +75,25 @@ export default function MyTrees({
                         </div>
                         {item.properties.type === 'gift' ? (
                           <div className={styles.source}>
-                            {t('me:receivedTrees')}
+                            {item.properties.giver.name
+                              ? t('me:receivedFrom', {
+                                  name: item.properties.giver.name,
+                                })
+                              : t('me:receivedTrees')}
                           </div>
                         ) : null}
                         {item.properties.type === 'redeem' ? (
                           <div className={styles.source}>
                             {t('me:redeemedTrees')}
+                          </div>
+                        ) : null}
+                        {item.properties.type === 'donation' ? (
+                          <div className={styles.source}>
+                            {item.properties.recipient
+                              ? t('me:giftToGiftee', {
+                                gifteeName: item.properties.recipient.name,
+                                })
+                              : null}
                           </div>
                         ) : null}
                       </div>

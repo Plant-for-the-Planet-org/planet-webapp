@@ -43,11 +43,24 @@ export function sortCountriesData(sortBy) {
 /**
  * Sorts the countries array for the translated country name
  * @param {Function} t - translation function
+ * @param {String} language - language to get country names for
+ * @param {Array} priorityCountries - country code to always show first in given order
  */
-export function sortCountriesByTranslation(t, language) {
-  if (!sortedCountries[language]) {
-    // returns a sorted array
-    sortedCountries[language] = countriesData.sort((a, b) => {
+export function sortCountriesByTranslation(t, language, priorityCountryCodes) {
+  const key = `${language}.${priorityCountryCodes}`;
+  if (!sortedCountries[key]) {
+    const priorityCountries = [];
+    // filter priority countries from list
+    const filteredCountries = countriesData.filter(function(value, index, arr) {
+      if (priorityCountryCodes.includes(value.countryCode)) {
+        priorityCountries.push(value);
+        return false;
+      } else {
+        return true;
+      }
+    });
+    // sort array of countries
+    sortedCountries[key] = priorityCountries.concat(filteredCountries.sort((a, b) => {
       const nameA = t(`country:${a.countryCode.toLowerCase()}`);
       const nameB = t(`country:${b.countryCode.toLowerCase()}`);
       if (nameA > nameB) {
@@ -56,7 +69,7 @@ export function sortCountriesByTranslation(t, language) {
         return -1;
       }
       return 0;
-    });
+    }));
   }
-  return sortedCountries[language];
+  return sortedCountries[key];
 }

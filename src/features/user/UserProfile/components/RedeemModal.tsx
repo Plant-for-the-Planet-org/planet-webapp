@@ -167,8 +167,9 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <div className={styles.donationCount}>
-                    {t('redeem:myPlantedTreesByOrg', { 
-                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
+                    {t('redeem:myPlantedTreesByOrg', {
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
                       tpoName:validCodeData.tpos[0].tpoName 
                     })}
                     <p className={styles.donationTenant}>
@@ -186,7 +187,8 @@ export default function RedeemModal({
                   </div>
                   <p className={styles.tempDonationCount}>
                     {t('redeem:myPlantedTreesByOrg', {
-                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
                       tpoName:validCodeData.tpos[0].tpoName
                     })}
                   </p>
@@ -242,7 +244,9 @@ export default function RedeemModal({
                     <h4>
                       {t('me:redeem')}
                     </h4>
-
+                    <div className={styles.note}>
+                      <p>{t('me:redeemDescription')}</p>
+                    </div>
                     <div className={styles.inputField}>
                       <MaterialTextField inputRef={register({
                         required: {

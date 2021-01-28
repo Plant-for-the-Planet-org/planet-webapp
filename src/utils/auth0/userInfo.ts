@@ -1,5 +1,5 @@
 import { getAccountInfo } from "../apiRequests/api";
-import { setUserExistsInDB } from "./localStorageUtils";
+import { setUserExistsInDB, getLocalUserInfo, setLocalUserInfo, removeLocalUserInfo } from "./localStorageUtils";
 
 // Use a global to save the user, so we don't have to fetch it again after page navigations
 let userInfo: any;
@@ -7,9 +7,8 @@ let userInfo: any;
 export async function getUserInfo(token: any, router: any, logout: any) {  
   // Check if userInfo is present in the global or not
   if (!userInfo) {
-    if (localStorage.getItem('userInfo')) {
-      const stringUserInfo = localStorage.getItem('userInfo');
-      userInfo = JSON.parse(stringUserInfo!);
+    if (getLocalUserInfo()) {
+      userInfo = getLocalUserInfo();
     }
     else {
       const res = await getAccountInfo(token);
@@ -21,7 +20,7 @@ export async function getUserInfo(token: any, router: any, logout: any) {
           profilePic: resJson.image,
           type: resJson.type
         }
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        setLocalUserInfo(userInfo);
 
       } else if (res.status === 303) {
         setUserExistsInDB(false)
@@ -33,7 +32,7 @@ export async function getUserInfo(token: any, router: any, logout: any) {
         if (typeof window !== 'undefined') {
           router.push('/');
         }
-        localStorage.removeItem('userInfo');
+        removeLocalUserInfo();
       } else {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
         if (typeof window !== 'undefined') {
