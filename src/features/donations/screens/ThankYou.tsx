@@ -6,7 +6,7 @@ import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../common/types/donations';
 import styles from '../styles/ThankYou.module.scss';
 import ShareOptions from '../components/ShareOptions';
-import { getPaymentType } from '../components/treeDonation/PaymentFunctions';
+import { getPaymentType } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';

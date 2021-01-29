@@ -1,20 +1,20 @@
 import React, { ReactElement } from 'react'
-import CardPayments from './components/CardPayments'
+import CardPayments from './components/paymentMethods/CardPayments'
 import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../utils/stripe/getStripe';
 import styles from './styles/PaymentDetails.module.scss';
 import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
-import { PaymentRequestCustomButton } from './components/PaymentRequestForm';
+import { NativePay, PaymentRequestCustomButton } from './components/paymentMethods/PaymentRequestCustomButton';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
 import i18next from '../../../i18n';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../utils/getFormattedNumber';
-import { payDonation } from '../donations/components/treeDonation/PaymentFunctions';
+import { payDonation } from './components/PaymentFunctions';
 import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress';
-import ThankYou from '../donations/screens/ThankYou';
+import ThankYou from './screens/ThankYou';
 import { useRouter } from 'next/router';
-import Paypal from './components/Paypal';
+import Paypal from './components/paymentMethods/Paypal';
 import { paypalCurrencies } from '../../utils/paypalCurrencies';
 const { useTranslation } = i18next;
 
@@ -68,11 +68,11 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     loadPaymentSetup();
   }, [paymentData, country]);
 
-  const onPaymentFunction = (gateway:any,paymentMethod: any) => {
+  const onPaymentFunction = (gateway: any, paymentMethod: any) => {
     setIsPaymentProcessing(true);
 
     let payDonationData;
-    if(gateway==='stripe'){
+    if (gateway === 'stripe') {
       payDonationData = {
         paymentProviderRequest: {
           account: paymentSetup.gateways.stripe.account,
@@ -84,7 +84,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         },
       };
     }
-    else if(gateway === 'paypal'){
+    else if (gateway === 'paypal') {
       payDonationData = {
         paymentProviderRequest: {
           account: paymentSetup.gateways.paypal.account,
@@ -122,8 +122,9 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         } else if (res.status === 'action_required') {
           const clientSecret = res.response.payment_intent_client_secret;
           const donationID = res.id;
+          let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
           const stripe = window.Stripe(
-            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+            key,
             {
               stripeAccount: res.response.account,
             },
@@ -183,15 +184,15 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       giftDetails.recipientName = paymentData.supportedTreecounterName;
     }
   }
-  
 
-const paypalSuccess =(data:any)=>{
-  if(data.error){
-    setPaymentError(data.error.message)
-  }else{
-    onPaymentFunction('paypal',data);
+
+  const paypalSuccess = (data: any) => {
+    if (data.error) {
+      setPaymentError(data.error.message)
+    } else {
+      onPaymentFunction('paypal', data);
+    }
   }
-} 
 
   const project = {
     name: paymentData.plantProjectName,
@@ -208,91 +209,97 @@ const paypalSuccess =(data:any)=>{
     onClose,
     paymentType,
     setDonationStep: null
-  };  
-  
+  };
+
   return ready ? (
     !isDonationComplete ? isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-      <div className={styles.container}>
-        {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
-        )}
-        <div className={styles.header}>
-          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-          <div className={styles.headerText}>
-            {t('common:to_project_by_tpo', {
-              projectName: paymentData.plantProjectName,
-              tpoName: paymentData.tpoName,
-            })}
+        <div className={styles.container}>
+          {paymentError && (
+            <div className={styles.paymentError}>{paymentError}</div>
+          )}
+          <div className={styles.header}>
+            <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
+            <div className={styles.headerText}>
+              {t('common:to_project_by_tpo', {
+                projectName: paymentData.plantProjectName,
+                tpoName: paymentData.tpoName,
+              })}
+            </div>
+            {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
+              paymentData.giftRecipient ?
+                (<div className={styles.headerText}>
+                  {t('donate:giftTo')} {paymentData.giftRecipient}
+                </div>) :
+                (<div className={styles.headerText}>
+                  {t('donate:supporting')} {paymentData.supportedTreecounterName}
+                </div>)
+            ) : null}
+
           </div>
-          {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
-            paymentData.giftRecipient ?
-              (<div className={styles.headerText}>
-                {t('donate:giftTo')} {paymentData.giftRecipient}
-              </div>) :
-              (<div className={styles.headerText}>
-                {t('donate:supporting')} {paymentData.supportedTreecounterName}
-              </div>)
-          ) : null}
 
-        </div>
-
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {!isPaymentOptionsLoading ? getFormatedCurrency(i18n.language, currency, treeCount * treeCost) : null}
+          <div className={styles.finalTreeCount}>
+            <div className={styles.totalCost}>
+              {!isPaymentOptionsLoading ? getFormatedCurrency(i18n.language, currency, treeCount * treeCost) : null}
+            </div>
+            <div className={styles.totalCostText}>
+              {t('donate:fortreeCountTrees', {
+                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+              })}
+            </div>
           </div>
-          <div className={styles.totalCostText}>
-            {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-            })}
-          </div>
-        </div>
 
-        <Elements stripe={getStripe()}>
-          <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
-        </Elements>
+          {paymentSetup && (
+            <>
+              <Elements stripe={getStripe(paymentSetup)}>
+                <CardPayments onPaymentFunction={(data) => onPaymentFunction('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+              </Elements>
 
 
-        <Elements stripe={getStripe()}>
-          {!isPaymentOptionsLoading
-            && paymentSetup?.gateways?.stripe?.account
-            && currency ? (
-              <>
-                <div className={styles.horizontalLine} />
-                <PaymentRequestCustomButton
-                  country={country}
-                  currency={currency}
-                  amount={formatAmountForStripe(
-                    treeCost * treeCount,
-                    currency.toLowerCase(),
+              <Elements stripe={getStripe(paymentSetup)}>
+                {!isPaymentOptionsLoading
+                  && paymentSetup?.gateways?.stripe?.account
+                  && currency ? (
+                    <>
+                      <div className={styles.horizontalLine} />
+                      <NativePay
+                        country={country}
+                        currency={currency}
+                        continueNext={null}
+                        amount={formatAmountForStripe(
+                          treeCost * treeCount,
+                          currency.toLowerCase(),
+                        )}
+                        onPaymentFunction={(data) => onPaymentFunction('stripe', data)}
+                        paymentSetup={paymentSetup}
+                      />
+                    </>
+                  ) : (
+                    <div className={styles.actionButtonsContainer}>
+                      <ButtonLoader />
+                    </div>
                   )}
-                  onPaymentFunction={(data)=> onPaymentFunction('stripe',data)}
-                />
-              </>
-            ) : (
-              <div className={styles.actionButtonsContainer}>
-                <ButtonLoader />
-              </div>
-            )}
-        </Elements>
+              </Elements>
+            </>
+          )}
 
-        { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
-        <Paypal
-          onSuccess={data => {
-            paypalSuccess(data);
-          }}
-          amount={treeCost * treeCount}
-          currency={currency}
-          donationId={paymentData.guid}
-          mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
-          clientID={paymentSetup?.gateways.paypal.authorization.client_id}
-        /> }
-      </div>
-    ) : (
-      <ThankYou {...ThankYouProps} />
-    )
-  ) : null;
+          { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
+            <Paypal
+              onSuccess={data => {
+                paypalSuccess(data);
+              }}
+              amount={treeCost * treeCount}
+              currency={currency}
+              donationId={paymentData.guid}
+              mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
+              clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+            />}
+        </div>
+      ) : (
+        <ThankYou {...ThankYouProps} />
+      )
+  ) : <></>;
 }
 
 export default LegacyDonations
