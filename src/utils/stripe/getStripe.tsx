@@ -1,13 +1,11 @@
-/**
- * This is a singleton to ensure we only instantiate Stripe once.
- */
 import { Stripe, loadStripe } from '@stripe/stripe-js';
 
 let stripePromise: Promise<Stripe | null>;
-const getStripe = () => {
-  if (!stripePromise) {
-    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-  }
+
+const getStripe = (paymentSetup:any) => {
+  let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
+  let account = paymentSetup?.gateways?.stripe?.authorization.accountId;
+  stripePromise = loadStripe(key,{stripeAccount:account});
   return stripePromise;
 };
 

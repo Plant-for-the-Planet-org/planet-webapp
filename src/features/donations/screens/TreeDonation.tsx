@@ -10,10 +10,10 @@ import { TreeDonationProps } from '../../common/types/donations';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import styles from '../styles/TreeDonation.module.scss';
-import { PaymentRequestCustomButton } from '../components/PaymentRequestForm';
+import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
-import { payWithCard } from '../components/treeDonation/PaymentFunctions';
+import { payWithCard } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -134,7 +134,7 @@ function TreeDonation({
   };
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
-  const [isGiftValidated,setGiftValidated] = React.useState(false);
+  const [isGiftValidated, setGiftValidated] = React.useState(false);
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -343,16 +343,18 @@ function TreeDonation({
             {((treeCost * treeCount) >= minAmt) ? !isPaymentOptionsLoading &&
               paymentSetup?.gateways?.stripe?.account &&
               currency ? (
-                <PaymentRequestCustomButton
-                  country={country}
-                  currency={currency}
-                  amount={formatAmountForStripe(
-                    treeCost * treeCount,
-                    currency.toLowerCase()
-                  )}
-                  onPaymentFunction={onPaymentFunction}
-                  continueNext={continueNext}
-                />
+                <NativePay
+                    country={country}
+                    currency={currency}
+                    amount={formatAmountForStripe(
+                      treeCost * treeCount,
+                      currency.toLowerCase()
+                    )}
+                    onPaymentFunction={onPaymentFunction}
+                    continueNext={continueNext}
+                    paymentSetup={paymentSetup}
+                  />
+
               ) : (
                 <div className={styles.actionButtonsContainer}>
                   <ButtonLoader />

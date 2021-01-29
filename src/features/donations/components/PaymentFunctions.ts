@@ -1,5 +1,5 @@
-import getsessionId from '../../../../utils/apiRequests/getSessionId';
-import { PayWithCardTypes } from '../../../common/types/donations';
+import getsessionId from '../../../utils/apiRequests/getSessionId';
+import { PayWithCardTypes } from '../../common/types/donations';
 
 export async function createDonation(data: any, token:any) {
   let headers = {
@@ -201,11 +201,12 @@ export function payWithCard({
             } else if (res.status === 'action_required') {
               const clientSecret = res.response.payment_intent_client_secret;
               const donationID = res.id;
+              let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
               const stripe = window.Stripe(
-                  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-                  {
-                    stripeAccount: res.response.account,
-                  },
+                key,
+                {
+                  stripeAccount: res.response.account,
+                },
               );
               if (stripe) {
                 await stripe.handleCardAction(clientSecret).then((res) => {
