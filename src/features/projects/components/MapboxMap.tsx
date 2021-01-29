@@ -29,6 +29,15 @@ import dynamic from 'next/dynamic';
 import ImagerySwitcher from './maps/ImagerySwitcher';
 import MapLoading from '../../common/ContentLoaders/Maps/MapLoading';
 import nicfi_coverage from '../../../../public/data/planet/aoi.json';
+import PolygonIcon from '../../../../public/assets/images/icons/PolygonIcon';
+import {
+  FormControl,
+  NativeSelect,
+  createStyles,
+  withStyles,
+  Theme,
+  InputBase,
+} from '@material-ui/core';
 
 const MapCompare = dynamic(() => import('./CompareMaps'), { ssr: false });
 
@@ -147,6 +156,47 @@ export default function MapboxMap({
     setModalOpen(true);
   };
 
+  const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setCurrentSite(event.target.value as string);
+  };
+
+  const BootstrapInput = withStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        'label + &': {
+          marginTop: theme.spacing(3),
+        },
+      },
+      input: {
+        borderRadius: 13,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: '0px 3px 6px #00000029',
+        fontSize: 16,
+        padding: '10px 26px 10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        // Use the system font instead of the default Roboto font.
+        fontFamily: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(','),
+        '&:focus': {
+          borderRadius: 4,
+          borderColor: '#80bdff',
+          boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+      },
+    })
+  )(InputBase);
+
   const handleExploreProjectsChange = (event) => {
     setExploreProjects(event.target.checked);
     setShowProjects(event.target.checked);
@@ -248,13 +298,18 @@ export default function MapboxMap({
       if (project) {
         if (siteExists) {
           if (geoJson) {
-            if (selectedOption === 'imagery' && !nicfiDataExists)
-              if (!yearExists(selectedYear1) || !yearExists(selectedYear2)) {
-                fetchImageryData('/imagery', geoJson);
+            if (selectedOption === 'imagery' && !nicfiDataExists) {
+              if (!isMapDataLoading) {
+                if (!yearExists(selectedYear1) || !yearExists(selectedYear2)) {
+                  fetchImageryData('/imagery', geoJson);
+                }
               }
+            }
             if (selectedOption === 'vegetation') {
-              if (!siteVegetationChange) {
-                fetchVegetationData('/vegetation', geoJson);
+              if (!isMapDataLoading) {
+                if (!siteVegetationChange) {
+                  fetchVegetationData('/vegetation', geoJson);
+                }
               }
             }
           }
@@ -270,10 +325,11 @@ export default function MapboxMap({
         }
       }
     }
-  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists, siteExists, geoJson]);
+  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists, siteExists, geoJson, isMapDataLoading]);
 
   React.useEffect(() => {
     if (showSingleProject) {
+      setNicfiDataExists(true);
       if (project) {
         setSingleProjectLatLong([
           project.coordinates.lat,
@@ -366,6 +422,7 @@ export default function MapboxMap({
             var siteCenter = turf.centroid(geoJson.features[currentSite]);
             if (!turf.booleanPointInPolygon(siteCenter, nicfi_coverage)) {
               setNicfiDataExists(false);
+              console.log(nicfiDataExists);
             }
           }
         } else {
@@ -689,7 +746,31 @@ export default function MapboxMap({
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
+        {siteExists ?
+          <>
+            <div className={styles.projectSitesButton}>
+              <PolygonIcon />
+            </div>
+            <div className={styles.projectSitesDropdown}>
+              <FormControl>
+                {/* <InputLabel htmlFor="demo-customized-select-native">Image 1</InputLabel> */}
+                <NativeSelect
+                  id="customized-select-native"
+                  value={currentSite}
+                  onChange={handleChangeSite}
+                  input={<BootstrapInput />}
+                >
+                  {geoJson.features.map((site: any, index: any) => {
+                    return (
+                      <option value={index}>{site.properties.name}</option>
+                    )
+                  })}
 
+                </NativeSelect>
+              </FormControl>
+            </div>
+          </>
+          : null}
         <ExploreContainer
           exploreContainerRef={exploreContainerRef}
           setExploreExpanded={setExploreExpanded}

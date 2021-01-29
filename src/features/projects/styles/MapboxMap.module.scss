@@ -63,7 +63,7 @@
   border: 1px solid #aaaaaa;
   border-radius: 6px;
   cursor: pointer;
-  display: flex;
+  display: none;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -88,6 +88,33 @@
 
 .mapContainer .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
+}
+
+.projectSitesButton {
+  position: fixed;
+  right: 60px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+  line-height: 16px;
+  cursor: pointer;
+  z-index: 11;
+  svg {
+    width: 20px;
+  }
+}
+
+.projectSitesDropdown {
+  position: fixed;
+  right: 60px;
+  top: 20px;
+  z-index: 9999;
 }
 
 .exploreButton {
@@ -418,8 +445,8 @@
 }
 
 @include smTabletView {
-  .projectControls {
-    top: 150px;
+  .projectSitesButton {
+    top: 100px;
   }
 
   .exploreButton {
@@ -440,12 +467,18 @@
     padding-top: 60px;
     padding-bottom: 0px;
   }
+  .projectSitesButton {
+    display: none;
+  }
+
   .projectControls {
+    display: flex;
     top: auto;
     bottom: 30px;
     left: 350px;
   }
   .exploreButton {
+    right: 20px;
     flex-direction: row;
   }
 }

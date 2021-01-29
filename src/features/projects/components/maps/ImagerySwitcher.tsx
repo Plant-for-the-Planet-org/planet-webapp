@@ -73,7 +73,6 @@ export default function ImagerySwitcher({
       <div className={styles.dropdownContainer}>
         <div className={styles.beforeYear}>
           <FormControl>
-            {/* <InputLabel htmlFor="demo-customized-select-native">Image 1</InputLabel> */}
             <NativeSelect
               id="customized-select-native"
               value={selectedYear1}
@@ -89,7 +88,6 @@ export default function ImagerySwitcher({
         </div>
         <div className={styles.afterYear}>
           <FormControl>
-            {/* <InputLabel htmlFor="demo-customized-select-native">Image 2</InputLabel> */}
             <NativeSelect
               id="customized-select-native"
               value={selectedYear2}

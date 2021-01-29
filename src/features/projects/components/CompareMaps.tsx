@@ -47,6 +47,12 @@ export default function MapCompare({
   const [firstRun, setFirstRun] = React.useState(true);
   const [imageryMask, setImageryMask] = React.useState(null);
 
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+
   const nicfi_data = [
     {
       year: '2017',
@@ -74,7 +80,7 @@ export default function MapCompare({
       console.log('here');
       var before = new mapboxgl.Map({
         container: 'before', // Container ID
-        style: style,
+        style: EMPTY_STYLE,
         center: projectCenter,
         zoom: projectZoom,
         // interactive: false
@@ -84,7 +90,7 @@ export default function MapCompare({
 
       var after = new mapboxgl.Map({
         container: 'after', // Container ID
-        style: style,
+        style: EMPTY_STYLE,
         center: projectCenter,
         zoom: projectZoom,
         // interactive: false
@@ -103,7 +109,8 @@ export default function MapCompare({
         orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
       });
 
-      syncMove(before, mapRef.current.getMap());
+      syncMove(before, after, mapRef.current.getMap());
+
       if (nicfiDataExists) {
         setTimeout(() => { setIsMapDataLoading(false); }, 2000);
       }
@@ -436,13 +443,10 @@ export default function MapCompare({
   return (
     <>
       {
-        // selectedOption === 'imagery' &&
-        //   siteImagery !== [] ? (
         <div style={selectedOption === 'imagery' ? { userSelect: 'none' } : { display: 'none' }} id="comparison-container">
           <div className="comparison-map" id="before"></div>
           <div className="comparison-map" id="after"></div>
         </div>
-        // ) : null
       }
     </>
   );
