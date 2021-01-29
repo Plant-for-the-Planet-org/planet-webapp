@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/TreeDonation.module.scss';
 import i18next from '../../../../../i18n';
+import getStripe from '../../../../utils/stripe/getStripe';
+import { Elements } from '@stripe/react-stripe-js';
 
 const { useTranslation } = i18next;
 
@@ -34,17 +36,13 @@ interface PaymentButtonProps {
   amount: number;
   onPaymentFunction: Function;
   continueNext: Function | null;
-  window: any;
-  paymentSetup: any;
 }
 export const PaymentRequestCustomButton = ({
   country,
   currency,
   amount,
   onPaymentFunction,
-  continueNext,
-  window,
-  paymentSetup
+  continueNext
 }: PaymentButtonProps) => {
   const { t, ready } = useTranslation(['donate', 'common']);
 
@@ -106,20 +104,13 @@ export const PaymentRequestCustomButton = ({
     'US',
     'UY',
   ];
+
   useEffect(() => {
     if (
       stripe &&
       !paymentRequest &&
       stripeAllowedCountries.includes(country)
-    ) {
-
-      let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
-      const stripe = window.Stripe(
-        key,
-        {
-          stripeAccount: paymentSetup?.gateways?.stripe?.account,
-        },
-      );
+    ) {      
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
@@ -138,6 +129,7 @@ export const PaymentRequestCustomButton = ({
     if (stripe && paymentRequest) {
       setPaymentRequest(null);
       setCanMakePayment(false);
+      setPaymentLoading(false)
     }
   }, [country, currency, amount]);
 
@@ -158,11 +150,13 @@ export const PaymentRequestCustomButton = ({
   }, [paymentRequest]);
 
   useEffect(() => {
+
     if (paymentRequest && !paymentLoading) {
       setPaymentLoading(true)
       paymentRequest.on(
         'paymentmethod',
         ({ complete, paymentMethod, ...data }: any) => {
+          
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
           setPaymentLoading(false)
@@ -234,3 +228,36 @@ export const PaymentRequestCustomButton = ({
         </div>
       ) : null) : null;
 };
+
+export const NativePay = ({ country, currency, amount, onPaymentFunction, continueNext, paymentSetup }) => {
+  
+  const [stripePromise,setStripePromise] = useState(()=>getStripe(paymentSetup))
+
+  useEffect(()=>{
+    const fetchStripeObject = async () => {
+      if (paymentSetup) {
+        const res = ()=> getStripe(paymentSetup);
+        // When we have got the Stripe object, pass it into our useState.
+        setStripePromise(res);
+      }
+    };
+    setStripePromise(null);
+    fetchStripeObject();
+  },[paymentSetup])
+
+  if(!stripePromise){
+    return <></>;
+  }
+
+  return (
+    <Elements stripe={stripePromise} key={paymentSetup?.gateways?.stripe?.authorization.accountId}>
+      <PaymentRequestCustomButton
+        country={country}
+        currency={currency}
+        amount={amount}
+        onPaymentFunction={onPaymentFunction}
+        continueNext={continueNext}
+      />
+    </Elements>
+  )
+}

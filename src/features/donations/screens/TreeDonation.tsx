@@ -10,7 +10,7 @@ import { TreeDonationProps } from '../../common/types/donations';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import styles from '../styles/TreeDonation.module.scss';
-import { PaymentRequestCustomButton } from '../components/paymentMethods/PaymentRequestCustomButton';
+import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
 import { payWithCard } from '../components/PaymentFunctions';
@@ -18,8 +18,6 @@ import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
-import { Elements } from '@stripe/react-stripe-js';
-import getStripe from '../../../utils/stripe/getStripe';
 
 const { useTranslation } = i18next;
 
@@ -340,9 +338,7 @@ function TreeDonation({
             {((treeCost * treeCount) >= minAmt) ? !isPaymentOptionsLoading &&
               paymentSetup?.gateways?.stripe?.account &&
               currency ? (
-                <Elements
-                  stripe={getStripe(paymentSetup)}>
-                  <PaymentRequestCustomButton
+                <NativePay
                     country={country}
                     currency={currency}
                     amount={formatAmountForStripe(
@@ -351,10 +347,8 @@ function TreeDonation({
                     )}
                     onPaymentFunction={onPaymentFunction}
                     continueNext={continueNext}
-                    window={window}
                     paymentSetup={paymentSetup}
                   />
-                </Elements>
 
               ) : (
                 <div className={styles.actionButtonsContainer}>

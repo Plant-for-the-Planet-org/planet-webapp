@@ -4,7 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../utils/stripe/getStripe';
 import styles from './styles/PaymentDetails.module.scss';
 import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
-import { PaymentRequestCustomButton } from './components/paymentMethods/PaymentRequestCustomButton';
+import { NativePay, PaymentRequestCustomButton } from './components/paymentMethods/PaymentRequestCustomButton';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
 import i18next from '../../../i18n';
@@ -263,7 +263,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                   && currency ? (
                     <>
                       <div className={styles.horizontalLine} />
-                      <PaymentRequestCustomButton
+                      <NativePay
                         country={country}
                         currency={currency}
                         continueNext={null}
@@ -272,7 +272,6 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                           currency.toLowerCase(),
                         )}
                         onPaymentFunction={(data) => onPaymentFunction('stripe', data)}
-                        window={window}
                         paymentSetup={paymentSetup}
                       />
                     </>
