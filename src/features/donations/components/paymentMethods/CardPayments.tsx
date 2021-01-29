@@ -8,12 +8,12 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
-import CreditCard from '../../../../public/assets/images/icons/donation/CreditCard';
-import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
-import AnimatedButton from '../../common/InputTypes/AnimatedButton';
-import styles from './../styles/PaymentDetails.module.scss';
+import CreditCard from '../../../../../public/assets/images/icons/donation/CreditCard';
+import { getCardBrand } from '../../../../utils/stripe/stripeHelpers';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
+import styles from './../../styles/PaymentDetails.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 
@@ -99,6 +99,10 @@ function CardPayments({
     }
 
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
+
+  const createPaymentMethodCC = (cardElement: any) => {
+    return stripe.createPaymentMethod('card', cardElement)
+  }
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);
     event.preventDefault();
@@ -120,15 +124,7 @@ function CardPayments({
           return;
         }
       });
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: cardElement!,
-        })
-        .catch((error) => {
-          setPaymentError(t('donate:noPaymentMethodError'));
-          return;
-        });
+      let payload = await createPaymentMethodCC(cardElement);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
@@ -188,6 +184,11 @@ function CardPayments({
               <div className={styles.paymentModeTitle}>
                 {t('donate:creditDebitCard')}
               </div>
+
+              {/* <div className={styles.paymentModeFee}>
+                  <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
+                  <InfoIcon />
+                </div> */}
             </div>
 
             <div className={styles.formRow}>

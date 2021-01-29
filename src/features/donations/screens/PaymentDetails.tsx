@@ -1,41 +1,21 @@
-import { FormControl } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  CardCvcElement,
-  CardExpiryElement,
-  CardNumberElement,
-  IbanElement,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
-import CreditCard from '../../../../public/assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
-import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
-import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
-import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
+import { createDonation, payDonation, payWithCard } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
-import Paypal from '../../legacyDonations/components/Paypal';
+import Paypal from '../components/paymentMethods/Paypal';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
+import CardPayments from '../components/paymentMethods/CardPayments';
+import { Elements } from '@stripe/react-stripe-js';
+import getStripe from '../../../utils/stripe/getStripe';
 
 const { useTranslation } = i18next;
 
-const FormControlNew = withStyles({
-  root: {
-    width: '100%',
-    backgroundColor: '#F2F2F7',
-    border: '0px!important',
-    borderRadius: '10px',
-    fontFamily: styles.primaryFontFamily,
-    padding: '18.5px',
-  },
-})(FormControl);
 const ELEMENT_OPTIONS = {
   supportedCountries: ['SEPA'],
   style: {
@@ -53,28 +33,6 @@ const ELEMENT_OPTIONS = {
       color: '#9e2146',
     },
   },
-};
-const getInputOptions = (placeholder: string) => {
-  const ObjectM = {
-    style: {
-      base: {
-        color: '#32325d',
-        fontFamily: styles.primaryFontFamily,
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#2F3336',
-          fontFamily: styles.primaryFontFamily,
-          fontSize: '14px',
-        },
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
-      },
-    },
-    placeholder: placeholder,
-  };
-  return ObjectM;
 };
 
 function PaymentDetails({
@@ -95,13 +53,7 @@ function PaymentDetails({
   recurrencyMnemonic
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
-  const [saveCardDetails, setSaveCardDetails] = React.useState(false);
   const [paypalEnabled, setPaypalEnabled] = React.useState(false);
-  const stripe = useStripe();
-  const elements = useElements();
-  const [cardNumber, setCardNumber] = React.useState(false);
-  const [cardCvv, setCardCvv] = React.useState(false);
-  const [cardDate, setCardDate] = React.useState(false);
 
   const [showPaymentForm, setShowPaymentForm] = React.useState('CARD');
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
@@ -113,8 +65,6 @@ function PaymentDetails({
   const [isSepa, setIsSepa] = React.useState(false);
 
   const [paymentError, setPaymentError] = React.useState('');
-  const [showContinue, setShowContinue] = React.useState(false);
-  const [showBrand, setShowBrand] = React.useState('');
 
   const [donationID, setDonationID] = React.useState(null);
   const [paypalProcessing, setPaypalProcessing] = React.useState(false);
@@ -129,85 +79,32 @@ function PaymentDetails({
     country: contactDetails.country,
     companyname: contactDetails.companyName,
   };
-  React.useEffect(() => {
-    const cardNumberElement = elements!.getElement(CardNumberElement);
-    cardNumberElement!.on('change', ({ error, complete, brand }) => {
-      if (error) {
-        setShowContinue(false);
-      } else if (complete) {
-        setShowBrand(brand);
-        const cardExpiryElement = elements!.getElement(CardExpiryElement);
-        cardExpiryElement!.on('change', ({ error, complete }) => {
-          if (error) {
-            setShowContinue(false);
-          } else if (complete) {
-            const cardCvcElement = elements!.getElement(CardCvcElement);
-            cardCvcElement!.on('change', ({ error, complete }) => {
-              if (error) {
-                setShowContinue(false);
-              } else if (complete) {
-                setShowContinue(true);
-              }
-            });
-          }
-        });
-      }
-    });
-  }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    setShowContinue(false);
-    event.preventDefault();
-    if (!stripe || !elements) {
-      return;
-    }
 
-    let paymentMethod: any;
+  // const createPaymentMethodSepa = (sepaElement: any, contactDetails: any) => {
+  //   return stripe?.createPaymentMethod({
+  //     type: 'sepa_debit',
+  //     sepa_debit: sepaElement,
+  //     billing_details: {
+  //       name: contactDetails.firstName,
+  //       email: contactDetails.email,
+  //     },
+  //   })
+  // }
 
-    if (paymentType === 'CARD') {
-      const cardElement = elements!.getElement(CardNumberElement);
-      setCardCvv(false);
-      setCardDate(false);
-      setCardNumber(false);
-      cardElement!.on('change', ({ error }) => {
-        if (error) {
-          // setPaymentError(error.message);
-          setPaymentError(t('donate:noPaymentMethodError'));
-          return;
-        }
-      });
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: cardElement!,
-        })
-        .catch((error) => {
-          setPaymentError(t('donate:noPaymentMethodError'));
-          return;
-        });
-      paymentMethod = payload.paymentMethod;
-      // Add payload error if failed
-    } else if (paymentType === 'SEPA') {
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'sepa_debit',
-          sepa_debit: elements.getElement(IbanElement)!,
-          billing_details: {
-            name: contactDetails.firstName,
-            email: contactDetails.email,
-          },
-        })
-        .catch((error) => {
-          setPaymentError(error.message);
-          return;
-        });
-      paymentMethod = payload.paymentMethod;
-      // Add payload error if failed
-    }
+  // Code for SEPA
+  // else if (paymentType === 'SEPA') {
+  //   const sepaElement = elements.getElement(IbanElement)!;
+  //   let payload = await createPaymentMethodSepa(sepaElement, contactDetails);
+  //   paymentMethod = payload.paymentMethod;
+  //   // Add payload error if failed
+  // }
+
+
+  const onPaymentFunction =  (gateway:any,paymentMethod: any) => {
     if (!paymentMethod) {
       setPaymentError(t('donate:noPaymentMethodError'));
       return;
     }
-
     const payWithCardProps = {
       setDonationStep,
       setIsPaymentProcessing,
@@ -228,40 +125,6 @@ function PaymentDetails({
     };
     payWithCard({ ...payWithCardProps });
   };
-
-  const handleChange = (change) => {
-    if (change.complete === true) {
-      setCardNumber(true);
-    } else {
-      setCardNumber(false);
-    }
-  };
-  const handleChangeCvv = (change) => {
-    if (change.complete === true) {
-      setCardCvv(true);
-    } else {
-      setCardCvv(false);
-    }
-  };
-  const handleChangeCardDate = (change) => {
-    if (change.complete === true) {
-      setCardDate(true);
-    } else {
-      setCardDate(false);
-    }
-  };
-
-  const validateCard = () => {
-    if (cardNumber && cardCvv && cardDate) {
-      setShowContinue(true);
-    } else {
-      setShowContinue(false);
-    }
-  };
-
-  React.useEffect(() => {
-    validateCard();
-  }, [cardDate, cardNumber, cardCvv]);
 
   // Function to process paypal donations, this will create a donation ID
   const createDonationWithPaypal = () => {
@@ -400,19 +263,19 @@ function PaymentDetails({
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div
-            onClick={() => setDonationStep(2)}
-            className={styles.headerBackIcon}
-          >
-            <BackArrow />
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <div
+              onClick={() => setDonationStep(2)}
+              className={styles.headerBackIcon}
+            >
+              <BackArrow />
+            </div>
+            <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
           </div>
-          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-        </div>
-        {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
-        )}
+          {paymentError && (
+            <div className={styles.paymentError}>{paymentError}</div>
+          )}
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
@@ -423,102 +286,49 @@ function PaymentDetails({
                   treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
                 })}
           </div>
-        </div>
+          <Elements 
+            stripe={getStripe(paymentSetup)}>
+              <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+          </Elements>
 
-        {
-          <div className={styles.paymentModeContainer} onClick={() => setShowPaymentForm('CARD')}>
-            <div className={styles.paymentModeHeader}>
-              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
-              <div className={styles.paymentModeTitle}>
-                {t('donate:creditDebitCard')}
+          { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
+            <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
+              <div className={styles.paymentModeHeader}>
+                <PaypalIcon />
+                <div className={styles.paymentModeTitle}>Paypal</div>
+                {paypalProcessing && <div className={styles.spinner} />}
+
               </div>
-              {/* <div className={styles.paymentModeFee}>
-            <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
-            <InfoIcon />
-          </div> */}
-            </div>
 
-            {showPaymentForm === 'CARD' && (
-              <>
-                <div className={styles.formRow}>
-                  <FormControlNew variant="outlined">
-                    <CardNumberElement
-                      id="cardNumber"
-                      options={getInputOptions(t('donate:cardNumber'))}
-                      onChange={handleChange}
-                    />
-                  </FormControlNew>
-                </div>
-                <div className={styles.formRow}>
-                  <FormControlNew variant="outlined">
-                    <CardExpiryElement
-                      id="expiry"
-                      options={getInputOptions(t('donate:expDate'))}
-                      onChange={handleChangeCardDate}
-                    />
-                  </FormControlNew>
-                  <div style={{ width: '20px' }}></div>
-                  <FormControlNew variant="outlined">
-                    <CardCvcElement id="cvc" options={getInputOptions('CVV')} onChange={handleChangeCvv} />
-                  </FormControlNew>
-                </div>
-                {/* <div className={styles.saveCard}>
-          <div className={styles.saveCardText}>
-            Save card for future Donations
-          </div>
-          <ToggleSwitch
-            checked={saveCardDetails}
-            onChange={() => setSaveCardDetails(!saveCardDetails)}
-            name="checkedB"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-        </div> */}
-                {showContinue ? (
-                  <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-                    <AnimatedButton className={styles.continueButton}>
-                      {t('common:donate')}
-                    </AnimatedButton>
-                  </div>
-                ) : (
-                    <div className={styles.actionButtonsContainer}>
-                      <AnimatedButton disabled className={styles.continueButtonDisabled}>
-                        {t('common:donate')}
-                      </AnimatedButton>
-                    </div>
-                  )}
-              </>
-            )}
-          </div>
-        }
+              { paypalCurrencies.includes(currency) && recurrencyMnemonic === 'none' &&  paymentSetup?.gateways.paypal &&
+            <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
+              <div className={styles.paymentModeHeader}>
+                <PaypalIcon />
+                <div className={styles.paymentModeTitle}>Paypal</div>
+                {paypalProcessing && <div className={styles.spinner} />}
 
-        { paypalCurrencies.includes(currency) && recurrencyMnemonic === 'none' && paymentSetup?.gateways.paypal &&
-          <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
-            <div className={styles.paymentModeHeader}>
-              <PaypalIcon />
-              <div className={styles.paymentModeTitle}>Paypal</div>
-              {paypalProcessing && <div className={styles.spinner} />}
+              </div>
+
+              {showPaymentForm === 'PAYPAL' && (
+                donationID && (
+                  <Paypal
+                    onSuccess={data => {
+                      paypalSuccess(data);
+                    }}
+                    amount={treeCost * treeCount}
+                    currency={currency}
+                    donationId={donationID}
+                    mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
+                    clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+                  />
+                )
+              )}
 
             </div>
+          }
 
-            {showPaymentForm === 'PAYPAL' && (
-              donationID && (
-                <Paypal
-                  onSuccess={data => {
-                    paypalSuccess(data);
-                  }}
-                  amount={treeCost * treeCount}
-                  currency={currency}
-                  donationId={donationID}
-                  mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
-                  clientID={paymentSetup?.gateways.paypal.authorization.client_id}
-                />
-              )
-            )}
 
-          </div>
-        }
-
-        {/* <div className={styles.paymentModeContainer}>
+          {/* <div className={styles.paymentModeContainer}>
         <div onClick={() => {
           setIsSepa(!isSepa), setPaymentType('SEPA')
         }} className={styles.paymentModeHeader}>
@@ -549,11 +359,8 @@ function PaymentDetails({
         </div>)}
       </div> */}
 
-        {/* <div className={styles.horizontalLine} /> */}
-
-
-      </div>
-    )
+        </div>
+      )
   ) : <></>;
 }
 
