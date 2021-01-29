@@ -54,7 +54,7 @@ function TreeDonation({
   const [paymentError, setPaymentError] = React.useState('');
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
-
+    const[customTreeInputValue, setCustomTreeInputValue] = React.useState("");
   const [screenWidth, setScreenWidth] = React.useState('');
   const [minAmt, setMinAmt] = React.useState(0);
 
@@ -226,6 +226,7 @@ function TreeDonation({
                     // eslint-disable-next-line no-unused-expressions
                     setTreeCount(option);
                     setIsCustomTrees(false);
+                    setCustomTreeInputValue("");
                   }}
                   key={option}
                   className={
@@ -262,10 +263,14 @@ function TreeDonation({
                       e.target.value = e.target.value.toString().slice(0, 12);
                     }
                   }}
+                  value = {customTreeInputValue}
                   type="text"
                   inputMode="numeric"
-                  pattern="\d*" 
-                  onChange={(e) => setCustomTreeValue(e)}
+                  pattern="\d*"
+                  onChange={(e) => {
+                    setCustomTreeValue(e);
+                    setCustomTreeInputValue(e.target.value)}
+                  }
                 />
                 <div className={styles.treeCountOptionTrees}>
                   {t('common:trees')}
