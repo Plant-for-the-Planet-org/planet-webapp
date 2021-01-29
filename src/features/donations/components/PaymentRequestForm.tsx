@@ -126,6 +126,7 @@ export const PaymentRequestCustomButton = ({
     if (stripe && paymentRequest) {
       setPaymentRequest(null);
       setCanMakePayment(false);
+      setPaymentLoading(false);
     }
   }, [country, currency, amount]);
 
