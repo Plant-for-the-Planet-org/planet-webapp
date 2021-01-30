@@ -177,9 +177,9 @@ function ClaimDonation({ }: Props): ReactElement {
                 <>
                     <div className={styles.modalFinal}>
                         <div className={styles.header}>
-                            <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                            <button id={'closeIconCode'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                                 <Close />
-                            </div>
+                            </button>
                             <div className={styles.headerTitle}>
                                 {t('redeem:congratulations')}
                             </div>
@@ -302,7 +302,7 @@ function ClaimDonation({ }: Props): ReactElement {
                 </div>
             </LandingSection>
       )
-    ) : null;
+    ) : <></>;
 }
 
 export default ClaimDonation

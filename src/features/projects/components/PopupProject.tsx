@@ -100,13 +100,10 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
-                <div
-                  ref={buttonRef}
-                  onClick={handleOpen}
-                  className={'donateButton'}
+                <button id={`ProjPopDonate${project.id}`}ref={buttonRef} onClick={handleOpen} className={'donateButton'}
                 >
                   {t('common:donate')}
-                </div>
+                </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,

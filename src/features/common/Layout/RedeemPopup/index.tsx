@@ -40,12 +40,12 @@ export default function RedeemPopup() {
 
   return ready && showRedeemPopup ? (
     <div className={styles.cookieContainer}>
-      <div
+      <button id={'redeemCloseButton'}
         className={styles.closeButton}
         onClick={() => setShowRedeemPopup(false)}
       >
         <CloseIcon color={styles.primaryColor} />
-      </div>
+      </button >
       <div className={styles.cookieContent}>
         {t('common:redeemPopup')}{' '}
         <a onClick={sendUserToLogin}>{t('common:login')}</a>

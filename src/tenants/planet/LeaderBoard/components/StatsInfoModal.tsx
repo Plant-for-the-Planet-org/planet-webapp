@@ -57,7 +57,7 @@ function ExploreInfoModal({
           </div>
         </div>
       ) : null}
-      <div
+      <button id={'statsInfoModal'}
         onClick={() => {
           setInfoExpanded(null);
           setModalOpen(false);
@@ -65,7 +65,7 @@ function ExploreInfoModal({
         className={styles.infoClose}
       >
         <CancelIcon color="#d5d5d5" />
-      </div>
+      </button>
     </div>
   ) : null;
 }

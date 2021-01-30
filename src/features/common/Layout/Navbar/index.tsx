@@ -122,14 +122,14 @@ export default function NavbarComponent(props: any) {
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
-                <div key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
+                <button id={'navbarActiveIcon'} key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
                   <div className={'link_icon'}>
                     <UserProfileIcon />
                   </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
                     {t('common:' + SingleLink.title)}
                   </p>
-                </div>
+                </button>
               )
             }
             return SingleLink.visible ? (

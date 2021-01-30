@@ -140,11 +140,11 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                                 {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                     <PencilIcon color={"#000"} />
                                 </div> */}
-                                <div
+                                <button id={'trashIconProjC'}
                                     onClick={() => deleteProjectCertificate(report.id)}
                                     className={styles.reportEditButton}>
                                     <TrashIcon />
-                                </div>
+                                </button>
                             </div>
                         )
                     })}
@@ -245,7 +245,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                     </div>)}
 
         </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default ProjectCertificates

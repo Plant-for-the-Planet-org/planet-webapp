@@ -191,12 +191,12 @@ export default function EditProfileModal({
         <div className={styles.modal}>
           <div>
             <div className={styles.headerDiv}>
-              <div
+              <button id={'backButtonEditP'}
                 className={styles.backDiv}
                 onClick={handleEditProfileModalClose}
               >
                 <BackButton style={{}} />
-              </div>
+              </button>
               <div className={styles.editProfileText}>
                 {' '}
                 <b> {t('editProfile:edit')} </b>
@@ -432,7 +432,7 @@ export default function EditProfileModal({
               className={styles.formFieldLarge}
               style={{ justifyContent: 'center' }}
             >
-              <div
+              <button id={'editProfileSaveProfile'}
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >
@@ -441,7 +441,7 @@ export default function EditProfileModal({
                 ) : (
                   t('editProfile:save')
                 )}
-              </div>
+              </button>
             </div>
           </div>
         </div>

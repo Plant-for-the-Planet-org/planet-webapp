@@ -150,11 +150,11 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                                    <div
+                                    <button id={'trashIconProjSpend'}
                                         onClick={() => deleteProjectSpending(report.id)}
                                         className={styles.reportEditButton}>
                                         <TrashIcon />
-                                    </div>
+                                    </button>
                                 </div>
                             )
                         })}

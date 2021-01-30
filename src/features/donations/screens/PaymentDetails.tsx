@@ -254,19 +254,19 @@ function PaymentDetails({
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-        <div className={styles.container}>
-          <div className={styles.header}>
-            <div
-              onClick={() => setDonationStep(2)}
-              className={styles.headerBackIcon}
-            >
-              <BackArrow />
-            </div>
-            <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-          </div>
-          {paymentError && (
-            <div className={styles.paymentError}>{paymentError}</div>
-          )}
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <button id={'backArrowPayment'}
+            onClick={() => setDonationStep(2)}
+            className={styles.headerBackIcon}
+          >
+            <BackArrow />
+          </button>
+          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
+        </div>
+        {paymentError && (
+          <div className={styles.paymentError}>{paymentError}</div>
+        )}
 
           <div className={styles.finalTreeCount}>
             <div className={styles.totalCost}>
