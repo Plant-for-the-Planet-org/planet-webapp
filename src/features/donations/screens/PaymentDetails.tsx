@@ -282,63 +282,61 @@ function PaymentDetails({
             {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
           </div>
           <div className={styles.totalCostText}>
-          {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
-                  treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-                })}
+            {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
+              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+            })}
           </div>
-          <Elements 
-            stripe={getStripe(paymentSetup)}>
+          <Elements stripe={getStripe(paymentSetup)}>
               <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
           </Elements>
 
-          { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
+          {paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
             <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
               <div className={styles.paymentModeHeader}>
                 <PaypalIcon />
                 <div className={styles.paymentModeTitle}>Paypal</div>
                 {paypalProcessing && <div className={styles.spinner} />}
-
               </div>
 
               { paypalCurrencies.includes(currency) && recurrencyMnemonic === 'none' &&  paymentSetup?.gateways.paypal &&
-            <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
-              <div className={styles.paymentModeHeader}>
-                <PaypalIcon />
-                <div className={styles.paymentModeTitle}>Paypal</div>
-                {paypalProcessing && <div className={styles.spinner} />}
+                <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
+                  <div className={styles.paymentModeHeader}>
+                  <PaypalIcon />
+                  <div className={styles.paymentModeTitle}>Paypal</div>
+                    {paypalProcessing && <div className={styles.spinner} />}
+                  </div>
 
+                  {showPaymentForm === 'PAYPAL' && (
+                    donationID && (
+                    <Paypal
+                      onSuccess={data => {
+                        paypalSuccess(data);
+                      }}
+                      amount={treeCost * treeCount}
+                      currency={currency}
+                      donationId={donationID}
+                      mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
+                      clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+                    />
+                  )
+                )}
               </div>
-
-              {showPaymentForm === 'PAYPAL' && (
-                donationID && (
-                  <Paypal
-                    onSuccess={data => {
-                      paypalSuccess(data);
-                    }}
-                    amount={treeCost * treeCount}
-                    currency={currency}
-                    donationId={donationID}
-                    mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
-                    clientID={paymentSetup?.gateways.paypal.authorization.client_id}
-                  />
-                )
-              )}
-
+            }
             </div>
           }
 
-
-          {/* <div className={styles.paymentModeContainer}>
-        <div onClick={() => {
-          setIsSepa(!isSepa), setPaymentType('SEPA')
-        }} className={styles.paymentModeHeader}>
-          <SepaIcon />
-          <div className={styles.paymentModeTitle}>SEPA Direct Debit</div>
-          <div className={styles.paymentModeFee}>
-            <div className={styles.paymentModeFeeAmount}>€ 0,35 fee</div>
-            <InfoIcon />
+        {/* 
+          <div className={styles.paymentModeContainer}>
+            <div onClick={() => {
+              setIsSepa(!isSepa), setPaymentType('SEPA')
+            }} className={styles.paymentModeHeader}>
+              <SepaIcon />
+              <div className={styles.paymentModeTitle}>SEPA Direct Debit</div>
+              <div className={styles.paymentModeFee}>
+              <div className={styles.paymentModeFeeAmount}>€ 0,35 fee</div>
+              <InfoIcon />
+            </div>
           </div>
-        </div>
 
         {isSepa && (<div>
           <div className={styles.mandateAcceptance}>
@@ -349,18 +347,18 @@ function PaymentDetails({
             entitled to a refund from your bank under the terms and conditions of
             your agreement with your bank. A refund must be claimed within 8 weeks
             starting from the date on which your account was debited.
-      </div>
+          </div>
           <FormControlNew variant="outlined">
             <IbanElement
               id="iban"
               options={ELEMENT_OPTIONS}
             />
           </FormControlNew>
-        </div>)}
-      </div> */}
+        */}
+        </div> 
 
-        </div>
-      )
+      </div>
+    )
   ) : <></>;
 }
 
