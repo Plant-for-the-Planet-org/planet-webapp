@@ -122,9 +122,9 @@ export default function UploadImages({
                   />
                   {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
-                    <div onClick={() => deleteContributionImage(image.id)}>
+                    <button id={'uploadImgDelIcon'} onClick={() => deleteContributionImage(image.id)}>
                       <DeleteIcon />
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -153,5 +153,5 @@ export default function UploadImages({
         </label>
       </div>
     </>
-  ) : null;
+  ) : <></>;
 }

@@ -605,5 +605,5 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             </form>
 
         </div>
-    ) : null;
+    ) : <></>;
 }

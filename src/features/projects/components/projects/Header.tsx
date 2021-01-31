@@ -61,14 +61,14 @@ function Header({showFeaturedList,setSelectedTab,selectedTab,setSearchMode,proje
                 </p>
               )}
 
-            <div
+            <button id={'searchIcon'}
               className={'searchIcon'}
               onClick={() => setSearchMode(true)}
             >
               <SearchIcon />
-            </div>
+            </button>
           </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default Header

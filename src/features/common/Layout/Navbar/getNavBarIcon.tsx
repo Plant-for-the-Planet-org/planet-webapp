@@ -19,46 +19,46 @@ function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
 
     const HomeLink =()=>{
         return(
-            <div className={'link_icon'}>
+            <button id={'homeIcon'} className={'link_icon'}>
                 {router.pathname === item.onclick ? (
                     <GlobeSelected color={themeProperties.primaryColor} />
                 ) : (
                         <Globe color={themeProperties.light.primaryFontColor} />
                     )}
-            </div>
+            </button>
         )
     }
     const DonateLink =()=>{
         return(
-            <div className={'link_icon'}>
+            <button id={'donateIcon'} className={'link_icon'}>
                 {router.pathname === item.onclick ? (
                     <DonateSelected color={themeProperties.primaryColor} />
                 ) : (
                         <Donate color={themeProperties.light.primaryFontColor} />
                     )}
-            </div>
+            </button>
         )
     }
     const AboutUsLink =()=>{
         return(
-            <div className={'link_icon'}>
+            <button id={'aboutIcon'} className={'link_icon'}>
                 {router.pathname === item.onclick ? (
                     <LeafSelected color={themeProperties.primaryColor} />
                 ) : (
                         <Leaf color={themeProperties.light.primaryFontColor} />
                     )}
-            </div>
+            </button>
         )
     }
     const LeadersLink =()=>{
         return(
-            <div className={'link_icon'}>
+            <button id={'leaderIcon'} className={'link_icon'}>
                 {router.pathname === item.onclick ? (
                     <LeaderboardSelected color={themeProperties.primaryColor} />
                 ) : (
                         <Leaderboard color={themeProperties.light.primaryFontColor} />
                     )}
-            </div>
+            </button>
         )
     }
     switch(mainKey){

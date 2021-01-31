@@ -153,9 +153,9 @@ export default function RedeemModal({
           <>
             <div className={styles.modalFinal}>
               <div className={styles.header}>
-                <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                <button id={'closeRedeemM'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                   <Close />
-                </div>
+                </button>
                 <div className={styles.headerTitle}>
                   {t('redeem:congratulations')}
                 </div>
@@ -233,11 +233,11 @@ export default function RedeemModal({
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
-                  <div onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
+                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (t('redeem:addToMyTrees'))}
-                  </div>
+                  </button>
                 </>
               ) : (
                   <>
@@ -263,11 +263,11 @@ export default function RedeemModal({
                     {errorMessage && (
                       <span className={styles.formErrors}>{errorMessage}</span>
                     )}
-                    <div onClick={handleSubmit(validateCode)} className={styles.continueButton}>
+                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className={styles.continueButton}>
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (t('redeem:validateCode'))}
-                    </div>
+                    </button>
                   </>
                 )}
 

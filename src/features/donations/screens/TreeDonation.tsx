@@ -166,7 +166,7 @@ function TreeDonation({
             }}
           >
             <div className={styles.header}>
-              <div
+              <button id={'treeDonationClose'}
                 onClick={onClose}
                 onKeyPress={onClose}
                 role="button"
@@ -174,7 +174,7 @@ function TreeDonation({
                 className={styles.headerCloseIcon}
               >
                 <Close color={styles.primaryFontColor} />
-              </div>
+              </button>
               <div className={styles.headerTitle}>{t('donate:treeDonation')}</div>
             </div>
 
@@ -236,7 +236,7 @@ function TreeDonation({
 
             <div className={styles.selectTreeCount}>
               {treeCountOptions.map((option) => (
-                <motion.div
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
@@ -256,9 +256,9 @@ function TreeDonation({
                   <div className={styles.treeCountOptionTrees}>
                     {t('common:trees')}
                   </div>
-                </motion.div>
+                </motion.button>
               ))}
-              <motion.div
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className={
@@ -292,7 +292,7 @@ function TreeDonation({
                 <div className={styles.treeCountOptionTrees}>
                   {t('common:trees')}
                 </div>
-              </motion.div>
+              </motion.button>
             </div>
 
             {paymentSetup?.gateways?.stripe?.recurrency?.enabled ? token ? (

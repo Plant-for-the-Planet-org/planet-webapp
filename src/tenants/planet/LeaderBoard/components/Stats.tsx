@@ -35,7 +35,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(tenantScore.total), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:plantedGlobally')}</h3>
-          <div
+          <button id={'globalStats'}
             onClick={() => {
               setInfoExpanded('global');
               setModalOpen(true);
@@ -43,14 +43,14 @@ export default function Stats({tenantScore}: Props): ReactElement {
             className={styles.statInfo}
           >
             <InfoIcon />
-          </div>
+          </button>
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber} style={{ color: '#E86F56' }}>
             {localizedAbbreviatedNumber(i18n.language, Number(10000000000), 2)}
           </h2>
           <h3 className={styles.statText}>{t('planet:forestLoss')}</h3>
-          <div
+          <button id={'lossStats'}
             onClick={() => {
               setInfoExpanded('loss');
               setModalOpen(true);
@@ -58,7 +58,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
             className={styles.statInfo}
           >
             <InfoIcon />
-          </div>
+          </button>
         </div>
       </div>
       {infoExpanded !== null ? (

@@ -61,9 +61,9 @@ export default function ProjectSnippet({
 
       {editMode ? (
         <Link href={`/manage-projects/${project.id}`}>
-          <div className={'projectEditBlock'}>
+          <button id={'projectSnipEdit'} className={'projectEditBlock'}>
             <EditIcon></EditIcon>
-          </div>
+          </button>
         </Link>
       ) : null}
       <div
@@ -127,9 +127,9 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <div onClick={handleOpen} className={'donateButton'}>
+                <button id={`ProjSnippetDonate_${project.id}`} onClick={handleOpen} className={'donateButton'}>
                   {t('common:donate')}
-                </div>
+                </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,

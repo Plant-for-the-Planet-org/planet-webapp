@@ -19,7 +19,7 @@ const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
-function ProjectsList({
+function  ProjectsList({
   projects,
   showProjects,
   setShowProjects,
