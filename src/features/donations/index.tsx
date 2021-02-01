@@ -55,8 +55,8 @@ function DonationsPopup({
 
   const [token, setToken] = React.useState('');
 
+  // Recurrecny Setup
   const [recurrencyMnemonic, setRecurrencyMnemonic] = React.useState<any>(null);
-
   React.useEffect(()=>{
     if(token){
       setRecurrencyMnemonic('none')

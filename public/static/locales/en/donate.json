@@ -13,6 +13,7 @@
   "taxDeductionNotAvailableForProject": "Tax deduction is not yet available for this project",
   "youWillReceiveTaxDeduction": "You will receive a tax deduction receipt for ",
   "toProjectByOrganization": "To {{projectName}} by {{organizationName}}",
+  "fortreeCountTreesnull": "for {{treeCount}} Trees",
   "fortreeCountTreesnone": "for {{treeCount}} Trees",
   "fortreeCountTreesdaily": "for {{treeCount}} Trees every day",
   "fortreeCountTreesweekly": "for {{treeCount}} Trees every week",

@@ -281,6 +281,7 @@ function PaymentDetails({
           <div className={styles.totalCost}>
             {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
           </div>
+        </div>
           <div className={styles.totalCostText}>
             {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
               treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
@@ -355,8 +356,6 @@ function PaymentDetails({
             />
           </FormControlNew>
         */}
-        </div> 
-
       </div>
     )
   ) : <></>;
