@@ -7,6 +7,7 @@ const config = {
   showUNEPLogo:true,
   showUNDecadeLogo:true,
   showRedeemHint:true,
+  allowRecurrecny:true,
   // font family and it's property particular to tenant
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',

@@ -19,6 +19,7 @@ import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurr
 import { useAuth0 } from '@auth0/auth0-react';
 import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
 import ShowTreeCount from '../components/ShowTreeCount';
+import tenantConfig from '../../../../tenant.config';
 
 const { useTranslation } = i18next;
 
@@ -50,6 +51,8 @@ function TreeDonation({
 }: TreeDonationProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const treeCountOptions = [10, 20, 50, 150];
+
+  const config = tenantConfig();
 
   const {
     loginWithRedirect,
@@ -296,7 +299,7 @@ function TreeDonation({
               </motion.button>
             </div>
 
-            {paymentSetup?.gateways?.stripe?.recurrency?.enabled ? token ? (
+            {config.allowRecurrecny && paymentSetup?.gateways?.stripe?.recurrency?.enabled ? token ? (
               <>
                 <div className={styles.donationFrequencyTitle}>
                   {t('donate:recurrency')}

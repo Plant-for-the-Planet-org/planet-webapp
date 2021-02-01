@@ -6,6 +6,7 @@ import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
 import TreeDonation from './screens/TreeDonation';
 import { useAuth0 } from '@auth0/auth0-react';
+import tenantConfig from '../../../tenant.config';
 
 interface Props {
   onClose: any;
@@ -20,6 +21,8 @@ function DonationsPopup({
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
   const [paymentSetup, setPaymentSetup] = React.useState();
+
+  const config = tenantConfig();
 
   const {
     isLoading,
@@ -58,7 +61,7 @@ function DonationsPopup({
   // Recurrecny Setup
   const [recurrencyMnemonic, setRecurrencyMnemonic] = React.useState<any>(null);
   React.useEffect(()=>{
-    if(token){
+    if(token && config.allowRecurrecny){
       setRecurrencyMnemonic('none')
     }
   },[token])
