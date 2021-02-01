@@ -111,7 +111,7 @@ function DonationsPopup({
         const resJson = await res.json();
         setUserprofile(resJson);
         if (resJson) {
-          let defaultDetails = {
+          const defaultDetails = {
             firstName: resJson.firstname ? resJson.firstname : '',
             lastName: resJson.lastname ? resJson.lastname : '',
             email: resJson.email ? resJson.email : '',

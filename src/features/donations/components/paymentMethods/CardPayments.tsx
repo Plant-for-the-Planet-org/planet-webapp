@@ -124,7 +124,7 @@ function CardPayments({
           return;
         }
       });
-      let payload = await createPaymentMethodCC(cardElement);
+      const payload = await createPaymentMethodCC(cardElement);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }

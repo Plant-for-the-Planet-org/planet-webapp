@@ -25,7 +25,7 @@ export default function RedeemPopup() {
 
   React.useEffect(() => {
     if (config.showRedeemHint) {
-      let prev = localStorage.getItem('redeemPopup');
+      const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
         setShowRedeemPopup(true);
       } else {

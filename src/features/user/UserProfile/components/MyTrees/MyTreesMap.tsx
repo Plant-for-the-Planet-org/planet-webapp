@@ -70,6 +70,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
               .map((point: any) => {
                 return (
                   <Marker
+                    key={point.properties.id}
                     coordinates={point.geometry.coordinates}
                     anchor="bottom"
                   >

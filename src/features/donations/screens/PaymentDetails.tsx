@@ -68,7 +68,7 @@ function PaymentDetails({
   const [donationID, setDonationID] = React.useState(null);
   const [paypalProcessing, setPaypalProcessing] = React.useState(false);
 
-  let donorDetails = {
+  const donorDetails = {
     firstname: contactDetails.firstName,
     lastname: contactDetails.lastName,
     email: contactDetails.email,
@@ -136,7 +136,7 @@ function PaymentDetails({
       currency,
       donor: { ...donorDetails },
     };
-    let taxDeductionCountry = isTaxDeductible ? country : null;
+    const taxDeductionCountry = isTaxDeductible ? country : null;
     if (taxDeductionCountry) {
       createDonationData = {
         ...createDonationData,
@@ -203,10 +203,7 @@ function PaymentDetails({
       setPaymentError(data.error.message)
     } else {
       setIsPaymentProcessing(true);
-
-      let payDonationData;
-
-      payDonationData = {
+      const payDonationData = {
         paymentProviderRequest: {
           account: paymentSetup.gateways.paypal.account,
           gateway: 'paypal',

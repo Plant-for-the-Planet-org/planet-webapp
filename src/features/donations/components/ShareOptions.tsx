@@ -42,7 +42,7 @@ const ShareOptions = ({
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
-    var options = {
+    const options = {
       quality: 1,
     };
     domtoimage
@@ -50,7 +50,7 @@ const ShareOptions = ({
       .then((dataUrl) => {
         domtoimage.toJpeg(element, options).then((dataUrl) => {
           domtoimage.toJpeg(element, options).then((dataUrl) => {
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             link.download = fileName;
             link.href = dataUrl;
             link.click();

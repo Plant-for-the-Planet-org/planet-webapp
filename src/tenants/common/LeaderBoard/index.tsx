@@ -46,7 +46,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
                 {leaderboardData.mostRecent.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
+                  <div key={leader.created} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
@@ -62,7 +62,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
             ) : (
               <div className={styles.leaderBoardBody}>
                 {leaderboardData.mostDonated.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
+                  <div key={leader.created} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
