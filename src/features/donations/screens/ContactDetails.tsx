@@ -8,9 +8,8 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from '../../common/types/donations';
 import styles from '../styles/ContactDetails.module.scss';
 import i18next from '../../../../i18n';
-import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
+import ShowTreeCount from '../components/ShowTreeCount';
 
 const { useTranslation } = i18next;
 
@@ -51,7 +50,7 @@ function ContactDetails({
   React.useEffect(() => {
     const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country);
     setPostalRegex(fiteredCountry[0]?.postal);
-  }, [contactDetails.country])  
+  }, [contactDetails.country])
   return ready ? (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -231,33 +230,24 @@ function ContactDetails({
 
         <div className={styles.horizontalLine} />
 
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
-          </div>
-          <div className={styles.totalCostText}>
-          {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
-                  treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-                })}
-          </div>
-        </div>
+        <ShowTreeCount treeCost={treeCost} treeCount={treeCount} currency={currency} recurrencyMnemonic={recurrencyMnemonic} />
 
         <div className={styles.actionButtonsContainer}>
 
-          {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country  ? 
-          <AnimatedButton
-            className={styles.continueButtonDisabled}
-          >
+          {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country ?
+            <AnimatedButton
+              className={styles.continueButtonDisabled}
+            >
               {t('common:continue')}
             </AnimatedButton>
             :
             <AnimatedButton
-            onClick={handleSubmit(onSubmit)}
-            className={styles.continueButton}
-          >
-            {t('common:continue')}
-          </AnimatedButton> 
-            }
+              onClick={handleSubmit(onSubmit)}
+              className={styles.continueButton}
+            >
+              {t('common:continue')}
+            </AnimatedButton>
+          }
         </div>
       </form>
     </div>

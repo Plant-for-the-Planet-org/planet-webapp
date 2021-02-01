@@ -5,14 +5,13 @@ import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
 import { createDonation, payDonation, payWithCard } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
-import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
 import Paypal from '../components/paymentMethods/Paypal';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
 import CardPayments from '../components/paymentMethods/CardPayments';
 import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../../utils/stripe/getStripe';
+import ShowTreeCount from '../components/ShowTreeCount';
 
 const { useTranslation } = i18next;
 
@@ -100,7 +99,7 @@ function PaymentDetails({
   // }
 
 
-  const onPaymentFunction =  (gateway:any,paymentMethod: any) => {
+  const onPaymentFunction = (gateway: any, paymentMethod: any) => {
     if (!paymentMethod) {
       setPaymentError(t('donate:noPaymentMethodError'));
       return;
@@ -263,32 +262,25 @@ function PaymentDetails({
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <button id={'backArrowPayment'}
-            onClick={() => setDonationStep(2)}
-            className={styles.headerBackIcon}
-          >
-            <BackArrow />
-          </button>
-          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-        </div>
-        {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
-        )}
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <button id={'backArrowPayment'}
+              onClick={() => setDonationStep(2)}
+              className={styles.headerBackIcon}
+            >
+              <BackArrow />
+            </button>
+            <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
+          </div>
+          {paymentError && (
+            <div className={styles.paymentError}>{paymentError}</div>
+          )}
 
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
-          </div>
-        </div>
-          <div className={styles.totalCostText}>
-            {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-            })}
-          </div>
+          <ShowTreeCount treeCost={treeCost} treeCount={treeCount} currency={currency} recurrencyMnemonic={recurrencyMnemonic} />
+
+
           <Elements stripe={getStripe(paymentSetup)}>
-              <CardPayments onPaymentFunction={(data)=> onPaymentFunction('stripe',data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+            <CardPayments onPaymentFunction={(data) => onPaymentFunction('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
           </Elements>
 
           {paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
@@ -299,34 +291,34 @@ function PaymentDetails({
                 {paypalProcessing && <div className={styles.spinner} />}
               </div>
 
-              { paypalCurrencies.includes(currency) && recurrencyMnemonic === 'none' &&  paymentSetup?.gateways.paypal &&
+              {paypalCurrencies.includes(currency) && recurrencyMnemonic === 'none' && paymentSetup?.gateways.paypal &&
                 <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
                   <div className={styles.paymentModeHeader}>
-                  <PaypalIcon />
-                  <div className={styles.paymentModeTitle}>Paypal</div>
+                    <PaypalIcon />
+                    <div className={styles.paymentModeTitle}>Paypal</div>
                     {paypalProcessing && <div className={styles.spinner} />}
                   </div>
 
                   {showPaymentForm === 'PAYPAL' && (
                     donationID && (
-                    <Paypal
-                      onSuccess={data => {
-                        paypalSuccess(data);
-                      }}
-                      amount={treeCost * treeCount}
-                      currency={currency}
-                      donationId={donationID}
-                      mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
-                      clientID={paymentSetup?.gateways.paypal.authorization.client_id}
-                    />
-                  )
-                )}
-              </div>
-            }
+                      <Paypal
+                        onSuccess={data => {
+                          paypalSuccess(data);
+                        }}
+                        amount={treeCost * treeCount}
+                        currency={currency}
+                        donationId={donationID}
+                        mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
+                        clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+                      />
+                    )
+                  )}
+                </div>
+              }
             </div>
           }
 
-        {/* 
+          {/* 
           <div className={styles.paymentModeContainer}>
             <div onClick={() => {
               setIsSepa(!isSepa), setPaymentType('SEPA')
@@ -356,8 +348,8 @@ function PaymentDetails({
             />
           </FormControlNew>
         */}
-      </div>
-    )
+        </div>
+      )
   ) : <></>;
 }
 

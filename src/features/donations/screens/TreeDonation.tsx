@@ -16,9 +16,9 @@ import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
 import { payWithCard } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
+import ShowTreeCount from '../components/ShowTreeCount';
 
 const { useTranslation } = i18next;
 
@@ -62,7 +62,7 @@ function TreeDonation({
   const [paymentError, setPaymentError] = React.useState('');
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
-    const[customTreeInputValue, setCustomTreeInputValue] = React.useState("");
+  const [customTreeInputValue, setCustomTreeInputValue] = React.useState("");
   const [screenWidth, setScreenWidth] = React.useState('');
   const [minAmt, setMinAmt] = React.useState(0);
 
@@ -148,7 +148,7 @@ function TreeDonation({
   const loginuser = () => {
     loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
   }
-  
+
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -280,13 +280,14 @@ function TreeDonation({
                       e.target.value = e.target.value.toString().slice(0, 12);
                     }
                   }}
-                  value = {customTreeInputValue}
+                  value={customTreeInputValue}
                   type="text"
                   inputMode="numeric"
                   pattern="\d*"
                   onChange={(e) => {
                     setCustomTreeValue(e);
-                    setCustomTreeInputValue(e.target.value)}
+                    setCustomTreeInputValue(e.target.value)
+                  }
                   }
                 />
                 <div className={styles.treeCountOptionTrees}>
@@ -323,10 +324,10 @@ function TreeDonation({
                 </div>
               </>
             ) : (
-              <div className={styles.loginHint} onClick={() => loginuser()}>
-                 {t('donate:loginForRecurrency')}
-              </div>
-            ): <></>}
+                <div className={styles.loginHint} onClick={() => loginuser()}>
+                  {t('donate:loginForRecurrency')}
+                </div>
+              ) : <></>}
 
 
             {project.taxDeductionCountries.length > 0 ? (
@@ -378,32 +379,22 @@ function TreeDonation({
               </div>
             ) : null}
 
-            <div className={styles.finalTreeCount}>
-              <div className={styles.totalCost}>
-                {getFormatedCurrency(i18n.language, currency, treeCost * treeCount)}
-                {/* {(treeCount * treeCost).toFixed(2)}{' '} */}
-              </div>
-              <div className={styles.totalCostText}>
-                {t(`donate:fortreeCountTrees${recurrencyMnemonic}`, {
-                  treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-                })}
-              </div>
-            </div>
+            <ShowTreeCount treeCost={treeCost} treeCount={treeCount} currency={currency} recurrencyMnemonic={recurrencyMnemonic} />
 
             {((treeCost * treeCount) >= minAmt) ? !isPaymentOptionsLoading &&
               paymentSetup?.gateways?.stripe?.account &&
               currency ? (
                 <NativePay
-                    country={country}
-                    currency={currency}
-                    amount={formatAmountForStripe(
-                      treeCost * treeCount,
-                      currency.toLowerCase()
-                    )}
-                    onPaymentFunction={onPaymentFunction}
-                    continueNext={continueNext}
-                    paymentSetup={paymentSetup}
-                  />
+                  country={country}
+                  currency={currency}
+                  amount={formatAmountForStripe(
+                    treeCost * treeCount,
+                    currency.toLowerCase()
+                  )}
+                  onPaymentFunction={onPaymentFunction}
+                  continueNext={continueNext}
+                  paymentSetup={paymentSetup}
+                />
 
               ) : (
                 <div className={styles.actionButtonsContainer}>
