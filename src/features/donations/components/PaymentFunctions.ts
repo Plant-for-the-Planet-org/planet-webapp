@@ -1,18 +1,17 @@
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { PayWithCardTypes } from '../../common/types/donations';
 
-export async function createDonation(data: any, token:any) {
+export async function createDonation(data: any, token: any) {
   let headers = {
     'Content-Type': 'application/json',
     'tenant-key': `${process.env.TENANTID}`,
     'X-SESSION-ID': await getsessionId(),
-    'x-locale': `${
-      localStorage.getItem('language')
+    'x-locale': `${localStorage.getItem('language')
         ? localStorage.getItem('language')
         : 'en'
-    }`
+      }`
   }
-  if(token && token !== ''){
+  if (token && token !== '') {
     headers = {
       ...headers,
       'Authorization': `OAuth ${token}`
@@ -27,16 +26,15 @@ export async function createDonation(data: any, token:any) {
   return donation;
 }
 
-export async function payDonation(data: any, id: any, token:any) {
+export async function payDonation(data: any, id: any, token: any) {
   let headers = {
     'Content-Type': 'application/json',
     'tenant-key': `${process.env.TENANTID}`,
     'X-SESSION-ID': await getsessionId(),
-    'x-locale': `${
-      localStorage.getItem('language')
+    'x-locale': `${localStorage.getItem('language')
         ? localStorage.getItem('language')
         : 'en'
-    }`,
+      }`,
   }
   if (token && token !== '') {
     headers = {
@@ -47,7 +45,7 @@ export async function payDonation(data: any, id: any, token:any) {
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
-    headers:headers ,
+    headers: headers,
   });
   // having to patch this as API returns only a text error message on 401
   if (res.status === 401) {
@@ -104,54 +102,11 @@ export function payWithCard({
 }: PayWithCardTypes) {
   setIsPaymentProcessing(true);
 
-  let createDonationData = {
-    type: 'trees',
-    project: project.id,
-    treeCount,
-    amount: Math.round((treeCost * treeCount + Number.EPSILON) * 100) / 100,
-    currency,
-    donor: { ...donorDetails },
-  };
-  if (taxDeductionCountry) {
-    createDonationData = {
-      ...createDonationData,
-      taxDeductionCountry,
-    };
-  }
+  
+  let donationeData = createDonationData({project,treeCount,treeCost,currency,donorDetails,taxDeductionCountry,isGift,giftDetails})
 
-  if (isGift) {
-    if(giftDetails.type === 'invitation') {
-    createDonationData = {
-      ...createDonationData,
-      ...{
-        gift: {
-          type: 'invitation',
-          recipientName: giftDetails.recipientName,
-          recipientEmail: giftDetails.email,
-          message: giftDetails.giftMessage,
-        }
-      },
-    };
-  } else if (giftDetails.type === 'direct') {
-    createDonationData = {
-      ...createDonationData,
-      ...{
-        gift: {
-          type: 'direct',
-          recipientTreecounter:giftDetails.recipientTreecounter,
-          message: giftDetails.giftMessage,
-        }
-      },
-    };
-  } else if (giftDetails.type === 'bulk') {
-    // for multiple receipients
-  }
-  }
-
-  createDonation(createDonationData, token)
+  createDonation(donationeData, token)
     .then((res) => {
-      // Code for Payment API
-
       if (res.code === 400) {
         setIsPaymentProcessing(false);
         setPaymentError(res.message);
@@ -248,4 +203,60 @@ export function payWithCard({
       setIsPaymentProcessing(false);
       setPaymentError(error.message);
     }); // Add Catch if create donation failes
+}
+
+export function createDonationData ({
+  project,
+  treeCount,
+  treeCost,
+  currency,
+  donorDetails,
+  taxDeductionCountry,
+  isGift,
+  giftDetails
+}:any){
+  let donationData = {
+    type: 'trees',
+    project: project.id,
+    treeCount,
+    amount: Math.round((treeCost * treeCount + Number.EPSILON) * 100) / 100,
+    currency,
+    donor: { ...donorDetails },
+  };
+  if (taxDeductionCountry) {
+    donationData = {
+      ...donationData,
+      taxDeductionCountry,
+    };
+  }
+
+  if (isGift) {
+    if (giftDetails.type === 'invitation') {
+      donationData = {
+        ...donationData,
+        ...{
+          gift: {
+            type: 'invitation',
+            recipientName: giftDetails.recipientName,
+            recipientEmail: giftDetails.email,
+            message: giftDetails.giftMessage,
+          }
+        },
+      };
+    } else if (giftDetails.type === 'direct') {
+      donationData = {
+        ...donationData,
+        ...{
+          gift: {
+            type: 'direct',
+            recipientTreecounter: giftDetails.recipientTreecounter,
+            message: giftDetails.giftMessage,
+          }
+        },
+      };
+    } else if (giftDetails.type === 'bulk') {
+      // for multiple receipients
+    }
+  }
+  return donationData;
 }

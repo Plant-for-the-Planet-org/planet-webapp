@@ -254,3 +254,33 @@
     left: 0px;
   }
 }
+
+.paymentMethodsTabsContainer{
+  display: flex; 
+  margin-top: 20px;
+  flex-direction: row;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  > .paymentMethod {
+    margin-right: 12px;
+    border: 1px solid $dividerColor;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    min-width: 100px;
+    color: $dividerColor;
+    > label {
+      margin-top: 6px;
+    }
+    &:hover{
+      cursor: pointer;
+      color: $primaryFontColor;
+      border: 1px solid $primaryFontColor;
+    }
+  }
+  .paymentMethodSelected{
+    border: 1px solid $primaryFontColor;
+    color: $primaryFontColor;
+  }
+}
