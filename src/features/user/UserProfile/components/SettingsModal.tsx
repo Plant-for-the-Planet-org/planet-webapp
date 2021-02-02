@@ -8,7 +8,7 @@ import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
-
+import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -29,7 +29,7 @@ export default function SettingsModal({
   } = useAuth0();
 
   const logoutUser = () => {
-    localStorage.removeItem('userInfo');
+    removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
   return ready ? (
@@ -56,17 +56,17 @@ export default function SettingsModal({
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
-            <div
+            <button id={'settingsLogOut'}
               className={styles.settingsItem}
               onClick={logoutUser}>
               <b>{t('me:logout')} </b>
-            </div>
-            <div
+            </button>
+            <button id={'SettingsItem'}
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
               <div className={styles.cancelText}> {t('common:cancel')}</div>
-            </div>
+            </button>
           </div>
         </Fade>
       </Modal>

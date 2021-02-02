@@ -3,9 +3,11 @@
   "target": "Cible",
   "share": "Partager",
   "registerTrees": "Enregistrer les arbres",
+  "registerTreesDescription": "Enregistrer les arbres que vous avez plantés vous-même, par exemple dans votre jardin.",
   "redeem": "Redeem",
+  "redeemDescription": "Échangez votre bon d'arbre et d'autres codes.",
   "myForest": "Ma forêt",
-  "giftToGiftee": "Cadeau à ${gifteeName}",
+  "giftToGiftee": "Cadeau à {{gifteeName}}",
   "settingManageProject": "Gérer les projets",
   "userTree": "Enregistrer les arbres",
   "logout": "Déconnexion",
@@ -32,6 +34,7 @@
   "moreThanOne": "1 arbre minimum requis",
   "registered": "Enregistré",
   "receivedTrees": "Arbres reçus",
+  "receivedFrom": "Reçu de {{name}}",
   "redeemedTrees": "Arbres rachetés",
   "nameForest": "La forêt des {{name}}"
 }

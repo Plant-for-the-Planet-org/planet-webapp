@@ -30,15 +30,16 @@ export default function GiftForm({
             {t('donate:directGiftRecipient')}{' '}
             <span>{giftDetails.recipientName}</span>
           </div>
-          <div
+          <button id={'singleGoftRemoved'}
             onClick={() => {
               localStorage.removeItem('directGift');
               setDirectGift(null);
             }}
+            id='singleGiftRemoveId'
             className={styles.singleGiftRemove}
           >
-            Remove
-          </div>
+            {t('donate:removeRecipient')}
+          </button>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
-            <div
+            <button id={'leaderBoardSecRecent'}
               onClick={() => setSelectedTab('recent')}
               className={
                 selectedTab === 'recent'
@@ -29,8 +29,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
               {t('leaderboard:mostRecent')}
-            </div>
-            <div
+            </button>
+            <button id={'leaderBoardSecHighest'}
               onClick={() => setSelectedTab('highest')}
               className={
                 selectedTab === 'highest'
@@ -39,7 +39,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
               {t('leaderboard:mostTrees')}
-            </div>
+            </button>
           </div>
           {leaderboardData &&
           leaderboardData.mostRecent &&

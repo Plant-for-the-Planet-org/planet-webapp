@@ -47,12 +47,12 @@ export default function IndividualProfile({
       <main>
         {authenticatedType === 'private' && (
           <>
-            <div
+            <button id={'IndividualProSetting'}
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
             >
               <Settings color="white" />
-            </div>
+            </button>
           </>
         )}
         {/* userinfo section */}

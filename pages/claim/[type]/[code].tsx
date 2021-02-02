@@ -131,7 +131,7 @@ function ClaimDonation({ }: Props): ReactElement {
             // store the claim link in localstorage
             if (routerReady && typeof window !== 'undefined') {
                 localStorage.setItem('redirectLink', window.location.href);
-                loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login` });
+                loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
             }
         }
     }, [isAuthenticated, isLoading, code])
@@ -177,9 +177,9 @@ function ClaimDonation({ }: Props): ReactElement {
                 <>
                     <div className={styles.modalFinal}>
                         <div className={styles.header}>
-                            <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                            <button id={'closeIconCode'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                                 <Close />
-                            </div>
+                            </button>
                             <div className={styles.headerTitle}>
                                 {t('redeem:congratulations')}
                             </div>
@@ -302,7 +302,7 @@ function ClaimDonation({ }: Props): ReactElement {
                 </div>
             </LandingSection>
       )
-    ) : null;
+    ) : <></>;
 }
 
 export default ClaimDonation

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import ManageProjects from '../../../src/features/user/ManageProjects/screens'
-import { getUserInfo } from '../../../src/utils/auth0/localStorageUtils';
+import { getLocalUserInfo } from '../../../src/utils/auth0/localStorageUtils';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -35,7 +35,7 @@ function ManageProjectsPage({ }: Props): ReactElement {
 
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = getUserInfo().type;      
+      const usertype = getLocalUserInfo().type;      
       if (usertype === 'tpo') {
         setAccessDenied(false)
         setSetupAccess(true)

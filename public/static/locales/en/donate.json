@@ -28,6 +28,7 @@
   "directGiftRecipient": "This donation supports",
   "recipientName": "Recipient Name",
   "recipientNameRequired": "Recipient Name is required",
+  "removeRecipient": "Remove",
   "giftMessage": "Gift Message",
   "firstNameRequired": "First Name field is required",
   "lastNameRequired": "Last Name field is required",
@@ -70,7 +71,9 @@
   "giftTo": "Gift to",
   "supporting": "Supporting",
   "selectProject": "Select a project",
-  "nameOfOrg": "Organisation Name",
-  "nameOfOrgIsRequired": "Organisation name is required",
-  "giftValidation": "Please enter gift details"
+  "giftValidation": "Please enter gift details",
+  "minDonate": "Minimum donation amount is",
+  "noPaymentMethodError": "Could not process your payment, please try again.",
+  "somethingWentWrong": "Something went wrong please try again soon!",
+  "underMaintenance": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details"
 }

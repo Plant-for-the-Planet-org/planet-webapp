@@ -53,12 +53,12 @@ function ContactDetails({
   return ready ? (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div
+        <button id={'backArrowContact'}
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
           <BackArrow color={styles.primaryFontColor} />
-        </div>
+        </button>
         <div className={styles.headerTitle}>{t('donate:contactDetails')}</div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -258,7 +258,7 @@ function ContactDetails({
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default ContactDetails;

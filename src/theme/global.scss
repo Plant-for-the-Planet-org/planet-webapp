@@ -174,3 +174,56 @@ video {
 .MuiStepIcon-root.MuiStepIcon-completed {
   color: $primaryColor !important;
 }
+
+
+@font-face {
+  font-family: 'Pampers Script';
+  src: url('/tenants/pampers/Pampers Script.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HarmoniaSansPro';
+  src: url('/tenants/pampers/HarmoniaSansPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.primaryButton {
+  color: white;
+  font-weight: bold;
+  background-color: #68b030;
+  height: 40px;
+  padding: 0px;
+  text-align: center;
+  border: 0px;
+  border-radius: 52px;
+  min-width: 150px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  text-decoration: none;
+}
+.primaryButton:hover{
+  transform: translateY(-7px);
+  cursor: pointer;
+}
+
+button{
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+  background: transparent;
+}
+
+@font-face {
+  font-family: 'HarmoniaSansPro';
+  src: url('/tenants/pampers/HarmoniaSansPro-SemiBd.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}

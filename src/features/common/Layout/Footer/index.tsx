@@ -113,26 +113,27 @@ export default function Footer() {
           <div>
             <div className={styles.footer_button_container}>
 
-              <div onClick={handleModalOpen} className={styles.footer_button}>
+              <button id={'worldIcon'} onClick={handleModalOpen} className={styles.footer_button}>
                 <World color={styles.primaryFontColor} />
                 <p className={styles.selected_language}>
                   {`${getLanguageName(language)} · ${selectedCurrency}`}
                 </p>
-              </div>
+              </button>
               <a href="https://play.google.com/store/apps/details?id=org.pftp">
-                <div className={styles.footer_button}>
+                <button id={'googleIcon'}className={styles.footer_button}>
                   <GooglePlayIcon />
                   <p className={styles.selected_language_bold}>Google Play</p>
-                </div>
+                </button>
               </a>
               <a href="https://apps.apple.com/us/app/plant-for-the-planet/id1444740626">
-                <div className={styles.footer_button}>
+                <button id={'appleIcon'}className={styles.footer_button}>
                   <AppleIcon />
                   <p className={styles.selected_language_bold}>App Store</p>
-                </div>
+                </button>
               </a>
 
               <div className={styles.footer_social_container}>
+                <button id={'facebookIcon'}>
                 <a className={styles.social_button} target="_blank" href="https://www.facebook.com/plantfortheplanet">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3315" data-name="Group 3315" transform="translate(-393.342 -502.758)">
@@ -144,7 +145,9 @@ export default function Footer() {
                     </g>
                   </svg>
                 </a>
+                </button>
 
+                <button id={'twitterIcon'}>
                 <a className={styles.social_button} target="_blank" href="https://twitter.com/pftp_int">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3318" data-name="Group 3318" transform="translate(-449.175 -500.555)">
@@ -156,7 +159,9 @@ export default function Footer() {
                     </g>
                   </svg>
                 </a>
+                </button>
 
+                <button id={'instagramIcon'}>
                 <a className={styles.social_button} target="_blank" href="https://www.instagram.com/plantfortheplanet_official/">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3317" data-name="Group 3317" transform="translate(-548.604 -496.605)">
@@ -168,7 +173,7 @@ export default function Footer() {
                     </g>
                   </svg>
                 </a>
-
+                </button>
               </div>
             </div>
             <div className={styles.footer_links_container}>
@@ -186,27 +191,27 @@ export default function Footer() {
         </div>
         <div className={styles.logo_container}>
 
-            <div className={styles.pfp_logo_container}>
+            <button id={'pfpLogoIcon'} className={styles.pfp_logo_container}>
               <a href="http://www.plant-for-the-planet.org/" target="_blank" rel="noopener noreferrer">
                 <PlanetCJLogo />
               </a>
-            </div>
+            </button>
 
             {config.showUNEPLogo && (
-              <div className={styles.unep_logo_container}>
+              <button id={'unepLogoIcon'} className={styles.unep_logo_container}>
                 <a href="https://www.unep.org/" target="_blank" rel="noopener noreferrer">
                   <p className={styles.unep_logo_text}>{t('common:supportsUNEP')} </p>
                   <UNEPLogo />
                 </a>
-              </div>
+              </button>
             )}
 
             {config.showUNDecadeLogo && (
-              <div className={styles.undecade_logo_container}>
+              <button id={'undecadeLogoIcon'}className={styles.undecade_logo_container}>
                 <a href="https://www.decadeonrestoration.org/" target="_blank" rel="noopener noreferrer">
                   <UNDecadeLogo />
                 </a>
-              </div>
+              </button>
             )}
           </div>
         <SelectLanguageAndCountry

@@ -35,7 +35,7 @@ const config = {
         visible: false,
       },
       leaderboard: {
-        title: 'leaderboard',
+        title: 'leaders',
         onclick: '/all',
         visible: true,
       },

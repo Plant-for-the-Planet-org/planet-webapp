@@ -6,7 +6,7 @@ import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../common/types/donations';
 import styles from '../styles/ThankYou.module.scss';
 import ShareOptions from '../components/ShareOptions';
-import { getPaymentType } from '../components/treeDonation/PaymentFunctions';
+import { getPaymentType } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -59,9 +59,9 @@ function ThankYou({
   return ready ? (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div onClick={onClose} className={styles.headerCloseIcon}>
+        <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
           <Close />
-        </div>
+        </button>
         <div className={styles.headerTitle}>{t('common:thankYou')}</div>
       </div>
 
@@ -146,7 +146,7 @@ function ThankYou({
         </Alert>
       </Snackbar>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default ThankYou;

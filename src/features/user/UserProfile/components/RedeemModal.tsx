@@ -153,9 +153,9 @@ export default function RedeemModal({
           <>
             <div className={styles.modalFinal}>
               <div className={styles.header}>
-                <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                <button id={'closeRedeemM'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                   <Close />
-                </div>
+                </button>
                 <div className={styles.headerTitle}>
                   {t('redeem:congratulations')}
                 </div>
@@ -167,8 +167,9 @@ export default function RedeemModal({
                     <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
                   </div>
                   <div className={styles.donationCount}>
-                    {t('redeem:myPlantedTreesByOrg', { 
-                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
+                    {t('redeem:myPlantedTreesByOrg', {
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
                       tpoName:validCodeData.tpos[0].tpoName 
                     })}
                     <p className={styles.donationTenant}>
@@ -186,7 +187,8 @@ export default function RedeemModal({
                   </div>
                   <p className={styles.tempDonationCount}>
                     {t('redeem:myPlantedTreesByOrg', {
-                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
                       tpoName:validCodeData.tpos[0].tpoName
                     })}
                   </p>
@@ -231,18 +233,20 @@ export default function RedeemModal({
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
-                  <div onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
+                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (t('redeem:addToMyTrees'))}
-                  </div>
+                  </button>
                 </>
               ) : (
                   <>
                     <h4>
                       {t('me:redeem')}
                     </h4>
-
+                    <div className={styles.note}>
+                      <p>{t('me:redeemDescription')}</p>
+                    </div>
                     <div className={styles.inputField}>
                       <MaterialTextField inputRef={register({
                         required: {
@@ -259,11 +263,11 @@ export default function RedeemModal({
                     {errorMessage && (
                       <span className={styles.formErrors}>{errorMessage}</span>
                     )}
-                    <div onClick={handleSubmit(validateCode)} className={styles.continueButton}>
+                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className={styles.continueButton}>
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (t('redeem:validateCode'))}
-                    </div>
+                    </button>
                   </>
                 )}
 

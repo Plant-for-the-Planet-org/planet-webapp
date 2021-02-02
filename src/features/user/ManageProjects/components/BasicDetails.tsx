@@ -13,6 +13,7 @@ import {
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
+import { getFormattedNumber, parseNumber } from '../../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
@@ -130,7 +131,7 @@ export default function BasicDetails({
         website: projectDetails.website,
         description: projectDetails.description,
         acceptDonations: projectDetails.acceptDonations,
-        treeCost: projectDetails.treeCost,
+        treeCost: getFormattedNumber(i18n.language, projectDetails.treeCost || 0),
         publish: projectDetails.publish,
         visitorAssistance: projectDetails.visitorAssistance,
         enablePlantLocations: projectDetails.enablePlantLocations,
@@ -156,8 +157,6 @@ export default function BasicDetails({
   }, [projectDetails]);
 
   const onSubmit = (data: any) => {
-    // console.log('data.treeCost', data.treeCost.replace(/,/g, '.'));
-
     setIsUploadingData(true);
     let submitData = {
       name: data.name,
@@ -174,7 +173,7 @@ export default function BasicDetails({
       website: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
-      treeCost: data.treeCost ? Number(data.treeCost.replace(/,/g, '.')) : 0,
+      treeCost: parseNumber(i18n.language, data.treeCost),
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
@@ -429,18 +428,11 @@ export default function BasicDetails({
                       value: true,
                       message: t('manageProjects:treeCostValidaitonRequired'),
                     },
-                    validate: (value) => parseFloat(value) > 0 && parseFloat(value) <= 100,
-                    pattern: {
-                      value: /^[+]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{1,2})?|(?:\.[0-9]{3})*(?:,[0-9]{1,2})?)$/,
-                      message: t('manageProjects:treeCostValidationInvalid'),
-                    }
+                    validate: (value) => parseNumber(i18n.language, value) > 0 && parseNumber(i18n.language, value) <= 100,
                   })}
                   label={t('manageProjects:treeCost')}
                   variant="outlined"
                   name="treeCost"
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
-                  }}
                   placeholder={'0'}
                   InputProps={{
                     startAdornment: (
@@ -625,7 +617,7 @@ export default function BasicDetails({
           </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
-            <div
+            <button id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
               className={styles.continueButton}
             >
@@ -634,10 +626,10 @@ export default function BasicDetails({
               ) : (
                   t('manageProjects:saveAndContinue')
                 )}
-            </div>
+            </button>
           </div>
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

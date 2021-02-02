@@ -12,6 +12,11 @@
   status = 301
   force = false
 [[redirects]]
+  from = "/donate-tree"
+  to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
   from = "/donate-trees"
   to = "/open-app"
   status = 301
@@ -22,8 +27,18 @@
   status = 301
   force = false
 [[redirects]]
+  from = "/my-trees"
+  to = "/login"
+  status = 301
+  force = false
+[[redirects]]
   from = "/project/*"
   to = "/open-app"
+  status = 301
+  force = false
+[[redirects]]
+  from = "/redeem"
+  to = "/login"
   status = 301
   force = false
 [[redirects]]

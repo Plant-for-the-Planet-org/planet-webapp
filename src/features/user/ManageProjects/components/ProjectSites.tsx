@@ -226,14 +226,14 @@ export default function ProjectSites({
                     <div className={styles.uploadedMapStatus}>
                       {String(site.status).toUpperCase()}
                     </div>
-                    <div
+                    <button id={'trashIconProjS'}
                       onClick={() => {
                         deleteProjectSite(site.id);
                       }}
                       className={styles.uploadedMapDeleteButton}
                     >
                       <TrashIcon color={'#000'} />
-                    </div>
+                    </button>
                     <MapStatic
                       {...viewport}
                       center={[longitude, latitude]}
@@ -307,24 +307,24 @@ export default function ProjectSites({
 
             <Map {...MapProps} />
 
-            <div
+            <button id="projSiteSaveandAdd"
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.formFieldLarge}
             >
               <p className={styles.inlineLinkButton}>
                 {t('manageProjects:saveAndAddSite')}
               </p>
-            </div>
+            </button>
           </div>
         ) : (
-          <div
+          <button id={'manageProjAddSite'}
             onClick={() => setShowForm(true)}
             className={styles.formFieldLarge}
           >
             <p className={styles.inlineLinkButton}>
               {t('manageProjects:addSite')}
             </p>
-          </div>
+          </button>
         )}
 
         {errorMessage && errorMessage !== '' ? (
@@ -359,5 +359,5 @@ export default function ProjectSites({
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

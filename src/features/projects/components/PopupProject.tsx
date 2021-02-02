@@ -1,8 +1,6 @@
 import Modal from '@material-ui/core/Modal';
-import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement, Ref } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import i18next from '../../../../i18n/'
@@ -50,9 +48,7 @@ export default function PopupProject({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <Elements stripe={getStripe()}>
           <DonationsPopup project={projectDetails} onClose={handleClose} />
-        </Elements>
       </Modal>
       <div className={'projectImage'}>
         {project.properties.image &&
@@ -88,7 +84,7 @@ export default function PopupProject({
           <div className={'targetLocation'}>
             <div className={'target'}>
               {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
-              {t('common:planted')} •{' '}
+              {t('common:trees')} •{' '}
               <span style={{ fontWeight: 400 }}>
               {t('country:' + project.properties.country.toLowerCase())}
               </span>
@@ -104,13 +100,10 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
-                <div
-                  ref={buttonRef}
-                  onClick={handleOpen}
-                  className={'donateButton'}
+                <button id={`ProjPopDonate${project.id}`}ref={buttonRef} onClick={handleOpen} className={'donateButton'}
                 >
                   {t('common:donate')}
-                </div>
+                </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
@@ -125,5 +118,5 @@ export default function PopupProject({
         )}
       </div>
     </>
-  ) : null;
+  ) : <></>;
 }

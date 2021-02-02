@@ -267,7 +267,7 @@ export default function RegisterTrees({
           {!registered ? (
             <div className={styles.formContainer}>
               <h2 className={styles.title}>
-                <div
+                <button id={'backButtonRegTree'}
                   style={{
                     cursor: 'pointer',
                     marginLeft: -10,
@@ -278,10 +278,13 @@ export default function RegisterTrees({
                   }}
                 >
                   <BackButton />
-                </div>
+                </button>
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
+                <div className={styles.note}>
+                  <p>{t('me:registerTreesDescription')}</p>
+                </div>
                 <div className={styles.formField}>
                   <div className={styles.formFieldHalf}>
                     <MaterialTextField
@@ -424,7 +427,7 @@ export default function RegisterTrees({
                 {/* : null
               } */}
                 <div className={styles.nextButton}>
-                  <div
+                  <button id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
                     className={styles.continueButton}
                   >
@@ -434,7 +437,7 @@ export default function RegisterTrees({
                     ) : (
                       t('me:registerButton')
                     )}
-                  </div>
+                  </button>
                 </div>
               </form>
             </div>

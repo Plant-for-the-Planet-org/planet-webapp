@@ -28,6 +28,7 @@
   "directGiftRecipient": "Esta doação apoia",
   "recipientName": "Nome do Destinatário",
   "recipientNameRequired": "Nome do Destinatário é necessário",
+  "removeRecipient": "Remover",
   "giftMessage": "Mensagem de Presente",
   "firstNameRequired": "O campo Nome é obrigatório",
   "lastNameRequired": "O campo Sobrenome é obrigatório",
@@ -70,7 +71,9 @@
   "giftTo": "Presente para",
   "supporting": "Apoiando",
   "selectProject": "Selecione um projeto",
-  "nameOfOrg": "Nome da organização",
-  "nameOfOrgIsRequired": "Nome da organização é obrigatório",
-  "giftValidation": "Por favor, introduza os detalhes do presente"
+  "giftValidation": "Por favor, introduza os detalhes do presente",
+  "minDonate": "O valor mínimo de doação é",
+  "noPaymentMethodError": "Não conseguimos processar o seu pagamento, por favor tente novamente.",
+  "somethingWentWrong": "Algo deu errado, por favor tente novamente em breve!",
+  "underMaintenance": "App está em manutenção, por favor acesse status.plant-for-the-planet.org para mais detalhes"
 }

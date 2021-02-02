@@ -72,8 +72,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     const onSubmit = (pdf: any) => {
         setIsUploadingData(true)
-        const updatedAmount = getValues("amount");
-        const year = getValues("year");
+        const updatedAmount = getValues('amount');
+        const year = getValues('year');
 
         const submitData = {
             year: year.getFullYear(),
@@ -82,7 +82,6 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
         }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
-
             if (!res.code) {
                 let newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
@@ -151,11 +150,11 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                                    <div
+                                    <button id={'trashIconProjSpend'}
                                         onClick={() => deleteProjectSpending(report.id)}
                                         className={styles.reportEditButton}>
                                         <TrashIcon />
-                                    </div>
+                                    </button>
                                 </div>
                             )
                         })}
@@ -204,8 +203,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             <div className={`${styles.formFieldHalf}`}>
                                 <MaterialTextField
                                     inputRef={register({
-                                        validate: (value) =>
-                                            parseFloat(value) > 0,
+                                        validate: (value) => parseInt(value) > 0,
                                         required: {
                                             value: true,
                                             message: t('manageProjects:spendingAmountValidation')
@@ -215,9 +213,9 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     placeholder={0}
                                     variant="outlined"
                                     name="amount"
-                                    onChange={(e) => setAmount(e.target.value)}
                                     onInput={(e) => {
-                                        e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                      setAmount(e.target.value);
                                     }}
                                     InputProps={{
                                         startAdornment: (

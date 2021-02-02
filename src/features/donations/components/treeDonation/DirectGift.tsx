@@ -27,7 +27,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
         </div>
         <div className={styles.selectProject}>{t('donate:selectProject')}</div>
       </div>
-      <div
+      <button id={'giftClose'}
         onClick={() => {
           directGift.show = false;
           localStorage.setItem('directGift', JSON.stringify(directGift));
@@ -36,7 +36,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
         className={styles.closeButton}
       >
         <CancelIcon color={styles.primaryFontColor} />
-      </div>
+      </button>
     </div>
   ) : null;
 }

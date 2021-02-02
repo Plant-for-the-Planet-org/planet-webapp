@@ -19,7 +19,7 @@ const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
-function ProjectsList({
+function  ProjectsList({
   projects,
   showProjects,
   setShowProjects,
@@ -65,21 +65,12 @@ function ProjectsList({
     if (keyword !== '') {
       resultProjects = projects.filter(function (project) {
         if (
-          project.properties.name.toLowerCase().includes(keyword.toLowerCase())
-        ) {
-          return true;
-        } else if (
-          project.properties.location &&
-          project.properties.location
-            .toLowerCase()
-            .includes(keyword.toLowerCase())
-        ) {
-          return true;
-        } else if (
-          project.properties.tpo.name &&
-          project.properties.tpo.name
-            .toLowerCase()
-            .includes(keyword.toLowerCase())
+          //searching for name
+          project.properties.name.toLowerCase().includes(keyword.toLowerCase()) || 
+          //searching for location
+          (project.properties.location && project.properties.location.toLowerCase().includes(keyword.toLowerCase())) || 
+          //searching for tpo name
+          ( project.properties.tpo.name && project.properties.tpo.name.toLowerCase().includes(keyword.toLowerCase()))
         ) {
           return true;
         } else {
@@ -177,7 +168,7 @@ function ProjectsList({
         </div>
       ) : null}
     </>
-  ) : null;
+  ) : <></>;
 }
 
 export default ProjectsList;

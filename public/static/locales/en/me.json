@@ -3,9 +3,11 @@
   "target": "Target",
   "share": "Share",
   "registerTrees": "Register Trees",
+  "registerTreesDescription": "Register trees that you have planted yourself, e.g. in your garden.",
   "redeem": "Redeem",
+  "redeemDescription": "Redeem your tree voucher and other codes.",
   "myForest": "My Forest",
-  "giftToGiftee": "Gift to ${gifteeName}",
+  "giftToGiftee": "Gift to {{gifteeName}}",
   "settingManageProject": "Manage Projects",
   "userTree": "Register Trees",
   "logout": "Logout",
@@ -32,6 +34,7 @@
   "moreThanOne": "minimum 1 tree required",
   "registered": "Registered",
   "receivedTrees": "Received Trees",
+  "receivedFrom": "Received from {{name}}",
   "redeemedTrees": "Redeemed Trees",
   "nameForest": "{{name}}'s Forest"
 }
