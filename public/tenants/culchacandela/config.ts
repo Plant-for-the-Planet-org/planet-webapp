@@ -17,7 +17,7 @@ const config = {
     description: 'Culcha Candela X Plant-for-the-Planet',
     image: `/tenants/culchacandela/background.jpg`,
     twitterHandle: '',
-    locale: 'en_US',
+    locale: 'de_DE',
   },
   home: {
     title: 'Culcha Candela X Plant-for-the-Planet ',
