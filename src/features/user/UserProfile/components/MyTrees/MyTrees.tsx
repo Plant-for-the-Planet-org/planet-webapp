@@ -91,11 +91,12 @@ export default function MyTrees({
             </div>
             <div className={styles.myTreesContainer}>
               <div className={styles.treesList}>
-                {contributions.map((item: any) => {
-                  return (
-                    <div className={styles.tree}>
-                      {expandedContribution &&
-                        expandedContribution === item.properties.id ? (
+                {isAuthenticated && expandedContribution ?
+                  contributions.map((item: any) => {
+                    return (
+                      expandedContribution === item.properties.id ? (
+                        <div className={styles.tree}>
+
                           <div className={styles.singleContribution}>
                             <div
                               onClick={() => setExpandedContribution(null)}
@@ -121,8 +122,8 @@ export default function MyTrees({
                             </div>
                             <div className={styles.plantedBy}>
                               {`Planted by ${item.properties.type === 'registration'
-                                  ? 'User'
-                                  : item.properties.project.owner.name
+                                ? 'User'
+                                : item.properties.project.owner.name
                                 }`}
                             </div>
                             {item.properties.type === 'gift' ? (
@@ -192,98 +193,101 @@ export default function MyTrees({
                               </div>
                             ) : null}
                           </div>
-                        ) : (
-                          <>
-                            <div className={styles.dateRow}>
-                              {formatDate(item.properties.plantDate)}
+                        </div>
+                      ) : null
+                    )
+                  }) :
+                  contributions.map((item: any) => {
+                    return (
+                      <div className={styles.tree}>
+                        <div className={styles.dateRow}>
+                          {formatDate(item.properties.plantDate)}
+                        </div>
+                        <div
+                          onClick={() =>
+                            handleViewContribution(item.properties.id)
+                          }
+                          className={styles.treeRow}
+                        >
+                          <div className={styles.textCol}>
+                            <div className={styles.title}>
+                              {item.properties.type === 'registration'
+                                ? t('me:registered')
+                                : item.properties.project?.name}
                             </div>
-                            <div
-                              onClick={() =>
-                                handleViewContribution(item.properties.id)
-                              }
-                              className={styles.treeRow}
-                            >
-                              <div className={styles.textCol}>
-                                <div className={styles.title}>
-                                  {item.properties.type === 'registration'
-                                    ? t('me:registered')
-                                    : item.properties.project?.name}
-                                </div>
-                                <div className={styles.country}>
-                                  {item.properties.country
-                                    ? t(
-                                      'country:' +
-                                      item.properties.country.toLowerCase()
-                                    )
-                                    : null}
-                                </div>
-                                {item.properties.type === 'gift' ? (
-                                  <div className={styles.source}>
-                                    {item.properties.giver.name
-                                      ? t('me:receivedFrom', {
-                                        name: item.properties.giver.name,
-                                      })
-                                      : t('me:receivedTrees')}
-                                  </div>
-                                ) : null}
-                                {item.properties.type === 'redeem' ? (
-                                  <div className={styles.source}>
-                                    {t('me:redeemedTrees')}
-                                  </div>
-                                ) : null}
-                                {item.properties.type === 'donation' ? (
-                                  <div className={styles.source}>
-                                    {item.properties.recipient
-                                      ? t('me:giftToGiftee', {
-                                        gifteeName:
-                                          item.properties.recipient.name,
-                                      })
-                                      : null}
-                                  </div>
-                                ) : null}
+                            <div className={styles.country}>
+                              {item.properties.country
+                                ? t(
+                                  'country:' +
+                                  item.properties.country.toLowerCase()
+                                )
+                                : null}
+                            </div>
+                            {item.properties.type === 'gift' ? (
+                              <div className={styles.source}>
+                                {item.properties.giver.name
+                                  ? t('me:receivedFrom', {
+                                    name: item.properties.giver.name,
+                                  })
+                                  : t('me:receivedTrees')}
                               </div>
-                              <div className={styles.numberCol}>
-                                <div className={styles.treeIcon}>
-                                  <div
-                                    style={
+                            ) : null}
+                            {item.properties.type === 'redeem' ? (
+                              <div className={styles.source}>
+                                {t('me:redeemedTrees')}
+                              </div>
+                            ) : null}
+                            {item.properties.type === 'donation' ? (
+                              <div className={styles.source}>
+                                {item.properties.recipient
+                                  ? t('me:giftToGiftee', {
+                                    gifteeName:
+                                      item.properties.recipient.name,
+                                  })
+                                  : null}
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className={styles.numberCol}>
+                            <div className={styles.treeIcon}>
+                              <div
+                                style={
+                                  item.properties.type === 'registration'
+                                    ? { color: '#3D67B1' }
+                                    : {}
+                                }
+                                className={styles.number}
+                              >
+                                {getFormattedNumber(
+                                  i18n.language,
+                                  Number(item.properties.treeCount)
+                                )}
+                              </div>
+                              <div className={styles.icon}>
+                                {item.properties.treeCount > 1 ? (
+                                  <TreesIcon
+                                    color={
                                       item.properties.type === 'registration'
-                                        ? { color: '#3D67B1' }
-                                        : {}
+                                        ? '#3D67B1'
+                                        : null
                                     }
-                                    className={styles.number}
-                                  >
-                                    {getFormattedNumber(
-                                      i18n.language,
-                                      Number(item.properties.treeCount)
-                                    )}
-                                  </div>
-                                  <div className={styles.icon}>
-                                    {item.properties.treeCount > 1 ? (
-                                      <TreesIcon
-                                        color={
-                                          item.properties.type === 'registration'
-                                            ? '#3D67B1'
-                                            : null
-                                        }
-                                      />
-                                    ) : (
-                                        <TreeIcon
-                                          color={
-                                            item.properties.type === 'registration'
-                                              ? '#3D67B1'
-                                              : null
-                                          }
-                                        />
-                                      )}
-                                  </div>
-                                </div>
+                                  />
+                                ) : (
+                                    <TreeIcon
+                                      color={
+                                        item.properties.type === 'registration'
+                                          ? '#3D67B1'
+                                          : null
+                                      }
+                                    />
+                                  )}
                               </div>
                             </div>
-                          </>
-                        )}
-                    </div>
-                  );
-                })}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
               </div>
               <MyTreesMap {...MapProps} />
             </div>
