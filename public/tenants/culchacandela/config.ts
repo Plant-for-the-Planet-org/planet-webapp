@@ -3,7 +3,7 @@ const config = {
   tenantURL: 'wald.culchacandela.de',
   languages: ['en', 'de'],
   fallbackCurrency: 'EUR',
-  tenantGoal: 1000000,
+  tenantGoal: null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL:
@@ -18,6 +18,12 @@ const config = {
     image: `/tenants/culchacandela/background.jpg`,
     twitterHandle: '',
     locale: 'en_US',
+  },
+  home: {
+    title: 'Culcha Candela X Plant-for-the-Planet ',
+    description:
+      'Wir pflanzen Bäume für ein besseres Weltklima, um uns so wichtige Zeit im Wettlauf gegen die Klimakrise zu verschaffen. Pflanz’ hier mit! Und beim Hören des neuen „Hamma (INVCTS & Dorfkind J-P Remix)” auf music-for-nature & sämtlichen Musik Streaming-Plattformen. Die Streaming Einnahmen spenden wir an Plant-for-the-Planet!',
+    image: `/tenants/culchacandela/background.jpg`,
   },
   header: {
     isSecondaryTenant: true,
