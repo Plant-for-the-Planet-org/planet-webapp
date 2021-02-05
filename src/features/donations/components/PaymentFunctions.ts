@@ -344,7 +344,14 @@ export async function handleSCAPaymentFunction({
         {
           payment_method: {
             billing_details: {
-              name: `${donorDetails.firstName} ${donorDetails.lastName} ` // TO DO Use customer name from Giropay
+              name: `${donorDetails.firstName} ${donorDetails.lastName}`,
+              email:donorDetails.email,
+              address:{
+                city: donorDetails.city,
+                country: donorDetails.country,
+                line1: donorDetails.address,
+                postal_code: donorDetails.zipCode,
+              }
             }
           },
           return_url: `${process.env.NEXTAUTH_URL}/donation-successful?donationID=${donationID}`,
