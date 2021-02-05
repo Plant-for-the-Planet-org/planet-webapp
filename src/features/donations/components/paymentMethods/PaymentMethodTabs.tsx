@@ -12,7 +12,7 @@ function a11yProps(index: any) {
     };
 }
 
-export default function PaymentMethodTabs({ paymentType, setPaymentType, showPaypal,showGiroPay }: any) {
+export default function PaymentMethodTabs({ paymentType, setPaymentType, showPaypal, showGiroPay, showSepa, showCC }: any) {
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
         setPaymentType(newValue);
@@ -20,15 +20,22 @@ export default function PaymentMethodTabs({ paymentType, setPaymentType, showPay
 
     return (
         <div className={styles.paymentMethodsTabsContainer}>
-            <button className={`${styles.paymentMethod} ${paymentType === 'CARD' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'CARD')}  {...a11yProps('CARD')}>
-                <CreditCard />
-                <label>Credit Card</label>
-            </button>
 
-            <button className={`${styles.paymentMethod} ${paymentType === 'SEPA' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'SEPA')}  {...a11yProps('SEPA')}>
-                <SepaIcon />
-                <label>SEPA</label>
-            </button>
+            {showCC && (
+                <button className={`${styles.paymentMethod} ${paymentType === 'CARD' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'CARD')}  {...a11yProps('CARD')}>
+                    <CreditCard />
+                    <label>Credit Card</label>
+                </button>
+            )}
+
+
+            {showSepa && (
+                <button className={`${styles.paymentMethod} ${paymentType === 'SEPA' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'SEPA')}  {...a11yProps('SEPA')}>
+                    <SepaIcon />
+                    <label>SEPA</label>
+                </button>
+            )}
+
 
             {showPaypal ? (
                 <button className={`${styles.paymentMethod} ${paymentType === 'Paypal' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'Paypal')}  {...a11yProps('Paypal')}>

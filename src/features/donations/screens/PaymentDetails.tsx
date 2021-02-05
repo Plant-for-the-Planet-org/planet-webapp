@@ -129,7 +129,9 @@ function PaymentDetails({
           <PaymentMethodTabs 
             paymentType={paymentType} 
             setPaymentType={setPaymentType} 
-            showGiroPay={country === 'DE'} 
+            showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")} 
+            showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")} 
+            showSepa={paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")} 
             showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal} 
             />
           <div
