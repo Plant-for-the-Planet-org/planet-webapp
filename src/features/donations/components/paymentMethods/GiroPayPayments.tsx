@@ -25,7 +25,7 @@ function GiroPayPayments({ contactDetails,onSubmitPayment,paymentSetup }: Props)
            
                 <div onClick={()=>onSubmitPayment('stripe_giropay','giropay')} className={styles.actionButtonsContainer}>
                     <AnimatedButton className={styles.continueButton}>
-                        {t('common:donate')}
+                        {t('donate:payWithGiroPay')}
                     </AnimatedButton>
                 </div>
         

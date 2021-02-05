@@ -94,7 +94,7 @@ function PaymentDetails({
       setDonationStep,
       donorDetails
     })
-  }
+  }  
 
   return ready ? (
     isPaymentProcessing ? (
@@ -126,7 +126,12 @@ function PaymentDetails({
             </div>
           </div>
 
-          <PaymentMethodTabs paymentType={paymentType} setPaymentType={setPaymentType} showGiroPay={country === 'DE'} showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal} />
+          <PaymentMethodTabs 
+            paymentType={paymentType} 
+            setPaymentType={setPaymentType} 
+            showGiroPay={country === 'DE'} 
+            showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal} 
+            />
           <div
             role="tabpanel"
             hidden={paymentType !== 'CARD'}

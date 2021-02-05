@@ -79,5 +79,6 @@
   "completingYourDonation":"Completing your Donation",
   "waitingConfirmation":"We are currently waiting a confirmation from your bank and will send you an email shortly. Please feel free to close this page.",
   "yourDonationRef":"Your donation ref is {{donationID}}",
-  "backToHome":"Back to home"
+  "backToHome":"Back to home",
+  "payWithGiroPay":"Pay with GiroPay"
 }
