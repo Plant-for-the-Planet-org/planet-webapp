@@ -46,18 +46,20 @@ function PaymentDetails({
 
   const [paymentError, setPaymentError] = React.useState('');
 
-  let donorDetails = {
-    firstname: contactDetails.firstName,
-    lastname: contactDetails.lastName,
-    email: contactDetails.email,
-    address: contactDetails.address,
-    zipCode: contactDetails.zipCode,
-    city: contactDetails.city,
-    country: contactDetails.country,
-    companyname: contactDetails.companyName,
-  };
+  const [donorDetails,setDonorDetails] =React.useState({})
 
   React.useEffect(() => {
+    let donorDetails = {
+      firstname: contactDetails.firstName,
+      lastname: contactDetails.lastName,
+      email: contactDetails.email,
+      address: contactDetails.address,
+      zipCode: contactDetails.zipCode,
+      city: contactDetails.city,
+      country: contactDetails.country,
+      companyname: contactDetails.companyName,
+    };
+    setDonorDetails(donorDetails);
     createDonationFunction({
       isTaxDeductible, 
       country, 
@@ -75,7 +77,7 @@ function PaymentDetails({
     });
 
     // This array needs to be verified
-  }, [])
+  }, [paymentSetup,treeCount, treeCost,contactDetails,isGift, giftDetails, isTaxDeductible ])
 //paymentSetup, treeCount, treeCost, donorDetails, isGift, giftDetails, isTaxDeductible
 
 
