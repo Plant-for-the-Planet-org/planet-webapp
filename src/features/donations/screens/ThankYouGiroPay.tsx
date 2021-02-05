@@ -18,16 +18,16 @@ function ThankYouGiroPay({ donationID }: any): ReactElement {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-          Completing your Donation
-          </div>
+          {t('donate:completingYourDonation')}
+        </div>
       </div>
 
       <div className={styles.contributionMessage}>
-        We are currently waiting a confirmation from your bank and will send you an email shortly. Please feel free to close this page.
+        {t('donate:waitingConfirmation')}
       </div>
 
-      <div className={styles.contributionMessage} style={{fontStyle:'italic'}}>
-        Your donation ref is {donationID}
+      <div className={styles.contributionMessage} style={{ fontStyle: 'italic' }}>
+        {t('donate:yourDonationRef', { donationID: donationID })}
       </div>
 
       <div className={styles.thankyouImageContainer}>

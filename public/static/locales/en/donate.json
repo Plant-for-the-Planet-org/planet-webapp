@@ -75,5 +75,8 @@
   "minDonate": "Minimum donation amount is",
   "noPaymentMethodError": "Could not process your payment, please try again.",
   "somethingWentWrong": "Something went wrong please try again soon!",
-  "underMaintenance": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details"
+  "underMaintenance": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details",
+  "completingYourDonation":"Completing your Donation",
+  "waitingConfirmation":"We are currently waiting a confirmation from your bank and will send you an email shortly. Please feel free to close this page.",
+  "yourDonationRef":"Your donation ref is {{donationID}}"
 }
