@@ -238,3 +238,33 @@
 .tempthankyouImageHeader p h1 {
   font-size: 150px;
 }
+
+
+.actionButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.actionButtonsText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.continueButton {
+  background-color: $primaryColor;
+  border-radius: 6px;
+  padding: 8px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}

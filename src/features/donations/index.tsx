@@ -20,6 +20,7 @@ function DonationsPopup({
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
   const [paymentSetup, setPaymentSetup] = React.useState();
+  const [donationID, setDonationID] = React.useState(null)
 
   const {
     isLoading,
@@ -153,7 +154,9 @@ function DonationsPopup({
     paymentType,
     setPaymentType,
     isPaymentOptionsLoading,
-    token
+    token,
+    donationID, 
+    setDonationID
   };
 
   const ContactDetailsProps = {
@@ -183,7 +186,9 @@ function DonationsPopup({
     setPaymentType,
     country,
     isTaxDeductible,
-    token
+    token,
+    donationID, 
+    setDonationID
   };
 
   const ThankYouProps = {

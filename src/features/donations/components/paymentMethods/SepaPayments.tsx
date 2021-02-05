@@ -57,6 +57,17 @@ function SepaPayments({
     const [paymentError, setPaymentError] = React.useState('');
     const [showContinue, setShowContinue] = React.useState(false);
 
+    const validateChange =()=>{
+        const sepaElement = elements.getElement(IbanElement)!;
+        sepaElement.on('change', ({ error }) => {
+            if (error) {
+                setShowContinue(false)
+            } else {
+                setShowContinue(true)
+            }
+        });
+    }
+
     const createPaymentMethodSepa = (sepaElement: any, contactDetails: any) => {
         return stripe?.createPaymentMethod({
             type: 'sepa_debit',
@@ -83,7 +94,7 @@ function SepaPayments({
             // Add payload error if failed
         }
         if (paymentMethod) {
-            onPaymentFunction(paymentMethod);
+            onPaymentFunction('stripe', paymentMethod);
         } else {
             setPaymentError(t('donate:noPaymentMethodError'));
             return;
@@ -110,7 +121,8 @@ function SepaPayments({
                 <div>
                     <div className={styles.mandateAcceptance}>
                         By providing your IBAN and confirming this payment, you authorise
-                        (A) Rocketship Inc and Stripe, our payment service provider, to send
+                        (A) Plant for the Planet or the reforestation organization and Stripe,
+                        our payment service provider, to send
                         instructions to your bank to debit your account and (B) your bank to
                         debit your account in accordance with those instructions. You are
                         entitled to a refund from your bank under the terms and conditions of
@@ -121,6 +133,7 @@ function SepaPayments({
                         <IbanElement
                             id="iban"
                             options={SEPA_OPTIONS}
+                            onChange={validateChange}
                         />
                     </FormControlNew>
                 </div>

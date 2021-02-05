@@ -284,3 +284,10 @@
     color: $primaryFontColor;
   }
 }
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-left: 6px;
+}

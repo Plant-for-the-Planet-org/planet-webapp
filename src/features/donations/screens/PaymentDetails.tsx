@@ -3,7 +3,7 @@ import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackAr
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
-import { payWithCard } from '../components/PaymentFunctions';
+import {  createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -14,6 +14,7 @@ import getStripe from '../../../utils/stripe/getStripe';
 import PaymentMethodTabs from '../components/paymentMethods/PaymentMethodTabs';
 import SepaPayments from '../components/paymentMethods/SepaPayments';
 import PaypalPayments from '../components/paymentMethods/PaypalPayments';
+import GiroPayPayments from '../components/paymentMethods/GiroPayPayments';
 
 const { useTranslation } = i18next;
 
@@ -31,7 +32,9 @@ function PaymentDetails({
   setPaymentType,
   country,
   isTaxDeductible,
-  token
+  token,
+  donationID,
+  setDonationID
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
@@ -54,31 +57,42 @@ function PaymentDetails({
     companyname: contactDetails.companyName,
   };
 
-
-  const onPaymentFunction = (gateway: any, paymentMethod: any) => {
-    if (!paymentMethod) {
-      setPaymentError(t('donate:noPaymentMethodError'));
-      return;
-    }
-    const payWithCardProps = {
-      setDonationStep,
-      setIsPaymentProcessing,
-      project,
-      currency,
-      treeCost,
+  React.useEffect(() => {
+    createDonationFunction({
+      isTaxDeductible, 
+      country, 
+      project, 
+      treeCost, 
       treeCount,
-      giftDetails,
-      isGift,
-      setPaymentError,
-      paymentSetup,
-      window,
-      paymentMethod,
+      currency,
       donorDetails,
-      taxDeductionCountry: isTaxDeductible ? country : null,
-      token: token
-    };
-    payWithCard({ ...payWithCardProps });
-  };
+      isGift,
+      giftDetails,
+      setIsPaymentProcessing,
+      setPaymentError,
+      setDonationID,
+      token
+    });
+
+    // This array needs to be verified
+  }, [])
+//paymentSetup, treeCount, treeCost, donorDetails, isGift, giftDetails, isTaxDeductible
+
+
+  const onSubmitPayment = ( gateway:any, paymentMethod:any)=>{
+    payDonationFunction ({
+      gateway,
+      paymentMethod,
+      setIsPaymentProcessing,
+      setPaymentError,
+      t,
+      paymentSetup,
+      donationID,
+      token,
+      setDonationStep,
+      donorDetails
+    })
+  }
 
   return ready ? (
     isPaymentProcessing ? (
@@ -110,7 +124,7 @@ function PaymentDetails({
             </div>
           </div>
 
-          <PaymentMethodTabs paymentType={paymentType} setPaymentType={setPaymentType} showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal} />
+          <PaymentMethodTabs paymentType={paymentType} setPaymentType={setPaymentType} showGiroPay={country === 'DE'} showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal} />
           <div
             role="tabpanel"
             hidden={paymentType !== 'CARD'}
@@ -119,7 +133,7 @@ function PaymentDetails({
           >
             <Elements
               stripe={getStripe(paymentSetup)}>
-              <CardPayments onPaymentFunction={(data) => onPaymentFunction('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+              <CardPayments onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
             </Elements>
           </div>
 
@@ -134,7 +148,7 @@ function PaymentDetails({
               stripe={getStripe(paymentSetup)}>
               <SepaPayments
                 paymentType={paymentType}
-                onPaymentFunction={onPaymentFunction}
+                onPaymentFunction={onSubmitPayment}
                 contactDetails={contactDetails}
               />
             </Elements>
@@ -147,23 +161,17 @@ function PaymentDetails({
             id={`payment-methods-tabpanel-${'Paypal'}`}
             aria-labelledby={`scrollable-force-tab-${'Paypal'}`}
           >
-
-            <PaypalPayments paymentSetup={paymentSetup}
-              project={project}
+            {paymentType === 'Paypal' && (
+              <PaypalPayments
+              paymentSetup={paymentSetup}
               treeCount={treeCount}
               treeCost={treeCost}
               currency={currency}
-              setDonationStep={setDonationStep}
-              isGift={isGift}
-              giftDetails={giftDetails}
-              paymentType={paymentType}
-              country={country}
-              isTaxDeductible={isTaxDeductible}
-              token={token}
-              setPaymentError={setPaymentError}
-              setIsPaymentProcessing={setIsPaymentProcessing}
-              donorDetails={donorDetails} />
-
+              donationID={donationID}
+              payDonationFunction={onSubmitPayment}
+            />
+            )}
+            
           </div>
           <div
             role="tabpanel"
@@ -171,7 +179,15 @@ function PaymentDetails({
             id={`payment-methods-tabpanel-${'Jiro'}`}
             aria-labelledby={`scrollable-force-tab-${'Jiro'}`}
           >
-            Item Four
+            <Elements
+              stripe={getStripe(paymentSetup)}>
+                <GiroPayPayments
+                  contactDetails={contactDetails}
+                  onSubmitPayment={onSubmitPayment}
+                  paymentSetup={paymentSetup}
+                />
+              </Elements>
+            
             </div>
 
         </div>
