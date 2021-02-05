@@ -78,5 +78,6 @@
   "underMaintenance": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details",
   "completingYourDonation":"Completing your Donation",
   "waitingConfirmation":"We are currently waiting a confirmation from your bank and will send you an email shortly. Please feel free to close this page.",
-  "yourDonationRef":"Your donation ref is {{donationID}}"
+  "yourDonationRef":"Your donation ref is {{donationID}}",
+  "backToHome":"Back to home"
 }
