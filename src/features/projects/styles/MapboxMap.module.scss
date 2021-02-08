@@ -416,15 +416,15 @@
 
 @include smTabletView {
   .projectControls {
-    top: 90px;
+    top: 30px; // Removed for iframe
   }
 
   .exploreButton {
-    top: 100px;
+    top: 40px; // Removed for iframe
   }
 
   .exploreExpanded {
-    top: 100px;
+    top: 40px; // Removed for iframe
   }
 
   // .infoExpanded {
@@ -434,7 +434,7 @@
 
 @include mdTabletView {
   .mapContainer {
-    padding-top: 60px;
+    // padding-top: 60px; // Removed for iframe
     padding-bottom: 0px;
   }
   .projectControls {

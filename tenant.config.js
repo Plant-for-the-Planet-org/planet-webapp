@@ -9,6 +9,7 @@ import energizerConfig from './public/tenants/energizer/config';
 import senatDerWirtschaft from './public/tenants/senatDerWirtschaft/config';
 import pampersConfig from './public/tenants/pampers/config';
 import interactClub from './public/tenants/interactClub/config';
+import sateins from './public/tenants/sateins/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -23,6 +24,7 @@ export default function tenantConfig() {
     case 'senatDerWirtschaft': return senatDerWirtschaft;
     case 'pampers': return pampersConfig;
     case 'interactClub': return interactClub;
+    case 'sateins': return sateins;
     default: return planetConfig;
   }
 }

@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import SalesforceHome from '../src/tenants/salesforce/Home';
+import SateinsHome from '../src/tenants/sateins/Home';
+
 import SternHome from '../src/tenants/stern/Home';
 import LacoquetaHome from '../src/tenants/lacoqueta/Home';
 import NitroSBHome from '../src/tenants/nitrosb/Home';
@@ -48,6 +50,9 @@ export default function Home(initialized: Props) {
     switch (process.env.TENANT) {
       case 'salesforce':
         HomePage = SalesforceHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'sateins':
+        HomePage = SateinsHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'lacoqueta':
         HomePage = LacoquetaHome;

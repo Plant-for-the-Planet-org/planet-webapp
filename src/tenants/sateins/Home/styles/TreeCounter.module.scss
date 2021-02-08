@@ -1,0 +1,40 @@
+@import '../../../../theme/theme';
+
+
+.treeCounterSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.treeCounter {
+  z-index: 1;
+  width: 320px;
+  height: 320px;
+}
+
+@include smTabletView {
+  
+
+  .treeCounterSection {
+    height: 60vh;
+    margin: 80px 0;
+    max-height: 420px;
+  }
+
+  .treeCounter {
+    width: 330px;
+    height: 330px;
+  }
+
+}
+
+
+@include lgLaptopView {
+
+  .treeCounter {
+    width: 400px;
+    height: 400px;
+  }
+}
