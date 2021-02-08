@@ -60,3 +60,8 @@
   package = "netlify-plugin-next-dynamic"
 [[plugins]]
   package = "netlify-plugin-cache-nextjs"
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'"
