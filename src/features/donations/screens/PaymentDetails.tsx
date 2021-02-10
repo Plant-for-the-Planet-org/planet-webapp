@@ -3,7 +3,7 @@ import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackAr
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/PaymentDetails.module.scss';
-import {  createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
+import { createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -15,6 +15,7 @@ import PaymentMethodTabs from '../components/paymentMethods/PaymentMethodTabs';
 import SepaPayments from '../components/paymentMethods/SepaPayments';
 import PaypalPayments from '../components/paymentMethods/PaypalPayments';
 import GiroPayPayments from '../components/paymentMethods/GiroPayPayments';
+import SofortPayments from '../components/paymentMethods/SofortPayment';
 
 const { useTranslation } = i18next;
 
@@ -46,7 +47,7 @@ function PaymentDetails({
 
   const [paymentError, setPaymentError] = React.useState('');
 
-  const [donorDetails,setDonorDetails] =React.useState({})
+  const [donorDetails, setDonorDetails] = React.useState({})
 
   React.useEffect(() => {
     let donorDetails = {
@@ -61,10 +62,10 @@ function PaymentDetails({
     };
     setDonorDetails(donorDetails);
     createDonationFunction({
-      isTaxDeductible, 
-      country, 
-      project, 
-      treeCost, 
+      isTaxDeductible,
+      country,
+      project,
+      treeCost,
       treeCount,
       currency,
       donorDetails,
@@ -77,12 +78,12 @@ function PaymentDetails({
     });
 
     // This array needs to be verified
-  }, [paymentSetup,treeCount, treeCost,contactDetails,isGift, giftDetails, isTaxDeductible ])
-//paymentSetup, treeCount, treeCost, donorDetails, isGift, giftDetails, isTaxDeductible
+  }, [paymentSetup, treeCount, treeCost, contactDetails, isGift, giftDetails, isTaxDeductible])
+  //paymentSetup, treeCount, treeCost, donorDetails, isGift, giftDetails, isTaxDeductible
 
 
-  const onSubmitPayment = ( gateway:any, paymentMethod:any)=>{
-    payDonationFunction ({
+  const onSubmitPayment = (gateway: any, paymentMethod: any) => {
+    payDonationFunction({
       gateway,
       paymentMethod,
       setIsPaymentProcessing,
@@ -94,7 +95,7 @@ function PaymentDetails({
       setDonationStep,
       donorDetails
     })
-  }  
+  }
 
   return ready ? (
     isPaymentProcessing ? (
@@ -126,14 +127,15 @@ function PaymentDetails({
             </div>
           </div>
 
-          <PaymentMethodTabs 
-            paymentType={paymentType} 
-            setPaymentType={setPaymentType} 
-            showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")} 
-            showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")} 
-            showSepa={paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")} 
-            showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal} 
-            />
+          <PaymentMethodTabs
+            paymentType={paymentType}
+            setPaymentType={setPaymentType}
+            showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")}
+            showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")}
+            showSepa={paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")}
+            showSofort={paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")}
+            showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal}
+          />
           <div
             role="tabpanel"
             hidden={paymentType !== 'CARD'}
@@ -172,15 +174,15 @@ function PaymentDetails({
           >
             {paymentType === 'Paypal' && (
               <PaypalPayments
-              paymentSetup={paymentSetup}
-              treeCount={treeCount}
-              treeCost={treeCost}
-              currency={currency}
-              donationID={donationID}
-              payDonationFunction={onSubmitPayment}
-            />
+                paymentSetup={paymentSetup}
+                treeCount={treeCount}
+                treeCost={treeCost}
+                currency={currency}
+                donationID={donationID}
+                payDonationFunction={onSubmitPayment}
+              />
             )}
-            
+
           </div>
           <div
             role="tabpanel"
@@ -190,14 +192,25 @@ function PaymentDetails({
           >
             <Elements
               stripe={getStripe(paymentSetup)}>
-                <GiroPayPayments
-                  contactDetails={contactDetails}
-                  onSubmitPayment={onSubmitPayment}
-                  paymentSetup={paymentSetup}
-                />
-              </Elements>
-            
-            </div>
+              <GiroPayPayments
+                onSubmitPayment={onSubmitPayment}
+              />
+            </Elements>
+          </div>
+
+          <div
+            role="tabpanel"
+            hidden={paymentType !== 'Sofort'}
+            id={`payment-methods-tabpanel-${'Sofort'}`}
+            aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
+          >
+            <Elements
+              stripe={getStripe(paymentSetup)}>
+              <SofortPayments
+                onSubmitPayment={onSubmitPayment}
+              />
+            </Elements>
+          </div>
 
         </div>
       )

@@ -3,6 +3,7 @@ import CreditCard from '../../../../../public/assets/images/icons/donation/Credi
 import GiroPayIcon from '../../../../../public/assets/images/icons/donation/GiroPay';
 import PaypalIcon from '../../../../../public/assets/images/icons/donation/PaypalIcon';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
+import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
 import styles from './../../styles/PaymentDetails.module.scss';
 
 function a11yProps(index: any) {
@@ -12,7 +13,7 @@ function a11yProps(index: any) {
     };
 }
 
-export default function PaymentMethodTabs({ paymentType, setPaymentType, showPaypal, showGiroPay, showSepa, showCC }: any) {
+export default function PaymentMethodTabs({ paymentType, setPaymentType, showPaypal, showGiroPay, showSepa, showSofort, showCC }: any) {
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
         setPaymentType(newValue);
@@ -48,6 +49,13 @@ export default function PaymentMethodTabs({ paymentType, setPaymentType, showPay
                 <button className={`${styles.paymentMethod} ${paymentType === 'GiroPay' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'GiroPay')}  {...a11yProps('GiroPay')}>
                     <GiroPayIcon />
                     <label>GiroPay</label>
+                </button>
+            )}
+
+            {showSofort && (
+                <button className={`${styles.paymentMethod} ${paymentType === 'Sofort' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'Sofort')}  {...a11yProps('Sofort')}>
+                    <SofortIcon />
+                    <label>Sofort</label>
                 </button>
             )}
 

@@ -365,6 +365,38 @@ export async function handleSCAPaymentFunction({
         console.log('paymentIntent',paymentIntent)
       }
     }
+
+    else if(gateway === 'stripe_sofort'){
+      const {error, paymentIntent} = await stripe.confirmSofortPayment(
+        paidDonation.response.payment_intent_client_secret,
+        {
+          payment_method: {
+            sofort: {
+              country: "DE" // TODO pass variable country
+            },
+            billing_details: {
+              name: `${donorDetails.firstName} ${donorDetails.lastName}`,
+              email:donorDetails.email,
+              address:{
+                city: donorDetails.city,
+                country: donorDetails.country,
+                line1: donorDetails.address,
+                postal_code: donorDetails.zipCode,
+              }
+            }
+          },
+          return_url: `${process.env.NEXTAUTH_URL}/donation-successful?donationID=${donationID}&paymentType=Sofort`,
+        }
+      );
+
+      if (error) {
+        setIsPaymentProcessing(false);
+        setPaymentError(error);
+      }
+      else {
+        console.log('paymentIntent',paymentIntent)
+      }
+    }
     
   }
 }
