@@ -184,9 +184,9 @@ function PaymentDetails({
           </div>
           <div
             role="tabpanel"
-            hidden={paymentType !== 'Jiro'}
-            id={`payment-methods-tabpanel-${'Jiro'}`}
-            aria-labelledby={`scrollable-force-tab-${'Jiro'}`}
+            hidden={paymentType !== 'GiroPay'}
+            id={`payment-methods-tabpanel-${'GiroPay'}`}
+            aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
           >
             <Elements
               stripe={getStripe(paymentSetup)}>

@@ -45,7 +45,7 @@ export default function PaymentMethodTabs({ paymentType, setPaymentType, showPay
             ) : null}
 
             {showGiroPay && (
-                <button className={`${styles.paymentMethod} ${paymentType === 'Jiro' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'Jiro')}  {...a11yProps('Jiro')}>
+                <button className={`${styles.paymentMethod} ${paymentType === 'GiroPay' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'GiroPay')}  {...a11yProps('GiroPay')}>
                     <GiroPayIcon />
                     <label>GiroPay</label>
                 </button>
