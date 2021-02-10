@@ -106,16 +106,9 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     country: paymentData.plantProjectCountry
   }
   const ThankYouProps = {
-    project,
-    treeCount,
-    treeCost,
-    currency,
-    contactDetails: {},
-    isGift,
-    giftDetails,
+    donationID:paymentData.guid,
     onClose,
     paymentType,
-    setDonationStep: null
   };
 
   return ready ? (

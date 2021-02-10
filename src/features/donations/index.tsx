@@ -192,14 +192,7 @@ function DonationsPopup({
   };
 
   const ThankYouProps = {
-    project,
-    treeCount,
-    treeCost,
-    currency,
-    setDonationStep,
-    contactDetails,
-    isGift,
-    giftDetails,
+    donationID,
     onClose,
     paymentType,
   };

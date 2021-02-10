@@ -10,21 +10,27 @@ import { getPaymentType } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import { getRequest } from '../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 
 function ThankYou({
-  project,
-  treeCount,
-  treeCost,
-  currency,
-  contactDetails,
-  isGift,
-  giftDetails,
+  donationID,
   onClose,
   paymentType,
 }: ThankYouProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+
+  const [donation, setdonation] = React.useState(null)
+    React.useEffect(()=>{
+        async function loadDonation() {
+              const donation = await getRequest(`/app/donations/${donationID}`);
+              setdonation(donation);
+          }
+          if (donationID) {
+            loadDonation();
+          }
+    },[donationID])
 
   const config = tenantConfig();
   const imageRef = React.createRef();
@@ -54,9 +60,12 @@ function ThankYou({
     setTextCopiedSnackbarOpen(false);
   };
 
-  const currencyFormat = () => getFormatedCurrency(i18n.language, currency, treeCost * treeCount);
+  let currencyFormat;
+  if(donation){
+    currencyFormat = () => getFormatedCurrency(i18n.language, donation.currency, donation.amount);
+  }
 
-  return ready ? (
+  return ready && donation ? (
     <div className={styles.container}>
       <div className={styles.header}>
         <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
@@ -75,15 +84,15 @@ function ThankYou({
             paymentTypeUsed,
           },
         )}
-        {isGift ? (
+        {donation.gift ? (
           ' ' + t('donate:giftSentMessage', {
-            recipientName: giftDetails.recipientName,
+            recipientName: donation.gift.recipientName,
           })
         ) : null }
         {' ' + t('donate:yourTreesPlantedByOnLocation', {
-          treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-          projectName: project.name,
-          location: t('country:' + project.country.toLowerCase()),
+          treeCount: getFormattedNumber(i18n.language, Number(donation.treeCount)),
+          projectName: donation.project.name,
+          location: t('country:' + donation.project.country.toLowerCase()),
         })}
       </div>
 
@@ -101,8 +110,8 @@ function ThankYou({
           </div>
             <p className={styles.tempDonationCount}>
               {t('donate:myTreesPlantedByOnLocation', {
-                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-                location: t('country:' + project.country.toLowerCase()),
+                treeCount: getFormattedNumber(i18n.language, Number(donation.treeCount)),
+                location: t('country:' + donation.project.country.toLowerCase()),
               })}
             </p>
             <p className={styles.tempDonationTenant}>
@@ -118,8 +127,8 @@ function ThankYou({
           </div>
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-              location: t('country:' + project.country.toLowerCase()),
+              treeCount: getFormattedNumber(i18n.language, Number(donation.treeCount)),
+              location: t('country:' + donation.project.country.toLowerCase()),
             })}
             <p className={styles.donationTenant}>
               {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -129,10 +138,10 @@ function ThankYou({
       </div>
 
       <ShareOptions
-        treeCount={getFormattedNumber(i18n.language, Number(treeCount))}
+        treeCount={getFormattedNumber(i18n.language, Number(donation.treeCount))}
         sendRef={sendRef}
         handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-        contactDetails={contactDetails}
+        donor={donation.donor}
       />
 
       {/* snackbar for showing text copied to clipboard */}

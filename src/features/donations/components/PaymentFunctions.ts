@@ -263,7 +263,6 @@ export async function payDonationFunction({
       } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending') {
         setIsPaymentProcessing(false);
         setDonationStep(4);
-        console.log('paidDonation',paidDonation);
         
         return paidDonation;
       } else if (paidDonation.status === 'action_required') {
@@ -354,7 +353,7 @@ export async function handleSCAPaymentFunction({
               }
             }
           },
-          return_url: `${process.env.NEXTAUTH_URL}/donation-successful?donationID=${donationID}`,
+          return_url: `${process.env.NEXTAUTH_URL}/donation-successful?donationID=${donationID}&paymentType=Giropay`,
         }
       );
 

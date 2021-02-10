@@ -79,16 +79,9 @@ export interface ContactDetailsPageProps {
 }
 
 export interface ThankYouProps {
-  project: { name: String };
-  treeCount: number;
-  treeCost: number;
-  currency: String;
-  setDonationStep: Function;
-  contactDetails: Object;
-  isGift: Boolean;
-  giftDetails: giftDetailsProps;
+  donationID:any;
   onClose: any;
-  paymentType: String;
+  paymentType: String | string;
 }
 
 export interface CreateDonationFunctionProps {
