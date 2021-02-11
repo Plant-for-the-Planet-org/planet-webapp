@@ -41,7 +41,7 @@
     "@math.gl/web-mercator": "^3.3.2",
     "@next/bundle-analyzer": "^10.0.4",
     "@sentry/browser": "^5.29.1",
-    "@sentry/integrations": "5.29.2",
+    "@sentry/integrations": "5.30.0",
     "@sentry/node": "^5.29.2",
     "@sentry/webpack-plugin": "^1.14.0",
     "@stripe/react-stripe-js": "^1.2.0",
