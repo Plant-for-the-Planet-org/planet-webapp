@@ -146,7 +146,7 @@ export default function CompleteSignup() {
 
   const createButtonClicked = async (data: any) => {
     if (!isLoading && token) {
-      let submitData = {
+      const submitData = {
         ...data,
         country,
         type,

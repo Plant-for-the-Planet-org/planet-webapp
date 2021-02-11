@@ -122,7 +122,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         } else if (res.status === 'action_required') {
           const clientSecret = res.response.payment_intent_client_secret;
           const donationID = res.id;
-          let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
+          const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
           const stripe = window.Stripe(
             key,
             {
@@ -172,7 +172,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     }
   }
   let isGift = false;
-  let giftDetails = {
+  const giftDetails = {
     recipientName: null
   };
   if (paymentData.giftRecipient || paymentData.supportedTreecounterName) {

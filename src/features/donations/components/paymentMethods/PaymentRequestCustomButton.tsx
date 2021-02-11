@@ -229,7 +229,22 @@ export const PaymentRequestCustomButton = ({
       ) : null) : null;
 };
 
-export const NativePay = ({ country, currency, amount, onPaymentFunction, continueNext, paymentSetup }) => {
+interface NativePayProps {
+  country: string;
+  currency: String;
+  amount: number;
+  onPaymentFunction: Function;
+  continueNext: Function | null;
+  paymentSetup: Object;
+}
+export const NativePay = ({
+  country,
+  currency,
+  amount,
+  onPaymentFunction,
+  continueNext,
+  paymentSetup
+ }: NativePayProps) => {
   
   const [stripePromise,setStripePromise] = useState(()=>getStripe(paymentSetup))
 

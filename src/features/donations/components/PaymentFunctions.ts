@@ -201,7 +201,7 @@ export function payWithCard({
             } else if (res.status === 'action_required') {
               const clientSecret = res.response.payment_intent_client_secret;
               const donationID = res.id;
-              let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
+              const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
               const stripe = window.Stripe(
                 key,
                 {

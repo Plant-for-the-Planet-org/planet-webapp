@@ -28,7 +28,7 @@ export function formatAmountForStripe(
     currencyDisplay: 'symbol',
   });
   const parts = numberFormat.formatToParts(amount);
-  let zeroDecimalCurrency: boolean = true;
+  let zeroDecimalCurrency = true;
 
   // https://gist.github.com/ljharb/58faf1cfcb4e6808f74aae4ef7944cff
   // for (const part of parts) {

@@ -66,12 +66,12 @@ export async function getAuthenticatedRequest(url: any,token:any) {
     }, ).then(async(res) => {
       result = res.status === 200 ? await res.json() : null;
       if(res.status === 404){
-        let error = {
+        const error = {
           status: 404
         }
         result = error;
       } else if(res.status === 401) {
-        let error = {
+        const error = {
           status: 401
         }
         result = error;
