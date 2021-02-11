@@ -79,7 +79,7 @@
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.4",
     "react-gtm-module": "^2.0.11",
-    "react-hook-form": "^6.13.1",
+    "react-hook-form": "^6.14.2",
     "react-i18next": "^11.8.5",
     "react-insta-stories": "^2.1.2",
     "react-lazyload": "^3.1.0",
@@ -88,7 +88,7 @@
     "react-mapbox-gl-draw": "^2.0.4",
     "react-player": "^2.7.2",
     "read-more-react": "^1.0.10",
-    "styled-jsx": "^3.3.2",
+    "styled-jsx": "^3.4.1",
     "uuid": "^8.3.2",
     "viewport-mercator-project": "^6.1.1",
     "vizzuality-components": "^3.0.3"

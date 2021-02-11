@@ -45,8 +45,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any) => (
-                  <div key={leader.created} className={styles.leaderBoardBodyRow}>
+                {leaderboardData.mostRecent.map((leader: any,index:any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
@@ -61,8 +61,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any) => (
-                  <div key={leader.created} className={styles.leaderBoardBodyRow}>
+                {leaderboardData.mostDonated.map((leader: any, index:any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
