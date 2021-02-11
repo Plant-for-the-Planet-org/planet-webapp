@@ -204,7 +204,7 @@ function ThankYou({
   if (ready && donation) {
     if (!redirectStatus) {
       switch (donation.paymentStatus) {
-        case 'success':
+        case 'success': return <SuccessfulDonation />;
         case 'paid': return <SuccessfulDonation />;
         case 'failed': return <FailedDonation />;
         case 'initiated': return <PendingDonation />;
