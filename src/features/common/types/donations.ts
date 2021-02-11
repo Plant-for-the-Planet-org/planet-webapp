@@ -63,6 +63,8 @@ export interface PaymentDetailsProps {
   token:any;
   donationID:any;
   setDonationID:Function;
+  shouldCreateDonation:Boolean;
+  setShouldCreateDonation:Function;
 }
 
 export interface ContactDetailsPageProps {

@@ -117,7 +117,6 @@ export default function CountrySelect(props: {
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
           }}
-          inputRef={props.inputRef}
           name={'countrydropdown'}
         />
       )}

@@ -35,7 +35,9 @@ function PaymentDetails({
   isTaxDeductible,
   token,
   donationID,
-  setDonationID
+  setDonationID,
+  shouldCreateDonation,
+  setShouldCreateDonation
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
@@ -50,7 +52,7 @@ function PaymentDetails({
   const [donorDetails, setDonorDetails] = React.useState({})
 
   React.useEffect(() => {
-    let donorDetails = {
+    const donorDetails = {
       firstname: contactDetails.firstName,
       lastname: contactDetails.lastName,
       email: contactDetails.email,
@@ -61,25 +63,28 @@ function PaymentDetails({
       companyname: contactDetails.companyName,
     };
     setDonorDetails(donorDetails);
-    createDonationFunction({
-      isTaxDeductible,
-      country,
-      project,
-      treeCost,
-      treeCount,
-      currency,
-      donorDetails,
-      isGift,
-      giftDetails,
-      setIsPaymentProcessing,
-      setPaymentError,
-      setDonationID,
-      token
-    });
+  }, [contactDetails]);
 
-    // This array needs to be verified
-  }, [paymentSetup, treeCount, treeCost, contactDetails, isGift, giftDetails, isTaxDeductible])
-  //paymentSetup, treeCount, treeCost, donorDetails, isGift, giftDetails, isTaxDeductible
+  React.useEffect(() => {
+    if (shouldCreateDonation) {
+      createDonationFunction({
+        isTaxDeductible,
+        country,
+        project,
+        treeCost,
+        treeCount,
+        currency,
+        donorDetails,
+        isGift,
+        giftDetails,
+        setIsPaymentProcessing,
+        setPaymentError,
+        setDonationID,
+        token
+      });
+      setShouldCreateDonation(false)
+    }
+  }, [shouldCreateDonation])
 
 
   const onSubmitPayment = (gateway: any, paymentMethod: any) => {
@@ -97,7 +102,7 @@ function PaymentDetails({
     })
   }
 
-  const sofortCountries = ['AT','BE','DE','IT','NL','ES']
+  const sofortCountries = ['AT', 'BE', 'DE', 'IT', 'NL', 'ES']
 
   return ready ? (
     isPaymentProcessing ? (
@@ -135,7 +140,7 @@ function PaymentDetails({
             showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")}
             showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")}
             showSepa={paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")}
-            showSofort={sofortCountries.includes(country) && paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")} 
+            showSofort={sofortCountries.includes(country) && paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")}
             showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal}
           />
           <div
