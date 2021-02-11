@@ -18,19 +18,20 @@ function ThankYou({
   donationID,
   onClose,
   paymentType,
+  redirectStatus
 }: ThankYouProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const [donation, setdonation] = React.useState(null)
-    React.useEffect(()=>{
-        async function loadDonation() {
-              const donation = await getRequest(`/app/donations/${donationID}`);
-              setdonation(donation);
-          }
-          if (donationID) {
-            loadDonation();
-          }
-    },[donationID])
+  React.useEffect(() => {
+    async function loadDonation() {
+      const donation = await getRequest(`/app/donations/${donationID}`);
+      setdonation(donation);
+    }
+    if (donationID) {
+      loadDonation();
+    }
+  }, [donationID])
 
   const config = tenantConfig();
   const imageRef = React.createRef();
@@ -61,11 +62,12 @@ function ThankYou({
   };
 
   let currencyFormat;
-  if(donation){
+  if (donation) {
     currencyFormat = () => getFormatedCurrency(i18n.language, donation.currency, donation.amount);
   }
 
-  return ready && donation ? (
+
+  return ready && donation ? (redirectStatus !== 'failed' && (donation.paymentStatus === 'success' || donation.paymentStatus === 'paid')) ? (
     <div className={styles.container}>
       <div className={styles.header}>
         <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
@@ -88,7 +90,7 @@ function ThankYou({
           ' ' + t('donate:giftSentMessage', {
             recipientName: donation.gift.recipientName,
           })
-        ) : null }
+        ) : null}
         {' ' + t('donate:yourTreesPlantedByOnLocation', {
           treeCount: getFormattedNumber(i18n.language, Number(donation.treeCount)),
           projectName: donation.project.name,
@@ -104,26 +106,26 @@ function ThankYou({
 
       {/* hidden div for image download */}
       <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
-          <div className={styles.tempThankYouImage} ref={imageRef}>
+        <div className={styles.tempThankYouImage} ref={imageRef}>
           <div className={styles.tempthankyouImageHeader}>
-          <p dangerouslySetInnerHTML={{__html: t('donate:thankyouHeaderText')}} />
+            <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
           </div>
-            <p className={styles.tempDonationCount}>
-              {t('donate:myTreesPlantedByOnLocation', {
-                treeCount: getFormattedNumber(i18n.language, Number(donation.treeCount)),
-                location: t('country:' + donation.project.country.toLowerCase()),
-              })}
-            </p>
-            <p className={styles.tempDonationTenant}>
-              {t('donate:plantTreesAtURL', { url: config.tenantURL })}
-            </p>
-          </div>
+          <p className={styles.tempDonationCount}>
+            {t('donate:myTreesPlantedByOnLocation', {
+              treeCount: getFormattedNumber(i18n.language, Number(donation.treeCount)),
+              location: t('country:' + donation.project.country.toLowerCase()),
+            })}
+          </p>
+          <p className={styles.tempDonationTenant}>
+            {t('donate:plantTreesAtURL', { url: config.tenantURL })}
+          </p>
+        </div>
       </div>
 
       <div className={styles.thankyouImageContainer}>
         <div className={styles.thankyouImage}>
           <div className={styles.thankyouImageHeader}>
-            <p dangerouslySetInnerHTML={{__html: t('donate:thankyouHeaderText')}} />
+            <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
           </div>
           <div className={styles.donationCount}>
             {t('donate:myTreesPlantedByOnLocation', {
@@ -155,7 +157,20 @@ function ThankYou({
         </Alert>
       </Snackbar>
     </div>
-  ) : <></>;
+  ) : (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
+            <Close />
+          </button>
+          <div className={styles.headerTitle}>{t('donate:donationFailed')}</div>
+        </div>
+        <div className={styles.contributionMessage} style={{marginBottom:'24px'}}>
+          {t('donate:donationFailedMessage')}
+        </div>
+
+      </div>
+    ) : <></>;
 }
 
 export default ThankYou;

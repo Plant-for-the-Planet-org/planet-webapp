@@ -20,6 +20,7 @@ function DonationSuccessful({ }: Props): ReactElement {
                 donationID={donationID}
                 onClose={() => router.replace(`${process.env.NEXTAUTH_URL}`)}
                 paymentType={router.query.paymentType}
+                redirectStatus={router.query.redirect_status}
             />
         </div>
     ) : <></>;

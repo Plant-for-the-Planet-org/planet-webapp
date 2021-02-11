@@ -97,6 +97,8 @@ function PaymentDetails({
     })
   }
 
+  const sofortCountries = ['AT','BE','DE','IT','NL','ES']
+
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -133,7 +135,7 @@ function PaymentDetails({
             showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")}
             showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")}
             showSepa={paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")}
-            showSofort={paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")}
+            showSofort={sofortCountries.includes(country) && paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")} 
             showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal}
           />
           <div

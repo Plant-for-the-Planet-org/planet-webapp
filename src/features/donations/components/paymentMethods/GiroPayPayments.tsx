@@ -15,10 +15,10 @@ function GiroPayPayments({ onSubmitPayment }: Props): ReactElement {
 
     return (
         <div className={styles.paymentModeContainer}>
-            <div className={styles.paymentModeHeader}>
+            {/* <div className={styles.paymentModeHeader}>
                 <GiroPayIcon />
                 <div className={styles.paymentModeTitle}>Giro Pay</div>
-            </div>
+            </div> */}
 
            
                 <div onClick={()=>onSubmitPayment('stripe_giropay','giropay')} className={styles.actionButtonsContainer}>

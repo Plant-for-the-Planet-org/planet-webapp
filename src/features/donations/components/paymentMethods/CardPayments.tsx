@@ -179,17 +179,6 @@ function CardPayments({
 
         {
           <div className={styles.paymentModeContainer}>
-            <div className={styles.paymentModeHeader}>
-              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
-              <div className={styles.paymentModeTitle}>
-                {t('donate:creditDebitCard')}
-              </div>
-
-              {/* <div className={styles.paymentModeFee}>
-                  <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
-                  <InfoIcon />
-                </div> */}
-            </div>
 
             <div className={styles.formRow}>
               <FormControlNew variant="outlined">

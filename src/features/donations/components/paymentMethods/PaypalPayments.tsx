@@ -18,10 +18,10 @@ function PaypalPayments({
         <div>
             {paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
                 <div className={styles.paymentModeContainer}>
-                    <div className={styles.paymentModeHeader}>
+                    {/* <div className={styles.paymentModeHeader}>
                         <PaypalIcon />
                         <div className={styles.paymentModeTitle}>Paypal</div>
-                    </div>
+                    </div> */}
                     <Paypal
                         onSuccess={data => {
                             payDonationFunction('paypal',data);

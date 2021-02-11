@@ -82,6 +82,7 @@ export interface ThankYouProps {
   donationID:any;
   onClose: any;
   paymentType: String | string;
+  redirectStatus:any;
 }
 
 export interface CreateDonationFunctionProps {

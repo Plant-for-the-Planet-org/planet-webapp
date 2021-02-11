@@ -81,5 +81,7 @@
   "yourDonationRef":"Your donation ref is {{donationID}}",
   "backToHome":"Back to home",
   "payWithGiroPay":"Pay with GiroPay",
-  "payWithSofort":"Pay with Sofort"
+  "payWithSofort":"Pay with Sofort",
+  "donationFailed":"Donation Failed",
+  "donationFailedMessage":"Your payment has failed, please try again."
 }

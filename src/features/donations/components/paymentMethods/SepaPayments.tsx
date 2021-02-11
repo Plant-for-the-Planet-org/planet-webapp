@@ -57,7 +57,7 @@ function SepaPayments({
     const [paymentError, setPaymentError] = React.useState('');
     const [showContinue, setShowContinue] = React.useState(false);
 
-    const validateChange =()=>{
+    const validateChange = () => {
         const sepaElement = elements.getElement(IbanElement)!;
         sepaElement.on('change', ({ error }) => {
             if (error) {
@@ -109,14 +109,6 @@ function SepaPayments({
             )}
 
             <div className={styles.paymentModeContainer}>
-                <div className={styles.paymentModeHeader}>
-                    <SepaIcon />
-                    <div className={styles.paymentModeTitle}>SEPA Direct Debit</div>
-                    {/* <div className={styles.paymentModeFee}>
-                        <div className={styles.paymentModeFeeAmount}>€ 0,35 fee</div>
-                        <InfoIcon />
-                    </div> */}
-                </div>
 
                 <div>
                     <div className={styles.mandateAcceptance}>

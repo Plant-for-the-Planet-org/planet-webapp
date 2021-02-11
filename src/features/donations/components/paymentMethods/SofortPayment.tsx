@@ -15,10 +15,10 @@ function SofortPayments({ onSubmitPayment }: Props): ReactElement {
 
     return (
         <div className={styles.paymentModeContainer}>
-            <div className={styles.paymentModeHeader}>
+            {/* <div className={styles.paymentModeHeader}>
                 <SofortIcon />
                 <div className={styles.paymentModeTitle}>Sofort</div>
-            </div>
+            </div> */}
 
            
                 <div onClick={()=>onSubmitPayment('stripe_sofort','sofort')} className={styles.actionButtonsContainer}>

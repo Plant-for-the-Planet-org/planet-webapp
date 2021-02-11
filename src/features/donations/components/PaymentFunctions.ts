@@ -372,7 +372,7 @@ export async function handleSCAPaymentFunction({
         {
           payment_method: {
             sofort: {
-              country: "DE" // TODO pass variable country
+              country: donorDetails.country // TODO pass variable country
             },
             billing_details: {
               name: `${donorDetails.firstName} ${donorDetails.lastName}`,
