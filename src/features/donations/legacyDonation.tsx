@@ -88,7 +88,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     }
   }
   let isGift = false;
-  let giftDetails = {
+  const giftDetails = {
     recipientName: null
   };
   if (paymentData.giftRecipient || paymentData.supportedTreecounterName) {

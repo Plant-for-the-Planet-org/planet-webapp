@@ -82,9 +82,8 @@ export default function PublicUser(initialized: Props) {
         if (isAuthenticated) {
           token = await getAccessTokenSilently();
         }
-        let userInfo;
-        userInfo = await getLocalUserInfo()
-        let currentUserSlug = userInfo?.slug ? userInfo.slug : null;
+        const userInfo = await getLocalUserInfo()
+        const currentUserSlug = userInfo?.slug ? userInfo.slug : null;
         
         // some user logged in and slug matches -> private profile
         if (!isLoading && token && currentUserSlug === slug) {          
@@ -108,7 +107,9 @@ export default function PublicUser(initialized: Props) {
             } else {
               // any other error
             }
-          } catch (e) { }
+          } catch (err) {
+            console.log(err);
+          }
         } else {
           //no user logged in or slug mismatch -> public profile
           const newPublicUserprofile = await getRequest(

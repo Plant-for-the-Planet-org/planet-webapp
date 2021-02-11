@@ -29,7 +29,7 @@ type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
 declare module '@material-ui/core/styles/overrides' {
-  export interface ComponentNameToClassKey extends overridesNameToClassKey {}
+  export type ComponentNameToClassKey = overridesNameToClassKey
 }
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
@@ -131,12 +131,12 @@ export default function RegisterTrees({
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
-      let userLang = localStorage.getItem('language');
+      const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
 
     async function getUserCountryBbox() {
-      var country = getStoredConfig('country');
+      const country = getStoredConfig('country');
       const result = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
       );
@@ -322,11 +322,11 @@ export default function RegisterTrees({
                         }
                       >
                         <Controller
-                          render={(props) => (
+                          render={(properties) => (
                             <DatePicker
                               label={t('me:datePlanted')}
-                              value={props.value}
-                              onChange={props.onChange}
+                              value={properties.value}
+                              onChange={properties.onChange}
                               inputVariant="outlined"
                               TextFieldComponent={MaterialTextField}
                               autoOk

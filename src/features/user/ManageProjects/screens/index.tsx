@@ -93,7 +93,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     const [userLang,setUserLang] = React.useState('en')
     React.useEffect(()=>{
         if (localStorage.getItem('language')) {
-            let userLang = localStorage.getItem('language');
+            const userLang = localStorage.getItem('language');
             if (userLang) setUserLang(userLang);
           }
     },[])

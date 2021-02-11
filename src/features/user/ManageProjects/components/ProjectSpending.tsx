@@ -83,7 +83,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
             if (!res.code) {
-                let newUploadedFiles = uploadedFiles;
+                const newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
                 setUploadedFiles(newUploadedFiles);
                 setAmount(0);
@@ -109,7 +109,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
         setIsUploadingData(true)
         deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
             if (res !== 404) {
-                let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
+                const uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
                 setIsUploadingData(false)
             }
@@ -128,7 +128,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
             })
     }, [projectGUID]);
 
-    var fiveYearsAgo = new Date();
+    const fiveYearsAgo = new Date();
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
     return ready ? (
         <div className={styles.stepContainer}>
@@ -166,7 +166,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             <div className={`${styles.formFieldHalf}`}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                     <Controller
-                                        render={props => (
+                                        render={properties => (
                                             <DatePicker
                                                 inputRef={register({
                                                     required: {
@@ -175,8 +175,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                                     }
                                                 })}
                                                 views={["year"]}
-                                                value={props.value}
-                                                onChange={props.onChange}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
                                                 label={t('manageProjects:spendingYear')}
                                                 inputVariant="outlined"
                                                 variant="inline"

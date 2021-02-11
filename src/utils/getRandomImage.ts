@@ -1,5 +1,5 @@
 export default function getRandomImage(name: string) {
-  let upperCaseName = name.toUpperCase();
+  const upperCaseName = name.toUpperCase();
   const firstAlphabet = (upperCaseName ? upperCaseName.charAt(0) : '');
 
     if (firstAlphabet >= 'A' && firstAlphabet <= 'D') {
