@@ -88,7 +88,7 @@
     "react-mapbox-gl-draw": "^2.0.4",
     "react-player": "^2.7.2",
     "read-more-react": "^1.0.10",
-    "styled-jsx": "^3.3.2",
+    "styled-jsx": "^3.4.1",
     "uuid": "^8.3.2",
     "viewport-mercator-project": "^6.1.1",
     "vizzuality-components": "^3.0.3"
