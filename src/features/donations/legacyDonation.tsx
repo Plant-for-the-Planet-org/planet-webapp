@@ -68,17 +68,17 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     loadPaymentSetup();
   }, [paymentData, country]);
 
-  const onSubmitPayment = ( gateway:any, paymentMethod:any)=>{
-    payDonationFunction ({
+  const onSubmitPayment = (gateway: any, paymentMethod: any) => {
+    payDonationFunction({
       gateway,
       paymentMethod,
       setIsPaymentProcessing,
       setPaymentError,
       t,
       paymentSetup,
-      donationID:paymentData.guid,
-      token:null,
-      setDonationStep: ()=>{}
+      donationID: paymentData.guid,
+      token: null,
+      setDonationStep: () => { }
     })
   }
   const router = useRouter();
@@ -106,7 +106,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     country: paymentData.plantProjectCountry
   }
   const ThankYouProps = {
-    donationID:paymentData.guid,
+    donationID: paymentData.guid,
     onClose,
     paymentType,
   };
@@ -121,23 +121,24 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           )}
           <div className={styles.header}>
             <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-            <div className={styles.headerText}>
-              {t('common:to_project_by_tpo', {
-                projectName: paymentData.plantProjectName,
-                tpoName: paymentData.tpoName,
-              })}
-            </div>
-            {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
-              paymentData.giftRecipient ?
-                (<div className={styles.headerText}>
-                  {t('donate:giftTo')} {paymentData.giftRecipient}
-                </div>) :
-                (<div className={styles.headerText}>
-                  {t('donate:supporting')} {paymentData.supportedTreecounterName}
-                </div>)
-            ) : null}
-
           </div>
+          <div className={styles.headerText}>
+            {t('common:to_project_by_tpo', {
+              projectName: paymentData.plantProjectName,
+              tpoName: paymentData.tpoName,
+            })}
+          </div>
+          {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
+            paymentData.giftRecipient ?
+              (<div className={styles.headerText}>
+                {t('donate:giftTo')} {paymentData.giftRecipient}
+              </div>) :
+              (<div className={styles.headerText}>
+                {t('donate:supporting')} {paymentData.supportedTreecounterName}
+              </div>)
+          ) : null}
+
+
 
           <div className={styles.finalTreeCount}>
             <div className={styles.totalCost}>

@@ -83,5 +83,7 @@
   "payWithGiroPay":"Pay with GiroPay",
   "payWithSofort":"Pay with Sofort",
   "donationFailed":"Donation Failed",
-  "donationFailedMessage":"Your payment has failed, please try again."
+  "donationFailedMessage":"Your payment has failed, please try again.",
+  "donationPending":"Completing your donation",
+  "donationPendingMessage":"We are just waiting for the confirmation from your bank. This might take some time feel free to close this page. We'll send your receipt via email shortly."
 }
