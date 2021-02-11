@@ -354,7 +354,7 @@ export async function handleSCAPaymentFunction({
         {
           payment_method: {
             billing_details: {
-              name: `${donorDetails.firstName} ${donorDetails.lastName}`,
+              name: `${donorDetails.firstname} ${donorDetails.lastname}`,
               email:donorDetails.email,
               address:{
                 city: donorDetails.city,
@@ -386,7 +386,7 @@ export async function handleSCAPaymentFunction({
               country: donorDetails.country // TODO pass variable country
             },
             billing_details: {
-              name: `${donorDetails.firstName} ${donorDetails.lastName}`,
+              name: `${donorDetails.firstname} ${donorDetails.lastname}`,
               email:donorDetails.email,
               address:{
                 city: donorDetails.city,

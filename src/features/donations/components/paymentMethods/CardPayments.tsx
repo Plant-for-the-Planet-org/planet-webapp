@@ -54,7 +54,8 @@ const getInputOptions = (placeholder: string) => {
 function CardPayments({
   paymentType,
   setPaymentType,
-  onPaymentFunction
+  onPaymentFunction,
+  donorDetails
 }: any): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const stripe = useStripe();
@@ -101,7 +102,20 @@ function CardPayments({
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
 
   const createPaymentMethodCC = (cardElement: any) => {
-    return stripe.createPaymentMethod('card', cardElement)
+    return stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+        name: `${donorDetails.firstname} ${donorDetails.lastname}`,
+        email:donorDetails.email,
+        address:{
+          city: donorDetails.city,
+          country: donorDetails.country,
+          line1: donorDetails.address,
+          postal_code: donorDetails.zipCode,
+        }
+      }
+    })
   }
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);

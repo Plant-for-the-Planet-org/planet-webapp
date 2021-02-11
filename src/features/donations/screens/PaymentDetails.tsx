@@ -147,7 +147,7 @@ function PaymentDetails({
           >
             <Elements
               stripe={getStripe(paymentSetup)}>
-              <CardPayments onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+              <CardPayments donorDetails={donorDetails} onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
             </Elements>
           </div>
 
