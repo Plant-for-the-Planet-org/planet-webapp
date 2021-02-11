@@ -49,21 +49,17 @@ function PaymentDetails({
 
   const [paymentError, setPaymentError] = React.useState('');
 
-  const [donorDetails, setDonorDetails] = React.useState({})
+  const donorDetails = {
+    firstname: contactDetails.firstName,
+    lastname: contactDetails.lastName,
+    email: contactDetails.email,
+    address: contactDetails.address,
+    zipCode: contactDetails.zipCode,
+    city: contactDetails.city,
+    country: contactDetails.country,
+    companyname: contactDetails.companyName,
+  };
 
-  React.useEffect(() => {
-    const donorDetails = {
-      firstname: contactDetails.firstName,
-      lastname: contactDetails.lastName,
-      email: contactDetails.email,
-      address: contactDetails.address,
-      zipCode: contactDetails.zipCode,
-      city: contactDetails.city,
-      country: contactDetails.country,
-      companyname: contactDetails.companyName,
-    };
-    setDonorDetails(donorDetails);
-  }, [contactDetails]);
 
   React.useEffect(() => {
     if (shouldCreateDonation) {

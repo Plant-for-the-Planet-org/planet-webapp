@@ -237,6 +237,17 @@ export async function payDonationFunction({
       }
     }
   }
+  else if (gateway === 'stripe_sofort') {
+    payDonationData = {
+      paymentProviderRequest: {
+        account: paymentSetup.gateways.stripe.account,
+        gateway: 'stripe_pi',
+        source: {
+          object: 'sofort'
+        }
+      }
+    }
+  }
 
   try {
     const paidDonation = await payDonation(payDonationData, donationID, token);
