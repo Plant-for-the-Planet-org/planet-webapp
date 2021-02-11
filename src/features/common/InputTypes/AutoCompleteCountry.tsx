@@ -57,7 +57,7 @@ export default function CountrySelect(props: {
   React.useEffect(() => {
     // create default object
     const defaultCountry = countries.filter((data) => data.code === defaultValue);
-    if (defaultCountry.length > 0) {
+    if (defaultCountry && defaultCountry.length > 0) {
       // set initial value
       setValue(defaultCountry[0]);
       // set contact details
