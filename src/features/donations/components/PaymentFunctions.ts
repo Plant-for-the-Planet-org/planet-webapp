@@ -319,7 +319,7 @@ export async function handleSCAPaymentFunction({
   );
   if (stripe) {
     if(gateway === 'stripe'){
-      const SCAdonation = await stripe.handleCardAction(clientSecret)
+      const SCAdonation = await stripe.handleCardAction(clientSecret);      
       if (SCAdonation) {
         if (SCAdonation.error) {
           setIsPaymentProcessing(false);
@@ -330,14 +330,14 @@ export async function handleSCAPaymentFunction({
               account: paymentSetup.gateways.stripe.account,
               gateway: 'stripe_pi',
               source: {
-                id: paidDonation.paymentIntent.id,
+                id: SCAdonation.paymentIntent.id,
                 object: 'payment_intent',
               },
             },
           };
           const SCAPaidDonation = await payDonation(payDonationData, donationID, token);
           if (SCAPaidDonation) {
-            if (SCAPaidDonation.paymentStatus === 'success') {
+            if (SCAPaidDonation.paymentStatus) {
               setIsPaymentProcessing(false);
               setDonationStep(4);
             } else {
