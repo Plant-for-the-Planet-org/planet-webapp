@@ -112,14 +112,7 @@ function SepaPayments({
 
                 <div>
                     <div className={styles.mandateAcceptance}>
-                        By providing your IBAN and confirming this payment, you authorise
-                        (A) Plant for the Planet or the reforestation organization and Stripe,
-                        our payment service provider, to send
-                        instructions to your bank to debit your account and (B) your bank to
-                        debit your account in accordance with those instructions. You are
-                        entitled to a refund from your bank under the terms and conditions of
-                        your agreement with your bank. A refund must be claimed within 8 weeks
-                        starting from the date on which your account was debited.
+                        {t('donate:sepaMessage')}
                     </div>
                     <FormControlNew variant="outlined">
                         <IbanElement

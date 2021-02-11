@@ -84,6 +84,7 @@ function PaymentDetails({
 
 
   const onSubmitPayment = (gateway: any, paymentMethod: any) => {
+    setShouldCreateDonation(true)
     payDonationFunction({
       gateway,
       paymentMethod,
