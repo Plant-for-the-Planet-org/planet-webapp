@@ -26,9 +26,9 @@ describe('hompage', () => {
     const val1 = await driver.findElement(By.xpath("//*[text()='Continue']"));
     await val1.click();
     await driver.switchTo().activeElement();
-    (await driver).sleep(100);
+    (await driver).sleep(1000);
 
-    await driver.switchTo().frame(driver.findElement(By.xpath("//*[@id='cardNumber']/div/iframe")));
+    await driver.switchTo().frame(driver.findElement(By.xpath('//*[@id="cardNumber"]/div/iframe')));
     const cardNumber = await driver.findElement(By.name('cardnumber'));
     const cardEnabled = await driver.wait(until.elementIsEnabled(cardNumber));
     await cardEnabled.sendKeys('4242424242424242');      
