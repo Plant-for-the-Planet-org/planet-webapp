@@ -102,20 +102,25 @@ function CardPayments({
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
 
   const createPaymentMethodCC = (cardElement: any) => {
-    return stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-      billing_details: {
-        name: `${donorDetails.firstname} ${donorDetails.lastname}`,
-        email:donorDetails.email,
-        address:{
-          city: donorDetails.city,
-          country: donorDetails.country,
-          line1: donorDetails.address,
-          postal_code: donorDetails.zipCode,
+    if(donorDetails){
+      return stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: `${donorDetails.firstname} ${donorDetails.lastname}`,
+          email:donorDetails.email,
+          address:{
+            city: donorDetails.city,
+            country: donorDetails.country,
+            line1: donorDetails.address,
+            postal_code: donorDetails.zipCode,
+          }
         }
-      }
-    })
+      })
+    }
+    else {
+      return stripe.createPaymentMethod('card', cardElement)
+    }
   }
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);
