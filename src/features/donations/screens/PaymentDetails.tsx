@@ -139,81 +139,87 @@ function PaymentDetails({
             showSofort={sofortCountries.includes(country) && paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")}
             showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal}
           />
-          <div
-            role="tabpanel"
-            hidden={paymentType !== 'CARD'}
-            id={`payment-methods-tabpanel-${'CARD'}`}
-            aria-labelledby={`scrollable-force-tab-${'CARD'}`}
-          >
-            <Elements
-              stripe={getStripe(paymentSetup)}>
-              <CardPayments donorDetails={donorDetails} onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
-            </Elements>
-          </div>
 
-          {/* SEPA */}
-          <div
-            role="tabpanel"
-            hidden={paymentType !== 'SEPA'}
-            id={`payment-methods-tabpanel-${'SEPA'}`}
-            aria-labelledby={`scrollable-force-tab-${'SEPA'}`}
-          >
-            <Elements
-              stripe={getStripe(paymentSetup)}>
-              <SepaPayments
-                paymentType={paymentType}
-                onPaymentFunction={onSubmitPayment}
-                contactDetails={contactDetails}
-              />
-            </Elements>
-          </div>
+          {donationID && (
+            <>
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'CARD'}
+                id={`payment-methods-tabpanel-${'CARD'}`}
+                aria-labelledby={`scrollable-force-tab-${'CARD'}`}
+              >
+                <Elements
+                  stripe={getStripe(paymentSetup)}>
+                  <CardPayments donorDetails={donorDetails} onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+                </Elements>
+              </div>
 
-          {/* Paypal */}
-          <div
-            role="tabpanel"
-            hidden={paymentType !== 'Paypal'}
-            id={`payment-methods-tabpanel-${'Paypal'}`}
-            aria-labelledby={`scrollable-force-tab-${'Paypal'}`}
-          >
-            {paymentType === 'Paypal' && (
-              <PaypalPayments
-                paymentSetup={paymentSetup}
-                treeCount={treeCount}
-                treeCost={treeCost}
-                currency={currency}
-                donationID={donationID}
-                payDonationFunction={onSubmitPayment}
-              />
-            )}
+              {/* SEPA */}
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'SEPA'}
+                id={`payment-methods-tabpanel-${'SEPA'}`}
+                aria-labelledby={`scrollable-force-tab-${'SEPA'}`}
+              >
+                <Elements
+                  stripe={getStripe(paymentSetup)}>
+                  <SepaPayments
+                    paymentType={paymentType}
+                    onPaymentFunction={onSubmitPayment}
+                    contactDetails={contactDetails}
+                  />
+                </Elements>
+              </div>
 
-          </div>
-          <div
-            role="tabpanel"
-            hidden={paymentType !== 'GiroPay'}
-            id={`payment-methods-tabpanel-${'GiroPay'}`}
-            aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
-          >
-            <Elements
-              stripe={getStripe(paymentSetup)}>
-              <GiroPayPayments
-                onSubmitPayment={onSubmitPayment}
-              />
-            </Elements>
-          </div>
+              {/* Paypal */}
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'Paypal'}
+                id={`payment-methods-tabpanel-${'Paypal'}`}
+                aria-labelledby={`scrollable-force-tab-${'Paypal'}`}
+              >
+                {paymentType === 'Paypal' && (
+                  <PaypalPayments
+                    paymentSetup={paymentSetup}
+                    treeCount={treeCount}
+                    treeCost={treeCost}
+                    currency={currency}
+                    donationID={donationID}
+                    payDonationFunction={onSubmitPayment}
+                  />
+                )}
 
-          <div
-            role="tabpanel"
-            hidden={paymentType !== 'Sofort'}
-            id={`payment-methods-tabpanel-${'Sofort'}`}
-            aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
-          >
-            <Elements
-              stripe={getStripe(paymentSetup)}>
-              <SofortPayments
-                onSubmitPayment={onSubmitPayment}
-              />
-            </Elements>
-          </div>
+              </div>
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'GiroPay'}
+                id={`payment-methods-tabpanel-${'GiroPay'}`}
+                aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
+              >
+                <Elements
+                  stripe={getStripe(paymentSetup)}>
+                  <GiroPayPayments
+                    onSubmitPayment={onSubmitPayment}
+                  />
+                </Elements>
+              </div>
+
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'Sofort'}
+                id={`payment-methods-tabpanel-${'Sofort'}`}
+                aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
+              >
+                <Elements
+                  stripe={getStripe(paymentSetup)}>
+                  <SofortPayments
+                    onSubmitPayment={onSubmitPayment}
+                  />
+                </Elements>
+              </div>
+            </>
+          )}
+
 
         </div>
       )
