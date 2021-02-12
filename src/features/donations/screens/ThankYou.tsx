@@ -25,16 +25,29 @@ function ThankYou({
 }: ThankYouProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
-  const [donation, setdonation] = React.useState(null)
+  const [donation, setdonation] = React.useState(null);
+
+  async function loadDonation() {
+    const donation = await getRequest(`/app/donations/${donationID}`);
+    setdonation(donation);
+  }
+
   React.useEffect(() => {
-    async function loadDonation() {
-      const donation = await getRequest(`/app/donations/${donationID}`);
-      setdonation(donation);
-    }
     if (donationID) {
       loadDonation();
     }
   }, [donationID])
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (donation && donation.paymentStatus === 'pending') {
+        loadDonation();
+      }
+    }, 10000)
+    return () => {
+      clearInterval(interval);
+    }
+  }, [donation])
 
   const config = tenantConfig();
   const imageRef = React.createRef();
@@ -166,7 +179,7 @@ function ThankYou({
 
   function FailedDonation() {
     return (
-      <div className={styles.container} style={{paddingBottom:'24px'}}>
+      <div className={styles.container} style={{ paddingBottom: '24px' }}>
         <div className={styles.header}>
           <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
             <Close />
@@ -176,7 +189,7 @@ function ThankYou({
         <div className={styles.contributionMessage} style={{ marginBottom: '24px' }}>
           {t('donate:donationFailedMessage')}
         </div>
-        <PaymentFailedIllustration/>
+        <PaymentFailedIllustration />
       </div>
     )
 
@@ -184,7 +197,7 @@ function ThankYou({
 
   function PendingDonation() {
     return (
-      <div className={styles.container} style={{paddingBottom:'24px'}}>
+      <div className={styles.container} style={{ paddingBottom: '24px' }}>
         <div className={styles.header}>
           <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
             <Close />
@@ -194,7 +207,7 @@ function ThankYou({
         <div className={styles.contributionMessage} style={{ marginBottom: '24px' }}>
           {t('donate:donationPendingMessage')}
         </div>
-        <PaymentPendingIllustration/>
+        <PaymentPendingIllustration />
       </div>
     )
 
