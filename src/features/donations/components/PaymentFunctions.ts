@@ -98,8 +98,8 @@ export async function createDonationFunction({
   setDonationID,
   token
 }: CreateDonationFunctionProps) {
-  let taxDeductionCountry = isTaxDeductible ? country : null;
-  let donationData = createDonationData({ project, treeCount, treeCost, currency, donorDetails, taxDeductionCountry, isGift, giftDetails })
+  const taxDeductionCountry = isTaxDeductible ? country : null;
+  const donationData = createDonationData({ project, treeCount, treeCost, currency, donorDetails, taxDeductionCountry, isGift, giftDetails })
   try {
     const donation = await createDonation(donationData, token);
     if (donation) {
@@ -310,7 +310,7 @@ export async function handleSCAPaymentFunction({
   donorDetails
 }: any) {  
   const clientSecret = paidDonation.response.payment_intent_client_secret;
-  let key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
+  const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
   const stripe = window.Stripe(
     key,
     {

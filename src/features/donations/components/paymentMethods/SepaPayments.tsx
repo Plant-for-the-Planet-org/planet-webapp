@@ -89,7 +89,7 @@ function SepaPayments({
 
         if (paymentType === 'SEPA') {
             const sepaElement = elements.getElement(IbanElement)!;
-            let payload = await createPaymentMethodSepa(sepaElement, contactDetails);
+            const payload = await createPaymentMethodSepa(sepaElement, contactDetails);
             paymentMethod = payload.paymentMethod;
             // Add payload error if failed
         }
