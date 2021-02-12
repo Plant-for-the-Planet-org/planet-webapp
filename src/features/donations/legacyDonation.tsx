@@ -79,6 +79,14 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       donationID: paymentData.guid,
       token: null,
       setDonationStep: () => { }
+    }).then((res)=>{
+      if (res.paymentStatus) {
+        setIsPaymentProcessing(false);
+        setIsDonationComplete(true);
+      } else {
+        setIsPaymentProcessing(false);
+        setPaymentError(res.error ? res.error.message : res.message);
+      }
     })
   }
   const router = useRouter();

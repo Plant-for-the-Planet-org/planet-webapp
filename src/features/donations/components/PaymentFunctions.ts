@@ -340,6 +340,7 @@ export async function handleSCAPaymentFunction({
             if (SCAPaidDonation.paymentStatus) {
               setIsPaymentProcessing(false);
               setDonationStep(4);
+              return SCAPaidDonation;
             } else {
               setIsPaymentProcessing(false);
               setPaymentError(SCAPaidDonation.error ? SCAPaidDonation.error.message : SCAPaidDonation.message);
