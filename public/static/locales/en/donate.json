@@ -86,5 +86,6 @@
   "donationFailedMessage":"Something went wrong while completing your payment. If you continue having issues please reach out to us at support@plant-for-the-planet.org",
   "donationPending":"Completing your donation",
   "donationPendingMessage":"We are currently waiting for the confirmation from your bank. This might take some time so, please feel free to close this page. We’ll send your receipt via email shortly.",
-  "sepaMessage":"By providing your IBAN and confirming this payment, you authorize Plant-for-the-Planet and Stripe, our payment service provider, to send instructions to your bank to debit your account. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. If you have any issues regarding your donation, please send us an email to support@plant-for-the-planet.org"
+  "sepaMessage":"By providing your IBAN and confirming this payment, you authorize Plant-for-the-Planet and Stripe, our payment service provider, to send instructions to your bank to debit your account. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. If you have any issues regarding your donation, please send us an email to support@plant-for-the-planet.org",
+  "donationRef":"Donation Ref"
 }

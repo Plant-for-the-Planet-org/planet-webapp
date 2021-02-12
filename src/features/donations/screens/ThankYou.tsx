@@ -204,8 +204,11 @@ function ThankYou({
           </button>
           <div className={styles.headerTitle}>{t('donate:donationPending')}</div>
         </div>
-        <div className={styles.contributionMessage} style={{ marginBottom: '24px' }}>
+        <div className={styles.contributionMessage}>
           {t('donate:donationPendingMessage')}
+        </div>
+        <div className={styles.contributionMessage} style={{ marginBottom: '24px',fontStyle:'italic' }}>
+          {t('donate:donationRef')} {donationID}
         </div>
         <PaymentPendingIllustration />
       </div>
