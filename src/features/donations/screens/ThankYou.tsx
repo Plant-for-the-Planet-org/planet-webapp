@@ -40,7 +40,7 @@ function ThankYou({
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      if (donation && donation.paymentStatus === 'pending') {
+      if (donation && (donation.paymentStatus === 'pending' || donation.paymentStatus === 'initiated')) {
         loadDonation();
       }
     }, 10000)
