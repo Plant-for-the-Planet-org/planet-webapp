@@ -257,8 +257,9 @@
   overflow-y: scroll;
   padding-bottom: 20px;
   > .paymentMethod {
+    box-sizing: border-box;
     margin-right: 12px;
-    border: 1px solid $dividerColor;
+    border: 2px solid $dividerColor;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -277,7 +278,7 @@
     }
   }
   .paymentMethodSelected{
-    border: 2px solid $primaryFontColor;
+    border: 2px solid $primaryColor;
     color: $primaryFontColor;
     font-weight: 600;
   }
