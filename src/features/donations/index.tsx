@@ -20,6 +20,9 @@ function DonationsPopup({
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
   const [paymentSetup, setPaymentSetup] = React.useState();
+  const [donationID, setDonationID] = React.useState(null);
+  const [shouldCreateDonation, setShouldCreateDonation] = React.useState(false);
+
 
   const {
     isLoading,
@@ -130,6 +133,10 @@ function DonationsPopup({
     }
   }, [isAuthenticated, isLoading])
 
+  React.useEffect(()=>{
+    setShouldCreateDonation(true);
+  },[paymentSetup,treeCount,isGift,giftDetails,contactDetails.firstName,contactDetails.lastName,contactDetails.email,contactDetails.address,contactDetails.city,contactDetails.zipCode,contactDetails.firstName,contactDetails.country,contactDetails.companyName, isTaxDeductible])
+
   const TreeDonationProps = {
     project,
     onClose,
@@ -153,7 +160,9 @@ function DonationsPopup({
     paymentType,
     setPaymentType,
     isPaymentOptionsLoading,
-    token
+    token,
+    donationID, 
+    setDonationID
   };
 
   const ContactDetailsProps = {
@@ -183,18 +192,15 @@ function DonationsPopup({
     setPaymentType,
     country,
     isTaxDeductible,
-    token
+    token,
+    donationID, 
+    setDonationID,
+    shouldCreateDonation,
+    setShouldCreateDonation
   };
 
   const ThankYouProps = {
-    project,
-    treeCount,
-    treeCost,
-    currency,
-    setDonationStep,
-    contactDetails,
-    isGift,
-    giftDetails,
+    donationID,
     onClose,
     paymentType,
   };

@@ -4,13 +4,13 @@ import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../utils/stripe/getStripe';
 import styles from './styles/PaymentDetails.module.scss';
 import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
-import { NativePay, PaymentRequestCustomButton } from './components/paymentMethods/PaymentRequestCustomButton';
+import { NativePay } from './components/paymentMethods/PaymentRequestCustomButton';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
 import i18next from '../../../i18n';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../utils/getFormattedNumber';
-import { payDonation } from './components/PaymentFunctions';
+import { payDonationFunction } from './components/PaymentFunctions';
 import PaymentProgress from '../common/ContentLoaders/Donations/PaymentProgress';
 import ThankYou from './screens/ThankYou';
 import { useRouter } from 'next/router';
@@ -68,103 +68,27 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     loadPaymentSetup();
   }, [paymentData, country]);
 
-  const onPaymentFunction = (gateway: any, paymentMethod: any) => {
-    setIsPaymentProcessing(true);
-
-    let payDonationData;
-    if (gateway === 'stripe') {
-      payDonationData = {
-        paymentProviderRequest: {
-          account: paymentSetup.gateways.stripe.account,
-          gateway: 'stripe_pi',
-          source: {
-            id: paymentMethod.id,
-            object: 'payment_method',
-          },
-        },
-      };
-    }
-    else if (gateway === 'paypal') {
-      payDonationData = {
-        paymentProviderRequest: {
-          account: paymentSetup.gateways.paypal.account,
-          gateway: 'paypal',
-          source: {
-            ...paymentMethod
-          },
-        },
-      };
-    }
-
-    payDonation(payDonationData, paymentData.guid, null)
-      .then(async (res) => {
-        if (res.code === 400 || res.code === 401) {
-          setIsPaymentProcessing(false);
-          setPaymentError(res.message);
-          return;
-        } if (res.code === 500) {
-          setIsPaymentProcessing(false);
-          setPaymentError('Something went wrong please try again soon!');
-          return;
-        } if (res.code === 503) {
-          setIsPaymentProcessing(false);
-          setPaymentError(
-            'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
-          );
-          return;
-        }
-        if (res.status === 'failed') {
-          setIsPaymentProcessing(false);
-          setPaymentError(res.message);
-        } else if (res.paymentStatus === 'success') {
-          setIsPaymentProcessing(false);
-          setIsDonationComplete(true);
-        } else if (res.status === 'action_required') {
-          const clientSecret = res.response.payment_intent_client_secret;
-          const donationID = res.id;
-          const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
-          const stripe = window.Stripe(
-            key,
-            {
-              stripeAccount: res.response.account,
-            },
-          );
-          if (stripe) {
-            await stripe.handleCardAction(clientSecret).then((res) => {
-              if (res.error) {
-                setIsPaymentProcessing(false);
-                setPaymentError(res.error.message);
-              } else {
-                const payDonationData = {
-                  paymentProviderRequest: {
-                    account: paymentSetup.gateways.stripe.account,
-                    gateway: 'stripe_pi',
-                    source: {
-                      id: res.paymentIntent.id,
-                      object: 'payment_intent',
-                    },
-                  },
-                };
-                payDonation(payDonationData, donationID, null).then((res) => {
-                  if (res.paymentStatus === 'success') {
-                    setIsPaymentProcessing(false);
-                    setIsDonationComplete(true);
-                  } else {
-                    setIsPaymentProcessing(false);
-                    setPaymentError(res.error ? res.error.message : res.message);
-                  }
-                });
-              }
-            });
-          }
-        }
-      })
-      .catch((error) => {
+  const onSubmitPayment = (gateway: any, paymentMethod: any) => {
+    payDonationFunction({
+      gateway,
+      paymentMethod,
+      setIsPaymentProcessing,
+      setPaymentError,
+      t,
+      paymentSetup,
+      donationID: paymentData.guid,
+      token: null,
+      setDonationStep: () => { }
+    }).then((res)=>{
+      if (res.paymentStatus) {
         setIsPaymentProcessing(false);
-        setPaymentError(error.message);
-      });
+        setIsDonationComplete(true);
+      } else {
+        setIsPaymentProcessing(false);
+        setPaymentError(res.error ? res.error.message : res.message);
+      }
+    })
   }
-
   const router = useRouter();
   const onClose = () => {
     if (typeof window !== 'undefined') {
@@ -185,30 +109,14 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
     }
   }
 
-
-  const paypalSuccess = (data: any) => {
-    if (data.error) {
-      setPaymentError(data.error.message)
-    } else {
-      onPaymentFunction('paypal', data);
-    }
-  }
-
   const project = {
     name: paymentData.plantProjectName,
     country: paymentData.plantProjectCountry
   }
   const ThankYouProps = {
-    project,
-    treeCount,
-    treeCost,
-    currency,
-    contactDetails: {},
-    isGift,
-    giftDetails,
+    donationID: paymentData.guid,
     onClose,
     paymentType,
-    setDonationStep: null
   };
 
   return ready ? (
@@ -221,23 +129,24 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           )}
           <div className={styles.header}>
             <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-            <div className={styles.headerText}>
-              {t('common:to_project_by_tpo', {
-                projectName: paymentData.plantProjectName,
-                tpoName: paymentData.tpoName,
-              })}
-            </div>
-            {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
-              paymentData.giftRecipient ?
-                (<div className={styles.headerText}>
-                  {t('donate:giftTo')} {paymentData.giftRecipient}
-                </div>) :
-                (<div className={styles.headerText}>
-                  {t('donate:supporting')} {paymentData.supportedTreecounterName}
-                </div>)
-            ) : null}
-
           </div>
+          <div className={styles.headerText}>
+            {t('common:to_project_by_tpo', {
+              projectName: paymentData.plantProjectName,
+              tpoName: paymentData.tpoName,
+            })}
+          </div>
+          {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
+            paymentData.giftRecipient ?
+              (<div className={styles.headerText}>
+                {t('donate:giftTo')} {paymentData.giftRecipient}
+              </div>) :
+              (<div className={styles.headerText}>
+                {t('donate:supporting')} {paymentData.supportedTreecounterName}
+              </div>)
+          ) : null}
+
+
 
           <div className={styles.finalTreeCount}>
             <div className={styles.totalCost}>
@@ -253,7 +162,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           {paymentSetup && (
             <>
               <Elements stripe={getStripe(paymentSetup)}>
-                <CardPayments onPaymentFunction={(data) => onPaymentFunction('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+                <CardPayments onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
               </Elements>
 
 
@@ -271,7 +180,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                           treeCost * treeCount,
                           currency.toLowerCase(),
                         )}
-                        onPaymentFunction={(data) => onPaymentFunction('stripe', data)}
+                        onPaymentFunction={(data) => onSubmitPayment('stripe', data)}
                         paymentSetup={paymentSetup}
                       />
                     </>
@@ -287,7 +196,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
             <Paypal
               onSuccess={data => {
-                paypalSuccess(data);
+                onSubmitPayment('paypal', data)
               }}
               amount={treeCost * treeCount}
               currency={currency}

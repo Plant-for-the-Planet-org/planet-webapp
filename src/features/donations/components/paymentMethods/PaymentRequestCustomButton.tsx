@@ -185,7 +185,7 @@ export const PaymentRequestCustomButton = ({
       paymentRequest ? (
         <div className={styles.actionButtonsContainer}
           style={{ justifyContent: continueNext ? "space-between" : "center" }}>
-          <div style={{ width: '150px' }}>
+          <div style={{ width: '150px',borderRadius:'18px' }}>
             <PaymentRequestButtonElement
               className="PaymentRequestButton"
               options={options}
@@ -207,6 +207,7 @@ export const PaymentRequestCustomButton = ({
             <AnimatedButton
               onClick={() => continueNext()}
               className={styles.continueButton}
+              style={{borderRadius:'6px'}}
             >
               {t('common:continue')}
             </AnimatedButton>
