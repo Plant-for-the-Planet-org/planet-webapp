@@ -93,7 +93,7 @@ function ExploreInfoModal({infoRef,infoExpanded,setInfoExpanded,setModalOpen}: P
                 <div className={styles.infoContent}></div>
               </div>
             ) : null}
-            <div
+            <button id={'exploreClose'}
               onClick={() => {
                 setInfoExpanded(null);
                 setModalOpen(false);
@@ -101,9 +101,9 @@ function ExploreInfoModal({infoRef,infoExpanded,setInfoExpanded,setModalOpen}: P
               className={styles.infoClose}
             >
               <CancelIcon color="#d5d5d5" />
-            </div>
+            </button>
           </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default ExploreInfoModal

@@ -3,9 +3,11 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
-import AnimatedButton from '../../common/InputTypes/AnimatedButton';
-import styles from './../styles/TreeDonation.module.scss';
-import i18next from '../../../../i18n';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
+import styles from './../../styles/TreeDonation.module.scss';
+import i18next from '../../../../../i18n';
+import getStripe from '../../../../utils/stripe/getStripe';
+import { Elements } from '@stripe/react-stripe-js';
 
 const { useTranslation } = i18next;
 
@@ -33,21 +35,21 @@ interface PaymentButtonProps {
   currency: String;
   amount: number;
   onPaymentFunction: Function;
-  continueNext: Function;
+  continueNext: Function | null;
 }
 export const PaymentRequestCustomButton = ({
   country,
   currency,
   amount,
   onPaymentFunction,
-  continueNext,
+  continueNext
 }: PaymentButtonProps) => {
   const { t, ready } = useTranslation(['donate', 'common']);
 
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [canMakePayment, setCanMakePayment] = useState(false);
-  const [paymentLoading,setPaymentLoading] = useState(false)
+  const [paymentLoading, setPaymentLoading] = useState(false)
   const stripeAllowedCountries = [
     'AE',
     'AT',
@@ -102,12 +104,13 @@ export const PaymentRequestCustomButton = ({
     'US',
     'UY',
   ];
+
   useEffect(() => {
     if (
       stripe &&
       !paymentRequest &&
       stripeAllowedCountries.includes(country)
-    ) {
+    ) {      
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
@@ -147,11 +150,13 @@ export const PaymentRequestCustomButton = ({
   }, [paymentRequest]);
 
   useEffect(() => {
+
     if (paymentRequest && !paymentLoading) {
       setPaymentLoading(true)
       paymentRequest.on(
         'paymentmethod',
         ({ complete, paymentMethod, ...data }: any) => {
+          
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
           setPaymentLoading(false)
@@ -176,47 +181,99 @@ export const PaymentRequestCustomButton = ({
 
   return ready ? (
     stripeAllowedCountries.includes(country) &&
-    canMakePayment &&
-    paymentRequest ? (
-    <div className={styles.actionButtonsContainer}>
-      <div style={{ width: '150px' }}>
-        <PaymentRequestButtonElement
-          className="PaymentRequestButton"
-          options={options}
-          onReady={() => {
-            // console.log('PaymentRequestButton [ready]');
-          }}
-          onClick={(event) => {
-            // console.log('PaymentRequestButton [click]', event);
-          }}
-          onBlur={() => {
-            // console.log('PaymentRequestButton [blur]');
-          }}
-          onFocus={() => {
-            // console.log('PaymentRequestButton [focus]');
-          }}
-        />
-      </div>
+      canMakePayment &&
+      paymentRequest ? (
+        <div className={styles.actionButtonsContainer}
+          style={{ justifyContent: continueNext ? "space-between" : "center" }}>
+          <div style={{ width: '150px',borderRadius:'18px' }}>
+            <PaymentRequestButtonElement
+              className="PaymentRequestButton"
+              options={options}
+              onReady={() => {
+                // console.log('PaymentRequestButton [ready]');
+              }}
+              onClick={(event) => {
+                // console.log('PaymentRequestButton [click]', event);
+              }}
+              onBlur={() => {
+                // console.log('PaymentRequestButton [blur]');
+              }}
+              onFocus={() => {
+                // console.log('PaymentRequestButton [focus]');
+              }}
+            />
+          </div>
+          {continueNext && (
+            <AnimatedButton
+              onClick={() => continueNext()}
+              className={styles.continueButton}
+              style={{borderRadius:'6px'}}
+            >
+              {t('common:continue')}
+            </AnimatedButton>
+          )}
 
-      <AnimatedButton
-        onClick={() => continueNext()}
-        className={styles.continueButton}
-      >
-        {t('common:continue')}
-      </AnimatedButton>
-    </div>
-  ) : (
-    <div
-      className={styles.actionButtonsContainer}
-      style={{ justifyContent: 'center' }}
-    >
-      <AnimatedButton
-        onClick={() => continueNext()}
-        className={styles.continueButton}
-        id="treeDonateContinue"
-      >
-        {t('common:continue')}
-      </AnimatedButton>
-    </div>
-  )) : null;
+        </div>
+      ) : continueNext ? (
+        <div
+          className={styles.actionButtonsContainer}
+          style={{ justifyContent: 'center' }}
+        >
+          <AnimatedButton
+            onClick={() => continueNext()}
+            className={styles.continueButton}
+            id="treeDonateContinue"
+          >
+            {t('common:continue')}
+          </AnimatedButton>
+        </div>
+      ) : null) : null;
 };
+
+interface NativePayProps {
+  country: string;
+  currency: String;
+  amount: number;
+  onPaymentFunction: Function;
+  continueNext: Function | null;
+  paymentSetup: Object;
+}
+export const NativePay = ({
+  country,
+  currency,
+  amount,
+  onPaymentFunction,
+  continueNext,
+  paymentSetup
+ }: NativePayProps) => {
+  
+  const [stripePromise,setStripePromise] = useState(()=>getStripe(paymentSetup))
+
+  useEffect(()=>{
+    const fetchStripeObject = async () => {
+      if (paymentSetup) {
+        const res = ()=> getStripe(paymentSetup);
+        // When we have got the Stripe object, pass it into our useState.
+        setStripePromise(res);
+      }
+    };
+    setStripePromise(null);
+    fetchStripeObject();
+  },[paymentSetup])
+
+  if(!stripePromise){
+    return <></>;
+  }
+
+  return (
+    <Elements stripe={stripePromise} key={paymentSetup?.gateways?.stripe?.authorization.accountId}>
+      <PaymentRequestCustomButton
+        country={country}
+        currency={currency}
+        amount={amount}
+        onPaymentFunction={onPaymentFunction}
+        continueNext={continueNext}
+      />
+    </Elements>
+  )
+}

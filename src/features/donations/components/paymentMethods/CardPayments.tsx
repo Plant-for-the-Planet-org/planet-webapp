@@ -8,12 +8,12 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
-import CreditCard from '../../../../public/assets/images/icons/donation/CreditCard';
-import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
-import AnimatedButton from '../../common/InputTypes/AnimatedButton';
-import styles from './../styles/PaymentDetails.module.scss';
+import CreditCard from '../../../../../public/assets/images/icons/donation/CreditCard';
+import { getCardBrand } from '../../../../utils/stripe/stripeHelpers';
+import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
+import styles from './../../styles/PaymentDetails.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../i18n';
+import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
 
@@ -54,7 +54,8 @@ const getInputOptions = (placeholder: string) => {
 function CardPayments({
   paymentType,
   setPaymentType,
-  onPaymentFunction
+  onPaymentFunction,
+  donorDetails
 }: any): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const stripe = useStripe();
@@ -99,6 +100,28 @@ function CardPayments({
     }
 
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
+
+  const createPaymentMethodCC = (cardElement: any) => {
+    if(donorDetails){
+      return stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: `${donorDetails.firstname} ${donorDetails.lastname}`,
+          email:donorDetails.email,
+          address:{
+            city: donorDetails.city,
+            country: donorDetails.country,
+            line1: donorDetails.address,
+            postal_code: donorDetails.zipCode,
+          }
+        }
+      })
+    }
+    else {
+      return stripe.createPaymentMethod('card', cardElement)
+    }
+  }
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);
     event.preventDefault();
@@ -120,15 +143,7 @@ function CardPayments({
           return;
         }
       });
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: cardElement!,
-        })
-        .catch((error) => {
-          setPaymentError(t('donate:noPaymentMethodError'));
-          return;
-        });
+      const payload = await createPaymentMethodCC(cardElement);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
@@ -183,12 +198,6 @@ function CardPayments({
 
         {
           <div className={styles.paymentModeContainer}>
-            <div className={styles.paymentModeHeader}>
-              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
-              <div className={styles.paymentModeTitle}>
-                {t('donate:creditDebitCard')}
-              </div>
-            </div>
 
             <div className={styles.formRow}>
               <FormControlNew variant="outlined">

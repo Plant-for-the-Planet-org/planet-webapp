@@ -20,13 +20,16 @@ function DonationsPopup({
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
   const [paymentSetup, setPaymentSetup] = React.useState();
+  const [donationID, setDonationID] = React.useState(null);
+  const [shouldCreateDonation, setShouldCreateDonation] = React.useState(false);
+
 
   const {
     isLoading,
     isAuthenticated,
     getAccessTokenSilently
   } = useAuth0();
-  
+
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
 
@@ -55,7 +58,7 @@ function DonationsPopup({
 
   const [token, setToken] = React.useState('');
 
-  const [userProfile,setUserprofile] = React.useState(null)
+  const [userProfile, setUserprofile] = React.useState(null)
 
   //  to load payment data
   React.useEffect(() => {
@@ -110,25 +113,29 @@ function DonationsPopup({
       if (res.status === 200) {
         const resJson = await res.json();
         setUserprofile(resJson);
-        if(resJson){
-          let defaultDetails = {
-            firstName:resJson.firstname ? resJson.firstname: '',
-            lastName: resJson.lastname ? resJson.lastname:'',
-            email: resJson.email ? resJson.email: '',
-            address: resJson.address.address ? resJson.address.address: '',
-            city: resJson.address.city ? resJson.address.city:'',
-            zipCode: resJson.address.zipCode ? resJson.address.zipCode:'',
+        if (resJson) {
+          const defaultDetails = {
+            firstName: resJson.firstname ? resJson.firstname : '',
+            lastName: resJson.lastname ? resJson.lastname : '',
+            email: resJson.email ? resJson.email : '',
+            address: resJson.address.address ? resJson.address.address : '',
+            city: resJson.address.city ? resJson.address.city : '',
+            zipCode: resJson.address.zipCode ? resJson.address.zipCode : '',
             country: '',
             companyName: '',
           }
           setContactDetails(defaultDetails)
         }
-      } 
+      }
     }
     if (!isLoading && isAuthenticated) {
       loadFunction()
     }
   }, [isAuthenticated, isLoading])
+
+  React.useEffect(()=>{
+    setShouldCreateDonation(true);
+  },[paymentSetup,treeCount,isGift,giftDetails,contactDetails.firstName,contactDetails.lastName,contactDetails.email,contactDetails.address,contactDetails.city,contactDetails.zipCode,contactDetails.firstName,contactDetails.country,contactDetails.companyName, isTaxDeductible])
 
   const TreeDonationProps = {
     project,
@@ -153,7 +160,9 @@ function DonationsPopup({
     paymentType,
     setPaymentType,
     isPaymentOptionsLoading,
-    token
+    token,
+    donationID, 
+    setDonationID
   };
 
   const ContactDetailsProps = {
@@ -183,18 +192,15 @@ function DonationsPopup({
     setPaymentType,
     country,
     isTaxDeductible,
-    token
+    token,
+    donationID, 
+    setDonationID,
+    shouldCreateDonation,
+    setShouldCreateDonation
   };
 
   const ThankYouProps = {
-    project,
-    treeCount,
-    treeCost,
-    currency,
-    setDonationStep,
-    contactDetails,
-    isGift,
-    giftDetails,
+    donationID,
     onClose,
     paymentType,
   };
@@ -248,6 +254,7 @@ function DonationsPopup({
       );
     case 3:
       return (
+
         <motion.div
           animate={{
             scale: [0.94, 1.05, 1],

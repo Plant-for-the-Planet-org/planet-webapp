@@ -174,21 +174,21 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
 
 
             <div ref={exploreContainerRef}>
-                <div
+                <button id={'exploreButton'}
                     className={styles.exploreButton}
                     onClick={() => { setExploreExpanded(!exploreExpanded) }}
                     style={exploreExpanded ? { padding: '4px 10px' } : {}}
                 >
                     {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
                     {exploreExpanded ? null : (
-                        <p
+                        <button id={'exploreExpand'}
                             onClick={() => setExploreExpanded(true)}
                             className={styles.exploreText}
                         >
                             {isMobile ? null : t('maps:explore')}
-                        </p>
+                        </button>
                     )}
-                </div>
+                </button>
                 {exploreExpanded ? (
                     <>
                         <div className={styles.exploreExpanded}>
@@ -207,7 +207,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         }
                                         label={t('maps:forests')}
                                     />
-                                    <div
+                                    <button id={'exploreForest'}
                                         onClick={() => {
                                             setInfoExpanded('Forests');
                                             setModalOpen(true);
@@ -215,7 +215,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         className={styles.exploreInfo}
                                     >
                                         <InfoIcon />
-                                    </div>
+                                    </button>
                                 </div>
                                 <div className={styles.exploreToggleRow}>
                                     <FormControlLabel
@@ -229,7 +229,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         }
                                         label={t('maps:restoration')}
                                     />
-                                    <div
+                                    <button id={'exploreRestoration'}
                                         onClick={() => {
                                             setInfoExpanded('Restoration');
                                             setModalOpen(true);
@@ -237,7 +237,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         className={styles.exploreInfo}
                                     >
                                         <InfoIcon />
-                                    </div>
+                                    </button>
                                 </div>
 
                                 <div className={styles.exploreToggleRow}>
@@ -252,7 +252,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         }
                                         label={t('maps:deforestation')}
                                     />
-                                    <div
+                                    <button id={'exploreDeforest'}
                                         onClick={() => {
                                             setInfoExpanded('Deforestation');
                                             setModalOpen(true);
@@ -260,7 +260,7 @@ function ExploreContainer({ exploreContainerRef, setExploreExpanded, exploreExpa
                                         className={styles.exploreInfo}
                                     >
                                         <InfoIcon />
-                                    </div>
+                                    </button>
                                 </div>
                                 {exploreDeforestation ? (
                                     <div className={styles.deforestionSlider}>

@@ -58,7 +58,7 @@ export default function UploadImages({
     )
       .then((res) => {
         if (!res.code) {
-          let newUploadedImages = uploadedImages;
+          const newUploadedImages = uploadedImages;
           newUploadedImages.push(res);
           setUploadedImages(newUploadedImages);
           setIsUploadingData(false);
@@ -94,8 +94,8 @@ export default function UploadImages({
       token
     ).then((res) => {
       if (res !== 404) {
-        let uploadedImagesTemp = uploadedImages;
-        let index = uploadedImagesTemp.findIndex((item) => {
+        const uploadedImagesTemp = uploadedImages;
+        const index = uploadedImagesTemp.findIndex((item) => {
           return item.id === id;
         });
         if (index !== -1) {
@@ -122,9 +122,9 @@ export default function UploadImages({
                   />
                   {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
-                    <div onClick={() => deleteContributionImage(image.id)}>
+                    <button id={'uploadImgDelIcon'} onClick={() => deleteContributionImage(image.id)}>
                       <DeleteIcon />
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -153,5 +153,5 @@ export default function UploadImages({
         </label>
       </div>
     </>
-  ) : null;
+  ) : <></>;
 }

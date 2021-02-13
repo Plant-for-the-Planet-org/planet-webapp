@@ -1,0 +1,20 @@
+name: 'ESLint error report'
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+jobs:
+  ubuntu-job:
+    name: 'ESLint on Ubuntu'
+    runs-on: ubuntu-latest  # Can be self-hosted runner also
+    steps:
+
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node Modules'
+        run: npm install
+
+      - name: 'Running ESLint only showing errors'
+        run: npm run lint:errors
