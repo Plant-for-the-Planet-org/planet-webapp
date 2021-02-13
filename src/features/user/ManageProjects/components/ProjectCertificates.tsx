@@ -74,7 +74,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/certificates`, submitData, token).then((res) => {
             if (!res.code) {
-                let newUploadedFiles = uploadedFiles;
+                const newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res)
                 setUploadedFiles(newUploadedFiles);
                 setCertifierName('');
@@ -99,7 +99,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
     const deleteProjectCertificate = (id: any) => {
         deleteAuthenticatedRequest(`/app/projects/${projectGUID}/certificates/${id}`, token).then(res => {
             if (res !== 404) {
-                let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
+                const uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
             }
         })
@@ -117,7 +117,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
     }, [projectGUID]);
 
 
-    var tenYearsAgo = new Date();
+    const tenYearsAgo = new Date();
     tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
 
     return ready ? (
@@ -140,11 +140,11 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                                 {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                     <PencilIcon color={"#000"} />
                                 </div> */}
-                                <div
+                                <button id={'trashIconProjC'}
                                     onClick={() => deleteProjectCertificate(report.id)}
                                     className={styles.reportEditButton}>
                                     <TrashIcon />
-                                </div>
+                                </button>
                             </div>
                         )
                     })}
@@ -245,7 +245,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                     </div>)}
 
         </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default ProjectCertificates

@@ -14,7 +14,7 @@ import { getStoredConfig } from '../../../../utils/storeConfig';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
-let styles = require('./SelectLanguageAndCountry.module.scss');
+import styles from './SelectLanguageAndCountry.module.scss';
 import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
 
@@ -24,8 +24,17 @@ const { useTranslation } = i18next;
 // reduce the allowed languages to the languages listed in the tenants config file
 const selectableLanguages = supportedLanguages.filter(lang => config.languages.includes(lang.langCode));
         
-export default function TransitionsModal(props) {
-  const {
+interface TransitionsModalProps {
+  openModal: boolean,
+  handleModalClose: Function,
+  setLanguage: Function,
+  language: any,
+  setSelectedCurrency: Function,
+  selectedCountry: any,
+  setSelectedCountry: Function,
+  setCurrencyCode: Function,
+}
+export default function TransitionsModal({
     openModal,
     handleModalClose,
     setLanguage,
@@ -34,7 +43,7 @@ export default function TransitionsModal(props) {
     selectedCountry,
     setSelectedCountry,
     setCurrencyCode
-  } = props;
+  }: TransitionsModalProps) {
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
 
@@ -60,7 +69,7 @@ export default function TransitionsModal(props) {
     i18n.changeLanguage(modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
-    let currencyCode = getCountryDataBy('countryCode', selectedModalCountry)
+    const currencyCode = getCountryDataBy('countryCode', selectedModalCountry)
       .currencyCode;
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
@@ -117,14 +126,14 @@ export default function TransitionsModal(props) {
             </div>
             {/* modal buttons */}
             <div className={styles.buttonContainer}>
-              <div className={styles.button} onClick={handleModalClose}>
+              <button id={'selLangAndCountryCan'} className={styles.button} onClick={handleModalClose}>
                 <div></div>
                 <p>{t('common:cancel')}</p>
-              </div>
-              <div className={styles.button} onClick={handleOKClick}>
+              </button>
+              <button id={'selLangAndCountryOk'}className={styles.button} onClick={handleOKClick}>
                 <div></div>
                 <p>{t('common:ok')}</p>
-              </div>
+              </button>
             </div>
           </div>
         </Fade>
@@ -134,10 +143,12 @@ export default function TransitionsModal(props) {
 }
 
 // Maps the radio buttons for countries
-function MapCountry(props) {
+interface MapCountryProps {
+  value: string,
+  handleChange: Function,
+}
+function MapCountry({value, handleChange}: MapCountryProps) {
   const { t, i18n, ready } = useTranslation(['country']);
-  
-  const { value, handleChange } = props;  
   const country = getStoredConfig('country');
   const priorityCountries = country === value ? [ value ] : [ value, country ];
   const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language, priorityCountries) : {};
@@ -164,8 +175,11 @@ function MapCountry(props) {
 }
 
 // Maps the radio buttons for language
-function MapLanguage(props) {
-  const { value, handleChange } = props;
+interface MapLanguageProps {
+  value: string,
+  handleChange: Function,
+}
+function MapLanguage({value, handleChange}: MapLanguageProps) {
   return (
     <FormControl component="fieldset">
       <RadioGroup

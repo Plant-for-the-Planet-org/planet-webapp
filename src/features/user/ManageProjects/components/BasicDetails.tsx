@@ -141,16 +141,14 @@ export default function BasicDetails({
           longitude: projectDetails.geoLongitude,
         },
       };
-      if (projectDetails.hasOwnProperty('geoLongitude') && projectDetails.hasOwnProperty('geoLatitude')) {
-        if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
-          setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
-          setViewPort({
-            ...viewport,
-            latitude: projectDetails.geoLatitude,
-            longitude: projectDetails.geoLongitude,
-            zoom: 7,
-          });
-        }
+      if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
+        setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
+        setViewPort({
+          ...viewport,
+          latitude: projectDetails.geoLatitude,
+          longitude: projectDetails.geoLongitude,
+          zoom: 7,
+        });
       }
       reset(basicDetails);
     }
@@ -158,7 +156,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
-    let submitData = {
+    const submitData = {
       name: data.name,
       slug: data.slug,
       classification: data.classification,
@@ -348,7 +346,7 @@ export default function BasicDetails({
                   },
                   pattern: {
                     //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=\*]*)$/,
+                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
                     message: t('manageProjects:websiteValidationInvalid'),
                   },
                 })}
@@ -409,11 +407,11 @@ export default function BasicDetails({
                 <Controller
                   name="acceptDonations"
                   control={control}
-                  render={(props) => (
+                  render={(properties) => (
                     <ToggleSwitch
                       id="acceptDonations"
-                      checked={props.value}
-                      onChange={(e) => props.onChange(e.target.checked)}
+                      checked={properties.value}
+                      onChange={(e) => properties.onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   )}
@@ -547,11 +545,11 @@ export default function BasicDetails({
               <Controller
                 name="visitorAssistance"
                 control={control}
-                render={(props) => (
+                render={(properties) => (
                   <ToggleSwitch
                     id="visitorAssistance"
-                    checked={props.value}
-                    onChange={(e) => props.onChange(e.target.checked)}
+                    checked={properties.value}
+                    onChange={(e) => properties.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 )}
@@ -568,10 +566,10 @@ export default function BasicDetails({
               <Controller
                 name="publish"
                 control={control}
-                render={(props) => (
+                render={(properties) => (
                   <ToggleSwitch
-                    checked={props.value}
-                    onChange={(e) => props.onChange(e.target.checked)}
+                    checked={properties.value}
+                    onChange={(e) => properties.onChange(e.target.checked)}
                     id="publish"
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
@@ -588,11 +586,11 @@ export default function BasicDetails({
               <Controller
                 name="enablePlantLocations"
                 control={control}
-                render={props => (
+                render={properties => (
 
                   <ToggleSwitch
-                    checked={props.value}
-                    onChange={e => props.onChange(e.target.checked)}
+                    checked={properties.value}
+                    onChange={e => properties.onChange(e.target.checked)}
                     id="enablePlantLocations"
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
@@ -617,7 +615,7 @@ export default function BasicDetails({
           </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
-            <div
+            <button id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
               className={styles.continueButton}
             >
@@ -626,10 +624,10 @@ export default function BasicDetails({
               ) : (
                   t('manageProjects:saveAndContinue')
                 )}
-            </div>
+            </button>
           </div>
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

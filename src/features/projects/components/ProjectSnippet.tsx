@@ -1,8 +1,6 @@
 import Modal from '@material-ui/core/Modal';
-import { Elements } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import getStripe from '../../../utils/stripe/getStripe';
 import { ThemeContext } from '../../../theme/themeContext';
 import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
@@ -58,16 +56,14 @@ export default function ProjectSnippet({
         disableBackdropClick
         hideBackdrop
       >
-        <Elements stripe={getStripe()}>
           <DonationsPopup project={project} onClose={handleClose} />
-        </Elements>
       </Modal>
 
       {editMode ? (
         <Link href={`/manage-projects/${project.id}`}>
-          <div className={'projectEditBlock'}>
+          <button id={'projectSnipEdit'} className={'projectEditBlock'}>
             <EditIcon></EditIcon>
-          </div>
+          </button>
         </Link>
       ) : null}
       <div
@@ -131,9 +127,9 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <div onClick={handleOpen} className={'donateButton'}>
+                <button id={`ProjSnippetDonate_${project.id}`} onClick={handleOpen} className={'donateButton'}>
                   {t('common:donate')}
-                </div>
+                </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
@@ -148,5 +144,5 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }

@@ -11,8 +11,10 @@ describe('remove', () => {
     await driver.navigate().to(`${url}s/sagar-aryal`);
     await driver.wait(until.elementLocated(By.className('donateButton'))).click();
     await driver.switchTo().activeElement();
+    await driver.wait(until.elementLocated(By.id('singleGiftRemoveId')));
     //await driver.findElement(By.xpath("//*[text()='Remove']")).click();
     await driver.findElement(By.id('singleGiftRemoveId')).click();
+    await driver.wait(until.elementLocated(By.name('checkedA')));
     await driver.findElement(By.name('checkedA')).click().then(() => {
       driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Action successful"}}');
     });

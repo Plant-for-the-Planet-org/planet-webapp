@@ -2,8 +2,8 @@ import Footer from '../../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import React from 'react';
 import i18next from './../../i18n'
-import LegacyDonations from '../../src/features/legacyDonations';
-import styles from './../../src/features/legacyDonations/styles/PaymentDetails.module.scss'
+import LegacyDonations from '../../src/features/donations/legacyDonation';
+import styles from './../../src/features/donations/styles/PaymentDetails.module.scss'
 interface Props {
     initialized: Boolean;
 }
@@ -20,7 +20,7 @@ function PaymentPage({ initialized }: Props) {
 
     React.useEffect(() => {
         async function loadProjects() {
-            let userLang = localStorage.getItem('language') || 'en';
+            const userLang = localStorage.getItem('language') || 'en';
             await fetch(`${process.env.API_ENDPOINT}/public/v1.3/${userLang}/paymentInfo/${router.query.code}`).then(async (res) => {
                 if (res.status !== 200) {
                     setPaymentData(null)

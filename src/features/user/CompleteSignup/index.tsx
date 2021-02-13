@@ -146,7 +146,7 @@ export default function CompleteSignup() {
 
   const createButtonClicked = async (data: any) => {
     if (!isLoading && token) {
-      let submitData = {
+      const submitData = {
         ...data,
         country,
         type,
@@ -192,11 +192,11 @@ export default function CompleteSignup() {
           <div className={styles.profileTypesContainer}>
             {profileTypes.map(item => {
               return (
-                <p key={item.id} className={`${styles.profileTypes} ${type === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
+                <button id={'editProfileTypes'} key={item.id} className={`${styles.profileTypes} ${type === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
                   {t('editProfile:profileTypes', {
                     item: item
                   })}
-                </p>
+                </button>
               )
             })}
           </div>
@@ -376,9 +376,9 @@ export default function CompleteSignup() {
 
           <div className={styles.horizontalLine} />
 
-          <div className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
+          <button id={'signupCreate'} className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
             {t('editProfile:createAccount')}
-          </div>
+          </button>
         </div>
         {/* snackbar */}
         <Snackbar

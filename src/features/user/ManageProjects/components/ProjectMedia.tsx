@@ -51,7 +51,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
       if (!res.code) {
-        let newUploadedImages = uploadedImages;
+        const newUploadedImages = uploadedImages;
         newUploadedImages.push(res)
         setUploadedImages(newUploadedImages)
         setIsUploadingData(false)
@@ -117,7 +117,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, token).then(res => {
       if (res !== 404) {
-        let uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
+        const uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
         setUploadedImages(uploadedFilesTemp)
       }
     })
@@ -163,7 +163,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token).then((res) => {
       if (!res.code) {
-        let tempUploadedData = uploadedImages;
+        const tempUploadedData = uploadedImages;
         tempUploadedData.forEach((image) => {
           image.isDefault = false
         })
@@ -191,7 +191,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token).then((res) => {
       if (!res.code) {
-        let tempUploadedData = uploadedImages;
+        const tempUploadedData = uploadedImages;
         tempUploadedData[index].description = res.description;
         setUploadedImages(tempUploadedData);
         setIsUploadingData(false)
@@ -222,7 +222,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
             <MaterialTextField
               inputRef={register({
                 pattern: {
-                  value: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/,
+                  value: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
                   message: t('manageProjects:youtubeURLValidation')
                 }
               })}
@@ -260,12 +260,12 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
                         />
 
                         <div className={styles.uploadedImageButtonContainer}>
-                          <div onClick={() => deleteProjectCertificate(image.id)}>
+                          <button id={'DelProjCert'} onClick={() => deleteProjectCertificate(image.id)}>
                             <DeleteIcon />
-                          </div>
-                          <div onClick={() => setDefaultImage(image.id, index)}>
+                          </button>
+                          <button id={'setDefaultImg'} onClick={() => setDefaultImage(image.id, index)}>
                             <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
-                          </div>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -314,12 +314,12 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <div onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
-            </div>
+            </button>
           </div>
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }

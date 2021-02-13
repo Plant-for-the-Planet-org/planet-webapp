@@ -10,21 +10,37 @@ import andaluciaConfig from './public/tenants/andalucia/config';
 import senatDerWirtschaft from './public/tenants/senatDerWirtschaft/config';
 import pampersConfig from './public/tenants/pampers/config';
 import interactClub from './public/tenants/interactClub/config';
+import culchacandela from './public/tenants/culchacandela/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
-    case 'planet': return planetConfig;
-    case 'planetbeta': return planetConfigBeta;
-    case 'ttc': return ttcConfig;
-    case 'salesforce': return salesforceConfig;
-    case 'stern': return sternConfig;
-    case 'nitrosb': return nitrosbConfig;
-    case 'lacoqueta': return lacoquetaConfig;
-    case 'energizer': return energizerConfig;
-    case 'andalucia': return andaluciaConfig;
-    case 'senatDerWirtschaft': return senatDerWirtschaft;
-    case 'pampers': return pampersConfig;
-    case 'interactClub': return interactClub;
-    default: return planetConfig;
+    case 'planet':
+      return planetConfig;
+    case 'planetbeta':
+      return planetConfigBeta;
+    case 'ttc':
+      return ttcConfig;
+    case 'salesforce':
+      return salesforceConfig;
+    case 'stern':
+      return sternConfig;
+    case 'nitrosb':
+      return nitrosbConfig;
+    case 'lacoqueta':
+      return lacoquetaConfig;
+    case 'energizer':
+      return energizerConfig;
+    case 'senatDerWirtschaft':
+      return senatDerWirtschaft;
+    case 'pampers':
+      return pampersConfig;
+    case 'interactClub':
+      return interactClub;
+    case 'culchacandela':
+      return culchacandela;
+    default:
+      return planetConfig;
+    case 'andalucia':
+      return andaluciaConfig;
   }
 }

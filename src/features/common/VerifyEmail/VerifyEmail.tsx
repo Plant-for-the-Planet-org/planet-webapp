@@ -28,11 +28,11 @@ function VerifyEmailComponent({ }: Props): ReactElement {
             <span style={{ fontStyle: 'italic', marginTop: '12px' }}>
                 {t('common:verifyEmailInfo')}
             </span>
-            <div onClick={() => loginWithRedirect({redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={styles.continueButton}>
+            <button id={'verifyEmail'} onClick={() => loginWithRedirect({redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={styles.continueButton}>
                 {t('common:continueToLogin')}
-            </div>
+            </button>
         </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default VerifyEmailComponent

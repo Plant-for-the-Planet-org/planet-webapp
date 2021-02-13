@@ -9,7 +9,7 @@ import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
 import i18next from '../../../../../i18n';
-let styles = require('./../../styles/SelectCurrencyModal.module.scss');
+import styles from './../../styles/SelectCurrencyModal.module.scss';
 
 const { useTranslation } = i18next;
 
@@ -88,14 +88,14 @@ export default function TransitionsModal(props: any) {
 
             {/* modal buttons */}
             <div className={styles.buttonContainer}>
-              <div className={styles.button} onClick={handleModalClose}>
+              <button id={'selectTaxDedCan'} className={styles.button} onClick={handleModalClose}>
                 <div></div>
                 <p>{t('common:cancel')}</p>
-              </div>
-              <div className={styles.button} onClick={handleOKClick}>
+              </button>
+              <button id={'selectTaxDedOk'} className={styles.button} onClick={handleOKClick}>
                 <div></div>
                 <p>{t('common:ok')}</p>
-              </div>
+              </button>
             </div>
           </div>
         </Fade>

@@ -30,12 +30,12 @@ Steps to reproduce the behavior:
 
 **Desktop (please complete the following information):**
 - OS: [e.g. latest MacOS]
-- Browser [e.g. latest Chrome, Safari]
+- Browser: [e.g. latest Chrome, Safari]
 
 **Smartphone (please complete the following information):**
-- Device: [e.g. iPhone 11]
-- OS: [e.g. iOS 13.5]
-- Browser [e.g. stock browser, Safari]
+- Device: [e.g. iPhone]
+- OS: [e.g. latest iOS]
+- Browser: [e.g. stock browser, Safari]
 
 **Additional context**
 *Add any other context about the problem here.*
