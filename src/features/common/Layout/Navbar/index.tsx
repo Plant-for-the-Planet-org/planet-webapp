@@ -36,8 +36,7 @@ export default function NavbarComponent(props: any) {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
-      let userInfo;
-      userInfo = await getUserInfo(token, router, logout);
+      const userInfo = await getUserInfo(token, router, logout);
       setUserInfo(userInfo);
     }
     if (!isLoading && isAuthenticated) {
@@ -49,8 +48,7 @@ export default function NavbarComponent(props: any) {
   async function gotoUserPage() {
     if (userInfo && isAuthenticated) {
       if (!userInfo.slug) {
-        let userInfo;
-        userInfo = await getUserInfo(token, router, logout);
+        const userInfo = await getUserInfo(token, router, logout);
         setUserInfo(userInfo);
       }
       if (typeof window !== 'undefined') {
@@ -118,7 +116,7 @@ export default function NavbarComponent(props: any) {
     return links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
-          let SingleLink = config.header.items[link];
+          const SingleLink = config.header.items[link];
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (

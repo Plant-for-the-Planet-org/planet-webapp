@@ -133,7 +133,7 @@ export default function MapComponent({
             drawControlRef.current.draw.deleteAll();
           }
           acceptedFiles.forEach((file: any) => {
-            var fileType =
+            const fileType =
               file.name.substring(
                 file.name.lastIndexOf('.') + 1,
                 file.name.length
@@ -143,11 +143,11 @@ export default function MapComponent({
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
-                var dom = new DOMParser().parseFromString(
+                const dom = new DOMParser().parseFromString(
                   event.target.result,
                   'text/xml'
                 );
-                var geo = tj.kml(dom);
+                const geo = tj.kml(dom);
                 if (gjv.isGeoJSONObject(geo)) {
                   setGeoJsonError(false);
                   setGeoJson(geo);
@@ -161,7 +161,7 @@ export default function MapComponent({
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
-                var geo = JSON.parse(event.target.result);
+                const geo = JSON.parse(event.target.result);
                 if (gjv.isGeoJSONObject(geo)) {
                   setGeoJsonError(false);
                   setGeoJson(geo);

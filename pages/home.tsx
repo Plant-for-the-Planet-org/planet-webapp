@@ -67,6 +67,7 @@ export default function Home(initialized: Props) {
       case 'senatDerWirtschaft':
       case 'pampers':
       case 'interactClub':
+      case 'culchacandela':
         HomePage = BasicHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       default:
@@ -77,12 +78,12 @@ export default function Home(initialized: Props) {
 
   return (
     <>
-      <GetHomeMeta/>
+      <GetHomeMeta />
       {initialized ? (
-          getHomePage()
+        getHomePage()
       ) : (
-        <></>
-      )}
+          <></>
+        )}
     </>
   );
 }

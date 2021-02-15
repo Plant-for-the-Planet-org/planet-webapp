@@ -75,8 +75,8 @@ export default function RedeemModal({
       code: data.code
     }
     if (!isLoading && isAuthenticated) {
-      let token = await getAccessTokenSilently();
-      let userLang = localStorage.getItem('language') || 'en';
+      const token = await getAccessTokenSilently();
+      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/api/v1.3/${userLang}/validateCode`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -103,8 +103,8 @@ export default function RedeemModal({
       code: code
     }
     if (!isLoading && isAuthenticated) {
-      let token = await getAccessTokenSilently();
-      let userLang = localStorage.getItem('language') || 'en';
+      const token = await getAccessTokenSilently();
+      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);

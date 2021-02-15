@@ -10,10 +10,11 @@ class NumberParser {
     this._index = d => index.get(d);
   }
   parse(string) {
-    return (string = string.trim()
+    string = string.trim()
       .replace(this._group, "")
       .replace(this._decimal, ".")
-      .replace(this._numeral, this._index)) ? +string : NaN;
+      .replace(this._numeral, this._index);
+    return string ? +string : NaN;
   }
 }
 

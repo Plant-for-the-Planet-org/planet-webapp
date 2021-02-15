@@ -90,15 +90,15 @@ export default function Footer() {
   useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
-        let currencyCode = localStorage.getItem('currencyCode');
+        const currencyCode = localStorage.getItem('currencyCode');
         if (currencyCode) setSelectedCurrency(currencyCode);
       }
       if (localStorage.getItem('countryCode')) {
-        let countryCode = localStorage.getItem('countryCode');
+        const countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
       }
       if (localStorage.getItem('language')) {
-        let langCode = localStorage.getItem('language');
+        const langCode = localStorage.getItem('language');
         if (langCode) setLanguage(langCode);
       }
     }
@@ -134,7 +134,7 @@ export default function Footer() {
 
               <div className={styles.footer_social_container}>
                 <button id={'facebookIcon'}>
-                <a className={styles.social_button} target="_blank" href="https://www.facebook.com/plantfortheplanet">
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://www.facebook.com/plantfortheplanet">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3315" data-name="Group 3315" transform="translate(-393.342 -502.758)">
                       <g id="Ellipse_1312" data-name="Ellipse 1312" transform="translate(393.342 502.758)" fill="none" stroke="#2f3336" strokeWidth="1">
@@ -148,7 +148,7 @@ export default function Footer() {
                 </button>
 
                 <button id={'twitterIcon'}>
-                <a className={styles.social_button} target="_blank" href="https://twitter.com/pftp_int">
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://twitter.com/pftp_int">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3318" data-name="Group 3318" transform="translate(-449.175 -500.555)">
                       <g id="Ellipse_1309" data-name="Ellipse 1309" transform="translate(449.175 500.555)" fill="none" stroke="#2f3336" strokeWidth="1">
@@ -162,7 +162,7 @@ export default function Footer() {
                 </button>
 
                 <button id={'instagramIcon'}>
-                <a className={styles.social_button} target="_blank" href="https://www.instagram.com/plantfortheplanet_official/">
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://www.instagram.com/plantfortheplanet_official/">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3317" data-name="Group 3317" transform="translate(-548.604 -496.605)">
                       <g id="Ellipse_1311" data-name="Ellipse 1311" transform="translate(548.604 496.605)" fill="none" stroke="#2f3336" strokeWidth="1">

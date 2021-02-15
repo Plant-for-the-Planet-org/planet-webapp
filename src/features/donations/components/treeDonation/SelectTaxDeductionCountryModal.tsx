@@ -9,7 +9,7 @@ import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
 import i18next from '../../../../../i18n';
-let styles = require('./../../styles/SelectCurrencyModal.module.scss');
+import styles from './../../styles/SelectCurrencyModal.module.scss';
 
 const { useTranslation } = i18next;
 

@@ -18,13 +18,13 @@ interface ShareOptionsProps {
   treeCount: String;
   sendRef: any;
   handleTextCopiedSnackbarOpen: Function
-  contactDetails: Object
+  donor: Object
 }
 const ShareOptions = ({
   treeCount,
   sendRef,
   handleTextCopiedSnackbarOpen,
-  contactDetails,
+  donor,
 }: ShareOptionsProps) => {
   const { t, ready } = useTranslation(['donate']);
   const config = tenantConfig();
@@ -33,16 +33,16 @@ const ShareOptions = ({
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
   let textToShare = '';
-  // contactDetails may be undefined or empty for legacy donations or redeem
-  if (contactDetails && (contactDetails.firstName || contactDetails.lastName)) {
-    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${contactDetails.firstName} ${contactDetails.lastName}` }) : '';
+  // donor may be undefined or empty for legacy donations or redeem
+  if (donor && (donor.name)) {
+    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${donor.name}` }) : '';
   } else {
     textToShare = ready ? t('donate:textToShareForMe') : '';
   }
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
-    var options = {
+    const options = {
       quality: 1,
     };
     domtoimage
@@ -50,7 +50,7 @@ const ShareOptions = ({
       .then((dataUrl) => {
         domtoimage.toJpeg(element, options).then((dataUrl) => {
           domtoimage.toJpeg(element, options).then((dataUrl) => {
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             link.download = fileName;
             link.href = dataUrl;
             link.click();
