@@ -16,59 +16,59 @@ import SustainableCity from './components/SustainableCity'
 import styles from './styles/anilloverdegranada.module.scss'
 
 interface Props {
-  tenantScore:any
+    tenantScore: any
 }
 
-function Home({ tenantScore}: Props): ReactElement {
+function Home({ tenantScore }: Props): ReactElement {
     const router = useRouter()
-    const projectID = 'proj_0CgTQJMm5zX624sdpVDet93O';
+    const projectID = 'yucatan-reforestation';
 
     const LandingSectionData = {
-        mainTitleText:'200.000 árboles para Granada,',
-        mainTitleSubText:'1 Billón para el planeta.',
+        mainTitleText: '200.000 árboles para Granada,',
+        mainTitleSubText: '1 Billón para el planeta.',
         para: <span><b>Plant-for-the-Planet</b> propuso al Ayuntamiento de Granada en 2019 desarrollar el proyecto "Anillo verde de Granada" para crear un anillo natural reforestado que rodeará la ciudad.</span>,
-        imagePath:'/tenants/sateins/images/alhambra.jpg'
+        imagePath: '/tenants/sateins/images/alhambra.jpg'
     }
 
     const FeaturesSectionData = {
-        featureText:<div>
-                        <span>Un pulmón para una de las ciudades más bellas de España</span>
-                        <h2>El Anillo verde de Granada</h2>
-                        <p>En aras de reverdecer la ciudad de la Alhambra, este proyecto pretende crear un nuevo ecosistema formado por especies autóctonas.</p>
-                        <p>Dicho ecosistema se llevará a cabo mediante la restauración de bosques y otros paisajes en una superficie aproximada de 800 hectáreas por un periodo de al menos 50 años, garantizando su exención de venta o explotación comercial y protegidas durante ese período.</p>
-                        <p>La creación de este Anillo verde persigue, por un lado, mitigar el calentamiento global y, por otro, velar por la salud de las generaciones actuales y futuras, a través de la mejora de la calidad del aire, la promoción de la actividad física o los diversos beneficios para el sistema inmunológico y el metabolismo.</p>
-                        <p>El proyecto se dividirá en varias etapas desde este año 2020 hasta 2030. </p>
-                    </div>,
-        features:{
-            title1:'El espacio',
-            text1:'800 hectáreas (Granada)',
-            title2:'Especies',
-            text2:'Pinos, encinas & especies mediterráneas',
-            title3:'Monte público',
-            text3:'Monte público - Cesión por el Ayuntamiento de Granada',
-            title4:'Coordenadas',
-            text4:'37.203275, -3.588959'
+        featureText: <div>
+            <span>Un pulmón para una de las ciudades más bellas de España</span>
+            <h2>El Anillo verde de Granada</h2>
+            <p>En aras de reverdecer la ciudad de la Alhambra, este proyecto pretende crear un nuevo ecosistema formado por especies autóctonas.</p>
+            <p>Dicho ecosistema se llevará a cabo mediante la restauración de bosques y otros paisajes en una superficie aproximada de 800 hectáreas por un periodo de al menos 50 años, garantizando su exención de venta o explotación comercial y protegidas durante ese período.</p>
+            <p>La creación de este Anillo verde persigue, por un lado, mitigar el calentamiento global y, por otro, velar por la salud de las generaciones actuales y futuras, a través de la mejora de la calidad del aire, la promoción de la actividad física o los diversos beneficios para el sistema inmunológico y el metabolismo.</p>
+            <p>El proyecto se dividirá en varias etapas desde este año 2020 hasta 2030. </p>
+        </div>,
+        features: {
+            title1: 'El espacio',
+            text1: '800 hectáreas (Granada)',
+            title2: 'Especies',
+            text2: 'Pinos, encinas & especies mediterráneas',
+            title3: 'Monte público',
+            text3: 'Monte público - Cesión por el Ayuntamiento de Granada',
+            title4: 'Coordenadas',
+            text4: '37.203275, -3.588959'
         }
     }
 
     const SustainableCityData = {
         sustainableText: <div><h2>Si amas Granada...</h2>
-        <h3>Si deseas formar parte de su presente y futuro...</h3>
-        <h3 style={{color:'#568802'}}>Si quieres ayudar a crear una ciudad más verde y sostenible</h3></div>,
-        imagePath:'/tenants/sateins/images/sustainableCity.jpg'
+            <h3>Si deseas formar parte de su presente y futuro...</h3>
+            <h3 style={{ color: '#568802' }}>Si quieres ayudar a crear una ciudad más verde y sostenible</h3></div>,
+        imagePath: '/tenants/sateins/images/sustainableCity.jpg'
     }
 
-    const [project,setProject] = React.useState(null)
+    const [project, setProject] = React.useState(null)
     React.useEffect(() => {
         async function loadProject() {
-          let currencyCode = getStoredCurrency();
-          const project = await getRequest(`/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`);
-          setProject(project);
+            let currencyCode = getStoredCurrency();
+            const project = await getRequest(`/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`);
+            setProject(project);
         }
-        if(projectID) {
-          loadProject();
+        if (projectID) {
+            loadProject();
         }
-      }, [projectID]);
+    }, [projectID]);
 
     const { theme } = React.useContext(ThemeContext);
 
@@ -77,18 +77,18 @@ function Home({ tenantScore}: Props): ReactElement {
         setOpen(false);
     };
     const handleOpen = () => {
-        if( window!== undefined){
-        router.push('/')
-        }
+        setOpen(true);
     };
 
-    const handleViewProject=()=>{
-      if( window!== undefined){
-        router.push('/')
+    const handleViewProject = () => {
+        if (window !== undefined) {
+            router.push('/[p]', `/${project.slug}`, {
+                shallow: true,
+            });
         }
     }
 
-    return  project ? (
+    return project ? (
         <div className={styles.pageContainer}>
             <Modal
                 className={`modal ${theme} modalContainer`}
@@ -104,19 +104,18 @@ function Home({ tenantScore}: Props): ReactElement {
                 </Elements>
             </Modal>
             <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
-           
+
             <Objective />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
-            {/* <ProjectMap projectID={projectID} /> */}
             <SustainableCity handleOpen={handleOpen} SustainableCityData={SustainableCityData} />
             <div className={styles.logoContainer}>
-                 <img src={'/tenants/sateins/images/anillo.svg'} />
+                <img src={'/tenants/sateins/images/anillo.svg'} />
                 <img src={'/tenants/sateins/images/granadaLogo.png'} />
                 <img src={'/tenants/sateins/images/grx.svg'} />
             </div>
-            <ProjectBy/>
+            <ProjectBy />
         </div>
-    ): <></>
+    ) : <></>
 }
 
 
