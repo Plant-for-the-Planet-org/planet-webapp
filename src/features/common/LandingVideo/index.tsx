@@ -22,11 +22,11 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
      return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
-                <iframe src="https://player.vimeo.com/video/76979871?background=1&autoplay=1&loop=1&byline=0&title=0"
+                <iframe src="https://player.vimeo.com/video/512607409?background=1&autoplay=1&loop=1&byline=0&title=0"
                     frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
             </div>
             <button className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>
-                {isUploading ? <div className={styles.spinner}></div> : t('common:skipVideo')}
+                {isUploading ? <div className={styles.spinner}></div> : t('common:skipIntroVideo')}
             </button>
         </div>
     ) : (<></>)
