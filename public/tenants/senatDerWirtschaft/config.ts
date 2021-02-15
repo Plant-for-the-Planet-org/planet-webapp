@@ -19,9 +19,6 @@ const config = {
     locale: 'de_DE',
   },
   home: {
-    title: 'Senat Der Wirtschaft',
-    description:
-      'Die Klimakrise ist eine der größten gesellschaftlichen Herausforderungen und es muss sich etwas ändern. Der Senat der Wirtschaft ist eine Wertegemeinschaft. Wir stehen für eine motivierende und verbindende Vision, verknüpft mit praktischer Umsetzung. Deshalb pflanzen immer mehr unserer Mitglieder Wälder, zusammen mit ihren Mitarbeiter, Geschäftspartnern und Kunden. Jeder gepflanzte Baum bindet CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen!',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
   },
   header: {

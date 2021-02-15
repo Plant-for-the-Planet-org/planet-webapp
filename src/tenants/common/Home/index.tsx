@@ -3,8 +3,12 @@ import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
-import tenantConfig from '../../../../tenant.config'
+import tenantConfig from '../../../../tenant.config';
+import i18next from '../../../../i18n';
+
 const config = tenantConfig();
+
+const { useTranslation } = i18next;
 
 interface Props {
   leaderboard: any;
@@ -12,6 +16,7 @@ interface Props {
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {
+  const { t, i18n, ready } = useTranslation(['tenants']);
   return (
     <main>
       <LandingSection
@@ -25,11 +30,19 @@ export default function About({ leaderboard, tenantScore }: Props) {
           />
           ) }
 
-        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>{config.home.title}</p>
+        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+           {t(`tenants:${config.tenantName}.title`)}
+        </p>
+
         {config.home.descriptionTitle && (
-        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>{config.home.descriptionTitle}</p>
+        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+          {t(`tenants:${config.tenantName}.descriptionTitle`)}
+        </p>
         )}
-        <p className={styles.publicUserDescription} style={{ marginTop: '8px' }}>{config.home.description}</p>
+
+        <p className={styles.publicUserDescription} style={{ marginTop: '8px' }}>
+          {t(`tenants:${config.tenantName}.description`)}
+        </p>
         <div style={{ marginBottom:'60px' }} />
       </LandingSection>
       <LeaderBoard leaderboard={leaderboard} />
