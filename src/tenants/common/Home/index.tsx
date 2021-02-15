@@ -17,6 +17,7 @@ interface Props {
 
 export default function About({ leaderboard, tenantScore }: Props) {
   const { t, i18n, ready } = useTranslation(['tenants']);
+
   return (
     <main>
       <LandingSection
@@ -45,7 +46,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
         </p>
         <div style={{ marginBottom:'60px' }} />
       </LandingSection>
-      <LeaderBoard leaderboard={leaderboard} />
+      {leaderboard && (leaderboard.mostDonated.length > 0 || leaderboard.mostRecent.length > 0 ) && <LeaderBoard leaderboard={leaderboard} />}
       <Footer />
     </main>
   );
