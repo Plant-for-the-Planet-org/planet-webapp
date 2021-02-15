@@ -124,7 +124,7 @@ export default function NavbarComponent(props: any) {
                   <div className={'link_icon'}>
                     <UserProfileIcon />
                   </div>
-                  <p className={router.pathname === '/t/[id]' ? 'active_icon' : ''}>
+                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
                     {t('common:' + SingleLink.title)}
                   </p>
                 </button>
