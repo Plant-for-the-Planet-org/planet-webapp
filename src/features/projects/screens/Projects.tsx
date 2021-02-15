@@ -22,7 +22,6 @@ const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
 function  ProjectsList({
   projects,
   showProjects,
-  setShowProjects,
   setsearchedProjects,
 }: Props): ReactElement {
   

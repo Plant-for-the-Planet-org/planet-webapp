@@ -15,4 +15,4 @@ export default function formatDate(dateString: any) {
   } else {
     return '';
   }
-};
+}

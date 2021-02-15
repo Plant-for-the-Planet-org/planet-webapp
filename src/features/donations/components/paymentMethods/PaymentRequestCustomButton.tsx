@@ -185,7 +185,7 @@ export const PaymentRequestCustomButton = ({
       paymentRequest ? (
         <div className={styles.actionButtonsContainer}
           style={{ justifyContent: continueNext ? "space-between" : "center" }}>
-          <div style={{ width: '150px' }}>
+          <div style={{ width: '150px',borderRadius:'18px' }}>
             <PaymentRequestButtonElement
               className="PaymentRequestButton"
               options={options}
@@ -207,6 +207,7 @@ export const PaymentRequestCustomButton = ({
             <AnimatedButton
               onClick={() => continueNext()}
               className={styles.continueButton}
+              style={{borderRadius:'6px'}}
             >
               {t('common:continue')}
             </AnimatedButton>
@@ -229,7 +230,22 @@ export const PaymentRequestCustomButton = ({
       ) : null) : null;
 };
 
-export const NativePay = ({ country, currency, amount, onPaymentFunction, continueNext, paymentSetup }) => {
+interface NativePayProps {
+  country: string;
+  currency: String;
+  amount: number;
+  onPaymentFunction: Function;
+  continueNext: Function | null;
+  paymentSetup: Object;
+}
+export const NativePay = ({
+  country,
+  currency,
+  amount,
+  onPaymentFunction,
+  continueNext,
+  paymentSetup
+ }: NativePayProps) => {
   
   const [stripePromise,setStripePromise] = useState(()=>getStripe(paymentSetup))
 

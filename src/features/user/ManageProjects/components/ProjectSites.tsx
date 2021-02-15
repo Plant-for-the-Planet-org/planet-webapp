@@ -108,8 +108,7 @@ export default function ProjectSites({
   const uploadProjectSite = (data: any) => {
     if (geoJson && geoJson.features.length !== 0) {
       setIsUploadingData(true);
-      let submitData;
-      submitData = {
+      const submitData = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
@@ -120,8 +119,8 @@ export default function ProjectSites({
         token
       ).then((res) => {
         if (!res.code) {
-          let temp = siteList;
-          let submitData = {
+          const temp = siteList;
+          const submitData = {
             id: res.id,
             name: res.name,
             geometry: res.geometry,
@@ -161,7 +160,7 @@ export default function ProjectSites({
       token
     ).then((res) => {
       if (res !== 404) {
-        let siteListTemp = siteList.filter((item) => item.id !== id);
+        const siteListTemp = siteList.filter((item) => item.id !== id);
         setSiteList(siteListTemp);
         setIsUploadingData(false);
       }

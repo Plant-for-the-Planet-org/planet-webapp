@@ -11,7 +11,7 @@ interface Props {
 
 export default function ImageSlider({ project, height, imageSize }: Props) {
   const [slider, setSlider] = React.useState<JSX.Element>();
-  let projectImages: { content: () => JSX.Element }[] = [];
+  const projectImages: { content: () => JSX.Element }[] = [];
 
   const loadImageSource = (image: any) => {
     const ImageSource = getImageUrl('project', imageSize, image);
@@ -20,7 +20,7 @@ export default function ImageSlider({ project, height, imageSize }: Props) {
 
   React.useEffect(() => {
     project.images.forEach((image: any) => {
-      let imageURL = loadImageSource(image.image);
+      const imageURL = loadImageSource(image.image);
       projectImages.push({
         content: () => (
           <div
@@ -49,5 +49,5 @@ export default function ImageSlider({ project, height, imageSize }: Props) {
       />
     );
   }, []);
-  return <>{slider}</>;;
+  return <>{slider}</>;
 }

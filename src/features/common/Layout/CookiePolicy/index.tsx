@@ -20,7 +20,7 @@ export default function CookiePolicy() {
   }, [isAuthenticated, isLoading])
 
   React.useEffect(() => {
-    let prev = localStorage.getItem('cookieNotice');
+    const prev = localStorage.getItem('cookieNotice');
     if (!prev) {
       setShowCookieNotice(true);      
     } else {
