@@ -54,7 +54,7 @@ function Andodonana({ }: Props): ReactElement {
     const [project,setProject] = React.useState(null)
     React.useEffect(() => {
         async function loadProject() {
-          let currencyCode = getStoredCurrency();
+          const currencyCode = getStoredCurrency();
           const project = await getRequest(`/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`);
           setProject(project);
         }
