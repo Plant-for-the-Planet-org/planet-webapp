@@ -18,6 +18,12 @@ const config = {
     twitterHandle: '',
     locale: 'en_US',
   },
+  home: {
+    title: 'Plant Trees with Nitro Snowboards',
+    description:
+      'Nitro Snowboards set a goal to support and mobilize the conservation, restoration, and growth of a forest.',
+    image: `/tenants/nitrosb/background.jpeg`,
+  },
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/nitrosb/logo.svg`,

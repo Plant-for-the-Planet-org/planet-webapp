@@ -1,9 +1,9 @@
 import styles from './Home.module.scss';
 import LandingSection from '../../../features/common/Layout/LandingSection';
-import LeaderBoard from '../../common/LeaderBoard';
+import LeaderBoard from '../LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
-import tenantConfig from './../../../../tenant.config'
+import tenantConfig from '../../../../tenant.config'
 const config = tenantConfig();
 
 interface Props {
