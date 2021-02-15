@@ -18,6 +18,7 @@ import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
+import VideoContainer from '../src/features/common/LandingVideo';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -102,27 +103,45 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setCurrencyCode
   };
 
-  return (
-    <Auth0Provider
-      domain={process.env.AUTH0_CUSTOM_DOMAIN}
-      clientId={process.env.AUTH0_CLIENT_ID}
-      redirectUri={process.env.NEXTAUTH_URL}
-      cacheLocation={'localstorage'}
-      onRedirectCallback={onRedirectCallback}
-    >
-      <ThemeProvider>
-        <CssBaseline />
-        <Layout>
-          {isMap ? (
-            project ? (
-              <MapLayout {...ProjectProps} />
-            ) : projects ? (
-              <MapLayout {...ProjectProps} />
-            ) : null
-          ) : null}
-          <Component {...ProjectProps} />
-        </Layout>
-      </ThemeProvider>
-    </Auth0Provider>
-  );
+  const [showVideo, setshowVideo] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('hidePreview')) {
+        setshowVideo(false)
+      }
+      else {
+        setshowVideo(true)
+      }
+    }
+  }, [])
+
+
+  return showVideo ? (
+    <div>
+      <VideoContainer setshowVideo={setshowVideo} />
+    </div>
+  ) : (
+      <Auth0Provider
+        domain={process.env.AUTH0_CUSTOM_DOMAIN}
+        clientId={process.env.AUTH0_CLIENT_ID}
+        redirectUri={process.env.NEXTAUTH_URL}
+        cacheLocation={'localstorage'}
+        onRedirectCallback={onRedirectCallback}
+      >
+        <ThemeProvider>
+          <CssBaseline />
+          <Layout>
+            {isMap ? (
+              project ? (
+                <MapLayout {...ProjectProps} />
+              ) : projects ? (
+                <MapLayout {...ProjectProps} />
+              ) : null
+            ) : null}
+            <Component {...ProjectProps} />
+          </Layout>
+        </ThemeProvider>
+      </Auth0Provider>
+    );
 }
