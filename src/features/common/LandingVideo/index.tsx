@@ -1,10 +1,15 @@
 import React, { ReactElement } from 'react'
 import styles from './styles.module.scss'
+import i18next from '../../../../i18n';
+
+const { useTranslation } = i18next;
+
 interface Props {
     setshowVideo: Function;
 }
 
 function VideoContainer({ setshowVideo }: Props): ReactElement {
+    const { t, ready } = useTranslation(['common']);
 
     const [isUploading, setisUploading] = React.useState(false)
     const handleVideoClose = () => {
@@ -14,15 +19,17 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
             localStorage.setItem('hidePreview', true)
         }
     }
-    return (
+     return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
                 <iframe src="https://player.vimeo.com/video/76979871?background=1&autoplay=1&loop=1&byline=0&title=0"
                     frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
             </div>
-            <button className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>{isUploading ? <div className={styles.spinner}></div> : 'Skip Video'}</button>
+            <button className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>
+                {isUploading ? <div className={styles.spinner}></div> : t('common:skipVideo')}
+            </button>
         </div>
-    )
+    ) : (<></>)
 }
 
 export default VideoContainer
