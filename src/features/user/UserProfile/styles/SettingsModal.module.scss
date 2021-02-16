@@ -7,7 +7,7 @@
     justify-content: center;
     overflow: hidden;
   }
-  
+
   // white modal
   .modal {
     background-color: #ffffff;
@@ -24,8 +24,9 @@
     top: 100px;
     right: 110px;
   }
-  
+
   .settingsItem {
+      font-family: $primaryFontFamily;
       padding: 10px 0px;
       text-decoration: none;
       color: rgba(0, 0, 0, 0.87);
@@ -37,7 +38,7 @@
 
   .cancelText {
       color: $highlightBackground;  //grey
-  } 
+  }
 
   @media only screen and (max-width: 768px) {
       .modal {
@@ -48,4 +49,3 @@
         padding: 7px 0px;
       }
   }
-  
