@@ -258,7 +258,7 @@
 
 @include xlDesktopView {
     .featuresMainContainer {
-        min-height: auto;
+        min-height: 70vh;
         .featuresSection {
             .singleFeature {
                 width: 280px;

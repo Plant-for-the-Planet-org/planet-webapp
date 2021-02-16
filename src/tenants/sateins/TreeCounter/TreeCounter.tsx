@@ -11,7 +11,7 @@ export default function TpoProfile(props: any) {
             {getFormattedNumber('en', Number(props.planted))}
           </h2>
           <h2 className={treeCounterStyles.countLabel}>
-            trees supported by the Sat1 community through the projects on this platform
+            Bäume. DerSAT.1 Waldwächst.
           </h2>
         </div>
       </div>
