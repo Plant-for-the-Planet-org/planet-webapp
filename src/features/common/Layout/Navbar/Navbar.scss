@@ -61,6 +61,7 @@
     justify-content: center;
     margin:10px;
     > p {
+      font-family: $primaryFontFamily;
       font-weight: 14.24px;
       font-weight: 700;
       margin: 5px;
@@ -111,7 +112,7 @@
   .top_nav {
     display: flex !important;
     padding: 0;
-    
+
     justify-content: space-between;
     box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.12);
     .brandLogos{
