@@ -55,10 +55,9 @@ export default function CountrySelect(props: {
 
   // use default country passed to create default object & set contact details
   React.useEffect(() => {
-    let defaultCountry;
     // create default object
-    defaultCountry = countries.filter((data) => data.code === defaultValue);
-    if (defaultCountry) {
+    const defaultCountry = countries.filter((data) => data.code === defaultValue);
+    if (defaultCountry && defaultCountry.length > 0) {
       // set initial value
       setValue(defaultCountry[0]);
       // set contact details
@@ -118,7 +117,6 @@ export default function CountrySelect(props: {
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
           }}
-          inputRef={props.inputRef}
           name={'countrydropdown'}
         />
       )}

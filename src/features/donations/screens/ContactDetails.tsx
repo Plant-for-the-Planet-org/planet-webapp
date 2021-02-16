@@ -30,11 +30,10 @@ function ContactDetails({
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
+    
   const onSubmit = (data: any) => {
+    setContactDetails({...contactDetails,...data});
     setDonationStep(3);
-  };
-  const changeContactDetails = (e: any) => {
-    setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
   };
 
   const changeCountry = (country: any) => {
@@ -70,7 +69,6 @@ function ContactDetails({
               label={t('donate:firstName')}
               variant="outlined"
               name="firstName"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.firstName}
             />
             {errors.firstName && (
@@ -87,7 +85,6 @@ function ContactDetails({
               label={t('donate:lastName')}
               variant="outlined"
               name="lastName"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.lastName}
             />
             {errors.lastName && (
@@ -107,7 +104,6 @@ function ContactDetails({
               label={t('donate:email')}
               variant="outlined"
               name="email"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.email}
               disabled={token ? true : false}
             />
@@ -125,7 +121,6 @@ function ContactDetails({
               label={t('donate:address')}
               variant="outlined"
               name="address"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.address}
             />
             {errors.address && (
@@ -142,7 +137,6 @@ function ContactDetails({
               label={t('donate:city')}
               variant="outlined"
               name="city"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.city}
             />
             {errors.city && (
@@ -164,7 +158,6 @@ function ContactDetails({
                   label={t('donate:zipCode')}
                   variant="outlined"
                   name="zipCode"
-                  onChange={changeContactDetails}
                   defaultValue={contactDetails.zipCode}
                 />
               )
@@ -216,7 +209,6 @@ function ContactDetails({
                 inputRef={
                   isCompany ? register({ required: true }) : register({})
                 }
-                onChange={changeContactDetails}
                 defaultValue={contactDetails.companyName}
               />
               {errors.companyName && (

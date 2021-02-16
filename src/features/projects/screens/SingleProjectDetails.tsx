@@ -90,7 +90,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
             zIndex: 3333,
           }}
           onClick={() => {
-            router.push('/', undefined, { shallow: true });
+            router.back();
           }}
         >
           <BackButton />

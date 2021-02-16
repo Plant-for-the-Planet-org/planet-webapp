@@ -44,6 +44,8 @@ export interface TreeDonationProps {
   token:any;
   recurrencyMnemonic:String;
   setRecurrencyMnemonic:Function;
+  donationID:any;
+  setDonationID:Function;
 }
 
 export interface PaymentDetailsProps {
@@ -62,6 +64,10 @@ export interface PaymentDetailsProps {
   isTaxDeductible: Boolean;
   token:any;
   recurrencyMnemonic:String;
+  donationID:any;
+  setDonationID:Function;
+  shouldCreateDonation:Boolean;
+  setShouldCreateDonation:Function;
 }
 
 export interface ContactDetailsPageProps {
@@ -80,33 +86,25 @@ export interface ContactDetailsPageProps {
 }
 
 export interface ThankYouProps {
-  project: { name: String };
-  treeCount: number;
-  treeCost: number;
-  currency: String;
-  setDonationStep: Function;
-  contactDetails: Object;
-  isGift: Boolean;
-  giftDetails: giftDetailsProps;
+  donationID:any;
   onClose: any;
-  paymentType: String;
+  paymentType: String | string;
+  redirectStatus:any;
 }
 
-export interface PayWithCardTypes {
-  setIsPaymentProcessing: Function;
-  setPaymentError: Function;
+export interface CreateDonationFunctionProps {
+  isTaxDeductible:Boolean | null;
+  country:any;
   project: Object;
   treeCount: number;
   treeCost: number;
   currency: String;
+  donorDetails: Object;
   giftDetails: giftDetailsProps;
   isGift: Boolean;
-  paymentSetup: Object;
-  window: any;
-  setDonationStep: Function;
-  paymentMethod: Object;
-  donorDetails: Object;
-  taxDeductionCountry: string | null;
+  setIsPaymentProcessing: Function;
+  setPaymentError: Function;
+  setDonationID:any;
   token: any | null;
   recurrencyMnemonic:String;
 }

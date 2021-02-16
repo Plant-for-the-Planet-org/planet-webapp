@@ -13,7 +13,7 @@ import styles from '../styles/TreeDonation.module.scss';
 import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
-import { payWithCard } from '../components/PaymentFunctions';
+import { createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -47,7 +47,9 @@ function TreeDonation({
   isPaymentOptionsLoading,
   token,
   recurrencyMnemonic,
-  setRecurrencyMnemonic
+  setRecurrencyMnemonic,
+  setDonationID,
+  donationID
 }: TreeDonationProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const treeCountOptions = [10, 20, 50, 150];
@@ -104,7 +106,7 @@ function TreeDonation({
     setMinAmt(getMinimumAmountForCurrency(currency));
   }, [country]);
 
-  const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
+  const onPaymentFunction = async(paymentMethod: any, paymentRequest: any) => {
     // eslint-disable-next-line no-underscore-dangle
     setPaymentType(paymentRequest._activeBackingLibraryName);
 
@@ -124,25 +126,34 @@ function TreeDonation({
       country: paymentMethod.billing_details.address.country,
     };
 
-    const payWithCardProps = {
-      setDonationStep,
-      setIsPaymentProcessing,
-      project,
-      currency,
-      treeCost,
+    await createDonationFunction({
+      isTaxDeductible, 
+      country, 
+      project, 
+      treeCost, 
       treeCount,
-      giftDetails,
-      isGift,
-      setPaymentError,
-      paymentSetup,
-      window,
-      paymentMethod,
+      currency,
       donorDetails,
-      taxDeductionCountry: isTaxDeductible ? country : null,
-      token: token || null,
-      recurrencyMnemonic
-    };
-    payWithCard({ ...payWithCardProps });
+      isGift,
+      giftDetails,
+      setIsPaymentProcessing,
+      setPaymentError,
+      recurrencyMnemonic,
+      setDonationID,
+      token
+    }).then((res)=>{      
+      payDonationFunction ({
+        gateway:'stripe',
+        paymentMethod,
+        setIsPaymentProcessing,
+        setPaymentError,
+        t,
+        paymentSetup,
+        donationID:res.id,
+        token,
+        setDonationStep
+      })
+    });
   };
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);

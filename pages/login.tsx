@@ -25,8 +25,7 @@ function Login({ }: Props): ReactElement {
     React.useEffect(() => {
         async function loadFunction() {
           const token = await getAccessTokenSilently();
-          let userInfo;
-          userInfo = await getUserInfo(token, router, logout);            
+          const userInfo = await getUserInfo(token, router, logout);            
           // redirect
 
           if (typeof window !== 'undefined' && userInfo) {

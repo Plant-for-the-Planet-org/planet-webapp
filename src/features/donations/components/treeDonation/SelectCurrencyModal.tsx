@@ -15,7 +15,7 @@ import { getStoredConfig } from '../../../../utils/storeConfig';
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
 import i18next from '../../../../../i18n';
-let styles = require('./../../styles/SelectCurrencyModal.module.scss');
+import styles from './../../styles/SelectCurrencyModal.module.scss';
 
 const { useTranslation } = i18next;
 export default function TransitionsModal(props: any) {
@@ -46,7 +46,7 @@ export default function TransitionsModal(props: any) {
 
   React.useEffect(() => {
     // sets two default country as important country which is US(United States) and DE (Germany)
-    let impCountryList = ['US','DE'];
+    const impCountryList = ['US','DE'];
 
     // if the selected country is other than US and DE then add that country to important country list
     if (country && country != 'US' && country != 'DE') {

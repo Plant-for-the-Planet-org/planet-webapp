@@ -20,7 +20,7 @@ async function fetchTiles(style:any, metadataUrl:any) {
       console.log('Error:', e);
       return null;
     }
-  };
+  }
 
 function format(style: any, metadata: any, metadataUrl:any) {
 // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /

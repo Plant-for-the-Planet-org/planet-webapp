@@ -42,7 +42,7 @@ function ProjectInfo({ project }: Props): ReactElement {
     const [ownerTypes, setOwnerTypes] = React.useState([])
     React.useEffect(() => {
         if (project.siteOwnerType && project.siteOwnerType.length > 0) {
-            let newSiteOwners = ownerTypes;
+            const newSiteOwners = ownerTypes;
             for (let i = 0; i < project.siteOwnerType.length; i++) {
                 for (let j = 0; j < siteOwners.length; j++) {
                     if (siteOwners[j].value === project.siteOwnerType[i]) {
@@ -55,10 +55,10 @@ function ProjectInfo({ project }: Props): ReactElement {
     }, [])
 
 
-    let expenseAmount = project.expenses.map((expense:any)=>expense.amount);    
+    const expenseAmount = project.expenses.map((expense:any)=>expense.amount);    
     const calculatePercentage =(amount:any)=>{
         const maxAmount = Math.max(...expenseAmount)
-        let percentage = (amount/maxAmount) * 100;
+        const percentage = (amount/maxAmount) * 100;
         return `${percentage}%`
     }
 
@@ -239,7 +239,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
                     {project.certificates.map((certificate: any) => {
                         return (
-                            <div className={styles.infoText}>
+                            <div key={certificate.id} className={styles.infoText}>
                                 {certificate.certifierName}
                                 <a className={styles.infoTextButton} target="_blank" rel="noopener noreferrer"
                                   href={getPDFFile('projectCertificate', certificate.pdf)}>
@@ -261,7 +261,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
                     {project.expenses.map((expense: any) => {
                         return (
-                            <div className={styles.infoText} style={{justifyContent:'normal'}}>
+                            <div key={expense.id} className={styles.infoText} style={{justifyContent:'normal'}}>
                                  <span>
                                     {expense.year}
                                 </span>

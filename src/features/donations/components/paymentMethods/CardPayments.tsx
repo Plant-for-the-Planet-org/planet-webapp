@@ -54,7 +54,8 @@ const getInputOptions = (placeholder: string) => {
 function CardPayments({
   paymentType,
   setPaymentType,
-  onPaymentFunction
+  onPaymentFunction,
+  donorDetails
 }: any): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
   const stripe = useStripe();
@@ -101,7 +102,25 @@ function CardPayments({
   }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
 
   const createPaymentMethodCC = (cardElement: any) => {
-    return stripe.createPaymentMethod('card', cardElement)
+    if(donorDetails){
+      return stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: `${donorDetails.firstname} ${donorDetails.lastname}`,
+          email:donorDetails.email,
+          address:{
+            city: donorDetails.city,
+            country: donorDetails.country,
+            line1: donorDetails.address,
+            postal_code: donorDetails.zipCode,
+          }
+        }
+      })
+    }
+    else {
+      return stripe.createPaymentMethod('card', cardElement)
+    }
   }
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     setShowContinue(false);
@@ -124,7 +143,7 @@ function CardPayments({
           return;
         }
       });
-      let payload = await createPaymentMethodCC(cardElement);
+      const payload = await createPaymentMethodCC(cardElement);
       paymentMethod = payload.paymentMethod;
       // Add payload error if failed
     }
@@ -179,17 +198,6 @@ function CardPayments({
 
         {
           <div className={styles.paymentModeContainer}>
-            <div className={styles.paymentModeHeader}>
-              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
-              <div className={styles.paymentModeTitle}>
-                {t('donate:creditDebitCard')}
-              </div>
-
-              {/* <div className={styles.paymentModeFee}>
-                  <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
-                  <InfoIcon />
-                </div> */}
-            </div>
 
             <div className={styles.formRow}>
               <FormControlNew variant="outlined">
