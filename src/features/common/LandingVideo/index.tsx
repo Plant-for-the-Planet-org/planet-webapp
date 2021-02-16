@@ -19,11 +19,12 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
             localStorage.setItem('hidePreview', true)
         }
     }
-     return ready ? (
+    return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
-                <iframe src="https://player.vimeo.com/video/512607409?background=1&autoplay=1&loop=1&byline=0&title=0"
-                    frameBorder="0" allowFullScreen></iframe>
+                <video autoPlay preload='auto'>
+                    <source src={"/assets/video/landing.mp4"} type="video/mp4" />
+                </video>
             </div>
             <button className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>
                 {isUploading ? <div className={styles.spinner}></div> : t('common:skipIntroVideo')}
