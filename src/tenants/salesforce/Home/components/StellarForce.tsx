@@ -87,7 +87,7 @@ export default function StellarForce() {
           <div className={`${gridStyles.colMd6} ${gridStyles.col12} ${treeCounterStyles.treeCounterSection}`}>
             <div className={treeCounterStyles.treeCounterContainer}></div>
             <div className={treeCounterStyles.treeCounter}>
-              <TreeCounter target={100000000} planted={333333} />
+              <TreeCounter target={100000000} planted={0} />
             </div>
             <img
               className={treeCounterStyles.treeCounterImage}
