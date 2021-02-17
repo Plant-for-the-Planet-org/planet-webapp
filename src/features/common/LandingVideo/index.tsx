@@ -22,7 +22,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
-                <video autoPlay onEnded={() => handleVideoClose()}>
+                <video muted autoPlay onEnded={() => handleVideoClose()}>
                     <source src={"/assets/video/landing.mp4"} type="video/mp4" />
                 </video>
             </div>
