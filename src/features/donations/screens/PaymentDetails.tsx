@@ -16,6 +16,9 @@ import SepaPayments from '../components/paymentMethods/SepaPayments';
 import PaypalPayments from '../components/paymentMethods/PaypalPayments';
 import GiroPayPayments from '../components/paymentMethods/GiroPayPayments';
 import SofortPayments from '../components/paymentMethods/SofortPayment';
+import tenantConfig from '../../../../tenant.config';
+
+const config = tenantConfig();
 
 const { useTranslation } = i18next;
 
@@ -135,7 +138,7 @@ function PaymentDetails({
             setPaymentType={setPaymentType}
             showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")}
             showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")}
-            showSepa={paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")}
+            showSepa={(config.enableGuestSepa || token) && paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")}
             showSofort={sofortCountries.includes(country) && paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")}
             showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal}
           />

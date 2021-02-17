@@ -4,11 +4,7 @@ import GiroPayIcon from '../../../../../public/assets/images/icons/donation/Giro
 import PaypalIcon from '../../../../../public/assets/images/icons/donation/PaypalIcon';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
 import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
-import tenantConfig from '../../../../../tenant.config';
 import styles from './../../styles/PaymentDetails.module.scss';
-
-
-const config = tenantConfig();
 
 function a11yProps(index: any) {
     return {
@@ -34,7 +30,7 @@ export default function PaymentMethodTabs({ paymentType, setPaymentType, showPay
             )}
 
 
-            {config.enableSepa && showSepa && (
+            {showSepa && (
                 <button className={`${styles.paymentMethod} ${paymentType === 'SEPA' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'SEPA')}  {...a11yProps('SEPA')}>
                     <SepaIcon />
                     <label>SEPA</label>
