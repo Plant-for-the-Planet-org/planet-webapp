@@ -52,6 +52,14 @@
         transform: translateX(-50%) scale(1.05);
         cursor: pointer;
     }
+
+    @include smTabletView{
+        .landingVideoSkipButton {
+            left: auto;
+            transform: none;
+            right: 30px;
+        }
+    }
 }
 
 // Loader for Buttons
