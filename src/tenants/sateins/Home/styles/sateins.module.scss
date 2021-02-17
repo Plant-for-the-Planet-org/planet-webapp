@@ -7,11 +7,32 @@
 .landingSection {
     margin: auto;
     width: 100vw;
-    max-width: 1280px;
+    background-image: url("/tenants/sateins/images/sat1-forest-yucatan.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
     display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-    align-self: center;
+    justify-content: center;
+    .landingContent {
+        max-width: 1280px;
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        align-self: center;
+        position: relative;
+    }
+    > .landingSectionOverlay {
+        opacity: 0.7;
+        background-color: rgba(66, 66, 66, 0.3);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+    }
+
     .landingImageSection {
         order: 1;
         width: 100%;
@@ -24,10 +45,6 @@
             width: 90%;
             margin: 48px;
             border-radius: 10px;
-            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-            // &:hover{
-            //     transform: translateY(-40px);
-            // }
         }
     }
 
@@ -39,14 +56,15 @@
         align-items: center;
         flex-direction: column;
         padding: 24px;
-        color: #232323;
+        color: #fff;
         text-align: center;
+        font-weight: 600;
         > h2 {
             font-size: 3.2rem;
             font-weight: bold;
             line-height: 1.2;
             > span {
-                color: #568802;
+                color: #fff;
             }
         }
         > p {
@@ -65,7 +83,9 @@
 
 @include lgLaptopView {
     .landingSection {
-        flex-direction: row;
+        .landingContent {
+            flex-direction: row;
+        }
         .landingImageSection {
             width: 50%;
             order: 2;
@@ -83,11 +103,6 @@
     }
 }
 
-@include smTabletView {
-    .landingSection {
-        margin-top: 60px;
-    }
-}
 .continueButton,
 .secondaryButton {
     height: 40px;
@@ -123,9 +138,9 @@
 
 // Sections 2
 .section2MainContainer {
-    background-image: url("/tenants/sateins/images/parallaxCover.jpg");
+    background-image: url("/tenants/sateins/images/sat1-forest-yucatan.jpg");
     width: 100vw;
-    height: 240px;
+    height: 300px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -216,23 +231,9 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        .singleFeature {
-            width: 240px;
-            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-            &:hover {
-                transform: translateY(-20px);
-            }
-            > svg {
-                width: 80px;
-                height: 80px;
-                margin-bottom: 8px;
-            }
-            text-align: center;
-            > h2 {
-                font-size: 20.8px;
-                font-weight: bold;
-                margin-bottom: 8px;
-            }
+        > img {
+            width: 100%;
+            border-radius: 10px;
         }
     }
 }
@@ -240,8 +241,8 @@
 @include lgLaptopView {
     .featuresMainContainer {
         min-height: 100vh;
-        padding: 64px;
         .featuresContainerText {
+            padding: 64px;
             > div {
                 max-width: 540px;
             }
@@ -251,7 +252,11 @@
             border-right: 2px solid rgb(86, 136, 2);
         }
         .featuresSection {
+            padding: 64px;
             width: 50%;
+            > img {
+                width: 400px;
+            }
         }
     }
 }
@@ -259,175 +264,5 @@
 @include xlDesktopView {
     .featuresMainContainer {
         min-height: 70vh;
-        .featuresSection {
-            .singleFeature {
-                width: 280px;
-                > svg {
-                    width: 100px;
-                    height: 100px;
-                    margin-bottom: 8px;
-                }
-            }
-        }
-    }
-}
-.sustainableSection {
-    margin: auto;
-    width: 100vw;
-    max-width: 1280px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-self: center;
-
-    .sustainableImageSection {
-        order: 1;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        > img {
-            max-width: 540px;
-            width: 90%;
-            margin: 48px;
-            border-radius: 10px;
-            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-            // &:hover{
-            //     transform: translateY(-40px);
-            // }
-        }
-    }
-
-    .sustainableTextSection {
-        order: 2;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        padding: 24px;
-        color: #232323;
-        text-align: center;
-        > div {
-            > h2 {
-                font-size: 3.2rem;
-                font-weight: bold;
-                line-height: 1.2;
-                color: #9e9e9e;
-            }
-            > h3 {
-                margin-top: 24px;
-                font-size: 25.6px;
-                line-height: 1;
-                font-weight: bolder;
-            }
-        }
-    }
-
-    .sustainableButtonContainer {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-}
-
-@include lgLaptopView {
-    .sustainableSection {
-        flex-direction: row;
-        .sustainableImageSection {
-            width: 50%;
-            order: 2;
-        }
-        .sustainableTextSection {
-            width: 50%;
-            align-items: left;
-            text-align: left;
-            order: 1;
-            padding: 72px;
-        }
-        .sustainableButtonContainer {
-            justify-content: left;
-        }
-    }
-}
-
-@include xlDesktopView {
-    .sustainableSection {
-        min-height: auto;
-        margin-bottom: 80px;
-    }
-}
-
-@include smTabletView {
-    .sustainableSection {
-        margin-top: 60px;
-    }
-}
-
-.projectBySection {
-    background-color: #568802;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 48px;
-    padding-bottom: 48px;
-    text-align: center;
-    > h2 {
-        color: #ffe161;
-        font-size: 25.6px;
-        font-weight: bolder;
-    }
-    > h1 {
-        color: white;
-        font-size: 41px;
-        font-weight: bolder;
-        font-style: italic;
-        margin-top: 24px;
-    }
-}
-
-.projectMapContainer {
-    background-color: #c8def4;
-    padding-top: 48px;
-    padding-bottom: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    > div {
-        background-color: white;
-        border-radius: 10px;
-        width: 320px;
-        padding: 10px;
-    }
-}
-
-.logoContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    > img {
-        height: 90px;
-        margin-right: 36px;
-        margin-bottom: 36px;
-        filter: grayscale(1);
-        transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.4s;
-        &:hover{
-            // transform: translateY(-10px);
-            filter: grayscale(0);
-        }
-    }
-    :first-child {
-        height: 120px;
-    }
-}
-@include xsPhoneView {
-    .logoContainer {
-        > img {
-            margin-right: 0px;
-        }
     }
 }
