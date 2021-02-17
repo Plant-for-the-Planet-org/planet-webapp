@@ -4,6 +4,7 @@ import Blogs from './components/Blogs';
 import Landing from './components/Landing';
 import LeaderBoard from './components/LeaderBoardSection';
 import LearnMore from './components/LearnMore';
+import StellarForce from './components/StellarForce';
 import TreeCounterSection from './components/TreeCounter';
 
 interface Props {
@@ -18,6 +19,7 @@ export default function About({ tenantScore, leaderboard }: Props) {
       <TreeCounterSection tenantScore={tenantScore} />
       <LearnMore />
       <LeaderBoard leaderboard={leaderboard} />
+      <StellarForce/>
       <Articles />
       <Blogs />
       <Footer />

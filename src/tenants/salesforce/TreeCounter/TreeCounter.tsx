@@ -10,9 +10,12 @@ export default function TpoProfile(props: any) {
           <h2 className={treeCounterStyles.countNumber}>
             {getFormattedNumber('en', Number(props.planted))}
           </h2>
-          <h2 className={treeCounterStyles.countLabel}>
-          trees supported by the Salesforce community through the projects on this platform
-          </h2>
+          {!props.hideText && (
+            <h2 className={treeCounterStyles.countLabel}>
+              trees supported by the Salesforce community through the projects on this platform
+            </h2>
+          )}
+
         </div>
       </div>
     </div>
