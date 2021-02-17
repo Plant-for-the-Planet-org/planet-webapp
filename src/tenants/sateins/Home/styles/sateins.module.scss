@@ -3,6 +3,10 @@
 .pageContainer {
     display: flex;
     flex-direction: column;
+    margin-bottom: 24px;
+    .poweredByLink{
+        text-align: center;
+    }
 }
 .landingSection {
     margin: auto;

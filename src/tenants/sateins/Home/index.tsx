@@ -78,6 +78,7 @@ function Home({ tenantScore }: Props): ReactElement {
 
             <Objective />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
+            <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/" target="_blank">Plant-for-the-Planet</a> </p>
         </div>
     ) : <></>
 }
