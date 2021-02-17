@@ -6,6 +6,7 @@ export default function FeaturesSection(props:any){
             <div className={styles.featuresContainerText}>
                 {props.FeaturesSectionData.featureText}
             </div>
+            <div className={styles.featuresContainerDivider}></div>
             <div className={styles.featuresSection}>
                 <img src={"tenants/sateins/images/sat1-sign.jpg"} />
             </div>

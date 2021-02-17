@@ -81,7 +81,7 @@
     }
 }
 
-@include lgLaptopView {
+@include mdTabletView {
     .landingSection {
         .landingContent {
             flex-direction: row;
@@ -238,22 +238,25 @@
     }
 }
 
-@include lgLaptopView {
+@include mdTabletView {
     .featuresMainContainer {
         min-height: 100vh;
+        display: flex;
+        align-items: center;
         .featuresContainerText {
-            padding: 64px;
+            padding: 32px;
+            width: 49%;
             > div {
                 max-width: 540px;
             }
         }
-        .featuresContainerText {
-            width: 50%;
+        .featuresContainerDivider {
+            height: 160px;
             border-right: 2px solid rgb(86, 136, 2);
         }
         .featuresSection {
-            padding: 64px;
-            width: 50%;
+            padding: 32px;
+            width: 49%;
             > img {
                 width: 400px;
             }
