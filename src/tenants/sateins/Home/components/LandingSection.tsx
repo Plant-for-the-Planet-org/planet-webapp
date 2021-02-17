@@ -8,7 +8,6 @@ export default function LandingSection(props: any) {
 
             <div className={styles.landingTextSection}>
                 <h2>
-                    {props.LandingSectionData.mainTitleText} <br />
                     <span>{props.LandingSectionData.mainTitleSubText}</span>
                 </h2>
                 <p>
@@ -16,11 +15,11 @@ export default function LandingSection(props: any) {
                 </p>
                 <div className={styles.landingButtonContainer}>
                     <AnimatedButton onClick={() => props.handleOpen()} className={styles.continueButton}>
-                        Plantar árboles
+                        Jetzt Bäume pflanzen
                     </AnimatedButton>
-                    <AnimatedButton onClick={() => props.handleViewProject()} className={styles.secondaryButton} style={{ marginLeft: '24px' }}>
+                    {/* <AnimatedButton onClick={() => props.handleViewProject()} className={styles.secondaryButton} style={{ marginLeft: '24px' }}>
                         Ver Proyecto {'>'}
-                    </AnimatedButton>
+                    </AnimatedButton> */}
                 </div>
             </div>
             <div className={styles.landingImageSection}>
