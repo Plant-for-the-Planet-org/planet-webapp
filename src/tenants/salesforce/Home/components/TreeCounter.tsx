@@ -26,7 +26,7 @@ Check out the “Donate” tab to see some of the places where we’re supportin
         <div className={`${gridStyles.colMd6} ${gridStyles.col12} ${styles.treeCounterSection}`}>
           <div className={styles.treeCounterContainer}></div>
           <div className={styles.treeCounter}>
-            <TreeCounter target={100000000} planted={tenantScoreData} />
+            <TreeCounter title={'trees supported by the Salesforce community through the projects on this platform'} planted={tenantScoreData} />
           </div>
           <img
             className={styles.treeCounterImage}

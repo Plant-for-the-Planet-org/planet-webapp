@@ -9,26 +9,24 @@ export default function StellarForce() {
     {
       id: 1,
       stellarForceDescription:
-        'Since 2017 we’ve supported carbon projects, such as restoring mangrove forests in Myanmar while working with the local population to adapt to more sustainable practices.',
-      name: 'Iberiaforce',
+        'Donate trees to make Salesforce Iberia`s forest grow!',
+      name: 'IberiaForce',
       imagePath: '/tenants/salesforce/images/TreeCounterImage.png',
       link: 'https://trees.salesforce.com/s/iberiaforce',
       guid: 'iberiaforce'
     },
     {
       id: 2,
-      stellarForceDescription:
-        'Salesforce supports the four Together With Nature Principles to responsibly tackle the climate crisis, restore biodiversity, and benefit planetary health and human wellbeing.',
-      name: 'Italyforce',
+      stellarForceDescription:'Donate trees to make Salesforce Italy`s forest grow!',
+      name: 'ItalyForce',
       imagePath: '/tenants/salesforce/images/TreeCounterImage.png',
       link: 'https://trees.salesforce.com/s/italyforce',
       guid: 'italyforce'
     },
     {
       id: 3,
-      stellarForceDescription:
-        'Salesforce technology powers this digital platform that crowdsources innovations from ecopreneurs, who are developing solutions to meet the trillion trees goal.',
-      name: 'Israelforce',
+      stellarForceDescription:'Donate trees to make Salesforce Israel`s forest grow!',
+      name: 'IsraelForce',
       imagePath: '/tenants/salesforce/images/TreeCounterImage.png',
       link:
         'https://trees.salesforce.com/s/israelforce',
@@ -36,9 +34,8 @@ export default function StellarForce() {
     },
     {
       id: 4,
-      stellarForceDescription:
-        'We pledged with other U.S.-based organizations to support almost one billion trees and accelerate the trillion trees movement.',
-      name: 'Franceforce',
+      stellarForceDescription:'Donate trees to make Salesforce France`s forest grow!',
+      name: 'FranceForce',
       imagePath: '/tenants/salesforce/images/TreeCounterImage.png',
       link:
         'https://trees.salesforce.com/s/franceforce',
@@ -47,9 +44,8 @@ export default function StellarForce() {
 
     {
       id: 5,
-      stellarForceDescription:
-        'We pledged with other U.S.-based organizations to support almost one billion trees and accelerate the trillion trees movement.',
-      name: 'Emergingforce',
+      stellarForceDescription:'Donate trees to make Salesforce Emerging Markets` forest grow!',
+      name: 'EmergingForce',
       imagePath: '/tenants/salesforce/images/TreeCounterImage.png',
       link:
         'https://trees.salesforce.com/s/emergingforce',
@@ -57,9 +53,8 @@ export default function StellarForce() {
     },
     {
       id: 6,
-      stellarForceDescription:
-        'Salesforce technology powers this digital platform that crowdsources innovations from ecopreneurs, who are developing solutions to meet the trillion trees goal.',
-      name: 'Irelandforce',
+      stellarForceDescription:'Donate trees to make Salesforce Ireland`s forest grow!',
+      name: 'IrelandForce',
       imagePath: '/tenants/salesforce/images/TreeCounterImage.png',
       link:
         'https://trees.salesforce.com/s/irelandforce',
@@ -73,12 +68,11 @@ export default function StellarForce() {
         <div className={`${gridStyles.gridRow} ${treeCounterStyles.treeCounterSectionRow}`}>
           <div className={`${gridStyles.colMd6} ${gridStyles.col12} ${treeCounterStyles.treeCounterSectionText}`}>
             <h2 className={treeCounterStyles.treeCounterSectionTextHeader}>
-              StellarForce
+              StellarForestForce
             </h2>
             <br />
             <p className={treeCounterStyles.treeCounterSectionTextPara}>
-              Even though our journey is just starting, we know it will take the full power of Salesforce - including our technology, capital, influence, and network - to get there. And we know there’s no time to waste. We know we’ll have to refine our programs and methodology over time, by sharing with and learning from others. That’s why we’ve launched this resource.
-              <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.              <br />
               <br />
               {/* Check out the “Donate” tab to see some of the places where we’re supporting tree planting organizations and lend your support! The tracker to the right and leaderboard below reflect all the donations made and registered on this platform. Also below, you’ll find examples of our other initiatives as well as resources to get involved. We’ll continue to add projects, programs, and resources so check back often! */}
             </p>
@@ -87,7 +81,7 @@ export default function StellarForce() {
           <div className={`${gridStyles.colMd6} ${gridStyles.col12} ${treeCounterStyles.treeCounterSection}`}>
             <div className={treeCounterStyles.treeCounterContainer}></div>
             <div className={treeCounterStyles.treeCounter}>
-              <TreeCounter target={100000000} planted={0} />
+              <TreeCounter title={'trees planted'} target={100000000} planted={0} />
             </div>
             <img
               className={treeCounterStyles.treeCounterImage}
