@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
@@ -114,9 +114,8 @@ export default function BasicDetails({
     setError
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
-  const acceptDonations = watch('acceptDonations');
-
-  // const treeCost = watch('treeCost');
+  const [acceptDonations, setAcceptDonations] = useState(false);
+    // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
 
@@ -411,7 +410,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e) => properties.onChange(e.target.checked)}
+                      onChange={(e) => {properties.onChange(e.target.checked); setAcceptDonations(!acceptDonations) } }
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   )}
