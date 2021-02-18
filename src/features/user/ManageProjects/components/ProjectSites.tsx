@@ -306,7 +306,7 @@ export default function ProjectSites({
 
             <Map {...MapProps} />
 
-            <button id="projSiteSaveandAdd"
+            <button id={styles.projSiteSaveandAdd}
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.formFieldLarge}
             >
