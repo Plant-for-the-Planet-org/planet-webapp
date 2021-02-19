@@ -1,0 +1,275 @@
+@import "../../../../theme/theme";
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+    .poweredByLink{
+        text-align: center;
+    }
+}
+.landingSection {
+    margin: auto;
+    width: 100vw;
+    background-image: url("/tenants/sateins/images/yucatan-aerial.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    display: flex;
+    justify-content: center;
+    .landingContent {
+        max-width: 1280px;
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        align-self: center;
+        position: relative;
+    }
+    > .landingSectionOverlay {
+        opacity: 0.7;
+        background-color: rgba(66, 66, 66, 0.3);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+    }
+
+    .landingImageSection {
+        order: 1;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        > img {
+            max-width: 540px;
+            width: 90%;
+            margin: 48px;
+            border-radius: 10px;
+        }
+    }
+
+    .landingTextSection {
+        order: 2;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 24px;
+        color: #fff;
+        text-align: center;
+        font-weight: 600;
+        > h2 {
+            font-size: 3.2rem;
+            font-weight: bold;
+            line-height: 1.2;
+            > span {
+                color: #fff;
+            }
+        }
+        > p {
+            margin-top: 24px;
+            font-size: 0.94rem;
+            line-height: 1.73;
+        }
+    }
+
+    .landingButtonContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@include mdTabletView {
+    .landingSection {
+        .landingContent {
+            flex-direction: row;
+        }
+        .landingImageSection {
+            width: 50%;
+            order: 2;
+        }
+        .landingTextSection {
+            width: 50%;
+            align-items: left;
+            text-align: left;
+            order: 1;
+            padding: 72px;
+        }
+        .landingButtonContainer {
+            justify-content: left;
+        }
+    }
+}
+
+.continueButton,
+.secondaryButton {
+    height: 40px;
+    border-radius: 100px;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    border: 0px;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    margin-top: 24px;
+    width: 200px;
+}
+.secondaryButton {
+    background-image: none;
+    background-color: white;
+    color: $primaryFontColor;
+    > a {
+        text-decoration: none;
+        color: $primaryFontColor;
+    }
+}
+.continueButton:hover,
+.secondaryButton:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+// Sections 2
+.section2MainContainer {
+    background-image: url("/tenants/sateins/images/sat1-forest-yucatan.jpg");
+    width: 100vw;
+    height: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+    text-align: center;
+    > .section2Overlay {
+        opacity: 0.7;
+        background-color: rgb(86, 136, 2);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+    }
+    > p {
+        font-size: 0.94rem;
+        line-height: 1.73;
+        margin-bottom: 12px;
+        font-weight: bold;
+        z-index: 2;
+    }
+    > h2 {
+        font-size: 1.6rem;
+        line-height: 1;
+        font-weight: bolder;
+        margin-bottom: 12px;
+        z-index: 2;
+    }
+    > span {
+        font-size: 1.3rem;
+        line-height: 1.06;
+        font-weight: bold;
+        font-style: italic;
+        z-index: 2;
+    }
+}
+
+// featuresMainContainer
+
+.featuresMainContainer {
+    display: flex;
+    min-height: 100vh;
+    padding: 24px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1280px;
+    margin: auto;
+    .featuresContainerText {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        > div {
+            max-width: 380px;
+            > span {
+                color: #9d9d9d;
+                margin-bottom: 0.4375rem;
+                text-align: left;
+                font-size: 0.94rem;
+                line-height: 1.73;
+                font-weight: 600;
+                margin-bottom: 12px;
+            }
+            > h2 {
+                font-size: 1.9rem;
+                line-height: 1;
+                font-weight: bolder;
+                color: rgb(86, 136, 2);
+                margin-bottom: 12px;
+            }
+            > p {
+                font-size: 0.94rem;
+                line-height: 1.73;
+                margin-bottom: 24px;
+            }
+        }
+    }
+    .featuresSection {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        > img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+}
+
+@include mdTabletView {
+    .featuresMainContainer {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        .featuresContainerText {
+            padding: 32px;
+            width: 49%;
+            > div {
+                max-width: 540px;
+            }
+        }
+        .featuresContainerDivider {
+            height: 160px;
+            border-right: 2px solid rgb(86, 136, 2);
+        }
+        .featuresSection {
+            padding: 32px;
+            width: 49%;
+            > img {
+                width: 400px;
+            }
+        }
+    }
+}
+
+@include xlDesktopView {
+    .featuresMainContainer {
+        min-height: 70vh;
+    }
+}

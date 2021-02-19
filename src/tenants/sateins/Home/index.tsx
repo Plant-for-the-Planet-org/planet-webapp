@@ -5,11 +5,10 @@ import DonationsPopup from '../../../features/donations'
 import { ThemeContext } from '../../../theme/themeContext'
 import { getRequest } from '../../../utils/apiRequests/api'
 import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency'
-import LeaderBoardSection from '../../common/LeaderBoard'
 import FeaturesSection from './components/FeaturesSection'
 import LandingSection from './components/LandingSection'
 import Objective from './components/Objective'
-import styles from './styles/anilloverdegranada.module.scss'
+import styles from './styles/sateins.module.scss'
 
 interface Props {
     tenantScore: any
@@ -28,34 +27,14 @@ function Home({ tenantScore }: Props): ReactElement {
     const FeaturesSectionData = {
         featureText: <div>
             <h2>Das Projekt: Jeder Euro ist ein Baum mehr</h2>
-            <p>Für jeden gespendeten Euro im Rahmen der "SAT.1 Waldrekord-Woche" wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen HalbinselYucatán im Bundesland Campeche der "SAT.1-Wald" gepflanzt wird und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiterzuwachsen. Die Spender*innen können das Wachstum ihrer Bäume auf der "Plant-for-the-Planet App" verfolgen – oder die Pflanzung persönlich zu besuchen. Außerdem haben sie die Chance, einen XXX in unserer Verlosung zu gewinnen.</p>
-        </div>,
-        features: {
-            title1: 'El espacio',
-            text1: '800 hectáreas (Granada)',
-            title2: 'Especies',
-            text2: 'Pinos, encinas & especies mediterráneas',
-            title3: 'Monte público',
-            text3: 'Monte público - Cesión por el Ayuntamiento de Granada',
-            title4: 'Coordenadas',
-            text4: '37.203275, -3.588959'
-        }
+            <p>Für jeden gespendeten Euro im Rahmen der &quot;SAT.1 Waldrekord-Woche&quot; wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen HalbinselYucatán im Bundesland Campeche der &quot;SAT.1-Wald&quot; gepflanzt wird und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiterzuwachsen. Die Spender*innen können das Wachstum ihrer Bäume auf der &quot;Plant-for-the-Planet App&quot; verfolgen – oder die Pflanzung persönlich zu besuchen. Außerdem haben sie die Chance, einen XXX in unserer Verlosung zu gewinnen.</p>
+        </div>
     }
-
-    const [leaderboard, setLeaderboard] = React.useState(null);
-
-    React.useEffect(() => {
-        async function loadLeaderboard() {
-            const newLeaderboard = await getRequest('/app/leaderboard');
-            setLeaderboard(newLeaderboard);
-        }
-        loadLeaderboard();
-    }, []);
 
     const [project, setProject] = React.useState(null)
     React.useEffect(() => {
         async function loadProject() {
-            let currencyCode = getStoredCurrency();
+            const currencyCode = getStoredCurrency();
             const project = await getRequest(`/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`);
             setProject(project);
         }
@@ -99,7 +78,7 @@ function Home({ tenantScore }: Props): ReactElement {
 
             <Objective />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
-            <LeaderBoardSection leaderboard={leaderboard} />
+            <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/" target="_blank">Plant-for-the-Planet</a> </p>
         </div>
     ) : <></>
 }
