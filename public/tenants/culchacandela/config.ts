@@ -22,12 +22,12 @@ const config = {
   home: {
     title: 'Culcha Candela X Plant-for-the-Planet ',
     description:
-      'Wir pflanzen Bäume für ein besseres Weltklima, um uns so wichtige Zeit im Wettlauf gegen die Klimakrise zu verschaffen. Pflanz’ hier mit! Und beim Hören des neuen „Hamma (INVCTS & Dorfkind J-P Remix)” auf music-for-nature & sämtlichen Musik Streaming-Plattformen. Die Streaming Einnahmen spenden wir an Plant-for-the-Planet!',
+      '<p>Wir pflanzen B&auml;ume f&uuml;r ein besseres Weltklima, um uns so wichtige Zeit im Wettlauf gegen die Klimakrise zu verschaffen. Pflanz&rsquo; hier mit!&nbsp;<br />&hellip;und beim H&ouml;ren des neuen &bdquo;<a href="https://ffm.to/hamma-4-the-planet" target="_blank" rel="noopener noreferrer">Hamma (INVCTS &amp;Dorfkind J-P Remix)</a>&rdquo;&nbsp;auf&nbsp;s&auml;mtlichen Musik Streaming-Plattformen.<br />Wir spenden die kompletten Streaming Einnahmen des Songs an Plant-for-the-Planet! Powered by&nbsp;<a href="https://www.music-for-nature.net/" target="_blank" rel="noopener noreferrer">music-for-nature</a>!</p>',
     image: `/tenants/culchacandela/background.jpg`,
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/culchacandela/logo.svg`,
+    tenantLogoURL: `/tenants/culchacandela/logo.png`,
     tenantLogoLink: 'https://www.culchacandela.de/',
     items: {
       home: {
