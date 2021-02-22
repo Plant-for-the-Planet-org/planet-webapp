@@ -10,7 +10,7 @@
 }
 .landingSection {
     margin: auto;
-    width: 100vw;
+    width: 100%;
     background-image: url("/tenants/sateins/images/yucatan-aerial.jpg");
     background-position: center;
     background-repeat: no-repeat;
@@ -143,7 +143,7 @@
 // Sections 2
 .section2MainContainer {
     background-image: url("/tenants/sateins/images/sat1-forest-yucatan.jpg");
-    width: 100vw;
+    width: 100%;
     height: 300px;
     background-position: center;
     background-repeat: no-repeat;
@@ -192,7 +192,7 @@
 
 .featuresMainContainer {
     display: flex;
-    min-height: 100vh;
+    min-height: 780px;
     padding: 24px;
     flex-direction: row;
     flex-wrap: wrap;
@@ -244,7 +244,7 @@
 
 @include mdTabletView {
     .featuresMainContainer {
-        min-height: 100vh;
+        min-height: 780px;
         display: flex;
         align-items: center;
         .featuresContainerText {
@@ -270,6 +270,6 @@
 
 @include xlDesktopView {
     .featuresMainContainer {
-        min-height: 70vh;
+        min-height: 780px;
     }
 }
