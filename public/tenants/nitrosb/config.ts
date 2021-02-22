@@ -18,6 +18,9 @@ const config = {
     twitterHandle: '',
     locale: 'en_US',
   },
+  home: {
+    image: `/tenants/nitrosb/background.jpeg`,
+  },
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/nitrosb/logo.svg`,

@@ -20,9 +20,6 @@ const config = {
     locale: 'de_DE',
   },
   home: {
-    title: 'Interact Club Wald',
-    description:
-      'Bäume pflanzen ist ein Generationenverbindendes, friedensstiftendes Projekt das uns Menschen und besonders jungen Menschen hoffnung gibt und auch Mut. Mut brauchen wir, um gemeinsam in dieser Klimakrise Lösungen beherzt anzupacken. Unser Ziel ist es als Kinder, Jugendliche und junge Erwachsene die Welt zu mobilisieren 1.000 Milliarden Bäume zu pflanzen damit diese Bäume uns wertvolle Zeit, etwa 15 Jahre, schenken können, die wir unbedingt nutzen sollten, um unsere CO2-Emissionen zu reduzieren. Wiederaufforstung, global skaliert, kann so zum größten Konjunkturprogramm besonders für Länder des Globalen Südens werden. Die Flächen, auf denen wir die 1.000 Milliarden zusätzlichen Bäume pflanzen können, liegen zur Hälfte in Afrika, der Rest in Lateinamerika und Südostasien, und damit in Ländern, die von der Klimakrise am stärksten betroffen sind. Diese Bäume schaffen Arbeitsplätze, sind gut für die Artenvielfalt und binden das Treibhausgas CO2. Die neue Area of Focus der Rotarischen Familie lautet: Umwelt. Wir fangen jetzt an unseren Beitrag zu leisten. Pflanz gemeinsam mit uns Bäume.',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
   },
   header: {
