@@ -308,7 +308,7 @@ export default function ProjectSites({
 
             <button id="projSiteSaveandAdd"
               onClick={handleSubmit(uploadProjectSite)}
-              className={styles.formFieldLarge}
+              className={styles.projSiteSaveandAdd}
             >
               <p className={styles.inlineLinkButton}>
                 {t('manageProjects:saveAndAddSite')}
