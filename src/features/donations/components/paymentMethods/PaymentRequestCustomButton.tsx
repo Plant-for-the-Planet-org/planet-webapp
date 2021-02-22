@@ -4,7 +4,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import styles from './../../styles/Donations.module.scss';
+import styles from './../../styles/TreeDonation.module.scss';
 import i18next from '../../../../../i18n';
 import getStripe from '../../../../utils/stripe/getStripe';
 import { Elements } from '@stripe/react-stripe-js';

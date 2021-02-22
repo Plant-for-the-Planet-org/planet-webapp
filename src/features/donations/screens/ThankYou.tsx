@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react';
 import tenantConfig from '../../../../tenant.config';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ThankYouProps } from '../../common/types/donations';
-import styles from '../styles/Donations.module.scss';
+import styles from '../styles/ThankYou.module.scss';
 import ShareOptions from '../components/ShareOptions';
 import { getPaymentType } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
@@ -84,7 +84,7 @@ function ThankYou({
 
   function SuccessfulDonation() {
     return (
-      <div className={styles.cardContainer}>
+      <div className={styles.container}>
         <div className={styles.header}>
           <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
             <Close />

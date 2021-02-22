@@ -1,0 +1,292 @@
+@import './../../../theme/theme';
+
+.container {
+  background-color: $backgroundColor;
+  border-radius: 7px;
+  padding: 20px;
+  width: 412px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.headerBackIcon:hover {
+  cursor: pointer;
+}
+.headerTitle {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 27px;
+  color: $primaryFontColor;
+  margin-left: 20px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Tree Count and Cost  */
+
+.finalTreeCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.totalCost {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryColor;
+}
+
+.totalCostText {
+  font-family: $primaryFontFamily;
+  font-weight: bold;
+  font-size: 16px;
+  color: $primaryFontColor;
+  margin-left: 6px;
+}
+
+.actionButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.actionButtonsText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.continueButton {
+  width: 100%;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  border-radius: 24px;
+  padding: 14px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.continueButtonDisabled {
+  width: 100%;
+  background-color: $dividerColor;
+  border-radius: 24px;
+  padding: 14px 40px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.horizontalLine {
+  height: 1px;
+  background-color: $dividerColor;
+  margin-top: 20px;
+}
+
+/* Payment error */
+.paymentError {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+/* Payment Mode */
+
+.paymentModeContainer {
+  width: 100%;
+}
+
+.paymentModeHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentModeHeader > svg {
+  height: 20px;
+}
+
+.paymentModeFee {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.paymentModeTitle {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  font-weight: 600;
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.paymentModeFeeAmount {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+  margin-right: 4px;
+}
+
+/* Save Company */
+.saveCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.saveCardText {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: $primaryFontColor;
+}
+
+.mandateAcceptance {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize - 2;
+  color: $primaryFontColor;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.spinner{
+  border: 2px solid $primaryColor;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px!important;
+  height: 16px!important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+:export {
+  primaryFontFamily: $primaryFontFamily;
+}
+
+// For legacy donations
+.donationPaymentSection {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  margin-top: 0px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 0px;
+  position: relative;
+}
+
+.leaderBoardBushImage, .leaderBoardGroupTreeImage {
+  display: none;
+}
+.leaderBoardBushImageMobile {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+@include smTabletView {
+    .leaderBoardBushImageMobile {
+      display: none;
+    }
+}
+@include lgLaptopView {
+  .leaderBoardBushImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+  .leaderBoardGroupTreeImage {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+  }
+}
+
+.paymentMethodsTabsContainer{
+  display: flex; 
+  margin-top: 20px;
+  flex-direction: row;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  > .paymentMethod {
+    box-sizing: border-box;
+    margin-right: 12px;
+    border: 2px solid $dividerColor;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    min-width: 100px;
+    color: $dividerColor;
+    justify-content: center;
+    > label {
+      margin-top: 6px;
+      font-size: 10px;
+    }
+    &:hover{
+      cursor: pointer;
+      color: $primaryFontColor;
+      border: 2px solid $primaryFontColor;
+    }
+  }
+  .paymentMethodSelected{
+    border: 2px solid $primaryColor;
+    color: $primaryFontColor;
+    font-weight: 600;
+  }
+}
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-left: 6px;
+}

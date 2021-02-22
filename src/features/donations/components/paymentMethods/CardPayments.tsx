@@ -11,7 +11,7 @@ import React, { ReactElement } from 'react';
 import CreditCard from '../../../../../public/assets/images/icons/donation/CreditCard';
 import { getCardBrand } from '../../../../utils/stripe/stripeHelpers';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import styles from './../../styles/Donations.module.scss';
+import styles from './../../styles/PaymentDetails.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
 
@@ -236,13 +236,13 @@ function CardPayments({
         </div>
       </div> */}
         {showContinue ? (
-          <div onClick={handleSubmit} className={styles.actionButtonsContainerCenter}>
+          <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
             <AnimatedButton className={styles.continueButton}>
               {t('common:donate')}
             </AnimatedButton>
           </div>
         ) : (
-            <div className={styles.actionButtonsContainerCenter}>
+            <div className={styles.actionButtonsContainer}>
               <AnimatedButton disabled className={styles.continueButtonDisabled}>
                 {t('common:donate')}
               </AnimatedButton>

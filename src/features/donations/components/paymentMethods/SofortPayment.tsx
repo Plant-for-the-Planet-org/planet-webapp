@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import styles from '../../styles/Donations.module.scss';
+import styles from '../../styles/PaymentDetails.module.scss';
 import i18next from '../../../../../i18n';
 import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
 
@@ -21,7 +21,7 @@ function SofortPayments({ onSubmitPayment }: Props): ReactElement {
             </div> */}
 
            
-                <div onClick={()=>onSubmitPayment('stripe_sofort','sofort')} className={styles.actionButtonsContainerCenter}>
+                <div onClick={()=>onSubmitPayment('stripe_sofort','sofort')} className={styles.actionButtonsContainer}>
                     <AnimatedButton className={styles.continueButton}>
                         {t('donate:payWithSofort')}
                     </AnimatedButton>

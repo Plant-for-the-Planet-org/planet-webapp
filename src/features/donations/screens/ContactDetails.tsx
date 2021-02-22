@@ -6,7 +6,7 @@ import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from '../../common/types/donations';
-import styles from '../styles/Donations.module.scss';
+import styles from '../styles/ContactDetails.module.scss';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -50,7 +50,7 @@ function ContactDetails({
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [contactDetails.country])  
   return ready ? (
-    <div className={styles.cardContainer}>
+    <div className={styles.container}>
       <div className={styles.header}>
         <button id={'backArrowContact'}
           onClick={() => setDonationStep(1)}
@@ -231,7 +231,7 @@ function ContactDetails({
           </div>
         </div>
 
-        <div className={styles.actionButtonsContainerCenter}>
+        <div className={styles.actionButtonsContainer}>
 
           {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country  ? 
           <AnimatedButton

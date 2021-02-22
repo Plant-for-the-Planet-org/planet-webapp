@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import styles from './../styles/Donations.module.scss';
+import styles from './../styles/ThankYou.module.scss';
 import EmailIcon from '../../../../public/assets/images/icons/share/Email';
 import EmailSolid from '../../../../public/assets/images/icons/share/EmailSolid';
 import FacebookIcon from '../../../../public/assets/images/icons/share/Facebook';
