@@ -202,7 +202,8 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-
+        align-items: center;
+        text-align: center;
         > div {
             max-width: 380px;
             > span {
@@ -250,6 +251,8 @@
         .featuresContainerText {
             padding: 32px;
             width: 49%;
+            align-items: center;
+            text-align: left;
             > div {
                 max-width: 540px;
             }
