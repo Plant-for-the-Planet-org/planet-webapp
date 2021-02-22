@@ -3,7 +3,7 @@ const config = {
   tenantURL: 'wald.culchacandela.de',
   languages: ['en', 'de'],
   fallbackCurrency: 'EUR',
-  tenantGoal: 77.777,
+  tenantGoal: 77700,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL:
