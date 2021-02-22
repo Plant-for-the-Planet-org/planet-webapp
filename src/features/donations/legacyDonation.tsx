@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import CardPayments from './components/paymentMethods/CardPayments'
 import { Elements } from '@stripe/react-stripe-js';
 import getStripe from '../../utils/stripe/getStripe';
-import styles from './styles/PaymentDetails.module.scss';
+import styles from './styles/Donations.module.scss';
 import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
 import { NativePay } from './components/paymentMethods/PaymentRequestCustomButton';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
@@ -185,7 +185,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
                       />
                     </>
                   ) : (
-                    <div className={styles.actionButtonsContainer}>
+                    <div className={styles.actionButtonsContainerCenter}>
                       <ButtonLoader />
                     </div>
                   )}

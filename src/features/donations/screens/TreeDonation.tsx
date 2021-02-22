@@ -9,7 +9,7 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../common/types/donations';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
-import styles from '../styles/TreeDonation.module.scss';
+import styles from '../styles/Donations.module.scss';
 import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
@@ -152,10 +152,8 @@ function TreeDonation({
     ) : (
         <>
           <div
-            className={`${styles.cardContainer} ${isGift ? styles.giftExpanded : null
-              }`}
+            className={styles.cardContainer}
             style={{
-              alignSelf: isGift ? 'start' : 'center',
               width: `${screenWidth}%`,
             }}
           >

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import { PaymentDetailsProps } from '../../common/types/donations';
-import styles from './../styles/PaymentDetails.module.scss';
+import styles from './../styles/Donations.module.scss';
 import { createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -107,7 +107,7 @@ function PaymentDetails({
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-        <div className={styles.container}>
+        <div className={styles.cardContainer}>
           <div className={styles.header}>
             <button id={'backArrowPayment'}
               onClick={() => setDonationStep(2)}

@@ -4,7 +4,7 @@ import GiroPayIcon from '../../../../../public/assets/images/icons/donation/Giro
 import PaypalIcon from '../../../../../public/assets/images/icons/donation/PaypalIcon';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
 import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
-import styles from './../../styles/PaymentDetails.module.scss';
+import styles from './../../styles/Donations.module.scss';
 
 function a11yProps(index: any) {
     return {
