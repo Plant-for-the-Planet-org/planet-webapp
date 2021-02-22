@@ -68,8 +68,6 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
         }
 
       }
-      console.log("hello", uploadPhotos);
-
     })
   };
 
@@ -279,7 +277,6 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
               <AnimatedButton
-                // onClick={uploadPhotos}
                 className={styles.continueButton}
               >
                 <input {...getInputProps()} />
