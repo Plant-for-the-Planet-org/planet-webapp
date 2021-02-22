@@ -192,7 +192,7 @@
 
 .featuresMainContainer {
     display: flex;
-    min-height: 780px;
+    min-height: 500px;
     padding: 24px;
     flex-direction: row;
     flex-wrap: wrap;
@@ -244,7 +244,7 @@
 
 @include mdTabletView {
     .featuresMainContainer {
-        min-height: 780px;
+        min-height: 500px;
         display: flex;
         align-items: center;
         .featuresContainerText {
@@ -270,6 +270,6 @@
 
 @include xlDesktopView {
     .featuresMainContainer {
-        min-height: 780px;
+        min-height: 500px;
     }
 }

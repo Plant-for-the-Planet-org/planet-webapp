@@ -26,8 +26,8 @@ function Home({ tenantScore }: Props): ReactElement {
 
     const FeaturesSectionData = {
         featureText: <div>
-            <h2>Das Projekt: Jeder Euro ist ein Baum mehr</h2>
-            <p>Für jeden gespendeten Euro im Rahmen der &quot;SAT.1 Waldrekord-Woche&quot; wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen HalbinselYucatán im Bundesland Campeche der &quot;SAT.1-Wald&quot; gepflanzt wird und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiterzuwachsen. Die Spender*innen können das Wachstum ihrer Bäume auf der &quot;Plant-for-the-Planet App&quot; verfolgen – oder die Pflanzung persönlich zu besuchen. Außerdem haben sie die Chance, einen XXX in unserer Verlosung zu gewinnen.</p>
+            <h2>Das Projekt</h2>
+            <p>Für jeden gespendeten Euro im Rahmen der "SAT.1 Waldrekord-Woche" wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen Halbinsel Yucatán im Bundesland Campeche der "SAT.1-Wald" gepflanzt wird - und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiter zu wachsen. Die Spender*innen können die Entwicklung ihrer Bäume auf der "Plant-for-the-Planet"-App" verfolgen oder die Pflanzung persönlich besuchen. Außerdem haben sie die Chance, ein Elektro-Auto in unserer Verlosung zu gewinnen.</p>
         </div>
     }
 

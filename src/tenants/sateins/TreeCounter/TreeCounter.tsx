@@ -11,7 +11,7 @@ export default function TpoProfile(props: any) {
             {getFormattedNumber('en', Number(props.planted))}
           </h2>
           <h2 className={treeCounterStyles.countLabel}>
-            Bäume. Der SAT.1 Wald wächst.
+            Bäume.<br/> Der SAT.1 Wald wächst.
           </h2>
         </div>
       </div>
