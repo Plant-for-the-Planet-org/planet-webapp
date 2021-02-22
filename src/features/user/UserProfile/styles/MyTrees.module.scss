@@ -145,6 +145,24 @@
   pointer-events: none;
 }
 
+.bigMarker {
+  width: 40px;
+  height: 40px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -40px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  pointer-events: none;
+}
+
 @include mdTabletView {
   .myTreesSection {
     height: 80vh;
