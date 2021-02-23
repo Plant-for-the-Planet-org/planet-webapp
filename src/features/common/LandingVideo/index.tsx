@@ -10,7 +10,7 @@ interface Props {
 
 function VideoContainer({ setshowVideo }: Props): ReactElement {
     const { t, ready } = useTranslation(['common']);
-
+    const [videoURL, setvideoURL] = React.useState("/assets/video/landing.mp4")
     const [isUploading, setisUploading] = React.useState(false)
     const handleVideoClose = () => {
         setshowVideo(false);
@@ -19,11 +19,20 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
             localStorage.setItem('hidePreview', true)
         }
     }
+
+    React.useEffect(()=>{
+        var screenWidth = window.innerWidth;
+        if (screenWidth < 480){
+            setvideoURL("/assets/video/landingMobile.mp4")
+        } else {
+            setvideoURL("/assets/video/landing.mp4")
+        }
+    },[])
     return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
                 <video muted autoPlay onEnded={() => handleVideoClose()}>
-                    <source src={"/assets/video/landing.mp4"} type="video/mp4" />
+                    <source src={videoURL} type="video/mp4" />
                 </video>
             </div>
             <button className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>
