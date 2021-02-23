@@ -323,7 +323,7 @@ export async function handleSCAPaymentFunction({
       if (SCAdonation) {
         if (SCAdonation.error) {
           setIsPaymentProcessing(false);
-          setPaymentError(paidDonation.error.message);
+          setPaymentError(SCAdonation.error.message);
         } else {
           const payDonationData = {
             paymentProviderRequest: {
