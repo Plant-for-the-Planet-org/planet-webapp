@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styles from './../../styles/PaymentDetails.module.scss';
+import styles from './../../styles/Donations.module.scss';
 import PaypalIcon from '../../../../../public/assets/images/icons/donation/PaypalIcon';
 import Paypal from './Paypal';
 import { paypalCurrencies } from '../../../../utils/paypalCurrencies';
