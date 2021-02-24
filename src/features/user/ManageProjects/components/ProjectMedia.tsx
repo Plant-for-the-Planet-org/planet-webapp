@@ -56,7 +56,8 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
         setUploadedImages(newUploadedImages)
         setIsUploadingData(false)
         setErrorMessage('')
-      } else {
+      } 
+      else {
         if (res.code === 404) {
           setIsUploadingData(false)
           setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
@@ -67,8 +68,6 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
         }
 
       }
-
-
     })
   };
 
@@ -245,14 +244,14 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           {uploadedImages && uploadedImages.length > 0 ?
             <div className={styles.formField}>
               {
-                uploadedImages.map((image, index) => {
+                uploadedImages.map((image, index: any) => { 
                   return (
-                    <div key={image.id} className={styles.formFieldHalf}>
+                    <div key={index} className={styles.formFieldHalf}>
                       <div className={styles.uploadedImageContainer}>
                         <img src={getImageUrl('project', 'medium', image.image)} />
                         <div className={styles.uploadedImageOverlay}></div>
 
-                        <input
+                         <input
                           onBlur={(e) => uploadCaption(image.id, index, e)}
                           type="text"
                           placeholder={t('manageProjects:addCaption')}
@@ -278,7 +277,6 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
               <AnimatedButton
-                onClick={uploadPhotos}
                 className={styles.continueButton}
               >
                 <input {...getInputProps()} />

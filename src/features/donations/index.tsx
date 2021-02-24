@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import { getRequest, getAccountInfo } from '../../utils/apiRequests/api';
 import ContactDetails from './screens/ContactDetails';
@@ -133,9 +132,9 @@ function DonationsPopup({
     }
   }, [isAuthenticated, isLoading])
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     setShouldCreateDonation(true);
-  },[paymentSetup,treeCount,isGift,giftDetails,contactDetails.firstName,contactDetails.lastName,contactDetails.email,contactDetails.address,contactDetails.city,contactDetails.zipCode,contactDetails.firstName,contactDetails.country,contactDetails.companyName, isTaxDeductible])
+  }, [paymentSetup, treeCount, isGift, giftDetails, contactDetails.firstName, contactDetails.lastName, contactDetails.email, contactDetails.address, contactDetails.city, contactDetails.zipCode, contactDetails.firstName, contactDetails.country, contactDetails.companyName, isTaxDeductible])
 
   const TreeDonationProps = {
     project,
@@ -161,7 +160,7 @@ function DonationsPopup({
     setPaymentType,
     isPaymentOptionsLoading,
     token,
-    donationID, 
+    donationID,
     setDonationID
   };
 
@@ -193,7 +192,7 @@ function DonationsPopup({
     country,
     isTaxDeductible,
     token,
-    donationID, 
+    donationID,
     setDonationID,
     shouldCreateDonation,
     setShouldCreateDonation
@@ -232,60 +231,33 @@ function DonationsPopup({
   switch (donationStep) {
     case 1:
       return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <TreeDonation {...TreeDonationProps} />
-        </motion.div>
+        </div>
       );
     case 2:
       return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.04, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <ContactDetails {...ContactDetailsProps} />
-        </motion.div>
+        </div>
       );
     case 3:
       return (
-
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <PaymentDetails {...PaymentDetailsProps} />
-        </motion.div>
+        </div>
       );
     case 4:
       return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.04, 1],
-            rotate: [-15, 5, 0],
-          }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <ThankYou {...ThankYouProps} />
-        </motion.div>
+        </div>
       );
     default:
       return (
-        <motion.div
-          animate={{
-            scale: [0.94, 1.05, 1],
-          }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <TreeDonation {...TreeDonationProps} />
-        </motion.div>
+        </div>
       );
   }
 }

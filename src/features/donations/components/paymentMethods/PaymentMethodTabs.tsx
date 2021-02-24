@@ -4,7 +4,7 @@ import GiroPayIcon from '../../../../../public/assets/images/icons/donation/Giro
 import PaypalIcon from '../../../../../public/assets/images/icons/donation/PaypalIcon';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
 import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
-import styles from './../../styles/PaymentDetails.module.scss';
+import styles from './../../styles/Donations.module.scss';
 
 function a11yProps(index: any) {
     return {
@@ -29,14 +29,12 @@ export default function PaymentMethodTabs({ paymentType, setPaymentType, showPay
                 </button>
             )}
 
-
-            {showSepa && (
-                <button className={`${styles.paymentMethod} ${paymentType === 'SEPA' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'SEPA')}  {...a11yProps('SEPA')}>
-                    <SepaIcon />
-                    <label>SEPA</label>
+            {showSofort && (
+                <button className={`${styles.paymentMethod} ${paymentType === 'Sofort' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'Sofort')}  {...a11yProps('Sofort')}>
+                    <SofortIcon />
+                    <label>Sofort</label>
                 </button>
             )}
-
 
             {showPaypal ? (
                 <button className={`${styles.paymentMethod} ${paymentType === 'Paypal' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'Paypal')}  {...a11yProps('Paypal')}>
@@ -52,10 +50,10 @@ export default function PaymentMethodTabs({ paymentType, setPaymentType, showPay
                 </button>
             )}
 
-            {showSofort && (
-                <button className={`${styles.paymentMethod} ${paymentType === 'Sofort' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'Sofort')}  {...a11yProps('Sofort')}>
-                    <SofortIcon />
-                    <label>Sofort</label>
+            {showSepa && (
+                <button className={`${styles.paymentMethod} ${paymentType === 'SEPA' ? styles.paymentMethodSelected : ''}`} onClick={(e) => handleChange(e, 'SEPA')}  {...a11yProps('SEPA')}>
+                    <SepaIcon />
+                    <label>SEPA</label>
                 </button>
             )}
 
