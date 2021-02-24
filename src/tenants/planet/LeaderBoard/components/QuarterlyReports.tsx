@@ -4,6 +4,7 @@ import i18next from '../../../../../i18n';
 import AnimatedButton from '../../../../features/common/InputTypes/AnimatedButton';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import { useRouter } from 'next/router';
 
 interface Props {
 
@@ -12,7 +13,7 @@ interface Props {
 const { useTranslation } = i18next;
 function QuarterlyReports({ }: Props): ReactElement {
   const { t, ready, i18n } = useTranslation(['leaderboard', 'common']);
-
+  const router = useRouter();
   const [reports, setreports] = React.useState([]);
   const [baseValue, setBaseValue] = React.useState(0);
   React.useEffect(() => {
@@ -49,9 +50,18 @@ function QuarterlyReports({ }: Props): ReactElement {
                     {report.treesDonated.map((project, index) => {
                       const opacity = (100 - (index * 14)) / 100;
                       return (
-                        <div key={index} className={styles.projectSegmentContainer} style={{ width: `${(project.trees / baseValue) * 100}%` }}>
-                          <div className={styles.projectSegment} style={{ opacity: opacity }}>
-                          </div>
+                        <div 
+                          onClick={() => {
+                            project.id !== 0 ?
+                            router.push('/[p]', `/${project.id}`, {
+                              shallow: true,
+                            }) : {}
+                          }} 
+                          key={index} 
+                          className={styles.projectSegmentContainer} 
+                          style={{ width: `${(project.trees / baseValue) * 100}%` }}>
+                          
+                          <div className={styles.projectSegment} style={{ opacity: opacity }}/>
                           <div className={styles.projectName}>{project.name} : {" "}
                             {t('leaderboard:treesTotal', {
                               count: getFormattedNumber(i18n.language, project.trees),
