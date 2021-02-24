@@ -31,7 +31,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
-                <video muted autoPlay playsInline onEnded={() => handleVideoClose()}>
+                <video preload={"metadata"} muted autoPlay playsInline onEnded={() => handleVideoClose()}>
                     <source src={videoURL} type="video/mp4" />
                 </video>
             </div>
