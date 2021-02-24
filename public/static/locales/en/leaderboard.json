@@ -3,5 +3,10 @@
   "mostRecent": "Most Recent",
   "mostTrees": "Most Trees",
   "videoTitle": "And finally, this",
-  "searchUser": "Search User"
+  "searchUser": "Search User",
+  "quarterlyReportsTitle":"Donations",
+  "supportUs":"Support us",
+  "reportDescription":"This site charges no commissions. There’s no business model. Please help us improve this site with a donation.",
+  "treesTotal":"{{count}} trees",
+  "current":"Current"
 }

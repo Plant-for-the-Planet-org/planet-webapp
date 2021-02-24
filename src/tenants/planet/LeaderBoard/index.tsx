@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import Footer from '../../../features/common/Layout/Footer';
+import QuarterlyReports from './components/QuarterlyReports';
 import Score from './components/Score';
 import Stats from './components/Stats';
 import Stories from './components/Stories';
@@ -57,7 +58,7 @@ export default function index({ leaderboard, tenantScore }: Props): ReactElement
       <Score leaderboard={leaderboard} />
 
       {tenantScore && <Stats tenantScore={tenantScore} />}
-
+      <QuarterlyReports/>
 
       {/* <Stories /> */}
 
