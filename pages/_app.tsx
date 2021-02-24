@@ -103,7 +103,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setCurrencyCode
   };
 
-  const [showVideo, setshowVideo] = React.useState(false);
+  const [showVideo, setshowVideo] = React.useState(true);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
