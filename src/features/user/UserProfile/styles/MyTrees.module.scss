@@ -142,7 +142,8 @@
   top: 40%;
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  pointer-events: none;
+  // pointer-events: none;
+  cursor: pointer;
 }
 
 .bigMarker {
@@ -160,7 +161,33 @@
   top: 40%;
   margin: -40px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  pointer-events: none;
+  // pointer-events: none;
+  cursor: pointer;
+}
+
+.contributionInfo {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 90px;
+  width: 240px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  max-width: 100%;
+  border-radius: 10px;
+  background-color: #fff;
+  > .treeCount {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: $primaryFontFamily;
+  }
+  > .moreInfo {
+    font-size: 14px;
+    font-family: $primaryFontFamily;
+  }
 }
 
 @include mdTabletView {

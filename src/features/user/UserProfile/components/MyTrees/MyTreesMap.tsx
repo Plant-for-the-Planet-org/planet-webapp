@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { Cluster, GeoJSONLayer, Marker } from 'react-mapbox-gl';
 import getMapStyle from '../../../../../utils/getMapStyle';
+import { getFormattedRoundedNumber } from '../../../../../utils/getFormattedNumber';
+import i18next from '../../../../../../i18n';
+import { getCountryDataBy } from '../../../../../utils/countryCurrency/countryUtils';
 
 const Map = ReactMapboxGl({
   customAttribution:
@@ -13,6 +16,8 @@ interface Props {
 }
 
 export default function MyTreesMap({ contributions }: Props): ReactElement {
+  const { useTranslation } = i18next;
+  const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
@@ -28,6 +33,8 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
     sources: {},
     layers: [],
   });
+
+  const [contributionInfo, setContributionInfo] = React.useState(null);
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -51,12 +58,25 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
     }
   }, [contributions]);
 
-  const clusterMarker = (coordinates: any) => (
+  const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => (
     <Marker
       coordinates={coordinates}
       anchor="bottom"
+    // onClick={() => {
+    //   console.log('point Count ', pointCount);
+    //   console.log('Leaves ', getLeaves(Infinity));
+    // }}
     >
       <div
+        onMouseOver={() => {
+          const nodes = getLeaves(Infinity);
+          let sum = 0;
+          nodes.map((node: any) => {
+            sum += Number(contributions[node.key].properties.treeCount);
+          })
+          console.log(sum);
+          setContributionInfo({ treeCount: sum, country: contributions[nodes[0].key].properties.country });
+        }}
         className={styles.bigMarker}
       />
     </Marker>
@@ -90,38 +110,16 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                         ? { background: '#3D67B1' }
                         : {}
                     }
+                    onMouseOver={() => {
+                      console.log(point.properties.treeCount);
+                      setContributionInfo({ treeCount: point.properties.treeCount, country: point.properties.country, project: point.properties.project.name, type: point.properties.type });
+                    }}
                     className={styles.marker}
                   />
                 </Marker>
               ) : null
           }
         </Cluster>
-        {/* {contributions &&
-        Array.isArray(contributions) &&
-        contributions.length !== 0
-          ? contributions
-              .filter((feature: any) => {
-                return feature.geometry?.type === 'Point';
-              })
-              .map((point: any) => {
-                return (
-                  <Marker
-                    key={point.properties.id}
-                    coordinates={point.geometry.coordinates}
-                    anchor="bottom"
-                  >
-                    <div
-                      style={
-                        point.properties.type === 'registration'
-                          ? { background: '#3D67B1' }
-                          : {}
-                      }
-                      className={styles.marker}
-                    />
-                  </Marker>
-                );
-              })
-          : null} */}
         {geoJson ? (
           <GeoJSONLayer
             data={geoJson}
@@ -135,6 +133,13 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
             }}
           />
         ) : null}
+        {contributionInfo ?
+          <div className={styles.contributionInfo}>
+            <p className={styles.treeCount}>{`${getFormattedRoundedNumber(i18n.language, contributionInfo.treeCount, 1)} Trees ${contributionInfo.country ? `• ${getCountryDataBy('countryCode', contributionInfo.country).countryName}` : ''}`}</p>
+            <p className={styles.moreInfo}>{contributionInfo.project ? contributionInfo.project : null}</p>
+            <p className={styles.moreInfo}>{contributionInfo.type && contributionInfo.type === 'registration' ? t('registeredTrees') : null}</p>
+          </div>
+          : null}
       </Map>
     </div>
   );
