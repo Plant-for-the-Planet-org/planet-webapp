@@ -22,16 +22,16 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
 
     React.useEffect(()=>{
         var screenWidth = window.innerWidth;
-        if (screenWidth < 480){
-            setvideoURL("/assets/video/landingMobile.mp4")
-        } else {
-            setvideoURL("/assets/video/landing.mp4")
-        }
+            if (screenWidth < 480){
+                setvideoURL("/assets/video/landingMobile.mp4")
+            } else {
+                setvideoURL("/assets/video/landing.mp4")
+            }
     },[])
     return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
-                <video muted autoPlay onEnded={() => handleVideoClose()}>
+                <video muted autoPlay playsInline onEnded={() => handleVideoClose()}>
                     <source src={videoURL} type="video/mp4" />
                 </video>
             </div>
