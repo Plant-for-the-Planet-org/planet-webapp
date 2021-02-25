@@ -21,6 +21,7 @@ interface Props {
   showSingleProject: Boolean;
   isMobile: Boolean;
   currentSite: any;
+  rasterData: any;
 }
 
 export default function MapCompare({
@@ -39,7 +40,8 @@ export default function MapCompare({
   projectBbox,
   showSingleProject,
   isMobile,
-  currentSite
+  currentSite,
+  rasterData
 }: Props): ReactElement {
 
   const [before, setBefore] = React.useState();
@@ -294,8 +296,8 @@ export default function MapCompare({
             }
           }
         })
-        if (!nicfiDataExists) {
-          siteImagery.map((year: any) => {
+        if (!nicfiDataExists && rasterData?.imagery?.sentinel?.length !== 0) {
+          rasterData.imagery.sentinel.map((year: any) => {
             if (year.year === selectedYear1) {
               if (!before.getSource(`before-imagery-${year.year}-sentinel`)) {
                 before.addSource(`before-imagery-${year.year}-sentinel`, {
@@ -403,25 +405,25 @@ export default function MapCompare({
                   }
                 });
               }
-              if (imageryMask && !after.getSource(`project-mask-${year.year}-sentinel`)) {
-                after.addSource(`project-mask-${year.year}-sentinel`, {
-                  'type': 'geojson',
-                  'data': imageryMask
-                });
-              }
+              // if (imageryMask && !after.getSource(`project-mask-${year.year}-sentinel`)) {
+              //   after.addSource(`project-mask-${year.year}-sentinel`, {
+              //     'type': 'geojson',
+              //     'data': imageryMask
+              //   });
+              // }
 
-              if (imageryMask && !after.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
-                after.addLayer({
-                  'id': `project-mask-layer-${year.year}-sentinel`,
-                  'type': 'fill',
-                  'source': `project-mask-${year.year}-sentinel`,
-                  'layout': {},
-                  'paint': {
-                    'fill-color': '#fff',
-                    'fill-opacity': 1,
-                  }
-                });
-              }
+              // if (imageryMask && !after.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
+              //   after.addLayer({
+              //     'id': `project-mask-layer-${year.year}-sentinel`,
+              //     'type': 'fill',
+              //     'source': `project-mask-${year.year}-sentinel`,
+              //     'layout': {},
+              //     'paint': {
+              //       'fill-color': '#fff',
+              //       'fill-opacity': 1,
+              //     }
+              //   });
+              // }
             } else {
               if (after.getLayer(`project-polygon-layer-${year.year}-sentinel`)) {
                 after.removeLayer(`project-polygon-layer-${year.year}-sentinel`);
@@ -429,9 +431,9 @@ export default function MapCompare({
               if (after.getLayer(`after-imagery-${year.year}-sentinel-layer`)) {
                 after.removeLayer(`after-imagery-${year.year}-sentinel-layer`);
               }
-              if (after.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
-                after.removeLayer(`project-mask-layer-${year.year}-sentinel`);
-              }
+              // if (after.getLayer(`project-mask-layer-${year.year}-sentinel`)) {
+              //   after.removeLayer(`project-mask-layer-${year.year}-sentinel`);
+              // }
             }
           })
         }

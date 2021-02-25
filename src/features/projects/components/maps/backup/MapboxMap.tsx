@@ -20,7 +20,7 @@ import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './maps/ExploreInfoModal';
 import ExploreContainer from './maps/ExploreContainer';
 import PopupProject from './PopupProject';
-import { getEarthEngineLayer } from '../../../utils/apiRequests/api';
+import { getRasterData } from '../../../utils/apiRequests/api';
 import VegetationChange from './maps/VegetationChange';
 import i18next from '../../../../i18n';
 import SelectLanguageAndCountry from '../../common/Layout/Footer/SelectLanguageAndCountry';
@@ -98,6 +98,7 @@ export default function MapboxMap({
   const [isMapDataLoading, setIsMapDataLoading] = React.useState(false);
   const [nicfiDataExists, setNicfiDataExists] = React.useState(true);
   const [projectBbox, setProjectBbox] = React.useState([]);
+  const [rasterData, setRasterData] = useState(null);
 
   const EMPTY_STYLE = {
     version: 8,
@@ -264,33 +265,18 @@ export default function MapboxMap({
     showSingleProject,
     isMobile,
     siteExists,
-    currentSite
+    currentSite,
+    rasterData
   };
 
-  async function fetchImageryData(url: any, data: any) {
+  async function fetchRasterData(id: any) {
     setIsMapDataLoading(true);
-    const payload = { year1: selectedYear1, year2: selectedYear2, geometry: data }
-    const siteVgData = await getEarthEngineLayer(url, payload);
-    siteVgData &&
-      siteVgData.data.imagery.map((year: any) => {
-        var temp = siteImagery;
-        temp.push(year);
-        setSiteImagery(temp);
-      });
+    let result = await getRasterData(id);
+    if (result) {
+      setRasterData(result);
+    }
+    console.log(result);
     setTimeout(() => setIsMapDataLoading(false), 2000);
-  }
-
-  async function fetchVegetationData(url: any, data: any) {
-    setIsMapDataLoading(true);
-    const siteVgData = await getEarthEngineLayer(url, data);
-    siteVgData ? setSiteVegetationChange(siteVgData.data.ndvi) : null;
-    setTimeout(() => setIsMapDataLoading(false), 2000);
-  }
-
-  const yearExists = (year: any) => {
-    return siteImagery.some(function (el: any) {
-      return el.year === year;
-    });
   }
 
   React.useEffect(() => {
@@ -298,34 +284,15 @@ export default function MapboxMap({
       if (project) {
         if (siteExists) {
           if (geoJson) {
-            if (selectedOption === 'imagery' && !nicfiDataExists) {
-              if (!isMapDataLoading) {
-                if (!yearExists(selectedYear1) || !yearExists(selectedYear2)) {
-                  fetchImageryData('/imagery', geoJson);
-                }
-              }
-            }
-            if (selectedOption === 'vegetation') {
-              if (!isMapDataLoading) {
-                if (!siteVegetationChange) {
-                  fetchVegetationData('/vegetation', geoJson);
-                }
-              }
-            }
-          }
-          if (selectedOption === 'none') {
-            if (mapRef.current && mapRef.current.getMap().getZoom() > 15) {
-              setViewPort({
-                ...viewport, zoom: 14.99, transitionDuration: 300,
-                transitionInterpolator: new FlyToInterpolator(),
-                transitionEasing: d3.easeCubic,
-              })
+            if (!isMapDataLoading && !rasterData) {
+              fetchRasterData(project.id);
             }
           }
         }
       }
     }
-  }, [selectedOption, selectedYear1, selectedYear2, nicfiDataExists, siteExists, geoJson, isMapDataLoading]);
+  }, [siteExists, geoJson, isMapDataLoading, rasterData]);
+
 
   React.useEffect(() => {
     if (showSingleProject) {
@@ -373,6 +340,7 @@ export default function MapboxMap({
       setSiteImagery([]);
       setProjectBbox([]);
       setNicfiDataExists(false);
+      setRasterData(null);
       setSelectedState('imagery');
     }
   }, [showSingleProject, project]);
