@@ -36,6 +36,7 @@ export default function CompleteSignup() {
 
   const [token, setToken] = React.useState('')
 
+  const [submit, setSubmit] = React.useState(false)
   React.useEffect(() => {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
@@ -145,6 +146,7 @@ export default function CompleteSignup() {
   }, [type])
 
   const createButtonClicked = async (data: any) => {
+    setSubmit(true);
     if (!isLoading && token) {
       const submitData = {
         ...data,
@@ -377,7 +379,12 @@ export default function CompleteSignup() {
           <div className={styles.horizontalLine} />
 
           <button id={'signupCreate'} className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
-            {t('editProfile:createAccount')}
+          {submit ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                t('editProfile:createAccount')
+                )}
+            
           </button>
         </div>
         {/* snackbar */}
