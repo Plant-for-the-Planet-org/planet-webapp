@@ -7,7 +7,6 @@ import { getRequest } from '../../../utils/apiRequests/api'
 import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency'
 import FeaturesSection from './components/FeaturesSection'
 import LandingSection from './components/LandingSection'
-import Objective from './components/Objective'
 import styles from './styles/sateins.module.scss'
 
 interface Props {
@@ -75,8 +74,6 @@ function Home({ tenantScore }: Props): ReactElement {
                 <DonationsPopup project={project} onClose={handleClose} />
             </Modal>
             <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
-
-            <Objective />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
             <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/" target="_blank">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank">Datenschutz</a> </p>
         </div>

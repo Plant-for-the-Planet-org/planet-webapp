@@ -1,6 +1,6 @@
 const config = {
   tenantName: 'sateins',
-  tenantURL: 'trees.sat1.de/',
+  tenantURL: 'plant-for-the-planet.org',
   fallbackCurrency: 'EUR',
   tenantGoal:null,
   showUNDecadeLogo:true,
