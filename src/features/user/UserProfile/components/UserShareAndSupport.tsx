@@ -64,7 +64,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
             opacity: 1,
             position: 'absolute',
             top: '35px',
-            left: userprofile.type !== 'tpo' ? '210px' : '181px'
+            right: userprofile.type !== 'tpo' ? '-180px' : '181px'
           }}
           transition={{ stiffness: 150, type: "spring" }}
           initial={{
