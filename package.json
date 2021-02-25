@@ -44,7 +44,7 @@
     "@sentry/integrations": "5.30.0",
     "@sentry/node": "^5.29.2",
     "@sentry/webpack-plugin": "^1.14.0",
-    "@stripe/react-stripe-js": "^1.2.0",
+    "@stripe/react-stripe-js": "^1.2.2",
     "@stripe/stripe-js": "^1.11.0",
     "@turf/turf": "^5.1.6",
     "@types/image-to-base64": "^2.1.0",
