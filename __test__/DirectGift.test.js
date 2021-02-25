@@ -51,7 +51,7 @@ describe('direct gift', () => {
     await driver.switchTo().defaultContent();
 
     (await driver).sleep(100);
-    await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000).click();
+    await driver.wait(until.elementLocated(By.id('donateContinueButton')), 10000).click();
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {
