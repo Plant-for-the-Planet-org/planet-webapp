@@ -148,7 +148,8 @@ export default function UserProfileOptions({
           animate={{
             position: 'absolute',
             top: '35px',
-            right: divWidth > 291 ? '290px' : '-180px',
+            right: divWidth > 320 ? '290px' : '-180px',
+            backgroundColor: "red",
           }}
         >
           <motion.div
