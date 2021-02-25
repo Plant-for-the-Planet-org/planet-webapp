@@ -67,7 +67,7 @@
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-draw": "^0.16.0",
     "moment": "^2.29.1",
-    "next": "^10.0.4",
+    "next": "^10.0.6",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
     "next-unused": "0.0.3",
