@@ -11,7 +11,7 @@ const config = {
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
-  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
+  languages: ['de','en'],
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,

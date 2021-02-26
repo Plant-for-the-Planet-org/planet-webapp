@@ -8,12 +8,13 @@ import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency'
 import FeaturesSection from './components/FeaturesSection'
 import LandingSection from './components/LandingSection'
 import styles from './styles/sateins.module.scss'
+import LeaderBoard from '../../common/LeaderBoard'
 
 interface Props {
     tenantScore: any
 }
 
-function Home({ tenantScore }: Props): ReactElement {
+function Home({ leaderboard, tenantScore }: Props): ReactElement {
     const router = useRouter()
     const projectID = 'yucatan-reforestation';
 
@@ -74,6 +75,7 @@ function Home({ tenantScore }: Props): ReactElement {
                 <DonationsPopup project={project} onClose={handleClose} />
             </Modal>
             <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
+            <LeaderBoard leaderboard={leaderboard} />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
             <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/" target="_blank">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank">Datenschutz</a> </p>
         </div>
