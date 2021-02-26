@@ -751,3 +751,23 @@
       cursor: pointer;
     }
   }
+
+  .disclaimerContainer{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(231, 237, 255);
+    border-radius: 10px;
+    width:100%;
+    padding: 18.5px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    > div {
+      display: flex;
+      justify-content: flex-start;
+      width: 48px;
+      height: 20px;
+    }
+    > p {
+      margin-left: 12px;
+    }
+  }

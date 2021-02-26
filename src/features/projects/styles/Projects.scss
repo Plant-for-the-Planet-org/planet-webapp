@@ -113,7 +113,7 @@
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 56px;
   height: auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -214,6 +214,9 @@
   .container {
     padding-bottom: 0px;
   }
+  .projectsContainer{
+    padding-bottom: 56px;
+  }
 }
 
 @include mdTabletView {
@@ -254,6 +257,7 @@
     margin-top: 5px;
     width: 360px;
     overflow-y: hidden;
+    padding-bottom: 16px;
   }
   .header {
     width: 360px;
