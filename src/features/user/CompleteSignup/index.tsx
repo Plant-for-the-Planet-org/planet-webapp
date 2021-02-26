@@ -117,16 +117,19 @@ export default function CompleteSignup() {
         // in case of 401 - invalid token: signIn()
         console.log('in 401-> unauthenticated user / invalid token')
         removeLocalUserInfo();
+        setSubmit(false);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
+        setSubmit(false);
         setSeverity("error")
         handleSnackbarOpen();
       }
     } catch {
+      setSubmit(false)
       setSnackbarMessage(ready ? t('editProfile:profileCreationError') : '');
       setSeverity("error")
       handleSnackbarOpen();
