@@ -23,18 +23,18 @@ function SofortPayments({ onSubmitPayment }: Props): ReactElement {
 
             <div className={styles.disclaimerContainer}>
                 <div>
-                    <InfoIcon/> 
+                    <InfoIcon/>
                 </div>
-                <p>{t('donate:sepaSofortDisclaimer')}</p>
+                <p>{t('donate:sofortDisclaimer')}</p>
             </div>
 
-           
+
                 <div onClick={()=>onSubmitPayment('stripe_sofort','sofort')} className={styles.actionButtonsContainerCenter}>
                     <AnimatedButton className={styles.continueButton}>
                         {t('donate:payWithSofort')}
                     </AnimatedButton>
                 </div>
-        
+
         </div>
     )
 }

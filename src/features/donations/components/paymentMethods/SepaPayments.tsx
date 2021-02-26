@@ -111,9 +111,9 @@ function SepaPayments({
 
             <div className={styles.disclaimerContainer}>
                 <div>
-                    <InfoIcon/> 
+                    <InfoIcon/>
                 </div>
-                <p>{t('donate:sepaSofortDisclaimer')}</p>
+                <p>{t('donate:sepaDisclaimer')}</p>
             </div>
             <div className={styles.paymentModeContainer}>
                 <div>
