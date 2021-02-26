@@ -1,6 +1,6 @@
 @import './../../../theme/theme';
 .leaderBoardSection {
-    min-height: 100vh;
+    min-height: 500px;
     width: 100%;
     display: flex;
     margin-top: 50px;
@@ -11,12 +11,12 @@
     padding-bottom: 0px;
     position: relative;
   }
-  
+
   .leaderBoard {
     align-self: center;
     text-align: center;
   }
-  
+
   .leaderBoard > h3 {
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -26,7 +26,7 @@
     text-align: center;
     color: #080707;
   }
-  
+
   .leaderBoard > h2 {
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -37,7 +37,7 @@
     letter-spacing: -0.4px;
     color: #080707;
   }
-  
+
   .leaderBoardTableHeader {
     display: flex;
     flex-direction: row;
@@ -45,7 +45,7 @@
     align-items: center;
     margin-top: 16px;
   }
-  
+
   .leaderBoardTableHeaderTitle {
     padding: 8px;
     border-bottom: 1px solid #dddbda;
@@ -55,7 +55,7 @@
     font-size: 13px;
     color: #080707;
   }
-  
+
   .leaderBoardTableHeaderTitleSelected {
     padding: 8px;
     border-bottom: 2px solid #68B030;
@@ -65,7 +65,7 @@
     font-size: 13px;
     color: #080707;
   }
-  
+
   .leaderBoardTableHeaderTitle:hover {
     cursor: pointer;
   }
@@ -80,7 +80,7 @@
     padding: 16px 0px;
     border-bottom: 1px solid #dddbda;
   }
-  
+
   .leaderBoardDonorName {
     flex-grow: 1;
     font-style: normal;
@@ -91,7 +91,7 @@
     text-align: left;
     margin-bottom: 0px;
   }
-  
+
   .leaderBoardDonorTrees {
     font-style: normal;
     font-weight: normal;
@@ -104,7 +104,7 @@
     margin-bottom: 0px;
     font-family: $primaryFontFamily;
   }
-  
+
   .leaderBoardDonorTime {
     font-style: normal;
     font-weight: normal;
@@ -118,7 +118,7 @@
     margin-bottom: 0px;
     font-family: $primaryFontFamily;
   }
-  
+
   .leaderBoardBushImage, .leaderBoardGroupTreeImage {
     display: none;
   }
@@ -128,17 +128,17 @@
     width: 100%;
   }
 @include smTabletView {
-  
+
     .leaderBoardBody {
         width: 528px;
         margin-top: 60px;
       }
-    
-      
+
+
       .leaderBoardSection {
         margin-top: 0px;
       }
-      
+
       .leaderBoardBushImageMobile {
         display: none;
       }
