@@ -110,10 +110,13 @@
   }
 }
 
-.projectSitesDropdown {
+.dropdownContainer {
   position: fixed;
   right: 60px;
   top: 20px;
+}
+
+.projectSitesDropdown {
   z-index: 9999;
 }
 
@@ -449,6 +452,10 @@
     top: 100px;
   }
 
+  .dropdownContainer {
+    top: 100px;
+  }
+
   .exploreButton {
     top: 100px;
   }
@@ -467,8 +474,12 @@
     padding-top: 60px;
     padding-bottom: 0px;
   }
-  .projectSitesButton {
-    display: none;
+  .dropdownContainer {
+    right: 120px;
+  }
+
+  .projectSitesDropdown {
+    right: 120px;
   }
 
   .projectControls {

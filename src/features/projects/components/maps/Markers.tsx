@@ -5,16 +5,13 @@ import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 
 interface Props {
-    showSingleProject: Boolean;
-    exploreProjects: Boolean;
     searchedProject: Array<Object>;
     setPopupData: Function;
     popupData: Object;
     isMobile: Boolean;
 }
 
-export default function Markers({ showSingleProject,
-    exploreProjects,
+export default function Markers({
     searchedProject,
     setPopupData,
     popupData,
@@ -34,8 +31,7 @@ export default function Markers({ showSingleProject,
     };
     return (
         <>
-            {!showSingleProject &&
-                exploreProjects &&
+            {
                 searchedProject.map((projectMarker: any, index: any) => (
                     <Marker
                         key={index}

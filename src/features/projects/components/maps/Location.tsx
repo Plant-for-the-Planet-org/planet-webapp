@@ -1,70 +1,35 @@
 import React from 'react';
 import { Layer, Marker, Source } from 'react-map-gl';
 import styles from '../../styles/ProjectsMap.module.scss';
+import ProjectPolygon from './ProjectPolygon';
 
 interface Props {
-    showSingleProject: Boolean;
     siteExists: Boolean;
-    projectCoordinates: Array<number>;
-    selectedMode: String;
     geoJson: Object | null;
+    project: Object;
 }
 
-export default function Location({ showSingleProject,
+export default function Location({
     siteExists,
-    projectCoordinates,
-    selectedMode,
-    geoJson }: Props) {
+    geoJson,
+    project }: Props) {
+
     return (
         <>
-            {showSingleProject ? (
-                !siteExists ? (
+            {
+                !siteExists && project ? (
                     <Marker
-                        latitude={projectCoordinates[0]}
-                        longitude={projectCoordinates[1]}
+                        latitude={project.coordinates.lat}
+                        longitude={project.coordinates.lon}
                         offsetLeft={5}
                         offsetTop={-16}
                     >
                         <div style={{ left: '28px' }} className={styles.marker} />
                     </Marker>
-                ) : selectedMode === 'location' ? (
-                    <>
-                        <Source
-                            id="satellite"
-                            type="raster"
-                            tiles={[
-                                'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                            ]}
-                            tileSize={128}
-                        >
-                            <Layer id="satellite-layer" source="satellite" type="raster" />
-                        </Source>
-                        <Source id="singleProject" type="geojson" data={geoJson}>
-                            <Layer
-                                id="ploygonOutline"
-                                type="line"
-                                source="singleProject"
-                                paint={{
-                                    'line-color': '#fff',
-                                    'line-width': 4,
-                                }}
-                            />
-                        </Source>
-                    </>
-                ) : (
-                            <Source id="singleProject" type="geojson" data={geoJson}>
-                                <Layer
-                                    id="ploygonOutline"
-                                    type="line"
-                                    source="singleProject"
-                                    paint={{
-                                        'line-color': '#fff',
-                                        'line-width': 4,
-                                    }}
-                                />
-                            </Source>
-                        )
-            ) : null}
+                ) :
+
+                    <ProjectPolygon geoJson={geoJson} />
+            }
         </>
     )
 }

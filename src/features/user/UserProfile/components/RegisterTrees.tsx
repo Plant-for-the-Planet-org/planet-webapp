@@ -23,13 +23,13 @@ import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import getMapStyle from '../../../../utils/getMapStyle';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
 declare module '@material-ui/core/styles/overrides' {
-  export interface ComponentNameToClassKey extends overridesNameToClassKey {}
+  export interface ComponentNameToClassKey extends overridesNameToClassKey { }
 }
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
@@ -366,8 +366,8 @@ export default function RegisterTrees({
                   {isMultiple ? (
                     <p>{t('me:drawPolygon')}</p>
                   ) : (
-                    <p>{t('me:selectLocation')}</p>
-                  )}
+                      <p>{t('me:selectLocation')}</p>
+                    )}
                 </div>
 
                 <div className={`${styles.locationMap}`}>
@@ -377,47 +377,47 @@ export default function RegisterTrees({
                       countryBbox={countryBbox}
                     />
                   ) : (
-                    <MapGL
-                      {...mapState}
-                      {...viewport}
-                      onViewportChange={_onViewportChange}
-                      onStateChange={_onStateChange}
-                      onClick={(event) => {
-                        setplantLocation(event.lngLat);
-                        setGeometry({
-                          type: 'Point',
-                          coordinates: event.lngLat,
-                        });
-                        setViewPort({
-                          ...viewport,
-                          latitude: event.lngLat[1],
-                          longitude: event.lngLat[0],
-                          transitionDuration: 400,
-                          transitionInterpolator: new FlyToInterpolator(),
-                          transitionEasing: d3.easeCubic,
-                        });
-                      }}
-                      mapOptions={{
-                        customAttribution:
-                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-                      }}
-                    >
-                      {plantLocation ? (
-                        <Marker
-                          latitude={plantLocation[1]}
-                          longitude={plantLocation[0]}
-                          offsetLeft={5}
-                          offsetTop={-16}
-                          style={{ left: '28px' }}
-                        >
-                          <div className={styles.marker}></div>
-                        </Marker>
-                      ) : null}
-                      <div className={styles.mapNavigation}>
-                        <NavigationControl showCompass={false} />
-                      </div>
-                    </MapGL>
-                  )}
+                      <MapGL
+                        {...mapState}
+                        {...viewport}
+                        onViewportChange={_onViewportChange}
+                        onStateChange={_onStateChange}
+                        onClick={(event) => {
+                          setplantLocation(event.lngLat);
+                          setGeometry({
+                            type: 'Point',
+                            coordinates: event.lngLat,
+                          });
+                          setViewPort({
+                            ...viewport,
+                            latitude: event.lngLat[1],
+                            longitude: event.lngLat[0],
+                            transitionDuration: 400,
+                            transitionInterpolator: new FlyToInterpolator(),
+                            transitionEasing: d3.easeCubic,
+                          });
+                        }}
+                        mapOptions={{
+                          customAttribution:
+                            '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+                        }}
+                      >
+                        {plantLocation ? (
+                          <Marker
+                            latitude={plantLocation[1]}
+                            longitude={plantLocation[0]}
+                            offsetLeft={5}
+                            offsetTop={-16}
+                            style={{ left: '28px' }}
+                          >
+                            <div className={styles.marker}></div>
+                          </Marker>
+                        ) : null}
+                        <div className={styles.mapNavigation}>
+                          <NavigationControl showCompass={false} />
+                        </div>
+                      </MapGL>
+                    )}
                 </div>
 
                 {/* {errorMessage !== '' ? */}
@@ -435,15 +435,15 @@ export default function RegisterTrees({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                      t('me:registerButton')
-                    )}
+                        t('me:registerButton')
+                      )}
                   </div>
                 </div>
               </form>
             </div>
           ) : (
-            <SingleContribution {...ContributionProps} />
-          )}
+              <SingleContribution {...ContributionProps} />
+            )}
         </div>
       </Modal>
     </>

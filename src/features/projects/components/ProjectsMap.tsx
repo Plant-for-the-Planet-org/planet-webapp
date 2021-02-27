@@ -1,9 +1,11 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import MapGL, { NavigationControl } from 'react-map-gl';
-import getMapStyle from '../../../utils/getMapStyle';
+import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
-import Location from '../components/maps/Location';
-import Markers from './maps/Markers';
+import Project from '../components/maps/Project';
+import Credits from './maps/Credits';
+import Explore from './maps/Explore';
+import Home from './maps/Home';
 
 interface Props {
     projects: any;
@@ -23,7 +25,6 @@ export default function ProjectsMap({
     searchedProject,
     setCurrencyCode,
 }: Props): ReactElement {
-
 
     //Map
     const mapRef = useRef(null);
@@ -56,20 +57,14 @@ export default function ProjectsMap({
     const [loaded, setLoaded] = useState(false);
 
     // Projects
-    const [geoJson, setGeoJson] = React.useState(null);
-    const [projectCoordinates, setProjectCoordinates] = React.useState([
-        defaultMapCenter[0],
-        defaultMapCenter[1],
-    ]);
-    const [selectedMode, setSelectedMode] = React.useState('location');
     const [popupData, setPopupData] = useState({ show: false });
-    const [siteExists, setsiteExists] = React.useState(false);
 
     // Explore
     const [exploreProjects, setExploreProjects] = React.useState(true);
 
     // Use Effects
     useEffect(() => {
+        //loads the default mapstyle
         async function loadMapStyle() {
             let result = await getMapStyle('default');
             if (result) {
@@ -81,23 +76,39 @@ export default function ProjectsMap({
     }, []);
 
     //Props
-    const locationProps = {
-        showSingleProject,
-        siteExists,
-        projectCoordinates,
-        selectedMode,
-        geoJson,
-
-    }
-
-    const markerProps = {
-        showSingleProject,
-        exploreProjects,
+    const homeProps = {
         searchedProject,
         setPopupData,
         popupData,
         isMobile,
-
+        defaultMapCenter,
+        defaultZoom,
+        viewport,
+        setViewPort,
+    }
+    const projectProps = {
+        project,
+        defaultMapCenter,
+        viewport,
+        setViewPort,
+        setExploreProjects,
+        isMobile
+    }
+    const creditProps = {
+        setCurrencyCode
+    }
+    const exploreProps = {
+        loaded,
+        mapRef,
+        setShowProjects,
+        viewport,
+        setViewPort,
+        setExploreProjects,
+        defaultMapCenter,
+        mapState,
+        setMapState,
+        isMobile,
+        exploreProjects
     }
 
     return (
@@ -112,8 +123,13 @@ export default function ProjectsMap({
                 onClick={() => setPopupData({ ...popupData, show: false })}
                 onLoad={() => setLoaded(true)}
             >
-                <Markers {...markerProps} />
-                <Location {...locationProps} />
+                {!showSingleProject && searchedProject && <Home {...homeProps} />}
+                {showSingleProject && project && <Project {...projectProps} />}
+                <Explore {...exploreProps} />
+                <div className={styles.mapNavigation}>
+                    <NavigationControl showCompass={false} />
+                </div>
+                <Credits {...creditProps} />
             </MapGL>
 
         </div>

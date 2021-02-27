@@ -1,5 +1,5 @@
-import defaultStyle from '../../public/data/styles/root.json';
-import openStreetMap from '../../public/data/styles/OpenStreetMap.json';
+import defaultStyle from '../../../public/data/styles/root.json';
+import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
 
 export default function getMapStyle(style: any) {
   return new Promise<any>(async (resolve, reject) => {
