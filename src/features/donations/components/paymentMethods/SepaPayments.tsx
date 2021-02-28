@@ -133,13 +133,13 @@ function SepaPayments({
 
             {showContinue ? (
                 <div onClick={handleSubmit} className={styles.actionButtonsContainerCenter}>
-                    <AnimatedButton className={styles.continueButton}>
+                    <AnimatedButton className={styles.continueButton} id='donateContinueButton'>
                         {t('common:donate')}
                     </AnimatedButton>
                 </div>
             ) : (
                     <div className={styles.actionButtonsContainerCenter}>
-                        <AnimatedButton disabled className={styles.continueButtonDisabled}>
+                        <AnimatedButton disabled className={styles.continueButtonDisabled} id='donateContinueButton'>
                             {t('common:donate')}
                         </AnimatedButton>
                     </div>
