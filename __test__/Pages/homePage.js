@@ -1,3 +1,4 @@
+// this file is currently unused
 import { By } from 'selenium-webdriver';
 import { root } from './index';
 
