@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react';
 import BootstrapInput from './BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
+import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
 
 interface Props {
     selectedYear1: string;
@@ -20,6 +21,9 @@ export default function ImageDropdown({
     selectedYear1, selectedYear2, setSelectedYear1, setSelectedYear2, rasterData, selectedSource1, setSelectedSource1, selectedSource2, setSelectedSource2
 }: Props): ReactElement {
 
+    const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(false);
+    const [isSource2MenuOpen, setIsSource2MenuOpen] = React.useState(false);
+
     console.log();
     const handleChangeYear1 = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedYear1(event.target.value as string);
@@ -29,9 +33,11 @@ export default function ImageDropdown({
     };
     const handleChangeSource1 = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedSource1(event.target.value as string);
+        setIsSource1MenuOpen(false);
     };
     const handleChangeSource2 = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedSource2(event.target.value as string);
+        setIsSource2MenuOpen(false);
     };
 
     return (
@@ -52,36 +58,52 @@ export default function ImageDropdown({
                             })}
                         </NativeSelect>
                     </FormControl>
-                    <FormControl>
-                        <NativeSelect
-                            id="customized-select-native"
-                            value={selectedSource1}
-                            onChange={handleChangeSource1}
-                            input={<BootstrapInput />}
-                        >
-                            {Object.keys(rasterData.imagery).map((item: any) => {
-                                return (
-                                    <option value={item}>{sources[item]}</option>
-                                )
-                            })}
-                        </NativeSelect>
-                    </FormControl>
+                    {!isSource1MenuOpen ?
+                        <div onMouseOver={() => { setIsSource1MenuOpen(true); }}>
+                            <div className={styles.sourceIcon}>
+                                <SourceIcon />
+                            </div>
+                        </div> : null}
+                    {isSource1MenuOpen &&
+                        <FormControl>
+                            <NativeSelect
+                                id="customized-select-native"
+                                value={selectedSource1}
+                                onChange={handleChangeSource1}
+                                input={<BootstrapInput />}
+                            >
+                                {Object.keys(rasterData.imagery).map((item: any) => {
+                                    return (
+                                        <option value={item}>{sources[item]}</option>
+                                    )
+                                })}
+                            </NativeSelect>
+                        </FormControl>
+                    }
                 </div>
                 <div className={styles.afterYear}>
-                    <FormControl>
-                        <NativeSelect
-                            id="customized-select-native"
-                            value={selectedSource2}
-                            onChange={handleChangeSource2}
-                            input={<BootstrapInput />}
-                        >
-                            {Object.keys(rasterData.imagery).map((item: any) => {
-                                return (
-                                    <option value={item}>{sources[item]}</option>
-                                )
-                            })}
-                        </NativeSelect>
-                    </FormControl>
+                    {!isSource2MenuOpen ?
+                        <div onMouseOver={() => { setIsSource2MenuOpen(true); }}>
+                            <div className={styles.sourceIcon}>
+                                <SourceIcon />
+                            </div>
+                        </div> : null}
+                    {isSource2MenuOpen &&
+                        <FormControl>
+                            <NativeSelect
+                                id="customized-select-native"
+                                value={selectedSource2}
+                                onChange={handleChangeSource2}
+                                input={<BootstrapInput />}
+                            >
+                                {Object.keys(rasterData.imagery).map((item: any) => {
+                                    return (
+                                        <option value={item}>{sources[item]}</option>
+                                    )
+                                })}
+                            </NativeSelect>
+                        </FormControl>
+                    }
                     <FormControl>
                         <NativeSelect
                             id="customized-select-native"

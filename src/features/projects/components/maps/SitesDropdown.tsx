@@ -12,35 +12,41 @@ interface Props {
 
 export default function SitesDropdown({ geoJson, selectedSite, setSelectedSite }: Props): ReactElement {
 
+    const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
     const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedSite(event.target.value as string);
+        setIsPolygonMenuOpen(false);
     };
 
     return (
         <>
-            {/* <div className={styles.projectSitesButton}>
-                <PolygonIcon />
-            </div> */}
-            <div className={styles.dropdownContainer}>
-                <div className={styles.projectSitesDropdown}>
-                    <FormControl>
-                        {/* <InputLabel htmlFor="demo-customized-select-native">Image 1</InputLabel> */}
-                        <NativeSelect
-                            id="customized-select-native"
-                            value={selectedSite}
-                            onChange={handleChangeSite}
-                            input={<BootstrapInput />}
-                        >
-                            {geoJson.features.map((site: any, index: any) => {
-                                return (
-                                    <option value={index}>{site.properties.name}</option>
-                                )
-                            })}
+            {!isPolygonMenuOpen ?
+                <div onMouseOver={() => { setIsPolygonMenuOpen(true); }} className={styles.projectSitesButton}>
+                    <PolygonIcon />
+                </div> : null}
+            {isPolygonMenuOpen ?
+                <div className={styles.dropdownContainer}>
+                    <div className={styles.projectSitesDropdown}>
+                        <FormControl>
+                            {/* <InputLabel htmlFor="demo-customized-select-native">Image 1</InputLabel> */}
+                            <NativeSelect
 
-                        </NativeSelect>
-                    </FormControl>
+                                id="customized-select-native"
+                                value={selectedSite}
+                                onChange={handleChangeSite}
+                                input={<BootstrapInput />}
+                            >
+                                {geoJson.features.map((site: any, index: any) => {
+                                    return (
+                                        <option key={index} value={index}>{site.properties.name}</option>
+                                    )
+                                })}
+
+                            </NativeSelect>
+                        </FormControl>
+                    </div>
                 </div>
-            </div>
+                : null}
 
         </>
     )
