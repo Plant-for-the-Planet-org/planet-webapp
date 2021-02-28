@@ -15,14 +15,15 @@ interface Props {
     setSelectedSource1: Function;
     selectedSource2: string;
     setSelectedSource2: Function;
+    isMobile: boolean;
 }
 
 export default function ImageDropdown({
-    selectedYear1, selectedYear2, setSelectedYear1, setSelectedYear2, rasterData, selectedSource1, setSelectedSource1, selectedSource2, setSelectedSource2
+    selectedYear1, selectedYear2, setSelectedYear1, setSelectedYear2, rasterData, selectedSource1, setSelectedSource1, selectedSource2, setSelectedSource2, isMobile
 }: Props): ReactElement {
 
-    const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(false);
-    const [isSource2MenuOpen, setIsSource2MenuOpen] = React.useState(false);
+    const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(isMobile ? false : true);
+    const [isSource2MenuOpen, setIsSource2MenuOpen] = React.useState(isMobile ? false : true);
 
     console.log();
     const handleChangeYear1 = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -33,11 +34,13 @@ export default function ImageDropdown({
     };
     const handleChangeSource1 = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedSource1(event.target.value as string);
-        setIsSource1MenuOpen(false);
+        if (isMobile)
+            setIsSource1MenuOpen(false);
     };
     const handleChangeSource2 = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedSource2(event.target.value as string);
-        setIsSource2MenuOpen(false);
+        if (isMobile)
+            setIsSource2MenuOpen(false);
     };
 
     return (
@@ -58,7 +61,7 @@ export default function ImageDropdown({
                             })}
                         </NativeSelect>
                     </FormControl>
-                    {!isSource1MenuOpen ?
+                    {isMobile && !isSource1MenuOpen ?
                         <div onMouseOver={() => { setIsSource1MenuOpen(true); }}>
                             <div className={styles.sourceIcon}>
                                 <SourceIcon />
@@ -82,7 +85,7 @@ export default function ImageDropdown({
                     }
                 </div>
                 <div className={styles.afterYear}>
-                    {!isSource2MenuOpen ?
+                    {isMobile && !isSource2MenuOpen ?
                         <div onMouseOver={() => { setIsSource2MenuOpen(true); }}>
                             <div className={styles.sourceIcon}>
                                 <SourceIcon />

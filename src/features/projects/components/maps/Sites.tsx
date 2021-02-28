@@ -48,7 +48,8 @@ export default function Sites({
     const dropDownProps = {
         geoJson,
         selectedSite,
-        setSelectedSite
+        setSelectedSite,
+        isMobile
     }
     const projectTabs = {
         selectedMode, setSelectedMode, rasterData
@@ -56,7 +57,8 @@ export default function Sites({
     const timeTravelProps = {
         rasterData,
         mapRef,
-        geoJson
+        geoJson,
+        isMobile
     }
 
     return (

@@ -8,9 +8,10 @@ interface Props {
     rasterData: Object | null;
     mapRef: Object;
     geoJson: Object | null;
+    isMobile: boolean;
 }
 
-export default function TimeTravel({ rasterData, mapRef, geoJson }: Props): ReactElement {
+export default function TimeTravel({ rasterData, mapRef, geoJson, isMobile }: Props): ReactElement {
 
     const [before, setBefore] = React.useState();
     const [after, setAfter] = React.useState();
@@ -442,7 +443,7 @@ export default function TimeTravel({ rasterData, mapRef, geoJson }: Props): Reac
     }, [before, after, selectedYear1, selectedYear2, selectedSource1, selectedSource2]);
 
     const imageDropdownProps = {
-        selectedYear1, selectedYear2, setSelectedYear1, setSelectedYear2, rasterData, selectedSource1, setSelectedSource1, selectedSource2, setSelectedSource2
+        selectedYear1, selectedYear2, setSelectedYear1, setSelectedYear2, rasterData, selectedSource1, setSelectedSource1, selectedSource2, setSelectedSource2, isMobile
     }
     return (
         <>

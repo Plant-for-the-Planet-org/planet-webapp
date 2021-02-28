@@ -8,19 +8,21 @@ interface Props {
     geoJson: Object | null;
     selectedSite: number;
     setSelectedSite: Function;
+    isMobile: boolean;
 }
 
-export default function SitesDropdown({ geoJson, selectedSite, setSelectedSite }: Props): ReactElement {
+export default function SitesDropdown({ geoJson, selectedSite, setSelectedSite, isMobile }: Props): ReactElement {
 
-    const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
+    const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(isMobile ? false : true);
     const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedSite(event.target.value as string);
-        setIsPolygonMenuOpen(false);
+        if (isMobile)
+            setIsPolygonMenuOpen(false);
     };
 
     return (
         <>
-            {!isPolygonMenuOpen ?
+            {isMobile && !isPolygonMenuOpen ?
                 <div onMouseOver={() => { setIsPolygonMenuOpen(true); }} className={styles.projectSitesButton}>
                     <PolygonIcon />
                 </div> : null}
