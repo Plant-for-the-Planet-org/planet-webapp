@@ -97,7 +97,8 @@ function PaymentDetails({
       donationID,
       token,
       setDonationStep,
-      donorDetails
+      donorDetails,
+      setShouldCreateDonation
     })
   }
 

@@ -78,7 +78,8 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       paymentSetup,
       donationID: paymentData.guid,
       token: null,
-      setDonationStep: () => { }
+      setDonationStep: () => { },
+      setShouldCreateDonation: () => {}
     }).then((res)=>{
       if (res.paymentStatus) {
         setIsPaymentProcessing(false);

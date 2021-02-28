@@ -139,7 +139,8 @@ function TreeDonation({
         paymentSetup,
         donationID:res.id,
         token,
-        setDonationStep
+        setDonationStep,
+        setShouldCreateDonation: () => {}
       })
     });
   };

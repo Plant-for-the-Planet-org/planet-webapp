@@ -193,13 +193,15 @@ export async function payDonationFunction({
   donationID,
   token,
   setDonationStep,
-  donorDetails
+  donorDetails,
+  setShouldCreateDonation
 }: any) {
   setIsPaymentProcessing(true);
 
   if (!paymentMethod) {
     setIsPaymentProcessing(false);
     setPaymentError(t('donate:noPaymentMethodError'));
+    setShouldCreateDonation(true)
     return;
   }
   let payDonationData;
@@ -256,21 +258,25 @@ export async function payDonationFunction({
       if (paidDonation.code === 400 || paidDonation.code === 401) {
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
+        setShouldCreateDonation(true);
         return;
       } if (paidDonation.code === 500) {
         setIsPaymentProcessing(false);
         setPaymentError('Something went wrong please try again soon!');
+        setShouldCreateDonation(true)
         return;
       } if (paidDonation.code === 503) {
         setIsPaymentProcessing(false);
         setPaymentError(
           'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
         );
+        setShouldCreateDonation(true)
         return;
       }
       if (paidDonation.status === 'failed') {
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
+        setShouldCreateDonation(true)
       } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending') {
         setIsPaymentProcessing(false);
         setDonationStep(4);
@@ -287,7 +293,8 @@ export async function payDonationFunction({
           donationID,
           token,
           setDonationStep,
-          donorDetails
+          donorDetails,
+          setShouldCreateDonation
         })
       }
     }
@@ -307,7 +314,8 @@ export async function handleSCAPaymentFunction({
   donationID,
   token,
   setDonationStep,
-  donorDetails
+  donorDetails,
+  setShouldCreateDonation
 }: any) {  
   const clientSecret = paidDonation.response.payment_intent_client_secret;
   const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
@@ -324,6 +332,7 @@ export async function handleSCAPaymentFunction({
         if (SCAdonation.error) {
           setIsPaymentProcessing(false);
           setPaymentError(SCAdonation.error.message);
+          setShouldCreateDonation(true);
         } else {
           const payDonationData = {
             paymentProviderRequest: {
@@ -344,6 +353,7 @@ export async function handleSCAPaymentFunction({
             } else {
               setIsPaymentProcessing(false);
               setPaymentError(SCAPaidDonation.error ? SCAPaidDonation.error.message : SCAPaidDonation.message);
+              setShouldCreateDonation(true)
             }
           }
         }
@@ -372,6 +382,7 @@ export async function handleSCAPaymentFunction({
       if (error) {
         setIsPaymentProcessing(false);
         setPaymentError(error);
+        setShouldCreateDonation(true)
       }
       else {
         console.log('paymentIntent',paymentIntent)
@@ -404,6 +415,7 @@ export async function handleSCAPaymentFunction({
       if (error) {
         setIsPaymentProcessing(false);
         setPaymentError(error);
+        setShouldCreateDonation(true)
       }
       else {
         console.log('paymentIntent',paymentIntent)
