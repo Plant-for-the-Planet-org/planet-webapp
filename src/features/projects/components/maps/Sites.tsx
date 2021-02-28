@@ -16,7 +16,7 @@ interface Props {
     geoJson: Object | null;
     selectedSite: number;
     setSelectedSite: Function;
-    isMobile: Boolean;
+    isMobile: boolean;
     selectedMode: string;
     setSelectedMode: Function;
     rasterData: Object | null;
