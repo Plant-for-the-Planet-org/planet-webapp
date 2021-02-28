@@ -1,4 +1,4 @@
-const { By, until, Key } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver-3');
 const { driver } = require('./helper');
 const { load } = require('./Pages');
 

@@ -1,5 +1,5 @@
 // this file is currently unused
-import { By } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver-3';
 import { root } from './index';
 
 const headerSelector = { css: '.theme-light' };
