@@ -67,7 +67,7 @@ export default function Project({ project, defaultMapCenter, viewport,
         async function loadRasterData() {
             let result = await getRasterData('');
             let result2 = await getRasterData(project.id);
-            if (result && result2.evi) {
+            if (result && result2) {
                 setRasterData({ ...rasterData, imagery: result.imagery, evi: result2.evi });
             } else if (result) {
                 setRasterData({ ...rasterData, imagery: result.imagery });

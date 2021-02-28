@@ -175,7 +175,6 @@ export async function getRasterData(id: any) {
   const res = await fetch(`${process.env.GEE_API_URL}/api/v1/project/${id}`)
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      console.log(result);
       return result;
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
