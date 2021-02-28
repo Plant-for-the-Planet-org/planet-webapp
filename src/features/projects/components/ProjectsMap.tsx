@@ -92,7 +92,10 @@ export default function ProjectsMap({
         viewport,
         setViewPort,
         setExploreProjects,
-        isMobile
+        isMobile,
+        mapRef,
+        mapState,
+        setMapState,
     }
     const creditProps = {
         setCurrencyCode

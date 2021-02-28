@@ -1,9 +1,14 @@
+import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react'
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
+import ProjectPolygon from './ProjectPolygon';
 import ProjectTabs from './ProjectTabs';
 import SatelliteLayer from './SatelliteLayer';
 import SitesDropdown from './SitesDropdown';
+// import TimeTravel from './TimeTravel';
 import VegetationChange from './VegetationChange';
+
+const TimeTravel = dynamic(() => import('./TimeTravel'), { ssr: false });
 
 interface Props {
     viewport: Object;
@@ -14,7 +19,8 @@ interface Props {
     isMobile: Boolean;
     selectedMode: string;
     setSelectedMode: Function;
-    rasterData: Object;
+    rasterData: Object | null;
+    mapRef: Object;
 }
 
 export default function Sites({
@@ -26,7 +32,8 @@ export default function Sites({
     isMobile,
     selectedMode,
     setSelectedMode,
-    rasterData }: Props): ReactElement {
+    rasterData,
+    mapRef }: Props): ReactElement {
 
     React.useEffect(() => {
         zoomToProjectSite(
@@ -44,15 +51,21 @@ export default function Sites({
         setSelectedSite
     }
     const projectTabs = {
-        selectedMode, setSelectedMode
+        selectedMode, setSelectedMode, rasterData
+    }
+    const timeTravelProps = {
+        rasterData,
+        mapRef,
+        geoJson
     }
 
     return (
         <>
-            {selectedMode === 'location' && <SatelliteLayer />}
-            {rasterData && <>
+            {selectedMode === 'location' && <><SatelliteLayer /><ProjectPolygon id="locationPolygon" geoJson={geoJson} /></>}
+            {Object.keys(rasterData.imagery).length !== 0 && rasterData.imagery.constructor === Object && <>
                 <ProjectTabs {...projectTabs} />
                 {selectedMode === 'vegetation' && <VegetationChange rasterData={rasterData} />}
+                {selectedMode === 'imagery' && <TimeTravel {...timeTravelProps} />}
             </>}
             <SitesDropdown {...dropDownProps} />
         </>

@@ -8,9 +8,10 @@ import styles from '../../styles/VegetationChange.module.scss';
 interface Props {
     selectedMode: string;
     setSelectedMode: Function;
+    rasterData: Object | null;
 }
 
-export default function ProjectTabs({ selectedMode, setSelectedMode }: Props): ReactElement {
+export default function ProjectTabs({ selectedMode, setSelectedMode, rasterData }: Props): ReactElement {
     const { useTranslation } = i18next;
     const { i18n, t } = useTranslation(['maps']);
     return (
@@ -54,26 +55,28 @@ export default function ProjectTabs({ selectedMode, setSelectedMode }: Props): R
                         {t('maps:timeTravel')}<sup>{t('maps:beta')}</sup>
                     </p>
                 </div>
-                <div
-                    onClick={() => {
-                        setSelectedMode('vegetation');
-                    }}
-                    style={
-                        selectedMode === 'vegetation'
-                            ? {
-                                color: '#fff',
-                                backgroundColor: styles.primaryColor,
-                                border: 'none',
-                            }
-                            : {}
-                    }
-                    className={styles.options}
-                >
-                    <ResearchIcon color={selectedMode === 'vegetation' ? '#fff' : null} />{' '}
-                    <p>
-                        {t('maps:vegetationChange')}<sup>{t('maps:beta')}</sup>
-                    </p>
-                </div>
+                {rasterData.evi ?
+                    <div
+                        onClick={() => {
+                            setSelectedMode('vegetation');
+                        }}
+                        style={
+                            selectedMode === 'vegetation'
+                                ? {
+                                    color: '#fff',
+                                    backgroundColor: styles.primaryColor,
+                                    border: 'none',
+                                }
+                                : {}
+                        }
+                        className={styles.options}
+                    >
+                        <ResearchIcon color={selectedMode === 'vegetation' ? '#fff' : null} />{' '}
+                        <p>
+                            {t('maps:vegetationChange')}<sup>{t('maps:beta')}</sup>
+                        </p>
+                    </div>
+                    : null}
             </div>
         </>
     )

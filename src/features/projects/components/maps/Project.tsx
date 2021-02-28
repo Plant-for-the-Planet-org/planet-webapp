@@ -4,7 +4,6 @@ import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import Location from './Location'
 import Sites from './Sites';
-import VegetationChange from './VegetationChange';
 
 interface Props {
     project: Object;
@@ -12,10 +11,13 @@ interface Props {
     viewport: Object;
     setViewPort: Function;
     isMobile: Boolean;
+    mapRef: Object;
+    mapState: Object;
+    setMapState: Function;
 }
 
 export default function Project({ project, defaultMapCenter, viewport,
-    setViewPort, isMobile }: Props): ReactElement {
+    setViewPort, isMobile, mapRef, mapState, setMapState }: Props): ReactElement {
 
     const [selectedMode, setSelectedMode] = React.useState('location');
     const [geoJson, setGeoJson] = React.useState(null);
@@ -25,7 +27,10 @@ export default function Project({ project, defaultMapCenter, viewport,
     const [selectedSite, setSelectedSite] = React.useState(0);
 
     //Zoom 3
-    const [rasterData, setRasterData] = React.useState(null);
+    const [rasterData, setRasterData] = React.useState({
+        evi: "",
+        imagery: {}
+    });
 
     React.useEffect(() => {
         if (typeof project.sites !== 'undefined' && project.sites.length > 0) {
@@ -60,8 +65,14 @@ export default function Project({ project, defaultMapCenter, viewport,
 
     React.useEffect(() => {
         async function loadRasterData() {
-            let result = await getRasterData(project.id);
-            setRasterData(result);
+            let result = await getRasterData('');
+            let result2 = await getRasterData(project.id);
+            if (result && result2.evi) {
+                setRasterData({ ...rasterData, imagery: result.imagery, evi: result2.evi });
+            } else if (result) {
+                setRasterData({ ...rasterData, imagery: result.imagery });
+            }
+
         }
         if (geoJson) {
             zoomToProjectSite(
@@ -73,7 +84,15 @@ export default function Project({ project, defaultMapCenter, viewport,
                 4000);
             loadRasterData();
         }
-    }, [geoJson])
+    }, [geoJson]);
+
+    React.useEffect(() => {
+        if (selectedMode === 'imagery') {
+            setMapState({ ...mapState, dragPan: false });
+        } else {
+            setMapState({ ...mapState, dragPan: true });
+        }
+    }, [selectedMode]);
 
     //Props
     const locationProps = {
@@ -90,7 +109,8 @@ export default function Project({ project, defaultMapCenter, viewport,
         isMobile,
         selectedMode,
         setSelectedMode,
-        rasterData
+        rasterData,
+        mapRef
     }
 
     return (
