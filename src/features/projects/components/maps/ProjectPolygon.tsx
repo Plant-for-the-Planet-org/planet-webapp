@@ -9,11 +9,11 @@ interface Props {
 export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
     return (
         <>
-            <Source id="singleProject" type="geojson" data={geoJson}>
+            <Source id={id ? id : "singleProject"} type="geojson" data={geoJson}>
                 <Layer
-                    id={id ? id : "ploygonOutline1"}
+                    id={id ? id : "ploygonOutline"}
                     type="line"
-                    source="singleProject"
+                    source={id ? id : "singleProject"}
                     paint={{
                         'line-color': '#fff',
                         'line-width': 4,
