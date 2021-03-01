@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import VideoContainer from '../src/features/common/LandingVideo';
+import tenantConfig from '../tenant.config';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -52,6 +53,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
   const [currencyCode, setCurrencyCode] = React.useState('');
+
+  const config = tenantConfig();
+
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -116,8 +120,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, [])
 
-
-  return showVideo ? (
+  return showVideo && (config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
     <div>
       <VideoContainer setshowVideo={setshowVideo} />
     </div>
