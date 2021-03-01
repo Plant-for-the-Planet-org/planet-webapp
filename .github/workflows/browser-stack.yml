@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - develop
+      - tenant/*
       - main
 jobs:
   ubuntu-job:

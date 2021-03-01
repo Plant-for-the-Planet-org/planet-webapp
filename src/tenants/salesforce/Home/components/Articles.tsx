@@ -40,11 +40,11 @@ export default function Articles() {
   ];
 
   return (
-    <section className={styles.articleSection}>
+    <div className={styles.articleSection}>
       <h2 className={styles.articleSectionHeader}>
         Check out some other ways we support trees.
       </h2>
-      <div className={`${gridStyles.gridRow} ${styles.articleContainer}`}>
+      <div className={styles.articleContainer} style={{display:'flex',flexWrap:'wrap'}}>
         {articles.map((article) => {
           return (
             <div key={article.id} className={`${gridStyles.colSm10} ${gridStyles.colLg6}`}>
@@ -70,6 +70,6 @@ export default function Articles() {
           );
         })}
       </div>
-    </section>
+    </div>
   );
 }

@@ -17,10 +17,7 @@ const config = {
     locale: 'en_US',
   },
   home: {
-    title: 'Pampers ❤️ Wald',
     descriptionTitle:"Bäume pflanzen für eine nachhaltigere Zukunft",
-    description:
-      'Gemeinsam mit euch wollen wir dabei helfen, unseren Kleinsten eine bessere Zukunft zu ermöglichen. Deshalb arbeiten wir mit der Kinder- und Jugendorganisation Plant-for-the-Planet an einem tollen Projekt: dem Pampers Wald. Pro verkaufter Packung Pampers Windeln spenden wir 0,01 EUR/CHF und insgesamt bis zu 100.000 EUR an Plant-for-the-Planet. Unser Ziel: 60.000 Bäume für eine nachhaltige Wiederaufforstung zu pflanzen. Auf der Karte seht ihr, wo das Projekt realisiert wird. Jetzt anschauen und mithelfen.',
     image: `/tenants/pampers/background.jpeg`,
   },
   header: {

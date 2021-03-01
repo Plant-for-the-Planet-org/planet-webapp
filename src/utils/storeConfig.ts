@@ -1,7 +1,13 @@
 import getsessionId from './apiRequests/getSessionId';
 
 export async function storeConfig() {
-    const userLang = localStorage.getItem('language') || 'en';
+  let userLang;
+  if(localStorage){
+    userLang = localStorage.getItem('language') || 'en';
+  }
+  else{
+    userLang = "en";
+  }
     await fetch(`${process.env.API_ENDPOINT}/public/v1.2/${userLang}/config`, {
         headers: {
           'tenant-key': `${process.env.TENANTID}`,
