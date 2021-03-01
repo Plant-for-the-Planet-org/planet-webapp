@@ -32,7 +32,7 @@ export default function Blogs() {
   ];
 
   return (
-    <section className={styles.blogSection}>
+    <div className={styles.blogSection}>
       <p className={styles.blogSectionHeader}>Take climate action.</p>
       <div className={`${gridStyles.gridRow} ${styles.blogContainer}`}>
         {blogs.map((blog) => {
@@ -57,6 +57,6 @@ export default function Blogs() {
           );
         })}
       </div>
-    </section>
+    </div>
   );
 }
