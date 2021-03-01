@@ -9,7 +9,7 @@ interface Props {
 }
 
 function VideoContainer({ setshowVideo }: Props): ReactElement {
-    const { t, ready } = useTranslation(['common']);
+    const { t, ready, i18n } = useTranslation(['common']);
     const [videoURL, setvideoURL] = React.useState("/assets/video/landing.mp4")
     const [isUploading, setisUploading] = React.useState(false)
     const handleVideoClose = () => {
@@ -20,14 +20,23 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
         }
     }
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         var screenWidth = window.innerWidth;
-            if (screenWidth < 480){
-                setvideoURL("/assets/video/landingMobile.mp4")
-            } else {
-                setvideoURL("/assets/video/landing.mp4")
+
+        if (screenWidth < 480) {
+            switch (localStorage.getItem('language')) {
+                case 'de': setvideoURL("/assets/video/landingMobileDe.mp4"); break;
+                case 'en': setvideoURL("/assets/video/landingMobile.mp4"); break;
+                default: setvideoURL("/assets/video/landingMobile.mp4");
             }
-    },[])
+        } else {
+            switch (localStorage.getItem('language')) {
+                case 'de': setvideoURL("/assets/video/landingDe.mp4"); break;
+                case 'en': setvideoURL("/assets/video/landing.mp4"); break;
+                default: setvideoURL("/assets/video/landing.mp4");
+            }
+        }
+    }, [])
     return ready ? (
         <div className={styles.landingVideoSection}>
             <div className={styles.landingVideoWrapper}>
