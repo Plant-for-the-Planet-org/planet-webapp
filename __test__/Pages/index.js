@@ -1,4 +1,4 @@
-import { until } from 'selenium-webdriver';
+import { until } from 'selenium-webdriver-3';
 import { driver, defaultTimeout } from '../helper';
 
 const rootSelector = { css: '.theme-light' };
