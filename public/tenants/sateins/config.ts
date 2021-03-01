@@ -45,10 +45,10 @@ const config = {
     }
   },
   meta: {
-    title: 'Sat1',
+    title: `BÄUME SPENDEN: SO EINFACH GEHT'S`,
     description:
-      'Lorem Ipsum',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+      'Für jeden gespendeten Euro im Rahmen der "SAT.1 Waldrekord-Woche" wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen Halbinsel Yucatán im Bundesland Campeche der "SAT.1-Wald" gepflanzt wird - und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiter zu wachsen.',
+    image: `/tenants/sateins/images/sat1-sign.jpg`,
     twitterHandle: '',
     locale: 'en_US',
   },
