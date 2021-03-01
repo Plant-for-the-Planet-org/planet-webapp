@@ -60,6 +60,12 @@ export default function Donate({
     }
   }, [router]);
 
+  React.useEffect(()=>{
+    if(typeof window  !== 'undefined'){
+      router.replace('http://waldrekord.de/');
+    }
+  },[router]);
+
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
