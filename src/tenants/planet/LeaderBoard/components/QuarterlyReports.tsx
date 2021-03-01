@@ -62,10 +62,10 @@ function QuarterlyReports({ }: Props): ReactElement {
                           style={{ width: `${(project.trees / baseValue) * 100}%` }}>
                           
                           <div className={styles.projectSegment} style={{ opacity: opacity }}/>
-                          <div className={styles.projectName}>{project.name} : {" "}
-                            {t('leaderboard:treesTotal', {
+                          <div className={styles.projectName}>{project.name} {" "}
+                            <span>{t('leaderboard:treesTotal', {
                               count: getFormattedNumber(i18n.language, project.trees),
-                            })}
+                            })}</span>
                           </div>
                         </div>
                       )
