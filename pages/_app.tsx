@@ -115,7 +115,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         setshowVideo(false)
       }
       else {
-        setshowVideo(true)
+        if(router.pathname === '/'){
+          setshowVideo(true)
+        }
       }
     }
   }, [])
