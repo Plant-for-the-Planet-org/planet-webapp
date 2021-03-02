@@ -89,6 +89,12 @@ export default function TimeTravel({
       btn[0].addEventListener('mouseup', (e) => {
         setMapState({ ...mapState, dragPan: true });
       });
+      btn[0].addEventListener('touchstart', (e) => {
+        setMapState({ ...mapState, dragPan: false });
+      });
+      btn[0].addEventListener('touchend', (e) => {
+        setMapState({ ...mapState, dragPan: true });
+      });
     }
   }, []);
 
