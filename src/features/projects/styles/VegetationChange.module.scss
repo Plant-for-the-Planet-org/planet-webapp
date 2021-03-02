@@ -110,32 +110,32 @@
   }
 
   .dropdownContainer {
-    top: 145px;
+    top: 90px;
   }
 }
 
 @include mdTabletView {
   .VegetationChangeContainer {
     left: 400px;
-    top: 110px;
+    top: 50px;
   }
   .dropdownContainer {
     padding: 0 20px 0 400px;
-    top: 160px;
   }
 }
 
 @include lgLaptopView {
   .VegetationChangeContainer {
-    margin-left: auto;
-    right: 0;
+    // margin-left: auto;
+    right: auto;
   }
+}
 
+@include xlDesktopView {
   .options {
     width: 200px;
-  }
-
-  .options p {
-    display: block;
+    p {
+      display: block;
+    }
   }
 }

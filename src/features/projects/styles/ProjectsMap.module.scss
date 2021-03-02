@@ -449,15 +449,16 @@
 
 @include smTabletView {
   .projectSitesButton {
-    top: 100px;
+    top: 110px;
+    right: 70px;
   }
 
   .dropdownContainer {
-    top: 100px;
+    top: 110px;
   }
 
   .exploreButton {
-    top: 100px;
+    top: 110px;
   }
 
   .exploreExpanded {
@@ -475,7 +476,7 @@
     padding-bottom: 0px;
   }
   .dropdownContainer {
-    right: 120px;
+    right: 70px;
   }
 
   .projectSitesDropdown {
