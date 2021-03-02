@@ -26,6 +26,7 @@ export default new NextI18Next({
     caches: ['cookie', 'localStorage'],
     cookieSameSite: 'none',
     cookieSecure: true,
+    cookieExpirationDate: new Date(new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000)),
   },
   react: {
     // trigger a rerender when language is changed
