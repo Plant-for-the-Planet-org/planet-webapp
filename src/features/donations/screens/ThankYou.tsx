@@ -179,7 +179,7 @@ function ThankYou({
 
   function FailedDonation() {
     return (
-      <div className={styles.container} style={{ paddingBottom: '24px' }}>
+      <div className={styles.cardContainer} style={{ paddingBottom: '24px' }}>
         <div className={styles.header}>
           <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
             <Close />
@@ -197,7 +197,7 @@ function ThankYou({
 
   function PendingDonation() {
     return (
-      <div className={styles.container} style={{ paddingBottom: '24px' }}>
+      <div className={styles.cardContainer} style={{ paddingBottom: '24px' }}>
         <div className={styles.header}>
           <button id={'thankYouClose'} onClick={onClose} className={styles.headerCloseIcon}>
             <Close />
