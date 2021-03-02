@@ -24,6 +24,8 @@ export default new NextI18Next({
 
     // cache the language in cookies and local storage
     caches: ['cookie', 'localStorage'],
+    cookieSameSite: 'none',
+    cookieSecure: true,
   },
   react: {
     // trigger a rerender when language is changed
