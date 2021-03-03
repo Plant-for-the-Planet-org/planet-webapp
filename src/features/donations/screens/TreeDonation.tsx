@@ -91,6 +91,7 @@ function TreeDonation({
     }
 
     setMinAmt(getMinimumAmountForCurrency(currency));
+    console.log(minAmt);
   }, [country]);
 
   const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
@@ -134,7 +135,7 @@ function TreeDonation({
   };
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
-  const [isGiftValidated,setGiftValidated] = React.useState(false);
+  const [isGiftValidated, setGiftValidated] = React.useState(false);
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />

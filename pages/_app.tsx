@@ -15,7 +15,7 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
-import MapLayout from '../src/features/projects/components/MapboxMap';
+import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';

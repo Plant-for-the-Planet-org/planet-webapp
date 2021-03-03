@@ -110,10 +110,13 @@
   }
 }
 
-.projectSitesDropdown {
+.dropdownContainer {
   position: fixed;
   right: 60px;
   top: 20px;
+}
+
+.projectSitesDropdown {
   z-index: 9999;
 }
 
@@ -447,6 +450,11 @@
 @include smTabletView {
   .projectSitesButton {
     top: 100px;
+    right: 65px;
+  }
+
+  .dropdownContainer {
+    top: 100px;
   }
 
   .exploreButton {
@@ -454,7 +462,7 @@
   }
 
   .exploreExpanded {
-    top: 100px;
+    top: 110px;
   }
 
   // .infoExpanded {
@@ -467,17 +475,22 @@
     padding-top: 60px;
     padding-bottom: 0px;
   }
+
+  .exploreExpanded {
+    top: 110px;
+  }
   .projectSitesButton {
-    display: none;
+    top: 110px;
+    right: 70px;
   }
 
-  .projectControls {
-    display: flex;
-    top: auto;
-    bottom: 30px;
-    left: 350px;
+  .dropdownContainer {
+    top: 110px;
+    right: 70px;
   }
+
   .exploreButton {
+    top: 110px;
     right: 20px;
     flex-direction: row;
   }
@@ -518,5 +531,18 @@
     .popoverContent {
       display: block;
     }
+  }
+}
+
+@include lgLaptopView {
+  .projectSitesDropdown {
+    right: 120px;
+  }
+
+  .projectControls {
+    display: flex;
+    top: auto;
+    bottom: 30px;
+    left: 350px;
   }
 }
