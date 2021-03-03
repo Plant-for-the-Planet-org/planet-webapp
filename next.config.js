@@ -19,7 +19,7 @@ const {
   VERCEL_GITLAB_COMMIT_SHA,
   VERCEL_BITBUCKET_COMMIT_SHA,
   SOURCE_VERSION,
-  GEE_API_URL,
+  SITE_IMAGERY_API_URL,
 } = process.env;
 
 const COMMIT_SHA =
@@ -117,7 +117,7 @@ module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
     NEXTAUTH_URL: nextauthUrl,
     VERCEL_URL: process.env.VERCEL_URL,
-    GEE_API_URL: GEE_API_URL,
+    SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,

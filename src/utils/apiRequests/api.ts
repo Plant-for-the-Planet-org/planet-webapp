@@ -172,7 +172,7 @@ export async function putAuthenticatedRequest(url: any, data: any, token: any) {
 
 export async function getRasterData(id: any) {
   let result;
-  const res = await fetch(`${process.env.GEE_API_URL}/api/v1/project/${id}`)
+  const res = await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       return result;
