@@ -21,6 +21,7 @@ interface Props {
 export default function ProjectsMap({
   project,
   showSingleProject,
+  showProjects,
   setShowProjects,
   searchedProject,
   setCurrencyCode,
@@ -126,7 +127,9 @@ export default function ProjectsMap({
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
-        {!showSingleProject && searchedProject && <Home {...homeProps} />}
+        {!showSingleProject && searchedProject && showProjects && (
+          <Home {...homeProps} />
+        )}
         {showSingleProject && project && <Project {...projectProps} />}
         <Explore {...exploreProps} />
         <div className={styles.mapNavigation}>
