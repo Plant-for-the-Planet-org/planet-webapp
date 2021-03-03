@@ -75,8 +75,8 @@ export default function Project({
 
   React.useEffect(() => {
     async function loadRasterData() {
-      let result = await getRasterData('');
-      let result2 = await getRasterData(project.id);
+      const result = await getRasterData('');
+      const result2 = await getRasterData(project.id);
       if (result && result2) {
         setRasterData({
           ...rasterData,

@@ -8,7 +8,7 @@ export default function zoomToProjectSite(
   viewport: Object,
   isMobile: Boolean,
   setViewPort: Function,
-  duration: number = 1200
+  duration = 1200
 ) {
   const bbox = turf.bbox(geoJson.features[selectedSite]);
   const { longitude, latitude, zoom } = new WebMercatorViewport(

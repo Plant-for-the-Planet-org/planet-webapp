@@ -38,9 +38,9 @@ export default function TimeTravel({
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      let center = mapRef.current.getMap().getCenter();
-      let zoom = mapRef.current.getMap().getZoom();
-      var before = new mapboxgl.Map({
+      const center = mapRef.current.getMap().getCenter();
+      const zoom = mapRef.current.getMap().getZoom();
+      const before = new mapboxgl.Map({
         container: 'before', // Container ID
         style: EMPTY_STYLE,
         center: center,
@@ -49,7 +49,7 @@ export default function TimeTravel({
 
       setBefore(before);
 
-      var after = new mapboxgl.Map({
+      const after = new mapboxgl.Map({
         container: 'after', // Container ID
         style: EMPTY_STYLE,
         center: center,
@@ -65,7 +65,7 @@ export default function TimeTravel({
       );
 
       // A selector or reference to HTML element
-      var container = '#comparison-container';
+      const container = '#comparison-container';
 
       new MapboxCompare(before, after, container, {
         mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
@@ -74,14 +74,14 @@ export default function TimeTravel({
 
       syncMove(before, after, mapRef.current.getMap());
     }
-    var siteCenter = turf.centroid(geoJson);
+    const siteCenter = turf.centroid(geoJson);
     if (!turf.booleanPointInPolygon(siteCenter, planetCoverage)) {
       setSelectedSource1('sentinel');
       setSelectedSource2('sentinel');
     }
 
     if (document) {
-      let btn = document.getElementsByClassName('compare-swiper-vertical');
+      const btn = document.getElementsByClassName('compare-swiper-vertical');
       console.log('button', btn[0]);
       btn[0].addEventListener('mousedown', (e) => {
         setMapState({ ...mapState, dragPan: false });

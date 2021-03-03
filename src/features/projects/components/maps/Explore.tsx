@@ -24,7 +24,7 @@ import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 
 interface Props {
-  loaded: Boolean;
+  loaded: boolean;
   mapRef: Object;
   setShowProjects: Function;
   viewport: Object;
@@ -33,8 +33,8 @@ interface Props {
   defaultMapCenter: Array<number>;
   mapState: Object;
   setMapState: Function;
-  isMobile: Boolean;
-  exploreProjects: Boolean;
+  isMobile: boolean;
+  exploreProjects: boolean;
   showSingleProject: boolean;
 }
 

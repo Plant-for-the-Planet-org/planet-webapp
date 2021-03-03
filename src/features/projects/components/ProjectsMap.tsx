@@ -66,7 +66,7 @@ export default function ProjectsMap({
   useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {
-      let result = await getMapStyle('default');
+      const result = await getMapStyle('default');
       if (result) {
         setMapState({ ...mapState, mapStyle: result });
         setStyle(result);

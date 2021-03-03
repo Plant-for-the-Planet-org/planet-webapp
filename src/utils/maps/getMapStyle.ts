@@ -4,13 +4,13 @@ import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
 export default function getMapStyle(style: any) {
   return new Promise<any>(async (resolve, reject) => {
     if (style === 'default') {
-      let result = await fetchTiles(
+      const result = await fetchTiles(
         defaultStyle,
         'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
       );
       resolve(result);
     } else if (style === 'openStreetMap') {
-      let result = await fetchTiles(
+      const result = await fetchTiles(
         openStreetMap,
         'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
       );

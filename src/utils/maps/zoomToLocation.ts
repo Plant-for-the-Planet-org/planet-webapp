@@ -8,7 +8,7 @@ export default function zoomToProjectSite(
   longitude: number,
   latitude: number,
   zoom: number,
-  duration: number = 1200
+  duration = 1200
 ) {
   const newViewport = {
     ...viewport,
