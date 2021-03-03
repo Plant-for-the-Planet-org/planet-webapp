@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
@@ -13,7 +13,12 @@ interface Props {
   setModalOpen: Function;
 }
 
-function ExploreInfoModal({ infoRef, infoExpanded, setInfoExpanded, setModalOpen }: Props): ReactElement {
+function ExploreInfoModal({
+  infoRef,
+  infoExpanded,
+  setInfoExpanded,
+  setModalOpen,
+}: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['maps']);
 
   return (
@@ -32,14 +37,15 @@ function ExploreInfoModal({ infoRef, infoExpanded, setInfoExpanded, setModalOpen
                 <p>{t('maps:forestInfo')}</p>
                 <a
                   href="https://www.nature.com/articles/nature14967"
-                  target="_blank" rel="noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ paddingTop: 20 }}
                 >
                   <OpenLink />
                   <p>
                     Crowther, T. W. et al. (2015) Mapping tree
-                      <br /> density at a global scale. Nature 525, 201–205.
-                    </p>
+                    <br /> density at a global scale. Nature 525, 201–205.
+                  </p>
                 </a>
               </div>
             </div>
@@ -56,35 +62,35 @@ function ExploreInfoModal({ infoRef, infoExpanded, setInfoExpanded, setModalOpen
                 <p>{t('maps:restorationInfo')}</p>
                 <a
                   href="https://science.sciencemag.org/content/365/6448/76"
-                  target="_blank" rel="noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ paddingTop: 20 }}
                 >
                   <OpenLink />
                   <p>
                     Bastin, J. F. et al. (2019) The Global Tree
-                      <br /> Restoration Potential. Science 365(6448), 76-79.
-                    </p>
+                    <br /> Restoration Potential. Science 365(6448), 76-79.
+                  </p>
                 </a>
               </div>
             </div>
           ) : null}
           {infoExpanded === 'Deforestation' ? (
             <div className={styles.infoContainer}>
-              <div className={styles.infoTitle}>
-                {t('maps:deforestation')}
-              </div>
+              <div className={styles.infoTitle}>{t('maps:deforestation')}</div>
               <div className={styles.infoContent}>
                 <a
                   href="https://data.globalforestwatch.org/datasets/63f9425c45404c36a23495ed7bef1314"
-                  target="_blank" rel="noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ paddingTop: 20 }}
                 >
                   <OpenLink />
                   <p>
                     Global Forest Watch
-                      <br />
-                      globalforestwatch.org
-                    </p>
+                    <br />
+                    globalforestwatch.org
+                  </p>
                 </a>
               </div>
             </div>
@@ -106,7 +112,8 @@ function ExploreInfoModal({ infoRef, infoExpanded, setInfoExpanded, setModalOpen
           </div>
         </div>
       ) : null}
-    </>);
+    </>
+  );
 }
 
-export default ExploreInfoModal
+export default ExploreInfoModal;

@@ -1,4 +1,4 @@
-const { By, until, Key } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver-3');
 const { driver } = require('./helper');
 const { load } = require('./Pages');
 
@@ -30,7 +30,9 @@ describe('Gift Trees', () => {
     await driver.switchTo().activeElement();
     (await driver).sleep(100);
 
+    await driver.wait(until.elementLocated(By.xpath("//*[@id='cardNumber']/div/iframe")));
     await driver.switchTo().frame(driver.findElement(By.xpath("//*[@id='cardNumber']/div/iframe")));
+    await driver.wait(until.elementLocated(By.name('cardnumber')));
     const cardNumber = await driver.findElement(By.name('cardnumber'));
     const cardEnabled = await driver.wait(until.elementIsEnabled(cardNumber));
     await cardEnabled.sendKeys('4242424242424242');      
@@ -49,7 +51,7 @@ describe('Gift Trees', () => {
     await driver.switchTo().defaultContent();
 
     (await driver).sleep(100);
-    await driver.wait(until.elementLocated(By.className('PaymentDetails_continueButton__2eFJF')), 10000).click();
+    await driver.wait(until.elementLocated(By.id('donateContinueButton')), 10000).click();
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {

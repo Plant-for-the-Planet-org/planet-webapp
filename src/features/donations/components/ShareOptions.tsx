@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import styles from './../styles/ThankYou.module.scss';
+import styles from './../styles/Donations.module.scss';
 import EmailIcon from '../../../../public/assets/images/icons/share/Email';
 import EmailSolid from '../../../../public/assets/images/icons/share/EmailSolid';
 import FacebookIcon from '../../../../public/assets/images/icons/share/Facebook';
@@ -18,13 +18,13 @@ interface ShareOptionsProps {
   treeCount: String;
   sendRef: any;
   handleTextCopiedSnackbarOpen: Function
-  contactDetails: Object
+  donor: Object
 }
 const ShareOptions = ({
   treeCount,
   sendRef,
   handleTextCopiedSnackbarOpen,
-  contactDetails,
+  donor,
 }: ShareOptionsProps) => {
   const { t, ready } = useTranslation(['donate']);
   const config = tenantConfig();
@@ -33,16 +33,16 @@ const ShareOptions = ({
   const urlToShare = config.tenantURL;
   const linkToShare = config.tenantURL;
   let textToShare = '';
-  // contactDetails may be undefined or empty for legacy donations or redeem
-  if (contactDetails && (contactDetails.firstName || contactDetails.lastName)) {
-    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${contactDetails.firstName} ${contactDetails.lastName}` }) : '';
+  // donor may be undefined or empty for legacy donations or redeem
+  if (donor && (donor.name)) {
+    textToShare = ready ? t('donate:textToShareLinkedin', { name: `${donor.name}` }) : '';
   } else {
     textToShare = ready ? t('donate:textToShareForMe') : '';
   }
 
   const exportComponent = (node, fileName, backgroundColor, type) => {
     const element = ReactDOM.findDOMNode(node.current);
-    var options = {
+    const options = {
       quality: 1,
     };
     domtoimage
@@ -50,7 +50,7 @@ const ShareOptions = ({
       .then((dataUrl) => {
         domtoimage.toJpeg(element, options).then((dataUrl) => {
           domtoimage.toJpeg(element, options).then((dataUrl) => {
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             link.download = fileName;
             link.href = dataUrl;
             link.click();
@@ -87,7 +87,7 @@ const ShareOptions = ({
       onMouseOut={() => setCurrentHover(-1)}
       style={{ cursor: 'pointer' }}
     >
-      <div
+      <button id={'shareButton'}
         className={styles.shareIcon}
         onClick={() => {
           if (sendRef) {
@@ -104,9 +104,9 @@ const ShareOptions = ({
         ) : (
           <DownloadIcon color={styles.blueishGrey} />
         )}
-      </div>
+      </button>
 
-      <div
+      <button id={'shareFacebook'}
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(
@@ -119,9 +119,9 @@ const ShareOptions = ({
         <FacebookIcon
           color={currentHover === 2 ? '#3b5998' : styles.blueishGrey}
         />
-      </div>
+      </button>
 
-      <div
+      <button id={'shareInstagram'}
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(3)}
         onClick={() =>
@@ -131,9 +131,9 @@ const ShareOptions = ({
         <InstagramIcon
           color={currentHover === 3 ? '#dd217b' : styles.blueishGrey}
         />
-      </div>
+      </button>
 
-      <div
+      <button id={'shareTwitter'}
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
@@ -143,9 +143,9 @@ const ShareOptions = ({
         <TwitterIcon
           color={currentHover === 4 ? '#00acee' : styles.blueishGrey}
         />
-      </div>
+      </button>
 
-      <div
+      <button id={'shareMail'}
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(`mailto:?subject=${titleToShare}&body=${textToShare}`)
@@ -157,7 +157,7 @@ const ShareOptions = ({
         ) : (
           <EmailIcon color={styles.blueishGrey} />
         )}
-      </div>
+      </button>
     </div>
   ) : null;
 };

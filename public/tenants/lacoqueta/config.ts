@@ -18,6 +18,9 @@ const config = {
     twitterHandle: '',
     locale: 'en_US',
   },
+  home: {
+    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+  },
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/lacoqueta/logo.svg`,

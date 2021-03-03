@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - develop
+      - tenant/*
       - main
 jobs:
   ubuntu-job:
@@ -17,31 +18,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
 
-      - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
-        uses: browserstack/github-actions/setup-env@master
-        with:
-          username:  ${{ secrets.BROWSERSTACK_USERNAME }}
-          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          build-name: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
-          project-name: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
-
-      - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
-        uses: browserstack/github-actions/setup-local@master
-        with:
-          local-testing: start
-          local-identifier: random
-
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
       - name: 'Install Node Modules'
         run: npm install
-
-      - name: Fixes for BrowserStack Build
-        run: |
-          # fix problems with 'Error: ENOSPC: System limit for number of file watchers reached'
-          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-# The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
 
       - name: Setting Environment Variables
         env:
@@ -61,8 +42,3 @@ jobs:
         run: |
           cat .env
           npm run test
-
-      - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
-        uses: browserstack/github-actions/setup-local@master
-        with:
-          local-testing: stop

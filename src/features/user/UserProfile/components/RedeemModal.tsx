@@ -75,8 +75,8 @@ export default function RedeemModal({
       code: data.code
     }
     if (!isLoading && isAuthenticated) {
-      let token = await getAccessTokenSilently();
-      let userLang = localStorage.getItem('language') || 'en';
+      const token = await getAccessTokenSilently();
+      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/api/v1.3/${userLang}/validateCode`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -103,8 +103,8 @@ export default function RedeemModal({
       code: code
     }
     if (!isLoading && isAuthenticated) {
-      let token = await getAccessTokenSilently();
-      let userLang = localStorage.getItem('language') || 'en';
+      const token = await getAccessTokenSilently();
+      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -153,9 +153,9 @@ export default function RedeemModal({
           <>
             <div className={styles.modalFinal}>
               <div className={styles.header}>
-                <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                <button id={'closeRedeemM'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                   <Close />
-                </div>
+                </button>
                 <div className={styles.headerTitle}>
                   {t('redeem:congratulations')}
                 </div>
@@ -233,11 +233,11 @@ export default function RedeemModal({
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
-                  <div onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
+                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (t('redeem:addToMyTrees'))}
-                  </div>
+                  </button>
                 </>
               ) : (
                   <>
@@ -263,11 +263,11 @@ export default function RedeemModal({
                     {errorMessage && (
                       <span className={styles.formErrors}>{errorMessage}</span>
                     )}
-                    <div onClick={handleSubmit(validateCode)} className={styles.continueButton}>
+                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className={styles.continueButton}>
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (t('redeem:validateCode'))}
-                    </div>
+                    </button>
                   </>
                 )}
 

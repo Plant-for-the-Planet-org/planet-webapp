@@ -73,7 +73,19 @@
   "selectProject": "Select a project",
   "giftValidation": "Please enter gift details",
   "minDonate": "Minimum donation amount is",
-  "noPaymentMethodError":"Could not process your payment, please try again.",
-  "somethingWentWrong":"Something went wrong please try again soon!",
-  "underMaintenance":"App is undergoing maintenance, please check status.plant-for-the-planet.org for details"
+  "noPaymentMethodError": "Could not process your payment, please try again.",
+  "somethingWentWrong": "Something went wrong please try again soon!",
+  "underMaintenance": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details",
+  "waitingConfirmation":"We are currently waiting a confirmation from your bank and will send you an email shortly. Please feel free to close this page.",
+  "yourDonationRef":"Your donation ref is {{donationID}}",
+  "payWithGiroPay":"Pay with GiroPay",
+  "payWithSofort":"Pay with Sofort",
+  "donationFailed":"Donation Failed",
+  "donationFailedMessage":"Something went wrong while completing your payment. If you continue having issues please reach out to us at support@plant-for-the-planet.org",
+  "donationPending":"Completing your donation",
+  "donationPendingMessage":"We are currently waiting for the confirmation from your bank. This might take some time so, please feel free to close this page. We’ll send your receipt via email shortly.",
+  "sepaMessage":"By providing your IBAN and confirming this payment, you authorize Plant-for-the-Planet and Stripe, our payment service provider, to send instructions to your bank to debit your account. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. If you have any issues regarding your donation, please send us an email to support@plant-for-the-planet.org",
+  "donationRef":"Donation Ref",
+  "sepaDisclaimer":"SEPA payments take 2-14 business days (usually 3-5 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
+  "sofortDisclaimer":"SOFORT payments take 2-14 business days (usually 2-3 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter."
 }

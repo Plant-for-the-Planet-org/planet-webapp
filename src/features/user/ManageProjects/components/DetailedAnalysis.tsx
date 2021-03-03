@@ -61,19 +61,19 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
-        let month = plantingSeasons[id];
-        let newMonth = month;
+        const month = plantingSeasons[id];
+        const newMonth = month;
         newMonth.isSet = !month.isSet;
-        let plantingSeasonsNew = plantingSeasons;
+        const plantingSeasonsNew = plantingSeasons;
         plantingSeasonsNew[id] = newMonth;
         setPlantingSeasons([...plantingSeasonsNew]);
     }
 
     const handleSetSiteOwner = (id: any) => {
-        let owner = siteOwners[id - 1];
-        let newOwner = owner;
+        const owner = siteOwners[id - 1];
+        const newOwner = owner;
         newOwner.isSet = !owner.isSet;
-        let newSiteOwners = siteOwners;
+        const newSiteOwners = siteOwners;
         newSiteOwners[id - 1] = newOwner;
         setSiteOwners([...newSiteOwners]);
     }
@@ -90,15 +90,15 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
     const onSubmit = (data: any) => {
         setIsUploadingData(true)
-        let months = [];
+        const months = [];
         for (let i = 0; i < plantingSeasons.length; i++) {
             if (plantingSeasons[i].isSet) {
-                let j = i + 1;
+                const j = i + 1;
                 months.push(j)
             }
         }
 
-        let owners = [];
+        const owners = [];
         for (let i = 0; i < siteOwners.length; i++) {
             if (siteOwners[i].isSet) {
                 owners.push(siteOwners[i].value)
@@ -165,7 +165,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             if (projectDetails.plantingSeasons && projectDetails.plantingSeasons.length > 0) {
                 for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
                     if (projectDetails.plantingSeasons[i]) {
-                        let j = projectDetails.plantingSeasons[i] - 1;
+                        const j = projectDetails.plantingSeasons[i] - 1;
                         handleSetPlantingSeasons(j)
                     }
                 }
@@ -173,7 +173,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
             // set owner type
             if (projectDetails.siteOwnerType && projectDetails.siteOwnerType.length > 0) {
-                let newSiteOwners = siteOwners
+                const newSiteOwners = siteOwners
                 for (let i = 0; i < projectDetails.siteOwnerType.length; i++) {
                     for (let j = 0; j < newSiteOwners.length; j++) {
                         if (newSiteOwners[j].value === projectDetails.siteOwnerType[i]) {
@@ -197,11 +197,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             views={["year"]}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             label={t('manageProjects:yearOfAbandonment')}
                                             inputVariant="outlined"
                                             variant="inline"
@@ -234,12 +234,12 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
 
                                         <DatePicker
                                             label={t('manageProjects:firstTreePlanted')}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             inputVariant="outlined"
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
@@ -432,11 +432,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             label={t('manageProjects:acquisitionYear')}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             inputVariant="outlined"
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
@@ -458,11 +458,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             views={["year"]}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             label={t('manageProjects:yearOfDegradation')}
                                             inputVariant="outlined"
                                             variant="inline"
@@ -605,5 +605,5 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             </form>
 
         </div>
-    ) : null;
+    ) : <></>;
 }

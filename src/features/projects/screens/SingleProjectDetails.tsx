@@ -75,14 +75,14 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         hideBackdrop
       >
         <div className={'modalWrapper'}>
-          <div onClick={handleModalClose} className={'modalClose'}>
+          <button id={'singleProjCloseModal'}  onClick={handleModalClose} className={'modalClose'}>
             <CancelIcon color="#fff" />
-          </div>
+          </button>
           <ImageSlider project={project} height={600} imageSize="large" />
         </div>
       </Modal>
       <div className={'projectContainer'}>
-        <div
+        <button id={'backButtonSingleP'}
           style={{
             cursor: 'pointer',
             width: 'fit-content',
@@ -90,11 +90,11 @@ function SingleProjectDetails({ project }: Props): ReactElement {
             zIndex: 3333,
           }}
           onClick={() => {
-            router.push('/', undefined, { shallow: true });
+            router.back();
           }}
         >
           <BackButton />
-        </div>
+        </button>
         <div className={'projectSnippetContainer'}>
           <ProjectSnippet key={project.id} project={project} editMode={false} />
         </div>
@@ -141,9 +141,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 />
               ) : null}
               <div className={'projectImageSliderContainer'}>
-                <div onClick={handleModalOpen} className={'modalOpen'}>
+                <button id={'expandButton'} onClick={handleModalOpen} className={'modalOpen'}>
                   <ExpandIcon color="#fff" />
-                </div>
+                </button>
                 {project.images.length > 0 && !openModal ? (
                   <ImageSlider
                     project={project}
@@ -163,7 +163,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         </div>
       </div>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default SingleProjectDetails;

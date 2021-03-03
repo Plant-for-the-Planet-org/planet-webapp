@@ -20,7 +20,7 @@ export default function CookiePolicy() {
   }, [isAuthenticated, isLoading])
 
   React.useEffect(() => {
-    let prev = localStorage.getItem('cookieNotice');
+    const prev = localStorage.getItem('cookieNotice');
     if (!prev) {
       setShowCookieNotice(true);      
     } else {
@@ -34,12 +34,12 @@ export default function CookiePolicy() {
   
   return ready && showCookieNotice ? (
     <div className={styles.cookieContainer}>
-      <div
+      <button id={'cookieCloseButton'}
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >
         <CloseIcon color={styles.primaryColor} />
-      </div>
+      </button>
       <div className={styles.cookieContent}>
         {t('common:privacyPolicyNotice')}{' '}
         <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">

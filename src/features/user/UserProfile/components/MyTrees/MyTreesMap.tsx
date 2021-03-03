@@ -61,29 +61,29 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
         }}
       >
         {contributions &&
-          Array.isArray(contributions) &&
-          contributions.length !== 0
+        Array.isArray(contributions) &&
+        contributions.length !== 0
           ? contributions
-            .filter((feature: any) => {
-              return feature.geometry?.type === 'Point';
-            })
-            .map((point: any) => {
-              return (
-                <Marker
-                  coordinates={point.geometry.coordinates}
-                  anchor="bottom"
-                >
-                  <div
-                    style={
-                      point.properties.type === 'registration'
-                        ? { background: '#3D67B1' }
-                        : {}
-                    }
-                    className={styles.marker}
-                  />
-                </Marker>
-              );
-            })
+              .filter((feature: any) => {
+                return feature.geometry?.type === 'Point';
+              })
+              .map((point: any) => {
+                return (
+                  <Marker
+                    coordinates={point.geometry.coordinates}
+                    anchor="bottom"
+                  >
+                    <div
+                      style={
+                        point.properties.type === 'registration'
+                          ? { background: '#3D67B1' }
+                          : {}
+                      }
+                      className={styles.marker}
+                    />
+                  </Marker>
+                );
+              })
           : null}
         {geoJson ? (
           <GeoJSONLayer

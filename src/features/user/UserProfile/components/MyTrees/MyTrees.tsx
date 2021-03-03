@@ -54,7 +54,7 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
             <div className={styles.treesList}>
               {contributions.map((item: any) => {
                 return (
-                  <div className={styles.tree}>
+                  <div key={item.properties.id} className={styles.tree}>
                     <div className={styles.dateRow}>
                       {formatDate(item.properties.plantDate)}
                     </div>

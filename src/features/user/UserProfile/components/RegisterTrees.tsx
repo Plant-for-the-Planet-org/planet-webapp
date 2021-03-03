@@ -29,7 +29,7 @@ type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
 declare module '@material-ui/core/styles/overrides' {
-  export interface ComponentNameToClassKey extends overridesNameToClassKey { }
+  export type ComponentNameToClassKey = overridesNameToClassKey;
 }
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
@@ -131,12 +131,12 @@ export default function RegisterTrees({
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
-      let userLang = localStorage.getItem('language');
+      const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
 
     async function getUserCountryBbox() {
-      var country = getStoredConfig('country');
+      const country = getStoredConfig('country');
       const result = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
       );
@@ -267,7 +267,8 @@ export default function RegisterTrees({
           {!registered ? (
             <div className={styles.formContainer}>
               <h2 className={styles.title}>
-                <div
+                <button
+                  id={'backButtonRegTree'}
                   style={{
                     cursor: 'pointer',
                     marginLeft: -10,
@@ -278,7 +279,7 @@ export default function RegisterTrees({
                   }}
                 >
                   <BackButton />
-                </div>
+                </button>
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
@@ -322,11 +323,11 @@ export default function RegisterTrees({
                         }
                       >
                         <Controller
-                          render={(props) => (
+                          render={(properties) => (
                             <DatePicker
                               label={t('me:datePlanted')}
-                              value={props.value}
-                              onChange={props.onChange}
+                              value={properties.value}
+                              onChange={properties.onChange}
                               inputVariant="outlined"
                               TextFieldComponent={MaterialTextField}
                               autoOk
@@ -366,8 +367,8 @@ export default function RegisterTrees({
                   {isMultiple ? (
                     <p>{t('me:drawPolygon')}</p>
                   ) : (
-                      <p>{t('me:selectLocation')}</p>
-                    )}
+                    <p>{t('me:selectLocation')}</p>
+                  )}
                 </div>
 
                 <div className={`${styles.locationMap}`}>
@@ -377,47 +378,47 @@ export default function RegisterTrees({
                       countryBbox={countryBbox}
                     />
                   ) : (
-                      <MapGL
-                        {...mapState}
-                        {...viewport}
-                        onViewportChange={_onViewportChange}
-                        onStateChange={_onStateChange}
-                        onClick={(event) => {
-                          setplantLocation(event.lngLat);
-                          setGeometry({
-                            type: 'Point',
-                            coordinates: event.lngLat,
-                          });
-                          setViewPort({
-                            ...viewport,
-                            latitude: event.lngLat[1],
-                            longitude: event.lngLat[0],
-                            transitionDuration: 400,
-                            transitionInterpolator: new FlyToInterpolator(),
-                            transitionEasing: d3.easeCubic,
-                          });
-                        }}
-                        mapOptions={{
-                          customAttribution:
-                            '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-                        }}
-                      >
-                        {plantLocation ? (
-                          <Marker
-                            latitude={plantLocation[1]}
-                            longitude={plantLocation[0]}
-                            offsetLeft={5}
-                            offsetTop={-16}
-                            style={{ left: '28px' }}
-                          >
-                            <div className={styles.marker}></div>
-                          </Marker>
-                        ) : null}
-                        <div className={styles.mapNavigation}>
-                          <NavigationControl showCompass={false} />
-                        </div>
-                      </MapGL>
-                    )}
+                    <MapGL
+                      {...mapState}
+                      {...viewport}
+                      onViewportChange={_onViewportChange}
+                      onStateChange={_onStateChange}
+                      onClick={(event) => {
+                        setplantLocation(event.lngLat);
+                        setGeometry({
+                          type: 'Point',
+                          coordinates: event.lngLat,
+                        });
+                        setViewPort({
+                          ...viewport,
+                          latitude: event.lngLat[1],
+                          longitude: event.lngLat[0],
+                          transitionDuration: 400,
+                          transitionInterpolator: new FlyToInterpolator(),
+                          transitionEasing: d3.easeCubic,
+                        });
+                      }}
+                      mapOptions={{
+                        customAttribution:
+                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+                      }}
+                    >
+                      {plantLocation ? (
+                        <Marker
+                          latitude={plantLocation[1]}
+                          longitude={plantLocation[0]}
+                          offsetLeft={5}
+                          offsetTop={-16}
+                          style={{ left: '28px' }}
+                        >
+                          <div className={styles.marker}></div>
+                        </Marker>
+                      ) : null}
+                      <div className={styles.mapNavigation}>
+                        <NavigationControl showCompass={false} />
+                      </div>
+                    </MapGL>
+                  )}
                 </div>
 
                 {/* {errorMessage !== '' ? */}
@@ -427,7 +428,8 @@ export default function RegisterTrees({
                 {/* : null
               } */}
                 <div className={styles.nextButton}>
-                  <div
+                  <button
+                    id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
                     className={styles.continueButton}
                   >
@@ -435,15 +437,15 @@ export default function RegisterTrees({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                        t('me:registerButton')
-                      )}
-                  </div>
+                      t('me:registerButton')
+                    )}
+                  </button>
                 </div>
               </form>
             </div>
           ) : (
-              <SingleContribution {...ContributionProps} />
-            )}
+            <SingleContribution {...ContributionProps} />
+          )}
         </div>
       </Modal>
     </>

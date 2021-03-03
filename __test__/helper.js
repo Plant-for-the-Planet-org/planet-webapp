@@ -1,4 +1,4 @@
-import webdriver from 'selenium-webdriver'
+import webdriver from 'selenium-webdriver-3'
 
 const capabilities = {
   'os_version' : '10',

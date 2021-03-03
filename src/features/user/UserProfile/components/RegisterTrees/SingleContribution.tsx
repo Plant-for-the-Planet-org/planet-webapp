@@ -37,14 +37,14 @@ export default function SingleContribution({
 
   return ready ? (
     <>
-      <div
+      <button id={'singleControcloseButton'}
         className={styles.closeButton}
         onClick={() => {
           router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
         }}
       >
         <CancelIcon />
-      </div>
+      </button>
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div>
@@ -71,15 +71,15 @@ export default function SingleContribution({
         <UploadImages {...UploadProps} />
       </div>
       <div className={styles.nextButton}>
-        <div
+        <button id={'singleControCont'}
           onClick={() =>
             router.push(`/t/${currentUserSlug}`, undefined, { shallow: true })
           }
           className={styles.continueButton}
         >
           {t('me:save')}
-        </div>
+        </button>
       </div>
     </>
-  ) : null;
+  ) : <></>;
 }

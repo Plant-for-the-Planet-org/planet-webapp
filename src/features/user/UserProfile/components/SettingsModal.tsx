@@ -56,17 +56,17 @@ export default function SettingsModal({
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
-            <div
+            <button id={'settingsLogOut'}
               className={styles.settingsItem}
               onClick={logoutUser}>
               <b>{t('me:logout')} </b>
-            </div>
-            <div
+            </button>
+            <button id={'SettingsItem'}
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
               <div className={styles.cancelText}> {t('common:cancel')}</div>
-            </div>
+            </button>
           </div>
         </Fade>
       </Modal>

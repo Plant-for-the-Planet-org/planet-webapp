@@ -90,8 +90,8 @@ function ClaimDonation({ }: Props): ReactElement {
             code: code
         }
         if (!isLoading && isAuthenticated) {
-            let token = await getAccessTokenSilently();
-            let userLang = localStorage.getItem('language') || 'en';
+            const token = await getAccessTokenSilently();
+            const userLang = localStorage.getItem('language') || 'en';
             postAuthenticatedRequest(`/api/v1.3/${userLang}/validateCode`, submitData, token).then((res) => {
                 if (res.code === 401) {
                     setErrorMessage(res.message);
@@ -143,8 +143,8 @@ function ClaimDonation({ }: Props): ReactElement {
             code: code
         }
         if (!isLoading && isAuthenticated) {
-            let token = await getAccessTokenSilently();
-            let userLang = localStorage.getItem('language') || 'en';
+            const token = await getAccessTokenSilently();
+            const userLang = localStorage.getItem('language') || 'en';
             postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
                 if (res.code === 401) {
                     setErrorMessage(res.message);
@@ -177,9 +177,9 @@ function ClaimDonation({ }: Props): ReactElement {
                 <>
                     <div className={styles.modalFinal}>
                         <div className={styles.header}>
-                            <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                            <button id={'closeIconCode'} onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
                                 <Close />
-                            </div>
+                            </button>
                             <div className={styles.headerTitle}>
                                 {t('redeem:congratulations')}
                             </div>
@@ -302,7 +302,7 @@ function ClaimDonation({ }: Props): ReactElement {
                 </div>
             </LandingSection>
       )
-    ) : null;
+    ) : <></>;
 }
 
 export default ClaimDonation

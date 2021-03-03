@@ -490,15 +490,15 @@ export default function MapboxMap({
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
-        let currencyCode = localStorage.getItem('currencyCode');
+        const currencyCode = localStorage.getItem('currencyCode');
         if (currencyCode) setSelectedCurrency(currencyCode);
       }
       if (localStorage.getItem('countryCode')) {
-        let countryCode = localStorage.getItem('countryCode');
+        const countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
       }
       if (localStorage.getItem('language')) {
-        let langCode = localStorage.getItem('language');
+        const langCode = localStorage.getItem('language');
         if (langCode) setLanguage(langCode);
       }
     }
@@ -524,7 +524,7 @@ export default function MapboxMap({
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (localStorage.getItem('language')) {
-        let userLang = localStorage.getItem('language');
+        const userLang = localStorage.getItem('language');
         if (userLang) setUserLang(userLang);
       }
     }

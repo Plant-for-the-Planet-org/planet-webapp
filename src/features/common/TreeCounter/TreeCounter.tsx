@@ -98,24 +98,24 @@ export default function TpoProfile(props: any) {
                 {t('me:target')}
               </h2>
               {props.authenticatedType === 'private' && (
-                <div
+                <button id={'treeCounterEdit'}
                   className={treeCounterStyles.editTragetContainer}
                   onClick={() => props.handleAddTargetModalOpen()}
                 >
                   <EditIcon color="white"></EditIcon>
-                </div>
+                </button>
               )}
             </div>
           </div>
         ) : null}
 
         {props.authenticatedType === 'private' && props.target === 0 && (
-          <div
+          <button id={'addTarget'}
             onClick={() => props.handleAddTargetModalOpen()}
             className={treeCounterStyles.addTargetButton}
           >
             <p>{t('me:addTarget')} </p>
-          </div>
+          </button>
         )}
       </div>
     </div>

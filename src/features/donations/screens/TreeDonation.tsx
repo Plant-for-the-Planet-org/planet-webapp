@@ -9,11 +9,11 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../common/types/donations';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
-import styles from '../styles/TreeDonation.module.scss';
-import { PaymentRequestCustomButton } from '../components/PaymentRequestForm';
+import styles from '../styles/Donations.module.scss';
+import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
 import GiftForm from '../components/treeDonation/GiftForm';
 import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
-import { payWithCard } from '../components/treeDonation/PaymentFunctions';
+import { createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -43,7 +43,9 @@ function TreeDonation({
   setDirectGift,
   setPaymentType,
   isPaymentOptionsLoading,
-  token
+  token,
+  setDonationID,
+  donationID
 }: TreeDonationProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const treeCountOptions = [10, 20, 50, 150];
@@ -54,7 +56,7 @@ function TreeDonation({
   const [paymentError, setPaymentError] = React.useState('');
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
-
+    const[customTreeInputValue, setCustomTreeInputValue] = React.useState("");
   const [screenWidth, setScreenWidth] = React.useState('');
   const [minAmt, setMinAmt] = React.useState(0);
 
@@ -94,7 +96,7 @@ function TreeDonation({
     console.log(minAmt);
   }, [country]);
 
-  const onPaymentFunction = (paymentMethod: any, paymentRequest: any) => {
+  const onPaymentFunction = async(paymentMethod: any, paymentRequest: any) => {
     // eslint-disable-next-line no-underscore-dangle
     setPaymentType(paymentRequest._activeBackingLibraryName);
 
@@ -114,24 +116,33 @@ function TreeDonation({
       country: paymentMethod.billing_details.address.country,
     };
 
-    const payWithCardProps = {
-      setDonationStep,
-      setIsPaymentProcessing,
-      project,
-      currency,
-      treeCost,
+    await createDonationFunction({
+      isTaxDeductible, 
+      country, 
+      project, 
+      treeCost, 
       treeCount,
-      giftDetails,
-      isGift,
-      setPaymentError,
-      paymentSetup,
-      window,
-      paymentMethod,
+      currency,
       donorDetails,
-      taxDeductionCountry: isTaxDeductible ? country : null,
-      token: token || null,
-    };
-    payWithCard({ ...payWithCardProps });
+      isGift,
+      giftDetails,
+      setIsPaymentProcessing,
+      setPaymentError,
+      setDonationID,
+      token
+    }).then((res)=>{      
+      payDonationFunction ({
+        gateway:'stripe',
+        paymentMethod,
+        setIsPaymentProcessing,
+        setPaymentError,
+        t,
+        paymentSetup,
+        donationID:res.id,
+        token,
+        setDonationStep
+      })
+    });
   };
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
@@ -142,15 +153,13 @@ function TreeDonation({
     ) : (
         <>
           <div
-            className={`${styles.cardContainer} ${isGift ? styles.giftExpanded : null
-              }`}
+            className={styles.cardContainer}
             style={{
-              alignSelf: isGift ? 'start' : 'center',
               width: `${screenWidth}%`,
             }}
           >
             <div className={styles.header}>
-              <div
+              <button id={'treeDonationClose'}
                 onClick={onClose}
                 onKeyPress={onClose}
                 role="button"
@@ -158,7 +167,7 @@ function TreeDonation({
                 className={styles.headerCloseIcon}
               >
                 <Close color={styles.primaryFontColor} />
-              </div>
+              </button>
               <div className={styles.headerTitle}>{t('donate:treeDonation')}</div>
             </div>
 
@@ -220,13 +229,14 @@ function TreeDonation({
 
             <div className={styles.selectTreeCount}>
               {treeCountOptions.map((option) => (
-                <motion.div
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
                     // eslint-disable-next-line no-unused-expressions
                     setTreeCount(option);
                     setIsCustomTrees(false);
+                    setCustomTreeInputValue("");
                   }}
                   key={option}
                   className={
@@ -239,9 +249,9 @@ function TreeDonation({
                   <div className={styles.treeCountOptionTrees}>
                     {t('common:trees')}
                   </div>
-                </motion.div>
+                </motion.button>
               ))}
-              <motion.div
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className={
@@ -263,15 +273,19 @@ function TreeDonation({
                       e.target.value = e.target.value.toString().slice(0, 12);
                     }
                   }}
+                  value = {customTreeInputValue}
                   type="text"
                   inputMode="numeric"
                   pattern="\d*"
-                  onChange={(e) => setCustomTreeValue(e)}
+                  onChange={(e) => {
+                    setCustomTreeValue(e);
+                    setCustomTreeInputValue(e.target.value)}
+                  }
                 />
                 <div className={styles.treeCountOptionTrees}>
                   {t('common:trees')}
                 </div>
-              </motion.div>
+              </motion.button>
             </div>
 
             {project.taxDeductionCountries.length > 0 ? (
@@ -339,16 +353,18 @@ function TreeDonation({
             {((treeCost * treeCount) >= minAmt) ? !isPaymentOptionsLoading &&
               paymentSetup?.gateways?.stripe?.account &&
               currency ? (
-                <PaymentRequestCustomButton
-                  country={country}
-                  currency={currency}
-                  amount={formatAmountForStripe(
-                    treeCost * treeCount,
-                    currency.toLowerCase()
-                  )}
-                  onPaymentFunction={onPaymentFunction}
-                  continueNext={continueNext}
-                />
+                <NativePay
+                    country={country}
+                    currency={currency}
+                    amount={formatAmountForStripe(
+                      treeCost * treeCount,
+                      currency.toLowerCase()
+                    )}
+                    onPaymentFunction={onPaymentFunction}
+                    continueNext={continueNext}
+                    paymentSetup={paymentSetup}
+                  />
+
               ) : (
                 <div className={styles.actionButtonsContainer}>
                   <ButtonLoader />

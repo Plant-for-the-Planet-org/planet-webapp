@@ -40,7 +40,7 @@ export default function SingleContributionPage(): ReactElement {
         getLocalUserInfo() && getLocalUserInfo().slug
           ? setCurrentUserSlug(getLocalUserInfo().slug)
           : null;
-        };
+        }
       if (isAuthenticated && !isLoading) {
         loadFunction()
       }
@@ -61,7 +61,7 @@ export default function SingleContributionPage(): ReactElement {
         }).catch(() => {
             setAccessDenied(true)
             setSetupAccess(true)
-        })};
+        })}
       // ready is for router, loading is for session
       if (ready && isAuthenticated && !isLoading) {
         loadFunction()

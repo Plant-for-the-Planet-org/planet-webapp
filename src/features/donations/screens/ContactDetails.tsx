@@ -6,7 +6,7 @@ import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { ContactDetailsPageProps } from '../../common/types/donations';
-import styles from '../styles/ContactDetails.module.scss';
+import styles from '../styles/Donations.module.scss';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -29,11 +29,10 @@ function ContactDetails({
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
+    
   const onSubmit = (data: any) => {
+    setContactDetails({...contactDetails,...data});
     setDonationStep(3);
-  };
-  const changeContactDetails = (e: any) => {
-    setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
   };
 
   const changeCountry = (country: any) => {
@@ -51,14 +50,14 @@ function ContactDetails({
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [contactDetails.country])  
   return ready ? (
-    <div className={styles.container}>
+    <div className={styles.cardContainer}>
       <div className={styles.header}>
-        <div
+        <button id={'backArrowContact'}
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
           <BackArrow color={styles.primaryFontColor} />
-        </div>
+        </button>
         <div className={styles.headerTitle}>{t('donate:contactDetails')}</div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,7 +68,6 @@ function ContactDetails({
               label={t('donate:firstName')}
               variant="outlined"
               name="firstName"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.firstName}
             />
             {errors.firstName && (
@@ -86,7 +84,6 @@ function ContactDetails({
               label={t('donate:lastName')}
               variant="outlined"
               name="lastName"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.lastName}
             />
             {errors.lastName && (
@@ -106,7 +103,6 @@ function ContactDetails({
               label={t('donate:email')}
               variant="outlined"
               name="email"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.email}
             />
             {errors.email && (
@@ -123,7 +119,6 @@ function ContactDetails({
               label={t('donate:address')}
               variant="outlined"
               name="address"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.address}
             />
             {errors.address && (
@@ -140,7 +135,6 @@ function ContactDetails({
               label={t('donate:city')}
               variant="outlined"
               name="city"
-              onChange={changeContactDetails}
               defaultValue={contactDetails.city}
             />
             {errors.city && (
@@ -162,7 +156,6 @@ function ContactDetails({
                   label={t('donate:zipCode')}
                   variant="outlined"
                   name="zipCode"
-                  onChange={changeContactDetails}
                   defaultValue={contactDetails.zipCode}
                 />
               )
@@ -214,7 +207,6 @@ function ContactDetails({
                 inputRef={
                   isCompany ? register({ required: true }) : register({})
                 }
-                onChange={changeContactDetails}
                 defaultValue={contactDetails.companyName}
               />
               {errors.companyName && (
@@ -239,7 +231,7 @@ function ContactDetails({
           </div>
         </div>
 
-        <div className={styles.actionButtonsContainer}>
+        <div className={styles.actionButtonsContainerCenter}>
 
           {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country  ? 
           <AnimatedButton
@@ -258,7 +250,7 @@ function ContactDetails({
         </div>
       </form>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default ContactDetails;
