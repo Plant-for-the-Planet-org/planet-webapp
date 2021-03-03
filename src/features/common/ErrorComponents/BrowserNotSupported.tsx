@@ -5,6 +5,7 @@ export default function BrowserNotSupported() {
         <Layout>
             <div
                 style={{
+                    margin: '20px',
                     width: '100vw',
                     height: '60vh',
                     display: 'flex',
