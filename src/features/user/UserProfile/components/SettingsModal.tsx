@@ -9,6 +9,7 @@ import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
+import { Link } from '@material-ui/core';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -32,6 +33,7 @@ export default function SettingsModal({
     removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
+
   return ready ? (
     <>
       <Modal
@@ -56,6 +58,10 @@ export default function SettingsModal({
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
+            <Link href="/account" className={styles.accounts}> 
+            <a>{t('me:Account History')}</a>
+            </Link>
+             
             <button id={'settingsLogOut'}
               className={styles.settingsItem}
               onClick={logoutUser}>

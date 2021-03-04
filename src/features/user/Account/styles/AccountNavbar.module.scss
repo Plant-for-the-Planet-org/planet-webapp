@@ -1,0 +1,56 @@
+@import './../../../../theme/theme';
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+.accountNavbar {
+  width: 100%;
+  height: 305px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.accountNavbarFixedBG {
+  height: 100vh;
+}
+
+.NameText{
+  width: 318px;
+  height: 49px;
+  margin: -109px 798px 13px 164px;
+  font-family: Raleway;
+  font-size: 41px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.66;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  position: absolute;
+}
+.firstName {
+  font-weight: bold;
+}
+
+.secondaryText{
+  width: 200px;
+  height: 21px;
+  margin-top: -70px;
+  margin-left: 164px;
+  font-family: Raleway;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  position: absolute;
+ 
+}
+.accountHistory{
+  
+}
