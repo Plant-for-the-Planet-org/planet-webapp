@@ -104,6 +104,9 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       if (err[0].errors[0].code === "file-too-large") {
         setErrorMessage(t('manageProjects:fileSizeLimit'))
       }
+      else if(err[0].errors[0].code === "file-invalid-type"){
+        setErrorMessage(t('manageProjects:fileImageOnly'))
+      }
     }
   });
 

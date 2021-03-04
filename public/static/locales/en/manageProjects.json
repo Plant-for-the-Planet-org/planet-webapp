@@ -111,5 +111,7 @@
   "otherPlanting": "Other Planting",
   "projectType": "Project Type",
   "polygonRequired": "Polygon is required",
-  "fileSizeLimit":"File is larger than 10 mb"
+  "fileSizeLimit":"File is larger than 10 mb",
+  "fileImageOnly":"File type must be image",
+  "filePDFOnly":"File type must be PDF"
 }
