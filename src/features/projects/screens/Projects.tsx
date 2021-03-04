@@ -72,12 +72,18 @@ function  ProjectsList({
       const keywords = keyword.split(/[\s\-.,+]+/);
       resultProjects = projects.filter(function (project) {
         const found = keywords.every(function(word) {
+          const searchWord = word.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          const projectName = project.properties.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          const projectLocation = project.properties.location ?
+            project.properties.location.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
+          const projectTpoName = project.properties.tpo.name ?
+            project.properties.tpo.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
           //searching for name
-          return project.properties.name.toLowerCase().indexOf(word.toLowerCase()) > -1 ||
+          return projectName.indexOf(searchWord) > -1 ||
           //searching for location
-          (project.properties.location && project.properties.location.toLowerCase().indexOf(word.toLowerCase()) > -1) || 
+          (projectLocation && projectLocation.indexOf(searchWord) > -1) || 
           //searching for tpo name
-          (project.properties.tpo.name && project.properties.tpo.name.toLowerCase().indexOf(word.toLowerCase()) > -1)
+          (projectTpoName && projectTpoName.indexOf(searchWord) > -1)
         });
         return found;
       });
