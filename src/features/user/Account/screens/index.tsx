@@ -8,7 +8,7 @@ import {
     getLocalUserInfo,
     removeLocalUserInfo,
 } from '../../../../utils/auth0/localStorageUtils';
-import { getRequest, getAccountInfo } from '../../../../utils/apiRequests/api';
+import { getRequest, getAccountInfo, getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 interface Props {
 
@@ -28,10 +28,6 @@ function Account({ }: Props): ReactElement {
 
     useEffect(() => {
         async function loadUserData() {
-            // For loading user data we first have to decide whether user is trying to load their own profile or someone else's
-            // To do this we first try to fetch the slug from the local storage
-            // If the slug matches and also there is token in the session we fetch the user's private data, else the public data
-
             if (typeof Storage !== 'undefined') {
                 let token = null;
                 if (isAuthenticated) {
@@ -69,10 +65,38 @@ function Account({ }: Props): ReactElement {
         }
     }, [isLoading, isAuthenticated]);
 
+    const [filter,setFilter] = React.useState('');
+    const [paymentHistory,setpaymentHistory] = React.useState();
+
+    React.useEffect(()=>{
+        async function fetchPaymentHistory() {
+            let token = null;
+            if (isAuthenticated) {
+                token = await getAccessTokenSilently();
+
+                if(filter === ''){
+                    let paymentHistory = await getAuthenticatedRequest('/app/paymentHistory',token);
+                    setpaymentHistory(paymentHistory);
+                }
+                else {
+                    let paymentHistory = await getAuthenticatedRequest(`/app/paymentHistory?filter${filter}`,token);
+                    setpaymentHistory(paymentHistory);
+                }
+            }
+            
+        }
+        fetchPaymentHistory();
+    },[filter])
+
+
+
     return (
         <div>
             {userprofile && <AccountNavbar userProfile={userprofile} />}
-
+            <button onClick={()=>setFilter("donations")}>Donations</button> <br/>
+            <button onClick={()=>setFilter("canceled")}>Cancelled</button><br/>
+            <button onClick={()=>setFilter("in-progress")}>In Progress</button> <br/>
+            <button onClick={()=>setFilter("tree-cash")}>Tree Cash</button>
         </div>
     )
 }
