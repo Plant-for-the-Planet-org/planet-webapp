@@ -62,8 +62,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
         multiple: false,
-        onDrop: onDrop,
-        onDropAccepted: () => {
+        onDropAccepted: onDrop,
+        onDrop: () => {
             console.log('uploaded');
         },
     });
@@ -214,8 +214,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     variant="outlined"
                                     name="amount"
                                     onInput={(e) => {
-                                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                                      setAmount(e.target.value);
+                                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                        setAmount(e.target.value);
                                     }}
                                     InputProps={{
                                         startAdornment: (
@@ -238,11 +238,11 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         {errors.amount || errors.year || !isDirty || amount === 0 ? (
                             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                                 <div className={styles.fileUploadContainer}>
-                                    <AnimatedButton
+                                    <div
                                         className={styles.continueButton}
                                     >
                                         {t('manageProjects:uploadReport')}
-                                    </AnimatedButton>
+                                    </div>
                                     <p style={{ marginTop: '18px' }}>
                                         {t('manageProjects:dragInPdf')}
                                     </p>
@@ -251,13 +251,12 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         ) : (
                                 <div className={styles.formFieldLarge} {...getRootProps()}>
                                     <div className={styles.fileUploadContainer}>
-                                        <AnimatedButton
-                                            // onClick={uploadReport}
+                                        <div
                                             className={styles.continueButton}
                                         >
                                             <input {...getInputProps()} />
                                             {t('manageProjects:uploadReport')}
-                                        </AnimatedButton>
+                                        </div>
                                         <p style={{ marginTop: '18px' }}>
                                             {t('manageProjects:dragInPdf')}
                                         </p>
@@ -297,7 +296,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> :t('manageProjects:saveAndContinue')}
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </AnimatedButton>
                     </div>
                 </div>

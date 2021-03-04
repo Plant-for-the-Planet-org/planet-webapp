@@ -24,10 +24,10 @@ interface Props {
     projectGUID: String;
     token: any;
     setIsUploadingData: Function;
-    userLang:String;    
+    userLang: String;
 }
 
-function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }: Props): ReactElement {
+function ProjectCertificates({ projectGUID, token, setIsUploadingData, userLang }: Props): ReactElement {
     const { t, i18n, ready } = useTranslation(['manageProjects']);
 
     const { register, handleSubmit, errors, control, formState, getValues, setValue } = useForm({ mode: 'all' });
@@ -57,8 +57,8 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
         multiple: false,
-        onDrop: onDrop,
-        onDropAccepted: () => {
+        onDropAccepted: onDrop,
+        onDrop: () => {
             console.log('uploaded');
         },
     });
@@ -129,7 +129,7 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                         return (
                             <div key={report.id} className={` ${styles.reportPDFContainer}`}>
                                 <a target="_blank" rel="noopener noreferrer"
-                                  href={getPDFFile('projectCertificate', report.pdf)}>
+                                    href={getPDFFile('projectCertificate', report.pdf)}>
                                     {/* <PDFIcon color="#2F3336" /> */}
                                     <PDFRed />
                                 </a>
@@ -211,29 +211,28 @@ function ProjectCertificates({ projectGUID, token, setIsUploadingData,userLang }
                     {errors.certifierName || errors.issueDate || !isDirty || certifierName === '' ? (
                         <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                             <div className={styles.fileUploadContainer}>
-                                <AnimatedButton
+                                <div
                                     className={styles.continueButton}
                                 >
                                     {t('manageProjects:uploadCertificate')}
-                            </AnimatedButton>
+                                </div>
                                 <p style={{ marginTop: '18px' }}>
                                     {t('manageProjects:dragIn')}
-                        </p>
+                                </p>
                             </div>
                         </div>
                     ) : (
                             <div className={styles.formFieldLarge} {...getRootProps()}>
                                 <div className={styles.fileUploadContainer}>
-                                    <AnimatedButton
-                                        // onClick={uploadReport}
+                                    <div
                                         className={styles.continueButton}
                                     >
                                         <input {...getInputProps()} />
-                                    {t('manageProjects:uploadCertificate')}
-                                </AnimatedButton>
+                                        {t('manageProjects:uploadCertificate')}
+                                    </div>
                                     <p style={{ marginTop: '18px' }}>
-                                        {t('manageProjects:dragIn')}
-                                </p>
+                                        {t('manageProjects:dragInPdf')}
+                                    </p>
                                 </div>
                             </div>
                         )}
