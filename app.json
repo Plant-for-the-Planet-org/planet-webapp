@@ -55,6 +55,10 @@
     "SENTRY_AUTH_TOKEN": {
       "required": false,
       "description": "Sentry Auth Token"
+    },
+    "SITE_IMAGERY_API_URL": {
+      "required": false,
+      "description": "For showing vegetation change"
     }
   },
   "formation": {
