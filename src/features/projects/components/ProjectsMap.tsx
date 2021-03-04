@@ -10,7 +10,7 @@ import Home from './maps/Home';
 interface Props {
   projects: any;
   project: any;
-  showSingleProject: Boolean;
+  showSingleProject: boolean;
   setShowProjects: Function;
   searchedProject: any;
   showProjects: any;
@@ -122,7 +122,6 @@ export default function ProjectsMap({
         {...mapState}
         {...viewport}
         onViewportChange={_onViewportChange}
-        //@ts-ignore
         onStateChange={_onStateChange}
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}

@@ -70,10 +70,12 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
               .map((point: any) => {
                 return (
                   <Marker
+                    key={point.properties.id}
                     coordinates={point.geometry.coordinates}
                     anchor="bottom"
                   >
                     <div
+                      key={point.properties.id}
                       style={
                         point.properties.type === 'registration'
                           ? { background: '#3D67B1' }

@@ -9,7 +9,7 @@ import {
 import React, { ReactElement } from 'react';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
-import BootstrapInput from './BootstrapInput';
+import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 
 interface Props {
   geoJson: Object | null;
