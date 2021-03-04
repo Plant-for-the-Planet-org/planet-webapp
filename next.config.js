@@ -107,7 +107,6 @@ module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
     autoPrerender: false,
   },
   env: {
-    MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
     TENANT: process.env.TENANT,

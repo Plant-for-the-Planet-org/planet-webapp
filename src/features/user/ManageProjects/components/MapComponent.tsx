@@ -9,7 +9,8 @@ import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from "geojson-validation";
+import gjv from 'geojson-validation';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -19,17 +20,13 @@ interface Props {
   setGeoJsonError: Function;
 }
 
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
-
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
+const Map = ReactMapboxGl({});
 
 export default function MapComponent({
   geoJson,
   setGeoJson,
   geoJsonError,
-  setGeoJsonError
+  setGeoJsonError,
 }: Props): ReactElement {
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -46,6 +43,20 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
 
@@ -80,8 +91,7 @@ export default function MapComponent({
       if (drawControlRef.current) {
         try {
           drawControlRef.current.draw.add(geoJson);
-        }
-        catch (e) {
+        } catch (e) {
           setGeoJsonError(true);
           setGeoJson(null);
           console.log('We only support feature collection for now', e);
@@ -97,94 +107,101 @@ export default function MapComponent({
     }
   }, [geoJson]);
 
-  return ready ? (
-    <div
-      ref={mapParentRef}
-      className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
-    >
-      <Map
-        {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
-        containerStyle={{
-          height: '400px',
-          width: '100%',
-        }}
-      >
-        <DrawControl
-          ref={drawControlRef}
-          onDrawCreate={onDrawCreate}
-          onDrawUpdate={onDrawUpdate}
-          controls={{
-            point: false,
-            line_string: false,
-            polygon: true,
-            trash: true,
-            combine_features: false,
-            uncombine_features: false,
-          }}
-        />
-        <ZoomControl position='bottom-right' />
-      </Map>
-      <Dropzone
-        accept={['.geojson', '.kml']}
-        multiple={false}
-        onDrop={(acceptedFiles) => {
-          if (drawControlRef.current) {
-            drawControlRef.current.draw.deleteAll();
-          }
-          acceptedFiles.forEach((file: any) => {
-            const fileType =
-              file.name.substring(
-                file.name.lastIndexOf('.') + 1,
-                file.name.length
-              ) || file.name;
-            if (fileType === 'kml') {
-              reader.readAsText(file);
-              reader.onabort = () => console.log('file reading was aborted');
-              reader.onerror = () => console.log('file reading has failed');
-              reader.onload = (event) => {
-                const dom = new DOMParser().parseFromString(
-                  event.target.result,
-                  'text/xml'
-                );
-                const geo = tj.kml(dom);
-                if (gjv.isGeoJSONObject(geo)) {
-                  setGeoJsonError(false);
-                  setGeoJson(geo);
-                } else {
-                  setGeoJsonError(true);
-                  console.log('invalid kml');
-                }
-              };
-            } else if (fileType === 'geojson') {
-              reader.readAsText(file);
-              reader.onabort = () => console.log('file reading was aborted');
-              reader.onerror = () => console.log('file reading has failed');
-              reader.onload = (event) => {
-                const geo = JSON.parse(event.target.result);
-                if (gjv.isGeoJSONObject(geo)) {
-                  setGeoJsonError(false);
-                  setGeoJson(geo);
-                } else {
-                  setGeoJsonError(true);
-                  console.log('invalid geojson');
-                }
-              };
+  return (
+    <>
+      {ready ? (
+        <div
+          ref={mapParentRef}
+          className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
+        >
+          <Map
+            {...viewport}
+            style={style} // eslint-disable-line
+            containerStyle={{
+              height: '400px',
+              width: '100%',
+            }}
+          >
+            <DrawControl
+              ref={drawControlRef}
+              onDrawCreate={onDrawCreate}
+              onDrawUpdate={onDrawUpdate}
+              controls={{
+                point: false,
+                line_string: false,
+                polygon: true,
+                trash: true,
+                combine_features: false,
+                uncombine_features: false,
+              }}
+            />
+            <ZoomControl position="bottom-right" />
+          </Map>
+          <Dropzone
+            accept={['.geojson', '.kml']}
+            multiple={false}
+            onDrop={(acceptedFiles) => {
+              if (drawControlRef.current) {
+                drawControlRef.current.draw.deleteAll();
+              }
+              acceptedFiles.forEach((file: any) => {
+                const fileType =
+                  file.name.substring(
+                    file.name.lastIndexOf('.') + 1,
+                    file.name.length
+                  ) || file.name;
+                if (fileType === 'kml') {
+                  reader.readAsText(file);
+                  reader.onabort = () =>
+                    console.log('file reading was aborted');
+                  reader.onerror = () => console.log('file reading has failed');
+                  reader.onload = (event) => {
+                    const dom = new DOMParser().parseFromString(
+                      event.target.result,
+                      'text/xml'
+                    );
+                    const geo = tj.kml(dom);
+                    if (gjv.isGeoJSONObject(geo)) {
+                      setGeoJsonError(false);
+                      setGeoJson(geo);
+                    } else {
+                      setGeoJsonError(true);
+                      console.log('invalid kml');
+                    }
+                  };
+                } else if (fileType === 'geojson') {
+                  reader.readAsText(file);
+                  reader.onabort = () =>
+                    console.log('file reading was aborted');
+                  reader.onerror = () => console.log('file reading has failed');
+                  reader.onload = (event) => {
+                    const geo = JSON.parse(event.target.result);
+                    if (gjv.isGeoJSONObject(geo)) {
+                      setGeoJsonError(false);
+                      setGeoJson(geo);
+                    } else {
+                      setGeoJsonError(true);
+                      console.log('invalid geojson');
+                    }
+                  };
 
-              // Upload the base 64 to API and use the response to show preview to the user
-            }
-          });
-        }}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div {...getRootProps()} className={styles.dropZone}>
-            <input {...getInputProps()} />
-            {t('manageProjects:dropGeoJson')}
-          </div>
-        )}
-      </Dropzone>
-      {geoJsonError ?
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
-    </div>
-  ) : null;
+                  // Upload the base 64 to API and use the response to show preview to the user
+                }
+              });
+            }}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()} className={styles.dropZone}>
+                <input {...getInputProps()} />
+                {t('manageProjects:dropGeoJson')}
+              </div>
+            )}
+          </Dropzone>
+          {geoJsonError ? (
+            <div className={styles.geoJsonError}>Invalid geojson/kml</div>
+          ) : null}
+        </div>
+      ) : null}
+    </>
+  );
 }

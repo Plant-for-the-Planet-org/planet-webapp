@@ -77,7 +77,7 @@ export default function RegisterTrees({
     zoom: defaultZoom,
   });
   const [userLang, setUserLang] = React.useState('en');
-  const [countryBbox, setCountryBbox] = React.useState();
+  const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
 
   React.useEffect(() => {
@@ -135,37 +135,29 @@ export default function RegisterTrees({
       if (userLang) setUserLang(userLang);
     }
 
-    async function getUserCountryBbox() {
-      const country = getStoredConfig('country');
-      const result = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
-      );
-      const geoCodingAPI = result.status === 200 ? await result.json() : null;
-      setCountryBbox(geoCodingAPI.features[0].bbox);
+    async function getUserLocation() {
+      let location = await getStoredConfig('loc');
+      if (location) {
+        setUserLocation([location.latitude, location.longitude]);
+      }
     }
-    getUserCountryBbox();
+    getUserLocation();
   }, []);
 
   React.useEffect(() => {
-    if (countryBbox) {
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport
-      ).fitBounds([
-        [countryBbox[0], countryBbox[1]],
-        [countryBbox[2], countryBbox[3]],
-      ]);
+    if (userLocation) {
       const newViewport = {
         ...viewport,
-        longitude,
-        latitude,
-        zoom,
+        longitude: userLocation[0],
+        latitude: userLocation[1],
+        zoom: 5,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
       setViewPort(newViewport);
     }
-  }, [countryBbox]);
+  }, [userLocation]);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const defaultBasicDetails = {
@@ -375,7 +367,7 @@ export default function RegisterTrees({
                   {isMultiple ? (
                     <DrawMap
                       setGeometry={setGeometry}
-                      countryBbox={countryBbox}
+                      userLocation={userLocation}
                     />
                   ) : (
                     <MapGL
