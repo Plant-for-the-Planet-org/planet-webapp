@@ -95,14 +95,16 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     multiple: true,
+    maxSize: 10485760,
     onDropAccepted: onDrop,
     onDrop: () => {
-      console.log('uploaded');
+      console.log('uploading');
     },
-
-    // onFileDialogCancel: () => {
-    //     alert('no file selected')
-    // }
+    onDropRejected: (err) => {
+      if (err[0].errors[0].code === "file-too-large") {
+        setErrorMessage(t('manageProjects:fileSizeLimit'))
+      }
+    }
   });
 
   const [youtubeURL, setYoutubeURL] = React.useState('')

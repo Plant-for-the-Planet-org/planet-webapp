@@ -62,10 +62,16 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
         multiple: false,
+        maxSize:10485760,
         onDropAccepted: onDrop,
         onDrop: () => {
-            console.log('uploaded');
+            console.log('uploading');
         },
+        onDropRejected: (err)=>{
+            if(err[0].errors[0].code === "file-too-large"){
+                setErrorMessage(t('manageProjects:fileSizeLimit'))
+            }
+        }
     });
 
     const { isDirty, isSubmitting } = formState;
