@@ -122,6 +122,7 @@
   border: 0px;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-width: 240px;
 }
 .continueButton:hover,
 .secondaryButton:hover {
@@ -445,7 +446,7 @@
     :nth-child(2) {
       margin-top: 9px;
     }
-    > div {
+    > button {
       background-color: white;
       border-radius: 50%;
       height: 21px;
