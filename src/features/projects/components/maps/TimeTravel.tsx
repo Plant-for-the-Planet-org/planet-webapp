@@ -82,7 +82,6 @@ export default function TimeTravel({
 
     if (document) {
       const btn = document.getElementsByClassName('compare-swiper-vertical');
-      console.log('button', btn[0]);
       btn[0].addEventListener('mousedown', (e) => {
         setMapState({ ...mapState, dragPan: false });
       });

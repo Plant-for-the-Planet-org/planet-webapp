@@ -27,7 +27,6 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
       getRequestWithoutRedirecting(`/app/profiles/${profile.id}/contributions`)
         .then((result: any) => {
           setContributions(result);
-          console.log(contributions);
         })
         .catch((e: any) => {
           console.log('error occured :', e);
@@ -91,7 +90,7 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                           <div className={styles.source}>
                             {item.properties.recipient
                               ? t('me:giftToGiftee', {
-                                gifteeName: item.properties.recipient.name,
+                                  gifteeName: item.properties.recipient.name,
                                 })
                               : null}
                           </div>

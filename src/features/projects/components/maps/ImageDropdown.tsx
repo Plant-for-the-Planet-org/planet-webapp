@@ -37,7 +37,6 @@ export default function ImageDropdown({
     isMobile ? false : true
   );
 
-  console.log();
   const handleChangeYear1 = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedYear1(event.target.value as string);
   };

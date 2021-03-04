@@ -84,7 +84,6 @@ export default function RegisterTrees({
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
       if (style) {
-        console.log(style);
         setMapState({ ...mapState, mapStyle: style });
       }
     });
@@ -202,7 +201,6 @@ export default function RegisterTrees({
         postAuthenticatedRequest(`/app/contributions`, submitData, token).then(
           (res) => {
             if (!res.code) {
-              console.log(res);
               setErrorMessage('');
               setContributionGUID(res.id);
               setContributionDetails(res);
