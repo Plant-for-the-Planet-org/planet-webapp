@@ -53,7 +53,7 @@ export default function Explore({
   showSingleProject,
 }: Props): ReactElement {
   const { useTranslation } = i18next;
-  const { t, i18n, ready } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps']);
   const router = useRouter();
 
   const infoRef = React.useRef(null);
@@ -218,7 +218,7 @@ export default function Explore({
       ) : null}
 
       {loaded ? (
-        <LayerManager map={mapRef.current.getMap()} plugin={PluginMapboxGl}>
+        <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
           {exploreDeforestation &&
             TreeCoverLoss.map((layer) => {
               const {

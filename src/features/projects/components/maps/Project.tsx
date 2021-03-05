@@ -7,7 +7,6 @@ import Sites from './Sites';
 
 interface Props {
   project: Object;
-  defaultMapCenter: Array<number>;
   viewport: Object;
   setViewPort: Function;
   isMobile: Boolean;
@@ -18,7 +17,6 @@ interface Props {
 
 export default function Project({
   project,
-  defaultMapCenter,
   viewport,
   setViewPort,
   isMobile,
@@ -39,26 +37,43 @@ export default function Project({
     imagery: {},
   });
 
+  async function loadRasterData() {
+    const result = await getRasterData('');
+    const result2 = await getRasterData(project.id);
+    if (result && result2) {
+      setRasterData({
+        ...rasterData,
+        imagery: result.imagery,
+        evi: result2.evi,
+      });
+    } else if (result) {
+      setRasterData({ ...rasterData, imagery: result.imagery });
+    }
+  }
+
   React.useEffect(() => {
-    if (typeof project.sites !== 'undefined' && project.sites.length > 0) {
-      if (project.sites[0].geometry) {
-        setsiteExists(true);
-        setGeoJson({
+    if (
+      typeof project.sites !== 'undefined' &&
+      project.sites.length > 0 &&
+      project.sites[0].geometry
+    ) {
+      setsiteExists(true);
+      setGeoJson({
+        type: 'FeatureCollection',
+        features: project.sites,
+      });
+      zoomToProjectSite(
+        {
           type: 'FeatureCollection',
           features: project.sites,
-        });
-      } else {
-        setsiteExists(false);
-        setGeoJson(null);
-        zoomToLocation(
-          viewport,
-          setViewPort,
-          project.coordinates.lon,
-          project.coordinates.lat,
-          5,
-          3000
-        );
-      }
+        },
+        selectedSite,
+        viewport,
+        isMobile,
+        setViewPort,
+        4000
+      );
+      loadRasterData();
     } else {
       setsiteExists(false);
       setGeoJson(null);
@@ -72,41 +87,6 @@ export default function Project({
       );
     }
   }, []);
-
-  React.useEffect(() => {
-    async function loadRasterData() {
-      const result = await getRasterData('');
-      const result2 = await getRasterData(project.id);
-      if (result && result2) {
-        setRasterData({
-          ...rasterData,
-          imagery: result.imagery,
-          evi: result2.evi,
-        });
-      } else if (result) {
-        setRasterData({ ...rasterData, imagery: result.imagery });
-      }
-    }
-    if (geoJson) {
-      zoomToProjectSite(
-        geoJson,
-        selectedSite,
-        viewport,
-        isMobile,
-        setViewPort,
-        4000
-      );
-      loadRasterData();
-    }
-  }, [geoJson]);
-
-  // React.useEffect(() => {
-  //   if (selectedMode === 'imagery') {
-  //     setMapState({ ...mapState, dragPan: false });
-  //   } else {
-  //     setMapState({ ...mapState, dragPan: true });
-  //   }
-  // }, [selectedMode]);
 
   //Props
   const locationProps = {

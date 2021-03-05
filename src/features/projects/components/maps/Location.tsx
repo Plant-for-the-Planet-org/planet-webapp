@@ -4,32 +4,26 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import ProjectPolygon from './ProjectPolygon';
 
 interface Props {
-    siteExists: Boolean;
-    geoJson: Object | null;
-    project: Object;
+  siteExists: boolean;
+  geoJson: Object | null;
+  project: Object;
 }
 
-export default function Location({
-    siteExists,
-    geoJson,
-    project }: Props) {
-
-    return (
-        <>
-            {
-                !siteExists && project ? (
-                    <Marker
-                        latitude={project.coordinates.lat}
-                        longitude={project.coordinates.lon}
-                        offsetLeft={5}
-                        offsetTop={-16}
-                    >
-                        <div style={{ left: '28px' }} className={styles.marker} />
-                    </Marker>
-                ) :
-
-                    <ProjectPolygon geoJson={geoJson} />
-            }
-        </>
-    )
+export default function Location({ siteExists, geoJson, project }: Props) {
+  return (
+    <>
+      {!siteExists && project ? (
+        <Marker
+          latitude={project.coordinates.lat}
+          longitude={project.coordinates.lon}
+          offsetLeft={5}
+          offsetTop={-16}
+        >
+          <div style={{ left: '28px' }} className={styles.marker} />
+        </Marker>
+      ) : (
+        <ProjectPolygon geoJson={geoJson} />
+      )}
+    </>
+  );
 }

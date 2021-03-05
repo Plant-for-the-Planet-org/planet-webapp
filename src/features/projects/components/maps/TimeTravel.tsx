@@ -80,21 +80,40 @@ export default function TimeTravel({
       setSelectedSource2('sentinel');
     }
 
+    let btn: any;
+
     if (document) {
-      const btn = document.getElementsByClassName('compare-swiper-vertical');
-      btn[0].addEventListener('mousedown', (e) => {
+      btn = document.getElementsByClassName('compare-swiper-vertical');
+      btn[0].addEventListener('mousedown', () => {
         setMapState({ ...mapState, dragPan: false });
       });
-      btn[0].addEventListener('mouseup', (e) => {
+      btn[0].addEventListener('mouseup', () => {
         setMapState({ ...mapState, dragPan: true });
       });
-      btn[0].addEventListener('touchstart', (e) => {
+      btn[0].addEventListener('touchstart', () => {
         setMapState({ ...mapState, dragPan: false });
       });
-      btn[0].addEventListener('touchend', (e) => {
+      btn[0].addEventListener('touchend', () => {
         setMapState({ ...mapState, dragPan: true });
       });
     }
+
+    return () => {
+      if (Array.isArray(btn)) {
+        btn[0].removeEventListener('mousedown', () => {
+          setMapState({ ...mapState, dragPan: false });
+        });
+        btn[0].removeEventListener('mouseup', () => {
+          setMapState({ ...mapState, dragPan: true });
+        });
+        btn[0].removeEventListener('touchstart', () => {
+          setMapState({ ...mapState, dragPan: false });
+        });
+        btn[0].removeEventListener('touchend', () => {
+          setMapState({ ...mapState, dragPan: true });
+        });
+      }
+    };
   }, []);
 
   React.useEffect(() => {

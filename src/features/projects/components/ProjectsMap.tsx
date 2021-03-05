@@ -35,7 +35,6 @@ export default function ProjectsMap({
   };
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
-  const [style, setStyle] = React.useState(EMPTY_STYLE);
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
@@ -69,7 +68,6 @@ export default function ProjectsMap({
       const result = await getMapStyle('default');
       if (result) {
         setMapState({ ...mapState, mapStyle: result });
-        setStyle(result);
       }
     }
     loadMapStyle();
@@ -88,10 +86,8 @@ export default function ProjectsMap({
   };
   const projectProps = {
     project,
-    defaultMapCenter,
     viewport,
     setViewPort,
-    setExploreProjects,
     isMobile,
     mapRef,
     mapState,

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Layer, Source } from 'react-map-gl';
 
 interface Props {
-  id: string | undefined;
+  id?: string | undefined;
   geoJson: Object | null;
 }
 

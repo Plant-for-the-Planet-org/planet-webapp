@@ -6,7 +6,7 @@ export default function zoomToProjectSite(
   geoJson: Object | null,
   selectedSite: number,
   viewport: Object,
-  isMobile: Boolean,
+  isMobile: boolean,
   setViewPort: Function,
   duration = 1200
 ) {
