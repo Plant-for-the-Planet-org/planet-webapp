@@ -18,6 +18,8 @@ import MapLayout from '../src/features/projects/components/MapboxMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
+import { browserNotCompatible } from '../src/utils/browsercheck';
+import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -51,6 +53,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
   const [currencyCode, setCurrencyCode] = React.useState('');
+  const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -85,6 +88,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, []);
 
+  React.useEffect(() => {
+    setBrowserCompatible(browserNotCompatible());
+  }, []);
+
   const ProjectProps = {
     projects,
     project,
@@ -102,27 +109,34 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setCurrencyCode
   };
 
-  return (
-    <Auth0Provider
-      domain={process.env.AUTH0_CUSTOM_DOMAIN}
-      clientId={process.env.AUTH0_CLIENT_ID}
-      redirectUri={process.env.NEXTAUTH_URL}
-      cacheLocation={'localstorage'}
-      onRedirectCallback={onRedirectCallback}
-    >
-      <ThemeProvider>
-        <CssBaseline />
-        <Layout>
-          {isMap ? (
-            project ? (
-              <MapLayout {...ProjectProps} />
-            ) : projects ? (
-              <MapLayout {...ProjectProps} />
-            ) : null
-          ) : null}
-          <Component {...ProjectProps} />
-        </Layout>
-      </ThemeProvider>
-    </Auth0Provider>
-  );
+  if (browserCompatible) {
+    return (
+      <BrowserNotSupported />
+    );
+  }
+  else {
+    return (
+      <Auth0Provider
+        domain={process.env.AUTH0_CUSTOM_DOMAIN}
+        clientId={process.env.AUTH0_CLIENT_ID}
+        redirectUri={process.env.NEXTAUTH_URL}
+        cacheLocation={'localstorage'}
+        onRedirectCallback={onRedirectCallback}
+      >
+        <ThemeProvider>
+          <CssBaseline />
+          <Layout>
+            {isMap ? (
+              project ? (
+                <MapLayout {...ProjectProps} />
+              ) : projects ? (
+                <MapLayout {...ProjectProps} />
+              ) : null
+            ) : null}
+            <Component {...ProjectProps} />
+          </Layout>
+        </ThemeProvider>
+      </Auth0Provider>
+    );
+  }
 }
