@@ -1,4 +1,8 @@
 import { createStyles, InputBase, Theme, withStyles } from '@material-ui/core';
+import tenantConfig from '../../../../tenant.config';
+import getConfig from '../../../../tenant.config';
+
+const config = tenantConfig();
 
 const BootstrapInput = withStyles((theme: Theme) =>
   createStyles({
@@ -16,18 +20,7 @@ const BootstrapInput = withStyles((theme: Theme) =>
       padding: '10px 26px 10px 12px',
       transition: theme.transitions.create(['border-color', 'box-shadow']),
       // Use the system font instead of the default Roboto font.
-      fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
+      fontFamily: [config.font.primaryFontFamily].join(','),
       '&:focus': {
         backgroundColor: theme.palette.background.paper,
         borderRadius: 9,
