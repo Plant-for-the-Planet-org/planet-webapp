@@ -186,5 +186,5 @@ export default function MapComponent({
       {geoJsonError ?
         <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
     </div>
-  ) : null;
+  ) : <></>;
 }
