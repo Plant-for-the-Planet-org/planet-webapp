@@ -94,7 +94,7 @@ export default function BasicDetails({
     acceptDonations: false,
     treeCost: 0,
     publish: false,
-    visitorAssistance: true,
+    visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
     projectCoords: {
