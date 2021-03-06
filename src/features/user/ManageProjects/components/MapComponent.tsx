@@ -9,7 +9,7 @@ import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from "geojson-validation";
+import gjv from 'geojson-validation';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -29,7 +29,7 @@ export default function MapComponent({
   geoJson,
   setGeoJson,
   geoJsonError,
-  setGeoJsonError
+  setGeoJsonError,
 }: Props): ReactElement {
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -48,7 +48,6 @@ export default function MapComponent({
   });
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
-
   const drawControlRef = React.useRef(null);
 
   const onDrawCreate = ({ features }: any) => {
@@ -77,16 +76,17 @@ export default function MapComponent({
         center: [longitude, latitude],
         zoom: [zoom],
       };
-      if (drawControlRef.current) {
-        try {
-          drawControlRef.current.draw.add(geoJson);
+      setTimeout(() => {
+        if (drawControlRef.current) {
+          try {
+            drawControlRef.current.draw.add(geoJson);
+          } catch (e) {
+            setGeoJsonError(true);
+            setGeoJson(null);
+            console.log('We only support feature collection for now', e);
+          }
         }
-        catch (e) {
-          setGeoJsonError(true);
-          setGeoJson(null);
-          console.log('We only support feature collection for now', e);
-        }
-      }
+      }, 1000);
       setViewPort(newViewport);
     } else {
       setViewPort({
@@ -123,7 +123,7 @@ export default function MapComponent({
             uncombine_features: false,
           }}
         />
-        <ZoomControl position='bottom-right' />
+        <ZoomControl position="bottom-right" />
       </Map>
       <Dropzone
         accept={['.geojson', '.kml']}
@@ -183,8 +183,11 @@ export default function MapComponent({
           </div>
         )}
       </Dropzone>
-      {geoJsonError ?
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
+      {geoJsonError ? (
+        <div className={styles.geoJsonError}>Invalid geojson/kml</div>
+      ) : null}
     </div>
-  ) : null;
+  ) : (
+    <></>
+  );
 }

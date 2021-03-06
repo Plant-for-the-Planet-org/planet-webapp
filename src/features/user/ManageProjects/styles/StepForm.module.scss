@@ -336,6 +336,26 @@
       }
     }
   }
+  .uploadedMapEditButton {
+    background-color: $light;
+    padding: 6px;
+    border-radius: 18px;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    right: 5%;
+    > svg {
+      height: 12px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .mapboxContainer2 {
@@ -580,4 +600,23 @@
       display: block;
     }
   }
+}
+
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+// white modal
+.modal {
+  background-color: white;
+  border: 0px;
+  border-radius: 8px;
+  max-height: 80vh;
+  width: 80vw;
+  max-width: 1200px;
+  overflow: hidden;
+  outline: none;
 }
