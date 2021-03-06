@@ -91,10 +91,10 @@ export default function BasicDetails({
     countTarget: 0,
     website: '',
     description: '',
-    acceptDonations: true,
+    acceptDonations: false,
     treeCost: 0,
-    publish: true,
-    visitorAssistance: false,
+    publish: false,
+    visitorAssistance: true,
     enablePlantLocations: false,
     currency: 'EUR',
     projectCoords: {
