@@ -111,7 +111,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             case 4:
                 return <ProjectSpending userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
             case 5:
-                return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
+                return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
             default:
                 return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
         }
