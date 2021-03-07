@@ -170,7 +170,7 @@ export default function BasicDetails({
       website: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
-      treeCost: parseNumber(i18n.language, data.treeCost),
+      treeCost: data.treeCost ? parseNumber(i18n.language, data.treeCost) : null,
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
