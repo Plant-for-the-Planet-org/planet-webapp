@@ -354,7 +354,7 @@ export default function ProjectSites({
                 <Controller
                   as={
                     <MaterialTextField
-                      label={t('manageProjects:projectStatus')}
+                      label={t('manageProjects:siteStatus')}
                       variant="outlined"
                       name="status"
                       onChange={changeSiteDetails}
@@ -558,7 +558,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
                 <Controller
                   as={
                     <MaterialTextField
-                      label={t('manageProjects:projectStatus')}
+                      label={t('manageProjects:siteStatus')}
                       variant="outlined"
                       name="status"
                       onChange={changeSiteDetails}
