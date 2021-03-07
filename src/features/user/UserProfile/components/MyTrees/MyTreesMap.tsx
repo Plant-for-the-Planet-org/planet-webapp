@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
-import getMapStyle from '../../../../../utils/getMapStyle';
+import getMapStyle from '../../../../../utils/maps/getMapStyle';
 
 const Map = ReactMapboxGl({
   customAttribution:
@@ -75,6 +75,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                     anchor="bottom"
                   >
                     <div
+                      key={point.properties.id}
                       style={
                         point.properties.type === 'registration'
                           ? { background: '#3D67B1' }

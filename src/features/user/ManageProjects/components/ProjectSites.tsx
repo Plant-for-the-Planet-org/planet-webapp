@@ -17,12 +17,11 @@ import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 
 const MapStatic = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
   interactive: false,
 });
 
@@ -83,6 +82,20 @@ export default function ProjectSites({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
 
   const [showForm, setShowForm] = React.useState(true);
 
@@ -168,9 +181,18 @@ export default function ProjectSites({
   };
 
   const status = [
-    { label: ready ? t('manageProjects:siteStatusPlanting') : '', value: 'planting' },
-    { label: ready ? t('manageProjects:siteStatusPlanted') : '', value: 'planted' },
-    { label: ready ? t('manageProjects:siteStatusBarren') : '', value: 'barren' },
+    {
+      label: ready ? t('manageProjects:siteStatusPlanting') : '',
+      value: 'planting',
+    },
+    {
+      label: ready ? t('manageProjects:siteStatusPlanted') : '',
+      value: 'planted',
+    },
+    {
+      label: ready ? t('manageProjects:siteStatusBarren') : '',
+      value: 'barren',
+    },
     {
       label: ready ? t('manageProjects:siteStatusReforestation') : '',
       value: 'reforestation',
@@ -225,7 +247,8 @@ export default function ProjectSites({
                     <div className={styles.uploadedMapStatus}>
                       {String(site.status).toUpperCase()}
                     </div>
-                    <button id={'trashIconProjS'}
+                    <button
+                      id={'trashIconProjS'}
                       onClick={() => {
                         deleteProjectSite(site.id);
                       }}
@@ -237,7 +260,7 @@ export default function ProjectSites({
                       {...viewport}
                       center={[longitude, latitude]}
                       zoom={[zoom]}
-                      style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+                      style={style} // eslint-disable-line
                       containerStyle={{
                         height: 200,
                         width: 320,
@@ -306,7 +329,8 @@ export default function ProjectSites({
 
             <Map {...MapProps} />
 
-            <button id="projSiteSaveandAdd"
+            <button
+              id="projSiteSaveandAdd"
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.projSiteSaveandAdd}
             >
@@ -316,7 +340,8 @@ export default function ProjectSites({
             </button>
           </div>
         ) : (
-          <button id={'manageProjAddSite'}
+          <button
+            id={'manageProjAddSite'}
             onClick={() => setShowForm(true)}
             className={styles.formFieldLarge}
           >
@@ -358,5 +383,7 @@ export default function ProjectSites({
         </div>
       </form>
     </div>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }
