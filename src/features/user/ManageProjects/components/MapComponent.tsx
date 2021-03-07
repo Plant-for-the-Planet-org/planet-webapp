@@ -10,6 +10,7 @@ import tj from '@mapbox/togeojson';
 import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -19,11 +20,7 @@ interface Props {
   setGeoJsonError: Function;
 }
 
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
-
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
+const Map = ReactMapboxGl({});
 
 export default function MapComponent({
   geoJson,
@@ -46,6 +43,20 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
   const drawControlRef = React.useRef(null);
@@ -104,7 +115,7 @@ export default function MapComponent({
     >
       <Map
         {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+        style={style} // eslint-disable-line
         containerStyle={{
           height: '400px',
           width: '100%',
@@ -188,6 +199,6 @@ export default function MapComponent({
       ) : null}
     </div>
   ) : (
-    <></>
-  );
+      <></>
+    );
 }

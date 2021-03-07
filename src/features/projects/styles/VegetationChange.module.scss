@@ -1,0 +1,142 @@
+@import './../../../theme/theme';
+
+.VegetationChangeContainer {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  right: auto;
+  margin: 0 auto;
+  width: fit-content;
+  height: 36px;
+  border-radius: 13px;
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 10;
+  max-width: 100%;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.options {
+  height: 100%;
+  border: 1px solid #d5d5d5;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  cursor: pointer;
+  width: 50px;
+}
+
+.options svg {
+  height: 18px;
+  padding-right: 4px;
+}
+
+.options p {
+  display: none;
+}
+
+.options p sup {
+  padding-left: 1px;
+  font-size: 8px;
+}
+
+.dropdownContainer {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  height: 50px;
+}
+
+.beforeYear {
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  > div {
+    padding-right: 20px;
+  }
+}
+
+.afterYear {
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  > div {
+    padding-left: 20px;
+  }
+}
+
+.sourceIcon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+  line-height: 16px;
+  cursor: pointer;
+  svg {
+    width: 20px;
+  }
+}
+
+:export {
+  primaryColor: $primaryColor;
+}
+
+@include smTabletView {
+  .VegetationChangeContainer {
+    top: 100px;
+  }
+
+  .dropdownContainer {
+    top: 145px;
+  }
+}
+
+@include mdTabletView {
+  .VegetationChangeContainer {
+    left: 400px;
+    top: 50px;
+  }
+  .dropdownContainer {
+    padding: 0 20px 0 400px;
+    top: 90px;
+  }
+}
+
+@include lgLaptopView {
+  .VegetationChangeContainer {
+    // margin-left: auto;
+    right: auto;
+  }
+}
+
+@include xlDesktopView {
+  .options {
+    width: 200px;
+    p {
+      display: block;
+    }
+  }
+}

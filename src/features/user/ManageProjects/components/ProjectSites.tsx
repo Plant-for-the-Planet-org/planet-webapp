@@ -23,12 +23,11 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import { ThemeContext } from '../../../../theme/themeContext';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
 
 const MapStatic = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
   interactive: false,
 });
 
@@ -90,6 +89,20 @@ export default function ProjectSites({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
 
   const [showForm, setShowForm] = React.useState(true);
 
@@ -119,7 +132,7 @@ export default function ProjectSites({
     }
   });
 
-  const uploadProjectSite = (data: any) => {    
+  const uploadProjectSite = (data: any) => {
     if (geoJson && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const submitData = {
@@ -182,9 +195,18 @@ export default function ProjectSites({
   };
 
   const status = [
-    { label: ready ? t('manageProjects:siteStatusPlanting') : '', value: 'planting' },
-    { label: ready ? t('manageProjects:siteStatusPlanted') : '', value: 'planted' },
-    { label: ready ? t('manageProjects:siteStatusBarren') : '', value: 'barren' },
+    {
+      label: ready ? t('manageProjects:siteStatusPlanting') : '',
+      value: 'planting',
+    },
+    {
+      label: ready ? t('manageProjects:siteStatusPlanted') : '',
+      value: 'planted',
+    },
+    {
+      label: ready ? t('manageProjects:siteStatusBarren') : '',
+      value: 'barren',
+    },
     {
       label: ready ? t('manageProjects:siteStatusReforestation') : '',
       value: 'reforestation',
@@ -205,7 +227,7 @@ export default function ProjectSites({
       });
   }, [projectGUID]);
 
-  const [siteGUID,setSiteGUID] = React.useState()
+  const [siteGUID, setSiteGUID] = React.useState()
 
   const editSite = (site: any) => {
     const defaultSiteDetails = {
@@ -220,7 +242,7 @@ export default function ProjectSites({
         properties: {},
         type: "Feature"
       }]
-    }    
+    }
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
     setSiteGUID(site.id)
@@ -231,7 +253,7 @@ export default function ProjectSites({
 
 
   const EditProps = {
-    openModal, handleModalClose, changeSiteDetails, siteDetails, errorMessage, status, geoJsonProp:geoJson,ready,projectGUID,setSiteList,token,setFeatures,seteditMode,siteGUID,siteList
+    openModal, handleModalClose, changeSiteDetails, siteDetails, errorMessage, status, geoJsonProp: geoJson, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList
   }
 
   return ready ? (
@@ -271,7 +293,8 @@ export default function ProjectSites({
                     <div className={styles.uploadedMapStatus}>
                       {String(site.status).toUpperCase()}
                     </div>
-                    <button id={'trashIconProjS'}
+                    <button
+                      id={'trashIconProjS'}
                       onClick={() => {
                         deleteProjectSite(site.id);
                       }}
@@ -291,7 +314,7 @@ export default function ProjectSites({
                       {...viewport}
                       center={[longitude, latitude]}
                       zoom={[zoom]}
-                      style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+                      style={style} // eslint-disable-line
                       containerStyle={{
                         height: 200,
                         width: 320,
@@ -360,7 +383,8 @@ export default function ProjectSites({
 
             <Map {...MapProps} />
 
-            <button id="projSiteSaveandAdd"
+            <button
+              id="projSiteSaveandAdd"
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.projSiteSaveandAdd}
             >
@@ -370,22 +394,22 @@ export default function ProjectSites({
             </button>
           </div>
         ) : (
-          <button id={'manageProjAddSite'}
-            onClick={() => {
-              setShowForm(true);
-              setGeoJson(null);
-              setSiteDetails(defaultSiteDetails);
-              setSiteGUID(null)
-              seteditMode(false);
-              setOpenModal(false);
-            }}
-            className={styles.formFieldLarge}
-          >
-            <p className={styles.inlineLinkButton}>
-              {t('manageProjects:addSite')}
-            </p>
-          </button>
-        )}
+            <button id={'manageProjAddSite'}
+              onClick={() => {
+                setShowForm(true);
+                setGeoJson(null);
+                setSiteDetails(defaultSiteDetails);
+                setSiteGUID(null)
+                seteditMode(false);
+                setOpenModal(false);
+              }}
+              className={styles.formFieldLarge}
+            >
+              <p className={styles.inlineLinkButton}>
+                {t('manageProjects:addSite')}
+              </p>
+            </button>
+          )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -412,34 +436,36 @@ export default function ProjectSites({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('manageProjects:saveAndContinue')
-              )}
+                  t('manageProjects:saveAndContinue')
+                )}
             </AnimatedButton>
           </div>
         </div>
       </form>
     </div>
-  ) : <></>;
+  ) : (
+      <></>
+    );
 }
 
 interface EditSiteProps {
-  openModal:boolean;
-  handleModalClose:Function;
-  changeSiteDetails:Function;
-  siteDetails:any;
-  status:any;
-  geoJsonProp:any;
-  ready:any;
-  projectGUID:any;
-  setSiteList:Function;
-  token:any;
-  setFeatures:Function;
-  seteditMode:Function;
-  siteGUID:any;
-  siteList:any;
+  openModal: boolean;
+  handleModalClose: Function;
+  changeSiteDetails: Function;
+  siteDetails: any;
+  status: any;
+  geoJsonProp: any;
+  ready: any;
+  projectGUID: any;
+  setSiteList: Function;
+  token: any;
+  setFeatures: Function;
+  seteditMode: Function;
+  siteGUID: any;
+  siteList: any;
 }
 
-function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails, status, geoJsonProp,ready,projectGUID,setSiteList,token,setFeatures,seteditMode,siteGUID,siteList }:EditSiteProps) {
+function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails, status, geoJsonProp, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
   const { register, handleSubmit, errors, control } = useForm();
@@ -455,7 +481,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     setGeoJsonError,
   };
 
-  const editProjectSite = (data: any) => {    
+  const editProjectSite = (data: any) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const submitData = {
@@ -471,13 +497,13 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
         if (!res.code) {
           const temp = siteList;
           let siteIndex;
-          let singleSite = temp.find((site,index) => {
-            if(site.id === res.id){
+          let singleSite = temp.find((site, index) => {
+            if (site.id === res.id) {
               siteIndex = index;
               return true
             }
           });
-          if(siteIndex !== null){
+          if (siteIndex !== null) {
             temp[siteIndex] = singleSite;
           }
           setSiteList(temp);
@@ -578,8 +604,8 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
-                  t('manageProjects:saveSite')
-                )}
+                    t('manageProjects:saveSite')
+                  )}
               </AnimatedButton>
             </div>
           </div>
