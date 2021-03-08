@@ -8,12 +8,14 @@ describe('manage-project', () => {
   });
   it('should create a project', async () => {
     const url = await driver.getCurrentUrl();
-		await element(by.id("navbarActiveIcon")).click();
+    await driver.navigate().to(`${url}/login`);
+    (await driver).sleep(200);
 		await element(by.id("username")).click();
 		await element(by.id("username")).sendKeys('test-tpo@plant-for-the-planet.org');
 		await element(by.name("action")).click();
 		await element(by.id("password")).click();
 		await element(by.id("password")).sendKeys('CcCFg2enJ@C7XrV3ukqHbYYbaN-2hBW7hh6_Ye8kBorZAwczZfdM*TJnMLdgpbi');
+    await element(by.name("action")).click();
     (await driver).sleep(200);
 
     await element(by.id("addProjectBut")).click();
