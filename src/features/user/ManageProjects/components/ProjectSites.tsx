@@ -351,7 +351,7 @@ export default function ProjectSites({
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   inputRef={register({ required: true })}
-                  label={t('manageProjects:name')}
+                  label={t('manageProjects:siteName')}
                   variant="outlined"
                   name="name"
                   onChange={changeSiteDetails}
@@ -559,7 +559,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   inputRef={register({ required: true })}
-                  label={t('manageProjects:name')}
+                  label={t('manageProjects:siteName')}
                   variant="outlined"
                   name="name"
                   onChange={changeSiteDetails}
