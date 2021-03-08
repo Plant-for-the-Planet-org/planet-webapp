@@ -104,8 +104,8 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
         }
 
         const submitData = {
-            yearAbandoned: data.yearAbandoned.getFullYear(),
-            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
+            yearAbandoned: data.yearAbandoned.getFullYear() ? data.yearAbandoned.getFullYear() : null,
+            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()+1}-${data.firstTreePlanted.getDate()}`,
             plantingDensity: data.plantingDensity,
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
@@ -117,7 +117,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months
-        }
+        }        
 
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
             if (!res.code) {
