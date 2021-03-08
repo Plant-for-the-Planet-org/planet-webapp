@@ -4,7 +4,11 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss';
-import MapGL, { Marker, NavigationControl, FlyToInterpolator } from 'react-map-gl';
+import MapGL, {
+  Marker,
+  NavigationControl,
+  FlyToInterpolator,
+} from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
@@ -13,7 +17,11 @@ import {
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
-import { getFormattedNumber, parseNumber } from '../../../../utils/getFormattedNumber';
+import {
+  getFormattedNumber,
+  parseNumber,
+} from '../../../../utils/getFormattedNumber';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
 
@@ -39,12 +47,17 @@ export default function BasicDetails({
   projectGUID,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
-
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
+  const [style, setStyle] = React.useState(EMPTY_STYLE);
   const [viewport, setViewPort] = React.useState({
     width: 760,
     height: 400,
@@ -52,6 +65,17 @@ export default function BasicDetails({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+
+  React.useEffect(() => {
+    //loads the default mapstyle
+    async function loadMapStyle() {
+      const result = await getMapStyle('openStreetMap');
+      if (result) {
+        setStyle(result);
+      }
+    }
+    loadMapStyle();
+  }, []);
 
   const [projectCoords, setProjectCoords] = React.useState([0, 0]);
 
@@ -75,25 +99,46 @@ export default function BasicDetails({
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   const classifications = [
-    { label: ready ? t('manageProjects:largeScalePlanting') : '', value: 'large-scale-planting' },
-    { label: ready ? t('manageProjects:agroforestry') : '', value: 'agroforestry' },
-    { label: ready ? t('manageProjects:naturalRegeneration') : '', value: 'natural-regeneration' },
-    { label: ready ? t('manageProjects:managedRegeneration') : '', value: 'managed-regeneration' },
-    { label: ready ? t('manageProjects:urbanPlanting') : '', value: 'urban-planting' },
-    { label: ready ? t('manageProjects:otherPlanting') : '', value: 'other-planting' },
+    {
+      label: ready ? t('manageProjects:largeScalePlanting') : '',
+      value: 'large-scale-planting',
+    },
+    {
+      label: ready ? t('manageProjects:agroforestry') : '',
+      value: 'agroforestry',
+    },
+    {
+      label: ready ? t('manageProjects:naturalRegeneration') : '',
+      value: 'natural-regeneration',
+    },
+    {
+      label: ready ? t('manageProjects:managedRegeneration') : '',
+      value: 'managed-regeneration',
+    },
+    {
+      label: ready ? t('manageProjects:urbanPlanting') : '',
+      value: 'urban-planting',
+    },
+    {
+      label: ready ? t('manageProjects:otherPlanting') : '',
+      value: 'other-planting',
+    },
   ];
 
   // Default Form Fields
   const defaultBasicDetails = {
     name: '',
     slug: '',
-    classification: { label: ready ? t('manageProjects:projectType') : '', value: null },
+    classification: {
+      label: ready ? t('manageProjects:projectType') : '',
+      value: null,
+    },
     countTarget: 0,
     website: '',
     description: '',
-    acceptDonations: true,
+    acceptDonations: false,
     treeCost: 0,
-    publish: true,
+    publish: false,
     visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
@@ -111,14 +156,13 @@ export default function BasicDetails({
     reset,
     setValue,
     watch,
-    setError
+    setError,
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const [acceptDonations, setAcceptDonations] = useState(false);
-    // const treeCost = watch('treeCost');
+  // const treeCost = watch('treeCost');
 
   // console.log('watch treeCost',parseFloat(treeCost));
-
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -130,7 +174,10 @@ export default function BasicDetails({
         website: projectDetails.website,
         description: projectDetails.description,
         acceptDonations: projectDetails.acceptDonations,
-        treeCost: getFormattedNumber(i18n.language, projectDetails.treeCost || 0),
+        treeCost: getFormattedNumber(
+          i18n.language,
+          projectDetails.treeCost || 0
+        ),
         publish: projectDetails.publish,
         visitorAssistance: projectDetails.visitorAssistance,
         enablePlantLocations: projectDetails.enablePlantLocations,
@@ -141,7 +188,10 @@ export default function BasicDetails({
         },
       };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
-        setProjectCoords([projectDetails.geoLongitude, projectDetails.geoLatitude]);
+        setProjectCoords([
+          projectDetails.geoLongitude,
+          projectDetails.geoLatitude,
+        ]);
         setViewPort({
           ...viewport,
           latitude: projectDetails.geoLatitude,
@@ -150,6 +200,9 @@ export default function BasicDetails({
         });
       }
       reset(basicDetails);
+      if(projectDetails.acceptDonations){
+        setAcceptDonations(projectDetails.acceptDonations);
+      }
     }
   }, [projectDetails]);
 
@@ -193,14 +246,12 @@ export default function BasicDetails({
           if (res.code === 404) {
             setIsUploadingData(false);
             setErrorMessage(res.message);
-          } 
-          else if (res.code === 400) {
-            setIsUploadingData(false)
+          } else if (res.code === 400) {
+            setIsUploadingData(false);
             if (res.errors && res.errors.children) {
-              addServerErrors(res.errors.children,setError);
+              addServerErrors(res.errors.children, setError);
             }
-          }
-          else {
+          } else {
             setIsUploadingData(false);
             setErrorMessage(res.message);
           }
@@ -219,14 +270,12 @@ export default function BasicDetails({
             if (res.code === 404) {
               setIsUploadingData(false);
               setErrorMessage(res.message);
-            }
-            else if (res.code === 400) {
-              setIsUploadingData(false)
+            } else if (res.code === 400) {
+              setIsUploadingData(false);
               if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children,setError);
+                addServerErrors(res.errors.children, setError);
               }
-            }
-            else {
+            } else {
               setIsUploadingData(false);
               setErrorMessage(res.message);
             }
@@ -238,7 +287,7 @@ export default function BasicDetails({
 
   return ready ? (
     <div className={`${styles.stepContainer} `}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           <div className={styles.formFieldLarge}>
             <MaterialTextField
@@ -296,7 +345,9 @@ export default function BasicDetails({
                   </MaterialTextField>
                 }
                 name="classification"
-                rules={{ required: t('manageProjects:classificationValidation') }}
+                rules={{
+                  required: t('manageProjects:classificationValidation'),
+                }}
                 control={control}
               />
               {errors.classification && (
@@ -378,7 +429,7 @@ export default function BasicDetails({
             )}
           </div>
 
-          <div className={styles.formField}>
+          <div className={styles.formField} style={{minHeight:'80px'}}>
             <div className={`${styles.formFieldHalf}`}>
               <div className={`${styles.formFieldRadio}`}>
                 <label
@@ -395,9 +446,7 @@ export default function BasicDetails({
                         className={styles.popoverContent}
                         style={{ left: '-150px' }}
                       >
-                        <p>
-                          {t('manageProjects:receiveDonationsInfo')}
-                        </p>
+                        <p>{t('manageProjects:receiveDonationsInfo')}</p>
                       </div>
                     </div>
                   </div>
@@ -410,7 +459,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e) => {properties.onChange(e.target.checked); setAcceptDonations(!acceptDonations) } }
+                      onChange={(e) => { properties.onChange(e.target.checked); setAcceptDonations(e.target.checked) }}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   )}
@@ -425,7 +474,9 @@ export default function BasicDetails({
                       value: true,
                       message: t('manageProjects:treeCostValidaitonRequired'),
                     },
-                    validate: (value) => parseNumber(i18n.language, value) > 0 && parseNumber(i18n.language, value) <= 100,
+                    validate: (value) =>
+                      parseNumber(i18n.language, value) > 0 &&
+                      parseNumber(i18n.language, value) <= 100,
                   })}
                   label={t('manageProjects:treeCost')}
                   variant="outlined"
@@ -444,7 +495,7 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.treeCost.message
                       ? errors.treeCost.message
-                      : t("manageProjects:treeCostValidation")}
+                      : t('manageProjects:treeCostValidation')}
                   </span>
                 )}
               </div>
@@ -452,14 +503,11 @@ export default function BasicDetails({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-            <p>
-              {t("manageProjects:projectLocation")}
-            </p>
+            <p>{t('manageProjects:projectLocation')}</p>
             <MapGL
               {...viewport}
               ref={mapRef}
-              mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
-              mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
+              mapStyle={style}
               onViewportChange={_onViewportChange}
               onClick={(event) => {
                 setProjectCoords(event.lngLat);
@@ -512,7 +560,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true }} 
+                  InputLabelProps={{ shrink: true }}
                 />
               </div>
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
@@ -530,7 +578,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true }} 
+                  InputLabelProps={{ shrink: true }}
                 />
               </div>
             </div>
@@ -614,7 +662,8 @@ export default function BasicDetails({
           </div> */}
 
           <div className={`${styles.formFieldHalf}`}>
-            <button id={'basicDetailsCont'}
+            <button
+              id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
               className={styles.continueButton}
             >
@@ -628,5 +677,7 @@ export default function BasicDetails({
         </div>
       </form>
     </div>
-  ) : <></>;
+  ) : (
+      <></>
+    );
 }
