@@ -77,7 +77,7 @@ function Home({ leaderboard, tenantScore }: Props): ReactElement {
             <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
             <LeaderBoard leaderboard={leaderboard} />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
-            <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/" target="_blank">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank">Datenschutz</a> </p>
+            <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/de" target="_blank">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank">Datenschutz</a> </p>
         </div>
     ) : <></>
 }
