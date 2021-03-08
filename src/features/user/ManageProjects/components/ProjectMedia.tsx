@@ -28,7 +28,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState()
+  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>()
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -51,7 +51,10 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
       if (!res.code) {
-        const newUploadedImages = uploadedImages;
+        let newUploadedImages = uploadedImages;
+        if(newUploadedImages === undefined){
+          newUploadedImages = [];
+        }
         newUploadedImages.push(res)
         setUploadedImages(newUploadedImages)
         setIsUploadingData(false)
