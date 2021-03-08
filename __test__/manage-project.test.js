@@ -10,16 +10,18 @@ describe('manage-project', () => {
     const url = await driver.getCurrentUrl();
     await driver.navigate().to(`${url}/login`);
     (await driver).sleep(200);
-		await element(by.id("username")).click();
-		await element(by.id("username")).sendKeys('test-tpo@plant-for-the-planet.org');
-		await element(by.name("action")).click();
-		await element(by.id("password")).click();
-		await element(by.id("password")).sendKeys('CcCFg2enJ@C7XrV3ukqHbYYbaN-2hBW7hh6_Ye8kBorZAwczZfdM*TJnMLdgpbi');
-    await element(by.name("action")).click();
+    //Login Process
+    await driver.findElement(By.id('username')).sendKeys('test-tpo@plant-for-the-planet.org');
+    await driver.findElement(By.name('action')).click();
+    await driver.findElement(By.id('password')).sendKeys('CcCFg2enJ@C7XrV3ukqHbYYbaN-2hBW7hh6_Ye8kBorZAwczZfdM*TJnMLdgpbi');
+    await driver.findElement(By.name('action')).click();
     (await driver).sleep(200);
 
-    await element(by.id("addProjectBut")).click();
-    await element(by.name("name")).click();
+    //Start Project Creation
+    await driver.findElement(By.id('addProjectBut')).click();
+    await driver.findElement(By.name('name')).sendKeys('Test Project 200');
+    await driver.findElement(By.name('slug')).sendKeys('test-project-200');
+
 		await element(by.name("name")).sendKeys('Test Project 200');
 		await element(by.name("slug")).click();
 		await element(by.name("slug")).sendKeys('test-project-200');
