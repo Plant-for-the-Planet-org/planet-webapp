@@ -7,7 +7,7 @@ describe('manage-project', () => {
     await load();
   });
   it('should create a project', async () => {
-    await browser.get('https://planet-webapp-qk4wx0ybh-planetapp.vercel.app/');
+    const url = await driver.getCurrentUrl();
 		await element(by.id("navbarActiveIcon")).click();
 		await element(by.id("username")).click();
 		await element(by.id("username")).sendKeys('test-tpo@plant-for-the-planet.org');
