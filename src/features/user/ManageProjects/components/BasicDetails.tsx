@@ -136,9 +136,9 @@ export default function BasicDetails({
     countTarget: 0,
     website: '',
     description: '',
-    acceptDonations: true,
+    acceptDonations: false,
     treeCost: 0,
-    publish: true,
+    publish: false,
     visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
@@ -200,6 +200,9 @@ export default function BasicDetails({
         });
       }
       reset(basicDetails);
+      if(projectDetails.acceptDonations){
+        setAcceptDonations(projectDetails.acceptDonations);
+      }
     }
   }, [projectDetails]);
 
@@ -284,7 +287,7 @@ export default function BasicDetails({
 
   return ready ? (
     <div className={`${styles.stepContainer} `}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           <div className={styles.formFieldLarge}>
             <MaterialTextField
@@ -426,7 +429,7 @@ export default function BasicDetails({
             )}
           </div>
 
-          <div className={styles.formField}>
+          <div className={styles.formField} style={{minHeight:'80px'}}>
             <div className={`${styles.formFieldHalf}`}>
               <div className={`${styles.formFieldRadio}`}>
                 <label
@@ -456,10 +459,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e) => {
-                        properties.onChange(e.target.checked);
-                        setAcceptDonations(!acceptDonations);
-                      }}
+                      onChange={(e) => { properties.onChange(e.target.checked); setAcceptDonations(e.target.checked) }}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   )}
@@ -670,14 +670,14 @@ export default function BasicDetails({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('manageProjects:saveAndContinue')
-              )}
+                  t('manageProjects:saveAndContinue')
+                )}
             </button>
           </div>
         </div>
       </form>
     </div>
   ) : (
-    <></>
-  );
+      <></>
+    );
 }
