@@ -59,6 +59,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
 
+  const [geoLocation, setgeoLocation] = React.useState<Object>();
   const defaultSiteDetails = {
     name: '',
     status: '',
@@ -118,6 +119,7 @@ export default function ProjectSites({
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
+    geoLocation
   };
 
   const onSubmit = (data: any) => {
@@ -220,6 +222,12 @@ export default function ProjectSites({
         `/app/profile/projects/${projectGUID}?_scope=sites`,
         token
       ).then((result) => {
+        let geoLocation = {
+          geoLatitude:result.geoLatitude,
+          geoLongitude:result.geoLongitude
+        }
+        setgeoLocation(geoLocation);
+        
         if (result.sites.length > 0) {
           setShowForm(false);
         }
@@ -381,7 +389,7 @@ export default function ProjectSites({
               </div>
             </div>
 
-            <Map {...MapProps} />
+            {geoLocation && <Map {...MapProps} />} 
 
             <button
               id="projSiteSaveandAdd"
@@ -479,6 +487,10 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
+    geoLocation:{
+      geoLatitude:36.96,
+      geoLongitude:-28.5
+    }
   };
 
   const editProjectSite = (data: any) => {

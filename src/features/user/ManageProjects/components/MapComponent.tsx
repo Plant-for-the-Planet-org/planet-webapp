@@ -18,6 +18,7 @@ interface Props {
   setGeoJson: Function;
   geoJsonError: any;
   setGeoJsonError: Function;
+  geoLocation:any;
 }
 
 const Map = ReactMapboxGl({});
@@ -27,8 +28,9 @@ export default function MapComponent({
   setGeoJson,
   geoJsonError,
   setGeoJsonError,
+  geoLocation
 }: Props): ReactElement {
-  const defaultMapCenter = [-28.5, 36.96];
+  const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
