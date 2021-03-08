@@ -190,7 +190,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     }, [projectDetails])
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>

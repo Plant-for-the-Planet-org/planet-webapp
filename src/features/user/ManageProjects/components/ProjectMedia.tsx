@@ -28,7 +28,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState([])
+  const [uploadedImages, setUploadedImages] = React.useState()
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -214,7 +214,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   }
   return ready ? (
     <div className={styles.stepContainer}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {/* <div className={styles.formFieldLarge}>
             {youtubeURL && !errors.youtubeURL ? (

@@ -284,7 +284,7 @@ export default function BasicDetails({
 
   return ready ? (
     <div className={`${styles.stepContainer} `}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           <div className={styles.formFieldLarge}>
             <MaterialTextField

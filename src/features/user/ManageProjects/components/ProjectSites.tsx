@@ -261,7 +261,7 @@ export default function ProjectSites({
       {editMode &&
         <EditSite {...EditProps} />}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={styles.formField}>
           {siteList
             .filter((site) => {
