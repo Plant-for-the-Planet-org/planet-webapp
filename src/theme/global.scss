@@ -108,8 +108,6 @@ samp,
 small,
 strike,
 strong,
-sub,
-sup,
 tt,
 var,
 b,
@@ -175,6 +173,28 @@ video {
   color: $primaryColor !important;
 }
 
+.comparison-map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.mapboxgl-compare {
+  top: 0;
+}
+
+.mapboxgl-compare .compare-swiper-vertical {
+  background-color: $primaryColor;
+}
+
+.mapboxgl-ctrl-bottom-right {
+  margin: 0 10px 40px 0 !important;
+}
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
 
 @font-face {
   font-family: 'Pampers Script';
@@ -209,12 +229,12 @@ video {
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   text-decoration: none;
 }
-.primaryButton:hover{
+.primaryButton:hover {
   transform: translateY(-7px);
   cursor: pointer;
 }
 
-button{
+button {
   border: 0px;
   padding: 0px;
   margin: 0px;
