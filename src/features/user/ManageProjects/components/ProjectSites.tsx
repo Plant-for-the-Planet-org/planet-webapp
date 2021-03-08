@@ -607,7 +607,17 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
             </div>
           ) : null}
 
-          <div className={styles.formField} style={{ justifyContent: 'center' }}>
+          <div className={styles.formField}>
+          <div className={`${styles.formFieldHalf}`}>
+            <AnimatedButton
+              onClick={handleModalClose}
+              className={styles.secondaryButton}
+            >
+              <BackArrow />
+              <p>{t('manageProjects:backToSites')}</p>
+            </AnimatedButton>
+          </div>
+          <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf}`}>
               <AnimatedButton
                 onClick={handleSubmit(editProjectSite)}
