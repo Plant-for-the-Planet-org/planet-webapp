@@ -200,6 +200,9 @@ export default function BasicDetails({
         });
       }
       reset(basicDetails);
+      if(projectDetails.acceptDonations){
+        setAcceptDonations(projectDetails.acceptDonations);
+      }
     }
   }, [projectDetails]);
 
@@ -426,7 +429,7 @@ export default function BasicDetails({
             )}
           </div>
 
-          <div className={styles.formField}>
+          <div className={styles.formField} style={{minHeight:'80px'}}>
             <div className={`${styles.formFieldHalf}`}>
               <div className={`${styles.formFieldRadio}`}>
                 <label
