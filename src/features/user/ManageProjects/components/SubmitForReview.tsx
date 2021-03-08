@@ -175,7 +175,7 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
         case 'accepted': return ready ?  <AcceptedReview /> : <></>;
         case 'denied': return ready ?  <DeniedReview /> : <></>;
         default: return ready ?  <UnderReviewComponent /> : <></>;
-    };
+    }
 }
 
 export default SubmitForReview
