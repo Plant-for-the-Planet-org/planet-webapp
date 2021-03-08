@@ -222,7 +222,7 @@ export default function ProjectSites({
         `/app/profile/projects/${projectGUID}?_scope=sites`,
         token
       ).then((result) => {
-        let geoLocation = {
+        const geoLocation = {
           geoLatitude:result.geoLatitude,
           geoLongitude:result.geoLongitude
         }
@@ -243,7 +243,7 @@ export default function ProjectSites({
       status: site.status,
       geometry: {},
     };
-    let collection = {
+    const collection = {
       type: "FeatureCollection",
       features: [{
         geometry: site.geometry,
@@ -509,7 +509,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
         if (!res.code) {
           const temp = siteList;
           let siteIndex;
-          let singleSite = temp.find((site, index) => {
+          const singleSite = temp.find((site, index) => {
             if (site.id === res.id) {
               siteIndex = index;
               return true
