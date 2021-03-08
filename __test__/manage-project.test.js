@@ -6,7 +6,7 @@ describe('manage-project', () => {
   beforeEach(async () => {
     await load();
   });
-  it('should create a project', async () => {
+  it('should create a project and update data for a project.', async () => {
     const url = await driver.getCurrentUrl();
     await driver.navigate().to(`${url}/login`);
     (await driver).sleep(200);
@@ -21,20 +21,51 @@ describe('manage-project', () => {
     await driver.findElement(By.id('addProjectBut')).click();
     await driver.findElement(By.name('name')).sendKeys('Test Project 200');
     await driver.findElement(By.name('slug')).sendKeys('test-project-200');
+    await driver.findElement(By.name('countTarget')).sendKeys('50000');
+    await driver.findElement(By.name('website')).sendKeys('https://plant-for-the-planet.org');
+    await driver.findElement(By.name('description')).sendKeys('This is a test descrtiption for a test Project.');
 
-		await element(by.name("name")).sendKeys('Test Project 200');
-		await element(by.name("slug")).click();
-		await element(by.name("slug")).sendKeys('test-project-200');
-		await element(by.xpath("//div[@id='menu-classification']/div[3]/ul/li")).click();
-		await element(by.name("countTarget")).click();
-		await element(by.name("countTarget")).sendKeys('50000');
-		await element(by.name("website")).click();
-		await element(by.name("website")).sendKeys('https://plant-for-the-planet.org');
-		await element(by.name("description")).click();
-		await element(by.name("description")).sendKeys('This is a test project.');
-		await element(by.xpath("//div[@id='__next']/div/div[2]/div/div/div/div/div/div/div/form/div/div[6]/div/div/div[2]/div")).click();
-		await element(by.xpath("(//input[@value=''])[8]")).click();
-		(await driver).sleep(100);
+    // Skip acceptDonation change this after project is sent for review
+    await driver.findElement(By.name('projectCoords.latitude')).sendKeys('21.819612325842368');
+    await driver.findElement(By.name('projectCoords.longitude')).sendKeys('25.52054272496909');
+    // Skip publish project and allow Site Visit
+    // Submit Project
+    await driver.findElement(By.id('basicDetailsCont')).click();
+    (await driver).sleep(200);
+
+    await driver.findElement(By.name('youtubeURL')).sendKeys('https://www.youtube.com/watch?v=svNcrAowh2s');
+    //Todo add images
+    await driver.findElement(By.id('SaveAndCont')).click();
+    (await driver).sleep(200);
+
+    // Skipping Year of Abandonment
+    // Skipping First Tree Planted
+    await driver.findElement(By.name('plantingDensity')).sendKeys('200');
+    await driver.findElement(By.name('employeesCount')).sendKeys('10');
+    await driver.findElement(By.name('employeesCount')).sendKeys('10');
+
+    //Todo add identifiers in planting seasons.
+
+    await driver.findElement(By.name('mainChallenge')).sendKeys('Our Main Challenge is example');
+    await driver.findElement(By.name('motivation')).sendKeys('Our Motivation is example');
+
+    //Todo add identifiers for site owner selection
+
+    await driver.findElement(By.name('siteOwnerName')).sendKeys('Project Site Owner');
+
+    //Skipping Acquisition Year and Degredation Year
+    await driver.findElement(By.name('degradationCause')).sendKeys('Deforestation');
+    await driver.findElement(By.name('longTermPlan')).sendKeys('Increase Survival Rate');
+
+    //Skipping Certification
+    (await driver).sleep(100);
+    //Todo Button is missing identifier/name
+
+    //Skip Project Sites
+    //Todo Submit for Review (btn missing identifiers)
+
+    //Todo Fix the conditions below.
+    //Expect: Your project is under review, kindly wait. ( if true, pass the test.)
     await element(by.id("basicDetailsCont")).click();
     await driver.wait(until.elementLocated(By.id('donateContinueButton')), 10000).click();
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
