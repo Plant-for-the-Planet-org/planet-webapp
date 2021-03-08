@@ -114,6 +114,6 @@
   "fileSizeLimit": "File is larger than 10 mb",
   "fileImageOnly": "File type must be image",
   "filePDFOnly": "File type must be PDF",
-  "acceptedReview": "Your review is accepted",
+  "acceptedReview": "Changes to your project are Live",
   "deniedReview": "Your review is denied"
 }
