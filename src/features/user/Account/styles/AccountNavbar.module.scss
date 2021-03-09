@@ -12,6 +12,41 @@
   }
 }
 
+.filterContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.filterRow{
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+}
+.captionDate{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.caption{
+  margin-bottom: 10px;
+  font-weight: bold;
+
+}
+.filterText{
+  font-weight: bold;
+  margin-top: 20px;
+}
+.singleRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-bottom: 1px solid #dddbda;
+  margin-bottom: 10px;
+}
 .navbarContainer{
   width: 100%;
   display: flex;

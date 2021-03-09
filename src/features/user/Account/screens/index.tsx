@@ -2,6 +2,9 @@ import React, { useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth0 } from '@auth0/auth0-react';
 import AccountNavbar from '../components/accountNavbar';
+import FilterBlock from '../components/filterBlock';
+
+
 import {
     setUserExistsInDB,
     removeUserExistsInDB,
@@ -23,9 +26,6 @@ function Account({ }: Props): ReactElement {
     } = useAuth0();
     const [userprofile, setUserprofile] = React.useState();
     const router = useRouter();
-
-    console.log(userprofile);
-
     useEffect(() => {
         async function loadUserData() {
             if (typeof Storage !== 'undefined') {
@@ -75,22 +75,22 @@ function Account({ }: Props): ReactElement {
                 token = await getAccessTokenSilently();
 
                 if(filter === ''){
-                    let paymentHistory = await getAuthenticatedRequest('/app/paymentHistory',token);
-                    setpaymentHistory(paymentHistory);
+                    let paymentHist = await getAuthenticatedRequest('/app/paymentHistory',token);
+                    setpaymentHistory(paymentHist);
                 }
                 else {
-                    let paymentHistory = await getAuthenticatedRequest(`/app/paymentHistory?filter${filter}`,token);
-                    setpaymentHistory(paymentHistory);
-                }
+                    let paymentHist = await getAuthenticatedRequest(`/app/paymentHistory?filter=${filter}`,token);
+                    setpaymentHistory(paymentHist);
+                }   
+                
             }
             
         }
         fetchPaymentHistory();
     },[filter])
 
-
-
     return (
+        <>
         <div>
             {userprofile && <AccountNavbar userProfile={userprofile} />}
             <button onClick={()=>setFilter("donations")}>Donations</button> <br/>
@@ -98,6 +98,8 @@ function Account({ }: Props): ReactElement {
             <button onClick={()=>setFilter("in-progress")}>In Progress</button> <br/>
             <button onClick={()=>setFilter("tree-cash")}>Tree Cash</button>
         </div>
+         {paymentHistory && <FilterBlock paymentHistory={paymentHistory} />}
+        </>
     )
 }
 
