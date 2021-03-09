@@ -62,10 +62,19 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
         multiple: false,
-        onDrop: onDrop,
-        onDropAccepted: () => {
-            console.log('uploaded');
+        maxSize: 10485760,
+        onDropAccepted: onDrop,
+        onDrop: () => {
+            console.log('uploading');
         },
+        onDropRejected: (err) => {
+            if (err[0].errors[0].code === "file-too-large") {
+                setErrorMessage(t('manageProjects:fileSizeLimit'))
+            }
+            else if (err[0].errors[0].code === "file-invalid-type") {
+                setErrorMessage(t('manageProjects:filePDFOnly'))
+            }
+        }
     });
 
     const { isDirty, isSubmitting } = formState;
@@ -132,7 +141,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
                     <div className={styles.formField}>
                         {uploadedFiles.map((report) => {
@@ -214,8 +223,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     variant="outlined"
                                     name="amount"
                                     onInput={(e) => {
-                                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                                      setAmount(e.target.value);
+                                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                        setAmount(e.target.value);
                                     }}
                                     InputProps={{
                                         startAdornment: (
@@ -238,11 +247,11 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         {errors.amount || errors.year || !isDirty || amount === 0 ? (
                             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                                 <div className={styles.fileUploadContainer}>
-                                    <AnimatedButton
+                                    <div
                                         className={styles.continueButton}
                                     >
                                         {t('manageProjects:uploadReport')}
-                                    </AnimatedButton>
+                                    </div>
                                     <p style={{ marginTop: '18px' }}>
                                         {t('manageProjects:dragInPdf')}
                                     </p>
@@ -251,13 +260,12 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         ) : (
                                 <div className={styles.formFieldLarge} {...getRootProps()}>
                                     <div className={styles.fileUploadContainer}>
-                                        <AnimatedButton
-                                            // onClick={uploadReport}
+                                        <div
                                             className={styles.continueButton}
                                         >
                                             <input {...getInputProps()} />
                                             {t('manageProjects:uploadReport')}
-                                        </AnimatedButton>
+                                        </div>
                                         <p style={{ marginTop: '18px' }}>
                                             {t('manageProjects:dragInPdf')}
                                         </p>
@@ -297,7 +305,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> :t('manageProjects:saveAndContinue')}
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </AnimatedButton>
                     </div>
                 </div>
