@@ -148,7 +148,7 @@ export default function Footer() {
                 </button>
 
                 <button id={'twitterIcon'}>
-                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://twitter.com/pftp_int">
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://twitter.com/trilliontrees">
                   <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
                     <g id="Group_3318" data-name="Group 3318" transform="translate(-449.175 -500.555)">
                       <g id="Ellipse_1309" data-name="Ellipse 1309" transform="translate(449.175 500.555)" fill="none" stroke="#2f3336" strokeWidth="1">

@@ -137,7 +137,7 @@ const ShareOptions = ({
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
-          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=PftP_int&url=${linkToShare}&text=${textToShare}`)
+          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`)
         }
       >
         <TwitterIcon
