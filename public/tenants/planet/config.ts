@@ -42,7 +42,7 @@ const config = {
         visible: true,
       },
       me:{
-        title: 'me',
+        title: 'Sign-In',
         onclick: '/me',
         visible: true,
       }
