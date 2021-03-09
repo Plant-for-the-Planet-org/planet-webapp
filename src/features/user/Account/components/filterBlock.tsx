@@ -16,7 +16,7 @@ function FilterBlock(props: any) {
                         </p>
                         <p>
                             {item.created}
-                    </p>
+                        </p>
                     </div>
                     
                     <div className={styles.filterText}>

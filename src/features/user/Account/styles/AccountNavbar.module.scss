@@ -17,10 +17,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 .filterRow{
   display: flex;
-  width: 600px;
+  width: 100%;
   flex-direction: column;
 }
 .captionDate{
@@ -34,9 +35,39 @@
   font-weight: bold;
 
 }
+.amtStatus{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.moneyCurr{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
 .filterText{
   font-weight: bold;
   margin-top: 20px;
+}
+.project{
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  width: 150px;
+}
+.projectText{
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+.projectName{
+  color: #68b030;
+
+}
+.secondRow{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 24px;
 }
 .singleRow{
   display: flex;
@@ -47,6 +78,37 @@
   border-bottom: 1px solid #dddbda;
   margin-bottom: 10px;
 }
+@media screen and(min-width: 768px){
+  .filterRow{
+    width: 600px;
+  }
+}
+.filterButtons{
+  width: 200px;
+  height: 150px;
+  margin-left: 0;
+  margin-right: 164px;
+  padding: 24px;
+  position: relative;
+}
+
+.filterButtons > button{
+  border-bottom: #dddbda 1px solid;
+  margin-top: 8px;
+  cursor: pointer;
+
+}
+.historyContainer{
+display: flex;
+justify-content: center;
+width:100%;
+}
+.donationDate{
+  margin-top: 22px;
+  margin-left: 30px;
+}
+
+
 .navbarContainer{
   width: 100%;
   display: flex;

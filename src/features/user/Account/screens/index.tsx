@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 import { useAuth0 } from '@auth0/auth0-react';
 import AccountNavbar from '../components/accountNavbar';
 import FilterBlock from '../components/filterBlock';
+import styles from '../styles/AccountNavbar.module.scss'
+import TreeDonationHistory from '../components/treeDonationHistory';
+
 
 
 import {
@@ -88,17 +91,23 @@ function Account({ }: Props): ReactElement {
         }
         fetchPaymentHistory();
     },[filter])
-
     return (
         <>
-        <div>
+    
             {userprofile && <AccountNavbar userProfile={userprofile} />}
-            <button onClick={()=>setFilter("donations")}>Donations</button> <br/>
-            <button onClick={()=>setFilter("canceled")}>Cancelled</button><br/>
-            <button onClick={()=>setFilter("in-progress")}>In Progress</button> <br/>
-            <button onClick={()=>setFilter("tree-cash")}>Tree Cash</button>
-        </div>
-         {paymentHistory && <FilterBlock paymentHistory={paymentHistory} />}
+            <div className={styles.filterButtons}>
+                <span>Filters</span><br/>
+                
+                    <button id={'donationFilter'} onClick={()=>setFilter("donations")}>Donations</button><br />
+                    <button id="cancelFilter" onClick={()=>setFilter("canceled")}>Cancelled</button><br />
+            
+                        <button id={"progressFilter"} onClick={()=>setFilter("in-progress")}>In Progress</button><br />
+                        <button id={"treeCashFilter"} onClick={()=>setFilter("tree-cash")}>Tree Cash</button><br />
+                
+            </div>
+            {paymentHistory && <TreeDonationHistory paymentHistory={paymentHistory}/>}
+            {paymentHistory ? paymentHistory && <FilterBlock paymentHistory={paymentHistory} />: null}
+            
         </>
     )
 }
