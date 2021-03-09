@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../styles/StepForm.module.scss';
@@ -18,7 +18,7 @@ interface Props {
   setGeoJson: Function;
   geoJsonError: any;
   setGeoJsonError: Function;
-  geoLocation:any;
+  geoLocation: any;
 }
 
 const Map = ReactMapboxGl({});
@@ -51,14 +51,23 @@ export default function MapComponent({
     layers: [],
   });
 
-  React.useEffect(() => {
-    const promise = getMapStyle('openStreetMap');
-    promise.then((style: any) => {
-      if (style) {
-        setStyle(style);
-      }
-    });
-  }, []);
+  const RASTER_SOURCE_OPTIONS = {
+    "type": "raster",
+    "tiles": [
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    ],
+    "tileSize": 128
+  };
+
+  // React.useEffect(() => {
+  //   const promise = getMapStyle('openStreetMap');
+  //   promise.then((style: any) => {
+  //     if (style) {
+  //       setStyle(style);
+  //     }
+  //   });
+  // }, []);
+
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
   const drawControlRef = React.useRef(null);
@@ -123,6 +132,8 @@ export default function MapComponent({
           width: '100%',
         }}
       >
+        <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+        <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
@@ -201,6 +212,6 @@ export default function MapComponent({
       ) : null}
     </div>
   ) : (
-      <></>
-    );
+    <></>
+  );
 }
