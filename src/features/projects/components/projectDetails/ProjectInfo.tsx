@@ -41,19 +41,17 @@ function ProjectInfo({ project }: Props): ReactElement {
 
     const [ownerTypes, setOwnerTypes] = React.useState([])
     React.useEffect(() => {
-        if (project.siteOwnerType && project.siteOwnerType.length > 0) {
-            const newSiteOwners = ownerTypes;
+        if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
+            let newSiteOwners = [];
+
             for (let i = 0; i < project.siteOwnerType.length; i++) {
-                for (let j = 0; j < siteOwners.length; j++) {
-                    if (siteOwners[j].value === project.siteOwnerType[i]) {
-                        newSiteOwners.push(siteOwners[j].title)
-                    }
-                }
+                let translatedOwnerType = siteOwners.find((element)=>element.value === project.siteOwnerType[i]);
+                newSiteOwners.push(translatedOwnerType.title);
             }
+
             setOwnerTypes(newSiteOwners)
         }
-    }, [])
-
+    }, [ready])
 
     const expenseAmount = project.expenses.map((expense:any)=>expense.amount);    
     const calculatePercentage =(amount:any)=>{
@@ -61,6 +59,8 @@ function ProjectInfo({ project }: Props): ReactElement {
         const percentage = (amount/maxAmount) * 100;
         return `${percentage}%`
     }
+
+    
 
     return ready ? (
         <div>
@@ -289,7 +289,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
         </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default ProjectInfo
