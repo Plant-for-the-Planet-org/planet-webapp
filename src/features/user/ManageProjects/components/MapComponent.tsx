@@ -50,6 +50,7 @@ export default function MapComponent({
     sources: {},
     layers: [],
   });
+  const [satellite, setSatellite] = React.useState(false);
 
   const RASTER_SOURCE_OPTIONS = {
     "type": "raster",
@@ -59,14 +60,14 @@ export default function MapComponent({
     "tileSize": 128
   };
 
-  // React.useEffect(() => {
-  //   const promise = getMapStyle('openStreetMap');
-  //   promise.then((style: any) => {
-  //     if (style) {
-  //       setStyle(style);
-  //     }
-  //   });
-  // }, []);
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
 
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
@@ -132,8 +133,12 @@ export default function MapComponent({
           width: '100%',
         }}
       >
-        <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
-        <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
+        {satellite &&
+          <>
+            <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+            <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
+          </>
+        }
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
@@ -147,6 +152,14 @@ export default function MapComponent({
             uncombine_features: false,
           }}
         />
+        <div className={styles.layerSwitcher}>
+          <div onClick={() => setSatellite(false)} className={styles.layerOption}>
+            Map
+          </div>
+          <div onClick={() => setSatellite(true)} className={styles.layerOption}>
+            Satellite
+          </div>
+        </div>
         <ZoomControl position="bottom-right" />
       </Map>
       <Dropzone

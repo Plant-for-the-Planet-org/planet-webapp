@@ -90,6 +90,31 @@
     width: 120px !important;
   }
 }
+
+.layerSwitcher {
+  display: flex;
+  flex-direction: row;
+
+  height: 50px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.layerOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  width: 60px;
+  height: 30px;
+  border: 1px solid $primaryFontColor;
+  border-radius: 0 !important;
+}
+
 @include mdTabletView {
   .mainContainer {
     max-width: 780px;
@@ -170,8 +195,8 @@
 
 .inlineLinkButton {
   font-family: $primaryFontFamily;
- width: 100%;
- font-size: 14px;
+  width: 100%;
+  font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -186,7 +211,7 @@
   cursor: pointer;
   font-weight: bold;
 }
-.projSiteSaveandAdd{
+.projSiteSaveandAdd {
   display: flex;
   justify-content: center;
   align-items: center;
