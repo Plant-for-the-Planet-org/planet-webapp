@@ -67,8 +67,8 @@ describe('manage-project', () => {
     //Todo Fix the conditions below.
     //Expect: Your project is under review, kindly wait. ( if true, pass the test.)
     await element(by.id("basicDetailsCont")).click();
-    await driver.wait(until.elementLocated(By.id('donateContinueButton')), 10000).click();
-    await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
+    await driver.wait(until.elementLocated(By.id('donateContinueButton'))).click();
+    await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']"))).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {
         driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Title contains header!"}}');
