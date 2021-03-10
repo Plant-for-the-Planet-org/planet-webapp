@@ -52,7 +52,7 @@ describe('Gift Trees', () => {
 
     (await driver).sleep(100);
     await driver.wait(until.elementLocated(By.id('donateContinueButton')), 10000).click();
-    await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
+    await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 100000).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {
         driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Title contains header!"}}');
