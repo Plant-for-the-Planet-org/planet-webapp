@@ -141,7 +141,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )}
 
-                {project.plantingSeasons && (
+                {project.plantingSeasons && project.plantingSeasons.length > 0 && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:plantingSeasons')}
