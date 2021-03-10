@@ -125,7 +125,7 @@ export default function NavbarComponent(props: any) {
                     <UserProfileIcon />
                   </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {isAuthenticated && userInfo ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)} 
+                  {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)} 
                   </p>
                 </button>
               )
