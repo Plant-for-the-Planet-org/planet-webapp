@@ -10,7 +10,7 @@ describe('hompage', () => {
     await driver.wait(until.elementLocated(By.className('donateButton'))).click();
     await driver.switchTo().activeElement();
     await driver.wait(until.elementLocated(By.id('treeDonateContinue'))).click();
-    await driver.findElement(By.name('firstName')).sendKeys('Peter');
+    await driver.wait(until.elementLocated(By.name('firstName'))).sendKeys('Peter');
     await driver.findElement(By.name('lastName')).sendKeys('Planter');
     await driver.findElement(By.name('email')).sendKeys('peter.planter@gmail.com');
     await driver.findElement(By.name('address')).sendKeys('Am Bahnhof 1');
