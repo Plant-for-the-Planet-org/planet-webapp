@@ -11,7 +11,7 @@ describe('Gift Trees', () => {
     await driver.navigate().to(`${url}s/sagar-aryal`);
     await driver.wait(until.elementLocated(By.className('donateButton'))).click();
     await driver.switchTo().activeElement();
-    await driver.wait(until.elementLocated(By.id('treeDonateContinue')), 10000).click();
+    await driver.wait(until.elementLocated(By.id('treeDonateContinue'))).click();
     await driver.findElement(By.name('firstName')).sendKeys('Peter');
     await driver.findElement(By.name('lastName')).sendKeys('Planter');
     await driver.findElement(By.name('email')).sendKeys('peter.planter@gmail.com');
@@ -51,8 +51,8 @@ describe('Gift Trees', () => {
     await driver.switchTo().defaultContent();
 
     (await driver).sleep(100);
-    await driver.wait(until.elementLocated(By.id('donateContinueButton')), 10000).click();
-    await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']")), 50000).getText().then((title) => {
+    await driver.wait(until.elementLocated(By.id('donateContinueButton'))).click();
+    await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']"))).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {
         driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Title contains header!"}}');
