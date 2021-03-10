@@ -95,7 +95,7 @@ export default function NavbarComponent(props: any) {
           width: '27px',
           border: '1px solid #F2F2F7',
         }}
-      >
+      > 
         <img
           src={getImageUrl('profile', 'avatar', userInfo.profilePic)}
           height="26px"
@@ -125,7 +125,7 @@ export default function NavbarComponent(props: any) {
                     <UserProfileIcon />
                   </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                    {t('common:' + SingleLink.title)}
+                  {isAuthenticated && userInfo ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)} 
                   </p>
                 </button>
               )
