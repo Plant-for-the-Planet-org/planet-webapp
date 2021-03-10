@@ -177,7 +177,7 @@ export default function RegisterTrees({
 
   const treeCount = watch('treeCount');
 
-  const onTreeCountChange = (e) => {
+  const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {

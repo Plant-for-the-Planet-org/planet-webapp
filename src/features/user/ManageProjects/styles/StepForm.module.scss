@@ -112,9 +112,13 @@
   height: 30px;
   border-radius: 0 !important;
   cursor: pointer;
-  > div {
-    border-right: 1px solid $primaryFontColor !important;
-  }
+  font-family: $primaryFontFamily;
+  font-weight: 700;
+}
+
+.active {
+  background-color: $primaryColor;
+  color: #fff;
 }
 
 @include mdTabletView {

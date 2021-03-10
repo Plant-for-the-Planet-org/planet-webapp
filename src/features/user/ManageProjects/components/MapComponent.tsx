@@ -153,10 +153,10 @@ export default function MapComponent({
           }}
         />
         <div className={styles.layerSwitcher}>
-          <div onClick={() => setSatellite(false)} className={styles.layerOption} style={{ borderRight: "1px solid #2f3336" }}>
+          <div onClick={() => setSatellite(false)} className={`${styles.layerOption} ${satellite ? '' : styles.active}`}>
             Map
           </div>
-          <div onClick={() => setSatellite(true)} className={styles.layerOption}>
+          <div onClick={() => setSatellite(true)} className={`${styles.layerOption} ${satellite ? styles.active : ''}`}>
             Satellite
           </div>
         </div>
