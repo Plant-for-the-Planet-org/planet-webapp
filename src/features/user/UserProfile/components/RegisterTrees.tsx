@@ -137,7 +137,7 @@ export default function RegisterTrees({
     async function getUserLocation() {
       const location = await getStoredConfig('loc');
       if (location) {
-        setUserLocation([location.longitude, location.latitude]);
+        setUserLocation([Number(location.longitude) || 0, Number(location.latitude) || 0]);
       }
     }
     getUserLocation();
