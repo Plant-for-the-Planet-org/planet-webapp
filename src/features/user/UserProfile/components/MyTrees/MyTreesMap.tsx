@@ -9,6 +9,7 @@ import { getCountryDataBy } from '../../../../../utils/countryCurrency/countryUt
 const Map = ReactMapboxGl({
   customAttribution:
     '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
+  maxZoom: 16
 });
 
 interface Props {
@@ -89,7 +90,12 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
           width: '100%',
         }}
       >
-        <Cluster ClusterMarkerFactory={clusterMarker}>
+        <Cluster
+          ClusterMarkerFactory={clusterMarker}
+          zoomOnClick={true}
+          zoomOnClickPadding={50}
+          maxZoom={24}
+        >
           {
             contributions &&
               Array.isArray(contributions) &&
