@@ -70,8 +70,9 @@ function Account({}: Props): ReactElement {
   const [paymentHistory, setpaymentHistory] = React.useState();
 
   React.useEffect(()=>{
+    if(isAuthenticated)
     setFilter('')
-  },[])
+  },[isAuthenticated])
   React.useEffect(() => {
     async function fetchPaymentHistory() {
       let token = null;
@@ -120,9 +121,9 @@ function Account({}: Props): ReactElement {
     <div className={styles.accountsPage}>
       <div className={styles.accountsPageContainer}>
         <div className={styles.accountsHeader}>
-          <div className={styles.backButton}>
+          <button onClick={()=>{router.back()}} className={styles.backButton}>
             <BackButton style={{ margin: '0px' }} />
-          </div>
+          </button>
           <div className={styles.accountsTitleContainer}>
             <div className={styles.accountsTitle}>Account History</div>
             <div className={styles.settingsButton}></div>
