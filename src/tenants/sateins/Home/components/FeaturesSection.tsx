@@ -8,7 +8,7 @@ export default function FeaturesSection(props:any){
             </div>
             <div className={styles.featuresContainerDivider}></div>
             <div className={styles.featuresSection}>
-                <img src={"tenants/sateins/images/sat1-sign.jpg"} />
+                <img src={"https://waldrekord.plant-for-the-planet.org/tenants/sateins/images/sat1-sign.jpg"} />
             </div>
         </div>
     )
