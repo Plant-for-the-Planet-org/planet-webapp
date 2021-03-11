@@ -31,7 +31,7 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderBoard = await getRequest(`/app/leaderboard`);
+      const newLeaderBoard = await getRequest(`/app/leaderboard?limit=20`);
       setLeaderboard(newLeaderBoard);
     }
     loadLeaderboard();
