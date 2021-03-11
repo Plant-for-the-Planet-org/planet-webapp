@@ -28,7 +28,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState([])
+  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>()
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -51,12 +51,16 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
       if (!res.code) {
-        const newUploadedImages = uploadedImages;
+        let newUploadedImages = uploadedImages;
+        if(newUploadedImages === undefined){
+          newUploadedImages = [];
+        }
         newUploadedImages.push(res)
         setUploadedImages(newUploadedImages)
         setIsUploadingData(false)
         setErrorMessage('')
-      } else {
+      }
+      else {
         if (res.code === 404) {
           setIsUploadingData(false)
           setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
@@ -67,8 +71,6 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
         }
 
       }
-
-
     })
   };
 
@@ -96,15 +98,19 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     multiple: true,
-    onDrop: onDrop,
-    onDropAccepted: () => {
-      console.log('uploaded');
-
+    maxSize: 10485760,
+    onDropAccepted: onDrop,
+    onDrop: () => {
+      console.log('uploading');
     },
-
-    // onFileDialogCancel: () => {
-    //     alert('no file selected')
-    // }
+    onDropRejected: (err) => {
+      if (err[0].errors[0].code === "file-too-large") {
+        setErrorMessage(t('manageProjects:fileSizeLimit'))
+      }
+      else if(err[0].errors[0].code === "file-invalid-type"){
+        setErrorMessage(t('manageProjects:fileImageOnly'))
+      }
+    }
   });
 
   const [youtubeURL, setYoutubeURL] = React.useState('')
@@ -211,7 +217,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   }
   return ready ? (
     <div className={styles.stepContainer}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {/* <div className={styles.formFieldLarge}>
             {youtubeURL && !errors.youtubeURL ? (
@@ -245,9 +251,9 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           {uploadedImages && uploadedImages.length > 0 ?
             <div className={styles.formField}>
               {
-                uploadedImages.map((image, index) => {
+                uploadedImages.map((image, index: any) => {
                   return (
-                    <div key={image.id} className={styles.formFieldHalf}>
+                    <div key={index} className={styles.formFieldHalf}>
                       <div className={styles.uploadedImageContainer}>
                         <img src={getImageUrl('project', 'medium', image.image)} />
                         <div className={styles.uploadedImageOverlay}></div>
@@ -277,14 +283,12 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <AnimatedButton
-                onClick={uploadPhotos}
+              <div
                 className={styles.continueButton}
               >
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
-
-              </AnimatedButton>
+              </div>
               <p style={{ marginTop: '18px' }}>
                 {t('manageProjects:dragIn')}
               </p>

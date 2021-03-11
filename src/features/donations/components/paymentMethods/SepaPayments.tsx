@@ -7,9 +7,10 @@ import {
 } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import styles from './../../styles/PaymentDetails.module.scss';
+import styles from './../../styles/Donations.module.scss';
 import i18next from '../../../../../i18n';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
+import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 const { useTranslation } = i18next;
 
@@ -108,8 +109,13 @@ function SepaPayments({
                 <div className={styles.paymentError}>{paymentError}</div>
             )}
 
+            <div className={styles.disclaimerContainer}>
+                <div>
+                    <InfoIcon/>
+                </div>
+                <p>{t('donate:sepaDisclaimer')}</p>
+            </div>
             <div className={styles.paymentModeContainer}>
-
                 <div>
                     <div className={styles.mandateAcceptance}>
                         {t('donate:sepaMessage')}
@@ -126,14 +132,14 @@ function SepaPayments({
 
 
             {showContinue ? (
-                <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-                    <AnimatedButton className={styles.continueButton}>
+                <div onClick={handleSubmit} className={styles.actionButtonsContainerCenter}>
+                    <AnimatedButton className={styles.continueButton} id='donateContinueButton'>
                         {t('common:donate')}
                     </AnimatedButton>
                 </div>
             ) : (
-                    <div className={styles.actionButtonsContainer}>
-                        <AnimatedButton disabled className={styles.continueButtonDisabled}>
+                    <div className={styles.actionButtonsContainerCenter}>
+                        <AnimatedButton disabled className={styles.continueButtonDisabled} id='donateContinueButton'>
                             {t('common:donate')}
                         </AnimatedButton>
                     </div>

@@ -71,8 +71,8 @@
   "siteStatusPlanted": "Planted",
   "siteStatusBarren": "Barren",
   "siteStatusReforestation": "Reforestation",
-  "projectStatus": "Project Status",
-  "selectProjectStatus": "Please select Project Status",
+  "siteStatus": "Site Status",
+  "selectProjectStatus": "Please select Site Status",
   "saveAndAddSite": "Save & Add another site",
   "addSite": "Add another site",
   "backToAnalysis": "Back to detailed analysis",
@@ -110,5 +110,11 @@
   "urbanPlanting": "Urban Planting",
   "otherPlanting": "Other Planting",
   "projectType": "Project Type",
-  "polygonRequired": "Polygon is required"
+  "polygonRequired": "Polygon is required",
+  "fileSizeLimit": "File is larger than 10 mb",
+  "fileImageOnly": "File type must be image",
+  "filePDFOnly": "File type must be PDF",
+  "acceptedReview": "Changes to your project are Live",
+  "deniedReview": "Your review is denied",
+  "saveSite":"Save Site"
 }
