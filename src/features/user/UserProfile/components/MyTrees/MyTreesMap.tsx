@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
-import ReactMapboxGl, { Cluster, GeoJSONLayer, Marker } from 'react-mapbox-gl';
-import getMapStyle from '../../../../../utils/getMapStyle';
+import ReactMapboxGl, { Cluster, GeoJSONLayer, Marker, ZoomControl } from 'react-mapbox-gl';
+import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import { getFormattedRoundedNumber } from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
 import { getCountryDataBy } from '../../../../../utils/countryCurrency/countryUtils';
@@ -58,29 +58,26 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
     }
   }, [contributions]);
 
-  const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => (
-    <Marker
-      coordinates={coordinates}
-      anchor="bottom"
-    // onClick={() => {
-    //   console.log('point Count ', pointCount);
-    //   console.log('Leaves ', getLeaves(Infinity));
-    // }}
-    >
-      <div
-        onMouseOver={() => {
-          const nodes = getLeaves(Infinity);
-          let sum = 0;
-          nodes.map((node: any) => {
-            sum += Number(contributions[node.key].properties.treeCount);
-          })
-          console.log(sum);
-          setContributionInfo({ treeCount: sum, country: contributions[nodes[0].key].properties.country });
-        }}
-        className={styles.bigMarker}
-      />
-    </Marker>
-  );
+  const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
+    const nodes = getLeaves(Infinity);
+    let sum = 0;
+    nodes.map((node: any) => {
+      sum += Number(contributions[node.key].properties.treeCount);
+    })
+    console.log(sum);
+    return (
+      <Marker
+        coordinates={coordinates}
+        anchor="bottom"
+      >
+        <div
+          className={styles.bigMarker}
+        >
+          {getFormattedRoundedNumber(i18n.language, sum, 2)}
+        </div>
+      </Marker>
+    );
+  };
 
   return (
     <div className={styles.mapContainer}>
@@ -140,6 +137,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
             <p className={styles.moreInfo}>{contributionInfo.type && contributionInfo.type === 'registration' ? t('registeredTrees') : null}</p>
           </div>
           : null}
+        <ZoomControl position="bottom-right" />
       </Map>
     </div>
   );
