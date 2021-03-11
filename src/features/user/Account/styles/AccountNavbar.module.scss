@@ -1,144 +1,218 @@
 @import './../../../../theme/theme';
-.accountNavbar {
+
+.accountsPage{
   width: 100%;
-  min-height: 120px;
-  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.accountsPageContainer {
+  align-self: center;
+  width: 100%;
+  max-width: 980px;
+  margin-top: 100px;
+}
+
+.accountsHeader{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  @include smTabletView{
-    height: 305px;
+  gap:30px;
+  .backButton{
+    box-shadow:1px 1px 4px -2px #707070;
+    height: 30px;
+    width: 30px;
+    background-color:white;
+    border-radius:50%;
+  }
+  .accountsTitleContainer{
+    .accountsTitle{
+      font-size: 36px;
+      font-weight: bold;
+    }
+  }
+}
+.contentContainer{
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+// accounts 
+.accountsContainer{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+// Single record which is not expanded
+
+.singleRecord {
+  padding: 20px;
+  background-color: $light;
+  border-radius: 10px;
+  box-shadow: 1px 2px 8px -6px #707070;
+  .recordHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &:hover{
+      cursor: pointer;
+    }
   }
 }
 
-.filterContainer{
+
+
+
+.recordDataContainer{
+  height: 0px;
+  display: none;
+  border-top: #dddbda 1px solid;
+  padding-top: 20px;
+  margin-top: 20px;
+  grid-row-gap: 20px;
+  grid-template-columns: 32% 32% 32%;
+  .detailContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .detailTitle{
+      font-weight: bold;
+    }
+    a {
+      color: $primaryColor;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
+  transition: all 1s ease;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+}
+.recordDataContainer.recordDataContainerSelected{
+  display: grid;
+  height: fit-content;
+}
+
+
+
+
+.treesDate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.treesDonated {
+  font-weight: bold;
+}
+.recordStatus {
+  font-weight: bold;
+}
+
+.statusAmount {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+// Filters for the records
+
+.filterContainer {
+  background-color: $light;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 300px;
+  box-shadow: 1px 2px 8px -6px #707070;
+  height: fit-content;
+}
+
+.filterTitle {
+  font-weight: 600;
+}
+
+.filterButtons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.multiSelectInput {
+  display: flex;
+  flex-direction: row;
+  background-color: $light;
+  border-radius: 6px;
+  transition-duration: 0.4;
+  transition-timing-function: ease-in;
+  margin-right: 20px;
+  margin-top: 20px;
+  width: fit-content;
+  .multiSelectInputCheck {
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    background-color: #d5d5d5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .multiSelectInputCheckTrue {
+    background-color: $primaryColor;
+  }
+  p {
+    margin-left: 6px;
+  }
+}
+.multiSelectInput:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.filterButtons > button {
+  border-bottom: #dddbda 1px solid;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+// Single record expanded
+
+.historyContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
   width: 100%;
 }
-.filterRow{
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-}
-.captionDate{
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-.caption{
-  margin-bottom: 10px;
-  font-weight: bold;
 
-}
-.amtStatus{
+.amtStatus {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
 }
-.moneyCurr{
+.moneyCurr {
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
   font-weight: bold;
 }
-.filterText{
-  font-weight: bold;
-  margin-top: 20px;
-}
-.project{
+
+.project {
   display: flex;
   flex-direction: column;
   margin-top: 30px;
   width: 150px;
 }
-.projectText{
+.projectText {
   font-weight: bold;
   margin-bottom: 14px;
 }
-.projectName{
+.projectName {
   color: #68b030;
-
 }
-.secondRow{
+.secondRow {
   display: flex;
   flex-direction: row;
   margin-bottom: 24px;
-}
-.singleRow{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-bottom: 1px solid #dddbda;
-  margin-bottom: 10px;
-}
-@media screen and(min-width: 768px){
-  .filterRow{
-    width: 600px;
-  }
-}
-.filterButtons{
-  width: 200px;
-  height: 150px;
-  margin-left: 0;
-  margin-right: 164px;
-  padding: 24px;
-  position: relative;
-}
-
-.filterButtons > button{
-  border-bottom: #dddbda 1px solid;
-  margin-top: 8px;
-  cursor: pointer;
-
-}
-.historyContainer{
-display: flex;
-justify-content: center;
-width:100%;
-}
-.donationDate{
-  margin-top: 22px;
-  margin-left: 30px;
-}
-
-
-.navbarContainer{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: left;
-  color: $light;
-  padding: 20px;
-  padding-bottom: 0px;
-  text-align: left;
-  max-width: 980px;
-  position: absolute;
-  bottom: 16px;
-  .nameText{
-    font-size: 41px;
-    line-height: 0.66;
-  }
-  .firstName {
-    font-weight: bold;
-  }
-  .secondaryText{
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 12px;
-  }
-  .navbarLink{
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 16px;
-    color: $light;
-    width: fit-content;
-  }
 }
