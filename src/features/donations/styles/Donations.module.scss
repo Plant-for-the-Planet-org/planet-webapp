@@ -2,8 +2,8 @@
 
 .cardContainer {
   background-color: $backgroundColor;
-  border-radius: 7px;
-  padding: 26px;
+  border-radius: 10px;
+  // padding: 26px;
   width: 412px;
   z-index: 10;
   position: absolute;
@@ -14,8 +14,11 @@
 
 .header {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  background-color: #68b030;
+  width: 100%;
+  border-radius: 10px 10px 60px 60px;
+  padding: 20px;
 }
 
 .headerCloseIcon,
@@ -30,27 +33,32 @@
 .headerBackIcon:hover {
   cursor: pointer;
 }
+
+.headerTitleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
 .headerTitle {
   font-family: $primaryFontFamily;
-  font-weight: bold;
+  font-weight: bolder;
   font-size: 27px;
-  color: $primaryFontColor;
-  margin-left: 20px;
+  color: $light;
 }
 
 .plantProjectName {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  color: $primaryFontColor;
-  margin-top: 20px;
+  font-size: 12px;
+  color: $light;
   width: 100%;
+  margin-top: 4px;
 }
 
 .currencyRate {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  margin-top: 10px;
+  color: $light;
+  align-items: baseline;
 }
 
 .currencyRateDisabled {
@@ -67,14 +75,13 @@
 .currency {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: $fontSubTitleSize;
-  color: $primaryColor;
+  font-size: 12px;
 }
 
 .currencyDisabled {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: $fontSubTitleSize;
+  font-size: 12px;
   color: $highlightBackground;
 }
 
@@ -85,8 +92,12 @@
 .rate {
   margin-left: 9px;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  color: $primaryFontColor;
+  font-size: 12px;
+}
+
+.treeDonationContainer {
+  padding: 26px;
+  padding-top: 0px;
 }
 
 .isGiftDonation {
@@ -269,13 +280,14 @@
 }
 .continueButton {
   background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
-  border-radius: 18px;
+  border-radius: 10px;
   padding: 8px 40px;
-  min-height: 36px;
+  min-height: 40px;
   color: $light;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
+  width: 100%;
   &:hover {
     cursor: pointer;
   }
@@ -283,12 +295,14 @@
 
 .continueButtonDisabled {
   background-color: $dividerColor;
-  border-radius: 18px;
+  border-radius: 10px;
   padding: 8px 40px;
   color: $light;
+  width: 100%;
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   font-weight: 600;
+  min-height: 40px;
 }
 
 .paymentRequestPlaceholder {
@@ -320,7 +334,7 @@
   font-family: $primaryFontFamily;
   font-size: 14px;
   color: $primaryFontColor;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .singleGiftTitle > span {
   font-weight: 600;
@@ -360,6 +374,7 @@
 :export {
   primaryFontColor: $primaryFontColor;
   primaryColor: $primaryColor;
+  light: $light;
 }
 
 /* Is Company */
@@ -511,8 +526,9 @@
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-    padding: 6px;
-    min-width: 100px;
+    align-items: center;
+    width: 64px;
+    height: 40px;
     color: $dividerColor;
     justify-content: center;
     position: relative;
@@ -527,7 +543,7 @@
       background-color: #e7edff;
       border: 0.5px solid #e7edff;
     }
-    .checkMark{
+    .checkMark {
       display: none;
     }
   }
@@ -536,8 +552,8 @@
     border: 0.5px solid #e7edff;
     color: $primaryFontColor;
     font-weight: 600;
-    
-    > .checkMark{
+
+    > .checkMark {
       display: block;
       position: absolute;
       right: -6px;
@@ -750,18 +766,6 @@
   margin-left: 24px;
   margin-right: 24px;
 }
-.continueButton {
-  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
-  border-radius: 18px;
-  padding: 8px 40px;
-  color: $light;
-  font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
-  font-weight: 600;
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 .disclaimerContainer {
   display: flex;
@@ -785,11 +789,18 @@
 }
 
 .showContactDetails {
-  margin-top: 20px;
-  padding: 20px;
-  border:1px solid $primaryFontColor;
-  border-radius: 10px;
+  margin-left: 22px;
+  margin-right: 22px;
+  margin-top: -70px;
   color: $primaryFontColor;
+  padding: 20px;
+  padding-left: 26px;
+  padding-right: 26px;
+
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 1px 3px 6px -4px rgba(116, 116, 116, 0.7);
   .showContactDetailsName {
     font-size: 18px;
     font-weight: bold;
@@ -798,4 +809,17 @@
     font-size: 12px;
     margin-top: 2px;
   }
+}
+
+.contributionMessageContainer {
+  margin-left: 22px;
+  margin-right: 22px;
+  margin-top: -80px;
+  color: $primaryFontColor;
+  position: relative;
+  padding: 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 1px 3px 6px -4px rgba(116, 116, 116, 0.7);
 }
