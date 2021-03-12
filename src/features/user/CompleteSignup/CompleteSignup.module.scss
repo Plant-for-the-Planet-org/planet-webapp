@@ -8,13 +8,13 @@
   background-size:cover;
   display:flex;
   flex-direction:column;
-  height: 100vh; 
-  overflow-x: hidden;
+  overflow-y: auto;
+  // min-height: calc(100vh - 150px);
 }
 
 // the white form
 .signup {
-  top: 80px;
+  top: 100px;
   margin-bottom: 60px;
   background-color: $light;
   position: absolute;
@@ -28,15 +28,18 @@
   border-radius: 8px;
   align-self: center;
   padding:20px;
+  overflow-y: auto;
+  // min-height: calc(100vh - 150px);
+  z-index: 100;
 }
 
 // when request sent, opacity low
 .signupRequestSent {
   background-color: $light;
+  position:absolute;
   border: 0px;
-  opacity: 0.8;
-  min-width: 360px;
-  max-width: 30vw;
+  min-width: 320px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,6 +47,7 @@
   border-radius: 8px;
   align-self: center;
   padding:20px 20px;
+  margin-top: 100px;
 }
 
 .header {
@@ -60,6 +64,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
+  > svg {
+    width: 16px;
+  }
 }
 .headerBackIcon:hover {
   cursor: pointer;
@@ -252,4 +259,18 @@
   max-width: 320px;
   position: absolute;
   bottom: -18px;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
+}
+
+// for mobile view
+@media only screen and (max-width: 768px) {
+  .signup {
+      min-height: calc(100vh - 150px);
+  }
+  .signUpPage {
+    min-height: calc(100vh - 150px);
+  }
 }

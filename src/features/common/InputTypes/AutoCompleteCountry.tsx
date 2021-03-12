@@ -55,10 +55,9 @@ export default function CountrySelect(props: {
 
   // use default country passed to create default object & set contact details
   React.useEffect(() => {
-    let defaultCountry;
     // create default object
-    defaultCountry = countries.filter((data) => data.code === defaultValue);
-    if (defaultCountry) {
+    const defaultCountry = countries.filter((data) => data.code === defaultValue);
+    if (defaultCountry && defaultCountry.length > 0) {
       // set initial value
       setValue(defaultCountry[0]);
       // set contact details
@@ -100,7 +99,7 @@ export default function CountrySelect(props: {
       renderOption={(option) => (
         <>
           <span>{countryToFlag(option.code)}</span>
-          {t(`country:${option.code.toLowerCase()}`) + ' ' + option.code}
+          {props.name === 'editProfile' ? (t(`country:${option.code.toLowerCase()}`)) : (t(`country:${option.code.toLowerCase()}`) + ' ' + option.code)}
         </>
       )}
       onChange={(event: any, newValue: CountryType | null) => {
@@ -118,7 +117,6 @@ export default function CountrySelect(props: {
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
           }}
-          inputRef={props.inputRef}
           name={'countrydropdown'}
         />
       )}
@@ -379,7 +377,7 @@ const countries = [
   { code: 'TR', label: 'Turkey', phone: '90' },
   { code: 'TT', label: 'Trinidad and Tobago', phone: '1-868' },
   { code: 'TV', label: 'Tuvalu', phone: '688' },
-  { code: 'TW', label: 'Taiwan, Province of China', phone: '886' },
+  { code: 'TW', label: 'Taiwan', phone: '886' },
   { code: 'TZ', label: 'United Republic of Tanzania', phone: '255' },
   { code: 'UA', label: 'Ukraine', phone: '380' },
   { code: 'UG', label: 'Uganda', phone: '256' },

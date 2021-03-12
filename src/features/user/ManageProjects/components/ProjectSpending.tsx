@@ -1,9 +1,8 @@
-import 'date-fns'
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
@@ -25,17 +24,16 @@ interface Props {
     handleBack: Function;
     projectGUID: String;
     handleReset: Function;
-    session: any;
+    token: any;
     userLang: String;
 }
 
-export default function ProjectSpending({ handleBack, session, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
+export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects']);
 
-    const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
+    const { register, handleSubmit, errors, formState, getValues, setValue, control } = useForm({ mode: 'all' });
 
-    const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
@@ -44,7 +42,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
     const [uploadedFiles, setUploadedFiles] = React.useState([])
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset(t('manageProjects:resetMessage'))
+            handleReset(ready ? t('manageProjects:resetMessage') : '')
         }
     })
 
@@ -64,27 +62,37 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
         multiple: false,
-        onDrop: onDrop,
-        onDropAccepted: () => {
-            console.log('uploaded');
+        maxSize: 10485760,
+        onDropAccepted: onDrop,
+        onDrop: () => {
+            console.log('uploading');
         },
+        onDropRejected: (err) => {
+            if (err[0].errors[0].code === "file-too-large") {
+                setErrorMessage(t('manageProjects:fileSizeLimit'))
+            }
+            else if (err[0].errors[0].code === "file-invalid-type") {
+                setErrorMessage(t('manageProjects:filePDFOnly'))
+            }
+        }
     });
 
     const { isDirty, isSubmitting } = formState;
 
     const onSubmit = (pdf: any) => {
         setIsUploadingData(true)
-        const updatedAmount = getValues("amount");
+        const updatedAmount = getValues('amount');
+        const year = getValues('year');
+
         const submitData = {
             year: year.getFullYear(),
             amount: updatedAmount,
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, session).then((res) => {
-
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
             if (!res.code) {
-                let newUploadedFiles = uploadedFiles;
+                const newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
                 setUploadedFiles(newUploadedFiles);
                 setAmount(0);
@@ -95,7 +103,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                 }
                 else {
                     setIsUploadingData(false)
@@ -108,9 +116,9 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
 
     const deleteProjectSpending = (id: any) => {
         setIsUploadingData(true)
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, session).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
             if (res !== 404) {
-                let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
+                const uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
                 setIsUploadingData(false)
             }
@@ -120,8 +128,8 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
 
     React.useEffect(() => {
         // Fetch spending of the project 
-        if (projectGUID && session?.accessToken)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, session).then((result) => {
+        if (projectGUID && token)
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
                 if (result.expenses.length > 0) {
                     setShowForm(false)
                 }
@@ -129,17 +137,18 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
             })
     }, [projectGUID]);
 
-    var fiveYearsAgo = new Date();
+    const fiveYearsAgo = new Date();
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
                     <div className={styles.formField}>
                         {uploadedFiles.map((report) => {
                             return (
                                 <div key={report.id} className={` ${styles.reportPDFContainer}`}>
-                                    <a target={"_blank"} href={getPDFFile('projectExpense', report.pdf)}>
+                                    <a target="_blank" rel="noopener noreferrer"
+                                        href={getPDFFile('projectExpense', report.pdf)}>
                                         {/* <PDFIcon color="#2F3336" /> */}
                                         <PDFRed />
                                     </a>
@@ -150,11 +159,11 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                                     {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                                    <div
+                                    <button id={'trashIconProjSpend'}
                                         onClick={() => deleteProjectSpending(report.id)}
                                         className={styles.reportEditButton}>
                                         <TrashIcon />
-                                    </div>
+                                    </button>
                                 </div>
                             )
                         })}
@@ -165,26 +174,32 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                    <DatePicker
-                                        inputRef={register({
-                                            required: {
-                                                value: true,
-                                                message: t('manageProjects:spendingYearValidation')
-                                            }
-                                        })}
-                                        views={["year"]}
-                                        value={year}
-                                        onChange={(value) => setYear(value)}
-                                        label={t('manageProjects:spendingYear')}
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                inputRef={register({
+                                                    required: {
+                                                        value: true,
+                                                        message: t('manageProjects:spendingYearValidation')
+                                                    }
+                                                })}
+                                                views={["year"]}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                label={t('manageProjects:spendingYear')}
+                                                inputVariant="outlined"
+                                                variant="inline"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                clearable
+                                                disableFuture
+                                                minDate={fiveYearsAgo}
+                                                maxDate={new Date()}
+                                            />
+                                        )}
+                                        defaultValue={new Date()}
                                         name="year"
-                                        inputVariant="outlined"
-                                        variant="inline"
-                                        TextFieldComponent={MaterialTextField}
-                                        autoOk
-                                        clearable
-                                        disableFuture
-                                        minDate={fiveYearsAgo}
-                                        maxDate={new Date()}
+                                        control={control}
                                     />
                                 </MuiPickersUtilsProvider>
                                 {errors.year && (
@@ -197,8 +212,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                             <div className={`${styles.formFieldHalf}`}>
                                 <MaterialTextField
                                     inputRef={register({
-                                        validate: (value) =>
-                                            parseFloat(value) > 0,
+                                        validate: (value) => parseInt(value) > 0,
                                         required: {
                                             value: true,
                                             message: t('manageProjects:spendingAmountValidation')
@@ -208,9 +222,9 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                                     placeholder={0}
                                     variant="outlined"
                                     name="amount"
-                                    onChange={(e) => setAmount(e.target.value)}
                                     onInput={(e) => {
-                                        e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                        setAmount(e.target.value);
                                     }}
                                     InputProps={{
                                         startAdornment: (
@@ -233,11 +247,11 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                         {errors.amount || errors.year || !isDirty || amount === 0 ? (
                             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                                 <div className={styles.fileUploadContainer}>
-                                    <AnimatedButton
+                                    <div
                                         className={styles.continueButton}
                                     >
                                         {t('manageProjects:uploadReport')}
-                                    </AnimatedButton>
+                                    </div>
                                     <p style={{ marginTop: '18px' }}>
                                         {t('manageProjects:dragInPdf')}
                                     </p>
@@ -246,13 +260,12 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                         ) : (
                                 <div className={styles.formFieldLarge} {...getRootProps()}>
                                     <div className={styles.fileUploadContainer}>
-                                        <AnimatedButton
-                                            // onClick={uploadReport}
+                                        <div
                                             className={styles.continueButton}
                                         >
                                             <input {...getInputProps()} />
                                             {t('manageProjects:uploadReport')}
-                                        </AnimatedButton>
+                                        </div>
                                         <p style={{ marginTop: '18px' }}>
                                             {t('manageProjects:dragInPdf')}
                                         </p>
@@ -263,7 +276,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                 ) : (
                         <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
                             <p className={styles.inlineLinkButton}>
-                            {t('manageProjects:addAnotherYear')}
+                                {t('manageProjects:addAnotherYear')}
                             </p>
                         </div>
                     )}
@@ -282,7 +295,7 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                         >
                             <BackArrow />
                             <p>
-                            {t('manageProjects:backToSites')}
+                                {t('manageProjects:backToSites')}
                             </p>
                         </AnimatedButton>
                     </div>
@@ -292,11 +305,11 @@ export default function ProjectSpending({ handleBack, session, handleNext, userL
                             onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> :t('manageProjects:saveAndContinue')}
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </AnimatedButton>
                     </div>
                 </div>
             </form>
         </div>
-    )
+    ) : <></>;
 }

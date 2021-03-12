@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import ProjectsList from '../src/features/public/Donations/screens/Projects';
+import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
-import storeConfig from '../src/utils/storeConfig';
-import DirectGift from '../src/features/public/Donations/components/DirectGift';
+import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
 
 interface Props {
   initialized: Boolean;
@@ -15,7 +14,9 @@ interface Props {
   setShowSingleProject: Function;
   showProjects: Boolean;
   setShowProjects: Function;
-  setsearchedProjects: any
+  setsearchedProjects: any;
+  currencyCode: any;
+  setCurrencyCode: Function;
 }
 
 export default function Donate({
@@ -27,13 +28,13 @@ export default function Donate({
   showProjects,
   setShowProjects,
   setsearchedProjects,
+  currencyCode,
+  setCurrencyCode
 }: Props) {
   const router = useRouter();
+  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
-  React.useEffect(() => {
-    storeConfig();
-  }, []);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -62,20 +63,23 @@ export default function Donate({
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      const currencyCode = getStoredCurrency();
-      const projects = await getRequest(
-        `/app/projects?_scope=map&currency=${currencyCode}`,
-      );
-      setProjects(projects);
-      setProject(null);
-      setShowSingleProject(false);
+      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode) {
+        const currency = getStoredCurrency();
+        setInternalCurrencyCode(currency);
+        setCurrencyCode(currency);
+        const projects = await getRequest(
+          `/app/projects?_scope=map&currency=${currency}`,
+        );
+        setProjects(projects);
+        setProject(null);
+        setShowSingleProject(false);        
+      }
     }
     loadProjects();
-  }, []);
+  }, [currencyCode]);
+  
   const ProjectsProps = {
     projects,
-    directGift,
-    setDirectGift,
     showProjects,
     setShowProjects,
     setsearchedProjects,
@@ -88,10 +92,10 @@ export default function Donate({
 
   return (
     <>
-      {projects ? <GetAllProjectsMeta /> : null}
       {initialized ? (
         projects && initialized ? (
           <>
+          <GetAllProjectsMeta />
             <ProjectsList {...ProjectsProps} />
             {directGift ? (
               showdirectGift ? (

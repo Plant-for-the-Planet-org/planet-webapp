@@ -7,22 +7,26 @@
     justify-content: center;
     overflow: hidden;
   }
-  
+
   // white modal
   .modal {
     background-color: #ffffff;
     border: 0px;
     border-radius: 8px;
-    padding: 6px 72px;
+    padding: 6px 50px;
     max-width: 80vw;
     overflow: hidden;
     outline: none;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: absolute;
+    top: 100px;
+    right: 110px;
   }
-  
+
   .settingsItem {
+      font-family: $primaryFontFamily;
       padding: 10px 0px;
       text-decoration: none;
       color: rgba(0, 0, 0, 0.87);
@@ -34,6 +38,14 @@
 
   .cancelText {
       color: $highlightBackground;  //grey
-  } 
+  }
 
-  
+  @media only screen and (max-width: 768px) {
+      .modal {
+        top: 40px;
+        right: 90px;
+      }
+      .settingsItem {
+        padding: 7px 0px;
+      }
+  }

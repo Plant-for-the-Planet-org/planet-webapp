@@ -1,9 +1,7 @@
-import 'date-fns'
 import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -29,77 +27,76 @@ interface Props {
     setProjectDetails: Function;
     projectGUID: String;
     handleReset: Function;
-    session: any;
+    token: any;
     userLang: String;
 }
-export default function DetailedAnalysis({ handleBack, userLang, session, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
-    const { t, i18n } = useTranslation(['manageProjects', 'common']);
+export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+    const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
     const [siteOwners, setSiteOwners] = React.useState([
-        { id: 1, title: t('manageProjects:siteOwnerPrivate'), value: 'private', isSet: false },
-        { id: 2, title: t('manageProjects:siteOwnerPublic'), value: 'public-property', isSet: false },
-        { id: 3, title: t('manageProjects:siteOwnerSmallHolding'), value: 'smallholding', isSet: false },
-        { id: 4, title: t('manageProjects:siteOwnerCommunal'), value: 'communal-land', isSet: false },
-        { id: 5, title: t('manageProjects:siteOwnerOwned'), value: 'owned-by-owner', isSet: false },
-        { id: 6, title: t('manageProjects:siteOwnerOther'), value: 'other', isSet: false }
+        { id: 1, title: ready ? t('manageProjects:siteOwnerPrivate') : '', value: 'private', isSet: false },
+        { id: 2, title: ready ? t('manageProjects:siteOwnerPublic') : '', value: 'public-property', isSet: false },
+        { id: 3, title: ready ? t('manageProjects:siteOwnerSmallHolding') : '', value: 'smallholding', isSet: false },
+        { id: 4, title: ready ? t('manageProjects:siteOwnerCommunal') : '', value: 'communal-land', isSet: false },
+        { id: 5, title: ready ? t('manageProjects:siteOwnerOwned') : '', value: 'owned-by-owner', isSet: false },
+        { id: 6, title: ready ? t('manageProjects:siteOwnerOther') : '', value: 'other', isSet: false }
     ])
 
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
     const [plantingSeasons, setPlantingSeasons] = React.useState([
-        { id: 0, title: t('common:january'), isSet: false },
-        { id: 1, title: t('common:february'), isSet: false },
-        { id: 2, title: t('common:march'), isSet: false },
-        { id: 3, title: t('common:april'), isSet: false },
-        { id: 4, title: t('common:may'), isSet: false },
-        { id: 5, title: t('common:june'), isSet: false },
-        { id: 6, title: t('common:july'), isSet: false },
-        { id: 7, title: t('common:august'), isSet: false },
-        { id: 8, title: t('common:september'), isSet: false },
-        { id: 9, title: t('common:october'), isSet: false },
-        { id: 10, title: t('common:november'), isSet: false },
-        { id: 11, title: t('common:december'), isSet: false }
+        { id: 0, title: ready ? t('common:january') : '', isSet: false },
+        { id: 1, title: ready ? t('common:february') : '', isSet: false },
+        { id: 2, title: ready ? t('common:march') : '', isSet: false },
+        { id: 3, title: ready ? t('common:april') : '', isSet: false },
+        { id: 4, title: ready ? t('common:may') : '', isSet: false },
+        { id: 5, title: ready ? t('common:june') : '', isSet: false },
+        { id: 6, title: ready ? t('common:july') : '', isSet: false },
+        { id: 7, title: ready ? t('common:august') : '', isSet: false },
+        { id: 8, title: ready ? t('common:september') : '', isSet: false },
+        { id: 9, title: ready ? t('common:october') : '', isSet: false },
+        { id: 10, title: ready ? t('common:november') : '', isSet: false },
+        { id: 11, title: ready ? t('common:december') : '', isSet: false }
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
-        let month = plantingSeasons[id];
-        let newMonth = month;
+        const month = plantingSeasons[id];
+        const newMonth = month;
         newMonth.isSet = !month.isSet;
-        let plantingSeasonsNew = plantingSeasons;
+        const plantingSeasonsNew = plantingSeasons;
         plantingSeasonsNew[id] = newMonth;
         setPlantingSeasons([...plantingSeasonsNew]);
     }
 
     const handleSetSiteOwner = (id: any) => {
-        let owner = siteOwners[id - 1];
-        let newOwner = owner;
+        const owner = siteOwners[id - 1];
+        const newOwner = owner;
         newOwner.isSet = !owner.isSet;
-        let newSiteOwners = siteOwners;
+        const newSiteOwners = siteOwners;
         newSiteOwners[id - 1] = newOwner;
         setSiteOwners([...newSiteOwners]);
     }
 
     React.useEffect(() => {
         if (!projectGUID || projectGUID === '') {
-            handleReset(t('manageProjects:resetMessage'))
+            handleReset(ready ? t('manageProjects:resetMessage') : '')
         }
     })
 
-    const [isCertified, setisCertified] = React.useState(true)
 
     const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (data: any) => {
         setIsUploadingData(true)
-        let months = [];
+        const months = [];
         for (let i = 0; i < plantingSeasons.length; i++) {
             if (plantingSeasons[i].isSet) {
-                let j = i + 1;
+                const j = i + 1;
                 months.push(j)
             }
         }
 
-        let owners = [];
+        const owners = [];
         for (let i = 0; i < siteOwners.length; i++) {
             if (siteOwners[i].isSet) {
                 owners.push(siteOwners[i].value)
@@ -107,8 +104,8 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
         }
 
         const submitData = {
-            yearAbandoned: data.yearAbandoned.getFullYear(),
-            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
+            yearAbandoned: data.yearAbandoned.getFullYear() ? data.yearAbandoned.getFullYear() : null,
+            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()+1}-${data.firstTreePlanted.getDate()}`,
             plantingDensity: data.plantingDensity,
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
@@ -120,9 +117,9 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months
-        }
+        }        
 
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, session).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)
@@ -131,7 +128,7 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
             } else {
                 if (res.code === 404) {
                     setIsUploadingData(false)
-                    setErrorMessage(t('manageProjects:projectNotFound'))
+                    setErrorMessage(ready ? t('manageProjects:projectNotFound') : '')
                 }
                 else {
                     setIsUploadingData(false)
@@ -166,7 +163,7 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
             if (projectDetails.plantingSeasons && projectDetails.plantingSeasons.length > 0) {
                 for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
                     if (projectDetails.plantingSeasons[i]) {
-                        let j = projectDetails.plantingSeasons[i] - 1;
+                        const j = projectDetails.plantingSeasons[i] - 1;
                         handleSetPlantingSeasons(j)
                     }
                 }
@@ -174,7 +171,7 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
 
             // set owner type
             if (projectDetails.siteOwnerType && projectDetails.siteOwnerType.length > 0) {
-                let newSiteOwners = siteOwners
+                const newSiteOwners = siteOwners
                 for (let i = 0; i < projectDetails.siteOwnerType.length; i++) {
                     for (let j = 0; j < newSiteOwners.length; j++) {
                         if (newSiteOwners[j].value === projectDetails.siteOwnerType[i]) {
@@ -189,20 +186,20 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
-    return (
+    return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             views={["year"]}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             label={t('manageProjects:yearOfAbandonment')}
                                             inputVariant="outlined"
                                             variant="inline"
@@ -235,12 +232,12 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
 
                                         <DatePicker
                                             label={t('manageProjects:firstTreePlanted')}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             inputVariant="outlined"
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
@@ -289,7 +286,7 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MaterialTextField
-                                inputRef={register({ validate: value => parseInt(value, 10) > 1 })}
+                                inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
                                 label={t('manageProjects:employeeCount')}
                                 variant="outlined"
                                 name="employeesCount"
@@ -433,11 +430,11 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             label={t('manageProjects:acquisitionYear')}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             inputVariant="outlined"
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
@@ -459,11 +456,11 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             views={["year"]}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             label={t('manageProjects:yearOfDegradation')}
                                             inputVariant="outlined"
                                             variant="inline"
@@ -544,34 +541,12 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
                     </div>
 
 
-                    <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
-                            <div className={`${styles.formFieldRadio}`}>
-                                <label htmlFor="isCertified">
-                                    {t('manageProjects:isCertified')}
-                                </label>
-                                <ToggleSwitch
-                                    checked={isCertified}
-                                    onChange={() => setisCertified(!isCertified)}
-                                    name="isCertified"
-                                    id="isCertified"
-
-                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                />
-                            </div>
-                        </div>
-                        <div style={{ width: '20px' }}></div>
-
-                    </div>
-
-                    {isCertified ? (
                         <ProjectCertificates
                             projectGUID={projectGUID}
-                            session={session}
+                            token={token}
                             setIsUploadingData={setIsUploadingData}
                             userLang={userLang}
                         />
-                    ) : null}
 
                 </div>
 
@@ -606,5 +581,5 @@ export default function DetailedAnalysis({ handleBack, userLang, session, handle
             </form>
 
         </div>
-    )
+    ) : <></>;
 }

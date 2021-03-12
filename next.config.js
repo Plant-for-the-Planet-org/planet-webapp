@@ -1,6 +1,10 @@
+const withPlugins = require('next-compose-plugins');
 // Use the hidden-source-map option when you don't want the source maps to be
 // publicly available on the servers, only to the error reporting
 const withSourceMaps = require('@zeit/next-source-maps')();
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 // Use the SentryWebpack plugin to upload the source maps during build step
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
@@ -14,24 +18,32 @@ const {
   VERCEL_GITHUB_COMMIT_SHA,
   VERCEL_GITLAB_COMMIT_SHA,
   VERCEL_BITBUCKET_COMMIT_SHA,
+  SOURCE_VERSION,
+  SITE_IMAGERY_API_URL,
 } = process.env;
 
-const COMMIT_SHA = VERCEL_GITHUB_COMMIT_SHA
-  || VERCEL_GITLAB_COMMIT_SHA
-  || VERCEL_BITBUCKET_COMMIT_SHA;
+const COMMIT_SHA =
+  VERCEL_GITHUB_COMMIT_SHA ||
+  VERCEL_GITLAB_COMMIT_SHA ||
+  VERCEL_BITBUCKET_COMMIT_SHA ||
+  SOURCE_VERSION;
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';
 
-const scheme = process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
-  ? process.env.SCHEME
-  : 'https';
+const scheme =
+  process.env.SCHEME === 'http' || process.env.SCHEME === 'https'
+    ? process.env.SCHEME
+    : 'https';
 
-const nextauthUrl = process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}` : `${scheme}://${process.env.VERCEL_URL}`;
+const nextauthUrl = process.env.NEXTAUTH_URL
+  ? `${process.env.NEXTAUTH_URL}`
+  : `${scheme}://${process.env.VERCEL_URL}`;
 
-const hasAssetPrefix = process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
+const hasAssetPrefix =
+  process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-module.exports = withSourceMaps({
+module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
   serverRuntimeConfig: {
     rootDir: __dirname,
   },
@@ -53,6 +65,9 @@ module.exports = withSourceMaps({
     if (!options.isServer) {
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
+    config.node = {
+      fs: 'empty',
+    };
 
     // When all the Sentry configuration env variables are available/configured
     // The Sentry webpack plugin gets pushed to the webpack plugins to build
@@ -60,12 +75,12 @@ module.exports = withSourceMaps({
     // This is an alternative to manually uploading the source maps
     // Note: This is disabled in development mode.
     if (
-      SENTRY_DSN
-      && SENTRY_ORG
-      && SENTRY_PROJECT
-      && SENTRY_AUTH_TOKEN
-      && COMMIT_SHA
-      && NODE_ENV === 'production'
+      SENTRY_DSN &&
+      SENTRY_ORG &&
+      SENTRY_PROJECT &&
+      SENTRY_AUTH_TOKEN &&
+      COMMIT_SHA &&
+      NODE_ENV === 'production'
     ) {
       config.plugins.push(
         new SentryWebpackPlugin({
@@ -75,6 +90,13 @@ module.exports = withSourceMaps({
           urlPrefix: `~${basePath}/_next`,
           release: COMMIT_SHA,
         }),
+        new SentryWebpackPlugin({
+          include: '.next',
+          ignore: ['node_modules'],
+          stripPrefix: ['webpack://_N_E/'],
+          urlPrefix: `~${basePath}/_next`,
+          release: COMMIT_SHA,
+        })
       );
     }
     return config;
@@ -85,7 +107,6 @@ module.exports = withSourceMaps({
     autoPrerender: false,
   },
   env: {
-    MAPBOXGL_ACCESS_TOKEN: process.env.MAPBOXGL_ACCESS_TOKEN,
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
     TENANT: process.env.TENANT,
@@ -94,6 +115,8 @@ module.exports = withSourceMaps({
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
     NEXTAUTH_URL: nextauthUrl,
+    VERCEL_URL: process.env.VERCEL_URL,
+    SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -104,6 +127,65 @@ module.exports = withSourceMaps({
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: '/account-activate/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/competition/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-tree',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-trees',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/donate-trees/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/my-trees',
+        destination: '/login',
+        permanent: true,
+      },
+      {
+        source: '/project/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/redeem',
+        destination: '/login',
+        permanent: true,
+      },
+      {
+        source: '/reset-password/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/signup',
+        destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/signup/:slug*',
+        destination: '/open-app',
+        permanent: true,
+      },
+    ];
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files

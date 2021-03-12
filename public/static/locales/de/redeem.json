@@ -1,0 +1,10 @@
+{
+  "myPlantedTreesByOrg": "Mein {{formattedNumber}} Baum wird von {{tpoName}} gepflanzt",
+  "myPlantedTreesByOrg_plural": "Meine {{formattedNumber}} Bäume werden von {{tpoName}} gepflanzt",
+  "congratulations": "Herzlichen Glückwunsch!",
+  "addToMyTrees": "Zu meinen Bäumen hinzufügen",
+  "validateCode": "Code prüfen",
+  "enterRedeemCode": "Bitte gibt einen Code zum Einlösen ein",
+  "validating": "Prüfe",
+  "invalidType": "Ungültiger Typ, bitte überprüfen Sie den Link erneut"
+}

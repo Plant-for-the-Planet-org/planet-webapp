@@ -7,7 +7,7 @@ const url = require('url');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
-const i18next = require('./i18n/server');
+// const i18next = require('./i18n');
 // const nextI18NextMiddleware = require('next-i18next/middleware').default;
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -18,7 +18,9 @@ if (!dev && cluster.isMaster) {
   console.log(`Node cluster master ${process.pid} is running`);
 
   // Fork workers.
-  for (let i = 0; i < numCPUs; i += 1) {
+  const WORKERS = process.env.WEB_CONCURRENCY || numCPUs;
+  console.log('Number of workers calculated:', WORKERS);
+  for (let i = 0; i < WORKERS; i++) {
     cluster.fork();
   }
 
@@ -34,7 +36,7 @@ if (!dev && cluster.isMaster) {
   nextApp.prepare().then(async () => {
     const server = express();
 
-    await i18next.initPromise;
+    // await i18next.initPromise;
     // server.use(nextI18NextMiddleware(i18next));
 
     if (!dev) {
@@ -45,6 +47,8 @@ if (!dev && cluster.isMaster) {
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
+            'X-Frame-Options': 'DENY',
+            'Content-Security-Policy': 'frame-ancestors \'none\'',
           });
           return next();
         }

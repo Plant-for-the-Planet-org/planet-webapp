@@ -1,4 +1,5 @@
 {
-  "AddTarget": "Ziel hinzufügen",
-  "targetSave": "Speichern"
+  "setTarget": "Ziel setzen",
+  "targetSave": "Speichern",
+  "targetErrorMessage": "Zahl muss größer als Null sein"
 }

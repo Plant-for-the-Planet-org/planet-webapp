@@ -1,0 +1,445 @@
+@import './../../../../theme/theme';
+
+// modal container for black opacity
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-y: scroll;
+  background: rgba(0, 0, 0, 0.6);
+  min-height: calc(100vh - 100px);
+}
+
+// white modal
+.modal {
+  top: 80px;
+  margin-bottom: 60px;
+  background-color: #fff;
+  border: 0px;
+  border-radius: 8px;
+  position: absolute;
+  padding: 20px 20px;
+  width: 412px;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  overflow-y: auto;
+}
+// white modal
+// .modal {
+//   background-color: #ffffff;
+//   border: 0px;
+//   border-radius: 8px;
+//   padding: 50px 20px 80px;
+//   overflow-y: scroll;
+//   outline: none;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin: auto;
+//   max-width: 100%;
+//   width: 800px;
+//   justify-content: flex-start;
+//   position: relative;
+// }
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 22px;
+}
+
+.contribTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  text-align: center;
+}
+
+.inputField {
+  margin-top: 20px;
+}
+
+.continueButton {
+  height: 40px;
+  border-radius: 100px;
+  margin-top: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  border: 0px;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.continueButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.tabButtonContainer {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+}
+
+.tabButton {
+  background-color: transparent;
+  border: none;
+  margin-left: 16px;
+  margin-top: 18px;
+}
+
+.tabButton:hover {
+  cursor: pointer;
+}
+
+.tabButtonText {
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  color: $primaryFontColor;
+  margin-bottom: 10px;
+}
+
+.tabButtonSelected {
+  color: $primaryColor;
+  font-family: $primaryFontFamily;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tabButtonSelectedIndicator {
+  height: 3px;
+  background-color: $primaryColor;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  align-self: flex-end;
+}
+
+.formContainer {
+  font-family: $primaryFontFamily;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.formContainer > form {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.formField {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.formFieldHalf {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  padding: 5px;
+  flex-direction: column;
+  div,
+  input {
+    width: 100%;
+  }
+}
+.formFieldLarge {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.formFieldRadio {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fileUploadContainer {
+  height: 128px;
+  border-radius: 10px;
+  border: dashed 1px #2f3336;
+  background-color: #f2f2f7;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.note {
+  padding: 5px;
+}
+
+.mapNote {
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.locationMap {
+  width: 100%;
+  height: 400px;
+  padding: 5px;
+}
+
+.locationMap > div {
+  width: 100%;
+  height: 400px;
+  border-radius: 13px;
+  overflow: hidden;
+  cursor: pointer !important;
+}
+
+.previewMap {
+  width: 100%;
+  height: 200px;
+}
+
+.previewMap > div {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer !important;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.mapNavigation {
+  position: absolute;
+  right: 10px;
+  bottom: 20px;
+}
+
+.contributionInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+.contributionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 20px 0;
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: row;
+  overflow: wrap;
+  width: 100%;
+  padding: 5px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.infoLine {
+  padding: 4px 0;
+}
+
+.uploadImages {
+  width: 100%;
+}
+
+.nextButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.closeButton {
+  cursor: pointer;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
+.closeButton svg {
+  width: 20px;
+}
+
+.checkMark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 10px;
+}
+
+.uploadedImageContainer {
+  position: relative;
+  height: min-content;
+  > img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .uploadedImageOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 240px;
+    max-width: 100%;
+    border-radius: 10px;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(47, 51, 54, 0) 60%,
+      rgba(47, 51, 54, 0.22) 76%,
+      rgba(47, 51, 54, 0.74)
+    );
+  }
+
+  .uploadedImageButtonContainer {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: fit-content;
+    :nth-child(2) {
+      margin-top: 9px;
+    }
+    > div {
+      background-color: white;
+      border-radius: 50%;
+      height: 21px;
+      width: 21px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 7px 12px -6px rgba(60, 60, 60, 1);
+      transition-duration: 0.4s;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.formErrors {
+  // position: absolute;
+  font-family: $primaryFontFamily;
+  font-size: 14px;
+  color: #e74c3c;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+  text-align: center;
+}
+
+.center {
+  justify-content: center;
+}
+
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.overlayButton {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+// Loader for Buttons
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@include mdTabletView {
+  .formFieldHalf {
+    width: 50%;
+  }
+}
+
+:export {
+  primaryColor: $primaryColor;
+  light: $light;
+  dark: $dark;
+  primaryFontColor: $primaryFontColor;
+  dividerColor: $dividerColor;
+}

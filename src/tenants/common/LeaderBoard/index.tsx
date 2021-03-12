@@ -1,25 +1,25 @@
 import React from 'react';
-import Sugar from 'sugar';
 import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../i18n';
+import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 
 interface Props {
   leaderboard: any;
 }
 
+const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
-  const { useTranslation } = i18next;
-  const { t } = useTranslation(['leaderboard', 'common']);
+  const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
-  return (
+  return ready ? ( 
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
-            <div
+            <button id={'LeaderBoardRecent'}
               onClick={() => setSelectedTab('recent')}
               className={
                 selectedTab === 'recent'
@@ -28,8 +28,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
               {t('leaderboard:mostRecent')}
-            </div>
-            <div
+            </button>
+            <button id="leaderBoardHighest"
               onClick={() => setSelectedTab('highest')}
               className={
                 selectedTab === 'highest'
@@ -38,20 +38,20 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
               {t('leaderboard:mostTrees')}
-            </div>
+            </button>
           </div>
           {leaderboardData &&
           leaderboardData.mostRecent &&
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
+                {leaderboardData.mostRecent.map((leader: any,index:any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
+                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
                     </p>
                     {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -61,13 +61,13 @@ export default function LeaderBoardSection(leaderboard: Props) {
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
+                {leaderboardData.mostDonated.map((leader: any, index:any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {Sugar.Number.format(Number(leader.treeCount))} {t('common:trees')}
+                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
                     </p>
                   </div>
                 ))}
@@ -80,12 +80,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
       </div>
       <img
         className={styles.leaderBoardBushImage}
-        src="/tenants/planet/images/leaderboard/leaderboard.svg"
+        src="/tenants/planet/images/leaderboard/Person.svg"
         alt=""
       />
       <img
         className={styles.leaderBoardGroupTreeImage}
-        src="/tenants/planet/images/leaderboard/treeGroup.svg"
+        src="/tenants/planet/images/leaderboard/Trees.svg"
         alt=""
       />
       {/* <img
@@ -94,5 +94,5 @@ export default function LeaderBoardSection(leaderboard: Props) {
         alt=""
       /> */}
     </section>
-  );
+  ) : null;
 }

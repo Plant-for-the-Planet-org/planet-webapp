@@ -3,13 +3,18 @@ export default function getFormatedCurrency(
   currency: string,
   number: number
 ) {
-  const formatter = new Intl.NumberFormat(langCode, {
-    style: 'currency',
-    currency: currency,
-
+  let options = {
     // These options are needed to round to whole numbers if that's what you want.
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  });
+  }
+  if (currency) {
+    options = {
+      style: 'currency',
+      currency: currency,
+      ...options,
+    }
+  }
+  const formatter = new Intl.NumberFormat(langCode, options);    
   return formatter.format(number);
 }

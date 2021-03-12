@@ -59,6 +59,14 @@
   "noProjectsFound": "No se han encontrado proyectos",
   "inTimeOfTaxReturns": "a tiempo para la declaración de impuestos.",
   "titleToShare": "Plantando árboles contra la crisis climática!",
-  "textToShare": "Para prevenir la crisis climática es necesario reducir drásticamente las emisiones de carbono y plantar árboles. Por eso acabo de plantar algunos. Mira {{linkToShare}} si tú también quieres plantar algunos! #Dejar de hablar, empezar a plantar... TrillionTrees @PftP_int",
-  "thankyouHeaderText": "Vamos hacia un\n <h1>Trillón de árboles</h1>"
+  "giftToName": "Regalo a",
+  "plantTreesWith": "Plantar árboles con",
+  "textToShare": "Únete a {{name}} y miles de otros para plantar un trillón de árboles para hacer frente a la crisis climática #Dejar de hablar, empezar a plantar... TrillionTrees @trilliontrees",
+  "thankyouHeaderText": "Vamos hacia un\n <h1>Trillón de árboles</h1>",
+  "shareTextTitle": "Deja de hablar. Inicie la planta",
+  "textToShareLinkedin": "Únete a {{name}} y miles de otros para plantar un trillón de árboles para hacer frente a la crisis climática",
+  "donationTokenInvalid": "La ficha de donación proporcionada es inválida.",
+  "giftTo": "Regalo a",
+  "supporting": "Apoyando",
+  "selectProject": "Seleccione un proyecto"
 }

@@ -122,6 +122,7 @@
   border: 0px;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-width: 240px;
 }
 .continueButton:hover,
 .secondaryButton:hover {
@@ -169,18 +170,27 @@
 
 .inlineLinkButton {
   font-family: $primaryFontFamily;
-  width: 100%;
-  font-size: 14px;
+ width: 100%;
+ font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.43;
   letter-spacing: normal;
-  text-align: center;
   color: #68b030;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 .inlineLinkButton:hover {
   cursor: pointer;
+  font-weight: bold;
+}
+.projSiteSaveandAdd{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .plantingSeasons {
@@ -304,6 +314,7 @@
     width: fit-content;
     font-weight: bold;
     font-size: 10px;
+    min-width: 100px;
   }
   .uploadedMapDeleteButton {
     background-color: $light;
@@ -318,7 +329,26 @@
     align-items: center;
     z-index: 999;
     right: 5%;
-    width: fit-content;
+    > svg {
+      height: 12px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  .uploadedMapEditButton {
+    background-color: $light;
+    padding: 6px;
+    border-radius: 18px;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    right: 5%;
     > svg {
       height: 12px;
       &:hover {
@@ -436,7 +466,7 @@
     :nth-child(2) {
       margin-top: 9px;
     }
-    > div {
+    > button {
       background-color: white;
       border-radius: 50%;
       height: 21px;
@@ -456,6 +486,16 @@
 
 /*  error */
 .errorMessage {
+  font-family: $primaryFontFamily;
+  font-size: $fontSubTitleSize;
+  color: #e74c3c;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.geoJsonError {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
   color: #e74c3c;
@@ -560,4 +600,23 @@
       display: block;
     }
   }
+}
+
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+// white modal
+.modal {
+  background-color: white;
+  border: 0px;
+  border-radius: 8px;
+  max-height: 80vh;
+  width: 80vw;
+  max-width: 1200px;
+  overflow: hidden;
+  outline: none;
 }

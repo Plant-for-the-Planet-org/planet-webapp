@@ -1,4 +1,5 @@
 {
-  "AddTarget": "Add Target",
-  "targetSave": "Save"
+  "setTarget": "Set Target",
+  "targetSave": "Save",
+  "targetErrorMessage": "Number must be greater than zero"
 }
