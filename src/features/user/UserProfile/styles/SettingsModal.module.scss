@@ -2,50 +2,128 @@
 
 // modal container for black opacity
 .modalContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-  // white modal
+// white modal
+.modal {
+  background-color: #ffffff;
+  border: 0px;
+  border-radius: 8px;
+  padding: 6px 50px;
+  max-width: 80vw;
+  overflow: hidden;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 100px;
+  right: 110px;
+}
+
+.settingsItem {
+  font-family: $primaryFontFamily;
+  padding: 10px 0px;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.settingsItem:hover {
+  cursor: pointer;
+}
+
+.cancelText {
+  color: $highlightBackground; //grey
+}
+
+@media only screen and (max-width: 768px) {
   .modal {
-    background-color: #ffffff;
-    border: 0px;
-    border-radius: 8px;
-    padding: 6px 50px;
-    max-width: 80vw;
-    overflow: hidden;
-    outline: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 100px;
-    right: 110px;
+    top: 40px;
+    right: 90px;
   }
-
   .settingsItem {
-      font-family: $primaryFontFamily;
-      padding: 10px 0px;
-      text-decoration: none;
-      color: rgba(0, 0, 0, 0.87);
+    padding: 7px 0px;
   }
+}
 
-  .settingsItem:hover {
+.deleteModal {
+  background-color: white;
+  border: 0px;
+  border-radius: 10px;
+  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 320px;
+  @include smTabletView{
+    padding: 36px;
+    max-width: 420px;
+  }
+  .deleteModalTitle {
+    font-weight: bold;
+    font-size: 27px;
+    text-align: center;
+  }
+  .deleteModalContent{
+    margin-top: 20px;
+  }
+  .deleteModalWarning{
+    text-align: center;
+    margin-top: 20px;
+    color: #EB4E3B;
+  }
+  .deleteButtonContainer{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 20px;
+    .goBackContainer{
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      height: 40px;
+      border-radius: 10px;
+      padding-left: 24px;
+      padding-right: 24px;
+      background-color:$highlightBackground; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      border: 0px;
+      transition-duration: 0.5s;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      &:hover{
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+    }
+    .deleteButton{
+      flex: 1;
+      background-color:#EB4E3B; 
+      height: 40px;
+      border-radius: 10px;
+      padding-left: 24px;
+      padding-right: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+      border: 0px;
+      transition-duration: 0.5s;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .deleteButton:hover {
+      transform: scale(1.05);
       cursor: pointer;
+    }
   }
-
-  .cancelText {
-      color: $highlightBackground;  //grey
-  }
-
-  @media only screen and (max-width: 768px) {
-      .modal {
-        top: 40px;
-        right: 90px;
-      }
-      .settingsItem {
-        padding: 7px 0px;
-      }
-  }
+}
