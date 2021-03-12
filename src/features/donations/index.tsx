@@ -112,6 +112,8 @@ function DonationsPopup({
       if (res.status === 200) {
         const resJson = await res.json();
         setUserprofile(resJson);
+        console.log('resJson',resJson);
+        
         if (resJson) {
           const defaultDetails = {
             firstName: resJson.firstname ? resJson.firstname : '',
@@ -122,6 +124,8 @@ function DonationsPopup({
             zipCode: resJson.address.zipCode ? resJson.address.zipCode : '',
             country: '',
             companyName: '',
+            isPrivate:resJson.isPrivate,
+            type:resJson.type
           }
           setContactDetails(defaultDetails)
         }
