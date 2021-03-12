@@ -81,7 +81,7 @@ export default function MapComponent({
         ...viewport,
         longitude: userLocation[0],
         latitude: userLocation[1],
-        zoom: [5],
+        zoom: [10],
       };
       setViewPort(newViewport);
     }

@@ -21,7 +21,7 @@ interface Props {
   geoLocation: any;
 }
 
-const Map = ReactMapboxGl({});
+const Map = ReactMapboxGl({ maxZoom: 15 });
 
 export default function MapComponent({
   geoJson,
