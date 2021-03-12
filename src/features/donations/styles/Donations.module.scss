@@ -787,9 +787,9 @@
 .showContactDetails {
   margin-top: 20px;
   padding: 20px;
-  background-color: $primaryColor;
+  border:1px solid $primaryFontColor;
   border-radius: 10px;
-  color: $light;
+  color: $primaryFontColor;
   .showContactDetailsName {
     font-size: 18px;
     font-weight: bold;

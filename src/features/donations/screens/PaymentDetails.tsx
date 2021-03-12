@@ -146,6 +146,23 @@ function PaymentDetails({
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
+{contactDetails && (
+          <div className={styles.showContactDetails}>
+            <p className={styles.showContactDetailsName}>
+              {`${contactDetails.firstName} ${contactDetails.lastName}`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.address}, ${contactDetails.city}`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.zipCode}, ${getCountryDataBy('countryCode',contactDetails.country).countryName}`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.email}`}
+            </p>
+          </div>
+        )}
+
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
             {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
@@ -164,22 +181,7 @@ function PaymentDetails({
             })}
           </div>
 
-        {contactDetails && (
-          <div className={styles.showContactDetails}>
-            <p className={styles.showContactDetailsName}>
-              {`${contactDetails.firstName} ${contactDetails.lastName}`}
-            </p>
-            <p className={styles.showContactDetailsAddress}>
-              {`${contactDetails.address}, ${contactDetails.city}`}
-            </p>
-            <p className={styles.showContactDetailsAddress}>
-              {`${contactDetails.zipCode}, ${getCountryDataBy('countryCode',contactDetails.country).countryName}`}
-            </p>
-            <p className={styles.showContactDetailsAddress}>
-              {`${contactDetails.email}`}
-            </p>
-          </div>
-        )}
+
 
         <PaymentMethodTabs
           paymentType={paymentType}
@@ -203,6 +205,35 @@ function PaymentDetails({
           }
         />
 
+{contactDetails.type === 'individual' ||
+        contactDetails.companyName !== '' ? (
+          askpublishName ? (
+            <div className={styles.isCompany}>
+              <label htmlFor="publishName" className={styles.isCompanyText}>
+                {t('donate:askPublishName')}
+              </label>
+              <ToggleSwitch
+                id="publishName"
+                checked={publishName}
+                onChange={() => setpublishName(!publishName)}
+                name="checkedB"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </div>
+          ) : (
+            <div className={styles.isCompany}>
+              <label className={styles.isCompanyText}>
+                {t('donate:nameAlreadyPublished')}
+              </label>
+            </div>
+          )
+        ) : (
+          <div className={styles.isCompany}>
+            <label className={styles.isCompanyText}>
+              {t('donate:orgNamePublished')}
+            </label>
+          </div>
+        )}
         {donationID && (
           <>
             <div
@@ -279,35 +310,7 @@ function PaymentDetails({
           </>
         )}
 
-        {contactDetails.type === 'individual' ||
-        contactDetails.companyName !== '' ? (
-          askpublishName ? (
-            <div className={styles.isCompany}>
-              <label htmlFor="publishName" className={styles.isCompanyText}>
-                {t('donate:askPublishName')}
-              </label>
-              <ToggleSwitch
-                id="publishName"
-                checked={publishName}
-                onChange={() => setpublishName(!publishName)}
-                name="checkedB"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          ) : (
-            <div className={styles.isCompany}>
-              <label className={styles.isCompanyText}>
-                {t('donate:nameAlreadyPublished')}
-              </label>
-            </div>
-          )
-        ) : (
-          <div className={styles.isCompany}>
-            <label className={styles.isCompanyText}>
-              {t('donate:orgNamePublished')}
-            </label>
-          </div>
-        )}
+       
       </div>
     )
   ) : (
