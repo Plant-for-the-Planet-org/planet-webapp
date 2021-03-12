@@ -42,10 +42,10 @@ function ProjectInfo({ project }: Props): ReactElement {
     const [ownerTypes, setOwnerTypes] = React.useState([])
     React.useEffect(() => {
         if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
-            let newSiteOwners = [];
+            const newSiteOwners = [];
 
             for (let i = 0; i < project.siteOwnerType.length; i++) {
-                let translatedOwnerType = siteOwners.find((element)=>element.value === project.siteOwnerType[i]);
+                const translatedOwnerType = siteOwners.find((element)=>element.value === project.siteOwnerType[i]);
                 newSiteOwners.push(translatedOwnerType.title);
             }
 
