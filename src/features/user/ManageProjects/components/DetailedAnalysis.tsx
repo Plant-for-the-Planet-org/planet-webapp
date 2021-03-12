@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -84,7 +83,6 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
         }
     })
 
-    const [isCertified, setisCertified] = React.useState(true)
 
     const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur' });
 
@@ -106,8 +104,8 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
         }
 
         const submitData = {
-            yearAbandoned: data.yearAbandoned.getFullYear(),
-            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
+            yearAbandoned: data.yearAbandoned.getFullYear() ? data.yearAbandoned.getFullYear() : null,
+            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()+1}-${data.firstTreePlanted.getDate()}`,
             plantingDensity: data.plantingDensity,
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
@@ -119,7 +117,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months
-        }
+        }        
 
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
             if (!res.code) {
@@ -190,7 +188,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     }, [projectDetails])
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>
@@ -543,34 +541,12 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     </div>
 
 
-                    <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
-                            <div className={`${styles.formFieldRadio}`}>
-                                <label htmlFor="isCertified">
-                                    {t('manageProjects:isCertified')}
-                                </label>
-                                <ToggleSwitch
-                                    checked={isCertified}
-                                    onChange={() => setisCertified(!isCertified)}
-                                    name="isCertified"
-                                    id="isCertified"
-
-                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                />
-                            </div>
-                        </div>
-                        <div style={{ width: '20px' }}></div>
-
-                    </div>
-
-                    {isCertified ? (
                         <ProjectCertificates
                             projectGUID={projectGUID}
                             token={token}
                             setIsUploadingData={setIsUploadingData}
                             userLang={userLang}
                         />
-                    ) : null}
 
                 </div>
 

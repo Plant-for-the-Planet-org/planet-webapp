@@ -62,6 +62,7 @@ export default function Home(initialized: Props) {
       case 'interactClub':
       case 'culchacandela':
       case 'lacoqueta':
+      case 'ulmpflanzt':
         HomePage = BasicHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       default:

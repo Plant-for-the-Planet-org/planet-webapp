@@ -10,6 +10,7 @@ import senatDerWirtschaft from './public/tenants/senatDerWirtschaft/config';
 import pampersConfig from './public/tenants/pampers/config';
 import interactClub from './public/tenants/interactClub/config';
 import culchacandela from './public/tenants/culchacandela/config';
+import ulmpflanzt from './public/tenants/ulmpflanzt/config';
 import sateins from './public/tenants/sateins/config';
 
 export default function tenantConfig() {
@@ -38,7 +39,9 @@ export default function tenantConfig() {
       return interactClub;
     case 'culchacandela':
       return culchacandela;
-    case 'sateins': 
+    case 'ulmpflanzt':
+      return ulmpflanzt;
+    case 'sateins':
       return sateins;
     default:
       return planetConfig;

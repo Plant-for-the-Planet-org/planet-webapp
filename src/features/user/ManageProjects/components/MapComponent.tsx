@@ -9,7 +9,8 @@ import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from "geojson-validation";
+import gjv from 'geojson-validation';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -17,21 +18,19 @@ interface Props {
   setGeoJson: Function;
   geoJsonError: any;
   setGeoJsonError: Function;
+  geoLocation:any;
 }
 
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
-
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
+const Map = ReactMapboxGl({});
 
 export default function MapComponent({
   geoJson,
   setGeoJson,
   geoJsonError,
-  setGeoJsonError
+  setGeoJsonError,
+  geoLocation
 }: Props): ReactElement {
-  const defaultMapCenter = [-28.5, 36.96];
+  const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
@@ -46,9 +45,22 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
-
   const drawControlRef = React.useRef(null);
 
   const onDrawCreate = ({ features }: any) => {
@@ -77,16 +89,17 @@ export default function MapComponent({
         center: [longitude, latitude],
         zoom: [zoom],
       };
-      if (drawControlRef.current) {
-        try {
-          drawControlRef.current.draw.add(geoJson);
+      setTimeout(() => {
+        if (drawControlRef.current) {
+          try {
+            drawControlRef.current.draw.add(geoJson);
+          } catch (e) {
+            setGeoJsonError(true);
+            setGeoJson(null);
+            console.log('We only support feature collection for now', e);
+          }
         }
-        catch (e) {
-          setGeoJsonError(true);
-          setGeoJson(null);
-          console.log('We only support feature collection for now', e);
-        }
-      }
+      }, 1000);
       setViewPort(newViewport);
     } else {
       setViewPort({
@@ -104,7 +117,7 @@ export default function MapComponent({
     >
       <Map
         {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+        style={style} // eslint-disable-line
         containerStyle={{
           height: '400px',
           width: '100%',
@@ -123,7 +136,7 @@ export default function MapComponent({
             uncombine_features: false,
           }}
         />
-        <ZoomControl position='bottom-right' />
+        <ZoomControl position="bottom-right" />
       </Map>
       <Dropzone
         accept={['.geojson', '.kml']}
@@ -183,8 +196,11 @@ export default function MapComponent({
           </div>
         )}
       </Dropzone>
-      {geoJsonError ?
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
+      {geoJsonError ? (
+        <div className={styles.geoJsonError}>Invalid geojson/kml</div>
+      ) : null}
     </div>
-  ) : null;
+  ) : (
+      <></>
+    );
 }
