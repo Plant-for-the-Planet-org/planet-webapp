@@ -3,6 +3,8 @@
   "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",
   "trees": "Trees",
+  "tree": "Tree",
+  "tree_plural": "Trees",
   "planted": "planted",
   "privacyAndTerms": "Privacy & Terms",
   "imprint": "Imprint",

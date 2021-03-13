@@ -128,6 +128,7 @@ function PaymentDetails({
             </div>
             <div className={styles.totalCostText}>
               {t('donate:fortreeCountTrees', {
+                count: Number(treeCount),
                 treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
               })}
             </div>
