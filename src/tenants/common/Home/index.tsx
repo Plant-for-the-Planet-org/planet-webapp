@@ -12,7 +12,7 @@ const { useTranslation } = i18next;
 
 interface Props {
   leaderboard: any;
-  tenantScore:any;
+  tenantScore: any;
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {
@@ -22,31 +22,31 @@ export default function About({ leaderboard, tenantScore }: Props) {
     <main>
       <LandingSection
         imageSrc={config.meta.image}>
-        <div style={{ marginTop:'120px' }} />
+        <div style={{ marginTop: '120px' }} />
         {tenantScore
           && (
-          <TreeCounter
-            target={config.tenantGoal}
-            planted={tenantScore.total}
-          />
-          ) }
+            <TreeCounter
+              target={config.tenantGoal}
+              planted={tenantScore.total}
+            />
+          )}
 
         <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
-           {t(`tenants:${config.tenantName}.title`)}
+          {t(`tenants:${config.tenantName}.title`)}
         </p>
 
         {config.home.descriptionTitle && (
-        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
-          {t(`tenants:${config.tenantName}.descriptionTitle`)}
-        </p>
+          <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+            {t(`tenants:${config.tenantName}.descriptionTitle`)}
+          </p>
         )}
 
         <p className={styles.publicUserDescription} style={{ marginTop: '8px' }}>
-          {t(`tenants:${config.tenantName}.description`)}
+          <div dangerouslySetInnerHTML={{ __html: t(`tenants:${config.tenantName}.description`) }} />
         </p>
-        <div style={{ marginBottom:'60px' }} />
+        <div style={{ marginBottom: '60px' }} />
       </LandingSection>
-      {leaderboard && (leaderboard.mostDonated.length > 0 || leaderboard.mostRecent.length > 0 ) && <LeaderBoard leaderboard={leaderboard} />}
+      {leaderboard && (leaderboard.mostDonated.length > 0 || leaderboard.mostRecent.length > 0) && <LeaderBoard leaderboard={leaderboard} />}
       <Footer />
     </main>
   );
