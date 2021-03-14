@@ -1,4 +1,6 @@
 {
+  "fortreeCountTrees": "for {{treeCount}} Tree",
+  "fortreeCountTrees_plural": "for {{treeCount}} Trees",
   "PROJECTS": "PROJETS",
   "topProjects": "Principaux projets",
   "allCountProjects": "Tous {{projectCount}} Projets",
@@ -13,7 +15,6 @@
   "taxDeductionNotAvailableForProject": "La déduction fiscale n'est pas encore disponible pour ce projet",
   "youWillReceiveTaxDeduction": "Vous recevrez un reçu de déduction fiscale pour ",
   "toProjectByOrganization": "Pour {{projectName}} par {{organizationName}}",
-  "fortreeCountTrees": "pour {{treeCount}} Arbres",
   "firstName": "Prénom",
   "lastName": "Nom de famille",
   "email": "Email",
@@ -62,7 +63,7 @@
   "titleToShare": "Planter des arbres contre la crise climatique !",
   "giftToName": "Don à",
   "plantTreesWith": "Planter des arbres avec",
-  "textToShare": "Rejoignez {{name}} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
+  "textToShare": "Rejoignez {{name}} et des milliers d'autres pour planter un billion d'arbres pour lutter contre la crise climatique ! #StopTalkingStartPlanting #TrillionTrees@trilliontrees",
   "thankyouHeaderText": "Nous sommes sur la voie d'une \n <h1>Trillion d'arbres</h1>",
   "shareTextTitle": "Arrêtez de parler. Commencer à planter",
   "textToShareLinkedin": "Rejoignez  {{name}} et des milliers d'autres  pour planter un mille milliards d'arbres afin de lutter contre la crise climatique",
