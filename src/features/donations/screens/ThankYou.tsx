@@ -265,7 +265,7 @@ function ThankYou({
               <Close color="#fff" />
             </button>
             <div className={styles.headerTitle}>
-              {t('donate:donationPending')}
+              {t('donate:thankYou')}
             </div>
           </div>
         </div>
