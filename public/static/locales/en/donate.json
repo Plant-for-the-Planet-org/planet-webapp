@@ -90,5 +90,6 @@
   "sofortDisclaimer": "SOFORT payments take 2-14 business days (usually 2-3 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
   "askPublishName":"I agree to the publication of my full name alongside the number of donated/contributed trees in the Plant-for-the-Planet Apps",
   "nameAlreadyPublished":"Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public. You can manage your profile <link> here.",
-  "orgNamePublished":"Organization/Company names are displayed in full on the leaderboard to enhance transparency."
+  "orgNamePublishedTax":"Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
+  "orgNamePublished":"Company name is visible on our leaderboard and app."
 }

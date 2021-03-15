@@ -29,9 +29,9 @@ function ContactDetails({
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
-    
+
   const onSubmit = (data: any) => {
-    setContactDetails({...contactDetails,...data});
+    setContactDetails({ ...contactDetails, ...data });
     setDonationStep(3);
   };
 
@@ -43,16 +43,23 @@ function ContactDetails({
     ? country
     : localStorage.getItem('countryCode');
 
-  const [postalRegex, setPostalRegex] = React.useState(COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country)[0]?.postal)
+  const [postalRegex, setPostalRegex] = React.useState(
+    COUNTRY_ADDRESS_POSTALS.filter(
+      (country) => country.abbrev === contactDetails.country
+    )[0]?.postal
+  );
 
   React.useEffect(() => {
-    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter((country) => country.abbrev === contactDetails.country);
+    const fiteredCountry = COUNTRY_ADDRESS_POSTALS.filter(
+      (country) => country.abbrev === contactDetails.country
+    );
     setPostalRegex(fiteredCountry[0]?.postal);
-  }, [contactDetails.country])  
+  }, [contactDetails.country]);
   return ready ? (
     <div className={styles.cardContainer}>
       <div className={styles.header}>
-        <button id={'backArrowContact'}
+        <button
+          id={'backArrowContact'}
           onClick={() => setDonationStep(1)}
           className={styles.headerBackIcon}
         >
@@ -146,20 +153,18 @@ function ContactDetails({
 
           <div style={{ width: '20px' }} />
           <div>
-            {
-              postalRegex && (
-                <MaterialTextField
-                  inputRef={register({
-                    required: true,
-                    pattern: postalRegex
-                  })}
-                  label={t('donate:zipCode')}
-                  variant="outlined"
-                  name="zipCode"
-                  defaultValue={contactDetails.zipCode}
-                />
-              )
-            }
+            {postalRegex && (
+              <MaterialTextField
+                inputRef={register({
+                  required: true,
+                  pattern: postalRegex,
+                })}
+                label={t('donate:zipCode')}
+                variant="outlined"
+                name="zipCode"
+                defaultValue={contactDetails.zipCode}
+              />
+            )}
             {errors.zipCode && (
               <span className={styles.formErrors}>
                 {t('donate:zipCodeAlphaNumValidation')}
@@ -189,6 +194,13 @@ function ContactDetails({
         <div className={styles.isCompany}>
           <div className={styles.isCompanyText}>
             {t('donate:isACompanyDonation')}
+            {isCompany ? (
+              <div className={styles.isCompany}>
+                <label className={styles.isCompanyText} style={{fontSize:'12px', fontStyle:'italic'}}>
+                  {isTaxDeductible ?  t('donate:orgNamePublishedTax') : t('donate:orgNamePublished')}
+                </label>
+              </div>
+            ) : null}
           </div>
           <ToggleSwitch
             checked={isCompany}
@@ -198,24 +210,26 @@ function ContactDetails({
           />
         </div>
         {isCompany ? (
-          <div className={styles.formRow}>
-            <div style={{ width: '100%' }}>
-              <MaterialTextField
-                label={t('donate:companyName')}
-                name="companyName"
-                variant="outlined"
-                inputRef={
-                  isCompany ? register({ required: true }) : register({})
-                }
-                defaultValue={contactDetails.companyName}
-              />
-              {errors.companyName && (
-                <span className={styles.formErrors}>
-                  {t('donate:companyRequired')}
-                </span>
-              )}
+          <>
+            <div className={styles.formRow}>
+              <div style={{ width: '100%' }}>
+                <MaterialTextField
+                  label={t('donate:companyName')}
+                  name="companyName"
+                  variant="outlined"
+                  inputRef={
+                    isCompany ? register({ required: true }) : register({})
+                  }
+                  defaultValue={contactDetails.companyName}
+                />
+                {errors.companyName && (
+                  <span className={styles.formErrors}>
+                    {t('donate:companyRequired')}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          </>
         ) : null}
 
         <div className={styles.horizontalLine} />
@@ -232,25 +246,30 @@ function ContactDetails({
         </div>
 
         <div className={styles.actionButtonsContainerCenter}>
-
-          {errors.firstName || errors.lastName || errors.email || errors.address || errors.city || errors.zipCode || errors.country  ? 
-          <AnimatedButton
-            className={styles.continueButtonDisabled}
-          >
+          {errors.firstName ||
+          errors.lastName ||
+          errors.email ||
+          errors.address ||
+          errors.city ||
+          errors.zipCode ||
+          errors.country ? (
+            <AnimatedButton className={styles.continueButtonDisabled}>
               {t('common:continue')}
             </AnimatedButton>
-            :
+          ) : (
             <AnimatedButton
-            onClick={handleSubmit(onSubmit)}
-            className={styles.continueButton}
-          >
-            {t('common:continue')}
-          </AnimatedButton> 
-            }
+              onClick={handleSubmit(onSubmit)}
+              className={styles.continueButton}
+            >
+              {t('common:continue')}
+            </AnimatedButton>
+          )}
         </div>
       </form>
     </div>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }
 
 export default ContactDetails;

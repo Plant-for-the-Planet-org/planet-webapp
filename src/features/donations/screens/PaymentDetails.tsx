@@ -146,7 +146,7 @@ function PaymentDetails({
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
-{contactDetails && (
+{/* {contactDetails && (
           <div className={styles.showContactDetails}>
             <p className={styles.showContactDetailsName}>
               {`${contactDetails.firstName} ${contactDetails.lastName}`}
@@ -161,7 +161,7 @@ function PaymentDetails({
               {`${contactDetails.email}`}
             </p>
           </div>
-        )}
+        )} */}
 
         <div className={styles.finalTreeCount}>
           <div className={styles.totalCost}>
@@ -182,6 +182,27 @@ function PaymentDetails({
           </div>
 
 
+          {
+          askpublishName ? (
+            <div className={styles.isCompany}>
+              <label htmlFor="publishName" className={styles.isCompanyText}>
+                {t('donate:askPublishName')}
+              </label>
+              <ToggleSwitch
+                id="publishName"
+                checked={publishName}
+                onChange={() => setpublishName(!publishName)}
+                name="checkedB"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </div>
+          ) : (
+            <div className={styles.isCompany}>
+              <label className={styles.isCompanyText}>
+                {t('donate:nameAlreadyPublished')}
+              </label>
+            </div>
+          )}
 
         <PaymentMethodTabs
           paymentType={paymentType}
@@ -205,35 +226,7 @@ function PaymentDetails({
           }
         />
 
-{contactDetails.type === 'individual' ||
-        contactDetails.companyName !== '' ? (
-          askpublishName ? (
-            <div className={styles.isCompany}>
-              <label htmlFor="publishName" className={styles.isCompanyText}>
-                {t('donate:askPublishName')}
-              </label>
-              <ToggleSwitch
-                id="publishName"
-                checked={publishName}
-                onChange={() => setpublishName(!publishName)}
-                name="checkedB"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          ) : (
-            <div className={styles.isCompany}>
-              <label className={styles.isCompanyText}>
-                {t('donate:nameAlreadyPublished')}
-              </label>
-            </div>
-          )
-        ) : (
-          <div className={styles.isCompany}>
-            <label className={styles.isCompanyText}>
-              {t('donate:orgNamePublished')}
-            </label>
-          </div>
-        )}
+
         {donationID && (
           <>
             <div
