@@ -63,7 +63,7 @@ export default function PaymentMethodTabs({
           {...a11yProps('CARD')}
         >
           <CreditCard />
-          <label>Credit Card</label>
+          {/* <label>Credit Card</label> */}
           <CheckMark />
         </button>
       )}
@@ -77,7 +77,7 @@ export default function PaymentMethodTabs({
           {...a11yProps('Sofort')}
         >
           <SofortIcon />
-          <label>Sofort</label>
+          {/* <label>Sofort</label> */}
           <CheckMark />
         </button>
       )}
@@ -91,7 +91,7 @@ export default function PaymentMethodTabs({
           {...a11yProps('Paypal')}
         >
           <PaypalIcon />
-          <label>Paypal</label>
+          {/* <label>Paypal</label> */}
           <CheckMark />
         </button>
       ) : null}
@@ -105,7 +105,7 @@ export default function PaymentMethodTabs({
           {...a11yProps('GiroPay')}
         >
           <GiroPayIcon />
-          <label>GiroPay</label>
+          {/* <label>GiroPay</label> */}
           <CheckMark />
         </button>
       )}
@@ -119,7 +119,7 @@ export default function PaymentMethodTabs({
           {...a11yProps('SEPA')}
         >
           <SepaIcon />
-          <label>SEPA</label>
+          {/* <label>SEPA</label> */}
           <CheckMark />
         </button>
       )}

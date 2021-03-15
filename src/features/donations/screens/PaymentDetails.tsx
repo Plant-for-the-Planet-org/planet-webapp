@@ -131,57 +131,90 @@ function PaymentDetails({
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
       <div className={styles.cardContainer}>
-        <div className={styles.header}>
-          <button
-            id={'backArrowPayment'}
-            onClick={() => setDonationStep(2)}
-            className={styles.headerBackIcon}
-          >
-            <BackArrow />
-          </button>
-          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
+        <div className={styles.header} style={{ minHeight: '200px' }}>
+          <div className={styles.headerTitleContainer}>
+            <button
+              id={'backArrowPayment'}
+              onClick={() => setDonationStep(2)}
+              className={styles.headerBackIcon}
+            >
+              <BackArrow color="#ffffff" />
+            </button>
+            <div>
+              <div className={styles.headerTitle}>
+                {t('donate:paymentDetails')}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div
+                  className={styles.totalCost}
+                  style={{ color: styles.light }}
+                >
+                  {getFormatedCurrency(
+                    i18n.language,
+                    currency,
+                    treeCount * treeCost
+                  )}
+                </div>
+                <div
+                  className={styles.totalCostText}
+                  style={{ color: styles.light }}
+                >
+                  {t('donate:fortreeCountTrees', {
+                    treeCount: getFormattedNumber(
+                      i18n.language,
+                      Number(treeCount)
+                    ),
+                  })}
+                </div>
+              </div>
+              <div className={styles.plantProjectName}>
+                {t('common:to_project_by_tpo', {
+                  projectName: project.name,
+                  tpoName: project.tpo.name,
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
         {paymentError && (
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
-        {/* {contactDetails && (
+       {contactDetails && (
           <div className={styles.showContactDetails}>
-            <p className={styles.showContactDetailsName}>
-              {`${contactDetails.firstName} ${contactDetails.lastName}`}
-            </p>
+            {contactDetails.companyName ? (
+              <>
+                <p className={styles.showContactDetailsName}>
+                  {`${contactDetails.companyName}`}
+                </p>
+                <p className={styles.showContactDetailsAddress}>
+                  {`${contactDetails.firstName} ${contactDetails.lastName}`}
+                </p>
+              </>
+            ) : (
+              <p className={styles.showContactDetailsName}>
+                {`${contactDetails.firstName} ${contactDetails.lastName}`}
+              </p>
+            )}
+
             <p className={styles.showContactDetailsAddress}>
               {`${contactDetails.address}, ${contactDetails.city}`}
             </p>
             <p className={styles.showContactDetailsAddress}>
-              {`${contactDetails.zipCode}, ${getCountryDataBy('countryCode',contactDetails.country).countryName}`}
+              {`${contactDetails.zipCode}, ${
+                getCountryDataBy('countryCode', contactDetails.country)
+                  .countryName
+              }`}
             </p>
             <p className={styles.showContactDetailsAddress}>
               {`${contactDetails.email}`}
             </p>
           </div>
-        )} */}
+        )} 
 
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
-          </div>
-          <div className={styles.totalCostText}>
-            {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-            })}
-          </div>
-        </div>
-        <div
-          className={styles.plantProjectName}
-          style={{ textAlign: 'center', marginTop: '10px' }}
-        >
-          {t('common:to_project_by_tpo', {
-            projectName: project.name,
-            tpoName: project.tpo.name,
-          })}
-        </div>
+        <div className={styles.treeDonationContainer}>
+          
 
         {!contactDetails.companyName && contactDetails.companyName === '' ? (
           askpublishName ? (
@@ -208,103 +241,109 @@ function PaymentDetails({
           )
         ) : null}
 
-        <PaymentMethodTabs
-          paymentType={paymentType}
-          setPaymentType={setPaymentType}
-          showCC={paymentSetup?.gateways.stripe.methods.includes('stripe_cc')}
-          showGiroPay={
-            country === 'DE' &&
-            paymentSetup?.gateways.stripe.methods.includes('stripe_giropay')
-          }
-          showSepa={
-            currency === 'EUR' &&
-            (config.enableGuestSepa || token) &&
-            paymentSetup?.gateways.stripe.methods.includes('stripe_sepa')
-          }
-          showSofort={
-            sofortCountries.includes(country) &&
-            paymentSetup?.gateways.stripe.methods.includes('stripe_sofort')
-          }
-          showPaypal={
-            paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal
-          }
-        />
 
-        {donationID && (
-          <>
-            <div
-              role="tabpanel"
-              hidden={paymentType !== 'CARD'}
-              id={`payment-methods-tabpanel-${'CARD'}`}
-              aria-labelledby={`scrollable-force-tab-${'CARD'}`}
-            >
-              <Elements stripe={getStripe(paymentSetup)}>
-                <CardPayments
-                  donorDetails={donorDetails}
-                  onPaymentFunction={(data) => onSubmitPayment('stripe', data)}
-                  paymentType={paymentType}
-                  setPaymentType={setPaymentType}
-                />
-              </Elements>
-            </div>
 
-            {/* SEPA */}
-            <div
-              role="tabpanel"
-              hidden={paymentType !== 'SEPA'}
-              id={`payment-methods-tabpanel-${'SEPA'}`}
-              aria-labelledby={`scrollable-force-tab-${'SEPA'}`}
-            >
-              <Elements stripe={getStripe(paymentSetup)}>
-                <SepaPayments
-                  paymentType={paymentType}
-                  onPaymentFunction={onSubmitPayment}
-                  contactDetails={contactDetails}
-                />
-              </Elements>
-            </div>
+          <PaymentMethodTabs
+            paymentType={paymentType}
+            setPaymentType={setPaymentType}
+            showCC={paymentSetup?.gateways.stripe.methods.includes('stripe_cc')}
+            showGiroPay={
+              country === 'DE' &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_giropay')
+            }
+            showSepa={
+              currency === 'EUR' &&
+              (config.enableGuestSepa || token) &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_sepa')
+            }
+            showSofort={
+              sofortCountries.includes(country) &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_sofort')
+            }
+            showPaypal={
+              paypalCurrencies.includes(currency) &&
+              paymentSetup?.gateways.paypal
+            }
+          />
 
-            {/* Paypal */}
-            <div
-              role="tabpanel"
-              hidden={paymentType !== 'Paypal'}
-              id={`payment-methods-tabpanel-${'Paypal'}`}
-              aria-labelledby={`scrollable-force-tab-${'Paypal'}`}
-            >
-              {paymentType === 'Paypal' && (
-                <PaypalPayments
-                  paymentSetup={paymentSetup}
-                  treeCount={treeCount}
-                  treeCost={treeCost}
-                  currency={currency}
-                  donationID={donationID}
-                  payDonationFunction={onSubmitPayment}
-                />
-              )}
-            </div>
-            <div
-              role="tabpanel"
-              hidden={paymentType !== 'GiroPay'}
-              id={`payment-methods-tabpanel-${'GiroPay'}`}
-              aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
-            >
-              <Elements stripe={getStripe(paymentSetup)}>
-                <GiroPayPayments onSubmitPayment={onSubmitPayment} />
-              </Elements>
-            </div>
+          {donationID && (
+            <>
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'CARD'}
+                id={`payment-methods-tabpanel-${'CARD'}`}
+                aria-labelledby={`scrollable-force-tab-${'CARD'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <CardPayments
+                    donorDetails={donorDetails}
+                    onPaymentFunction={(data) =>
+                      onSubmitPayment('stripe', data)
+                    }
+                    paymentType={paymentType}
+                    setPaymentType={setPaymentType}
+                  />
+                </Elements>
+              </div>
 
-            <div
-              role="tabpanel"
-              hidden={paymentType !== 'Sofort'}
-              id={`payment-methods-tabpanel-${'Sofort'}`}
-              aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
-            >
-              <Elements stripe={getStripe(paymentSetup)}>
-                <SofortPayments onSubmitPayment={onSubmitPayment} />
-              </Elements>
-            </div>
-          </>
-        )}
+              {/* SEPA */}
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'SEPA'}
+                id={`payment-methods-tabpanel-${'SEPA'}`}
+                aria-labelledby={`scrollable-force-tab-${'SEPA'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <SepaPayments
+                    paymentType={paymentType}
+                    onPaymentFunction={onSubmitPayment}
+                    contactDetails={contactDetails}
+                  />
+                </Elements>
+              </div>
+
+              {/* Paypal */}
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'Paypal'}
+                id={`payment-methods-tabpanel-${'Paypal'}`}
+                aria-labelledby={`scrollable-force-tab-${'Paypal'}`}
+              >
+                {paymentType === 'Paypal' && (
+                  <PaypalPayments
+                    paymentSetup={paymentSetup}
+                    treeCount={treeCount}
+                    treeCost={treeCost}
+                    currency={currency}
+                    donationID={donationID}
+                    payDonationFunction={onSubmitPayment}
+                  />
+                )}
+              </div>
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'GiroPay'}
+                id={`payment-methods-tabpanel-${'GiroPay'}`}
+                aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <GiroPayPayments onSubmitPayment={onSubmitPayment} />
+                </Elements>
+              </div>
+
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'Sofort'}
+                id={`payment-methods-tabpanel-${'Sofort'}`}
+                aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <SofortPayments onSubmitPayment={onSubmitPayment} />
+                </Elements>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     )
   ) : (

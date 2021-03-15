@@ -179,6 +179,7 @@ function DonationsPopup({
     setIsCompany,
     country,
     isTaxDeductible,
+    project
   };
 
   const PaymentDetailsProps = {
