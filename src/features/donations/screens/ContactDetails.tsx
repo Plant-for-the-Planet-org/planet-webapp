@@ -183,60 +183,66 @@ function ContactDetails({
               )}
             </div>
 
-            <div style={{ width: '20px' }} />
-            <div>
-              {postalRegex && (
-                <MaterialTextField
-                  inputRef={register({
-                    required: true,
-                    pattern: postalRegex,
-                  })}
-                  label={t('donate:zipCode')}
-                  variant="outlined"
-                  name="zipCode"
-                  defaultValue={contactDetails.zipCode}
-                />
-              )}
-              {errors.zipCode && (
-                <span className={styles.formErrors}>
-                  {t('donate:zipCodeAlphaNumValidation')}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className={styles.formRow}>
-            <div style={{ width: '100%' }}>
-              <AutoCompleteCountry
-                inputRef={register({ required: true })}
-                label={t('donate:country')}
-                name="country"
-                onChange={changeCountry}
-                defaultValue={
-                  contactDetails.country
-                    ? contactDetails.country
-                    : defaultCountry
-                }
+          <div style={{ width: '20px' }} />
+          <div>
+            {postalRegex && (
+              <MaterialTextField
+                inputRef={register({
+                  required: true,
+                  pattern: postalRegex,
+                })}
+                label={t('donate:zipCode')}
+                variant="outlined"
+                name="zipCode"
+                defaultValue={contactDetails.zipCode}
               />
-              {errors.country && (
-                <span className={styles.formErrors}>
-                  {t('donate:countryRequired')}
-                </span>
-              )}
-            </div>
+            )}
+            {errors.zipCode && (
+              <span className={styles.formErrors}>
+                {t('donate:zipCodeAlphaNumValidation')}
+              </span>
+            )}
           </div>
-
-          <div className={styles.isCompany}>
-            <div className={styles.isCompanyText}>
-              {t('donate:isACompanyDonation')}
-            </div>
-            <ToggleSwitch
-              checked={isCompany}
-              onChange={() => setIsCompany(!isCompany)}
-              name="checkedB"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
+        </div>
+        <div className={styles.formRow}>
+          <div style={{ width: '100%' }}>
+            <AutoCompleteCountry
+              inputRef={register({ required: true })}
+              label={t('donate:country')}
+              name="country"
+              onChange={changeCountry}
+              defaultValue={
+                contactDetails.country ? contactDetails.country : defaultCountry
+              }
             />
+            {errors.country && (
+              <span className={styles.formErrors}>
+                {t('donate:countryRequired')}
+              </span>
+            )}
           </div>
-          {isCompany ? (
+        </div>
+
+        <div className={styles.isCompany} style={{alignItems:'baseline'}}>
+          <div className={styles.isCompanyText}>
+            {t('donate:isACompanyDonation')}
+            {isCompany ? (
+              <div className={styles.isCompany} style={{marginTop:'10px'}}>
+                <label className={styles.isCompanyText} style={{fontSize:'12px', fontStyle:'italic'}}>
+                  {isTaxDeductible ?  t('donate:orgNamePublishedTax') : t('donate:orgNamePublished')}
+                </label>
+              </div>
+            ) : null}
+          </div>
+          <ToggleSwitch
+            checked={isCompany}
+            onChange={() => setIsCompany(!isCompany)}
+            name="checkedB"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
+        </div>
+        {isCompany ? (
+          <>
             <div className={styles.formRow}>
               <div style={{ width: '100%' }}>
                 <MaterialTextField
@@ -255,7 +261,10 @@ function ContactDetails({
                 )}
               </div>
             </div>
-          ) : null}
+          </>
+        ) : null}
+
+        
 
           <div className={styles.horizontalLine} />
 

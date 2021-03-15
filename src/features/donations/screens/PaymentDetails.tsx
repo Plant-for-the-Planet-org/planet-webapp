@@ -22,6 +22,8 @@ import SofortPayments from '../components/paymentMethods/SofortPayment';
 import tenantConfig from '../../../../tenant.config';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
+import Link from 'next/link';
+import { putRequest } from '../../../utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -59,13 +61,12 @@ function PaymentDetails({
   }, []);
 
   React.useEffect(() => {
-    // We use the user's details to know whether the we should ask to publish name or not
-    // For logged in user's this data will be stored in contact details
-    // For logged out user's this will be always false
-    if (contactDetails && contactDetails.isPrivate) {
-      setaskpublishName(true);
+    if (donationID) {
+      putRequest(`/app/donations/${donationID}/publish`, {
+        publish: publishName,
+      });
     }
-  }, [contactDetails]);
+  }, [publishName, donationID]);
 
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -96,10 +97,9 @@ function PaymentDetails({
       setDonationID,
       token,
     });
-    console.log('donation', donation);
-    if (donation.isPrivate) {
-      setaskpublishName(true);
-    }
+    setaskpublishName(!donation.hasPublicProfile);
+    setpublishName(donation.hasPublicProfile);
+    setDonationID(donation.id);
 
     setShouldCreateDonation(false);
   }
@@ -181,7 +181,7 @@ function PaymentDetails({
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
-        {contactDetails && (
+       {contactDetails && (
           <div className={styles.showContactDetails}>
             {contactDetails.companyName ? (
               <>
@@ -211,38 +211,37 @@ function PaymentDetails({
               {`${contactDetails.email}`}
             </p>
           </div>
-        )}
+        )} 
 
         <div className={styles.treeDonationContainer}>
-          {contactDetails.type === 'individual' ||
-          contactDetails.companyName !== '' ? (
-            askpublishName ? (
-              <div className={styles.isCompany}>
-                <label htmlFor="publishName" className={styles.isCompanyText}>
-                  {t('donate:askPublishName')}
-                </label>
-                <ToggleSwitch
-                  id="publishName"
-                  checked={publishName}
-                  onChange={() => setpublishName(!publishName)}
-                  name="checkedB"
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-              </div>
-            ) : (
-              <div className={styles.isCompany}>
-                <label className={styles.isCompanyText}>
-                  {t('donate:nameAlreadyPublished')}
-                </label>
-              </div>
-            )
+          
+
+        {!contactDetails.companyName && contactDetails.companyName === '' ? (
+          askpublishName ? (
+            <div className={styles.isCompany}>
+              <label htmlFor="publishName" className={styles.isCompanyText}>
+                {t('donate:askPublishName')}
+              </label>
+              <ToggleSwitch
+                id="publishName"
+                checked={publishName}
+                onChange={() => {
+                  setpublishName(!publishName);
+                }}
+                name="checkedB"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </div>
           ) : (
             <div className={styles.isCompany}>
               <label className={styles.isCompanyText}>
-                {t('donate:orgNamePublished')}
+                {t('donate:nameAlreadyPublished')}
               </label>
             </div>
-          )}
+          )
+        ) : null}
+
+
 
           <PaymentMethodTabs
             paymentType={paymentType}
