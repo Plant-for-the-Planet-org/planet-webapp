@@ -88,8 +88,8 @@
   "donationRef": "Donation Ref",
   "sepaDisclaimer": "SEPA payments take 2-14 business days (usually 3-5 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
   "sofortDisclaimer": "SOFORT payments take 2-14 business days (usually 2-3 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
-  "askPublishName":"I agree to the publication of my full name alongside the number of donated/contributed trees in the Plant-for-the-Planet Apps",
-  "nameAlreadyPublished":"Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public. You can manage your profile <link> here.",
+  "askPublishName":"I would like to publish my Full Name in the leaderboard and Plant-for-the-Planet Apps. Optional",
+  "nameAlreadyPublished":"Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public.",
   "orgNamePublishedTax":"Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
   "orgNamePublished":"Company name is visible on our leaderboard and app."
 }

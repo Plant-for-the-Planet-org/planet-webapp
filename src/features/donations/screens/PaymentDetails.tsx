@@ -22,6 +22,8 @@ import SofortPayments from '../components/paymentMethods/SofortPayment';
 import tenantConfig from '../../../../tenant.config';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
+import Link from 'next/link';
+import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -64,8 +66,21 @@ function PaymentDetails({
     // For logged out user's this will be always false
     if (contactDetails && contactDetails.isPrivate) {
       setaskpublishName(true);
+    }else{
+      setpublishName(true)
     }
   }, [contactDetails]);
+
+  React.useEffect(()=>{
+    if(donationID){
+      putAuthenticatedRequest(
+        `/app/donations/${donationID}/publish`,
+        {publish:publishName},
+        token
+      );
+    }
+
+  },[publishName,askpublishName,donationID])
 
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -96,10 +111,10 @@ function PaymentDetails({
       setDonationID,
       token,
     });
-    console.log('donation', donation);
-    if (donation.isPrivate) {
+    if (!donation.hasPublicProfile) {
       setaskpublishName(true);
     }
+    setDonationID(donation.id)
 
     setShouldCreateDonation(false);
   }
@@ -146,7 +161,7 @@ function PaymentDetails({
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
-{/* {contactDetails && (
+        {/* {contactDetails && (
           <div className={styles.showContactDetails}>
             <p className={styles.showContactDetailsName}>
               {`${contactDetails.firstName} ${contactDetails.lastName}`}
@@ -191,7 +206,7 @@ function PaymentDetails({
               <ToggleSwitch
                 id="publishName"
                 checked={publishName}
-                onChange={() => setpublishName(!publishName)}
+                onChange={() => {setpublishName(!publishName);setaskpublishName(false)}}
                 name="checkedB"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
@@ -201,6 +216,13 @@ function PaymentDetails({
               <label className={styles.isCompanyText}>
                 {t('donate:nameAlreadyPublished')}
               </label>
+              <ToggleSwitch
+                id="publishName"
+                checked={publishName}
+                onChange={() => {setpublishName(!publishName);setaskpublishName(true)}}
+                name="checkedB"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
             </div>
           )}
 
