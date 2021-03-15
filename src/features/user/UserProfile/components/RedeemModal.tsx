@@ -225,7 +225,7 @@ export default function RedeemModal({
                 <>
                   <div className={styles.codeTreeCount}>
                     {getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
-                    <span>{t('common:trees')}</span>
+                    <span>{t('common:tree', { count: Number(validCodeData.treeCount) })}</span>
                   </div>
 
                   <div className={styles.plantedBy}>
