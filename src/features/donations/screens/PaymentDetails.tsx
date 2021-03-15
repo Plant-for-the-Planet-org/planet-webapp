@@ -61,25 +61,12 @@ function PaymentDetails({
   }, []);
 
   React.useEffect(() => {
-    // We use the user's details to know whether the we should ask to publish name or not
-    // For logged in user's this data will be stored in contact details
-    // For logged out user's this will be always false
-    if (contactDetails && contactDetails.isPrivate) {
-      setaskpublishName(true);
-    }else{
-      setpublishName(true)
+    if (donationID) {
+      putRequest(`/app/donations/${donationID}/publish`, {
+        publish: publishName,
+      });
     }
-  }, [contactDetails]);
-
-  React.useEffect(()=>{
-    if(donationID){
-      putRequest(
-        `/app/donations/${donationID}/publish`,
-        {publish:publishName}
-      );
-    }
-
-  },[publishName,askpublishName,donationID])
+  }, [publishName, donationID]);
 
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -110,10 +97,9 @@ function PaymentDetails({
       setDonationID,
       token,
     });
-    if (!donation.hasPublicProfile) {
-      setaskpublishName(true);
-    }
-    setDonationID(donation.id)
+    setaskpublishName(!donation.hasPublicProfile);
+    setpublishName(donation.hasPublicProfile);
+    setDonationID(donation.id);
 
     setShouldCreateDonation(false);
   }
@@ -186,17 +172,19 @@ function PaymentDetails({
               treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
             })}
           </div>
-         
         </div>
-        <div className={styles.plantProjectName} style={{textAlign:'center',marginTop:'10px'}}>
-            {t('common:to_project_by_tpo', {
-              projectName: project.name,
-              tpoName: project.tpo.name,
-            })}
-          </div>
+        <div
+          className={styles.plantProjectName}
+          style={{ textAlign: 'center', marginTop: '10px' }}
+        >
+          {t('common:to_project_by_tpo', {
+            projectName: project.name,
+            tpoName: project.tpo.name,
+          })}
+        </div>
 
-
-          {askpublishName ? (
+        {!contactDetails.companyName && contactDetails.companyName === '' ? (
+          askpublishName ? (
             <div className={styles.isCompany}>
               <label htmlFor="publishName" className={styles.isCompanyText}>
                 {t('donate:askPublishName')}
@@ -204,7 +192,9 @@ function PaymentDetails({
               <ToggleSwitch
                 id="publishName"
                 checked={publishName}
-                onChange={() => {setpublishName(!publishName);setaskpublishName(false)}}
+                onChange={() => {
+                  setpublishName(!publishName);
+                }}
                 name="checkedB"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
@@ -214,15 +204,9 @@ function PaymentDetails({
               <label className={styles.isCompanyText}>
                 {t('donate:nameAlreadyPublished')}
               </label>
-              <ToggleSwitch
-                id="publishName"
-                checked={publishName}
-                onChange={() => {setpublishName(!publishName);setaskpublishName(true)}}
-                name="checkedB"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
             </div>
-          )}
+          )
+        ) : null}
 
         <PaymentMethodTabs
           paymentType={paymentType}
@@ -245,7 +229,6 @@ function PaymentDetails({
             paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal
           }
         />
-
 
         {donationID && (
           <>
@@ -322,8 +305,6 @@ function PaymentDetails({
             </div>
           </>
         )}
-
-       
       </div>
     )
   ) : (
