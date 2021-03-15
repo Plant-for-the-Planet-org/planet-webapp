@@ -171,7 +171,7 @@ function TreeDonation({
               >
                 <Close color={styles.light} />
               </button>
-              <div style={{ marginLeft: '8px' }}>
+              <div>
                 <div className={styles.headerTitle}>
                   {t('donate:treeDonation')}
                 </div>

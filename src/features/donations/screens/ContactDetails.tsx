@@ -67,7 +67,7 @@ function ContactDetails({
           >
             <BackArrow color={styles.light} />
           </button>
-          <div style={{ marginLeft: '8px' }}>
+          <div>
             <div className={styles.headerTitle}>
               {t('donate:contactDetails')}
             </div>
