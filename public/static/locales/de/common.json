@@ -1,10 +1,10 @@
 {
+  "tree": "Baum",
+  "tree_plural": "Bäume",
   "by": "Von {{tpoName}}",
   "to_project_by_tpo": "An {{projectName}} von {{tpoName}}",
   "for": "für",
   "trees": "Bäume",
-  "tree": "Baum",
-  "tree_plural": "Bäume",
   "planted": "gepflanzt",
   "privacyAndTerms": "Datenschutz & AGB",
   "imprint": "Impressum",
