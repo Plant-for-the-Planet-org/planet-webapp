@@ -183,9 +183,21 @@ function PaymentDetails({
 
         {contactDetails && (
           <div className={styles.showContactDetails}>
-            <p className={styles.showContactDetailsName}>
-              {`${contactDetails.firstName} ${contactDetails.lastName}`}
-            </p>
+            {contactDetails.companyName ? (
+              <>
+                <p className={styles.showContactDetailsName}>
+                  {`${contactDetails.companyName}`}
+                </p>
+                <p className={styles.showContactDetailsAddress}>
+                  {`${contactDetails.firstName} ${contactDetails.lastName}`}
+                </p>
+              </>
+            ) : (
+              <p className={styles.showContactDetailsName}>
+                {`${contactDetails.firstName} ${contactDetails.lastName}`}
+              </p>
+            )}
+
             <p className={styles.showContactDetailsAddress}>
               {`${contactDetails.address}, ${contactDetails.city}`}
             </p>
@@ -202,8 +214,7 @@ function PaymentDetails({
         )}
 
         <div className={styles.treeDonationContainer}>
-
-        {contactDetails.type === 'individual' ||
+          {contactDetails.type === 'individual' ||
           contactDetails.companyName !== '' ? (
             askpublishName ? (
               <div className={styles.isCompany}>
@@ -256,7 +267,6 @@ function PaymentDetails({
             }
           />
 
-        
           {donationID && (
             <>
               <div
