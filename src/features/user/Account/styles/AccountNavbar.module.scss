@@ -1,6 +1,6 @@
 @import './../../../../theme/theme';
 
-.accountsPage{
+.accountsPage {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -11,44 +11,51 @@
   width: 100%;
   max-width: 980px;
   margin-top: 100px;
+  position: relative;
 }
 
-.accountsHeader{
+.accountsHeader {
   display: flex;
   flex-direction: column;
-  gap:30px;
-  .backButton{
-    box-shadow:1px 1px 4px -2px #707070;
+  gap: 30px;
+  .backButton {
+    box-shadow: 1px 1px 4px -2px #707070;
     height: 30px;
     width: 30px;
-    background-color:white;
-    border-radius:50%;
-    &:hover{
+    background-color: white;
+    border-radius: 50%;
+    &:hover {
       cursor: pointer;
     }
   }
-  .accountsTitleContainer{
-    .accountsTitle{
+  .accountsTitleContainer {
+    .accountsTitle {
       font-size: 36px;
       font-weight: bold;
     }
   }
 }
-.contentContainer{
+.contentContainer {
   margin-top: 30px;
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
 
-// accounts 
-.accountsContainer{
+// accounts
+.accountsContainer {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+.settingsButton {
+  padding: 10px;
+  svg {
+    height: 20px;
+  }
+}
 
 // Single record which is not expanded
 
@@ -57,20 +64,17 @@
   background-color: $light;
   border-radius: 10px;
   box-shadow: 1px 2px 8px -6px #707070;
-  .recordHeader{
+  .recordHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
   }
 }
 
-
-
-
-.recordDataContainer{
+.recordDataContainer {
   height: 0px;
   display: none;
   border-top: #dddbda 1px solid;
@@ -78,11 +82,11 @@
   margin-top: 20px;
   grid-row-gap: 20px;
   grid-template-columns: 32% 32% 32%;
-  .detailContainer{
+  .detailContainer {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    .detailTitle{
+    .detailTitle {
       font-weight: bold;
     }
     a {
@@ -97,13 +101,10 @@
   -ms-transition: all 1s ease;
   -o-transition: all 1s ease;
 }
-.recordDataContainer.recordDataContainerSelected{
+.recordDataContainer.recordDataContainerSelected {
   display: grid;
   height: fit-content;
 }
-
-
-
 
 .treesDate {
   display: flex;
@@ -132,6 +133,8 @@
   max-width: 300px;
   box-shadow: 1px 2px 8px -6px #707070;
   height: fit-content;
+  position: absolute;
+  right: 0;
 }
 
 .filterTitle {
@@ -218,4 +221,22 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 24px;
+}
+
+.closeButton {
+  padding: 10px;
+  > svg {
+    width: 20px;
+  }
+}
+
+.optionsRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+:export {
+  primaryColor: $primaryColor;
 }

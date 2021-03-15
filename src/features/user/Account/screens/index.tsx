@@ -13,10 +13,13 @@ import {
 } from '../../../../utils/apiRequests/api';
 import PaymentRecord from '../components/PaymentRecord';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import FilterIcon from '../../../../../public/assets/images/icons/FilterIcon';
+import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
+import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 
-interface Props {}
+interface Props { }
 
-function Account({}: Props): ReactElement {
+function Account({ }: Props): ReactElement {
   const {
     isLoading,
     isAuthenticated,
@@ -24,6 +27,7 @@ function Account({}: Props): ReactElement {
     getAccessTokenSilently,
   } = useAuth0();
   const [userprofile, setUserprofile] = React.useState();
+  const [showFilters, setShowFilters] = React.useState(false);
   const router = useRouter();
   useEffect(() => {
     async function loadUserData() {
@@ -69,10 +73,10 @@ function Account({}: Props): ReactElement {
   const [filter, setFilter] = React.useState(null);
   const [paymentHistory, setpaymentHistory] = React.useState();
 
-  React.useEffect(()=>{
-    if(isAuthenticated)
-    setFilter('')
-  },[isAuthenticated])
+  React.useEffect(() => {
+    if (isAuthenticated)
+      setFilter('')
+  }, [isAuthenticated])
   React.useEffect(() => {
     async function fetchPaymentHistory() {
       let token = null;
@@ -121,12 +125,56 @@ function Account({}: Props): ReactElement {
     <div className={styles.accountsPage}>
       <div className={styles.accountsPageContainer}>
         <div className={styles.accountsHeader}>
-          <button onClick={()=>{router.back()}} className={styles.backButton}>
+          <button onClick={() => { router.back() }} className={styles.backButton}>
             <BackButton style={{ margin: '0px' }} />
           </button>
           <div className={styles.accountsTitleContainer}>
             <div className={styles.accountsTitle}>Account History</div>
-            <div className={styles.settingsButton}></div>
+            <div className={styles.optionsRow}>
+              {showFilters ?
+                <div onClick={() => setShowFilters(false)} className={styles.settingsButton}><Close /></div>
+                :
+                <div onClick={() => setShowFilters(true)} className={styles.settingsButton}><FilterIcon /></div>
+              }
+            </div>
+            {showFilters &&
+              <div className={styles.filterContainer}>
+                <div className={styles.filterHead}><p className={styles.filterTitle}>Filters</p>
+                </div>
+
+
+                <div className={styles.filterButtons}>
+                  {accountingFilters.map((filter) => {
+                    return (
+                      <div
+                        className={styles.multiSelectInput}
+                        key={filter.id}
+                        onClick={() => handleSetFilter(filter.id)}
+                      >
+                        <div
+                          className={`${styles.multiSelectInputCheck} ${filter.isSet ? styles.multiSelectInputCheckTrue : ''
+                            }`}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="13.02"
+                            height="9.709"
+                            viewBox="0 0 13.02 9.709"
+                          >
+                            <path
+                              id="check-solid"
+                              d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
+                              transform="translate(0 -65.098)"
+                              fill="#fff"
+                            />
+                          </svg>
+                        </div>
+                        <p>{filter.label}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>}
           </div>
         </div>
         <div className={styles.contentContainer}>
@@ -135,41 +183,6 @@ function Account({}: Props): ReactElement {
               paymentHistory.items.map((item, index) => {
                 return <PaymentRecord record={item} index={index} />;
               })}
-          </div>
-          <div className={styles.filterContainer}>
-            <p className={styles.filterTitle}>Filters</p>
-            <div className={styles.filterButtons}>
-              {accountingFilters.map((filter) => {
-                return (
-                  <div
-                    className={styles.multiSelectInput}
-                    key={filter.id}
-                    onClick={() => handleSetFilter(filter.id)}
-                  >
-                    <div
-                      className={`${styles.multiSelectInputCheck} ${
-                        filter.isSet ? styles.multiSelectInputCheckTrue : ''
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="13.02"
-                        height="9.709"
-                        viewBox="0 0 13.02 9.709"
-                      >
-                        <path
-                          id="check-solid"
-                          d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
-                          transform="translate(0 -65.098)"
-                          fill="#fff"
-                        />
-                      </svg>
-                    </div>
-                    <p>{filter.label}</p>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>
