@@ -23,7 +23,7 @@ import tenantConfig from '../../../../tenant.config';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
 import Link from 'next/link';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { putRequest } from '../../../utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -73,10 +73,9 @@ function PaymentDetails({
 
   React.useEffect(()=>{
     if(donationID){
-      putAuthenticatedRequest(
+      putRequest(
         `/app/donations/${donationID}/publish`,
-        {publish:publishName},
-        token
+        {publish:publishName}
       );
     }
 
@@ -197,8 +196,7 @@ function PaymentDetails({
           </div>
 
 
-          {
-          askpublishName ? (
+          {askpublishName ? (
             <div className={styles.isCompany}>
               <label htmlFor="publishName" className={styles.isCompanyText}>
                 {t('donate:askPublishName')}

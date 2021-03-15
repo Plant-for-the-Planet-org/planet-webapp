@@ -191,11 +191,11 @@ function ContactDetails({
           </div>
         </div>
 
-        <div className={styles.isCompany}>
+        <div className={styles.isCompany} style={{alignItems:'baseline'}}>
           <div className={styles.isCompanyText}>
             {t('donate:isACompanyDonation')}
             {isCompany ? (
-              <div className={styles.isCompany}>
+              <div className={styles.isCompany} style={{marginTop:'10px'}}>
                 <label className={styles.isCompanyText} style={{fontSize:'12px', fontStyle:'italic'}}>
                   {isTaxDeductible ?  t('donate:orgNamePublishedTax') : t('donate:orgNamePublished')}
                 </label>
