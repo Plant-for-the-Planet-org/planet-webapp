@@ -3,8 +3,8 @@
 .cardContainer {
   background-color: $backgroundColor;
   border-radius: 10px;
-  // padding: 26px;
-  width: 412px;
+  width: 100%;
+  max-width: 412px;
   z-index: 10;
   position: absolute;
   top: 120px;
