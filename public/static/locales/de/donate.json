@@ -1,4 +1,6 @@
 {
+  "fortreeCountTrees": "für {{treeCount}} Baum",
+  "fortreeCountTrees_plural": "für {{treeCount}} Bäume",
   "PROJECTS": "PROJEKTE",
   "topProjects": "Top Projekte",
   "allCountProjects": "Alle {{projectCount}} Projekte",
@@ -13,8 +15,6 @@
   "taxDeductionNotAvailableForProject": "Spendenbescheinigung für dieses Projekt ist noch nicht möglich",
   "youWillReceiveTaxDeduction": "Du erhältst eine Spendenbescheinigung für ",
   "toProjectByOrganization": "An {{projectName}} von {{organizationName}}",
-  "fortreeCountTrees": "für {{treeCount}} Baum",
-  "fortreeCountTrees_plural": "für {{treeCount}} Bäume",
   "firstName": "Vorname",
   "lastName": "Nachname",
   "email": "E-Mail",
@@ -88,5 +88,9 @@
   "sepaMessage": "Indem du deine IBAN angibst und diese Zahlung bestätigst, ermächtigst du Plant-for-the-Planet und Stripe, unseren Zahlungsdienstleister, Anweisungen an deine Bank zu senden, um dein Konto zu belasten. Du hast Anspruch auf eine Rückerstattung durch deine Bank gemäß ihrer allgemeinen Geschäftsbedingungen. Wenn du irgendwelche Probleme mit deiner Spende hast, sende uns bitte eine E-Mail an support@plant-for-the-planet.org.",
   "donationRef": "Spendenreferenznummer",
   "sepaDisclaimer": "SEPA-Zahlungen dauern 2-14 Werktage (normalerweise 3-5 Tage). Sobald sie eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinem Baumzertifikat und erhöhen den Baumzähler.",
-  "sofortDisclaimer": "SOFORT Zahlungen dauern 2-14 Werktage (in der Regel 2-3 Tage). Sobald sie eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinem Baumzertifikat und erhöhen den Baumzähler."
+  "sofortDisclaimer": "SOFORT Zahlungen dauern 2-14 Werktage (in der Regel 2-3 Tage). Sobald sie eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinem Baumzertifikat und erhöhen den Baumzähler.",
+  "askPublishName": "Zeige meinen vollständigen Namen in der Plant-for-the-Planet App & Bestenliste.",
+  "nameAlreadyPublished": "Dein vollständiger Name wird in der Rangliste angezeigt, da dein Plant-for-the-Planet-Profil derzeit öffentlich ist.",
+  "orgNamePublishedTax": "Der Firmenname ist auf unserer Bestenliste und App sichtbar. Steuerabzugsquittungen werden auf denselben Namen ausgestellt.",
+  "orgNamePublished": "Der Firmenname ist auf unserem Leaderboard und in der App sichtbar."
 }
