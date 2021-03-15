@@ -105,7 +105,7 @@ export default function ProjectSnippet({
           <div className={'targetLocation'}>
             <div className={'target'}>
               {localizedAbbreviatedNumber(i18n.language, Number(project.countPlanted), 1)}{' '}
-              {t('common:trees')} •{' '}
+              {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
               </span>

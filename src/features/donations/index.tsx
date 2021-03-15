@@ -122,6 +122,8 @@ function DonationsPopup({
             zipCode: resJson.address.zipCode ? resJson.address.zipCode : '',
             country: '',
             companyName: '',
+            isPrivate:resJson.isPrivate,
+            type:resJson.type
           }
           setContactDetails(defaultDetails)
         }
@@ -175,6 +177,7 @@ function DonationsPopup({
     setIsCompany,
     country,
     isTaxDeductible,
+    project
   };
 
   const PaymentDetailsProps = {

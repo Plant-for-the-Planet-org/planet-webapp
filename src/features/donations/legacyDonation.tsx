@@ -127,37 +127,38 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           {paymentError && (
             <div className={styles.paymentError}>{paymentError}</div>
           )}
-          <div className={styles.header}>
+          <div className={styles.header} style={{textAlign:'center'}}>
             <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-          </div>
-          <div className={styles.headerText}>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'center'}}>
+              <div className={styles.totalCost} style={{color:styles.light}}>
+              {!isPaymentOptionsLoading ? getFormatedCurrency(i18n.language, currency, treeCount * treeCost) : null}
+
+              </div>
+              <div className={styles.totalCostText} style={{color:styles.light}}>
+              {t('donate:fortreeCountTrees', {
+                count: Number(treeCount),
+                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
+              })}
+              </div>
+            </div>
+            <div className={styles.plantProjectName}>
             {t('common:to_project_by_tpo', {
               projectName: paymentData.plantProjectName,
               tpoName: paymentData.tpoName,
             })}
-          </div>
-          {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
+            </div>
+            {paymentData.giftRecipient || paymentData.supportedTreecounterName ? (
             paymentData.giftRecipient ?
-              (<div className={styles.headerText}>
+              (<div className={styles.plantProjectName}>
                 {t('donate:giftTo')} {paymentData.giftRecipient}
               </div>) :
-              (<div className={styles.headerText}>
+              (<div className={styles.plantProjectName}>
                 {t('donate:supporting')} {paymentData.supportedTreecounterName}
               </div>)
           ) : null}
-
-
-
-          <div className={styles.finalTreeCount}>
-            <div className={styles.totalCost}>
-              {!isPaymentOptionsLoading ? getFormatedCurrency(i18n.language, currency, treeCount * treeCost) : null}
-            </div>
-            <div className={styles.totalCostText}>
-              {t('donate:fortreeCountTrees', {
-                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-              })}
-            </div>
           </div>
+
+          
 
           {paymentSetup && (
             <>
