@@ -160,6 +160,7 @@ function PaymentDetails({
                   style={{ color: styles.light }}
                 >
                   {t('donate:fortreeCountTrees', {
+                    count: Number(treeCount),
                     treeCount: getFormattedNumber(
                       i18n.language,
                       Number(treeCount)
