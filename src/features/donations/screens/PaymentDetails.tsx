@@ -234,7 +234,7 @@ function PaymentDetails({
             </div>
           ) : (
             <div className={styles.isCompany}>
-              <label className={styles.isCompanyText}>
+              <label className={styles.isCompanyText} style={{textAlign:'center'}}>
                 {t('donate:nameAlreadyPublished')}
               </label>
             </div>
