@@ -50,7 +50,6 @@ function  ProjectsList({
 
   useDebouncedEffect(() => {
     setTrottledSearchValue(searchValue);
-    console.log(searchValue);
   }, 1000, [searchValue]);
 
   const searchRef = React.useRef(null);

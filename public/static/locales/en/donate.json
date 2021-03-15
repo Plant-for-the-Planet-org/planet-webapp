@@ -88,5 +88,9 @@
   "sepaMessage": "By providing your IBAN and confirming this payment, you authorize Plant-for-the-Planet and Stripe, our payment service provider, to send instructions to your bank to debit your account. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. If you have any issues regarding your donation, please send us an email to support@plant-for-the-planet.org",
   "donationRef": "Donation Ref",
   "sepaDisclaimer": "SEPA payments take 2-14 business days (usually 3-5 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
-  "sofortDisclaimer": "SOFORT payments take 2-14 business days (usually 2-3 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter."
+  "sofortDisclaimer": "SOFORT payments take 2-14 business days (usually 2-3 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
+  "askPublishName":"I would like to publish my Full Name in the leaderboard and Plant-for-the-Planet Apps. Optional",
+  "nameAlreadyPublished":"Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public.",
+  "orgNamePublishedTax":"Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
+  "orgNamePublished":"Company name is visible on our leaderboard and app."
 }
