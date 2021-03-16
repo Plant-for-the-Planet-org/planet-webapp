@@ -26,7 +26,7 @@ export default function LandingSection(props: any) {
                     </AnimatedButton> */}
                     </div>
                 </div>
-                {props.tenantScore && props.tenantScore !== 404 && (
+                {props.tenantScore && props.tenantScore.total && (
                     <div className={styles.landingImageSection}>
                         <TreeCounterSection tenantScore={props.tenantScore} />
                     </div>
