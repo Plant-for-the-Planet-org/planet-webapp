@@ -23,7 +23,7 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      await getRequestWithoutRedirecting(`/app/tenantScore`).then((res)=>{
+      await getRequestWithoutRedirecting(`/app/tenantScore/${process.env.TENANTID}`).then((res)=>{
         setTenantScore(res);
       }).catch((err)=>{
         console.log('Error',err);
@@ -34,7 +34,7 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      await getRequestWithoutRedirecting(`/app/leaderboard?limit=20`).then((res)=>{
+      await getRequestWithoutRedirecting(`/app/leaderboard/${process.env.TENANTID}?limit=20`).then((res)=>{
         setLeaderboard(res);
       }).catch((err)=>{
         console.log('Error',err);
