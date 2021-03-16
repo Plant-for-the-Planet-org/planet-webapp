@@ -436,10 +436,10 @@
 
 .mandateAcceptance {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize - 2;
+  font-size: 12px;
   color: $primaryFontColor;
   margin-top: 20px;
-  margin-bottom: 20px;
+  text-align: center;
 }
 
 .spinner {
@@ -518,11 +518,13 @@
   display: flex;
   padding-top: 30px;
   flex-direction: row;
-  overflow-y: scroll;
+  flex-wrap: wrap;
+  // gap: 12px;
   // padding-bottom: 20px;
   > .paymentMethod {
     box-sizing: border-box;
     margin-right: 12px;
+    margin-bottom: 12px;
     border: 0.5px solid $primaryFontColor;
     border-radius: 4px;
     display: flex;

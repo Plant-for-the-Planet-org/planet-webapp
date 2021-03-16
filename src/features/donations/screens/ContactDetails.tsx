@@ -32,7 +32,11 @@ function ContactDetails({
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const onSubmit = (data: any) => {
-    setContactDetails({ ...contactDetails, ...data });
+    let submitdata = data;    
+    if(!isCompany){
+      submitdata.companyName = ''
+    }
+    setContactDetails({ ...contactDetails, ...submitdata });
     setDonationStep(3);
   };
 
