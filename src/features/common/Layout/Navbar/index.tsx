@@ -12,6 +12,7 @@ import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
+import Topbar from '../Topbar';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -151,6 +152,7 @@ export default function NavbarComponent(props: any) {
 
   return (
     <div className={'mainNavContainer'}>
+      <Topbar/>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>
           {config.header?.isSecondaryTenant && (

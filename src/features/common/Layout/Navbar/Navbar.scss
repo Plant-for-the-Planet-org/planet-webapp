@@ -1,17 +1,51 @@
 @import './../../../../theme/theme';
 
 .mainNavContainer{
-  height: 80px;
+  height: fit-content;
   width: 100%;
   background-color: #f8f9fa!important;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   z-index: 1030;
   position: fixed;
   top: 0;
+  .topbarContainer{
+    width: 100%;
+    background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+    color: $light;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 36px;
+    position: relative;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    > p {
+      text-align: center;
+      width: 80%;
+      max-width: 980px;
+      font-size: 14px;
+    }
+    button{
+      margin: 0px;
+      padding: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    svg {
+      height: 12px;
+      position: absolute;
+      right: 20px;
+    }
+  }
 }
 .top_nav {
   justify-content: center;
