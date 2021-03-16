@@ -3,6 +3,7 @@ import TreeCounterSection from './TreeCounter'
 import styles from './../styles/sateins.module.scss'
 
 export default function LandingSection(props: any) {
+    
     return (
         <div className={styles.landingSection}>
             {/* <div className={styles.landingSectionOverlay}></div> */}
@@ -25,9 +26,11 @@ export default function LandingSection(props: any) {
                     </AnimatedButton> */}
                     </div>
                 </div>
-                <div className={styles.landingImageSection}>
-                    <TreeCounterSection tenantScore={props.tenantScore} />
-                </div>
+                {props.tenantScore && props.tenantScore.total && (
+                    <div className={styles.landingImageSection}>
+                        <TreeCounterSection tenantScore={props.tenantScore} />
+                    </div>
+                )}
             </div>
 
 

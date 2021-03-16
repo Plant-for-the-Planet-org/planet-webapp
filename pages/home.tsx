@@ -7,7 +7,7 @@ import SternHome from '../src/tenants/stern/Home';
 import BasicHome from '../src/tenants/common/Home';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import { getRequest } from '../src/utils/apiRequests/api';
+import { getRequest, getRequestWithoutRedirecting } from '../src/utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -23,16 +23,22 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(`/app/tenantScore`);
-      setTenantScore(newTenantScore);
+      await getRequestWithoutRedirecting(`/app/tenantScore/${process.env.TENANTID}`).then((res)=>{
+        setTenantScore(res);
+      }).catch((err)=>{
+        console.log('Error',err);
+      });
     }
     loadTenantScore();
   }, []);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderBoard = await getRequest(`/app/leaderboard?limit=20`);
-      setLeaderboard(newLeaderBoard);
+      await getRequestWithoutRedirecting(`/app/leaderboard/${process.env.TENANTID}?limit=20`).then((res)=>{
+        setLeaderboard(res);
+      }).catch((err)=>{
+        console.log('Error',err);
+      });
     }
     loadLeaderboard();
   }, []);
