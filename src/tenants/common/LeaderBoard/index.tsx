@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../i18n';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import LeaderboardLoader from '../../../features/common/ContentLoaders/LeaderboardLoader';
 
 interface Props {
   leaderboard: any;
@@ -13,13 +14,14 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const leaderboardData = leaderboard.leaderboard;
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
-  return ready ? ( 
+  return ready ? (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
-            <button id={'LeaderBoardRecent'}
+            <button
+              id={'LeaderBoardRecent'}
               onClick={() => setSelectedTab('recent')}
               className={
                 selectedTab === 'recent'
@@ -29,7 +31,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
             >
               {t('leaderboard:mostRecent')}
             </button>
-            <button id="leaderBoardHighest"
+            <button
+              id="leaderBoardHighest"
               onClick={() => setSelectedTab('highest')}
               className={
                 selectedTab === 'highest'
@@ -45,13 +48,17 @@ export default function LeaderBoardSection(leaderboard: Props) {
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any,index:any) => (
+                {leaderboardData.mostRecent.map((leader: any, index: any) => (
                   <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
+                      {getFormattedNumber(
+                        i18n.language,
+                        Number(leader.treeCount)
+                      )}{' '}
+                      {t('common:tree', { count: Number(leader.treeCount) })}
                     </p>
                     {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -61,20 +68,35 @@ export default function LeaderBoardSection(leaderboard: Props) {
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any, index:any) => (
+                {leaderboardData.mostDonated.map((leader: any, index: any) => (
                   <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
+                      {getFormattedNumber(
+                        i18n.language,
+                        Number(leader.treeCount)
+                      )}{' '}
+                      {t('common:tree', { count: Number(leader.treeCount) })}
                     </p>
                   </div>
                 ))}
               </div>
             )
           ) : (
-            <p>loading</p>
+            <>
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+            </>
           )}
         </div>
       </div>
