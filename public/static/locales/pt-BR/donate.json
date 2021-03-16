@@ -13,7 +13,6 @@
   "taxDeductionNotAvailableForProject": "A dedução fiscal ainda não está disponível para este projeto",
   "youWillReceiveTaxDeduction": "Você receberá um recibo de dedução de imposto para ",
   "toProjectByOrganization": "Para {{projectName}} por {{organizationName}}",
-  "fortreeCountTrees": "para {{treeCount}} Árvores",
   "firstName": "Nome",
   "lastName": "Sobrenome",
   "email": "Email",

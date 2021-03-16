@@ -99,7 +99,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                       <p className={styles.leaderBoardDonorTrees}>
                         {getFormattedNumber(i18n.language, Number(leader.treeCount))}
                         {' '}
-                        {t('common:trees')}
+                        {t('common:tree', { count: Number(leader.treeCount) })}
                       </p>
                       {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -117,7 +117,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                         <p className={styles.leaderBoardDonorTrees}>
                           {getFormattedNumber(i18n.language, Number(leader.treeCount))}
                           {' '}
-                          {t('common:trees')}
+                          {t('common:tree', { count: Number(leader.treeCount) })}
                         </p>
                       </div>
                     ))}

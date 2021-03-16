@@ -170,6 +170,25 @@ export async function putAuthenticatedRequest(url: any, data: any, token: any) {
   return result;
 }
 
+export async function putRequest(url: any, data: any) {
+  const res = await fetch(process.env.API_ENDPOINT + url, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+    },
+  });
+  const result = await res.json();
+  return result;
+}
+
 export async function getRasterData(id: any) {
   let result;
   const res = await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
