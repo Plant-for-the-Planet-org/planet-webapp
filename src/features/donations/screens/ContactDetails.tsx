@@ -32,7 +32,7 @@ function ContactDetails({
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const onSubmit = (data: any) => {
-    let submitdata = data;    
+    const submitdata = data;    
     if(!isCompany){
       submitdata.companyName = ''
     }
