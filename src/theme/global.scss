@@ -213,7 +213,7 @@ video {
 .primaryButton {
   color: white;
   font-weight: bold;
-  background-color: #68b030;
+  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
   height: 40px;
   padding: 0px;
   text-align: center;
@@ -246,4 +246,41 @@ button {
   src: url('/tenants/pampers/HarmoniaSansPro-SemiBd.woff') format('woff');
   font-weight: bold;
   font-style: normal;
+}
+
+// Error Modal design
+
+.errorModal{
+  background-color: $light;
+  border-radius: 10px;
+  padding: 24px;
+  min-width: 300px;
+  max-width: 480px;
+  position: relative;
+  .errorModalButton{
+    display: flex;
+    justify-content: center;
+  }
+  .errorModalImage{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    svg {
+      max-width: 80%;
+      max-height: fit-content;
+    }
+  }
+  .errorModalMessage{
+    text-align: center;
+    margin-top: 20px;
+  }
+  .errorModalClose{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
 }

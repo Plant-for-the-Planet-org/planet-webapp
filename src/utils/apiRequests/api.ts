@@ -66,15 +66,15 @@ export async function getAuthenticatedRequest(url: any, token: any) {
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      if(res.status === 404){
+      if (res.status === 404) {
         const error = {
-          status: 404
-        }
+          status: 404,
+        };
         result = error;
-      } else if(res.status === 401) {
+      } else if (res.status === 401) {
         const error = {
-          status: 401
-        }
+          status: 401,
+        };
         result = error;
       } else if (res.status !== 200) {
         // Maybe show a Modal with Error and redirect to home page
@@ -191,7 +191,9 @@ export async function putRequest(url: any, data: any) {
 
 export async function getRasterData(id: any) {
   let result;
-  const res = await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
+  const res = await fetch(
+    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
+  )
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       return result;
@@ -214,9 +216,15 @@ export async function getRequestWithoutRedirecting(url: any) {
     },
   })
     .then(async (res) => {
+      if (res.status !== 200 && res.status !== 202) {
+        result =  await res.json();
+        throw result;
+      }
       result = res.status === 200 ? await res.json() : res.status;
       return result;
     })
-    .catch((err) => console.log(`Something went wrong: ${err}`));
+    .catch((err) => {
+      throw err;
+    });
   return result;
 }

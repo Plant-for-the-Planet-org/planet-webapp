@@ -59,5 +59,7 @@
   "faqs": "FAQs",
   "annualReports": "Annual Reports",
   "mapInfo": "Esri",
-  "aboutUs": "About Us"
+  "aboutUs": "About Us",
+  "networkError":"There is some connection error please try again.",
+  "tryAgain":"Try Again"
 }

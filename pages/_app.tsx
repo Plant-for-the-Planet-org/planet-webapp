@@ -20,7 +20,8 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { browserNotCompatible } from '../src/utils/browsercheck';
-import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import ErrorProvider from '../src/utils/errorContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -107,15 +108,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     searchedProject,
     setsearchedProjects,
     currencyCode,
-    setCurrencyCode
+    setCurrencyCode,
   };
 
   if (browserCompatible) {
-    return (
-      <BrowserNotSupported />
-    );
-  }
-  else {
+    return <BrowserNotSupported />;
+  } else {
     return (
       <Auth0Provider
         domain={process.env.AUTH0_CUSTOM_DOMAIN}
@@ -125,17 +123,19 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         onRedirectCallback={onRedirectCallback}
       >
         <ThemeProvider>
-          <CssBaseline />
-          <Layout>
-            {isMap ? (
-              project ? (
-                <MapLayout {...ProjectProps} />
-              ) : projects ? (
-                <MapLayout {...ProjectProps} />
-              ) : null
-            ) : null}
-            <Component {...ProjectProps} />
-          </Layout>
+          <ErrorProvider>
+            <CssBaseline />
+            <Layout>
+              {isMap ? (
+                project ? (
+                  <MapLayout {...ProjectProps} />
+                ) : projects ? (
+                  <MapLayout {...ProjectProps} />
+                ) : null
+              ) : null}
+              <Component {...ProjectProps} />
+            </Layout>
+          </ErrorProvider>
         </ThemeProvider>
       </Auth0Provider>
     );
