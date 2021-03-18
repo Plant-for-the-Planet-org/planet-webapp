@@ -53,7 +53,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                           {leader.donorName}
                         </p>
                         <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:trees')}
+                          {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
                         </p>
                       </div>
                     );
@@ -68,7 +68,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                             {leader.donorName}
                           </p>
                           <p className={styles.leaderBoardDonorTrees}>
-                            {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:trees')}
+                            {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
                           </p>
                         </div>
                       );

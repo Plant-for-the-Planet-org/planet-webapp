@@ -1,4 +1,6 @@
 {
+  "tree": "Tree",
+  "tree_plural": "Trees",
   "by": "By {{tpoName}}",
   "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",

@@ -71,8 +71,8 @@
   "siteStatusPlanted": "Gepflanzt",
   "siteStatusBarren": "Kahl",
   "siteStatusReforestation": "Wiederaufforstung",
-  "projectStatus": "Projektstatus",
-  "selectProjectStatus": "Bitte Projektstatus auswählen",
+  "siteStatus": "Standort Status",
+  "selectProjectStatus": "Bitte Status auswählen",
   "saveAndAddSite": "Speichern & weiteren Standort hinzufügen",
   "addSite": "Weiteren Standort hinzufügen",
   "backToAnalysis": "Zurück zur detaillierten Analyse",
@@ -110,5 +110,11 @@
   "urbanPlanting": "Städtische Bepflanzung",
   "otherPlanting": "Andere Pflanzung",
   "projectType": "Projekttyp",
-  "polygonRequired": "Polygon ist erforderlich"
+  "polygonRequired": "Polygon ist erforderlich",
+  "fileSizeLimit": "Datei ist größer als 10 MB",
+  "fileImageOnly": "Dateityp muss Bild sein",
+  "filePDFOnly": "Dateityp muss PDF sein",
+  "acceptedReview": "Änderungen an deinem Projekt sind online",
+  "deniedReview": "Deine Überprüfung führte zu einer Ablehnung",
+  "saveSite": "Standort speichern"
 }

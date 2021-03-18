@@ -3,7 +3,10 @@ import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackAr
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import { PaymentDetailsProps } from '../../common/types/donations';
 import styles from './../styles/Donations.module.scss';
-import { createDonationFunction, payDonationFunction } from '../components/PaymentFunctions';
+import {
+  createDonationFunction,
+  payDonationFunction,
+} from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
@@ -17,6 +20,10 @@ import PaypalPayments from '../components/paymentMethods/PaypalPayments';
 import GiroPayPayments from '../components/paymentMethods/GiroPayPayments';
 import SofortPayments from '../components/paymentMethods/SofortPayment';
 import tenantConfig from '../../../../tenant.config';
+import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
+import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
+import Link from 'next/link';
+import { putRequest } from '../../../utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -40,15 +47,26 @@ function PaymentDetails({
   donationID,
   setDonationID,
   shouldCreateDonation,
-  setShouldCreateDonation
+  setShouldCreateDonation,
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
+  const [publishName, setpublishName] = React.useState(false);
+  const [askpublishName, setaskpublishName] = React.useState(false);
+
   React.useEffect(() => {
     setPaymentType('CARD');
   }, []);
+
+  React.useEffect(() => {
+    if (donationID) {
+      putRequest(`/app/donations/${donationID}/publish`, {
+        publish: publishName,
+      });
+    }
+  }, [publishName, donationID]);
 
   const [paymentError, setPaymentError] = React.useState('');
 
@@ -63,28 +81,33 @@ function PaymentDetails({
     companyname: contactDetails.companyName,
   };
 
+  async function getDonation() {
+    const donation = await createDonationFunction({
+      isTaxDeductible,
+      country,
+      project,
+      treeCost,
+      treeCount,
+      currency,
+      donorDetails,
+      isGift,
+      giftDetails,
+      setIsPaymentProcessing,
+      setPaymentError,
+      setDonationID,
+      token,
+    });
+    setaskpublishName(!donation.hasPublicProfile);
+    setpublishName(donation.hasPublicProfile);
+    setDonationID(donation.id);
 
+    setShouldCreateDonation(false);
+  }
   React.useEffect(() => {
     if (shouldCreateDonation) {
-      createDonationFunction({
-        isTaxDeductible,
-        country,
-        project,
-        treeCost,
-        treeCount,
-        currency,
-        donorDetails,
-        isGift,
-        giftDetails,
-        setIsPaymentProcessing,
-        setPaymentError,
-        setDonationID,
-        token
-      });
-      setShouldCreateDonation(false)
+      getDonation();
     }
-  }, [shouldCreateDonation])
-
+  }, [shouldCreateDonation]);
 
   const onSubmitPayment = (gateway: any, paymentMethod: any) => {
     payDonationFunction({
@@ -97,50 +120,169 @@ function PaymentDetails({
       donationID,
       token,
       setDonationStep,
-      donorDetails
-    })
-  }
+      donorDetails,
+    });
+  };
 
-  const sofortCountries = ['AT', 'BE', 'DE', 'IT', 'NL', 'ES']
+  const sofortCountries = ['AT', 'BE', 'DE', 'IT', 'NL', 'ES'];
 
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-        <div className={styles.cardContainer}>
-          <div className={styles.header}>
-            <button id={'backArrowPayment'}
+      <div className={styles.cardContainer}>
+        <div className={styles.header} style={{ minHeight: '200px' }}>
+          <div className={styles.headerTitleContainer}>
+            <button
+              id={'backArrowPayment'}
               onClick={() => setDonationStep(2)}
               className={styles.headerBackIcon}
             >
-              <BackArrow />
+              <BackArrow color="#ffffff" />
             </button>
-            <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
-          </div>
-
-          {paymentError && (
-            <div className={styles.paymentError}>{paymentError}</div>
-          )}
-
-          <div className={styles.finalTreeCount}>
-            <div className={styles.totalCost}>
-              {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
+            <div>
+              <div className={styles.headerTitle}>
+                {t('donate:paymentDetails')}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div
+                  className={styles.totalCost}
+                  style={{ color: styles.light }}
+                >
+                  {getFormatedCurrency(
+                    i18n.language,
+                    currency,
+                    treeCount * treeCost
+                  )}
+                </div>
+                <div
+                  className={styles.totalCostText}
+                  style={{ color: styles.light }}
+                >
+                  {t('donate:fortreeCountTrees', {
+                    count: Number(treeCount),
+                    treeCount: getFormattedNumber(
+                      i18n.language,
+                      Number(treeCount)
+                    ),
+                  })}
+                </div>
+              </div>
+              <div className={styles.plantProjectName}>
+                {t('common:to_project_by_tpo', {
+                  projectName: project.name,
+                  tpoName: project.tpo.name,
+                })}
+              </div>
             </div>
-            <div className={styles.totalCostText}>
-              {t('donate:fortreeCountTrees', {
-                treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-              })}
-            </div>
           </div>
+        </div>
+
+        {paymentError && (
+          <div className={styles.paymentError}>{paymentError}</div>
+        )}
+
+        {contactDetails && (
+          <div className={styles.showContactDetails}>
+            {contactDetails.companyName ? (
+              <>
+                <p className={styles.showContactDetailsName}>
+                  {`${contactDetails.companyName}`}
+                </p>
+                <p className={styles.showContactDetailsAddress}>
+                  {`${contactDetails.firstName} ${contactDetails.lastName}`}
+                </p>
+              </>
+            ) : (
+              <p className={styles.showContactDetailsName}>
+                {`${contactDetails.firstName} ${contactDetails.lastName}`}
+              </p>
+            )}
+
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.address}, ${contactDetails.city}`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.zipCode}, ${
+                getCountryDataBy('countryCode', contactDetails.country)
+                  .countryName
+              }`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.email}`}
+            </p>
+
+            {giftDetails && giftDetails.recipientName && (
+              <div style={{marginTop:'12px',fontStyle:'italic'}}>
+                <p className={styles.showContactDetailsName}>
+                  {t('donate:giftTo')} {giftDetails.recipientName}
+                </p>
+
+                {giftDetails.email && (
+                  <p className={styles.showContactDetailsAddress}>
+                    {giftDetails.email}
+                  </p>
+                )}
+                {giftDetails.giftMessage && (
+                  <p className={styles.showContactDetailsAddress}>
+                    {giftDetails.giftMessage}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className={styles.treeDonationContainer}>
+          {!contactDetails.companyName && contactDetails.companyName === '' ? (
+            askpublishName ? (
+              <div className={styles.isCompany}>
+                <label htmlFor="publishName" className={styles.isCompanyText}>
+                  {t('donate:askPublishName')}
+                </label>
+                <ToggleSwitch
+                  id="publishName"
+                  checked={publishName}
+                  onChange={() => {
+                    setpublishName(!publishName);
+                  }}
+                  name="checkedB"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </div>
+            ) : (
+              <div className={styles.isCompany}>
+                <label
+                  className={styles.isCompanyText}
+                  style={{ textAlign: 'center' }}
+                >
+                  {t('donate:nameAlreadyPublished')}
+                </label>
+              </div>
+            )
+          ) : null}
 
           <PaymentMethodTabs
             paymentType={paymentType}
             setPaymentType={setPaymentType}
-            showCC={paymentSetup?.gateways.stripe.methods.includes("stripe_cc")}
-            showGiroPay={country === 'DE' && paymentSetup?.gateways.stripe.methods.includes("stripe_giropay")}
-            showSepa={currency === 'EUR' && (config.enableGuestSepa || token) && paymentSetup?.gateways.stripe.methods.includes("stripe_sepa")}
-            showSofort={sofortCountries.includes(country) && paymentSetup?.gateways.stripe.methods.includes("stripe_sofort")}
-            showPaypal={paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal}
+            showCC={paymentSetup?.gateways.stripe.methods.includes('stripe_cc')}
+            showGiroPay={
+              country === 'DE' &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_giropay')
+            }
+            showSepa={
+              currency === 'EUR' &&
+              (config.enableGuestSepa || token) &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_sepa')
+            }
+            showSofort={
+              sofortCountries.includes(country) &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_sofort')
+            }
+            showPaypal={
+              paypalCurrencies.includes(currency) &&
+              paymentSetup?.gateways.paypal
+            }
           />
 
           {donationID && (
@@ -151,9 +293,15 @@ function PaymentDetails({
                 id={`payment-methods-tabpanel-${'CARD'}`}
                 aria-labelledby={`scrollable-force-tab-${'CARD'}`}
               >
-                <Elements
-                  stripe={getStripe(paymentSetup)}>
-                  <CardPayments donorDetails={donorDetails} onPaymentFunction={(data) => onSubmitPayment('stripe', data)} paymentType={paymentType} setPaymentType={setPaymentType} />
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <CardPayments
+                    donorDetails={donorDetails}
+                    onPaymentFunction={(data) =>
+                      onSubmitPayment('stripe', data)
+                    }
+                    paymentType={paymentType}
+                    setPaymentType={setPaymentType}
+                  />
                 </Elements>
               </div>
 
@@ -164,8 +312,7 @@ function PaymentDetails({
                 id={`payment-methods-tabpanel-${'SEPA'}`}
                 aria-labelledby={`scrollable-force-tab-${'SEPA'}`}
               >
-                <Elements
-                  stripe={getStripe(paymentSetup)}>
+                <Elements stripe={getStripe(paymentSetup)}>
                   <SepaPayments
                     paymentType={paymentType}
                     onPaymentFunction={onSubmitPayment}
@@ -191,7 +338,6 @@ function PaymentDetails({
                     payDonationFunction={onSubmitPayment}
                   />
                 )}
-
               </div>
               <div
                 role="tabpanel"
@@ -199,11 +345,8 @@ function PaymentDetails({
                 id={`payment-methods-tabpanel-${'GiroPay'}`}
                 aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
               >
-                <Elements
-                  stripe={getStripe(paymentSetup)}>
-                  <GiroPayPayments
-                    onSubmitPayment={onSubmitPayment}
-                  />
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <GiroPayPayments onSubmitPayment={onSubmitPayment} />
                 </Elements>
               </div>
 
@@ -213,20 +356,18 @@ function PaymentDetails({
                 id={`payment-methods-tabpanel-${'Sofort'}`}
                 aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
               >
-                <Elements
-                  stripe={getStripe(paymentSetup)}>
-                  <SofortPayments
-                    onSubmitPayment={onSubmitPayment}
-                  />
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <SofortPayments onSubmitPayment={onSubmitPayment} />
                 </Elements>
               </div>
             </>
           )}
-
-
         </div>
-      )
-  ) : <></>;
+      </div>
+    )
+  ) : (
+    <></>
+  );
 }
 
 export default PaymentDetails;

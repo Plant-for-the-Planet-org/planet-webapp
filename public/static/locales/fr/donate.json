@@ -1,4 +1,6 @@
 {
+  "fortreeCountTrees": "for {{treeCount}} Tree",
+  "fortreeCountTrees_plural": "for {{treeCount}} Trees",
   "PROJECTS": "PROJETS",
   "topProjects": "Principaux projets",
   "allCountProjects": "Tous {{projectCount}} Projets",
@@ -13,7 +15,6 @@
   "taxDeductionNotAvailableForProject": "La déduction fiscale n'est pas encore disponible pour ce projet",
   "youWillReceiveTaxDeduction": "Vous recevrez un reçu de déduction fiscale pour ",
   "toProjectByOrganization": "Pour {{projectName}} par {{organizationName}}",
-  "fortreeCountTrees": "pour {{treeCount}} Arbres",
   "firstName": "Prénom",
   "lastName": "Nom de famille",
   "email": "Email",
