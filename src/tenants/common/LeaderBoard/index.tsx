@@ -50,7 +50,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
                 {leaderboardData.mostRecent.map((leader: any, index: any) => {
-                  const donationTime = new Date(leader.created);
+                  const donationTime = new Date(leader.created.replace(/-/g, "/"));                  
 
                   return (
                     <div key={index} className={styles.leaderBoardBodyRow}>
