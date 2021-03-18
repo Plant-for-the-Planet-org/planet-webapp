@@ -35,7 +35,6 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Plant-for-the-Planet-org/planet-webapp/tree/main)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plant-for-the-Planet&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
 ---
 
@@ -161,7 +160,7 @@ If you have found a vulnerability, you could write us at: support@plant-for-the-
 The deployment and management of this application is possible with support from open source contributors and following partners.
 
 <a href="https://www.vercel.com?utm_source=planetapp&utm_medium=web&utm_campaign=oss">
-<img src="https://cdn.pp.eco/logo/svg/powered-by-vercel.svg" height="26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://cdn.plant-for-the-planet.org/logo/svg/powered-by-vercel.svg" height="26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## Legal
 

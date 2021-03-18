@@ -10,8 +10,8 @@
   "low": "Low",
   "forestInfo": "3.04 trillion trees currently exist globally. Down from six trillion trees before humans started cutting down forests about 11,000 years ago.",
   "restorationInfo": " Half a billion hectares are suitable for wide-scale restoration of closed forests. Further one and a half billion hectares are best sited for mosaic restoration, which combines forests with other land uses like agroforestry, smallholder agriculture, and settlements.",
-  "location":"Location",
-  "timeTravel":"Time Travel",
-  "vegetationChange":"Vegetation Change",
-  "beta":"BETA"
+  "location": "Location",
+  "timeTravel": "Time Travel",
+  "vegetationChange": "Vegetation Change",
+  "beta": "BETA"
 }
