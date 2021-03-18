@@ -23,7 +23,7 @@ export default function timeSince(dateParam: any) {
   const isThisYear = today.getFullYear() === date.getFullYear();
 
   if (seconds < 5) {
-    return 'now';
+    return 'jetzt';
   } else if (seconds < 60) {
     return `${seconds} s`;
   } 
@@ -31,7 +31,7 @@ export default function timeSince(dateParam: any) {
   //   return 'about a minute';
   // } 
   else if (minutes < 60) {
-    return `${minutes} m`;
+    return `${minutes} min`;
   } else if (hours < 24) {
     return `${hours} h`;
   } else if (days < 8) {
