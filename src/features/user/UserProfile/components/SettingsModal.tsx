@@ -138,7 +138,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
     >
       <Fade in={deleteModalOpen}>
         <div className={styles.deleteModal}>
-          <p className={styles.deleteModalTitle}> {t('common:deleteYourAccount')}</p>
+          <p className={styles.deleteModalTitle}> {t('common:deleteAccount')}</p>
           <p className={styles.deleteModalContent}>
             By clicking delete, I am requesting Plant-for-the-Planet to delete
             all data associated with my Plant-for-the-Planet account in
@@ -152,12 +152,12 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
             Alternatively you can mark your profile private by visiting Edit Profile.
             <br/>
             <br/>
-            To continue with deletion, please type “Delete My Account”
+            To continue with deletion, please type "{t('common:deleteAccount')}"
           </p>
 
           <MaterialTextField 
-              placeholder={'Delete My Account'}
-              label={'Delete My Account'}
+              placeholder={t('common:deleteAccount')}
+              label={t('common:deleteAccount')}
               type="text"
               onChange={(e) => console.log(e.target.value)}
               variant="outlined"
