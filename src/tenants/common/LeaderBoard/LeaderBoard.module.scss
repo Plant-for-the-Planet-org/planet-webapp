@@ -113,8 +113,8 @@
     mix-blend-mode: normal;
     opacity: 0.9;
     flex: none;
-    min-width: 50px;
-    text-align: right;
+    align-self: center;
+    margin-right: 16px;
     margin-bottom: 0px;
     font-family: $primaryFontFamily;
   }
