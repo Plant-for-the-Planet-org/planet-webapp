@@ -184,6 +184,43 @@ function Account({ }: Props): ReactElement {
                 return <PaymentRecord record={item} index={index} />;
               })}
           </div>
+          <div className={styles.filterContainerDesktop}>
+            <div className={styles.filterHead}><p className={styles.filterTitle}>Filters</p>
+            </div>
+
+
+            <div className={styles.filterButtons}>
+              {accountingFilters.map((filter) => {
+                return (
+                  <div
+                    className={styles.multiSelectInput}
+                    key={filter.id}
+                    onClick={() => handleSetFilter(filter.id)}
+                  >
+                    <div
+                      className={`${styles.multiSelectInputCheck} ${filter.isSet ? styles.multiSelectInputCheckTrue : ''
+                        }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13.02"
+                        height="9.709"
+                        viewBox="0 0 13.02 9.709"
+                      >
+                        <path
+                          id="check-solid"
+                          d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
+                          transform="translate(0 -65.098)"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                    <p>{filter.label}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
