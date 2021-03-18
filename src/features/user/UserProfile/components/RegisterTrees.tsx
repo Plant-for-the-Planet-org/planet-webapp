@@ -137,7 +137,7 @@ export default function RegisterTrees({
     async function getUserLocation() {
       const location = await getStoredConfig('loc');
       if (location) {
-        setUserLocation([location.latitude, location.longitude]);
+        setUserLocation([Number(location.longitude) || 0, Number(location.latitude) || 0]);
       }
     }
     getUserLocation();
@@ -149,7 +149,7 @@ export default function RegisterTrees({
         ...viewport,
         longitude: userLocation[0],
         latitude: userLocation[1],
-        zoom: 5,
+        zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
@@ -177,7 +177,7 @@ export default function RegisterTrees({
 
   const treeCount = watch('treeCount');
 
-  const onTreeCountChange = (e) => {
+  const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {

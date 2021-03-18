@@ -81,10 +81,7 @@ export default function MapComponent({
         ...viewport,
         longitude: userLocation[0],
         latitude: userLocation[1],
-        zoom: 5,
-        transitionDuration: 2000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic,
+        zoom: [10],
       };
       setViewPort(newViewport);
     }
