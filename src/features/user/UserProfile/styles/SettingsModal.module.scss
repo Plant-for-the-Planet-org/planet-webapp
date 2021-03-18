@@ -89,10 +89,10 @@
       display: flex;
       flex-direction: row;
       height: 40px;
-      border-radius: 10px;
+      border-radius: 100px;
       padding-left: 24px;
       padding-right: 24px;
-      background-color:$highlightBackground; 
+      background-color:#f2f2f7; 
       display: flex;
       justify-content: center;
       align-items: center;
@@ -104,12 +104,15 @@
         transform: scale(1.05);
         cursor: pointer;
       }
+      p{
+        margin-left: 6px;
+      }
     }
     .deleteButton{
       flex: 1;
       background-color:#EB4E3B; 
       height: 40px;
-      border-radius: 10px;
+      border-radius: 100px;
       padding-left: 24px;
       padding-right: 24px;
       display: flex;

@@ -11,7 +11,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -119,6 +119,10 @@ export default function SettingsModal({
 }
 
 function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
+  const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
+  const handleChange = (e) => {
+    e.preventDefault();
+  };
   return (
     <Modal
       className={styles.modalContainer}
@@ -134,7 +138,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
     >
       <Fade in={deleteModalOpen}>
         <div className={styles.deleteModal}>
-          <p className={styles.deleteModalTitle}>Delete your account</p>
+          <p className={styles.deleteModalTitle}> {t('common:deleteYourAccount')}</p>
           <p className={styles.deleteModalContent}>
             By clicking delete, I am requesting Plant-for-the-Planet to delete
             all data associated with my Plant-for-the-Planet account in
@@ -158,15 +162,18 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
               onChange={(e) => console.log(e.target.value)}
               variant="outlined"
               style={{marginTop:'20px'}}
-              name="addTarget" />
+              name="addTarget"
+              onCut={handleChange}
+              onCopy={handleChange}
+              onPaste={handleChange} />
 
           <div className={styles.deleteButtonContainer}>
           <div onClick={()=>handledeleteModalClose()} className={styles.goBackContainer}>
-            <BackButton style={{}} />
-            Go Back
+            <BackArrow />
+            <p>Go Back</p>
           </div>
           <AnimatedButton className={styles.deleteButton}>
-            Delete
+          {t('common:delete')}
           </AnimatedButton>
           </div>
 
