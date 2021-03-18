@@ -65,7 +65,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
   padding: 15px;
 }
@@ -99,14 +99,14 @@
   justify-content: flex-end;
   align-items: center;
   width: 100px;
-  height: 100%;
+  height: fit-content;
 }
 
 .treeIcon {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: flex-end;
+  // align-items: flex-end;
   width: 100%;
 }
 
@@ -125,6 +125,8 @@
 .mapContainer {
   height: 400px;
   width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .marker {
@@ -176,7 +178,8 @@
   min-height: 90px;
   max-height: 100%;
   width: 240px;
-  padding: 20px;
+  // padding: 20px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -184,15 +187,17 @@
   max-width: 100%;
   border-radius: 10px;
   background-color: #fff;
-  > .treeCount {
-    font-size: 16px;
-    font-weight: 700;
-    font-family: $primaryFontFamily;
-  }
-  > .moreInfo {
-    font-size: 14px;
-    font-family: $primaryFontFamily;
-  }
+  z-index: 3;
+  font-family: $primaryFontFamily;
+  // > .treeCount {
+  //   font-size: 16px;
+  //   font-weight: 700;
+  //   font-family: $primaryFontFamily;
+  // }
+  // > .moreInfo {
+  //   font-size: 14px;
+  //   font-family: $primaryFontFamily;
+  // }
 }
 
 @include mdTabletView {

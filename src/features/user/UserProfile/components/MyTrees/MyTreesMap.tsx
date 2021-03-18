@@ -2,9 +2,12 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import ReactMapboxGl, { Cluster, GeoJSONLayer, Marker, ZoomControl } from 'react-mapbox-gl';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import { getFormattedRoundedNumber } from '../../../../../utils/getFormattedNumber';
+import { getFormattedNumber, getFormattedRoundedNumber } from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
 import { getCountryDataBy } from '../../../../../utils/countryCurrency/countryUtils';
+import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 
 const Map = ReactMapboxGl({
   customAttribution:
@@ -115,7 +118,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                     }
                     onMouseOver={() => {
                       console.log(point.properties.treeCount);
-                      setContributionInfo({ treeCount: point.properties.treeCount, country: point.properties.country, project: point.properties.project.name, type: point.properties.type });
+                      setContributionInfo(point);
                     }}
                     className={styles.marker}
                   />
@@ -137,11 +140,96 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
           />
         ) : null}
         {contributionInfo ?
-          <div className={styles.contributionInfo}>
+          <>
+            {/* <div className={styles.contributionInfo}>
             <p className={styles.treeCount}>{`${getFormattedRoundedNumber(i18n.language, contributionInfo.treeCount, 1)} Trees ${contributionInfo.country ? `• ${getCountryDataBy('countryCode', contributionInfo.country).countryName}` : ''}`}</p>
             <p className={styles.moreInfo}>{contributionInfo.project ? contributionInfo.project : null}</p>
             <p className={styles.moreInfo}>{contributionInfo.type && contributionInfo.type === 'registration' ? t('registeredTrees') : null}</p>
-          </div>
+          </div> */}
+            <div className={styles.contributionInfo}>
+              <div key={contributionInfo.properties.id} className={styles.tree}>
+                <div className={styles.dateRow}>
+                  {formatDate(contributionInfo.properties.plantDate)}
+                </div>
+                <div className={styles.treeRow}>
+                  <div className={styles.textCol}>
+                    <div className={styles.title}>
+                      {contributionInfo.properties.type === 'registration'
+                        ? t('me:registered')
+                        : contributionInfo.properties.project?.name}
+                    </div>
+                    <div className={styles.country}>
+                      {contributionInfo.properties.country
+                        ? t(
+                          'country:' +
+                          contributionInfo.properties.country.toLowerCase()
+                        )
+                        : null}
+                    </div>
+                    {contributionInfo.properties.type === 'gift' ? (
+                      <div className={styles.source}>
+                        {contributionInfo.properties.giver.name
+                          ? t('me:receivedFrom', {
+                            name: contributionInfo.properties.giver.name,
+                          })
+                          : t('me:receivedTrees')}
+                      </div>
+                    ) : null}
+                    {contributionInfo.properties.type === 'redeem' ? (
+                      <div className={styles.source}>
+                        {t('me:redeemedTrees')}
+                      </div>
+                    ) : null}
+                    {contributionInfo.properties.type === 'donation' ? (
+                      <div className={styles.source}>
+                        {contributionInfo.properties.recipient
+                          ? t('me:giftToGiftee', {
+                            gifteeName: contributionInfo.properties.recipient.name,
+                          })
+                          : null}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className={styles.numberCol}>
+                    <div className={styles.treeIcon}>
+                      <div
+                        style={
+                          contributionInfo.properties.type === 'registration'
+                            ? { color: '#3D67B1' }
+                            : {}
+                        }
+                        className={styles.number}
+                      >
+                        {getFormattedNumber(
+                          i18n.language,
+                          Number(contributionInfo.properties.treeCount)
+                        )}
+                      </div>
+                      <div className={styles.icon}>
+                        {contributionInfo.properties.treeCount > 1 ? (
+                          <TreesIcon
+                            color={
+                              contributionInfo.properties.type === 'registration'
+                                ? '#3D67B1'
+                                : null
+                            }
+                          />
+                        ) : (
+                          <TreeIcon
+                            color={
+                              contributionInfo.properties.type === 'registration'
+                                ? '#3D67B1'
+                                : null
+                            }
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
           : null}
         <ZoomControl position="bottom-right" />
       </Map>
