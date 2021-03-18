@@ -3,6 +3,7 @@ import styles from './LeaderBoard.module.scss';
 import i18next from '../../../../i18n';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import LeaderboardLoader from '../../../features/common/ContentLoaders/LeaderboardLoader';
+import timeSince from '../../../utils/getTimeAgo';
 
 interface Props {
   leaderboard: any;
@@ -48,40 +49,50 @@ export default function LeaderBoardSection(leaderboard: Props) {
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any, index: any) => (
-                  <div key={index} className={styles.leaderBoardBodyRow}>
-                    <p className={styles.leaderBoardDonorName}>
-                      {leader.donorName}
-                    </p>
-                    <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(
-                        i18n.language,
-                        Number(leader.treeCount)
-                      )}{' '}
-                      {t('common:tree', { count: Number(leader.treeCount) })}
-                    </p>
-                    {/* <p className={styles.leaderBoardDonorTime}>
-                          {leader.created}
-                        </p> */}
-                  </div>
-                ))}
+                {leaderboardData.mostRecent.map((leader: any, index: any) => {
+                  const donationTime = new Date(leader.created.replace(/-/g, "/"));                  
+
+                  return (
+                    <div key={index} className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {getFormattedNumber(
+                          i18n.language,
+                          Number(leader.treeCount)
+                        )}{' '}
+                        {t('common:tree', { count: Number(leader.treeCount) })}
+                      </p>
+
+                      <p className={styles.leaderBoardDonorTime}>
+                        {timeSince(donationTime)}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any, index: any) => (
-                  <div key={index} className={styles.leaderBoardBodyRow}>
-                    <p className={styles.leaderBoardDonorName}>
-                      {leader.donorName}
-                    </p>
-                    <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(
-                        i18n.language,
-                        Number(leader.treeCount)
-                      )}{' '}
-                      {t('common:tree', { count: Number(leader.treeCount) })}
-                    </p>
-                  </div>
-                ))}
+                {leaderboardData.mostDonated.map((leader: any, index: any) => {
+                  return (
+                    <div key={index} className={styles.leaderBoardBodyRow}>
+                      <p className={styles.leaderBoardDonorName}>
+                        {leader.donorName}
+                      </p>
+                      <p className={styles.leaderBoardDonorTrees}>
+                        {getFormattedNumber(
+                          i18n.language,
+                          Number(leader.treeCount)
+                        )}{' '}
+                        {t('common:tree', { count: Number(leader.treeCount) })}
+                      </p>
+                      {/* <p className={styles.leaderBoardDonorTime}>
+                        {timeSince(donationTime)}
+                      </p> */}
+                    </div>
+                  );
+                })}
               </div>
             )
           ) : (
