@@ -48,13 +48,12 @@ export default function ProjectSnippet({
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
-        className={`modal ${theme} modalContainer`}
+        className={`modal ${theme}`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         disableBackdropClick
-        hideBackdrop
       >
           <DonationsPopup project={project} onClose={handleClose} />
       </Modal>
