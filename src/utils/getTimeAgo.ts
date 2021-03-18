@@ -26,9 +26,11 @@ export default function timeSince(dateParam: any) {
     return 'now';
   } else if (seconds < 60) {
     return `${seconds} s`;
-  } else if (seconds < 90) {
-    return 'about a minute';
-  } else if (minutes < 60) {
+  } 
+  // else if (seconds < 90) {
+  //   return 'about a minute';
+  // } 
+  else if (minutes < 60) {
     return `${minutes} m`;
   } else if (hours < 24) {
     return `${hours} h`;
