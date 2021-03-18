@@ -22,7 +22,7 @@ export default function timeSince(dateParam: any) {
   const isYesterday = yesterday.toDateString() === date.toDateString();
   const isThisYear = today.getFullYear() === date.getFullYear();
 
-  if (seconds < 30) {
+  if (seconds < 5) {
     return 'now';
   } else if (seconds < 60) {
     return `${seconds} s`;
