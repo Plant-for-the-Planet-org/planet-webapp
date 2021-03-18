@@ -39,6 +39,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
   });
 
   const [contributionInfo, setContributionInfo] = React.useState(null);
+  let timer: NodeJS.Timeout;
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -119,7 +120,11 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                     }
                     onMouseOver={() => {
                       console.log(point.properties.treeCount);
+                      clearTimeout(timer);
                       setContributionInfo(point);
+                    }}
+                    onMouseLeave={() => {
+                      timer = setTimeout(() => setContributionInfo(null), 3000);
                     }}
                     className={styles.marker}
                   />
