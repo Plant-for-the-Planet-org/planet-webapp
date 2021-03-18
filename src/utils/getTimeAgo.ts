@@ -22,20 +22,20 @@ export default function timeSince(dateParam: any) {
   const isYesterday = yesterday.toDateString() === date.toDateString();
   const isThisYear = today.getFullYear() === date.getFullYear();
 
-  if (seconds < 5) {
+  if (seconds < 2) {
     return 'jetzt';
   } else if (seconds < 60) {
     return `${seconds} s`;
-  } 
+  }
   // else if (seconds < 90) {
   //   return 'about a minute';
-  // } 
+  // }
   else if (minutes < 60) {
     return `${minutes} min`;
   } else if (hours < 24) {
     return `${hours} h`;
   } else if (days < 8) {
-    return `${days} d`;
+    return `${days} t`;
   }
   //   else if (isToday) {
   //     return getFormattedDate(date, 'Today'); // Today at 10:20
