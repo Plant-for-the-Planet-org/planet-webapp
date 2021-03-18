@@ -73,7 +73,7 @@
     "next": "^10.0.6",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
-    "next-unused": "0.0.3",
+    "next-unused": "0.0.4",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
