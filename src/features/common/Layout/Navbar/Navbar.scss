@@ -29,6 +29,12 @@
       width: 80%;
       max-width: 980px;
       font-size: 14px;
+      > a {
+        text-decoration: none;
+        font-weight: bold;
+        color: white;
+        margin-left: 4px;
+      }
     }
     button{
       margin: 0px;
