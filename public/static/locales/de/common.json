@@ -1,4 +1,6 @@
 {
+  "tree": "Baum",
+  "tree_plural": "Bäume",
   "by": "Von {{tpoName}}",
   "to_project_by_tpo": "An {{projectName}} von {{tpoName}}",
   "for": "für",
