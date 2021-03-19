@@ -29,7 +29,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   React.useEffect(() => {
     async function loadFunction() {
       if (token) {
-        getAuthenticatedRequestWithoutRedirecting(`/app/profiles/${profile.id}/contributions`, token)
+        getAuthenticatedRequestWithoutRedirecting(`/app/profile/contributions`, token)
           .then((result: any) => {
             setContributions(result);
           })
