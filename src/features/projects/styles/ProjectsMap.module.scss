@@ -515,7 +515,7 @@
 
 .popover {
   position: relative;
- 
+
   .popoverContent {
     position: absolute;
     z-index: 10;
@@ -524,12 +524,14 @@
     padding: 12px;
     text-align: center;
     display: none;
+    flex-direction: column;
+    font-weight: 400;
   }
   &:hover,
   &:active {
     cursor: pointer;
     .popoverContent {
-      display: block;
+      display: flex;
     }
   }
 }
