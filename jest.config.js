@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '.env' });
 
 module.exports = {
     setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],

@@ -1,4 +1,5 @@
 import webdriver from 'selenium-webdriver-3'
+import chrome from 'selenium-webdriver-3/chrome'
 
 const capabilities = {
   'os_version' : '10',
@@ -16,10 +17,12 @@ const capabilities = {
 
 export const driver = new webdriver.Builder()
   .forBrowser('chrome')
-  .usingServer('https://hub-cloud.browserstack.com/wd/hub')
-  .withCapabilities(capabilities)
+// install 'chromedriver' and add it to your PATH environment
+//.usingServer('https://hub-cloud.browserstack.com/wd/hub')
+//.withCapabilities(capabilities)
+  .setChromeOptions(new chrome.Options()
+    .addArguments('--lang=en,en-US')
+    .setUserPreferences({'intl.accept_languages': 'en,en_US'})
+  )
   .build();
-  
-driver.manage().window().maximize() 
 
-export const defaultTimeout = 10e9;

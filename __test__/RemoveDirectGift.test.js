@@ -16,7 +16,7 @@ describe('remove', () => {
     await driver.findElement(By.id('singleGiftRemoveId')).click();
     await driver.wait(until.elementLocated(By.name('checkedA')));
     await driver.findElement(By.name('checkedA')).click().then(() => {
-      driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Action successful"}}');
+      //driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Action successful"}}');
     });
     await driver.quit();
   });

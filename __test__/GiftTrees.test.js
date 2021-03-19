@@ -55,9 +55,9 @@ describe('Gift Trees', () => {
     await driver.wait(until.elementLocated(By.xpath("//*[text()='Thank You']"))).getText().then((title) => {
       expect(title).toBe('Thank You');
       if (title.includes('Thank You')) {
-        driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Title contains header!"}}');
+        //driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Title contains header!"}}');
       } else {
-        driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Title does not contain header!"}}');
+        //driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Title does not contain header!"}}');
       }
     });
     await driver.quit();
