@@ -1,4 +1,6 @@
 {
+  "tree": "Baum",
+  "tree_plural": "Bäume",
   "by": "Von {{tpoName}}",
   "to_project_by_tpo": "An {{projectName}} von {{tpoName}}",
   "for": "für",
@@ -11,6 +13,7 @@
   "leaders": "Spitzenreiter",
   "leaderboard": "Bestenliste",
   "me": "Ich",
+  "signIn": "Anmelden",
   "home": "Start",
   "donate_gift": "Spenden/Schenken",
   "plant": "Pflanzen",

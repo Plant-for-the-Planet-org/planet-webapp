@@ -9,5 +9,9 @@
   "high": "Hoch",
   "low": "Niedrig",
   "forestInfo": "Derzeit gibt es weltweit 3040 Milliarden Bäume. Es gab 6000 Milliarde Bäume, bevor der Mensch vor etwa 11.000 Jahren begann Wälder abzuholzen.",
-  "restorationInfo": " Eine halbe Milliarde Hektar eignen sich für die großflächige Wiederherstellung von geschlossenen Wäldern. Weitere anderthalb Milliarden Hektar eignen sich am besten für die Mosaikrestaurierung, bei der Wälder mit anderen Landnutzungen wie Agroforstwirtschaft, kleinbäuerlicher Landwirtschaft und Siedlungen kombiniert werden."
+  "restorationInfo": " Eine halbe Milliarde Hektar eignen sich für die großflächige Wiederherstellung von geschlossenen Wäldern. Weitere anderthalb Milliarden Hektar eignen sich am besten für die Mosaikrestaurierung, bei der Wälder mit anderen Landnutzungen wie Agroforstwirtschaft, kleinbäuerlicher Landwirtschaft und Siedlungen kombiniert werden.",
+  "location": "Ort",
+  "timeTravel": "Zeitreise",
+  "vegetationChange": "Vegetationsänderung",
+  "beta": "BETA"
 }
