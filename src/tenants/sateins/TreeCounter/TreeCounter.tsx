@@ -8,7 +8,7 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.backgroundCircle}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h2 className={treeCounterStyles.countNumber}>
-            {getFormattedNumber('en', Number(props.planted))}
+            {getFormattedNumber('de', Number(props.planted))}
           </h2>
           <h2 className={treeCounterStyles.countLabel}>
             Bäume.<br/> Der SAT.1 Wald wächst.

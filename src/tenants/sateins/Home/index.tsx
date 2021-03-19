@@ -11,6 +11,7 @@ import styles from './styles/sateins.module.scss'
 import LeaderBoard from '../../common/LeaderBoard'
 
 interface Props {
+    leaderboard: any,
     tenantScore: any
 }
 
@@ -27,7 +28,7 @@ function Home({ leaderboard, tenantScore }: Props): ReactElement {
     const FeaturesSectionData = {
         featureText: <div>
             <h2>Das Projekt</h2>
-            <p>Für jeden gespendeten Euro im Rahmen der "SAT.1 Waldrekord-Woche" wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen Halbinsel Yucatán im Bundesland Campeche der "SAT.1-Wald" gepflanzt wird - und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiter zu wachsen. Die Spender*innen können die Entwicklung ihrer Bäume auf der "Plant-for-the-Planet"-App" verfolgen oder die Pflanzung persönlich besuchen. Außerdem haben sie die Chance, ein Elektro-Auto in unserer Verlosung zu gewinnen.</p>
+            <p>Für jeden gespendeten Euro im Rahmen der &quot;SAT.1 Waldrekord-Woche&quot; wird ein Baum gepflanzt. Aktionspartner Plant-for-the-Planet sorgt dafür, dass auf einer festgelegten Fläche auf der mexikanischen Halbinsel Yucatán im Bundesland Campeche der &quot;SAT.1-Wald&quot; gepflanzt wird - und pflegt die gespendeten Bäume, bis sie groß genug sind, um selbst weiter zu wachsen. Die Spender*innen können die Entwicklung ihrer Bäume auf der &quot;Plant-for-the-Planet&quot;-App verfolgen oder die Pflanzung persönlich besuchen.</p>
         </div>
     }
 
@@ -77,7 +78,7 @@ function Home({ leaderboard, tenantScore }: Props): ReactElement {
             <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
             <LeaderBoard leaderboard={leaderboard} />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
-            <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/de" target="_blank">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank">Datenschutz</a> </p>
+            <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/de" target="_blank" rel="noreferrer">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank" rel="noreferrer">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank" rel="noreferrer">Datenschutz</a> </p>
         </div>
     ) : <></>
 }
