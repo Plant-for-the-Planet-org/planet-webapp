@@ -71,8 +71,8 @@ export default function SettingsModal({
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
-            <Link href="/account" className={styles.accounts}> 
-            <a>{t('me:Account History')}</a>
+            <Link href="/account" className={styles.settingsItem}> 
+            <a>{t('me:accountHistory')}</a>
             </Link>
              
             <button onClick={handleEmbedModalOpen} id={'SettingsItem'}

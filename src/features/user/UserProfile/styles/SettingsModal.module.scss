@@ -28,8 +28,15 @@
   .settingsItem {
       font-family: $primaryFontFamily;
       padding: 10px 0px;
-      text-decoration: none;
+      text-decoration: none!important;
       color: rgba(0, 0, 0, 0.87);
+      a {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.87);
+        &:hover{
+          text-decoration: none;
+        }
+      }
   }
 
   .settingsItem:hover {
