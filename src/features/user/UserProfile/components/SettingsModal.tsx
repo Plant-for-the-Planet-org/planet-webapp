@@ -10,6 +10,7 @@ import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import { Link } from '@material-ui/core';
+import EmbedModal from './EmbedModal';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -34,6 +35,18 @@ export default function SettingsModal({
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 
+  const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
+
+  const embedModalProps = { embedModalOpen, setEmbedModalOpen, userprofile };
+
+  const handleEmbedModalOpen = () => {
+    if (userprofile.isPrivate) {
+      setEmbedModalOpen(true);
+    } else {
+      router.push(`${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`);
+    }
+  }
+
   return ready ? (
     <>
       <Modal
@@ -54,7 +67,7 @@ export default function SettingsModal({
               userType == 'tpo' &&
               <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> {t('me:settingManageProject')} </a>
             }
-            <div className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </div>
+            <button className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </button>
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
@@ -62,6 +75,11 @@ export default function SettingsModal({
             <a>{t('me:Account History')}</a>
             </Link>
              
+            <button onClick={handleEmbedModalOpen} id={'SettingsItem'}
+              className={styles.settingsItem}
+            >
+              {t('me:embedWidget')}
+            </button>
             <button id={'settingsLogOut'}
               className={styles.settingsItem}
               onClick={logoutUser}>
@@ -85,6 +103,7 @@ export default function SettingsModal({
         changeForceReload={changeForceReload}
         forceReload={forceReload}
       />
+      <EmbedModal {...embedModalProps} />
     </>
   ) : null;
 }
