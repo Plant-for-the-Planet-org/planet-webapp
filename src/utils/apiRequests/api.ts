@@ -220,3 +220,25 @@ export async function getRequestWithoutRedirecting(url: any) {
     .catch((err) => console.log(`Something went wrong: ${err}`));
   return result;
 }
+
+export async function getAuthenticatedRequestWithoutRedirecting(url: any, token: any) {
+  let result;
+  await fetch(`${process.env.API_ENDPOINT}` + url, {
+    headers: {
+      'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
+      Authorization: `OAuth ${token}`,
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+    },
+  })
+    .then(async (res) => {
+      result = res.status === 200 ? await res.json() : res.status;
+      return result;
+    })
+    .catch((err) => console.log(`Something went wrong: ${err}`));
+  return result;
+}
