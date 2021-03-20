@@ -36,5 +36,6 @@
   "receivedTrees": "Empfangene Bäume",
   "receivedFrom": "Empfangen von {{name}}",
   "redeemedTrees": "Eingelöste Bäume",
-  "nameForest": "{{name}}'s Wald"
+  "nameForest": "{{name}}'s Wald",
+  "embedWidget": "Widget einbetten"
 }
