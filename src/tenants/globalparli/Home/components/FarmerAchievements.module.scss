@@ -1,0 +1,96 @@
+.achievementImageContainer{
+    position: relative;
+    height:200px;
+    width:100%;
+    .achievementImageOverlay{
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        width:100%; 
+        height:200px;
+        top:0; 
+        left:0;
+        background:rgba(0,0,0,0.4);
+        position:absolute;
+        opacity: 1;
+    }
+    .farmerName{
+        position: absolute;
+        bottom:18px;
+        left:18px;
+        color:white;
+        // -webkit-text-stroke: 1px white;
+        font-size:30px;
+        text-align: left;
+    }
+}
+
+.achievementImage{
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    height:200px;
+    width:100%;
+}
+.contentContainer{
+    position: relative;
+    padding: 18px;
+    text-align: left;
+    .farmerImage{
+        position: absolute;
+        height: 80px!important;
+        width: 80px!important;
+        left:18px;
+        top:-180px;
+        img{
+            border-radius: 50%;
+            border: 2px solid white;
+
+        }
+    }
+    .multipliedBy{
+        position: absolute;
+        right: 18px;
+        top:-180px;
+        color: white;
+        // -webkit-text-stroke: 1px black;
+        text-align: right;
+        .multipliedByText{
+            font-family: 'Commissioner', sans-serif !important;
+            font-size: 18px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+    }
+    
+    h3{
+        margin-top: 0px!important;
+        margin-bottom: 10px!important;
+        text-align: left!important;
+        font-size: 18px;
+        line-height: 1.5;
+        // opacity: 0.7;
+        font-weight: bold;
+        
+    }
+}
+
+.incomeStats{
+    display: flex;
+    flex-direction: row;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    // justify-content: space-between;
+    align-items: flex-end;
+    .earlierIncome{
+        opacity: 0.4;
+        font-size: 24px;
+    }
+    .newIncome{
+        font-size: 24px;
+        color: #388E3C;
+    }
+    img{
+        height: 20px!important;
+        width: 26px!important;
+    }
+
+}

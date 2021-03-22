@@ -1,0 +1,110 @@
+@import '../../../../theme/theme';
+
+.treeCounterSectionContainer{
+  background-image: url('/tenants/globalparli/images/background3.jpg');
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: fit-content;
+}
+.treeCounterSectionRow {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  height: fit-content;
+  background-color: rgba($color: #000000, $alpha: 0.7);
+}
+
+.treeCounterSectionText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+}
+
+.treeCounterSectionTextHeader {
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 64px;
+  letter-spacing: -0.4px;
+  color: white!important;
+  text-align: center;
+  font-family: $primaryFontFamily;
+  font-weight: bolder;
+}
+
+.treeCounterSectionTextPara {
+  font-family: $primaryFontFamily;
+  color: white!important;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  font-weight: bolder;
+
+}
+
+.treeCounterSectionTextLink {
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.treeCounterSection {
+  display: flex;
+  // flex-direction: column;
+  width: 100%;
+  // height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.treeCounter {
+  z-index: 1;
+  width: 320px;
+  height: 320px;
+}
+
+
+@include mdTabletView{
+  .treeCounterSectionRow {
+    flex-direction: row;
+  }
+
+  .treeCounterSectionTextHeader {
+    font-size: 48px;
+    line-height: 40px;
+    text-align: left;
+  }
+
+  .treeCounterSectionTextPara {
+    font-size: 22px;
+    line-height: 42px;
+    text-align: left;
+  }
+  .treeCounterSection{
+    overflow: visible;
+    flex: 1;
+    margin-top: -140px;
+
+  }
+  .treeCounterSectionText {
+    flex: 1;
+  }
+
+}
+
+@include lgLaptopView {
+  
+  .treeCounterSectionRow {
+    padding-bottom: 0px;
+  }
+
+  .treeCounterSectionText {
+    justify-content: flex-start;
+  }
+}

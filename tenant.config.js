@@ -11,6 +11,7 @@ import pampersConfig from './public/tenants/pampers/config';
 import interactClub from './public/tenants/interactClub/config';
 import culchacandela from './public/tenants/culchacandela/config';
 import ulmpflanzt from './public/tenants/ulmpflanzt/config';
+import globalparli from './public/tenants/globalparli/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -40,6 +41,8 @@ export default function tenantConfig() {
       return culchacandela;
     case 'ulmpflanzt':
       return ulmpflanzt;
+    case 'globalparli':
+      return globalparli;
     default:
       return planetConfig;
   }

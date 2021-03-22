@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import SalesforceHome from '../src/tenants/salesforce/Home';
+import GlobalParliHome from '../src/tenants/globalparli/Home';
 import SternHome from '../src/tenants/stern/Home';
 import BasicHome from '../src/tenants/common/Home';
 import tenantConfig from '../tenant.config';
@@ -49,6 +50,9 @@ export default function Home(initialized: Props) {
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'stern':
         HomePage = SternHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'globalparli':
+        HomePage = GlobalParliHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'nitrosb':
       case 'energizer':
