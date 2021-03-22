@@ -78,7 +78,7 @@
   "backToAnalysis": "Back to detailed analysis",
   "spendingYearValidation": "Please add Spending Year",
   "spendingAmountValidation": "Please enter the Amount Spent",
-  "uploadReport": "Upload Report",
+  "uploadReport": "Upload and save report",
   "dragInPdf": "or drag in a pdf",
   "addAnotherYear": "Add another year",
   "backToSites": "Back to project sites",
@@ -116,5 +116,9 @@
   "filePDFOnly": "File type must be PDF",
   "acceptedReview": "Changes to your project are Live",
   "deniedReview": "Your review is denied",
-  "saveSite": "Save Site"
+  "saveSite": "Save Site",
+  "latitude":"Latitude",
+  "longitude":"Longitude",
+  "latitudeRequired":"Latitude is required",
+  "longitudeRequired":"Longitude is required"
 }
