@@ -60,7 +60,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 320px;
-  @include smTabletView{
+  @include smTabletView {
     padding: 36px;
     max-width: 420px;
   }
@@ -69,22 +69,23 @@
     font-size: 27px;
     text-align: center;
   }
-  .deleteModalContent{
+  .deleteModalContent {
     margin-top: 20px;
   }
-  .deleteModalWarning{
+  .deleteModalWarning {
     text-align: center;
     margin-top: 20px;
-    color: #EB4E3B;
+    color: #eb4e3b;
+    font-size: smaller;
   }
-  .deleteButtonContainer{
+  .deleteButtonContainer {
     display: flex;
     width: 100%;
     flex-direction: row;
     gap: 20px;
     justify-content: space-between;
     margin-top: 20px;
-    .goBackContainer{
+    .goBackContainer {
       flex: 1;
       display: flex;
       flex-direction: row;
@@ -92,7 +93,8 @@
       border-radius: 100px;
       padding-left: 24px;
       padding-right: 24px;
-      background-color:#f2f2f7; 
+      background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -100,17 +102,17 @@
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-      &:hover{
+      &:hover {
         transform: scale(1.05);
         cursor: pointer;
       }
-      p{
+      p {
         margin-left: 6px;
       }
     }
-    .deleteButton{
+    .deleteButton {
       flex: 1;
-      background-color:#EB4E3B; 
+      background-color: #eb4e3b;
       height: 40px;
       border-radius: 100px;
       padding-left: 24px;

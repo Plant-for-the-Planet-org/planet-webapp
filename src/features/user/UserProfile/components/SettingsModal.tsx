@@ -138,48 +138,53 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
     >
       <Fade in={deleteModalOpen}>
         <div className={styles.deleteModal}>
-          <p className={styles.deleteModalTitle}> {t('common:deleteAccount')}</p>
+          <p className={styles.deleteModalTitle}>
+            {' '}
+            {t('common:deleteAccount')}
+          </p>
           <p className={styles.deleteModalContent}>
-            By clicking delete, I am requesting Plant-for-the-Planet to delete
-            all data associated with my Plant-for-the-Planet account in
-            accordance with GDPR Act. I understand that donation data may be
-            kept for up to eight years. Trees I have registered will not be
-            removed from Trillion Tree Counter, however, will be anonymized and
-            cannot be associated with a profile again. Any additional data will
-            be deleted/anonymised in accordance to the Privacy Policy.
-            <br/>
-            <br/>
-            Alternatively you can mark your profile private by visiting Edit Profile.
-            <br/>
-            <br/>
-            To continue with deletion, please type "{t('common:deleteAccount')}"
+            To continue with deletion, please type "<span style={{fontWeight:'bold'}}>{t('common:deleteAccount')}</span>"
+            <br />
+            <br />
+            Alternatively you can mark your profile private by visiting Edit
+            Profile.
           </p>
-
-          <MaterialTextField 
-              placeholder={t('common:deleteAccount')}
-              label={t('common:deleteAccount')}
-              type="text"
-              onChange={(e) => console.log(e.target.value)}
-              variant="outlined"
-              style={{marginTop:'20px'}}
-              name="addTarget"
-              onCut={handleChange}
-              onCopy={handleChange}
-              onPaste={handleChange} />
-
-          <div className={styles.deleteButtonContainer}>
-          <div onClick={()=>handledeleteModalClose()} className={styles.goBackContainer}>
-            <BackArrow />
-            <p>Go Back</p>
-          </div>
-          <AnimatedButton className={styles.deleteButton}>
-          {t('common:delete')}
-          </AnimatedButton>
-          </div>
-
+          <MaterialTextField
+            // placeholder={t('common:deleteAccount')}
+            label={t('common:deleteAccount')}
+            type="text"
+            onChange={(e) => console.log(e.target.value)}
+            variant="outlined"
+            style={{ marginTop: '20px' }}
+            name="addTarget"
+            onCut={handleChange}
+            onCopy={handleChange}
+            onPaste={handleChange}
+          />
+          <p style={{fontSize:'smaller',textAlign:'center',marginTop:'20px'}}>
+          By clicking delete, I am requesting Plant-for-the-Planet to delete all
+          data associated with my Plant-for-the-Planet account. Donation data may be kept for up to
+          eight years. Trees I have registered will not be removed, however, will be anonymized and can't be claimed again.
+          
+          </p>
           <p className={styles.deleteModalWarning}>
-            I also understand that account deletion of example@email.com is irreversible.   
+            I also understand that account deletion of example@email.com is
+            irreversible.
           </p>
+          
+          <div className={styles.deleteButtonContainer}>
+            <div
+              onClick={() => handledeleteModalClose()}
+              className={styles.goBackContainer}
+            >
+              {/* <BackArrow /> */}
+              <p>Go Back</p>
+            </div>
+            <AnimatedButton className={styles.deleteButton}>
+              {t('common:delete')}
+            </AnimatedButton>
+          </div>
+          
         </div>
       </Fade>
     </Modal>
