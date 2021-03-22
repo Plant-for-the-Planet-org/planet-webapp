@@ -252,11 +252,7 @@ function PaymentDetails({
               country === 'DE' &&
               paymentSetup?.gateways.stripe.methods.includes('stripe_giropay')
             }
-            showSepa={
-              currency === 'EUR' &&
-              (config.enableGuestSepa || token) &&
-              paymentSetup?.gateways.stripe.methods.includes('stripe_sepa')
-            }
+            showSepa={false}
             showSofort={
               sofortCountries.includes(country) &&
               paymentSetup?.gateways.stripe.methods.includes('stripe_sofort')
