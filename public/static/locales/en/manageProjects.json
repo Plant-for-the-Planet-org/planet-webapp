@@ -117,8 +117,8 @@
   "acceptedReview": "Changes to your project are Live",
   "deniedReview": "Your review is denied",
   "saveSite": "Save Site",
-  "latitude":"Latitude",
-  "longitude":"Longitude",
-  "latitudeRequired":"Latitude is required",
-  "longitudeRequired":"Longitude is required"
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "latitudeRequired": "Latitude is required",
+  "longitudeRequired": "Longitude is required"
 }
