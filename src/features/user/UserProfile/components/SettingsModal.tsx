@@ -90,12 +90,6 @@ export default function SettingsModal({
             >
               {t('me:embedWidget')}
             </li>
-            <li id={'settingsLogOut'}
-              className={styles.settingsItem}
-              onClick={logoutUser}
-            >
-              <b>{t('me:logout')} </b>
-            </li>
             {userType !== 'tpo' && (
             <li
               id={'settingsDeleteAccount'}
@@ -105,6 +99,13 @@ export default function SettingsModal({
               {t('me:deleteAccount')}
             </li>
             )}
+            <li id={'settingsLogOut'}
+              className={styles.settingsItem}
+              onClick={logoutUser}
+            >
+              <b>{t('me:logout')} </b>
+            </li>
+            
             <li
               id={'SettingsItem'}
               className={styles.settingsItem}
