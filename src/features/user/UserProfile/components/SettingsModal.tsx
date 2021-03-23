@@ -8,10 +8,11 @@ import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
-import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
+import { removeLocalUserInfo, removeUserExistsInDB } from '../../../../utils/auth0/localStorageUtils';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
+import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -113,15 +114,54 @@ export default function SettingsModal({
       <DeleteModal
         deleteModalOpen={deleteModalOpen}
         handledeleteModalClose={handledeleteModalClose}
+        userprofile={userprofile}
       />
     </>
   ) : null;
 }
 
-function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
+function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }) {
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
+  };
+
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
+
+
+  const {
+    getAccessTokenSilently,
+    isAuthenticated,
+    logout
+  } = useAuth0();
+
+
+  React.useEffect(() => {
+    
+    async function loadFunction() {
+      const token = await getAccessTokenSilently();
+      setToken(token);
+    }
+    if (isAuthenticated) {
+      loadFunction()
+    }
+  }, [isAuthenticated])
+
+  const [token, setToken] = React.useState('')
+
+  const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
+
+  const handleDeleteAccount = () => {
+    setIsUploadingData(true);
+    deleteAuthenticatedRequest('/app/profile',token).then(res => {
+      if (res !== 404) {
+        removeLocalUserInfo();
+        removeUserExistsInDB()
+        logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
+      }else{
+        console.log(res.errorText);
+      }
+    })
   };
   return (
     <Modal
@@ -143,48 +183,65 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }) {
             {t('common:deleteAccount')}
           </p>
           <p className={styles.deleteModalContent}>
-            To continue with deletion, please type "<span style={{fontWeight:'bold'}}>{t('common:deleteAccount')}</span>"
+            {t('common:deleteAccountMessage',{
+              delete:'Delete'
+            })}
             <br />
             <br />
-            Alternatively you can mark your profile private by visiting Edit
-            Profile.
+            {t('common:alternativelyEditProfile')}
           </p>
           <MaterialTextField
             // placeholder={t('common:deleteAccount')}
             label={t('common:deleteAccount')}
             type="text"
-            onChange={(e) => console.log(e.target.value)}
             variant="outlined"
             style={{ marginTop: '20px' }}
             name="addTarget"
             onCut={handleChange}
             onCopy={handleChange}
             onPaste={handleChange}
+            onChange={(e) => {
+              if (e.target.value === 'Delete') {
+                setcanDeleteAccount(true);
+              } else {
+                setcanDeleteAccount(false);
+              }
+            }}
           />
-          <p style={{fontSize:'smaller',textAlign:'center',marginTop:'20px'}}>
-          By clicking delete, I am requesting Plant-for-the-Planet to delete all
-          data associated with my Plant-for-the-Planet account. Donation data may be kept for up to
-          eight years. Trees I have registered will not be removed, however, will be anonymized and can't be claimed again.
-          
+          <p className={styles.deleteConsent}>
+            {t('common:deleteAccountConsent')}
           </p>
           <p className={styles.deleteModalWarning}>
-            I also understand that account deletion of example@email.com is
-            irreversible.
+            {t('common:deleteIrreversible', {
+              email: userprofile.email,
+            })}
           </p>
-          
+
           <div className={styles.deleteButtonContainer}>
             <div
               onClick={() => handledeleteModalClose()}
               className={styles.goBackContainer}
             >
-              {/* <BackArrow /> */}
-              <p>Go Back</p>
+              <p>{t('common:goBack')}</p>
             </div>
-            <AnimatedButton className={styles.deleteButton}>
-              {t('common:delete')}
-            </AnimatedButton>
+            {canDeleteAccount ? (
+              <AnimatedButton
+                onClick={() => handleDeleteAccount()}
+                className={styles.deleteButton}
+                style={{ backgroundColor: '#eb4e3b', color:'white' }}
+              >{isUploadingData ? (
+                <div className={styles.spinner}></div>
+            ) : (t('common:delete'))}
+              </AnimatedButton>
+            ) : (
+              <AnimatedButton
+                className={styles.deleteButton}
+                style={{ backgroundColor: '#f2f2f7', color:'#2f3336' }}
+              >
+                {t('common:delete')}
+              </AnimatedButton>
+            )}
           </div>
-          
         </div>
       </Fade>
     </Modal>
