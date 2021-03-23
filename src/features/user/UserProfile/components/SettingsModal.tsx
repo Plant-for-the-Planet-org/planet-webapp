@@ -69,7 +69,8 @@ export default function SettingsModal({
         }}
       >
         <Fade in={settingsModalOpen}>
-          <div className={styles.modal}>
+          <nav className={styles.modal}>
+            <ul style={{listStyle:'none',paddingLeft: '0px',textAlign:'center'}}>
             {userType == 'tpo' && (
               <a
                 href={`#projectsContainer`}
@@ -83,39 +84,37 @@ export default function SettingsModal({
 
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div> */}
-         
- 
-            <button className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </button>
-            {/*  <div className={styles.settingsItem}> Change Password </div>
-            <div className={styles.settingsItem}> Change Email </div>*/}
-            <button onClick={handleEmbedModalOpen} id={'SettingsItem'}
+            <li className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </li>
+            <li onClick={handleEmbedModalOpen} id={'SettingsItem'}
               className={styles.settingsItem}
             >
               {t('me:embedWidget')}
-            </button>
-            <button id={'settingsLogOut'}
+            </li>
+            <li id={'settingsLogOut'}
               className={styles.settingsItem}
               onClick={logoutUser}
             >
               <b>{t('me:logout')} </b>
-            </button>
+            </li>
             {userType !== 'tpo' && (
-            <button
+            <li
               id={'settingsDeleteAccount'}
               className={styles.settingsItem}
               onClick={handledeleteModalOpen}
             >
               {t('me:deleteAccount')}
-            </button>
+            </li>
             )}
-            <button
+            <li
               id={'SettingsItem'}
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >
               <div className={styles.cancelText}> {t('common:cancel')}</div>
-            </button>
-          </div>
+            </li>
+            </ul>
+            
+          </nav>
         </Fade>
       </Modal>
 
