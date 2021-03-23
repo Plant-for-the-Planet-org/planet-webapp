@@ -87,7 +87,6 @@
     display: flex;
     width: 100%;
     flex-direction: row;
-    gap: 20px;
     justify-content: space-between;
     margin-top: 20px;
     .goBackContainer {
@@ -107,6 +106,7 @@
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      margin-right: 20px;
       &:hover {
         transform: scale(1.05);
         cursor: pointer;
