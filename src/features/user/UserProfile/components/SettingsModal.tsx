@@ -135,7 +135,7 @@ export default function SettingsModal({
   ) : null;
 }
 
-function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }) {
+function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:any) {
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
