@@ -85,11 +85,44 @@
   }
 }
 .latlongField {
+  position: relative;
   div,
   input {
     width: 120px !important;
+    position: relative;
   }
 }
+
+.layerSwitcher {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.layerOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  font-family: $primaryFontFamily;
+  font-weight: 700;
+}
+
+.active {
+  background-color: $primaryColor;
+  color: #fff;
+}
+
 @include mdTabletView {
   .mainContainer {
     max-width: 780px;
@@ -170,8 +203,8 @@
 
 .inlineLinkButton {
   font-family: $primaryFontFamily;
- width: 100%;
- font-size: 14px;
+  width: 100%;
+  font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -186,7 +219,7 @@
   cursor: pointer;
   font-weight: bold;
 }
-.projSiteSaveandAdd{
+.projSiteSaveandAdd {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -248,6 +281,17 @@
   color: #e74c3c;
   margin-left: 6px;
   margin-top: 6px;
+  max-width: 320px;
+}
+
+.formErrorsAbsolute {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: #e74c3c;
   max-width: 320px;
 }
 
@@ -619,4 +663,8 @@
   max-width: 1200px;
   overflow: hidden;
   outline: none;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
 }

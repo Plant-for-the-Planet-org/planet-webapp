@@ -142,10 +142,8 @@ export default function BasicDetails({
     visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
-    projectCoords: {
-      latitude: 0,
-      longitude: 0,
-    },
+    latitude: 0,
+    longitude: 0,
   };
 
   const {
@@ -155,14 +153,12 @@ export default function BasicDetails({
     control,
     reset,
     setValue,
-    watch,
     setError,
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
+
   const [acceptDonations, setAcceptDonations] = useState(false);
   // const treeCost = watch('treeCost');
-
-  // console.log('watch treeCost',parseFloat(treeCost));
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -182,10 +178,8 @@ export default function BasicDetails({
         visitorAssistance: projectDetails.visitorAssistance,
         enablePlantLocations: projectDetails.enablePlantLocations,
         currency: projectDetails.currency,
-        projectCoords: {
-          latitude: projectDetails.geoLatitude,
-          longitude: projectDetails.geoLongitude,
-        },
+        latitude: projectDetails.geoLatitude,
+        longitude: projectDetails.geoLongitude,
       };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -200,7 +194,7 @@ export default function BasicDetails({
         });
       }
       reset(basicDetails);
-      if(projectDetails.acceptDonations){
+      if (projectDetails.acceptDonations) {
         setAcceptDonations(projectDetails.acceptDonations);
       }
     }
@@ -215,15 +209,17 @@ export default function BasicDetails({
       geometry: {
         type: 'Point',
         coordinates: [
-          parseFloat(data.projectCoords.longitude),
-          parseFloat(data.projectCoords.latitude),
+          parseFloat(data.longitude),
+          parseFloat(data.latitude),
         ],
       },
       countTarget: Number(data.countTarget),
       website: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
-      treeCost: data.treeCost ? parseNumber(i18n.language, data.treeCost) : null,
+      treeCost: data.treeCost
+        ? parseNumber(i18n.language, data.treeCost)
+        : null,
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
@@ -283,11 +279,15 @@ export default function BasicDetails({
         }
       );
     }
-  };
+  };  
 
   return ready ? (
     <div className={`${styles.stepContainer} `}>
-      <form onSubmit={(e)=>{e.preventDefault()}}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           <div className={styles.formFieldLarge}>
             <MaterialTextField
@@ -429,7 +429,7 @@ export default function BasicDetails({
             )}
           </div>
 
-          <div className={styles.formField} style={{minHeight:'80px'}}>
+          <div className={styles.formField} style={{ minHeight: '80px' }}>
             <div className={`${styles.formFieldHalf}`}>
               <div className={`${styles.formFieldRadio}`}>
                 <label
@@ -459,7 +459,10 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e) => { properties.onChange(e.target.checked); setAcceptDonations(e.target.checked) }}
+                      onChange={(e) => {
+                        properties.onChange(e.target.checked);
+                        setAcceptDonations(e.target.checked);
+                      }}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
                   )}
@@ -523,7 +526,8 @@ export default function BasicDetails({
                   transitionInterpolator: new FlyToInterpolator(),
                   transitionEasing: d3.easeCubic,
                 });
-                setValue('projectCoords', latLong);
+                setValue('latitude', latLong.latitude);
+                setValue('longitude', latLong.longitude);
               }}
             >
               {projectCoords ? (
@@ -552,16 +556,24 @@ export default function BasicDetails({
                     validate: (value) =>
                       parseFloat(value) > -90 && parseFloat(value) < 90,
                   })}
-                  label="Latitude"
+                  label={t('manageProjects:latitude')}
                   variant="outlined"
-                  name={'projectCoords.latitude'}
+                  name={'latitude'}
                   onChange={changeLat}
                   className={styles.latitudeInput}
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true }}
+                  InputLabelProps={{ shrink: true,style:{position:'absolute',left:'50%',transform:'translateX(-50%)',top:'-6px'} }}
                 />
+                {errors.latitude && (
+                  <span
+                    className={styles.formErrorsAbsolute}
+                    style={{ zIndex: 2, textAlign: 'center' }}
+                  >
+                    {t('manageProjects:latitudeRequired')}
+                  </span>
+                )}
               </div>
               <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
                 <MaterialTextField
@@ -570,16 +582,24 @@ export default function BasicDetails({
                     validate: (value) =>
                       parseFloat(value) > -180 && parseFloat(value) < 180,
                   })}
-                  label="Longitude"
+                  label={t('manageProjects:longitude')}
                   variant="outlined"
                   onChange={changeLon}
-                  name={'projectCoords.longitude'}
+                  name={'longitude'}
                   className={styles.longitudeInput}
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true }}
+                  InputLabelProps={{ shrink: true,style:{position:'absolute',left:'50%',transform:'translateX(-50%)',top:'-6px'} }}
                 />
+                {errors.longitude && (
+                  <span
+                    className={styles.formErrorsAbsolute}
+                    style={{ zIndex: 2, textAlign: 'center' }}
+                  >
+                    {t('manageProjects:longitudeRequired')}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -670,14 +690,14 @@ export default function BasicDetails({
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
+                t('manageProjects:saveAndContinue')
+              )}
             </button>
           </div>
         </div>
       </form>
     </div>
   ) : (
-      <></>
-    );
+    <></>
+  );
 }

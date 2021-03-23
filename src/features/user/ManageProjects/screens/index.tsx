@@ -55,7 +55,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
     project ? project : {}
   );
 
-  const [reviewRequested, setReviewRequested] = React.useState(false);
   const router = useRouter();
 
   const submitForReview = () => {
@@ -83,11 +82,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       }
     });
   };
-  React.useEffect(() => {
-    if (projectDetails && projectDetails.reviewRequested) {
-      setReviewRequested(true);
-    }
-  }, [projectDetails]);
+
   React.useEffect(() => {
     // Fetch details of the project
     if (projectGUID && token)
@@ -120,7 +115,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       case 4:
         return <ProjectSpending userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
       case 5:
-        return <SubmitForReview handleBack={handleBack} reviewRequested={reviewRequested} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
+        return <SubmitForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
       default:
         return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
     }

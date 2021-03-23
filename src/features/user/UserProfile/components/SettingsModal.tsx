@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from '../styles/SettingsModal.module.scss';
-import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useRouter } from 'next/router';
@@ -11,8 +10,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { removeLocalUserInfo, removeUserExistsInDB } from '../../../../utils/auth0/localStorageUtils';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import EmbedModal from './EmbedModal';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -41,7 +40,20 @@ export default function SettingsModal({
   const logoutUser = () => {
     removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  };
+  }
+
+  const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
+
+  const embedModalProps = { embedModalOpen, setEmbedModalOpen, userprofile };
+
+  const handleEmbedModalOpen = () => {
+    if (userprofile.isPrivate) {
+      setEmbedModalOpen(true);
+    } else {
+      router.push(`${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`);
+    }
+  }
+
   return ready ? (
     <>
       <Modal
@@ -68,18 +80,20 @@ export default function SettingsModal({
                 {t('me:settingManageProject')}{' '}
               </a>
             )}
-            <div
-              className={styles.settingsItem}
-              onClick={handleEditProfileModalOpen}
-            >
-              {' '}
-              {t('editProfile:edit')}{' '}
-            </div>
+
             {/*  <div className={styles.settingsItem}> Change Password </div>
-            <div className={styles.settingsItem}> Change Email </div>
-            <div className={styles.settingsItem}> Embed Widget </div> */}
-            <button
-              id={'settingsLogOut'}
+            <div className={styles.settingsItem}> Change Email </div> */}
+         
+ 
+            <button className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </button>
+            {/*  <div className={styles.settingsItem}> Change Password </div>
+            <div className={styles.settingsItem}> Change Email </div>*/}
+            <button onClick={handleEmbedModalOpen} id={'SettingsItem'}
+              className={styles.settingsItem}
+            >
+              {t('me:embedWidget')}
+            </button>
+            <button id={'settingsLogOut'}
               className={styles.settingsItem}
               onClick={logoutUser}
             >
@@ -116,6 +130,7 @@ export default function SettingsModal({
         handledeleteModalClose={handledeleteModalClose}
         userprofile={userprofile}
       />
+      <EmbedModal {...embedModalProps} />
     </>
   ) : null;
 }
@@ -219,7 +234,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }) {
 
           <div className={styles.deleteButtonContainer}>
             <div
-              onClick={() => handledeleteModalClose()}
+              onClick={() => {handledeleteModalClose();setcanDeleteAccount(false)}}
               className={styles.goBackContainer}
             >
               <p>{t('common:goBack')}</p>

@@ -37,5 +37,6 @@
   "receivedTrees": "Received Trees",
   "receivedFrom": "Received from {{name}}",
   "redeemedTrees": "Redeemed Trees",
-  "nameForest": "{{name}}'s Forest"
+  "nameForest": "{{name}}'s Forest",
+  "embedWidget": "Create Profile Widget"
 }

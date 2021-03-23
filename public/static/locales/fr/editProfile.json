@@ -24,5 +24,10 @@
   "nameValidation": "Saisir un nom",
   "profilePicUpdated": "La photo du profil est en cours d'actualisation...",
   "profileSaved": "Sauvé avec succès !",
-  "profileSaveFailed": "Erreur dans la mise à jour du profil."
+  "profileSaveFailed": "Erreur dans la mise à jour du profil.",
+  "changeAccountToPublic": "Passer à un compte public",
+  "publicAccount": "Compte public",
+  "accountPrivacyChangeText": "Pour créer un widget de profil, vous devez avoir un compte public. En cliquant sur Continuer, vous changez vos paramètres de confidentialité en public.",
+  "continue": "Continuer",
+  "cancel": "Annuler"
 }

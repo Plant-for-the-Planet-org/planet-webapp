@@ -1,4 +1,6 @@
 {
+  "fortreeCountTrees": "for {{treeCount}} Tree",
+  "fortreeCountTrees_plural": "for {{treeCount}} Trees",
   "PROJECTS": "PROJECTS",
   "topProjects": "Top Projects",
   "allCountProjects": "All {{projectCount}} Projects",
@@ -13,8 +15,6 @@
   "taxDeductionNotAvailableForProject": "Tax deduction is not yet available for this project",
   "youWillReceiveTaxDeduction": "You will receive a tax deduction receipt for ",
   "toProjectByOrganization": "To {{projectName}} by {{organizationName}}",
-  "fortreeCountTrees": "for {{treeCount}} Tree",
-  "fortreeCountTrees_plural": "for {{treeCount}} Trees",
   "firstName": "First Name",
   "lastName": "Last Name",
   "email": "Email",
@@ -79,8 +79,8 @@
   "underMaintenance": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details",
   "waitingConfirmation": "We are currently waiting a confirmation from your bank and will send you an email shortly. Please feel free to close this page.",
   "yourDonationRef": "Your donation ref is {{donationID}}",
-  "payWithGiroPay": "Pay with GiroPay",
-  "payWithSofort": "Pay with Sofort",
+  "payWithGiroPay": "Donate with GiroPay",
+  "payWithSofort": "Donate with Sofort",
   "donationFailed": "Donation Failed",
   "donationFailedMessage": "Something went wrong while completing your payment. If you continue having issues please reach out to us at support@plant-for-the-planet.org",
   "donationPending": "Completing your donation",
@@ -89,8 +89,8 @@
   "donationRef": "Donation Ref",
   "sepaDisclaimer": "SEPA payments take 2-14 business days (usually 3-5 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
   "sofortDisclaimer": "SOFORT payments take 2-14 business days (usually 2-3 days). As soon as it arrives we send you a confirmation email with your tree certificate and raise the tree counter.",
-  "askPublishName":"I would like to publish my Full Name in the leaderboard and Plant-for-the-Planet Apps. Optional",
-  "nameAlreadyPublished":"Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public.",
-  "orgNamePublishedTax":"Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
-  "orgNamePublished":"Company name is visible on our leaderboard and app."
+  "askPublishName": "Show my full name in the Plant-for-the-Planet app & leaderboards.",
+  "nameAlreadyPublished": "Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public.",
+  "orgNamePublishedTax": "Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
+  "orgNamePublished": "Company name is visible on our leaderboard and app."
 }
