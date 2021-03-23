@@ -13,5 +13,7 @@
   "location": "Ort",
   "timeTravel": "Zeitreise",
   "vegetationChange": "Vegetationsänderung",
-  "beta": "BETA"
+  "beta": "BETA",
+  "baseLayer": "Basislayer & Vektorkarten",
+  "satelliteImagery": "Satellitenbilder"
 }
