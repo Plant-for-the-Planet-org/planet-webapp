@@ -209,7 +209,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
           </p>
           <MaterialTextField
             // placeholder={t('common:deleteAccount')}
-            label={t('common:deleteAccount')}
+            label={t('common:deleteAccountLabel')}
             type="text"
             variant="outlined"
             style={{ marginTop: '20px' }}
