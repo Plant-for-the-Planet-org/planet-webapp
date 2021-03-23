@@ -71,14 +71,13 @@
   "siteStatusPlanted": "Planté",
   "siteStatusBarren": "Stérile",
   "siteStatusReforestation": "Reboisement",
-  "projectStatus": "État d'avancement du projet",
+  "siteStatus": "Statut du site",
   "selectProjectStatus": "Sélectionner le statut du projet",
   "saveAndAddSite": "Enregistrer et ajouter un autre site",
   "addSite": "Ajouter un autre site",
   "backToAnalysis": "Retour à l'analyse détaillée",
   "spendingYearValidation": "Veuillez ajouter l'année de dépense",
   "spendingAmountValidation": "Veuillez indiquer le montant dépensé",
-  "uploadReport": "Télécharger le rapport",
   "dragInPdf": "ou glisser dans un pdf",
   "addAnotherYear": "Ajouter une année supplémentaire",
   "backToSites": "Retour aux sites des projets",
@@ -110,5 +109,11 @@
   "urbanPlanting": "Plantation urbaine",
   "otherPlanting": "Autres plantations",
   "projectType": "Type de projet",
-  "polygonRequired": "Le polygone est nécessaire"
+  "polygonRequired": "Le polygone est nécessaire",
+  "fileSizeLimit": "Le fichier est supérieur à 10 mb",
+  "fileImageOnly": "Le type de fichier doit être une image",
+  "filePDFOnly": "Le type de fichier doit être PDF",
+  "acceptedReview": "Les modifications apportées à votre projet sont en direct",
+  "deniedReview": "Votre avis est refusé",
+  "saveSite": "Sauvegarder le site"
 }

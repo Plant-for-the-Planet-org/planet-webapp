@@ -67,7 +67,7 @@ function ProjectCertificates({
         onSubmit(event.target.result);
       };
     });
-  }, []);
+  }, [uploadedFiles]);
 
   React.useEffect(() => {
     // Fetch certificates of the project

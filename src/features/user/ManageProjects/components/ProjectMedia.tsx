@@ -28,7 +28,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>()
+  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -51,8 +51,9 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
       if (!res.code) {
-        let newUploadedImages = uploadedImages;
-        if(newUploadedImages === undefined){
+        let newUploadedImages = [...uploadedImages];
+        
+        if(!newUploadedImages){
           newUploadedImages = [];
         }
         newUploadedImages.push(res)
@@ -93,7 +94,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       }
     })
 
-  }, [])
+  }, [uploadedImages])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',

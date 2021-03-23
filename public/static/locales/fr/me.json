@@ -36,5 +36,6 @@
   "receivedTrees": "Arbres reçus",
   "receivedFrom": "Reçu de {{name}}",
   "redeemedTrees": "Arbres rachetés",
-  "nameForest": "La forêt des {{name}}"
+  "nameForest": "La forêt des {{name}}",
+  "embedWidget": "Créer un widget de profil"
 }

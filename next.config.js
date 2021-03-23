@@ -117,6 +117,7 @@ module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
     NEXTAUTH_URL: nextauthUrl,
     VERCEL_URL: process.env.VERCEL_URL,
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
+    WIDGET_URL: process.env.WIDGET_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
