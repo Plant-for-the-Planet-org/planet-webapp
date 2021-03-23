@@ -99,6 +99,7 @@ export default function SettingsModal({
             >
               <b>{t('me:logout')} </b>
             </button>
+            {userType !== 'tpo' && (
             <button
               id={'settingsDeleteAccount'}
               className={styles.settingsItem}
@@ -106,6 +107,7 @@ export default function SettingsModal({
             >
               {t('me:deleteAccount')}
             </button>
+            )}
             <button
               id={'SettingsItem'}
               className={styles.settingsItem}
