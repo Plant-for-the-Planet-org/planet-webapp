@@ -24,6 +24,8 @@
   "selectCountry": "Select Country",
   "ok": "OK",
   "cancel": "Cancel",
+  "delete": "Delete",
+  "deleteAccount": "Delete Account",
   "thankYou": "Thank You",
   "privacyPolicyNotice": "By using this website, you agree to our",
   "privacyPolicy": "privacy policy",
@@ -59,5 +61,11 @@
   "faqs": "FAQs",
   "annualReports": "Annual Reports",
   "mapInfo": "Map Credits",
-  "aboutUs": "About Us"
+  "aboutUs": "About Us",
+  "alternativelyEditProfile":"Alternatively you can mark your profile private by visiting Edit Profile.",
+  "deleteAccountConsent":"By clicking delete, I am requesting Plant-for-the-Planet to delete all data associated with my Plant-for-the-Planet account. Donation data may be kept for up to eight years. Trees I have registered will not be removed, however, will be anonymized and can't be claimed again.",
+  "deleteIrreversible":"I also understand that account deletion of {{email}} is irreversible.",
+  "goBack":"Go Back",
+  "deleteAccountMessage":"To continue with deletion, please type `{{delete}}`",
+  "deleteAccountLabel":"Type: Delete"
 }
