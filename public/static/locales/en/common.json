@@ -62,10 +62,10 @@
   "annualReports": "Annual Reports",
   "mapInfo": "Map Credits",
   "aboutUs": "About Us",
-  "alternativelyEditProfile":"Alternatively you can mark your profile private by visiting Edit Profile.",
-  "deleteAccountConsent":"By clicking delete, I am requesting Plant-for-the-Planet to delete all data associated with my Plant-for-the-Planet account. Donation data may be kept for up to eight years. Trees I have registered will not be removed, however, will be anonymized and can't be claimed again.",
-  "deleteIrreversible":"I also understand that account deletion of {{email}} is irreversible.",
-  "goBack":"Go Back",
-  "deleteAccountMessage":"To continue with deletion, please type `{{delete}}`",
-  "deleteAccountLabel":"Type: Delete"
+  "alternativelyEditProfile": "Alternatively you can mark your profile private by visiting Edit Profile.",
+  "deleteAccountConsent": "By clicking \"Delete\", I am requesting Plant-for-the-Planet to delete all data associated with my Plant-for-the-Planet account. Donation data may be kept for up to eight years. Trees I have registered will not be removed, however, will be anonymized and can't be claimed again.",
+  "deleteIrreversible": "I also understand that account deletion of {{email}} is irreversible.",
+  "goBack": "Go Back",
+  "deleteAccountMessage": "To continue with deletion, please type `{{delete}}`",
+  "deleteAccountLabel": "Type: {{delete}}"
 }

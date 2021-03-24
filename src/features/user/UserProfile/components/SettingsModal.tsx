@@ -105,7 +105,7 @@ export default function SettingsModal({
             >
               <b>{t('me:logout')} </b>
             </li>
-            
+
             <li
               id={'SettingsItem'}
               className={styles.settingsItem}
@@ -114,7 +114,7 @@ export default function SettingsModal({
               <div className={styles.cancelText}> {t('common:cancel')}</div>
             </li>
             </ul>
-            
+
           </nav>
         </Fade>
       </Modal>
@@ -154,7 +154,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
 
 
   React.useEffect(() => {
-    
+
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
@@ -209,7 +209,9 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
           </p>
           <MaterialTextField
             // placeholder={t('common:deleteAccount')}
-            label={t('common:deleteAccountLabel')}
+            label={t('common:deleteAccountLabel',
+              {delete:'Delete'}
+            )}
             type="text"
             variant="outlined"
             style={{ marginTop: '20px' }}
