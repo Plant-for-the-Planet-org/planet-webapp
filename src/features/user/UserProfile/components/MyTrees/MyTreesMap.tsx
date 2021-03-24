@@ -174,11 +174,6 @@ export default function MyTreesMap({
         ) : null}
         {contributionInfo ? (
           <>
-            {/* <div className={styles.contributionInfo}>
-            <p className={styles.treeCount}>{`${getFormattedRoundedNumber(i18n.language, contributionInfo.treeCount, 1)} Trees ${contributionInfo.country ? `• ${getCountryDataBy('countryCode', contributionInfo.country).countryName}` : ''}`}</p>
-            <p className={styles.moreInfo}>{contributionInfo.project ? contributionInfo.project : null}</p>
-            <p className={styles.moreInfo}>{contributionInfo.type && contributionInfo.type === 'registration' ? t('registeredTrees') : null}</p>
-          </div> */}
             <div className={styles.contributionInfo}>
               <div key={contributionInfo.properties.id} className={styles.tree}>
                 <div className={styles.dateRow}>
@@ -269,11 +264,6 @@ export default function MyTreesMap({
         ) : null}
         {clusterInfo ? (
           <>
-            {/* <div className={styles.contributionInfo}>
-            <p className={styles.treeCount}>{`${getFormattedRoundedNumber(i18n.language, contributionInfo.treeCount, 1)} Trees ${contributionInfo.country ? `• ${getCountryDataBy('countryCode', contributionInfo.country).countryName}` : ''}`}</p>
-            <p className={styles.moreInfo}>{contributionInfo.project ? contributionInfo.project : null}</p>
-            <p className={styles.moreInfo}>{contributionInfo.type && contributionInfo.type === 'registration' ? t('registeredTrees') : null}</p>
-          </div> */}
             <div className={styles.contributionInfo}>
               <div className={styles.tree}>
                 <div className={styles.treeRow}>
