@@ -1,8 +1,16 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
-import ReactMapboxGl, { Cluster, GeoJSONLayer, Marker, ZoomControl } from 'react-mapbox-gl';
+import ReactMapboxGl, {
+  Cluster,
+  GeoJSONLayer,
+  Marker,
+  ZoomControl,
+} from 'react-mapbox-gl';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import { getFormattedNumber, getFormattedRoundedNumber } from '../../../../../utils/getFormattedNumber';
+import {
+  getFormattedNumber,
+  getFormattedRoundedNumber,
+} from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
 import { getCountryDataBy } from '../../../../../utils/countryCurrency/countryUtils';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
@@ -12,14 +20,18 @@ import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 const Map = ReactMapboxGl({
   customAttribution:
     '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
-  maxZoom: 16
+  maxZoom: 16,
 });
 
 interface Props {
+  authenticatedType: string;
   contributions: any;
 }
 
-export default function MyTreesMap({ contributions }: Props): ReactElement {
+export default function MyTreesMap({
+  contributions,
+  authenticatedType,
+}: Props): ReactElement {
   const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
@@ -39,7 +51,9 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
   });
 
   const [contributionInfo, setContributionInfo] = React.useState(null);
-  let timer: NodeJS.Timeout;
+  const [clusterInfo, setClusterInfo] = React.useState(null);
+  let timer1: NodeJS.Timeout;
+  let timer2: NodeJS.Timeout;
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -61,21 +75,29 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
         features: contributions,
       });
     }
+    console.log(contributions);
   }, [contributions]);
 
   const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
     const nodes = getLeaves(Infinity);
     let sum = 0;
     nodes.map((node: any) => {
-      sum += Number(contributions[node.key].properties.treeCount);
-    })
-    console.log(sum);
+      let item = contributions.find((i: any) => {
+        if (i.properties.id === node.key) return true;
+      });
+      sum += Number(item ? item.properties.treeCount : 0);
+    });
     return (
-      <Marker
-        coordinates={coordinates}
-        anchor="bottom"
-      >
+      <Marker coordinates={coordinates} anchor="bottom">
         <div
+          onMouseOver={() => {
+            setContributionInfo(null);
+            clearTimeout(timer2);
+            setClusterInfo({ pointCount, sum });
+          }}
+          onMouseLeave={() => {
+            timer2 = setTimeout(() => setClusterInfo(null), 3000);
+          }}
           className={styles.bigMarker}
         >
           {getFormattedRoundedNumber(i18n.language, sum, 2)}
@@ -94,44 +116,49 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
           width: '100%',
         }}
       >
-        <Cluster
-          ClusterMarkerFactory={clusterMarker}
-          zoomOnClick={true}
-          zoomOnClickPadding={50}
-          maxZoom={24}
-        >
-          {
-            contributions &&
-              Array.isArray(contributions) &&
-              contributions.length !== 0
-              ? contributions.filter((feature: any) => {
-                return feature.geometry?.type === 'Point';
-              }).map((point: any) =>
-                <Marker
-                  key={point.properties.id}
-                  coordinates={point.geometry.coordinates}
-                  anchor="bottom">
-                  <div
-                    key={point.properties.id}
-                    style={
-                      point.properties.type === 'registration'
-                        ? { background: '#3D67B1' }
-                        : {}
-                    }
-                    onMouseOver={() => {
-                      console.log(point.properties.treeCount);
-                      clearTimeout(timer);
-                      setContributionInfo(point);
-                    }}
-                    onMouseLeave={() => {
-                      timer = setTimeout(() => setContributionInfo(null), 3000);
-                    }}
-                    className={styles.marker}
-                  />
-                </Marker>
-              ) : null
-          }
-        </Cluster>
+        {contributions && (
+          <Cluster
+            ClusterMarkerFactory={clusterMarker}
+            zoomOnClick={true}
+            zoomOnClickPadding={50}
+            maxZoom={24}
+          >
+            {Array.isArray(contributions) && contributions.length !== 0
+              ? contributions
+                  .filter((feature: any) => {
+                    return feature.geometry?.type === 'Point';
+                  })
+                  .map((point: any, index: number) => (
+                    <Marker
+                      key={point.properties.id}
+                      coordinates={point.geometry.coordinates}
+                      anchor="bottom"
+                    >
+                      <div
+                        key={index}
+                        style={
+                          point.properties.type === 'registration'
+                            ? { background: '#3D67B1' }
+                            : {}
+                        }
+                        onMouseOver={() => {
+                          setClusterInfo(null);
+                          clearTimeout(timer1);
+                          setContributionInfo(point);
+                        }}
+                        onMouseLeave={() => {
+                          timer1 = setTimeout(
+                            () => setContributionInfo(null),
+                            3000
+                          );
+                        }}
+                        className={styles.marker}
+                      />
+                    </Marker>
+                  ))
+              : null}
+          </Cluster>
+        )}
         {geoJson ? (
           <GeoJSONLayer
             data={geoJson}
@@ -145,7 +172,7 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
             }}
           />
         ) : null}
-        {contributionInfo ?
+        {contributionInfo ? (
           <>
             {/* <div className={styles.contributionInfo}>
             <p className={styles.treeCount}>{`${getFormattedRoundedNumber(i18n.language, contributionInfo.treeCount, 1)} Trees ${contributionInfo.country ? `• ${getCountryDataBy('countryCode', contributionInfo.country).countryName}` : ''}`}</p>
@@ -167,17 +194,17 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                     <div className={styles.country}>
                       {contributionInfo.properties.country
                         ? t(
-                          'country:' +
-                          contributionInfo.properties.country.toLowerCase()
-                        )
+                            'country:' +
+                              contributionInfo.properties.country.toLowerCase()
+                          )
                         : null}
                     </div>
                     {contributionInfo.properties.type === 'gift' ? (
                       <div className={styles.source}>
                         {contributionInfo.properties.giver.name
                           ? t('me:receivedFrom', {
-                            name: contributionInfo.properties.giver.name,
-                          })
+                              name: contributionInfo.properties.giver.name,
+                            })
                           : t('me:receivedTrees')}
                       </div>
                     ) : null}
@@ -190,8 +217,9 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                       <div className={styles.source}>
                         {contributionInfo.properties.recipient
                           ? t('me:giftToGiftee', {
-                            gifteeName: contributionInfo.properties.recipient.name,
-                          })
+                              gifteeName:
+                                contributionInfo.properties.recipient.name,
+                            })
                           : null}
                       </div>
                     ) : null}
@@ -215,7 +243,8 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                         {contributionInfo.properties.treeCount > 1 ? (
                           <TreesIcon
                             color={
-                              contributionInfo.properties.type === 'registration'
+                              contributionInfo.properties.type ===
+                              'registration'
                                 ? '#3D67B1'
                                 : null
                             }
@@ -223,7 +252,8 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
                         ) : (
                           <TreeIcon
                             color={
-                              contributionInfo.properties.type === 'registration'
+                              contributionInfo.properties.type ===
+                              'registration'
                                 ? '#3D67B1'
                                 : null
                             }
@@ -236,7 +266,40 @@ export default function MyTreesMap({ contributions }: Props): ReactElement {
               </div>
             </div>
           </>
-          : null}
+        ) : null}
+        {clusterInfo ? (
+          <>
+            {/* <div className={styles.contributionInfo}>
+            <p className={styles.treeCount}>{`${getFormattedRoundedNumber(i18n.language, contributionInfo.treeCount, 1)} Trees ${contributionInfo.country ? `• ${getCountryDataBy('countryCode', contributionInfo.country).countryName}` : ''}`}</p>
+            <p className={styles.moreInfo}>{contributionInfo.project ? contributionInfo.project : null}</p>
+            <p className={styles.moreInfo}>{contributionInfo.type && contributionInfo.type === 'registration' ? t('registeredTrees') : null}</p>
+          </div> */}
+            <div className={styles.contributionInfo}>
+              <div className={styles.tree}>
+                <div className={styles.treeRow}>
+                  <div className={styles.textCol}>
+                    <div className={styles.title}>
+                      {`${clusterInfo.pointCount} ${t('contributions')}`}
+                    </div>
+                  </div>
+                  <div className={styles.numberCol}>
+                    <div className={styles.treeIcon}>
+                      <div className={styles.number}>
+                        {getFormattedNumber(
+                          i18n.language,
+                          Number(clusterInfo.sum)
+                        )}
+                      </div>
+                      <div className={styles.icon}>
+                        {clusterInfo.sum > 1 ? <TreesIcon /> : <TreeIcon />}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : null}
         <ZoomControl position="bottom-right" />
       </Map>
     </div>
