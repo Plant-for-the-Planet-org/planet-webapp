@@ -22,6 +22,8 @@
   "selectCountry": "Sélectionner un pays",
   "ok": "OK",
   "cancel": "Annuler",
+  "delete": "Supprimer",
+  "deleteAccount": "Supprimer le compte",
   "thankYou": "Merci",
   "privacyPolicyNotice": "En utilisant ce site web, vous acceptez notre",
   "privacyPolicy": "politique de protection de la vie privée",
@@ -56,5 +58,11 @@
   "blogs": "Blogs",
   "faqs": "FAQs",
   "annualReports": "Rapports annuels",
-  "aboutUs": "À propos de nous"
+  "mapInfo": "Crédits cartographiques",
+  "aboutUs": "À propos de nous",
+  "alternativelyEditProfile": "Vous pouvez également marquer votre profil comme privé en visitant la page Modifier le profil.",
+  "deleteIrreversible": "Je comprends également que la suppression du compte de {{email}} est irréversible.",
+  "goBack": "Retour",
+  "deleteAccountMessage": "Pour continuer la suppression, veuillez taper `{{delete}}`",
+  "deleteAccountLabel": "Taper : {{delete}}"
 }
