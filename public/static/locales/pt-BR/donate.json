@@ -1,4 +1,6 @@
 {
+  "fortreeCountTrees": "para {{treeCount}} Árvore",
+  "fortreeCountTrees_plural": "para {{treeCount}} Árvores",
   "PROJECTS": "PROJETOS",
   "topProjects": "Principais projetos",
   "allCountProjects": "Todos {{projectCount}} Projetos",

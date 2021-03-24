@@ -78,6 +78,7 @@
   "backToAnalysis": "Retour à l'analyse détaillée",
   "spendingYearValidation": "Veuillez ajouter l'année de dépense",
   "spendingAmountValidation": "Veuillez indiquer le montant dépensé",
+  "uploadReport": "Télécharger et sauver le rapport",
   "dragInPdf": "ou glisser dans un pdf",
   "addAnotherYear": "Ajouter une année supplémentaire",
   "backToSites": "Retour aux sites des projets",
@@ -115,5 +116,9 @@
   "filePDFOnly": "Le type de fichier doit être PDF",
   "acceptedReview": "Les modifications apportées à votre projet sont en direct",
   "deniedReview": "Votre avis est refusé",
-  "saveSite": "Sauvegarder le site"
+  "saveSite": "Sauvegarder le site",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "latitudeRequired": "La latitude est requise",
+  "longitudeRequired": "La longitude est requise"
 }
