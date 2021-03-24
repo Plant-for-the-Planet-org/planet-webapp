@@ -82,7 +82,7 @@ export default function MyTreesMap({
     const nodes = getLeaves(Infinity);
     let sum = 0;
     nodes.map((node: any) => {
-      let item = contributions.find((i: any) => {
+      const item = contributions.find((i: any) => {
         if (i.properties.id === node.key) return true;
       });
       sum += Number(item ? item.properties.treeCount : 0);
