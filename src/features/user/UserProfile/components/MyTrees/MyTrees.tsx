@@ -28,7 +28,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {
     async function loadFunction() {
-      if (token) {
+      if (authenticatedType === 'private' && token) {
         getAuthenticatedRequestWithoutRedirecting(`/app/profile/contributions`, token)
           .then((result: any) => {
             setContributions(result);
