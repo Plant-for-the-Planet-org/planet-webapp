@@ -165,7 +165,7 @@
 .secondaryButton {
   background-image: none;
   background-color: $blueishGrey;
-  color: #2f3336;
+  color: $primaryFontColor;
   p {
     margin-left: 6px;
   }
@@ -177,7 +177,7 @@
 .backButton {
   margin-top: 12px;
   font-weight: bold;
-  color: #2f3336;
+  color: $primaryFontColor;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -192,7 +192,7 @@
 .fileUploadContainer {
   height: 128px;
   border-radius: 10px;
-  border: dashed 1px #2f3336;
+  border: dashed 1px $primaryFontColor;
   background-color: #f2f2f7;
   width: 100%;
   display: flex;
@@ -446,7 +446,7 @@
   background-color: rgb(242, 242, 247);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border: dashed 1px #2f3336;
+  border: dashed 1px $primaryFontColor;
 }
 
 .mapNavigation {
