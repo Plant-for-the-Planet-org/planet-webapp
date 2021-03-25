@@ -543,17 +543,16 @@
     &:hover {
       cursor: pointer;
       color: $primaryFontColor;
-      // border: 0.5px solid $primaryFontColor;
-      background-color: #e7edff;
-      border: 0.5px solid #e7edff;
+      background-color: $blueishGrey;
+      border: 0.5px solid $blueishGrey;
     }
     .checkMark {
       display: none;
     }
   }
   .paymentMethodSelected {
-    background-color: #e7edff;
-    border: 0.5px solid #e7edff;
+    background-color: $blueishGrey;
+    border: 0.5px solid $blueishGrey;
     color: $primaryFontColor;
     font-weight: 600;
 
