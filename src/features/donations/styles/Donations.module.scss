@@ -135,7 +135,7 @@
   margin-top: 20px;
 }
 .treeCountOption {
-  border: 1px solid #d5d5d5;
+  border: 1px solid $dividerColor;
 }
 
 .treeCountOptionSelected {
@@ -318,7 +318,7 @@
 
 .horizontalLine {
   height: 1px;
-  background-color: #d5d5d5;
+  background-color: $dividerColor;
   margin-top: 20px;
 }
 
@@ -526,7 +526,7 @@
     box-sizing: border-box;
     margin-right: 12px;
     margin-bottom: 12px;
-    border: 0.5px solid $primaryFontColor;
+    border: 1px solid $dividerColor;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
