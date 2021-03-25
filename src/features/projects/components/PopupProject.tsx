@@ -42,7 +42,7 @@ export default function PopupProject({
     <>
       <Modal
         ref={popupRef}
-        className={`${theme}`}
+        className={`modalContainer ${theme}`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
