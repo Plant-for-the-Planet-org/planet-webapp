@@ -13,7 +13,7 @@
 .modal {
   //   top: 80px;
   margin-bottom: 60px;
-  background-color: #fff;
+  background-color: $light;
   border: 0px;
   border-radius: 8px;
   position: absolute;
@@ -74,7 +74,7 @@
   background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
   align-items: center;
   font-weight: bold;
-  color: white;
+  color: $light;
   border: 0px;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);

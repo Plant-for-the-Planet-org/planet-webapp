@@ -109,7 +109,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background: #fff;
+  background: $backgroundColor;
   width: 60px;
   height: 30px;
   border-radius: 0 !important;
@@ -120,7 +120,7 @@
 
 .active {
   background-color: $primaryColor;
-  color: #fff;
+  color: $light;
 }
 
 @include mdTabletView {
@@ -151,7 +151,7 @@
   background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
   align-items: center;
   font-weight: bold;
-  color: white;
+  color: $light;
   border: 0px;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -420,7 +420,7 @@
   }
 }
 .mapTool {
-  background-color: white;
+  background-color: $backgroundColor;
   height: 30px;
   width: 30px;
   border-radius: 3px;
@@ -486,20 +486,20 @@
     bottom: 16px;
     left: 12px;
     border: 0px;
-    color: white;
+    color: $light;
     background-color: transparent;
     font-size: 16px;
     &::placeholder {
-      color: white;
+      color: $light;
       opacity: 1; /* Firefox */
     }
     &:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
-      color: white;
+      color: $light;
     }
     &::-ms-input-placeholder {
       /* Microsoft Edge */
-      color: white;
+      color: $light;
     }
   }
   .uploadedImageButtonContainer {
@@ -511,7 +511,7 @@
       margin-top: 9px;
     }
     > button {
-      background-color: white;
+      background-color: $backgroundColor;
       border-radius: 50%;
       height: 21px;
       width: 21px;
@@ -571,7 +571,7 @@
   }
 
   .reportEditButton {
-    background-color: white;
+    background-color: $backgroundColor;
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -655,7 +655,7 @@
 
 // white modal
 .modal {
-  background-color: white;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
   max-height: 80vh;

@@ -211,7 +211,7 @@ video {
 }
 
 .primaryButton {
-  color: white;
+  color:$light;
   font-weight: bold;
   background-color: $primaryColor;
   background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);

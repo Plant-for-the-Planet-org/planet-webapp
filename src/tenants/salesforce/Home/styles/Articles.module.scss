@@ -42,7 +42,7 @@
   .articleSingleContainer {
     position: relative;
     width: 100%;
-    background: #ffffff;
+    background: $backgroundColor;
     margin-bottom: 0px;
   }
   
@@ -105,7 +105,7 @@
     align-self: center;
     background-color: #0070d2;
     padding: 6px 16px;
-    color: white;
+    color: $light;
     width: fit-content;
     border-radius: 4px;
     margin: auto;

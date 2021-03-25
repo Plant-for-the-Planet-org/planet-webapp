@@ -10,7 +10,7 @@
 
 // white modal
 .modal {
-  background-color: #ffffff;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
   padding: 6px 50px;
@@ -51,7 +51,7 @@
 }
 
 .deleteModal {
-  background-color: white;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 10px;
   padding: 20px;
@@ -98,7 +98,7 @@
       padding-left: 24px;
       padding-right: 24px;
       background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
-      color: white;
+      color: $light;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -126,7 +126,7 @@
       justify-content: center;
       align-items: center;
       font-weight: bold;
-      color: white;
+      color: $light;
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
