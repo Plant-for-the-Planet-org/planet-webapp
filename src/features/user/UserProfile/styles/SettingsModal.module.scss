@@ -1,13 +1,5 @@
 @import './../../../../theme/theme';
 
-// modal container for black opacity
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 // white modal
 .modal {
   background-color: $backgroundColor;
@@ -27,9 +19,12 @@
 
 .settingsItem {
   font-family: $primaryFontFamily;
-  padding: 10px 0px;
+  margin-top: 20px;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);
+  a {
+    color: rgba(0, 0, 0, 0.87);
+  }
 }
 
 .settingsItem:hover {

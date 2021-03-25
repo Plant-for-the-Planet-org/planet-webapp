@@ -24,6 +24,7 @@ import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -241,11 +242,12 @@ export default function RegisterTrees({
     contributionGUID,
     currentUserSlug: slug,
   };
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <>
       <Modal
-        className={styles.modalContainer}
+        className={'modalContainer'+' '+theme}
         open={registerTreesModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition

@@ -1,16 +1,5 @@
 @import './../../../../theme/theme';
 
-// modal container for black opacity
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow-y: scroll;
-  background: rgba(0, 0, 0, 0.6);
-  min-height: calc(100vh - 100px);
-}
-
 // white modal
 .modal {
   top: 80px;

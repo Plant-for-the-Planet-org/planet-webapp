@@ -5,11 +5,11 @@ import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
 import i18next from '../../../../../i18n';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 interface Props {
   tenantScore:any;
 }
-
 const { useTranslation } = i18next;
 export default function Stats({tenantScore}: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
@@ -21,6 +21,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
   const handleModalOpen = () => {
     setModalOpen(true);
   };
+  const { theme } = React.useContext(ThemeContext);
   return ready ? (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -63,7 +64,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
       </div>
       {infoExpanded !== null ? (
         <Modal
-          className={styles.modal}
+          className={'modalContainer'+' '+theme}
           open={openModal}
           onClose={handleModalClose}
           aria-labelledby="simple-modal-title"

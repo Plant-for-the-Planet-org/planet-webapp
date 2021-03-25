@@ -1,15 +1,5 @@
 @import './../../../../theme/theme';
 
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow-y: auto;
-  background: rgba(0, 0, 0, 0.6);
-  //   min-height: calc(100vh - 100px);
-}
-
 .modal {
   //   top: 80px;
   margin-bottom: 60px;

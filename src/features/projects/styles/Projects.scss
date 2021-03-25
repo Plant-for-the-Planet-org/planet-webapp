@@ -200,10 +200,6 @@
   border-radius: 100px;
 }
 
-.modalContainer {
-  background: rgba(0, 0, 0, 0.6);
-}
-
 @include smTabletView {
   .allProjectsContainer > div > div {
     display: grid;
