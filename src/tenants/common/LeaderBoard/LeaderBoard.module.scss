@@ -24,7 +24,7 @@
     font-size: 14px;
     line-height: 21px;
     text-align: center;
-    color: #080707;
+    color: $primaryFontColor;
   }
   
   .leaderBoard > h2 {
@@ -35,7 +35,7 @@
     line-height: 40px;
     text-align: center;
     letter-spacing: -0.4px;
-    color: #080707;
+    color: $primaryFontColor;
   }
   
   .leaderBoardTableHeader {
@@ -53,7 +53,7 @@
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
-    color: #080707;
+    color: $primaryFontColor;
   }
   
   .leaderBoardTableHeaderTitleSelected {
@@ -63,7 +63,7 @@
     font-style: normal;
     font-weight: bold;
     font-size: 13px;
-    color: #080707;
+    color: $primaryFontColor;
   }
   
   .leaderBoardTableHeaderTitle:hover {
@@ -86,7 +86,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
-    color: #080707;
+    color: $primaryFontColor;
     font-family: $primaryFontFamily;
     text-align: left;
     margin-bottom: 0px;
