@@ -12,7 +12,6 @@ import {
   getFormattedRoundedNumber,
 } from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
-import { getCountryDataBy } from '../../../../../utils/countryCurrency/countryUtils';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
@@ -75,7 +74,6 @@ export default function MyTreesMap({
         features: contributions,
       });
     }
-    console.log(contributions);
   }, [contributions]);
 
   const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
@@ -147,10 +145,10 @@ export default function MyTreesMap({
                           setContributionInfo(point);
                         }}
                         onMouseLeave={() => {
-                          timer1 = setTimeout(
-                            () => setContributionInfo(null),
-                            3000
-                          );
+                          // timer1 = setTimeout(
+                          //   () => setContributionInfo(null),
+                          //   3000
+                          // );
                         }}
                         className={styles.marker}
                       />

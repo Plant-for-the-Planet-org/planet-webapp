@@ -5,12 +5,7 @@ import {
   getRequestWithoutRedirecting,
   getAuthenticatedRequestWithoutRedirecting,
 } from '../../../../../utils/apiRequests/api';
-import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
-import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import i18next from '../../../../../../i18n';
-import { getLocalUserInfo } from '../../../../../utils/auth0/localStorageUtils';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -29,8 +24,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const [contributions, setContributions] = React.useState();
   React.useEffect(() => {
     async function loadFunction() {
-      console.log(contributions);
-      // const userInfo = await getLocalUserInfo();
       if (token && authenticatedType === 'private') {
         getAuthenticatedRequestWithoutRedirecting(
           `/app/profile/contributions`,
