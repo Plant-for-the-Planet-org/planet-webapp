@@ -322,17 +322,17 @@
   margin: 0 5px;
   height: 7px;
   border-radius: 50px;
-  background: linear-gradient(90deg, #68b030 1.1%, #007a49 98.6%);
+  background: linear-gradient(90deg, $primaryColor 1.1%, $primaryDarkColor 98.6%);
 }
 
 .currentForestScale > p:nth-child(1) {
   font-size: 12px;
-  color: #68b030;
+  color: $primaryColor;
 }
 
 .currentForestScale > p:nth-child(3) {
   font-size: 12px;
-  color: #007a49;
+  color: $primaryDarkColor;
 }
 
 .layerLegend {

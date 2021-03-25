@@ -1,8 +1,8 @@
 @import './../../../../theme/theme';
 
 .wrapper {
-  background-color: #007a49;
-  background-image: linear-gradient(to bottom, #007a49, #68b030);
+  background-color: $primaryDarkColor;
+  background-image: linear-gradient(to bottom, $primaryDarkColor, $primaryColor);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -38,7 +38,7 @@
   font-family: $primaryFontFamily;
   font-size: 38px;
   font-weight: bold;
-  color: #68b030;
+  color: $primaryColor;
 }
 
 .statText {

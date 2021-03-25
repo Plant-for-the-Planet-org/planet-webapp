@@ -67,7 +67,7 @@
 
 .leaderBoardTableHeaderTitleSelected {
   padding: 8px;
-  border-bottom: 2px solid #68b030;
+  border-bottom: 2px solid $primaryColor;
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: bold;
@@ -75,7 +75,7 @@
   color: #080707;
   > svg {
     height: 13px;
-    > path {fill: #68b030;}
+    > path {fill: $primaryColor;}
   }
 }
 
