@@ -23,6 +23,7 @@ const globalStyles = css.global`
     --highlight-background: ${light.highlightBackground};
     --light: ${light.light};
     --dark: ${light.dark};
+    --danger-color: ${light.dangerColor};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
@@ -33,6 +34,7 @@ const globalStyles = css.global`
     --highlight-background: ${dark.highlightBackground};
     --light: ${dark.light};
     --dark: ${dark.dark};
+    --danger-color: ${dark.dangerColor};
   }
 `;
 

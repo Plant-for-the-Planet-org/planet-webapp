@@ -79,7 +79,7 @@
   }
   .deleteModalWarning {
     margin-top: 20px;
-    color: #eb4e3b;
+    color: $dangerColor;
     font-size: 12px;
     text-align: center;
   }
@@ -117,7 +117,7 @@
     }
     .deleteButton {
       flex: 1;
-      background-color: #eb4e3b;
+      background-color: $dangerColor;
       height: 40px;
       border-radius: 100px;
       padding-left: 24px;
@@ -165,4 +165,9 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+:export {
+  dangerColor: $dangerColor;
+  light:$light;
 }

@@ -343,7 +343,7 @@
 
 .singleGiftRemove {
   cursor: pointer;
-  color: #e74c3c;
+  color: $dangerColor;
   font-size: 12px;
   margin-top: 20px;
 }
@@ -359,7 +359,7 @@
 .paymentError {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  color: #e74c3c;
+  color: $dangerColor;
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
@@ -368,7 +368,7 @@
 .formErrors {
   font-family: $primaryFontFamily;
   font-size: 12px;
-  color: #e74c3c;
+  color: $dangerColor;
   margin-left: 6px;
 }
 
@@ -376,6 +376,7 @@
   primaryFontColor: $primaryFontColor;
   primaryColor: $primaryColor;
   light: $light;
+  dangerColor: $dangerColor;
 }
 
 /* Is Company */

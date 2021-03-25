@@ -77,5 +77,5 @@ export default function Stats({tenantScore}: Props): ReactElement {
         </Modal>
       ) : null}
     </div>
-  ) : null;
+  ) : <></>;
 }

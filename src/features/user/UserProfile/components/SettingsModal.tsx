@@ -247,7 +247,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
               <AnimatedButton
                 onClick={() => handleDeleteAccount()}
                 className={styles.deleteButton}
-                style={{ backgroundColor: '#eb4e3b', color:'white' }}
+                style={{ backgroundColor: styles.dangerColor, color:styles.light }}
               >{isUploadingData ? (
                 <div className={styles.spinner}></div>
             ) : (t('common:delete'))}

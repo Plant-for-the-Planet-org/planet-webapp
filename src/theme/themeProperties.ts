@@ -14,6 +14,7 @@ const themeProperties = {
     highlightBackground: '#4d5153',
     light: '#fff',
     dark: '#000',
+    dangerColor:'#e74c3c',
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -24,6 +25,7 @@ const themeProperties = {
     highlightBackground: '#f2f2f2',
     light: '#fff',
     dark: '#000',
+    dangerColor:'#e74c3c',
   },
 };
 
