@@ -4,6 +4,7 @@ const themeProperties = {
     titleSize: '18px',
   },
   primaryColor: '#68B030',
+  primaryDarkColor: '#007a49',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',

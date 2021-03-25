@@ -3,7 +3,7 @@ import tenantConfig from '../../tenant.config';
 import theme from './themeProperties';
 const config = tenantConfig();
 
-const { light, dark, fontSizes, primaryColor } = theme;
+const { light, dark, fontSizes, primaryColor,primaryDarkColor } = theme;
 
 const globalStyles = css.global`
   :root {
@@ -12,6 +12,7 @@ const globalStyles = css.global`
     --title-size: ${fontSizes.titleSize};
     --sub-title-size: ${fontSizes.subTitleSize};
     --primary-color: ${primaryColor};
+    --primary-dark-color: ${primaryDarkColor};
   }
   .theme-light {
     --primary-font-color: ${light.primaryFontColor};
