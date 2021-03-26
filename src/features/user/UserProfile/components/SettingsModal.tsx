@@ -26,14 +26,12 @@ export default function SettingsModal({
 }: any) {
   const router = useRouter();
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
-  const {
-    logout,
-  } = useAuth0();
+  const { logout } = useAuth0();
 
   const logoutUser = () => {
     removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  }
+  };
 
   const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
 
@@ -43,9 +41,11 @@ export default function SettingsModal({
     if (userprofile.isPrivate) {
       setEmbedModalOpen(true);
     } else {
-      router.push(`${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`);
+      router.push(
+        `${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`
+      );
     }
-  }
+  };
 
   return ready ? (
     <>
@@ -63,29 +63,53 @@ export default function SettingsModal({
       >
         <Fade in={settingsModalOpen}>
           <div className={styles.modal}>
-            {
-              userType == 'tpo' &&
-              <a href={`#projectsContainer`} onClick={handleSettingsModalClose} className={styles.settingsItem}> {t('me:settingManageProject')} </a>
-            }
-            <button className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </button>
+            {userType == 'tpo' && (
+              <a
+                href={`#projectsContainer`}
+                onClick={handleSettingsModalClose}
+                className={styles.settingsItem}
+              >
+                {' '}
+                {t('me:settingManageProject')}{' '}
+              </a>
+            )}
+            <button
+              className={styles.settingsItem}
+              onClick={handleEditProfileModalOpen}
+            >
+              {' '}
+              {t('editProfile:edit')}{' '}
+            </button>
             {/*  <div className={styles.settingsItem}> Change Password </div>
             <div className={styles.settingsItem}> Change Email </div>
             <div className={styles.settingsItem}> Embed Widget </div> */}
-            <Link href="/account" className={styles.settingsItem}> 
-            <a>{t('me:accountHistory')}</a>
-            </Link>
-             
-            <button onClick={handleEmbedModalOpen} id={'SettingsItem'}
+
+            <button
+              onClick={() =>
+                router.push('/account', undefined, { shallow: true })
+              }
+              id={'SettingsItem'}
+              className={styles.settingsItem}
+            >
+              {t('me:accountHistory')}
+            </button>
+
+            <button
+              onClick={handleEmbedModalOpen}
+              id={'SettingsItem'}
               className={styles.settingsItem}
             >
               {t('me:embedWidget')}
             </button>
-            <button id={'settingsLogOut'}
+            <button
+              id={'settingsLogOut'}
               className={styles.settingsItem}
-              onClick={logoutUser}>
+              onClick={logoutUser}
+            >
               <b>{t('me:logout')} </b>
             </button>
-            <button id={'SettingsItem'}
+            <button
+              id={'SettingsItem'}
               className={styles.settingsItem}
               onClick={handleSettingsModalClose}
             >

@@ -2,7 +2,6 @@ import React, { useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/AccountNavbar.module.scss';
-
 import {
   setUserExistsInDB,
   removeUserExistsInDB,
@@ -16,10 +15,11 @@ import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import FilterIcon from '../../../../../public/assets/images/icons/FilterIcon';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
+import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 
-interface Props { }
+interface Props {}
 
-function Account({ }: Props): ReactElement {
+function Account({}: Props): ReactElement {
   const {
     isLoading,
     isAuthenticated,
@@ -74,9 +74,8 @@ function Account({ }: Props): ReactElement {
   const [paymentHistory, setpaymentHistory] = React.useState();
 
   React.useEffect(() => {
-    if (isAuthenticated)
-      setFilter('')
-  }, [isAuthenticated])
+    if (isAuthenticated) setFilter('');
+  }, [isAuthenticated]);
   React.useEffect(() => {
     async function fetchPaymentHistory() {
       let token = null;
@@ -125,23 +124,31 @@ function Account({ }: Props): ReactElement {
     <div className={styles.accountsPage}>
       <div className={styles.accountsPageContainer}>
         <div className={styles.accountsHeader}>
-          <button onClick={() => { router.back() }} className={styles.backButton}>
-            <BackButton style={{ margin: '0px' }} />
-          </button>
+          <div className={styles.navContainer}>
+            <button
+              onClick={() => {
+                router.back();
+              }}
+              className={styles.backButton}
+            >
+              <BackButton style={{ margin: '0px' }} />
+            </button>
+            <button
+              id={'IndividualProSetting'}
+              className={styles.settingsIcon}
+              // onClick={handleSettingsModalOpen}
+            >
+              <Settings color="white" />
+            </button>
+          </div>
           <div className={styles.accountsTitleContainer}>
-            <div className={styles.accountsTitle}>Account History</div>
-            <div className={styles.optionsRow}>
-              {showFilters ?
-                <div onClick={() => setShowFilters(false)} className={styles.settingsButton}><Close /></div>
-                :
-                <div onClick={() => setShowFilters(true)} className={styles.settingsButton}><FilterIcon /></div>
-              }
-            </div>
-            {showFilters &&
+            <div className={styles.accountsTitle}>My Account</div>
+            <div className={styles.optionsRow}></div>
+            {showFilters && (
               <div className={styles.filterContainer}>
-                <div className={styles.filterHead}><p className={styles.filterTitle}>Filters</p>
+                <div className={styles.filterHead}>
+                  <p className={styles.filterTitle}>Filters</p>
                 </div>
-
 
                 <div className={styles.filterButtons}>
                   {accountingFilters.map((filter) => {
@@ -152,8 +159,9 @@ function Account({ }: Props): ReactElement {
                         onClick={() => handleSetFilter(filter.id)}
                       >
                         <div
-                          className={`${styles.multiSelectInputCheck} ${filter.isSet ? styles.multiSelectInputCheckTrue : ''
-                            }`}
+                          className={`${styles.multiSelectInputCheck} ${
+                            filter.isSet ? styles.multiSelectInputCheckTrue : ''
+                          }`}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -174,20 +182,36 @@ function Account({ }: Props): ReactElement {
                     );
                   })}
                 </div>
-              </div>}
+              </div>
+            )}
           </div>
+        </div>
+        <div className={styles.filterContainer}>
+          {accountingFilters.map((filter) => {
+            return (
+              <button
+                className={`${styles.multiSelectInput} ${
+                  filter.isSet ? styles.multiSelectInputCheckTrue : ''
+                }`}
+                key={filter.id}
+                onClick={() => handleSetFilter(filter.id)}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
         </div>
         <div className={styles.contentContainer}>
           <div className={styles.accountsContainer}>
             {paymentHistory &&
-              paymentHistory.items.map((item, index) => {
+              paymentHistory?.items?.map((item, index) => {
                 return <PaymentRecord record={item} index={index} />;
               })}
           </div>
           <div className={styles.filterContainerDesktop}>
-            <div className={styles.filterHead}><p className={styles.filterTitle}>Filters</p>
+            <div className={styles.filterHead}>
+              <p className={styles.filterTitle}>Filters</p>
             </div>
-
 
             <div className={styles.filterButtons}>
               {accountingFilters.map((filter) => {
@@ -198,8 +222,9 @@ function Account({ }: Props): ReactElement {
                     onClick={() => handleSetFilter(filter.id)}
                   >
                     <div
-                      className={`${styles.multiSelectInputCheck} ${filter.isSet ? styles.multiSelectInputCheckTrue : ''
-                        }`}
+                      className={`${styles.multiSelectInputCheck} ${
+                        filter.isSet ? styles.multiSelectInputCheckTrue : ''
+                      }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
