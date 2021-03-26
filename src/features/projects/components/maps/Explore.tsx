@@ -271,12 +271,13 @@ export default function Explore({
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
           {exploreExpanded ? null : (
-            <p
+            isMobile || showSingleProject ? null : ( <p
               onClick={() => setExploreExpanded(true)}
               className={styles.exploreText}
             >
-              {isMobile || showSingleProject ? null : t('maps:explore')}
-            </p>
+              {t('maps:explore')}
+            </p>)
+           
           )}
         </div>
         {exploreExpanded ? (
