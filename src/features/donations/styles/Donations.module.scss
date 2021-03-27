@@ -248,6 +248,7 @@
   font-weight: bold;
   font-size: 16px;
   color: $primaryColor;
+  margin-left: 4px;
 }
 
 .totalCostText {
@@ -256,6 +257,10 @@
   font-size: 16px;
   color: $primaryFontColor;
   margin-left: 6px;
+}
+.totalCostText > p{
+  width: 100%;
+  text-align: center;
 }
 
 .actionButtonsContainer {
