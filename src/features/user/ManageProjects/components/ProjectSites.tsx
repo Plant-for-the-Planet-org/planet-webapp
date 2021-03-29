@@ -552,7 +552,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={styles.modalContainer + ' ' + theme}
+      className={'modalContainer' + ' ' + theme}
       open={openModal}
       onClose={handleModalClose}
       closeAfterTransition

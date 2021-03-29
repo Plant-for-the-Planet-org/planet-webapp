@@ -17,9 +17,11 @@ interface Props {
 
 function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
 
+    console.log('router.pathname',router.pathname);
+    
     const HomeLink =()=>{
         return(
-            <button id={'homeIcon'} className={'link_icon'}>
+            <button id={'homeIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <GlobeSelected color={themeProperties.primaryColor} />
                 ) : (
@@ -30,7 +32,7 @@ function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
     }
     const DonateLink =()=>{
         return(
-            <button id={'donateIcon'} className={'link_icon'}>
+            <button id={'donateIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <DonateSelected color={themeProperties.primaryColor} />
                 ) : (
@@ -41,7 +43,7 @@ function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
     }
     const AboutUsLink =()=>{
         return(
-            <button id={'aboutIcon'} className={'link_icon'}>
+            <button id={'aboutIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <LeafSelected color={themeProperties.primaryColor} />
                 ) : (
@@ -52,7 +54,7 @@ function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
     }
     const LeadersLink =()=>{
         return(
-            <button id={'leaderIcon'} className={'link_icon'}>
+            <button id={'leaderIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <LeaderboardSelected color={themeProperties.primaryColor} />
                 ) : (
