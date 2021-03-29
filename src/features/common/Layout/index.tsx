@@ -5,6 +5,7 @@ import CookiePolicy from './CookiePolicy';
 import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
+import styles from './Layout.module.scss'
 
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
@@ -17,8 +18,11 @@ export default function Layout(props: any) {
       <div className={`${themeType}`}>
         <Navbar theme={themeType} />
         {props.children}
-        <CookiePolicy />
-        <RedeemPopup />
+        <div className={'notificationContainer'}>
+          <CookiePolicy />
+          <RedeemPopup />
+        </div>
+        
       </div>
     </>
   );
