@@ -67,7 +67,7 @@ function ProjectCertificates({
         onSubmit(event.target.result);
       };
     });
-  }, []);
+  }, [uploadedFiles]);
 
   React.useEffect(() => {
     // Fetch certificates of the project
@@ -204,7 +204,6 @@ function ProjectCertificates({
                   rel="noopener noreferrer"
                   href={getPDFFile('projectCertificate', report.pdf)}
                 >
-                  {/* <PDFIcon color="#2F3336" /> */}
                   <PDFRed />
                 </a>
                 <div className={styles.reportPDFDetails}>

@@ -14,6 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -134,9 +135,11 @@ export default function RedeemModal({
     lastName:userprofile.lastname
   }
 
+  const { theme } = React.useContext(ThemeContext);
+
   return ready ? (
     <Modal
-      className={styles.modalContainer}
+      className={'modalContainer'+' '+theme}
       open={redeemModalOpen}
       onClose={handleRedeemModalClose}
       closeAfterTransition
@@ -225,7 +228,7 @@ export default function RedeemModal({
                 <>
                   <div className={styles.codeTreeCount}>
                     {getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
-                    <span>{t('common:trees')}</span>
+                    <span>{t('common:tree', { count: Number(validCodeData.treeCount) })}</span>
                   </div>
 
                   <div className={styles.plantedBy}>

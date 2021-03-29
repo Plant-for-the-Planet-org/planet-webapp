@@ -11,7 +11,6 @@ const { useTranslation } = i18next;
 
 interface Props {
     handleBack: Function;
-    reviewRequested: Boolean;
     submitForReview: Function;
     isUploadingData: Boolean;
     projectGUID: any;
@@ -19,7 +18,7 @@ interface Props {
     projectDetails: any;
 }
 
-function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploadingData, projectGUID, handleReset, projectDetails }: Props): ReactElement {
+function SubmitForReview({ submitForReview, handleBack, isUploadingData, projectGUID, handleReset, projectDetails }: Props): ReactElement {
 
     const { t, i18n, ready } = useTranslation(['manageProjects']);
 

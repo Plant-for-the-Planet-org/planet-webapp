@@ -35,7 +35,7 @@
   margin-top: 2px;
 }
 .backgroundCircle {
-  border: 20px solid white;
+  border: 20px solid $light;
   border-radius: 50%;
   height: 100%;
   width: 100%;
@@ -52,19 +52,10 @@
   .treeCounterData {
     height: 60%;
   }
-  // .treeCounterDataField > h1 {
-  //   font-size: 49px;
-  // }
   .treeCounterDataField > .countLabel {
     font-size: 14px;
     font-weight: bold;
     max-width: 200px;
     margin-top: 0px;
   }
-  // .backgroundCircle {
-  //   top: 10px;
-  //   border: 20px solid white;
-  //   height: 324px;
-  //   width: 324px;
-  // }
 }

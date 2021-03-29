@@ -42,7 +42,7 @@ export default function PopupProject({
     <>
       <Modal
         ref={popupRef}
-        className={`modal ${theme}`}
+        className={`modalContainer ${theme}`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
@@ -84,7 +84,7 @@ export default function PopupProject({
           <div className={'targetLocation'}>
             <div className={'target'}>
               {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
-              {t('common:trees')} •{' '}
+              {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
               <span style={{ fontWeight: 400 }}>
               {t('country:' + project.properties.country.toLowerCase())}
               </span>

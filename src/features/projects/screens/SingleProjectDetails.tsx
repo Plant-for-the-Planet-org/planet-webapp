@@ -67,7 +67,7 @@ function SingleProjectDetails({ project }: Props): ReactElement {
       }}
     >
       <Modal
-        className={'imageModal'}
+        className={'modalContainer'}
         open={openModal}
         onClose={handleModalClose}
         aria-labelledby="simple-modal-title"

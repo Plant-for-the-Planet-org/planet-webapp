@@ -30,7 +30,7 @@ interface Props {
 
 export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n, ready } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects','common']);
 
     const { register, handleSubmit, errors, formState, getValues, setValue, control } = useForm({ mode: 'all' });
 
@@ -57,7 +57,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
             }
         })
 
-    }, [])
+    }, [uploadedFiles])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
@@ -130,7 +130,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
         // Fetch spending of the project 
         if (projectGUID && token)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
-                if (result.expenses.length > 0) {
+                if (result?.expenses && result.expenses.length > 0) {
                     setShowForm(false)
                 }
                 setUploadedFiles(result.expenses)
@@ -149,7 +149,6 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 <div key={report.id} className={` ${styles.reportPDFContainer}`}>
                                     <a target="_blank" rel="noopener noreferrer"
                                         href={getPDFFile('projectExpense', report.pdf)}>
-                                        {/* <PDFIcon color="#2F3336" /> */}
                                         <PDFRed />
                                     </a>
                                     <div className={styles.reportPDFDetails}>
@@ -305,7 +304,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             onClick={() => handleNext()}
                             className={styles.continueButton}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
                         </AnimatedButton>
                     </div>
                 </div>

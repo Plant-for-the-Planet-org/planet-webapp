@@ -46,5 +46,5 @@
   "continueToLogin": "Continuar con el inicio de sesión",
   "supportsUNEP": "Apoya al PNUMA",
   "plantedBy": "Plantado por",
-  "mapInfo": "Esri"
+  "deleteAccountLabel": "Tipo: {{delete}}"
 }
