@@ -5,7 +5,6 @@ import CookiePolicy from './CookiePolicy';
 import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
-import styles from './Layout.module.scss'
 
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
