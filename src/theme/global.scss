@@ -282,11 +282,11 @@ button {
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     left: 0;
     right: 0;
-    bottom: 60px;
+    bottom: 100px;
     max-width: 100%;
     border-radius: 0px;
   }
