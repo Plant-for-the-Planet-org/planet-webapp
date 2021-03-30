@@ -1,79 +1,109 @@
 @import '../../../../theme/theme';
 
 .landingSection {
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12vh 0;
-  
-    background-image: url('/tenants/salesforce/images/mobile/Landscape.png');
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/tenants/salesforce/images/mobile/Landscape.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 80px 0;
+
+  @include smTabletView {
+    padding: 35px 0 45px;
   }
 
-  .landingContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 90%;
-    margin-bottom: 10vh;
+  @include lgLaptopView {
+    background-image: url('/tenants/salesforce/images/desktop/landscape2x.png');
+    margin-top: 80px;
+    max-width: 2560px;
   }
-  
-  .landingContent > h1 {
+}
+
+.landingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin-bottom: 10vh;
+  @include smTabletView {
+    max-width: 60%;
+  }
+  @include lgLaptopView {
+    max-width: 800px;
+    margin-bottom: 16vh;
+  }
+
+  h1 {
     font-family: $primaryFontFamily;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 30px;
     line-height: 40px;
+    letter-spacing: -0.03em;
+    color: #032D60;
     text-align: center;
-    letter-spacing: -0.006em;
-    color: #080707;
+    margin-bottom: 20px;
+    @include lgLaptopView {
+      font-size: 72px;
+      line-height: 80px;
+      text-align: center;
+      font-weight: 500;
+    }
   }
-  
-  .landingContent > p {
+
+  h3 {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: -0.004em;
+    color: #FFFFFF;
+    @include lgLaptopView {
+      font-size: 36px;
+      line-height: 100%;
+      margin-bottom: 38px;
+    }
+  }
+
+  p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    @include lgLaptopView {
+      font-size: 15px;
+      line-height: 24px;
+    }
+  }
+
+  button {
+    background: #215CA0;
+    border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    line-height: 24px;
-    text-align: center;
-    color: #080707;
-    max-width: 500px;
-    margin-top: 1.5vh;
-  }
-@include smTabletView {
-    .landingSection {
-        padding: 17vh 0;
-      }
-
-  .landingContent {
-    max-width: 60%;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 13px 24px;
   }
 }
 
-@include lgLaptopView {
-    .landingSection {
-        background-image: url('/tenants/salesforce/images/desktop/Landscape3x.png');
-        margin-top: 60px;
-        // padding: 20vh 0;
-      }
-      .landingContent {
-        max-width: 800px;
-        margin-bottom: 16vh;
-      }
-    
-      .landingContent > h1 {
-        font-size: 56px;
-        line-height: 60px;
-        text-align: center;
-        font-weight: 700;
-      }
-    
-      .landingContent > p {
-        font-size: 16px;
-        line-height: 24px;
-      }
+.landingContentTop {
+  text-align: center;
+  margin-bottom: 245px;
+}
+
+.landingContentBottom {
+  text-align: center;
 }

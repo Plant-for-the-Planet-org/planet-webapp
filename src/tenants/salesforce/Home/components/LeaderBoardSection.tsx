@@ -16,7 +16,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
   return ready ? (
     <div className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
-        <h3>Salesforce</h3>
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>

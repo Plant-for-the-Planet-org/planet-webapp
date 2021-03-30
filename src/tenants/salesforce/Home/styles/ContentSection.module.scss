@@ -1,5 +1,63 @@
 @import '../../../../theme/theme';
 
+.contentSection {
+  h2 {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 40px;
+    text-align: center;
+    letter-spacing: -0.004em;
+    color: #032D60;
+    margin-bottom: 10px;
+    @include lgLaptopView {
+      font-size: 52px;
+      line-height: 100%;
+      letter-spacing: -0.006em;
+    }
+  }
+  h3 {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -0.004em;
+    color: #032D60;
+    margin-bottom: 10px;
+    @include lgLaptopView {
+      font-size: 36px;
+      line-height: 100%;
+      margin-bottom: 15px;
+    }
+  }
+  p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #181818;
+    margin-bottom: 30px;
+  }
+}
+
+.contentSectionSubhead {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+  letter-spacing: -0.002em;
+  color: #181818;
+  @include lgLaptopView {
+    font-size: 22px;
+    line-height: 30px;
+  }
+}
+
 .treeCounterSectionRow {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -74,14 +132,14 @@
   bottom: 0;
 }
 @include smTabletView {
-  
+
 
   .treeCounterSection {
     height: 60vh;
     padding-top: 10vh;
     margin: 40px 0;
     max-height: 420px;
-   
+
   }
 
   .treeCounterContainer {
@@ -123,7 +181,7 @@
 
 @include lgLaptopView {
 
-  
+
   .treeCounterSectionRow {
     padding-bottom: 0px;
   }

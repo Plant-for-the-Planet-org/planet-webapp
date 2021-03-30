@@ -3,8 +3,7 @@ import Articles from './components/Articles';
 import Blogs from './components/Blogs';
 import Landing from './components/Landing';
 import LeaderBoard from './components/LeaderBoardSection';
-import LearnMore from './components/LearnMore';
-import TreeCounterSection from './components/TreeCounter';
+import TreeCounterSection from './components/ContentSection';
 
 interface Props {
   leaderboard: any;
@@ -13,10 +12,9 @@ interface Props {
 
 export default function About({ tenantScore, leaderboard }: Props) {
   return (
-    <main>
-      <Landing />
-      <TreeCounterSection tenantScore={tenantScore} />
-      <LearnMore />
+    <main style={{backgroundColor: 'white'}}>
+      <Landing tenantScore={tenantScore} />
+      <TreeCounterSection />
       <LeaderBoard leaderboard={leaderboard} />
       <Articles />
       <Blogs />

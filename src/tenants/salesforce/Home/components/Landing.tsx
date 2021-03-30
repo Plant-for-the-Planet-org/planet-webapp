@@ -1,14 +1,24 @@
 import styles from './../styles/Landing.module.scss';
-
-export default function Landing() {
+import TreeCounter from "../../TreeCounter/TreeCounter";
+interface Props {
+  tenantScore: any;
+}
+export default function Landing(tenantScore: Props) {
+  const tenantScoreData = tenantScore.tenantScore
+    ? tenantScore.tenantScore.total
+    : '';
   return (
     <section className={styles.landingSection}>
       <div className={styles.landingContent}>
-        <h1>Plant the Seeds for a More Sustainable Future</h1>
-        <p>
-        Salesforce set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030. Here, we partnered with Plant-for-the-Planet to track and share our progress while also empowering our community to join us and start planting!
-        </p>
-        {/* <p style={{ marginTop: '10px' }}>Join us and start planting!</p> */}
+        <div className={styles.landingContentTop}>
+          <h1>Plant the Seeds for a More Sustainable Future</h1>
+          <button>Start Planting</button>
+        </div>
+        <div className={styles.landingContentBottom}>
+          <h3>Trees Conserved, Restored, and Grown</h3>
+          <TreeCounter target={100000000} planted={tenantScoreData} />
+          <p>This is Salesforce’s progress in achieving our goal of 100,000,000 trees by 2030.</p>
+        </div>
       </div>
     </section>
   );

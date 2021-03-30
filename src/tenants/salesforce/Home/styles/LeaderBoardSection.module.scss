@@ -1,151 +1,191 @@
 @import '../../../../theme/theme';
 .leaderBoardSection {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    margin-top: 50px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 90px;
-    padding-bottom: 90px;
-    position: relative;
+  width: 100%;
+  display: flex;
+  margin-top: 50px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  position: relative;
+  background-position: bottom center, 22% 28%, 85% 48%, 80% 32%;
+  background-repeat: no-repeat;
+  background-size: cover, 150px 150px, 67px 67px, 16px 16px;
+  @include lgLaptopView {
+    background-image:
+        url('/tenants/salesforce/images/blue-bkg.png'),
+        url('/tenants/salesforce/images/circle-1.png'),
+        url('/tenants/salesforce/images/circle-2.png'),
+        url('/tenants/salesforce/images/circle-3.png');
+    margin-top: 80px;
+    max-width: 2560px;
   }
-  
-  .leaderBoard {
-    align-self: center;
-    text-align: center;
+}
+
+.leaderBoard {
+  position: relative;
+  align-self: center;
+  text-align: center;
+  padding: 50px 80px;
+  background-color: white;
+  &:before {
+    content: "";
+    display: block;
+    width: 334px;
+    height: 235px;
+    background-image: url('/tenants/salesforce/images/foliage-left.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    left: -190px;
   }
-  
-  .leaderBoard > h3 {
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 21px;
-    text-align: center;
-    color: #080707;
+  &:after {
+    content: "";
+    display: block;
+    width: 203px;
+    height: 235px;
+    background-image: url('/tenants/salesforce/images/foliage-right.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    right: -160px;
   }
-  
-  .leaderBoard > h2 {
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 40px;
-    text-align: center;
-    letter-spacing: -0.4px;
-    color: #080707;
-  }
-  
-  .leaderBoardTableHeader {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: 16px;
-  }
-  
-  .leaderBoardTableHeaderTitle {
-    padding: 8px;
-    border-bottom: 1px solid #dddbda;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    color: #080707;
-  }
-  
-  .leaderBoardTableHeaderTitleSelected {
-    padding: 8px;
-    border-bottom: 2px solid #005fb2;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 13px;
-    color: #080707;
-  }
-  
-  .leaderBoardTableHeaderTitle:hover {
-    cursor: pointer;
-  }
+}
+
+.leaderBoard > h3 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #080707;
+}
+
+.leaderBoard > h2 {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #080707;
+}
+
+.leaderBoardTableHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.leaderBoardTableHeaderTitle {
+  padding: 8px;
+  border-bottom: 1px solid #dddbda;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitleSelected {
+  padding: 8px;
+  border-bottom: 2px solid #005fb2;
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  color: #080707;
+}
+
+.leaderBoardTableHeaderTitle:hover {
+  cursor: pointer;
+}
+.leaderBoardBody {
+  width: 100%;
+  margin-top: 60px;
+}
+.leaderBoardBodyRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 0px;
+  border-bottom: 1px solid #dddbda;
+}
+
+.leaderBoardDonorName {
+  flex-grow: 1;
+  font-style: normal;
+  font-family: $primaryFontFamily;
+  text-align: left;
+  margin-bottom: 0px;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 24px;
+  color: #181818;
+}
+
+.leaderBoardDonorTrees {
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: -0.4px;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+  font-size: 15px;
+  line-height: 24px;
+  color: #181818;
+}
+
+.leaderBoardDonorTime {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: #706e6b;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+  flex: none;
+  align-self: center;
+  margin-right: 16px;
+  margin-bottom: 0px;
+  font-family: $primaryFontFamily;
+}
+
+.leaderBoardBushImage {
+  display: none;
+}
+.leaderBoardBushImageMobile {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+@include smTabletView {
+
   .leaderBoardBody {
-    width: 100%;
+    width: 528px;
     margin-top: 60px;
   }
-  .leaderBoardBodyRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 16px 0px;
-    border-bottom: 1px solid #dddbda;
+
+
+  .leaderBoardSection {
+    margin-top: 0px;
   }
-  
-  .leaderBoardDonorName {
-    flex-grow: 1;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    color: #080707;
-    font-family: $primaryFontFamily;
-    text-align: left;
-    margin-bottom: 0px;
-  }
-  
-  .leaderBoardDonorTrees {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    color: #3e3e3c;
-    flex: none;
-    align-self: center;
-    margin-right: 16px;
-    margin-bottom: 0px;
-    font-family: $primaryFontFamily;
-  }
-  
-  .leaderBoardDonorTime {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    color: #706e6b;
-    mix-blend-mode: normal;
-    opacity: 0.9;
-    flex: none;
-    align-self: center;
-    margin-right: 16px;
-    margin-bottom: 0px;
-    font-family: $primaryFontFamily;
-  }
-  
   .leaderBoardBushImage {
-    display: none;
-  }
-  .leaderBoardBushImageMobile {
+    display: block;
     position: absolute;
     bottom: 0px;
-    width: 100%;
+    right: 0px;
   }
-@include smTabletView {
-  
-    .leaderBoardBody {
-        width: 528px;
-        margin-top: 60px;
-      }
-    
-      
-      .leaderBoardSection {
-        margin-top: 0px;
-      }
-      .leaderBoardBushImage {
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-      }
-    
-      .leaderBoardBushImageMobile {
-        display: none;
-      }
+
+  .leaderBoardBushImageMobile {
+    display: none;
+  }
 }
