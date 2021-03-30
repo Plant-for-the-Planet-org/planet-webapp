@@ -1,0 +1,21 @@
+@import '../../../../theme/theme';
+
+.scroll{
+    border: 1px solid $highlightBackground ;
+    position: fixed;
+    background-color: $light;
+    width: 35px;
+    height: 35px;
+    bottom: 115px;
+    right: 17px;
+    z-index: 999;
+    border-radius: 100%;
+    cursor: pointer;
+    transform: rotate(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.scroll:hover{
+    border: 1px solid $dark;
+}
