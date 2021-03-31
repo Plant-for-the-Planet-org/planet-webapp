@@ -40,8 +40,8 @@ export function localizedAbbreviatedNumber(
     return getFormattedRoundedNumber(langCode, number/1000000000, fractionDigits) + getLocalizedAbbreviation(langCode, 'b');
   if (number >= 1000000)
     return getFormattedRoundedNumber(langCode, number/1000000, fractionDigits) + getLocalizedAbbreviation(langCode, 'm');
-  if (number >= 1000)
-    return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
+  //if (number >= 1000)
+  //  return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
 
   return getFormattedRoundedNumber(langCode, number, fractionDigits);
 }
