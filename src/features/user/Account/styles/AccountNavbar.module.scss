@@ -4,6 +4,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .accountsPageContainer {
@@ -13,11 +14,12 @@
   position: relative;
 }
 
-.accountsHeader {
+.headerBG {
+  height: 300px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding-top: 30px;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(
       to top,
       rgba(0, 0, 0, 0.5),
@@ -25,28 +27,39 @@
       rgba(0, 0, 0, 0),
       rgba(0, 0, 0, 0)
     ),
+    url('https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg')
+      center center,
     $primaryColor;
-  .backButton {
-    box-shadow: 1px 1px 4px -2px #707070;
-    height: 30px;
-    width: 30px;
-    background-color: white;
-    border-radius: 50%;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  .accountsTitleContainer {
+  .accountsHeader {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    .accountsTitle {
-      margin-left: 20px;
-      color: #fff;
-      font-size: 36px;
-      font-weight: bold;
-      padding-bottom: 40px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 980px;
+    gap: 30px;
+    padding-top: 30px;
+
+    .backButton {
+      box-shadow: 1px 1px 4px -2px #707070;
+      height: 30px;
+      width: 30px;
+      background-color: white;
+      border-radius: 50%;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .accountsTitleContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .accountsTitle {
+        margin-left: 20px;
+        color: #fff;
+        font-size: 36px;
+        font-weight: bold;
+        padding-bottom: 40px;
+      }
     }
   }
 }
@@ -71,7 +84,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  background: transparent;
 }
 
 .settingsButton {
@@ -86,22 +99,55 @@
 .singleRecord {
   padding: 20px;
   background-color: $light;
+  position: relative;
+}
+
+.borderBottom {
+  border-bottom: #dddbda 1px solid;
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 40px);
+  left: auto;
+  right: auto;
+}
+
+.recordHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  &:hover {
+    cursor: pointer;
+  }
+  padding-bottom: 20px;
+  border-bottom: #dddbda 1px solid;
+}
+
+.recordHeaderDesktop {
+  display: none;
+  flex-direction: row;
+  justify-content: space-between;
+  &:hover {
+    cursor: pointer;
+  }
+  padding-bottom: 20px;
+  border-bottom: #dddbda 1px solid;
+}
+
+.selectedRecord {
   border-radius: 10px;
   box-shadow: 1px 2px 8px -6px #707070;
-  .recordHeader {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    &:hover {
-      cursor: pointer;
-    }
+  > .borderBottom {
+    display: none;
   }
+}
+
+.closeRecord {
+  display: block;
 }
 
 .recordDataContainer {
   height: 0px;
   display: none;
-  border-top: #dddbda 1px solid;
   padding-top: 20px;
   margin-top: 20px;
   grid-row-gap: 20px;
@@ -126,7 +172,7 @@
   -o-transition: all 1s ease;
 }
 .recordDataContainer.recordDataContainerSelected {
-  display: grid;
+  display: none;
   height: fit-content;
 }
 
@@ -190,23 +236,39 @@
 .multiSelectInput {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background-color: $light;
   transition-duration: 0.4;
   transition-timing-function: ease-in;
   margin-right: 20px;
-  padding: 8px 12px;
+  padding: 8px 0;
   border-radius: 100px;
   border: 1px solid $primaryColor;
-  width: fit-content;
+  min-width: 100px;
   white-space: nowrap;
-  > .multiSelectInputCheckTrue {
-    background-color: rgba(104, 176, 48, 0.12);
-  }
+  font-family: $primaryFontFamily;
 }
 
-.multiSelectInput:hover {
-  cursor: pointer;
-  transform: scale(1.05);
+.multiSelectInputCheckTrue {
+  border: none;
+  padding: 9px 13px;
+  background-color: rgba(104, 176, 48, 0.12);
+}
+
+// .multiSelectInput:hover {
+//   cursor: pointer;
+//   transform: scale(1.05);
+// }
+
+.filterGrid {
+  margin-top: 20px;
+  width: 220px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  // grid-template-rows: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .filterButtons > button {
@@ -268,12 +330,76 @@
   align-items: center;
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.expandedRecord {
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+}
+
+.recordContainer {
+  padding: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  .detailContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .detailTitle {
+      font-weight: bold;
+    }
+    a {
+      color: $primaryColor;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
+}
+
+@include mdTabletView {
+  .selectedRecord {
+    margin-bottom: 20px;
+  }
+
+  .recordDataContainer.recordDataContainerSelected {
+    display: grid;
+  }
+  .modal {
+    display: none;
+  }
+
+  .recordHeaderDesktop {
+    display: flex;
+  }
+
+  .recordHeader {
+    display: none;
+  }
+}
+
 @include lgLaptopView {
   .accountsHeader {
     margin-top: 80px;
   }
 
   .filterContainer {
+    display: none;
+  }
+
+  .closeRecord {
     display: none;
   }
 
@@ -291,35 +417,9 @@
   .optionsRow {
     display: none;
   }
-
   .multiSelectInput {
-    display: flex;
-    flex-direction: row;
-    background-color: $light;
-    border-radius: 6px;
-    transition-duration: 0.4;
-    transition-timing-function: ease-in;
-    border: none;
-    margin-right: 20px;
-    margin-top: 20px;
-    width: fit-content;
-    white-space: normal;
-    padding: 0;
-    .multiSelectInputCheck {
-      height: 20px;
-      width: 20px;
-      border-radius: 20px;
-      background-color: #d5d5d5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .multiSelectInputCheckTrue {
-      background-color: $primaryColor;
-    }
-    p {
-      margin-left: 6px;
-    }
+    // margin-top: 10px;
+    margin-right: 0px;
   }
 }
 

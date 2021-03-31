@@ -16,6 +16,7 @@ import FilterIcon from '../../../../../public/assets/images/icons/FilterIcon';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
+import SettingsModal from '../../UserProfile/components/SettingsModal';
 
 interface Props {}
 
@@ -89,7 +90,7 @@ function Account({}: Props): ReactElement {
           setpaymentHistory(paymentHistory);
         } else {
           let paymentHistory = await getAuthenticatedRequest(
-            `/app/paymentHistory?filter=${filter},in-progress`,
+            `/app/paymentHistory?filter=${filter ? filter : ''}`,
             token
           );
           setpaymentHistory(paymentHistory);
@@ -100,7 +101,7 @@ function Account({}: Props): ReactElement {
   }, [filter]);
 
   const [accountingFilters, setaccountingFilters] = React.useState([
-    { id: 0, label: 'All', value: '', isSet: false },
+    { id: 0, label: 'All', value: '', isSet: true },
     { id: 1, label: 'Donations', value: 'donations', isSet: false },
     { id: 2, label: 'In Progress', value: 'in-progress', isSet: false },
     { id: 3, label: 'Tree Cash', value: 'tree-cash', isSet: false },
@@ -120,9 +121,29 @@ function Account({}: Props): ReactElement {
     setaccountingFilters([...accountingFiltersNew]);
   };
 
+  // settings modal
+  const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
+  const handleSettingsModalClose = () => {
+    setSettingsModalOpen(false);
+  };
+  const handleSettingsModalOpen = () => {
+    setSettingsModalOpen(!settingsModalOpen);
+  };
+
+  // editProfile modal  (from settings modal)
+  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
+  const handleEditProfileModalClose = () => {
+    setEditProfileModalOpen(false);
+  };
+  const handleEditProfileModalOpen = () => {
+    setEditProfileModalOpen(true);
+  };
+
+  const [forceReload, changeForceReload] = React.useState(false);
+
   return (
     <div className={styles.accountsPage}>
-      <div className={styles.accountsPageContainer}>
+      <div className={styles.headerBG}>
         <div className={styles.accountsHeader}>
           <div className={styles.navContainer}>
             <button
@@ -136,7 +157,7 @@ function Account({}: Props): ReactElement {
             <button
               id={'IndividualProSetting'}
               className={styles.settingsIcon}
-              // onClick={handleSettingsModalOpen}
+              onClick={handleSettingsModalOpen}
             >
               <Settings color="white" />
             </button>
@@ -150,56 +171,21 @@ function Account({}: Props): ReactElement {
                   <p className={styles.filterTitle}>Filters</p>
                 </div>
 
-                <div className={styles.filterButtons}>
-                  {accountingFilters.map((filter) => {
-                    return (
-                      <div
-                        className={styles.multiSelectInput}
-                        key={filter.id}
-                        onClick={() => handleSetFilter(filter.id)}
-                      >
-                        <div
-                          className={`${styles.multiSelectInputCheck} ${
-                            filter.isSet ? styles.multiSelectInputCheckTrue : ''
-                          }`}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="13.02"
-                            height="9.709"
-                            viewBox="0 0 13.02 9.709"
-                          >
-                            <path
-                              id="check-solid"
-                              d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
-                              transform="translate(0 -65.098)"
-                              fill="#fff"
-                            />
-                          </svg>
-                        </div>
-                        <p>{filter.label}</p>
-                      </div>
-                    );
-                  })}
-                </div>
+                <FilterButtons
+                  accountingFilters={accountingFilters}
+                  handleSetFilter={handleSetFilter}
+                />
               </div>
             )}
           </div>
         </div>
+      </div>
+      <div className={styles.accountsPageContainer}>
         <div className={styles.filterContainer}>
-          {accountingFilters.map((filter) => {
-            return (
-              <button
-                className={`${styles.multiSelectInput} ${
-                  filter.isSet ? styles.multiSelectInputCheckTrue : ''
-                }`}
-                key={filter.id}
-                onClick={() => handleSetFilter(filter.id)}
-              >
-                {filter.label}
-              </button>
-            );
-          })}
+          <FilterButtons
+            accountingFilters={accountingFilters}
+            handleSetFilter={handleSetFilter}
+          />
         </div>
         <div className={styles.contentContainer}>
           <div className={styles.accountsContainer}>
@@ -212,44 +198,46 @@ function Account({}: Props): ReactElement {
             <div className={styles.filterHead}>
               <p className={styles.filterTitle}>Filters</p>
             </div>
-
-            <div className={styles.filterButtons}>
-              {accountingFilters.map((filter) => {
-                return (
-                  <div
-                    className={styles.multiSelectInput}
-                    key={filter.id}
-                    onClick={() => handleSetFilter(filter.id)}
-                  >
-                    <div
-                      className={`${styles.multiSelectInputCheck} ${
-                        filter.isSet ? styles.multiSelectInputCheckTrue : ''
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="13.02"
-                        height="9.709"
-                        viewBox="0 0 13.02 9.709"
-                      >
-                        <path
-                          id="check-solid"
-                          d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
-                          transform="translate(0 -65.098)"
-                          fill="#fff"
-                        />
-                      </svg>
-                    </div>
-                    <p>{filter.label}</p>
-                  </div>
-                );
-              })}
+            <div className={styles.filterGrid}>
+              <FilterButtons
+                accountingFilters={accountingFilters}
+                handleSetFilter={handleSetFilter}
+              />
             </div>
           </div>
         </div>
       </div>
+      {/* Open setting component */}
+      {settingsModalOpen && (
+        <SettingsModal
+          userprofile={userprofile}
+          settingsModalOpen={settingsModalOpen}
+          handleSettingsModalClose={handleSettingsModalClose}
+          editProfileModalOpen={editProfileModalOpen}
+          handleEditProfileModalClose={handleEditProfileModalClose}
+          handleEditProfileModalOpen={handleEditProfileModalOpen}
+          changeForceReload={changeForceReload}
+          forceReload={forceReload}
+        />
+      )}
     </div>
   );
+}
+
+function FilterButtons(props: any) {
+  return props.accountingFilters.map((filter: any) => {
+    return (
+      <button
+        className={`${styles.multiSelectInput} ${
+          filter.isSet ? styles.multiSelectInputCheckTrue : ''
+        }`}
+        key={filter.id}
+        onClick={() => props.handleSetFilter(filter.id)}
+      >
+        {filter.label}
+      </button>
+    );
+  });
 }
 
 export default Account;

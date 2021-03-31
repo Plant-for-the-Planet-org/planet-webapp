@@ -86,7 +86,7 @@ export default function SettingsModal({
 
             <button
               onClick={() =>
-                router.push('/account', undefined, { shallow: true })
+                router.push('/account/history', undefined, { shallow: true })
               }
               id={'SettingsItem'}
               className={styles.settingsItem}
