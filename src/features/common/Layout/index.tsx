@@ -5,7 +5,6 @@ import CookiePolicy from './CookiePolicy';
 import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
-import Scroll from './BackToTop/backToTop'
 import BackToTop from './BackToTop/backToTop';
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
@@ -22,7 +21,7 @@ export default function Layout(props: any) {
           <CookiePolicy />
           <RedeemPopup />
         </div>
-        <Scroll />
+        <BackToTop showBelow={100} />
       </div>
     </>
   );

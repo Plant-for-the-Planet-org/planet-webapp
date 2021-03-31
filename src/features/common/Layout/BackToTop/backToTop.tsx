@@ -1,29 +1,34 @@
 import React,{ useState, useEffect} from 'react';
-import { useWindowScroll } from 'react-use';
 import Arrow from '../../../../../public/assets/images/icons/DownArrow'
 import styles from './BackToTop.module.scss'
 
-const BackToTop = () => {
-    const { y: pageYOffset} = useWindowScroll();
-    const [visible, setVisible] = useState(false)
+const BackToTop = (showBelow) => {
+    const [show, setShow] = useState(showBelow ? false : true);
+    const handleScroll = () => {
+        if(window.pageYOffset > showBelow){
+            if(!show) 
+            setShow(true)
+        }else {
+            if(show) 
+            setShow(false)
+        }
+    }
 
     useEffect(() => {
-        if(pageYOffset > 400){
-            setVisible(true)
-        } else{
-            setVisible(false)
+        if(showBelow){
+            window.addEventListener(`scroll`, handleScroll)
+            return () => window.removeEventListener(`scroll`, handleScroll)
         }
-    }, [pageYOffset]);
-
-    const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth"})
-
-    if(!visible) {
-        return false;
+    })
+    
+    const handleClick = () => {
+        window[`scrollTo`]({ top: 0, behavior: `smooth`})
     }
+
     return(
-        <div onClick={scrollToTop} className={styles.scroll}>
+        <button onClick={handleClick} className={styles.scroll}>
             <Arrow />
-        </div>
+        </button>
     )
 }
 
