@@ -9,12 +9,50 @@
   height: 100%;
 }
 
+.treeCounterComma {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 80px;
+  line-height: 100%;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+}
+
+.treeCounterNumber {
+  display: inline-block;
+  position: relative;
+  width: 73px;
+  height: 100px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 80px;
+  line-height: 100px;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+  margin-right: 4px;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #FFFFFF;
+    mix-blend-mode: soft-light;
+    border-radius: 8px;
+  }
+}
+
 .treeCounterDataField {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin-bottom: 37px;
 }
 
 .treeCounterDataField > .countNumber {

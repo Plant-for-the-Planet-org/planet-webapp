@@ -34,7 +34,7 @@ export default function Timeline() {
       image: '/tenants/salesforce/images/jan.png',
       title: '1t.org & Salesforce’s 100M Tree Commitment',
       copy: 'Salesforce partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
-      learnMore: ''
+      learnMore: 'https://www.salesforce.com/news/stories/one-trillion-trees-to-combat-climate-change-why-its-not-so-outlandish/'
     },
     {
       id: 2,
@@ -42,7 +42,7 @@ export default function Timeline() {
       image: '/tenants/salesforce/images/jul.png',
       title: 'UpLink Trillion Tree Challenge',
       copy: 'The World Economic Forum launched the Trillion Trees Challenge on UpLink, a platform built on Salesforce technology to connect the next generation of change-makers to resources, professional expertise, and capital to create an impact.',
-      learnMore: ''
+      learnMore: 'https://uplink.weforum.org/uplink/s/uplink-issue/a002o00000vOf09AAC/trillion-trees'
     },
     {
       id: 3,
@@ -58,7 +58,7 @@ export default function Timeline() {
       image: '/tenants/salesforce/images/sep.png',
       title: ' Salesforce’s Tree Tracker',
       copy: 'The tree tracker is an essential piece of Salesforce’s work to share resources and provide transparency to our stakeholders.',
-      learnMore: ''
+      learnMore: 'https://us.1t.org/view-pledges/'
     },
     {
       id: 5,
@@ -66,7 +66,7 @@ export default function Timeline() {
       image: '/tenants/salesforce/images/mar.png',
       title: '10M Trees Milestone',
       copy: 'With Salesforce’s TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!\n',
-      learnMore: ''
+      learnMore: 'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/'
     }
   ];
 

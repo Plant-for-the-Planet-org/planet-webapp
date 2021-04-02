@@ -9,21 +9,21 @@ export default function ClimateAction() {
       category: 'trailhead',
       title: 'Learn how trees combat climate change on Trailhead ',
       image: '/tenants/salesforce/images/climate-action-1.png',
-      link: 'https://www.cooleffect.org/content/project/sea-of-change',
+      link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
     },
     {
       id: 2,
       category: 'sustainability',
       title: 'Learn about Salesforce’s sustainability initiatives. ',
       image: '/tenants/salesforce/images/climate-action-2.png',
-      link: 'http://www.togetherwithnature.com/',
+      link: 'https://www.salesforce.com/company/sustainability/',
     },
     {
       id: 3,
       category: '360 blog',
       title: 'Analyze your corporate emissions with Salesforce Sustainability Cloud',
       image: '/tenants/salesforce/images/climate-action-3.png',
-      link: 'https://us.1t.org/pledge/mobilizing-and-supporting-the-conservation-restoration-and-growth-of-100m-trees/',
+      link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
     },
   ];
 
