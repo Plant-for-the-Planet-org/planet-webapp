@@ -5,6 +5,22 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  position: relative;
+  background-color: #fff;
+}
+
+.topLoader {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 5px;
+
+  z-index: 1031;
+}
+
+.topLoaderProgress {
+  width: 0%;
+  background-color: $primaryColor;
 }
 
 .accountsPageContainer {
@@ -15,7 +31,7 @@
 }
 
 .headerBG {
-  height: 300px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -94,6 +110,18 @@
   }
 }
 
+.notFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160px;
+  > p {
+    margin-top: 10px;
+  }
+}
+
 // Single record which is not expanded
 
 .singleRecord {
@@ -118,7 +146,7 @@
   &:hover {
     cursor: pointer;
   }
-  padding-bottom: 20px;
+  padding: 20px 0;
   border-bottom: #dddbda 1px solid;
 }
 
@@ -369,6 +397,15 @@
   }
 }
 
+@include smTabletView {
+  .headerBG {
+    height: 300px;
+  }
+  .accountsHeader {
+    margin-top: 80px;
+  }
+}
+
 @include mdTabletView {
   .selectedRecord {
     margin-bottom: 20px;
@@ -391,10 +428,6 @@
 }
 
 @include lgLaptopView {
-  .accountsHeader {
-    margin-top: 80px;
-  }
-
   .filterContainer {
     display: none;
   }

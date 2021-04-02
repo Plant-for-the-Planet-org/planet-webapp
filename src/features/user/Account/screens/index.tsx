@@ -12,11 +12,13 @@ import {
 } from '../../../../utils/apiRequests/api';
 import PaymentRecord from '../components/PaymentRecord';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import FilterIcon from '../../../../../public/assets/images/icons/FilterIcon';
-import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
-import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
 import SettingsModal from '../../UserProfile/components/SettingsModal';
+import TopProgressBar from '../../../common/ContentLoaders/TopProgressBar';
+import i18next from '../../../../../i18n';
+import TransactionIcon from '../../../../../public/assets/images/icons/TransactionIcon';
+
+const { useTranslation } = i18next;
 
 interface Props {}
 
@@ -27,8 +29,9 @@ function Account({}: Props): ReactElement {
     loginWithRedirect,
     getAccessTokenSilently,
   } = useAuth0();
+  const { t } = useTranslation(['me']);
   const [userprofile, setUserprofile] = React.useState();
-  const [showFilters, setShowFilters] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
   const router = useRouter();
   useEffect(() => {
     async function loadUserData() {
@@ -71,54 +74,45 @@ function Account({}: Props): ReactElement {
     }
   }, [isLoading, isAuthenticated]);
 
-  const [filter, setFilter] = React.useState(null);
+  const [filter, setFilter] = React.useState();
   const [paymentHistory, setpaymentHistory] = React.useState();
 
   React.useEffect(() => {
-    if (isAuthenticated) setFilter('');
+    if (isAuthenticated) setFilter(null);
   }, [isAuthenticated]);
   React.useEffect(() => {
     async function fetchPaymentHistory() {
+      setProgress(70);
       let token = null;
       if (isAuthenticated) {
         token = await getAccessTokenSilently();
-        if (filter === '') {
+        if (filter === null) {
           let paymentHistory = await getAuthenticatedRequest(
             '/app/paymentHistory',
             token
           );
           setpaymentHistory(paymentHistory);
+          setProgress(100);
+          setTimeout(() => setProgress(0), 1000);
+          setaccountingFilters(paymentHistory._filters);
         } else {
           let paymentHistory = await getAuthenticatedRequest(
-            `/app/paymentHistory?filter=${filter ? filter : ''}`,
+            `${filter ? accountingFilters[filter] : '/app/paymentHistory'}`,
             token
           );
           setpaymentHistory(paymentHistory);
+          setProgress(100);
+          setTimeout(() => setProgress(0), 1000);
         }
       }
     }
     fetchPaymentHistory();
   }, [filter]);
 
-  const [accountingFilters, setaccountingFilters] = React.useState([
-    { id: 0, label: 'All', value: '', isSet: true },
-    { id: 1, label: 'Donations', value: 'donations', isSet: false },
-    { id: 2, label: 'In Progress', value: 'in-progress', isSet: false },
-    { id: 3, label: 'Tree Cash', value: 'tree-cash', isSet: false },
-    { id: 4, label: 'Cancelled', value: 'canceled', isSet: false },
-    { id: 5, label: 'Transfers', value: 'transfers', isSet: false },
-  ]);
+  const [accountingFilters, setaccountingFilters] = React.useState();
 
   const handleSetFilter = (id: any) => {
-    const accountingFiltersNew = accountingFilters;
-    for (let i = 0; i < accountingFiltersNew.length; i++) {
-      accountingFiltersNew[i].isSet = false;
-    }
-    const newfilter = accountingFiltersNew[id];
-    newfilter.isSet = !newfilter.isSet;
-    accountingFiltersNew[id] = newfilter;
-    setFilter(accountingFiltersNew[id].value);
-    setaccountingFilters([...accountingFiltersNew]);
+    setFilter(id);
   };
 
   // settings modal
@@ -143,6 +137,11 @@ function Account({}: Props): ReactElement {
 
   return (
     <div className={styles.accountsPage}>
+      {/* {progress > 0 && ( */}
+      <div className={styles.topLoader}>
+        <TopProgressBar progress={progress} />
+      </div>
+      {/* )} */}
       <div className={styles.headerBG}>
         <div className={styles.accountsHeader}>
           <div className={styles.navContainer}>
@@ -163,50 +162,70 @@ function Account({}: Props): ReactElement {
             </button>
           </div>
           <div className={styles.accountsTitleContainer}>
-            <div className={styles.accountsTitle}>My Account</div>
+            <div className={styles.accountsTitle}>{t('myAccount')}</div>
             <div className={styles.optionsRow}></div>
-            {showFilters && (
-              <div className={styles.filterContainer}>
-                <div className={styles.filterHead}>
-                  <p className={styles.filterTitle}>Filters</p>
-                </div>
-
-                <FilterButtons
-                  accountingFilters={accountingFilters}
-                  handleSetFilter={handleSetFilter}
-                />
-              </div>
-            )}
           </div>
         </div>
       </div>
-      <div className={styles.accountsPageContainer}>
-        <div className={styles.filterContainer}>
-          <FilterButtons
-            accountingFilters={accountingFilters}
-            handleSetFilter={handleSetFilter}
-          />
-        </div>
-        <div className={styles.contentContainer}>
-          <div className={styles.accountsContainer}>
-            {paymentHistory &&
-              paymentHistory?.items?.map((item, index) => {
-                return <PaymentRecord record={item} index={index} />;
-              })}
-          </div>
-          <div className={styles.filterContainerDesktop}>
-            <div className={styles.filterHead}>
-              <p className={styles.filterTitle}>Filters</p>
-            </div>
-            <div className={styles.filterGrid}>
+      {paymentHistory && accountingFilters && (
+        <div className={styles.accountsPageContainer}>
+          <div className={styles.filterContainer}>
+            <button
+              className={`${styles.multiSelectInput} ${
+                null === filter ? styles.multiSelectInputCheckTrue : ''
+              }`}
+              key="all"
+              onClick={() => handleSetFilter(null)}
+            >
+              {t('all')}
+            </button>
+            {accountingFilters && (
               <FilterButtons
                 accountingFilters={accountingFilters}
                 handleSetFilter={handleSetFilter}
+                filter={filter}
               />
+            )}
+          </div>
+          <div className={styles.contentContainer}>
+            <div className={styles.accountsContainer}>
+              {paymentHistory.items.length === 0 ? (
+                <div className={styles.notFound}>
+                  <TransactionIcon color={'#c5c5c5'} width={'50px'} />
+                  <p>{t('noRecords')}</p>
+                </div>
+              ) : (
+                paymentHistory?.items?.map((item, index) => {
+                  return <PaymentRecord record={item} index={index} />;
+                })
+              )}
+            </div>
+            <div className={styles.filterContainerDesktop}>
+              <div className={styles.filterHead}>
+                <p className={styles.filterTitle}>{t('filters')}</p>
+              </div>
+              <div className={styles.filterGrid}>
+                <button
+                  className={`${styles.multiSelectInput} ${
+                    null === filter ? styles.multiSelectInputCheckTrue : ''
+                  }`}
+                  key="all"
+                  onClick={() => handleSetFilter(null)}
+                >
+                  {t('all')}
+                </button>
+                {accountingFilters && (
+                  <FilterButtons
+                    accountingFilters={accountingFilters}
+                    handleSetFilter={handleSetFilter}
+                    filter={filter}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       {/* Open setting component */}
       {settingsModalOpen && (
         <SettingsModal
@@ -225,16 +244,16 @@ function Account({}: Props): ReactElement {
 }
 
 function FilterButtons(props: any) {
-  return props.accountingFilters.map((filter: any) => {
+  return Object.entries(props.accountingFilters).map((item) => {
     return (
       <button
         className={`${styles.multiSelectInput} ${
-          filter.isSet ? styles.multiSelectInputCheckTrue : ''
+          props.filter === item[0] ? styles.multiSelectInputCheckTrue : ''
         }`}
-        key={filter.id}
-        onClick={() => props.handleSetFilter(filter.id)}
+        key={item[0]}
+        onClick={() => props.handleSetFilter(item[0])}
       >
-        {filter.label}
+        {item[0]}
       </button>
     );
   });
