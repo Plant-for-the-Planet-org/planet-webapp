@@ -53,7 +53,18 @@
     max-width: 100%;
 
 }
-.col12, .colMd6, .colSm10, .colLg6{
+.col12,
+.colSm10,
+.colMd4,
+.colMd5,
+.colMd6,
+.colMd7,
+.colMd10,
+.colLg4,
+.colLg5,
+.colLg6,
+.colLg7,
+.colLg10 {
   position: relative;
     width: 100%;
     padding-right: 15px;

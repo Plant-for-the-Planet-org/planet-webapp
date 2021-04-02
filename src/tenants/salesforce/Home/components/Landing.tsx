@@ -1,5 +1,7 @@
 import styles from './../styles/Landing.module.scss';
 import TreeCounter from "../../TreeCounter/TreeCounter";
+import Link from 'next/link';
+
 interface Props {
   tenantScore: any;
 }
@@ -12,7 +14,9 @@ export default function Landing(tenantScore: Props) {
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
           <h1>Plant the Seeds for a More Sustainable Future</h1>
-          <button>Start Planting</button>
+          <Link href="/">
+            <button>Start Planting</button>
+          </Link>
         </div>
         <div className={styles.landingContentBottom}>
           <h3>Trees Conserved, Restored, and Grown</h3>

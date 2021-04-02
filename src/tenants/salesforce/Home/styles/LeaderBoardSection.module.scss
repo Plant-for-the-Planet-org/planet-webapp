@@ -9,7 +9,7 @@
   padding-top: 90px;
   padding-bottom: 90px;
   position: relative;
-  background-position: bottom center, 22% 28%, 85% 48%, 80% 32%;
+  background-position: center -130px, calc(50% + -370px) 28%, calc(50% + 470px) 48%, calc(50% + 426px) 32%;
   background-repeat: no-repeat;
   background-size: cover, 150px 150px, 67px 67px, 16px 16px;
   @include lgLaptopView {
