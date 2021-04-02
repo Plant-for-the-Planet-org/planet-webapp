@@ -308,7 +308,7 @@ function ProjectCertificates({
           ) : (
             <div className={styles.formFieldLarge} {...getRootProps()}>
               <div className={styles.fileUploadContainer}>
-                <div className={styles.continueButton}>
+                <div className="primaryButton">
                   <input {...getInputProps()} />
                   {t('manageProjects:uploadCertificate')}
                 </div>

@@ -302,7 +302,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                     <div className={`${styles.formFieldHalf}`}>
                         <AnimatedButton
                             onClick={() => handleNext()}
-                            className={styles.continueButton}
+                            className="primaryButton"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
                         </AnimatedButton>

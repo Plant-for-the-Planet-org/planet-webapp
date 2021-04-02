@@ -287,7 +287,7 @@ function ContactDetails({
             ) : (
               <AnimatedButton
                 onClick={handleSubmit(onSubmit)}
-                className={styles.continueButton}
+                className="primaryButton"
               >
                 {t('common:continue')}
               </AnimatedButton>

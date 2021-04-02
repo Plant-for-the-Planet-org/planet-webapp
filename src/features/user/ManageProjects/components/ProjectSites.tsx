@@ -448,7 +448,7 @@ export default function ProjectSites({
           <div className={`${styles.formFieldHalf}`}>
             <AnimatedButton
               onClick={handleSubmit(uploadProjectSiteNext)}
-              className={styles.continueButton}
+              className="primaryButton"
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
@@ -630,7 +630,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
             <div className={`${styles.formFieldHalf}`}>
               <AnimatedButton
                 onClick={handleSubmit(editProjectSite)}
-                className={styles.continueButton}
+                className="primaryButton"
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>

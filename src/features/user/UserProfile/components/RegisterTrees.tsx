@@ -423,7 +423,7 @@ export default function RegisterTrees({
                   <button
                     id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
-                    className={styles.continueButton}
+                    className="primaryButton"
                   >
                     {' '}
                     {isUploadingData ? (

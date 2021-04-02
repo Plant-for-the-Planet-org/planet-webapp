@@ -92,7 +92,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                         <div className={`${styles.formFieldHalf}`}>
                             <AnimatedButton
                                 onClick={() => submitForReview()}
-                                className={styles.continueButton}
+                                className="primaryButton"
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
                             </AnimatedButton>

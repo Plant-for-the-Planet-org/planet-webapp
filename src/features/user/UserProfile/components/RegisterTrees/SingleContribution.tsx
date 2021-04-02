@@ -75,7 +75,7 @@ export default function SingleContribution({
           onClick={() =>
             router.push(`/t/${currentUserSlug}`, undefined, { shallow: true })
           }
-          className={styles.continueButton}
+          className="primaryButton"
         >
           {t('me:save')}
         </button>

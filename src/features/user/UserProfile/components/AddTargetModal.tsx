@@ -105,12 +105,12 @@ export default function AddTargetModal({
             </span>
           )}
           {errors.addTarget ? (
-            <div className={styles.continueButton}>
+            <div className="primaryButton">
               {t('target:targetSave')}
             </div>
           ) : (
             <button id={'AddTargetCont'}
-              className={styles.continueButton}
+            className="primaryButton"
               onClick={() => handleSubmit(apiCallChangeTarget())}
             >
               {isLoadingForm ? (
