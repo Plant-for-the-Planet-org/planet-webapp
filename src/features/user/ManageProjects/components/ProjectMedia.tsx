@@ -285,7 +285,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
               <div
-                className={styles.continueButton}
+                className="primaryButton" style={{maxWidth: "240px"}}
               >
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
@@ -319,7 +319,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton">
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{minWidth:"240px"}}>
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </button>
           </div>

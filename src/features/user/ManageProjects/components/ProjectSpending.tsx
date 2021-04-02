@@ -247,7 +247,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                                 <div className={styles.fileUploadContainer}>
                                     <div
-                                        className={styles.continueButton}
+                                        className="primaryButton"
+                                        style={{maxWidth:"240px"}}
                                     >
                                         {t('manageProjects:uploadReport')}
                                     </div>
@@ -260,7 +261,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 <div className={styles.formFieldLarge} {...getRootProps()}>
                                     <div className={styles.fileUploadContainer}>
                                         <div
-                                            className={styles.continueButton}
+                                            className="primaryButton"
+                                            style={{maxWidth:"240px"}}
                                         >
                                             <input {...getInputProps()} />
                                             {t('manageProjects:uploadReport')}
@@ -300,12 +302,13 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                     </div>
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={() => handleNext()}
                             className="primaryButton"
+                            style={{minWidth:"240px"}}
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
-                        </AnimatedButton>
+                        </button>
                     </div>
                 </div>
             </form>

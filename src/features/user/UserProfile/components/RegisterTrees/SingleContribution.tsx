@@ -76,6 +76,7 @@ export default function SingleContribution({
             router.push(`/t/${currentUserSlug}`, undefined, { shallow: true })
           }
           className="primaryButton"
+          style={{maxWidth: "100px"}}
         >
           {t('me:save')}
         </button>

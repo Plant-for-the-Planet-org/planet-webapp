@@ -446,16 +446,17 @@ export default function ProjectSites({
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
+              style={{minWidth:"240px"}}
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
                 t('manageProjects:saveAndContinue')
               )}
-            </AnimatedButton>
+            </button>
           </div>
         </div>
       </form>
@@ -628,16 +629,17 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf}`}>
-              <AnimatedButton
+              <button
                 onClick={handleSubmit(editProjectSite)}
                 className="primaryButton"
+                style={{minWidth:"240px"}}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
                   t('manageProjects:saveSite')
                 )}
-              </AnimatedButton>
+              </button>
             </div>
           </div>
         </form>

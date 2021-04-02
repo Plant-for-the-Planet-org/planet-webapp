@@ -266,7 +266,7 @@ export default function RedeemModal({
                     {errorMessage && (
                       <span className={styles.formErrors}>{errorMessage}</span>
                     )}
-                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className="primaryButton">
+                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className="primaryButton" style={{maxWidth: "200px"}}> 
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (t('redeem:validateCode'))}

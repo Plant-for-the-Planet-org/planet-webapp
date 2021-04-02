@@ -569,13 +569,14 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         </AnimatedButton>
                     </div>
                     <div style={{ width: '20px' }}></div>
-                    <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                    <div className={`${styles.formFieldHalf}`} style={{ minWidth: "240px"}}>
+                        <button 
                             onClick={handleSubmit(onSubmit)}
                             className="primaryButton"
+                            
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
-                        </AnimatedButton>
+                        </button >
                     </div>
                 </div>
             </form>

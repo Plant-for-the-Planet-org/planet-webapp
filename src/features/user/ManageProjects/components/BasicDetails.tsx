@@ -686,6 +686,7 @@ export default function BasicDetails({
               id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
               className="primaryButton"
+              style={{minWidth: "240px"}}
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>

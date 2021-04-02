@@ -424,6 +424,7 @@ export default function RegisterTrees({
                     id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
                     className="primaryButton"
+                    style={{maxWidth: "240px"}}
                   >
                     {' '}
                     {isUploadingData ? (

@@ -90,12 +90,13 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                         <div style={{ width: '20px' }}></div>
 
                         <div className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={() => submitForReview()}
                                 className="primaryButton"
+                                style={{minWidth:"240px"}}
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
-                            </AnimatedButton>
+                            </button>
                         </div>
 
                     </div>

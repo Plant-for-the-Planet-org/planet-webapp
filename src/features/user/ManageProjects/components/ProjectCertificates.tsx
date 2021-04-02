@@ -297,7 +297,7 @@ function ProjectCertificates({
           {errors.certifierName || errors.issueDate || certifierName === '' ? (
             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
               <div className={styles.fileUploadContainer}>
-                <div className={styles.continueButton}>
+                <div className="primaryButton" style={{ maxWidth: "240px"}}>
                   {t('manageProjects:uploadCertificate')}
                 </div>
                 <p style={{ marginTop: '18px' }}>
@@ -308,7 +308,7 @@ function ProjectCertificates({
           ) : (
             <div className={styles.formFieldLarge} {...getRootProps()}>
               <div className={styles.fileUploadContainer}>
-                <div className="primaryButton">
+                <div className="primaryButton" style={{ maxWidth: "240px"}}>
                   <input {...getInputProps()} />
                   {t('manageProjects:uploadCertificate')}
                 </div>

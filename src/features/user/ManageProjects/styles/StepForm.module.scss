@@ -140,7 +140,7 @@
     }
   }
 }
-.continueButton,
+
 .secondaryButton {
   height: 40px;
   border-radius: 100px;
@@ -157,7 +157,7 @@
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   min-width: 240px;
 }
-.continueButton:hover,
+
 .secondaryButton:hover {
   transform: scale(1.05);
   cursor: pointer;

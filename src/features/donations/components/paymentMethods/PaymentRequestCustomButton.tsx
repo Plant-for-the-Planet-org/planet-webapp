@@ -219,13 +219,14 @@ export const PaymentRequestCustomButton = ({
           className={styles.actionButtonsContainer}
           style={{ justifyContent: 'center' }}
         >
-          <AnimatedButton
+          <button
             onClick={() => continueNext()}
-            className={styles.continueButton}
+            className="primaryButton"
             id="treeDonateContinue"
+            style={{maxWidth: "240px"}}
           >
             {t('common:continue')}
-          </AnimatedButton>
+          </button>
         </div>
       ) : null) : null;
 };
