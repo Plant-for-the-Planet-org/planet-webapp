@@ -307,7 +307,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleBack}
               className={styles.secondaryButton}
             >
@@ -315,7 +315,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
               <p>
                 {t('manageProjects:backToBasic')}
               </p>
-            </AnimatedButton>
+            </button>
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>

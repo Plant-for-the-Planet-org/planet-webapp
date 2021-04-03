@@ -436,13 +436,13 @@ export default function ProjectSites({
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleBack}
               className={styles.secondaryButton}
             >
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
-            </AnimatedButton>
+            </button>
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
@@ -619,13 +619,13 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
 
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf}`}>
-              <AnimatedButton
+              <button
                 onClick={handleModalClose}
                 className={styles.secondaryButton}
               >
                 <BackArrow />
                 <p>{t('manageProjects:backToSites')}</p>
-              </AnimatedButton>
+              </button>
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf}`}>

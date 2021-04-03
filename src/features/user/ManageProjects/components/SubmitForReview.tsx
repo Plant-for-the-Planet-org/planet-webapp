@@ -43,7 +43,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
 
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
                                 className={styles.secondaryButton}
                             >
@@ -51,7 +51,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
@@ -77,7 +77,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
 
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
                                 className={styles.secondaryButton}
                             >
@@ -85,7 +85,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
@@ -120,7 +120,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                     </div>
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
                                 className={styles.secondaryButton}
                             >
@@ -128,7 +128,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
                     </div>
@@ -151,7 +151,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                     </div>
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
                                 className={styles.secondaryButton}
                             >
@@ -159,7 +159,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
                     </div>
