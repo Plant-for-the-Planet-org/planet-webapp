@@ -223,7 +223,8 @@ export const PaymentRequestCustomButton = ({
             onClick={() => continueNext()}
             className="primaryButton"
             id="treeDonateContinue"
-            style={{maxWidth: "240px"}}
+            style={{borderRadius: "10px"}}
+
           >
             {t('common:continue')}
           </button>

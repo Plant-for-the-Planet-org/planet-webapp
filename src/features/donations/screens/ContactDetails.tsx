@@ -288,7 +288,7 @@ function ContactDetails({
               <button
                 onClick={handleSubmit(onSubmit)}
                 className="primaryButton"
-                style={{maxWidth: "240px"}}
+                style={{borderRadius: "10px"}}
               >
                 {t('common:continue')}
               </button>
