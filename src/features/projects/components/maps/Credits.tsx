@@ -44,13 +44,13 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {`🌐 ${language ? language.toUpperCase() : ''
                         } • ${selectedCurrency}`}
                 </div>
-                <a
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a 
                     rel="noopener noreferrer"
                     href={`https://www.thegoodshop.org/${userLang}/shop/`}
                     target={'_blank'}
                 >
                     {t('common:shop')}
-                </a>
+                </a> : null}
                 <a
                     rel="noopener noreferrer"
                     href={`https://status.plant-for-the-planet.org/`}
