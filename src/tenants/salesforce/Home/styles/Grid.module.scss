@@ -47,33 +47,51 @@
   margin-left: -15px;
 }
 
+.col8 {
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+
 .col12{
   -moz-box-flex: 0;
     flex: 0 0 100%;
     max-width: 100%;
-
 }
+.col8,
 .col12,
+.colSm8,
 .colSm10,
 .colMd4,
 .colMd5,
 .colMd6,
 .colMd7,
 .colMd10,
+.colMd12,
 .colLg4,
 .colLg5,
 .colLg6,
 .colLg7,
-.colLg10 {
+.colLg10,
+.colLg12 {
   position: relative;
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
 }
 @include smTabletView{
+  .orderSm0 {
+    order: 0;
+  }
+  .orderSm1 {
+    order: 1;
+  }
+  .colSm8 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
   .colSm10{
     flex: 0 0 83.333333%;
-      max-width: 83.333333%;
+    max-width: 83.333333%;
   }
 }
 @include mdTabletView{
@@ -97,6 +115,16 @@
     flex: 0 0 83.333333%;
     max-width: 83.333333%;
   }
+  .colMd12{
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .orderMd0 {
+    order: 0;
+  }
+  .orderMd1 {
+    order: 1;
+  }
 }
 
 @include lgLaptopView{
@@ -119,6 +147,10 @@
   .colLg10 {
     flex: 0 0 83.333333%;
     max-width: 83.333333%;
+  }
+  .colLg12 {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 }
 

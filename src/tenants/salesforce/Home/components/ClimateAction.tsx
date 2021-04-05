@@ -49,8 +49,8 @@ export default function ClimateAction() {
             );
           })}
         </div>
-        <div className={`${gridStyles.gridRow} ${styles.climateActionDonate}`}>
-          <div className={gridStyles.col12}>
+        <div className={`${gridStyles.gridRow} ${styles.climateActionDonate} ${gridStyles.justifyContentCenter}`}>
+          <div className={`${gridStyles.col8} ${gridStyles.colMd12}`}>
             <h3>Becoming a tree champion is easy.</h3>
             <p><small>Select your favorite tree project and lend your support.</small></p>
             <Link href="/">

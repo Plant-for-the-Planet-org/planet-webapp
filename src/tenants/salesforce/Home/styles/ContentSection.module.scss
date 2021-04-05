@@ -45,6 +45,12 @@
       color: #0B5CAB;
     }
   }
+  img {
+    margin-bottom: 30px;
+    @include lgLaptopView{
+      margin-bottom: 0;
+    }
+  }
 }
 
 .contentSectionSubhead {

@@ -5,19 +5,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('/tenants/salesforce/images/mobile/Landscape.png');
+  background-image: url('/tenants/salesforce/images/landscape2x.png');
   background-position: bottom center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 80px 0;
+  padding: 35px 0 100px;
 
   @include smTabletView {
-    padding: 35px 0 45px;
+    margin-top: 80px;
   }
 
   @include lgLaptopView {
-    background-image: url('/tenants/salesforce/images/desktop/landscape2x.png');
-    margin-top: 80px;
     max-width: 2560px;
   }
 }
@@ -41,12 +39,13 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: 30px;
-    line-height: 40px;
-    letter-spacing: -0.03em;
+    font-size: 42px;
+    line-height: 45px;
+    letter-spacing: -0.006em;
     color: #032D60;
     text-align: center;
     margin-bottom: 20px;
+
     @include lgLaptopView {
       font-size: 72px;
       line-height: 80px;
@@ -64,6 +63,7 @@
     text-align: center;
     letter-spacing: -0.004em;
     color: #FFFFFF;
+    margin-bottom: 26px;
     @include lgLaptopView {
       font-size: 36px;
       line-height: 100%;
@@ -102,7 +102,10 @@
 
 .landingContentTop {
   text-align: center;
-  margin-bottom: 245px;
+  margin-bottom: 120px;
+  @include lgLaptopView {
+    margin-bottom: 245px;
+  }
 }
 
 .landingContentBottom {
@@ -111,13 +114,20 @@
   &:after {
     content: "";
     display: block;
-    width: 163px;
-    height: 234px;
     background-image: url('/tenants/salesforce/images/astro-tree.png');
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
-    bottom: 50px;
-    left: -143px;
+    top: calc(50% - 20px);
+    left: calc(50% - 180px);
+    width: 57px;
+    height: 81px;
+    transform: translate(-50%, -50%);
+    @include lgLaptopView {
+      top: calc(50% - 50px);
+      left: calc(50% - 423px);
+      width: 163px;
+      height: 234px;
+    }
   }
 }

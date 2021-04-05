@@ -70,7 +70,10 @@
     line-height: 26px;
     letter-spacing: -0.001em;
     color: #032D60;
-    margin-bottom: 5px;
+    margin-bottom: 16px;
+    @include lgLaptopView{
+      margin-bottom: 5px;
+    }
   }
 }
 

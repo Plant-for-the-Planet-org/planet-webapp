@@ -6,13 +6,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 90px;
   padding-bottom: 90px;
   position: relative;
   background-position: center -130px, calc(50% + -370px) 28%, calc(50% + 470px) 48%, calc(50% + 426px) 32%;
   background-repeat: no-repeat;
   background-size: cover, 150px 150px, 67px 67px, 16px 16px;
   @include lgLaptopView {
+    padding-top: 90px;
     background-image:
         url('/tenants/salesforce/images/blue-bkg.png'),
         url('/tenants/salesforce/images/circle-1.png'),
@@ -27,11 +27,15 @@
   position: relative;
   align-self: center;
   text-align: center;
-  padding: 50px 80px;
+  width: 90vw;
   background-color: white;
+  @include lgLaptopView {
+    padding: 50px 80px;
+    width: auto;
+  }
   &:before {
     content: "";
-    display: block;
+    display: none;
     width: 334px;
     height: 235px;
     background-image: url('/tenants/salesforce/images/foliage-left.png');
@@ -40,10 +44,13 @@
     position: absolute;
     bottom: 0;
     left: -190px;
+    @include lgLaptopView {
+      display: block;
+    }
   }
   &:after {
     content: "";
-    display: block;
+    display: none;
     width: 203px;
     height: 235px;
     background-image: url('/tenants/salesforce/images/foliage-right.png');
@@ -52,6 +59,9 @@
     position: absolute;
     bottom: 0;
     right: -160px;
+    @include lgLaptopView {
+      display: block;
+    }
   }
 }
 
@@ -74,6 +84,7 @@
   line-height: 100%;
   letter-spacing: -0.004em;
   color: #032D60;
+  margin-bottom: 30px;
 }
 
 .leaderBoardTableHeader {
@@ -82,26 +93,42 @@
   justify-content: center;
   align-items: center;
   margin-top: 16px;
+  background-color: #F5F2F2;
+  border-radius: 90px;
+  height: 42px;
+  margin-left: 10px;
+  margin-right: 10px;
+  @include lgLaptopView {
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .leaderBoardTableHeaderTitle {
-  padding: 8px;
-  border-bottom: 1px solid #dddbda;
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
-  color: #080707;
+  line-height: 42px;
+  color: #032D60;
+  background-color: #F5F2F2;
+  text-align: center;
+  border-radius: 90px;
+  width: 50%;
 }
 
 .leaderBoardTableHeaderTitleSelected {
-  padding: 8px;
-  border-bottom: 2px solid #005fb2;
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: bold;
   font-size: 13px;
-  color: #080707;
+  line-height: 42px;
+  color: white;
+  background-color: #032D60;
+  text-align: center;
+  border-radius: 90px;
+  width: 50%;
 }
 
 .leaderBoardTableHeaderTitle:hover {
@@ -109,7 +136,10 @@
 }
 .leaderBoardBody {
   width: 100%;
-  margin-top: 60px;
+  margin-top: 40px;
+  @include lgLaptopView{
+    margin-top: 60px;
+  }
 }
 .leaderBoardBodyRow {
   display: flex;
@@ -171,7 +201,7 @@
 
   .leaderBoardBody {
     width: 528px;
-    margin-top: 60px;
+    margin: 60px auto 0;
   }
 
 
