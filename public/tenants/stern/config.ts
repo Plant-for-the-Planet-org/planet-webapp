@@ -1,6 +1,7 @@
 const config = {
   tenantName: 'stern',
   tenantURL: 'baeume.stern.de',
+  statusURL: 'https://status.pp.eco/786023700',
   languages: ['de','en'],
   fallbackCurrency: 'EUR',
   tenantGoal:null,

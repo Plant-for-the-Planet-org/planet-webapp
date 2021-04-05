@@ -1,6 +1,7 @@
 const config = {
   tenantName: 'salesforce',
   tenantURL: 'trees.salesforce.com',
+  statusURL: 'https://status.pp.eco/785980197',
   languages: ['en'],
   fallbackCurrency: 'USD',
   tenantGoal:null,

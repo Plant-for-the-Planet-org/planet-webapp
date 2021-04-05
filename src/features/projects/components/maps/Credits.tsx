@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
+import tenantConfig from '../../../../../tenant.config';
+
+const config = tenantConfig();
 
 interface Props {
     setCurrencyCode: Function;
@@ -53,7 +56,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 </a> : null}
                 <a
                     rel="noopener noreferrer"
-                    href={`https://status.plant-for-the-planet.org/`}
+                    href={config.statusURL}
                     target={'_blank'}
                 >
                     {t('common:status')}
