@@ -17,6 +17,7 @@
     text-align: center;
     letter-spacing: -0.004em;
     color: #032D60;
+    margin-bottom: 50px;
 
     @include lgLaptopView {
       font-size: 36px;
@@ -109,4 +110,49 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+}
+
+.timelineDesktop {
+  display: none;
+  @include lgLaptopView {
+    display: flex;
+  }
+}
+
+.timelineDesktop,
+.timelineMobile {
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border: none;
+  }
+}
+
+.timelineDesktop {
+  display: none;
+  @include lgLaptopView {
+    display: flex;
+  }
+}
+
+.timelineMobile {
+  display: flex;
+  @include lgLaptopView {
+    display: none;
+  }
+}
+
+.timelineMoment {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: center;
 }

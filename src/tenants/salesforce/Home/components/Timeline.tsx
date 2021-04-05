@@ -1,32 +1,8 @@
 import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
-import slickStyles from './../styles/Slick.module.scss';
-import Slider from "react-slick";
-
-interface Props {
-  currentSlide: any;
-  slideCount: any;
-  props: any;
-}
 
 export default function Timeline() {
-  const SlickArrowPrev = ({ currentSlide, slideCount, ...props }: Props) => (
-    <button {...props} className='slick-prev'><img src="/tenants/salesforce/images/arrow-prev.png" alt="" /></button>
-  );
 
-  const SlickArrowNext = ({ currentSlide, slideCount, ...props }: Props) => (
-    <button {...props} className='slick-next'><img src="/tenants/salesforce/images/arrow-next.png" alt="" /></button>
-  );
-
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    prevArrow: <SlickArrowPrev />,
-    nextArrow: <SlickArrowNext />,
-  };
   const moments = [
     {
       id: 1,
@@ -70,6 +46,41 @@ export default function Timeline() {
     }
   ];
 
+  const populateSlide = slides => {
+    return (
+      <div className={styles.timelineMoment}>
+        <div className={gridStyles.gridRow}>
+          {slides.map((moment) => {
+            return (
+              <div className={`${styles.timelineContent} ${gridStyles.colMd4}`} key={`moment-${moment.id}`}>
+                <span className={styles.timelineDate}>{moment.date}</span>
+                <img src={moment.image} alt="" className={styles.timelineImage}/>
+                <h4>{moment.title}</h4>
+                <p dangerouslySetInnerHTML={{__html: moment.copy}} />
+                <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  function desktopSlider() {
+    let m = [];
+    let mReturn = [];
+
+    moments.forEach(( moment, index) => {
+      m.push(moment);
+      if(m.length === 3 || index+1 === moments.length){
+        mReturn.push(populateSlide(m));
+        m = [];
+      }
+    });
+
+    return mReturn;
+  }
+
   return (
     <section className={styles.timelineSection}>
       <div className={gridStyles.fluidContainer}>
@@ -81,22 +92,21 @@ export default function Timeline() {
       </div>
       <div className={styles.timelineRow}>
         <div className={gridStyles.fluidContainer}>
-          <div className={`${slickStyles.slickSlider}`}>
-            <Slider
-              {...settings}
-            >
-              {moments.map((moment) => {
-                return (
-                  <div className={`${styles.timelineContent}`} key={`moment-${moment.id}`}>
-                    <span className={styles.timelineDate}>{moment.date}</span>
-                    <img src={moment.image} alt="" className={styles.timelineImage}/>
-                    <h4>{moment.title}</h4>
-                    <p dangerouslySetInnerHTML={{__html: moment.copy}} />
-                    <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
-                  </div>
-                );
-              })}
-            </Slider>
+          <div className={styles.timelineDesktop}>
+            {desktopSlider()}
+          </div>
+          <div className={styles.timelineMobile}>
+            {moments.map((moment) => {
+              return (
+                <div className={`${styles.timelineContent} ${styles.timelineMoment}`} key={`moment-${moment.id}`}>
+                  <span className={styles.timelineDate}>{moment.date}</span>
+                  <img src={moment.image} alt="" className={styles.timelineImage}/>
+                  <h4>{moment.title}</h4>
+                  <p dangerouslySetInnerHTML={{__html: moment.copy}} />
+                  <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
