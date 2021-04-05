@@ -125,8 +125,9 @@
 .mapContainer {
   height: 400px;
   width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
+  canvas {
+    border-radius: 10px;
+  }
 }
 
 .marker {
