@@ -137,11 +137,11 @@ function Account({}: Props): ReactElement {
 
   return (
     <div className={styles.accountsPage}>
-      {/* {progress > 0 && ( */}
-      <div className={styles.topLoader}>
-        <TopProgressBar progress={progress} />
-      </div>
-      {/* )} */}
+      {progress > 0 && (
+        <div className={styles.topLoader}>
+          <TopProgressBar progress={progress} />
+        </div>
+      )}
       <div className={styles.headerBG}>
         <div className={styles.accountsHeader}>
           <div className={styles.navContainer}>

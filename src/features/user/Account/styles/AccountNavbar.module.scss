@@ -89,7 +89,6 @@
 }
 
 .contentContainer {
-  margin-top: 30px;
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -245,6 +244,12 @@
   overflow-x: scroll;
   padding: 20px;
   height: fit-content;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.filterContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .filterContainerDesktop {
@@ -379,7 +384,7 @@
 .recordContainer {
   padding: 20px 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   .detailContainer {
@@ -404,9 +409,16 @@
   .accountsHeader {
     margin-top: 80px;
   }
+  .recordContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @include mdTabletView {
+  .contentContainer {
+    margin-top: 30px;
+  }
+
   .selectedRecord {
     margin-bottom: 20px;
   }
