@@ -41,29 +41,6 @@
   padding: 5px;
 }
 
-.continueButton {
-  height: 40px;
-  min-width: 208px;
-  border-radius: 100px;
-  margin-top: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
-  display: flex;
-  justify-content: center;
-  background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
-  align-items: center;
-  font-weight: bold;
-  color: $light;
-  border: 0px;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.continueButton:hover {
-  transform: scale(1.05);
-  cursor: pointer;
-}
-
 // Loader for Buttons
 .spinner {
   border: 2px solid #f3f3f3;

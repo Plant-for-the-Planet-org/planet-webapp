@@ -308,7 +308,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           <div className={`${styles.formFieldHalf}`}>
             <button
               onClick={handleBack}
-              className={styles.secondaryButton}
+              className="secondaryButton"
             >
               <BackArrow />
               <p>

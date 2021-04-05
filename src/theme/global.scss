@@ -233,6 +233,37 @@ video {
   transform: translateY(-7px);
   cursor: pointer;
 }
+.secondaryButton {
+  height: 40px;
+  border-radius: 100px;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
+  align-items: center;
+  font-weight: bold;
+  color: $light;
+  border: 0px;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-width: 240px;
+}
+.secondaryButton:hover {
+  transform: translateY(-7px);
+  cursor: pointer;
+}
+.secondaryButton {
+  background-image: none;
+  background-color: $blueishGrey;
+  color: $primaryFontColor;
+  p {
+    margin-left: 6px;
+  }
+  svg {
+    height: 12px;
+  }
+}
 
 button {
   border: 0px;

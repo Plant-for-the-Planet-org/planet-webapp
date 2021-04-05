@@ -559,7 +559,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     <div className={`${styles.formFieldHalf}`}>
                         <button
                             onClick={handleBack}
-                            className={styles.secondaryButton}
+                            className="secondaryButton"
                         >
                             <BackArrow />
                             <p>

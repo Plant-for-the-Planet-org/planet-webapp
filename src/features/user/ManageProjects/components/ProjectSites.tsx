@@ -437,7 +437,7 @@ export default function ProjectSites({
           <div className={`${styles.formFieldHalf}`}>
             <button
               onClick={handleBack}
-              className={styles.secondaryButton}
+              className="secondaryButton"
             >
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
@@ -620,7 +620,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
             <div className={`${styles.formFieldHalf}`}>
               <button
                 onClick={handleModalClose}
-                className={styles.secondaryButton}
+                className="secondaryButton"
               >
                 <BackArrow />
                 <p>{t('manageProjects:backToSites')}</p>
