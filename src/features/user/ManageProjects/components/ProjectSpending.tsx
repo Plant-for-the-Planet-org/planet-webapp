@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -290,7 +289,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
                 <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={handleBack}
                             className={styles.secondaryButton}
                         >
@@ -298,7 +297,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             <p>
                                 {t('manageProjects:backToSites')}
                             </p>
-                        </AnimatedButton>
+                        </button>
                     </div>
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>

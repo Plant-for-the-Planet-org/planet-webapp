@@ -3,7 +3,6 @@ import styles from './../styles/StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import { useDropzone } from 'react-dropzone';
