@@ -48,7 +48,7 @@ export default function ProjectSnippet({
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
-        className={`modal ${theme}`}
+        className={`modalContainer ${theme}`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"

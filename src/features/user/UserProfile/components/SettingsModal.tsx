@@ -7,11 +7,15 @@ import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
-import { removeLocalUserInfo, removeUserExistsInDB } from '../../../../utils/auth0/localStorageUtils';
+import {
+  removeLocalUserInfo,
+  removeUserExistsInDB,
+} from '../../../../utils/auth0/localStorageUtils';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import EmbedModal from './EmbedModal';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -40,7 +44,7 @@ export default function SettingsModal({
   const logoutUser = () => {
     removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  }
+  };
 
   const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
 
@@ -50,14 +54,18 @@ export default function SettingsModal({
     if (userprofile.isPrivate) {
       setEmbedModalOpen(true);
     } else {
-      router.push(`${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`);
+      router.push(
+        `${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`
+      );
     }
-  }
+  };
+
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <>
       <Modal
-        className={styles.modalContainer}
+        className={'modalContainer' + ' ' + theme}
         open={settingsModalOpen}
         onClose={handleSettingsModalClose}
         closeAfterTransition
@@ -70,51 +78,69 @@ export default function SettingsModal({
       >
         <Fade in={settingsModalOpen}>
           <nav className={styles.modal}>
-            <ul style={{listStyle:'none',paddingLeft: '0px',textAlign:'center'}}>
-            {userType == 'tpo' && (
-              <a
-                href={`#projectsContainer`}
-                onClick={handleSettingsModalClose}
+            <ul
+              style={{
+                listStyle: 'none',
+                paddingLeft: '0px',
+                textAlign: 'center',
+                paddingBottom:'20px'
+              }}
+            >
+              {userType == 'tpo' && (
+                <li
+                  className={styles.settingsItem}
+                  style={{ marginTop: '12px' }}
+                >
+                  <a
+                    href={`#projectsContainer`}
+                    onClick={handleSettingsModalClose}
+                  >
+                    {t('me:settingManageProject')}
+                  </a>
+                </li>
+              )}
+
+              {/*  <div className={styles.settingsItem}> Change Password </div>
+            <div className={styles.settingsItem}> Change Email </div> */}
+              <li
                 className={styles.settingsItem}
+                onClick={handleEditProfileModalOpen}
               >
                 {' '}
-                {t('me:settingManageProject')}{' '}
-              </a>
-            )}
+                {t('editProfile:edit')}{' '}
+              </li>
+              <li
+                onClick={handleEmbedModalOpen}
+                id={'SettingsItem'}
+                className={styles.settingsItem}
+              >
+                {t('me:embedWidget')}
+              </li>
+              {userType !== 'tpo' && (
+                <li
+                  id={'settingsDeleteAccount'}
+                  className={styles.settingsItem}
+                  onClick={handledeleteModalOpen}
+                >
+                  {t('me:deleteAccount')}
+                </li>
+              )}
+              <li
+                id={'settingsLogOut'}
+                className={styles.settingsItem}
+                onClick={logoutUser}
+              >
+                <b>{t('me:logout')} </b>
+              </li>
 
-            {/*  <div className={styles.settingsItem}> Change Password </div>
-            <div className={styles.settingsItem}> Change Email </div> */}
-            <li className={styles.settingsItem} onClick={handleEditProfileModalOpen}> {t('editProfile:edit')} </li>
-            <li onClick={handleEmbedModalOpen} id={'SettingsItem'}
-              className={styles.settingsItem}
-            >
-              {t('me:embedWidget')}
-            </li>
-            {userType !== 'tpo' && (
-            <li
-              id={'settingsDeleteAccount'}
-              className={styles.settingsItem}
-              onClick={handledeleteModalOpen}
-            >
-              {t('me:deleteAccount')}
-            </li>
-            )}
-            <li id={'settingsLogOut'}
-              className={styles.settingsItem}
-              onClick={logoutUser}
-            >
-              <b>{t('me:logout')} </b>
-            </li>
-
-            <li
-              id={'SettingsItem'}
-              className={styles.settingsItem}
-              onClick={handleSettingsModalClose}
-            >
-              <div className={styles.cancelText}> {t('common:cancel')}</div>
-            </li>
+              <li
+                id={'SettingsItem'}
+                className={styles.settingsItem}
+                onClick={handleSettingsModalClose}
+              >
+                <div className={styles.cancelText}> {t('common:cancel')}</div>
+              </li>
             </ul>
-
           </nav>
         </Fade>
       </Modal>
@@ -137,7 +163,11 @@ export default function SettingsModal({
   ) : null;
 }
 
-function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:any) {
+function DeleteModal({
+  deleteModalOpen,
+  handledeleteModalClose,
+  userprofile,
+}: any) {
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
@@ -145,44 +175,40 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
-
-  const {
-    getAccessTokenSilently,
-    isAuthenticated,
-    logout
-  } = useAuth0();
-
+  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
 
   React.useEffect(() => {
-
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
     }
     if (isAuthenticated) {
-      loadFunction()
+      loadFunction();
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState('');
 
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile',token).then(res => {
+    deleteAuthenticatedRequest('/app/profile', token).then((res) => {
       if (res !== 404) {
         removeLocalUserInfo();
-        removeUserExistsInDB()
+        removeUserExistsInDB();
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-      }else{
+      } else {
         console.log(res.errorText);
       }
-    })
+    });
   };
+
+  const { theme } = React.useContext(ThemeContext);
+
   return (
     <Modal
-      className={styles.modalContainer}
+      className={'modalContainer' + ' ' + theme}
       open={deleteModalOpen}
       onClose={handledeleteModalClose}
       closeAfterTransition
@@ -200,8 +226,8 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
             {t('common:deleteAccount')}
           </p>
           <p className={styles.deleteModalContent}>
-            {t('common:deleteAccountMessage',{
-              delete:'Delete'
+            {t('common:deleteAccountMessage', {
+              delete: 'Delete',
             })}
             <br />
             <br />
@@ -209,9 +235,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
           </p>
           <MaterialTextField
             // placeholder={t('common:deleteAccount')}
-            label={t('common:deleteAccountLabel',
-              {delete:'Delete'}
-            )}
+            label={t('common:deleteAccountLabel', { delete: 'Delete' })}
             type="text"
             variant="outlined"
             style={{ marginTop: '20px' }}
@@ -238,7 +262,10 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
 
           <div className={styles.deleteButtonContainer}>
             <div
-              onClick={() => {handledeleteModalClose();setcanDeleteAccount(false)}}
+              onClick={() => {
+                handledeleteModalClose();
+                setcanDeleteAccount(false);
+              }}
               className={styles.goBackContainer}
             >
               <p>{t('common:goBack')}</p>
@@ -247,15 +274,21 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose, userprofile }:an
               <AnimatedButton
                 onClick={() => handleDeleteAccount()}
                 className={styles.deleteButton}
-                style={{ backgroundColor: '#eb4e3b', color:'white' }}
-              >{isUploadingData ? (
-                <div className={styles.spinner}></div>
-            ) : (t('common:delete'))}
+                style={{
+                  backgroundColor: styles.dangerColor,
+                  color: styles.light,
+                }}
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('common:delete')
+                )}
               </AnimatedButton>
             ) : (
               <AnimatedButton
                 className={styles.deleteButton}
-                style={{ backgroundColor: '#f2f2f7', color:'#2f3336' }}
+                style={{ backgroundColor: '#f2f2f7', color: '#2f3336' }}
               >
                 {t('common:delete')}
               </AnimatedButton>

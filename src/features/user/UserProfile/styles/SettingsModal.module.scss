@@ -1,16 +1,8 @@
 @import './../../../../theme/theme';
 
-// modal container for black opacity
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 // white modal
 .modal {
-  background-color: #ffffff;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
   padding: 6px 50px;
@@ -27,9 +19,12 @@
 
 .settingsItem {
   font-family: $primaryFontFamily;
-  padding: 10px 0px;
+  margin-top: 20px;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);
+  a {
+    color: rgba(0, 0, 0, 0.87);
+  }
 }
 
 .settingsItem:hover {
@@ -51,7 +46,7 @@
 }
 
 .deleteModal {
-  background-color: white;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 10px;
   padding: 20px;
@@ -79,7 +74,7 @@
   }
   .deleteModalWarning {
     margin-top: 20px;
-    color: #eb4e3b;
+    color: $dangerColor;
     font-size: 12px;
     text-align: center;
   }
@@ -97,8 +92,8 @@
       border-radius: 100px;
       padding-left: 24px;
       padding-right: 24px;
-      background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
-      color: white;
+      background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
+      color: $light;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -117,7 +112,7 @@
     }
     .deleteButton {
       flex: 1;
-      background-color: #eb4e3b;
+      background-color: $dangerColor;
       height: 40px;
       border-radius: 100px;
       padding-left: 24px;
@@ -126,7 +121,7 @@
       justify-content: center;
       align-items: center;
       font-weight: bold;
-      color: white;
+      color: $light;
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -165,4 +160,9 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+:export {
+  dangerColor: $dangerColor;
+  light:$light;
 }

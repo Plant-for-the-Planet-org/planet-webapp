@@ -149,7 +149,6 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 <div key={report.id} className={` ${styles.reportPDFContainer}`}>
                                     <a target="_blank" rel="noopener noreferrer"
                                         href={getPDFFile('projectExpense', report.pdf)}>
-                                        {/* <PDFIcon color="#2F3336" /> */}
                                         <PDFRed />
                                     </a>
                                     <div className={styles.reportPDFDetails}>
