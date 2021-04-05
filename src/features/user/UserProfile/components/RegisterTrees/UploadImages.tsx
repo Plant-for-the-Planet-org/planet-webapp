@@ -138,9 +138,10 @@ export default function UploadImages({
           className={styles.fileUploadContainer}
           {...getRootProps()}
         >
-          <AnimatedButton
+          <button
             onClick={uploadPhotos}
-            className={styles.continueButton}
+            className="primaryButton"
+            style={{maxWidth: "200px"}}
           >
             <input {...getInputProps()} />
             {isUploadingData ? (
@@ -148,7 +149,7 @@ export default function UploadImages({
             ) : (
               t('me:uploadPhotos')
             )}
-          </AnimatedButton>
+          </button>
           <p style={{ marginTop: '18px' }}>{t('me:dragHere')}</p>
         </label>
       </div>

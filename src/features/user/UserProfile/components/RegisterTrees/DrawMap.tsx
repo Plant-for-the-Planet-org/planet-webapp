@@ -99,7 +99,8 @@ export default function MapComponent({
                   setDrawing(true);
                   drawControlRef.current?.draw.changeMode('draw_polygon');
                 }}
-                className={styles.continueButton}
+                className="primaryButton"
+                style={{maxWidth: "150px"}}
               >
                 {t('me:startDrawing')}
               </div>

@@ -285,12 +285,13 @@ function ContactDetails({
                 {t('common:continue')}
               </AnimatedButton>
             ) : (
-              <AnimatedButton
+              <button
                 onClick={handleSubmit(onSubmit)}
-                className={styles.continueButton}
+                className="primaryButton"
+                style={{borderRadius: "10px"}}
               >
                 {t('common:continue')}
-              </AnimatedButton>
+              </button>
             )}
           </div>
         </form>
