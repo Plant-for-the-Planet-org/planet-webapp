@@ -46,6 +46,20 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 </div>
                 <a
                     rel="noopener noreferrer"
+                    href={`https://status.plant-for-the-planet.org/`}
+                    target={'_blank'}
+                >
+                    {t('common:status')}
+                </a>
+                <a
+                    rel="noopener noreferrer"
+                    href={`https://www.thegoodshop.org/${userLang}/shop/`}
+                    target={'_blank'}
+                >
+                    {t('common:shop')}
+                </a>
+                <a
+                    rel="noopener noreferrer"
                     href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
                     target={'_blank'}
                 >
