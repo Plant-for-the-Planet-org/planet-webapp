@@ -1,11 +1,12 @@
 @import '../../../../theme/theme';
 
 .fluidContainer{
+  position: relative;
   width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .justifyContentCenter {

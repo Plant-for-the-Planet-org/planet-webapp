@@ -22,7 +22,7 @@
     @include lgLaptopView {
       font-size: 36px;
       line-height: 100%;
-      margin-bottom: 38px;
+      margin-bottom: 0;
     }
   }
 
@@ -61,7 +61,7 @@
 
 .timelineRow {
   background-image: url('/tenants/salesforce/images/dotted-line.png');
-  background-position: 50% -40px;
+  background-position: 50% 40px;
   background-repeat: repeat-x;
   background-size: auto 267px;
   width: 100vw;
@@ -124,6 +124,8 @@
   overflow-x: scroll;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  position: relative;
+  padding-bottom: 40px;
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -155,4 +157,74 @@
   flex: 0 0 100%;
   width: 100%;
   scroll-snap-align: center;
+  padding-top: 80px;
+}
+
+.timelineDesktopNav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  @include lgLaptopView {
+    display: flex;
+  }
+}
+
+.timelineMobileNav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  @include lgLaptopView {
+    display: none;
+  }
+}
+
+.timelineDot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #0176D3;
+  box-sizing: border-box;
+  border-radius: 11px;
+  cursor: pointer;
+}
+
+.timelineDotDisabled {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #0176D3;
+  box-sizing: border-box;
+  border-radius: 11px;
+  background-color: #0176D3;
+  cursor: default;
+}
+
+.timelineArrow {
+  width: 21px;
+  height: auto;
+  margin-top: 1px;
+}
+
+.timelineButtonArrowPrev {
+  margin-right: 20px;
+  &[disabled] {
+    opacity: 0;
+  }
+}
+
+.timelineButtonArrowNext {
+  margin-left: 10px;
+  cursor: pointer;
+  &[disabled] {
+    opacity: 0;
+    cursor: default;
+  }
+}
+
+.timelineButtonDot {
+  margin-right: 10px;
 }

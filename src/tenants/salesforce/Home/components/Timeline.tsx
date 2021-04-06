@@ -1,7 +1,12 @@
 import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
+import React, {useState} from 'react';
+import Link from 'next/link';
 
 export default function Timeline() {
+
+  const [desktopCurrent, setDesktopCurrent] = useState(0);
+  const [mobileCurrent, setMobileCurrent] = useState(0);
 
   const moments = [
     {
@@ -46,13 +51,13 @@ export default function Timeline() {
     }
   ];
 
-  const populateSlide = slides => {
+  const populateSlide = (slides, slideIndex) => {
     return (
-      <div className={styles.timelineMoment}>
+      <div className={styles.timelineMoment} id={`desktop-timeline-moment-${slideIndex}`}>
         <div className={gridStyles.gridRow}>
           {slides.map((moment) => {
             return (
-              <div className={`${styles.timelineContent} ${gridStyles.colMd4}`} key={`moment-${moment.id}`}>
+              <div className={`${styles.timelineContent} ${gridStyles.colMd4}`} key={`desktop-moment-${moment.id}`}>
                 <span className={styles.timelineDate}>{moment.date}</span>
                 <img src={moment.image} alt="" className={styles.timelineImage}/>
                 <h4>{moment.title}</h4>
@@ -69,16 +74,58 @@ export default function Timeline() {
   function desktopSlider() {
     let m = [];
     let mReturn = [];
+    let slideIndex = 0;
 
     moments.forEach(( moment, index) => {
       m.push(moment);
       if(m.length === 3 || index+1 === moments.length){
-        mReturn.push(populateSlide(m));
+        mReturn.push(populateSlide(m, slideIndex));
         m = [];
+        slideIndex++;
       }
     });
 
     return mReturn;
+  }
+
+  function desktopDots() {
+    let dots = [];
+
+    for (let i = 0; i < Math.ceil(moments.length/3); i++) {
+      dots.push(<Link
+        href={`#desktop-timeline-moment-${i}`}
+        scroll={false}
+      >
+        <button
+          className={styles.timelineButtonDot}
+          disabled={desktopCurrent === i}
+          aria-disabled={desktopCurrent === i}
+          onClick={()=>setDesktopCurrent(i)}>
+          <span className={`${desktopCurrent === i ? styles.timelineDotDisabled : styles.timelineDot}`} />
+        </button>
+      </Link>);
+    }
+    return dots;
+  }
+
+  function mobileDots() {
+    let dots = [];
+
+    for (let i = 0; i < moments.length; i++) {
+      dots.push(<Link
+        href={`#mobile-timeline-moment-${i}`}
+        scroll={false}
+      >
+        <button
+          className={styles.timelineButtonDot}
+          disabled={mobileCurrent === i}
+          aria-disabled={mobileCurrent === i}
+          onClick={()=>setMobileCurrent(i)}>
+          <span className={`${mobileCurrent === i ? styles.timelineDotDisabled : styles.timelineDot}`} />
+        </button>
+      </Link>);
+    }
+    return dots;
   }
 
   return (
@@ -96,9 +143,9 @@ export default function Timeline() {
             {desktopSlider()}
           </div>
           <div className={styles.timelineMobile}>
-            {moments.map((moment) => {
+            {moments.map((moment, index) => {
               return (
-                <div className={`${styles.timelineContent} ${styles.timelineMoment}`} key={`moment-${moment.id}`}>
+                <div className={`${styles.timelineContent} ${styles.timelineMoment}`} key={`mobile-moment-${moment.id}`} id={`mobile-timeline-moment-${index}`}>
                   <span className={styles.timelineDate}>{moment.date}</span>
                   <img src={moment.image} alt="" className={styles.timelineImage}/>
                   <h4>{moment.title}</h4>
@@ -107,6 +154,62 @@ export default function Timeline() {
                 </div>
               );
             })}
+          </div>
+          <div className={styles.timelineDesktopNav}>
+            <Link
+              href={`#desktop-timeline-moment-${desktopCurrent-1}`}
+              scroll={false}
+            >
+              <button
+                className={styles.timelineButtonArrowPrev}
+                disabled={desktopCurrent === 0}
+                aria-disabled={desktopCurrent === 0}
+                onClick={()=>setDesktopCurrent(desktopCurrent-1)}>
+                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow}/>
+              </button>
+            </Link>
+            {desktopDots()}
+            <Link
+              href={`#desktop-timeline-moment-${desktopCurrent+1}`}
+              scroll={false}
+            >
+              <button
+                className={styles.timelineButtonArrowNext}
+                onClick={()=>setDesktopCurrent(desktopCurrent+1)}
+                disabled={desktopCurrent+1 === Math.ceil(moments.length/3)}
+                aria-disabled={desktopCurrent+1 === Math.ceil(moments.length/3)}
+              >
+                <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
+              </button>
+            </Link>
+          </div>
+          <div className={styles.timelineMobileNav}>
+            <Link
+              href={`#mobile-timeline-moment-${mobileCurrent-1}`}
+              scroll={false}
+            >
+              <button
+                className={styles.timelineButtonArrowPrev}
+                disabled={mobileCurrent === 0}
+                aria-disabled={mobileCurrent === 0}
+                onClick={()=>setMobileCurrent(mobileCurrent-1)}>
+                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow}/>
+              </button>
+            </Link>
+            {mobileDots()}
+            <Link
+              href={`#mobile-timeline-moment-${mobileCurrent+1}`}
+              scroll={false}
+            >
+              <button
+                className={styles.timelineButtonArrowNext}
+                onClick={()=>setMobileCurrent(mobileCurrent+1)}
+                disabled={mobileCurrent+1 === moments.length}
+                aria-disabled={mobileCurrent+1 === moments.length}
+              >
+                <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
+              </button>
+            </Link>
           </div>
         </div>
       </div>
