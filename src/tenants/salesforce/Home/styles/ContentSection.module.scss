@@ -2,7 +2,7 @@
 
 .contentSection {
   h2 {
-    font-family: $primaryFontFamily;
+    font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
     font-size: 36px;
@@ -18,7 +18,7 @@
     }
   }
   h3 {
-    font-family: $primaryFontFamily;
+    font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
@@ -54,7 +54,7 @@
 }
 
 .contentSectionSubhead {
-  font-family: $primaryFontFamily;
+  font-family: $secondaryFontFamily;
   font-style: normal;
   font-weight: 300;
   font-size: 18px;
@@ -89,7 +89,7 @@
   letter-spacing: -0.4px;
   color: #080707;
   text-align: center;
-  font-family: $primaryFontFamily;
+  font-family: $secondaryFontFamily;
 }
 
 .treeCounterSectionTextPara {

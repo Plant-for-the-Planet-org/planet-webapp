@@ -9,7 +9,7 @@
   padding: 80px 0 460px;
 
   h3 {
-    font-family: $primaryFontFamily;
+    font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
@@ -27,7 +27,7 @@
   }
 
   h4 {
-    font-family: $primaryFontFamily;
+    font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
@@ -61,9 +61,9 @@
 
 .timelineRow {
   background-image: url('/tenants/salesforce/images/dotted-line.png');
-  background-position: 50% 40px;
+  background-position: 50% 137px;
   background-repeat: repeat-x;
-  background-size: auto 267px;
+  background-size: auto 76px;
   width: 100vw;
 }
 
@@ -74,7 +74,7 @@
 }
 
 .timelineDate {
-  font-family: $primaryFontFamily;
+  font-family: $secondaryFontFamily;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -121,7 +121,7 @@
 
 .timelineDesktop,
 .timelineMobile {
-  overflow-x: scroll;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   position: relative;

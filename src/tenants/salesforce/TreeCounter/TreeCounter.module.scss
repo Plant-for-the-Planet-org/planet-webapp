@@ -10,7 +10,7 @@
 }
 
 .treeCounterComma {
-  font-family: $primaryFontFamily;
+  font-family: $secondaryFontFamily;
   font-style: normal;
   font-weight: 500;
   font-size: 32px;
@@ -29,6 +29,7 @@
   position: relative;
   width: 30px;
   height: 40px;
+  font-family: $secondaryFontFamily;
   font-style: normal;
   font-weight: 500;
   font-size: 32px;
