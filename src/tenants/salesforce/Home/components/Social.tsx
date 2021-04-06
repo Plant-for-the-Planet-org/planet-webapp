@@ -7,9 +7,13 @@ export default function Social() {
       <div className={gridStyles.fluidContainer}>
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
-            <img src="/tenants/salesforce/images/astro-social.png" alt="" />
             <h3>Invite a friend to join the trillion tree movement.</h3>
-            <button>Share Now</button>
+            <div className={styles.socialContent}>
+              <img src="/tenants/salesforce/images/astro-social.png" alt="" />
+              <a href="" className={styles.socialFacebook}><img src="/tenants/salesforce/images/facebook.png" alt=""/></a>
+              <a href="" className={styles.socialLinkedin}><img src="/tenants/salesforce/images/linkedin.png" alt=""/></a>
+              <a href="" className={styles.socialTwitter}><img src="/tenants/salesforce/images/twitter.png" alt=""/></a>
+            </div>
           </div>
         </div>
       </div>
