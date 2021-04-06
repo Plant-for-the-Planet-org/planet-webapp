@@ -54,13 +54,13 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:shop')}
                 </a> : null}
-                <a
+                {config.statusURL ? <a
                     rel="noopener noreferrer"
                     href={config.statusURL}
                     target={'_blank'}
                 >
                     {t('common:status')}
-                </a>
+                </a> : null}
                 <a
                     rel="noopener noreferrer"
                     href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
