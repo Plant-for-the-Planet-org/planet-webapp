@@ -23,6 +23,9 @@
   @include lgLaptopView{
     margin-bottom: 100px;
   }
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 
 @include mdTabletView{
