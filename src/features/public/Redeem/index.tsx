@@ -2,7 +2,8 @@ import React from 'react'
 import Footer from '../../common/Layout/Footer'
 import LandingSection from '../../common/Layout/LandingSection'
 import styles from './Redeem.module.scss';
-import { useSession, signIn } from 'next-auth/client';
+import { useAuth0 } from '@auth0/auth0-react';
+
 import MapGL, {
     Marker,
     Popup,
@@ -14,7 +15,13 @@ interface Props {
 
 const Redeem = (props: Props) => {
 
-    const [session, loading] = useSession();
+    const {
+        isLoading,
+        isAuthenticated,
+        getAccessTokenSilently,
+        loginWithRedirect
+      } = useAuth0();
+
     const isGift= false;
     const byOrg= false;
     const isPlanted = true;
@@ -65,18 +72,18 @@ const Redeem = (props: Props) => {
                 <div className={styles.plantedGiftMessage}>
                     {isGift ? 'Felix gifted you 5 trees! Your trees are being planted in Yucatan, Mexico '  : byOrg ? 'Congratulations on your 5 trees from Salesforce! Your trees are being planted in Yucatan, Mexico': 'You’ve planted X trees!'}
                 </div>
-                {!byOrg && !session ? (
+                {!byOrg && !isAuthenticated ? (
                     <div className={styles.signupMessage}>
                         {isPlanted ?  'These trees have already been added to an account.':'Sign up to keep track of your trees as they grow – and maybe even plant more trees yourself.'}
                     </div>
                 ) :null}
 
-                {!byOrg && !session ? (
+                {!byOrg && !isAuthenticated ? (
                     <div className={styles.authButtonsContainer}>
-                        <div onClick={()=>signIn('auth0', { callbackUrl: '/login' })} className={styles.authButton}>
+                        <div onClick={()=>loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={styles.authButton}>
                             Sign Up
                         </div>
-                        <div onClick={()=>signIn('auth0', { callbackUrl: '/login' })} className={styles.authButton}>
+                        <div onClick={()=>loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={styles.authButton}>
                             Log in
                         </div>
                     </div>

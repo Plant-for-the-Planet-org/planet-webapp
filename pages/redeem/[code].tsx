@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
 import React, { useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import Footer from '../../src/features/common/Layout/Footer';
@@ -11,7 +10,6 @@ interface Props {
 }
 
 export default function PublicUser(initialized: Props) {
-  const [session, loading] = useSession();
 
   const [ready, setReady] = React.useState(false);
   const [slug, setSlug] = React.useState('');
