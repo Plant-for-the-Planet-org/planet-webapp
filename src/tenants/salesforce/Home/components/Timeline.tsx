@@ -73,7 +73,7 @@ export default function Timeline() {
 
   function desktopSlider() {
     let m = [];
-    let mReturn = [];
+    const mReturn = [];
     let slideIndex = 0;
 
     moments.forEach(( moment, index) => {
@@ -89,7 +89,7 @@ export default function Timeline() {
   }
 
   function desktopDots() {
-    let dots = [];
+    const dots = [];
 
     for (let i = 0; i < Math.ceil(moments.length/3); i++) {
       dots.push(<Link
@@ -109,7 +109,7 @@ export default function Timeline() {
   }
 
   function mobileDots() {
-    let dots = [];
+    const dots = [];
 
     for (let i = 0; i < moments.length; i++) {
       dots.push(<Link
