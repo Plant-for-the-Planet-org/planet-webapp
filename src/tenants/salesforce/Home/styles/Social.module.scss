@@ -21,6 +21,22 @@
       margin-bottom: 20px;
     }
   }
+  p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 30px;
+    text-align: center;
+    letter-spacing: -0.002em;
+    color: #181818;
+    small {
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 24px;
+      color: #1A1A1A;
+    }
+  }
   img {
     max-width: 100%;
     height: auto;
