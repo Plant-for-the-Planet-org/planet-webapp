@@ -1,6 +1,6 @@
 import { Modal } from '@material-ui/core';
 import React, { ReactElement } from 'react';
-import BackButton from '../../../../../out/assets/images/icons/BackButton';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../styles/AccountNavbar.module.scss';
 
