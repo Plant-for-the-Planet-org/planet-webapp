@@ -10,7 +10,7 @@ export default function Social() {
   const handle = config.meta.twitterHandle;
   const fbLink = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
   const liLink = 'https://www.linkedin.com/shareArticle?url=' + url + '&title=' + title;
-  const twLink = 'https://twitter.com/intent/tweet?url=' + url + '&text=' + title + '&via=' + handle;
+  const twLink = 'https://twitter.com/intent/tweet?url=' + url + '&text=' + title + '&via=' + handle.replace('@', '');
 
   return (
     <section className={styles.socialSection}>
