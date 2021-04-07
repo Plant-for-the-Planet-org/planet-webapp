@@ -210,7 +210,7 @@ video {
   font-style: normal;
 }
 
-.primaryButton {
+.primaryButton, .secondaryButton {
   color:$light;
   font-weight: bold;
   background-color: $primaryColor;
@@ -222,8 +222,6 @@ video {
   border-radius: 52px;
   min-width: 200px;
   width: 100%;
-  margin-top: 24px;
-  margin-bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -231,9 +229,22 @@ video {
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   text-decoration: none;
 }
-.primaryButton:hover {
+.primaryButton:hover, .secondaryButton:hover{
   transform: translateY(-7px);
   cursor: pointer;
+}
+
+.secondaryButton {
+  min-width: 240px;
+  background-image: none;
+  background-color: $blueishGrey;
+  color: $primaryFontColor;
+  p {
+    margin-left: 6px;
+  }
+  svg {
+    height: 12px;
+  }
 }
 
 button {
@@ -257,4 +268,42 @@ button {
   overflow: hidden;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.6);
+}
+
+.notificationContainer{
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+  min-width: 200px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  align-items: center;
+  max-width: 98%;
+  pointer-events: all;
+  z-index: 999;
+  height: 250px;
+  background: transparent;
+}
+
+@include xsPhoneView {
+  .notificationContainer {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    max-width: 100%;
+    border-radius: 0px;
+  }
+}
+
+.read-more-button{
+  font-weight: bold;
+  cursor: pointer;
 }
