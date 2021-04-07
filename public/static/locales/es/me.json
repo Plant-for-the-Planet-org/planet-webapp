@@ -3,10 +3,13 @@
   "target": "Objetivo",
   "share": "Compartir",
   "registerTrees": "Registra los árboles",
+  "registerTreesDescription": "Registra los árboles que has plantado tú mismo, por ejemplo, en tu jardín.",
   "redeem": "Canjear",
+  "redeemDescription": "Canjea tuVale de árboles y otros códigos.",
   "myForest": "Mi bosque",
   "giftToGiftee": "Regalo a {{gifteeName}}",
   "settingManageProject": "Administrar los proyectos",
+  "deleteAccount": "Borrar la cuenta",
   "userTree": "Registro de árboles",
   "logout": "Cierre de sesión",
   "close": "Cerrar",
@@ -34,5 +37,6 @@
   "receivedTrees": "Árboles recibidos",
   "receivedFrom": "Recibido de {{name}}",
   "redeemedTrees": "Árboles redimidos",
-  "nameForest": "El Bosque de {{name}}"
+  "nameForest": "El Bosque de {{name}}",
+  "embedWidget": "Insertar Widget"
 }

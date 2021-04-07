@@ -9,6 +9,7 @@
   "myForest": "My Forest",
   "giftToGiftee": "Gift to {{gifteeName}}",
   "settingManageProject": "Manage Projects",
+  "deleteAccount": "Delete Account",
   "userTree": "Register Trees",
   "accountHistory": "Account History",
   "logout": "Logout",
@@ -37,10 +38,10 @@
   "receivedTrees": "Received Trees",
   "receivedFrom": "Received from {{name}}",
   "redeemedTrees": "Redeemed Trees",
-  "nameForest": "{{name}}'s Forest",
-  "embedWidget": "Embed Widget",
   "myAccount": "My Account",
   "all": "All",
   "noRecords": "No Records",
-  "filters": "Filters"
+  "filters": "Filters",
+  "registeredTrees": "Registered Trees",
+  "embedWidget": "Create Widget"
 }

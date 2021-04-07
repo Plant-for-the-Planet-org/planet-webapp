@@ -19,14 +19,17 @@ const {
   VERCEL_GITLAB_COMMIT_SHA,
   VERCEL_BITBUCKET_COMMIT_SHA,
   SOURCE_VERSION,
+  COMMIT_REF,
   SITE_IMAGERY_API_URL,
 } = process.env;
 
+// allow source map uploads from Vercel, Heroku and Netlify deployments
 const COMMIT_SHA =
   VERCEL_GITHUB_COMMIT_SHA ||
   VERCEL_GITLAB_COMMIT_SHA ||
   VERCEL_BITBUCKET_COMMIT_SHA ||
-  SOURCE_VERSION;
+  SOURCE_VERSION ||
+  COMMIT_REF;
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';

@@ -10,6 +10,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useAuth0 } from '@auth0/auth0-react';
 import formStyles from '../styles/EditProfileModal.module.scss';
 import spinnerStyle from '../../ManageProjects/styles/StepForm.module.scss';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 
@@ -59,9 +60,11 @@ export default function AddTargetModal({
       })
     }
   };
+  const { theme } = React.useContext(ThemeContext);
+
   return ready ? (
     <Modal
-      className={styles.modalContainer}
+      className={'modalContainer'+' '+theme}
       open={addTargetModalOpen}
       onClose={handleAddTargetModalClose}
       closeAfterTransition
@@ -102,12 +105,12 @@ export default function AddTargetModal({
             </span>
           )}
           {errors.addTarget ? (
-            <div className={styles.continueButton}>
+            <div className="primaryButton" style={{marginTop: "24px"}}>
               {t('target:targetSave')}
             </div>
           ) : (
             <button id={'AddTargetCont'}
-              className={styles.continueButton}
+            className="primaryButton" style={{marginTop: "24px"}}
               onClick={() => handleSubmit(apiCallChangeTarget())}
             >
               {isLoadingForm ? (

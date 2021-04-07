@@ -63,7 +63,7 @@
     line-height: 19px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $light;
   }
   
   .blogTitle {
@@ -123,7 +123,7 @@
       }
     
       .blogTitle {
-        color: #fff;
+        color: $light;
         font-size: 18px;
       }
     
@@ -137,7 +137,7 @@
         flex: none;
         align-self: center;
         padding: 6px 16px;
-        background-color: white;
+        background-color: $backgroundColor;
         width: fit-content;
         border-radius: 4px;
       }
