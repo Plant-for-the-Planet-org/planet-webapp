@@ -17,6 +17,10 @@ import SettingsModal from '../../UserProfile/components/SettingsModal';
 import TopProgressBar from '../../../common/ContentLoaders/TopProgressBar';
 import i18next from '../../../../../i18n';
 import TransactionIcon from '../../../../../public/assets/images/icons/TransactionIcon';
+import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
+import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
+import FilterLoader from '../../../../../public/assets/images/icons/FilterLoader';
+import FilterInlineLoader from '../../../../../public/assets/images/icons/FilterInlineLoader';
 
 const { useTranslation } = i18next;
 
@@ -32,6 +36,7 @@ function Account({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const [userprofile, setUserprofile] = React.useState();
   const [progress, setProgress] = React.useState(0);
+  const [isDataLoading, setIsDataLoading] = React.useState(false);
   const router = useRouter();
   useEffect(() => {
     async function loadUserData() {
@@ -82,6 +87,7 @@ function Account({}: Props): ReactElement {
   }, [isAuthenticated]);
   React.useEffect(() => {
     async function fetchPaymentHistory() {
+      setIsDataLoading(true);
       setProgress(70);
       let token = null;
       if (isAuthenticated) {
@@ -93,6 +99,7 @@ function Account({}: Props): ReactElement {
           );
           setpaymentHistory(paymentHistory);
           setProgress(100);
+          setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
           setaccountingFilters(paymentHistory._filters);
         } else {
@@ -102,6 +109,7 @@ function Account({}: Props): ReactElement {
           );
           setpaymentHistory(paymentHistory);
           setProgress(100);
+          setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
         }
       }
@@ -167,43 +175,56 @@ function Account({}: Props): ReactElement {
           </div>
         </div>
       </div>
-      {paymentHistory && accountingFilters && (
-        <div className={styles.accountsPageContainer}>
-          <div className={styles.filterContainer}>
-            <button
-              className={`${styles.multiSelectInput} ${
-                null === filter ? styles.multiSelectInputCheckTrue : ''
-              }`}
-              key="all"
-              onClick={() => handleSetFilter(null)}
-            >
-              {t('all')}
-            </button>
-            {accountingFilters && (
-              <FilterButtons
-                accountingFilters={accountingFilters}
-                handleSetFilter={handleSetFilter}
-                filter={filter}
-              />
+
+      <div className={styles.accountsPageContainer}>
+        <div className={styles.filterContainer}>
+          {isDataLoading ? (
+            <FilterInlineLoader />
+          ) : (
+            <>
+              <button
+                className={`${styles.multiSelectInput} ${
+                  null === filter ? styles.multiSelectInputCheckTrue : ''
+                }`}
+                key="all"
+                onClick={() => handleSetFilter(null)}
+              >
+                {t('all')}
+              </button>
+              {accountingFilters && (
+                <FilterButtons
+                  accountingFilters={accountingFilters}
+                  handleSetFilter={handleSetFilter}
+                  filter={filter}
+                />
+              )}
+            </>
+          )}
+        </div>
+        <div className={styles.contentContainer}>
+          <div className={styles.accountsContainer}>
+            {isDataLoading ? (
+              <TransactionListLoader />
+            ) : paymentHistory && paymentHistory.items.length === 0 ? (
+              <div className={styles.notFound}>
+                {/* <TransactionIcon color={'#c5c5c5'} width={'50px'} />
+                <p>{t('noRecords')}</p> */}
+                <TransactionsNotFound />
+              </div>
+            ) : (
+              paymentHistory &&
+              paymentHistory?.items?.map((item, index) => {
+                return <PaymentRecord record={item} index={index} />;
+              })
             )}
           </div>
-          <div className={styles.contentContainer}>
-            <div className={styles.accountsContainer}>
-              {paymentHistory.items.length === 0 ? (
-                <div className={styles.notFound}>
-                  <TransactionIcon color={'#c5c5c5'} width={'50px'} />
-                  <p>{t('noRecords')}</p>
-                </div>
-              ) : (
-                paymentHistory?.items?.map((item, index) => {
-                  return <PaymentRecord record={item} index={index} />;
-                })
-              )}
+          <div className={styles.filterContainerDesktop}>
+            <div className={styles.filterHead}>
+              <p className={styles.filterTitle}>{t('filters')}</p>
             </div>
-            <div className={styles.filterContainerDesktop}>
-              <div className={styles.filterHead}>
-                <p className={styles.filterTitle}>{t('filters')}</p>
-              </div>
+            {isDataLoading ? (
+              <FilterLoader />
+            ) : (
               <div className={styles.filterGrid}>
                 <button
                   className={`${styles.multiSelectInput} ${
@@ -222,10 +243,11 @@ function Account({}: Props): ReactElement {
                   />
                 )}
               </div>
-            </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
+
       {/* Open setting component */}
       {settingsModalOpen && (
         <SettingsModal
