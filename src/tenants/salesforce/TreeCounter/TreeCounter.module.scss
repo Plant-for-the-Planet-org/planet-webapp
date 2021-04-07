@@ -7,6 +7,11 @@
   align-items: center;
   width: 100%;
   height: 100%;
+  opacity: 0;
+}
+
+.treeCounterReady {
+  opacity: 1;
 }
 
 .treeCounterComma {
