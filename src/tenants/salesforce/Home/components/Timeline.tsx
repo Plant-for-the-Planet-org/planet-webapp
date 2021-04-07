@@ -54,6 +54,7 @@ export default function Timeline() {
   const populateSlide = (slides, slideIndex) => {
     return (
       <div className={styles.timelineMoment} id={`desktop-timeline-moment-${slideIndex}`}>
+        <h3>Follow us on our tree journey.</h3>
         <div className={gridStyles.gridRow}>
           {slides.map((moment) => {
             return (
@@ -130,13 +131,6 @@ export default function Timeline() {
 
   return (
     <section className={styles.timelineSection}>
-      <div className={gridStyles.fluidContainer}>
-        <div className={gridStyles.gridRow}>
-          <div className={gridStyles.col12}>
-            <h3>Follow us on our tree journey.</h3>
-          </div>
-        </div>
-      </div>
       <div className={styles.timelineRow}>
         <div className={gridStyles.fluidContainer}>
           <div className={styles.timelineDesktop}>
@@ -146,6 +140,7 @@ export default function Timeline() {
             {moments.map((moment, index) => {
               return (
                 <div className={`${styles.timelineContent} ${styles.timelineMoment}`} key={`mobile-moment-${moment.id}`} id={`mobile-timeline-moment-${index}`}>
+                  <h3>Follow us on our tree journey.</h3>
                   <span className={styles.timelineDate}>{moment.date}</span>
                   <img src={moment.image} alt="" className={styles.timelineImage}/>
                   <h4>{moment.title}</h4>

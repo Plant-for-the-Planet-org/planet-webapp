@@ -18,6 +18,10 @@
     letter-spacing: -0.004em;
     color: #032D60;
     margin-bottom: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 
     @include lgLaptopView {
       font-size: 36px;
@@ -124,7 +128,7 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-  position: relative;
+  //position: relative;
   padding-bottom: 40px;
   &::-webkit-scrollbar {
     width: 0;
@@ -153,7 +157,6 @@
 }
 
 .timelineMoment {
-  position: relative;
   flex: 0 0 100%;
   width: 100%;
   scroll-snap-align: center;
