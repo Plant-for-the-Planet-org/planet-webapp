@@ -1,13 +1,5 @@
 @import '../../../theme/theme';
 
-// modal container for black opacity
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 // white modal
 .modal {
   background-color: $backgroundColor;
@@ -147,5 +139,11 @@
     grid-template-columns: repeat(1, 1fr);
     grid-gap: 10px;
     padding: 20px 10px;
+  }
+}
+
+@include mdTabletView{
+  .modal{
+    width: 420px;
   }
 }

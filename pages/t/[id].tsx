@@ -36,7 +36,7 @@ export default function PublicUser(initialized: Props) {
     getAccessTokenSilently,
     logout
   } = useAuth0();
- 
+
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -55,6 +55,7 @@ export default function PublicUser(initialized: Props) {
     changeForceReload,
     forceReload,
     authenticatedType,
+    token,
   };
 
   const logoutUser = () => {
@@ -69,24 +70,23 @@ export default function PublicUser(initialized: Props) {
       setReady(true);
     }
   }, [router]);
-  
-  
+
   useEffect(() => {
     async function loadUserData() {
       // For loading user data we first have to decide whether user is trying to load their own profile or someone else's
       // To do this we first try to fetch the slug from the local storage
       // If the slug matches and also there is token in the session we fetch the user's private data, else the public data
-      
+
       if (typeof Storage !== 'undefined') {
-        let token = null; 
+        let token = null;
         if (isAuthenticated) {
           token = await getAccessTokenSilently();
         }
         const userInfo = await getLocalUserInfo()
         const currentUserSlug = userInfo?.slug ? userInfo.slug : null;
-        
+
         // some user logged in and slug matches -> private profile
-        if (!isLoading && token && currentUserSlug === slug) {          
+        if (!isLoading && token && currentUserSlug === slug) {
           try {
             const res = await getAccountInfo(token)
             if (res.status === 200) {
@@ -146,7 +146,7 @@ export default function PublicUser(initialized: Props) {
         </>
       );
     }
-    
+
   }
 
   if (initialized && (userprofile) && ready) {

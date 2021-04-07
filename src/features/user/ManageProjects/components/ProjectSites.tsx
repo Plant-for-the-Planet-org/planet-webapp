@@ -1,15 +1,13 @@
 import React, { ReactElement } from 'react';
 import styles from './../styles/StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { Controller, useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import StaticMap, { Source, Layer, WebMercatorViewport } from 'react-map-gl';
-import ReactMapboxGl, { GeoJSONLayer } from 'react-mapbox-gl';
+import { WebMercatorViewport } from 'react-map-gl';
+import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
-import * as d3 from 'd3-ease';
 import { MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import {
@@ -96,14 +94,23 @@ export default function ProjectSites({
     layers: [],
   });
 
-  React.useEffect(() => {
-    const promise = getMapStyle('openStreetMap');
-    promise.then((style: any) => {
-      if (style) {
-        setStyle(style);
-      }
-    });
-  }, []);
+  const RASTER_SOURCE_OPTIONS = {
+    "type": "raster",
+    "tiles": [
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    ],
+    "tileSize": 128
+  };
+
+
+  // React.useEffect(() => {
+  //   const promise = getMapStyle('openStreetMap');
+  //   promise.then((style: any) => {
+  //     if (style) {
+  //       setStyle(style);
+  //     }
+  //   });
+  // }, []);
 
   const [showForm, setShowForm] = React.useState(true);
 
@@ -223,11 +230,11 @@ export default function ProjectSites({
         token
       ).then((result) => {
         const geoLocation = {
-          geoLatitude:result.geoLatitude,
-          geoLongitude:result.geoLongitude
+          geoLatitude: result.geoLatitude,
+          geoLongitude: result.geoLongitude
         }
         setgeoLocation(geoLocation);
-        
+
         if (result.sites.length > 0) {
           setShowForm(false);
         }
@@ -259,7 +266,6 @@ export default function ProjectSites({
 
   }
 
-
   const EditProps = {
     openModal, handleModalClose, changeSiteDetails, siteDetails, errorMessage, status, geoJsonProp: geoJson, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList
   }
@@ -269,7 +275,7 @@ export default function ProjectSites({
       {editMode &&
         <EditSite {...EditProps} />}
 
-      <form onSubmit={(e)=>{e.preventDefault()}}>
+      <form onSubmit={(e) => { e.preventDefault() }}>
         <div className={styles.formField}>
           {siteList
             .filter((site) => {
@@ -328,6 +334,8 @@ export default function ProjectSites({
                         width: 320,
                       }}
                     >
+                      <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+                      <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
                       <GeoJSONLayer
                         data={site.geometry}
                         fillPaint={{
@@ -389,7 +397,7 @@ export default function ProjectSites({
               </div>
             </div>
 
-            {geoLocation && <Map {...MapProps} />} 
+            {geoLocation && <Map {...MapProps} />}
 
             <button
               id="projSiteSaveandAdd"
@@ -402,22 +410,22 @@ export default function ProjectSites({
             </button>
           </div>
         ) : (
-            <button id={'manageProjAddSite'}
-              onClick={() => {
-                setShowForm(true);
-                setGeoJson(null);
-                setSiteDetails(defaultSiteDetails);
-                setSiteGUID(null)
-                seteditMode(false);
-                setOpenModal(false);
-              }}
-              className={styles.formFieldLarge}
-            >
-              <p className={styles.inlineLinkButton}>
-                {t('manageProjects:addSite')}
-              </p>
-            </button>
-          )}
+          <button id={'manageProjAddSite'}
+            onClick={() => {
+              setShowForm(true);
+              setGeoJson(null);
+              setSiteDetails(defaultSiteDetails);
+              setSiteGUID(null)
+              seteditMode(false);
+              setOpenModal(false);
+            }}
+            className={styles.formFieldLarge}
+          >
+            <p className={styles.inlineLinkButton}>
+              {t('manageProjects:addSite')}
+            </p>
+          </button>
+        )}
 
         {errorMessage && errorMessage !== '' ? (
           <div className={styles.formFieldLarge}>
@@ -427,33 +435,34 @@ export default function ProjectSites({
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleBack}
-              className={styles.secondaryButton}
+              className="secondaryButton"
             >
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
-            </AnimatedButton>
+            </button>
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleSubmit(uploadProjectSiteNext)}
-              className={styles.continueButton}
+              className="primaryButton"
+              style={{minWidth:"240px"}}
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
-            </AnimatedButton>
+                t('manageProjects:saveAndContinue')
+              )}
+            </button>
           </div>
         </div>
       </form>
     </div>
   ) : (
-      <></>
-    );
+    <></>
+  );
 }
 
 interface EditSiteProps {
@@ -487,9 +496,9 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
-    geoLocation:{
-      geoLatitude:36.96,
-      geoLongitude:-28.5
+    geoLocation: {
+      geoLatitude: 36.96,
+      geoLongitude: -28.5
     }
   };
 
@@ -543,7 +552,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={styles.modalContainer + ' ' + theme}
+      className={'modalContainer' + ' ' + theme}
       open={openModal}
       onClose={handleModalClose}
       closeAfterTransition
@@ -608,27 +617,28 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
           ) : null}
 
           <div className={styles.formField}>
-          <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
-              onClick={handleModalClose}
-              className={styles.secondaryButton}
-            >
-              <BackArrow />
-              <p>{t('manageProjects:backToSites')}</p>
-            </AnimatedButton>
-          </div>
-          <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf}`}>
-              <AnimatedButton
+              <button
+                onClick={handleModalClose}
+                className="secondaryButton"
+              >
+                <BackArrow />
+                <p>{t('manageProjects:backToSites')}</p>
+              </button>
+            </div>
+            <div style={{ width: '20px' }}></div>
+            <div className={`${styles.formFieldHalf}`}>
+              <button
                 onClick={handleSubmit(editProjectSite)}
-                className={styles.continueButton}
+                className="primaryButton"
+                style={{minWidth:"240px"}}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
-                    t('manageProjects:saveSite')
-                  )}
-              </AnimatedButton>
+                  t('manageProjects:saveSite')
+                )}
+              </button>
             </div>
           </div>
         </form>

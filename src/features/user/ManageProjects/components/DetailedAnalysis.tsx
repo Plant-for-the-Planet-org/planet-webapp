@@ -3,7 +3,6 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import styles from './../styles/StepForm.module.scss'
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -558,24 +557,25 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
                 <div className={styles.formField} style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={handleBack}
-                            className={styles.secondaryButton}
+                            className="secondaryButton"
                         >
                             <BackArrow />
                             <p>
                                 {t('manageProjects:backToMedia')}
                             </p>
-                        </AnimatedButton>
+                        </button>
                     </div>
                     <div style={{ width: '20px' }}></div>
-                    <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                    <div className={`${styles.formFieldHalf}`} >
+                        <button 
                             onClick={handleSubmit(onSubmit)}
-                            className={styles.continueButton}
+                            className="primaryButton"
+                            style={{ minWidth: "240px"}}
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
-                        </AnimatedButton>
+                        </button >
                     </div>
                 </div>
             </form>
