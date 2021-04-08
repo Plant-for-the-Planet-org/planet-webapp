@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function PublicUser(initialized: Props) {
-
   const [ready, setReady] = React.useState(false);
   const [slug, setSlug] = React.useState('');
 
@@ -22,9 +21,6 @@ export default function PublicUser(initialized: Props) {
       setReady(true);
     }
   }, [router]);
-   
-  return ready ? (
-    <Redeem/>
-  ) :  (<UserProfileLoader />);
- 
+
+  return ready ? <Redeem slug={slug} /> : <UserProfileLoader />;
 }
