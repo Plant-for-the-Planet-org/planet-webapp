@@ -38,5 +38,6 @@
   "receivedFrom": "Empfangen von {{name}}",
   "redeemedTrees": "Eingelöste Bäume",
   "nameForest": "{{name}}'s Wald",
+  "registeredTrees": "Registrierte Bäume",
   "embedWidget": "Widget einbetten"
 }
