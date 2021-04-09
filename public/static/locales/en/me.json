@@ -70,5 +70,6 @@
   "refunded": "Refunded",
   "referred": "Referred",
   "in-dispute": "In Dispute",
-  "dispute-lost": "Dispute Lost"
+  "dispute-lost": "Dispute Lost",
+  "nameForest": "{{name}}'s Forest"
 }
