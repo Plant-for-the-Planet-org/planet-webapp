@@ -14,7 +14,6 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/Donations.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 
@@ -53,9 +52,7 @@ const getInputOptions = (placeholder: string) => {
 };
 
 function CardPayments({
-  treeCount,
-  treeCost,
-  currency,
+  totalCost,
   paymentType,
   setPaymentType,
   onPaymentFunction,
@@ -246,11 +243,7 @@ function CardPayments({
               {t('common:donate')}
               <div className={styles.totalCost}
               style={{ color: styles.light, fontSize: "14px" }}>
-              {getFormatedCurrency(
-                    i18n.language,
-                    currency,
-                    treeCount * treeCost
-                  )}
+                 {totalCost}
                   </div>
             </AnimatedButton>
           </div>
@@ -260,11 +253,7 @@ function CardPayments({
                 {t('common:donate')}
                 <div className={styles.totalCost}
               style={{ color: styles.light, fontSize: "14px" }}>
-              {getFormatedCurrency(
-                    i18n.language,
-                    currency,
-                    treeCount * treeCost
-                  )}
+              {totalCost}
                   </div>
               </AnimatedButton>
             </div>
