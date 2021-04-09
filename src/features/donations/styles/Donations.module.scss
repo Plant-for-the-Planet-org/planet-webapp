@@ -315,6 +315,10 @@
   font-size: $fontSubTitleSize;
   font-weight: 600;
   min-height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .paymentRequestPlaceholder {

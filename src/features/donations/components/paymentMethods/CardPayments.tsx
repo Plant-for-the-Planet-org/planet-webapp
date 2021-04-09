@@ -258,6 +258,14 @@ function CardPayments({
             <div className={styles.actionButtonsContainerCenter}>
               <AnimatedButton disabled className={styles.continueButtonDisabled} id='donateContinueButton'>
                 {t('common:donate')}
+                <div className={styles.totalCost}
+              style={{ color: styles.light, fontSize: "14px" }}>
+              {getFormatedCurrency(
+                    i18n.language,
+                    currency,
+                    treeCount * treeCost
+                  )}
+                  </div>
               </AnimatedButton>
             </div>
           )}
