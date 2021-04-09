@@ -16,7 +16,7 @@ import GetNavBarIcon from './getNavBarIcon';
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
-  const { t, ready } = useTranslation(['common']);
+  const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
 
   const {
@@ -127,6 +127,17 @@ export default function NavbarComponent(props: any) {
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
                   {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)} 
                   </p>
+                </button>
+              )
+            }
+            if (link === 'about' && SingleLink.visible) {
+              return (
+                <button id={'aboutUsIcon'} key={link} onClick={() => router.push(`${SingleLink.onclick}${i18n.language === 'de' ? 'de' : ''}`,undefined,undefined)} className={'linkContainer'}>
+                  
+                  <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
+                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+                      {t('common:' + SingleLink.title)}
+                    </p>
                 </button>
               )
             }
