@@ -296,6 +296,9 @@ function PaymentDetails({
                 <Elements stripe={getStripe(paymentSetup)}>
                   <CardPayments
                     donorDetails={donorDetails}
+                    treeCount={treeCount}
+                    treeCost={treeCost}
+                    currency={currency}
                     onPaymentFunction={(data) =>
                       onSubmitPayment('stripe', data)
                     }
