@@ -3,8 +3,15 @@ import React, { ReactElement } from 'react';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../styles/AccountNavbar.module.scss';
+import i18next from '../../../../../i18n';
+import Link from 'next/link';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+
+const { useTranslation } = i18next;
 
 function PaymentRecord({ record, index }) {
+  const { t, i18n } = useTranslation('me');
   const [selectedRecord, setselectedRecord] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -41,16 +48,17 @@ function PaymentRecord({ record, index }) {
     >
       <div className={styles.recordHeader} onClick={() => selectRecord1(index)}>
         <div className={styles.treesDate}>
-          <p className={styles.treesDonated}>{record.caption}</p>
+          <p className={styles.treesDonated}>
+            {getFormattedNumber(i18n.language, record.treeCount)}{' '}
+            {t(record.type)}
+          </p>
           <p className={styles.donationDate}>{formatDate(record.created)}</p>
         </div>
         <div className={styles.statusAmount}>
-          {record.amount && record.currency && (
-            <div className={styles.recordStatus}>
-              {record.currency} {record.amount}
-            </div>
-          )}
-          <div>{record.status}</div>
+          <div className={styles.recordStatus}>
+            {getFormatedCurrency(i18n.language, record.currency, record.amount)}
+          </div>
+          <div>{t(t(record.status))}</div>
         </div>
       </div>
 
@@ -59,16 +67,18 @@ function PaymentRecord({ record, index }) {
         onClick={() => selectRecord2(index)}
       >
         <div className={styles.treesDate}>
-          <p className={styles.treesDonated}>{record.caption}</p>
+          <p className={styles.treesDonated}>
+            {getFormattedNumber(i18n.language, record.treeCount)}{' '}
+            {t(record.type)}
+          </p>
           <p className={styles.donationDate}>{formatDate(record.created)}</p>
         </div>
         <div className={styles.statusAmount}>
-          {record.amount && record.currency && (
-            <div className={styles.recordStatus}>
-              {record.currency} {record.amount}
-            </div>
-          )}
-          <div>{record.status}</div>
+          <div className={styles.recordStatus}>
+            {getFormatedCurrency(i18n.language, record.currency, record.amount)}
+          </div>
+
+          <div>{t(record.status)}</div>
         </div>
       </div>
 
@@ -77,19 +87,14 @@ function PaymentRecord({ record, index }) {
           selectedRecord === index ? styles.recordDataContainerSelected : ''
         }`}
       >
-        {record.details &&
-          record.details.length > 0 &&
-          record.details.map((detail, index) => {
-            return (
-              <div key={index} className={styles.detailContainer}>
-                <p className={styles.detailTitle}>{detail.caption}</p>
-                <div
-                  className={styles.detailValue}
-                  dangerouslySetInnerHTML={{ __html: detail.text }}
-                />
-              </div>
-            );
-          })}
+        {record.details && (
+          <RecordDetails
+            detail={record.details}
+            t={t}
+            i18n={i18n}
+            currency={record.currency}
+          />
+        )}
       </div>
       {/* <div className={styles.borderBottom}></div> */}
       {selectedRecord === index && (
@@ -111,39 +116,88 @@ function PaymentRecord({ record, index }) {
             </div>
             <div className={styles.recordHeader}>
               <div className={styles.treesDate}>
-                <p className={styles.treesDonated}>{record.caption}</p>
+                <p className={styles.treesDonated}>
+                  {getFormattedNumber(i18n.language, record.treeCount)}{' '}
+                </p>
                 <p className={styles.donationDate}>
                   {formatDate(record.created)}
                 </p>
               </div>
               <div className={styles.statusAmount}>
-                {record.amount && record.currency && (
-                  <div className={styles.recordStatus}>
-                    {record.currency} {record.amount}
-                  </div>
-                )}
-                <div>{record.status}</div>
+                <div className={styles.recordStatus}>
+                  {getFormatedCurrency(
+                    i18n.language,
+                    record.currency,
+                    record.amount
+                  )}
+                </div>
+
+                <div>{t(record.status)}</div>
               </div>
             </div>
             <div className={styles.recordContainer}>
-              {record.details &&
-                record.details.length > 0 &&
-                record.details.map((detail: any, index: any) => {
-                  return (
-                    <div key={index} className={styles.detailContainer}>
-                      <p className={styles.detailTitle}>{detail.caption}</p>
-                      <div
-                        className={styles.detailValue}
-                        dangerouslySetInnerHTML={{ __html: detail.text }}
-                      />
-                    </div>
-                  );
-                })}
+              {record.details && (
+                <RecordDetails
+                  detail={record.details}
+                  t={t}
+                  i18n={i18n}
+                  currency={record.currency}
+                />
+              )}
             </div>
           </div>
         </Modal>
       )}
     </div>
+  );
+}
+
+function RecordDetails({ detail, t, i18n, currency }: any) {
+  return (
+    <>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('amount')}</p>
+        <div className={styles.detailValue}>
+          {getFormatedCurrency(i18n.language, currency, detail.amount)}
+        </div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('created')}</p>
+        <div className={styles.detailValue}>{formatDate(detail.created)}</div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('project')}</p>
+        <div className={styles.detailValue}>{detail.project}</div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('method')}</p>
+        <div className={styles.detailValue}>{detail.method}</div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('treeCost')}</p>
+        <div className={styles.detailValue}>
+          {getFormatedCurrency(i18n.language, currency, detail.treeCost)}
+        </div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('treeCount')}</p>
+        <div className={styles.detailValue}>
+          {getFormattedNumber(i18n.language, detail.treeCount)}
+        </div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('lastUpdate')}</p>
+        <div className={styles.detailValue}>
+          {formatDate(detail.lastUpdate)}
+        </div>
+      </div>
+      <div className={styles.detailContainer}>
+        <p className={styles.detailTitle}>{t('donorCertificate')}</p>
+        <Link href={detail.donorCertificate}>
+          <a className={styles.detailValue}>{t('download')}</a>
+        </Link>
+      </div>
+    </>
   );
 }
 

@@ -21,6 +21,7 @@ import TransactionListLoader from '../../../../../public/assets/images/icons/Tra
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import FilterLoader from '../../../../../public/assets/images/icons/FilterLoader';
 import FilterInlineLoader from '../../../../../public/assets/images/icons/FilterInlineLoader';
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 const { useTranslation } = i18next;
 
@@ -82,6 +83,8 @@ function Account({}: Props): ReactElement {
   const [filter, setFilter] = React.useState();
   const [paymentHistory, setpaymentHistory] = React.useState();
 
+  const [accountingFilters, setaccountingFilters] = React.useState();
+
   React.useEffect(() => {
     if (isAuthenticated) setFilter(null);
   }, [isAuthenticated]);
@@ -116,8 +119,6 @@ function Account({}: Props): ReactElement {
     }
     fetchPaymentHistory();
   }, [filter]);
-
-  const [accountingFilters, setaccountingFilters] = React.useState();
 
   const handleSetFilter = (id: any) => {
     setFilter(id);
@@ -196,6 +197,7 @@ function Account({}: Props): ReactElement {
                   accountingFilters={accountingFilters}
                   handleSetFilter={handleSetFilter}
                   filter={filter}
+                  t={t}
                 />
               )}
             </>
@@ -240,6 +242,7 @@ function Account({}: Props): ReactElement {
                     accountingFilters={accountingFilters}
                     handleSetFilter={handleSetFilter}
                     filter={filter}
+                    t={t}
                   />
                 )}
               </div>
@@ -275,7 +278,7 @@ function FilterButtons(props: any) {
         key={item[0]}
         onClick={() => props.handleSetFilter(item[0])}
       >
-        {item[0]}
+        {props.t(item[0])}
       </button>
     );
   });
