@@ -23,7 +23,8 @@ export default function GetHomeMeta(): ReactElement {
                   ) : null}
                   {config.tenantName === 'salesforce' ? (
                     <>
-                            <meta name="twitter:card" content="summary_large_image" />
+                      <script type="text/javascript" src="https://launchxd.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/24/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=d3c90764" />
+                      <meta name="twitter:card" content="summary_large_image" />
                             <meta name="twitter:image" content={config.meta.image} />
                     </>
                   ) : <meta name="twitter:card" content="summary" />}
