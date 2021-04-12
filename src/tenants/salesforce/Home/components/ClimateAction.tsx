@@ -54,7 +54,7 @@ export default function ClimateAction() {
             <h3>Becoming a tree champion is easy.</h3>
             <p><small>Select your favorite tree project and lend your support.</small></p>
             <Link href="/">
-              <button onClick={()=>{ga('send', 'event', 'cta', 'click', 'start planting bottom');}}>Start Planting</button>
+              <button>Start Planting</button>
             </Link>
           </div>
         </div>

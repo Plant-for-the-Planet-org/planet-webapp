@@ -15,7 +15,7 @@ export default function Landing(tenantScore: Props) {
         <div className={styles.landingContentTop}>
           <h1>Plant the Seeds for a More Sustainable Future</h1>
           <Link href="/">
-            <button onClick={()=>{ga('send', 'event', 'cta', 'click', 'start planting top');}}>Start Planting</button>
+            <button>Start Planting</button>
           </Link>
         </div>
         <div className={styles.landingContentBottom}>
