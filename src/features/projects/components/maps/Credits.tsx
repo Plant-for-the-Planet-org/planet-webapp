@@ -54,13 +54,20 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:shop')}
                 </a> : null}
-                {config.statusURL ? <a
+                {/* {config.statusURL ? <a
                     rel="noopener noreferrer"
                     href={config.statusURL}
                     target={'_blank'}
                 >
                     {t('common:status')}
-                </a> : null}
+                </a> : null} */}
+                <a
+                    rel="noopener noreferrer"
+                    href={`https://status.plant-for-the-planet.org/`}
+                    target={'_blank'}
+                >
+                    {t('common:status')}
+                </a>
                 <a
                     rel="noopener noreferrer"
                     href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
