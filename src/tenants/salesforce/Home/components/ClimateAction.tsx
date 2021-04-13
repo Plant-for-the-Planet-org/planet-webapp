@@ -21,7 +21,7 @@ export default function ClimateAction() {
     {
       id: 3,
       category: '360 blog',
-      title: 'Analyze your corporate emissions with Salesforce Sustainability Cloud.',
+      title: 'Embed sustainability into the core of your business with Salesforce Sustainability Cloud.',
       image: '/tenants/salesforce/images/climate-action-3.png',
       link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
     },
