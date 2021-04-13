@@ -6,10 +6,10 @@ import {
   getAuthenticatedRequestWithoutRedirecting,
 } from '../../../../../utils/apiRequests/api';
 import i18next from '../../../../../../i18n';
-import TreeIcon from '../../../../../../out/assets/images/icons/TreeIcon';
-import TreesIcon from '../../../../../../out/assets/images/icons/TreesIcon';
 import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
+import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
