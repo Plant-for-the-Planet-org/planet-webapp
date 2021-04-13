@@ -39,7 +39,6 @@ export function sortCountriesData(sortBy) {
     return 0;
   });
 }
-
 /**
  * Sorts the countries array for the translated country name
  * @param {Function} t - translation function
@@ -51,16 +50,22 @@ export function sortCountriesByTranslation(t, language, priorityCountryCodes) {
   if (!sortedCountries[key]) {
     const priorityCountries = [];
     // filter priority countries from list
-    const filteredCountries = countriesData.filter(function(value, index, arr) {
-      if (priorityCountryCodes.includes(value.countryCode)) {
-        priorityCountries.push(value);
-        return false;
-      } else {
-        return true;
-      }
-    });
+    // const filteredCountries = countriesData.filter(function(value, index, arr) {
+    //   if (priorityCountryCodes.includes(value.countryCode)) {
+    //     priorityCountries.push(value);
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // });
     // sort array of countries
-    sortedCountries[key] = priorityCountries.concat(filteredCountries.sort((a, b) => {
+    console.log(priorityCountryCodes,"code");
+  console.log(countriesData,"country")
+  priorityCountryCodes.map((country) => {
+    const priorityCountry = getCountryDataBy("countryCode", country);
+    priorityCountries.push(priorityCountry);
+  })
+    sortedCountries[key] = priorityCountries.concat(countriesData.sort((a, b) => {
       const nameA = t(`country:${a.countryCode.toLowerCase()}`);
       const nameB = t(`country:${b.countryCode.toLowerCase()}`);
       if (nameA > nameB) {
