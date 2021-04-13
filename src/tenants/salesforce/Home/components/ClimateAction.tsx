@@ -33,7 +33,7 @@ export default function ClimateAction() {
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
             <h3>Take climate action.</h3>
-            <p>The fun doesn’t stop here. If you’re inspired to do more, follow these paths:</p>
+            <p><small>The fun doesn’t stop here. If you’re inspired to do more, follow these paths:</small></p>
           </div>
         </div>
         <div className={gridStyles.gridRow}>
