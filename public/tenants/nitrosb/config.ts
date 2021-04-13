@@ -1,7 +1,6 @@
 const config = {
   tenantName: 'nitrosb',
   tenantURL: 'forest.nitrosnowboards.com',
-  statusURL: 'https://status.pp.eco/786388515',
   languages: ['en'],
   fallbackCurrency: 'EUR',
   tenantGoal:1000000,

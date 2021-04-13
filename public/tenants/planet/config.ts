@@ -1,7 +1,6 @@
 const config = {
   // name of tenant
   tenantName: 'planet',
-  statusURL: 'https://status.pp.eco/785878669',
   // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
   tenantGoal:null,

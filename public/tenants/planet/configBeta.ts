@@ -1,7 +1,6 @@
 const config = {
   tenantName: 'planetbeta',
   tenantURL: 'beta.plant-for-the-planet.org',
-  statusURL: 'https://status.pp.eco/785878669',
   tenantLogoURL: 'https://www.plant-for-the-planet.org',
   languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
   fallbackCurrency: 'EUR',

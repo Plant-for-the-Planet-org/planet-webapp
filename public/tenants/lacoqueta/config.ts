@@ -1,7 +1,6 @@
 const config = {
   tenantName: 'lacoqueta',
   tenantURL: 'forest.lacoquetakids.com',
-  statusURL: 'https://status.pp.eco/786388518',
   languages: ['en'],
   fallbackCurrency: 'GBP',
   tenantGoal:1000000,
