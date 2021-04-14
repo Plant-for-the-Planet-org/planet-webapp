@@ -106,7 +106,7 @@ function ContactDetails({
       <div className={styles.treeDonationContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formRow}>
-            <div>
+            <div style={{flex: "1"}}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:firstName')}
@@ -122,7 +122,7 @@ function ContactDetails({
             </div>
 
             <div style={{ width: '20px' }} />
-            <div>
+            <div style={{flex: "1"}}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:lastName')}
