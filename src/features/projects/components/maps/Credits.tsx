@@ -63,7 +63,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 </a> : null} */}
                 <a
                     rel="noopener noreferrer"
-                    href={`https://status.plant-for-the-planet.org/`}
+                    href={`https://status.pp.eco/`}
                     target={'_blank'}
                 >
                     {t('common:status')}
