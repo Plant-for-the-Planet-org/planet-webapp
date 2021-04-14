@@ -106,7 +106,7 @@ function ContactDetails({
       <div className={styles.treeDonationContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formRow}>
-            <div style={{flex: "1"}}>
+            <div className={styles.formRowInput}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:firstName')}
@@ -122,7 +122,7 @@ function ContactDetails({
             </div>
 
             <div style={{ width: '20px' }} />
-            <div style={{flex: "1"}}>
+            <div className={styles.formRowInput}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:lastName')}
@@ -173,7 +173,7 @@ function ContactDetails({
             </div>
           </div>
           <div className={styles.formRow}>
-            <div>
+            <div className={styles.formRowInput}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:city')}
@@ -189,7 +189,7 @@ function ContactDetails({
             </div>
 
           <div style={{ width: '20px' }} />
-          <div>
+          <div className={styles.formRowInput}>
             {postalRegex && (
               <MaterialTextField
                 inputRef={register({
