@@ -28,7 +28,7 @@ export default function CompleteSignup() {
     loginWithRedirect,
     user
   } = useAuth0();  
-
+console.log(user,"h")
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
@@ -37,7 +37,7 @@ export default function CompleteSignup() {
   const isPrivate = watch('isPrivate');
 
   const [token, setToken] = React.useState('')
-
+console.log(token,"token")
   const [submit, setSubmit] = React.useState(false)
   React.useEffect(() => {
     async function loadFunction() {
@@ -197,9 +197,10 @@ export default function CompleteSignup() {
 
           {/* type of account buttons */}
           <MaterialTextField
-                    label={t('editProfile:person')}
+                    label={t('editProfile:iamA')}
                     variant="outlined"
                     select
+                    defaultValue={profileTypes[0].value}
                   >
                     {profileTypes.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -215,6 +216,7 @@ export default function CompleteSignup() {
                 variant="outlined"
                 inputRef={register({ required: true })}
                 name={"firstname"}
+                defaultValue={user.given_name ? user.given_name : ""}
               />
               {errors.firstname && (
                 <span className={styles.formErrors}>
@@ -229,6 +231,7 @@ export default function CompleteSignup() {
                 variant="outlined"
                 inputRef={register({ required: true })}
                 name={"lastname"}
+                defaultValue={user.family_name ? user.family_name : ""}
               />
               {errors.lastname && (
                 <span className={styles.formErrors}>
