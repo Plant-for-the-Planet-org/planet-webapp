@@ -14,6 +14,8 @@ import i18next from '../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
+import { MenuItem } from '@material-ui/core';
+
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
@@ -74,7 +76,7 @@ export default function CompleteSignup() {
     setSnackbarOpen(false);
   };
 
-  const [type, setAccountType] = useState('individual');
+  const [type, setAccountType] = useState('person');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
@@ -137,7 +139,7 @@ export default function CompleteSignup() {
   };
 
   const profileTypes = [
-    { id: 1, title: ready ? t('editProfile:individual') : '', value: 'individual' },
+    { id: 1, title: ready ? t('editProfile:person') : '', value: 'person' },
     { id: 2, title: ready ? t('editProfile:organization') : '', value: 'organization' },
     { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
     { id: 4, title: ready ? t('editProfile:education') : '', value: 'education' }
@@ -194,17 +196,17 @@ export default function CompleteSignup() {
           </div>
 
           {/* type of account buttons */}
-          <div className={styles.profileTypesContainer}>
-            {profileTypes.map(item => {
-              return (
-                <button id={'editProfileTypes'} key={item.id} className={`${styles.profileTypes} ${type === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
-                  {t('editProfile:profileTypes', {
-                    item: item
-                  })}
-                </button>
-              )
-            })}
-          </div>
+          <MaterialTextField
+                    label={t('editProfile:person')}
+                    variant="outlined"
+                    select
+                  >
+                    {profileTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.title}
+                      </MenuItem>
+                    ))}
+                  </MaterialTextField>
 
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
@@ -236,7 +238,7 @@ export default function CompleteSignup() {
             </div>
           </div>
 
-          {type !== 'individual' ? (
+          {type !== 'person' ? (
             <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('editProfile:profileName', {
