@@ -31,7 +31,7 @@ export default function Timeline() {
       image: '/tenants/salesforce/images/aug.png',
       title: '1t.org US Chapter',
       copy: 'Salesforce helped launch the <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> U.S. Chapter with 25 companies, nonprofit organizations, and governments pledging to conserve, restore, and grow almost 1 billion trees by 2030.',
-      learnMore: ''
+      learnMore: 'https://us.1t.org/view-pledges/'
     },
     {
       id: 4,
@@ -39,7 +39,7 @@ export default function Timeline() {
       image: '/tenants/salesforce/images/sep.png',
       title: ' Salesforce’s Tree Tracker',
       copy: 'The tree tracker is an essential piece of Salesforce’s work to share resources and provide transparency to our stakeholders.',
-      learnMore: 'https://us.1t.org/view-pledges/'
+      learnMore: 'https://www.salesforce.com/news/stories/salesforce-partners-with-plant-for-the-planet-to-spotlight-global-reforestation-projects-and-track-progress-towards-100-million-tree-goal/'
     },
     {
       id: 5,
