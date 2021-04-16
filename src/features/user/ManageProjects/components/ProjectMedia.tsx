@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../styles/StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -28,7 +27,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState([])
+  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -51,12 +50,16 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
       if (!res.code) {
-        const newUploadedImages = uploadedImages;
+        let newUploadedImages = [...uploadedImages];
+        
+        if(!newUploadedImages){
+          newUploadedImages = [];
+        }
         newUploadedImages.push(res)
         setUploadedImages(newUploadedImages)
         setIsUploadingData(false)
         setErrorMessage('')
-      } 
+      }
       else {
         if (res.code === 404) {
           setIsUploadingData(false)
@@ -90,20 +93,24 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       }
     })
 
-  }, [])
+  }, [uploadedImages])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
     multiple: true,
-    onDrop: onDrop,
-    onDropAccepted: () => {
-      console.log('uploaded');
-
+    maxSize: 10485760,
+    onDropAccepted: onDrop,
+    onDrop: () => {
+      console.log('uploading');
     },
-
-    // onFileDialogCancel: () => {
-    //     alert('no file selected')
-    // }
+    onDropRejected: (err) => {
+      if (err[0].errors[0].code === "file-too-large") {
+        setErrorMessage(t('manageProjects:fileSizeLimit'))
+      }
+      else if(err[0].errors[0].code === "file-invalid-type"){
+        setErrorMessage(t('manageProjects:fileImageOnly'))
+      }
+    }
   });
 
   const [youtubeURL, setYoutubeURL] = React.useState('')
@@ -210,7 +217,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   }
   return ready ? (
     <div className={styles.stepContainer}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e)=>{e.preventDefault()}}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {/* <div className={styles.formFieldLarge}>
             {youtubeURL && !errors.youtubeURL ? (
@@ -244,14 +251,14 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           {uploadedImages && uploadedImages.length > 0 ?
             <div className={styles.formField}>
               {
-                uploadedImages.map((image, index: any) => { 
+                uploadedImages.map((image, index: any) => {
                   return (
                     <div key={index} className={styles.formFieldHalf}>
                       <div className={styles.uploadedImageContainer}>
                         <img src={getImageUrl('project', 'medium', image.image)} />
                         <div className={styles.uploadedImageOverlay}></div>
 
-                         <input
+                        <input
                           onBlur={(e) => uploadCaption(image.id, index, e)}
                           type="text"
                           placeholder={t('manageProjects:addCaption')}
@@ -276,13 +283,12 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <AnimatedButton
-                className={styles.continueButton}
+              <div
+                className="primaryButton" style={{maxWidth: "240px"}}
               >
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
-
-              </AnimatedButton>
+              </div>
               <p style={{ marginTop: '18px' }}>
                 {t('manageProjects:dragIn')}
               </p>
@@ -300,19 +306,19 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleBack}
-              className={styles.secondaryButton}
+              className="secondaryButton"
             >
               <BackArrow />
               <p>
                 {t('manageProjects:backToBasic')}
               </p>
-            </AnimatedButton>
+            </button>
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{minWidth:"240px"}}>
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </button>
           </div>

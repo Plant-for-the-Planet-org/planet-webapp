@@ -29,7 +29,12 @@
 html {
   overflow-x: hidden;
   overflow-y: scroll;
-  // background-color: #c8def4;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -108,8 +113,6 @@ samp,
 small,
 strike,
 strong,
-sub,
-sup,
 tt,
 var,
 b,
@@ -175,6 +178,28 @@ video {
   color: $primaryColor !important;
 }
 
+.comparison-map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.mapboxgl-compare {
+  top: 0;
+}
+
+.mapboxgl-compare .compare-swiper-vertical {
+  background-color: $primaryColor;
+}
+
+// .mapboxgl-ctrl-bottom-right {
+//   margin: 0 10px 40px 0 !important;
+// }
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
 
 @font-face {
   font-family: 'Pampers Script';
@@ -190,18 +215,23 @@ video {
   font-style: normal;
 }
 
-.primaryButton {
-  color: white;
+.primaryButton,
+.secondaryButton {
+  color: $light;
   font-weight: bold;
-  background-color: #68b030;
+  background-color: $primaryColor;
+  background-image: linear-gradient(
+    103deg,
+    $primaryColor 5%,
+    $primaryDarkColor 116%
+  );
   height: 40px;
   padding: 0px;
   text-align: center;
   border: 0px;
   border-radius: 52px;
-  min-width: 150px;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  min-width: 200px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,12 +239,26 @@ video {
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   text-decoration: none;
 }
-.primaryButton:hover{
+.primaryButton:hover,
+.secondaryButton:hover {
   transform: translateY(-7px);
   cursor: pointer;
 }
 
-button{
+.secondaryButton {
+  min-width: 240px;
+  background-image: none;
+  background-color: $blueishGrey;
+  color: $primaryFontColor;
+  p {
+    margin-left: 6px;
+  }
+  svg {
+    height: 12px;
+  }
+}
+
+button {
   border: 0px;
   padding: 0px;
   margin: 0px;
@@ -226,4 +270,51 @@ button{
   src: url('/tenants/pampers/HarmoniaSansPro-SemiBd.woff') format('woff');
   font-weight: bold;
   font-style: normal;
+}
+
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.notificationContainer {
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+  min-width: 200px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  align-items: center;
+  max-width: 98%;
+  pointer-events: all;
+  z-index: 999;
+  height: 250px;
+  background: transparent;
+}
+
+@include xsPhoneView {
+  .notificationContainer {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    max-width: 100%;
+    border-radius: 0px;
+  }
+}
+
+.read-more-button {
+  font-weight: bold;
+  cursor: pointer;
 }

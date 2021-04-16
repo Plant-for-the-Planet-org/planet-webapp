@@ -85,11 +85,44 @@
   }
 }
 .latlongField {
+  position: relative;
   div,
   input {
     width: 120px !important;
+    position: relative;
   }
 }
+
+.layerSwitcher {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.layerOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: $backgroundColor;
+  width: 60px;
+  height: 30px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  font-family: $primaryFontFamily;
+  font-weight: 700;
+}
+
+.active {
+  background-color: $primaryColor;
+  color: $light;
+}
+
 @include mdTabletView {
   .mainContainer {
     max-width: 780px;
@@ -107,43 +140,11 @@
     }
   }
 }
-.continueButton,
-.secondaryButton {
-  height: 40px;
-  border-radius: 100px;
-  padding-left: 24px;
-  padding-right: 24px;
-  display: flex;
-  justify-content: center;
-  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
-  align-items: center;
-  font-weight: bold;
-  color: white;
-  border: 0px;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.continueButton:hover,
-.secondaryButton:hover {
-  transform: scale(1.05);
-  cursor: pointer;
-}
-.secondaryButton {
-  background-image: none;
-  background-color: $blueishGrey;
-  color: #2f3336;
-  p {
-    margin-left: 6px;
-  }
-  svg {
-    height: 12px;
-  }
-}
 
 .backButton {
   margin-top: 12px;
   font-weight: bold;
-  color: #2f3336;
+  color: $primaryFontColor;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -158,7 +159,7 @@
 .fileUploadContainer {
   height: 128px;
   border-radius: 10px;
-  border: dashed 1px #2f3336;
+  border: dashed 1px $primaryFontColor;
   background-color: #f2f2f7;
   width: 100%;
   display: flex;
@@ -169,14 +170,14 @@
 
 .inlineLinkButton {
   font-family: $primaryFontFamily;
- width: 100%;
- font-size: 14px;
+  width: 100%;
+  font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.43;
   letter-spacing: normal;
-  color: #68b030;
+  color: $primaryColor;
   display: flex;
   justify-content: center;
   margin-top: 10px;
@@ -185,7 +186,7 @@
   cursor: pointer;
   font-weight: bold;
 }
-.projSiteSaveandAdd{
+.projSiteSaveandAdd {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -223,7 +224,7 @@
     height: 20px;
     width: 20px;
     border-radius: 20px;
-    background-color: #d5d5d5;
+    background-color: $dividerColor;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -244,9 +245,20 @@
   // position: absolute;
   font-family: $primaryFontFamily;
   font-size: 12px;
-  color: #e74c3c;
+  color: $dangerColor;
   margin-left: 6px;
   margin-top: 6px;
+  max-width: 320px;
+}
+
+.formErrorsAbsolute {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: $primaryFontFamily;
+  font-size: 12px;
+  color: $dangerColor;
   max-width: 320px;
 }
 
@@ -335,6 +347,26 @@
       }
     }
   }
+  .uploadedMapEditButton {
+    background-color: $light;
+    padding: 6px;
+    border-radius: 18px;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    right: 5%;
+    > svg {
+      height: 12px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .mapboxContainer2 {
@@ -355,7 +387,7 @@
   }
 }
 .mapTool {
-  background-color: white;
+  background-color: $backgroundColor;
   height: 30px;
   width: 30px;
   border-radius: 3px;
@@ -381,7 +413,7 @@
   background-color: rgb(242, 242, 247);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border: dashed 1px #2f3336;
+  border: dashed 1px $primaryFontColor;
 }
 
 .mapNavigation {
@@ -421,20 +453,20 @@
     bottom: 16px;
     left: 12px;
     border: 0px;
-    color: white;
+    color: $light;
     background-color: transparent;
     font-size: 16px;
     &::placeholder {
-      color: white;
+      color: $light;
       opacity: 1; /* Firefox */
     }
     &:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
-      color: white;
+      color: $light;
     }
     &::-ms-input-placeholder {
       /* Microsoft Edge */
-      color: white;
+      color: $light;
     }
   }
   .uploadedImageButtonContainer {
@@ -445,8 +477,8 @@
     :nth-child(2) {
       margin-top: 9px;
     }
-    > div {
-      background-color: white;
+    > button {
+      background-color: $backgroundColor;
       border-radius: 50%;
       height: 21px;
       width: 21px;
@@ -467,7 +499,7 @@
 .errorMessage {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  color: #e74c3c;
+  color: $dangerColor;
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
@@ -477,7 +509,7 @@
 .geoJsonError {
   font-family: $primaryFontFamily;
   font-size: $fontSubTitleSize;
-  color: #e74c3c;
+  color: $dangerColor;
   text-align: center;
   font-weight: 600;
   margin-top: 20px;
@@ -506,7 +538,7 @@
   }
 
   .reportEditButton {
-    background-color: white;
+    background-color: $backgroundColor;
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -579,4 +611,20 @@
       display: block;
     }
   }
+}
+
+// white modal
+.modal {
+  background-color: $backgroundColor;
+  border: 0px;
+  border-radius: 8px;
+  max-height: 80vh;
+  width: 80vw;
+  max-width: 1200px;
+  overflow: hidden;
+  outline: none;
+}
+
+:export {
+  primaryFontColor: $primaryFontColor;
 }

@@ -42,7 +42,8 @@ const config = {
         visible: true,
       },
       me:{
-        title: 'me',
+        title: 'signIn',
+        loggedInTitle: 'me',
         onclick: '/me',
         visible: true,
       }
@@ -53,7 +54,7 @@ const config = {
     description:
       "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
-    twitterHandle: '@pftp_int',
+    twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
   footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]

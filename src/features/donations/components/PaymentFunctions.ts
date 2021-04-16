@@ -374,7 +374,7 @@ export async function handleSCAPaymentFunction({
         setPaymentError(error);
       }
       else {
-        console.log('paymentIntent',paymentIntent)
+        return;
       }
     }
 

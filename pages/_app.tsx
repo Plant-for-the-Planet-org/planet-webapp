@@ -1,5 +1,6 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
@@ -14,12 +15,14 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
-import MapLayout from '../src/features/projects/components/MapboxMap';
+import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
-import VideoContainer from '../src/features/common/LandingVideo';
+import VideoContainer from '../src/features/common/LandingVideo/';
 import tenantConfig from '../tenant.config';
+import { browserNotCompatible } from '../src/utils/browsercheck';
+import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -35,6 +38,32 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       }),
     ],
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    // from https://gist.github.com/pioug/b006c983538538066ea871d299d8e8bc,
+    // also see https://docs.sentry.io/platforms/javascript/configuration/filtering/#decluttering-sentry
+    ignoreErrors: [
+      /^No error$/,
+      /__show__deepen/,
+      /_avast_submit/,
+      /Access is denied/,
+      /anonymous function: captureException/,
+      /Blocked a frame with origin/,
+      /console is not defined/,
+      /cordova/,
+      /DataCloneError/,
+      /Error: AccessDeny/,
+      /event is not defined/,
+      /feedConf/,
+      /ibFindAllVideos/,
+      /myGloFrameList/,
+      /SecurityError/,
+      /MyIPhoneApp/,
+      /snapchat.com/,
+      /vid_mate_check is not defined/,
+      /win\.document\.body/,
+      /window\._sharedData\.entry_data/,
+      /ztePageScrollModule/
+    ],
+    denyUrls: [],
   });
 }
 
@@ -53,6 +82,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [isMap, setIsMap] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
   const [currencyCode, setCurrencyCode] = React.useState('');
+  const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
   const config = tenantConfig();
 
@@ -90,6 +120,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, []);
 
+  React.useEffect(() => {
+    setBrowserCompatible(browserNotCompatible());
+  }, []);
+
   const ProjectProps = {
     projects,
     project,
@@ -122,11 +156,17 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, [])
 
-  return showVideo && (config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
-    <div>
-      <VideoContainer setshowVideo={setshowVideo} />
-    </div>
-  ) : (
+  if (browserCompatible) {
+    return (
+      <BrowserNotSupported />
+    );
+  }
+  else {
+    return showVideo && (config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
+      <div>
+        <VideoContainer setshowVideo={setshowVideo} />
+      </div>
+    ) :  (
       <Auth0Provider
         domain={process.env.AUTH0_CUSTOM_DOMAIN}
         clientId={process.env.AUTH0_CLIENT_ID}
@@ -149,4 +189,5 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         </ThemeProvider>
       </Auth0Provider>
     );
+  }
 }
