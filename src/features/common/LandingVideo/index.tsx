@@ -10,7 +10,7 @@ interface Props {
 
 function VideoContainer({ setshowVideo }: Props): ReactElement {
     const { t, ready, i18n } = useTranslation(['common']);
-    const [videoURL, setvideoURL] = React.useState("/assets/video/landing.mp4")
+    const [videoURL, setvideoURL] = React.useState(`${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`)
     const [isUploading, setisUploading] = React.useState(false)
     const handleVideoClose = () => {
         setshowVideo(false);
@@ -23,17 +23,17 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     React.useEffect(() => {
         var screenWidth = window.innerWidth;
 
-        if (screenWidth < 480) {
+        if (screenWidth < 768) {
             switch (localStorage.getItem('language')) {
-                case 'de': setvideoURL("/assets/video/landingMobileDe.mp4"); break;
-                case 'en': setvideoURL("/assets/video/landingMobile.mp4"); break;
-                default: setvideoURL("/assets/video/landingMobile.mp4");
+                case 'de': setvideoURL(`${process.env.CDN_URL}/landing-vid/planet/en-intro-mobile-planet.mp4`); break;
+                case 'en': setvideoURL(`${process.env.CDN_URL}/landing-vid/planet/en-intro-mobile-planet.mp4`); break;
+                default: setvideoURL(`${process.env.CDN_URL}/landing-vid/planet/en-intro-mobile-planet.mp4`);
             }
         } else {
             switch (localStorage.getItem('language')) {
-                case 'de': setvideoURL("/assets/video/landingDe.mp4"); break;
-                case 'en': setvideoURL("/assets/video/landing.mp4"); break;
-                default: setvideoURL("/assets/video/landing.mp4");
+                case 'de': setvideoURL(`${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`); break;
+                case 'en': setvideoURL(`${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`); break;
+                default: setvideoURL(`${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`);
             }
         }
     }, [])
