@@ -17,7 +17,7 @@ export default function ContentSection() {
         <div className={`${gridStyles.colMd7} ${gridStyles.col12}`}>
           <h3>We save trees, trees save us.</h3>
           <p>Trees offer cooling shade, block cold winter winds, improve biodiversity, purify our air, prevent soil erosion, clean our water, and add grace and beauty to our homes and communities. Fun fact: 80% of terrestrial species inhabit forests, with tropical forests alone hosting over half of the world’s biodiversity.</p>
-          <p>Without forests, life as we know it would cease to exist — forests are intimately entwined with the world’s human and environmental systems. However, since the dawn of human civilization, nearly half the world’s forests have been cleared or degraded, largely to feed our growing population. We continue to lose 15 billion trees per year. Of the original 6 trillion, only 3 trillion remain.</p>
+          <p>Without forests, life as we know it would cease to exist — forests are intimately entwined with the world’s human and environmental systems. However, since the dawn of human civilization, nearly half the world’s forests have been cleared or degraded, largely to feed our growing population. We continue to lose 10 billion trees per year. Of the original 6 trillion trees that once covered the earth’s landmass, only 3 trillion remain.</p>
         </div>
       </div>
       <div className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}>
