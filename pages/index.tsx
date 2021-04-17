@@ -8,6 +8,7 @@ import DirectGift from '../src/features/donations/components/treeDonation/Direct
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import { GetStaticProps } from 'next';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
+import Credits from '../src/features/projects/components/maps/Credits';
 
 interface Props {
   initialized: Boolean;
@@ -96,22 +97,21 @@ export default function ProjectsPage({
 
   return (
     <>
-      {initialized ? (
-        projects && initialized ? (
-          <>
-            <GetAllProjectsMeta />
-            <MapLayout {...ProjectsProps} />
-            <ProjectsList {...ProjectsProps} />
-            {directGift ? (
-              showdirectGift ? (
-                <DirectGift {...GiftProps} />
-              ) : null
-            ) : null}
-          </>
-        ) : (
-          <></>
-        )
-      ) : null}
+      {projects && initialized ? (
+        <>
+          <GetAllProjectsMeta />
+          <MapLayout {...ProjectsProps} />
+          <ProjectsList {...ProjectsProps} />
+          {directGift ? (
+            showdirectGift ? (
+              <DirectGift {...GiftProps} />
+            ) : null
+          ) : null}
+          <Credits setCurrencyCode={setCurrencyCode} />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

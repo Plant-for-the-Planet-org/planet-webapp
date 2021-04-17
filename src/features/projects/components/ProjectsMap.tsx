@@ -3,7 +3,6 @@ import MapGL, { NavigationControl } from 'react-map-gl';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
 import Project from '../components/maps/Project';
-import Credits from './maps/Credits';
 import Explore from './maps/Explore';
 import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
@@ -87,9 +86,7 @@ export default function ProjectsMap({ setCurrencyCode }: Props): ReactElement {
     mapState,
     setMapState,
   };
-  const creditProps = {
-    setCurrencyCode,
-  };
+
   const exploreProps = {
     loaded,
     mapRef,
@@ -124,7 +121,6 @@ export default function ProjectsMap({ setCurrencyCode }: Props): ReactElement {
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
-        <Credits {...creditProps} />
       </MapGL>
     </div>
   );

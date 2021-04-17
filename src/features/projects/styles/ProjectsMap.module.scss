@@ -322,7 +322,11 @@
   margin: 0 5px;
   height: 7px;
   border-radius: 50px;
-  background: linear-gradient(90deg, $primaryColor 1.1%, $primaryDarkColor 98.6%);
+  background: linear-gradient(
+    90deg,
+    $primaryColor 1.1%,
+    $primaryDarkColor 98.6%
+  );
 }
 
 .currentForestScale > p:nth-child(1) {
@@ -412,7 +416,7 @@
 }
 
 .lngSwitcher {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   right: 20px;
   font-size: 11px;

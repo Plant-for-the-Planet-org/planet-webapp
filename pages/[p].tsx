@@ -7,6 +7,7 @@ import { getRequest, getRequestWithLocale } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
+import Credits from '../src/features/projects/components/maps/Credits';
 
 export default function ProjectPage({
   pageProps,
@@ -54,6 +55,7 @@ export default function ProjectPage({
           <GetProjectMeta {...ProjectProps} />
           <MapLayout {...ProjectProps} />
           {initialized ? <SingleProjectDetails {...ProjectProps} /> : null}
+          <Credits setCurrencyCode={setCurrencyCode} />
         </>
       )}
     </>

@@ -73,7 +73,6 @@ const onRedirectCallback = (appState) => {
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
-  const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
@@ -95,14 +94,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   React.useEffect(() => {
     i18next.initPromise.then(() => setInitialized(true));
   }, []);
-
-  React.useEffect(() => {
-    if (router.pathname === '/' || router.pathname === '/[p]') {
-      setIsMap(true);
-    } else {
-      setIsMap(false);
-    }
-  }, [router]);
 
   React.useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
