@@ -18,7 +18,7 @@ export async function getAccountInfo(token: any) {
   return response;
 }
 
-export async function getRequest(url: any) {
+export async function getRequestWithLocale(url: any) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -30,6 +30,31 @@ export async function getRequest(url: any) {
           ? localStorage.getItem('language')
           : 'en'
       }`,
+    },
+  })
+    .then(async (res) => {
+      result = res.status === 200 ? await res.json() : null;
+      if (res.status === 404) {
+        const errorMessage = 'Not Found';
+        window.location.href = `/404?error=${errorMessage}`;
+      } else if (res.status !== 200) {
+        // Maybe show a Modal with Error and redirect to home page
+        const errorMessage = res.statusText;
+        window.location.href = `/404?error=${errorMessage}`;
+      } else {
+        return result;
+      }
+    })
+    .catch((err) => console.log(`Something went wrong: ${err}`));
+  return result;
+}
+
+export async function getRequest(url: any) {
+  let result;
+  await fetch(`${process.env.API_ENDPOINT}` + url, {
+    method: 'GET',
+    headers: {
+      'tenant-key': `${process.env.TENANTID}`,
     },
   })
     .then(async (res) => {

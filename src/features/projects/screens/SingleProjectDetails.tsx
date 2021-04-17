@@ -75,14 +75,19 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         hideBackdrop
       >
         <div className={'modalWrapper'}>
-          <button id={'singleProjCloseModal'}  onClick={handleModalClose} className={'modalClose'}>
+          <button
+            id={'singleProjCloseModal'}
+            onClick={handleModalClose}
+            className={'modalClose'}
+          >
             <CancelIcon color="#fff" />
           </button>
           <ImageSlider project={project} height={600} imageSize="large" />
         </div>
       </Modal>
       <div className={'projectContainer'}>
-        <button id={'backButtonSingleP'}
+        <button
+          id={'backButtonSingleP'}
           style={{
             cursor: 'pointer',
             width: 'fit-content',
@@ -141,7 +146,11 @@ function SingleProjectDetails({ project }: Props): ReactElement {
                 />
               ) : null}
               <div className={'projectImageSliderContainer'}>
-                <button id={'expandButton'} onClick={handleModalOpen} className={'modalOpen'}>
+                <button
+                  id={'expandButton'}
+                  onClick={handleModalOpen}
+                  className={'modalOpen'}
+                >
                   <ExpandIcon color="#fff" />
                 </button>
                 {project.images.length > 0 && !openModal ? (
@@ -163,7 +172,9 @@ function SingleProjectDetails({ project }: Props): ReactElement {
         </div>
       </div>
     </div>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }
 
 export default SingleProjectDetails;

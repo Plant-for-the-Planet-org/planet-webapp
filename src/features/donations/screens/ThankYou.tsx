@@ -10,7 +10,7 @@ import { getPaymentType } from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
-import { getRequest } from '../../../utils/apiRequests/api';
+import { getRequestWithLocale } from '../../../utils/apiRequests/api';
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import PaymentFailedIllustration from '../../../../public/assets/images/icons/donation/PaymentFailed';
 import PaymentPendingIllustration from '../../../../public/assets/images/icons/donation/PaymentPending';
@@ -28,7 +28,7 @@ function ThankYou({
   const [donation, setdonation] = React.useState(null);
 
   async function loadDonation() {
-    const donation = await getRequest(`/app/donations/${donationID}`);
+    const donation = await getRequestWithLocale(`/app/donations/${donationID}`);
     setdonation(donation);
   }
 
@@ -264,9 +264,7 @@ function ThankYou({
             >
               <Close color="#fff" />
             </button>
-            <div className={styles.headerTitle}>
-              {t('common:thankYou')}
-            </div>
+            <div className={styles.headerTitle}>{t('common:thankYou')}</div>
           </div>
         </div>
         <div className={styles.contributionMessageContainer}>

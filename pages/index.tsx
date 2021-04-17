@@ -3,34 +3,35 @@ import React from 'react';
 import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
-import { getRequest } from '../src/utils/apiRequests/api';
+import { getRequest, getRequestWithLocale } from '../src/utils/apiRequests/api';
 import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
+import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
+import { GetStaticProps } from 'next';
+import MapLayout from '../src/features/projects/components/ProjectsMap';
 
 interface Props {
   initialized: Boolean;
-  projects: any;
-  setProject: Function;
-  setProjects: Function;
-  setShowSingleProject: Function;
-  showProjects: Boolean;
-  setShowProjects: Function;
-  setsearchedProjects: any;
   currencyCode: any;
   setCurrencyCode: Function;
+  pageProps: Object;
 }
 
-export default function Donate({
+export default function ProjectsPage({
+  pageProps,
   initialized,
-  projects,
-  setProject,
-  setProjects,
-  setShowSingleProject,
-  showProjects,
-  setShowProjects,
-  setsearchedProjects,
   currencyCode,
-  setCurrencyCode
+  setCurrencyCode,
 }: Props) {
+  const {
+    projects,
+    setProject,
+    setProjects,
+    setShowSingleProject,
+    showProjects,
+    setShowProjects,
+    setsearchedProjects,
+  } = React.useContext(ProjectPropsContext);
+
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
@@ -41,6 +42,9 @@ export default function Donate({
     if (getdirectGift) {
       setDirectGift(JSON.parse(getdirectGift));
     }
+    setProjects(pageProps.projectsData);
+    setProject(null);
+    setShowSingleProject(false);
   }, []);
 
   React.useEffect(() => {
@@ -67,22 +71,22 @@ export default function Donate({
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
-        const projects = await getRequest(
-          `/app/projects?_scope=map&currency=${currency}`,
+        const projects = await getRequestWithLocale(
+          `/app/projects?_scope=map&currency=${currency}`
         );
         setProjects(projects);
-        setProject(null);
-        setShowSingleProject(false);        
       }
     }
     loadProjects();
   }, [currencyCode]);
-  
+
   const ProjectsProps = {
     projects,
     showProjects,
     setShowProjects,
     setsearchedProjects,
+    currencyCode,
+    setCurrencyCode,
   };
 
   const GiftProps = {
@@ -95,7 +99,8 @@ export default function Donate({
       {initialized ? (
         projects && initialized ? (
           <>
-          <GetAllProjectsMeta />
+            <GetAllProjectsMeta />
+            <MapLayout {...ProjectsProps} />
             <ProjectsList {...ProjectsProps} />
             {directGift ? (
               showdirectGift ? (
@@ -110,3 +115,19 @@ export default function Donate({
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context: any) => {
+  let projectsData;
+
+  projectsData = await getRequest(`/app/projects?_scope=map`);
+
+  return {
+    props: {
+      projectsData,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 300 seconds
+    revalidate: 300, // In seconds
+  };
+};

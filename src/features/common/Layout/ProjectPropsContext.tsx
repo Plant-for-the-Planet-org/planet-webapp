@@ -2,9 +2,9 @@ import React, { ReactElement } from 'react';
 
 interface Props {}
 
-export const MapPropsContext = React.createContext({
-  projects: [],
-  project: {},
+export const ProjectPropsContext = React.createContext({
+  projects: [] || null,
+  project: {} || null,
   setProject: (value: {}) => {},
   setProjects: (value: []) => {},
   showSingleProject: false,
@@ -15,15 +15,15 @@ export const MapPropsContext = React.createContext({
   setsearchedProjects: (value: []) => {},
 });
 
-function MapPropsProvider({ children }: any): ReactElement {
-  const [projects, setProjects] = React.useState([]);
-  const [project, setProject] = React.useState({});
+function ProjectPropsProvider({ children }: any): ReactElement {
+  const [projects, setProjects] = React.useState(null);
+  const [project, setProject] = React.useState(null);
   const [showProjects, setShowProjects] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
 
   return (
-    <MapPropsContext.Provider
+    <ProjectPropsContext.Provider
       value={{
         projects,
         project,
@@ -38,8 +38,8 @@ function MapPropsProvider({ children }: any): ReactElement {
       }}
     >
       {children}
-    </MapPropsContext.Provider>
+    </ProjectPropsContext.Provider>
   );
 }
 
-export default MapPropsProvider;
+export default ProjectPropsProvider;

@@ -6,21 +6,20 @@ import Project from '../components/maps/Project';
 import Credits from './maps/Credits';
 import Explore from './maps/Explore';
 import Home from './maps/Home';
-import { MapPropsContext } from '../../common/Layout/MapPropsContext';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 
 interface Props {
   setCurrencyCode: Function;
 }
 
-export default function ProjectsMap({
-  setCurrencyCode,
-}: Props): ReactElement {
-
-  const {  project,
+export default function ProjectsMap({ setCurrencyCode }: Props): ReactElement {
+  const {
+    project,
     showSingleProject,
     showProjects,
     setShowProjects,
-    searchedProject} = React.useContext(MapPropsContext)
+    searchedProject,
+  } = React.useContext(ProjectPropsContext);
   //Map
   const mapRef = useRef(null);
   const EMPTY_STYLE = {

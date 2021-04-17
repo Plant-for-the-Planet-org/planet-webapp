@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { getRequest } from '../../src/utils/apiRequests/api';
+import { getRequestWithLocale } from '../../src/utils/apiRequests/api';
 
 interface Props {}
 
@@ -16,7 +16,9 @@ export default function DirectGift({}: Props): ReactElement {
 }
 
 async function loadPublicUserData(router: any) {
-  const newProfile = await getRequest(`/app/profiles/${router.query.id}`);
+  const newProfile = await getRequestWithLocale(
+    `/app/profiles/${router.query.id}`
+  );
   if (newProfile.type !== 'tpo') {
     localStorage.setItem(
       'directGift',

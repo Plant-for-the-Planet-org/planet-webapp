@@ -15,13 +15,12 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
-import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import MapPropsProvider from '../src/features/common/Layout/MapPropsContext';
+import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -136,12 +135,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <ThemeProvider>
           <CssBaseline />
           <Layout>
-            <MapPropsProvider>
-              {isMap ? (
-                <MapLayout {...ProjectProps} />
-              ) : null}
+            <ProjectPropsProvider>
               <Component {...ProjectProps} />
-            </MapPropsProvider>
+            </ProjectPropsProvider>
           </Layout>
         </ThemeProvider>
       </Auth0Provider>

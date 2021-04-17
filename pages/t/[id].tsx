@@ -4,7 +4,10 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import { getRequest, getAccountInfo } from '../../src/utils/apiRequests/api';
+import {
+  getRequestWithLocale,
+  getAccountInfo,
+} from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import {
   setUserExistsInDB,
@@ -19,7 +22,6 @@ interface Props {
 }
 
 export default function PublicUser(initialized: Props) {
-
   // Whether public or private
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
@@ -28,13 +30,14 @@ export default function PublicUser(initialized: Props) {
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
 
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState('');
   const {
+    user,
     isLoading,
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
-    logout
+    logout,
   } = useAuth0();
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes
@@ -44,9 +47,9 @@ export default function PublicUser(initialized: Props) {
       setToken(token);
     }
     if (isAuthenticated && !isLoading) {
-      loadFunction()
+      loadFunction();
     }
-  }, [isAuthenticated, isLoading])
+  }, [isAuthenticated, isLoading]);
 
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
@@ -61,11 +64,11 @@ export default function PublicUser(initialized: Props) {
   const logoutUser = () => {
     removeLocalUserInfo();
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  }
+  };
 
   useEffect(() => {
     if (router && router.query.id) {
-      setUserprofile(null)
+      setUserprofile(null);
       setSlug(router.query.id);
       setReady(true);
     }
@@ -82,28 +85,31 @@ export default function PublicUser(initialized: Props) {
         if (isAuthenticated) {
           token = await getAccessTokenSilently();
         }
-        const userInfo = await getLocalUserInfo()
+        const userInfo = await getLocalUserInfo();
         const currentUserSlug = userInfo?.slug ? userInfo.slug : null;
 
         // some user logged in and slug matches -> private profile
         if (!isLoading && token && currentUserSlug === slug) {
           try {
-            const res = await getAccountInfo(token)
+            const res = await getAccountInfo(token);
             if (res.status === 200) {
               const resJson = await res.json();
-              setAuthenticatedType('private')
+              setAuthenticatedType('private');
               setUserprofile(resJson);
             } else if (res.status === 303) {
               // if 303 -> user doesn not exist in db
-              setUserExistsInDB(false)
+              setUserExistsInDB(false);
               if (typeof window !== 'undefined') {
                 router.push('/complete-signup');
               }
             } else if (res.status === 401) {
               // in case of 401 - invalid token: signIn()
               logoutUser();
-              removeUserExistsInDB()
-              loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+              removeUserExistsInDB();
+              loginWithRedirect({
+                redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+                ui_locales: localStorage.getItem('language') || 'en',
+              });
             } else {
               // any other error
             }
@@ -112,10 +118,10 @@ export default function PublicUser(initialized: Props) {
           }
         } else {
           //no user logged in or slug mismatch -> public profile
-          const newPublicUserprofile = await getRequest(
+          const newPublicUserprofile = await getRequestWithLocale(
             `/app/profiles/${slug}`
           );
-          setAuthenticatedType('public')
+          setAuthenticatedType('public');
           setUserprofile(newPublicUserprofile);
         }
       }
@@ -125,10 +131,10 @@ export default function PublicUser(initialized: Props) {
     if (ready && !isLoading) {
       loadUserData();
     }
-  }, [ready, isLoading, forceReload, isAuthenticated, router,slug]);
+  }, [ready, isLoading, forceReload, isAuthenticated, router, slug]);
 
   function getUserProfile() {
-    if(userprofile?.type === 'tpo'){
+    if (userprofile?.type === 'tpo') {
       return (
         <>
           <GetPublicUserProfileMeta userprofile={userprofile} />
@@ -136,8 +142,14 @@ export default function PublicUser(initialized: Props) {
           <Footer />
         </>
       );
-    }
-    else if(userprofile?.type === 'individual' || userprofile?.type === 'education' || userprofile?.type === 'company'|| userprofile?.type === 'organization' || userprofile?.type === 'children-youth' || userprofile?.type === 'government'){
+    } else if (
+      userprofile?.type === 'individual' ||
+      userprofile?.type === 'education' ||
+      userprofile?.type === 'company' ||
+      userprofile?.type === 'organization' ||
+      userprofile?.type === 'children-youth' ||
+      userprofile?.type === 'government'
+    ) {
       return (
         <>
           <GetPublicUserProfileMeta userprofile={userprofile} />
@@ -146,11 +158,10 @@ export default function PublicUser(initialized: Props) {
         </>
       );
     }
-
   }
 
-  if (initialized && (userprofile) && ready) {
-    return getUserProfile()
+  if (initialized && userprofile && ready) {
+    return getUserProfile();
   } else {
     return <UserProfileLoader />;
   }
