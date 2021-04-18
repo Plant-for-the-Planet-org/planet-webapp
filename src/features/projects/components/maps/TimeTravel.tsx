@@ -25,8 +25,8 @@ export default function TimeTravel({
 }: Props): ReactElement {
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
-  const [selectedSource1, setSelectedSource1] = React.useState('planetLabs');
-  const [selectedSource2, setSelectedSource2] = React.useState('planetLabs');
+  const [selectedSource1, setSelectedSource1] = React.useState('sentinel');
+  const [selectedSource2, setSelectedSource2] = React.useState('sentinel');
   const [selectedYear1, setSelectedYear1] = React.useState('2017');
   const [selectedYear2, setSelectedYear2] = React.useState('2020');
 
