@@ -49,7 +49,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 </div>
                 {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a 
                     rel="noopener noreferrer"
-                    href={`https://www.thegoodshop.org/${userLang}/shop/`}
+                    href={`https://www.thegoodshop.org/de/shop/`}
                     target={'_blank'}
                 >
                     {t('common:shop')}
