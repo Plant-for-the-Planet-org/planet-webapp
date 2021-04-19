@@ -21,7 +21,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     }
 
     React.useEffect(() => {
-        var screenWidth = window.innerWidth;
+        const screenWidth = window.innerWidth;
 
         if (screenWidth < 768) {
             switch (localStorage.getItem('language')) {
@@ -44,7 +44,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
                     <source src={videoURL} type="video/mp4" />
                 </video>
             </div>
-            <button className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>
+            <button id="skipLandingVideo" className={styles.landingVideoSkipButton} onClick={() => handleVideoClose()}>
                 {isUploading ? <div className={styles.spinner}></div> : t('common:skipIntroVideo')}
             </button>
         </div>

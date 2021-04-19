@@ -22,7 +22,7 @@ import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import VideoContainer from '../src/features/common/LandingVideo/';
 import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
-import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -61,7 +61,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       /vid_mate_check is not defined/,
       /win\.document\.body/,
       /window\._sharedData\.entry_data/,
-      /ztePageScrollModule/
+      /ztePageScrollModule/,
     ],
     denyUrls: [],
   });
@@ -85,7 +85,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
   const config = tenantConfig();
-
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -138,7 +137,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     searchedProject,
     setsearchedProjects,
     currencyCode,
-    setCurrencyCode
+    setCurrencyCode,
   };
 
   const [showVideo, setshowVideo] = React.useState(true);
@@ -146,48 +145,61 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (localStorage.getItem('hidePreview')) {
-        setshowVideo(false)
+        setshowVideo(false);
       }
-      else {
-        if(router.pathname === '/'){
-          setshowVideo(true)
-        }
+      if (router.pathname !== '/') {
+        setshowVideo(false);
       }
     }
-  }, [])
+  }, []);
 
   if (browserCompatible) {
+    return <BrowserNotSupported />;
+  } else {
     return (
-      <BrowserNotSupported />
-    );
-  }
-  else {
-    return showVideo && (config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
       <div>
-        <VideoContainer setshowVideo={setshowVideo} />
+        <div
+          style={
+            showVideo &&
+            (config.tenantName === 'planet' || config.tenantName === 'ttc')
+              ? {}
+              : { display: 'none' }
+          }
+        >
+          <VideoContainer setshowVideo={setshowVideo} />
+        </div>
+
+        <div
+          style={
+            showVideo &&
+            (config.tenantName === 'planet' || config.tenantName === 'ttc')
+              ? { display: 'none' }
+              : {}
+          }
+        >
+          <Auth0Provider
+            domain={process.env.AUTH0_CUSTOM_DOMAIN}
+            clientId={process.env.AUTH0_CLIENT_ID}
+            redirectUri={process.env.NEXTAUTH_URL}
+            cacheLocation={'localstorage'}
+            onRedirectCallback={onRedirectCallback}
+          >
+            <ThemeProvider>
+              <CssBaseline />
+              <Layout>
+                {isMap ? (
+                  project ? (
+                    <MapLayout {...ProjectProps} />
+                  ) : projects ? (
+                    <MapLayout {...ProjectProps} />
+                  ) : null
+                ) : null}
+                <Component {...ProjectProps} />
+              </Layout>
+            </ThemeProvider>
+          </Auth0Provider>
+        </div>
       </div>
-    ) :  (
-      <Auth0Provider
-        domain={process.env.AUTH0_CUSTOM_DOMAIN}
-        clientId={process.env.AUTH0_CLIENT_ID}
-        redirectUri={process.env.NEXTAUTH_URL}
-        cacheLocation={'localstorage'}
-        onRedirectCallback={onRedirectCallback}
-      >
-        <ThemeProvider>
-          <CssBaseline />
-          <Layout>
-            {isMap ? (
-              project ? (
-                <MapLayout {...ProjectProps} />
-              ) : projects ? (
-                <MapLayout {...ProjectProps} />
-              ) : null
-            ) : null}
-            <Component {...ProjectProps} />
-          </Layout>
-        </ThemeProvider>
-      </Auth0Provider>
     );
   }
 }

@@ -7,6 +7,10 @@ describe('hompage', () => {
     await load();
   });
   it('should click on donate', async () => {
+    if(driver.findElement(By.id('skipLandingVideo'))){
+      await driver.wait(until.elementLocated(By.id('skipLandingVideo'))).click();
+    }
+
     await driver.wait(until.elementLocated(By.className('donateButton'))).click();
     await driver.switchTo().activeElement();
     await driver.wait(until.elementLocated(By.id('treeDonateContinue'))).click();
