@@ -203,8 +203,8 @@ console.log(token,"token")
                     defaultValue={profileTypes[0].value}
                   >
                     {profileTypes.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.title}
+                      <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
+                        {option.title} 
                       </MenuItem>
                     ))}
                   </MaterialTextField>
