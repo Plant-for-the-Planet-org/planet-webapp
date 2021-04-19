@@ -1,0 +1,233 @@
+@import '../../../../theme/theme';
+
+.timelineSection {
+  width: 100vw;
+  background-image: url('/tenants/salesforce/images/timeline.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: auto 575px;
+  padding: 0 0 270px;
+
+  h3 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: -0.004em;
+    color: #032D60;
+    margin-bottom: 50px;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+
+    @include lgLaptopView {
+      font-size: 36px;
+      line-height: 100%;
+      margin-bottom: 0;
+    }
+  }
+
+  h4 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: center;
+    letter-spacing: -0.001em;
+    color: #032D60;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #181818;
+
+    @include lgLaptopView {
+      font-size: 15px;
+      line-height: 24px;
+      margin-bottom: 10px;
+    }
+
+    a {
+      text-decoration: underline;
+      color: #0B5CAB;
+    }
+  }
+}
+
+.timelineRow {
+  background-image: url('/tenants/salesforce/images/dotted-line.png');
+  background-position: 50% 217px;
+  background-repeat: repeat-x;
+  background-size: auto 76px;
+  width: 100vw;
+}
+
+.timelineContent {
+  text-align: center;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.timelineDate {
+  font-family: $secondaryFontFamily;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: -0.002em;
+  color: #032D60;
+  display: block;
+  margin-bottom: 17px;
+}
+
+.timelineImage {
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 13px;
+}
+
+.timelineLearnMore {
+  font-family: $primaryFontFamily;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: #0176D3;
+  &:after {
+    content: "";
+    margin-left: 5px;
+    display: inline-block;
+    width: 6px;
+    height: 10px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATBAMAAAC0B+rjAAAAHlBMVEUAAAABdtMAddMAcNQBdtMAddQCd9QAc9IAcNcBdtPWKcUgAAAACXRSTlMA0GAQ7zCfUCDQLIk9AAAAP0lEQVQI12Ng4GAAg0wFEMk+cxKIYpacCeYaznSFcKcEYOU6gCiOmRMgvAkInYYQczLBHDY4B9kGBbC1rCACAHUAEWVaEeaPAAAAAElFTkSuQmCC');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.timelineDesktop {
+  display: none;
+  @include lgLaptopView {
+    display: flex;
+  }
+}
+
+.timelineDesktop,
+.timelineMobile {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  //position: relative;
+  padding-bottom: 40px;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border: none;
+  }
+}
+
+.timelineDesktop {
+  display: none;
+  @include lgLaptopView {
+    display: flex;
+  }
+}
+
+.timelineMobile {
+  display: flex;
+  @include lgLaptopView {
+    display: none;
+  }
+}
+
+.timelineMoment {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: center;
+  padding-top: 160px;
+}
+
+.timelineDesktopNav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  @include lgLaptopView {
+    display: flex;
+  }
+}
+
+.timelineMobileNav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  @include lgLaptopView {
+    display: none;
+  }
+}
+
+.timelineDot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #0176D3;
+  box-sizing: border-box;
+  border-radius: 11px;
+  cursor: pointer;
+}
+
+.timelineDotDisabled {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #0176D3;
+  box-sizing: border-box;
+  border-radius: 11px;
+  background-color: #0176D3;
+  cursor: default;
+}
+
+.timelineArrow {
+  width: 21px;
+  height: auto;
+  margin-top: 1px;
+}
+
+.timelineButtonArrowPrev {
+  margin-right: 20px;
+  &[disabled] {
+    opacity: 0;
+  }
+}
+
+.timelineButtonArrowNext {
+  margin-left: 10px;
+  cursor: pointer;
+  &[disabled] {
+    opacity: 0;
+    cursor: default;
+  }
+}
+
+.timelineButtonDot {
+  margin-right: 10px;
+}
