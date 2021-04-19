@@ -15,7 +15,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { MenuItem } from '@material-ui/core';
-
+import { getStoredConfig } from '../../../utils/storeConfig'
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
@@ -290,7 +290,7 @@ console.log(token,"token")
                     label={t('donate:city')}
                     variant="outlined"
                     inputRef={register({ required: true })}
-                    name={"city"}
+                    defaultValue={getStoredConfig("loc").city}
                   />
                   {errors.city && (
                     <span className={styles.formErrors}>
@@ -307,6 +307,7 @@ console.log(token,"token")
                       pattern: postalRegex,
                       required: true
                     })}
+                    defaultValue={getStoredConfig("loc").postalCode}
                   />
                   {errors.zipCode && (
                     <span className={styles.formErrors}>
