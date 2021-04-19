@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
+import tenantConfig from '../../../../../tenant.config';
+
+const config = tenantConfig();
 
 interface Props {
     setCurrencyCode: Function;
@@ -44,6 +47,27 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {`🌐 ${language ? language.toUpperCase() : ''
                         } • ${selectedCurrency}`}
                 </div>
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a 
+                    rel="noopener noreferrer"
+                    href={`https://www.thegoodshop.org/de/shop/`}
+                    target={'_blank'}
+                >
+                    {t('common:shop')}
+                </a> : null}
+                {/* {config.statusURL ? <a
+                    rel="noopener noreferrer"
+                    href={config.statusURL}
+                    target={'_blank'}
+                >
+                    {t('common:status')}
+                </a> : null} */}
+                <a
+                    rel="noopener noreferrer"
+                    href={`https://status.pp.eco/`}
+                    target={'_blank'}
+                >
+                    {t('common:status')}
+                </a>
                 <a
                     rel="noopener noreferrer"
                     href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
