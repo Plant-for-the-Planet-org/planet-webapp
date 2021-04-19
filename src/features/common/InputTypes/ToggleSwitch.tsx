@@ -19,7 +19,7 @@ export default function ToggleSwitch(props: any) {
     <ToggleSwitch
       checked={props.checked}
       onChange={props.onChange}
-      name={props.name}
+      id={props.id}
       inputProps={props.inputProps}
     />
   );

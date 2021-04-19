@@ -16,7 +16,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
   return ready ? (
     <div className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
-        <h3>Salesforce</h3>
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
@@ -80,16 +79,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
             )}
         </div>
       </div>
-      <img
-        className={styles.leaderBoardBushImage}
-        src={'/tenants/salesforce/images/Bush.png'}
-        alt=""
-      />
-      <img
-        className={styles.leaderBoardBushImageMobile}
-        src={'/tenants/salesforce/images/mobile/Bush.png'}
-        alt=""
-      />
     </div>
   ) : <></>;
 }
