@@ -209,7 +209,7 @@ function TreeDonation({
               <ToggleSwitch
                 checked={isGift}
                 onChange={() => setIsGift(!isGift)}
-                name="checkedA"
+                id="checkedA"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             </div>

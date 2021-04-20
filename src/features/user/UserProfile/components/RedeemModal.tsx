@@ -236,7 +236,7 @@ export default function RedeemModal({
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
-                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
+                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className="primaryButton" style={{maxWidth: "200px", marginTop: "24px"}}>
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (t('redeem:addToMyTrees'))}
@@ -266,7 +266,7 @@ export default function RedeemModal({
                     {errorMessage && (
                       <span className={styles.formErrors}>{errorMessage}</span>
                     )}
-                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className={styles.continueButton}>
+                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className="primaryButton" style={{maxWidth: "200px", marginTop: "24px"}}> 
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (t('redeem:validateCode'))}
