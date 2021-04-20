@@ -16,10 +16,6 @@
 <a href="./CONTRIBUTING.md">
     <img src="http://img.shields.io/badge/CONTRIBUTING%20Guidelines-%235f27cd?style=for-the-badge" />
 </a>
-<a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
-    <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack&labelColor=4B124C" />
-</a>
-
 <br/>
 <br/>
 
