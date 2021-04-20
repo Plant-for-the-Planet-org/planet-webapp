@@ -24,7 +24,7 @@ const SEPA_OPTIONS = {
       },
     },
     invalid: {
-      color: '#9e2146',
+      color: styles.dangerColor,
     },
   },
 };

@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './../styles/StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { Controller, useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -436,26 +435,27 @@ export default function ProjectSites({
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleBack}
-              className={styles.secondaryButton}
+              className="secondaryButton"
             >
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
-            </AnimatedButton>
+            </button>
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleSubmit(uploadProjectSiteNext)}
-              className={styles.continueButton}
+              className="primaryButton"
+              style={{minWidth:"240px"}}
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
                 t('manageProjects:saveAndContinue')
               )}
-            </AnimatedButton>
+            </button>
           </div>
         </div>
       </form>
@@ -552,7 +552,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={styles.modalContainer + ' ' + theme}
+      className={'modalContainer' + ' ' + theme}
       open={openModal}
       onClose={handleModalClose}
       closeAfterTransition
@@ -618,26 +618,27 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
 
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf}`}>
-              <AnimatedButton
+              <button
                 onClick={handleModalClose}
-                className={styles.secondaryButton}
+                className="secondaryButton"
               >
                 <BackArrow />
                 <p>{t('manageProjects:backToSites')}</p>
-              </AnimatedButton>
+              </button>
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf}`}>
-              <AnimatedButton
+              <button
                 onClick={handleSubmit(editProjectSite)}
-                className={styles.continueButton}
+                className="primaryButton"
+                style={{minWidth:"240px"}}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
                   t('manageProjects:saveSite')
                 )}
-              </AnimatedButton>
+              </button>
             </div>
           </div>
         </form>
