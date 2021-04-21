@@ -49,7 +49,7 @@ function PaymentDetails({
   shouldCreateDonation,
   setShouldCreateDonation,
 }: PaymentDetailsProps): ReactElement {
-  const { t, i18n, ready } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
@@ -203,9 +203,9 @@ function PaymentDetails({
               {`${contactDetails.address}, ${contactDetails.city}`}
             </p>
             <p className={styles.showContactDetailsAddress}>
-              {`${contactDetails.zipCode}, ${
-                getCountryDataBy('countryCode', contactDetails.country)
-                  .countryName
+              {`${contactDetails.zipCode}, ${t(
+                  'country:' + contactDetails.country.toLowerCase()
+                )
               }`}
             </p>
             <p className={styles.showContactDetailsAddress}>
