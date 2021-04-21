@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import styles from './../styles/ThankYou.module.scss';
+import styles from './../styles/Donations.module.scss';
 import EmailIcon from '../../../../public/assets/images/icons/share/Email';
 import EmailSolid from '../../../../public/assets/images/icons/share/EmailSolid';
 import FacebookIcon from '../../../../public/assets/images/icons/share/Facebook';
@@ -137,7 +137,7 @@ const ShareOptions = ({
         className={styles.shareIcon}
         onMouseOver={() => setCurrentHover(4)}
         onClick={() =>
-          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=PftP_int&url=${linkToShare}&text=${textToShare}`)
+          shareClicked(`https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`)
         }
       >
         <TwitterIcon

@@ -19,7 +19,7 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  background-color: white;
+  background-color: $backgroundColor;
   border-radius: 50%;
   font-size: 12px;
   display: flex;
@@ -63,7 +63,7 @@
 .projectType {
   font-family: $primaryFontFamily;
   font-size: 10px;
-  color: #fff;
+  color: $light;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -71,7 +71,7 @@
 .projectName {
   font-family: $primaryFontFamily;
   font-size: 18px;
-  color: #fff;
+  color: $light;
 }
 
 /* Progress Bar */
@@ -126,7 +126,7 @@
 .projectCost {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .donateButton {
@@ -153,10 +153,11 @@
 
 .perTreeCost {
   font-family: $secondaryFontFamily;
-  font-size: 10px;
+  font-size: 12px;
   color: $primaryFontColor;
-  margin-top: 5px;
+  margin-top: 6px;
   font-weight: 400;
+  text-align: right;
 }
 
 .perTreeCost > span {

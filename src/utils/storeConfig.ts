@@ -1,25 +1,30 @@
 import getsessionId from './apiRequests/getSessionId';
 
 export async function storeConfig() {
-    const userLang = localStorage.getItem('language') || 'en';
-    await fetch(`${process.env.API_ENDPOINT}/public/v1.2/${userLang}/config`, {
-        headers: {
-          'tenant-key': `${process.env.TENANTID}`,
-          'X-SESSION-ID': await getsessionId(),
-        },
-      })
-        .then(async (res) => {
-          const config = await res.json();
-          localStorage.setItem('config', JSON.stringify(config));
-          if (!localStorage.getItem('countryCode')) {
-            localStorage.setItem('countryCode', config.country);
-          }
-          if (!localStorage.getItem('currencyCode')) {
-            localStorage.setItem('currencyCode', config.currency);
-          }
-        })
-        .catch((err) => console.log(`Something went wrong: ${err}`));
+  let userLang;
+  if (localStorage) {
+    userLang = localStorage.getItem('language') || 'en';
+  } else {
+    userLang = 'en';
   }
+  await fetch(`${process.env.API_ENDPOINT}/public/v1.2/${userLang}/config`, {
+    headers: {
+      'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
+    },
+  })
+    .then(async (res) => {
+      const config = await res.json();
+      localStorage.setItem('config', JSON.stringify(config));
+      if (!localStorage.getItem('countryCode')) {
+        localStorage.setItem('countryCode', config.country);
+      }
+      if (!localStorage.getItem('currencyCode')) {
+        localStorage.setItem('currencyCode', config.currency);
+      }
+    })
+    .catch((err) => console.log(`Something went wrong: ${err}`));
+}
 
 export function getStoredConfig(key: string) {
   let storedConfig;
@@ -43,6 +48,12 @@ export function getStoredConfig(key: string) {
           case 'currency':
             if (storedConfig.currency) {
               return storedConfig.currency;
+            } else {
+              return null;
+            }
+          case 'loc':
+            if (storedConfig.loc) {
+              return storedConfig.loc;
             } else {
               return null;
             }

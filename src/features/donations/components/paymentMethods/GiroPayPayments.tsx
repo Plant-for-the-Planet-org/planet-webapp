@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import GiroPayIcon from '../../../../../public/assets/images/icons/donation/GiroPay';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import styles from '../../styles/PaymentDetails.module.scss';
+import styles from '../../styles/Donations.module.scss';
 import i18next from './../../../../../i18n';
 
 const { useTranslation } = i18next;
@@ -21,7 +21,7 @@ function GiroPayPayments({ onSubmitPayment }: Props): ReactElement {
             </div> */}
 
            
-                <div onClick={()=>onSubmitPayment('stripe_giropay','giropay')} className={styles.actionButtonsContainer}>
+                <div onClick={()=>onSubmitPayment('stripe_giropay','giropay')} className={styles.actionButtonsContainerCenter}>
                     <AnimatedButton className={styles.continueButton}>
                         {t('donate:payWithGiroPay')}
                     </AnimatedButton>

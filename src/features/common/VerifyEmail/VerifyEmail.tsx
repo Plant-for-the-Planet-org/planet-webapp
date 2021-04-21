@@ -28,7 +28,7 @@ function VerifyEmailComponent({ }: Props): ReactElement {
             <span style={{ fontStyle: 'italic', marginTop: '12px' }}>
                 {t('common:verifyEmailInfo')}
             </span>
-            <button id={'verifyEmail'} onClick={() => loginWithRedirect({redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={styles.continueButton}>
+            <button id={'verifyEmail'} onClick={() => loginWithRedirect({redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' })} className={'primaryButton'}>
                 {t('common:continueToLogin')}
             </button>
         </div>

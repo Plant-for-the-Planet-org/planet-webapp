@@ -23,13 +23,14 @@ import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import getMapStyle from '../../../../utils/getMapStyle';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
 declare module '@material-ui/core/styles/overrides' {
-  export type ComponentNameToClassKey = overridesNameToClassKey
+  export type ComponentNameToClassKey = overridesNameToClassKey;
 }
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
@@ -77,14 +78,13 @@ export default function RegisterTrees({
     zoom: defaultZoom,
   });
   const [userLang, setUserLang] = React.useState('en');
-  const [countryBbox, setCountryBbox] = React.useState();
+  const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
       if (style) {
-        console.log(style);
         setMapState({ ...mapState, mapStyle: style });
       }
     });
@@ -135,37 +135,29 @@ export default function RegisterTrees({
       if (userLang) setUserLang(userLang);
     }
 
-    async function getUserCountryBbox() {
-      const country = getStoredConfig('country');
-      const result = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
-      );
-      const geoCodingAPI = result.status === 200 ? await result.json() : null;
-      setCountryBbox(geoCodingAPI.features[0].bbox);
+    async function getUserLocation() {
+      const location = await getStoredConfig('loc');
+      if (location) {
+        setUserLocation([Number(location.longitude) || 0, Number(location.latitude) || 0]);
+      }
     }
-    getUserCountryBbox();
+    getUserLocation();
   }, []);
 
   React.useEffect(() => {
-    if (countryBbox) {
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport
-      ).fitBounds([
-        [countryBbox[0], countryBbox[1]],
-        [countryBbox[2], countryBbox[3]],
-      ]);
+    if (userLocation) {
       const newViewport = {
         ...viewport,
-        longitude,
-        latitude,
-        zoom,
+        longitude: userLocation[0],
+        latitude: userLocation[1],
+        zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
       setViewPort(newViewport);
     }
-  }, [countryBbox]);
+  }, [userLocation]);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const defaultBasicDetails = {
@@ -186,7 +178,7 @@ export default function RegisterTrees({
 
   const treeCount = watch('treeCount');
 
-  const onTreeCountChange = (e) => {
+  const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {
@@ -210,7 +202,6 @@ export default function RegisterTrees({
         postAuthenticatedRequest(`/app/contributions`, submitData, token).then(
           (res) => {
             if (!res.code) {
-              console.log(res);
               setErrorMessage('');
               setContributionGUID(res.id);
               setContributionDetails(res);
@@ -251,11 +242,12 @@ export default function RegisterTrees({
     contributionGUID,
     currentUserSlug: slug,
   };
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <>
       <Modal
-        className={styles.modalContainer}
+        className={'modalContainer'+' '+theme}
         open={registerTreesModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition
@@ -267,7 +259,8 @@ export default function RegisterTrees({
           {!registered ? (
             <div className={styles.formContainer}>
               <h2 className={styles.title}>
-                <button id={'backButtonRegTree'}
+                <button
+                  id={'backButtonRegTree'}
                   style={{
                     cursor: 'pointer',
                     marginLeft: -10,
@@ -374,7 +367,7 @@ export default function RegisterTrees({
                   {isMultiple ? (
                     <DrawMap
                       setGeometry={setGeometry}
-                      countryBbox={countryBbox}
+                      userLocation={userLocation}
                     />
                   ) : (
                     <MapGL
@@ -427,9 +420,11 @@ export default function RegisterTrees({
                 {/* : null
               } */}
                 <div className={styles.nextButton}>
-                  <button id={'RegTressSubmit'}
+                  <button
+                    id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
-                    className={styles.continueButton}
+                    className="primaryButton"
+                    style={{maxWidth: "240px"}}
                   >
                     {' '}
                     {isUploadingData ? (
