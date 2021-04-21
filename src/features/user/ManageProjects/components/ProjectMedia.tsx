@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../styles/StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -28,7 +27,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>()
+  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([])
 
   const [isUploadingData, setIsUploadingData] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -51,8 +50,9 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     }
     postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
       if (!res.code) {
-        let newUploadedImages = uploadedImages;
-        if(newUploadedImages === undefined){
+        let newUploadedImages = [...uploadedImages];
+        
+        if(!newUploadedImages){
           newUploadedImages = [];
         }
         newUploadedImages.push(res)
@@ -93,7 +93,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       }
     })
 
-  }, [])
+  }, [uploadedImages])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -284,7 +284,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
               <div
-                className={styles.continueButton}
+                className="primaryButton" style={{maxWidth: "240px"}}
               >
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
@@ -306,19 +306,19 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <AnimatedButton
+            <button
               onClick={handleBack}
-              className={styles.secondaryButton}
+              className="secondaryButton"
             >
               <BackArrow />
               <p>
                 {t('manageProjects:backToBasic')}
               </p>
-            </AnimatedButton>
+            </button>
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className={styles.continueButton}>
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{minWidth:"240px"}}>
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </button>
           </div>

@@ -59,10 +59,10 @@ export default function TimeTravel({
       setAfter(after);
 
       // Add zoom and rotation controls to the map.
-      after.addControl(
-        new mapboxgl.NavigationControl({ showCompass: false }),
-        'bottom-right'
-      );
+      // after.addControl(
+      //   new mapboxgl.NavigationControl({ showCompass: false }),
+      //   'bottom-right'
+      // );
 
       // A selector or reference to HTML element
       const container = '#comparison-container';

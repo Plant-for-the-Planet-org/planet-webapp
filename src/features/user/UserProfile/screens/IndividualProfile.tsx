@@ -13,6 +13,7 @@ export default function IndividualProfile({
   changeForceReload,
   forceReload,
   authenticatedType,
+  token,
 }: any) {
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -83,7 +84,7 @@ export default function IndividualProfile({
           />
         </LandingSection>
 
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
+        <MyTrees authenticatedType={authenticatedType} profile={userprofile} token={token} />
       </main>
 
       {/* add target modal */}

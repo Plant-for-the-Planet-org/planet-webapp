@@ -32,7 +32,11 @@ function ContactDetails({
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const onSubmit = (data: any) => {
-    setContactDetails({ ...contactDetails, ...data });
+    const submitdata = data;    
+    if(!isCompany){
+      submitdata.companyName = ''
+    }
+    setContactDetails({ ...contactDetails, ...submitdata });
     setDonationStep(3);
   };
 
@@ -102,7 +106,7 @@ function ContactDetails({
       <div className={styles.treeDonationContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formRow}>
-            <div>
+            <div className={styles.formRowInput}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:firstName')}
@@ -118,7 +122,7 @@ function ContactDetails({
             </div>
 
             <div style={{ width: '20px' }} />
-            <div>
+            <div className={styles.formRowInput}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:lastName')}
@@ -169,7 +173,7 @@ function ContactDetails({
             </div>
           </div>
           <div className={styles.formRow}>
-            <div>
+            <div className={styles.formRowInput}>
               <MaterialTextField
                 inputRef={register({ required: true })}
                 label={t('donate:city')}
@@ -185,7 +189,7 @@ function ContactDetails({
             </div>
 
           <div style={{ width: '20px' }} />
-          <div>
+          <div className={styles.formRowInput}>
             {postalRegex && (
               <MaterialTextField
                 inputRef={register({
@@ -281,12 +285,13 @@ function ContactDetails({
                 {t('common:continue')}
               </AnimatedButton>
             ) : (
-              <AnimatedButton
+              <button
                 onClick={handleSubmit(onSubmit)}
-                className={styles.continueButton}
+                className="primaryButton"
+                style={{borderRadius: "10px"}}
               >
                 {t('common:continue')}
-              </AnimatedButton>
+              </button>
             )}
           </div>
         </form>

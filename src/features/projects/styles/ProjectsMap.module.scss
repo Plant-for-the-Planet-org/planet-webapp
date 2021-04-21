@@ -99,7 +99,7 @@
   justify-content: center;
   align-items: center;
   padding: 8px;
-  background: #fff;
+  background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   line-height: 16px;
@@ -129,7 +129,7 @@
   justify-content: center;
   align-items: center;
   padding: 9px;
-  background: #fff;
+  background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   line-height: 16px;
@@ -146,7 +146,7 @@
 }
 
 .exploreCaption {
-  border-top: 2px solid #d5d5d5;
+  border-top: 2px solid $dividerColor;
   padding-top: 15px;
   width: 200px;
   font-size: 10px;
@@ -208,7 +208,7 @@
   padding: 40px;
   width: 375px;
   max-width: 100%;
-  background: #fff;
+  background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   animation: fade_in_show 0.5s;
@@ -322,17 +322,17 @@
   margin: 0 5px;
   height: 7px;
   border-radius: 50px;
-  background: linear-gradient(90deg, #68b030 1.1%, #007a49 98.6%);
+  background: linear-gradient(90deg, $primaryColor 1.1%, $primaryDarkColor 98.6%);
 }
 
 .currentForestScale > p:nth-child(1) {
   font-size: 12px;
-  color: #68b030;
+  color: $primaryColor;
 }
 
 .currentForestScale > p:nth-child(3) {
   font-size: 12px;
-  color: #007a49;
+  color: $primaryDarkColor;
 }
 
 .layerLegend {
@@ -359,7 +359,7 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background: #fff;
+  background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   animation: fade_in_show 0.5s;
@@ -373,14 +373,6 @@
   100% {
     opacity: 1;
   }
-}
-
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 }
 
 .exploreToggleRow {
@@ -528,12 +520,14 @@
     padding: 12px;
     text-align: center;
     display: none;
+    flex-direction: column;
+    font-weight: 400;
   }
   &:hover,
   &:active {
     cursor: pointer;
     .popoverContent {
-      display: block;
+      display: flex;
     }
   }
 }

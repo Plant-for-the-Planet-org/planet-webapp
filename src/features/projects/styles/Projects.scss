@@ -167,7 +167,7 @@
   padding: 12px 20px;
   border-radius: 100px;
   background-color: $primaryColor;
-  color: #fff;
+  color: $light;
   position: absolute;
   bottom: 90px;
   right: 0;
@@ -198,10 +198,6 @@
   background-color: #c5c5c5;
   height: 5px;
   border-radius: 100px;
-}
-
-.modalContainer {
-  background: rgba(0, 0, 0, 0.6);
 }
 
 @include smTabletView {

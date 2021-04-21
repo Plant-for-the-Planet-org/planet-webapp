@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from './../styles/StepForm.module.scss'
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
@@ -11,7 +10,6 @@ const { useTranslation } = i18next;
 
 interface Props {
     handleBack: Function;
-    reviewRequested: Boolean;
     submitForReview: Function;
     isUploadingData: Boolean;
     projectGUID: any;
@@ -19,7 +17,7 @@ interface Props {
     projectDetails: any;
 }
 
-function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploadingData, projectGUID, handleReset, projectDetails }: Props): ReactElement {
+function SubmitForReview({ submitForReview, handleBack, isUploadingData, projectGUID, handleReset, projectDetails }: Props): ReactElement {
 
     const { t, i18n, ready } = useTranslation(['manageProjects']);
 
@@ -44,15 +42,15 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
 
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
@@ -78,25 +76,26 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
 
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
                         <div className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={() => submitForReview()}
-                                className={styles.continueButton}
+                                className="primaryButton"
+                                style={{minWidth:"240px"}}
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
-                            </AnimatedButton>
+                            </button>
                         </div>
 
                     </div>
@@ -120,15 +119,15 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
                     </div>
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
                     </div>
@@ -151,15 +150,15 @@ function SubmitForReview({ submitForReview, reviewRequested, handleBack, isUploa
                     </div>
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
                     </div>

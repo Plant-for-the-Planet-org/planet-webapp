@@ -209,7 +209,7 @@ function TreeDonation({
               <ToggleSwitch
                 checked={isGift}
                 onChange={() => setIsGift(!isGift)}
-                name="checkedA"
+                id="checkedA"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             </div>
@@ -395,10 +395,11 @@ function TreeDonation({
                   className={styles.totalCostText}
                   style={{ fontWeight: 'unset', marginRight: '6px' }}
                 >
-                  <p>{t('donate:minDonate')}</p>
-                </div>
-                <div className={styles.totalCost}>
-                  {getFormatedCurrency(i18n.language, currency, minAmt)}
+                  <p>{t('donate:minDonate')}
+                 <span className={styles.totalCost}>
+                 {getFormatedCurrency(i18n.language, currency, minAmt)}
+                 </span>
+                 </p>
                 </div>
               </div>
             )}

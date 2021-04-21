@@ -17,8 +17,11 @@ export default function Layout(props: any) {
       <div className={`${themeType}`}>
         {/* <Navbar theme={themeType} /> */}
         {props.children}
-        <CookiePolicy />
-        <RedeemPopup />
+        <div className={'notificationContainer'}>
+          <CookiePolicy />
+          <RedeemPopup />
+        </div>
+        
       </div>
     </>
   );

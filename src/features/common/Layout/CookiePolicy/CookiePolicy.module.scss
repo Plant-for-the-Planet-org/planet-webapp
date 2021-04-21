@@ -1,9 +1,6 @@
 @import '../../../../theme/theme';
 
 .cookieContainer {
-  position: fixed;
-  bottom: 150px;
-  right: 70px;
   min-width: 200px;
   border-radius: 8px;
   background: $backgroundColor;
@@ -52,19 +49,17 @@
 
 @include xsPhoneView {
   .cookieContainer {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    left: 0;
-    right: 0;
-    bottom: 140px;
     max-width: 100%;
-    border-radius: 0px;
+    border-radius: 0;
   }
 
   .cookieContent {
-    padding: 16px 24px 16px 24px;
+    padding: 16px 32px 16px 16px;
     max-width: 100%;
     // display: flex;
     // flex-direction: column;
@@ -75,7 +70,8 @@
   .closeButton {
     display: block;
     position: absolute;
-    right: 0;
+    right: 6px;
+    padding: 0;
   }
 }
 :export {

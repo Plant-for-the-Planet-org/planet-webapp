@@ -49,7 +49,7 @@ function PaymentDetails({
   shouldCreateDonation,
   setShouldCreateDonation,
 }: PaymentDetailsProps): ReactElement {
-  const { t, i18n, ready } = useTranslation(['donate', 'common']);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
 
@@ -182,7 +182,7 @@ function PaymentDetails({
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
-       {contactDetails && (
+        {contactDetails && (
           <div className={styles.showContactDetails}>
             {contactDetails.companyName ? (
               <>
@@ -203,46 +203,64 @@ function PaymentDetails({
               {`${contactDetails.address}, ${contactDetails.city}`}
             </p>
             <p className={styles.showContactDetailsAddress}>
-              {`${contactDetails.zipCode}, ${
-                getCountryDataBy('countryCode', contactDetails.country)
-                  .countryName
+              {`${contactDetails.zipCode}, ${t(
+                  'country:' + contactDetails.country.toLowerCase()
+                )
               }`}
             </p>
             <p className={styles.showContactDetailsAddress}>
               {`${contactDetails.email}`}
             </p>
+
+            {giftDetails && giftDetails.recipientName && (
+              <div style={{marginTop:'12px',fontStyle:'italic'}}>
+                <p className={styles.showContactDetailsName}>
+                  {t('donate:giftTo')} {giftDetails.recipientName}
+                </p>
+
+                {giftDetails.email && (
+                  <p className={styles.showContactDetailsAddress}>
+                    {giftDetails.email}
+                  </p>
+                )}
+                {giftDetails.giftMessage && (
+                  <p className={styles.showContactDetailsAddress}>
+                    {giftDetails.giftMessage}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
-        )} 
+        )}
 
         <div className={styles.treeDonationContainer}>
-          
-
-        {!contactDetails.companyName && contactDetails.companyName === '' ? (
-          askpublishName ? (
-            <div className={styles.isCompany}>
-              <label htmlFor="publishName" className={styles.isCompanyText}>
-                {t('donate:askPublishName')}
-              </label>
-              <ToggleSwitch
-                id="publishName"
-                checked={publishName}
-                onChange={() => {
-                  setpublishName(!publishName);
-                }}
-                name="checkedB"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          ) : (
-            <div className={styles.isCompany}>
-              <label className={styles.isCompanyText} style={{textAlign:'center'}}>
-                {t('donate:nameAlreadyPublished')}
-              </label>
-            </div>
-          )
-        ) : null}
-
-
+          {!contactDetails.companyName && contactDetails.companyName === '' ? (
+            askpublishName ? (
+              <div className={styles.isCompany}>
+                <label htmlFor="publishName" className={styles.isCompanyText}>
+                  {t('donate:askPublishName')}
+                </label>
+                <ToggleSwitch
+                  id="publishName"
+                  checked={publishName}
+                  onChange={() => {
+                    setpublishName(!publishName);
+                  }}
+                  name="checkedB"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </div>
+            ) : (
+              <div className={styles.isCompany}>
+                <label
+                  className={styles.isCompanyText}
+                  style={{ textAlign: 'center' }}
+                >
+                  {t('donate:nameAlreadyPublished')}
+                </label>
+              </div>
+            )
+          ) : null}
 
           <PaymentMethodTabs
             paymentType={paymentType}
@@ -274,6 +292,11 @@ function PaymentDetails({
                 <Elements stripe={getStripe(paymentSetup)}>
                   <CardPayments
                     donorDetails={donorDetails}
+                    totalCost={getFormatedCurrency(
+                      i18n.language,
+                      currency,
+                      treeCount * treeCost
+                    )}
                     onPaymentFunction={(data) =>
                       onSubmitPayment('stripe', data)
                     }
