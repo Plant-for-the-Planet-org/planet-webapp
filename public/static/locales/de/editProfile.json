@@ -24,5 +24,10 @@
   "nameValidation": "Bitte gib einen Namen ein",
   "profilePicUpdated": "Profilbild wird aktualisiert...",
   "profileSaved": "Erfolgreich gespeichert!",
-  "profileSaveFailed": "Fehler beim Aktualisieren des Profils."
+  "profileSaveFailed": "Fehler beim Aktualisieren des Profils.",
+  "changeAccountToPublic": "Konto auf öffentlich umstellen",
+  "publicAccount": "Öffentliches Konto",
+  "accountPrivacyChangeText": "Um ein Profil-Widget erstellen zu können, musst Du ein öffentliches Konto haben. Wenn Du auf \"Weiter\" klickst, änderst Du Deine Datenschutzeinstellungen auf \"öffentlich\".",
+  "continue": "Weiter",
+  "cancel": "Abbrechen"
 }

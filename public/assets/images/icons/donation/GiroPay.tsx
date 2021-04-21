@@ -4,8 +4,8 @@ function GiroPayIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="46.511"
-      height="20.001"
+      width="50"
+      height="22"
       viewBox="0 0 46.511 20.001"
     >
       <g fillRule="evenodd" transform="translate(-17.717 -22.137)">

@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
+import tenantConfig from '../../../../../tenant.config';
+
+const config = tenantConfig();
 
 interface Props {
     setCurrencyCode: Function;
@@ -9,7 +12,7 @@ interface Props {
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
     const { useTranslation } = i18next;
-    const { i18n, t } = useTranslation(['common']);
+    const { i18n, t } = useTranslation(['common', 'maps']);
     const [language, setLanguage] = React.useState(i18n.language);
     const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
     const [selectedCountry, setSelectedCountry] = React.useState('DE');
@@ -44,6 +47,27 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {`🌐 ${language ? language.toUpperCase() : ''
                         } • ${selectedCurrency}`}
                 </div>
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a 
+                    rel="noopener noreferrer"
+                    href={`https://www.thegoodshop.org/de/shop/`}
+                    target={'_blank'}
+                >
+                    {t('common:shop')}
+                </a> : null}
+                {/* {config.statusURL ? <a
+                    rel="noopener noreferrer"
+                    href={config.statusURL}
+                    target={'_blank'}
+                >
+                    {t('common:status')}
+                </a> : null} */}
+                <a
+                    rel="noopener noreferrer"
+                    href={`https://status.pp.eco/`}
+                    target={'_blank'}
+                >
+                    {t('common:status')}
+                </a>
                 <a
                     rel="noopener noreferrer"
                     href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
@@ -72,16 +96,15 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                             {t('common:mapInfo')}
                             <div
                                 className={styles.popoverContent}
-                                style={{ left: '-270px', top: '-140px' }}
+                                style={{ left: '-270px', top: '-240px' }}
                             >
-                                <a>
-                                    Esri Community Maps Contributors, Esri, HERE, Garmin,
-                                    METI/NASA, USGS
-                    <br />
-                    Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS,
-                    USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User
-                    Community
-                  </a>
+                                <b>{t('maps:baseLayer')}</b>
+                                <a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS </a>
+                                <a>World Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</a>
+                                <b>{t('maps:satelliteImagery')}</b>
+                                <a>Image courtesy of Planet Labs, Inc</a>
+                                <a>Copernicus Sentinel data 2017-2021</a>
+                                <a>Landsat-8 image courtesy of the U.S. Geological Survey</a>
                             </div>
                         </div>
                     </div>

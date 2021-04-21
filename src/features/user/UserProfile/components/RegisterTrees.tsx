@@ -24,6 +24,7 @@ import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -137,7 +138,7 @@ export default function RegisterTrees({
     async function getUserLocation() {
       const location = await getStoredConfig('loc');
       if (location) {
-        setUserLocation([location.latitude, location.longitude]);
+        setUserLocation([Number(location.longitude) || 0, Number(location.latitude) || 0]);
       }
     }
     getUserLocation();
@@ -149,7 +150,7 @@ export default function RegisterTrees({
         ...viewport,
         longitude: userLocation[0],
         latitude: userLocation[1],
-        zoom: 5,
+        zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
@@ -177,7 +178,7 @@ export default function RegisterTrees({
 
   const treeCount = watch('treeCount');
 
-  const onTreeCountChange = (e) => {
+  const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {
@@ -241,11 +242,12 @@ export default function RegisterTrees({
     contributionGUID,
     currentUserSlug: slug,
   };
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <>
       <Modal
-        className={styles.modalContainer}
+        className={'modalContainer'+' '+theme}
         open={registerTreesModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition
@@ -421,7 +423,8 @@ export default function RegisterTrees({
                   <button
                     id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
-                    className={styles.continueButton}
+                    className="primaryButton"
+                    style={{maxWidth: "240px"}}
                   >
                     {' '}
                     {isUploadingData ? (

@@ -14,7 +14,7 @@ export async function createDonation(data: any, token: any) {
   if (token && token !== '') {
     headers = {
       ...headers,
-      'Authorization': `OAuth ${token}`
+      'Authorization': `Bearer ${token}`
     }
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations`, {
@@ -39,7 +39,7 @@ export async function payDonation(data: any, id: any, token: any) {
   if (token && token !== '') {
     headers = {
       ...headers,
-      'Authorization': `OAuth ${token}`
+      'Authorization': `Bearer ${token}`
     }
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
@@ -274,7 +274,7 @@ export async function payDonationFunction({
       } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending') {
         setIsPaymentProcessing(false);
         setDonationStep(4);
-        
+
         return paidDonation;
       } else if (paidDonation.status === 'action_required') {
         handleSCAPaymentFunction({
@@ -308,7 +308,7 @@ export async function handleSCAPaymentFunction({
   token,
   setDonationStep,
   donorDetails
-}: any) {  
+}: any) {
   const clientSecret = paidDonation.response.payment_intent_client_secret;
   const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
   const stripe = window.Stripe(
@@ -319,7 +319,7 @@ export async function handleSCAPaymentFunction({
   );
   if (stripe) {
     if(gateway === 'stripe'){
-      const SCAdonation = await stripe.handleCardAction(clientSecret);      
+      const SCAdonation = await stripe.handleCardAction(clientSecret);
       if (SCAdonation) {
         if (SCAdonation.error) {
           setIsPaymentProcessing(false);
@@ -374,7 +374,7 @@ export async function handleSCAPaymentFunction({
         setPaymentError(error);
       }
       else {
-        console.log('paymentIntent',paymentIntent)
+        return;
       }
     }
 
@@ -409,6 +409,6 @@ export async function handleSCAPaymentFunction({
         console.log('paymentIntent',paymentIntent)
       }
     }
-    
+
   }
 }

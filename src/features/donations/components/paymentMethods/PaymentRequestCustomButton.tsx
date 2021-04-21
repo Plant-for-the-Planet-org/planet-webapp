@@ -207,7 +207,7 @@ export const PaymentRequestCustomButton = ({
             <AnimatedButton
               onClick={() => continueNext()}
               className={styles.continueButton}
-              style={{borderRadius:'6px'}}
+              style={{borderRadius:'6px', maxWidth:'48%',height:'32px!important'}}
             >
               {t('common:continue')}
             </AnimatedButton>
@@ -219,13 +219,15 @@ export const PaymentRequestCustomButton = ({
           className={styles.actionButtonsContainer}
           style={{ justifyContent: 'center' }}
         >
-          <AnimatedButton
+          <button
             onClick={() => continueNext()}
-            className={styles.continueButton}
+            className="primaryButton"
             id="treeDonateContinue"
+            style={{borderRadius: "10px"}}
+
           >
             {t('common:continue')}
-          </AnimatedButton>
+          </button>
         </div>
       ) : null) : null;
 };
