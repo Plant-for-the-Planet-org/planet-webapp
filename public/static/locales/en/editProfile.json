@@ -4,7 +4,7 @@
   "profileTypes": "{{item.title}}",
   "profileName": "Name of {{type}}",
   "createAccount": "Create Account",
-  "person": "Person",
+  "individual": "Person",
   "iamA" : "I am a",
   "tpo": "Reforestation Organisation",
   "education": "School",

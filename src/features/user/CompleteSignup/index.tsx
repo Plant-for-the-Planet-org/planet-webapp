@@ -75,7 +75,7 @@ console.log(token,"token")
     setSnackbarOpen(false);
   };
 
-  const [type, setAccountType] = useState('person');
+  const [type, setAccountType] = useState('individual');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
@@ -138,7 +138,7 @@ console.log(token,"token")
   };
 
   const profileTypes = [
-    { id: 1, title: ready ? t('editProfile:person') : '', value: 'person' },
+    { id: 1, title: ready ? t('editProfile:individual') : '', value: 'individual' },
     { id: 2, title: ready ? t('editProfile:organization') : '', value: 'organization' },
     { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
     { id: 4, title: ready ? t('editProfile:education') : '', value: 'education' }
@@ -240,7 +240,7 @@ console.log(token,"token")
             </div>
           </div>
 
-          {type !== 'person' ? (
+          {type !== 'individual' ? (
             <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('editProfile:profileName', {
