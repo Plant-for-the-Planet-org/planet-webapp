@@ -52,6 +52,7 @@ function PaymentDetails({
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
+  const [directGift, setDirectGift] = React.useState(null);
 
   const [publishName, setpublishName] = React.useState(false);
   const [askpublishName, setaskpublishName] = React.useState(false);
@@ -68,6 +69,12 @@ function PaymentDetails({
     }
   }, [publishName, donationID]);
 
+  React.useEffect(() => {
+    const getdirectGift = localStorage.getItem('directGift');
+    if (getdirectGift) {
+      setDirectGift(JSON.parse(getdirectGift));
+    }
+  }, []);
   const [paymentError, setPaymentError] = React.useState('');
 
   const donorDetails = {
@@ -215,9 +222,10 @@ function PaymentDetails({
             {giftDetails && giftDetails.recipientName && (
               <div style={{marginTop:'12px',fontStyle:'italic'}}>
                 <p className={styles.showContactDetailsName}>
-                  {t('donate:giftTo')} {giftDetails.recipientName}
+                  {directGift && directGift.type === 'individual' ? 
+                      t('donate:giftToName')
+                    : t('donate:thisDonationSupports')}{' '} {giftDetails.recipientName}
                 </p>
-
                 {giftDetails.email && (
                   <p className={styles.showContactDetailsAddress}>
                     {giftDetails.email}
