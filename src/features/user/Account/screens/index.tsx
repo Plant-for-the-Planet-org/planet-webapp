@@ -25,9 +25,9 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-function Account({}: Props): ReactElement {
+function Account({ }: Props): ReactElement {
   const {
     isLoading,
     isAuthenticated,
@@ -96,7 +96,7 @@ function Account({}: Props): ReactElement {
       if (isAuthenticated) {
         token = await getAccessTokenSilently();
         if (filter === null) {
-          let paymentHistory = await getAuthenticatedRequest(
+          const paymentHistory = await getAuthenticatedRequest(
             '/app/paymentHistory',
             token
           );
@@ -106,7 +106,7 @@ function Account({}: Props): ReactElement {
           setTimeout(() => setProgress(0), 1000);
           setaccountingFilters(paymentHistory._filters);
         } else {
-          let paymentHistory = await getAuthenticatedRequest(
+          const paymentHistory = await getAuthenticatedRequest(
             `${filter ? accountingFilters[filter] : '/app/paymentHistory'}`,
             token
           );
@@ -184,9 +184,8 @@ function Account({}: Props): ReactElement {
           ) : (
             <>
               <button
-                className={`${styles.multiSelectInput} ${
-                  null === filter ? styles.multiSelectInputCheckTrue : ''
-                }`}
+                className={`${styles.multiSelectInput} ${null === filter ? styles.multiSelectInputCheckTrue : ''
+                  }`}
                 key="all"
                 onClick={() => handleSetFilter(null)}
               >
@@ -216,7 +215,7 @@ function Account({}: Props): ReactElement {
             ) : (
               paymentHistory &&
               paymentHistory?.items?.map((item, index) => {
-                return <PaymentRecord record={item} index={index} />;
+                return <PaymentRecord key={index} record={item} index={index} />;
               })
             )}
           </div>
@@ -229,9 +228,8 @@ function Account({}: Props): ReactElement {
             ) : (
               <div className={styles.filterGrid}>
                 <button
-                  className={`${styles.multiSelectInput} ${
-                    null === filter ? styles.multiSelectInputCheckTrue : ''
-                  }`}
+                  className={`${styles.multiSelectInput} ${null === filter ? styles.multiSelectInputCheckTrue : ''
+                    }`}
                   key="all"
                   onClick={() => handleSetFilter(null)}
                 >
@@ -272,9 +270,8 @@ function FilterButtons(props: any) {
   return Object.entries(props.accountingFilters).map((item) => {
     return (
       <button
-        className={`${styles.multiSelectInput} ${
-          props.filter === item[0] ? styles.multiSelectInputCheckTrue : ''
-        }`}
+        className={`${styles.multiSelectInput} ${props.filter === item[0] ? styles.multiSelectInputCheckTrue : ''
+          }`}
         key={item[0]}
         onClick={() => props.handleSetFilter(item[0])}
       >

@@ -10,7 +10,12 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
-function PaymentRecord({ record, index }) {
+interface Props {
+  record: Object;
+  index: number;
+}
+
+function PaymentRecord({ record, index }: Props) {
   const { t, i18n } = useTranslation('me');
   const [selectedRecord, setselectedRecord] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -42,9 +47,8 @@ function PaymentRecord({ record, index }) {
   return (
     <div
       key={index}
-      className={`${styles.singleRecord} ${
-        index === selectedRecord ? styles.selectedRecord : ''
-      }`}
+      className={`${styles.singleRecord} ${index === selectedRecord ? styles.selectedRecord : ''
+        }`}
     >
       <div className={styles.recordHeader} onClick={() => selectRecord1(index)}>
         <div className={styles.treesDate}>
@@ -83,9 +87,8 @@ function PaymentRecord({ record, index }) {
       </div>
 
       <div
-        className={`${styles.recordDataContainer} ${
-          selectedRecord === index ? styles.recordDataContainerSelected : ''
-        }`}
+        className={`${styles.recordDataContainer} ${selectedRecord === index ? styles.recordDataContainerSelected : ''
+          }`}
       >
         {record.details && (
           <RecordDetails
