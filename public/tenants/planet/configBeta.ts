@@ -8,6 +8,7 @@ const config = {
   showUNEPLogo:true,
   showUNDecadeLogo:true,
   showRedeemHint:true,
+  enableGuestSepa:false,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
@@ -51,7 +52,7 @@ const config = {
     description:
       "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
-    twitterHandle: '@pftp_int',
+    twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
   footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]

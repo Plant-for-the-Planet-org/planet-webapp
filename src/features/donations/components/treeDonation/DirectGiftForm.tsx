@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styles from './../../styles/TreeDonation.module.scss';
+import styles from './../../styles/Donations.module.scss';
 import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;

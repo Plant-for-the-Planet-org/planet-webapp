@@ -4,7 +4,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import styles from './../../styles/TreeDonation.module.scss';
+import styles from './../../styles/Donations.module.scss';
 import i18next from '../../../../../i18n';
 import getStripe from '../../../../utils/stripe/getStripe';
 import { Elements } from '@stripe/react-stripe-js';
@@ -207,7 +207,7 @@ export const PaymentRequestCustomButton = ({
             <AnimatedButton
               onClick={() => continueNext()}
               className={styles.continueButton}
-              style={{borderRadius:'6px'}}
+              style={{borderRadius:'6px', maxWidth:'48%',height:'32px!important'}}
             >
               {t('common:continue')}
             </AnimatedButton>
@@ -219,13 +219,15 @@ export const PaymentRequestCustomButton = ({
           className={styles.actionButtonsContainer}
           style={{ justifyContent: 'center' }}
         >
-          <AnimatedButton
+          <button
             onClick={() => continueNext()}
-            className={styles.continueButton}
+            className="primaryButton"
             id="treeDonateContinue"
+            style={{borderRadius: "10px"}}
+
           >
             {t('common:continue')}
-          </AnimatedButton>
+          </button>
         </div>
       ) : null) : null;
 };

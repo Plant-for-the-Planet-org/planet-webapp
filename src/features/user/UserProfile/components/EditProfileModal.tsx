@@ -18,6 +18,7 @@ import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { selectUserType } from '../../../../utils/selectUserType';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 export default function EditProfileModal({
@@ -177,10 +178,12 @@ export default function EditProfileModal({
       }
     }
   };
+  const { theme } = React.useContext(ThemeContext);
+
   return ready ? (
     <React.Fragment>
       <Modal
-        className={styles.modalContainer}
+        className={'modalContainer'+' '+theme}
         open={editProfileModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition

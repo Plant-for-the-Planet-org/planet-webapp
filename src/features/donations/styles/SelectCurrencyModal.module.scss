@@ -1,13 +1,5 @@
 @import '../../../theme/theme';
 
-// modal container for black opacity
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 // white modal
 .modal {
   background-color: $backgroundColor;
@@ -149,3 +141,9 @@
     padding: 20px 10px;
   }
 }
+
+// @include mdTabletView{
+//   .modal{
+//     width: 420px;
+//   }
+// }
