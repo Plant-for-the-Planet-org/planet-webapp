@@ -19,7 +19,6 @@ import { getStoredConfig } from '../../../utils/storeConfig'
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
-
   const {
     isLoading,
     isAuthenticated,
@@ -290,7 +289,10 @@ console.log(token,"token")
                     label={t('donate:city')}
                     variant="outlined"
                     inputRef={register({ required: true })}
-                    defaultValue={getStoredConfig("loc").city}
+                    defaultValue={getStoredConfig("loc").city === "T1" || 
+                                  getStoredConfig("loc").city === "XX" || 
+                                  getStoredConfig("loc").city === "" ?
+                                  "" : getStoredConfig("loc").city}
                   />
                   {errors.city && (
                     <span className={styles.formErrors}>
@@ -307,7 +309,10 @@ console.log(token,"token")
                       pattern: postalRegex,
                       required: true
                     })}
-                    defaultValue={getStoredConfig("loc").postalCode}
+                    defaultValue={getStoredConfig("loc").postalCode === "T1" || 
+                                  getStoredConfig("loc").postalCode === "XX" || 
+                                  getStoredConfig("loc").postalCode === "" ?
+                                  "" : getStoredConfig("loc").postalCode}
                   />
                   {errors.zipCode && (
                     <span className={styles.formErrors}>
@@ -327,7 +332,10 @@ console.log(token,"token")
               label={t('donate:country')}
               name="country"
               onChange={(country) => setCountry(country)}
-              defaultValue={defaultCountry}
+              defaultValue={getStoredConfig("loc").postalCode === "T1" || 
+                            getStoredConfig("loc").postalCode === "XX" || 
+                            getStoredConfig("loc").postalCode === "" ?
+                            "" : getStoredConfig("loc").postalCode}
             />
             {errors.country && (
               <span className={styles.formErrors}>
