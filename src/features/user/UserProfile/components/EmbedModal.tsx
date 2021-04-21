@@ -8,6 +8,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import MuiAlert from '@material-ui/lab/Alert';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 interface Props {
     embedModalOpen: boolean;
@@ -99,10 +100,12 @@ export default function EmbedModal({ embedModalOpen, setEmbedModalOpen, userprof
     // React.useEffect(() => {
     //     console.log(isPrivate);
     // }, [isPrivate]);
+    const { theme } = React.useContext(ThemeContext);
+
     return (
         <>
             <Modal
-                className={styles.modalContainer}
+                className={'modalContainer'+' '+theme}
                 open={embedModalOpen}
                 hideBackdrop
             ><div className={styles.modal}>

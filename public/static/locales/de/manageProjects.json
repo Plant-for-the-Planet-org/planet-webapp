@@ -78,7 +78,7 @@
   "backToAnalysis": "Zurück zur detaillierten Analyse",
   "spendingYearValidation": "Bitte Ausgabenjahr hinzufügen",
   "spendingAmountValidation": "Bitte gib den ausgegebenen Betrag ein",
-  "uploadReport": "Bericht hochladen",
+  "uploadReport": "Bericht hochladen und speichern",
   "dragInPdf": "oder ziehe eine PDF-Datei hinein",
   "addAnotherYear": "Weiteres Jahr hinzufügen",
   "backToSites": "Zurück zu den Projektstandorten",
@@ -116,5 +116,9 @@
   "filePDFOnly": "Dateityp muss PDF sein",
   "acceptedReview": "Änderungen an deinem Projekt sind online",
   "deniedReview": "Deine Überprüfung führte zu einer Ablehnung",
-  "saveSite": "Standort speichern"
+  "saveSite": "Standort speichern",
+  "latitude": "Breitengrad",
+  "longitude": "Längengrad",
+  "latitudeRequired": "Breitengrad ist erforderlich",
+  "longitudeRequired": "Längengrad ist erforderlich"
 }

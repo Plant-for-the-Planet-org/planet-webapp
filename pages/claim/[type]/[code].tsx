@@ -259,7 +259,7 @@ function ClaimDonation({ }: Props): ReactElement {
                                     <p>{validCodeData.tpos[0].tpoName}</p>
                                 </div>
 
-                                <div onClick={() => redeemCode(code, type)} className={styles.continueButton}>
+                                <div onClick={() => redeemCode(code, type)} className="primaryButton" style={{maxWidth: "200px", marginTop: "24px"}}>
                                     {isUploadingData ? (
                                         <div className={styles.spinner}></div>
                                     ) : (t('redeem:addToMyTrees'))}
@@ -274,7 +274,7 @@ function ClaimDonation({ }: Props): ReactElement {
                                     {errorMessage && (
                                         <span className={styles.formErrors}>{errorMessage}</span>
                                     )}
-                                    <div onClick={() => validateCode(code, type)} className={styles.continueButton}>
+                                    <div onClick={() => validateCode(code, type)} className="primaryButton" style={{maxWidth: "200px", marginTop: "24px"}}>
                                         {isUploadingData ? (
                                             <div className={styles.spinner}></div>
                                         ) : (t('redeem:validateCode'))}

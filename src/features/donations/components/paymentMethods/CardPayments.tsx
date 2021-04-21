@@ -42,8 +42,8 @@ const getInputOptions = (placeholder: string) => {
         },
       },
       invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
+        color: styles.dangerColor,
+        iconColor: styles.dangerColor,
       },
     },
     placeholder: placeholder,
@@ -52,6 +52,7 @@ const getInputOptions = (placeholder: string) => {
 };
 
 function CardPayments({
+  totalCost,
   paymentType,
   setPaymentType,
   onPaymentFunction,
@@ -240,12 +241,20 @@ function CardPayments({
           <div onClick={handleSubmit} className={styles.actionButtonsContainerCenter}>
             <AnimatedButton className={styles.continueButton} id='donateContinueButton'>
               {t('common:donate')}
+              <div className={styles.totalCost}
+              style={{ color: styles.light, fontSize: "14px" }}>
+                 {totalCost}
+                  </div>
             </AnimatedButton>
           </div>
         ) : (
             <div className={styles.actionButtonsContainerCenter}>
               <AnimatedButton disabled className={styles.continueButtonDisabled} id='donateContinueButton'>
                 {t('common:donate')}
+                <div className={styles.totalCost}
+              style={{ color: styles.light, fontSize: "14px" }}>
+              {totalCost}
+                  </div>
               </AnimatedButton>
             </div>
           )}

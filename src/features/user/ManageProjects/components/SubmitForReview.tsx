@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from './../styles/StepForm.module.scss'
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
@@ -43,15 +42,15 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
 
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
@@ -77,25 +76,26 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
 
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
                         <div className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={() => submitForReview()}
-                                className={styles.continueButton}
+                                className="primaryButton"
+                                style={{minWidth:"240px"}}
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
-                            </AnimatedButton>
+                            </button>
                         </div>
 
                     </div>
@@ -119,15 +119,15 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                     </div>
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
                     </div>
@@ -150,15 +150,15 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                     </div>
                     <div className={styles.formField}>
                         <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-                            <AnimatedButton
+                            <button
                                 onClick={handleBack}
-                                className={styles.secondaryButton}
+                                className="secondaryButton"
                             >
                                 <BackArrow />
                                 <p>
                                     {t('manageProjects:backToSpending')}
                                 </p>
-                            </AnimatedButton>
+                            </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
                     </div>

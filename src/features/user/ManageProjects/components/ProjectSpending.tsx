@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -149,7 +148,6 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 <div key={report.id} className={` ${styles.reportPDFContainer}`}>
                                     <a target="_blank" rel="noopener noreferrer"
                                         href={getPDFFile('projectExpense', report.pdf)}>
-                                        {/* <PDFIcon color="#2F3336" /> */}
                                         <PDFRed />
                                     </a>
                                     <div className={styles.reportPDFDetails}>
@@ -248,7 +246,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                                 <div className={styles.fileUploadContainer}>
                                     <div
-                                        className={styles.continueButton}
+                                        className="primaryButton"
+                                        style={{maxWidth:"240px"}}
                                     >
                                         {t('manageProjects:uploadReport')}
                                     </div>
@@ -261,7 +260,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 <div className={styles.formFieldLarge} {...getRootProps()}>
                                     <div className={styles.fileUploadContainer}>
                                         <div
-                                            className={styles.continueButton}
+                                            className="primaryButton"
+                                            style={{maxWidth:"240px"}}
                                         >
                                             <input {...getInputProps()} />
                                             {t('manageProjects:uploadReport')}
@@ -289,24 +289,25 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
                 <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={handleBack}
-                            className={styles.secondaryButton}
+                            className="secondaryButton"
                         >
                             <BackArrow />
                             <p>
                                 {t('manageProjects:backToSites')}
                             </p>
-                        </AnimatedButton>
+                        </button>
                     </div>
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={() => handleNext()}
-                            className={styles.continueButton}
+                            className="primaryButton"
+                            style={{minWidth:"240px"}}
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
-                        </AnimatedButton>
+                        </button>
                     </div>
                 </div>
             </form>

@@ -9,6 +9,7 @@
   "myForest": "Mein Wald",
   "giftToGiftee": "Geschenk an {{gifteeName}}",
   "settingManageProject": "Projekte verwalten",
+  "deleteAccount": "Konto löschen",
   "userTree": "Bäume registrieren",
   "logout": "Abmelden",
   "close": "Schließen",
@@ -37,5 +38,6 @@
   "receivedFrom": "Empfangen von {{name}}",
   "redeemedTrees": "Eingelöste Bäume",
   "nameForest": "{{name}}'s Wald",
+  "registeredTrees": "Registrierte Bäume",
   "embedWidget": "Widget einbetten"
 }

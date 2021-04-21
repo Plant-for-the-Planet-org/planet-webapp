@@ -24,9 +24,11 @@
   "selectCountry": "Land auswählen",
   "ok": "OK",
   "cancel": "Abbrechen",
+  "delete": "Löschen",
+  "deleteAccount": "Konto löschen",
   "thankYou": "Vielen Dank",
   "privacyPolicyNotice": "Durch die Nutzung dieser Website akzeptierst Du unsere",
-  "privacyPolicy": "Datenschutz-Erklärung",
+  "privacyPolicy": "Datenschutzerklärung & Cookie-Richtlinie",
   "about_pftp": "Über Plant-for-the-Planet",
   "january": "Januar",
   "february": "Februar",
@@ -58,6 +60,12 @@
   "blogs": "Blogs",
   "faqs": "FAQs",
   "annualReports": "Jahresberichte",
-  "mapInfo": "Esri",
-  "aboutUs": "Über uns"
+  "mapInfo": "Kartenhinweise",
+  "aboutUs": "Über uns",
+  "alternativelyEditProfile": "Alternativ kannst du dein Profil als privat markieren, indem du Profil bearbeiten aufrufst.",
+  "deleteAccountConsent": "Indem ich auf \"Löschen\" klicke, fordere ich Plant-for-the-Planet auf, alle mit meinem Plant-for-the-Planet-Konto verbundenen Daten zu löschen. Die Spendendaten können bis zu acht Jahre aufbewahrt werden. Bäume, die ich registriert habe, werden nicht entfernt, werden aber anonymisiert und können nicht erneut beansprucht werden.",
+  "deleteIrreversible": "Ich verstehe, dass die Kontolöschung von {{email}} irreversibel ist.",
+  "goBack": "Zurückgehen",
+  "deleteAccountMessage": "Um mit dem Löschen fortzufahren, gib bitte `{{delete}}` ein",
+  "deleteAccountLabel": "Tippe: {{delete}}"
 }
