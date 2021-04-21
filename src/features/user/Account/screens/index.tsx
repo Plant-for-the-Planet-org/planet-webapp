@@ -45,6 +45,11 @@ function Account({ }: Props): ReactElement {
         let token = null;
         if (isAuthenticated) {
           token = await getAccessTokenSilently();
+        } else {
+          loginWithRedirect({
+            redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
+            ui_locales: localStorage.getItem('language') || 'en',
+          });
         }
         if (!isLoading && token) {
           try {
@@ -62,7 +67,7 @@ function Account({ }: Props): ReactElement {
               // in case of 401 - invalid token: signIn()
               removeUserExistsInDB();
               loginWithRedirect({
-                redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+                redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
                 ui_locales: localStorage.getItem('language') || 'en',
               });
             } else {
@@ -115,9 +120,15 @@ function Account({ }: Props): ReactElement {
           setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
         }
+      } else {
+        loginWithRedirect({
+          redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
+          ui_locales: localStorage.getItem('language') || 'en',
+        });
       }
     }
-    fetchPaymentHistory();
+    if (!isLoading && isAuthenticated)
+      fetchPaymentHistory();
   }, [filter]);
 
   const handleSetFilter = (id: any) => {
