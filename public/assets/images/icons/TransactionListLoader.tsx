@@ -4,10 +4,10 @@ function TransactionListLoader(props: any): ReactElement {
   return (
     <svg
       role="img"
-      width="476"
-      height="250"
+      width="100%"
+      height="100%"
       aria-labelledby="loading-aria"
-      viewBox="0 0 476 250"
+      viewBox="0 0 700 111"
       preserveAspectRatio="none"
     >
       <title id="loading-aria">Loading...</title>
@@ -21,15 +21,10 @@ function TransactionListLoader(props: any): ReactElement {
       ></rect>
       <defs>
         <clipPath id="clip-path">
-          <rect x="13" y="56" rx="3" ry="3" width="410" height="6" />
-          <rect x="13" y="72" rx="3" ry="3" width="380" height="6" />
-          <rect x="13" y="88" rx="3" ry="3" width="178" height="6" />
-          <rect x="13" y="118" rx="3" ry="3" width="410" height="6" />
-          <rect x="13" y="134" rx="3" ry="3" width="380" height="6" />
-          <rect x="13" y="150" rx="3" ry="3" width="178" height="6" />
-          <rect x="13" y="179" rx="3" ry="3" width="410" height="6" />
-          <rect x="13" y="195" rx="3" ry="3" width="380" height="6" />
-          <rect x="13" y="211" rx="3" ry="3" width="178" height="6" />
+          <rect x="20" y="20" rx="3" ry="3" width="160" height="20" />
+          <rect x="20" y="60" rx="3" ry="3" width="100" height="20" />
+          <rect x="620" y="20" rx="3" ry="3" width="60" height="20" />
+          <rect x="620" y="60" rx="3" ry="3" width="60" height="20" />
         </clipPath>
         <linearGradient id="fill">
           <stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">

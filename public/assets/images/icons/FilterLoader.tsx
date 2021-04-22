@@ -4,10 +4,10 @@ function FilterLoader(): ReactElement {
   return (
     <svg
       role="img"
-      width="476"
-      height="130"
+      width="220"
+      height="172"
       aria-labelledby="loading-aria-filter-loader"
-      viewBox="0 0 476 130"
+      viewBox="0 0 220 172"
       preserveAspectRatio="none"
     >
       <title id="loading-aria-filter-loader">Loading...</title>
@@ -21,12 +21,12 @@ function FilterLoader(): ReactElement {
       ></rect>
       <defs>
         <clipPath id="clip-path-filter-loader">
-          <rect x="46" y="24" rx="0" ry="0" width="80" height="25" />
-          <rect x="146" y="24" rx="0" ry="0" width="80" height="25" />
-          <rect x="46" y="64" rx="0" ry="0" width="80" height="25" />
-          <rect x="146" y="64" rx="0" ry="0" width="80" height="25" />
-          <rect x="46" y="104" rx="0" ry="0" width="80" height="25" />
-          <rect x="146" y="104" rx="0" ry="0" width="80" height="25" />
+          <rect x="0" y="20" rx="0" ry="0" width="100" height="34" />
+          <rect x="120" y="20" rx="0" ry="0" width="100" height="34" />
+          <rect x="0" y="74" rx="0" ry="0" width="100" height="34" />
+          <rect x="120" y="74" rx="0" ry="0" width="100" height="34" />
+          <rect x="0" y="128" rx="0" ry="0" width="100" height="34" />
+          <rect x="120" y="128" rx="0" ry="0" width="100" height="34" />
         </clipPath>
         <linearGradient id="fill-filter-loader">
           <stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">

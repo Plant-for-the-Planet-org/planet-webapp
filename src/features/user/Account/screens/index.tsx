@@ -216,7 +216,11 @@ function Account({ }: Props): ReactElement {
         <div className={styles.contentContainer}>
           <div className={styles.accountsContainer}>
             {isDataLoading ? (
+              <>
               <TransactionListLoader />
+              <TransactionListLoader />
+              <TransactionListLoader />
+              </>
             ) : paymentHistory && paymentHistory.items.length === 0 ? (
               <div className={styles.notFound}>
                 {/* <TransactionIcon color={'#c5c5c5'} width={'50px'} />

@@ -4,10 +4,10 @@ function FilterInlineLoader(): ReactElement {
   return (
     <svg
       role="img"
-      width="476"
-      height="60"
+      width="100%"
+      height="100%"
       aria-labelledby="loading-aria-filter-inline"
-      viewBox="0 0 476 60"
+      viewBox="0 0 340 34"
       preserveAspectRatio="none"
     >
       <title id="loading-aria-filter-inline">Loading...</title>
@@ -21,10 +21,9 @@ function FilterInlineLoader(): ReactElement {
       ></rect>
       <defs>
         <clipPath id="clip-path-filter-inline">
-          <rect x="46" y="24" rx="0" ry="0" width="80" height="25" />
-          <rect x="146" y="24" rx="0" ry="0" width="80" height="25" />
-          <rect x="246" y="24" rx="0" ry="0" width="80" height="25" />
-          <rect x="346" y="24" rx="0" ry="0" width="80" height="25" />
+          <rect x="0" y="0" rx="0" ry="0" width="100" height="34" />
+          <rect x="120" y="0" rx="0" ry="0" width="100" height="34" />
+          <rect x="240" y="0" rx="0" ry="0" width="100" height="34" />
         </clipPath>
         <linearGradient id="fill-filter-inline">
           <stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">
