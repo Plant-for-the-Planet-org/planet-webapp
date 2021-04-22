@@ -7,6 +7,7 @@ import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import Explore from '../components/maps/Explore';
 
 interface Props {
   projects: any;
@@ -20,12 +21,12 @@ const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
 
-function  ProjectsList({
+function ProjectsList({
   projects,
   showProjects,
   setsearchedProjects,
 }: Props): ReactElement {
-  
+
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
@@ -70,7 +71,7 @@ function  ProjectsList({
     if (keyword !== '') {
       const keywords = keyword.split(/[\s\-.,+]+/);
       resultProjects = projects.filter(function (project) {
-        const found = keywords.every(function(word) {
+        const found = keywords.every(function (word) {
           const searchWord = word.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
           const projectName = project.properties.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
           const projectLocation = project.properties.location ?
@@ -79,10 +80,10 @@ function  ProjectsList({
             project.properties.tpo.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
           //searching for name
           return projectName.indexOf(searchWord) > -1 ||
-          //searching for location
-          (projectLocation && projectLocation.indexOf(searchWord) > -1) || 
-          //searching for tpo name
-          (projectTpoName && projectTpoName.indexOf(searchWord) > -1)
+            //searching for location
+            (projectLocation && projectLocation.indexOf(searchWord) > -1) ||
+            //searching for tpo name
+            (projectTpoName && projectTpoName.indexOf(searchWord) > -1)
         });
         return found;
       });
@@ -96,7 +97,7 @@ function  ProjectsList({
   const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
     projects,
   ]);
-  
+
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
     [trottledSearchValue]
@@ -107,7 +108,7 @@ function  ProjectsList({
     [projects]
   );
 
-  const AllProjects = (projects:any)=>{   
+  const AllProjects = (projects: any) => {
     if (projects.projects.length < 1) {
       return ready ? (
         <div className={'projectNotFound'}>
@@ -129,12 +130,13 @@ function  ProjectsList({
             />
           );
         })
-      ) 
-    } 
+      )
+    }
   }
 
   return ready ? (
     <>
+      <Explore />
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
@@ -151,29 +153,29 @@ function  ProjectsList({
         >
           <div className={'header'} style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}>
             {isMobile ? <div className={'dragBar'}></div> : null}
-            {searchMode ? 
-              <SearchBar 
-                setSearchValue={setSearchValue} 
-                setSearchMode={setSearchMode} 
-                searchValue={searchValue} 
+            {searchMode ?
+              <SearchBar
+                setSearchValue={setSearchValue}
+                setSearchMode={setSearchMode}
+                searchValue={searchValue}
                 searchRef={searchRef}
-              /> :  
-              <Header 
-                showFeaturedList={showFeaturedList} 
-                setSelectedTab={setSelectedTab} 
-                selectedTab={selectedTab} 
-                setSearchMode={setSearchMode} 
-                projects={projects} 
+              /> :
+              <Header
+                showFeaturedList={showFeaturedList}
+                setSelectedTab={setSelectedTab}
+                selectedTab={selectedTab}
+                setSearchMode={setSearchMode}
+                projects={projects}
               />}
-            </div>
-            {/* till here is header */}
-            <div className={'projectsContainer'}>
-              {trottledSearchValue !== '' ?
-                <AllProjects projects={searchProjectResults} />
-                : selectedTab === 'all' ? 
-                  <AllProjects projects={allProjects} /> : 
-                  <AllProjects projects={featuredProjects} />}
-            </div>
+          </div>
+          {/* till here is header */}
+          <div className={'projectsContainer'}>
+            {trottledSearchValue !== '' ?
+              <AllProjects projects={searchProjectResults} />
+              : selectedTab === 'all' ?
+                <AllProjects projects={allProjects} /> :
+                <AllProjects projects={featuredProjects} />}
+          </div>
         </div>
       ) : null}
     </>

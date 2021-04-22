@@ -3,17 +3,19 @@ import i18next from '../../../../../i18n';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
+import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
 
 interface Props {
-    selectedMode: string;
-    setSelectedMode: Function;
-    rasterData: Object | null;
+
 }
 
-export default function ProjectTabs({ selectedMode, setSelectedMode, rasterData }: Props): ReactElement {
+export default function ProjectTabs({ }: Props): ReactElement {
     const { useTranslation } = i18next;
     const { i18n, t } = useTranslation(['maps']);
+    const {
+        selectedMode, setSelectedMode, rasterData
+    } = React.useContext(ProjectPropsContext);
     return (
         <>
             <div className={styles.VegetationChangeContainer}>
