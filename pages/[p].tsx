@@ -22,6 +22,10 @@ export default function ProjectPage({
     ProjectPropsContext
   );
 
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
+
   React.useEffect(() => {
     setProject(pageProps.projectData);
     setShowSingleProject(true);
@@ -86,6 +90,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
   return {
     paths: paths,
-    fallback: false,
+    fallback: true,
   };
 };

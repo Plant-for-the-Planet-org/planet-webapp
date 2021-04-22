@@ -45,6 +45,7 @@ export default function TimeTravel({
         style: EMPTY_STYLE,
         center: center,
         zoom: zoom,
+        dragPan: true,
       });
 
       setBefore(before);
@@ -54,6 +55,7 @@ export default function TimeTravel({
         style: EMPTY_STYLE,
         center: center,
         zoom: zoom,
+        dragPan: true,
       });
 
       setAfter(after);
