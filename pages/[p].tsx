@@ -9,12 +9,19 @@ import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
 import Credits from '../src/features/projects/components/maps/Credits';
 
+interface Props {
+  pageProps: Object;
+  initialized: boolean;
+  currencyCode: string;
+  setCurrencyCode: Function;
+}
+
 export default function ProjectPage({
   pageProps,
   initialized,
   currencyCode,
   setCurrencyCode,
-}) {
+}: Props) {
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
 
@@ -67,7 +74,7 @@ export default function ProjectPage({
 }
 
 export const getStaticProps: GetStaticProps = async (context: any) => {
-  let projectData = await getRequest(
+  const projectData = await getRequest(
     `/app/projects/${context.params.p}?_scope=extended`
   );
 
@@ -83,8 +90,8 @@ export const getStaticProps: GetStaticProps = async (context: any) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  let paths: { params: { p: any } }[] = [];
-  let projects = await getRequest(`/app/projects`);
+  const paths: { params: { p: any } }[] = [];
+  const projects = await getRequest(`/app/projects`);
   projects.forEach((project: { slug: any }) => {
     paths.push({ params: { p: project.slug } });
   });

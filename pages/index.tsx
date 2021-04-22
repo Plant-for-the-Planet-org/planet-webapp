@@ -117,9 +117,7 @@ export default function ProjectsPage({
 }
 
 export const getStaticProps: GetStaticProps = async (context: any) => {
-  let projectsData;
-
-  projectsData = await getRequest(`/app/projects?_scope=map`);
+  const projectsData = await getRequest(`/app/projects?_scope=map`);
 
   return {
     props: {
