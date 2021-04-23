@@ -16,7 +16,6 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import EmbedModal from './EmbedModal';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { lineReduce } from '@turf/meta';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({

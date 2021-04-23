@@ -2,14 +2,14 @@ import React, { ReactElement } from 'react';
 import Footer from '../../src/features/common/Layout/Footer';
 import Account from '../../src/features/user/Account/screens';
 
-interface Props {}
+interface Props { }
 
-function History({}: Props): ReactElement {
+function History({ }: Props): ReactElement {
   return (
-    <div>
+    <>
       <Account />
       <Footer />
-    </div>
+    </>
   );
 }
 

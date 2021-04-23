@@ -16,12 +16,10 @@ import Settings from '../../../../../public/assets/images/icons/userProfileIcons
 import SettingsModal from '../../UserProfile/components/SettingsModal';
 import TopProgressBar from '../../../common/ContentLoaders/TopProgressBar';
 import i18next from '../../../../../i18n';
-import TransactionIcon from '../../../../../public/assets/images/icons/TransactionIcon';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import FilterLoader from '../../../../../public/assets/images/icons/FilterLoader';
 import FilterInlineLoader from '../../../../../public/assets/images/icons/FilterInlineLoader';
-import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 const { useTranslation } = i18next;
 
@@ -39,60 +37,12 @@ function Account({ }: Props): ReactElement {
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const router = useRouter();
-  useEffect(() => {
-    async function loadUserData() {
-      if (typeof Storage !== 'undefined') {
-        let token = null;
-        if (isAuthenticated) {
-          token = await getAccessTokenSilently();
-        } else {
-          loginWithRedirect({
-            redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
-            ui_locales: localStorage.getItem('language') || 'en',
-          });
-        }
-        if (!isLoading && token) {
-          try {
-            const res = await getAccountInfo(token);
-            if (res.status === 200) {
-              const resJson = await res.json();
-              setUserprofile(resJson);
-            } else if (res.status === 303) {
-              // if 303 -> user doesn not exist in db
-              setUserExistsInDB(false);
-              if (typeof window !== 'undefined') {
-                router.push('/complete-signup');
-              }
-            } else if (res.status === 401) {
-              // in case of 401 - invalid token: signIn()
-              removeUserExistsInDB();
-              loginWithRedirect({
-                redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
-                ui_locales: localStorage.getItem('language') || 'en',
-              });
-            } else {
-              // any other error
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-    }
-    // ready is for router, loading is for session
-    if (!isLoading) {
-      loadUserData();
-    }
-  }, [isLoading, isAuthenticated]);
 
-  const [filter, setFilter] = React.useState();
+  const [filter, setFilter] = React.useState(null);
   const [paymentHistory, setpaymentHistory] = React.useState();
 
   const [accountingFilters, setaccountingFilters] = React.useState();
 
-  React.useEffect(() => {
-    if (isAuthenticated) setFilter(null);
-  }, [isAuthenticated]);
   React.useEffect(() => {
     async function fetchPaymentHistory() {
       setIsDataLoading(true);
@@ -120,6 +70,32 @@ function Account({ }: Props): ReactElement {
           setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
         }
+        if (!isLoading && token) {
+          try {
+            const res = await getAccountInfo(token);
+            if (res.status === 200) {
+              const resJson = await res.json();
+              setUserprofile(resJson);
+            } else if (res.status === 303) {
+              // if 303 -> user doesn not exist in db
+              setUserExistsInDB(false);
+              if (typeof window !== 'undefined') {
+                router.push('/complete-signup');
+              }
+            } else if (res.status === 401) {
+              // in case of 401 - invalid token: signIn()
+              removeUserExistsInDB();
+              loginWithRedirect({
+                redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
+                ui_locales: localStorage.getItem('language') || 'en',
+              });
+            } else {
+              // any other error
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
       } else {
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
@@ -127,9 +103,9 @@ function Account({ }: Props): ReactElement {
         });
       }
     }
-    if (!isLoading && isAuthenticated)
+    if (!isLoading)
       fetchPaymentHistory();
-  }, [filter]);
+  }, [filter, isLoading, isAuthenticated]);
 
   const handleSetFilter = (id: any) => {
     setFilter(id);
@@ -217,9 +193,9 @@ function Account({ }: Props): ReactElement {
           <div className={styles.accountsContainer}>
             {isDataLoading ? (
               <>
-              <TransactionListLoader />
-              <TransactionListLoader />
-              <TransactionListLoader />
+                <TransactionListLoader />
+                <TransactionListLoader />
+                <TransactionListLoader />
               </>
             ) : paymentHistory && paymentHistory.items.length === 0 ? (
               <div className={styles.notFound}>
