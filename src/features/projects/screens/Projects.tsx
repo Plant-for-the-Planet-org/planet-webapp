@@ -6,6 +6,7 @@ import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
+import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 
 interface Props {
   projects: any;
@@ -45,6 +46,11 @@ function  ProjectsList({
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
+  const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
+
+  useDebouncedEffect(() => {
+    setTrottledSearchValue(searchValue);
+  }, 1000, [searchValue]);
 
   const searchRef = React.useRef(null);
 
@@ -62,19 +68,23 @@ function  ProjectsList({
   function getSearchProjects(projects: Array<any>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
+      const keywords = keyword.split(/[\s\-.,+]+/);
       resultProjects = projects.filter(function (project) {
-        if (
+        const found = keywords.every(function(word) {
+          const searchWord = word.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          const projectName = project.properties.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          const projectLocation = project.properties.location ?
+            project.properties.location.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
+          const projectTpoName = project.properties.tpo.name ?
+            project.properties.tpo.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
           //searching for name
-          project.properties.name.toLowerCase().includes(keyword.toLowerCase()) || 
+          return projectName.indexOf(searchWord) > -1 ||
           //searching for location
-          (project.properties.location && project.properties.location.toLowerCase().includes(keyword.toLowerCase())) || 
+          (projectLocation && projectLocation.indexOf(searchWord) > -1) || 
           //searching for tpo name
-          ( project.properties.tpo.name && project.properties.tpo.name.toLowerCase().includes(keyword.toLowerCase()))
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+          (projectTpoName && projectTpoName.indexOf(searchWord) > -1)
+        });
+        return found;
       });
       setsearchedProjects(resultProjects);
       return resultProjects;
@@ -86,10 +96,10 @@ function  ProjectsList({
   const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
     projects,
   ]);
-
+  
   const searchProjectResults = React.useMemo(
-    () => getSearchProjects(projects, searchValue),
-    [searchValue]
+    () => getSearchProjects(projects, trottledSearchValue),
+    [trottledSearchValue]
   );
 
   const featuredProjects = React.useMemo(
@@ -158,7 +168,7 @@ function  ProjectsList({
             </div>
             {/* till here is header */}
             <div className={'projectsContainer'}>
-              {searchValue !== '' ?
+              {trottledSearchValue !== '' ?
                 <AllProjects projects={searchProjectResults} />
                 : selectedTab === 'all' ? 
                   <AllProjects projects={allProjects} /> : 

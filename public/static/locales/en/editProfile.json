@@ -24,5 +24,10 @@
   "nameValidation": "Please enter a name",
   "profilePicUpdated": "Profile picture is being updated...",
   "profileSaved": "Saved successfully!",
-  "profileSaveFailed": "Error in updating profile."
+  "profileSaveFailed": "Error in updating profile.",
+  "changeAccountToPublic": "Switch to a Public Account",
+  "publicAccount": "Public Account",
+  "accountPrivacyChangeText": "In order to create a profile widget you need to have a public account. By clicking continue you change your privacy settings to public.",
+  "continue": "Continue",
+  "cancel": "Cancel"
 }

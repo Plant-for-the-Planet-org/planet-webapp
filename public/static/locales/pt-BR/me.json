@@ -9,6 +9,7 @@
   "myForest": "Minha Floresta",
   "giftToGiftee": "Presente para {{gifteeName}}",
   "settingManageProject": "Gerenciar Projetos",
+  "deleteAccount": "Excluir conta",
   "userTree": "Registrar Árvores",
   "logout": "Sair",
   "close": "Fechar",
@@ -36,5 +37,6 @@
   "receivedTrees": "Árvores Recebidas",
   "receivedFrom": "Recebido de {{name}}",
   "redeemedTrees": "Árvores Redimidas",
-  "nameForest": "A Floresta de {{name}}"
+  "nameForest": "A Floresta de {{name}}",
+  "embedWidget": "Incorporar Widget"
 }

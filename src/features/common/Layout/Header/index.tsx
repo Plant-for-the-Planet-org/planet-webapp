@@ -18,7 +18,7 @@ export default function Header() {
       )}
       <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=0"
       />
       <meta property="og:locale" content={config.meta.locale} />
       {locales.map((locale) => {

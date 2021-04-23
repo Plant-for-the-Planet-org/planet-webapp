@@ -113,7 +113,7 @@
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 56px;
   height: auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -167,7 +167,7 @@
   padding: 12px 20px;
   border-radius: 100px;
   background-color: $primaryColor;
-  color: #fff;
+  color: $light;
   position: absolute;
   bottom: 90px;
   right: 0;
@@ -200,10 +200,6 @@
   border-radius: 100px;
 }
 
-.modalContainer {
-  background: rgba(0, 0, 0, 0.6);
-}
-
 @include smTabletView {
   .allProjectsContainer > div > div {
     display: grid;
@@ -213,6 +209,9 @@
 
   .container {
     padding-bottom: 0px;
+  }
+  .projectsContainer{
+    padding-bottom: 56px;
   }
 }
 
@@ -254,6 +253,7 @@
     margin-top: 5px;
     width: 360px;
     overflow-y: hidden;
+    padding-bottom: 16px;
   }
   .header {
     width: 360px;

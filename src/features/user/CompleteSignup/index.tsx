@@ -36,6 +36,7 @@ export default function CompleteSignup() {
 
   const [token, setToken] = React.useState('')
 
+  const [submit, setSubmit] = React.useState(false)
   React.useEffect(() => {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
@@ -116,16 +117,19 @@ export default function CompleteSignup() {
         // in case of 401 - invalid token: signIn()
         console.log('in 401-> unauthenticated user / invalid token')
         removeLocalUserInfo();
+        setSubmit(false);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
+        setSubmit(false);
         setSeverity("error")
         handleSnackbarOpen();
       }
     } catch {
+      setSubmit(false)
       setSnackbarMessage(ready ? t('editProfile:profileCreationError') : '');
       setSeverity("error")
       handleSnackbarOpen();
@@ -145,6 +149,7 @@ export default function CompleteSignup() {
   }, [type])
 
   const createButtonClicked = async (data: any) => {
+    setSubmit(true);
     if (!isLoading && token) {
       const submitData = {
         ...data,
@@ -377,7 +382,12 @@ export default function CompleteSignup() {
           <div className={styles.horizontalLine} />
 
           <button id={'signupCreate'} className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
-            {t('editProfile:createAccount')}
+          {submit ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                t('editProfile:createAccount')
+                )}
+            
           </button>
         </div>
         {/* snackbar */}

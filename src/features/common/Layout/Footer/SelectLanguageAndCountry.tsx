@@ -32,7 +32,7 @@ interface TransitionsModalProps {
   setSelectedCurrency: Function,
   selectedCountry: any,
   setSelectedCountry: Function,
-  setCurrencyCode: Function,
+  setCurrencyCode?: Function,
 }
 export default function TransitionsModal({
     openModal,
@@ -74,7 +74,7 @@ export default function TransitionsModal({
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
       setSelectedCurrency(currencyCode);
-      setCurrencyCode(currencyCode)
+      if (setCurrencyCode) setCurrencyCode(currencyCode)
     }
     handleModalClose();
   }
@@ -99,7 +99,7 @@ export default function TransitionsModal({
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={styles.modalContainer + ' ' + theme}
+        className={'modalContainer ' + theme}
         open={openModal}
         onClose={handleModalClose}
         closeAfterTransition

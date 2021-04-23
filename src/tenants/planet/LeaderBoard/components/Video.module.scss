@@ -17,7 +17,7 @@
   line-height: 40px;
   text-align: center;
   letter-spacing: -0.4px;
-  color: #080707;
+  color: $primaryFontColor;
 }
 
 .videoTitle {
@@ -57,3 +57,10 @@
     width: 66.66%;
   }
 }
+
+.backArrowVideoT{
+  transform: rotate(270deg);
+  margin-left: 12px;
+}
+
+
