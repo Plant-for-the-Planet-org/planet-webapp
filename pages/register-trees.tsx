@@ -5,8 +5,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import AccountHeader from '../src/features/common/Layout/Header/accountHeader';
 import BackButton from '../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
+import i18next from '../i18n';
 interface Props {}
-
+const { useTranslation } = i18next;
 export default function Register({}: Props): ReactElement {
   const [currentUserSlug, setCurrentUserSlug] = React.useState();
   const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
@@ -33,6 +34,7 @@ export default function Register({}: Props): ReactElement {
       loadFunction()
     }
   }, [isAuthenticated, isLoading])
+  const { t, ready } = useTranslation(['me']);
 const router = useRouter();
   return (
    <AccountHeader>
@@ -40,6 +42,8 @@ const router = useRouter();
         id={'backButtonRegTree'}
         style={{
           cursor: 'pointer',
+          marginTop: 150,
+          marginLeft: 420,
         }}
         onClick={() => {
           router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
@@ -48,6 +52,16 @@ const router = useRouter();
         <BackButton />
     </button>
     <div style={{display: "flex", justifyContent: "center"}}>
+    <h2 style={{
+      fontSize: 22,
+      color: "#fff",
+      zIndex: 1,
+      position: 'absolute',
+      top: 200,
+      left:430,
+    }}>
+                <b> {t('me:registerTrees')} </b>
+              </h2>
       {!isLoading && currentUserSlug ? (
         <RegisterTrees
           registerTreesModalOpen={registerTreesModalOpen}

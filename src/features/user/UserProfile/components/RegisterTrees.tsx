@@ -249,9 +249,6 @@ export default function RegisterTrees({
         <div className={styles.modal}>
           {!registered ? (
             <div className={styles.formContainer}>
-              <h2 className={styles.title}>
-                <b> {t('me:registerTrees')} </b>
-              </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
                 <div className={styles.note}>
                   <p>{t('me:registerTreesDescription')}</p>
