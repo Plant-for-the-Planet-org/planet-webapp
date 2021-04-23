@@ -71,5 +71,6 @@
   "referred": "Weitergeleitet",
   "in-dispute": "Strittig",
   "dispute-lost": "Streitfall verloren",
-  "nameForest": "Wald von {{name}}"
+  "nameForest": "Wald von {{name}}",
+  "taxReceipt": "Spendenbescheinigung"
 }
