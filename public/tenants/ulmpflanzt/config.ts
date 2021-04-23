@@ -19,7 +19,6 @@ const config = {
     locale: 'de_DE',
   },
   home: {
-    descriptionTitle:"",
     image: `/tenants/pampers/background.jpeg`,
   },
   header: {

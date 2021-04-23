@@ -17,15 +17,16 @@ interface Props {
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {
+  const { t, i18n, ready } = useTranslation(['tenants']);
+
   const descriptionRef = React.useRef(null);
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
-      descriptionRef.current.innerHTML = config.home.description;
+      descriptionRef.current.innerHTML = t(`tenants:${config.tenantName}.description`);
     }
-  }, []);
-  const { t, i18n, ready } = useTranslation(['tenants']);
+  }, [ready]);
 
-  return (
+  return ready ? (
     <main>
       <LandingSection
         imageSrc={config.meta.image}>
@@ -53,5 +54,5 @@ export default function About({ leaderboard, tenantScore }: Props) {
       {leaderboard && (leaderboard.mostDonated.length > 0 || leaderboard.mostRecent.length > 0) && <LeaderBoard leaderboard={leaderboard} />}
       <Footer />
     </main>
-  );
+  ) : null;
 }
