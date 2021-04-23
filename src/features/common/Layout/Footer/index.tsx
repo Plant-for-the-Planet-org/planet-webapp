@@ -174,6 +174,90 @@ export default function Footer() {
                   </svg>
                 </a>
                 </button>
+
+                <button id={'linkedInIcon'}>
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://www.linkedin.com/company/plant-for-the-planet/mycompany/">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="46"
+                    height="46"
+                    viewBox="0 0 46 46"
+                  >
+                    <g data-name="Group 3313" transform="translate(5512 4937.531)">
+                      <g
+                        fill="none"
+                        stroke="#2F3336"
+                        strokeWidth="1"
+                        data-name="Ellipse 1311"
+                        transform="translate(-5512 -4937.531)"
+                      >
+                        <circle cx="23" cy="23" r="23" stroke="none"></circle>
+                        <circle cx="23" cy="23" r="22.5"></circle>
+                      </g>
+                      <path
+                        d="M5.959 26.63H.44V8.857h5.519zM3.2 6.433a3.211 3.211 0 113.2-3.227 3.223 3.223 0 01-3.2 3.227zm23.418 20.2h-5.51v-8.655c0-2.062-.042-4.706-2.869-4.706-2.869 0-3.309 2.24-3.309 4.558v8.8H9.416V8.857h5.293v2.424h.077a5.8 5.8 0 015.222-2.87c5.586 0 6.612 3.678 6.612 8.456v9.763z"
+                        transform="translate(-5501.833 -4929.03)"
+                      ></path>
+                    </g>
+                </svg>
+                </a>
+                </button>
+
+                <button id={'youtubeIcon'}>
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://www.youtube.com/user/PlantForThePlanet">
+                <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="46"
+      height="46"
+      viewBox="0 0 46 46"
+    >
+      <g data-name="Group 3314" transform="translate(5446 4937.531)">
+        <g
+          fill="none"
+          stroke="#2f3336"
+          strokeWidth="1"
+          data-name="Ellipse 1493"
+          transform="translate(-5446 -4937.531)"
+        >
+          <circle cx="23" cy="23" r="23" stroke="none"></circle>
+          <circle cx="23" cy="23" r="22.5"></circle>
+        </g>
+        <path
+          d="M41 66.929a3.345 3.345 0 00-2.353-2.369c-2.076-.56-10.4-.56-10.4-.56s-8.324 0-10.4.56a3.345 3.345 0 00-2.353 2.369 37.661 37.661 0 000 12.9 3.3 3.3 0 002.353 2.331c2.076.56 10.4.56 10.4.56s8.324 0 10.4-.56A3.3 3.3 0 0041 79.826a37.661 37.661 0 000-12.9zM25.52 77.336v-7.917l6.957 3.958z"
+          transform="translate(-5451.6 -4987.89)"
+        ></path>
+      </g>
+    </svg>
+                </a>
+                </button>
+
+                <button id={'flickrIcon'}>
+                <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://www.flickr.com/people/plant-for-the-planet/">
+                <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="46"
+      height="46"
+      viewBox="0 0 46 46"
+    >
+      <g data-name="Group 3315" transform="translate(5539.69 4833.09)">
+        <path
+          d="M23.768 32H2.852A2.853 2.853 0 000 34.852v20.916a2.853 2.853 0 002.852 2.852h20.916a2.853 2.853 0 002.852-2.852V34.852A2.853 2.853 0 0023.768 32zM8.586 49.053a3.773 3.773 0 113.773-3.773 3.771 3.771 0 01-3.773 3.773zm9.448 0a3.773 3.773 0 113.773-3.773 3.771 3.771 0 01-3.773 3.773z"
+          transform="translate(-5530 -4855.4)"
+        ></path>
+        <g
+          fill="none"
+          stroke="#2f3336"
+          strokeWidth="1"
+          data-name="Ellipse 1494"
+          transform="translate(-5539.69 -4833.09)"
+        >
+          <circle cx="23" cy="23" r="23" stroke="none"></circle>
+          <circle cx="23" cy="23" r="22.5"></circle>
+        </g>
+      </g>
+    </svg>
+                </a>
+                </button>
               </div>
             </div>
             <div className={styles.footer_links_container}>
