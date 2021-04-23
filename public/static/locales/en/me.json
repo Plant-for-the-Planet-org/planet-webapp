@@ -71,5 +71,6 @@
   "referred": "Referred",
   "in-dispute": "In Dispute",
   "dispute-lost": "Dispute Lost",
-  "nameForest": "{{name}}'s Forest"
+  "nameForest": "{{name}}'s Forest",
+  "taxReceipt": "Tax Receipt"
 }

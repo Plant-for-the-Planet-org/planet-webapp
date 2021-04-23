@@ -194,12 +194,20 @@ function RecordDetails({ detail, t, i18n, currency }: any) {
           {formatDate(detail.lastUpdate)}
         </div>
       </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('donorCertificate')}</p>
-        <Link href={detail.donorCertificate}>
-          <a className={styles.detailValue}>{t('download')}</a>
-        </Link>
-      </div>
+      {detail.donorCertificate &&
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('donorCertificate')}</p>
+          <Link href={detail.donorCertificate}>
+            <a className={styles.detailValue}>{t('download')}</a>
+          </Link>
+        </div>}
+      {detail.taxReceipt &&
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('taxReceipt')}</p>
+          <Link href={detail.taxReceipt}>
+            <a className={styles.detailValue}>{t('download')}</a>
+          </Link>
+        </div>}
     </>
   );
 }
