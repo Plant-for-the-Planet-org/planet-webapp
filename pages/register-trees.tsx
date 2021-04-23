@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
-import LandingSection from '../src/features/common/Layout/LandingSection';
 import RegisterTrees from '../src/features/user/UserProfile/components/RegisterTrees';
 import { getLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
-
+import AccountHeader from '../src/features/common/Layout/Header/accountHeader';
+import BackButton from '../public/assets/images/icons/BackButton';
+import { useRouter } from 'next/router';
 interface Props {}
 
 export default function Register({}: Props): ReactElement {
@@ -32,16 +33,21 @@ export default function Register({}: Props): ReactElement {
       loadFunction()
     }
   }, [isAuthenticated, isLoading])
-
+const router = useRouter();
   return (
-    <LandingSection
-      fixedBg={true}
-      imageSrc={
-        process.env.CDN_URL
-          ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
-          : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
-      }
-    >
+   <AccountHeader>
+     <button
+        id={'backButtonRegTree'}
+        style={{
+          cursor: 'pointer',
+        }}
+        onClick={() => {
+          router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
+        }}
+      >
+        <BackButton />
+    </button>
+    <div style={{display: "flex", justifyContent: "center"}}>
       {!isLoading && currentUserSlug ? (
         <RegisterTrees
           registerTreesModalOpen={registerTreesModalOpen}
@@ -49,6 +55,7 @@ export default function Register({}: Props): ReactElement {
           token={token}
         />
       ) : null}
-    </LandingSection>
+      </div>
+      </AccountHeader>
   );
 }

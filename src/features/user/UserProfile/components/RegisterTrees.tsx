@@ -246,32 +246,10 @@ export default function RegisterTrees({
 
   return ready ? (
     <>
-      <Modal
-        className={'modalContainer'+' '+theme}
-        open={registerTreesModalOpen}
-        //onClose={handleEditProfileModalClose}
-        closeAfterTransition
-        hideBackdrop
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-bio"
-      >
         <div className={styles.modal}>
           {!registered ? (
             <div className={styles.formContainer}>
               <h2 className={styles.title}>
-                <button
-                  id={'backButtonRegTree'}
-                  style={{
-                    cursor: 'pointer',
-                    marginLeft: -10,
-                    paddingRight: 10,
-                  }}
-                  onClick={() => {
-                    router.push(`/t/${slug}`, undefined, { shallow: true });
-                  }}
-                >
-                  <BackButton />
-                </button>
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
@@ -440,7 +418,6 @@ export default function RegisterTrees({
             <SingleContribution {...ContributionProps} />
           )}
         </div>
-      </Modal>
     </>
   ) : null;
 }

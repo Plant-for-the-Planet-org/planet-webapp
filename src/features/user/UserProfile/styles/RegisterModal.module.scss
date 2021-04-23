@@ -2,14 +2,14 @@
 
 // white modal
 .modal {
-  top: 80px;
+  top: 255px;
   margin-bottom: 60px;
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
   position: absolute;
   padding: 20px 20px;
-  width: 412px;
+  max-width: 780px;
   outline: none;
   display: flex;
   flex-direction: column;
