@@ -1,4 +1,7 @@
 {
+  "fortreeCountTrees": "per {{treeCount}} Albero",
+  "fortreeCountTrees_plural": "per {{treeCount}} Alberi",
   "giftToName": "Regalo a",
-  "plantTreesWith": "Pianta alberi con"
+  "plantTreesWith": "Pianta alberi con",
+  "textToShare": "Unisciti a {{name}} e a migliaia di altri per piantare un trilione di alberi per affrontare la crisi climatica #StopTalkingStartPlanting #TrillionTrees @trilliontrees"
 }
