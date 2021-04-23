@@ -90,15 +90,39 @@ function PaymentRecord({ record, index }: Props) {
         className={`${styles.recordDataContainer} ${selectedRecord === index ? styles.recordDataContainerSelected : ''
           }`}
       >
-        {record.details && (
-          <RecordDetails
-            detail={record.details}
-            t={t}
-            i18n={i18n}
-            currency={record.currency}
-          />
-        )}
+        <div className={styles.recordDetails}>
+          {record.details && (
+            <RecordDetails
+              detail={record.details}
+              t={t}
+              i18n={i18n}
+              currency={record.currency}
+            />
+          )}
+
+        </div>
+        <div className={styles.recordDownloads}>
+          {record.details.donorCertificate &&
+            <div className={styles.detail}>
+              <Link href={record.details.donorCertificate}>
+                <a>{t('donorCertificate')}</a>
+              </Link>
+            </div>}
+          {record.details.recipientCertificate &&
+            <div className={styles.detail}>
+              <Link href={record.details.recipientCertificate}>
+                <a>{t('recipientCertificate')}</a>
+              </Link>
+            </div>}
+          {record.details.taxReceipt &&
+            <div className={styles.detail}>
+              <Link href={record.details.taxReceipt}>
+                <a>{t('taxReceipt')}</a>
+              </Link>
+            </div>}
+        </div>
       </div>
+
       {/* <div className={styles.borderBottom}></div> */}
       {selectedRecord === index && (
         <Modal
@@ -148,6 +172,26 @@ function PaymentRecord({ record, index }: Props) {
                 />
               )}
             </div>
+            <div className={styles.recordDownloads}>
+              {record.details.donorCertificate &&
+                <div className={styles.detail}>
+                  <Link href={record.details.donorCertificate}>
+                    <a>{t('donorCertificate')}</a>
+                  </Link>
+                </div>}
+              {record.details.recipientCertificate &&
+                <div className={styles.detail}>
+                  <Link href={record.details.recipientCertificate}>
+                    <a>{t('recipientCertificate')}</a>
+                  </Link>
+                </div>}
+              {record.details.taxReceipt &&
+                <div className={styles.detail}>
+                  <Link href={record.details.taxReceipt}>
+                    <a>{t('taxReceipt')}</a>
+                  </Link>
+                </div>}
+            </div>
           </div>
         </Modal>
       )}
@@ -194,20 +238,6 @@ function RecordDetails({ detail, t, i18n, currency }: any) {
           {formatDate(detail.lastUpdate)}
         </div>
       </div>
-      {detail.donorCertificate &&
-        <div className={styles.detailContainer}>
-          <p className={styles.detailTitle}>{t('donorCertificate')}</p>
-          <Link href={detail.donorCertificate}>
-            <a className={styles.detailValue}>{t('download')}</a>
-          </Link>
-        </div>}
-      {detail.taxReceipt &&
-        <div className={styles.detailContainer}>
-          <p className={styles.detailTitle}>{t('taxReceipt')}</p>
-          <Link href={detail.taxReceipt}>
-            <a className={styles.detailValue}>{t('download')}</a>
-          </Link>
-        </div>}
     </>
   );
 }
