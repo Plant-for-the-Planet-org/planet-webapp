@@ -85,7 +85,7 @@ function  ProjectsList({
           (projectLocation && projectLocation.indexOf(searchWord) > -1) ||
           //searching for tpo name
           (projectTpoName && projectTpoName.indexOf(searchWord) > -1) ||
-          //searching for tpo name
+          //searching for country name
           (projectCountry && projectCountry.indexOf(searchWord) > -1)
         });
         return found;
