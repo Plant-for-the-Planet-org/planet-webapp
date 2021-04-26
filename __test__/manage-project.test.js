@@ -1,5 +1,5 @@
 const { By, until, Key } = require('selenium-webdriver-3');
-const { getOtp } = require('./getotp');
+const { getOtp } = require('./getOtp');
 const { driver } = require('./helper');
 const { load } = require('./Pages');
 
