@@ -121,6 +121,7 @@ module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
     VERCEL_URL: process.env.VERCEL_URL,
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,
+    TEST_MFA_URL: process.env.TEST_MFA_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
