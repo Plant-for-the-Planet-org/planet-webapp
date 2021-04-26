@@ -50,7 +50,7 @@ function ManageProjectsPage({ }: Props): ReactElement {
       loadUserData();
     }
     else {
-      localStorage.setItem('redirectLink', '/manage-projects/add-project');
+      localStorage.setItem('redirectLink','/manage-projects/add-project');
       loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       }
   }, [isLoading, isAuthenticated]);
