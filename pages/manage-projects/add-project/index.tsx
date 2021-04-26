@@ -18,7 +18,8 @@ function ManageProjectsPage({ }: Props): ReactElement {
   const {
     isLoading,
     isAuthenticated,
-    getAccessTokenSilently
+    getAccessTokenSilently,
+    loginWithRedirect
   } = useAuth0();
 
   const [token, setToken] = React.useState('')
@@ -48,6 +49,10 @@ function ManageProjectsPage({ }: Props): ReactElement {
     if (!isLoading && isAuthenticated) {
       loadUserData();
     }
+    else {
+      localStorage.setItem('redirectLink', '/manage-projects/add-project');
+      loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+      }
   }, [isLoading, isAuthenticated]);
 
   // User is not TPO
