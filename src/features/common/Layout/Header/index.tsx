@@ -97,7 +97,7 @@ export default function Header() {
         <meta name="theme-color" content={styles.primaryColor} />
       ) : null}
     </Head>
-    <noscript>We're sorry but this page doesn't work properly without JavaScript enabled. Please enable it to continue</noscript>
+    <noscript>We are sorry but this page does not work properly without JavaScript enabled. Please enable it to continue</noscript>
     </>
   );
 }
