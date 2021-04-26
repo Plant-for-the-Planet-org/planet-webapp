@@ -222,7 +222,7 @@ function PaymentDetails({
             {giftDetails && giftDetails.recipientName && (
               <div style={{marginTop:'12px',fontStyle:'italic'}}>
                 <p className={styles.showContactDetailsName}>
-                  {directGift && directGift.type === 'individual' ? 
+                  {directGift && directGift.type === 'individual' ?
                       t('donate:giftToName')
                     : t('donate:thisDonationSupports')}{' '} {giftDetails.recipientName}
                 </p>
