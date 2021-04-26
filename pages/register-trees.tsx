@@ -35,41 +35,42 @@ export default function Register({}: Props): ReactElement {
     }
   }, [isAuthenticated, isLoading])
   const { t, ready } = useTranslation(['me']);
-const router = useRouter();
+  const router = useRouter();
   return (
-   <AccountHeader>
-     <button
+    <>
+    <AccountHeader>
+      <div>
+      <button
         id={'backButtonRegTree'}
         style={{
-          cursor: 'pointer',
-          marginTop: 150,
-          marginLeft: 420,
+          marginTop: 120,
+          cursor: 'pointer'
         }}
         onClick={() => {
           router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
         }}
       >
         <BackButton />
-    </button>
-    <div style={{display: "flex", justifyContent: "center"}}>
-    <h2 style={{
-      fontSize: 22,
-      color: "#fff",
-      zIndex: 1,
-      position: 'absolute',
-      top: 200,
-      left:430,
-    }}>
-                <b> {t('me:registerTrees')} </b>
-              </h2>
-      {!isLoading && currentUserSlug ? (
-        <RegisterTrees
-          registerTreesModalOpen={registerTreesModalOpen}
-          slug={currentUserSlug}
-          token={token}
-        />
-      ) : null}
-      </div>
-      </AccountHeader>
+      </button>
+        <h2 style={{
+          marginTop: 40,
+          marginLeft: 10,
+          color: '#fff',
+          fontSize: 22
+        }}>
+          <b> {t('me:registerTrees')} </b>
+        </h2>
+        </div>
+    </AccountHeader>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          {!isLoading && currentUserSlug ? (
+            <RegisterTrees
+              registerTreesModalOpen={registerTreesModalOpen}
+              slug={currentUserSlug}
+              token={token}
+            />
+          ) : null}
+        </div>
+  </>
   );
 }

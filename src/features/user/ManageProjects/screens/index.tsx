@@ -16,7 +16,6 @@ import {
 import SubmitForReview from '../components/SubmitForReview';
 import { useRouter } from 'next/router';
 import i18next from './../../../../../i18n';
-import AccountHeader from '../../../common/Layout/Header/accountHeader'
 const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
@@ -123,7 +122,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
 
   return ready ? (
     <>
-    <AccountHeader />
     <div className={styles.mainContainer}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((label, index) => (

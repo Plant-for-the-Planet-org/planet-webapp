@@ -6,6 +6,11 @@ import GlobeContentLoader from '../../src/features/common/ContentLoaders/Project
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../src/features/common/Layout/Footer';
 import { useAuth0 } from '@auth0/auth0-react';
+import AccountHeader from '../../src/features/common/Layout/Header/accountHeader'
+import BackButton from '../../public/assets/images/icons/BackButton';
+import i18next from '../../i18n';
+import { getLocalUserInfo } from '../../src/utils/auth0/localStorageUtils'
+const { useTranslation } = i18next;
 
 interface Props {
 
@@ -18,6 +23,7 @@ function ManageSingleProject({ }: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
   const [project, setProject] = React.useState({})
+  const { t } = useTranslation(['me']);
 
   const [token, setToken] = React.useState('')
   const {
@@ -32,12 +38,16 @@ function ManageSingleProject({ }: Props): ReactElement {
       setReady(true);
     }
   }, [router]);
+  const [currentUserSlug, setCurrentUserSlug] = React.useState();
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
+      getLocalUserInfo() && getLocalUserInfo().slug
+        ? setCurrentUserSlug(getLocalUserInfo().slug)
+        : null;
     }
     if (isAuthenticated) {
       loadFunction()
@@ -79,6 +89,30 @@ function ManageSingleProject({ }: Props): ReactElement {
   // Showing error to other TPOs is left
   return setupAccess ? (ready && token && !accessDenied) ? (
     <>
+    <AccountHeader>
+    <div>
+      <button
+        id={'backButtonRegTree'}
+        style={{
+          marginTop: 120,
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
+        }}
+      >
+        <BackButton />
+      </button>
+        <h2 style={{
+          marginTop: 40,
+          marginLeft: 10,
+          color: '#fff',
+          fontSize: 22
+        }}>
+          <b> {t('me:manageProjects')} </b>
+        </h2>
+        </div>
+    </AccountHeader>
       <ManageProjects GUID={projectGUID} token={token} project={project} />
       <Footer />
     </>
