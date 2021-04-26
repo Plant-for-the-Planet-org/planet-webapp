@@ -95,7 +95,7 @@ export default function NavbarComponent(props: any) {
           width: '27px',
           border: '1px solid #F2F2F7',
         }}
-      > 
+      >
         <img
           src={getImageUrl('profile', 'avatar', userInfo.profilePic)}
           height="26px"
@@ -116,7 +116,7 @@ export default function NavbarComponent(props: any) {
     return links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
-          const SingleLink = config.header.items[link];
+          let SingleLink = config.header.items[link];
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
@@ -125,21 +125,15 @@ export default function NavbarComponent(props: any) {
                     <UserProfileIcon />
                   </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)} 
+                  {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)}
                   </p>
                 </button>
               )
             }
             if (link === 'about' && SingleLink.visible) {
-              return (
-                <button id={'aboutUsIcon'} key={link} onClick={() => router.push(`${SingleLink.onclick}${i18n.language === 'de'  && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' :  ''}`,undefined,undefined)} className={'linkContainer'}>
-                  
-                  <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                      {t('common:' + SingleLink.title)}
-                    </p>
-                </button>
-              )
+              SingleLink= {
+                ...SingleLink,
+                onclick:`${SingleLink.onclick}${i18n.language === 'de'  && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' :  ''}`}
             }
             return SingleLink.visible ? (
               (
