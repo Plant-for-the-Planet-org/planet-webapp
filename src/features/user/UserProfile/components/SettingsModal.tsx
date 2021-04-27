@@ -110,7 +110,7 @@ export default function SettingsModal({
                 {t('editProfile:edit')}{' '}
               </li>
 
-              <li
+              {/* <li
                 onClick={() =>
                   router.push('/account/history', undefined, { shallow: true })
                 }
@@ -118,7 +118,7 @@ export default function SettingsModal({
                 className={styles.settingsItem}
               >
                 {t('me:accountHistory')}
-              </li>
+              </li> */}
               <li
                 onClick={handleEmbedModalOpen}
                 id={'SettingsItem'}
