@@ -7,7 +7,7 @@ export async function getAccountInfo(token: any) {
     headers: {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      Authorization: `OAuth ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')
@@ -81,7 +81,7 @@ export async function getAuthenticatedRequest(url: any, token: any) {
     headers: {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      Authorization: `OAuth ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')
@@ -123,7 +123,7 @@ export async function postAuthenticatedRequest(
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      Authorization: `OAuth ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')
@@ -162,7 +162,7 @@ export async function deleteAuthenticatedRequest(url: any, token: any) {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      Authorization: `OAuth ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')
@@ -183,7 +183,7 @@ export async function putAuthenticatedRequest(url: any, data: any, token: any) {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      Authorization: `OAuth ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')
@@ -252,7 +252,7 @@ export async function getAuthenticatedRequestWithoutRedirecting(url: any, token:
     headers: {
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      Authorization: `OAuth ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')

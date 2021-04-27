@@ -56,6 +56,7 @@ export default function Home(initialized: Props) {
       case 'pampers':
       case 'interactClub':
       case 'culchacandela':
+      case 'xiting':
       case 'lacoqueta':
       case 'ulmpflanzt':
         HomePage = BasicHome;

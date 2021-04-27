@@ -31,7 +31,7 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
-  const { t, ready } = useTranslation(['donate']);
+  const { t, ready } = useTranslation(['donate', 'country']);
 
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
@@ -78,12 +78,16 @@ function ProjectsList({
             project.properties.location.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
           const projectTpoName = project.properties.tpo.name ?
             project.properties.tpo.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
+          const projectCountry = project.properties.country ?
+            t('country:' + project.properties.country.toLowerCase()).normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
           //searching for name
           return projectName.indexOf(searchWord) > -1 ||
-            //searching for location
-            (projectLocation && projectLocation.indexOf(searchWord) > -1) ||
-            //searching for tpo name
-            (projectTpoName && projectTpoName.indexOf(searchWord) > -1)
+          //searching for location
+          (projectLocation && projectLocation.indexOf(searchWord) > -1) ||
+          //searching for tpo name
+          (projectTpoName && projectTpoName.indexOf(searchWord) > -1) ||
+          //searching for country name
+          (projectCountry && projectCountry.indexOf(searchWord) > -1)
         });
         return found;
       });
@@ -108,7 +112,7 @@ function ProjectsList({
     [projects]
   );
 
-  const AllProjects = (projects: any) => {
+  const AllProjects = (projects:any)=>{
     if (projects.projects.length < 1) {
       return ready ? (
         <div className={'projectNotFound'}>
@@ -167,15 +171,15 @@ function ProjectsList({
                 setSearchMode={setSearchMode}
                 projects={projects}
               />}
-          </div>
-          {/* till here is header */}
-          <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ?
-              <AllProjects projects={searchProjectResults} />
-              : selectedTab === 'all' ?
-                <AllProjects projects={allProjects} /> :
-                <AllProjects projects={featuredProjects} />}
-          </div>
+            </div>
+            {/* till here is header */}
+            <div className={'projectsContainer'}>
+              {trottledSearchValue !== '' ?
+                <AllProjects projects={searchProjectResults} />
+                : selectedTab === 'all' ?
+                  <AllProjects projects={allProjects} /> :
+                  <AllProjects projects={featuredProjects} />}
+            </div>
         </div>
       ) : null}
     </>
