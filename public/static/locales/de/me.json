@@ -40,7 +40,7 @@
   "redeemedTrees": "Eingelöste Bäume",
   "myAccount": "Mein Konto",
   "all": "Alle",
-  "noRecords": "Keine Aufzeichnungen",
+  "noRecords": "Keine Einträge",
   "filters": "Filter",
   "registeredTrees": "Registrierte Bäume",
   "embedWidget": "Widget einbetten",
@@ -54,7 +54,7 @@
   "method": "Zahlungsmethode",
   "treeCost": "Kosten pro Baum",
   "treeCount": "Baumanzahl",
-  "lastUpdate": "Zuletzt aktualisiert",
+  "lastUpdate": "Letzte Aktualisierung",
   "donorCertificate": "Spendenzertifikat",
   "download": "Herunterladen",
   "donations": "Spenden",
@@ -65,12 +65,12 @@
   "success": "Erfolgreich",
   "paid": "Erfolgreich",
   "initiated": "Initiiert",
-  "failed": "Gescheitert",
+  "failed": "Fehlgeschlagen",
   "pending": "Ausstehend",
   "refunded": "Erstattet",
   "referred": "Weitergeleitet",
   "in-dispute": "Strittig",
   "dispute-lost": "Streitfall verloren",
-  "nameForest": "{{name}}'s Wald",
-  "taxReceipt": "Steuerquittung"
+  "nameForest": "Wald von {{name}}",
+  "taxReceipt": "Spendenbescheinigung"
 }
