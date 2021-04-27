@@ -44,7 +44,10 @@
 .mapNavigation {
   position: absolute;
   right: 20px;
-  bottom: 50px;
+  bottom: 40px;
+  > div {
+    position: relative;
+  }
 }
 
 .projectControls {
@@ -322,7 +325,11 @@
   margin: 0 5px;
   height: 7px;
   border-radius: 50px;
-  background: linear-gradient(90deg, $primaryColor 1.1%, $primaryDarkColor 98.6%);
+  background: linear-gradient(
+    90deg,
+    $primaryColor 1.1%,
+    $primaryDarkColor 98.6%
+  );
 }
 
 .currentForestScale > p:nth-child(1) {
