@@ -39,6 +39,7 @@ export default function Register({}: Props): ReactElement {
   return (
     <>
     <AccountHeader>
+    <div style={{width: 980, display: 'flex', justifyContent:'flex-start'}}>
       <div>
       <button
         id={'backButtonRegTree'}
@@ -60,6 +61,7 @@ export default function Register({}: Props): ReactElement {
         }}>
           <b> {t('me:registerTrees')} </b>
         </h2>
+        </div>
         </div>
     </AccountHeader>
         <div style={{display: 'flex', justifyContent: 'center'}}>
