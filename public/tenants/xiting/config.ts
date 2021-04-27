@@ -1,9 +1,9 @@
 const config = {
-  tenantName: 'ulmpflanzt',
-  tenantURL: 'wald.ulm-pflanzt-bäume.de',
-  languages: ['de'],
+  tenantName: 'xiting',
+  tenantURL: 'trees.xiting.de',
+  languages: ['de','en'],
   fallbackCurrency: 'EUR',
-  tenantGoal:124781,
+  tenantGoal:50000,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
@@ -11,20 +11,20 @@ const config = {
     secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   meta: {
-    title: 'Ulm pflanzt Bäume',
+    title: 'Planting trees – For a green future',
     description:
-      '124.781 Bäume – für jede/n Ulmer Bürger/in einen. Das ist das Ziel von „Ulm pflanzt Bäume“ – der Klima-Initiative von Plant-for-the-Planet , dem unw (Ulmer Initiativkreis nachhaltige Wirtschaftsentwicklung e. V.), den Ulmer Unternehmen pervormance international, Trivis und der Volksbank Ulm sowie der Stadt Ulm und der lokalen agenda ulm 21.',
+      'With this platform, we at Xiting would like to give our partners, customers, and supporters the opportunity to plant trees quickly and easily and thus join our commitment to climate protection. We are convinced that climate protection only makes sense if it is supported by a broad public and we work together towards a sustainable and green future. Trees are the ideal and most natural means for this, filtering CO2 from the air. Plant with us now!',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'de_DE',
   },
   home: {
-    image: `/tenants/pampers/background.jpeg`,
+    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/ulmpflanzt/logo.svg`,
-    tenantLogoLink: 'https://xn--ulm-pflanzt-bume-7nb.de/',
+    tenantLogoURL: `/tenants/xiting/logo.svg`,
+    tenantLogoLink: 'https://www.xiting.de/',
     items: {
       home: {
         title: 'home',

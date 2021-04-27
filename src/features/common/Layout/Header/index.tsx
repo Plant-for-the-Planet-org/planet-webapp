@@ -8,6 +8,7 @@ const config = tenantConfig();
 export default function Header() {
   const { theme: themeType } = useTheme();
   return (
+    <>
     <Head>
       {config.font.primaryFontURL && (
         <link href={config.font.primaryFontURL} rel="stylesheet" />
@@ -96,5 +97,7 @@ export default function Header() {
         <meta name="theme-color" content={styles.primaryColor} />
       ) : null}
     </Head>
+    <noscript>We are sorry but this page does not work properly without JavaScript enabled. Please enable it to continue</noscript>
+    </>
   );
 }

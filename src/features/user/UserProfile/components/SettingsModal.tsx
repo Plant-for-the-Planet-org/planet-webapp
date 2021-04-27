@@ -83,7 +83,7 @@ export default function SettingsModal({
                 listStyle: 'none',
                 paddingLeft: '0px',
                 textAlign: 'center',
-                paddingBottom:'20px'
+                paddingBottom: '20px',
               }}
             >
               {userType == 'tpo' && (
@@ -109,6 +109,16 @@ export default function SettingsModal({
                 {' '}
                 {t('editProfile:edit')}{' '}
               </li>
+
+              {/* <li
+                onClick={() =>
+                  router.push('/account/history', undefined, { shallow: true })
+                }
+                id={'SettingsItem'}
+                className={styles.settingsItem}
+              >
+                {t('me:accountHistory')}
+              </li> */}
               <li
                 onClick={handleEmbedModalOpen}
                 id={'SettingsItem'}
