@@ -295,7 +295,7 @@ button {
   max-width: 98%;
   pointer-events: all;
   z-index: 999;
-  height: 250px;
+  height: fit-content;
   background: transparent;
 }
 
@@ -311,7 +311,6 @@ button {
     bottom: 100px;
     max-width: 100%;
     border-radius: 0px;
-    max-height: 15%;
   }
 }
 
