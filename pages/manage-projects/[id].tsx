@@ -90,6 +90,7 @@ function ManageSingleProject({ }: Props): ReactElement {
   return setupAccess ? (ready && token && !accessDenied) ? (
     <>
     <AccountHeader>
+    <div style={{width: 980, display: 'flex', justifyContent:'flex-start'}}>
     <div>
       <button
         id={'backButtonRegTree'}
@@ -111,6 +112,7 @@ function ManageSingleProject({ }: Props): ReactElement {
         }}>
           <b> {t('me:manageProjects')} </b>
         </h2>
+        </div>
         </div>
     </AccountHeader>
       <ManageProjects GUID={projectGUID} token={token} project={project} />
