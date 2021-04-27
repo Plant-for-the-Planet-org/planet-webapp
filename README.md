@@ -6,7 +6,7 @@
 
 <p style="align:center;">
 
-<a href="https://planet-app-sf.herokuapp.com/">
+<a href="https://dev.pp.eco/">
     <img src="http://img.shields.io/badge/Demo-%23141619?style=for-the-badge&logo=next.js" />
 </a>
 <a href="./CODE_OF_CONDUCT.md">
