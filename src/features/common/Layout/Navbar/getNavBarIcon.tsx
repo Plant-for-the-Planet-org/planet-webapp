@@ -16,8 +16,6 @@ interface Props {
 }
 
 function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
-
-    console.log('router.pathname',router.pathname);
     
     const HomeLink =()=>{
         return(
