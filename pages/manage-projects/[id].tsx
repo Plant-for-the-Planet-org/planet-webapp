@@ -8,7 +8,6 @@ import Footer from '../../src/features/common/Layout/Footer';
 import { useAuth0 } from '@auth0/auth0-react';
 import AccountHeader from '../../src/features/common/Layout/Header/accountHeader'
 import i18next from '../../i18n';
-import { getLocalUserInfo } from '../../src/utils/auth0/localStorageUtils'
 const { useTranslation } = i18next;
 
 interface Props {
