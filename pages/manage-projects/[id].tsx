@@ -82,7 +82,7 @@ function ManageSingleProject({ }: Props): ReactElement {
   // Showing error to other TPOs is left
   return setupAccess ? (ready && token && !accessDenied) ? (
     <>
-    <AccountHeader pageTitle={t('settingManageProject')}/>
+    <AccountHeader pageTitle={t('me:settingManageProject')}/>
       <ManageProjects GUID={projectGUID} token={token} project={project} />
       <Footer />
     </>

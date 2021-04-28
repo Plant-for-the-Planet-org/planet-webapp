@@ -137,7 +137,7 @@ function Account({ }: Props): ReactElement {
         </div>
       )}
 
-      <AccountHeader pageTitle={t('myAccount')}/>
+      <AccountHeader pageTitle={t('me:myAccount')}/>
       <div className={styles.accountsPageContainer}>
         <div className={styles.filterContainer}>
           {isDataLoading ? (
@@ -150,7 +150,7 @@ function Account({ }: Props): ReactElement {
                 key="all"
                 onClick={() => handleSetFilter(null)}
               >
-                {t('all')}
+                {t('me:all')}
               </button>
               {accountingFilters && (
                 <FilterButtons
@@ -174,7 +174,7 @@ function Account({ }: Props): ReactElement {
             ) : paymentHistory && paymentHistory.items.length === 0 ? (
               <div className={styles.notFound}>
                 {/* <TransactionIcon color={'#c5c5c5'} width={'50px'} />
-                <p>{t('noRecords')}</p> */}
+                <p>{t('me:noRecords')}</p> */}
                 <TransactionsNotFound />
               </div>
             ) : (
@@ -186,7 +186,7 @@ function Account({ }: Props): ReactElement {
           </div>
           <div className={styles.filterContainerDesktop}>
             <div className={styles.filterHead}>
-              <p className={styles.filterTitle}>{t('filters')}</p>
+              <p className={styles.filterTitle}>{t('me:filters')}</p>
             </div>
             {isDataLoading ? (
               <FilterLoader />
@@ -198,7 +198,7 @@ function Account({ }: Props): ReactElement {
                   key="all"
                   onClick={() => handleSetFilter(null)}
                 >
-                  {t('all')}
+                  {t('me:all')}
                 </button>
                 {accountingFilters && (
                   <FilterButtons

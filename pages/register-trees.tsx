@@ -35,7 +35,7 @@ export default function Register({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   return (
     <>
-    <AccountHeader pageTitle={t('registerTrees')}/>
+    <AccountHeader pageTitle={t('me:registerTrees')}/>
         <div style={{display: 'flex', justifyContent: 'center'}}>
           {!isLoading && currentUserSlug ? (
             <RegisterTrees
