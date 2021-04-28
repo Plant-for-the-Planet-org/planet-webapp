@@ -6,7 +6,7 @@
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
-  position: absolute;
+  position: relative;
   padding: 20px 20px;
   min-width: 780px;
   outline: none;
@@ -15,23 +15,7 @@
   align-items: left;
   overflow-y: auto;
 }
-// white modal
-// .modal {
-//   background-color: #ffffff;
-//   border: 0px;
-//   border-radius: 8px;
-//   padding: 50px 20px 80px;
-//   overflow-y: scroll;
-//   outline: none;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin: auto;
-//   max-width: 100%;
-//   width: 800px;
-//   justify-content: flex-start;
-//   position: relative;
-// }
+
 
 .title {
   display: flex;
@@ -264,6 +248,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 100px;
 }
 
 .closeButton {

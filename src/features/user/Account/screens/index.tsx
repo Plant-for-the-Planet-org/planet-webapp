@@ -2,6 +2,7 @@ import React, { useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/AccountNavbar.module.scss';
+import AccountHeader from '../../../common/Layout/Header/accountHeader'
 import {
   setUserExistsInDB,
   removeUserExistsInDB,
@@ -11,9 +12,6 @@ import {
   getAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import PaymentRecord from '../components/PaymentRecord';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import SettingsModal from '../../UserProfile/components/SettingsModal';
 import TopProgressBar from '../../../common/ContentLoaders/TopProgressBar';
 import i18next from '../../../../../i18n';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
@@ -138,32 +136,8 @@ function Account({ }: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <div className={styles.headerBG}>
-        <div className={styles.accountsHeader}>
-          <div className={styles.navContainer}>
-            <button
-              onClick={() => {
-                router.back();
-              }}
-              className={styles.backButton}
-            >
-              <BackButton style={{ margin: '0px' }} />
-            </button>
-            <button
-              id={'IndividualProSetting'}
-              className={styles.settingsIcon}
-              onClick={handleSettingsModalOpen}
-            >
-              <Settings color="white" />
-            </button>
-          </div>
-          <div className={styles.accountsTitleContainer}>
-            <div className={styles.accountsTitle}>{t('myAccount')}</div>
-            <div className={styles.optionsRow}></div>
-          </div>
-        </div>
-      </div>
 
+      <AccountHeader pageTitle={t('myAccount')}/>
       <div className={styles.accountsPageContainer}>
         <div className={styles.filterContainer}>
           {isDataLoading ? (
@@ -239,20 +213,7 @@ function Account({ }: Props): ReactElement {
           </div>
         </div>
       </div>
-
-      {/* Open setting component */}
-      {settingsModalOpen && (
-        <SettingsModal
-          userprofile={userprofile}
-          settingsModalOpen={settingsModalOpen}
-          handleSettingsModalClose={handleSettingsModalClose}
-          editProfileModalOpen={editProfileModalOpen}
-          handleEditProfileModalClose={handleEditProfileModalClose}
-          handleEditProfileModalOpen={handleEditProfileModalOpen}
-          changeForceReload={changeForceReload}
-          forceReload={forceReload}
-        />
-      )}
+      
     </div>
   );
 }

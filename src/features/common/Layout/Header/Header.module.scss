@@ -5,9 +5,63 @@
   primaryFontColor: $primaryFontColor;
 }
 
-.header{
-  height: 40vh;
+.headerBG {
+  height: 250px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    ),
+    url('https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg')
+      center center,
+    $primaryColor;
+  .accountsHeader {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 980px;
+    gap: 30px;
+    padding-top: 90px;
+  }
 }
-
+.accountsTitleContainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 980px;
+  .accountsTitle {
+    margin-left: 20px;
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+  }
+}
+.navContainer {
+  padding: 0px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.backButton {
+  box-shadow: 1px 1px 4px -2px #707070;
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.settingsButton {
+  width: 30px;
+  height: 30px;
+  &:hover {
+    cursor: pointer;
+  }
+}
