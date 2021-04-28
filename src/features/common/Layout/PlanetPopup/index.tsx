@@ -12,12 +12,10 @@ interface Props {}
 export default function index({}: Props): ReactElement {
   const [showPlanetModal, setShowPlanetModal] = React.useState(false);
   const [openModal, setModalOpen] = React.useState(true);
-  const [userLang, setUserLang] = React.useState('');
-  const [countryCode, setCountryCode] = React.useState('');
   const { t, ready, i18n } = useTranslation('popup');
 
   React.useEffect(() => {
-    let prev = localStorage.getItem('showPlanetModal');
+    const prev = localStorage.getItem('showPlanetModal');
     if (!prev) {
       setShowPlanetModal(true);      
     } else {
@@ -28,16 +26,6 @@ export default function index({}: Props): ReactElement {
   React.useEffect(() => {
     localStorage.setItem('showPlanetModal', showPlanetModal);
   }, [showPlanetModal]);
-
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      let userLang = localStorage.getItem('language');
-      let countryCode = localStorage.getItem('countryCode');
-      setUserLang(userLang);
-      setCountryCode(countryCode);
-    }
-  }, []);
 
   const closePlanetModal = () => {
     setShowPlanetModal(false);
