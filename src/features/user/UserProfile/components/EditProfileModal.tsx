@@ -19,7 +19,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { selectUserType } from '../../../../utils/selectUserType';
 import { ThemeContext } from '../../../../theme/themeContext';
-
+import { MenuItem } from '@material-ui/core';
+import { getStoredConfig } from '../../../../utils/storeConfig'
 const { useTranslation } = i18next;
 export default function EditProfileModal({
   userprofile,
@@ -108,7 +109,18 @@ export default function EditProfileModal({
   const [severity, setSeverity] = useState('success')
   const [snackbarMessage, setSnackbarMessage] = useState("OK");
   const watchIsPrivate = watch('isPrivate');
+  const [type, setAccountType] = useState('individual');
 
+  const profileTypes = [
+    { id: 1, title: ready ? t('editProfile:individual') : '', value: 'individual' },
+    { id: 2, title: ready ? t('editProfile:organization') : '', value: 'organization' },
+    { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
+    { id: 4, title: ready ? t('editProfile:education') : '', value: 'education' }
+  ]
+  React.useEffect(() => {
+    // This will remove field values which do not exist for the new type
+    reset()
+  }, [type])
   const onDrop = React.useCallback((acceptedFiles) => {
     setUpdatingPic(true);
     acceptedFiles.forEach((file: any) => {
@@ -152,7 +164,8 @@ export default function EditProfileModal({
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
-      country: country
+      country: country,
+      type
     }
     if (!isLoading && token) {
       try {
@@ -238,7 +251,18 @@ export default function EditProfileModal({
                 </div>
               </label>
             </div>
-
+            <MaterialTextField
+                    label={t('editProfile:iamA')}
+                    variant="outlined"
+                    select
+                    defaultValue={profileTypes[0].value}
+                  >
+                    {profileTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
+                        {option.title} 
+                      </MenuItem>
+                    ))}
+                  </MaterialTextField>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
