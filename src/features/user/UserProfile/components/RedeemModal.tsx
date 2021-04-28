@@ -14,6 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -134,9 +135,11 @@ export default function RedeemModal({
     lastName:userprofile.lastname
   }
 
+  const { theme } = React.useContext(ThemeContext);
+
   return ready ? (
     <Modal
-      className={styles.modalContainer}
+      className={'modalContainer'+' '+theme}
       open={redeemModalOpen}
       onClose={handleRedeemModalClose}
       closeAfterTransition
@@ -233,7 +236,7 @@ export default function RedeemModal({
                     <p>{validCodeData.tpos[0].tpoName}</p>
                   </div>
 
-                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
+                  <button id={'redeemModalCont'} onClick={handleSubmit(redeemCode)} className="primaryButton" style={{maxWidth: "200px", marginTop: "24px"}}>
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (t('redeem:addToMyTrees'))}
@@ -263,7 +266,7 @@ export default function RedeemModal({
                     {errorMessage && (
                       <span className={styles.formErrors}>{errorMessage}</span>
                     )}
-                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className={styles.continueButton}>
+                    <button id={'validateCodeRedeem'} onClick={handleSubmit(validateCode)} className="primaryButton" style={{maxWidth: "200px", marginTop: "24px"}}> 
                       {isUploadingData ? (
                         <div className={styles.spinner}></div>
                       ) : (t('redeem:validateCode'))}

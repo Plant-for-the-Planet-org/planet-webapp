@@ -22,6 +22,7 @@ import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './ExploreInfoModal';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 interface Props {
   loaded: boolean;
@@ -65,6 +66,8 @@ export default function Explore({
   const [explorePlanted, setExplorePlanted] = React.useState(false);
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const [openModal, setModalOpen] = React.useState(false);
+
+  const { theme } = React.useContext(ThemeContext);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -271,12 +274,13 @@ export default function Explore({
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
           {exploreExpanded ? null : (
-            <p
+            isMobile || showSingleProject ? null : ( <p
               onClick={() => setExploreExpanded(true)}
               className={styles.exploreText}
             >
-              {isMobile || showSingleProject ? null : t('maps:explore')}
-            </p>
+              {t('maps:explore')}
+            </p>)
+           
           )}
         </div>
         {exploreExpanded ? (
@@ -424,7 +428,7 @@ export default function Explore({
       </div>
       {infoExpanded !== null ? (
         <Modal
-          className={styles.modal}
+          className={'modalContainer' + ' ' + theme}
           open={openModal}
           onClose={handleModalClose}
           aria-labelledby="simple-modal-title"

@@ -1,79 +1,134 @@
 @import '../../../../theme/theme';
 
 .landingSection {
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12vh 0;
-  
-    background-image: url('/tenants/salesforce/images/mobile/Landscape.png');
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/tenants/salesforce/images/landscape2x.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 35px 0 100px;
+
+  @include smTabletView {
+    margin-top: 80px;
   }
 
-  .landingContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 90%;
-    margin-bottom: 10vh;
+  @include lgLaptopView {
+    max-width: 2560px;
+    padding: 85px 0 100px;
   }
-  
-  .landingContent > h1 {
+}
+
+.landingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin-bottom: 10vh;
+  @include smTabletView {
+    max-width: 60%;
+  }
+  @include lgLaptopView {
+    max-width: 1170px;
+    margin-bottom: 16vh;
+  }
+
+  h1 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 45px;
+    letter-spacing: -0.006em;
+    color: #032D60;
+    text-align: center;
+    margin-bottom: 20px;
+
+    @include lgLaptopView {
+      font-size: 72px;
+      line-height: 80px;
+      text-align: center;
+      font-weight: 500;
+    }
+  }
+
+  h3 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: -0.004em;
+    color: #FFFFFF;
+    margin-bottom: 26px;
+    @include lgLaptopView {
+      font-size: 36px;
+      line-height: 100%;
+      margin-bottom: 38px;
+    }
+  }
+
+  p {
     font-family: $primaryFontFamily;
     font-style: normal;
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 40px;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
     text-align: center;
-    letter-spacing: -0.006em;
-    color: #080707;
+    color: #FFFFFF;
+    @include lgLaptopView {
+      font-size: 15px;
+      line-height: 24px;
+    }
   }
-  
-  .landingContent > p {
+
+  button {
+    background: #215CA0;
+    border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    line-height: 24px;
-    text-align: center;
-    color: #080707;
-    max-width: 500px;
-    margin-top: 1.5vh;
-  }
-@include smTabletView {
-    .landingSection {
-        padding: 17vh 0;
-      }
-
-  .landingContent {
-    max-width: 60%;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 13px 24px;
+    cursor: pointer;
   }
 }
 
-@include lgLaptopView {
-    .landingSection {
-        background-image: url('/tenants/salesforce/images/desktop/Landscape3x.png');
-        margin-top: 60px;
-        // padding: 20vh 0;
-      }
-      .landingContent {
-        max-width: 800px;
-        margin-bottom: 16vh;
-      }
-    
-      .landingContent > h1 {
-        font-size: 56px;
-        line-height: 60px;
-        text-align: center;
-        font-weight: 700;
-      }
-    
-      .landingContent > p {
-        font-size: 16px;
-        line-height: 24px;
-      }
+.landingContentTop {
+  text-align: center;
+  margin-bottom: 120px;
+  @include lgLaptopView {
+    margin-bottom: 290px;
+  }
+}
+
+.landingContentBottom {
+  text-align: center;
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    background-image: url('/tenants/salesforce/images/astro-tree.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 180px);
+    width: 57px;
+    height: 81px;
+    transform: translate(-50%, -50%);
+    @include lgLaptopView {
+      top: calc(50% - 50px);
+      left: calc(50% - 423px);
+      width: 163px;
+      height: 234px;
+    }
+  }
 }
