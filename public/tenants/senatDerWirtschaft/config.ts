@@ -24,6 +24,7 @@ const config = {
   header: {
     isSecondaryTenant: true,
     tenantLogoURL: `/tenants/senatDerWirtschaft/logo.svg`,
+    mobileLogoURL: `/tenants/senatDerWirtschaft/logo-mobile.png`,
     tenantLogoLink: 'https://www.senat-deutschland.de/',
     items: {
       home: {
