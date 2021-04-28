@@ -15,7 +15,7 @@ export default function index({}: Props): ReactElement {
   const { t, ready, i18n } = useTranslation('popup');
 
   React.useEffect(() => {
-    const prev = localStorage.getItem('showPlanetModal');
+    const prev = localStorage.getItem('showPlanetModal2');
     if (!prev) {
       setShowPlanetModal(true);      
     } else {
@@ -24,13 +24,13 @@ export default function index({}: Props): ReactElement {
   }, []);
 
   React.useEffect(() => {
-    localStorage.setItem('showPlanetModal', showPlanetModal);
+    localStorage.setItem('showPlanetModal2', showPlanetModal);
   }, [showPlanetModal]);
 
   const closePlanetModal = () => {
     setShowPlanetModal(false);
     setModalOpen(false);
-    localStorage.setItem('showPlanetModal', 'false');
+    localStorage.setItem('showPlanetModal2', 'false');
   };
   
   return ready ? (
