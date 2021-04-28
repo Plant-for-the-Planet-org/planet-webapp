@@ -32,6 +32,7 @@ export default function index({}: Props): ReactElement {
     setModalOpen(false);
     localStorage.setItem('showPlanetModal', 'false');
   };
+  
   return ready ? (
     <>
       {tenantConfiguration.tenantName === 'planet' &&
