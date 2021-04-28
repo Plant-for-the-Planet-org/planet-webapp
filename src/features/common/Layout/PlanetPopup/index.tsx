@@ -64,7 +64,7 @@ export default function index({}: Props): ReactElement {
             <div
               style={{
                 backgroundColor: 'white',
-                minHeight: '300px',
+                minHeight: '240px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -78,7 +78,7 @@ export default function index({}: Props): ReactElement {
               <h2 style={{ fontWeight: 'bold' }}>
               {t('title')}
               </h2>
-              <p style={{ margin: '16px auto' }}>
+              <p style={{ margin: '16px auto',textAlign:'center' }}>
               {t('text')}
               </p>
               <a
