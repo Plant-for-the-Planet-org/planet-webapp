@@ -27,7 +27,6 @@ export default function CompleteSignup() {
     loginWithRedirect,
     user
   } = useAuth0();  
-console.log(user,"h")
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
@@ -36,7 +35,6 @@ console.log(user,"h")
   const isPrivate = watch('isPrivate');
 
   const [token, setToken] = React.useState('')
-console.log(token,"token")
   const [submit, setSubmit] = React.useState(false)
   React.useEffect(() => {
     async function loadFunction() {
