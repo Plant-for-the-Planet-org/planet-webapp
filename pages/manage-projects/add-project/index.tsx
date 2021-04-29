@@ -5,6 +5,9 @@ import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Proj
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import {  useAuth0 } from '@auth0/auth0-react';
+import AccountHeader from  '../../../src/features/common/Layout/Header/accountHeader';
+import i18next from '../../../i18n'
+const { useTranslation } = i18next;
 
 interface Props {
 
@@ -14,6 +17,7 @@ function ManageProjectsPage({ }: Props): ReactElement {
 
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
+  const { t } = useTranslation(['me']);
 
   const {
     isLoading,
@@ -66,6 +70,7 @@ function ManageProjectsPage({ }: Props): ReactElement {
   }
   return setupAccess ? (
     <>
+    <AccountHeader pageTitle={t('me:settingManageProject')}/>
       <ManageProjects token={token} />
       <Footer />
     </>
