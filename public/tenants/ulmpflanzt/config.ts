@@ -1,6 +1,6 @@
 const config = {
   tenantName: 'ulmpflanzt',
-  tenantURL: 'wald.ulm-pflanzt-bäume.de',
+  tenantURL: 'wald.xn--ulm-pflanzt-bume-7nb.de',
   languages: ['de'],
   fallbackCurrency: 'EUR',
   tenantGoal:124781,
