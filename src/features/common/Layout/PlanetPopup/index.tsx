@@ -71,7 +71,6 @@ export default function index({}: Props): ReactElement {
               {t('text')}
               </p>
               <a
-                target="_blank"
                 style={{ fontWeight: 'bold', color: '#68B030' }}
                 rel="noopener noreferrer"
                 href={`https://a.plant-for-the-planet.org/${i18n.language}/yucatan-reports/?utm_source=planetapp&utm_medium=banner&utm_campaign=yucatan_reports`}
