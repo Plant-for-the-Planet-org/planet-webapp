@@ -114,8 +114,7 @@ export default function EditProfileModal({
   const profileTypes = [
     { id: 1, title: ready ? t('editProfile:individual') : '', value: 'individual' },
     { id: 2, title: ready ? t('editProfile:organization') : '', value: 'organization' },
-    { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
-    { id: 4, title: ready ? t('editProfile:education') : '', value: 'education' }
+    { id: 3, title: ready ? t('editProfile:education') : '', value: 'education' }
   ]
   React.useEffect(() => {
     // This will remove field values which do not exist for the new type
@@ -251,7 +250,8 @@ export default function EditProfileModal({
                 </div>
               </label>
             </div>
-            <MaterialTextField
+            {userprofile.type !== "tpo" ?
+              <MaterialTextField
                     label={t('editProfile:iamA')}
                     variant="outlined"
                     select
@@ -262,7 +262,7 @@ export default function EditProfileModal({
                         {option.title} 
                       </MenuItem>
                     ))}
-                  </MaterialTextField>
+            </MaterialTextField> : null}
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
