@@ -291,6 +291,7 @@ export default function CompleteSignup() {
                                   getStoredConfig("loc").city === "XX" || 
                                   getStoredConfig("loc").city === "" ?
                                   "" : getStoredConfig("loc").city}
+                    name={'city'}
                   />
                   {errors.city && (
                     <span className={styles.formErrors}>
@@ -330,10 +331,10 @@ export default function CompleteSignup() {
               label={t('donate:country')}
               name="country"
               onChange={(country) => setCountry(country)}
-              defaultValue={getStoredConfig("loc").postalCode === "T1" || 
-                            getStoredConfig("loc").postalCode === "XX" || 
-                            getStoredConfig("loc").postalCode === "" ?
-                            "" : getStoredConfig("loc").postalCode}
+              defaultValue={getStoredConfig("loc").countryCode === "T1" || 
+                            getStoredConfig("loc").countryCode === "XX" || 
+                            getStoredConfig("loc").countryCode === "" ?
+                            "" : getStoredConfig("loc").countryCode}
             />
             {errors.country && (
               <span className={styles.formErrors}>
