@@ -21,6 +21,7 @@ import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -153,6 +154,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       >
         <ThemeProvider>
           <CssBaseline />
+          <UserPropsProvider>
           <Layout>
             {isMap ? (
               project ? (
@@ -163,6 +165,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             ) : null}
             <Component {...ProjectProps} />
           </Layout>
+      </UserPropsProvider>
         </ThemeProvider>
       </Auth0Provider>
     );

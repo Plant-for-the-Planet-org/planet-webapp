@@ -1,14 +1,8 @@
 import React, { useEffect, ReactElement } from 'react';
-import { useRouter } from 'next/router';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/AccountNavbar.module.scss';
 import AccountHeader from '../../../common/Layout/Header/accountHeader'
 import {
-  setUserExistsInDB,
-  removeUserExistsInDB,
-} from '../../../../utils/auth0/localStorageUtils';
-import {
-  getAccountInfo,
   getAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import PaymentRecord from '../components/PaymentRecord';
@@ -31,10 +25,8 @@ function Account({ }: Props): ReactElement {
     getAccessTokenSilently,
   } = useAuth0();
   const { t } = useTranslation(['me']);
-  const [userprofile, setUserprofile] = React.useState();
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const router = useRouter();
 
   const [filter, setFilter] = React.useState(null);
   const [paymentHistory, setpaymentHistory] = React.useState();
@@ -68,32 +60,6 @@ function Account({ }: Props): ReactElement {
           setIsDataLoading(false);
           setTimeout(() => setProgress(0), 1000);
         }
-        if (!isLoading && token) {
-          try {
-            const res = await getAccountInfo(token);
-            if (res.status === 200) {
-              const resJson = await res.json();
-              setUserprofile(resJson);
-            } else if (res.status === 303) {
-              // if 303 -> user doesn not exist in db
-              setUserExistsInDB(false);
-              if (typeof window !== 'undefined') {
-                router.push('/complete-signup');
-              }
-            } else if (res.status === 401) {
-              // in case of 401 - invalid token: signIn()
-              removeUserExistsInDB();
-              loginWithRedirect({
-                redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
-                ui_locales: localStorage.getItem('language') || 'en',
-              });
-            } else {
-              // any other error
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
       } else {
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
@@ -108,26 +74,6 @@ function Account({ }: Props): ReactElement {
   const handleSetFilter = (id: any) => {
     setFilter(id);
   };
-
-  // settings modal
-  const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
-  const handleSettingsModalClose = () => {
-    setSettingsModalOpen(false);
-  };
-  const handleSettingsModalOpen = () => {
-    setSettingsModalOpen(!settingsModalOpen);
-  };
-
-  // editProfile modal  (from settings modal)
-  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
-  const handleEditProfileModalClose = () => {
-    setEditProfileModalOpen(false);
-  };
-  const handleEditProfileModalOpen = () => {
-    setEditProfileModalOpen(true);
-  };
-
-  const [forceReload, changeForceReload] = React.useState(false);
 
   return (
     <div className={styles.accountsPage}>
