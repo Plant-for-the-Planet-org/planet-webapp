@@ -61,8 +61,9 @@ function Account({ }: Props): ReactElement {
           setTimeout(() => setProgress(0), 1000);
         }
       } else {
+        localStorage.setItem('redirectLink','/account/history');
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/account/history`,
+          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }
@@ -159,7 +160,7 @@ function Account({ }: Props): ReactElement {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 }
