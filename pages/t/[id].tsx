@@ -137,7 +137,7 @@ export default function PublicUser(initialized: Props) {
         </>
       );
     }
-    else if(userprofile?.type === 'individual' || userprofile?.type === 'education' || userprofile?.type === 'company'|| userprofile?.type === 'organization' || userprofile?.type === 'children-youth' || userprofile?.type === 'government'){
+    else{
       return (
         <>
           <GetPublicUserProfileMeta userprofile={userprofile} />
