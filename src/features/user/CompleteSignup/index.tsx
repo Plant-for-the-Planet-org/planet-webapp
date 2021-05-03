@@ -14,10 +14,11 @@ import i18next from '../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
+import { MenuItem } from '@material-ui/core';
+import { getStoredConfig } from '../../../utils/storeConfig'
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
-
   const {
     isLoading,
     isAuthenticated,
@@ -26,7 +27,6 @@ export default function CompleteSignup() {
     loginWithRedirect,
     user
   } = useAuth0();  
-
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
@@ -35,7 +35,6 @@ export default function CompleteSignup() {
   const isPrivate = watch('isPrivate');
 
   const [token, setToken] = React.useState('')
-
   const [submit, setSubmit] = React.useState(false)
   React.useEffect(() => {
     async function loadFunction() {
@@ -194,17 +193,18 @@ export default function CompleteSignup() {
           </div>
 
           {/* type of account buttons */}
-          <div className={styles.profileTypesContainer}>
-            {profileTypes.map(item => {
-              return (
-                <button id={'editProfileTypes'} key={item.id} className={`${styles.profileTypes} ${type === item.value ? styles.profileTypesSelected : ''}`} onClick={() => setAccountType(item.value)}>
-                  {t('editProfile:profileTypes', {
-                    item: item
-                  })}
-                </button>
-              )
-            })}
-          </div>
+          <MaterialTextField
+                    label={t('editProfile:iamA')}
+                    variant="outlined"
+                    select
+                    defaultValue={profileTypes[0].value}
+                  >
+                    {profileTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
+                        {option.title} 
+                      </MenuItem>
+                    ))}
+                  </MaterialTextField>
 
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
@@ -213,6 +213,7 @@ export default function CompleteSignup() {
                 variant="outlined"
                 inputRef={register({ required: true })}
                 name={"firstname"}
+                defaultValue={user.given_name ? user.given_name : ""}
               />
               {errors.firstname && (
                 <span className={styles.formErrors}>
@@ -227,6 +228,7 @@ export default function CompleteSignup() {
                 variant="outlined"
                 inputRef={register({ required: true })}
                 name={"lastname"}
+                defaultValue={user.family_name ? user.family_name : ""}
               />
               {errors.lastname && (
                 <span className={styles.formErrors}>
@@ -285,7 +287,11 @@ export default function CompleteSignup() {
                     label={t('donate:city')}
                     variant="outlined"
                     inputRef={register({ required: true })}
-                    name={"city"}
+                    defaultValue={getStoredConfig("loc").city === "T1" || 
+                                  getStoredConfig("loc").city === "XX" || 
+                                  getStoredConfig("loc").city === "" ?
+                                  "" : getStoredConfig("loc").city}
+                    name={'city'}
                   />
                   {errors.city && (
                     <span className={styles.formErrors}>
@@ -302,6 +308,10 @@ export default function CompleteSignup() {
                       pattern: postalRegex,
                       required: true
                     })}
+                    defaultValue={getStoredConfig("loc").postalCode === "T1" || 
+                                  getStoredConfig("loc").postalCode === "XX" || 
+                                  getStoredConfig("loc").postalCode === "" ?
+                                  "" : getStoredConfig("loc").postalCode}
                   />
                   {errors.zipCode && (
                     <span className={styles.formErrors}>
@@ -321,7 +331,10 @@ export default function CompleteSignup() {
               label={t('donate:country')}
               name="country"
               onChange={(country) => setCountry(country)}
-              defaultValue={defaultCountry}
+              defaultValue={getStoredConfig("loc").countryCode === "T1" || 
+                            getStoredConfig("loc").countryCode === "XX" || 
+                            getStoredConfig("loc").countryCode === "" ?
+                            "" : getStoredConfig("loc").countryCode}
             />
             {errors.country && (
               <span className={styles.formErrors}>
