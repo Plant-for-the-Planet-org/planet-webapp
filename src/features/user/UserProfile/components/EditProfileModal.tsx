@@ -269,7 +269,7 @@ export default function EditProfileModal({
                   label={t('donate:firstName')}
                   variant="outlined"
                   name="firstname"
-                  inputRef={register()}
+                  inputRef={register({ required: true })}
                 />
                 {errors.firstname && (
                   <span className={styles.formErrors}>
@@ -283,7 +283,7 @@ export default function EditProfileModal({
                   label={t('donate:lastName')}
                   variant="outlined"
                   name="lastname"
-                  inputRef={register()}
+                  inputRef={register({ required: true })}
                 />
                 {errors.lastname && (
                   <span className={styles.formErrors}>
@@ -301,7 +301,7 @@ export default function EditProfileModal({
                 })}
                 variant="outlined"
                 name="name"
-                inputRef={register()}
+                inputRef={register({ required: true })}
               />
               {errors.name && (
                 <span className={styles.formErrors}>
@@ -316,7 +316,7 @@ export default function EditProfileModal({
                 label={t('donate:address')}
                 variant="outlined"
                 name="address"
-                inputRef={register()}
+                inputRef={register({ required: true })}
               />
               {errors.address && (
                 <span className={styles.formErrors}>
@@ -331,7 +331,7 @@ export default function EditProfileModal({
                   label={t('donate:city')}
                   variant="outlined"
                   name="city"
-                  inputRef={register()}
+                  inputRef={register({ required: true })}
                 />
                 {errors.city && (
                   <span className={styles.formErrors}>
@@ -347,6 +347,7 @@ export default function EditProfileModal({
                   name="zipCode"
                   inputRef={register({
                     pattern: postalRegex,
+                    required: true 
                   })}
                 />
                 {errors.zipCode && (
