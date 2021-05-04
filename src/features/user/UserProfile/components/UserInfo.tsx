@@ -13,15 +13,23 @@ export default function UserInfo({
   handleAddTargetModalOpen,
 }: any) {
   const { t, ready } = useTranslation(['donate']);
+  console.log(userprofile,"user")
   return (
     <div className={styles.landingContent}>
+      {userprofile.type == "tpo" ? 
       <TreeCounter
+      handleAddTargetModalOpen={handleAddTargetModalOpen}
+      authenticatedType={authenticatedType}
+      target={userprofile.score.target}
+      planted={userprofile.score.personal}
+    /> : 
+    <TreeCounter
         handleAddTargetModalOpen={handleAddTargetModalOpen}
         authenticatedType={authenticatedType}
         target={userprofile.score.target}
         planted={userprofile.score.personal + userprofile.score.received}
-      />
-
+      />}
+      
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
       {/* user bio */}
       <div className={styles.treeCounterDescription}>
