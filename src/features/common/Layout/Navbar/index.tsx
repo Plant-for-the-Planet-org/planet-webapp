@@ -140,7 +140,8 @@ export default function NavbarComponent(props: any) {
           {config.header?.isSecondaryTenant && (
             <div className={config.tenantName === 'ttc' ? 'hidePrimaryTenantLogo' : 'primaryTenantLogo'}>
               <a href={config.header?.tenantLogoLink}>
-                <img className={'tenantLogo'} src={config.header.tenantLogoURL} />
+              <img className={'tenantLogo desktop'} src={config.header.tenantLogoURL} />
+                {config.header.mobileLogoURL?<img className={'tenantLogo mobile'} src={config.header.mobileLogoURL} />:<img className={'tenantLogo mobile'} src={config.header.tenantLogoURL} />}
               </a>
               <div className={'logo_divider'} />
             </div>

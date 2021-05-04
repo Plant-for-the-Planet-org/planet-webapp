@@ -51,13 +51,15 @@ const config = {
   },
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
+    appTitle: 'Plant for the Planet',
     description:
       "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
+  manifest: '/tenants/planet/manifest.json',
 };
 
 export default config;

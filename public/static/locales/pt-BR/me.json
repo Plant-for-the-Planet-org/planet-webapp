@@ -37,6 +37,6 @@
   "receivedTrees": "Árvores Recebidas",
   "receivedFrom": "Recebido de {{name}}",
   "redeemedTrees": "Árvores Redimidas",
-  "nameForest": "A Floresta de {{name}}",
-  "embedWidget": "Incorporar Widget"
+  "embedWidget": "Incorporar Widget",
+  "nameForest": "A Floresta de {{name}}"
 }
