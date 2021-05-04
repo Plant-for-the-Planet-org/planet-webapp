@@ -9,7 +9,6 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { getLocalUserInfo, setLocalUserInfo } from '../../../../utils/auth0/localStorageUtils'
 import getImageUrl from '../../../../utils/getImageURL'
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
@@ -19,16 +18,18 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { selectUserType } from '../../../../utils/selectUserType';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 export default function EditProfileModal({
-  userprofile,
   editProfileModalOpen,
   handleEditProfileModalClose,
   changeForceReload,
   forceReload,
 }: any) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const {userprofile,setUserprofile, userExistsInDB, setUserExistsInDB} = React.useContext(UserPropsContext);
 
   const [token, setToken] = React.useState('')
   const {
@@ -126,9 +127,8 @@ export default function EditProfileModal({
           handleSnackbarOpen()
 
           putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
-            const userInfo = getLocalUserInfo()
-            const newUserInfo = { ...userInfo, profilePic: res.image }
-            setLocalUserInfo(newUserInfo)
+            const newUserInfo = { ...userprofile, image: res.image }
+            setUserprofile(newUserInfo);
             setUpdatingPic(false);
           }).catch(error => {
             setUpdatingPic(false);
@@ -223,7 +223,7 @@ export default function EditProfileModal({
                         src={getImageUrl(
                           'profile',
                           'thumb',
-                          getLocalUserInfo().profilePic
+                          userprofile.image
                         )}
                         className={styles.profilePicImg}
                       />

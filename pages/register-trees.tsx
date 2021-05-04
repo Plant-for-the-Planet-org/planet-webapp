@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import RegisterTrees from '../src/features/user/UserProfile/components/RegisterTrees';
-import { getLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
 import AccountHeader from '../src/features/common/Layout/Header/accountHeader';
 import i18next from '../i18n';
+import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
 interface Props {}
 const { useTranslation } = i18next;
 export default function Register({}: Props): ReactElement {
@@ -11,6 +11,8 @@ export default function Register({}: Props): ReactElement {
   const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
     true
   );
+
+  const {userprofile} = React.useContext(UserPropsContext);
 
   const [token, setToken] = React.useState('')
   const {
@@ -24,8 +26,8 @@ export default function Register({}: Props): ReactElement {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
-      getLocalUserInfo() && getLocalUserInfo().slug
-        ? setCurrentUserSlug(getLocalUserInfo().slug)
+      userprofile && userprofile.slug
+        ? setCurrentUserSlug(userprofile.slug)
         : null;
     }
     if (isAuthenticated && !isLoading) {

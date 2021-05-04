@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react'
 import ManageProjects from '../../../src/features/user/ManageProjects/screens'
-import { getLocalUserInfo } from '../../../src/utils/auth0/localStorageUtils';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import {  useAuth0 } from '@auth0/auth0-react';
 import AccountHeader from  '../../../src/features/common/Layout/Header/accountHeader';
 import i18next from '../../../i18n'
+import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 const { useTranslation } = i18next;
 
 interface Props {
@@ -18,6 +18,8 @@ function ManageProjectsPage({ }: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false)
   const [setupAccess, setSetupAccess] = React.useState(false)
   const { t } = useTranslation(['me']);
+
+  const {userprofile} = React.useContext(UserPropsContext);
 
   const {
     isLoading,
@@ -40,7 +42,7 @@ function ManageProjectsPage({ }: Props): ReactElement {
 
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = getLocalUserInfo().type;      
+      const usertype = userprofile.type;      
       if (usertype === 'tpo') {
         setAccessDenied(false)
         setSetupAccess(true)

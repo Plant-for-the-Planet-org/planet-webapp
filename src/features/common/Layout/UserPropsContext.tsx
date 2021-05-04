@@ -2,13 +2,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { removeUserExistsInDB, setUserExistsInDB } from '../../../utils/auth0/localStorageUtils';
 
 interface Props { }
 
 export const UserPropsContext = React.createContext({
     userprofile: {} || null,
     setUserprofile: (value: {}) => { },
+    userExistsInDB: false,
+    setUserExistsInDB: (value: boolean) => { },
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -20,7 +21,9 @@ function UserPropsProvider({ children }: any): ReactElement {
     } = useAuth0();
 
     const router = useRouter();
+    
     const [userprofile, setUserprofile] = React.useState(null);
+    const [userExistsInDB,setUserExistsInDB] = React.useState(false);
 
     React.useEffect(() => {
         async function loadUserProfile() {
@@ -42,7 +45,7 @@ function UserPropsProvider({ children }: any): ReactElement {
                         }
                     } else if (res.status === 401) {
                         // in case of 401 - invalid token: signIn()
-                        removeUserExistsInDB();
+                        setUserprofile(null);
                         loginWithRedirect({
                             redirectUri: `${process.env.NEXTAUTH_URL}`,
                             ui_locales: localStorage.getItem('language') || 'en',
@@ -58,12 +61,12 @@ function UserPropsProvider({ children }: any): ReactElement {
         if (!isLoading)
             loadUserProfile();
 
-    }, [isLoading, isAuthenticated])
+    }, [isLoading, isAuthenticated,router])
 
     return (
         <UserPropsContext.Provider
             value={{
-                userprofile, setUserprofile
+                userprofile, setUserprofile,userExistsInDB,setUserExistsInDB
             }}
         >
             {children}

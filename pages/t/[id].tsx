@@ -4,15 +4,10 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import { getRequest, getAccountInfo } from '../../src/utils/apiRequests/api';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
-import {
-  setUserExistsInDB,
-  removeUserExistsInDB,
-  getLocalUserInfo,
-  removeLocalUserInfo,
-} from '../../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
+import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { getRequest } from '../../src/utils/apiRequests/api';
 
 interface Props {
   initialized: Boolean;
@@ -20,13 +15,13 @@ interface Props {
 
 export default function PublicUser(initialized: Props) {
 
-  // Whether public or private
-  const [authenticatedType, setAuthenticatedType] = React.useState('');
-
-  const [userprofile, setUserprofile] = React.useState();
+  const {userprofile,setUserprofile, userExistsInDB, setUserExistsInDB} = React.useContext(UserPropsContext);
 
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+
+  const [publicUserProfle, setPublicUserProfile] = React.useState(null);
+  const [authenticatedType, setAuthenticatedType] = React.useState('private');
 
   const [token, setToken] = React.useState('')
   const {
@@ -50,19 +45,7 @@ export default function PublicUser(initialized: Props) {
 
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
-  const PublicUserProps = {
-    userprofile,
-    changeForceReload,
-    forceReload,
-    authenticatedType,
-    token,
-  };
-
-  const logoutUser = () => {
-    removeLocalUserInfo();
-    logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  }
-
+  
   useEffect(() => {
     if (router && router.query.id) {
       setUserprofile(null)
@@ -76,50 +59,18 @@ export default function PublicUser(initialized: Props) {
       // For loading user data we first have to decide whether user is trying to load their own profile or someone else's
       // To do this we first try to fetch the slug from the local storage
       // If the slug matches and also there is token in the session we fetch the user's private data, else the public data
-
-      if (typeof Storage !== 'undefined') {
-        let token = null;
-        if (isAuthenticated) {
-          token = await getAccessTokenSilently();
-        }
-        const userInfo = await getLocalUserInfo()
-        const currentUserSlug = userInfo?.slug ? userInfo.slug : null;
+        const currentUserSlug = userprofile?.slug ? userprofile.slug : null;
 
         // some user logged in and slug matches -> private profile
-        if (!isLoading && token && currentUserSlug === slug) {
-          try {
-            const res = await getAccountInfo(token)
-            if (res.status === 200) {
-              const resJson = await res.json();
-              setAuthenticatedType('private')
-              setUserprofile(resJson);
-            } else if (res.status === 303) {
-              // if 303 -> user doesn not exist in db
-              setUserExistsInDB(false)
-              if (typeof window !== 'undefined') {
-                router.push('/complete-signup');
-              }
-            } else if (res.status === 401) {
-              // in case of 401 - invalid token: signIn()
-              logoutUser();
-              removeUserExistsInDB()
-              loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
-            } else {
-              // any other error
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        } else {
+        if (currentUserSlug !== slug || !userprofile) {
           //no user logged in or slug mismatch -> public profile
           const newPublicUserprofile = await getRequest(
             `/app/profiles/${slug}`
           );
-          setAuthenticatedType('public')
-          setUserprofile(newPublicUserprofile);
+          setAuthenticatedType('public');
+          setPublicUserProfile(newPublicUserprofile);
         }
       }
-    }
 
     // ready is for router, loading is for session
     if (ready && !isLoading) {
@@ -127,20 +78,30 @@ export default function PublicUser(initialized: Props) {
     }
   }, [ready, isLoading, forceReload, isAuthenticated, router,slug]);
 
+  const PublicUserProps = {
+    userprofile: publicUserProfle?publicUserProfle:userprofile,
+    changeForceReload,
+    forceReload,
+    authenticatedType,
+    token,
+  };
+
+
   function getUserProfile() {
-    if(userprofile?.type === 'tpo'){
+    const profile = publicUserProfle?publicUserProfle:userprofile;
+    if(profile?.type === 'tpo'){
       return (
         <>
-          <GetPublicUserProfileMeta userprofile={userprofile} />
+          <GetPublicUserProfileMeta userprofile={profile} />
           <TPOProfile {...PublicUserProps} />
           <Footer />
         </>
       );
     }
-    else if(userprofile?.type === 'individual' || userprofile?.type === 'education' || userprofile?.type === 'company'|| userprofile?.type === 'organization' || userprofile?.type === 'children-youth' || userprofile?.type === 'government'){
+    else if(profile?.type === 'individual' || profile?.type === 'education' || profile?.type === 'company'|| profile?.type === 'organization' || profile?.type === 'children-youth' || profile?.type === 'government'){
       return (
         <>
-          <GetPublicUserProfileMeta userprofile={userprofile} />
+          <GetPublicUserProfileMeta userprofile={profile} />
           <IndividualProfile {...PublicUserProps} />
           <Footer />
         </>
@@ -149,7 +110,7 @@ export default function PublicUser(initialized: Props) {
 
   }
 
-  if (initialized && (userprofile) && ready) {
+  if (initialized && (userprofile || publicUserProfle) && ready) {
     return getUserProfile()
   } else {
     return <UserProfileLoader />;

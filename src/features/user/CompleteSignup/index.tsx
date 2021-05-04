@@ -5,15 +5,14 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import { getUserExistsInDB, setUserExistsInDB, removeUserExistsInDB, getLocalUserInfo, setLocalUserInfo, removeLocalUserInfo } from '../../../utils/auth0/localStorageUtils'
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
@@ -34,7 +33,9 @@ export default function CompleteSignup() {
 
   const isPrivate = watch('isPrivate');
 
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState('');
+
+  const {userprofile,setUserprofile, userExistsInDB, setUserExistsInDB} = React.useContext(UserPropsContext);
 
   const [submit, setSubmit] = React.useState(false)
   React.useEffect(() => {
@@ -44,10 +45,9 @@ export default function CompleteSignup() {
       if(!token){
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       }
-      const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
-        if (getLocalUserInfo().slug) {
-          const userSlug = getLocalUserInfo().slug;
+        if (userprofile.slug) {
+          const userSlug = userprofile.slug;
           if (typeof window !== 'undefined') {
             router.push(`/t/${userSlug}`);
           }
@@ -103,9 +103,8 @@ export default function CompleteSignup() {
         // successful signup -> goto me page
         const resJson = await res.json();
         setUserExistsInDB(true);
-        const userInfo = getLocalUserInfo();
-        const newUserInfo = { ...userInfo, slug: resJson.slug, type: resJson.type }
-        setLocalUserInfo(newUserInfo)
+        const newUserInfo = { ...userprofile, slug: resJson.slug, type: resJson.type }
+        setUserprofile(newUserInfo);
         setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
         setSeverity("success")
         handleSnackbarOpen();
@@ -116,11 +115,10 @@ export default function CompleteSignup() {
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         console.log('in 401-> unauthenticated user / invalid token')
-        removeLocalUserInfo();
+        setUserprofile(false);
         setSubmit(false);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-
-        removeUserExistsInDB()
+        setUserExistsInDB(false);
         loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
@@ -162,18 +160,18 @@ export default function CompleteSignup() {
   };
 
   const logoutUser = () => {
-    removeLocalUserInfo();
+    setUserprofile(null);
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   }
 
   if (
     isLoading ||
-    (!isLoading && token && (getUserExistsInDB() === true)) ||
+    (!isLoading && token && (userExistsInDB === true)) ||
     (!isLoading && !token)
   ) {
     return null;
   }
-  if (!isLoading && token && (getUserExistsInDB() === false)) {
+  if (!isLoading && token && (userExistsInDB === false)) {
     return ready ? (
       <div
         className={styles.signUpPage}

@@ -7,20 +7,16 @@ import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-  removeLocalUserInfo,
-  removeUserExistsInDB,
-} from '../../../../utils/auth0/localStorageUtils';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import EmbedModal from './EmbedModal';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
   userType,
-  userprofile,
   settingsModalOpen,
   handleSettingsModalClose,
   editProfileModalOpen,
@@ -33,6 +29,8 @@ export default function SettingsModal({
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const { logout } = useAuth0();
 
+  const {userprofile,setUserprofile} = React.useContext(UserPropsContext);
+
   const [deleteModalOpen, setdeleteModalOpen] = React.useState(false);
   const handledeleteModalClose = () => {
     setdeleteModalOpen(false);
@@ -42,7 +40,7 @@ export default function SettingsModal({
   };
 
   const logoutUser = () => {
-    removeLocalUserInfo();
+    setUserprofile(null);
     logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
   };
 
@@ -156,7 +154,6 @@ export default function SettingsModal({
       </Modal>
 
       <EditProfileModal
-        userprofile={userprofile}
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
@@ -176,7 +173,6 @@ export default function SettingsModal({
 function DeleteModal({
   deleteModalOpen,
   handledeleteModalClose,
-  userprofile,
 }: any) {
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
@@ -184,7 +180,7 @@ function DeleteModal({
   };
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-
+  const {userprofile,setUserprofile,setUserExistsInDB} = React.useContext(UserPropsContext);
   const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
 
   React.useEffect(() => {
@@ -205,8 +201,8 @@ function DeleteModal({
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token).then((res) => {
       if (res !== 404) {
-        removeLocalUserInfo();
-        removeUserExistsInDB();
+        setUserprofile(null);
+        setUserExistsInDB(false);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
       } else {
         console.log(res.errorText);

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import { getUserInfo } from '../src/utils/auth0/userInfo';
 import { useRouter } from 'next/router';
+import {UserPropsContext} from '../src/features/common/Layout/UserPropsContext';
 
 interface Props {
 
@@ -25,10 +25,10 @@ function Login({ }: Props): ReactElement {
     React.useEffect(() => {
         async function loadFunction() {
           const token = await getAccessTokenSilently();
-          const userInfo = await getUserInfo(token, router, logout);            
+          const {userprofile} = React.useContext(UserPropsContext);     
           // redirect
 
-          if (typeof window !== 'undefined' && userInfo) {
+          if (typeof window !== 'undefined' && userprofile) {
             if (localStorage.getItem('redirectLink')) {
               const redirectLink = localStorage.getItem('redirectLink');
               if (redirectLink) {
@@ -36,7 +36,7 @@ function Login({ }: Props): ReactElement {
                 router.replace(redirectLink);
               }
             } else {
-              router.push(`/t/${userInfo.slug}`);
+              router.push(`/t/${userprofile.slug}`);
             }
           }
         }

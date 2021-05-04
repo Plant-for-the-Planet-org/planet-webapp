@@ -7,11 +7,10 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL';
 import { useAuth0 } from '@auth0/auth0-react';
-import { getUserInfo } from '../../../../utils/auth0/userInfo';
-import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
+import {UserPropsContext} from '../UserPropsContext';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -20,39 +19,19 @@ export default function NavbarComponent(props: any) {
   const router = useRouter();
 
   const {
-    isLoading,
     isAuthenticated,
     error,
     loginWithRedirect,
     logout,
-    getAccessTokenSilently,
   } = useAuth0();
 
-  const [token, setToken] = React.useState('');
-  const [userInfo, setUserInfo] = React.useState({});
-
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-      const userInfo = await getUserInfo(token, router, logout);
-      setUserInfo(userInfo);
-    }
-    if (!isLoading && isAuthenticated) {
-      loadFunction();
-    }
-  }, [isAuthenticated, isLoading]);
+  const {userprofile,setUserprofile} = React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
-    if (userInfo && isAuthenticated) {
-      if (!userInfo.slug) {
-        const userInfo = await getUserInfo(token, router, logout);
-        setUserInfo(userInfo);
-      }
+    if (userprofile) {
       if (typeof window !== 'undefined') {
-        router.push(`/t/${userInfo.slug}`);
+        router.push(`/t/${userprofile.slug}`);
       }
     } else {
       //----------------- To do - redirect to slug -----------------
@@ -73,20 +52,20 @@ export default function NavbarComponent(props: any) {
   if (error) {
     if (error.message === '401') {
       if (typeof window !== 'undefined') {
-        removeLocalUserInfo();
+        setUserprofile(null);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/verify-email` });
       }
     } else if (error.message === 'Invalid state') {
-      removeLocalUserInfo();
+      setUserprofile(null);
     } else {
       alert(error.message);
-      removeLocalUserInfo();
+      setUserprofile(null);
       logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
     }
   }
 
   const UserProfileIcon = () => {
-    return isAuthenticated && userInfo && userInfo.profilePic ? (
+    return isAuthenticated && userprofile && userprofile.image ? (
       <div
         style={{
           backgroundColor: '#fff',
@@ -97,14 +76,14 @@ export default function NavbarComponent(props: any) {
         }}
       >
         <img
-          src={getImageUrl('profile', 'avatar', userInfo.profilePic)}
+          src={getImageUrl('profile', 'avatar', userprofile.image)}
           height="26px"
           width="26px"
           style={{ borderRadius: '40px' }}
         />
       </div>
     ) : router.pathname === '/complete-signup' ||
-      (userInfo && router.pathname === `/t/${userInfo.slug}`) ? (
+      (userprofile && router.pathname === `/t/${userprofile.slug}`) ? (
           <MeSelected color={themeProperties.primaryColor} />
         ) : (
           <Me color={themeProperties.light.primaryFontColor} />
@@ -125,7 +104,7 @@ export default function NavbarComponent(props: any) {
                     <UserProfileIcon />
                   </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)}
+                  {isAuthenticated && userprofile && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)}
                   </p>
                 </button>
               )

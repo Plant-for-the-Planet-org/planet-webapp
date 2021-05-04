@@ -6,8 +6,8 @@ import Footer from '../../src/features/common/Layout/Footer';
 import LandingSection from '../../src/features/common/Layout/LandingSection';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import SingleContribution from '../../src/features/user/UserProfile/components/RegisterTrees/SingleContribution';
-import { getLocalUserInfo } from '../../src/utils/auth0/localStorageUtils';
 import { useAuth0 } from '@auth0/auth0-react';
+import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 
 export default function SingleContributionPage(): ReactElement {
     const [contributionGUID, setContributionGUID] = React.useState(null);
@@ -17,6 +17,8 @@ export default function SingleContributionPage(): ReactElement {
     const [setupAccess, setSetupAccess] = React.useState(false);
     const [contribution, setContribution] = React.useState({});
     const [currentUserSlug, setCurrentUserSlug] = React.useState();
+
+    const {userprofile} = React.useContext(UserPropsContext);
 
     const [token, setToken] = React.useState('')
     const {
@@ -37,8 +39,8 @@ export default function SingleContributionPage(): ReactElement {
       async function loadFunction() {
         const token = await getAccessTokenSilently();
         setToken(token);
-        getLocalUserInfo() && getLocalUserInfo().slug
-          ? setCurrentUserSlug(getLocalUserInfo().slug)
+        userprofile && userprofile.slug
+          ? setCurrentUserSlug(userprofile.slug)
           : null;
         }
       if (isAuthenticated && !isLoading) {
