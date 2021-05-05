@@ -15,11 +15,12 @@ export default function UserInfo({
   const { t, ready } = useTranslation(['donate']);
   return (
     <div className={styles.landingContent}>
-      <TreeCounter
+    <TreeCounter
         handleAddTargetModalOpen={handleAddTargetModalOpen}
         authenticatedType={authenticatedType}
         target={userprofile.score.target}
-        planted={userprofile.score.personal + userprofile.score.received}
+        planted={userprofile.type == "tpo" ? userprofile.score.personal :
+        userprofile.score.personal + userprofile.score.received}
       />
 
       <h2 className={styles.treeCounterName}>{userprofile.displayName}</h2>
