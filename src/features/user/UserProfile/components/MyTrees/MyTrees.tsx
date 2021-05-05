@@ -10,6 +10,7 @@ import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -20,15 +21,19 @@ const { useTranslation } = i18next;
 interface Props {
   profile: any;
   authenticatedType: any;
-  token: any;
 }
 
-export default function MyTrees({ profile, authenticatedType, token }: Props) {
+export default function MyTrees({ profile, authenticatedType }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
 
+  const {
+    getAccessTokenSilently,
+  } = useAuth0();
+
   React.useEffect(() => {
     async function loadFunction() {
+      const token = await getAccessTokenSilently();
       if (authenticatedType === 'private' && token) {
         getAuthenticatedRequestWithoutRedirecting(
           `/app/profile/contributions`,
@@ -55,8 +60,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     loadFunction();
   }, [profile]);
 
-  console.log('contributions', contributions);
-
   const MapProps = {
     contributions,
     authenticatedType,
@@ -64,8 +67,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   return ready ? (
     <>
       {contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0 ? (
+        Array.isArray(contributions) &&
+        contributions.length !== 0 ? (
         <div className={styles.myTreesSection}>
           <div className={styles.myTreesTitle}>
             {authenticatedType === 'private'
@@ -89,17 +92,17 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                         <div className={styles.country}>
                           {item.properties.country
                             ? t(
-                                'country:' +
-                                  item.properties.country.toLowerCase()
-                              )
+                              'country:' +
+                              item.properties.country.toLowerCase()
+                            )
                             : null}
                         </div>
                         {item.properties.type === 'gift' ? (
                           <div className={styles.source}>
                             {item.properties.giver.name
                               ? t('me:receivedFrom', {
-                                  name: item.properties.giver.name,
-                                })
+                                name: item.properties.giver.name,
+                              })
                               : t('me:receivedTrees')}
                           </div>
                         ) : null}
@@ -112,8 +115,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                           <div className={styles.source}>
                             {item.properties.recipient
                               ? t('me:giftToGiftee', {
-                                  gifteeName: item.properties.recipient.name,
-                                })
+                                gifteeName: item.properties.recipient.name,
+                              })
                               : null}
                           </div>
                         ) : null}

@@ -4,9 +4,9 @@ import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
 
-interface Props {}
+interface Props { }
 
-function Login({}: Props): ReactElement {
+function Login({ }: Props): ReactElement {
   const router = useRouter();
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
@@ -15,37 +15,44 @@ function Login({}: Props): ReactElement {
     isAuthenticated,
     isLoading,
     loginWithRedirect,
-    getAccessTokenSilently,
-    logout,
   } = useAuth0();
-  const { userprofile } = React.useContext(UserPropsContext);
+
+  const { userprofile, isLoaded } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     async function loadFunction() {
-      const token = await getAccessTokenSilently();
       // redirect
-
-      if (typeof window !== 'undefined' && userprofile) {
+      console.log('loading started');
+      if (userprofile) {
+        console.log('userprofile found');
         if (localStorage.getItem('redirectLink')) {
           const redirectLink = localStorage.getItem('redirectLink');
           if (redirectLink) {
+            console.log('redirectLink found');
             localStorage.removeItem('redirectLink');
             router.replace(redirectLink);
           }
         } else {
+          console.log('redirectLink not found');
           router.push(`/t/${userprofile.slug}`);
         }
       }
     }
-    if (!isLoading && isAuthenticated) {
+    if (!isLoading && isAuthenticated && isLoaded) {
       loadFunction();
     } else if (!isLoading && !isAuthenticated) {
+      console.log('not authenticated');
       loginWithRedirect({
         redirectUri: `${process.env.NEXTAUTH_URL}/login`,
         ui_locales: localStorage.getItem('language') || 'en',
       });
     }
-  }, [isAuthenticated, isLoading]);
+    console.log('nothing', isLoaded);
+  }, [isAuthenticated, isLoading, isLoaded]);
+
+  // console.log('isloaded', isLoaded);
+  console.log('isAuthenticated', isAuthenticated);
+  console.log('isloading', isLoading);
 
   return (
     <div>

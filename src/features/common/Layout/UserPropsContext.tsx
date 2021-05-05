@@ -6,10 +6,9 @@ import { getAccountInfo } from '../../../utils/apiRequests/api';
 interface Props { }
 
 export const UserPropsContext = React.createContext({
-    userprofile: {} || null,
-    setUserprofile: (value: {}) => { },
-    userExistsInDB: false,
-    setUserExistsInDB: (value: boolean) => { },
+    userprofile: false || {} || null,
+    setUserprofile: (value: boolean | object | null) => { },
+    isLoaded: false,
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -21,9 +20,8 @@ function UserPropsProvider({ children }: any): ReactElement {
     } = useAuth0();
 
     const router = useRouter();
-    
-    const [userprofile, setUserprofile] = React.useState(null);
-    const [userExistsInDB,setUserExistsInDB] = React.useState(false);
+    const [isLoaded, setIsLoaded] = React.useState(false);
+    const [userprofile, setUserprofile] = React.useState<boolean | object | null>(false);
 
     React.useEffect(() => {
         async function loadUserProfile() {
@@ -31,7 +29,7 @@ function UserPropsProvider({ children }: any): ReactElement {
             if (isAuthenticated) {
                 token = await getAccessTokenSilently();
             }
-            if (!isLoading && token) {
+            if (token) {
                 try {
                     const res = await getAccountInfo(token);
                     if (res.status === 200) {
@@ -39,13 +37,13 @@ function UserPropsProvider({ children }: any): ReactElement {
                         setUserprofile(resJson);
                     } else if (res.status === 303) {
                         // if 303 -> user doesn not exist in db
-                        setUserExistsInDB(false);
+                        setUserprofile(null);
                         if (typeof window !== 'undefined') {
                             router.push('/complete-signup');
                         }
                     } else if (res.status === 401) {
                         // in case of 401 - invalid token: signIn()
-                        setUserprofile(null);
+                        setUserprofile(false);
                         loginWithRedirect({
                             redirectUri: `${process.env.NEXTAUTH_URL}`,
                             ui_locales: localStorage.getItem('language') || 'en',
@@ -57,16 +55,18 @@ function UserPropsProvider({ children }: any): ReactElement {
                     console.log(err);
                 }
             }
+            setIsLoaded(true);
+
         }
-        if (!isLoading)
+        if (!isLoading && isAuthenticated)
             loadUserProfile();
 
-    }, [isLoading, isAuthenticated,router])
+    }, [isLoading, isAuthenticated])
 
     return (
         <UserPropsContext.Provider
             value={{
-                userprofile, setUserprofile,userExistsInDB,setUserExistsInDB
+                userprofile, setUserprofile, isLoaded
             }}
         >
             {children}

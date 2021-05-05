@@ -13,7 +13,6 @@ export default function TpoProfile({
   authenticatedType,
   changeForceReload,
   forceReload,
-  token
 }: any) {
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -88,7 +87,7 @@ export default function TpoProfile({
       />
 
       {authenticatedType === 'private' ? (
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} token={token} />
+        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
       ) : null}
 
       {/* add target modal */}

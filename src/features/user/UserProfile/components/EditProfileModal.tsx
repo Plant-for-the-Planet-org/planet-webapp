@@ -29,7 +29,7 @@ export default function EditProfileModal({
 }: any) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const {userprofile,setUserprofile, userExistsInDB, setUserExistsInDB} = React.useContext(UserPropsContext);
+  const { userprofile, setUserprofile } = React.useContext(UserPropsContext);
 
   const [token, setToken] = React.useState('')
   const {
@@ -68,10 +68,10 @@ export default function EditProfileModal({
     const defaultProfileDetails = {
       firstname: userprofile.firstname ? userprofile.firstname : '',
       lastname: userprofile.lastname ? userprofile.lastname : '',
-      address: userprofile.address &&  userprofile.address.address ? userprofile.address.address : '',
-      city:  userprofile.address &&  userprofile.address.city ? userprofile.address.city : '',
-      zipCode:  userprofile.address &&  userprofile.address.zipCode ? userprofile.address.zipCode : '',
-      country:  userprofile.address && userprofile.address.country ? userprofile.address.country : '',
+      address: userprofile.address && userprofile.address.address ? userprofile.address.address : '',
+      city: userprofile.address && userprofile.address.city ? userprofile.address.city : '',
+      zipCode: userprofile.address && userprofile.address.zipCode ? userprofile.address.zipCode : '',
+      country: userprofile.address && userprofile.address.country ? userprofile.address.country : '',
       isPrivate: userprofile.isPrivate ? userprofile.isPrivate : false,
       getNews: userprofile.getNews ? userprofile.getNews : false,
       bio: userprofile.bio ? userprofile.bio : '',
@@ -126,7 +126,7 @@ export default function EditProfileModal({
           setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '')
           handleSnackbarOpen()
 
-          putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
+          putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res) => {
             const newUserInfo = { ...userprofile, image: res.image }
             setUserprofile(newUserInfo);
             setUpdatingPic(false);
@@ -156,12 +156,12 @@ export default function EditProfileModal({
     }
     if (!isLoading && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
+        putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res) => {
           setSeverity('success')
           setSnackbarMessage(ready ? t('editProfile:profileSaved') : '')
           handleSnackbarOpen()
           changeForceReload(!forceReload),
-          handleEditProfileModalClose()
+            handleEditProfileModalClose()
           setIsUploadingData(false)
         }).catch(error => {
           setSeverity('error')
@@ -183,7 +183,7 @@ export default function EditProfileModal({
   return ready ? (
     <React.Fragment>
       <Modal
-        className={'modalContainer'+' '+theme}
+        className={'modalContainer' + ' ' + theme}
         open={editProfileModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition
@@ -271,20 +271,20 @@ export default function EditProfileModal({
 
             {userprofile.type !== 'individual' && (
               <div className={styles.formFieldLarge}>
-              <MaterialTextField
-                label={t('editProfile:profileName', {
-                  type: selectUserType(userprofile.type, t)
-                })}
-                variant="outlined"
-                name="name"
-                inputRef={register()}
-              />
-              {errors.name && (
-                <span className={styles.formErrors}>
-                  {t('editProfile:nameValidation')}
-                </span>
-              )}
-            </div>
+                <MaterialTextField
+                  label={t('editProfile:profileName', {
+                    type: selectUserType(userprofile.type, t)
+                  })}
+                  variant="outlined"
+                  name="name"
+                  inputRef={register()}
+                />
+                {errors.name && (
+                  <span className={styles.formErrors}>
+                    {t('editProfile:nameValidation')}
+                  </span>
+                )}
+              </div>
             )}
 
             <div className={styles.formFieldLarge}>

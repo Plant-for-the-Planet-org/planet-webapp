@@ -47,8 +47,6 @@ export default function CompleteSignup() {
   const {
     userprofile,
     setUserprofile,
-    userExistsInDB,
-    setUserExistsInDB,
   } = React.useContext(UserPropsContext);
 
   const [submit, setSubmit] = React.useState(false);
@@ -62,7 +60,7 @@ export default function CompleteSignup() {
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }
-      if (token && userExistsInDB) {
+      if (token && userprofile) {
         if (userprofile.slug) {
           const userSlug = userprofile.slug;
           if (typeof window !== 'undefined') {
@@ -124,7 +122,6 @@ export default function CompleteSignup() {
       if (res.status === 200) {
         // successful signup -> goto me page
         const resJson = await res.json();
-        setUserExistsInDB(true);
         const newUserInfo = {
           ...userprofile,
           slug: resJson.slug,
@@ -144,7 +141,6 @@ export default function CompleteSignup() {
         setUserprofile(false);
         setSubmit(false);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-        setUserExistsInDB(false);
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
@@ -207,12 +203,12 @@ export default function CompleteSignup() {
 
   if (
     isLoading ||
-    (!isLoading && token && userExistsInDB === true) ||
+    (!isLoading && token && userprofile) ||
     (!isLoading && !token)
   ) {
     return null;
   }
-  if (!isLoading && token && userExistsInDB === false) {
+  if (!isLoading && token && !userprofile) {
     return ready ? (
       <div
         className={styles.signUpPage}
@@ -332,8 +328,8 @@ export default function CompleteSignup() {
                     inputRef={register({ required: true })}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
-                      getStoredConfig('loc').city === 'XX' ||
-                      getStoredConfig('loc').city === ''
+                        getStoredConfig('loc').city === 'XX' ||
+                        getStoredConfig('loc').city === ''
                         ? ''
                         : getStoredConfig('loc').city
                     }
@@ -356,8 +352,8 @@ export default function CompleteSignup() {
                     })}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
-                      getStoredConfig('loc').postalCode === 'XX' ||
-                      getStoredConfig('loc').postalCode === ''
+                        getStoredConfig('loc').postalCode === 'XX' ||
+                        getStoredConfig('loc').postalCode === ''
                         ? ''
                         : getStoredConfig('loc').postalCode
                     }
@@ -380,8 +376,8 @@ export default function CompleteSignup() {
               onChange={(country) => setCountry(country)}
               defaultValue={
                 getStoredConfig('loc').countryCode === 'T1' ||
-                getStoredConfig('loc').countryCode === 'XX' ||
-                getStoredConfig('loc').countryCode === ''
+                  getStoredConfig('loc').countryCode === 'XX' ||
+                  getStoredConfig('loc').countryCode === ''
                   ? ''
                   : getStoredConfig('loc').countryCode
               }

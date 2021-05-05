@@ -19,7 +19,7 @@ import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browsercheck';
-import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
@@ -65,9 +65,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   });
 }
 
-const onRedirectCallback = (appState) => {
+const onRedirectCallback = (appState: any) => {
+  console.log('appState', appState);
   // Use Next.js's Router.replace method to replace the url
-  Router.replace(appState?.returnTo || '/');
+  if (appState)
+    Router.replace(appState?.returnTo || '/');
 };
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
@@ -153,17 +155,17 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <ThemeProvider>
           <CssBaseline />
           <UserPropsProvider>
-          <Layout>
-            {isMap ? (
-              project ? (
-                <MapLayout {...ProjectProps} />
-              ) : projects ? (
-                <MapLayout {...ProjectProps} />
-              ) : null
-            ) : null}
-            <Component {...ProjectProps} />
-          </Layout>
-      </UserPropsProvider>
+            <Layout>
+              {isMap ? (
+                project ? (
+                  <MapLayout {...ProjectProps} />
+                ) : projects ? (
+                  <MapLayout {...ProjectProps} />
+                ) : null
+              ) : null}
+              <Component {...ProjectProps} />
+            </Layout>
+          </UserPropsProvider>
         </ThemeProvider>
       </Auth0Provider>
     );
