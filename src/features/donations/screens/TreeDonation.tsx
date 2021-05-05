@@ -290,7 +290,7 @@ function TreeDonation({
                   }}
                 />
                 <div className={styles.treeCountOptionTrees}>
-                  {t('common:trees')}
+                  {customTreeInputValue == 1 ? t('common:tree') : t('common:trees')}
                 </div>
               </motion.button>
             </div>
