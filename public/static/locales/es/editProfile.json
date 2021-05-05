@@ -4,7 +4,6 @@
   "profileTypes": "{{item.title}}",
   "profileName": "Nombre de {{type}}",
   "createAccount": "Crear una cuenta",
-  "individual": "Individual",
   "tpo": "Organización de plantación",
   "education": "Escuela",
   "organization": "Empresa",
