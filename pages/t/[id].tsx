@@ -20,7 +20,7 @@ export default function PublicUser(initialized: Props) {
   } = React.useContext(UserPropsContext);
 
   const [isLoadingData, setIsLoadingData] = React.useState(false);
-
+  const [slug, setSlug] = React.useState();
   const [publicUserProfle, setPublicUserProfile] = React.useState(null);
   const [authenticatedType, setAuthenticatedType] = React.useState('private');
 
@@ -50,6 +50,7 @@ export default function PublicUser(initialized: Props) {
         setPublicUserProfile(newPublicUserprofile);
         setIsLoadingData(false);
       } else {
+        setPublicUserProfile(null);
         setAuthenticatedType('private');
       }
     }
