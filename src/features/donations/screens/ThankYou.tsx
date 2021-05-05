@@ -182,17 +182,7 @@ function ThankYou({
                 />
               </div>
               <div className={styles.donationCount}>
-                {donation.treeCount == 1 ?
-                 t('donate:myTreesPlantedByOnLocation_single', {
-                  treeCount: getFormattedNumber(
-                    i18n.language,
-                    Number(donation.treeCount)
-                  ),
-                  location: t(
-                    'country:' + donation.project.country.toLowerCase()
-                  ),
-                }) :
-                t('donate:myTreesPlantedByOnLocation', {
+                {t('donate:myTreesPlantedByOnLocation', {
                   treeCount: getFormattedNumber(
                     i18n.language,
                     Number(donation.treeCount)
