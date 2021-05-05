@@ -29,7 +29,7 @@ export default function SettingsModal({
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const { logout } = useAuth0();
 
-  const {userprofile,setUserprofile} = React.useContext(UserPropsContext);
+  const { userprofile, setUserprofile } = React.useContext(UserPropsContext);
 
   const [deleteModalOpen, setdeleteModalOpen] = React.useState(false);
   const handledeleteModalClose = () => {
@@ -180,7 +180,7 @@ function DeleteModal({
   };
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const {userprofile,setUserprofile,setUserExistsInDB} = React.useContext(UserPropsContext);
+  const { userprofile, setUserprofile } = React.useContext(UserPropsContext);
   const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
 
   React.useEffect(() => {
@@ -202,7 +202,6 @@ function DeleteModal({
     deleteAuthenticatedRequest('/app/profile', token).then((res) => {
       if (res !== 404) {
         setUserprofile(null);
-        setUserExistsInDB(false);
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
       } else {
         console.log(res.errorText);
