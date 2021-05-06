@@ -191,7 +191,6 @@ export default function EditProfileModal({
     }
   };
   const { theme } = React.useContext(ThemeContext);
-console.log(userprofile,"user")
   return ready ? (
     <React.Fragment>
       <Modal
@@ -293,22 +292,7 @@ console.log(userprofile,"user")
               </div>
             </div>
 
-            {/* {type !== "individual" ? 
-            <div className={styles.formFieldLarge}>
-              <MaterialTextField
-                label={t('editProfile:profileName', {
-                  type: selectUserType(type, t)
-                })}
-                variant="outlined"
-                name="name"
-                inputRef={register({ required: true })}
-              />
-              {errors.name && (
-                <span className={styles.formErrors}>
-                  {t('editProfile:nameValidation')}
-                </span>
-              )}
-            </div> : null} */}
+
 
             {userprofile.type && type !== 'individual' && (
               <div className={styles.formFieldLarge}>
