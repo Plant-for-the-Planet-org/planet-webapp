@@ -31,7 +31,7 @@ export default function Home({
       const newTenantScore = await getRequest(`/app/tenantScore/${process.env.TENANTID}`);
       setTenantScore(newTenantScore);
     }
-    loadTenantScore();
+     loadTenantScore();
   }, []);
   
 
