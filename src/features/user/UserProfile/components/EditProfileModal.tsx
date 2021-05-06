@@ -191,7 +191,7 @@ export default function EditProfileModal({
     }
   };
   const { theme } = React.useContext(ThemeContext);
-
+console.log(userprofile,"user")
   return ready ? (
     <React.Fragment>
       <Modal
@@ -255,7 +255,7 @@ export default function EditProfileModal({
                     label={t('editProfile:iamA')}
                     variant="outlined"
                     select
-                    defaultValue={profileTypes[0].value}
+                    defaultValue={type}
                   >
                     {profileTypes.map((option) => (
                       <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
@@ -293,11 +293,28 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {userprofile.type !== 'individual' && (
+            {/* {type !== "individual" ? 
+            <div className={styles.formFieldLarge}>
+              <MaterialTextField
+                label={t('editProfile:profileName', {
+                  type: selectUserType(type, t)
+                })}
+                variant="outlined"
+                name="name"
+                inputRef={register({ required: true })}
+              />
+              {errors.name && (
+                <span className={styles.formErrors}>
+                  {t('editProfile:nameValidation')}
+                </span>
+              )}
+            </div> : null} */}
+
+            {userprofile.type && type !== 'individual' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('editProfile:profileName', {
-                  type: selectUserType(userprofile.type, t)
+                  type: selectUserType(type, t)
                 })}
                 variant="outlined"
                 name="name"
