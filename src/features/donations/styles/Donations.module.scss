@@ -115,6 +115,14 @@
   color: $highlightBackground;
 }
 
+.addEmailButton{
+  font-family: $primaryFontFamily;
+  color: $primaryColor;
+  &:hover{
+    cursor: pointer;
+  }
+}
+
 .selectTreeCount {
   display: flex;
   flex-direction: row;
