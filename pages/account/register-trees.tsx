@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
-import RegisterTrees from '../src/features/user/UserProfile/components/RegisterTrees';
+import RegisterTrees from '../../src/features/user/UserProfile/components/RegisterTrees';
 import { useAuth0 } from '@auth0/auth0-react';
-import AccountHeader from '../src/features/common/Layout/Header/accountHeader';
-import i18next from '../i18n';
-import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
-interface Props {}
+import AccountHeader from '../../src/features/common/Layout/Header/accountHeader';
+import i18next from '../../i18n';
+import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+interface Props { }
 const { useTranslation } = i18next;
-export default function Register({}: Props): ReactElement {
+export default function Register({ }: Props): ReactElement {
   const [currentUserSlug, setCurrentUserSlug] = React.useState();
   const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
     true
   );
 
-  const {userprofile} = React.useContext(UserPropsContext);
+  const { userprofile } = React.useContext(UserPropsContext);
 
   const [token, setToken] = React.useState('')
   const {
@@ -37,16 +37,16 @@ export default function Register({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   return (
     <>
-    <AccountHeader pageTitle={t('me:registerTrees')}/>
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-          {!isLoading && currentUserSlug ? (
-            <RegisterTrees
-              registerTreesModalOpen={registerTreesModalOpen}
-              slug={currentUserSlug}
-              token={token}
-            />
-          ) : null}
-        </div>
-  </>
+      <AccountHeader page={'register-trees'} pageTitle={t('me:registerTrees')} />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {!isLoading && currentUserSlug ? (
+          <RegisterTrees
+            registerTreesModalOpen={registerTreesModalOpen}
+            slug={currentUserSlug}
+            token={token}
+          />
+        ) : null}
+      </div>
+    </>
   );
 }
