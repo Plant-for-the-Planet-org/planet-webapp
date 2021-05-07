@@ -64,7 +64,7 @@ export default function UserProfileOptions({
   React.useEffect(() => {
     if (ready) {
       setScreenWidth(window.screen.width);
-      setDivWidth(elementRef.current.getBoundingClientRect().width);      
+      setDivWidth(elementRef.current.getBoundingClientRect().width);
     }
   });
   const onShareClicked = () => {
@@ -120,7 +120,7 @@ export default function UserProfileOptions({
           userprofile={userprofile}
         />
 
-        <button id={'userProBottomIcon'} className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>
+        <button id={'userProBottomIcon'} className={styles.iconTextColumn} onClick={() => router.push('/account/register-trees')}>
           <div className={styles.bottomIconBg}>
             <Shovel color="white" />
           </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, ReactElement } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from '../styles/AccountNavbar.module.scss';
-import AccountHeader from '../../../common/Layout/Header/accountHeader'
 import {
   getAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
@@ -17,7 +16,7 @@ const { useTranslation } = i18next;
 
 interface Props { }
 
-function Account({ }: Props): ReactElement {
+function History({ }: Props): ReactElement {
   const {
     isLoading,
     isAuthenticated,
@@ -61,7 +60,7 @@ function Account({ }: Props): ReactElement {
           setTimeout(() => setProgress(0), 1000);
         }
       } else {
-        localStorage.setItem('redirectLink','/account/history');
+        localStorage.setItem('redirectLink', '/account/history');
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
@@ -77,14 +76,12 @@ function Account({ }: Props): ReactElement {
   };
 
   return (
-    <div className={styles.accountsPage}>
+    <>
       {progress > 0 && (
         <div className={styles.topLoader}>
           <TopProgressBar progress={progress} />
         </div>
       )}
-
-      <AccountHeader pageTitle={t('me:myAccount')}/>
       <div className={styles.accountsPageContainer}>
         <div className={styles.filterContainer}>
           {isDataLoading ? (
@@ -161,7 +158,7 @@ function Account({ }: Props): ReactElement {
         </div>
       </div>
 
-    </div>
+    </>
   );
 }
 
@@ -180,4 +177,4 @@ function FilterButtons(props: any) {
   });
 }
 
-export default Account;
+export default History;

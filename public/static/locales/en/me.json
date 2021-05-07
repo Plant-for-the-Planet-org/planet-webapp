@@ -72,5 +72,9 @@
   "in-dispute": "In Dispute",
   "dispute-lost": "Dispute Lost",
   "nameForest": "{{name}}'s Forest",
-  "taxReceipt": "Tax Receipt"
+  "taxReceipt": "Tax Receipt",
+  "history": "History",
+  "treemapper": "Tree Mapper",
+  "register-trees": "Register Trees",
+  "manage-projects": "Manage Projects"
 }

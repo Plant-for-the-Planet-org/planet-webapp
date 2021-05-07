@@ -30,21 +30,18 @@
   position: relative;
 }
 
-
-
-    .accountsTitleContainer {
-      display: flex;
-      justify-content: flex-start;
-      width: 980px;
-      .accountsTitle {
-        margin-left: 20px;
-        color: #fff;
-        font-size: 36px;
-        font-weight: bold;
-        padding-bottom: 40px;
-      }
-    }
-
+.accountsTitleContainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 980px;
+  .accountsTitle {
+    margin-left: 20px;
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+    padding-bottom: 40px;
+  }
+}
 
 .contentContainer {
   display: flex;
@@ -59,7 +56,6 @@
   flex-direction: column;
   background: transparent;
 }
-
 
 .notFound {
   display: flex;
