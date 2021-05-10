@@ -30,8 +30,8 @@ function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
     }
     const DonateLink = () => {
         return (
-            <button id={'donateIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
-                {router.pathname === item.onclick ? (
+            <button id={'donateIcon'} className={`link_icon ${router.pathname === item.onclick || router.pathname === "/[p]" ? 'active_icon' : ''}`}>
+                {router.pathname === item.onclick || router.pathname === "/[p]" ? (
                     <DonateSelected color={themeProperties.primaryColor} />
                 ) : (
                     <Donate color={themeProperties.light.primaryFontColor} />
