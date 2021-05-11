@@ -12,6 +12,7 @@ import interactClub from './public/tenants/interactClub/config';
 import culchacandela from './public/tenants/culchacandela/config';
 import xiting from './public/tenants/xiting/config';
 import ulmpflanzt from './public/tenants/ulmpflanzt/config';
+import sitex from './public/tenants/sitex/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -43,6 +44,8 @@ export default function tenantConfig() {
       return xiting;
     case 'ulmpflanzt':
       return ulmpflanzt;
+    case 'sitex':
+      return sitex;
     default:
       return planetConfig;
   }
