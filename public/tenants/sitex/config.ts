@@ -13,7 +13,7 @@ const config = {
       'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
   },
   meta: {
-    title: 'Planting trees – For a green future',
+    title: 'Sitex ❤️ Wald',
     description:
       'Die Klimarettung ist eine globale Aufgabe und lässt sich nur bewältigen, wenn wir alle zusammen vorgehen. Wir möchten unseren Kindern und Enkelkindern einen intakten Planeten hinterlassen. Darum unterstützen wir Plant-for-the-Planet und die Methode des Bäume-Pflanzens, um möglichst viel CO² aus der Atmosphäre zu binden. Unser Beitrag in der Sitex-Gruppe: durch kontinuierliches Pflanzen spenden wir mindestens 500.000 Bäume bis 2027.',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
