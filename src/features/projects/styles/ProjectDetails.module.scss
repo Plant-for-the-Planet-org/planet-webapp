@@ -107,7 +107,7 @@
 }
 .calculatedRating {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   font-weight: bold;
   color: $primaryFontColor;
 }
@@ -118,7 +118,7 @@
 
 .projectDescription {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   line-height: 21px;
   margin-top: 24px;
@@ -143,7 +143,7 @@
 }
 .infoTitle {
   font-family: $primaryFontFamily;
-  font-size: 10px;
+  font-size: $fontExtraSmall;
   color: $primaryFontColor;
   font-weight: bold;
   text-transform: uppercase;
@@ -152,7 +152,7 @@
 .infoText {
   margin-top: 9px;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   display: flex;
   flex-direction: row;
@@ -172,7 +172,7 @@
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   margin-bottom: -6px;
-  margin-top: $fontSubTitleSize;
+  margin-top: $fontSmall;
 }
 
 .contactDetailsRow {
@@ -223,7 +223,7 @@
 .projectImageSliderContentText {
   bottom: 10;
   color: $light;
-  font-size: 14;
+  font-size: $fontSmall;
   font-family: $primaryFontFamily;
   padding: 14px 12px;
 }
@@ -280,7 +280,7 @@
     display: none;
     text-transform: none;
     font-weight: normal;
-    font-size: 14px;
+    font-size: $fontSmall;
   }
   &:hover,
   &:active {

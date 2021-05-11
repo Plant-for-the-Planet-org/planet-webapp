@@ -21,7 +21,7 @@
   right: 12px;
   background-color: $backgroundColor;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   display: flex;
   flex-direction: row;
   height: 24px;
@@ -62,7 +62,7 @@
 
 .projectType {
   font-family: $primaryFontFamily;
-  font-size: 10px;
+  font-size: $fontDoubleExtraSmall;
   color: $light;
   font-weight: bold;
   text-transform: uppercase;
@@ -70,7 +70,7 @@
 
 .projectName {
   font-family: $primaryFontFamily;
-  font-size: 18px;
+  font-size: $fontMedium;
   color: $light;
 }
 
@@ -104,7 +104,7 @@
 
 .target {
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   color: $primaryFontColor;
   font-weight: bold;
   margin-right: 4px;
@@ -112,7 +112,7 @@
 
 .projectTPOName {
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   color: $primaryFontColor;
   margin-top: 10px;
   line-height: 14px;
@@ -141,7 +141,7 @@
   border-radius: 11px;
   color: $light;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
@@ -153,7 +153,7 @@
 
 .perTreeCost {
   font-family: $secondaryFontFamily;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   color: $primaryFontColor;
   margin-top: 6px;
   font-weight: 400;

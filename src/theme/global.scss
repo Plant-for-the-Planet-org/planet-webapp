@@ -10,7 +10,7 @@
 // }
 
 .mapboxgl-ctrl-attrib-inner > a {
-  font-size: 10px;
+  font-size: $fontDoubleExtraSmall;
 }
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
@@ -18,7 +18,7 @@
 }
 
 .MuiTypography-body1 {
-  font-size: 14px !important;
+  font-size: $fontSmall !important;
   font-family: $primaryFontFamily !important;
 }
 
@@ -174,7 +174,7 @@ video {
 .rc-slider-mark-text {
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
 }
 
 // Stepper Connector

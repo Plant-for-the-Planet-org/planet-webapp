@@ -54,7 +54,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   justify-content: flex-start;
   align-items: center;
   background-color: #f7f7f7;
@@ -79,7 +79,7 @@
 }
 
 .title {
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: 700;
   font-family: $primaryFontFamily;
   padding: 3px 0;
@@ -111,7 +111,7 @@
 }
 
 .number {
-  font-size: 22px;
+  font-size: $fontLarge;
   font-weight: 600;
   color: $primaryColor;
 }

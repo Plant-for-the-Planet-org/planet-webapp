@@ -171,7 +171,7 @@
 .inlineLinkButton {
   font-family: $primaryFontFamily;
   width: 100%;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -205,7 +205,7 @@
   .plantingSeasonsLabel {
     position: absolute;
     top: -8px;
-    font-size: 12px;
+    font-size: $fontExtraSmall;
   }
 }
 
@@ -244,7 +244,7 @@
 .formErrors {
   // position: absolute;
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   color: $dangerColor;
   margin-left: 6px;
   margin-top: 6px;
@@ -257,7 +257,7 @@
   left: 50%;
   transform: translateX(-50%);
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontExtraSmall;
   color: $dangerColor;
   max-width: 320px;
 }
@@ -296,7 +296,7 @@
     padding: 6px 18px;
     border-radius: 15px;
     top: -10px;
-    font-size: 12px;
+    font-size: $fontExtraSmall;
     left: 12px;
     z-index: 9;
   }
@@ -324,7 +324,7 @@
     left: 5%;
     width: fit-content;
     font-weight: bold;
-    font-size: 10px;
+    font-size: $fontDoubleExtraSmall;
     min-width: 100px;
   }
   .uploadedMapDeleteButton {
@@ -381,7 +381,7 @@
     padding: 6px 18px;
     border-radius: 15px;
     top: -10px;
-    font-size: 12px;
+    font-size: $fontExtraSmall;
     left: 12px;
     z-index: 999;
   }
@@ -455,7 +455,7 @@
     border: 0px;
     color: $light;
     background-color: transparent;
-    font-size: 16px;
+    font-size: $fontSixteen;
     &::placeholder {
       color: $light;
       opacity: 1; /* Firefox */
@@ -498,7 +498,7 @@
 /*  error */
 .errorMessage {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $dangerColor;
   text-align: center;
   font-weight: 600;
@@ -508,7 +508,7 @@
 
 .geoJsonError {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $dangerColor;
   text-align: center;
   font-weight: 600;
