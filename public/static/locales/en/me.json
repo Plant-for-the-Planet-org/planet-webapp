@@ -1,5 +1,6 @@
 {
-  "treesPlanted": "Trees Planted",
+  "treesPlanted_plural": "Trees Planted",
+  "treesPlanted": "Tree Planted",
   "target": "Target",
   "share": "Share",
   "registerTrees": "Register Trees",

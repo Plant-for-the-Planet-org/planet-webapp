@@ -290,7 +290,13 @@ function TreeDonation({
                   }}
                 />
                 <div className={styles.treeCountOptionTrees}>
-                  {t('common:trees')}
+                  {t('common:tree', {
+                  count: Number(treeCount),
+                  treeCount: getFormattedNumber(
+                    i18n.language,
+                    Number(treeCount)
+                  ),
+                })}
                 </div>
               </motion.button>
             </div>
