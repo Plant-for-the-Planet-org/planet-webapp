@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import Footer from '../../src/features/common/Layout/Footer';
-import Treemapper from '../../src/features/user/Account/screens/treemapper';
+import TreeMapper from '../../src/features/user/Account/screens/TreeMapper';
 import AccountHeader from '../../src/features/common/Layout/Header/accountHeader';
 import i18next from '../../i18n';
 import styles from '../../src/features/user/Account/styles/AccountNavbar.module.scss';
@@ -15,7 +15,7 @@ function History({ }: Props): ReactElement {
     <>
       <div className={styles.accountsPage}>
         <AccountHeader page={'treemapper'} pageTitle={t('me:myAccount')} />
-        <Treemapper />
+        <TreeMapper />
       </div>
 
       <Footer />

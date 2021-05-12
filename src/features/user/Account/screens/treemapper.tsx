@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import styles from '../styles/AccountNavbar.module.scss';
+import styles from '../styles/TreeMapper.module.scss';
 import {
   getAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
@@ -8,12 +8,18 @@ import TopProgressBar from '../../../common/ContentLoaders/TopProgressBar';
 import i18next from '../../../../../i18n';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
+import PlantLocation from '../components/TreeMapper/PlantLocation';
+import dynamic from 'next/dynamic';
+
+const PlantLocationMap = dynamic(() => import('../components/TreeMapper/Map'), {
+  loading: () => <p>loading</p>,
+});
 
 const { useTranslation } = i18next;
 
 interface Props { }
 
-function Account({ }: Props): ReactElement {
+function TreeMapper({ }: Props): ReactElement {
   const {
     isLoading,
     isAuthenticated,
@@ -73,8 +79,17 @@ function Account({ }: Props): ReactElement {
               <div className={styles.notFound}>
                 <TransactionsNotFound />
               </div>
-            ) : null}
+            ) :
+              plantLocations && plantLocations.map((location: any, index: number) => {
+                console.log(location);
+
+                return (
+                  <PlantLocation key={index} location={location} index={index} />
+                );
+              })
+            }
           </div>
+          <PlantLocationMap locations={plantLocations} />
         </div>
       </div>
 
@@ -82,4 +97,4 @@ function Account({ }: Props): ReactElement {
   );
 }
 
-export default Account;
+export default TreeMapper;
