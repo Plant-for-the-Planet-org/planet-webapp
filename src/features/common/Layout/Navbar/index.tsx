@@ -105,10 +105,10 @@ export default function NavbarComponent(props: any) {
       </div>
     ) : router.pathname === '/complete-signup' ||
       (userInfo && router.pathname === `/t/${userInfo.slug}`) ? (
-          <MeSelected color={themeProperties.primaryColor} />
-        ) : (
-          <Me color={themeProperties.light.primaryFontColor} />
-        );
+      <MeSelected color={themeProperties.primaryColor} />
+    ) : (
+      <Me color={themeProperties.light.primaryFontColor} />
+    );
   };
 
   const MenuItems = () => {
@@ -125,24 +125,29 @@ export default function NavbarComponent(props: any) {
                     <UserProfileIcon />
                   </div>
                   <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)}
+                    {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)}
                   </p>
                 </button>
               )
             }
             if (link === 'about' && SingleLink.visible) {
-              SingleLink= {
+              SingleLink = {
                 ...SingleLink,
-                onclick:`${SingleLink.onclick}${i18n.language === 'de'  && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' :  ''}`}
+                onclick: `${SingleLink.onclick}${i18n.language === 'de' && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' : ''}`
+              }
             }
             return SingleLink.visible ? (
               (
                 <Link key={link} href={SingleLink.onclick}>
                   <div className={'linkContainer'}>
                     <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                    <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                      {t('common:' + SingleLink.title)}
-                    </p>
+                    {SingleLink.title === "home" ?
+                      <p className={router.pathname === "/" || router.pathname === "/[p]" ? 'active_icon' : ''}>
+                        {t('common:' + SingleLink.title)}
+                      </p> :
+                      <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+                        {t('common:' + SingleLink.title)}
+                      </p>}
                   </div>
                 </Link>
               )
@@ -161,8 +166,8 @@ export default function NavbarComponent(props: any) {
           {config.header?.isSecondaryTenant && (
             <div className={config.tenantName === 'ttc' ? 'hidePrimaryTenantLogo' : 'primaryTenantLogo'}>
               <a href={config.header?.tenantLogoLink}>
-              <img className={'tenantLogo desktop'} src={config.header.tenantLogoURL} />
-                {config.header.mobileLogoURL?<img className={'tenantLogo mobile'} src={config.header.mobileLogoURL} />:<img className={'tenantLogo mobile'} src={config.header.tenantLogoURL} />}
+                <img className={'tenantLogo desktop'} src={config.header.tenantLogoURL} />
+                {config.header.mobileLogoURL ? <img className={'tenantLogo mobile'} src={config.header.mobileLogoURL} /> : <img className={'tenantLogo mobile'} src={config.header.tenantLogoURL} />}
               </a>
               <div className={'logo_divider'} />
             </div>
