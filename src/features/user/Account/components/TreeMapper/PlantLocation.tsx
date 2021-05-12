@@ -219,13 +219,13 @@ function RecordDetails({ location, t }: any) {
       <div className={styles.detailContainer}>
         <p className={styles.detailTitle}>{t('height')}</p>
         <div className={styles.detailValue}>
-          {location.measurements.height}
+          {location.measurements?.height}
         </div>
       </div>
       <div className={styles.detailContainer}>
         <p className={styles.detailTitle}>{t('width')}</p>
         <div className={styles.detailValue}>
-          {location.measurements.width}
+          {location.measurements?.width}
         </div>
       </div>
       <div className={styles.detailContainer}>

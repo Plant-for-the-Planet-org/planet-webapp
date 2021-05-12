@@ -69,6 +69,18 @@ export default function MyTreesMap({
                         }
                         object.features.push(feature);
                     }
+                    // if (location.geometry.type === 'Polygon') {
+                    //     var feature = {
+                    //         "type": "Feature",
+                    //         "properties": {},
+                    //         "geometry": {
+                    //             "type": "Polygon",
+                    //             "coordinates": location.geometry.coordinates
+                    //         }
+
+                    //     }
+                    //     object.features.push(feature);
+                    // }
                 }
             }
             setGeoJson(object);
@@ -99,6 +111,19 @@ export default function MyTreesMap({
                         </Marker>
                     );
                 })}
+                {geoJson ? (
+                    <GeoJSONLayer
+                        data={geoJson}
+                        fillPaint={{
+                            'fill-color': '#fff',
+                            'fill-opacity': 0.2,
+                        }}
+                        linePaint={{
+                            'line-color': '#3D67B1',
+                            'line-width': 2,
+                        }}
+                    />
+                ) : null}
                 <ZoomControl position="bottom-right" />
             </Map>
         </div>
