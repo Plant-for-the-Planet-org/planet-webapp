@@ -5,7 +5,7 @@
     font-family: $secondaryFontFamily;
     font-style: normal;
     font-weight: 500;
-    font-size: $fontDoubleExtraLarge;
+    font-size: $fontXXLarge;
     line-height: 40px;
     text-align: center;
     letter-spacing: -0.004em;
@@ -27,7 +27,7 @@
     color: #032D60;
     margin-bottom: 10px;
     @include lgLaptopView {
-      font-size: $fontDoubleExtraLarge;
+      font-size: $fontXXLarge;
       line-height: 100%;
       margin-bottom: 15px;
     }
@@ -171,7 +171,7 @@ p.contentSectionSubhead {
   }
 
   .treeCounterSectionTextHeader {
-    font-size: $fontDoubleExtraLarge;
+    font-size: $fontXXLarge;
     line-height: 40px;
     text-align: left;
   }

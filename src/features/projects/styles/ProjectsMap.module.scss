@@ -150,7 +150,7 @@
   border-top: 2px solid $dividerColor;
   padding-top: 15px;
   width: 200px;
-  font-size: $fontDoubleExtraSmall;
+  font-size: $fontXXSmall;
   text-align: center;
 }
 
@@ -230,7 +230,7 @@
 
 .infoContent {
   width: 100%;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -254,7 +254,7 @@
 }
 
 .infoContent > div > p {
-  font-size: $fontDoubleExtraSmall;
+  font-size: $fontXXSmall;
 }
 
 .infoContent > a > svg {
@@ -300,12 +300,12 @@
 }
 
 .reforestationScale > p:nth-child(1) {
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   // color: #fadc2f;
 }
 
 .reforestationScale > p:nth-child(3) {
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   // color: #fadc2f;
 }
 
@@ -327,12 +327,12 @@
 }
 
 .currentForestScale > p:nth-child(1) {
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   color: $primaryColor;
 }
 
 .currentForestScale > p:nth-child(3) {
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   color: $primaryDarkColor;
 }
 
@@ -397,7 +397,7 @@
   text-align: center;
   width: 200px;
   font-family: $primaryFontFamily;
-  font-size: $fontDoubleExtraSmall;
+  font-size: $fontXXSmall;
 }
 
 .exploreNote a {

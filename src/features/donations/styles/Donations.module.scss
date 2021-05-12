@@ -49,7 +49,7 @@
 
 .plantProjectName {
   font-family: $primaryFontFamily;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   color: $light;
   width: 100%;
   margin-top: 4px;
@@ -76,13 +76,13 @@
 .currency {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
 }
 
 .currencyDisabled {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   color: $highlightBackground;
 }
 
@@ -93,7 +93,7 @@
 .rate {
   margin-left: 9px;
   font-family: $primaryFontFamily;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
 }
 
 .treeDonationContainer {
@@ -359,7 +359,7 @@
 .singleGiftRemove {
   cursor: pointer;
   color: $dangerColor;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   margin-top: 20px;
 }
 
@@ -385,7 +385,7 @@
 
 .formErrors {
   font-family: $primaryFontFamily;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   color: $dangerColor;
   margin-left: 6px;
 }
@@ -455,7 +455,7 @@
 
 .mandateAcceptance {
   font-family: $primaryFontFamily;
-  font-size: $fontExtraSmall;
+  font-size: $fontXSmall;
   color: $primaryFontColor;
   margin-top: 20px;
   text-align: center;
@@ -556,7 +556,7 @@
     position: relative;
     > label {
       margin-top: 6px;
-      font-size: $fontDoubleExtraSmall;
+      font-size: $fontXXSmall;
     }
     &:hover {
       cursor: pointer;
@@ -823,11 +823,11 @@
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 1px 3px 6px -4px rgba(116, 116, 116, 0.7);
   .showContactDetailsName {
-    font-size: $fontExtraSmall;
+    font-size: $fontXSmall;
     font-weight: bold;
   }
   .showContactDetailsAddress {
-    font-size: $fontExtraSmall;
+    font-size: $fontXSmall;
     margin-top: 2px;
   }
 }

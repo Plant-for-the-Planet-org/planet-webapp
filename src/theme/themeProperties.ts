@@ -1,14 +1,14 @@
 const themeProperties = {
   fontSizes: {
-    fontDoubleExtraSmall: '10px',
-    fontExtraSmall: '12px',
+    fontXXSmall: '10px',
+    fontXSmall: '12px',
     fontSmall: '14px',
     fontSixteen: '16px',
     fontMedium: '18px',
     fontLarge: '22px',
-    fontExtraLarge: '26px',
-    fontDoubleExtraLarge: '36px',
-    fontTrippleExtraLarge: '48px'
+    fontXLarge: '26px',
+    fontXXLarge: '36px',
+    fontXXXLarge: '48px'
   },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
