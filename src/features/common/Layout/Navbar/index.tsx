@@ -130,10 +130,15 @@ export default function NavbarComponent(props: any) {
                 </button>
               )
             }
-            if (link === 'about' && SingleLink.visible) {
+            if (link === 'about' && SingleLink.visible && i18n.language === 'de') {
               SingleLink= {
                 ...SingleLink,
-                onclick:`${SingleLink.onclick}${i18n.language === 'de'  && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' :  ''}`}
+                onclick:`${SingleLink.onclick}${(process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' :  ''}`}
+            }
+            else if (link === 'about' && SingleLink.visible && i18n.language === 'es') {
+              SingleLink= {
+                ...SingleLink,
+                onclick:`${SingleLink.onclick}${(process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'es-es' :  ''}`}
             }
             return SingleLink.visible ? (
               (
