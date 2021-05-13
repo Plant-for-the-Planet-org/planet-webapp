@@ -23,7 +23,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/xiting/logo.svg`,
+    tenantLogoURL: `/tenants/3pleset/logo.svg`,
     mobileLogoURL: `/tenants/3pleset/logo-mobile.svg`,
     tenantLogoLink: 'https://www.3pleset.de',
     items: {
