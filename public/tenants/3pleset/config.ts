@@ -5,12 +5,10 @@ const config = {
   fallbackCurrency: 'EUR',
   tenantGoal: 50000,
   font: {
-    primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL:
-      'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap',
-    secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL:
-      'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
+    primaryFontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    primaryFontURL: 'https://fonts.cdnfonts.com/css/helvetica-neue-9',
+    secondaryFontFamily: '"Helvetica",Arial,sans-serif',
+    secondaryFontURL: 'https://fonts.cdnfonts.com/css/helvetica-255',
   },
   meta: {
     title: '3pleset ❤️ Bäume',
