@@ -37,7 +37,7 @@
 }
 
 .mapContainer {
-  width: 100%;
+  width: 40%;
   height: 400px;
   border-radius: 10px;
   overflow: hidden;
@@ -46,6 +46,7 @@
 // accounts
 .accountsContainer {
   flex-grow: 1;
+  width: 60%;
   display: flex;
   flex-direction: column;
   background: transparent;
@@ -318,7 +319,7 @@
   }
 
   .mapContainer {
-    width: 400px;
+    width: 380px;
   }
 
   .selectedRecord {

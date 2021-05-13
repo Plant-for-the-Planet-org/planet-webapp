@@ -7,11 +7,12 @@ import ReactMapboxGl, {
 } from 'react-mapbox-gl';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import i18next from '../../../../../../i18n';
+import * as turf from '@turf/turf';
+import WebMercatorViewport from '@math.gl/web-mercator';
 
 const Map = ReactMapboxGl({
     customAttribution:
         '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
-    maxZoom: 16,
 });
 
 interface Props {
@@ -30,6 +31,12 @@ export default function MyTreesMap({
         width: '100%',
         center: defaultMapCenter,
         zoom: [defaultZoom],
+    });
+    const [viewport2, setViewPort2] = React.useState({
+        height: 400,
+        width: 400,
+        center: defaultMapCenter,
+        zoom: defaultZoom,
     });
     const [geoJson, setGeoJson] = React.useState();
 
@@ -65,27 +72,45 @@ export default function MyTreesMap({
                                 "type": "Point",
                                 "coordinates": location.geometry.coordinates
                             }
-
                         }
                         object.features.push(feature);
                     }
-                    // if (location.geometry.type === 'Polygon') {
-                    //     var feature = {
-                    //         "type": "Feature",
-                    //         "properties": {},
-                    //         "geometry": {
-                    //             "type": "Polygon",
-                    //             "coordinates": location.geometry.coordinates
-                    //         }
-
-                    //     }
-                    //     object.features.push(feature);
-                    // }
+                    if (location.geometry.type === 'Polygon') {
+                        var feature = {
+                            "type": "Feature",
+                            "properties": {},
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": location.geometry.coordinates
+                            }
+                        }
+                        object.features.push(feature);
+                    }
                 }
             }
             setGeoJson(object);
         }
     }, [locations]);
+
+    React.useEffect(() => {
+        if (geoJson) {
+            const bbox = turf.bbox(geoJson);
+            const { longitude, latitude, zoom } = new WebMercatorViewport(
+                viewport2
+            ).fitBounds([
+                [bbox[0], bbox[1]],
+                [bbox[2], bbox[3]],
+            ], { padding: 50 });
+            const newViewport = {
+                ...viewport,
+                center: [longitude, latitude],
+                zoom: [zoom],
+            };
+            setViewPort(newViewport);
+        }
+        console.log(geoJson);
+
+    }, [geoJson]);
 
     return (
         <div className={styles.mapContainer}>
@@ -98,28 +123,29 @@ export default function MyTreesMap({
                 }}
             >
                 {geoJson && geoJson.features.map((location: any, index: number) => {
-                    return (
-                        <Marker
-                            key={index}
-                            coordinates={location.geometry.coordinates}
-                            anchor="bottom"
-                        >
-                            <div
+                    if (location.geometry.type === "Point")
+                        return (
+                            <Marker
                                 key={index}
-                                className={styles.marker}
-                            />
-                        </Marker>
-                    );
+                                coordinates={location.geometry.coordinates}
+                                anchor="bottom"
+                            >
+                                <div
+                                    key={index}
+                                    className={styles.marker}
+                                />
+                            </Marker>
+                        );
                 })}
                 {geoJson ? (
                     <GeoJSONLayer
                         data={geoJson}
                         fillPaint={{
-                            'fill-color': '#fff',
+                            'fill-color': '#FF6200',
                             'fill-opacity': 0.2,
                         }}
                         linePaint={{
-                            'line-color': '#3D67B1',
+                            'line-color': '#FF6200',
                             'line-width': 2,
                         }}
                     />
