@@ -11,7 +11,7 @@ const config = {
     secondaryFontURL: 'https://fonts.cdnfonts.com/css/helvetica-255',
   },
   meta: {
-    title: '3pleset ❤️ Bäume',
+    title: 'Alife & Kickin ❤️ Bäume',
     description:
       '#WEAREALIFE Schreibfehler? Nö, Absicht! Ganz nach dem Motto CHOOSE LIFE seid ihr jetzt dran. Denn ab sofort könnt ihr mit Alife & Kickin und der Organisation Plant-for-the-Planet Bäume pflanzen und Leben schenken. Erschafft mit uns den Alife & Kickin Wald. Wie? Pro Onlinebestellung pflanzen wir in den nächsten 2 Monaten einen Baum mit Plant-for-the-Planet. Unser Ziel: 50.000 Bäume für eine nachhaltige Wiederaufforstung. Wo? Auf der Karte seht ihr, wo unser Alife & Kickin Wald realisiert wird. Jetzt anschauen, mithelfen und noch mehr Leben schenken. CHOOSE LIFE. ONE ORDER ONE TREE. #WEAREALIFE',
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
@@ -23,7 +23,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/3pleset/logo.svg`,
+    tenantLogoURL: `/tenants/3pleset/logo-mobile.svg`,
     mobileLogoURL: `/tenants/3pleset/logo-mobile.svg`,
     tenantLogoLink: 'https://www.3pleset.de',
     items: {
