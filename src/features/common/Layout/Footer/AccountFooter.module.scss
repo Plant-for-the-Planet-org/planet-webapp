@@ -1,0 +1,29 @@
+@import '../../../../theme/theme';
+
+.footerContainer {
+  width: 100%;
+  padding: 50px 20px 120px 20px;
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.links {
+    font-family: $primaryFontFamily;
+    font-weight: bold;
+    font-size: 14px;
+    color: $primaryFontColor;
+    cursor: pointer;
+    // margin-right: 16px;
+    // margin-top: 22.2px;
+  }
+
+  @include smTabletView {
+      .footerContainer {
+        padding: 50px 20px;
+      }
+  } 
