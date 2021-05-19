@@ -118,6 +118,7 @@
 .addEmailButton{
   font-family: $primaryFontFamily;
   color: $primaryColor;
+  font-weight: 600;
   &:hover{
     cursor: pointer;
   }
