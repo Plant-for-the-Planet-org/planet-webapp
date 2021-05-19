@@ -51,6 +51,9 @@ export default function TreeMapperNew({
     <div id="pageContainer" className={styles.pageContainer}>
       <div className={styles.section}>
         <div className={styles.locationList}>
+          <div className={styles.pullUpContainer}>
+            <div className={styles.pullUpBar}></div>
+          </div>
           {isDataLoading ? (
             <>
               <TransactionListLoader />

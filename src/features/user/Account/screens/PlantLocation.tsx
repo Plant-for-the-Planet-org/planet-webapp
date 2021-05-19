@@ -42,6 +42,9 @@ export default function PlantLocation({
     <div id="pageContainer" className={styles.singleLocationPage}>
       <div className={styles.section}>
         <div className={styles.locationDetails}>
+          <div className={styles.pullUpContainer}>
+            <div className={styles.pullUpBar}></div>
+          </div>
           <div onClick={handleBackButton} className={styles.backButton}>
             <BackButton />
           </div>
