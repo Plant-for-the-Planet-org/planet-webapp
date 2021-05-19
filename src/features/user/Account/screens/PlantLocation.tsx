@@ -5,7 +5,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../styles/TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import TreeIcon from '../../../../../out/assets/images/icons/TreeIcon';
+import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 
 const { useTranslation } = i18next;
 
