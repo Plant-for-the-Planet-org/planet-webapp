@@ -60,7 +60,7 @@ export default function NavbarComponent(props: any) {
       loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
     }
   }
-
+console.log(router,"router")
   const { toggleTheme } = React.useContext(ThemeContext);
 
   // if (isLoading) {
@@ -141,13 +141,21 @@ export default function NavbarComponent(props: any) {
                 <Link key={link} href={SingleLink.onclick}>
                   <div className={'linkContainer'}>
                     <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                    {SingleLink.title === "home" ?
+                    {config.tenantName === "planet" || config.tenantName === "ttc" ?
+                    (SingleLink.title === "home" ?
                       <p className={router.pathname === "/" || router.pathname === "/[p]" ? 'active_icon' : ''}>
                         {t('common:' + SingleLink.title)}
                       </p> :
                       <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
                         {t('common:' + SingleLink.title)}
-                      </p>}
+                      </p>) :
+                      (SingleLink.title === "donate_gift" ?
+                      <p className={router.pathname === "/" || router.pathname === "/[p]" ? 'active_icon' : ''}>
+                        {t('common:' + SingleLink.title)}
+                      </p> :
+                      <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+                        {t('common:' + SingleLink.title)}
+                      </p>)}
                   </div>
                 </Link>
               )
