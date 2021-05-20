@@ -65,36 +65,69 @@ export default function MyTreesMap({
         type: 'FeatureCollection',
         features: [],
       };
-      for (const key in locations) {
-        if (Object.prototype.hasOwnProperty.call(locations, key)) {
-          const location = locations[key];
-          if (location.geometry.type === 'Point') {
-            var feature = {
-              type: 'Feature',
-              properties: location,
-              geometry: {
-                type: 'Point',
-                coordinates: location.geometry.coordinates,
-              },
-            };
-            object.features.push(feature);
-          }
-          if (location.geometry.type === 'Polygon') {
-            var feature = {
-              type: 'Feature',
-              properties: location,
-              geometry: {
-                type: 'Polygon',
-                coordinates: location.geometry.coordinates,
-              },
-            };
-            object.features.push(feature);
+      if (selectedLocation !== '') {
+        for (const key in locations) {
+          if (Object.prototype.hasOwnProperty.call(locations, key)) {
+            const location = locations[key];
+            if (location.id === selectedLocation) {
+              if (location.geometry.type === 'Point') {
+                var feature = {
+                  type: 'Feature',
+                  properties: location,
+                  geometry: {
+                    type: 'Point',
+                    coordinates: location.geometry.coordinates,
+                  },
+                };
+                object.features.push(feature);
+              }
+              if (location.geometry.type === 'Polygon') {
+                var feature = {
+                  type: 'Feature',
+                  properties: location,
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: location.geometry.coordinates,
+                  },
+                };
+                object.features.push(feature);
+              }
+            }
           }
         }
+        setGeoJson(object);
+      } else {
+        for (const key in locations) {
+          if (Object.prototype.hasOwnProperty.call(locations, key)) {
+            const location = locations[key];
+            if (location.geometry.type === 'Point') {
+              var feature = {
+                type: 'Feature',
+                properties: location,
+                geometry: {
+                  type: 'Point',
+                  coordinates: location.geometry.coordinates,
+                },
+              };
+              object.features.push(feature);
+            }
+            if (location.geometry.type === 'Polygon') {
+              var feature = {
+                type: 'Feature',
+                properties: location,
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: location.geometry.coordinates,
+                },
+              };
+              object.features.push(feature);
+            }
+          }
+        }
+        setGeoJson(object);
       }
-      setGeoJson(object);
     }
-  }, [locations]);
+  }, [locations, selectedLocation]);
 
   React.useEffect(() => {
     if (geoJson) {
