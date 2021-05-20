@@ -60,7 +60,7 @@ export default function NavbarComponent(props: any) {
       loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
     }
   }
-console.log(router,"router")
+
   const { toggleTheme } = React.useContext(ThemeContext);
 
   // if (isLoading) {
