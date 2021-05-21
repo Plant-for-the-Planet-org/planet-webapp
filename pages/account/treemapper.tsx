@@ -88,24 +88,6 @@ function History({}: Props): ReactElement {
   }, [isLoading, isAuthenticated]);
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined')
-      window.addEventListener('scroll', () => fixedMap(), false);
-
-    function fixedMap() {
-      if (
-        document.body.scrollTop > 200 ||
-        document.documentElement.scrollTop > 200
-      ) {
-        document.getElementById('pp-mapbox').style.position = 'fixed';
-        document.getElementById('pp-mapbox').style.marginTop = '-200px';
-      } else {
-        document.getElementById('pp-mapbox').style.position = 'absolute';
-        document.getElementById('pp-mapbox').style.marginTop = '0px';
-      }
-    }
-  }, []);
-
-  React.useEffect(() => {
     if (selectedLocation !== '') {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
