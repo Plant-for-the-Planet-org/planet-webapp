@@ -47,8 +47,9 @@ function PaymentRecord({ record, index }: Props) {
   return (
     <div
       key={index}
-      className={`${styles.singleRecord} ${index === selectedRecord ? styles.selectedRecord : ''
-        }`}
+      className={`${styles.singleRecord} ${
+        index === selectedRecord ? styles.selectedRecord : ''
+      }`}
     >
       <div className={styles.recordHeader} onClick={() => selectRecord1(index)}>
         <div className={styles.treesDate}>
@@ -87,8 +88,9 @@ function PaymentRecord({ record, index }: Props) {
       </div>
 
       <div
-        className={`${styles.recordDataContainer} ${selectedRecord === index ? styles.recordDataContainerSelected : ''
-          }`}
+        className={`${styles.recordDataContainer} ${
+          selectedRecord === index ? styles.recordDataContainerSelected : ''
+        }`}
       >
         <div className={styles.recordDetails}>
           {record.details && (
@@ -99,27 +101,29 @@ function PaymentRecord({ record, index }: Props) {
               currency={record.currency}
             />
           )}
-
         </div>
         <div className={styles.recordDownloads}>
-          {record.details.donorCertificate &&
+          {record.details.donorCertificate && (
             <div className={styles.detail}>
               <Link href={record.details.donorCertificate}>
                 <a>{t('donorCertificate')}</a>
               </Link>
-            </div>}
-          {record.details.recipientCertificate &&
+            </div>
+          )}
+          {record.details.recipientCertificate && (
             <div className={styles.detail}>
               <Link href={record.details.recipientCertificate}>
                 <a>{t('recipientCertificate')}</a>
               </Link>
-            </div>}
-          {record.details.taxReceipt &&
+            </div>
+          )}
+          {record.details.taxReceipt && (
             <div className={styles.detail}>
               <Link href={record.details.taxReceipt}>
                 <a>{t('taxReceipt')}</a>
               </Link>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
 
@@ -173,24 +177,27 @@ function PaymentRecord({ record, index }: Props) {
               )}
             </div>
             <div className={styles.recordDownloads}>
-              {record.details.donorCertificate &&
+              {record.details.donorCertificate && (
                 <div className={styles.detail}>
                   <Link href={record.details.donorCertificate}>
                     <a>{t('donorCertificate')}</a>
                   </Link>
-                </div>}
-              {record.details.recipientCertificate &&
+                </div>
+              )}
+              {record.details.recipientCertificate && (
                 <div className={styles.detail}>
                   <Link href={record.details.recipientCertificate}>
                     <a>{t('recipientCertificate')}</a>
                   </Link>
-                </div>}
-              {record.details.taxReceipt &&
+                </div>
+              )}
+              {record.details.taxReceipt && (
                 <div className={styles.detail}>
                   <Link href={record.details.taxReceipt}>
                     <a>{t('taxReceipt')}</a>
                   </Link>
-                </div>}
+                </div>
+              )}
             </div>
           </div>
         </Modal>
@@ -202,42 +209,56 @@ function PaymentRecord({ record, index }: Props) {
 function RecordDetails({ detail, t, i18n, currency }: any) {
   return (
     <>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('amount')}</p>
-        <div className={styles.detailValue}>
-          {getFormatedCurrency(i18n.language, currency, detail.amount)}
+      {detail.amount && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('amount')}</p>
+          <div className={styles.detailValue}>
+            {getFormatedCurrency(i18n.language, currency, detail.amount)}
+          </div>
         </div>
-      </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('created')}</p>
-        <div className={styles.detailValue}>{formatDate(detail.created)}</div>
-      </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('project')}</p>
-        <div className={styles.detailValue}>{detail.project}</div>
-      </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('method')}</p>
-        <div className={styles.detailValue}>{detail.method}</div>
-      </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('treeCost')}</p>
-        <div className={styles.detailValue}>
-          {getFormatedCurrency(i18n.language, currency, detail.treeCost)}
+      )}
+      {detail.created && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('created')}</p>
+          <div className={styles.detailValue}>{formatDate(detail.created)}</div>
         </div>
-      </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('treeCount')}</p>
-        <div className={styles.detailValue}>
-          {getFormattedNumber(i18n.language, detail.treeCount)}
+      )}
+      {detail.project && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('project')}</p>
+          <div className={styles.detailValue}>{detail.project}</div>
         </div>
-      </div>
-      <div className={styles.detailContainer}>
-        <p className={styles.detailTitle}>{t('lastUpdate')}</p>
-        <div className={styles.detailValue}>
-          {formatDate(detail.lastUpdate)}
+      )}
+      {detail.method && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('method')}</p>
+          <div className={styles.detailValue}>{detail.method}</div>
         </div>
-      </div>
+      )}
+      {detail.treeCost && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('treeCost')}</p>
+          <div className={styles.detailValue}>
+            {getFormatedCurrency(i18n.language, currency, detail.treeCost)}
+          </div>
+        </div>
+      )}
+      {detail.treeCount && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('treeCount')}</p>
+          <div className={styles.detailValue}>
+            {getFormattedNumber(i18n.language, detail.treeCount)}
+          </div>
+        </div>
+      )}
+      {detail.lastUpdate && (
+        <div className={styles.detailContainer}>
+          <p className={styles.detailTitle}>{t('lastUpdate')}</p>
+          <div className={styles.detailValue}>
+            {formatDate(detail.lastUpdate)}
+          </div>
+        </div>
+      )}
     </>
   );
 }
