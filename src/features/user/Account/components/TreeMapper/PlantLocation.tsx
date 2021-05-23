@@ -20,7 +20,7 @@ function PlantLocation({
   selectedLocation,
   setselectedLocation,
 }: Props) {
-  const { t, i18n } = useTranslation('me');
+  const { t, i18n } = useTranslation('treemapper');
 
   var treeCount = 0;
   if (location.plantedSpecies.length !== 0) {
@@ -58,7 +58,7 @@ function PlantLocation({
       </div>
       <div className={styles.right}>
         <div className={styles.status}>{t(location.captureStatus)}</div>
-        <div className={styles.mode}>{location.captureMode}</div>
+        <div className={styles.mode}>{t(location.captureMode)}</div>
       </div>
     </div>
   );

@@ -8,10 +8,18 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
 import NewAccountHeader from '../../src/features/common/Layout/Header/newAccountHeader';
 import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocation';
+import dynamic from 'next/dynamic';
 
 const { useTranslation } = i18next;
 
 interface Props {}
+
+const PlantLocationMap = dynamic(
+  () => import('../../src/features/user/Account/components/TreeMapper/Map'),
+  {
+    loading: () => <p>loading</p>,
+  }
+);
 
 function History({}: Props): ReactElement {
   const {
@@ -20,7 +28,7 @@ function History({}: Props): ReactElement {
     loginWithRedirect,
     getAccessTokenSilently,
   } = useAuth0();
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [plantLocations, setPlantLocations] = React.useState(null);
@@ -120,13 +128,26 @@ function History({}: Props): ReactElement {
         </div>
       )}
       <NewAccountHeader page={'treemapper'} title={t('me:myAccount')} />
-      {location === null ? (
-        <>
-          <TreeMapperList {...TreeMapperProps} />
-        </>
-      ) : (
-        <PlantLocationPage {...TreeMapperProps} />
-      )}
+      <div id="pageContainer" className={styles.pageContainer}>
+        <div className={styles.section}>
+          {location === null ? (
+            <>
+              <TreeMapperList {...TreeMapperProps} />
+            </>
+          ) : (
+            <PlantLocationPage {...TreeMapperProps} />
+          )}
+          <div className={styles.mapContainer}>
+            <div id="pp-mapbox" className={styles.map}>
+              <PlantLocationMap
+                locations={plantLocations}
+                selectedLocation={selectedLocation}
+                setselectedLocation={setselectedLocation}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
       <AccountFooter />
     </>
   );

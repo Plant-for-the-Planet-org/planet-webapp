@@ -3,12 +3,14 @@ import styles from '../../styles/TreeMapper.module.scss';
 import ReactMapboxGl, {
   GeoJSONLayer,
   Marker,
+  Popup,
   ZoomControl,
 } from 'react-mapbox-gl';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import i18next from '../../../../../../i18n';
 import * as turf from '@turf/turf';
 import WebMercatorViewport from '@math.gl/web-mercator';
+import getImageUrl from '../../../../../utils/getImageURL';
 
 const Map = ReactMapboxGl({
   customAttribution:
@@ -43,6 +45,8 @@ export default function MyTreesMap({
     zoom: defaultZoom,
   });
   const [geoJson, setGeoJson] = React.useState();
+  const [imagePopup, setImagePopup] = React.useState(null);
+  let timer: NodeJS.Timeout;
 
   const [style, setStyle] = React.useState({
     version: 8,
@@ -110,6 +114,24 @@ export default function MyTreesMap({
                   },
                 };
                 object.features.push(feature);
+              }
+              if (location.type === 'sample') {
+                for (const key in locations) {
+                  if (Object.prototype.hasOwnProperty.call(locations, key)) {
+                    const loc = locations[key];
+                    if (loc.id === location.parent) {
+                      var feature = {
+                        type: 'Feature',
+                        properties: loc,
+                        geometry: {
+                          type: 'Polygon',
+                          coordinates: loc.geometry.coordinates,
+                        },
+                      };
+                      object.features.push(feature);
+                    }
+                  }
+                }
               }
             }
           }
@@ -216,7 +238,28 @@ export default function MyTreesMap({
                   coordinates={location.geometry.coordinates}
                   anchor="bottom"
                 >
-                  <div key={index} className={styles.markerSample} />
+                  <div
+                    key={index}
+                    className={styles.markerSample}
+                    onMouseOver={() => {
+                      console.log(location);
+                      timer = setTimeout(() => {
+                        const image = getImageUrl(
+                          'coordinate',
+                          'large',
+                          location.properties.coordinates[0].image
+                        );
+                        setImagePopup({
+                          coordinates: location.geometry.coordinates,
+                          image: image,
+                        });
+                      }, 300);
+                    }}
+                    onMouseLeave={() => {
+                      clearTimeout(timer);
+                    }}
+                    onFocus={() => {}}
+                  />
                 </Marker>
               );
             } else {
@@ -226,7 +269,30 @@ export default function MyTreesMap({
                   coordinates={location.geometry.coordinates}
                   anchor="bottom"
                 >
-                  <div key={index} className={styles.marker} />
+                  <div
+                    key={index}
+                    className={styles.marker}
+                    role="button"
+                    tabIndex={0}
+                    onMouseOver={() => {
+                      console.log(location);
+                      timer = setTimeout(() => {
+                        const image = getImageUrl(
+                          'coordinate',
+                          'large',
+                          location.properties.coordinates[0].image
+                        );
+                        setImagePopup({
+                          coordinates: location.geometry.coordinates,
+                          image: image,
+                        });
+                      }, 300);
+                    }}
+                    onMouseLeave={() => {
+                      clearTimeout(timer);
+                    }}
+                    onFocus={() => {}}
+                  />
                 </Marker>
               );
             }
@@ -244,6 +310,17 @@ export default function MyTreesMap({
           }}
         />
       ) : null}
+      {/* {imagePopup && (
+        <Popup
+          className={styles.popupContainer}
+          coordinates={imagePopup.coordinates}
+          anchor={'bottom'}
+        >
+          <div className={styles.imagePopup}>
+            <img src={imagePopup.image} />
+          </div>
+        </Popup>
+      )} */}
       <ZoomControl position="bottom-right" />
     </Map>
   );
