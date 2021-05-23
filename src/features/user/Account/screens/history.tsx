@@ -15,13 +15,14 @@ const { useTranslation } = i18next;
 interface Props {}
 
 function History({}: Props): ReactElement {
+  const { t } = useTranslation(['me']);
   const {
     isLoading,
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
   } = useAuth0();
-  const { t } = useTranslation(['me']);
+
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
 
@@ -86,15 +87,6 @@ function History({}: Props): ReactElement {
               <FilterInlineLoader />
             ) : (
               <>
-                <button
-                  className={`${styles.multiSelectInput} ${
-                    null === filter ? styles.multiSelectInputCheckTrue : ''
-                  }`}
-                  key="all"
-                  onClick={() => handleSetFilter(null)}
-                >
-                  {t('me:all')}
-                </button>
                 {accountingFilters && (
                   <FilterButtons
                     accountingFilters={accountingFilters}
@@ -137,15 +129,6 @@ function History({}: Props): ReactElement {
                 <FilterLoader />
               ) : (
                 <div className={styles.filterGrid}>
-                  <button
-                    className={`${styles.multiSelectInput} ${
-                      null === filter ? styles.multiSelectInputCheckTrue : ''
-                    }`}
-                    key="all"
-                    onClick={() => handleSetFilter(null)}
-                  >
-                    {t('me:all')}
-                  </button>
                   {accountingFilters && (
                     <FilterButtons
                       accountingFilters={accountingFilters}
