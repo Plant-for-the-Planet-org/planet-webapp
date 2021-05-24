@@ -48,7 +48,7 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
       })
     }
   }
-  
+
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -89,8 +89,8 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
             {projects.map((project: any) => {
               return (
                 <div className={styles.singleProject} key={project.properties.id}>
-                  <ProjectSnippet 
-                    key={project.properties.id} 
+                  <ProjectSnippet
+                    key={project.properties.id}
                     project={project.properties}
                     editMode={authenticatedType === 'private' ? true : false} />
                 </div>
@@ -100,10 +100,10 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
               authenticatedType === 'private' ? (
                 <Link href='/manage-projects/add-project'>
                   <div className={styles.singleProject}>
-                    <div className={styles.projectNotFound}>
+                    <button id={'addProjectBut'} className={styles.projectNotFound}>
                       <AddProject />
                       <h2>{t('manageProjects:addProject')}</h2>
-                    </div>
+                    </button>
                   </div>
                 </Link>
               ) : (

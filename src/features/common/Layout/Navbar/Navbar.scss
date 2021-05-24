@@ -47,6 +47,12 @@
     background-color: rgba(0, 0, 0, 0.5);
     margin: 0rem 0.5rem;
   }
+  .mobile {
+    display: none;
+  }
+  .desktop {
+    display: block;
+  }
 }
 
 .menuItems{
@@ -133,6 +139,12 @@
       }
       .tenantLogo {
         height: 48px;
+      }
+      .mobile {
+        display: block;
+      }
+      .desktop {
+        display: none;
       }
     }
   }

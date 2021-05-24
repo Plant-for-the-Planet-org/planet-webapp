@@ -376,13 +376,13 @@ export default function EditProfileModal({
 
             <div className={styles.isPrivateAccountDiv}>
               <div>
-                <div className={styles.mainText}>
+                <label htmlFor="editPrivate" className={styles.mainText} style={{cursor: 'pointer'}}>
                   {t('editProfile:privateAccount')}
-                </div>
+                </label> <br />
                 {watchIsPrivate && (
-                  <div className={styles.isPrivateAccountText}>
+                  <label className={styles.isPrivateAccountText}>
                     {t('editProfile:privateAccountTxt')}
-                  </div>
+                  </label>
                 )}
               </div>
               <Controller
@@ -394,15 +394,16 @@ export default function EditProfileModal({
                     checked={props.value}
                     onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    id="editPrivate"
                   />
                 )}
               />
             </div>
 
             <div className={styles.isPrivateAccountDiv}>
-              <div className={styles.mainText}>
+              <label htmlFor="editGetNews" className={styles.mainText} style={{cursor: 'pointer'}}>
                 {t('editProfile:subscribe')}
-              </div>
+              </label>
 
               <Controller
                 name="getNews"
@@ -413,6 +414,7 @@ export default function EditProfileModal({
                     checked={props.value}
                     onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    id="editGetNews"
                   />
                 )}
               />
