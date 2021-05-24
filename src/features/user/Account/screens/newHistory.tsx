@@ -220,6 +220,12 @@ function DetailsComponent({ record }: DetailProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <>
+      {record.status && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('status')}</p>
+          <p>{t(record.status)}</p>
+        </div>
+      )}
       {record.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('created')}</p>
@@ -232,6 +238,12 @@ function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{formatDate(record.lastUpdate)}</p>
         </div>
       )}
+      {record.details?.paymentDate && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('details?.paymentDate')}</p>
+          <p>{formatDate(record.details?.paymentDate)}</p>
+        </div>
+      )}
       {record.details?.paidAmount && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('paidAmount')}</p>
@@ -240,6 +252,18 @@ function DetailsComponent({ record }: DetailProps): ReactElement {
               i18n.language,
               record.currency,
               record.details.paidAmount
+            )}
+          </p>
+        </div>
+      )}
+      {record.details?.totalAmount && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('totalAmount')}</p>
+          <p>
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.details.totalAmount
             )}
           </p>
         </div>
@@ -298,11 +322,51 @@ function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{record.reference}</p>
         </div>
       )}
-      {record.fee && (
+      {record.details?.fees?.disputeFee && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('fee')}</p>
+          <p className={styles.title}>{t('disputeFee')}</p>
           <p>
-            {getFormatedCurrency(i18n.language, record.currency, record.fee)}
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.details.fees.disputeFee
+            )}
+          </p>
+        </div>
+      )}
+      {record.details?.fees?.planetFee && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('planetFee')}</p>
+          <p>
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.details.fees.planetFee
+            )}
+          </p>
+        </div>
+      )}
+      {record.details?.fees?.transactionFee && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('transactionFee')}</p>
+          <p>
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.details.fees.transactionFee
+            )}
+          </p>
+        </div>
+      )}
+      {record.details?.fees?.transferFee && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('transferFee')}</p>
+          <p>
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.details.fees.transferFee
+            )}
           </p>
         </div>
       )}
