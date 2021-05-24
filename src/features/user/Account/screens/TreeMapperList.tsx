@@ -30,26 +30,27 @@ export default function TreeMapperNew({
           <TransactionListLoader />
           <TransactionListLoader />
         </>
-      ) : plantLocations && plantLocations.length === 0 ? (
-        <div className={styles.notFound}>
-          <TransactionsNotFound />
-        </div>
-      ) : (
-        plantLocations &&
-        plantLocations.map((location: any, index: number) => {
-          if (location.type !== 'sample')
-            return (
-              <PlantLocation
-                key={index}
-                location={location}
-                locations={plantLocations}
-                index={index}
-                selectedLocation={selectedLocation}
-                setselectedLocation={setselectedLocation}
-              />
-            );
-        })
-      )}
+      ) : plantLocations ? (
+        plantLocations.length === 0 ? (
+          <div className={styles.notFound}>
+            <TransactionsNotFound />
+          </div>
+        ) : (
+          plantLocations.map((location: any, index: number) => {
+            if (location.type !== 'sample')
+              return (
+                <PlantLocation
+                  key={index}
+                  location={location}
+                  locations={plantLocations}
+                  index={index}
+                  selectedLocation={selectedLocation}
+                  setselectedLocation={setselectedLocation}
+                />
+              );
+          })
+        )
+      ) : null}
     </div>
   );
 }

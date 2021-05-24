@@ -79,8 +79,6 @@ export default function NewHistory({
             </>
           ) : paymentHistory && paymentHistory.items.length === 0 ? (
             <div className={styles.notFound}>
-              {/* <TransactionIcon color={'#c5c5c5'} width={'50px'} />
-                <p>{t('me:noRecords')}</p> */}
               <TransactionsNotFound />
             </div>
           ) : (
@@ -133,14 +131,14 @@ export default function NewHistory({
           </div>
         </div>
       </div>
-      <div className={styles.modalContainer}>
-        {/* <Modal
-          disableBackdropClick
-          hideBackdrop
-          className={styles.modal}
-          open={openModal}
-          onClose={handleClose}
-        >
+      <Modal
+        disableBackdropClick
+        hideBackdrop
+        className={styles.modal}
+        open={openModal}
+        onClose={handleClose}
+      >
+        <>
           <div
             onClick={() => {
               handleClose();
@@ -149,33 +147,29 @@ export default function NewHistory({
           >
             <BackButton style={{}} />
           </div>
-          in progress */}
-        {/* {currentRecord ? (
+          {currentRecord ? (
             <>
               <RecordHeader record={currentRecord} />
               <div className={styles.divider}></div>
               <div className={styles.detailContainer}>
-              <div className={styles.detailGrid}>
-                <DetailsComponent
-                  record={currentRecord}
-                />
+                <div className={styles.detailGrid}>
+                  <DetailsComponent record={currentRecord} />
+                </div>
+                {currentRecord?.details?.recipientBank && (
+                  <>
+                    <div className={styles.title}>{t('bankDetails')}</div>
+                    <div className={styles.detailGrid}>
+                      <BankDetails
+                        record={paymentHistory?.items[selectedRecord]}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
-              {currentRecord?.details
-                ?.recipientBank && (
-                <>
-                  <div className={styles.title}>{t('bankDetails')}</div>
-                  <div className={styles.detailGrid}>
-                    <BankDetails
-                      record={paymentHistory?.items[selectedRecord]}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
             </>
-          ) : null} */}
-        {/* </Modal> */}
-      </div>
+          ) : null}
+        </>
+      </Modal>
     </div>
   );
 }

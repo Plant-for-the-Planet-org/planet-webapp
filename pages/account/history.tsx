@@ -38,7 +38,7 @@ function AccountHistory({}: Props): ReactElement {
         token = await getAccessTokenSilently();
         if (filter === null) {
           const paymentHistory = await getAuthenticatedRequest(
-            '/app/paymentHistory',
+            '/app/paymentHistory?limit=15',
             token
           );
           setpaymentHistory(paymentHistory);
@@ -48,7 +48,11 @@ function AccountHistory({}: Props): ReactElement {
           setaccountingFilters(paymentHistory._filters);
         } else {
           const paymentHistory = await getAuthenticatedRequest(
-            `${filter ? accountingFilters[filter] : '/app/paymentHistory'}`,
+            `${
+              filter
+                ? accountingFilters[filter] + '&limit=15'
+                : '/app/paymentHistory?limit=15'
+            }`,
             token
           );
           setpaymentHistory(paymentHistory);

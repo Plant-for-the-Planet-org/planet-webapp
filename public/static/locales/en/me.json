@@ -112,5 +112,6 @@
   "disputeFee": "Dispute Fee",
   "planetFee": "Planet Fee",
   "transactionFee": "Transaction Fee",
-  "transferFee": "Transfer Fee"
+  "transferFee": "Transfer Fee",
+  "open": "Open"
 }
