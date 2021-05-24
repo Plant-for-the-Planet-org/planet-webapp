@@ -12,62 +12,22 @@ import FilterInlineLoader from '../../../../../public/assets/images/icons/Filter
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props {
+  filter: string;
+  setFilter: Function;
+  isDataLoading: boolean;
+  accountingFilters: Object;
+  paymentHistory: Object;
+}
 
-function History({}: Props): ReactElement {
+function History({
+  filter,
+  setFilter,
+  isDataLoading,
+  accountingFilters,
+  paymentHistory,
+}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const {
-    isLoading,
-    isAuthenticated,
-    loginWithRedirect,
-    getAccessTokenSilently,
-  } = useAuth0();
-
-  const [progress, setProgress] = React.useState(0);
-  const [isDataLoading, setIsDataLoading] = React.useState(false);
-
-  const [filter, setFilter] = React.useState(null);
-  const [paymentHistory, setpaymentHistory] = React.useState();
-
-  const [accountingFilters, setaccountingFilters] = React.useState();
-
-  React.useEffect(() => {
-    async function fetchPaymentHistory() {
-      setIsDataLoading(true);
-      setProgress(70);
-      let token = null;
-      if (isAuthenticated) {
-        token = await getAccessTokenSilently();
-        if (filter === null) {
-          const paymentHistory = await getAuthenticatedRequest(
-            '/app/paymentHistory',
-            token
-          );
-          setpaymentHistory(paymentHistory);
-          setProgress(100);
-          setIsDataLoading(false);
-          setTimeout(() => setProgress(0), 1000);
-          setaccountingFilters(paymentHistory._filters);
-        } else {
-          const paymentHistory = await getAuthenticatedRequest(
-            `${filter ? accountingFilters[filter] : '/app/paymentHistory'}`,
-            token
-          );
-          setpaymentHistory(paymentHistory);
-          setProgress(100);
-          setIsDataLoading(false);
-          setTimeout(() => setProgress(0), 1000);
-        }
-      } else {
-        localStorage.setItem('redirectLink', '/account/history');
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
-      }
-    }
-    if (!isLoading) fetchPaymentHistory();
-  }, [filter, isLoading, isAuthenticated]);
 
   const handleSetFilter = (id: any) => {
     setFilter(id);
@@ -76,11 +36,6 @@ function History({}: Props): ReactElement {
   return (
     <>
       <div className={styles.accountsPage}>
-        {progress > 0 && (
-          <div className={styles.topLoader}>
-            <TopProgressBar progress={progress} />
-          </div>
-        )}
         <div className={styles.accountsPageContainer}>
           <div className={styles.filterContainer}>
             {isDataLoading ? (

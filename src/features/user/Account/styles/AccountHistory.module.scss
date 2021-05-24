@@ -1,0 +1,157 @@
+@import './../../../../theme/theme';
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.historyList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    > .record {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: $backgroundColor;
+        >.recordHeader {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        > .left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+            >.top {
+                font-weight: 700;
+            }
+        } .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 20px;
+            >.top {
+                font-weight: 700;
+            }
+        }
+    }
+    >.divider {
+        width: 100%;
+        height: 1px;
+        background-color: #dddbda;
+    }
+    }
+    > .record.selected {
+        background-color: #fafafa;
+        >.detailContainer {
+            width: 100%;
+            display: grid;
+            gap:20px;
+            grid-template-columns: repeat(1,fr);
+            >.singleDetail {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                justify-content: flex-start;
+                align-items: flex-start;
+                >.title {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
+
+.filterContainer {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 1px 2px 8px -6px #707070;
+    background-color: $light;
+    border-radius: 10px;
+    padding: 20px;
+    gap:20px;
+    >.header {
+        font-weight: 700;
+    }
+    >.filterGrid {
+        display: grid;
+        gap:20px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.filterRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    overflow-x:scroll;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .filterRow::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filterButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: $light;
+    transition-duration: 0.4;
+    transition-timing-function: ease-in;
+    margin-right: 20px;
+    padding: 8px 0;
+    border-radius: 100px;
+    border: 1px solid $primaryColor;
+    min-width: 100px;
+    white-space: nowrap;
+    font-family: $primaryFontFamily;
+  }
+
+  .filterButton.selected {
+    border: none;
+    padding: 9px 13px;
+    background-color: rgba(104, 176, 48, 0.12);
+  }
+
+@include lgLaptopView {
+    .historyList {
+        width: 80%;
+        > .record.selected {
+            >.detailContainer {
+                grid-template-columns: repeat(3,fr);
+            }
+        }
+    }
+    .filterContainer {
+        display: flex;
+    }
+}

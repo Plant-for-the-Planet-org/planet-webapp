@@ -62,25 +62,32 @@ function History({}: Props): ReactElement {
         //     }
         //   }
         // }
-        for (const itr in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
-            const location = plantLocations[itr];
-            if (location.type === 'multi') {
-              plantLocations[itr].sampleTrees = [];
-              for (const key in plantLocations) {
-                if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-                  const item = plantLocations[key];
-                  if (item.type === 'sample') {
-                    if (item.parent === location.id) {
-                      plantLocations[itr].sampleTrees.push(item);
+        if (plantLocations.length === 0) {
+          setPlantLocations(null);
+        } else {
+          for (const itr in plantLocations) {
+            if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
+              const location = plantLocations[itr];
+              if (location.type === 'multi') {
+                plantLocations[itr].sampleTrees = [];
+                for (const key in plantLocations) {
+                  if (
+                    Object.prototype.hasOwnProperty.call(plantLocations, key)
+                  ) {
+                    const item = plantLocations[key];
+                    if (item.type === 'sample') {
+                      if (item.parent === location.id) {
+                        plantLocations[itr].sampleTrees.push(item);
+                      }
                     }
                   }
                 }
               }
             }
           }
+          setPlantLocations(plantLocations);
         }
-        setPlantLocations(plantLocations);
+
         setProgress(100);
         setIsDataLoading(false);
         setTimeout(() => setProgress(0), 1000);
