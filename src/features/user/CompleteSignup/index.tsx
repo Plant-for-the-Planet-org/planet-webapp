@@ -26,7 +26,7 @@ export default function CompleteSignup() {
     logout,
     loginWithRedirect,
     user
-  } = useAuth0();  
+  } = useAuth0();
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
@@ -40,8 +40,8 @@ export default function CompleteSignup() {
     async function loadFunction() {
       const token = await getAccessTokenSilently();
       setToken(token);
-      if(!token){
-        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+      if (!token) {
+        loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       }
       const userExistsInDB = getUserExistsInDB();
       if (token && userExistsInDB) {
@@ -51,7 +51,7 @@ export default function CompleteSignup() {
             router.push(`/t/${userSlug}`);
           }
         }
-      }      
+      }
     }
     if (isAuthenticated && !isLoading) {
       loadFunction()
@@ -120,7 +120,7 @@ export default function CompleteSignup() {
         logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
 
         removeUserExistsInDB()
-        loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+        loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
         setSubmit(false);
@@ -194,17 +194,17 @@ export default function CompleteSignup() {
 
           {/* type of account buttons */}
           <MaterialTextField
-                    label={t('editProfile:iamA')}
-                    variant="outlined"
-                    select
-                    defaultValue={profileTypes[0].value}
-                  >
-                    {profileTypes.map((option) => (
-                      <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
-                        {option.title} 
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
+            label={t('editProfile:iamA')}
+            variant="outlined"
+            select
+            defaultValue={profileTypes[0].value}
+          >
+            {profileTypes.map((option) => (
+              <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
+                {option.title}
+              </MenuItem>
+            ))}
+          </MaterialTextField>
 
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
@@ -287,10 +287,10 @@ export default function CompleteSignup() {
                     label={t('donate:city')}
                     variant="outlined"
                     inputRef={register({ required: true })}
-                    defaultValue={getStoredConfig("loc").city === "T1" || 
-                                  getStoredConfig("loc").city === "XX" || 
-                                  getStoredConfig("loc").city === "" ?
-                                  "" : getStoredConfig("loc").city}
+                    defaultValue={getStoredConfig("loc").city === "T1" ||
+                      getStoredConfig("loc").city === "XX" ||
+                      getStoredConfig("loc").city === "" ?
+                      "" : getStoredConfig("loc").city}
                     name={'city'}
                   />
                   {errors.city && (
@@ -308,10 +308,10 @@ export default function CompleteSignup() {
                       pattern: postalRegex,
                       required: true
                     })}
-                    defaultValue={getStoredConfig("loc").postalCode === "T1" || 
-                                  getStoredConfig("loc").postalCode === "XX" || 
-                                  getStoredConfig("loc").postalCode === "" ?
-                                  "" : getStoredConfig("loc").postalCode}
+                    defaultValue={getStoredConfig("loc").postalCode === "T1" ||
+                      getStoredConfig("loc").postalCode === "XX" ||
+                      getStoredConfig("loc").postalCode === "" ?
+                      "" : getStoredConfig("loc").postalCode}
                   />
                   {errors.zipCode && (
                     <span className={styles.formErrors}>
@@ -331,10 +331,10 @@ export default function CompleteSignup() {
               label={t('donate:country')}
               name="country"
               onChange={(country) => setCountry(country)}
-              defaultValue={getStoredConfig("loc").countryCode === "T1" || 
-                            getStoredConfig("loc").countryCode === "XX" || 
-                            getStoredConfig("loc").countryCode === "" ?
-                            "" : getStoredConfig("loc").countryCode}
+              defaultValue={getStoredConfig("loc").countryCode === "T1" ||
+                getStoredConfig("loc").countryCode === "XX" ||
+                getStoredConfig("loc").countryCode === "" ?
+                "" : getStoredConfig("loc").countryCode}
             />
             {errors.country && (
               <span className={styles.formErrors}>
@@ -345,13 +345,13 @@ export default function CompleteSignup() {
 
           <div className={styles.isPrivateAccountDiv}>
             <div>
-              <div className={styles.mainText}>{t('editProfile:privateAccount')}</div>
+              <label htmlFor="isPrivate" className={styles.mainText} style={{ cursor: 'pointer' }}>
+                {t('editProfile:privateAccount')}
+              </label> <br />
               {isPrivate &&
-                <div className={styles.isPrivateAccountText}>
-                  <label htmlFor={'isPrivate'}>
-                    {t('editProfile:privateAccountTxt')}
-                  </label>
-                </div>
+                <label className={styles.isPrivateAccountText}>
+                  {t('editProfile:privateAccountTxt')}
+                </label>
               }
             </div>
             <Controller
@@ -365,6 +365,7 @@ export default function CompleteSignup() {
                   checked={props.value}
                   onChange={e => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="isPrivate"
                 />
               )}
             />
@@ -372,7 +373,7 @@ export default function CompleteSignup() {
 
           <div className={styles.isPrivateAccountDiv}>
             <div className={styles.mainText}>
-              <label htmlFor={'getNews'}>
+              <label htmlFor={'getNews'} style={{ cursor: 'pointer' }}>
                 {t('editProfile:subscribe')}
               </label>
             </div>
@@ -387,6 +388,7 @@ export default function CompleteSignup() {
                   checked={props.value}
                   onChange={e => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="getNews"
                 />
               )}
             />
@@ -395,12 +397,12 @@ export default function CompleteSignup() {
           <div className={styles.horizontalLine} />
 
           <button id={'signupCreate'} className={styles.saveButton} onClick={handleSubmit(createButtonClicked)}>
-          {submit ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('editProfile:createAccount')
-                )}
-            
+            {submit ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('editProfile:createAccount')
+            )}
+
           </button>
         </div>
         {/* snackbar */}
