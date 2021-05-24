@@ -8,6 +8,7 @@ import NewAccountHeader from '../../src/features/common/Layout/Header/newAccount
 import { useAuth0 } from '@auth0/auth0-react';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
+import NewHistory from '../../src/features/user/Account/screens/newHistory';
 
 const { useTranslation } = i18next;
 
@@ -82,7 +83,7 @@ function AccountHistory({}: Props): ReactElement {
         </div>
       )}
       <NewAccountHeader page={'history'} title={t('me:myAccount')} />
-      <History {...HistoryProps} />
+      <NewHistory {...HistoryProps} />
 
       <Footer />
     </>

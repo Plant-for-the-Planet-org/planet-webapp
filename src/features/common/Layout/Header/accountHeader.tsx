@@ -77,7 +77,7 @@ export default function AcountHeader(props: any) {
           <div className={styles.navbar}>
             {menuItems.map((item: any) => {
               if (item === 'manage-projects') {
-                if (userprofile.type === 'tpo')
+                if (userprofile?.type === 'tpo')
                   return (
                     <div
                       className={styles.menuItem}

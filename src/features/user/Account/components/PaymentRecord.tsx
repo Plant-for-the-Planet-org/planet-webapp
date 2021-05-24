@@ -26,6 +26,10 @@ function PaymentRecord({ record, index }: Props) {
     setOpen(true);
   };
 
+  console.log(
+    getFormatedCurrency(i18n.language, record.currency, record.netAmount)
+  );
+
   function selectRecord1(index: any) {
     if (selectedRecord === index) {
       setselectedRecord(null);
@@ -64,13 +68,11 @@ function PaymentRecord({ record, index }: Props) {
         </div>
         <div className={styles.statusAmount}>
           <div className={styles.recordStatus}>
-            {record.type === 'app-payout'
-              ? getFormatedCurrency(i18n.language, record.currency, record.net)
-              : getFormatedCurrency(
-                  i18n.language,
-                  record.currency,
-                  record.amount
-                )}
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.netAmount
+            )}
           </div>
           <div>{t(t(record.status))}</div>
         </div>
@@ -89,7 +91,11 @@ function PaymentRecord({ record, index }: Props) {
         </div>
         <div className={styles.statusAmount}>
           <div className={styles.recordStatus}>
-            {getFormatedCurrency(i18n.language, record.currency, record.amount)}
+            {getFormatedCurrency(
+              i18n.language,
+              record.currency,
+              record.netAmount
+            )}
           </div>
 
           <div>{t(record.status)}</div>
@@ -327,11 +333,11 @@ function AppPayoutDetails({ detail, t, i18n }: any) {
           </div>
         </div>
       )}
-      {detail.net && (
+      {detail.netAmount && (
         <div className={styles.detailContainer}>
           <p className={styles.detailTitle}>{t('net')}</p>
           <div className={styles.detailValue}>
-            {getFormatedCurrency(i18n.language, currency, detail.net)}
+            {getFormatedCurrency(i18n.language, currency, detail.netAmount)}
           </div>
         </div>
       )}
