@@ -240,7 +240,7 @@ function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record.details?.paymentDate && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('details?.paymentDate')}</p>
+          <p className={styles.title}>{t('paymentDate')}</p>
           <p>{formatDate(record.details?.paymentDate)}</p>
         </div>
       )}
@@ -431,13 +431,13 @@ function BankDetails({ record }: BankDetailsProps): ReactElement {
       {record.details?.recipientBank?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('created')}</p>
-          <p>{record.details.recipientBank.created}</p>
+          <p>{formatDate(record.details.recipientBank.created)}</p>
         </div>
       )}
       {record.details?.recipientBank?.updated && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('updated')}</p>
-          <p>{record.details.recipientBank.updated}</p>
+          <p>{formatDate(record.details.recipientBank.updated)}</p>
         </div>
       )}
     </>

@@ -97,5 +97,20 @@
   "swift": "SWIFT",
   "isDefault": "Default Account",
   "bankAccountCreated": "Bank Account Created",
-  "bankAccountUpdated": "Bank Account Updated"
+  "bankAccountUpdated": "Bank Account Updated",
+  "donation-all": "Donations",
+  "donation-canceled": "Cancelled",
+  "payout-all": "Payouts",
+  "payout-action-required": "Action Required",
+  "payout-pending": "Pending",
+  "payout-completed": "Completed",
+  "donorName": "Donor Name",
+  "paidAmount": "Paid Amount",
+  "projectGuid": "Project GUID",
+  "success": "Success",
+  "totalAmount": "Total Amount",
+  "disputeFee": "Dispute Fee",
+  "planetFee": "Planet Fee",
+  "transactionFee": "Transaction Fee",
+  "transferFee": "Transfer Fee"
 }
