@@ -6,9 +6,8 @@ import GlobeContentLoader from '../../src/features/common/ContentLoaders/Project
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../src/features/common/Layout/Footer';
 import { useAuth0 } from '@auth0/auth0-react';
-import AccountHeader from '../../src/features/common/Layout/Header/accountHeader';
+import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import i18next from '../../i18n';
-import NewAccountHeader from '../../src/features/common/Layout/Header/newAccountHeader';
 const { useTranslation } = i18next;
 
 interface Props {}
@@ -80,7 +79,7 @@ function ManageSingleProject({}: Props): ReactElement {
   return setupAccess ? (
     ready && token && !accessDenied ? (
       <>
-        <NewAccountHeader
+        <AccountHeader
           page={'manage-projects'}
           title={t('me:settingManageProject')}
         />

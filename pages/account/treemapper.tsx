@@ -6,7 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
-import NewAccountHeader from '../../src/features/common/Layout/Header/newAccountHeader';
+import NewAccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocation';
 import dynamic from 'next/dynamic';
 

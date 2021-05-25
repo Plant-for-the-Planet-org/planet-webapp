@@ -1,14 +1,12 @@
 import React, { ReactElement } from 'react';
-import Footer from '../../src/features/common/Layout/Footer';
-import History from '../../src/features/user/Account/screens/history';
-import AccountHeader from '../../src/features/common/Layout/Header/accountHeader';
 import i18next from '../../i18n';
-import styles from '../../src/features/user/Account/styles/AccountNavbar.module.scss';
-import NewAccountHeader from '../../src/features/common/Layout/Header/newAccountHeader';
+import styles from '../../src/features/user/Account/styles/AccountHistory.module.scss';
+import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
-import NewHistory from '../../src/features/user/Account/screens/newHistory';
+import History from '../../src/features/user/Account/screens/History';
+import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
 
 const { useTranslation } = i18next;
 
@@ -86,10 +84,10 @@ function AccountHistory({}: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <NewAccountHeader page={'history'} title={t('me:myAccount')} />
-      <NewHistory {...HistoryProps} />
+      <AccountHeader page={'history'} title={t('me:myAccount')} />
+      <History {...HistoryProps} />
 
-      <Footer />
+      <AccountFooter />
     </>
   );
 }

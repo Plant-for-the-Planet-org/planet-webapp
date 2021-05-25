@@ -1,5 +1,19 @@
 @import './../../../../theme/theme';
 
+.topLoader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5px;
+
+  z-index: 1031;
+}
+
+.topLoaderProgress {
+  width: 0%;
+  background-color: $primaryColor;
+}
+
 .pageContainer {
   display: flex;
   flex-direction: column;

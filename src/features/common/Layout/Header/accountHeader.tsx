@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react';
-import styles from './AccountHeader.module.scss';
 import { useRouter } from 'next/router';
-import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import SettingsModal from '../../../user/UserProfile/components/SettingsModal';
-import { useAuth0 } from '@auth0/auth0-react';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import React, { ReactElement } from 'react';
+import styles from './AccountHeader.module.scss';
 import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../UserPropsContext';
+import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
+import SettingsModal from '../../../user/UserProfile/components/SettingsModal';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
+
 const { useTranslation } = i18next;
 
-export default function AcountHeader(props: any) {
+interface Props {
+  title: string;
+  page: string;
+}
+
+export default function AccountHeader({ title, page }: Props): ReactElement {
   const { userprofile } = React.useContext(UserPropsContext);
   const [forceReload, changeForceReload] = React.useState(false);
   const { t } = useTranslation(['me']);
@@ -49,79 +54,73 @@ export default function AcountHeader(props: any) {
     }
   };
   return (
-    <>
-      <div className={styles.headerBG}>
-        <div className={styles.accountsHeader}>
-          <div className={styles.navContainer}>
-            <button
-              onClick={() => {
-                router.back();
-              }}
-              className={styles.backButton}
-            >
-              <BackButton style={{ margin: '0px' }} />
-            </button>
-            <button
-              id={'IndividualProSetting'}
-              className={styles.settingsButton}
-              onClick={handleSettingsModalOpen}
-            >
-              <Settings color="white" />
-            </button>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <div className={styles.accountsTitleContainer}>
-              <div className={styles.accountsTitle}>{props.pageTitle}</div>
-            </div>
-          </div>
-          <div className={styles.navbar}>
-            {menuItems.map((item: any) => {
-              if (item === 'manage-projects') {
-                if (userprofile?.type === 'tpo')
-                  return (
-                    <div
-                      className={styles.menuItem}
-                      onClick={() => handleNavClick(item)}
-                    >
-                      {t(item)}
-                      {props.page === item ? (
-                        <div className={styles.active}></div>
-                      ) : (
-                        <div className={styles.inActive}></div>
-                      )}
-                    </div>
-                  );
-              } else {
-                return (
-                  <div
-                    className={styles.menuItem}
-                    onClick={() => handleNavClick(item)}
-                  >
-                    {t(item)}
-                    {props.page === item ? (
-                      <div className={styles.active}></div>
-                    ) : (
-                      <div className={styles.inActive}></div>
-                    )}
-                  </div>
-                );
-              }
-            })}
-          </div>
-        </div>
+    <div className={styles.headerContainer}>
+      <div className={styles.navigationContainer}>
+        <button
+          onClick={() => {
+            router.push('/t/[id]', `/t/${userprofile.slug}`, { shallow: true });
+          }}
+          className={styles.backButton}
+        >
+          <BackButton style={{ margin: '0px' }} />
+        </button>
+        <button
+          id={'IndividualProSetting'}
+          className={styles.settingsButton}
+          onClick={handleSettingsModalOpen}
+        >
+          <Settings color="white" />
+        </button>
+        {settingsModalOpen && userprofile && (
+          <SettingsModal
+            userprofile={userprofile}
+            settingsModalOpen={settingsModalOpen}
+            handleSettingsModalClose={handleSettingsModalClose}
+            editProfileModalOpen={editProfileModalOpen}
+            handleEditProfileModalClose={handleEditProfileModalClose}
+            handleEditProfileModalOpen={handleEditProfileModalOpen}
+            changeForceReload={changeForceReload}
+            forceReload={forceReload}
+          />
+        )}
       </div>
-      {settingsModalOpen && (
-        <SettingsModal
-          userprofile={userprofile}
-          settingsModalOpen={settingsModalOpen}
-          handleSettingsModalClose={handleSettingsModalClose}
-          editProfileModalOpen={editProfileModalOpen}
-          handleEditProfileModalClose={handleEditProfileModalClose}
-          handleEditProfileModalOpen={handleEditProfileModalOpen}
-          changeForceReload={changeForceReload}
-          forceReload={forceReload}
-        />
-      )}
-    </>
+      <div id="title" className={styles.titleContainer}>
+        <div className={styles.title}>{title}</div>
+      </div>
+      <div className={styles.menuContainer}>
+        {menuItems.map((item: any) => {
+          if (item === 'manage-projects') {
+            if (userprofile?.type === 'tpo')
+              return (
+                <div
+                  className={styles.menuItem}
+                  onClick={() => handleNavClick(item)}
+                >
+                  {t(item)}
+                  {page === item ? (
+                    <div className={styles.active}></div>
+                  ) : (
+                    <div className={styles.inActive}></div>
+                  )}
+                </div>
+              );
+          } else {
+            return (
+              <div
+                className={styles.menuItem}
+                onClick={() => handleNavClick(item)}
+              >
+                {t(item)}
+                {page === item ? (
+                  <div className={styles.active}></div>
+                ) : (
+                  <div className={styles.inActive}></div>
+                )}
+              </div>
+            );
+          }
+        })}
+      </div>
+    </div>
   );
 }
