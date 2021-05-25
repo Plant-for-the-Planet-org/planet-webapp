@@ -59,7 +59,6 @@ export default function GiftForm({
     }
   }, [giftDetails]);
   React.useEffect(() => {
-    const email = getValues('email');
     if(giftDetails.email == null){
       setshowEmail(false)
     }
