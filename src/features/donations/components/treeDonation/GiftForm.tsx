@@ -58,6 +58,13 @@ export default function GiftForm({
       setGiftValidated(true);
     }
   }, [giftDetails]);
+  React.useEffect(() => {
+    const email = getValues('email');
+    if(giftDetails.email == null){
+      setshowEmail(false)
+    }
+    else setshowEmail(true)
+  }, [giftDetails.email]);
   return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
@@ -105,7 +112,7 @@ export default function GiftForm({
                   endAdornment: (
                     <InputAdornment position="end">
                       <button
-                        onClick={() => setshowEmail(false)}
+                        onClick={() => {setshowEmail(false); giftDetails.email = null} }
                         className={styles.singleGiftRemove}
                         style={{marginBottom:'20px'}}
                       >
