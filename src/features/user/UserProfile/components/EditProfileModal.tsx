@@ -9,7 +9,7 @@ import Camera from '../../../../../public/assets/images/icons/userProfileIcons/C
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import getImageUrl from '../../../../utils/getImageURL'
+import getImageUrl from '../../../../utils/getImageURL';
 import { useForm, Controller } from 'react-hook-form';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
@@ -31,12 +31,8 @@ export default function EditProfileModal({
 
   const { userprofile, setUserprofile } = React.useContext(UserPropsContext);
 
-  const [token, setToken] = React.useState('')
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
+  const [token, setToken] = React.useState('');
+  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -44,11 +40,11 @@ export default function EditProfileModal({
       setToken(token);
     }
     if (isAuthenticated && !isLoading) {
-      loadFunction()
+      loadFunction();
     }
-  }, [isAuthenticated, isLoading])
+  }, [isAuthenticated, isLoading]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false)
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate', 'target']);
 
   const handleSnackbarOpen = () => {
@@ -68,15 +64,27 @@ export default function EditProfileModal({
     const defaultProfileDetails = {
       firstname: userprofile.firstname ? userprofile.firstname : '',
       lastname: userprofile.lastname ? userprofile.lastname : '',
-      address: userprofile.address && userprofile.address.address ? userprofile.address.address : '',
-      city: userprofile.address && userprofile.address.city ? userprofile.address.city : '',
-      zipCode: userprofile.address && userprofile.address.zipCode ? userprofile.address.zipCode : '',
-      country: userprofile.address && userprofile.address.country ? userprofile.address.country : '',
+      address:
+        userprofile.address && userprofile.address.address
+          ? userprofile.address.address
+          : '',
+      city:
+        userprofile.address && userprofile.address.city
+          ? userprofile.address.city
+          : '',
+      zipCode:
+        userprofile.address && userprofile.address.zipCode
+          ? userprofile.address.zipCode
+          : '',
+      country:
+        userprofile.address && userprofile.address.country
+          ? userprofile.address.country
+          : '',
       isPrivate: userprofile.isPrivate ? userprofile.isPrivate : false,
       getNews: userprofile.getNews ? userprofile.getNews : false,
       bio: userprofile.bio ? userprofile.bio : '',
       url: userprofile.url ? userprofile.url : '',
-      name: userprofile.name ? userprofile.name : ''
+      name: userprofile.name ? userprofile.name : '',
     };
     reset(defaultProfileDetails);
   }, [userprofile]);
@@ -106,38 +114,43 @@ export default function EditProfileModal({
   }, [country]);
 
   // the form values
-  const [severity, setSeverity] = useState('success')
-  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const [severity, setSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
 
-  const onDrop = React.useCallback((acceptedFiles) => {
-    setUpdatingPic(true);
-    acceptedFiles.forEach((file: any) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = async (event) => {
-        if (!isLoading && token) {
-          const bodyToSend = {
-            imageFile: event.target.result
-          }
-          setSeverity('info')
-          setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '')
-          handleSnackbarOpen()
+  const onDrop = React.useCallback(
+    (acceptedFiles) => {
+      setUpdatingPic(true);
+      acceptedFiles.forEach((file: any) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onabort = () => console.log('file reading was aborted');
+        reader.onerror = () => console.log('file reading has failed');
+        reader.onload = async (event) => {
+          if (!isLoading && token) {
+            const bodyToSend = {
+              imageFile: event.target.result,
+            };
+            setSeverity('info');
+            setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
+            handleSnackbarOpen();
 
-          putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res) => {
-            const newUserInfo = { ...userprofile, image: res.image }
-            setUserprofile(newUserInfo);
-            setUpdatingPic(false);
-          }).catch(error => {
-            setUpdatingPic(false);
-            console.log(error);
-          })
-        }
-      };
-    });
-  }, [token]);
+            putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+              .then((res) => {
+                const newUserInfo = { ...userprofile, image: res.image };
+                setUserprofile(newUserInfo);
+                setUpdatingPic(false);
+              })
+              .catch((error) => {
+                setUpdatingPic(false);
+                console.log(error);
+              });
+          }
+        };
+      });
+    },
+    [token]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -152,24 +165,25 @@ export default function EditProfileModal({
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
-      country: country
-    }
+      country: country,
+    };
     if (!isLoading && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res) => {
-          setSeverity('success')
-          setSnackbarMessage(ready ? t('editProfile:profileSaved') : '')
-          handleSnackbarOpen()
-          changeForceReload(!forceReload),
-            handleEditProfileModalClose()
-          setIsUploadingData(false)
-        }).catch(error => {
-          setSeverity('error')
-          setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '')
-          handleSnackbarOpen()
-          setIsUploadingData(false)
-          console.log(error);
-        })
+        putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+          .then((res) => {
+            setSeverity('success');
+            setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
+            handleSnackbarOpen();
+            changeForceReload(!forceReload), handleEditProfileModalClose();
+            setIsUploadingData(false);
+          })
+          .catch((error) => {
+            setSeverity('error');
+            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
+            handleSnackbarOpen();
+            setIsUploadingData(false);
+            console.log(error);
+          });
       } catch (e) {
         setSeverity('error');
         setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
@@ -194,7 +208,8 @@ export default function EditProfileModal({
         <div className={styles.modal}>
           <div>
             <div className={styles.headerDiv}>
-              <button id={'backButtonEditP'}
+              <button
+                id={'backButtonEditP'}
                 className={styles.backDiv}
                 onClick={handleEditProfileModalClose}
               >
@@ -217,14 +232,12 @@ export default function EditProfileModal({
               <label htmlFor="upload">
                 <div className={styles.profilePicDiv}>
                   <input {...getInputProps()} />
-                  {updatingPic ? <div className={styles.spinnerImage}></div> : userprofile.image ? (
+                  {updatingPic ? (
+                    <div className={styles.spinnerImage}></div>
+                  ) : userprofile.image ? (
                     <div className={styles.profilePic}>
                       <img
-                        src={getImageUrl(
-                          'profile',
-                          'thumb',
-                          userprofile.image
-                        )}
+                        src={getImageUrl('profile', 'thumb', userprofile.image)}
                         className={styles.profilePicImg}
                       />
                       <div className={styles.profilePicOverlay} />
@@ -269,11 +282,11 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {userprofile.type !== 'individual' && (
+            {userprofile?.type !== 'individual' && (
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
                   label={t('editProfile:profileName', {
-                    type: selectUserType(userprofile.type, t)
+                    type: selectUserType(userprofile.type, t),
                   })}
                   variant="outlined"
                   name="name"
@@ -435,7 +448,8 @@ export default function EditProfileModal({
               className={styles.formFieldLarge}
               style={{ justifyContent: 'center' }}
             >
-              <button id={'editProfileSaveProfile'}
+              <button
+                id={'editProfileSaveProfile'}
                 className={styles.saveButton}
                 onClick={handleSubmit(saveProfile)}
               >

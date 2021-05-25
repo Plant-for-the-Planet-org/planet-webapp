@@ -114,7 +114,6 @@
   }
   > .filterGrid {
     display: flex;
-    gap: 10px;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
@@ -127,7 +126,6 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: 20px;
   width: 100%;
   padding: 20px;
   overflow-x: scroll;
@@ -146,12 +144,16 @@
   align-items: center;
   background-color: $light;
   transition-duration: 0.4;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   transition-timing-function: ease-in;
   padding: 8px 12px;
   border-radius: 100px;
   border: 1px solid $primaryColor;
   white-space: nowrap;
   font-family: $primaryFontFamily;
+  cursor: pointer;
 }
 
 .filterButton.selected {
@@ -209,6 +211,7 @@
       background-color: #fafafa;
       border-radius: 10px;
       box-shadow: 1px 2px 8px -6px #707070;
+      margin: 20px 0;
       > .detailContainer {
         display: flex;
       }
