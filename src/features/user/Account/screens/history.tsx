@@ -1,7 +1,7 @@
 import { Modal } from '@material-ui/core';
 import React, { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
-import BackButton from '../../../../../out/assets/images/icons/BackButton';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
@@ -145,7 +145,7 @@ export default function History({
             }}
             className={styles.closeRecord}
           >
-            <BackButton style={{}} />
+            <BackButton />
           </div>
           {currentRecord ? (
             <>
