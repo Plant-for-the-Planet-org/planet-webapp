@@ -90,7 +90,7 @@ export default function NewAccountHeader({ title, page }: Props): ReactElement {
       <div className={styles.menuContainer}>
         {menuItems.map((item: any) => {
           if (item === 'manage-projects') {
-            if (userprofile.type === 'tpo')
+            if (userprofile?.type === 'tpo')
               return (
                 <div
                   className={styles.menuItem}
