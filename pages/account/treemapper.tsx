@@ -7,7 +7,7 @@ import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
 import NewAccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
-import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocation';
+import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocationPage';
 import dynamic from 'next/dynamic';
 
 const { useTranslation } = i18next;
@@ -47,21 +47,6 @@ function History({}: Props): ReactElement {
           token
         );
         var plantLocations = response;
-        // for (const key in response) {
-        //   if (Object.prototype.hasOwnProperty.call(response, key)) {
-        //     const item = response[key];
-        //     if (item.type === 'sample') {
-        //       for (const key in plantLocations) {
-        //         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-        //           const location = plantLocations[key];
-        //           if (item.parent === location.id) {
-        //             plantLocations[key].sampleTrees.push(item);
-        //           }
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
         if (plantLocations.length === 0) {
           setPlantLocations(null);
         } else {

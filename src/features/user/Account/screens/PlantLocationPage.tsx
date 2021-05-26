@@ -38,8 +38,10 @@ export default function PlantLocation({
       </div>
       <div className={styles.imageContainer}>
         {location.coordinates.map((coordinate: any) => {
-          const image = getImageUrl('coordinate', 'large', coordinate.image);
-          return <img src={image} />;
+          if (coordinate.image) {
+            const image = getImageUrl('coordinate', 'large', coordinate.image);
+            return <img src={image} />;
+          }
         })}
       </div>
       <div className={styles.details}>

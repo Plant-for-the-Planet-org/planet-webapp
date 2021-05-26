@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
