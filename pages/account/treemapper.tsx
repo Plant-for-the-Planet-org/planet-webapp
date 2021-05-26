@@ -6,7 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
-import NewAccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
+import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocationPage';
 import dynamic from 'next/dynamic';
 
@@ -119,7 +119,7 @@ function History({}: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <NewAccountHeader page={'treemapper'} title={t('me:myAccount')} />
+      <AccountHeader page={'treemapper'} title={t('me:myAccount')} />
       <div id="pageContainer" className={styles.pageContainer}>
         <div className={styles.section}>
           {location === null ? (
