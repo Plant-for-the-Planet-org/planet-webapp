@@ -17,6 +17,8 @@ export default function TreeMapperNew({
   plantLocations,
   isDataLoading,
 }: Props): ReactElement {
+  console.log(plantLocations);
+
   return (
     <div className={styles.locationList}>
       <div className={styles.pullUpContainer}>
@@ -30,26 +32,24 @@ export default function TreeMapperNew({
           <TransactionListLoader />
         </>
       ) : plantLocations ? (
-        plantLocations.length === 0 ? (
-          <div className={styles.notFound}>
-            <TransactionsNotFound />
-          </div>
-        ) : (
-          plantLocations.map((location: any, index: number) => {
-            if (location.type !== 'sample')
-              return (
-                <PlantLocation
-                  key={index}
-                  location={location}
-                  locations={plantLocations}
-                  index={index}
-                  selectedLocation={selectedLocation}
-                  setselectedLocation={setselectedLocation}
-                />
-              );
-          })
-        )
-      ) : null}
+        plantLocations.map((location: any, index: number) => {
+          if (location.type !== 'sample')
+            return (
+              <PlantLocation
+                key={index}
+                location={location}
+                locations={plantLocations}
+                index={index}
+                selectedLocation={selectedLocation}
+                setselectedLocation={setselectedLocation}
+              />
+            );
+        })
+      ) : (
+        <div className={styles.notFound}>
+          <TransactionsNotFound />
+        </div>
+      )}
     </div>
   );
 }

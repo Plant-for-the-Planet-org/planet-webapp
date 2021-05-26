@@ -72,10 +72,6 @@ function History({}: Props): ReactElement {
           }
           setPlantLocations(plantLocations);
         }
-
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
       } else {
         localStorage.setItem('redirectLink', '/account/treemapper');
         loginWithRedirect({
@@ -83,6 +79,9 @@ function History({}: Props): ReactElement {
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }
+      setProgress(100);
+      setIsDataLoading(false);
+      setTimeout(() => setProgress(0), 1000);
     }
     if (!isLoading) fetchPaymentHistory();
   }, [isLoading, isAuthenticated]);
