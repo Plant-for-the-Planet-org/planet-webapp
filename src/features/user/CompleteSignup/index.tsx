@@ -24,7 +24,7 @@ export default function CompleteSignup() {
     getAccessTokenSilently,
     logout,
     loginWithRedirect,
-    user,
+    user
   } = useAuth0();
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
@@ -413,6 +413,7 @@ export default function CompleteSignup() {
                   checked={props.value}
                   onChange={(e) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="isPrivate"
                 />
               )}
             />
@@ -433,13 +434,13 @@ export default function CompleteSignup() {
                   checked={props.value}
                   onChange={(e) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="getNews"
                 />
               )}
             />
           </div>
 
           <div className={styles.horizontalLine} />
-
           <button
             id={'signupCreate'}
             className={styles.saveButton}

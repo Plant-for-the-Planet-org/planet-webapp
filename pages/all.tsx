@@ -18,7 +18,7 @@ export default function Home({
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderboard = await getRequest('/app/leaderboard');
+      const newLeaderboard = await getRequest(`/app/leaderboard/${process.env.TENANTID}`);
       setLeaderboard(newLeaderboard);
     }
     loadLeaderboard();
@@ -28,10 +28,10 @@ export default function Home({
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(`/app/tenantScore`);
+      const newTenantScore = await getRequest(`/app/tenantScore/${process.env.TENANTID}`);
       setTenantScore(newTenantScore);
     }
-    loadTenantScore();
+     loadTenantScore();
   }, []);
   
 
