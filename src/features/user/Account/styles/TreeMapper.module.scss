@@ -1,0 +1,272 @@
+@import './../../../../theme/theme';
+
+.topLoader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5px;
+
+  z-index: 1031;
+}
+
+.topLoaderProgress {
+  width: 0%;
+  background-color: $primaryColor;
+}
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  // margin-top: 280px;
+  > .section {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0px;
+    max-width: 1200px;
+    width: 100%;
+    > .locationList {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 100%;
+      margin-top: 400px;
+      min-height: 400px;
+      z-index: 10;
+      background-color: $backgroundColor;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      .singleLocation {
+        padding: 20px;
+        background-color: $light;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        &:hover {
+          cursor: pointer;
+        }
+        border-bottom: #dddbda 1px solid;
+        > .left {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          > .treeCount {
+            font-weight: 700;
+          }
+          > .date {
+            font-weight: 400;
+          }
+        }
+        > .right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 10px;
+          > .status {
+            font-weight: 700;
+          }
+          > .mode {
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    > .locationDetails {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      justify-content: center;
+      width: 100%;
+      z-index: 10;
+      margin-top: 400px;
+      background-color: $backgroundColor;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      padding: 0px 20px;
+      > .backButton {
+        cursor: pointer;
+      }
+      > .imageContainer {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        overflow-x: scroll;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        > img {
+          height: 100px;
+          width: auto;
+          margin: 10px 10px;
+          border-radius: 10px;
+        }
+      }
+      > .imageContainer::-webkit-scrollbar {
+        display: none;
+      }
+      > .details {
+        display: grid;
+        padding-top: 20px;
+        margin-top: 20px;
+        grid-row-gap: 20px;
+        grid-template-columns: 50% 50%;
+        .singleDetail {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          .title {
+            font-weight: bold;
+          }
+          a {
+            color: $primaryColor;
+            text-decoration: none;
+            font-weight: bold;
+          }
+          .value {
+            word-break: break-word;
+            padding-right: 20px;
+          }
+        }
+      }
+    }
+    > .mapContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: flex-start;
+      width: 100%;
+      > .map {
+        position: absolute;
+        height: 400px;
+        width: 100%;
+        max-width: 680px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160px;
+  margin-top: 100px;
+}
+
+.sampleTrees {
+  display: flex;
+  flex-direction: row;
+}
+
+.tree {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 10%;
+  background: $primaryColor;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.markerSample {
+  width: 20px;
+  height: 20px;
+  border-radius: 50% 50% 50% 10%;
+  background: #ff6200;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 40%;
+  margin: -20px 0 0 -20px;
+  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.pullUpContainer {
+  width: 100%;
+  height: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  > .pullUpBar {
+    height: 5px;
+    width: 40px;
+    border-radius: 50px;
+    background-color: $primaryFontColor;
+  }
+}
+
+.popupContainer {
+  box-shadow: none;
+  border-radius: 0px;
+  background-color: transparent;
+  width: 100px;
+  overflow: none;
+}
+
+.imagePopup {
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+  > img {
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+  }
+}
+
+@include mdTabletView {
+  .pageContainer {
+    padding-top: 20px;
+    > .section {
+      gap: 20px;
+      flex-direction: row;
+      > .locationList {
+        margin-top: 0px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+      }
+      > .locationDetails {
+        margin-top: 0px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+      }
+      > .mapContainer {
+        // width: 50%;
+        > .map {
+          width: 46%;
+        }
+      }
+    }
+  }
+
+  .pullUpContainer {
+    display: none;
+  }
+}

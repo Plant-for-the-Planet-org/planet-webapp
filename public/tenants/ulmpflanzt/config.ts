@@ -19,7 +19,7 @@ const config = {
     locale: 'de_DE',
   },
   home: {
-    image: `/tenants/pampers/background.jpeg`,
+    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,

@@ -1,34 +1,31 @@
-import React, { ReactElement } from 'react'
-import ManageProjects from '../../../src/features/user/ManageProjects/screens'
+import React, { ReactElement } from 'react';
+import ManageProjects from '../../../src/features/user/ManageProjects/screens';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-import {  useAuth0 } from '@auth0/auth0-react';
-import AccountHeader from  '../../../src/features/common/Layout/Header/accountHeader';
-import i18next from '../../../i18n'
+import { useAuth0 } from '@auth0/auth0-react';
+import AccountHeader from '../../../src/features/common/Layout/Header/AccountHeader';
+import i18next from '../../../i18n';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 const { useTranslation } = i18next;
 
-interface Props {
+interface Props {}
 
-}
-
-function ManageProjectsPage({ }: Props): ReactElement {
-
-  const [accessDenied, setAccessDenied] = React.useState(false)
-  const [setupAccess, setSetupAccess] = React.useState(false)
+function ManageProjectsPage({}: Props): ReactElement {
+  const [accessDenied, setAccessDenied] = React.useState(false);
+  const [setupAccess, setSetupAccess] = React.useState(false);
   const { t } = useTranslation(['me']);
 
-  const {userprofile} = React.useContext(UserPropsContext);
+  const { userprofile } = React.useContext(UserPropsContext);
 
   const {
     isLoading,
     isAuthenticated,
     getAccessTokenSilently,
-    loginWithRedirect
+    loginWithRedirect,
   } = useAuth0();
 
-  const [token, setToken] = React.useState('')
+  const [token, setToken] = React.useState('');
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
@@ -36,29 +33,31 @@ function ManageProjectsPage({ }: Props): ReactElement {
       setToken(token);
     }
     if (isAuthenticated) {
-      loadFunction()
+      loadFunction();
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = userprofile.type;      
+      const usertype = userprofile.type;
       if (usertype === 'tpo') {
-        setAccessDenied(false)
-        setSetupAccess(true)
-      }else{
-        setAccessDenied(true)
-        setSetupAccess(true)
+        setAccessDenied(false);
+        setSetupAccess(true);
+      } else {
+        setAccessDenied(true);
+        setSetupAccess(true);
       }
     }
 
     if (!isLoading && isAuthenticated) {
       loadUserData();
+    } else {
+      localStorage.setItem('redirectLink', '/manage-projects/add-project');
+      loginWithRedirect({
+        redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
     }
-    else {
-      localStorage.setItem('redirectLink','/manage-projects/add-project');
-      loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
-      }
   }, [isLoading, isAuthenticated]);
 
   // User is not TPO
@@ -68,20 +67,20 @@ function ManageProjectsPage({ }: Props): ReactElement {
         <AccessDeniedLoader />
         <Footer />
       </>
-    )
+    );
   }
   return setupAccess ? (
     <>
-    <AccountHeader pageTitle={t('me:settingManageProject')}/>
+      <AccountHeader pageTitle={t('me:settingManageProject')} />
       <ManageProjects token={token} />
       <Footer />
     </>
   ) : (
     <>
-    <GlobeContentLoader/>
-    <Footer/>
+      <GlobeContentLoader />
+      <Footer />
     </>
-  )
+  );
 }
 
 export default ManageProjectsPage;

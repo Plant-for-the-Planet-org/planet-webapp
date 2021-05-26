@@ -4,18 +4,14 @@ import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
 
-interface Props { }
+interface Props {}
 
-function Login({ }: Props): ReactElement {
+function Login({}: Props): ReactElement {
   const router = useRouter();
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
-  const {
-    isAuthenticated,
-    isLoading,
-    loginWithRedirect,
-  } = useAuth0();
+  const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
   const { userprofile, isLoaded } = React.useContext(UserPropsContext);
 
@@ -49,10 +45,6 @@ function Login({ }: Props): ReactElement {
     }
     console.log('nothing', isLoaded);
   }, [isAuthenticated, isLoading, isLoaded]);
-
-  // console.log('isloaded', isLoaded);
-  console.log('isAuthenticated', isAuthenticated);
-  console.log('isloading', isLoading);
 
   return (
     <div>
