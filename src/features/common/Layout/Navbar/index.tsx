@@ -18,7 +18,11 @@ const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
-
+  const lang_path = {
+    "en":"en",
+    "de":"de",
+    "es":"es-es"
+    }
   const {
     isLoading,
     isAuthenticated,
@@ -148,31 +152,13 @@ export default function NavbarComponent(props: any) {
             }
             if (
               link === 'about' &&
-              SingleLink.visible &&
-              i18n.language === 'de'
+              SingleLink.visible 
             ) {
               SingleLink = {
                 ...SingleLink,
                 onclick: `${SingleLink.onclick}${
                   process.env.TENANT === 'planet' ||
-                  process.env.TENANT === 'ttc'
-                    ? 'de'
-                    : ''
-                }`,
-              };
-            } else if (
-              link === 'about' &&
-              SingleLink.visible &&
-              i18n.language === 'es'
-            ) {
-              SingleLink = {
-                ...SingleLink,
-                onclick: `${SingleLink.onclick}${
-                  process.env.TENANT === 'planet' ||
-                  process.env.TENANT === 'ttc'
-                    ? 'es-es'
-                    : ''
-                }`,
+                  process.env.TENANT === 'ttc' ? lang_path[i18n.language] : ""}`
               };
             }
             return SingleLink.visible ? (
