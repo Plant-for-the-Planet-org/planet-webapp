@@ -141,13 +141,13 @@ export default function NavbarComponent(props: any) {
                 <Link key={link} href={SingleLink.onclick}>
                   <div className={'linkContainer'}>
                     <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                    {SingleLink.title === "home" ?
+                    {(link === 'donate' ?
                       <p className={router.pathname === "/" || router.pathname === "/[p]" ? 'active_icon' : ''}>
                         {t('common:' + SingleLink.title)}
                       </p> :
                       <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
                         {t('common:' + SingleLink.title)}
-                      </p>}
+                      </p>)}
                   </div>
                 </Link>
               )
