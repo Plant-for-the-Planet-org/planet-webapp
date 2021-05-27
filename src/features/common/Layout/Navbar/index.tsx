@@ -157,8 +157,7 @@ export default function NavbarComponent(props: any) {
               SingleLink = {
                 ...SingleLink,
                 onclick: `${SingleLink.onclick}${
-                  process.env.TENANT === 'planet' ||
-                  process.env.TENANT === 'ttc' ? lang_path[i18n.language] : ""}`
+                  (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') && lang_path[i18n.language] ? lang_path[i18n.language] : ""}`
               };
             }
             return SingleLink.visible ? (
