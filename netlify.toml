@@ -57,7 +57,7 @@
   status = 301
   force = false
 [[redirects]]
-  from = /yucatan-reforestation"
+  from = "/yucatan-reforestation"
   to = "/yucatan"
   status = 301
   force = false
