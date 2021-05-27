@@ -17,7 +17,7 @@ interface Props {
 
 function Home({ leaderboard, tenantScore }: Props): ReactElement {
     const router = useRouter()
-    const projectID = 'yucatan-reforestation';
+    const projectID = 'proj_WZkyugryh35sMmZMmXCwq7YY';
 
     const LandingSectionData = {
         mainTitleSubText: 'EIN EURO = EIN BAUM',
