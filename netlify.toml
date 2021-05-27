@@ -56,6 +56,11 @@
   to = "/open-app"
   status = 301
   force = false
+[[redirects]]
+  from = /yucatan-reforestation"
+  to = "/yucatan"
+  status = 301
+  force = false
 [[plugins]]
   package = "netlify-plugin-next-dynamic"
 [[plugins]]
