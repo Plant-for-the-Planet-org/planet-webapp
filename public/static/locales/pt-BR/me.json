@@ -1,5 +1,6 @@
 {
-  "treesPlanted": "Árvores Plantadas",
+  "treesPlanted": "Árvore Plantada",
+  "treesPlanted_plural": "Árvores Plantadas",
   "target": "Alvo",
   "share": "Compartilhe",
   "registerTrees": "Registrar Árvores",
