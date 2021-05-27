@@ -196,6 +196,11 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
         destination: '/open-app',
         permanent: true,
       },
+      {
+        source: '/yucatan-reforestation',
+        destination: '/yucatan',
+        permanent: true,
+      },
     ];
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
