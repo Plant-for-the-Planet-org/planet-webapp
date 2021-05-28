@@ -54,7 +54,7 @@ export default function Donate({
       loadProject();
     }
   }, [router.query.p, currencyCode]);
-console.log(router.asPath,"router")
+
   const ProjectProps = {
     project,
   };
