@@ -19,7 +19,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { selectUserType } from '../../../../utils/selectUserType';
 import { ThemeContext } from '../../../../theme/themeContext';
-
+import { MenuItem } from '@material-ui/core';
+import { getStoredConfig } from '../../../../utils/storeConfig'
 const { useTranslation } = i18next;
 export default function EditProfileModal({
   userprofile,
@@ -108,7 +109,17 @@ export default function EditProfileModal({
   const [severity, setSeverity] = useState('success')
   const [snackbarMessage, setSnackbarMessage] = useState("OK");
   const watchIsPrivate = watch('isPrivate');
+  const [type, setAccountType] = useState('individual');
 
+  const profileTypes = [
+    { id: 1, title: ready ? t('editProfile:individual') : '', value: 'individual' },
+    { id: 2, title: ready ? t('editProfile:organization') : '', value: 'organization' },
+    { id: 3, title: ready ? t('editProfile:education') : '', value: 'education' }
+  ]
+  React.useEffect(() => {
+    // This will remove field values which do not exist for the new type
+    reset()
+  }, [type])
   const onDrop = React.useCallback((acceptedFiles) => {
     setUpdatingPic(true);
     acceptedFiles.forEach((file: any) => {
@@ -152,7 +163,8 @@ export default function EditProfileModal({
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
-      country: country
+      country: country,
+      type
     }
     if (!isLoading && token) {
       try {
@@ -179,7 +191,6 @@ export default function EditProfileModal({
     }
   };
   const { theme } = React.useContext(ThemeContext);
-
   return ready ? (
     <React.Fragment>
       <Modal
@@ -238,14 +249,26 @@ export default function EditProfileModal({
                 </div>
               </label>
             </div>
-
+            {userprofile.type !== "tpo" ?
+              <MaterialTextField
+                    label={t('editProfile:iamA')}
+                    variant="outlined"
+                    select
+                    defaultValue={type}
+                  >
+                    {profileTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value} onClick={() => setAccountType(option.value)}>
+                        {option.title} 
+                      </MenuItem>
+                    ))}
+            </MaterialTextField> : null}
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   label={t('donate:firstName')}
                   variant="outlined"
                   name="firstname"
-                  inputRef={register()}
+                  inputRef={register({ required: true })}
                 />
                 {errors.firstname && (
                   <span className={styles.formErrors}>
@@ -259,7 +282,7 @@ export default function EditProfileModal({
                   label={t('donate:lastName')}
                   variant="outlined"
                   name="lastname"
-                  inputRef={register()}
+                  inputRef={register({ required: true })}
                 />
                 {errors.lastname && (
                   <span className={styles.formErrors}>
@@ -269,15 +292,17 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {userprofile.type !== 'individual' && (
+
+
+            {userprofile.type && type !== 'individual' && (
               <div className={styles.formFieldLarge}>
               <MaterialTextField
                 label={t('editProfile:profileName', {
-                  type: selectUserType(userprofile.type, t)
+                  type: selectUserType(type, t)
                 })}
                 variant="outlined"
                 name="name"
-                inputRef={register()}
+                inputRef={register({ required: true })}
               />
               {errors.name && (
                 <span className={styles.formErrors}>
@@ -292,7 +317,7 @@ export default function EditProfileModal({
                 label={t('donate:address')}
                 variant="outlined"
                 name="address"
-                inputRef={register()}
+                inputRef={register({ required: true })}
               />
               {errors.address && (
                 <span className={styles.formErrors}>
@@ -307,7 +332,7 @@ export default function EditProfileModal({
                   label={t('donate:city')}
                   variant="outlined"
                   name="city"
-                  inputRef={register()}
+                  inputRef={register({ required: true })}
                 />
                 {errors.city && (
                   <span className={styles.formErrors}>
@@ -323,6 +348,7 @@ export default function EditProfileModal({
                   name="zipCode"
                   inputRef={register({
                     pattern: postalRegex,
+                    required: true 
                   })}
                 />
                 {errors.zipCode && (

@@ -1,4 +1,5 @@
 {
+  "iamA": "I am a",
   "loginTitle": "{{log}} - Login",
   "signUpText": "Complete Signup",
   "profileTypes": "{{item.title}}",
