@@ -12,6 +12,7 @@ interface Props {
   index: number;
   selectedRecord: number;
   record: Object;
+  paymentHistory: Object;
 }
 
 export default function AccountRecord({
@@ -19,6 +20,7 @@ export default function AccountRecord({
   index,
   selectedRecord,
   record,
+  paymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
@@ -29,7 +31,9 @@ export default function AccountRecord({
       }`}
     >
       <RecordHeader record={record} />
-      <div className={styles.divider}></div>
+      {index !== paymentHistory?.items?.length - 1 && (
+        <div className={styles.divider} />
+      )}
       <div className={styles.detailContainer}>
         <div className={styles.detailGrid}>
           <DetailsComponent record={record} />
@@ -160,7 +164,11 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.details?.project && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
-          <p>{record.details.project}</p>
+          {record.projectGuid ? (
+            <a href={`/${record.projectGuid}`}>{record.details.project}</a>
+          ) : (
+            <p>{record.details.project}</p>
+          )}
         </div>
       )}
       {record.details?.refundAmount && (
@@ -187,12 +195,12 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           </p>
         </div>
       )}
-      {record.projectGuid && (
+      {/* {record.projectGuid && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('projectGuid')}</p>
           <p>{record.projectGuid}</p>
         </div>
-      )}
+      )} */}
       {record.reference && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('reference')}</p>

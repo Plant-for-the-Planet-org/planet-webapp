@@ -96,6 +96,7 @@ export default function History({
                   index={index}
                   selectedRecord={selectedRecord}
                   record={record}
+                  paymentHistory={paymentHistory}
                 />
               );
             })
