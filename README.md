@@ -160,7 +160,7 @@ The deployment and management of this application is possible with support from 
 
 ## Legal
 
-Any brand-images/logo/iconography used in this project, including of Plant-for-the-Planet, are registered trademark(s) of respective parties. 
+Any brand-images/logo/iconography used in this project, including of Plant-for-the-Planet, are registered trademark(s) of respective parties.
 
 [Trillion Tree Campaign icon](https://www.trilliontreecampaign.org/tenants/ttc/logo.png) is available under Creative Commons CC BY-NC-ND.
 

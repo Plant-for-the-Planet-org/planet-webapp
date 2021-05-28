@@ -30,7 +30,7 @@ describe('manage-project', () => {
     await driver.findElement(By.name('action')).click();
     (await driver).sleep(400);
 
-    await driver.findElement(By.id('tpoProfileSetting')).click().then(() => {
+    await driver.wait(until.elementLocated(By.id('tpoProfileSetting'))).click().then(() => {
       driver.executeScript('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Action successful"}}');
     });
     await driver.quit();
