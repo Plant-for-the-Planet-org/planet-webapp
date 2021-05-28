@@ -114,5 +114,6 @@
   "planetFee": "Planet Fee",
   "transactionFee": "Transaction Fee",
   "transferFee": "Transfer Fee",
-  "open": "Open"
+  "open": "Open",
+  "downloads": "Downloads"
 }

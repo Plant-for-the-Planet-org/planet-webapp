@@ -20,6 +20,7 @@ export default function AccountRecord({
   selectedRecord,
   record,
 }: Props): ReactElement {
+  const { t, i18n } = useTranslation(['me']);
   return (
     <div
       onClick={() => handleRecordOpen(index)}
@@ -38,6 +39,16 @@ export default function AccountRecord({
             <div className={styles.title}>{t('bankDetails')}</div>
             <div className={styles.detailGrid}>
               <BankDetails record={record} />
+            </div>
+          </>
+        )}
+        {(record.details.donorCertificate ||
+          record.details.taxDeductibleReceipt ||
+          record.details.giftCertificate) && (
+          <>
+            <div className={styles.title}>{t('downloads')}</div>
+            <div className={styles.detailGrid}>
+              <Certificates record={record} />
             </div>
           </>
         )}
@@ -304,6 +315,42 @@ export function BankDetails({ record }: BankDetailsProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('updated')}</p>
           <p>{formatDate(record.details.recipientBank.updated)}</p>
+        </div>
+      )}
+    </>
+  );
+}
+
+interface CertificatesProps {
+  record: Object;
+}
+
+export function Certificates({ record }: CertificatesProps): ReactElement {
+  const { t, i18n } = useTranslation(['me']);
+  return (
+    <>
+      {record.details?.donorCertificate && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('donorCertificate')}</p>
+          <a href={record.details.donorCertificate} target="_blank">
+            {t('download')}
+          </a>
+        </div>
+      )}
+      {record.details?.taxDeductibleReceipt && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('taxDeductibleReceipt')}</p>
+          <a href={record.details.taxDeductibleReceipt} target="_blank">
+            {t('download')}
+          </a>
+        </div>
+      )}
+      {record.details?.giftCertificate && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('giftCertificate')}</p>
+          <a href={record.details.giftCertificate} target="_blank">
+            {t('download')}
+          </a>
         </div>
       )}
     </>

@@ -9,6 +9,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import AccountRecord, {
   BankDetails,
+  Certificates,
   DetailsComponent,
   RecordHeader,
 } from '../components/History/AccountRecord';
@@ -148,9 +149,17 @@ export default function History({
                   <>
                     <div className={styles.title}>{t('bankDetails')}</div>
                     <div className={styles.detailGrid}>
-                      <BankDetails
-                        record={paymentHistory?.items[selectedRecord]}
-                      />
+                      <BankDetails record={currentRecord} />
+                    </div>
+                  </>
+                )}
+                {(currentRecord.details.donorCertificate ||
+                  currentRecord.details.taxDeductibleReceipt ||
+                  currentRecord.details.giftCertificate) && (
+                  <>
+                    <div className={styles.title}>{t('downloads')}</div>
+                    <div className={styles.detailGrid}>
+                      <Certificates record={currentRecord} />
                     </div>
                   </>
                 )}
