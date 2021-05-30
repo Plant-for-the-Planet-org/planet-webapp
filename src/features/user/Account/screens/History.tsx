@@ -122,53 +122,55 @@ export default function History({
           </div>
         </div>
       </div>
-      <Modal
-        disableBackdropClick
-        hideBackdrop
-        className={styles.modal}
-        open={openModal}
-        onClose={handleClose}
-      >
-        <>
-          <div
-            onClick={() => {
-              handleClose();
-            }}
-            className={styles.closeRecord}
-          >
-            <BackButton />
-          </div>
-          {currentRecord ? (
-            <>
-              <RecordHeader record={currentRecord} />
-              <div className={styles.divider}></div>
-              <div className={styles.detailContainer}>
-                <div className={styles.detailGrid}>
-                  <DetailsComponent record={currentRecord} />
+      <div className={styles.modalContainer}>
+        <Modal
+          disableBackdropClick
+          hideBackdrop
+          className={styles.modal}
+          open={openModal}
+          onClose={handleClose}
+        >
+          <>
+            <div
+              onClick={() => {
+                handleClose();
+              }}
+              className={styles.closeRecord}
+            >
+              <BackButton />
+            </div>
+            {currentRecord ? (
+              <>
+                <RecordHeader record={currentRecord} />
+                <div className={styles.divider}></div>
+                <div className={styles.detailContainer}>
+                  <div className={styles.detailGrid}>
+                    <DetailsComponent record={currentRecord} />
+                  </div>
+                  {currentRecord?.details?.recipientBank && (
+                    <>
+                      <div className={styles.title}>{t('bankDetails')}</div>
+                      <div className={styles.detailGrid}>
+                        <BankDetails record={currentRecord} />
+                      </div>
+                    </>
+                  )}
+                  {(currentRecord.details.donorCertificate ||
+                    currentRecord.details.taxDeductibleReceipt ||
+                    currentRecord.details.giftCertificate) && (
+                    <>
+                      <div className={styles.title}>{t('downloads')}</div>
+                      <div className={styles.detailGrid}>
+                        <Certificates record={currentRecord} />
+                      </div>
+                    </>
+                  )}
                 </div>
-                {currentRecord?.details?.recipientBank && (
-                  <>
-                    <div className={styles.title}>{t('bankDetails')}</div>
-                    <div className={styles.detailGrid}>
-                      <BankDetails record={currentRecord} />
-                    </div>
-                  </>
-                )}
-                {(currentRecord.details.donorCertificate ||
-                  currentRecord.details.taxDeductibleReceipt ||
-                  currentRecord.details.giftCertificate) && (
-                  <>
-                    <div className={styles.title}>{t('downloads')}</div>
-                    <div className={styles.detailGrid}>
-                      <Certificates record={currentRecord} />
-                    </div>
-                  </>
-                )}
-              </div>
-            </>
-          ) : null}
-        </>
-      </Modal>
+              </>
+            ) : null}
+          </>
+        </Modal>
+      </div>
     </div>
   );
 }

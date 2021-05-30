@@ -28,7 +28,7 @@
   align-items: flex-start;
   width: 100%;
   padding-top: 20px;
-  max-width: 1200px;
+  max-width: 1250px;
 }
 
 .historyList {
@@ -218,6 +218,10 @@
   scrollbar-width: none;
 }
 
+.modalContainer {
+  display: block;
+}
+
 @include smTabletView {
   .detailGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -247,6 +251,10 @@
   }
 
   .modal {
+    display: none;
+  }
+
+  .modalContainer {
     display: none;
   }
 
