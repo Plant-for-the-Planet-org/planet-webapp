@@ -190,20 +190,20 @@
 }
 
 .markerSample {
-  width: 20px;
-  height: 20px;
-  border-radius: 50% 50% 50% 10%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50% 50% 50% 50%;
   background: #ff6200;
   position: absolute;
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  left: 50%;
-  top: 40%;
-  margin: -20px 0 0 -20px;
-  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  // -webkit-transform: rotate(-45deg);
+  // -moz-transform: rotate(-45deg);
+  // -o-transform: rotate(-45deg);
+  // -ms-transform: rotate(-45deg);
+  // transform: rotate(-45deg);
+  // left: 50%;
+  // top: 40%;
+  // margin: -20px 0 0 -20px;
+  // box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
 }
 
@@ -251,16 +251,18 @@
         margin-top: 0px;
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
+        width: 40%;
       }
       > .locationDetails {
         margin-top: 0px;
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
+        width: 40%;
       }
       > .mapContainer {
-        // width: 50%;
+        width: 60%;
         > .map {
-          width: 46%;
+          width: 60%;
         }
       }
     }

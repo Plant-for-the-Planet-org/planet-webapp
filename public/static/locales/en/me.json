@@ -57,7 +57,7 @@
   "treeCount": "Tree Count",
   "lastUpdate": "Last Updated",
   "donorCertificate": "Donor Certificate",
-  "download": "Download",
+  "download": "Download Certificate",
   "donations": "Donations",
   "donation-in-progress": "In Progress",
   "donation-cancelled": "Cancelled",
@@ -115,5 +115,6 @@
   "transactionFee": "Transaction Fee",
   "transferFee": "Transfer Fee",
   "open": "Open",
-  "downloads": "Downloads"
+  "downloads": "Downloads",
+  "account": "Account"
 }

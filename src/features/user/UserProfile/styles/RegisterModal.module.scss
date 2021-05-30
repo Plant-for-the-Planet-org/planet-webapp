@@ -7,15 +7,14 @@
   border-radius: 8px;
   position: relative;
   padding: 20px 20px;
-  max-width: 780px;
+  max-width: 1200px;
   width: 100%;
   outline: none;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   overflow-y: auto;
 }
-
 
 .title {
   display: flex;
@@ -85,6 +84,7 @@
   width: 100%;
   justify-content: center;
   flex-direction: column;
+  max-width: 700px;
 }
 
 .formContainer > form {

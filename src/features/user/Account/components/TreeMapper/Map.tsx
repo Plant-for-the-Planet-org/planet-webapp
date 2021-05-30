@@ -115,6 +115,27 @@ export default function MyTreesMap({
                 };
                 object.features.push(feature);
               }
+              if (location.type === 'multi') {
+                for (const key in location.sampleTrees) {
+                  if (
+                    Object.prototype.hasOwnProperty.call(
+                      location.sampleTrees,
+                      key
+                    )
+                  ) {
+                    const loc = location.sampleTrees[key];
+                    var feature = {
+                      type: 'Feature',
+                      properties: loc,
+                      geometry: {
+                        type: 'Point',
+                        coordinates: loc.geometry.coordinates,
+                      },
+                    };
+                    object.features.push(feature);
+                  }
+                }
+              }
               if (location.type === 'sample') {
                 for (const key in locations) {
                   if (Object.prototype.hasOwnProperty.call(locations, key)) {
@@ -141,27 +162,29 @@ export default function MyTreesMap({
         for (const key in locations) {
           if (Object.prototype.hasOwnProperty.call(locations, key)) {
             const location = locations[key];
-            if (location.geometry.type === 'Point') {
-              var feature = {
-                type: 'Feature',
-                properties: location,
-                geometry: {
-                  type: 'Point',
-                  coordinates: location.geometry.coordinates,
-                },
-              };
-              object.features.push(feature);
-            }
-            if (location.geometry.type === 'Polygon') {
-              var feature = {
-                type: 'Feature',
-                properties: location,
-                geometry: {
-                  type: 'Polygon',
-                  coordinates: location.geometry.coordinates,
-                },
-              };
-              object.features.push(feature);
+            if (location.type !== 'sample') {
+              if (location.geometry.type === 'Point') {
+                var feature = {
+                  type: 'Feature',
+                  properties: location,
+                  geometry: {
+                    type: 'Point',
+                    coordinates: location.geometry.coordinates,
+                  },
+                };
+                object.features.push(feature);
+              }
+              if (location.geometry.type === 'Polygon') {
+                var feature = {
+                  type: 'Feature',
+                  properties: location,
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: location.geometry.coordinates,
+                  },
+                };
+                object.features.push(feature);
+              }
             }
           }
         }

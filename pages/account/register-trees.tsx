@@ -5,46 +5,29 @@ import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader
 import i18next from '../../i18n';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
+import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 interface Props {}
 const { useTranslation } = i18next;
 export default function Register({}: Props): ReactElement {
-  const [currentUserSlug, setCurrentUserSlug] = React.useState();
-  const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
-    true
-  );
+  const { userprofile, isLoaded, token } = React.useContext(UserPropsContext);
 
-  const { userprofile } = React.useContext(UserPropsContext);
-
-  const [token, setToken] = React.useState('');
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
-
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-      userprofile && userprofile.slug
-        ? setCurrentUserSlug(userprofile.slug)
-        : null;
-    }
-    if (isAuthenticated && !isLoading) {
-      loadFunction();
-    }
-  }, [isAuthenticated, isLoading]);
   const { t } = useTranslation(['me']);
   return (
     <>
-      <AccountHeader page={'register-trees'} title={t('me:registerTrees')} />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {!isLoading && currentUserSlug ? (
-          <RegisterTrees
-            registerTreesModalOpen={registerTreesModalOpen}
-            slug={currentUserSlug}
-            token={token}
+      {isLoaded && userprofile && token ? (
+        <>
+          <AccountHeader
+            page={'register-trees'}
+            title={t('me:registerTrees')}
           />
-        ) : null}
-      </div>
-      <AccountFooter />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <RegisterTrees slug={userprofile.slug} token={token} />
+          </div>
+          <AccountFooter />
+        </>
+      ) : (
+        <UserProfileLoader />
+      )}
     </>
   );
 }
