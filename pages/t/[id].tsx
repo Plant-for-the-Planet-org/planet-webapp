@@ -14,28 +14,20 @@ interface Props {
 }
 
 export default function PublicUser(initialized: Props) {
-  const {
-    userprofile,
-    isLoaded
-  } = React.useContext(UserPropsContext);
+  const { userprofile, isLoaded } = React.useContext(UserPropsContext);
 
   const [isLoadingData, setIsLoadingData] = React.useState(false);
   const [slug, setSlug] = React.useState();
   const [publicUserProfle, setPublicUserProfile] = React.useState(null);
   const [authenticatedType, setAuthenticatedType] = React.useState('private');
 
-  const {
-    isLoading,
-    isAuthenticated,
-  } = useAuth0();
-
+  const { isLoading, isAuthenticated } = useAuth0();
 
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
 
   useEffect(() => {
     async function loadUserData() {
-
       // For loading user data we first have to decide whether user is trying to load their own profile or someone else's
       // To do this we first try to fetch the slug from the local storage
       // If the slug matches and also there is token in the session we fetch the user's private data, else the public data
@@ -45,7 +37,9 @@ export default function PublicUser(initialized: Props) {
       if (currentUserSlug !== router.query.id || !userprofile) {
         setIsLoadingData(true);
         //no user logged in or slug mismatch -> public profile
-        const newPublicUserprofile = await getRequest(`/app/profiles/${router.query.id}`);
+        const newPublicUserprofile = await getRequest(
+          `/app/profiles/${router.query.id}`
+        );
         setAuthenticatedType('public');
         setPublicUserProfile(newPublicUserprofile);
         setIsLoadingData(false);
@@ -59,7 +53,7 @@ export default function PublicUser(initialized: Props) {
     if (router && router.query.id && !isLoading && isLoaded) {
       loadUserData();
     }
-  }, [isLoading, forceReload, isAuthenticated, router, isLoaded]);
+  }, [isLoading, forceReload, isAuthenticated, router, isLoaded, userprofile]);
 
   const PublicUserProps = {
     userprofile: publicUserProfle ? publicUserProfle : userprofile,
