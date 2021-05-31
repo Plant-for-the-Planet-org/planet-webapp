@@ -15,13 +15,9 @@ interface Props {
 
 export default function PublicUser(initialized: Props) {
   const { userprofile, isLoaded } = React.useContext(UserPropsContext);
-
   const [isLoadingData, setIsLoadingData] = React.useState(false);
-  const [slug, setSlug] = React.useState();
   const [publicUserProfle, setPublicUserProfile] = React.useState(null);
-  const [authenticatedType, setAuthenticatedType] = React.useState('private');
-
-  const { isLoading, isAuthenticated } = useAuth0();
+  const [authenticatedType, setAuthenticatedType] = React.useState('public');
 
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
@@ -34,7 +30,10 @@ export default function PublicUser(initialized: Props) {
       const currentUserSlug = userprofile?.slug ? userprofile.slug : null;
 
       // some user logged in and slug matches -> private profile
-      if (currentUserSlug !== router.query.id || !userprofile) {
+      if (userprofile && currentUserSlug === router.query.id) {
+        setPublicUserProfile(null);
+        setAuthenticatedType('private');
+      } else {
         setIsLoadingData(true);
         //no user logged in or slug mismatch -> public profile
         const newPublicUserprofile = await getRequest(
@@ -43,17 +42,14 @@ export default function PublicUser(initialized: Props) {
         setAuthenticatedType('public');
         setPublicUserProfile(newPublicUserprofile);
         setIsLoadingData(false);
-      } else {
-        setPublicUserProfile(null);
-        setAuthenticatedType('private');
       }
     }
 
     // ready is for router, loading is for session
-    if (router && router.query.id && !isLoading && isLoaded) {
+    if (router && router.query.id && isLoaded) {
       loadUserData();
     }
-  }, [isLoading, forceReload, isAuthenticated, router, isLoaded, userprofile]);
+  }, [forceReload, router, isLoaded, userprofile]);
 
   const PublicUserProps = {
     userprofile: publicUserProfle ? publicUserProfle : userprofile,
