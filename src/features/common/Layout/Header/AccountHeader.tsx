@@ -54,7 +54,21 @@ export default function AccountHeader({ title, page }: Props): ReactElement {
     }
   };
   return (
-    <div className={styles.headerContainer}>
+    <div
+      className={styles.headerContainer}
+      style={{
+        background: `linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    ),
+    url('${process.env.CDN_URL}/media/images/app/bg_layer.jpg')
+      center center,
+    ${styles.primaryColor}`,
+      }}
+    >
       <div className={styles.navigationContainer}>
         <button
           onClick={() => {

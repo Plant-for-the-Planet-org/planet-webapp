@@ -34,16 +34,16 @@
 .headerContainer {
   // position: fixed;
   // top:0;
-  background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0)
-    ),
-    url('https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg')
-      center center,
-    $primaryColor;
+  // background: linear-gradient(
+  //     to top,
+  //     rgba(0, 0, 0, 0.5),
+  //     rgba(0, 0, 0, 0.2),
+  //     rgba(0, 0, 0, 0),
+  //     rgba(0, 0, 0, 0)
+  //   ),
+  //   url('https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg')
+  //     center center,
+  //   $primaryColor;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -118,4 +118,8 @@
     // top:80px;
     margin-top: 80px;
   }
+}
+
+:export {
+  primaryColor: $primaryColor;
 }
