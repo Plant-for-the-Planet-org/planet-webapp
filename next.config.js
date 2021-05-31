@@ -100,13 +100,6 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
           urlPrefix: `~${basePath}/_next`,
           release: COMMIT_SHA,
         }),
-        new SentryWebpackPlugin({
-          include: '.next',
-          ignore: ['node_modules'],
-          stripPrefix: ['webpack://_N_E/'],
-          urlPrefix: `~${basePath}/_next`,
-          release: COMMIT_SHA,
-        })
       );
     }
     return config;
