@@ -53,7 +53,7 @@ export default function PublicUser(initialized: Props) {
     if (router && router.query.id && !isLoading && isLoaded) {
       loadUserData();
     }
-  }, [isLoading, forceReload, isAuthenticated, router, isLoaded, userprofile]);
+  }, [isLoading, forceReload, isAuthenticated, router, isLoaded]);
 
   const PublicUserProps = {
     userprofile: publicUserProfle ? publicUserProfle : userprofile,

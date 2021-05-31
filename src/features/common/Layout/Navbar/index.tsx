@@ -10,22 +10,21 @@ import { useAuth0 } from '@auth0/auth0-react';
 import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
-import {UserPropsContext} from '../UserPropsContext';
+import { UserPropsContext } from '../UserPropsContext';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
+  const lang_path = {
+    en: 'en',
+    de: 'de',
+    es: 'es-es',
+  };
+  const { isAuthenticated, error, loginWithRedirect, logout } = useAuth0();
 
-  const {
-    isAuthenticated,
-    error,
-    loginWithRedirect,
-    logout,
-  } = useAuth0();
-
-  const {userprofile,setUserprofile} = React.useContext(UserPropsContext);
+  const { userprofile, setUserprofile } = React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -36,7 +35,10 @@ export default function NavbarComponent(props: any) {
     } else {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
-      loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+      loginWithRedirect({
+        redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
     }
   }
 
@@ -84,10 +86,10 @@ export default function NavbarComponent(props: any) {
       </div>
     ) : router.pathname === '/complete-signup' ||
       (userprofile && router.pathname === `/t/${userprofile.slug}`) ? (
-          <MeSelected color={themeProperties.primaryColor} />
-        ) : (
-          <Me color={themeProperties.light.primaryFontColor} />
-        );
+      <MeSelected color={themeProperties.primaryColor} />
+    ) : (
+      <Me color={themeProperties.light.primaryFontColor} />
+    );
   };
 
   const MenuItems = () => {
@@ -99,54 +101,112 @@ export default function NavbarComponent(props: any) {
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
-                <button id={'navbarActiveIcon'} key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
+                <button
+                  id={'navbarActiveIcon'}
+                  key={link}
+                  onClick={() => gotoUserPage()}
+                  className={'linkContainer'}
+                >
                   <div className={'link_icon'}>
                     <UserProfileIcon />
                   </div>
-                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {isAuthenticated && userprofile && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)}
+                  <p
+                    className={
+                      router.pathname === SingleLink.onclick
+                        ? 'active_icon'
+                        : ''
+                    }
+                  >
+                    {isAuthenticated && userprofile && SingleLink.loggedInTitle
+                      ? t('common:' + SingleLink.loggedInTitle)
+                      : t('common:' + SingleLink.title)}
                   </p>
                 </button>
-              )
+              );
             }
             if (link === 'about' && SingleLink.visible) {
               SingleLink = {
                 ...SingleLink,
-                onclick: `${SingleLink.onclick}${i18n.language === 'de' && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' : ''}`
-              }
+                onclick: `${SingleLink.onclick}${
+                  (process.env.TENANT === 'planet' ||
+                    process.env.TENANT === 'ttc') &&
+                  lang_path[i18n.language]
+                    ? lang_path[i18n.language]
+                    : ''
+                }`,
+              };
             }
             return SingleLink.visible ? (
-              (
-                <Link key={link} href={SingleLink.onclick}>
-                  <div className={'linkContainer'}>
-                    <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                    {(link === 'donate' ?
-                      <p className={router.pathname === "/" || router.pathname === "/[p]" ? 'active_icon' : ''}>
-                        {t('common:' + SingleLink.title)}
-                      </p> :
-                      <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                        {t('common:' + SingleLink.title)}
-                      </p>)}
-                  </div>
-                </Link>
-              )
-            ) : <></>;
+              <Link key={link} href={SingleLink.onclick}>
+                <div className={'linkContainer'}>
+                  <GetNavBarIcon
+                    UserProfileIcon={UserProfileIcon}
+                    mainKey={link}
+                    router={router}
+                    item={SingleLink}
+                  />
+                  {link === 'donate' ? (
+                    <p
+                      className={
+                        router.pathname === '/' || router.pathname === '/[p]'
+                          ? 'active_icon'
+                          : ''
+                      }
+                    >
+                      {t('common:' + SingleLink.title)}
+                    </p>
+                  ) : (
+                    <p
+                      className={
+                        router.pathname === SingleLink.onclick
+                          ? 'active_icon'
+                          : ''
+                      }
+                    >
+                      {t('common:' + SingleLink.title)}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ) : (
+              <></>
+            );
           }
-
         })}
       </div>
-    ) : <></>;
-  }
+    ) : (
+      <></>
+    );
+  };
 
   return (
     <div className={'mainNavContainer'}>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>
           {config.header?.isSecondaryTenant && (
-            <div className={config.tenantName === 'ttc' ? 'hidePrimaryTenantLogo' : 'primaryTenantLogo'}>
+            <div
+              className={
+                config.tenantName === 'ttc'
+                  ? 'hidePrimaryTenantLogo'
+                  : 'primaryTenantLogo'
+              }
+            >
               <a href={config.header?.tenantLogoLink}>
-                <img className={'tenantLogo desktop'} src={config.header.tenantLogoURL} />
-                {config.header.mobileLogoURL ? <img className={'tenantLogo mobile'} src={config.header.mobileLogoURL} /> : <img className={'tenantLogo mobile'} src={config.header.tenantLogoURL} />}
+                <img
+                  className={'tenantLogo desktop'}
+                  src={config.header.tenantLogoURL}
+                />
+                {config.header.mobileLogoURL ? (
+                  <img
+                    className={'tenantLogo mobile'}
+                    src={config.header.mobileLogoURL}
+                  />
+                ) : (
+                  <img
+                    className={'tenantLogo mobile'}
+                    src={config.header.tenantLogoURL}
+                  />
+                )}
               </a>
               <div className={'logo_divider'} />
             </div>

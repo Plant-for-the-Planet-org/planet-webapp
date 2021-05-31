@@ -27,9 +27,7 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
 
-  const {
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -67,8 +65,8 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
   return ready ? (
     <>
       {contributions &&
-        Array.isArray(contributions) &&
-        contributions.length !== 0 ? (
+      Array.isArray(contributions) &&
+      contributions.length !== 0 ? (
         <div className={styles.myTreesSection}>
           <div className={styles.myTreesTitle}>
             {authenticatedType === 'private'
@@ -92,17 +90,17 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                         <div className={styles.country}>
                           {item.properties.country
                             ? t(
-                              'country:' +
-                              item.properties.country.toLowerCase()
-                            )
+                                'country:' +
+                                  item.properties.country.toLowerCase()
+                              )
                             : null}
                         </div>
                         {item.properties.type === 'gift' ? (
                           <div className={styles.source}>
                             {item.properties.giver.name
                               ? t('me:receivedFrom', {
-                                name: item.properties.giver.name,
-                              })
+                                  name: item.properties.giver.name,
+                                })
                               : t('me:receivedTrees')}
                           </div>
                         ) : null}
@@ -115,8 +113,8 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
                           <div className={styles.source}>
                             {item.properties.recipient
                               ? t('me:giftToGiftee', {
-                                gifteeName: item.properties.recipient.name,
-                              })
+                                  gifteeName: item.properties.recipient.name,
+                                })
                               : null}
                           </div>
                         ) : null}
