@@ -70,7 +70,7 @@ function ClaimDonation({ }: Props): ReactElement {
 
 
     React.useEffect(() => {
-        if (router && router.query.type && router.query.code) {            
+        if (router && router.query.type && router.query.code) {
             if (router.query.type !== 'donation' && router.query.type !== 'donor' && router.query.type !== 'gift') {
                 setErrorMessage(ready ? t('redeem:invalidType') : '')
             }
@@ -192,7 +192,7 @@ function ClaimDonation({ }: Props): ReactElement {
                                 </div>
                                 <div className={styles.donationCount}>
                                     {t('redeem:myPlantedTreesByOrg', {
-                                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
+                                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
                                       tpoName: validCodeData.tpos[0].tpoName
                                     })}
                                     <p className={styles.donationTenant}>
@@ -251,7 +251,7 @@ function ClaimDonation({ }: Props): ReactElement {
 
                                 <div className={styles.codeTreeCount}>
                                     {getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
-                                    <span>{t('common:trees')}</span>
+                                    <span>{t('common:tree', { count: Number(validCodeData.treeCount) })}</span>
                                 </div>
 
                                 <div className={styles.plantedBy}>
@@ -298,7 +298,7 @@ function ClaimDonation({ }: Props): ReactElement {
                                 )}
                             </div>
                         </div>
-                    
+
                 </div>
             </LandingSection>
       )

@@ -1,10 +1,12 @@
 {
+  "iamA": "I am a",
   "loginTitle": "{{log}} - Login",
   "signUpText": "Complete Signup",
   "profileTypes": "{{item.title}}",
   "profileName": "Name of {{type}}",
   "createAccount": "Create Account",
-  "individual": "Individual",
+  "individual": "Person",
+  "iamA": "I am a",
   "tpo": "Reforestation Organisation",
   "education": "School",
   "organization": "Company",
