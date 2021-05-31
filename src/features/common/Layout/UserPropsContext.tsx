@@ -29,6 +29,7 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     async function loadUserProfile() {
+      setIsLoaded(false);
       let token = null;
       if (isAuthenticated) {
         token = await getAccessTokenSilently();

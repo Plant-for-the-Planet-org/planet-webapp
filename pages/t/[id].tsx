@@ -28,7 +28,6 @@ export default function PublicUser(initialized: Props) {
       // To do this we first try to fetch the slug from the local storage
       // If the slug matches and also there is token in the session we fetch the user's private data, else the public data
       const currentUserSlug = userprofile?.slug ? userprofile.slug : null;
-
       // some user logged in and slug matches -> private profile
       if (userprofile && currentUserSlug === router.query.id) {
         setPublicUserProfile(null);
