@@ -53,7 +53,7 @@
     "@types/react-lazyload": "^2.6.0",
     "cors": "^2.8.5",
     "d3-ease": "^2.0.0",
-    "date-fns": "^2.21.0",
+    "date-fns": "^2.21.2",
     "deck.gl": "^7.3.6",
     "dom-to-image": "^2.6.0",
     "express": "^4.17.1",
