@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../../styles/TreeMapper.module.scss';
 import i18next from '../../../../../../i18n';
+import { LocationDetails } from '../../screens/PlantLocationPage';
 
 const { useTranslation } = i18next;
 
@@ -11,6 +12,7 @@ interface Props {
   locations: Object;
   selectedLocation: string;
   setselectedLocation: Function;
+  setLocation: Function;
 }
 
 function PlantLocation({
@@ -19,6 +21,7 @@ function PlantLocation({
   locations,
   selectedLocation,
   setselectedLocation,
+  setLocation,
 }: Props) {
   const { t, i18n } = useTranslation('treemapper');
 
@@ -40,25 +43,44 @@ function PlantLocation({
     }
   }
 
+  const DetailProps = {
+    location,
+    setselectedLocation,
+    setLocation,
+  };
+
   return (
     <div
       key={index}
       onClick={() => selectLocation(location.id)}
-      className={styles.singleLocation}
+      className={`${styles.singleLocation} ${
+        selectedLocation === location.id ? styles.selected : ''
+      }`}
     >
-      <div className={styles.left}>
-        <p className={styles.treeCount}>
-          {location.type === 'multi' && treeCount
-            ? `${treeCount} ${t('trees')}`
-            : `1 ${t('tree')}`}
-        </p>
-        <p className={styles.date}>
-          {t('on')} {formatDate(location.registrationDate)}
-        </p>
+      <div className={styles.locationHeader}>
+        <div className={styles.left}>
+          <p className={styles.treeCount}>
+            {location.type === 'multi' && treeCount
+              ? `${treeCount} ${t('trees')}`
+              : `1 ${t('tree')}`}
+          </p>
+          <p className={styles.date}>
+            {t('on')} {formatDate(location.registrationDate)}
+          </p>
+        </div>
+        <div className={styles.right}>
+          <div className={styles.status}>{t(location.captureStatus)}</div>
+          <div className={styles.mode}>{t(location.captureMode)}</div>
+        </div>
       </div>
-      <div className={styles.right}>
-        <div className={styles.status}>{t(location.captureStatus)}</div>
-        <div className={styles.mode}>{t(location.captureMode)}</div>
+
+      {index !== locations?.length - 1 && <div className={styles.divider} />}
+      <div
+        className={`${styles.detailContainer} ${
+          selectedLocation === location.id ? styles.selected : ''
+        }`}
+      >
+        <LocationDetails {...DetailProps} />
       </div>
     </div>
   );

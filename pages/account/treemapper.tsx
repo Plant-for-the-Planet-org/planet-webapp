@@ -121,13 +121,8 @@ function History({}: Props): ReactElement {
       <AccountHeader page={'treemapper'} title={t('me:myAccount')} />
       <div id="pageContainer" className={styles.pageContainer}>
         <div className={styles.section}>
-          {location === null ? (
-            <>
-              <TreeMapperList {...TreeMapperProps} />
-            </>
-          ) : (
-            <PlantLocationPage {...TreeMapperProps} />
-          )}
+          <TreeMapperList {...TreeMapperProps} />
+          {location && <PlantLocationPage {...TreeMapperProps} />}
           <div className={styles.mapContainer}>
             <div id="pp-mapbox" className={styles.map}>
               <PlantLocationMap

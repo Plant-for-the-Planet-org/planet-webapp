@@ -26,7 +26,14 @@ export default function PlantLocation({
       setselectedLocation(location.parent);
     } else {
       setselectedLocation('');
+      setLocation(null);
     }
+  };
+
+  const DetailProps = {
+    location,
+    setselectedLocation,
+    setLocation,
   };
   return (
     <div className={styles.locationDetails}>
@@ -36,6 +43,25 @@ export default function PlantLocation({
       <div onClick={handleBackButton} className={styles.backButton}>
         <BackButton />
       </div>
+      <LocationDetails {...DetailProps} />
+    </div>
+  );
+}
+
+interface DetailsProps {
+  setselectedLocation: Function;
+  location: Object;
+  setLocation: Function;
+}
+
+export function LocationDetails({
+  location,
+  setselectedLocation,
+  setLocation,
+}: DetailsProps): ReactElement {
+  const { t, i18n } = useTranslation('treemapper');
+  return (
+    <>
       <div className={styles.imageContainer}>
         {location.coordinates.map((coordinate: any) => {
           if (coordinate.image) {
@@ -131,6 +157,6 @@ export default function PlantLocation({
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

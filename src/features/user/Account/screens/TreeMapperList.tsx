@@ -9,6 +9,7 @@ interface Props {
   setselectedLocation: Function;
   plantLocations: Object;
   isDataLoading: boolean;
+  location;
 }
 
 export default function TreeMapperNew({
@@ -16,11 +17,16 @@ export default function TreeMapperNew({
   setselectedLocation,
   plantLocations,
   isDataLoading,
+  location,
 }: Props): ReactElement {
   console.log(plantLocations);
 
   return (
-    <div className={styles.locationList}>
+    <div
+      className={`${location ? styles.hideOnMobile : ''} ${
+        styles.locationList
+      } ${location ? styles.hideOnMobile : ''}`}
+    >
       <div className={styles.pullUpContainer}>
         <div className={styles.pullUpBar}></div>
       </div>
