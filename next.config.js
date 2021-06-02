@@ -1,7 +1,4 @@
 const withPlugins = require('next-compose-plugins');
-// Use the hidden-source-map option when you don't want the source maps to be
-// publicly available on the servers, only to the error reporting
-const withSourceMaps = require('@zeit/next-source-maps')();
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -46,7 +43,11 @@ const nextauthUrl = process.env.NEXTAUTH_URL
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
+module.exports = withPlugins([[withBundleAnalyzer]], {
+  future: {
+    webpack5: true, // this sill seems to have a problem with Auth0
+  },
+  productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     rootDir: __dirname,
   },
@@ -68,8 +69,14 @@ module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
     if (!options.isServer) {
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
-    config.node = {
-      fs: 'empty',
+    // for webpack4 - needs "next": "10.2.0" due to error solved in webpack5
+    //config.node = {
+    //  fs: 'empty',
+    //}
+    // for webpack5:
+    config.resolve.fallback = {
+      fs: false,
+      path: require.resolve("path-browserify")
     };
 
     // When all the Sentry configuration env variables are available/configured
@@ -187,6 +194,11 @@ module.exports = withPlugins([[withBundleAnalyzer], [withSourceMaps]], {
       {
         source: '/signup/:slug*',
         destination: '/open-app',
+        permanent: true,
+      },
+      {
+        source: '/yucatan-reforestation',
+        destination: '/yucatan',
         permanent: true,
       },
     ];

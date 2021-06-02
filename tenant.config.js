@@ -13,6 +13,7 @@ import culchacandela from './public/tenants/culchacandela/config';
 import xiting from './public/tenants/xiting/config';
 import ulmpflanzt from './public/tenants/ulmpflanzt/config';
 import sitex from './public/tenants/sitex/config';
+import T3pleset from './public/tenants/3pleset/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -46,6 +47,8 @@ export default function tenantConfig() {
       return ulmpflanzt;
     case 'sitex':
       return sitex;
+    case '3pleset':
+      return T3pleset;
     default:
       return planetConfig;
   }

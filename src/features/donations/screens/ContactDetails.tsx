@@ -230,7 +230,7 @@ function ContactDetails({
 
         <div className={styles.isCompany} style={{alignItems:'baseline'}}>
           <div className={styles.isCompanyText}>
-            {t('donate:isACompanyDonation')}
+            <label className={styles.isCompanyText} htmlFor="checkedB">{t('donate:isACompanyDonation')}</label>
             {isCompany ? (
               <div className={styles.isCompany} style={{marginTop:'10px'}}>
                 <label className={styles.isCompanyText} style={{fontSize:'12px', fontStyle:'italic'}}>
@@ -244,6 +244,7 @@ function ContactDetails({
             onChange={() => setIsCompany(!isCompany)}
             name="checkedB"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
+            id="checkedB"
           />
         </div>
         {isCompany ? (

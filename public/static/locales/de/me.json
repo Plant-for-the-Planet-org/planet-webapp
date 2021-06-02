@@ -1,5 +1,6 @@
 {
-  "treesPlanted": "Bäume gepflanzt",
+  "treesPlanted": "Baum gepflanzt",
+  "treesPlanted_plural": "Bäume gepflanzt",
   "target": "Ziel",
   "share": "Teilen",
   "registerTrees": "Bäume registrieren",
