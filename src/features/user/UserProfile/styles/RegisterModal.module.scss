@@ -2,37 +2,19 @@
 
 // white modal
 .modal {
-  top: 80px;
-  margin-bottom: 60px;
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
-  position: absolute;
+  position: relative;
   padding: 20px 20px;
-  width: 412px;
+  max-width: 1200px;
+  width: 100%;
   outline: none;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   overflow-y: auto;
 }
-// white modal
-// .modal {
-//   background-color: #ffffff;
-//   border: 0px;
-//   border-radius: 8px;
-//   padding: 50px 20px 80px;
-//   overflow-y: scroll;
-//   outline: none;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin: auto;
-//   max-width: 100%;
-//   width: 800px;
-//   justify-content: flex-start;
-//   position: relative;
-// }
 
 .title {
   display: flex;
@@ -102,6 +84,7 @@
   width: 100%;
   justify-content: center;
   flex-direction: column;
+  max-width: 700px;
 }
 
 .formContainer > form {
@@ -171,6 +154,8 @@
   width: 100%;
   height: 400px;
   padding: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 .locationMap > div {
@@ -263,6 +248,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 100px;
 }
 
 .closeButton {
