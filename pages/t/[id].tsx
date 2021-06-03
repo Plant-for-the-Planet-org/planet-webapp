@@ -102,12 +102,6 @@ export default function PublicUser({}: Props) {
     }
   }
 
-  // if (profile && !isLoadingData) {
-  //   return getUserProfile();
-  // } else {
-  //   return <UserProfileLoader />;
-  // }
-
   return (
     <>
       {profile ? (
@@ -121,7 +115,9 @@ export default function PublicUser({}: Props) {
           <Footer />
         </>
       ) : (
-        <UserProfileLoader />
+        <div
+          style={{ height: '100%', width: '100%', backgroundColor: 'skyblue' }}
+        ></div>
       )}
     </>
   );
