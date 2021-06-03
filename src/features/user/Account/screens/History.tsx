@@ -55,7 +55,7 @@ export default function History({
     setFilter(id);
   };
 
-  var currentRecord = paymentHistory?.items[selectedRecord];
+  const currentRecord = paymentHistory?.items[selectedRecord];
 
   return (
     <div className={styles.pageContainer}>
@@ -92,6 +92,7 @@ export default function History({
             paymentHistory?.items?.map((record: any, index: number) => {
               return (
                 <AccountRecord
+                  key={index}
                   handleRecordOpen={handleRecordOpen}
                   index={index}
                   selectedRecord={selectedRecord}

@@ -84,7 +84,7 @@ export default function MyTreesMap({
 
   React.useEffect(() => {
     if (locations) {
-      var object = {
+      const object = {
         type: 'FeatureCollection',
         features: [],
       };
@@ -94,7 +94,7 @@ export default function MyTreesMap({
             const location = locations[key];
             if (location.id === selectedLocation) {
               if (location.geometry.type === 'Point') {
-                var feature = {
+                const feature = {
                   type: 'Feature',
                   properties: location,
                   geometry: {
@@ -105,7 +105,7 @@ export default function MyTreesMap({
                 object.features.push(feature);
               }
               if (location.geometry.type === 'Polygon') {
-                var feature = {
+                const feature = {
                   type: 'Feature',
                   properties: location,
                   geometry: {
@@ -124,7 +124,7 @@ export default function MyTreesMap({
                     )
                   ) {
                     const loc = location.sampleTrees[key];
-                    var feature = {
+                    const feature = {
                       type: 'Feature',
                       properties: loc,
                       geometry: {
@@ -141,7 +141,7 @@ export default function MyTreesMap({
                   if (Object.prototype.hasOwnProperty.call(locations, key)) {
                     const loc = locations[key];
                     if (loc.id === location.parent) {
-                      var feature = {
+                      const feature = {
                         type: 'Feature',
                         properties: loc,
                         geometry: {
@@ -164,7 +164,7 @@ export default function MyTreesMap({
             const location = locations[key];
             if (location.type !== 'sample') {
               if (location.geometry.type === 'Point') {
-                var feature = {
+                const feature = {
                   type: 'Feature',
                   properties: location,
                   geometry: {
@@ -175,7 +175,7 @@ export default function MyTreesMap({
                 object.features.push(feature);
               }
               if (location.geometry.type === 'Polygon') {
-                var feature = {
+                const feature = {
                   type: 'Feature',
                   properties: location,
                   geometry: {

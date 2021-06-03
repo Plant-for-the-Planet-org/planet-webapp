@@ -25,6 +25,7 @@ export default function AccountRecord({
   const { t, i18n } = useTranslation(['me']);
   return (
     <div
+      key={index}
       onClick={() => handleRecordOpen(index)}
       className={`${styles.record} ${
         selectedRecord === index ? styles.selected : ''
@@ -340,7 +341,11 @@ export function Certificates({ record }: CertificatesProps): ReactElement {
       {record.details?.donorCertificate && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('donorCertificate')}</p>
-          <a href={record.details.donorCertificate} target="_blank">
+          <a
+            href={record.details.donorCertificate}
+            target="_blank"
+            rel="noreferrer"
+          >
             {t('download')}
           </a>
         </div>
@@ -348,7 +353,11 @@ export function Certificates({ record }: CertificatesProps): ReactElement {
       {record.details?.taxDeductibleReceipt && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('taxDeductibleReceipt')}</p>
-          <a href={record.details.taxDeductibleReceipt} target="_blank">
+          <a
+            href={record.details.taxDeductibleReceipt}
+            target="_blank"
+            rel="noreferrer"
+          >
             {t('download')}
           </a>
         </div>
@@ -356,7 +365,11 @@ export function Certificates({ record }: CertificatesProps): ReactElement {
       {record.details?.giftCertificate && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('giftCertificate')}</p>
-          <a href={record.details.giftCertificate} target="_blank">
+          <a
+            href={record.details.giftCertificate}
+            target="_blank"
+            rel="noreferrer"
+          >
             {t('download')}
           </a>
         </div>

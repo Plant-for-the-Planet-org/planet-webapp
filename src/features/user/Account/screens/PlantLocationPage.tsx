@@ -66,7 +66,7 @@ export function LocationDetails({
         {location.coordinates.map((coordinate: any) => {
           if (coordinate.image) {
             const image = getImageUrl('coordinate', 'large', coordinate.image);
-            return <img src={image} />;
+            return <img key={coordinate.image} src={image} />;
           }
         })}
       </div>
@@ -82,9 +82,11 @@ export function LocationDetails({
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('coordinates')}</p>
           <div className={styles.value}>
-            {location.deviceLocation.coordinates.map((coord: any) => {
-              return <p>{coord}</p>;
-            })}
+            {location.deviceLocation.coordinates.map(
+              (coord: any, index: number) => {
+                return <p key={index}>{coord}</p>;
+              }
+            )}
           </div>
         </div>
         <div className={styles.singleDetail}>
@@ -129,7 +131,7 @@ export function LocationDetails({
             {location.scientificSpecies
               ? location.scientificSpecies
               : location.plantedSpecies.map((species: any) => {
-                  return <p>{species.id}</p>;
+                  return <p key={species.id}>{species.id}</p>;
                 })}
           </div>
         </div>
@@ -142,6 +144,7 @@ export function LocationDetails({
                   location.sampleTrees.map((sampleTree: any) => {
                     return (
                       <div
+                        key={sampleTree.id}
                         onClick={() => {
                           setLocation(sampleTree);
                           setselectedLocation(sampleTree.id);

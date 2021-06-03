@@ -38,7 +38,7 @@ function History({}: Props): ReactElement {
         '/treemapper/plantLocations',
         token
       );
-      var plantLocations = response;
+      const plantLocations = response;
       if (plantLocations.length === 0) {
         setPlantLocations(null);
       } else {

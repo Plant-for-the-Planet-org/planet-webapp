@@ -25,7 +25,7 @@ function PlantLocation({
 }: Props) {
   const { t, i18n } = useTranslation('treemapper');
 
-  var treeCount = 0;
+  let treeCount = 0;
   if (location.plantedSpecies.length !== 0) {
     for (const key in location.plantedSpecies) {
       if (Object.prototype.hasOwnProperty.call(location.plantedSpecies, key)) {

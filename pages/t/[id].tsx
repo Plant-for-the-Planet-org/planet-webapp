@@ -75,33 +75,6 @@ export default function PublicUser({}: Props) {
     authenticatedType,
   };
 
-  function getUserProfile() {
-    if (profile?.type === 'tpo') {
-      return (
-        <>
-          <GetPublicUserProfileMeta userprofile={profile} />
-          <TPOProfile {...PublicUserProps} />
-          <Footer />
-        </>
-      );
-    } else if (
-      profile?.type === 'individual' ||
-      profile?.type === 'education' ||
-      profile?.type === 'company' ||
-      profile?.type === 'organization' ||
-      profile?.type === 'children-youth' ||
-      profile?.type === 'government'
-    ) {
-      return (
-        <>
-          <GetPublicUserProfileMeta userprofile={profile} />
-          <IndividualProfile {...PublicUserProps} />
-          <Footer />
-        </>
-      );
-    }
-  }
-
   return (
     <>
       {profile ? (
@@ -115,9 +88,7 @@ export default function PublicUser({}: Props) {
           <Footer />
         </>
       ) : (
-        <div
-          style={{ height: '100%', width: '100%', backgroundColor: 'skyblue' }}
-        ></div>
+        <UserProfileLoader />
       )}
     </>
   );
