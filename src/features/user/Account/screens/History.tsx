@@ -123,14 +123,15 @@ export default function History({
           </div>
         </div>
       </div>
-      <div className={styles.modalContainer}>
-        <Modal
+      {openModal && (
+        <div className={styles.modalContainer}>
+          {/* <Modal
           disableBackdropClick
           hideBackdrop
           className={styles.modal}
           open={openModal}
           onClose={handleClose}
-        >
+        > */}
           <>
             <div
               onClick={() => {
@@ -170,8 +171,9 @@ export default function History({
               </>
             ) : null}
           </>
-        </Modal>
-      </div>
+          {/* </Modal> */}
+        </div>
+      )}
     </div>
   );
 }

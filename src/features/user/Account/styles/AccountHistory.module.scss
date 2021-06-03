@@ -201,7 +201,25 @@
 }
 
 .modalContainer {
-  display: block;
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: auto;
+  background-color: $backgroundColor;
+  padding: 20px;
+  z-index: 1040;
+  flex-direction: column;
+}
+
+.closeRecord {
+  margin-left: -16px;
+  cursor: pointer;
 }
 
 .modal {
@@ -216,10 +234,6 @@
   background-color: #fff;
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.modalContainer {
-  display: block;
 }
 
 @include smTabletView {

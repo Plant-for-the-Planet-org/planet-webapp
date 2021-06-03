@@ -40,13 +40,14 @@
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       .singleLocation {
+        padding: 0 20px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         width: 100%;
         > .locationHeader {
-          padding: 20px;
+          padding: 20px 0;
           position: relative;
           display: flex;
           flex-direction: row;
@@ -278,7 +279,7 @@
           }
           > .detailContainer.selected {
             display: block;
-            padding: 20px;
+            padding: 20px 0;
           }
         }
         > .singleLocation.selected {
