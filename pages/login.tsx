@@ -30,7 +30,7 @@ function Login({}: Props): ReactElement {
           }
         } else {
           console.log('redirectLink not found');
-          router.replace(`/t/${userprofile.slug}`);
+          router.push('/t/[id]', `/t/${userprofile.slug}`, undefined);
         }
       }
     }

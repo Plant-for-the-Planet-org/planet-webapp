@@ -98,6 +98,7 @@ export default function PublicUser({ pageProps }: Props) {
 
 export const getStaticProps: GetStaticProps = async (context: any) => {
   const profileData = await getRequestNew(`/app/profiles/${context.params.id}`);
+  console.log(profileData);
 
   return {
     props: {
