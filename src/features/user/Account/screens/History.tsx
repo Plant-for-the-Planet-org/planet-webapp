@@ -76,32 +76,35 @@ export default function History({
           })}
       </div>
       <div className={styles.section}>
-        <div className={styles.historyList}>
-          {isDataLoading ? (
-            <>
-              <TransactionListLoader />
-              <TransactionListLoader />
-              <TransactionListLoader />
-            </>
-          ) : paymentHistory && paymentHistory.items.length === 0 ? (
-            <div className={styles.notFound}>
-              <TransactionsNotFound />
-            </div>
-          ) : (
-            paymentHistory &&
-            paymentHistory?.items?.map((record: any, index: number) => {
-              return (
-                <AccountRecord
-                  key={index}
-                  handleRecordOpen={handleRecordOpen}
-                  index={index}
-                  selectedRecord={selectedRecord}
-                  record={record}
-                  paymentHistory={paymentHistory}
-                />
-              );
-            })
-          )}
+        <div className={styles.accountHistory}>
+          <div className={styles.historyList}>
+            {isDataLoading ? (
+              <>
+                <TransactionListLoader />
+                <TransactionListLoader />
+                <TransactionListLoader />
+              </>
+            ) : paymentHistory && paymentHistory.items.length === 0 ? (
+              <div className={styles.notFound}>
+                <TransactionsNotFound />
+              </div>
+            ) : (
+              paymentHistory &&
+              paymentHistory?.items?.map((record: any, index: number) => {
+                return (
+                  <AccountRecord
+                    key={index}
+                    handleRecordOpen={handleRecordOpen}
+                    index={index}
+                    selectedRecord={selectedRecord}
+                    record={record}
+                    paymentHistory={paymentHistory}
+                  />
+                );
+              })
+            )}
+          </div>
+          <div className={styles.pagination}></div>
         </div>
         <div className={styles.filterContainer}>
           <p className={styles.header}>{t('me:filters')}</p>
@@ -125,13 +128,6 @@ export default function History({
       </div>
       {openModal && (
         <div className={styles.modalContainer}>
-          {/* <Modal
-          disableBackdropClick
-          hideBackdrop
-          className={styles.modal}
-          open={openModal}
-          onClose={handleClose}
-        > */}
           <>
             <div
               onClick={() => {
@@ -171,7 +167,6 @@ export default function History({
               </>
             ) : null}
           </>
-          {/* </Modal> */}
         </div>
       )}
     </div>
