@@ -27,6 +27,10 @@ export default function PublicUser({ pageProps }: Props) {
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
 
+  if (router.isFallback) {
+    return <UserProfileLoader />;
+  }
+
   useEffect(() => {
     if (router && router.query.id) {
       setProfile(null);
@@ -112,7 +116,9 @@ export const getStaticProps: GetStaticProps = async (context: any) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: { params: { id: any } }[] = [];
+  const paths: { params: { id: any } }[] = [
+    { params: { id: 'sarvesh-warge' } },
+  ];
   return {
     paths: paths,
     fallback: true,
