@@ -8,13 +8,10 @@ import IndividualProfile from '../../src/features/user/UserProfile/screens/Indiv
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import { getRequest } from '../../src/utils/apiRequests/api';
 
-interface Props {
-  pageProps: Object;
-}
+interface Props {}
 
-export default function PublicUser(pageProps: Props) {
-  console.log('page loading started', pageProps);
-  var initialized = pageProps?.initialized;
+export default function PublicUser({}: Props) {
+  console.log('page loading started');
   const { userprofile, isLoaded } = React.useContext(UserPropsContext);
   const [isLoadingData, setIsLoadingData] = React.useState(false);
   // const [publicUserProfile, setPublicUserProfile] = React.useState(null);
@@ -51,20 +48,20 @@ export default function PublicUser(pageProps: Props) {
     }
 
     console.log('before loading user data');
-    console.log('initialized', initialized);
+
     console.log('router?.query?.id', router?.query?.id);
     console.log('isLoaded', isLoaded);
     console.log('profile', profile);
 
     if (ready && isLoaded) {
       console.log('start loading user data');
-      console.log('initialized', initialized);
+
       console.log('router?.query?.id', router?.query?.id);
       console.log('isLoaded', isLoaded);
       console.log('profile', profile);
       loadUserData();
       console.log('after loading user data');
-      console.log('initialized', initialized);
+
       console.log('router?.query?.id', router?.query?.id);
       console.log('isLoaded', isLoaded);
       console.log('profile', profile);
