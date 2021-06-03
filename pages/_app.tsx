@@ -66,10 +66,10 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   });
 }
 
-const onRedirectCallback = (appState) => {
+const onRedirectCallback = (appState: any) => {
   removeLocalUserInfo();
   // Use Next.js's Router.replace method to replace the url
-  Router.replace(appState?.returnTo || '/');
+  if (appState) Router.replace(appState?.returnTo || '/');
 };
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {

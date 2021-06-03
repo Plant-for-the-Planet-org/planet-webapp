@@ -1,57 +1,56 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import { getUserInfo } from '../src/utils/auth0/userInfo';
 import { useRouter } from 'next/router';
+import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
 
-interface Props {
+interface Props {}
 
-}
-
-function Login({ }: Props): ReactElement {
-
+function Login({}: Props): ReactElement {
   const router = useRouter();
 
-    // if the user is authenticated check if we have slug, and if we do, send user to slug
-    // else send user to login flow
-    const {
-        isAuthenticated,
-        isLoading,
-        loginWithRedirect,
-        getAccessTokenSilently,
-        logout
-    } = useAuth0();
+  // if the user is authenticated check if we have slug, and if we do, send user to slug
+  // else send user to login flow
+  const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
-    React.useEffect(() => {
-        async function loadFunction() {
-          const token = await getAccessTokenSilently();
-          const userInfo = await getUserInfo(token, router, logout);            
-          // redirect
+  const { userprofile, isLoaded } = React.useContext(UserPropsContext);
 
-          if (typeof window !== 'undefined' && userInfo) {
-            if (localStorage.getItem('redirectLink')) {
-              const redirectLink = localStorage.getItem('redirectLink');
-              if (redirectLink) {
-                localStorage.removeItem("redirectLink");
-                router.replace(redirectLink);
-              }
-            } else {
-              router.push(`/t/${userInfo.slug}`);
-            }
+  React.useEffect(() => {
+    async function loadFunction() {
+      // redirect
+      console.log('loading started');
+      if (userprofile) {
+        console.log('userprofile found');
+        if (localStorage.getItem('redirectLink')) {
+          const redirectLink = localStorage.getItem('redirectLink');
+          if (redirectLink) {
+            console.log('redirectLink found');
+            localStorage.removeItem('redirectLink');
+            router.replace(redirectLink);
           }
+        } else {
+          console.log('redirectLink not found');
+          router.replace(`/t/${userprofile.slug}`);
         }
-        if (!isLoading && isAuthenticated) {
-          loadFunction()
-        } else if (!isLoading && !isAuthenticated) {
-          loginWithRedirect({redirectUri:`${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
-        }
-      }, [isAuthenticated, isLoading])
-    
-    return (
-        <div>
-            <UserProfileLoader/>
-        </div>
-    )
+      }
+    }
+    if (!isLoading && isAuthenticated && isLoaded) {
+      loadFunction();
+    } else if (!isLoading && !isAuthenticated) {
+      console.log('not authenticated');
+      loginWithRedirect({
+        redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
+    }
+    console.log('nothing', isLoaded);
+  }, [isAuthenticated, isLoading, isLoaded]);
+
+  return (
+    <div>
+      <UserProfileLoader />
+    </div>
+  );
 }
 
-export default Login
+export default Login;

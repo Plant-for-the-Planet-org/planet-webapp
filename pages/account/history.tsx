@@ -7,6 +7,7 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import History from '../../src/features/user/Account/screens/History';
 import AccountFooter from '../../src/features/common/Layout/Footer/accountFooter';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const { useTranslation } = i18next;
 
@@ -21,36 +22,47 @@ function AccountHistory({}: Props): ReactElement {
   const [paymentHistory, setpaymentHistory] = React.useState();
   const [accountingFilters, setaccountingFilters] = React.useState();
 
+  const { loginWithRedirect } = useAuth0();
+
   React.useEffect(() => {
+    console.log('data', token, isLoaded);
     async function fetchPaymentHistory() {
       setIsDataLoading(true);
       setProgress(70);
-      if (filter === null) {
-        const paymentHistory = await getAuthenticatedRequest(
-          '/app/paymentHistory?limit=15',
-          token
-        );
-        setpaymentHistory(paymentHistory);
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
-        setaccountingFilters(paymentHistory._filters);
+      if (token) {
+        if (filter === null) {
+          const paymentHistory = await getAuthenticatedRequest(
+            '/app/paymentHistory?limit=15',
+            token
+          );
+          setpaymentHistory(paymentHistory);
+          setProgress(100);
+          setIsDataLoading(false);
+          setTimeout(() => setProgress(0), 1000);
+          setaccountingFilters(paymentHistory._filters);
+        } else {
+          const paymentHistory = await getAuthenticatedRequest(
+            `${
+              filter
+                ? accountingFilters[filter] + '&limit=15'
+                : '/app/paymentHistory?limit=15'
+            }`,
+            token
+          );
+          setpaymentHistory(paymentHistory);
+          setProgress(100);
+          setIsDataLoading(false);
+          setTimeout(() => setProgress(0), 1000);
+        }
       } else {
-        const paymentHistory = await getAuthenticatedRequest(
-          `${
-            filter
-              ? accountingFilters[filter] + '&limit=15'
-              : '/app/paymentHistory?limit=15'
-          }`,
-          token
-        );
-        setpaymentHistory(paymentHistory);
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
+        localStorage.setItem('redirectLink', '/account/history');
+        loginWithRedirect({
+          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          ui_locales: localStorage.getItem('language') || 'en',
+        });
       }
     }
-    if (isLoaded && token) fetchPaymentHistory();
+    if (isLoaded) fetchPaymentHistory();
   }, [filter, isLoaded, token]);
 
   const HistoryProps = {

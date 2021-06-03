@@ -49,6 +49,31 @@ export async function getRequest(url: any) {
   return result;
 }
 
+export async function getRequestNew(url: any) {
+  let result;
+  await fetch(`${process.env.API_ENDPOINT}` + url, {
+    method: 'GET',
+    headers: {
+      'tenant-key': `${process.env.TENANTID}`,
+    },
+  })
+    .then(async (res) => {
+      result = res.status === 200 ? await res.json() : null;
+      if (res.status === 404) {
+        const errorMessage = 'Not Found';
+        window.location.href = `/404?error=${errorMessage}`;
+      } else if (res.status !== 200) {
+        // Maybe show a Modal with Error and redirect to home page
+        const errorMessage = res.statusText;
+        window.location.href = `/404?error=${errorMessage}`;
+      } else {
+        return result;
+      }
+    })
+    .catch((err) => console.log(`Something went wrong: ${err}`));
+  return result;
+}
+
 export async function getAuthenticatedRequest(url: any, token: any) {
   let result = {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
@@ -66,15 +91,15 @@ export async function getAuthenticatedRequest(url: any, token: any) {
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      if(res.status === 404){
+      if (res.status === 404) {
         const error = {
-          status: 404
-        }
+          status: 404,
+        };
         result = error;
-      } else if(res.status === 401) {
+      } else if (res.status === 401) {
         const error = {
-          status: 401
-        }
+          status: 401,
+        };
         result = error;
       } else if (res.status !== 200) {
         // Maybe show a Modal with Error and redirect to home page
@@ -191,7 +216,9 @@ export async function putRequest(url: any, data: any) {
 
 export async function getRasterData(id: any) {
   let result;
-  const res = await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
+  const res = await fetch(
+    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
+  )
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       return result;
@@ -221,7 +248,10 @@ export async function getRequestWithoutRedirecting(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequestWithoutRedirecting(url: any, token: any) {
+export async function getAuthenticatedRequestWithoutRedirecting(
+  url: any,
+  token: any
+) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     headers: {

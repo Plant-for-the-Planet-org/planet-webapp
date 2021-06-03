@@ -9,6 +9,7 @@ import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader
 import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocationPage';
 import dynamic from 'next/dynamic';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const { useTranslation } = i18next;
 
@@ -30,37 +31,49 @@ function History({}: Props): ReactElement {
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
 
+  const { loginWithRedirect } = useAuth0();
+
   React.useEffect(() => {
     async function fetchPaymentHistory() {
       setIsDataLoading(true);
       setProgress(70);
-      const response = await getAuthenticatedRequest(
-        '/treemapper/plantLocations',
-        token
-      );
-      const plantLocations = response;
-      if (plantLocations.length === 0) {
-        setPlantLocations(null);
-      } else {
-        for (const itr in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
-            const location = plantLocations[itr];
-            if (location.type === 'multi') {
-              plantLocations[itr].sampleTrees = [];
-              for (const key in plantLocations) {
-                if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-                  const item = plantLocations[key];
-                  if (item.type === 'sample') {
-                    if (item.parent === location.id) {
-                      plantLocations[itr].sampleTrees.push(item);
+      if (token) {
+        const response = await getAuthenticatedRequest(
+          '/treemapper/plantLocations',
+          token
+        );
+        const plantLocations = response;
+        if (plantLocations.length === 0) {
+          setPlantLocations(null);
+        } else {
+          for (const itr in plantLocations) {
+            if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
+              const location = plantLocations[itr];
+              if (location.type === 'multi') {
+                plantLocations[itr].sampleTrees = [];
+                for (const key in plantLocations) {
+                  if (
+                    Object.prototype.hasOwnProperty.call(plantLocations, key)
+                  ) {
+                    const item = plantLocations[key];
+                    if (item.type === 'sample') {
+                      if (item.parent === location.id) {
+                        plantLocations[itr].sampleTrees.push(item);
+                      }
                     }
                   }
                 }
               }
             }
           }
+          setPlantLocations(plantLocations);
         }
-        setPlantLocations(plantLocations);
+      } else {
+        localStorage.setItem('redirectLink', '/account/history');
+        loginWithRedirect({
+          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          ui_locales: localStorage.getItem('language') || 'en',
+        });
       }
       setProgress(100);
       setIsDataLoading(false);
