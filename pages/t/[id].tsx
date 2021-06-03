@@ -9,10 +9,12 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import { getRequest } from '../../src/utils/apiRequests/api';
 
 interface Props {
-  initialized: Boolean;
+  pageProps: Object;
 }
 
-export default function PublicUser(initialized: Props) {
+export default function PublicUser(pageProps: Props) {
+  console.log('page loading started', pageProps);
+  var initialized = pageProps?.initialized;
   const { userprofile, isLoaded } = React.useContext(UserPropsContext);
   const [isLoadingData, setIsLoadingData] = React.useState(false);
   const [publicUserProfile, setPublicUserProfile] = React.useState(null);
