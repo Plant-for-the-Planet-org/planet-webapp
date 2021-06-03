@@ -102,9 +102,27 @@ export default function PublicUser({}: Props) {
     }
   }
 
-  if (profile && !isLoadingData) {
-    return getUserProfile();
-  } else {
-    return <UserProfileLoader />;
-  }
+  // if (profile && !isLoadingData) {
+  //   return getUserProfile();
+  // } else {
+  //   return <UserProfileLoader />;
+  // }
+
+  return (
+    <>
+      {profile ? (
+        <>
+          <GetPublicUserProfileMeta userprofile={profile} />
+          {profile?.type === 'tpo' ? (
+            <TPOProfile {...PublicUserProps} />
+          ) : (
+            <IndividualProfile {...PublicUserProps} />
+          )}
+          <Footer />
+        </>
+      ) : (
+        <UserProfileLoader />
+      )}
+    </>
+  );
 }
