@@ -6,17 +6,21 @@ import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserP
 import Footer from '../../src/features/common/Layout/Footer';
 import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import { getRequest } from '../../src/utils/apiRequests/api';
+import { getRequest, getRequestNew } from '../../src/utils/apiRequests/api';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
-interface Props {}
+interface Props {
+  pageProps: Object;
+}
 
-export default function PublicUser({}: Props) {
+export default function PublicUser({ pageProps }: Props) {
   console.log('page loading started');
+  const { profileData } = pageProps;
   const { userprofile, isLoaded } = React.useContext(UserPropsContext);
   const [isLoadingData, setIsLoadingData] = React.useState(false);
   // const [publicUserProfile, setPublicUserProfile] = React.useState(null);
   const [authenticatedType, setAuthenticatedType] = React.useState('public');
-  const [profile, setProfile] = React.useState(null);
+  const [profile, setProfile] = React.useState(profileData);
   const [slug, setSlug] = React.useState(null);
   const [ready, setReady] = React.useState(false);
 
@@ -39,10 +43,8 @@ export default function PublicUser({}: Props) {
         setProfile(userprofile);
         setAuthenticatedType('private');
       } else {
-        //no user logged in or slug mismatch -> public profile
-        const publicUserProfile = await getRequest(`/app/profiles/${slug}`);
         setAuthenticatedType('public');
-        setProfile(publicUserProfile);
+        setProfile(profileData);
       }
       setIsLoadingData(false);
     }
@@ -93,3 +95,25 @@ export default function PublicUser({}: Props) {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context: any) => {
+  const profileData = await getRequestNew(`/app/profiles/${context.params.id}`);
+
+  return {
+    props: {
+      profileData,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 300 seconds
+    revalidate: 60, // In seconds
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths: { params: { id: any } }[] = [];
+  return {
+    paths: paths,
+    fallback: true,
+  };
+};
