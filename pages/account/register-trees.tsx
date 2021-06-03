@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import RegisterTrees from '../../src/features/user/UserProfile/components/RegisterTrees';
-import { useAuth0 } from '@auth0/auth0-react';
 import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import i18next from '../../i18n';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
