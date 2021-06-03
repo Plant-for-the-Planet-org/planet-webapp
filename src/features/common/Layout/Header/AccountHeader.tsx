@@ -37,12 +37,7 @@ export default function AccountHeader({ title, page }: Props): ReactElement {
     setEditProfileModalOpen(true);
   };
 
-  const menuItems = [
-    'history',
-    'treemapper',
-    'manage-projects',
-    'register-trees',
-  ];
+  const menuItems = ['history', 'treemapper', 'register-trees'];
 
   const handleNavClick = (item: any) => {
     if (item === 'manage-projects') {
