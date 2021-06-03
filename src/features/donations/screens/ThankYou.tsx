@@ -43,7 +43,7 @@ function ThankYou({
       if (
         donation &&
         (donation.paymentStatus === 'pending' ||
-          donation.paymentStatus === 'initiated')
+          donation.paymentStatus === 'initiated' || donation.paymentStatus === 'draft')
       ) {
         loadDonation();
       }
