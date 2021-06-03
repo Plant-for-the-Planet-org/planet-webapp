@@ -17,61 +17,68 @@ export default function PublicUser(pageProps: Props) {
   var initialized = pageProps?.initialized;
   const { userprofile, isLoaded } = React.useContext(UserPropsContext);
   const [isLoadingData, setIsLoadingData] = React.useState(false);
-  const [publicUserProfile, setPublicUserProfile] = React.useState(null);
+  // const [publicUserProfile, setPublicUserProfile] = React.useState(null);
   const [authenticatedType, setAuthenticatedType] = React.useState('public');
+  const [profile, setProfile] = React.useState(null);
+  const [slug, setSlug] = React.useState(null);
+  const [ready, setReady] = React.useState(false);
 
   const [forceReload, changeForceReload] = React.useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    if (router && router.query.id) {
+      setProfile(null);
+      setSlug(router.query.id);
+      setReady(true);
+    }
+  }, [router]);
+
+  useEffect(() => {
     async function loadUserData() {
+      setIsLoadingData(true);
       const currentUserSlug = userprofile?.slug ? userprofile.slug : null;
-      if (userprofile && currentUserSlug === router.query.id) {
-        setPublicUserProfile(null);
+      if (userprofile && currentUserSlug === slug) {
+        setProfile(userprofile);
         setAuthenticatedType('private');
       } else {
-        setIsLoadingData(true);
         //no user logged in or slug mismatch -> public profile
-        const newPublicUserprofile = await getRequest(
-          `/app/profiles/${router.query.id}`
-        );
+        const publicUserProfile = await getRequest(`/app/profiles/${slug}`);
         setAuthenticatedType('public');
-        setPublicUserProfile(newPublicUserprofile);
-        setIsLoadingData(false);
+        setProfile(publicUserProfile);
       }
+      setIsLoadingData(false);
     }
 
     console.log('before loading user data');
     console.log('initialized', initialized);
     console.log('router?.query?.id', router?.query?.id);
     console.log('isLoaded', isLoaded);
-    console.log('userprofile', userprofile);
-    console.log('publicUserProfile', publicUserProfile);
+    console.log('profile', profile);
 
-    if (router && router.query.id && isLoaded) {
+    if (ready && isLoaded) {
       console.log('start loading user data');
       console.log('initialized', initialized);
       console.log('router?.query?.id', router?.query?.id);
       console.log('isLoaded', isLoaded);
-      console.log('userprofile', userprofile);
+      console.log('profile', profile);
       loadUserData();
       console.log('after loading user data');
       console.log('initialized', initialized);
       console.log('router?.query?.id', router?.query?.id);
       console.log('isLoaded', isLoaded);
-      console.log('userprofile', userprofile);
+      console.log('profile', profile);
     }
-  }, [forceReload, router, isLoaded, userprofile]);
+  }, [ready, slug, forceReload, router, isLoaded, userprofile]);
 
   const PublicUserProps = {
-    userprofile: publicUserProfile ? publicUserProfile : userprofile,
+    userprofile: profile,
     changeForceReload,
     forceReload,
     authenticatedType,
   };
 
   function getUserProfile() {
-    const profile = publicUserProfile ? publicUserProfile : userprofile;
     if (profile?.type === 'tpo') {
       return (
         <>
@@ -98,12 +105,7 @@ export default function PublicUser(pageProps: Props) {
     }
   }
 
-  if (
-    initialized &&
-    isLoaded &&
-    (userprofile || publicUserProfile) &&
-    !isLoadingData
-  ) {
+  if (profile && !isLoadingData) {
     return getUserProfile();
   } else {
     return <UserProfileLoader />;
