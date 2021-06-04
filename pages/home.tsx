@@ -59,6 +59,7 @@ export default function Home(initialized: Props) {
       case 'xiting':
       case 'lacoqueta':
       case 'ulmpflanzt':
+      case 'sitex':
       case '3pleset':
         HomePage = BasicHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;

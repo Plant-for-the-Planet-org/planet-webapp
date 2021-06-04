@@ -12,6 +12,7 @@ import interactClub from './public/tenants/interactClub/config';
 import culchacandela from './public/tenants/culchacandela/config';
 import xiting from './public/tenants/xiting/config';
 import ulmpflanzt from './public/tenants/ulmpflanzt/config';
+import sitex from './public/tenants/sitex/config';
 import T3pleset from './public/tenants/3pleset/config';
 
 export default function tenantConfig() {
@@ -44,6 +45,8 @@ export default function tenantConfig() {
       return xiting;
     case 'ulmpflanzt':
       return ulmpflanzt;
+    case 'sitex':
+      return sitex;
     case '3pleset':
       return T3pleset;
     default:
