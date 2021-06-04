@@ -1,6 +1,6 @@
 {
   "treesDonated": "Árvores doadas desde 2019",
-  "plantedByTPO": "Plantado pelas 101 organizações participantes",
+  "plantedByTPO": "Plantado pelas {{projects}}+ organizações participantes",
   "plantedGlobally": "Árvores registradas na plataforma desde 2006",
   "forestLoss": "Perda florestal líquida nos últimos 12 meses",
   "estimateOf": "Estimativa da perda anual de árvores por",
