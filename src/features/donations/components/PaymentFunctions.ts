@@ -250,7 +250,7 @@ export async function payDonationFunction({
   }
 
   try {
-    const paidDonation = await payDonation(payDonationData, donationID, token);    
+    const paidDonation = await payDonation(payDonationData, donationID, token);
 
     if (paidDonation) {
       if (paidDonation.code === 400 || paidDonation.code === 401) {
@@ -272,13 +272,14 @@ export async function payDonationFunction({
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
         return paidDonation;
-      } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending' ||
-      paidDonation.status === "success" || 
-      paidDonation.status === "paid" ||
-      paidDonation.paymentStatus === "paid") {
+      } else if (paidDonation.paymentStatus === 'success'
+        || paidDonation.paymentStatus === 'pending'
+        || paidDonation.paymentStatus === 'paid'
+        || paidDonation.status === 'success'
+        || paidDonation.status === 'pending'
+        || paidDonation.status === 'paid' ) {
         setIsPaymentProcessing(false);
         setDonationStep(4);
-
         return paidDonation;
       } else if (paidDonation.status === 'action_required') {
         handleSCAPaymentFunction({
