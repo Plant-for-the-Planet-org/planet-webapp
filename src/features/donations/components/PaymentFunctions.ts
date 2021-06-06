@@ -250,7 +250,7 @@ export async function payDonationFunction({
   }
 
   try {
-    const paidDonation = await payDonation(payDonationData, donationID, token);
+    const paidDonation = await payDonation(payDonationData, donationID, token);    
 
     if (paidDonation) {
       if (paidDonation.code === 400 || paidDonation.code === 401) {
@@ -271,10 +271,11 @@ export async function payDonationFunction({
       if (paidDonation.status === 'failed') {
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
+        return paidDonation;
       } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending' ||
-      paidDonation.data.status === "success" || 
-      paidDonation.data.status === "paid" ||
-      paidDonation.data.paymentStatus === "paid") {
+      paidDonation.status === "success" || 
+      paidDonation.status === "paid" ||
+      paidDonation.paymentStatus === "paid") {
         setIsPaymentProcessing(false);
         setDonationStep(4);
 
