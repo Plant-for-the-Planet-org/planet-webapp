@@ -80,7 +80,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       token: null,
       setDonationStep: () => { }
     }).then((res)=>{
-      if (res.paymentStatus) {
+      if (res.paymentStatus || res.status) {
         setIsPaymentProcessing(false);
         setIsDonationComplete(true);
       } else {
