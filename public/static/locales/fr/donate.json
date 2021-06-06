@@ -1,6 +1,8 @@
 {
   "fortreeCountTrees": "for {{treeCount}} Tree",
   "fortreeCountTrees_plural": "for {{treeCount}} Trees",
+  "yourTreesPlantedByOnLocation": "Vos {{treeCount}} arbres seront plantés par {{projectName}} à {{location}}.",
+  "myTreesPlantedByOnLocation": "Mes {{treeCount}} arbres sont plantés à {{location}}.",
   "PROJECTS": "PROJETS",
   "topProjects": "Principaux projets",
   "allCountProjects": "Tous {{projectCount}} Projets",
@@ -79,6 +81,7 @@
   "waitingConfirmation": "Nous attendons actuellement une confirmation de votre banque et vous enverrons un courriel sous peu. N'hésitez pas à fermer cette page.",
   "yourDonationRef": "Votre référence de don est {{donationID}}",
   "payWithGiroPay": "Payer avec GiroPay",
+  "payWithSofort": "Payer avec SOFORT",
   "donationFailed": "Echec du don",
   "donationFailedMessage": "Un problème est survenu lors de votre paiement. Si vous continuez à avoir des problèmes, veuillez nous contacter à l'adresse suivante : support@plant-for-the-planet.org",
   "donationPending": "Compléter votre don",
