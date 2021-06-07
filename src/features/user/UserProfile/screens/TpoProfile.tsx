@@ -13,7 +13,7 @@ export default function TpoProfile({
   authenticatedType,
   changeForceReload,
   forceReload,
-  token
+  token,
 }: any) {
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -46,7 +46,8 @@ export default function TpoProfile({
     <>
       {authenticatedType === 'private' && (
         <>
-          <button id={'tpoProfileSetting'}
+          <button
+            id={'tpoProfileSetting'}
             className={styles.settingsIcon}
             onClick={handleSettingsModalOpen}
           >
@@ -75,12 +76,14 @@ export default function TpoProfile({
             forceReload={forceReload}
           />
         )}
-        <UserInfo
-          userprofile={userprofile}
-          authenticatedType={authenticatedType}
-          // handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-          handleAddTargetModalOpen={handleAddTargetModalOpen}
-        />
+        {userprofile && (
+          <UserInfo
+            userprofile={userprofile}
+            authenticatedType={authenticatedType}
+            // handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+            handleAddTargetModalOpen={handleAddTargetModalOpen}
+          />
+        )}
       </LandingSection>
       <ProjectsContainer
         userprofile={userprofile}
@@ -88,7 +91,11 @@ export default function TpoProfile({
       />
 
       {authenticatedType === 'private' ? (
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} token={token} />
+        <MyTrees
+          authenticatedType={authenticatedType}
+          profile={userprofile}
+          token={token}
+        />
       ) : null}
 
       {/* add target modal */}

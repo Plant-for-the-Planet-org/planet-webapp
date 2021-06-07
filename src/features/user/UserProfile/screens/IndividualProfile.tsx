@@ -47,7 +47,8 @@ export default function IndividualProfile({
       <main>
         {authenticatedType === 'private' && (
           <>
-            <button id={'IndividualProSetting'}
+            <button
+              id={'IndividualProSetting'}
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
             >
@@ -76,15 +77,20 @@ export default function IndividualProfile({
               forceReload={forceReload}
             />
           )}
-
-          <UserInfo
-            userprofile={userprofile}
-            authenticatedType={authenticatedType}
-            handleAddTargetModalOpen={handleAddTargetModalOpen}
-          />
+          {userprofile && (
+            <UserInfo
+              userprofile={userprofile}
+              authenticatedType={authenticatedType}
+              handleAddTargetModalOpen={handleAddTargetModalOpen}
+            />
+          )}
         </LandingSection>
 
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} token={token} />
+        <MyTrees
+          authenticatedType={authenticatedType}
+          profile={userprofile}
+          token={token}
+        />
       </main>
 
       {/* add target modal */}
