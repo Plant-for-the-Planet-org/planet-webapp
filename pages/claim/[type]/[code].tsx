@@ -129,7 +129,7 @@ function ClaimDonation({}: Props): ReactElement {
     // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.
     // When the user logs in, redirect user to the claim link from the localstorage and clear the localstorage.
     // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
-    else if (contextLoaded && user) {
+    else if (contextLoaded && !user) {
       // store the claim link in localstorage
       if (routerReady && typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
