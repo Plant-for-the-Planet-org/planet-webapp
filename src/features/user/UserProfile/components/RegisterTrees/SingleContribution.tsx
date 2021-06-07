@@ -12,7 +12,7 @@ interface Props {
   token: any;
   contributionGUID: any;
   contribution: any;
-  currentUserSlug: any;
+  slug: any;
 }
 
 const { useTranslation } = i18next;
