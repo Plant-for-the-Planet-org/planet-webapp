@@ -138,7 +138,10 @@ export default function RegisterTrees({
     async function getUserLocation() {
       const location = await getStoredConfig('loc');
       if (location) {
-        setUserLocation([Number(location.longitude) || 0, Number(location.latitude) || 0]);
+        setUserLocation([
+          Number(location.longitude) || 0,
+          Number(location.latitude) || 0,
+        ]);
       }
     }
     getUserLocation();
@@ -247,7 +250,7 @@ export default function RegisterTrees({
   return ready ? (
     <>
       <Modal
-        className={'modalContainer'+' '+theme}
+        className={'modalContainer' + ' ' + theme}
         open={registerTreesModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition
@@ -424,7 +427,7 @@ export default function RegisterTrees({
                     id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
                     className="primaryButton"
-                    style={{maxWidth: "240px"}}
+                    style={{ maxWidth: '240px' }}
                   >
                     {' '}
                     {isUploadingData ? (
