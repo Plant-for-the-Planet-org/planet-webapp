@@ -16,7 +16,7 @@
     margin-bottom: 15px;
 
     @include lgLaptopView {
-      font-size: 36px;
+      font-size: $fontXXLarge;
       line-height: 100%;
       margin-bottom: 20px;
     }
@@ -25,7 +25,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: 300;
-    font-size: 22px;
+    font-size: $fontLarge;
     line-height: 30px;
     text-align: center;
     letter-spacing: -0.002em;
@@ -49,7 +49,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
     color: #FFFFFF;
