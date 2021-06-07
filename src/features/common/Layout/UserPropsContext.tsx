@@ -39,7 +39,9 @@ function UserPropsProvider({ children }: any): ReactElement {
       const accessToken = await getAccessTokenSilently();
       setToken(accessToken);
     }
-    if (!isLoading && isAuthenticated) loadToken();
+    if (!isLoading)
+      if (isAuthenticated) loadToken();
+      else setContextLoaded(true);
   }, [isLoading, isAuthenticated]);
 
   const logoutUser = (

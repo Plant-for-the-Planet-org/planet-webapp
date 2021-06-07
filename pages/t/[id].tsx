@@ -46,7 +46,6 @@ function ProfileComponent(): ReactElement {
 
     if (ready && contextLoaded) {
       console.log('condition passed');
-
       setProfile(null);
       if (user) {
         console.log('user exists');
