@@ -37,6 +37,8 @@ function Login({}: Props): ReactElement {
     if (contextLoaded) {
       if (user) {
         loadFunction();
+      } else if (user === null) {
+        // wait for context to redirect to complete signup
       } else {
         console.log('not authenticated');
         loginWithRedirect({

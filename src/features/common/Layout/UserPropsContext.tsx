@@ -34,10 +34,8 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     async function loadToken() {
-      if (!token) {
-        const accessToken = await getAccessTokenSilently();
-        setToken(accessToken);
-      }
+      const accessToken = await getAccessTokenSilently();
+      setToken(accessToken);
     }
     if (!isLoading && isAuthenticated) loadToken();
   }, [isLoading, isAuthenticated]);

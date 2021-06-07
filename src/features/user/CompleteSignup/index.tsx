@@ -45,24 +45,26 @@ export default function CompleteSignup() {
   const [submit, setSubmit] = React.useState(false);
   React.useEffect(() => {
     async function loadFunction() {
-      if (!token) {
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
-      }
-      if (token && user) {
-        if (user.slug) {
+      console.log('load function');
+
+      if (token) {
+        if (user && user.slug) {
+          console.log('user exists');
           if (typeof window !== 'undefined') {
             router.push(`/t/${user.slug}`);
           }
         }
+      } else {
+        console.log("user doesn't exist");
+        router.push('/', undefined, { shallow: true });
       }
     }
     if (contextLoaded) {
       loadFunction();
     }
-  }, [contextLoaded]);
+  }, [contextLoaded, user, token]);
+
+  console.log('here');
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -112,18 +114,13 @@ export default function CompleteSignup() {
       if (res.status === 200) {
         // successful signup -> goto me page
         const resJson = await res.json();
-        const newUserInfo = {
-          ...user,
-          slug: resJson.slug,
-          type: resJson.type,
-        };
-        setUser(newUserInfo);
+        setUser(resJson);
         setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
         setSeverity('success');
         handleSnackbarOpen();
 
         if (typeof window !== 'undefined') {
-          router.push(`/t/${resJson.slug}`);
+          router.push('/t/[id]', `/t/${resJson.slug}`);
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
@@ -204,7 +201,7 @@ export default function CompleteSignup() {
         <div className={requestSent ? styles.signupRequestSent : styles.signup}>
           {/* header */}
           <div className={styles.header}>
-            <div onClick={logoutUser} className={styles.headerBackIcon}>
+            <div onClick={() => logoutUser()} className={styles.headerBackIcon}>
               <CancelIcon color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>
