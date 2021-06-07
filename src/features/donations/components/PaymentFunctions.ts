@@ -271,13 +271,15 @@ export async function payDonationFunction({
       if (paidDonation.status === 'failed') {
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
-      } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending' ||
-      paidDonation.data.status === "success" || 
-      paidDonation.data.status === "paid" ||
-      paidDonation.data.paymentStatus === "paid") {
+        return paidDonation;
+      } else if (paidDonation.paymentStatus === 'success'
+        || paidDonation.paymentStatus === 'pending'
+        || paidDonation.paymentStatus === 'paid'
+        || paidDonation.status === 'success'
+        || paidDonation.status === 'pending'
+        || paidDonation.status === 'paid' ) {
         setIsPaymentProcessing(false);
         setDonationStep(4);
-
         return paidDonation;
       } else if (paidDonation.status === 'action_required') {
         handleSCAPaymentFunction({
