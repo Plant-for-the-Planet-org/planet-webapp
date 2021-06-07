@@ -1,19 +1,16 @@
 import { Modal, Snackbar } from '@material-ui/core';
 import React, { ReactElement } from 'react';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from '../styles/EmbedModal.module.scss';
 import i18next from '../../../../../i18n';
-import { useAuth0 } from '@auth0/auth0-react';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import MuiAlert from '@material-ui/lab/Alert';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
-  user: Object;
 }
 
 const { useTranslation } = i18next;
@@ -21,28 +18,18 @@ const { useTranslation } = i18next;
 export default function EmbedModal({
   embedModalOpen,
   setEmbedModalOpen,
-  user,
 }: Props) {
   const { t, ready } = useTranslation(['editProfile']);
 
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [token, setToken] = React.useState('');
   const [severity, setSeverity] = React.useState('success');
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-    if (isAuthenticated && !isLoading) {
-      loadFunction();
-    }
-  }, [isAuthenticated, isLoading]);
+
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (user && user.isPrivate) {
@@ -72,7 +59,7 @@ export default function EmbedModal({
     const bodyToSend = {
       isPrivate: false,
     };
-    if (!isLoading && token) {
+    if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
           .then((res) => {

@@ -15,6 +15,7 @@ export const UserPropsContext = React.createContext({
   loginWithRedirect: ({}) => {},
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
+  auth0Error: {} || undefined,
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -25,6 +26,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     getAccessTokenSilently,
     logout,
     user,
+    error,
   } = useAuth0();
 
   const router = useRouter();
@@ -102,6 +104,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         loginWithRedirect,
         logoutUser,
         auth0User: user,
+        auth0Error: error,
       }}
     >
       {children}

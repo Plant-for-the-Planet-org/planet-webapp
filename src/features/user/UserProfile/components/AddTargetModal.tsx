@@ -7,7 +7,6 @@ import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useAuth0 } from '@auth0/auth0-react';
 import formStyles from '../styles/EditProfileModal.module.scss';
 import spinnerStyle from '../../ManageProjects/styles/StepForm.module.scss';
 import { ThemeContext } from '../../../../theme/themeContext';
