@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import styles from '../styles/UserProfile.module.scss';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsModal from '../components/SettingsModal';

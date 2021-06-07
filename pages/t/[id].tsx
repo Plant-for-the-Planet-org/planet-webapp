@@ -62,7 +62,7 @@ function ProfileComponent(): ReactElement {
         loadPublicProfile();
       }
     }
-  }, [ready, contextLoaded, forceReload, slug]);
+  }, [ready, contextLoaded, forceReload, slug, user]);
 
   console.log(ready, contextLoaded, slug, profile);
 

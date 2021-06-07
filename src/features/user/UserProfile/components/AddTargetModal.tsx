@@ -25,7 +25,9 @@ export default function AddTargetModal({
   const { t, ready } = useTranslation(['target']);
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
   const [isLoadingForm, setIsLoading] = React.useState(false);
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, setUser } = React.useContext(
+    UserPropsContext
+  );
 
   const apiCallChangeTarget = async () => {
     setIsLoading(true);
@@ -38,6 +40,11 @@ export default function AddTargetModal({
           handleAddTargetModalClose();
           changeForceReload(!forceReload);
           setIsLoading(false);
+          const newUserInfo = {
+            ...user,
+            score: res.score,
+          };
+          setUser(newUserInfo);
         })
         .catch((error) => {
           handleAddTargetModalClose();

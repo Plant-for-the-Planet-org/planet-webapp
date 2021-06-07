@@ -31,20 +31,9 @@ export default function EditProfileModal({
 }: any) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const [token, setToken] = React.useState('');
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-    if (isAuthenticated && !isLoading) {
-      loadFunction();
-    }
-  }, [isAuthenticated, isLoading]);
-
-  const { user, setUser } = React.useContext(UserPropsContext);
+  const { user, setUser, token, contextLoaded } = React.useContext(
+    UserPropsContext
+  );
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate', 'target']);
@@ -140,7 +129,7 @@ export default function EditProfileModal({
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = async (event) => {
-          if (!isLoading && token) {
+          if (contextLoaded && token) {
             const bodyToSend = {
               imageFile: event.target.result,
             };
@@ -181,7 +170,7 @@ export default function EditProfileModal({
       country: country,
       type,
     };
-    if (!isLoading && token) {
+    if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
           .then((res) => {
@@ -190,6 +179,7 @@ export default function EditProfileModal({
             handleSnackbarOpen();
             changeForceReload(!forceReload), handleEditProfileModalClose();
             setIsUploadingData(false);
+            setUser(res);
           })
           .catch((error) => {
             setSeverity('error');
