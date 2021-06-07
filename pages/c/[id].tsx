@@ -9,11 +9,7 @@ import SingleContribution from '../../src/features/user/UserProfile/components/R
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 
 export default function SingleContributionPage(): ReactElement {
-    const {
-        user,
-        contextLoaded,
-        token,
-      } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
   const [contributionGUID, setContributionGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const router = useRouter();
@@ -48,8 +44,7 @@ export default function SingleContributionPage(): ReactElement {
     }
     // ready is for router, loading is for session
     if (ready && contextLoaded) {
-        if(token)
-      loadFunction();
+      if (token) loadFunction();
     }
   }, [ready, contextLoaded]);
 
@@ -66,7 +61,7 @@ export default function SingleContributionPage(): ReactElement {
     token,
     contribution,
     contributionGUID,
-    user.slug,
+    slug: user.slug,
   };
 
   // Showing error to other TPOs is left
@@ -81,9 +76,7 @@ export default function SingleContributionPage(): ReactElement {
               : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
           }
         >
-          {user.slug ? (
-            <SingleContribution {...ContributionProps} />
-          ) : null}
+          {user.slug ? <SingleContribution {...ContributionProps} /> : null}
         </LandingSection>
       </>
     ) : (
