@@ -49,7 +49,7 @@
 // styles the section heading to bold and dark color
 .sectionHead {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: bold;
   color: $primaryFontColor;
   margin: 0px 0px 0px 20px;
@@ -67,7 +67,7 @@
 .buttonContainer p {
   color: $primaryColor;
   font-weight: bold;
-  font-size: 14px;
+  font-size: $fontSmall;
   margin: 0px;
   z-index: 1;
 }
