@@ -240,7 +240,7 @@ export default function RegisterTrees({}: Props) {
     token,
     contribution: contributionDetails,
     contributionGUID,
-    currentUserSlug: user.slug,
+    slug: user.slug,
   };
   const { theme } = React.useContext(ThemeContext);
 
