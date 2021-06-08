@@ -52,6 +52,18 @@
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
+  transition: all 300ms ease;
+}
+
+.projectImage:hover {
+  > .projectImageFile {
+    background-size: 105%;
+  }
+  > .projectImageBlock {
+    > .projectName {
+      transform: translateX(10px) scale(1.05);
+    }
+  }
 }
 
 .projectImageBlock {
@@ -72,6 +84,15 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
+  transition: all 50ms ease;
+}
+
+// .projectName:hover {
+//   transform: translateX(10px) scale(1.05);
+// }
+
+.projectName::after {
+  content: ' →';
 }
 
 /* Progress Bar */
@@ -117,9 +138,14 @@
   margin-top: 10px;
   line-height: 14px;
   cursor: pointer;
+  transition: all 50ms ease;
 }
 
-.projectData{
+.projectTPOName:hover {
+  transform: translateX(3px) scale(1.05);
+}
+
+.projectData {
   max-width: 178px;
 }
 
@@ -144,11 +170,13 @@
   font-size: $fontSmall;
   font-weight: 600;
   letter-spacing: 0.3px;
+  transition: all 50ms ease;
 }
 
 .donateButton:hover {
   cursor: pointer;
   text-decoration: none;
+  transform: scale(1.05);
 }
 
 .perTreeCost {
