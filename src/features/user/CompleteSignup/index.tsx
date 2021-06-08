@@ -45,17 +45,13 @@ export default function CompleteSignup() {
   const [submit, setSubmit] = React.useState(false);
   React.useEffect(() => {
     async function loadFunction() {
-      console.log('load function');
-
       if (token) {
         if (user && user.slug) {
-          console.log('user exists');
           if (typeof window !== 'undefined') {
             router.push(`/t/${user.slug}`);
           }
         }
       } else {
-        console.log("user doesn't exist");
         router.push('/', undefined, { shallow: true });
       }
     }
@@ -63,8 +59,6 @@ export default function CompleteSignup() {
       loadFunction();
     }
   }, [contextLoaded, user, token]);
-
-  console.log('here');
 
   //  snackbars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);

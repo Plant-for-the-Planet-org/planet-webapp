@@ -40,20 +40,15 @@ function ProfileComponent(): ReactElement {
       const profileData = await getRequest(`/app/profiles/${slug}`);
       setProfile(profileData);
       setAuthenticatedType('public');
-      console.log('not authenticated');
     }
-    console.log('useeffect');
 
     if (ready && contextLoaded) {
-      console.log('condition passed');
       setProfile(null);
       if (user) {
-        console.log('user exists');
         const currentUserSlug = user?.slug ? user.slug : null;
         if (user && currentUserSlug === slug) {
           setProfile(user);
           setAuthenticatedType('private');
-          console.log('authenticated');
         } else {
           loadPublicProfile();
         }
@@ -62,8 +57,6 @@ function ProfileComponent(): ReactElement {
       }
     }
   }, [ready, contextLoaded, forceReload, slug, user]);
-
-  console.log(ready, contextLoaded, slug, profile);
 
   const PublicUserProps = {
     userprofile: profile,

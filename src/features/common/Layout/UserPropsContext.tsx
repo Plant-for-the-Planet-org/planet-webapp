@@ -48,36 +48,27 @@ function UserPropsProvider({ children }: any): ReactElement {
     returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
   ) => {
     setUser(false);
-    console.log('returnTo', returnUrl);
     logout({ returnTo: returnUrl });
   };
 
   React.useEffect(() => {
-    console.log('in useeffect');
     async function loadUser() {
-      console.log('loading started');
       setContextLoaded(false);
       try {
         const res = await getAccountInfo(token);
         if (res.status === 200) {
-          console.log('user found');
           const resJson = await res.json();
           setUser(resJson);
         } else if (res.status === 303) {
           // if 303 -> user doesn not exist in db
           setUser(null);
-          console.log('not in db');
-
           if (typeof window !== 'undefined') {
-            console.log('window defined');
             router.push('/complete-signup', undefined, { shallow: true });
           }
         } else if (res.status === 401) {
           // in case of 401 - invalid token: signIn()
           setUser(false);
           setToken(null);
-          console.log('invalid token');
-          // logoutUser(`${process.env.NEXTAUTH_URL}`);
           loginWithRedirect({
             redirectUri: `${process.env.NEXTAUTH_URL}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
@@ -89,7 +80,6 @@ function UserPropsProvider({ children }: any): ReactElement {
         console.log(err);
       }
       setContextLoaded(true);
-      console.log('loading complete');
     }
     if (token) loadUser();
   }, [token]);
