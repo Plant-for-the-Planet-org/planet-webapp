@@ -9,7 +9,6 @@ import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
-import MapLayout from '../src/features/projects/components/ProjectsMap';
 
 interface Props {
   initialized: boolean;

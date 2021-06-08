@@ -5,7 +5,6 @@ import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
 import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
-import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 
@@ -60,6 +59,7 @@ export default function Donate({
   }, [router]);
 
   React.useEffect(() => {
+    setShowSingleProject(false);
     setProject(null);
   }, []);
 
