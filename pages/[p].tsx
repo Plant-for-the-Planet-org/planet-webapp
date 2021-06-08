@@ -1,34 +1,35 @@
 import { Modal } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import DonationsPopup from '../src/features/donations';
+import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
-import getStoredCurrency from "../src/utils/countryCurrency/getStoredCurrency";
+import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
+import MapLayout from '../src/features/projects/components/ProjectsMap';
 
 interface Props {
-  initialized: Boolean;
-  project: any;
-  setProject: Function;
-  setShowSingleProject: Function;
-  currencyCode: any;
+  initialized: boolean;
+  currencyCode: string;
   setCurrencyCode: Function;
 }
 
 export default function Donate({
   initialized,
-  project,
-  setProject,
-  setShowSingleProject,
   currencyCode,
-  setCurrencyCode
+  setCurrencyCode,
 }: Props) {
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
+  const { project, setProject, setShowSingleProject } = React.useContext(
+    ProjectPropsContext
+  );
+
   React.useEffect(() => {
     setShowSingleProject(true);
   }, []);
@@ -45,7 +46,9 @@ export default function Donate({
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
-        const project = await getRequest(`/app/projects/${router.query.p}?_scope=extended&currency=${currency}`);
+        const project = await getRequest(
+          `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`
+        );
         setProject(project);
         setShowSingleProject(true);
       }
@@ -57,19 +60,25 @@ export default function Donate({
 
   const ProjectProps = {
     project,
+    currencyCode,
+    setCurrencyCode,
   };
 
   React.useEffect(() => {
-    if(router.asPath){
-      const isDonation = router.asPath.search("#donate");
-      if(isDonation && isDonation != -1){
+    if (router.asPath) {
+      const isDonation = router.asPath.search('#donate');
+      if (isDonation && isDonation != -1) {
         handleOpen();
       }
     }
-  },[router.asPath])
+  }, [router.asPath]);
   return (
     <>
-      {project ? <GetProjectMeta {...ProjectProps} /> : null}
+      {project ? (
+        <>
+          <GetProjectMeta {...ProjectProps} /> <MapLayout {...ProjectProps} />
+        </>
+      ) : null}
       {initialized ? (
         project && initialized ? (
           <>
@@ -89,6 +98,7 @@ export default function Donate({
           <></>
         )
       ) : null}
+      <Credits setCurrencyCode={setCurrencyCode} />
     </>
   );
 }

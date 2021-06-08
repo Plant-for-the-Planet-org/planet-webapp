@@ -20,7 +20,8 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { browserNotCompatible } from '../src/utils/browsercheck';
-import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -59,7 +60,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       /vid_mate_check is not defined/,
       /win\.document\.body/,
       /window\._sharedData\.entry_data/,
-      /ztePageScrollModule/
+      /ztePageScrollModule/,
     ],
     denyUrls: [],
   });
@@ -120,28 +121,15 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   const ProjectProps = {
-    projects,
-    project,
-    setProject,
-    setProjects,
-    showSingleProject,
-    setShowSingleProject,
     pageProps,
     initialized,
-    showProjects,
-    setShowProjects,
-    searchedProject,
-    setsearchedProjects,
     currencyCode,
-    setCurrencyCode
+    setCurrencyCode,
   };
 
   if (browserCompatible) {
-    return (
-      <BrowserNotSupported />
-    );
-  }
-  else {
+    return <BrowserNotSupported />;
+  } else {
     return (
       <Auth0Provider
         domain={process.env.AUTH0_CUSTOM_DOMAIN}
@@ -154,14 +142,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <ThemeProvider>
           <CssBaseline />
           <Layout>
-            {isMap ? (
-              project ? (
-                <MapLayout {...ProjectProps} />
-              ) : projects ? (
-                <MapLayout {...ProjectProps} />
-              ) : null
-            ) : null}
-            <Component {...ProjectProps} />
+            <ProjectPropsProvider>
+              <Component {...ProjectProps} />
+            </ProjectPropsProvider>
           </Layout>
         </ThemeProvider>
       </Auth0Provider>
