@@ -41,7 +41,7 @@ export default function TimeTravel({}: Props): ReactElement {
         style: EMPTY_STYLE,
         center: center,
         zoom: zoom,
-        dragPan: true,
+        // dragPan: true,
       });
 
       setBefore(before);
@@ -51,7 +51,7 @@ export default function TimeTravel({}: Props): ReactElement {
         style: EMPTY_STYLE,
         center: center,
         zoom: zoom,
-        dragPan: true,
+        // dragPan: true,
       });
 
       setAfter(after);
@@ -70,7 +70,7 @@ export default function TimeTravel({}: Props): ReactElement {
         orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
       });
 
-      syncMove(before, after, mapRef.current.getMap());
+      syncMove(before, after);
     }
     const siteCenter = turf.centroid(geoJson);
     if (!turf.booleanPointInPolygon(siteCenter, planetCoverage)) {
