@@ -74,11 +74,7 @@ export default function Donate({
   }, [router.asPath]);
   return (
     <>
-      {project ? (
-        <>
-          <GetProjectMeta {...ProjectProps} /> <MapLayout {...ProjectProps} />
-        </>
-      ) : null}
+      {project ? <GetProjectMeta {...ProjectProps} /> : null}
       {initialized ? (
         project && initialized ? (
           <>

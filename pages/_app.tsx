@@ -21,7 +21,9 @@ import { storeConfig } from '../src/utils/storeConfig';
 import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
+import ProjectPropsProvider, {
+  ProjectPropsContext,
+} from '../src/features/common/Layout/ProjectPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -74,12 +76,7 @@ const onRedirectCallback = (appState) => {
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
-  const [projects, setProjects] = React.useState(null);
-  const [project, setProject] = React.useState(null);
-  const [showProjects, setShowProjects] = React.useState(true);
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
-  const [searchedProject, setsearchedProjects] = React.useState([]);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
@@ -127,6 +124,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setCurrencyCode,
   };
 
+  const { project, projects } = React.useContext(ProjectPropsContext);
+
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
@@ -143,6 +142,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <CssBaseline />
           <Layout>
             <ProjectPropsProvider>
+              {isMap ? (
+                project ? (
+                  <MapLayout />
+                ) : projects ? (
+                  <MapLayout />
+                ) : null
+              ) : null}
               <Component {...ProjectProps} />
             </ProjectPropsProvider>
           </Layout>

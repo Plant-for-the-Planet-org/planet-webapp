@@ -101,7 +101,6 @@ export default function Donate({
         projects && initialized ? (
           <>
             <GetAllProjectsMeta />
-            <MapLayout {...ProjectsProps} />
             <ProjectsList {...ProjectsProps} />
             {directGift ? (
               showdirectGift ? (

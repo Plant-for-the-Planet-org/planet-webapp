@@ -1,7 +1,7 @@
 @import './../../../theme/theme';
 
 .VegetationChangeContainer {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 10px;
   right: auto;
@@ -39,7 +39,6 @@
 
 .options p {
   display: none;
-  font-size: $fontSmall;
 }
 
 .options p sup {
@@ -48,7 +47,7 @@
 }
 
 .dropdownContainer {
-  position: absolute;
+  position: fixed;
   top: 65px;
   left: 0;
   right: 0;
@@ -61,6 +60,7 @@
   align-items: center;
   overflow: hidden;
   height: 50px;
+  z-index: 3;
 }
 
 .beforeYear {
@@ -118,11 +118,11 @@
 @include mdTabletView {
   .VegetationChangeContainer {
     left: 400px;
-    top: 50px;
+    top: 110px;
   }
   .dropdownContainer {
     padding: 0 20px 0 400px;
-    top: 90px;
+    top: 160px;
   }
 }
 

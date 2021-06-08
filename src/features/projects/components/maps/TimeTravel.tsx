@@ -5,24 +5,20 @@ import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import planetCoverage from '../../../../../public/data/planet/aoi.json';
 import * as turf from '@turf/turf';
+import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
-interface Props {
-  rasterData: Object | null;
-  mapRef: Object;
-  geoJson: Object | null;
-  isMobile: boolean;
-  mapState: Object;
-  setMapState: Function;
-}
+interface Props {}
 
-export default function TimeTravel({
-  rasterData,
-  mapRef,
-  geoJson,
-  isMobile,
-  mapState,
-  setMapState,
-}: Props): ReactElement {
+export default function TimeTravel({}: Props): ReactElement {
+  const {
+    mapRef,
+    geoJson,
+    rasterData,
+    isMobile,
+    mapState,
+    setMapState,
+  } = React.useContext(ProjectPropsContext);
+
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
   const [selectedSource1, setSelectedSource1] = React.useState('planetLabs');
@@ -45,6 +41,7 @@ export default function TimeTravel({
         style: EMPTY_STYLE,
         center: center,
         zoom: zoom,
+        dragPan: true,
       });
 
       setBefore(before);
@@ -54,15 +51,16 @@ export default function TimeTravel({
         style: EMPTY_STYLE,
         center: center,
         zoom: zoom,
+        dragPan: true,
       });
 
       setAfter(after);
 
       // Add zoom and rotation controls to the map.
-      // after.addControl(
-      //   new mapboxgl.NavigationControl({ showCompass: false }),
-      //   'bottom-right'
-      // );
+      after.addControl(
+        new mapboxgl.NavigationControl({ showCompass: false }),
+        'bottom-right'
+      );
 
       // A selector or reference to HTML element
       const container = '#comparison-container';
@@ -79,41 +77,6 @@ export default function TimeTravel({
       setSelectedSource1('sentinel');
       setSelectedSource2('sentinel');
     }
-
-    let btn: any;
-
-    if (document) {
-      btn = document.getElementsByClassName('compare-swiper-vertical');
-      btn[0].addEventListener('mousedown', () => {
-        setMapState({ ...mapState, dragPan: false });
-      });
-      btn[0].addEventListener('mouseup', () => {
-        setMapState({ ...mapState, dragPan: true });
-      });
-      btn[0].addEventListener('touchstart', () => {
-        setMapState({ ...mapState, dragPan: false });
-      });
-      btn[0].addEventListener('touchend', () => {
-        setMapState({ ...mapState, dragPan: true });
-      });
-    }
-
-    return () => {
-      if (Array.isArray(btn)) {
-        btn[0].removeEventListener('mousedown', () => {
-          setMapState({ ...mapState, dragPan: false });
-        });
-        btn[0].removeEventListener('mouseup', () => {
-          setMapState({ ...mapState, dragPan: true });
-        });
-        btn[0].removeEventListener('touchstart', () => {
-          setMapState({ ...mapState, dragPan: false });
-        });
-        btn[0].removeEventListener('touchend', () => {
-          setMapState({ ...mapState, dragPan: true });
-        });
-      }
-    };
   }, []);
 
   React.useEffect(() => {
