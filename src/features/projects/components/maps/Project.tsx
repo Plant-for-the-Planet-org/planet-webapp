@@ -40,9 +40,9 @@ export default function Project({
       setRasterData({ ...rasterData, imagery: result.imagery });
     }
   }
-
   React.useEffect(() => {
     if (siteExists) {
+      loadRasterData();
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
@@ -54,7 +54,6 @@ export default function Project({
         setViewPort,
         4000
       );
-      loadRasterData();
     } else {
       zoomToLocation(
         viewport,
@@ -65,7 +64,7 @@ export default function Project({
         3000
       );
     }
-  }, []);
+  }, [project, siteExists]);
 
   //Props
   const locationProps = {
