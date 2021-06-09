@@ -42,6 +42,8 @@ export default function TpoProfile({
     setAddTargetModalOpen(true);
   };
 
+  console.log('userprofile', userprofile);
+
   return (
     <>
       {authenticatedType === 'private' && (

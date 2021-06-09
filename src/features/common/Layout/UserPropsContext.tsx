@@ -47,7 +47,6 @@ function UserPropsProvider({ children }: any): ReactElement {
   const logoutUser = (
     returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
   ) => {
-    setUser(false);
     logout({ returnTo: returnUrl });
   };
 

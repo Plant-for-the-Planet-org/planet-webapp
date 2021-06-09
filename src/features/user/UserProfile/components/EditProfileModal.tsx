@@ -25,8 +25,6 @@ const { useTranslation } = i18next;
 export default function EditProfileModal({
   editProfileModalOpen,
   handleEditProfileModalClose,
-  changeForceReload,
-  forceReload,
 }: any) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -173,12 +171,21 @@ export default function EditProfileModal({
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
           .then((res) => {
-            setSeverity('success');
-            setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
+            console.log(res);
+            if(res.code !== 400) {
+              setSeverity('success');
+              setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
+              handleSnackbarOpen();
+              handleEditProfileModalClose();
+              setIsUploadingData(false);
+              setUser(res);
+            } else {
+              setSeverity('error');
+            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
             handleSnackbarOpen();
-            changeForceReload(!forceReload), handleEditProfileModalClose();
             setIsUploadingData(false);
-            setUser(res);
+            handleEditProfileModalClose();
+            }
           })
           .catch((error) => {
             setSeverity('error');
