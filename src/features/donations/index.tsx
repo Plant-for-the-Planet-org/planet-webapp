@@ -4,17 +4,14 @@ import ContactDetails from './screens/ContactDetails';
 import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
 import TreeDonation from './screens/TreeDonation';
-import { useAuth0 } from '@auth0/auth0-react';
+import { UserPropsContext } from '../common/Layout/UserPropsContext';
 
 interface Props {
   onClose: any;
   project: any;
 }
 
-function DonationsPopup({
-  onClose,
-  project,
-}: Props): ReactElement {
+function DonationsPopup({ onClose, project }: Props): ReactElement {
   const [treeCount, setTreeCount] = React.useState(50);
   const [isGift, setIsGift] = React.useState(false);
   const [treeCost, setTreeCost] = React.useState(project.treeCost);
@@ -22,12 +19,9 @@ function DonationsPopup({
   const [donationID, setDonationID] = React.useState(null);
   const [shouldCreateDonation, setShouldCreateDonation] = React.useState(false);
 
-
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
+  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
+    UserPropsContext
+  );
 
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
@@ -46,7 +40,6 @@ function DonationsPopup({
 
   const [paymentType, setPaymentType] = React.useState('');
 
-
   const [directGift, setDirectGift] = React.useState(null);
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -55,17 +48,15 @@ function DonationsPopup({
     }
   }, []);
 
-  const [token, setToken] = React.useState('');
-
-  const [userProfile, setUserprofile] = React.useState(null)
-
   //  to load payment data
   React.useEffect(() => {
     async function loadPaymentSetup() {
       try {
         setIsPaymentOptionsLoading(true);
 
-        const paymentSetupData = await getRequest(`/app/projects/${project.id}/paymentOptions?country=${country}`);
+        const paymentSetupData = await getRequest(
+          `/app/projects/${project.id}/paymentOptions?country=${country}`
+        );
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
           setTreeCost(paymentSetupData.treeCost);
@@ -106,37 +97,43 @@ function DonationsPopup({
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-      const res = await getAccountInfo(token)
-      if (res.status === 200) {
-        const resJson = await res.json();
-        setUserprofile(resJson);
-        if (resJson) {
-          const defaultDetails = {
-            firstName: resJson.firstname ? resJson.firstname : '',
-            lastName: resJson.lastname ? resJson.lastname : '',
-            email: resJson.email ? resJson.email : '',
-            address: resJson.address.address ? resJson.address.address : '',
-            city: resJson.address.city ? resJson.address.city : '',
-            zipCode: resJson.address.zipCode ? resJson.address.zipCode : '',
-            country: '',
-            companyName: '',
-            isPrivate:resJson.isPrivate,
-            type:resJson.type
-          }
-          setContactDetails(defaultDetails)
-        }
-      }
+      const defaultDetails = {
+        firstName: user.firstname ? user.firstname : '',
+        lastName: user.lastname ? user.lastname : '',
+        email: user.email ? user.email : '',
+        address: user.address.address ? user.address.address : '',
+        city: user.address.city ? user.address.city : '',
+        zipCode: user.address.zipCode ? user.address.zipCode : '',
+        country: '',
+        companyName: '',
+        isPrivate: user.isPrivate,
+        type: user.type,
+      };
+      setContactDetails(defaultDetails);
     }
-    if (!isLoading && isAuthenticated) {
-      loadFunction()
+    if (contextLoaded && user) {
+      loadFunction();
     }
-  }, [isAuthenticated, isLoading])
+  }, [contextLoaded && user]);
 
   React.useEffect(() => {
     setShouldCreateDonation(true);
-  }, [paymentSetup, treeCount, isGift, giftDetails, contactDetails.firstName, contactDetails.lastName, contactDetails.email, contactDetails.address, contactDetails.city, contactDetails.zipCode, contactDetails.firstName, contactDetails.country, contactDetails.companyName, isTaxDeductible])
+  }, [
+    paymentSetup,
+    treeCount,
+    isGift,
+    giftDetails,
+    contactDetails.firstName,
+    contactDetails.lastName,
+    contactDetails.email,
+    contactDetails.address,
+    contactDetails.city,
+    contactDetails.zipCode,
+    contactDetails.firstName,
+    contactDetails.country,
+    contactDetails.companyName,
+    isTaxDeductible,
+  ]);
 
   const TreeDonationProps = {
     project,
@@ -163,7 +160,7 @@ function DonationsPopup({
     isPaymentOptionsLoading,
     token,
     donationID,
-    setDonationID
+    setDonationID,
   };
 
   const ContactDetailsProps = {
@@ -177,7 +174,7 @@ function DonationsPopup({
     setIsCompany,
     country,
     isTaxDeductible,
-    project
+    project,
   };
 
   const PaymentDetailsProps = {
@@ -198,7 +195,7 @@ function DonationsPopup({
     donationID,
     setDonationID,
     shouldCreateDonation,
-    setShouldCreateDonation
+    setShouldCreateDonation,
   };
 
   const ThankYouProps = {

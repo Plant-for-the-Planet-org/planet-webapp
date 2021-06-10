@@ -18,9 +18,9 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import { browserNotCompatible } from '../src/utils/browsercheck';
-import BrowserNotSupported  from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -59,16 +59,15 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       /vid_mate_check is not defined/,
       /win\.document\.body/,
       /window\._sharedData\.entry_data/,
-      /ztePageScrollModule/
+      /ztePageScrollModule/,
     ],
     denyUrls: [],
   });
 }
 
-const onRedirectCallback = (appState) => {
-  removeLocalUserInfo();
+const onRedirectCallback = (appState: any) => {
   // Use Next.js's Router.replace method to replace the url
-  Router.replace(appState?.returnTo || '/');
+  if (appState) Router.replace(appState?.returnTo || '/');
 };
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
@@ -133,15 +132,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     searchedProject,
     setsearchedProjects,
     currencyCode,
-    setCurrencyCode
+    setCurrencyCode,
   };
 
   if (browserCompatible) {
-    return (
-      <BrowserNotSupported />
-    );
-  }
-  else {
+    return <BrowserNotSupported />;
+  } else {
     return (
       <Auth0Provider
         domain={process.env.AUTH0_CUSTOM_DOMAIN}
@@ -153,16 +149,18 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       >
         <ThemeProvider>
           <CssBaseline />
-          <Layout>
-            {isMap ? (
-              project ? (
-                <MapLayout {...ProjectProps} />
-              ) : projects ? (
-                <MapLayout {...ProjectProps} />
-              ) : null
-            ) : null}
-            <Component {...ProjectProps} />
-          </Layout>
+          <UserPropsProvider>
+            <Layout>
+              {isMap ? (
+                project ? (
+                  <MapLayout {...ProjectProps} />
+                ) : projects ? (
+                  <MapLayout {...ProjectProps} />
+                ) : null
+              ) : null}
+              <Component {...ProjectProps} />
+            </Layout>
+          </UserPropsProvider>
         </ThemeProvider>
       </Auth0Provider>
     );

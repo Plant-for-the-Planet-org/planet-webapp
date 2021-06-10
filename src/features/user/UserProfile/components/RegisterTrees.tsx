@@ -25,6 +25,7 @@ import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -38,19 +39,12 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   loading: () => <p></p>,
 });
 
-interface Props {
-  slug: any;
-  token: any;
-  registerTreesModalOpen: any;
-}
+interface Props {}
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({
-  slug,
-  token,
-  registerTreesModalOpen,
-}: Props) {
+export default function RegisterTrees({}: Props) {
   const router = useRouter();
+  const { user, token } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -80,6 +74,9 @@ export default function RegisterTrees({
   const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
+  const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
+    true
+  );
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -243,7 +240,7 @@ export default function RegisterTrees({
     token,
     contribution: contributionDetails,
     contributionGUID,
-    currentUserSlug: slug,
+    slug: user.slug,
   };
   const { theme } = React.useContext(ThemeContext);
 
@@ -270,7 +267,9 @@ export default function RegisterTrees({
                     paddingRight: 10,
                   }}
                   onClick={() => {
-                    router.push(`/t/${slug}`, undefined, { shallow: true });
+                    router.push(`/t/${user.slug}`, undefined, {
+                      shallow: true,
+                    });
                   }}
                 >
                   <BackButton />
