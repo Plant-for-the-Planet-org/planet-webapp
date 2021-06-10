@@ -185,7 +185,7 @@ export default function MapComponent({
                   'text/xml'
                 );
                 const geo = tj.kml(dom);
-                if (gjv.isGeoJSONObject(geo)) {
+                if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
                   setGeoJsonError(false);
                   setGeoJson(geo);
                 } else {
