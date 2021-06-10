@@ -199,7 +199,7 @@ export default function MapComponent({
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
                 const geo = JSON.parse(event.target.result);
-                if (gjv.isGeoJSONObject(geo)) {
+                if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
                   setGeoJsonError(false);
                   setGeoJson(geo);
                 } else {
