@@ -184,7 +184,7 @@ video {
 }
 
 .comparison-map {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   width: 100%;
@@ -192,6 +192,7 @@ video {
 
 .mapboxgl-compare {
   top: 0;
+  position: fixed;
 }
 
 .mapboxgl-compare .compare-swiper-vertical {

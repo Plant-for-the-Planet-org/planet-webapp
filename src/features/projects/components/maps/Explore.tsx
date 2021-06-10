@@ -23,49 +23,45 @@ import ExploreInfoModal from './ExploreInfoModal';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
-interface Props {
-  loaded: boolean;
-  mapRef: Object;
-  setShowProjects: Function;
-  viewport: Object;
-  setViewPort: Function;
-  setExploreProjects: Function;
-  defaultMapCenter: Array<number>;
-  mapState: Object;
-  setMapState: Function;
-  isMobile: boolean;
-  exploreProjects: boolean;
-  showSingleProject: boolean;
-}
+interface Props {}
 
-export default function Explore({
-  loaded,
-  mapRef,
-  setShowProjects,
-  viewport,
-  setViewPort,
-  setExploreProjects,
-  defaultMapCenter,
-  mapState,
-  setMapState,
-  isMobile,
-  exploreProjects,
-  showSingleProject,
-}: Props): ReactElement {
+export default function Explore({}: Props): ReactElement {
+  const {
+    showSingleProject,
+    setShowProjects,
+    exploreExpanded,
+    setExploreExpanded,
+    exploreForests,
+    setExploreForests,
+    explorePotential,
+    setExplorePotential,
+    exploreDeforestation,
+    setExploreDeforestation,
+    explorePlanted,
+    setExplorePlanted,
+    infoExpanded,
+    setInfoExpanded,
+    openModal,
+    setModalOpen,
+    exploreContainerRef,
+    infoRef,
+    layersSettings,
+    setLayersSettings,
+    viewport,
+    setViewPort,
+    setExploreProjects,
+    defaultMapCenter,
+    mapState,
+    setMapState,
+    isMobile,
+    exploreProjects,
+  } = React.useContext(ProjectPropsContext);
+
   const { useTranslation } = i18next;
   const { t } = useTranslation(['maps']);
   const router = useRouter();
-
-  const infoRef = React.useRef(null);
-  const exploreContainerRef = React.useRef(null);
-  const [exploreExpanded, setExploreExpanded] = React.useState(false);
-  const [exploreForests, setExploreForests] = React.useState(false);
-  const [explorePotential, setExplorePotential] = React.useState(false);
-  const [exploreDeforestation, setExploreDeforestation] = React.useState(false);
-  const [explorePlanted, setExplorePlanted] = React.useState(false);
-  const [infoExpanded, setInfoExpanded] = React.useState(null);
-  const [openModal, setModalOpen] = React.useState(false);
 
   const { theme } = React.useContext(ThemeContext);
 
@@ -75,9 +71,6 @@ export default function Explore({
   const handleModalOpen = () => {
     setModalOpen(true);
   };
-
-  // Layer Manager
-  const [layersSettings, setLayersSettings] = React.useState({});
 
   // Event Handlers
   const handleExploreForestsChange = (event: any) => {
@@ -197,73 +190,16 @@ export default function Explore({
     });
   });
 
-  React.useEffect(() => {
-    if (exploreExpanded) {
-      setMapState({ ...mapState, dragPan: false });
-    } else {
-      setMapState({ ...mapState, dragPan: true });
-    }
-  }, [exploreExpanded]);
+  // React.useEffect(() => {
+  //   if (exploreExpanded) {
+  //     setMapState({ ...mapState, dragPan: false });
+  //   } else {
+  //     setMapState({ ...mapState, dragPan: true });
+  //   }
+  // }, [exploreExpanded]);
 
   return (
     <>
-      {exploreForests ? (
-        <Source
-          id="forests"
-          type="raster"
-          tiles={[
-            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer/tile/{z}/{y}/{x}',
-          ]}
-          tileSize={128}
-        >
-          <Layer id="forest-layer" source="forests" type="raster" />
-        </Source>
-      ) : null}
-
-      {loaded ? (
-        <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
-          {exploreDeforestation &&
-            TreeCoverLoss.map((layer) => {
-              const {
-                id,
-                decodeConfig,
-                timelineConfig,
-                decodeFunction,
-              } = layer;
-
-              const lSettings = layersSettings[id] || {};
-
-              const l = {
-                ...layer,
-                ...layer.config,
-                ...lSettings,
-                ...(!!decodeConfig && {
-                  decodeParams: getParams(decodeConfig, {
-                    ...timelineConfig,
-                    ...lSettings.decodeParams,
-                  }),
-                  decodeFunction,
-                }),
-              };
-
-              return <LayerM key={layer.id} {...l} />;
-            })}
-        </LayerManager>
-      ) : null}
-
-      {explorePotential ? (
-        <Source
-          id="potential"
-          type="raster"
-          tiles={[
-            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
-          ]}
-          tileSize={128}
-        >
-          <Layer id="potential-layer" source="potential" type="raster" />
-        </Source>
-      ) : null}
-
       <div ref={exploreContainerRef}>
         <div
           className={styles.exploreButton}
@@ -273,14 +209,13 @@ export default function Explore({
           style={exploreExpanded ? { padding: '4px 10px' } : {}}
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
-          {exploreExpanded ? null : (
-            isMobile || showSingleProject ? null : ( <p
+          {exploreExpanded ? null : isMobile || showSingleProject ? null : (
+            <p
               onClick={() => setExploreExpanded(true)}
               className={styles.exploreText}
             >
               {t('maps:explore')}
-            </p>)
-           
+            </p>
           )}
         </div>
         {exploreExpanded ? (
@@ -445,3 +380,71 @@ export default function Explore({
     </>
   );
 }
+
+const ExploreLayers = () => {
+  const {
+    exploreForests,
+    explorePotential,
+    exploreDeforestation,
+  } = React.useContext(ProjectPropsContext);
+  return (
+    <>
+      {exploreForests ? (
+        <Source
+          id="forests"
+          type="raster"
+          tiles={[
+            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer/tile/{z}/{y}/{x}',
+          ]}
+          tileSize={128}
+        >
+          <Layer id="forest-layer" source="forests" type="raster" />
+        </Source>
+      ) : null}
+
+      {loaded ? (
+        <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
+          {exploreDeforestation &&
+            TreeCoverLoss.map((layer) => {
+              const {
+                id,
+                decodeConfig,
+                timelineConfig,
+                decodeFunction,
+              } = layer;
+
+              const lSettings = layersSettings[id] || {};
+
+              const l = {
+                ...layer,
+                ...layer.config,
+                ...lSettings,
+                ...(!!decodeConfig && {
+                  decodeParams: getParams(decodeConfig, {
+                    ...timelineConfig,
+                    ...lSettings.decodeParams,
+                  }),
+                  decodeFunction,
+                }),
+              };
+
+              return <LayerM key={layer.id} {...l} />;
+            })}
+        </LayerManager>
+      ) : null}
+
+      {explorePotential ? (
+        <Source
+          id="potential"
+          type="raster"
+          tiles={[
+            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
+          ]}
+          tileSize={128}
+        >
+          <Layer id="potential-layer" source="potential" type="raster" />
+        </Source>
+      ) : null}
+    </>
+  );
+};

@@ -114,6 +114,7 @@
   position: fixed;
   right: 60px;
   top: 20px;
+  z-index: 100;
 }
 
 .projectSitesDropdown {
@@ -323,7 +324,11 @@
   margin: 0 5px;
   height: 7px;
   border-radius: 50px;
-  background: linear-gradient(90deg, $primaryColor 1.1%, $primaryDarkColor 98.6%);
+  background: linear-gradient(
+    90deg,
+    $primaryColor 1.1%,
+    $primaryDarkColor 98.6%
+  );
 }
 
 .currentForestScale > p:nth-child(1) {
@@ -364,7 +369,7 @@
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   animation: fade_in_show 0.5s;
-  z-index: 11;
+  z-index: 12;
 }
 
 @keyframes fade_in_show {
@@ -414,7 +419,7 @@
 }
 
 .lngSwitcher {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   right: 20px;
   font-size: 11px;

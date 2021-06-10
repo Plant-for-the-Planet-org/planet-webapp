@@ -10,20 +10,14 @@ import React, { ReactElement } from 'react';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
+import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
-interface Props {
-  geoJson: Object | null;
-  selectedSite: number;
-  setSelectedSite: Function;
-  isMobile: boolean;
-}
+interface Props {}
 
-export default function SitesDropdown({
-  geoJson,
-  selectedSite,
-  setSelectedSite,
-  isMobile,
-}: Props): ReactElement {
+export default function SitesDropdown(): ReactElement {
+  const { geoJson, selectedSite, setSelectedSite, isMobile } = React.useContext(
+    ProjectPropsContext
+  );
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(
     isMobile ? false : true
   );

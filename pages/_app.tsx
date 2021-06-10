@@ -20,6 +20,9 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import ProjectPropsProvider, {
+  ProjectPropsContext,
+} from '../src/features/common/Layout/ProjectPropsContext';
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
@@ -72,12 +75,7 @@ const onRedirectCallback = (appState: any) => {
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
-  const [projects, setProjects] = React.useState(null);
-  const [project, setProject] = React.useState(null);
-  const [showProjects, setShowProjects] = React.useState(true);
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
-  const [searchedProject, setsearchedProjects] = React.useState([]);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
@@ -119,21 +117,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   const ProjectProps = {
-    projects,
-    project,
-    setProject,
-    setProjects,
-    showSingleProject,
-    setShowSingleProject,
     pageProps,
     initialized,
-    showProjects,
-    setShowProjects,
-    searchedProject,
-    setsearchedProjects,
     currencyCode,
     setCurrencyCode,
   };
+
+  const { project, projects } = React.useContext(ProjectPropsContext);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -150,16 +140,18 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <ThemeProvider>
           <CssBaseline />
           <UserPropsProvider>
-            <Layout>
+          <Layout>
+            <ProjectPropsProvider>
               {isMap ? (
                 project ? (
-                  <MapLayout {...ProjectProps} />
+                  <MapLayout />
                 ) : projects ? (
-                  <MapLayout {...ProjectProps} />
+                  <MapLayout />
                 ) : null
               ) : null}
               <Component {...ProjectProps} />
-            </Layout>
+            </ProjectPropsProvider>
+          </Layout>
           </UserPropsProvider>
         </ThemeProvider>
       </Auth0Provider>
