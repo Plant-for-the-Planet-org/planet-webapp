@@ -2,27 +2,26 @@ import React, { useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import i18next from '../../../../../i18n';
-import { useAuth0 } from '@auth0/auth0-react';
+import { UserPropsContext } from '../UserPropsContext';
 
 const { useTranslation } = i18next;
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const { t, ready } = useTranslation(['leaderboard']);
-  const {
-    isLoading,
-    isAuthenticated
-  } = useAuth0();
+  const { user, contextLoaded, loginWithRedirect } = React.useContext(
+    UserPropsContext
+  );
 
   React.useEffect(() => {
-    if (!isLoading && isAuthenticated) {
+    if (contextLoaded && user) {
       setShowCookieNotice(false);
     }
-  }, [isAuthenticated, isLoading])
+  }, [contextLoaded, user]);
 
   React.useEffect(() => {
     const prev = localStorage.getItem('cookieNotice');
     if (!prev) {
-      setShowCookieNotice(true);      
+      setShowCookieNotice(true);
     } else {
       setShowCookieNotice(prev === 'true');
     }
@@ -31,10 +30,11 @@ export default function CookiePolicy() {
   React.useEffect(() => {
     localStorage.setItem('cookieNotice', showCookieNotice);
   }, [showCookieNotice]);
-  
+
   return ready && showCookieNotice ? (
     <div className={styles.cookieContainer}>
-      <button id={'cookieCloseButton'}
+      <button
+        id={'cookieCloseButton'}
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >

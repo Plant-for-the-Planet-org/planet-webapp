@@ -25,7 +25,6 @@ describe('manage-project', () => {
     await driver.findElement(By.name('action')).click();
     (await driver).sleep(200);
     const otp = await getOtp();
-    console.log('otp', otp);
     await driver.findElement(By.id('code')).sendKeys(otp);
     await driver.findElement(By.name('action')).click();
     (await driver).sleep(400);

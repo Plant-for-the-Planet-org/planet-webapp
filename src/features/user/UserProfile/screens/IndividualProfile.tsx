@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import styles from '../styles/UserProfile.module.scss';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsModal from '../components/SettingsModal';
@@ -42,12 +41,15 @@ export default function IndividualProfile({
     setAddTargetModalOpen(true);
   };
 
+  console.log('userprofile', userprofile);
+
   return (
     <React.Fragment>
       <main>
         {authenticatedType === 'private' && (
           <>
-            <button id={'IndividualProSetting'}
+            <button
+              id={'IndividualProSetting'}
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
             >
@@ -76,15 +78,20 @@ export default function IndividualProfile({
               forceReload={forceReload}
             />
           )}
-
-          <UserInfo
-            userprofile={userprofile}
-            authenticatedType={authenticatedType}
-            handleAddTargetModalOpen={handleAddTargetModalOpen}
-          />
+          {userprofile && (
+            <UserInfo
+              userprofile={userprofile}
+              authenticatedType={authenticatedType}
+              handleAddTargetModalOpen={handleAddTargetModalOpen}
+            />
+          )}
         </LandingSection>
 
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} token={token} />
+        <MyTrees
+          authenticatedType={authenticatedType}
+          profile={userprofile}
+          token={token}
+        />
       </main>
 
       {/* add target modal */}

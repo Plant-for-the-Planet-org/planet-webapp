@@ -8,12 +8,11 @@ export const getOtp = () => {
       })
       .then(function (response) {
         // handle success
-        console.log(typeof response, response.data);
         resolve(response.data.token);
       })
       .catch(function (error) {
         // handle error
-        console.log('error here', error);
+        console.log('error', error);
         reject(error);
       });
   });
