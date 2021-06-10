@@ -139,8 +139,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       >
         <ThemeProvider>
           <CssBaseline />
+          <UserPropsProvider>
           <Layout>
-            <UserPropsProvider>
             <ProjectPropsProvider>
               {isMap ? (
                 project ? (
@@ -151,8 +151,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               ) : null}
               <Component {...ProjectProps} />
             </ProjectPropsProvider>
-              </UserPropsProvider>
           </Layout>
+          </UserPropsProvider>
         </ThemeProvider>
       </Auth0Provider>
     );
