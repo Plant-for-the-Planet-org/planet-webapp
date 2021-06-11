@@ -49,7 +49,7 @@
 
 .plantProjectName {
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $light;
   width: 100%;
   margin-top: 4px;
@@ -76,13 +76,13 @@
 .currency {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 .currencyDisabled {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $highlightBackground;
 }
 
@@ -93,7 +93,7 @@
 .rate {
   margin-left: 9px;
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 .treeDonationContainer {
@@ -111,8 +111,9 @@
 
 .isGiftDonationText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $highlightBackground;
+  cursor: pointer;
 }
 
 .addEmailButton{
@@ -157,7 +158,7 @@
 }
 .treeCountOption > .treeCountOptionTrees {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   padding-right: 10px;
 }
@@ -165,7 +166,7 @@
 .treeCountOptionSelected > .treeCountOptionTrees {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryColor;
   padding-right: 10px;
 }
@@ -177,7 +178,7 @@
   width: 70%;
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryColor;
   text-align: center;
   background-color: transparent;
@@ -205,7 +206,7 @@
 
 .isTaxDeductibleText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   white-space: wrap;
   margin-right: 6px;
@@ -229,14 +230,14 @@
 
 .taxDeductibleCountry {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryColor;
   white-space: nowrap;
 }
 
 .taxDeductibleCountryDisabled {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $highlightBackground;
 }
 
@@ -255,7 +256,7 @@
 .totalCost {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: 16px;
+  font-size: $fontSixteen;
   color: $primaryColor;
   margin-left: 4px;
 }
@@ -263,7 +264,7 @@
 .totalCostText {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: 16px;
+  font-size: $fontSixteen;
   color: $primaryFontColor;
   margin-left: 6px;
 }
@@ -290,7 +291,7 @@
 
 .actionButtonsText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-left: 24px;
   margin-right: 24px;
@@ -302,7 +303,7 @@
   min-height: 40px;
   color: $light;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   font-weight: 600;
   width: 100%;
   display: flex;
@@ -321,7 +322,7 @@
   color: $light;
   width: 100%;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   font-weight: 600;
   min-height: 40px;
   display: flex;
@@ -336,7 +337,7 @@
   padding: 8px 40px;
   color: $dark;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   font-weight: 600;
 }
 
@@ -357,7 +358,7 @@
 
 .singleGiftTitle {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-top: 10px;
 }
@@ -368,7 +369,7 @@
 .singleGiftRemove {
   cursor: pointer;
   color: $dangerColor;
-  font-size: 12px;
+  font-size: $fontXSmall;
   margin-top: 20px;
 }
 
@@ -385,7 +386,7 @@
 /* Payment error */
 .paymentError {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $dangerColor;
   text-align: center;
   font-weight: 600;
@@ -394,7 +395,7 @@
 
 .formErrors {
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $dangerColor;
   margin-left: 6px;
 }
@@ -417,8 +418,9 @@
 
 .isCompanyText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
+  cursor: pointer;
 }
 
 /* Payment Mode */
@@ -446,7 +448,7 @@
 
 .paymentModeTitle {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   font-weight: 600;
   flex-grow: 1;
@@ -455,7 +457,7 @@
 
 .paymentModeFeeAmount {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-right: 4px;
 }
@@ -464,7 +466,7 @@
 
 .mandateAcceptance {
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $primaryFontColor;
   margin-top: 20px;
   text-align: center;
@@ -565,7 +567,7 @@
     position: relative;
     > label {
       margin-top: 6px;
-      font-size: 10px;
+      font-size: $fontXXSmall;
     }
     &:hover {
       cursor: pointer;
@@ -594,7 +596,7 @@
 
 .contributionAmount {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-top: 20px;
   text-align: center;
@@ -603,7 +605,7 @@
 
 .contributionMessage {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-top: 20px;
   text-align: center;
@@ -663,7 +665,7 @@
 }
 
 .donationCount {
-  font-size: 22px;
+  font-size: $fontLarge;
   font-weight: 600;
   text-align: center;
   position: absolute;
@@ -673,7 +675,7 @@
 }
 
 .donationTenant {
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: 400;
   font-style: italic;
   text-align: center;
@@ -791,7 +793,7 @@
 
 .actionButtonsText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-left: 24px;
   margin-right: 24px;
@@ -832,11 +834,11 @@
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 1px 3px 6px -4px rgba(116, 116, 116, 0.7);
   .showContactDetailsName {
-    font-size: 12px;
+    font-size: $fontXSmall;
     font-weight: bold;
   }
   .showContactDetailsAddress {
-    font-size: 12px;
+    font-size: $fontXSmall;
     margin-top: 2px;
   }
 }

@@ -76,11 +76,10 @@ export default function MapComponent({
   };
 
   React.useEffect(() => {
-    if (userLocation) {
+    if (userLocation && userLocation !== [0, 0]) {
       const newViewport = {
         ...viewport,
-        longitude: userLocation[0],
-        latitude: userLocation[1],
+        center: userLocation,
         zoom: [10],
       };
       setViewPort(newViewport);
@@ -100,7 +99,7 @@ export default function MapComponent({
                   drawControlRef.current?.draw.changeMode('draw_polygon');
                 }}
                 className="primaryButton"
-                style={{maxWidth: "150px"}}
+                style={{ maxWidth: '150px' }}
               >
                 {t('me:startDrawing')}
               </div>
