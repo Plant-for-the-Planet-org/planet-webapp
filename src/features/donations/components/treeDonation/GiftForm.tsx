@@ -67,9 +67,6 @@ export default function GiftForm({
   return ready ? (
     <div className={styles.giftContainer}>
       <div className={styles.singleGiftContainer}>
-        <div className={styles.singleGiftTitle}>
-          {t('donate:giftRecipient')}
-        </div>
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
             <MaterialTextField
@@ -85,18 +82,30 @@ export default function GiftForm({
               </span>
             )}
           </div>
-        </div>
-        <div className={styles.formRow}>
-          <MaterialTextField
-            multiline
-            rowsMax="4"
-            label={t('donate:giftMessage')}
-            variant="outlined"
-            name={'giftMessage'}
-            onChange={changeGiftDetails}
-          />
-        </div>
+        </div> <br />
         {showEmail ? (
+          <>
+          <div className={styles.giftLine}>
+            <div className={styles.singleGiftTitle}>
+            {t('donate:giftRecipient')}
+          </div>
+          <button
+            onClick={() => {setshowEmail(false); giftDetails.email = null} }
+            className={styles.singleGiftRemove}
+          >
+            {t('donate:removeRecipient')}
+          </button>
+            </div>
+          <div style={{ width: '100%' }}>
+              <MaterialTextField
+                multiline
+                rowsMax="4"
+                label={t('donate:giftMessage')}
+                variant="outlined"
+                name={'giftMessage'}
+                onChange={changeGiftDetails}
+              />
+            </div>
           <div className={styles.formRow}>
             <div style={{ width: '100%' }}>
               <MaterialTextField
@@ -107,19 +116,6 @@ export default function GiftForm({
                 inputRef={register({
                   pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
                 })}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <button
-                        onClick={() => {setshowEmail(false); giftDetails.email = null} }
-                        className={styles.singleGiftRemove}
-                        style={{marginBottom:'20px'}}
-                      >
-                        {t('donate:removeRecipient')}
-                      </button>
-                    </InputAdornment>
-                  ),
-                }}
               />
               {errors.email && (
                 <span className={styles.formErrors}>
@@ -128,6 +124,7 @@ export default function GiftForm({
               )}
             </div>
           </div>
+          </>
         ) : (
           <div className={styles.formRow}>
             <button

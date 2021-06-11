@@ -29,7 +29,7 @@
   "country": "Country",
   "isACompanyDonation": "This donation is made by a company",
   "companyName": "Company Name",
-  "giftRecipient": "Gift Recipient",
+  "giftRecipient": "Gift Notification",
   "directGiftRecipient": "This donation supports",
   "recipientName": "Recipient Name",
   "recipientNameRequired": "Recipient Name is required",
@@ -96,5 +96,5 @@
   "nameAlreadyPublished": "Your full name will appear in leaderboard as your Plant-for-the-Planet profile is currently public.",
   "orgNamePublishedTax": "Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
   "orgNamePublished": "Company name is visible on our leaderboard and app.",
-  "addEmail":"Add Email & Send Invitation"
+  "addEmail":"Add Gift Notification"
 }

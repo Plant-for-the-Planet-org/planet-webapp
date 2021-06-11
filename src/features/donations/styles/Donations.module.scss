@@ -360,7 +360,6 @@
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $primaryFontColor;
-  margin-top: 10px;
 }
 .singleGiftTitle > span {
   font-weight: 600;
@@ -370,9 +369,13 @@
   cursor: pointer;
   color: $dangerColor;
   font-size: $fontXSmall;
-  margin-top: 20px;
-}
 
+}
+.giftLine{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
 .formRow {
   display: flex;
   flex-direction: row;
