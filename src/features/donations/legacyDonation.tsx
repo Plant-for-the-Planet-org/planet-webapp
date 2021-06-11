@@ -209,6 +209,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
               donationId={paymentData.guid}
               mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
               clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+              donationUid={paymentData.uid}
             />}
         </div>
       ) : (
