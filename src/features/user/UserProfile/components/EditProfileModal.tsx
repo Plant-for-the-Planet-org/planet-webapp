@@ -165,7 +165,6 @@ export default function EditProfileModal({
     const bodyToSend = {
       ...data,
       country: country,
-      type: user.type,
     };
     if (contextLoaded && token) {
       try {
