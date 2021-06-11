@@ -126,7 +126,7 @@ export default function GiftForm({
           </div>
           </>
         ) : (
-          <div className={styles.formRow}>
+          <div className={styles.formRow} style={{marginTop: "-10px"}}>
             <button
               onClick={() => setshowEmail(true)}
               className={styles.addEmailButton}
