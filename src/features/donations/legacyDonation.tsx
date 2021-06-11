@@ -78,7 +78,8 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       paymentSetup,
       donationID: paymentData.guid,
       token: null,
-      setDonationStep: () => { }
+      setDonationStep: () => { },
+      country
     }).then((res) => {
       if (res) {
         if (res.paymentStatus || res.status) {
