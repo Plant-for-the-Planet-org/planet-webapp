@@ -1,0 +1,12 @@
+/account-activate/*        /open-app    301
+/competition/*             /open-app    301
+/donate-tree               /open-app    301
+/donate-trees              /open-app    301
+/donate-trees/*            /open-app    301
+/my-trees                  /login       301
+/project/*                 /open-app    301
+/redeem                    /login       301
+/reset-password/*          /open-app    301
+/signup                    /open-app    301
+/signup/                   /open-app    301
+/yucatan-reforestation     /yucatan     301

@@ -39,7 +39,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-size: 22px;
+  font-size: $fontLarge;
 }
 
 .contribTitle {
@@ -47,7 +47,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: $fontLarge;
   text-align: center;
 }
 
@@ -74,7 +74,7 @@
 
 .tabButtonText {
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: bold;
   color: $primaryFontColor;
   margin-bottom: 10px;
@@ -83,7 +83,7 @@
 .tabButtonSelected {
   color: $primaryColor;
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -339,7 +339,7 @@
 .formErrors {
   // position: absolute;
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: $dangerColor;
   margin-left: 6px;
   margin-top: 6px;

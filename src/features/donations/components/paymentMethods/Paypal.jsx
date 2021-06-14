@@ -47,7 +47,8 @@ class Paypal extends React.Component {
       currency,
       onSuccess,
       donationId,
-      clientID
+      clientID,
+      donationUid
     } = this.props;
 
     const { showButton } = this.state;
@@ -66,7 +67,8 @@ class Paypal extends React.Component {
               total: Math.round(amount * 100) / 100,
               currency
             },
-            invoice_number: invoice_number
+            invoice_number: invoice_number,
+            custom: donationUid
           }
         ]
       });
@@ -122,7 +124,8 @@ Paypal.propTypes = {
   isScriptLoaded: PropTypes.bool,
   isScriptLoadSucceed: PropTypes.bool,
   mode: PropTypes.string,
-  onSuccess: PropTypes.func
+  onSuccess: PropTypes.func,
+  donationUid: PropTypes.string
 };
 
 export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(

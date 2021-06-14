@@ -9,8 +9,15 @@ const globalStyles = css.global`
   :root {
     --primary-font-family: ${config!.font.primaryFontFamily};
     --secondary-font-family: ${config!.font.secondaryFontFamily};
-    --title-size: ${fontSizes.titleSize};
-    --sub-title-size: ${fontSizes.subTitleSize};
+    --font-xx-extra-small: ${fontSizes.fontXXSmall};
+    --font-x-extra-small: ${fontSizes.fontXSmall};
+    --font-small: ${fontSizes.fontSmall};
+    --font-sixteen: ${fontSizes.fontSixteen};
+    --font-medium: ${fontSizes.fontMedium};
+    --font-large: ${fontSizes.fontLarge};
+    --font-x-large: ${fontSizes.fontXLarge};
+    --font-xx-large: ${fontSizes.fontXXLarge};
+    --font-xxx-large: ${fontSizes.fontXXXLarge};
     --primary-color: ${primaryColor};
     --primary-dark-color: ${primaryDarkColor};
   }

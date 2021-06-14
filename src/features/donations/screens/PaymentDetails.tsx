@@ -77,6 +77,8 @@ function PaymentDetails({
   }, []);
   const [paymentError, setPaymentError] = React.useState('');
 
+  const [donationUid, setDonationUid] = React.useState(null);
+
   const donorDetails = {
     firstname: contactDetails.firstName,
     lastname: contactDetails.lastName,
@@ -104,6 +106,7 @@ function PaymentDetails({
       setDonationID,
       token,
     });
+    setDonationUid(donation.uid)
     setaskpublishName(!donation.hasPublicProfile);
     setpublishName(donation.hasPublicProfile);
     setDonationID(donation.id);
@@ -128,6 +131,7 @@ function PaymentDetails({
       token,
       setDonationStep,
       donorDetails,
+      country
     });
   };
 
@@ -349,6 +353,7 @@ function PaymentDetails({
                     currency={currency}
                     donationID={donationID}
                     payDonationFunction={onSubmitPayment}
+                    donationUid={donationUid}
                   />
                 )}
               </div>

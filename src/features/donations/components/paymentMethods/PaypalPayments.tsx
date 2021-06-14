@@ -10,7 +10,8 @@ function PaypalPayments({
     treeCost,
     currency,
     donationID,
-    payDonationFunction
+    payDonationFunction,
+    donationUid
 }: any): ReactElement {
 
     
@@ -31,6 +32,7 @@ function PaypalPayments({
                         donationId={donationID}
                         mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
                         clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+                        donationUid={donationUid}
                     />
                 </div>
             }

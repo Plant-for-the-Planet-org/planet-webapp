@@ -54,7 +54,7 @@
 .footer_links {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-right: 16px;
   margin-top: 22.2px;
@@ -98,14 +98,14 @@
 
 .selected_language {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   margin: 0px !important;
   margin-left: 8px !important;
 }
 
 .selected_language_bold {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: bold;
   margin: 0px !important;
   margin-left: 8px !important;
