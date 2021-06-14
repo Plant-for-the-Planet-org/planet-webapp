@@ -31,7 +31,6 @@ export default function GiftForm({
     mode: 'all',
     defaultValues: defaultDeails,
   });
-
   const [showEmail, setshowEmail] = React.useState(false);
 
   const changeGiftDetails = (e: any) => {
