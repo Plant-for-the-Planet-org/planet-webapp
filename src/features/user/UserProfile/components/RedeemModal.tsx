@@ -119,7 +119,7 @@ export default function RedeemModal({
           setCodeRedeemed(true);
           setIsUploadingData(false);
           setCodeValidated(false);
-          const newUser = {...user, score:{personal: res.schemata.treeCounter.countPlanted}}
+          const newUser = {...user, score:{personal: res.schemata.treecounter.countPlanted, received: user.score.received}}
           setUser(newUser);
         }
       });
