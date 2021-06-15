@@ -246,203 +246,193 @@ export default function RegisterTrees({}: Props) {
 
   return ready ? (
     <>
-      <Modal
-        className={'modalContainer' + ' ' + theme}
-        open={registerTreesModalOpen}
-        //onClose={handleEditProfileModalClose}
-        closeAfterTransition
-        hideBackdrop
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-bio"
-      >
-        <div className={styles.modal}>
-          {!registered ? (
-            <div className={styles.formContainer}>
-              <h2 className={styles.title}>
-                <button
-                  id={'backButtonRegTree'}
-                  style={{
-                    cursor: 'pointer',
-                    marginLeft: -10,
-                    paddingRight: 10,
-                  }}
-                  onClick={() => {
-                    router.push(`/t/${user.slug}`, undefined, {
-                      shallow: true,
-                    });
-                  }}
-                >
-                  <BackButton />
-                </button>
-                <b> {t('me:registerTrees')} </b>
-              </h2>
-              <form onSubmit={handleSubmit(submitRegisterTrees)}>
-                <div className={styles.note}>
-                  <p>{t('me:registerTreesDescription')}</p>
-                </div>
-                <div className={styles.formField}>
-                  <div className={styles.formFieldHalf}>
-                    <MaterialTextField
-                      inputRef={register({
-                        required: {
-                          value: true,
-                          message: t('me:treesRequired'),
-                        },
-                        validate: (value) => parseInt(value, 10) >= 1,
-                      })}
-                      onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                      }}
-                      onChange={onTreeCountChange}
-                      label={t('me:noOfTrees')}
-                      variant="outlined"
-                      name="treeCount"
-                    />
-                    {errors.treeCount && (
-                      <span className={styles.formErrors}>
-                        {errors.treeCount.message
-                          ? errors.treeCount.message
-                          : t('me:moreThanOne')}
-                      </span>
-                    )}
-                  </div>
-                  <div className={styles.formFieldHalf}>
-                    <ThemeProvider theme={materialTheme}>
-                      <MuiPickersUtilsProvider
-                        utils={DateFnsUtils}
-                        locale={
-                          localeMapForDate[userLang]
-                            ? localeMapForDate[userLang]
-                            : localeMapForDate['en']
-                        }
-                      >
-                        <Controller
-                          render={(properties) => (
-                            <DatePicker
-                              label={t('me:datePlanted')}
-                              value={properties.value}
-                              onChange={properties.onChange}
-                              inputVariant="outlined"
-                              TextFieldComponent={MaterialTextField}
-                              autoOk
-                              disableFuture
-                              minDate={new Date(new Date().setFullYear(1950))}
-                              format="MMMM d, yyyy"
-                              maxDate={new Date()}
-                            />
-                          )}
-                          name="plantDate"
-                          control={control}
-                          defaultValue=""
-                        />
-                      </MuiPickersUtilsProvider>
-                    </ThemeProvider>
-                  </div>
-                </div>
-                <div className={styles.formFieldLarge}>
+      <div className={styles.modal}>
+        {!registered ? (
+          <div className={styles.formContainer}>
+            <h2 className={styles.title}>
+              <button
+                id={'backButtonRegTree'}
+                style={{
+                  cursor: 'pointer',
+                  marginLeft: -10,
+                  paddingRight: 10,
+                }}
+                onClick={() => {
+                  router.push(`/t/${user.slug}`, undefined, {
+                    shallow: true,
+                  });
+                }}
+              >
+                <BackButton />
+              </button>
+              <b> {t('me:registerTrees')} </b>
+            </h2>
+            <form onSubmit={handleSubmit(submitRegisterTrees)}>
+              <div className={styles.note}>
+                <p>{t('me:registerTreesDescription')}</p>
+              </div>
+              <div className={styles.formField}>
+                <div className={styles.formFieldHalf}>
                   <MaterialTextField
                     inputRef={register({
                       required: {
                         value: true,
-                        message: t('me:speciesIsRequired'),
+                        message: t('me:treesRequired'),
                       },
+                      validate: (value) => parseInt(value, 10) >= 1,
                     })}
-                    label={t('me:treeSpecies')}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    }}
+                    onChange={onTreeCountChange}
+                    label={t('me:noOfTrees')}
                     variant="outlined"
-                    name="species"
+                    name="treeCount"
                   />
-                  {errors.species && (
+                  {errors.treeCount && (
                     <span className={styles.formErrors}>
-                      {errors.species.message}
+                      {errors.treeCount.message
+                        ? errors.treeCount.message
+                        : t('me:moreThanOne')}
                     </span>
                   )}
                 </div>
-                <div className={styles.mapNote}>
-                  {isMultiple ? (
-                    <p>{t('me:drawPolygon')}</p>
-                  ) : (
-                    <p>{t('me:selectLocation')}</p>
-                  )}
-                </div>
-
-                <div className={`${styles.locationMap}`}>
-                  {isMultiple ? (
-                    <DrawMap
-                      setGeometry={setGeometry}
-                      userLocation={userLocation}
-                    />
-                  ) : (
-                    <MapGL
-                      {...mapState}
-                      {...viewport}
-                      onViewportChange={_onViewportChange}
-                      onStateChange={_onStateChange}
-                      onClick={(event) => {
-                        setplantLocation(event.lngLat);
-                        setGeometry({
-                          type: 'Point',
-                          coordinates: event.lngLat,
-                        });
-                        setViewPort({
-                          ...viewport,
-                          latitude: event.lngLat[1],
-                          longitude: event.lngLat[0],
-                          transitionDuration: 400,
-                          transitionInterpolator: new FlyToInterpolator(),
-                          transitionEasing: d3.easeCubic,
-                        });
-                      }}
-                      mapOptions={{
-                        customAttribution:
-                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-                      }}
+                <div className={styles.formFieldHalf}>
+                  <ThemeProvider theme={materialTheme}>
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      locale={
+                        localeMapForDate[userLang]
+                          ? localeMapForDate[userLang]
+                          : localeMapForDate['en']
+                      }
                     >
-                      {plantLocation ? (
-                        <Marker
-                          latitude={plantLocation[1]}
-                          longitude={plantLocation[0]}
-                          offsetLeft={5}
-                          offsetTop={-16}
-                          style={{ left: '28px' }}
-                        >
-                          <div className={styles.marker}></div>
-                        </Marker>
-                      ) : null}
-                      <div className={styles.mapNavigation}>
-                        <NavigationControl showCompass={false} />
-                      </div>
-                    </MapGL>
-                  )}
+                      <Controller
+                        render={(properties) => (
+                          <DatePicker
+                            label={t('me:datePlanted')}
+                            value={properties.value}
+                            onChange={properties.onChange}
+                            inputVariant="outlined"
+                            TextFieldComponent={MaterialTextField}
+                            autoOk
+                            disableFuture
+                            minDate={new Date(new Date().setFullYear(1950))}
+                            format="MMMM d, yyyy"
+                            maxDate={new Date()}
+                          />
+                        )}
+                        name="plantDate"
+                        control={control}
+                        defaultValue=""
+                      />
+                    </MuiPickersUtilsProvider>
+                  </ThemeProvider>
                 </div>
+              </div>
+              <div className={styles.formFieldLarge}>
+                <MaterialTextField
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('me:speciesIsRequired'),
+                    },
+                  })}
+                  label={t('me:treeSpecies')}
+                  variant="outlined"
+                  name="species"
+                />
+                {errors.species && (
+                  <span className={styles.formErrors}>
+                    {errors.species.message}
+                  </span>
+                )}
+              </div>
+              <div className={styles.mapNote}>
+                {isMultiple ? (
+                  <p>{t('me:drawPolygon')}</p>
+                ) : (
+                  <p>{t('me:selectLocation')}</p>
+                )}
+              </div>
 
-                {/* {errorMessage !== '' ? */}
-                <div className={`${styles.formFieldLarge} ${styles.center}`}>
-                  <p className={styles.formErrors}>{`${errorMessage}`}</p>
-                </div>
-                {/* : null
-              } */}
-                <div className={styles.nextButton}>
-                  <button
-                    id={'RegTressSubmit'}
-                    onClick={handleSubmit(submitRegisterTrees)}
-                    className="primaryButton"
-                    style={{ maxWidth: '240px' }}
+              <div className={`${styles.locationMap}`}>
+                {isMultiple ? (
+                  <DrawMap
+                    setGeometry={setGeometry}
+                    userLocation={userLocation}
+                  />
+                ) : (
+                  <MapGL
+                    {...mapState}
+                    {...viewport}
+                    onViewportChange={_onViewportChange}
+                    onStateChange={_onStateChange}
+                    onClick={(event) => {
+                      setplantLocation(event.lngLat);
+                      setGeometry({
+                        type: 'Point',
+                        coordinates: event.lngLat,
+                      });
+                      setViewPort({
+                        ...viewport,
+                        latitude: event.lngLat[1],
+                        longitude: event.lngLat[0],
+                        transitionDuration: 400,
+                        transitionInterpolator: new FlyToInterpolator(),
+                        transitionEasing: d3.easeCubic,
+                      });
+                    }}
+                    mapOptions={{
+                      customAttribution:
+                        '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+                    }}
                   >
-                    {' '}
-                    {isUploadingData ? (
-                      <div className={styles.spinner}></div>
-                    ) : (
-                      t('me:registerButton')
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
-          ) : (
-            <SingleContribution {...ContributionProps} />
-          )}
-        </div>
-      </Modal>
+                    {plantLocation ? (
+                      <Marker
+                        latitude={plantLocation[1]}
+                        longitude={plantLocation[0]}
+                        offsetLeft={5}
+                        offsetTop={-16}
+                        style={{ left: '28px' }}
+                      >
+                        <div className={styles.marker}></div>
+                      </Marker>
+                    ) : null}
+                    <div className={styles.mapNavigation}>
+                      <NavigationControl showCompass={false} />
+                    </div>
+                  </MapGL>
+                )}
+              </div>
+
+              {/* {errorMessage !== '' ? */}
+              <div className={`${styles.formFieldLarge} ${styles.center}`}>
+                <p className={styles.formErrors}>{`${errorMessage}`}</p>
+              </div>
+              {/* : null
+              } */}
+              <div className={styles.nextButton}>
+                <button
+                  id={'RegTressSubmit'}
+                  onClick={handleSubmit(submitRegisterTrees)}
+                  className="primaryButton"
+                  style={{ maxWidth: '240px' }}
+                >
+                  {' '}
+                  {isUploadingData ? (
+                    <div className={styles.spinner}></div>
+                  ) : (
+                    t('me:registerButton')
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <SingleContribution {...ContributionProps} />
+        )}
+      </div>
     </>
   ) : null;
 }
