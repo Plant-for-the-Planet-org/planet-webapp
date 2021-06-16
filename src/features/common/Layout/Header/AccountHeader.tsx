@@ -45,13 +45,7 @@ export default function AccountHeader({ title, page }: Props): ReactElement {
   ];
 
   const handleNavClick = (item: any) => {
-    if (item === 'manage-projects') {
-      router.push(`/t/${user.slug}#projectsContainer`, undefined, {
-        shallow: true,
-      });
-    } else {
-      router.push(`/account/${item}`, undefined, { shallow: true });
-    }
+    router.push(`/account/${item}`, undefined, { shallow: true });
   };
   return (
     <div
