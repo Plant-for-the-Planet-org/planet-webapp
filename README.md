@@ -6,7 +6,7 @@
 
 <p style="align:center;">
 
-<a href="https://planet-app-sf.herokuapp.com/">
+<a href="https://dev.pp.eco/">
     <img src="http://img.shields.io/badge/Demo-%23141619?style=for-the-badge&logo=next.js" />
 </a>
 <a href="./CODE_OF_CONDUCT.md">
@@ -16,10 +16,6 @@
 <a href="./CONTRIBUTING.md">
     <img src="http://img.shields.io/badge/CONTRIBUTING%20Guidelines-%235f27cd?style=for-the-badge" />
 </a>
-<a href="https://join.slack.com/share/zt-gejlwtt3-hIE0OwVDbb3vQvw2xDAsQQ">
-    <img src="http://img.shields.io/badge/Slack-Join%20Community-%23141619?style=for-the-badge&logo=slack&labelColor=4B124C" />
-</a>
-
 <br/>
 <br/>
 
@@ -164,5 +160,8 @@ The deployment and management of this application is possible with support from 
 
 ## Legal
 
-Any brand-images/logo/iconography used in this project, including of Plant-for-the-Planet, are registered trademark(s) of respective parties. Please contact partner at plant-for-the-planet d0t org for approval to use the Plant-for-the-Planet Logo.
+Any brand-images/logo/iconography used in this project, including of Plant-for-the-Planet, are registered trademark(s) of respective parties.
 
+[Trillion Tree Campaign icon](https://www.trilliontreecampaign.org/tenants/ttc/logo.png) is available under Creative Commons CC BY-NC-ND.
+
+Please contact partner[at]plant-for-the-planet[dot]org for approval to use the Plant-for-the-Planet Logo.

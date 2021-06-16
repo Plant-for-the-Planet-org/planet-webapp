@@ -6,21 +6,15 @@ import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
-import { useAuth0 } from '@auth0/auth0-react';
-import {
-  removeLocalUserInfo,
-  removeUserExistsInDB,
-} from '../../../../utils/auth0/localStorageUtils';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import EmbedModal from './EmbedModal';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
-  userType,
-  userprofile,
   settingsModalOpen,
   handleSettingsModalClose,
   editProfileModalOpen,
@@ -29,9 +23,10 @@ export default function SettingsModal({
   changeForceReload,
   forceReload,
 }: any) {
+  const { user, logoutUser } = React.useContext(UserPropsContext);
+
   const router = useRouter();
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
-  const { logout } = useAuth0();
 
   const [deleteModalOpen, setdeleteModalOpen] = React.useState(false);
   const handledeleteModalClose = () => {
@@ -41,21 +36,16 @@ export default function SettingsModal({
     setdeleteModalOpen(!deleteModalOpen);
   };
 
-  const logoutUser = () => {
-    removeLocalUserInfo();
-    logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
-  };
-
   const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
 
-  const embedModalProps = { embedModalOpen, setEmbedModalOpen, userprofile };
+  const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
 
   const handleEmbedModalOpen = () => {
-    if (userprofile.isPrivate) {
+    if (user.isPrivate) {
       setEmbedModalOpen(true);
     } else {
       router.push(
-        `${process.env.WIDGET_URL}?user=${userprofile.id}&tenantkey=${process.env.TENANTID}`
+        `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`
       );
     }
   };
@@ -83,10 +73,10 @@ export default function SettingsModal({
                 listStyle: 'none',
                 paddingLeft: '0px',
                 textAlign: 'center',
-                paddingBottom:'20px'
+                paddingBottom: '20px',
               }}
             >
-              {userType == 'tpo' && (
+              {user.type == 'tpo' && (
                 <li
                   className={styles.settingsItem}
                   style={{ marginTop: '12px' }}
@@ -109,6 +99,16 @@ export default function SettingsModal({
                 {' '}
                 {t('editProfile:edit')}{' '}
               </li>
+
+              {/* <li
+                onClick={() =>
+                  router.push('/account/history', undefined, { shallow: true })
+                }
+                id={'SettingsItem'}
+                className={styles.settingsItem}
+              >
+                {t('me:accountHistory')}
+              </li> */}
               <li
                 onClick={handleEmbedModalOpen}
                 id={'SettingsItem'}
@@ -116,7 +116,7 @@ export default function SettingsModal({
               >
                 {t('me:embedWidget')}
               </li>
-              {userType !== 'tpo' && (
+              {user.type !== 'tpo' && (
                 <li
                   id={'settingsDeleteAccount'}
                   className={styles.settingsItem}
@@ -128,7 +128,7 @@ export default function SettingsModal({
               <li
                 id={'settingsLogOut'}
                 className={styles.settingsItem}
-                onClick={logoutUser}
+                onClick={() => logoutUser()}
               >
                 <b>{t('me:logout')} </b>
               </li>
@@ -146,7 +146,7 @@ export default function SettingsModal({
       </Modal>
 
       <EditProfileModal
-        userprofile={userprofile}
+        user={user}
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
         handleEditProfileModalOpen={handleEditProfileModalOpen}
@@ -156,18 +156,14 @@ export default function SettingsModal({
       <DeleteModal
         deleteModalOpen={deleteModalOpen}
         handledeleteModalClose={handledeleteModalClose}
-        userprofile={userprofile}
       />
       <EmbedModal {...embedModalProps} />
     </>
   ) : null;
 }
 
-function DeleteModal({
-  deleteModalOpen,
-  handledeleteModalClose,
-  userprofile,
-}: any) {
+function DeleteModal({ deleteModalOpen, handledeleteModalClose }: any) {
+  const { user, token, logoutUser } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
@@ -175,29 +171,13 @@ function DeleteModal({
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
-  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
-
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-    if (isAuthenticated) {
-      loadFunction();
-    }
-  }, [isAuthenticated]);
-
-  const [token, setToken] = React.useState('');
-
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token).then((res) => {
       if (res !== 404) {
-        removeLocalUserInfo();
-        removeUserExistsInDB();
-        logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
+        logoutUser();
       } else {
         console.log(res.errorText);
       }
@@ -256,7 +236,7 @@ function DeleteModal({
           </p>
           <p className={styles.deleteModalWarning}>
             {t('common:deleteIrreversible', {
-              email: userprofile.email,
+              email: user.email,
             })}
           </p>
 

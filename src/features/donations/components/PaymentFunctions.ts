@@ -193,7 +193,8 @@ export async function payDonationFunction({
   donationID,
   token,
   setDonationStep,
-  donorDetails
+  donorDetails,
+  country
 }: any) {
   setIsPaymentProcessing(true);
 
@@ -271,10 +272,15 @@ export async function payDonationFunction({
       if (paidDonation.status === 'failed') {
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
-      } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending') {
+        return paidDonation;
+      } else if (paidDonation.paymentStatus === 'success'
+        || paidDonation.paymentStatus === 'pending'
+        || paidDonation.paymentStatus === 'paid'
+        || paidDonation.status === 'success'
+        || paidDonation.status === 'pending'
+        || paidDonation.status === 'paid' ) {
         setIsPaymentProcessing(false);
         setDonationStep(4);
-
         return paidDonation;
       } else if (paidDonation.status === 'action_required') {
         handleSCAPaymentFunction({
@@ -287,7 +293,8 @@ export async function payDonationFunction({
           donationID,
           token,
           setDonationStep,
-          donorDetails
+          donorDetails,
+          country
         })
       }
     }
@@ -307,7 +314,8 @@ export async function handleSCAPaymentFunction({
   donationID,
   token,
   setDonationStep,
-  donorDetails
+  donorDetails,
+  country
 }: any) {
   const clientSecret = paidDonation.response.payment_intent_client_secret;
   const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
@@ -384,7 +392,7 @@ export async function handleSCAPaymentFunction({
         {
           payment_method: {
             sofort: {
-              country: donorDetails.country
+              country: country
             },
             billing_details: {
               name: `${donorDetails.firstname} ${donorDetails.lastname}`,

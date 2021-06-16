@@ -50,13 +50,15 @@ const config = {
   },
   meta: {
     title: "Together let's plant a Trillion Trees!",
+    appTitle: 'Trillion Tree Campaign',
     description:
       "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
     image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"]
+  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
+  manifest: '/tenants/ttc/manifest.json',
 };
 
 export default config;

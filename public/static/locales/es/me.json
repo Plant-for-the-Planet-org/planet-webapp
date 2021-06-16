@@ -1,5 +1,4 @@
 {
-  "treesPlanted": "Árboles plantados",
   "target": "Objetivo",
   "share": "Compartir",
   "registerTrees": "Registra los árboles",
@@ -37,6 +36,6 @@
   "receivedTrees": "Árboles recibidos",
   "receivedFrom": "Recibido de {{name}}",
   "redeemedTrees": "Árboles redimidos",
-  "nameForest": "El Bosque de {{name}}",
-  "embedWidget": "Insertar Widget"
+  "embedWidget": "Insertar Widget",
+  "nameForest": "El Bosque de {{name}}"
 }

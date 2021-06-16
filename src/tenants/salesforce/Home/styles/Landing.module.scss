@@ -66,7 +66,7 @@
     color: #FFFFFF;
     margin-bottom: 26px;
     @include lgLaptopView {
-      font-size: 36px;
+      font-size: $fontXXLarge;
       line-height: 100%;
       margin-bottom: 38px;
     }
@@ -92,7 +92,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
     color: #FFFFFF;
