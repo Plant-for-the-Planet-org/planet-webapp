@@ -10,14 +10,12 @@ interface Props {
   project: Object;
   viewport: Object;
   setViewPort: Function;
-  isMobile: Boolean;
 }
 
 export default function Project({
   project,
   viewport,
   setViewPort,
-  isMobile,
 }: Props): ReactElement {
   const {
     geoJson,
@@ -25,6 +23,7 @@ export default function Project({
     siteExists,
     rasterData,
     setRasterData,
+    isMobile
   } = React.useContext(ProjectPropsContext);
 
   async function loadRasterData() {
