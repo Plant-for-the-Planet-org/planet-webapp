@@ -112,10 +112,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     window.addEventListener('resize', updateWidth);
-    if (typeof window !== 'undefined') {
-      const isMobileTemp = windowSize <= 767;
-      setIsMobile(isMobileTemp);
-    }
+    const isMobileTemp = windowSize <= 767;
+    setIsMobile(isMobileTemp);
     return () => window.removeEventListener('resize', updateWidth);
   }, [windowSize]);
 

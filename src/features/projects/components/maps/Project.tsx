@@ -42,6 +42,7 @@ export default function Project({
   React.useEffect(() => {
     if (siteExists) {
       loadRasterData();
+      const isMobileTemp = window.innerWidth <= 767;
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
@@ -49,7 +50,7 @@ export default function Project({
         },
         selectedSite,
         viewport,
-        isMobile,
+        isMobileTemp,
         setViewPort,
         4000
       );
