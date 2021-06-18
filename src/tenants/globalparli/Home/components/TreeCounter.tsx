@@ -14,7 +14,7 @@ export default function TreeCounterSection(tenantScore: Props) {
     ? tenantScore.tenantScore.total
     : '';
 
-    const projectID = 'yucatan-reforestation';
+    const projectID = 'yucatan';
 
     const [project, setProject] = React.useState(null)
     React.useEffect(() => {
