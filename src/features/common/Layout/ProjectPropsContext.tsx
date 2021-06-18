@@ -108,13 +108,20 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     imagery: {},
   });
 
+  const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+
   React.useEffect(() => {
+    window.addEventListener('resize', updateWidth);
     if (typeof window !== 'undefined') {
-      const screenWidth = window.innerWidth;
-      const isMobileTemp = screenWidth <= 767;
+      const isMobileTemp = windowSize <= 767;
       setIsMobile(isMobileTemp);
     }
-  }, []);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, [windowSize]);
+
+  const updateWidth = () => {
+    setWindowSize(window.innerWidth);
+  };
 
   React.useEffect(() => {
     if (
