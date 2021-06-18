@@ -108,7 +108,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     imagery: {},
   });
 
-  const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+  const [windowSize, setWindowSize] = React.useState(1280);
 
   React.useEffect(() => {
     window.addEventListener('resize', updateWidth);
