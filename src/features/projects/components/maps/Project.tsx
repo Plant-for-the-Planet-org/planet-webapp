@@ -41,29 +41,30 @@ export default function Project({
     }
   }
   React.useEffect(() => {
-    if (siteExists) {
-      loadRasterData();
-      zoomToProjectSite(
-        {
-          type: 'FeatureCollection',
-          features: project.sites,
-        },
-        selectedSite,
-        viewport,
-        isMobile,
-        setViewPort,
-        4000
-      );
-    } else {
-      zoomToLocation(
-        viewport,
-        setViewPort,
-        project.coordinates.lon,
-        project.coordinates.lat,
-        5,
-        3000
-      );
-    }
+    if (project)
+      if (siteExists) {
+        loadRasterData();
+        zoomToProjectSite(
+          {
+            type: 'FeatureCollection',
+            features: project.sites,
+          },
+          selectedSite,
+          viewport,
+          isMobile,
+          setViewPort,
+          4000
+        );
+      } else {
+        zoomToLocation(
+          viewport,
+          setViewPort,
+          project.coordinates.lon,
+          project.coordinates.lat,
+          5,
+          3000
+        );
+      }
   }, [project, siteExists]);
 
   //Props

@@ -12,16 +12,12 @@ export default function ProjectsMap(): ReactElement {
     project,
     showSingleProject,
     showProjects,
-    setShowProjects,
     searchedProject,
     viewport,
     setViewPort,
-    setExploreProjects,
     mapState,
     setMapState,
     isMobile,
-    exploreProjects,
-    loaded,
     setLoaded,
     mapRef,
     defaultMapCenter,
@@ -66,21 +62,6 @@ export default function ProjectsMap(): ReactElement {
     mapRef,
     mapState,
     setMapState,
-  };
-
-  const exploreProps = {
-    loaded,
-    mapRef,
-    setShowProjects,
-    viewport,
-    setViewPort,
-    setExploreProjects,
-    defaultMapCenter,
-    mapState,
-    setMapState,
-    isMobile,
-    exploreProjects,
-    showSingleProject,
   };
 
   return (
