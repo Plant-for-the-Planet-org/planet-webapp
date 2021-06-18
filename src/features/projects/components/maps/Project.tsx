@@ -41,7 +41,7 @@ export default function Project({
     }
   }
   React.useEffect(() => {
-    if (project)
+    if (project) {
       if (siteExists) {
         loadRasterData();
         zoomToProjectSite(
@@ -65,6 +65,7 @@ export default function Project({
           3000
         );
       }
+    }
   }, [project, siteExists]);
 
   //Props
@@ -76,7 +77,7 @@ export default function Project({
 
   return (
     <>
-      {siteExists && <Sites />}
+      {project && siteExists && <Sites />}
       <Location {...locationProps} />
     </>
   );

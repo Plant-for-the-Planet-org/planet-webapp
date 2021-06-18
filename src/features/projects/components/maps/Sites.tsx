@@ -15,9 +15,6 @@ export default function Sites({}: Props): ReactElement {
     geoJson,
     selectedSite,
     isMobile,
-    mapState,
-    setMapState,
-    mapRef,
     selectedMode,
     rasterData,
   } = React.useContext(ProjectPropsContext);
