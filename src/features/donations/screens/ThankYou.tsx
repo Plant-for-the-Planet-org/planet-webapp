@@ -43,7 +43,7 @@ function ThankYou({
       if (
         donation &&
         (donation.paymentStatus === 'pending' ||
-          donation.paymentStatus === 'initiated')
+          donation.paymentStatus === 'initiated' || donation.paymentStatus === 'draft')
       ) {
         loadDonation();
       }
@@ -126,6 +126,7 @@ function ThankYou({
               : null}
             {' ' +
               t('donate:yourTreesPlantedByOnLocation', {
+                count: Number(donation.treeCount),
                 treeCount: getFormattedNumber(
                   i18n.language,
                   Number(donation.treeCount)
@@ -183,6 +184,7 @@ function ThankYou({
               </div>
               <div className={styles.donationCount}>
                 {t('donate:myTreesPlantedByOnLocation', {
+                  count: Number(donation.treeCount),
                   treeCount: getFormattedNumber(
                     i18n.language,
                     Number(donation.treeCount)

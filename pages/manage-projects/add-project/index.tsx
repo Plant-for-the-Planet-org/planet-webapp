@@ -1,54 +1,44 @@
-import React, { ReactElement } from 'react'
-import ManageProjects from '../../../src/features/user/ManageProjects/screens'
-import { getLocalUserInfo } from '../../../src/utils/auth0/localStorageUtils';
+import React, { ReactElement } from 'react';
+import ManageProjects from '../../../src/features/user/ManageProjects/screens';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-import {  useAuth0 } from '@auth0/auth0-react';
+import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 
-interface Props {
+interface Props {}
 
-}
+function ManageProjectsPage({}: Props): ReactElement {
+  const [accessDenied, setAccessDenied] = React.useState(false);
+  const [setupAccess, setSetupAccess] = React.useState(false);
 
-function ManageProjectsPage({ }: Props): ReactElement {
-
-  const [accessDenied, setAccessDenied] = React.useState(false)
-  const [setupAccess, setSetupAccess] = React.useState(false)
-
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
-
-  const [token, setToken] = React.useState('')
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-    if (isAuthenticated) {
-      loadFunction()
-    }
-  }, [isAuthenticated])
+  const { user, contextLoaded, token, loginWithRedirect } = React.useContext(
+    UserPropsContext
+  );
 
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = getLocalUserInfo().type;      
+      const usertype = user.type;
       if (usertype === 'tpo') {
-        setAccessDenied(false)
-        setSetupAccess(true)
-      }else{
-        setAccessDenied(true)
-        setSetupAccess(true)
+        setAccessDenied(false);
+        setSetupAccess(true);
+      } else {
+        setAccessDenied(true);
+        setSetupAccess(true);
       }
     }
 
-    if (!isLoading && isAuthenticated) {
-      loadUserData();
+    if (contextLoaded) {
+      if (token && user) {
+        loadUserData();
+      } else {
+        localStorage.setItem('redirectLink', '/manage-projects/add-project');
+        loginWithRedirect({
+          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          ui_locales: localStorage.getItem('language') || 'en',
+        });
+      }
     }
-  }, [isLoading, isAuthenticated]);
+  }, [contextLoaded]);
 
   // User is not TPO
   if (accessDenied && setupAccess) {
@@ -57,7 +47,7 @@ function ManageProjectsPage({ }: Props): ReactElement {
         <AccessDeniedLoader />
         <Footer />
       </>
-    )
+    );
   }
   return setupAccess ? (
     <>
@@ -66,10 +56,10 @@ function ManageProjectsPage({ }: Props): ReactElement {
     </>
   ) : (
     <>
-    <GlobeContentLoader/>
-    <Footer/>
+      <GlobeContentLoader />
+      <Footer />
     </>
-  )
+  );
 }
 
 export default ManageProjectsPage;

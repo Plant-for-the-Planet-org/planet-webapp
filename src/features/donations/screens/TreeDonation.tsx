@@ -203,9 +203,9 @@ function TreeDonation({
 
           <div className={styles.treeDonationContainer}>
             <div className={styles.isGiftDonation}>
-              <div className={styles.isGiftDonationText}>
+              <label className={styles.isGiftDonationText} htmlFor="checkedA" >
                 {t('donate:myDonationGiftToSomeone')}
-              </div>
+              </label>
               <ToggleSwitch
                 checked={isGift}
                 onChange={() => setIsGift(!isGift)}
@@ -290,7 +290,13 @@ function TreeDonation({
                   }}
                 />
                 <div className={styles.treeCountOptionTrees}>
-                  {t('common:trees')}
+                  {t('common:tree', {
+                  count: Number(treeCount),
+                  treeCount: getFormattedNumber(
+                    i18n.language,
+                    Number(treeCount)
+                  ),
+                })}
                 </div>
               </motion.button>
             </div>

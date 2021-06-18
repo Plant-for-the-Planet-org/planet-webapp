@@ -65,7 +65,7 @@ function ProjectContactDetails({ project }: Props): ReactElement {
       >
         <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
           {contactDetails[0].icon}
-          <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+          <span style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer'}}>
             {contactDetails[0].text}
           </span>
         </div>

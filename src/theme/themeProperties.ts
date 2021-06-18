@@ -1,7 +1,14 @@
 const themeProperties = {
   fontSizes: {
-    subTitleSize: '14px',
-    titleSize: '18px',
+    fontXXSmall: '10px',
+    fontXSmall: '12px',
+    fontSmall: '14px',
+    fontSixteen: '16px',
+    fontMedium: '18px',
+    fontLarge: '22px',
+    fontXLarge: '26px',
+    fontXXLarge: '36px',
+    fontXXXLarge: '48px'
   },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',

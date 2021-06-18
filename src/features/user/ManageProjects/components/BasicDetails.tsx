@@ -434,7 +434,7 @@ export default function BasicDetails({
               <div className={`${styles.formFieldRadio}`}>
                 <label
                   htmlFor="acceptDonations"
-                  style={{ display: 'flex', alignItems: 'center' }}
+                  style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
                 >
                   {t('manageProjects:receiveDonations')}
                   <div
@@ -606,7 +606,7 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={styles.formFieldRadio}>
-              <label htmlFor="visitorAssistance">
+              <label htmlFor="visitorAssistance" style={{cursor: 'pointer'}}>
                 {t('manageProjects:visitorAssistanceLabel')}
               </label>
               <Controller
@@ -626,7 +626,7 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'}>
+              <label htmlFor={'publish'} style={{cursor: 'pointer'}}>
                 {t('manageProjects:publishProject')}
               </label>
 

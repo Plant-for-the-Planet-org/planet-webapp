@@ -31,12 +31,14 @@ jobs:
           BROWSERSTACK_BUILD_NAME: ${{ secrets.BROWSERSTACK_BUILD_NAME }}
           BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
           BROWSERSTACK_TEST_URL: ${{ steps.waitForVercel.outputs.url }}
+          TEST_MFA_URL: ${{ secrets.TEST_MFA_URL }}
         run: |
           echo "BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME" >> .env
           echo "BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY" >> .env
           echo "BROWSERSTACK_BUILD_NAME=$BROWSERSTACK_BUILD_NAME" >> .env
           echo "BROWSERSTACK_PROJECT_NAME=$BROWSERSTACK_PROJECT_NAME" >> .env
           echo "BROWSERSTACK_TEST_URL=$BROWSERSTACK_TEST_URL" >> .env
+          echo "TEST_MFA_URL=$TEST_MFA_URL" >> .env
 
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
         run: |

@@ -72,7 +72,7 @@
 
 .formErrors{
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: $dangerColor;
   margin-left: 6px;
   margin-top: 6px;
@@ -81,7 +81,7 @@
 }
 
 .codeTreeCount{
-  font-size: 48px;
+  font-size: fontXXXLarge;
   font-weight: bold;
   display: flex;
   flex-direction: row;
@@ -187,7 +187,7 @@
 }
 
 .donationCount {
-  font-size: 22px;
+  font-size: $fontLarge;
   font-weight: 600;
   text-align: center;
   position: absolute;
@@ -197,7 +197,7 @@
 }
 
 .donationTenant {
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: 400;
   font-style: italic;
   text-align: center;

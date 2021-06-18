@@ -6,58 +6,43 @@ import MeSelected from '../../../../../public/assets/images/navigation/MeSelecte
 import { ThemeContext } from '../../../../theme/themeContext';
 import i18next from '../../../../../i18n';
 import getImageUrl from '../../../../utils/getImageURL';
-import { useAuth0 } from '@auth0/auth0-react';
-import { getUserInfo } from '../../../../utils/auth0/userInfo';
-import { removeLocalUserInfo } from '../../../../utils/auth0/localStorageUtils';
 import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
+import { UserPropsContext } from '../UserPropsContext';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
+  const lang_path = {
+    en: 'en',
+    de: 'de',
+    es: 'es-es',
+  };
 
   const {
-    isLoading,
-    isAuthenticated,
-    error,
+    user,
+    setUser,
     loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
-
-  const [token, setToken] = React.useState('');
-  const [userInfo, setUserInfo] = React.useState({});
-
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-      const userInfo = await getUserInfo(token, router, logout);
-      setUserInfo(userInfo);
-    }
-    if (!isLoading && isAuthenticated) {
-      loadFunction();
-    }
-  }, [isAuthenticated, isLoading]);
+    logoutUser,
+    auth0Error,
+  } = React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
-    if (userInfo && isAuthenticated) {
-      if (!userInfo.slug) {
-        const userInfo = await getUserInfo(token, router, logout);
-        setUserInfo(userInfo);
-      }
+    if (user) {
       if (typeof window !== 'undefined') {
-        router.push(`/t/${userInfo.slug}`);
+        router.push(`/t/${user.slug}`);
       }
     } else {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
-      loginWithRedirect({ redirectUri: `${process.env.NEXTAUTH_URL}/login`, ui_locales: localStorage.getItem('language') || 'en' });
+      loginWithRedirect({
+        redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
     }
   }
 
@@ -70,23 +55,23 @@ export default function NavbarComponent(props: any) {
   // if (isLoading) {
   //   return <p>loading</p>;
   // }
-  if (error) {
-    if (error.message === '401') {
+  if (auth0Error) {
+    if (auth0Error.message === '401') {
       if (typeof window !== 'undefined') {
-        removeLocalUserInfo();
-        logout({ returnTo: `${process.env.NEXTAUTH_URL}/verify-email` });
+        setUser(null);
+        logoutUser(`${process.env.NEXTAUTH_URL}/verify-email`);
       }
-    } else if (error.message === 'Invalid state') {
-      removeLocalUserInfo();
+    } else if (auth0Error.message === 'Invalid state') {
+      setUser(null);
     } else {
-      alert(error.message);
-      removeLocalUserInfo();
-      logout({ returnTo: `${process.env.NEXTAUTH_URL}/` });
+      alert(auth0Error.message);
+      setUser(null);
+      logoutUser();
     }
   }
 
-  const UserProfileIcon = () => {
-    return isAuthenticated && userInfo && userInfo.profilePic ? (
+  const UserIcon = () => {
+    return user && user.image ? (
       <div
         style={{
           backgroundColor: '#fff',
@@ -95,20 +80,20 @@ export default function NavbarComponent(props: any) {
           width: '27px',
           border: '1px solid #F2F2F7',
         }}
-      > 
+      >
         <img
-          src={getImageUrl('profile', 'avatar', userInfo.profilePic)}
+          src={getImageUrl('profile', 'avatar', user.image)}
           height="26px"
           width="26px"
           style={{ borderRadius: '40px' }}
         />
       </div>
     ) : router.pathname === '/complete-signup' ||
-      (userInfo && router.pathname === `/t/${userInfo.slug}`) ? (
-          <MeSelected color={themeProperties.primaryColor} />
-        ) : (
-          <Me color={themeProperties.light.primaryFontColor} />
-        );
+      (user && router.pathname === `/t/${user.slug}`) ? (
+      <MeSelected color={themeProperties.primaryColor} />
+    ) : (
+      <Me color={themeProperties.light.primaryFontColor} />
+    );
   };
 
   const MenuItems = () => {
@@ -116,58 +101,116 @@ export default function NavbarComponent(props: any) {
     return links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
-          const SingleLink = config.header.items[link];
+          let SingleLink = config.header.items[link];
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
-                <button id={'navbarActiveIcon'} key={link} onClick={() => gotoUserPage()} className={'linkContainer'}>
+                <button
+                  id={'navbarActiveIcon'}
+                  key={link}
+                  onClick={() => gotoUserPage()}
+                  className={'linkContainer'}
+                >
                   <div className={'link_icon'}>
-                    <UserProfileIcon />
+                    <UserIcon />
                   </div>
-                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                  {isAuthenticated && userInfo && SingleLink.loggedInTitle ? t('common:' + SingleLink.loggedInTitle) : t('common:' + SingleLink.title)} 
+                  <p
+                    className={
+                      router.pathname === SingleLink.onclick
+                        ? 'active_icon'
+                        : ''
+                    }
+                  >
+                    {user && SingleLink.loggedInTitle
+                      ? t('common:' + SingleLink.loggedInTitle)
+                      : t('common:' + SingleLink.title)}
                   </p>
                 </button>
-              )
+              );
             }
             if (link === 'about' && SingleLink.visible) {
-              return (
-                <button id={'aboutUsIcon'} key={link} onClick={() => router.push(`${SingleLink.onclick}${i18n.language === 'de'  && (process.env.TENANT === 'planet' || process.env.TENANT === 'ttc') ? 'de' :  ''}`,undefined,undefined)} className={'linkContainer'}>
-                  
-                  <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                  <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
-                      {t('common:' + SingleLink.title)}
-                    </p>
-                </button>
-              )
+              SingleLink = {
+                ...SingleLink,
+                onclick: `${SingleLink.onclick}${
+                  (process.env.TENANT === 'planet' ||
+                    process.env.TENANT === 'ttc') &&
+                  lang_path[i18n.language]
+                    ? lang_path[i18n.language]
+                    : ''
+                }`,
+              };
             }
             return SingleLink.visible ? (
-              (
-                <Link key={link} href={SingleLink.onclick}>
-                  <div className={'linkContainer'}>
-                    <GetNavBarIcon UserProfileIcon={UserProfileIcon} mainKey={link} router={router} item={SingleLink} />
-                    <p className={router.pathname === SingleLink.onclick ? 'active_icon' : ''}>
+              <Link key={link} href={SingleLink.onclick}>
+                <div className={'linkContainer'}>
+                  <GetNavBarIcon
+                    UserIcon={UserIcon}
+                    mainKey={link}
+                    router={router}
+                    item={SingleLink}
+                  />
+                  {link === 'donate' ? (
+                    <p
+                      className={
+                        router.pathname === '/' || router.pathname === '/[p]'
+                          ? 'active_icon'
+                          : ''
+                      }
+                    >
                       {t('common:' + SingleLink.title)}
                     </p>
-                  </div>
-                </Link>
-              )
-            ) : <></>;
+                  ) : (
+                    <p
+                      className={
+                        router.pathname === SingleLink.onclick
+                          ? 'active_icon'
+                          : ''
+                      }
+                    >
+                      {t('common:' + SingleLink.title)}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ) : (
+              <></>
+            );
           }
-
         })}
       </div>
-    ) : <></>;
-  }
+    ) : (
+      <></>
+    );
+  };
 
   return (
     <div className={'mainNavContainer'}>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>
           {config.header?.isSecondaryTenant && (
-            <div className={config.tenantName === 'ttc' ? 'hidePrimaryTenantLogo' : 'primaryTenantLogo'}>
+            <div
+              className={
+                config.tenantName === 'ttc'
+                  ? 'hidePrimaryTenantLogo'
+                  : 'primaryTenantLogo'
+              }
+            >
               <a href={config.header?.tenantLogoLink}>
-                <img className={'tenantLogo'} src={config.header.tenantLogoURL} />
+                <img
+                  className={'tenantLogo desktop'}
+                  src={config.header.tenantLogoURL}
+                />
+                {config.header.mobileLogoURL ? (
+                  <img
+                    className={'tenantLogo mobile'}
+                    src={config.header.mobileLogoURL}
+                  />
+                ) : (
+                  <img
+                    className={'tenantLogo mobile'}
+                    src={config.header.tenantLogoURL}
+                  />
+                )}
               </a>
               <div className={'logo_divider'} />
             </div>

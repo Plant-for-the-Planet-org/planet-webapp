@@ -17,7 +17,6 @@ const config = {
     locale: 'en_US',
   },
   home: {
-    descriptionTitle:"Bäume pflanzen für eine nachhaltigere Zukunft",
     image: `/tenants/pampers/background.jpeg`,
   },
   header: {

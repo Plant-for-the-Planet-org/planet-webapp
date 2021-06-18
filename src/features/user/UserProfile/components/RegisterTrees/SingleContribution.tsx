@@ -12,7 +12,7 @@ interface Props {
   token: any;
   contributionGUID: any;
   contribution: any;
-  currentUserSlug: any;
+  slug: any;
 }
 
 const { useTranslation } = i18next;
@@ -25,7 +25,7 @@ export default function SingleContribution({
   token,
   contribution,
   contributionGUID,
-  currentUserSlug,
+  slug,
 }: Props): ReactElement {
   const router = useRouter();
   const UploadProps = {
@@ -37,10 +37,11 @@ export default function SingleContribution({
 
   return ready ? (
     <>
-      <button id={'singleControcloseButton'}
+      <button
+        id={'singleControcloseButton'}
         className={styles.closeButton}
         onClick={() => {
-          router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
+          router.push(`/t/${slug}`, undefined, { shallow: true });
         }}
       >
         <CancelIcon />
@@ -71,16 +72,19 @@ export default function SingleContribution({
         <UploadImages {...UploadProps} />
       </div>
       <div className={styles.nextButton}>
-        <button id={'singleControCont'}
+        <button
+          id={'singleControCont'}
           onClick={() =>
-            router.push(`/t/${currentUserSlug}`, undefined, { shallow: true })
+            router.push(`/t/${slug}`, undefined, { shallow: true })
           }
           className="primaryButton"
-          style={{maxWidth: "100px", marginTop: "24px"}}
+          style={{ maxWidth: '100px', marginTop: '24px' }}
         >
           {t('me:save')}
         </button>
       </div>
     </>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

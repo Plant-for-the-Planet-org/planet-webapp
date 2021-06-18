@@ -1,21 +1,23 @@
 @import './../../../theme/theme';
 
 .publicUserDescription {
-    font-family: $primaryFontFamily;
-    font-size: 16px;
-    color: $light;
-    margin-top: 30px;
-    max-width: 560px;
-    text-align: center;
-    line-height: 24px;
-    margin-left: 5%;
-    margin-right: 5%;
+  font-family: $primaryFontFamily;
+  font-size: $fontSixteen;
+  color: $light;
+  margin-top: 30px;
+  max-width: 560px;
+  text-align: center;
+  line-height: 24px;
+  margin-left: 5%;
+  margin-right: 5%;
+  a {
+    color: $primaryColor;
   }
-  
-  @include smTabletView {
-    .publicUserDescription {
-      margin-left: auto;
-      margin-right: auto;
-    }
+}
+
+@include smTabletView {
+  .publicUserDescription {
+    margin-left: auto;
+    margin-right: auto;
   }
-  
+}

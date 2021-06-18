@@ -55,7 +55,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     loadFunction();
   }, [profile]);
 
-  console.log('contributions', contributions);
 
   const MapProps = {
     contributions,

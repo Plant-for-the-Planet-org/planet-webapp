@@ -38,7 +38,7 @@
 }
 
 .editProfileText {
-  font-size: 22px;
+  font-size: $fontLarge;
   margin-left: 20px;
 }
 
@@ -76,16 +76,16 @@
 
 .mainText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $highlightBackground;
-  font-size: 16px;
+  font-size: $fontSixteen;
   text-align: left;
 }
 
 .isPrivateAccountText {
   margin-top: 6px;
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $highlightBackground;
 }
 
@@ -121,11 +121,11 @@
 
 .formErrors {
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $dangerColor;
   margin-left: 6px;
-  margin-top: 6px;
   max-width: 320px;
+  margin-bottom: -18px;
 }
 
 /// Form Styles
