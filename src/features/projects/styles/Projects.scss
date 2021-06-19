@@ -8,6 +8,7 @@
   width: 100vw;
   margin-top: 50vh;
   padding-bottom: 60px;
+  z-index: 12;
 }
 
 .header {
@@ -210,7 +211,7 @@
   .container {
     padding-bottom: 0px;
   }
-  .projectsContainer{
+  .projectsContainer {
     padding-bottom: 56px;
   }
 }
