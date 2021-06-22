@@ -78,14 +78,19 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       paymentSetup,
       donationID: paymentData.guid,
       token: null,
-      setDonationStep: () => { }
-    }).then((res)=>{
-      if (res.paymentStatus) {
-        setIsPaymentProcessing(false);
-        setIsDonationComplete(true);
+      setDonationStep: () => { },
+      country
+    }).then((res) => {
+      if (res) {
+        if (res.paymentStatus || res.status) {
+          setIsPaymentProcessing(false);
+          setIsDonationComplete(true);
+        } else {
+          setIsPaymentProcessing(false);
+          setPaymentError(res.error ? res.error.message : res.message);
+        }
       } else {
         setIsPaymentProcessing(false);
-        setPaymentError(res.error ? res.error.message : res.message);
       }
     })
   }
@@ -158,7 +163,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
           ) : null}
           </div>
 
-          
+
 
           {paymentSetup && (
             <>
@@ -204,6 +209,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
               donationId={paymentData.guid}
               mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
               clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+              donationUid={paymentData.uid}
             />}
         </div>
       ) : (

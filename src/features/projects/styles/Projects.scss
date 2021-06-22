@@ -8,6 +8,7 @@
   width: 100vw;
   margin-top: 50vh;
   padding-bottom: 60px;
+  z-index: 12;
 }
 
 .header {
@@ -45,7 +46,7 @@
 
 .tabButtonText {
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: bold;
   color: $primaryFontColor;
   margin-bottom: 10px;
@@ -54,7 +55,7 @@
 .tabButtonSelected {
   color: $primaryColor;
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -80,7 +81,7 @@
 .searchIcon {
   margin-left: 6px;
   padding: 10px;
-  font-size: 12px;
+  font-size: $fontXSmall;
   margin-right: 6px;
 }
 
@@ -210,7 +211,7 @@
   .container {
     padding-bottom: 0px;
   }
-  .projectsContainer{
+  .projectsContainer {
     padding-bottom: 56px;
   }
 }

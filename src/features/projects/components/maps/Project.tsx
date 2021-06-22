@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
+import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
 
@@ -9,33 +10,21 @@ interface Props {
   project: Object;
   viewport: Object;
   setViewPort: Function;
-  isMobile: Boolean;
-  mapRef: Object;
-  mapState: Object;
-  setMapState: Function;
 }
 
 export default function Project({
   project,
   viewport,
   setViewPort,
-  isMobile,
-  mapRef,
-  mapState,
-  setMapState,
 }: Props): ReactElement {
-  const [selectedMode, setSelectedMode] = React.useState('location');
-  const [geoJson, setGeoJson] = React.useState(null);
-
-  //Sites
-  const [siteExists, setsiteExists] = React.useState(false);
-  const [selectedSite, setSelectedSite] = React.useState(0);
-
-  //Zoom 3
-  const [rasterData, setRasterData] = React.useState({
-    evi: '',
-    imagery: {},
-  });
+  const {
+    geoJson,
+    selectedSite,
+    siteExists,
+    rasterData,
+    setRasterData,
+    isMobile
+  } = React.useContext(ProjectPropsContext);
 
   async function loadRasterData() {
     const result = await getRasterData('');
@@ -50,18 +39,10 @@ export default function Project({
       setRasterData({ ...rasterData, imagery: result.imagery });
     }
   }
-
   React.useEffect(() => {
-    if (
-      typeof project.sites !== 'undefined' &&
-      project.sites.length > 0 &&
-      project.sites[0].geometry
-    ) {
-      setsiteExists(true);
-      setGeoJson({
-        type: 'FeatureCollection',
-        features: project.sites,
-      });
+    if (siteExists) {
+      loadRasterData();
+      const isMobileTemp = window.innerWidth <= 767;
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
@@ -69,14 +50,11 @@ export default function Project({
         },
         selectedSite,
         viewport,
-        isMobile,
+        isMobileTemp,
         setViewPort,
         4000
       );
-      loadRasterData();
     } else {
-      setsiteExists(false);
-      setGeoJson(null);
       zoomToLocation(
         viewport,
         setViewPort,
@@ -86,7 +64,7 @@ export default function Project({
         3000
       );
     }
-  }, []);
+  }, [project, siteExists]);
 
   //Props
   const locationProps = {
@@ -94,24 +72,10 @@ export default function Project({
     geoJson,
     project,
   };
-  const sitesProps = {
-    viewport,
-    setViewPort,
-    geoJson,
-    selectedSite,
-    setSelectedSite,
-    isMobile,
-    selectedMode,
-    setSelectedMode,
-    rasterData,
-    mapRef,
-    mapState,
-    setMapState,
-  };
 
   return (
     <>
-      {siteExists && <Sites {...sitesProps} />}
+      {siteExists && <Sites />}
       <Location {...locationProps} />
     </>
   );

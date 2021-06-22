@@ -21,7 +21,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: $fontSmall;
     line-height: 21px;
     text-align: center;
     color: $primaryFontColor;
@@ -31,7 +31,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: 600;
-    font-size: 36px;
+    font-size: $fontXXLarge;
     line-height: 40px;
     text-align: center;
     letter-spacing: -0.4px;
@@ -52,7 +52,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
-    font-size: 13px;
+    font-size: $fontSmall;
     color: $primaryFontColor;
   }
 
@@ -62,7 +62,7 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: bold;
-    font-size: 13px;
+    font-size: $fontSmall;
     color: $primaryFontColor;
   }
 
@@ -85,7 +85,7 @@
     flex-grow: 1;
     font-style: normal;
     font-weight: 600;
-    font-size: 16px;
+    font-size: $fontSixteen;
     color: $primaryFontColor;
     font-family: $primaryFontFamily;
     text-align: left;
@@ -95,7 +95,7 @@
   .leaderBoardDonorTrees {
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: $fontSixteen;
     letter-spacing: -0.4px;
     color: $primaryFontColor;
     flex: none;
@@ -108,7 +108,7 @@
   .leaderBoardDonorTime {
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: $fontSixteen;
     color: #706e6b;
     mix-blend-mode: normal;
     opacity: 0.9;

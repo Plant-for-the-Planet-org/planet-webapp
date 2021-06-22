@@ -177,7 +177,7 @@ function ProjectCertificates({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="isCertified">
+              <label htmlFor="isCertified" style={{cursor: 'pointer'}}>
                 {t('manageProjects:isCertified')}
               </label>
               <ToggleSwitch

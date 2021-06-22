@@ -47,6 +47,12 @@
     background-color: rgba(0, 0, 0, 0.5);
     margin: 0rem 0.5rem;
   }
+  .mobile {
+    display: none;
+  }
+  .desktop {
+    display: block;
+  }
 }
 
 .menuItems{
@@ -62,7 +68,7 @@
     margin:10px;
     > p {
       font-family: $primaryFontFamily;
-      font-size: 14.24px;
+      font-size: $fontSmall;
       font-weight: 700;
       margin: 5px;
       line-height: 1;
@@ -134,6 +140,12 @@
       .tenantLogo {
         height: 48px;
       }
+      .mobile {
+        display: block;
+      }
+      .desktop {
+        display: none;
+      }
     }
   }
   .menuItems{
@@ -144,7 +156,7 @@
     .linkContainer{
       margin:0px;
       > p {
-        font-size: 12px;
+        font-size: $fontXSmall;
       }
       .link_icon {
         margin: 5px;

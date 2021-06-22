@@ -3,7 +3,7 @@ const config = {
   tenantURL: 'wald.culchacandela.de',
   languages: ['en', 'de'],
   fallbackCurrency: 'EUR',
-  tenantGoal: null,
+  tenantGoal: 77700,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
     primaryFontURL:
@@ -24,7 +24,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/culchacandela/logo.svg`,
+    tenantLogoURL: `/tenants/culchacandela/logo.png`,
     tenantLogoLink: 'https://www.culchacandela.de/',
     items: {
       home: {
