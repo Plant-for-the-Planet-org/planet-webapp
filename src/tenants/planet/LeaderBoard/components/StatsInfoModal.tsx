@@ -24,25 +24,25 @@ function ExploreInfoModal({
       {infoExpanded === 'donated' ? (
         <div className={styles.infoContainer}>
           <div className={styles.infoTitle}>{t('planet:treesDonated')}</div>
-          <div className={styles.infoContent}></div>
+          <div style={{marginTop:'12px'}} className={styles.infoContent}>{t('planet:treesDonatedDescription')}</div>
         </div>
       ) : null}
       {infoExpanded === 'planted' ? (
         <div className={styles.infoContainer}>
-          <div className={styles.infoTitle}>{t('planet:plantedByTPO')}</div>
-          <div className={styles.infoContent}></div>
+          <div className={styles.infoTitle}>{t('planet:plantedByTPO', { projects: 160 })}</div>
+          <div style={{marginTop:'12px'}} className={styles.infoContent}>{t('planet:treesPlantedDescription')}</div>
         </div>
       ) : null}
       {infoExpanded === 'global' ? (
         <div className={styles.infoContainer}>
           <div className={styles.infoTitle}>{t('planet:plantedGlobally')}</div>
-          <div className={styles.infoContent}>{t('planet:globallySince')}</div>
+          <div style={{marginTop:'12px'}} className={styles.infoContent}>{t('planet:globallySince')}</div>
         </div>
       ) : null}
       {infoExpanded === 'loss' ? (
         <div className={styles.infoContainer}>
           <div className={styles.infoTitle}>{t('planet:forestLoss')}</div>
-          <div className={styles.infoContent}>
+          <div style={{marginTop:'12px'}} className={styles.infoContent}>
             <div>
               {t('planet:estimateOf')}{' '}
               <a
@@ -67,7 +67,7 @@ function ExploreInfoModal({
         <CancelIcon color="#d5d5d5" />
       </button>
     </div>
-  ) : null;
+  ) : <></>;
 }
 
 export default ExploreInfoModal;
