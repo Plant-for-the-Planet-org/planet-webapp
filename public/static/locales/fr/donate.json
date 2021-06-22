@@ -1,8 +1,6 @@
 {
   "fortreeCountTrees": "for {{treeCount}} Tree",
   "fortreeCountTrees_plural": "for {{treeCount}} Trees",
-  "yourTreesPlantedByOnLocation": "Vos {{treeCount}} arbres seront plantés par {{projectName}} à {{location}}.",
-  "myTreesPlantedByOnLocation": "Mes {{treeCount}} arbres sont plantés à {{location}}.",
   "PROJECTS": "PROJETS",
   "topProjects": "Principaux projets",
   "allCountProjects": "Tous {{projectCount}} Projets",
