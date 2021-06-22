@@ -23,11 +23,12 @@ export default function Sites({}: Props): ReactElement {
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
+    const isMobileTemp = window.innerWidth <= 767;
     zoomToProjectSite(
       geoJson,
       selectedSite,
       viewport,
-      isMobile,
+      isMobileTemp,
       setViewPort,
       4000
     );

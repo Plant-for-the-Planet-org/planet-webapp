@@ -1,61 +1,61 @@
 import React, { ReactElement } from 'react';
 
-interface Props { }
+interface Props {}
 
 export const ProjectPropsContext = React.createContext({
   projects: [] || null,
   project: {} || null,
-  setProject: (value: {}) => { },
-  setProjects: (value: []) => { },
+  setProject: (value: {}) => {},
+  setProjects: (value: []) => {},
   showSingleProject: false,
-  setShowSingleProject: (value: boolean) => { },
+  setShowSingleProject: (value: boolean) => {},
   showProjects: true,
-  setShowProjects: (value: boolean) => { },
+  setShowProjects: (value: boolean) => {},
   searchedProject: [],
-  setsearchedProjects: (value: []) => { },
+  setsearchedProjects: (value: []) => {},
   geoJson: {} || null,
-  setGeoJson: (value: boolean) => { },
+  setGeoJson: (value: boolean) => {},
   selectedSite: 0,
-  setSelectedSite: (value: number) => { },
+  setSelectedSite: (value: number) => {},
   siteExists: false,
-  setsiteExists: (value: boolean) => { },
+  setsiteExists: (value: boolean) => {},
   isMobile: false,
   infoRef: {} || null,
   exploreContainerRef: {} || null,
   exploreExpanded: false,
-  setExploreExpanded: (value: boolean) => { },
+  setExploreExpanded: (value: boolean) => {},
   exploreForests: false,
-  setExploreForests: (value: boolean) => { },
+  setExploreForests: (value: boolean) => {},
   explorePotential: false,
-  setExplorePotential: (value: boolean) => { },
+  setExplorePotential: (value: boolean) => {},
   exploreDeforestation: false,
-  setExploreDeforestation: (value: boolean) => { },
+  setExploreDeforestation: (value: boolean) => {},
   explorePlanted: false,
-  setExplorePlanted: (value: boolean) => { },
-  infoExpanded: null || "",
-  setInfoExpanded: (value: string) => { },
+  setExplorePlanted: (value: boolean) => {},
+  infoExpanded: null || '',
+  setInfoExpanded: (value: string) => {},
   openModal: false,
-  setModalOpen: (value: boolean) => { },
+  setModalOpen: (value: boolean) => {},
   viewport: {},
-  setViewPort: (value: {}) => { },
-  setExploreProjects: (value: boolean) => { },
+  setViewPort: (value: {}) => {},
+  setExploreProjects: (value: boolean) => {},
   mapState: {},
-  setMapState: (value: {}) => { },
+  setMapState: (value: {}) => {},
   exploreProjects: true,
   loaded: false,
-  setLoaded: (value: boolean) => { },
+  setLoaded: (value: boolean) => {},
   mapRef: {},
   defaultMapCenter: [],
   defaultZoom: 1.4,
   layersSettings: {},
-  setLayersSettings: (value: {}) => { },
+  setLayersSettings: (value: {}) => {},
   selectedMode: 'location',
-  setSelectedMode: (value: string) => { },
+  setSelectedMode: (value: string) => {},
   rasterData: {
     evi: '',
     imagery: {},
   },
-  setRasterData: (value: {}) => { },
+  setRasterData: (value: {}) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -108,9 +108,22 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     imagery: {},
   });
 
+  const [windowSize, setWindowSize] = React.useState(1280);
 
   React.useEffect(() => {
-    if (project &&
+    window.addEventListener('resize', updateWidth);
+    const isMobileTemp = windowSize <= 767;
+    setIsMobile(isMobileTemp);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, [windowSize]);
+
+  const updateWidth = () => {
+    setWindowSize(window.innerWidth);
+  };
+
+  React.useEffect(() => {
+    if (
+      project &&
       typeof project.sites !== 'undefined' &&
       project.sites.length > 0 &&
       project.sites[0].geometry
@@ -147,13 +160,20 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setsiteExists,
         isMobile,
         setIsMobile,
-        exploreExpanded, setExploreExpanded,
-        exploreForests, setExploreForests,
-        explorePotential, setExplorePotential,
-        exploreDeforestation, setExploreDeforestation,
-        explorePlanted, setExplorePlanted,
-        infoExpanded, setInfoExpanded,
-        openModal, setModalOpen,
+        exploreExpanded,
+        setExploreExpanded,
+        exploreForests,
+        setExploreForests,
+        explorePotential,
+        setExplorePotential,
+        exploreDeforestation,
+        setExploreDeforestation,
+        explorePlanted,
+        setExplorePlanted,
+        infoExpanded,
+        setInfoExpanded,
+        openModal,
+        setModalOpen,
         exploreContainerRef,
         infoRef,
         viewport,
@@ -163,13 +183,17 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setMapState,
         isMobile,
         exploreProjects,
-        loaded, setLoaded,
+        loaded,
+        setLoaded,
         mapRef,
         defaultMapCenter,
         defaultZoom,
-        layersSettings, setLayersSettings,
-        selectedMode, setSelectedMode,
-        rasterData, setRasterData
+        layersSettings,
+        setLayersSettings,
+        selectedMode,
+        setSelectedMode,
+        rasterData,
+        setRasterData,
       }}
     >
       {children}

@@ -62,7 +62,6 @@ export default function ProjectsMap(): ReactElement {
     project,
     viewport,
     setViewPort,
-    isMobile,
     mapRef,
     mapState,
     setMapState,

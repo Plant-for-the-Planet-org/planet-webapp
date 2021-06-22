@@ -421,6 +421,9 @@
   right: 6px;
   bottom: 20px;
   z-index: 2;
+  > div {
+    position: relative !important;
+  }
 }
 
 .uploadedImageContainer {
