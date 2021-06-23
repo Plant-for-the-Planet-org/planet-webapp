@@ -48,7 +48,9 @@ export default function SitesDropdown(): ReactElement {
         <div className={styles.dropdownContainer}>
           <div className={styles.projectSitesDropdown}>
             <FormControl>
-              {/* <InputLabel htmlFor="demo-customized-select-native">Image 1</InputLabel> */}
+              <div className={styles.polygonIcon}>
+                <PolygonIcon />
+              </div>
               <NativeSelect
                 id="customized-select-native"
                 value={selectedSite}
