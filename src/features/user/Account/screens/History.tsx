@@ -19,6 +19,7 @@ interface Props {
   isDataLoading: boolean;
   accountingFilters: Object;
   paymentHistory: Object;
+  fetchPaymentHistory: Function;
 }
 
 export default function History({
@@ -27,6 +28,7 @@ export default function History({
   isDataLoading,
   accountingFilters,
   paymentHistory,
+  fetchPaymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState(null);
@@ -100,7 +102,21 @@ export default function History({
               })
             )}
           </div>
-          <div className={styles.pagination}></div>
+          {paymentHistory._links.next && (
+            <div className={styles.pagination}>
+              <button
+                onClick={() => fetchPaymentHistory(true)}
+                className="primaryButton"
+                style={{ minWidth: '240px' }}
+              >
+                {isDataLoading ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('loadMore')
+                )}
+              </button>
+            </div>
+          )}
         </div>
         <div className={styles.filterContainer}>
           <p className={styles.header}>{t('me:filters')}</p>

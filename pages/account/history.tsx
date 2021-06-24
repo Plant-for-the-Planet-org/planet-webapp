@@ -21,10 +21,23 @@ function AccountHistory({}: Props): ReactElement {
   const [paymentHistory, setpaymentHistory] = React.useState();
   const [accountingFilters, setaccountingFilters] = React.useState();
 
-  React.useEffect(() => {
-    async function fetchPaymentHistory() {
-      setIsDataLoading(true);
-      setProgress(70);
+  async function fetchPaymentHistory(next = false) {
+    setIsDataLoading(true);
+    setProgress(70);
+    if (next && paymentHistory._links.next) {
+      const newPaymentHistory = await getAuthenticatedRequest(
+        paymentHistory._links.next,
+        token
+      );
+      setpaymentHistory({
+        ...paymentHistory,
+        items: [...paymentHistory.items, ...newPaymentHistory.items],
+        _links: newPaymentHistory._links,
+      });
+      setProgress(100);
+      setIsDataLoading(false);
+      setTimeout(() => setProgress(0), 1000);
+    } else {
       if (filter === null) {
         const paymentHistory = await getAuthenticatedRequest(
           '/app/paymentHistory?limit=15',
@@ -50,6 +63,9 @@ function AccountHistory({}: Props): ReactElement {
         setTimeout(() => setProgress(0), 1000);
       }
     }
+  }
+
+  React.useEffect(() => {
     if (contextLoaded && token) fetchPaymentHistory();
   }, [filter, contextLoaded, token]);
 
@@ -59,6 +75,7 @@ function AccountHistory({}: Props): ReactElement {
     isDataLoading,
     accountingFilters,
     paymentHistory,
+    fetchPaymentHistory,
   };
 
   return (
