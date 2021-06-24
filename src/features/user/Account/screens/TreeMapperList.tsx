@@ -47,39 +47,37 @@ export default function TreeMapperNew({
       ) : (
         <>
           {plantLocations ? (
-            <>
-              {plantLocations.map((location: any, index: number) => {
-                if (location.type !== 'sample')
-                  return (
-                    <PlantLocation
-                      key={index}
-                      location={location}
-                      locations={plantLocations}
-                      index={index}
-                      selectedLocation={selectedLocation}
-                      setselectedLocation={setselectedLocation}
-                    />
-                  );
-              })}
-              {links.next && (
-                <div className={styles.pagination}>
-                  <button
-                    onClick={() => fetchTreemapperData(true)}
-                    className="primaryButton"
-                    style={{ maxWidth: '240px' }}
-                  >
-                    {isDataLoading ? (
-                      <div className={styles.spinner}></div>
-                    ) : (
-                      t('loadMore')
-                    )}
-                  </button>
-                </div>
-              )}
-            </>
+            plantLocations.map((location: any, index: number) => {
+              if (location.type !== 'sample')
+                return (
+                  <PlantLocation
+                    key={index}
+                    location={location}
+                    locations={plantLocations}
+                    index={index}
+                    selectedLocation={selectedLocation}
+                    setselectedLocation={setselectedLocation}
+                  />
+                );
+            })
           ) : (
             <div className={styles.notFound}>
               <TransactionsNotFound />
+            </div>
+          )}
+          {plantLocations && links.next && (
+            <div className={styles.pagination}>
+              <button
+                onClick={() => fetchTreemapperData(true)}
+                className="primaryButton"
+                style={{ maxWidth: '240px' }}
+              >
+                {isDataLoading ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('loadMore')
+                )}
+              </button>
             </div>
           )}
         </>

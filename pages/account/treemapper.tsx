@@ -67,7 +67,7 @@ function History({}: Props): ReactElement {
       }
     } else {
       const response = await getAuthenticatedRequest(
-        '/treemapper/plantLocations?limit=1',
+        '/treemapper/plantLocations?limit=15',
         token
       );
       if (response) {
