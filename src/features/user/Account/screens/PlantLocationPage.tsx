@@ -62,7 +62,7 @@ export function LocationDetails({
   return (
     <>
       <div className={styles.imageContainer}>
-        {location.coordinates.map((coordinate: any) => {
+        {location?.coordinates?.map((coordinate: any) => {
           if (coordinate.image) {
             const image = getImageUrl('coordinate', 'large', coordinate.image);
             return <img key={coordinate.image} src={image} />;
@@ -81,7 +81,7 @@ export function LocationDetails({
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('coordinates')}</p>
           <div className={styles.value}>
-            {location.deviceLocation.coordinates.map(
+            {location?.deviceLocation?.coordinates.map(
               (coord: any, index: number) => {
                 return <p key={index}>{coord}</p>;
               }
@@ -128,8 +128,8 @@ export function LocationDetails({
           <p className={styles.title}>{t('species')}</p>
           <div className={styles.value}>
             {location.scientificSpecies
-              ? location.scientificSpecies
-              : location.plantedSpecies.map((species: any) => {
+              ? location?.scientificSpecies
+              : location?.plantedSpecies?.map((species: any) => {
                   return <p key={species.id}>{species.id}</p>;
                 })}
           </div>
@@ -140,7 +140,7 @@ export function LocationDetails({
             <div className={styles.value}>
               <div className={styles.sampleTrees}>
                 {location.sampleTrees &&
-                  location.sampleTrees.map((sampleTree: any) => {
+                  location?.sampleTrees?.map((sampleTree: any) => {
                     return (
                       <div
                         key={sampleTree.id}

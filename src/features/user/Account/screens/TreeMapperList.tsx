@@ -3,6 +3,9 @@ import TransactionListLoader from '../../../../../public/assets/images/icons/Tra
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import PlantLocation from '../components/TreeMapper/PlantLocation';
 import styles from '../styles/TreeMapper.module.scss';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 interface Props {
   selectedLocation: string;
@@ -10,6 +13,8 @@ interface Props {
   plantLocations: Object;
   isDataLoading: boolean;
   location: any;
+  fetchTreemapperData: Function;
+  links: any;
 }
 
 export default function TreeMapperNew({
@@ -18,8 +23,10 @@ export default function TreeMapperNew({
   plantLocations,
   isDataLoading,
   location,
+  fetchTreemapperData,
+  links,
 }: Props): ReactElement {
-  console.log(plantLocations);
+  const { t, i18n } = useTranslation('treemapper');
 
   return (
     <div
@@ -37,24 +44,45 @@ export default function TreeMapperNew({
           <TransactionListLoader />
           <TransactionListLoader />
         </>
-      ) : plantLocations ? (
-        plantLocations.map((location: any, index: number) => {
-          if (location.type !== 'sample')
-            return (
-              <PlantLocation
-                key={index}
-                location={location}
-                locations={plantLocations}
-                index={index}
-                selectedLocation={selectedLocation}
-                setselectedLocation={setselectedLocation}
-              />
-            );
-        })
       ) : (
-        <div className={styles.notFound}>
-          <TransactionsNotFound />
-        </div>
+        <>
+          {plantLocations ? (
+            <>
+              {plantLocations.map((location: any, index: number) => {
+                if (location.type !== 'sample')
+                  return (
+                    <PlantLocation
+                      key={index}
+                      location={location}
+                      locations={plantLocations}
+                      index={index}
+                      selectedLocation={selectedLocation}
+                      setselectedLocation={setselectedLocation}
+                    />
+                  );
+              })}
+              {links.next && (
+                <div className={styles.pagination}>
+                  <button
+                    onClick={() => fetchTreemapperData(true)}
+                    className="primaryButton"
+                    style={{ maxWidth: '240px' }}
+                  >
+                    {isDataLoading ? (
+                      <div className={styles.spinner}></div>
+                    ) : (
+                      t('loadMore')
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className={styles.notFound}>
+              <TransactionsNotFound />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -24,7 +24,7 @@ function AccountHistory({}: Props): ReactElement {
   async function fetchPaymentHistory(next = false) {
     setIsDataLoading(true);
     setProgress(70);
-    if (next && paymentHistory._links.next) {
+    if (next && paymentHistory?._links?.next) {
       const newPaymentHistory = await getAuthenticatedRequest(
         paymentHistory._links.next,
         token

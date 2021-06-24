@@ -9,6 +9,7 @@ import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader
 import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocationPage';
 import dynamic from 'next/dynamic';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { pl } from 'date-fns/locale';
 
 const { useTranslation } = i18next;
 
@@ -29,30 +30,29 @@ function History({}: Props): ReactElement {
   const [plantLocations, setPlantLocations] = React.useState(null);
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
+  const [links, setLinks] = React.useState();
 
-  React.useEffect(() => {
-    async function fetchPaymentHistory() {
-      setIsDataLoading(true);
-      setProgress(70);
-      const response = await getAuthenticatedRequest(
-        '/treemapper/plantLocations',
-        token
-      );
-      const plantLocations = response;
-      if (plantLocations.length === 0) {
-        setPlantLocations(null);
-      } else {
-        for (const itr in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
-            const location = plantLocations[itr];
+  async function fetchTreemapperData(next = false) {
+    setIsDataLoading(true);
+    setProgress(70);
+
+    if (next && links?.next) {
+      const response = await getAuthenticatedRequest(links.next, token);
+      if (response) {
+        const newPlantLocations = response?.items;
+        for (const itr in newPlantLocations) {
+          if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
+            const location = newPlantLocations[itr];
             if (location.type === 'multi') {
-              plantLocations[itr].sampleTrees = [];
-              for (const key in plantLocations) {
-                if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-                  const item = plantLocations[key];
+              newPlantLocations[itr].sampleTrees = [];
+              for (const key in newPlantLocations) {
+                if (
+                  Object.prototype.hasOwnProperty.call(newPlantLocations, key)
+                ) {
+                  const item = newPlantLocations[key];
                   if (item.type === 'sample') {
                     if (item.parent === location.id) {
-                      plantLocations[itr].sampleTrees.push(item);
+                      newPlantLocations[itr].sampleTrees.push(item);
                     }
                   }
                 }
@@ -60,13 +60,53 @@ function History({}: Props): ReactElement {
             }
           }
         }
-        setPlantLocations(plantLocations);
+        console.log('new array', [...plantLocations, ...newPlantLocations]);
+
+        setPlantLocations([...plantLocations, ...newPlantLocations]);
+        setLinks(response._links);
       }
-      setProgress(100);
-      setIsDataLoading(false);
-      setTimeout(() => setProgress(0), 1000);
+    } else {
+      const response = await getAuthenticatedRequest(
+        '/treemapper/plantLocations?limit=1',
+        token
+      );
+      if (response) {
+        const plantLocations = response?.items;
+        if (plantLocations?.length === 0) {
+          setPlantLocations(null);
+        } else {
+          for (const itr in plantLocations) {
+            if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
+              const location = plantLocations[itr];
+              if (location.type === 'multi') {
+                plantLocations[itr].sampleTrees = [];
+                for (const key in plantLocations) {
+                  if (
+                    Object.prototype.hasOwnProperty.call(plantLocations, key)
+                  ) {
+                    const item = plantLocations[key];
+                    if (item.type === 'sample') {
+                      if (item.parent === location.id) {
+                        plantLocations[itr].sampleTrees.push(item);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          setPlantLocations(plantLocations);
+          setLinks(response._links);
+        }
+      }
     }
-    if (contextLoaded && token) fetchPaymentHistory();
+    setProgress(100);
+    setIsDataLoading(false);
+    setTimeout(() => setProgress(0), 1000);
+  }
+
+  React.useEffect(() => {
+    if (contextLoaded && token) fetchTreemapperData();
   }, [contextLoaded, token]);
 
   React.useEffect(() => {
@@ -92,6 +132,8 @@ function History({}: Props): ReactElement {
     setselectedLocation,
     plantLocations,
     isDataLoading,
+    fetchTreemapperData,
+    links,
   };
 
   return (

@@ -102,7 +102,7 @@ export default function History({
               })
             )}
           </div>
-          {paymentHistory._links.next && (
+          {paymentHistory?._links?.next && (
             <div className={styles.pagination}>
               <button
                 onClick={() => fetchPaymentHistory(true)}
