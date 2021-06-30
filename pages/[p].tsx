@@ -9,6 +9,7 @@ import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
+import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 
 interface Props {
   initialized: boolean;
@@ -25,12 +26,16 @@ export default function Donate({
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { project, setProject, setShowSingleProject } = React.useContext(
-    ProjectPropsContext
-  );
+  const {
+    project,
+    setProject,
+    setShowSingleProject,
+    setZoomLevel,
+    setPlantLocations,
+  } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
-    setShowSingleProject(true);
+    setZoomLevel(2);
   }, []);
 
   const handleClose = () => {
@@ -50,6 +55,9 @@ export default function Donate({
         );
         setProject(project);
         setShowSingleProject(true);
+        setZoomLevel(2);
+        const plantLocations = await getAllPlantLocations(project.id);
+        setPlantLocations(plantLocations);
       }
     }
     if (router.query.p) {

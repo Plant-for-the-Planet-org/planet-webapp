@@ -6,6 +6,9 @@ import Project from '../components/maps/Project';
 import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import StyleToggle from './maps/StyleToggle';
+import PlantLocations from './maps/PlantLocations';
+import PlantLocation from './maps/PlantLocation';
 
 export default function ProjectsMap(): ReactElement {
   const {
@@ -26,6 +29,7 @@ export default function ProjectsMap(): ReactElement {
     mapRef,
     defaultMapCenter,
     defaultZoom,
+    zoomLevel,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -93,10 +97,18 @@ export default function ProjectsMap(): ReactElement {
         onClick={() => setPopupData({ ...popupData, show: false })}
         onLoad={() => setLoaded(true)}
       >
-        {!showSingleProject && searchedProject && showProjects && (
+        {zoomLevel !== 1 && <StyleToggle />}
+
+        {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
         )}
-        {showSingleProject && project && <Project {...projectProps} />}
+        {zoomLevel === 2 && project && (
+          <>
+            <Project {...projectProps} />
+            <PlantLocations />
+          </>
+        )}
+        {zoomLevel === 3 && <PlantLocation />}
         <ExploreLayers />
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />

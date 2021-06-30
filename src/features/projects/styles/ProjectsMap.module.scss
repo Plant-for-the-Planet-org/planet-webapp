@@ -449,6 +449,36 @@
   }
 }
 
+.layerSwitcher {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.layerOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: $backgroundColor;
+  width: 60px;
+  height: 30px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  font-family: $primaryFontFamily;
+  font-weight: 700;
+}
+
+.active {
+  background-color: $primaryColor;
+  color: $light;
+}
+
 @include smTabletView {
   .projectSitesButton {
     top: 100px;

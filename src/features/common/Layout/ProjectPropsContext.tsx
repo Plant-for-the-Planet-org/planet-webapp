@@ -56,11 +56,22 @@ export const ProjectPropsContext = React.createContext({
     imagery: {},
   },
   setRasterData: (value: {}) => {},
+  plantLocations: [],
+  setPlantLocations: (value: []) => {},
+  selectedLocation: {},
+  setSelectedLocation: (value: {}) => {},
+  zoomLevel: 1,
+  setZoomLevel: (value: number) => {},
+  satellite: false,
+  setSatellite: (value: boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
+  const [plantLocations, setPlantLocations] = React.useState(null);
+  const [selectedLocation, setSelectedLocation] = React.useState(null);
+  const [zoomLevel, setZoomLevel] = React.useState(1);
   const [showProjects, setShowProjects] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
@@ -77,6 +88,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const [openModal, setModalOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
+  const [satellite, setSatellite] = React.useState(false);
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -194,6 +206,14 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setSelectedMode,
         rasterData,
         setRasterData,
+        plantLocations,
+        setPlantLocations,
+        selectedLocation,
+        setSelectedLocation,
+        zoomLevel,
+        setZoomLevel,
+        satellite,
+        setSatellite,
       }}
     >
       {children}
