@@ -64,6 +64,10 @@ export const ProjectPropsContext = React.createContext({
   setZoomLevel: (value: number) => {},
   satellite: false,
   setSatellite: (value: boolean) => {},
+  plIds: null || [],
+  setPlIds: (value: []) => {},
+  hoveredPl: null || '',
+  setHoveredPl: (value: string) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -119,8 +123,9 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     evi: '',
     imagery: {},
   });
-
+  const [plIds, setPlIds] = React.useState(null);
   const [windowSize, setWindowSize] = React.useState(1280);
+  const [hoveredPl, setHoveredPl] = React.useState(null);
 
   React.useEffect(() => {
     window.addEventListener('resize', updateWidth);
@@ -150,6 +155,21 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       setGeoJson(null);
     }
   }, [project]);
+
+  React.useEffect(() => {
+    let ids = [];
+    if (plantLocations && zoomLevel === 2) {
+      for (const key in plantLocations) {
+        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+          const element = plantLocations[key];
+          ids.push(element.id + '-layer');
+        }
+      }
+      setPlIds(ids);
+    } else {
+      setPlIds(null);
+    }
+  }, [plantLocations, zoomLevel]);
 
   return (
     <ProjectPropsContext.Provider
@@ -214,6 +234,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setZoomLevel,
         satellite,
         setSatellite,
+        plIds,
+        setPlIds,
+        hoveredPl,
+        setHoveredPl,
       }}
     >
       {children}

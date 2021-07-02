@@ -108,7 +108,7 @@ function SingleProjectDetails({}: Props): ReactElement {
               zIndex: 3333,
             }}
             onClick={() => {
-              router.back();
+              router.replace('/');
             }}
           >
             <BackButton />

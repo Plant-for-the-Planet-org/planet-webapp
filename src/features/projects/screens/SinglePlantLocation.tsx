@@ -8,11 +8,15 @@ import SitesDropdown from '../components/maps/SitesDropdown';
 import TimeTravel from '../components/maps/TimeTravel';
 import ProjectSnippet from '../components/ProjectSnippet';
 import { useRouter } from 'next/router';
-import ImageSlider from '../components/PlantLocation/ImageSlider';
 import styles from '../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
 import formatDate from '../../../utils/countryCurrency/getFormattedDate';
+import dynamic from 'next/dynamic';
+
+// const ImageSlider = dynamic(
+//   () => import('../components/PlantLocation/ImageSlider')
+// );
 
 const { useTranslation } = i18next;
 
@@ -80,7 +84,7 @@ export default function SinglePlantLocation({}: Props): ReactElement {
               zIndex: 3333,
             }}
             onClick={() => {
-              router.back();
+              router.replace(`/${project.slug}`);
             }}
           >
             <BackButton />
@@ -110,11 +114,11 @@ export default function SinglePlantLocation({}: Props): ReactElement {
               )}{' '}
               ha)
             </div>
-            <ImageSlider
+            {/* <ImageSlider
               images={selectedLocation.coordinates}
               height={233}
               imageSize="medium"
-            />
+            /> */}
             <div className={styles.locDetails}>
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>Planting Date</div>

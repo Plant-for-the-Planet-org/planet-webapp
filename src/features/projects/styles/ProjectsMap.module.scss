@@ -479,6 +479,16 @@
   color: $light;
 }
 
+.clickForDetails {
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 @include smTabletView {
   .projectSitesButton {
     top: 100px;

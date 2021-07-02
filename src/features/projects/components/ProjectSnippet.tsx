@@ -55,7 +55,7 @@ export default function ProjectSnippet({
         aria-describedby="simple-modal-description"
         disableBackdropClick
       >
-          <DonationsPopup project={project} onClose={handleClose} />
+        <DonationsPopup project={project} onClose={handleClose} />
       </Modal>
 
       {editMode ? (
@@ -67,9 +67,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
-          router.push('/[p]', `/${project.slug}`, {
-            shallow: true,
-          });
+          router.replace(`/${project.slug}`);
         }}
         className={'projectImage'}
       >
@@ -103,7 +101,11 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(i18n.language, Number(project.countPlanted), 1)}{' '}
+              {localizedAbbreviatedNumber(
+                i18n.language,
+                Number(project.countPlanted),
+                1
+              )}{' '}
               {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
@@ -126,7 +128,11 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <button id={`ProjSnippetDonate_${project.id}`} onClick={handleOpen} className={'donateButton'}>
+                <button
+                  id={`ProjSnippetDonate_${project.id}`}
+                  onClick={handleOpen}
+                  className={'donateButton'}
+                >
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>
@@ -143,5 +149,7 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

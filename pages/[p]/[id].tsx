@@ -60,12 +60,16 @@ export default function Donate({
     }
   }
   async function fetchPlantLocation() {
+    console.log('in fetch');
+
     if (plantLocations && plantLocations.length !== 0) {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
           const element = plantLocations[key];
           if (element.id === router.query.id) {
-            setSelectedLocation(element.id);
+            console.log('element found');
+
+            setSelectedLocation(element);
             setZoomLevel(3);
             break;
           } else {
@@ -79,7 +83,7 @@ export default function Donate({
         `/treemapper/plantLocations/${router.query.id}`
       );
       if (result) {
-        setSelectedLocation(result[0]);
+        setSelectedLocation(result);
       } else {
         router.replace(`/${project.slug}`);
       }
