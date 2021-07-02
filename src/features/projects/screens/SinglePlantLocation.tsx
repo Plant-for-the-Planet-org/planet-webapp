@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import i18next from '../../../../i18n';
-import BackButton from '../../../../out/assets/images/icons/BackButton';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import Explore from '../components/maps/Explore';
 import ProjectTabs from '../components/maps/ProjectTabs';
@@ -13,6 +12,7 @@ import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
 import formatDate from '../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
+import BackButton from '../../../../public/assets/images/icons/BackButton';
 
 // const ImageSlider = dynamic(
 //   () => import('../components/PlantLocation/ImageSlider')
