@@ -74,3 +74,16 @@
   font-family: $primaryFontFamily;
   padding: 14px 12px;
 }
+
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: rgba(0, 122, 73, 0.5);
+  cursor: pointer;
+  position: absolute;
+}
+
+.single:hover {
+  background-color: rgba(0, 122, 73, 1);
+}

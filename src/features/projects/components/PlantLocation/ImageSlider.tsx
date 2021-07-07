@@ -14,7 +14,7 @@ export default function ImageSlider({ images, height, imageSize }: Props) {
   const projectImages: { content: () => JSX.Element }[] = [];
 
   const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', imageSize, image);
+    const ImageSource = getImageUrl('coordinate', imageSize, image);
     return ImageSource;
   };
 

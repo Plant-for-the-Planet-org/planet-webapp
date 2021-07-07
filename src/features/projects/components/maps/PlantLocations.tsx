@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
-import { Layer } from 'react-map-gl';
+import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import { useRouter } from 'next/router';
 import { zoomToPlantLocation } from '../../../../utils/maps/plantLocations';
+import styles from '../../styles/PlantLocation.module.scss';
 
 interface Props {}
 
@@ -17,12 +18,13 @@ export default function PlantLocations({}: Props): ReactElement {
     <>
       {plantLocations &&
         plantLocations.map((pl: any) => {
-          let newPl = pl.geometry;
+          const newPl = pl.geometry;
           newPl.properties = {};
           newPl.properties.id = pl.id;
-          return (
-            <Source id={pl.id} type="geojson" data={newPl}>
-              {/* <Layer
+          if (pl.type === 'multi') {
+            return (
+              <Source key={pl.id} id={pl.id} type="geojson" data={newPl}>
+                {/* <Layer
                 id={`${pl.id}-layer`}
                 type="line"
                 source={pl.id}
@@ -31,17 +33,32 @@ export default function PlantLocations({}: Props): ReactElement {
                   'line-width': 4,
                 }}
               /> */}
-              <Layer
-                id={`${pl.id}-layer`}
-                type="fill"
-                source={pl.id}
-                paint={{
-                  'fill-color': '#007A49',
-                  'fill-opacity': hoveredPl ? 1 : 0.5,
-                }}
-              />
-            </Source>
-          );
+                <Layer
+                  key={pl.id}
+                  id={`${pl.id}-layer`}
+                  type="fill"
+                  source={pl.id}
+                  paint={{
+                    'fill-color': '#007A49',
+                    'fill-opacity': hoveredPl ? 1 : 0.5,
+                  }}
+                />
+              </Source>
+            );
+          } else {
+            return (
+              <Marker
+                key={pl.id}
+                latitude={newPl.coordinates[1]}
+                longitude={newPl.coordinates[0]}
+                // offsetLeft={5}
+                // offsetTop={-16}
+                // style={{ left: '28px' }}
+              >
+                <div className={styles.single} role="button" tabIndex={0} />
+              </Marker>
+            );
+          }
         })}
     </>
   );

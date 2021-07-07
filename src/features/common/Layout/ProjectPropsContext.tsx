@@ -157,12 +157,12 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   }, [project]);
 
   React.useEffect(() => {
-    let ids = [];
+    const ids = [];
     if (plantLocations && zoomLevel === 2) {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
           const element = plantLocations[key];
-          ids.push(element.id + '-layer');
+          if (element.type === 'multi') ids.push(element.id + '-layer');
         }
       }
       setPlIds(ids);

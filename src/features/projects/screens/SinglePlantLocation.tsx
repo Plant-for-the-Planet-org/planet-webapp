@@ -14,9 +14,9 @@ import formatDate from '../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 
-// const ImageSlider = dynamic(
-//   () => import('../components/PlantLocation/ImageSlider')
-// );
+const ImageSlider = dynamic(
+  () => import('../components/PlantLocation/ImageSlider')
+);
 
 const { useTranslation } = i18next;
 
@@ -34,7 +34,7 @@ export default function SinglePlantLocation({}: Props): ReactElement {
   const [plantationArea, setPlantationArea] = React.useState(0);
   React.useEffect(() => {
     let count = 0;
-    if (selectedLocation.plantedSpecies) {
+    if (selectedLocation && selectedLocation.plantedSpecies) {
       for (const key in selectedLocation.plantedSpecies) {
         if (
           Object.prototype.hasOwnProperty.call(
@@ -48,11 +48,28 @@ export default function SinglePlantLocation({}: Props): ReactElement {
       }
       setTreeCount(count);
     }
-    if (selectedLocation.type === 'multi') {
+    if (selectedLocation && selectedLocation.type === 'multi') {
       const area = turf.area(selectedLocation.geometry);
       setPlantationArea(area / 10000);
     }
   }, [selectedLocation]);
+
+  function getSpeciesName(id: string) {
+    for (const key in selectedLocation.metadata.app.species) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          selectedLocation.metadata.app.species,
+          key
+        )
+      ) {
+        const element = selectedLocation.metadata.app.species[key];
+        if (element.id === id) {
+          return element.aliases;
+        }
+      }
+    }
+    return null;
+  }
 
   return (
     <>
@@ -96,75 +113,95 @@ export default function SinglePlantLocation({}: Props): ReactElement {
               editMode={false}
             />
           </div>
-          <div className={'singleProject'}>
-            <div className={styles.treeCount}>
-              <span>
-                {localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(treeCount),
-                  1
-                )}{' '}
-                Trees
-              </span>{' '}
-              (
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(plantationArea),
-                1
-              )}{' '}
-              ha)
-            </div>
-            {/* <ImageSlider
-              images={selectedLocation.coordinates}
-              height={233}
-              imageSize="medium"
-            /> */}
-            <div className={styles.locDetails}>
-              <div className={styles.singleDetail}>
-                <div className={styles.detailTitle}>Planting Date</div>
-                <div className={styles.detailValue}>
-                  {formatDate(selectedLocation.plantDate)}
-                </div>
-              </div>
-              <div className={styles.singleDetail}>
-                <div className={styles.detailTitle}>Planting Density</div>
-                <div className={styles.detailValue}>
+          {selectedLocation && (
+            <div className={'singleProject'}>
+              <div className={styles.treeCount}>
+                <span>
                   {localizedAbbreviatedNumber(
                     i18n.language,
-                    Number(treeCount / plantationArea),
+                    Number(treeCount),
                     1
                   )}{' '}
-                  trees per ha
-                </div>
+                  Trees
+                </span>{' '}
+                (
+                {localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(plantationArea),
+                  3
+                )}{' '}
+                ha)
               </div>
-              {selectedLocation.plantedSpecies && (
+              <ImageSlider
+                images={selectedLocation.coordinates}
+                height={233}
+                imageSize="large"
+              />
+              <div className={styles.locDetails}>
+                <div className={styles.singleDetail}>
+                  <div className={styles.detailTitle}>Planting Date</div>
+                  <div className={styles.detailValue}>
+                    {formatDate(selectedLocation.plantDate)}
+                  </div>
+                </div>
+                <div className={styles.singleDetail}>
+                  <div className={styles.detailTitle}>Planting Density</div>
+                  <div className={styles.detailValue}>
+                    {localizedAbbreviatedNumber(
+                      i18n.language,
+                      Number(treeCount / plantationArea),
+                      1
+                    )}{' '}
+                    trees per ha
+                  </div>
+                </div>
+                {selectedLocation.plantedSpecies && (
+                  <div className={styles.singleDetail}>
+                    <div className={styles.detailTitle}>
+                      Species Planted ({selectedLocation.plantedSpecies.length})
+                    </div>
+                    {selectedLocation.plantedSpecies.map(
+                      (sp: any, index: number) => {
+                        const speciesName = getSpeciesName(
+                          sp.scientificSpecies
+                        );
+                        return (
+                          <div key={index} className={styles.detailValue}>
+                            {sp.treeCount} {speciesName}
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                )}
                 <div className={styles.singleDetail}>
                   <div className={styles.detailTitle}>
-                    Species Planted ({selectedLocation.plantedSpecies.length})
+                    Trees Sampled (
+                    {selectedLocation?.samplePlantLocations?.length})
                   </div>
-                  {selectedLocation.plantedSpecies.map((sp: any) => {
-                    return (
-                      <div className={styles.detailValue}>
-                        {sp.treeCount} dummy name
-                      </div>
-                    );
-                  })}
+                  {selectedLocation.samplePlantLocations &&
+                    selectedLocation.samplePlantLocations.map(
+                      (spl: any, index: number) => {
+                        const speciesName = getSpeciesName(
+                          spl.scientificSpecies
+                        );
+                        return (
+                          <div className={styles.detailValue}>
+                            {index + 1}. {speciesName}
+                            <br />#{spl?.tag} • {spl?.measurements?.height}m
+                            high • {spl?.measurements?.width}cm wide
+                          </div>
+                        );
+                      }
+                    )}
                 </div>
-              )}
-              <div className={styles.singleDetail}>
-                <div className={styles.detailTitle}>Trees Sampled (12)</div>
-                <div className={styles.detailValue}>
-                  1. Cedrela odorada
-                  <br />
-                  #TAG-12344 • 0.5m high • 20 cm wide
-                </div>
-              </div>
-              {/* <div className={styles.singleDetail}>
+                {/* <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>Recruits (per HA)</div>
                 <div className={styles.detailValue}>710,421</div>
               </div> */}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

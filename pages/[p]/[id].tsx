@@ -38,6 +38,7 @@ export default function Donate({
 
   React.useEffect(() => {
     setZoomLevel(3);
+    setSelectedLocation(null);
   }, []);
 
   const handleClose = () => {
@@ -61,32 +62,13 @@ export default function Donate({
   }
   async function fetchPlantLocation() {
     console.log('in fetch');
-
-    if (plantLocations && plantLocations.length !== 0) {
-      for (const key in plantLocations) {
-        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-          const element = plantLocations[key];
-          if (element.id === router.query.id) {
-            console.log('element found');
-
-            setSelectedLocation(element);
-            setZoomLevel(3);
-            break;
-          } else {
-            setSelectedLocation(null);
-          }
-        }
-      }
-      if (selectedLocation === '') router.replace(`/${project.slug}`);
+    const result = await getRequest(
+      `/treemapper/plantLocations/${router.query.id}?_scope=extended`
+    );
+    if (result) {
+      setSelectedLocation(result);
     } else {
-      const result = await getRequest(
-        `/treemapper/plantLocations/${router.query.id}`
-      );
-      if (result) {
-        setSelectedLocation(result);
-      } else {
-        router.replace(`/${project.slug}`);
-      }
+      router.replace(`/${project.slug}`);
     }
   }
 
@@ -122,25 +104,23 @@ export default function Donate({
   return (
     <>
       {project ? <GetProjectMeta {...ProjectProps} /> : null}
-      {initialized ? (
-        selectedLocation && initialized ? (
-          <>
-            <SinglePlantLocation {...ProjectProps} />
-            <Modal
-              className={`modalContainer ${theme}`}
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-              disableBackdropClick
-            >
-              <DonationsPopup project={project} onClose={handleClose} />
-            </Modal>
-          </>
-        ) : (
-          <></>
-        )
-      ) : null}
+      {project && initialized ? (
+        <>
+          <SinglePlantLocation {...ProjectProps} />
+          <Modal
+            className={`modalContainer ${theme}`}
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            disableBackdropClick
+          >
+            <DonationsPopup project={project} onClose={handleClose} />
+          </Modal>
+        </>
+      ) : (
+        <></>
+      )}
       <Credits setCurrencyCode={setCurrencyCode} />
     </>
   );

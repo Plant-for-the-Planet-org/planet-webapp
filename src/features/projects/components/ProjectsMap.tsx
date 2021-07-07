@@ -146,7 +146,7 @@ export default function ProjectsMap(): ReactElement {
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
         )}
-        {zoomLevel === 2 && project && (
+        {(zoomLevel === 2 || zoomLevel === 3) && project && (
           <>
             <Project {...projectProps} />
             <PlantLocations />
