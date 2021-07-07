@@ -10,9 +10,13 @@ interface Props {}
 
 export default function PlantLocations({}: Props): ReactElement {
   const router = useRouter();
-  const { project, plantLocations, mapRef, hoveredPl } = React.useContext(
-    ProjectPropsContext
-  );
+  const {
+    project,
+    plantLocations,
+    mapRef,
+    hoveredPl,
+    zoomLevel,
+  } = React.useContext(ProjectPropsContext);
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function PlantLocations({}: Props): ReactElement {
                   source={pl.id}
                   paint={{
                     'fill-color': '#007A49',
-                    'fill-opacity': hoveredPl ? 1 : 0.5,
+                    'fill-opacity': hoveredPl && zoomLevel === 2 ? 1 : 0.5,
                   }}
                 />
               </Source>
