@@ -14,6 +14,14 @@ import formatDate from '../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 
+const ImageSlider = dynamic(
+  () => import('../components/PlantLocation/ImageSlider'),
+  {
+    ssr: false,
+    loading: () => <p>Images</p>,
+  }
+);
+
 const { useTranslation } = i18next;
 
 interface Props {}
@@ -28,13 +36,6 @@ export default function SinglePlantLocation({}: Props): ReactElement {
   const [scrollY, setScrollY] = React.useState(0);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
-
-  const ImageSlider = dynamic(
-    () => import('../components/PlantLocation/ImageSlider'),
-    {
-      ssr: false,
-    }
-  );
 
   React.useEffect(() => {
     let count = 0;
