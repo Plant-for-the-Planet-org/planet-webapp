@@ -62,6 +62,16 @@ export default function PlantLocation({}: Props): ReactElement {
           />
         </Source>
       )}
+
+      {selectedLocation && selectedLocation.type === 'single' && (
+        <Marker
+          key={selectedLocation.id}
+          latitude={selectedLocation.geometry.coordinates[1]}
+          longitude={selectedLocation.geometry.coordinates[0]}
+        >
+          <div className={styles.single} role="button" tabIndex={0} />
+        </Marker>
+      )}
       {selectedLocation &&
         selectedLocation.samplePlantLocations &&
         selectedLocation.samplePlantLocations.map((spl: any) => {

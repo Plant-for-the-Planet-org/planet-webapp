@@ -18,6 +18,10 @@ export default function PlantLocations({}: Props): ReactElement {
     zoomLevel,
   } = React.useContext(ProjectPropsContext);
 
+  const openPl = (id: string) => {
+    router.replace(`/${project.slug}/${id}`);
+  };
+
   return (
     <>
       {plantLocations &&
@@ -59,7 +63,12 @@ export default function PlantLocations({}: Props): ReactElement {
                 // offsetTop={-16}
                 // style={{ left: '28px' }}
               >
-                <div className={styles.single} role="button" tabIndex={0} />
+                <div
+                  onClick={() => openPl(pl.id)}
+                  className={styles.single}
+                  role="button"
+                  tabIndex={0}
+                />
               </Marker>
             );
           }

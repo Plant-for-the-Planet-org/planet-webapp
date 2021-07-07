@@ -121,21 +121,29 @@ export default function SinglePlantLocation({}: Props): ReactElement {
           {selectedLocation && (
             <div className={'singleProject'}>
               <div className={styles.treeCount}>
-                <span>
-                  {localizedAbbreviatedNumber(
-                    i18n.language,
-                    Number(treeCount),
-                    1
-                  )}{' '}
-                  Trees
-                </span>{' '}
-                (
-                {localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(plantationArea),
-                  3
-                )}{' '}
-                ha)
+                {selectedLocation.type === 'multi' && (
+                  <>
+                    <span>
+                      {localizedAbbreviatedNumber(
+                        i18n.language,
+                        Number(treeCount),
+                        1
+                      )}{' '}
+                      Trees
+                    </span>
+                    (
+                    {localizedAbbreviatedNumber(
+                      i18n.language,
+                      Number(plantationArea),
+                      3
+                    )}
+                    )
+                  </>
+                )}
+                {selectedLocation.type === 'single' && <span>1 Tree </span>}
+                {selectedLocation.type === 'sample' && (
+                  <span>Sample Tree </span>
+                )}
               </div>
               <ImageSlider
                 images={selectedLocation.coordinates}
@@ -149,57 +157,63 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                     {formatDate(selectedLocation.plantDate)}
                   </div>
                 </div>
-                <div className={styles.singleDetail}>
-                  <div className={styles.detailTitle}>Planting Density</div>
-                  <div className={styles.detailValue}>
-                    {localizedAbbreviatedNumber(
-                      i18n.language,
-                      Number(treeCount / plantationArea),
-                      1
-                    )}{' '}
-                    trees per ha
-                  </div>
-                </div>
-                {selectedLocation.plantedSpecies && (
+                {selectedLocation.type === 'multi' && (
                   <div className={styles.singleDetail}>
-                    <div className={styles.detailTitle}>
-                      Species Planted ({selectedLocation.plantedSpecies.length})
+                    <div className={styles.detailTitle}>Planting Density</div>
+                    <div className={styles.detailValue}>
+                      {localizedAbbreviatedNumber(
+                        i18n.language,
+                        Number(treeCount / plantationArea),
+                        1
+                      )}{' '}
+                      trees per ha
                     </div>
-                    {selectedLocation.plantedSpecies.map(
-                      (sp: any, index: number) => {
-                        const speciesName = getSpeciesName(
-                          sp.scientificSpecies
-                        );
-                        return (
-                          <div key={index} className={styles.detailValue}>
-                            {sp.treeCount} {speciesName}
-                          </div>
-                        );
-                      }
-                    )}
                   </div>
                 )}
-                <div className={styles.singleDetail}>
-                  <div className={styles.detailTitle}>
-                    Trees Sampled (
-                    {selectedLocation?.samplePlantLocations?.length})
+                {selectedLocation.type === 'multi' &&
+                  selectedLocation.plantedSpecies && (
+                    <div className={styles.singleDetail}>
+                      <div className={styles.detailTitle}>
+                        Species Planted (
+                        {selectedLocation.plantedSpecies.length})
+                      </div>
+                      {selectedLocation.plantedSpecies.map(
+                        (sp: any, index: number) => {
+                          const speciesName = getSpeciesName(
+                            sp.scientificSpecies
+                          );
+                          return (
+                            <div key={index} className={styles.detailValue}>
+                              {sp.treeCount} {speciesName}
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  )}
+                {selectedLocation.type === 'multi' && (
+                  <div className={styles.singleDetail}>
+                    <div className={styles.detailTitle}>
+                      Trees Sampled (
+                      {selectedLocation?.samplePlantLocations?.length})
+                    </div>
+                    {selectedLocation.samplePlantLocations &&
+                      selectedLocation.samplePlantLocations.map(
+                        (spl: any, index: number) => {
+                          const speciesName = getSpeciesName(
+                            spl.scientificSpecies
+                          );
+                          return (
+                            <div className={styles.detailValue}>
+                              {index + 1}. {speciesName}
+                              <br />#{spl?.tag} • {spl?.measurements?.height}m
+                              high • {spl?.measurements?.width}cm wide
+                            </div>
+                          );
+                        }
+                      )}
                   </div>
-                  {selectedLocation.samplePlantLocations &&
-                    selectedLocation.samplePlantLocations.map(
-                      (spl: any, index: number) => {
-                        const speciesName = getSpeciesName(
-                          spl.scientificSpecies
-                        );
-                        return (
-                          <div className={styles.detailValue}>
-                            {index + 1}. {speciesName}
-                            <br />#{spl?.tag} • {spl?.measurements?.height}m
-                            high • {spl?.measurements?.width}cm wide
-                          </div>
-                        );
-                      }
-                    )}
-                </div>
+                )}
                 {/* <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>Recruits (per HA)</div>
                 <div className={styles.detailValue}>710,421</div>
