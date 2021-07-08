@@ -139,14 +139,14 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                         1
                       )}{' '}
                       Trees
-                    </span>
+                    </span>{' '}
                     (
                     {localizedAbbreviatedNumber(
                       i18n.language,
                       Number(plantationArea),
                       3
-                    )}
-                    )
+                    )}{' '}
+                    ha)
                   </>
                 )}
                 {selectedLocation.type === 'single' && <span>1 Tree </span>}
@@ -156,6 +156,7 @@ export default function SinglePlantLocation({}: Props): ReactElement {
               </div>
               <ImageSlider
                 images={selectedLocation.coordinates}
+                show={selectedLocation}
                 height={233}
                 imageSize="large"
               />
