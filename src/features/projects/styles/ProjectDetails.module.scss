@@ -94,10 +94,18 @@
 }
 
 .projectSnippetContainer {
+  background-color: $backgroundColor;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   .projectInfo {
     padding-left: 16px;
     padding-right: 16px;
   }
+}
+
+.singleProjectDetails {
+  border-radius: 10px;
+  background-color: $backgroundColor;
 }
 
 .ratings {
@@ -262,6 +270,15 @@
     width: 360px;
     padding-bottom: 16px;
     min-height: calc(100vh - 100px);
+    background-color: transparent;
+  }
+
+  .singleProjectDetails {
+    margin-top: 20px;
+  }
+
+  .projectSnippetContainer {
+    padding-bottom: 20px;
   }
 }
 

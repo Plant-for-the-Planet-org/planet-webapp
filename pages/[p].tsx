@@ -4,6 +4,7 @@ import React from 'react';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import DonationsPopup from '../src/features/donations';
 import Credits from '../src/features/projects/components/maps/Credits';
+import SinglePlantLocation from '../src/features/projects/screens/SinglePlantLocation';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -32,6 +33,7 @@ export default function Donate({
     setShowSingleProject,
     setZoomLevel,
     setPlantLocations,
+    selectedLocation,
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -85,7 +87,11 @@ export default function Donate({
       {initialized ? (
         project && initialized ? (
           <>
-            <SingleProjectDetails {...ProjectProps} />
+            {selectedLocation ? (
+              <SinglePlantLocation {...ProjectProps} />
+            ) : (
+              <SingleProjectDetails {...ProjectProps} />
+            )}
             <Modal
               className={`modalContainer ${theme}`}
               open={open}

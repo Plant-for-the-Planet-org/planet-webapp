@@ -4,7 +4,6 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import Explore from '../components/maps/Explore';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import SitesDropdown from '../components/maps/SitesDropdown';
-import TimeTravel from '../components/maps/TimeTravel';
 import ProjectSnippet from '../components/ProjectSnippet';
 import { useRouter } from 'next/router';
 import styles from '../styles/PlantLocation.module.scss';
@@ -22,6 +21,10 @@ const ImageSlider = dynamic(
   }
 );
 
+const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
+  ssr: false,
+});
+
 const { useTranslation } = i18next;
 
 interface Props {}
@@ -29,7 +32,13 @@ interface Props {}
 export default function SinglePlantLocation({}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { project, selectedLocation } = React.useContext(ProjectPropsContext);
+  const {
+    project,
+    selectedLocation,
+    geoJson,
+    rasterData,
+    selectedMode,
+  } = React.useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -79,10 +88,10 @@ export default function SinglePlantLocation({}: Props): ReactElement {
   return (
     <>
       <Explore />
-      {/* {geoJson && <SitesDropdown />} */}
-      {/* {Object.keys(rasterData.imagery).length !== 0 &&
-        rasterData.imagery.constructor === Object && <ProjectTabs />} */}
-      {/* {geoJson && selectedMode === 'imagery' && <TimeTravel />} */}
+      {geoJson && <SitesDropdown />}
+      {Object.keys(rasterData.imagery).length !== 0 &&
+        rasterData.imagery.constructor === Object && <ProjectTabs />}
+      {geoJson && selectedMode === 'imagery' && <TimeTravel />}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
         className={'container'}
@@ -119,7 +128,7 @@ export default function SinglePlantLocation({}: Props): ReactElement {
             />
           </div>
           {selectedLocation && (
-            <div className={'singleProject'}>
+            <div className={'singleProjectDetails'}>
               <div className={styles.treeCount}>
                 {selectedLocation.type === 'multi' && (
                   <>

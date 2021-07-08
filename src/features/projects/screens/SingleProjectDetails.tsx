@@ -121,7 +121,7 @@ function SingleProjectDetails({}: Props): ReactElement {
             />
           </div>
 
-          <div className={'singleProject'}>
+          <div className={'singleProjectDetails'}>
             <div className={'projectCompleteInfo'}>
               {/* <div className={'ratings}>
               <div className={'calculatedRating}>{rating}</div>

@@ -16,10 +16,25 @@ export default function PlantLocations({}: Props): ReactElement {
     mapRef,
     hoveredPl,
     zoomLevel,
+    selectedLocation,
+    setSelectedLocation,
   } = React.useContext(ProjectPropsContext);
 
   const openPl = (id: string) => {
     router.replace(`/${project.slug}/${id}`);
+  };
+
+  const onHover = (pl: Object) => {
+    if (zoomLevel === 2) setSelectedLocation(pl);
+  };
+
+  const onHoverEnd = (pl: Object) => {
+    if (
+      zoomLevel === 2 &&
+      selectedLocation &&
+      selectedLocation.type === 'single'
+    )
+      setSelectedLocation(null);
   };
 
   return (
@@ -32,15 +47,6 @@ export default function PlantLocations({}: Props): ReactElement {
           if (pl.type === 'multi') {
             return (
               <Source key={pl.id} id={pl.id} type="geojson" data={newPl}>
-                {/* <Layer
-                id={`${pl.id}-layer`}
-                type="line"
-                source={pl.id}
-                paint={{
-                  'line-color': '#007A49',
-                  'line-width': 4,
-                }}
-              /> */}
                 <Layer
                   key={pl.id}
                   id={`${pl.id}-layer`}
@@ -48,7 +54,7 @@ export default function PlantLocations({}: Props): ReactElement {
                   source={pl.id}
                   paint={{
                     'fill-color': '#007A49',
-                    'fill-opacity': hoveredPl && zoomLevel === 2 ? 1 : 0.5,
+                    'fill-opacity': hoveredPl === pl.id ? 1 : 0.5,
                   }}
                 />
               </Source>
@@ -65,6 +71,8 @@ export default function PlantLocations({}: Props): ReactElement {
               >
                 <div
                   onClick={() => openPl(pl.id)}
+                  onMouseEnter={() => onHover(pl)}
+                  onMouseLeave={() => onHoverEnd(pl)}
                   className={styles.single}
                   role="button"
                   tabIndex={0}
@@ -73,6 +81,25 @@ export default function PlantLocations({}: Props): ReactElement {
             );
           }
         })}
+      {zoomLevel === 3 &&
+        selectedLocation &&
+        selectedLocation.type === 'multi' && (
+          <Source
+            id={`selected-source`}
+            type="geojson"
+            data={selectedLocation.geometry}
+          >
+            <Layer
+              id={`selected-layer`}
+              type="line"
+              source={`${selectedLocation.id}-selected`}
+              paint={{
+                'line-color': '#007A49',
+                'line-width': 4,
+              }}
+            />
+          </Source>
+        )}
     </>
   );
 }

@@ -40,7 +40,9 @@ export function zoomToPlantLocation(
 }
 
 export async function getAllPlantLocations(project: string) {
-  const result = await getRequest(`/app/plantLocations/${project}`);
+  const result = await getRequest(
+    `/app/plantLocations/${project}?_scope=extended`
+  );
   if (result) {
     return result;
   } else {

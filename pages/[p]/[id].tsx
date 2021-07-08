@@ -9,6 +9,7 @@ import { ThemeContext } from '../../src/theme/themeContext';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import getStoredCurrency from '../../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../../src/utils/getMetaTags/GetProjectMeta';
+import { getAllPlantLocations } from '../../src/utils/maps/plantLocations';
 
 interface Props {
   initialized: boolean;
@@ -29,7 +30,6 @@ export default function Donate({
     project,
     setProject,
     setShowSingleProject,
-    plantLocations,
     setPlantLocations,
     selectedLocation,
     setSelectedLocation,
@@ -57,11 +57,13 @@ export default function Donate({
         `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`
       );
       setProject(project);
-      fetchPlantLocation();
+      fetchPlantLocation(project.id);
     }
   }
-  async function fetchPlantLocation() {
+  async function fetchPlantLocation(id: any) {
     console.log('in fetch');
+    const plantLocations = await getAllPlantLocations(id);
+    setPlantLocations(plantLocations);
     const result = await getRequest(
       `/treemapper/plantLocations/${router.query.id}?_scope=extended`
     );
@@ -77,7 +79,7 @@ export default function Donate({
     if (router.query.p) {
       if (project) {
         if (project.slug === router.query.p && router.query.id) {
-          fetchPlantLocation();
+          fetchPlantLocation(project.id);
         } else {
           fetchProject();
         }

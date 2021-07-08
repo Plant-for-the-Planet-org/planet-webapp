@@ -158,7 +158,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     const ids = [];
-    if (plantLocations && zoomLevel === 2) {
+    if (plantLocations && (zoomLevel === 2 || zoomLevel === 3)) {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
           const element = plantLocations[key];

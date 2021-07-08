@@ -34,6 +34,9 @@ export default function ProjectsMap(): ReactElement {
     zoomLevel,
     plIds,
     setHoveredPl,
+    plantLocations,
+    setSelectedLocation,
+    selectedLocation,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -101,11 +104,6 @@ export default function ProjectsMap(): ReactElement {
       console.log('onclick event', e.features[0]);
       if (e.features[0].layer?.source) {
         router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
-        // router.push(
-        //   '/[p]/[id]',
-        //   `/${project.slug}/${e.features[0].layer?.source}`,
-        //   { shallow: true }
-        // );
       }
     }
   };
@@ -114,11 +112,27 @@ export default function ProjectsMap(): ReactElement {
     if (e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         setHoveredPl(e.features[0].layer?.source);
+        if (zoomLevel === 2)
+          for (const key in plantLocations) {
+            if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+              const element = plantLocations[key];
+              if (element.id === e.features[0].layer?.source) {
+                setSelectedLocation(element);
+                break;
+              }
+            }
+          }
       }
-      setShowDetails({ coordinates: e.lngLat, show: true });
+      // setShowDetails({ coordinates: e.lngLat, show: true });
     } else {
-      setShowDetails({ ...showDetails, show: false });
+      // setShowDetails({ ...showDetails, show: false });
       setHoveredPl('');
+      if (
+        zoomLevel === 2 &&
+        selectedLocation &&
+        selectedLocation.type === 'multi'
+      )
+        setSelectedLocation(null);
     }
   };
 
@@ -152,7 +166,7 @@ export default function ProjectsMap(): ReactElement {
             <PlantLocations />
           </>
         )}
-        {zoomLevel === 3 && <PlantLocation />}
+        {/* {zoomLevel === 3 && <PlantLocation />} */}
         <ExploreLayers />
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
