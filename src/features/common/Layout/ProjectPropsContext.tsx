@@ -104,7 +104,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     dragPan: true,
     scrollZoom: false,
     minZoom: 1,
-    maxZoom: 15,
+    maxZoom: 25,
   });
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
@@ -155,6 +155,14 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       setGeoJson(null);
     }
   }, [project]);
+
+  React.useEffect(() => {
+    if (satellite) {
+      setMapState({ ...mapState, maxZoom: 15 });
+    } else {
+      setMapState({ ...mapState, maxZoom: 25 });
+    }
+  }, [satellite]);
 
   React.useEffect(() => {
     const ids = [];

@@ -10,6 +10,8 @@ import StyleToggle from './maps/StyleToggle';
 import PlantLocations from './maps/PlantLocations';
 import PlantLocation from './maps/PlantLocation';
 import { useRouter } from 'next/router';
+import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
+import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 
 export default function ProjectsMap(): ReactElement {
   const router = useRouter();
@@ -37,6 +39,8 @@ export default function ProjectsMap(): ReactElement {
     plantLocations,
     setSelectedLocation,
     selectedLocation,
+    satellite,
+    setSatellite,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -155,7 +159,7 @@ export default function ProjectsMap(): ReactElement {
         onLoad={() => setLoaded(true)}
         interactiveLayerIds={plIds ? plIds : undefined}
       >
-        {zoomLevel !== 1 && <StyleToggle />}
+        {/* {zoomLevel !== 1 && <StyleToggle />} */}
 
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
@@ -169,6 +173,12 @@ export default function ProjectsMap(): ReactElement {
         {/* {zoomLevel === 3 && <PlantLocation />} */}
         <ExploreLayers />
         <div className={styles.mapNavigation}>
+          <div
+            onClick={() => setSatellite(!satellite)}
+            className={styles.layerToggle}
+          >
+            {satellite ? <LayerIcon /> : <LayerDisabled />}
+          </div>
           <NavigationControl showCompass={false} />
         </div>
         {showDetails.show && (
