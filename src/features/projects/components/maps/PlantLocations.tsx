@@ -100,6 +100,20 @@ export default function PlantLocations({}: Props): ReactElement {
             />
           </Source>
         )}
+      {zoomLevel === 3 &&
+        selectedLocation &&
+        selectedLocation.samplePlantLocations &&
+        selectedLocation.samplePlantLocations.map((spl: any) => {
+          return (
+            <Marker
+              key={spl.id}
+              latitude={spl.geometry.coordinates[1]}
+              longitude={spl.geometry.coordinates[0]}
+            >
+              <div className={styles.single} role="button" tabIndex={0} />
+            </Marker>
+          );
+        })}
     </>
   );
 }
