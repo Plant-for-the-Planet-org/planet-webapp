@@ -39,13 +39,13 @@ const socialIconAnimate = {
   // }
 };
 const { useTranslation } = i18next;
-export default function UserProfileOptions({
-  userprofile
-}: any) {
+export default function UserProfileOptions({ userprofile }: any) {
   const router = useRouter();
   const { t, ready } = useTranslation(['me']);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
+  const textToShare = ready
+    ? t('donate:textToShare', { name: userprofile.displayName })
+    : '';
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const [screenWidth, setScreenWidth] = React.useState(null);
   const [divWidth, setDivWidth] = React.useState(null);
@@ -64,7 +64,7 @@ export default function UserProfileOptions({
   React.useEffect(() => {
     if (ready) {
       setScreenWidth(window.screen.width);
-      setDivWidth(elementRef.current.getBoundingClientRect().width);      
+      setDivWidth(elementRef.current.getBoundingClientRect().width);
     }
   });
   const onShareClicked = () => {
@@ -108,7 +108,11 @@ export default function UserProfileOptions({
       )}
       <div className={styles.bottomIconsRow} ref={elementRef}>
         <div className={styles.iconTextColumn}>
-          <button id={'userProHandleRedeem'} className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
+          <button
+            id={'userProHandleRedeem'}
+            className={styles.bottomIconBg}
+            onClick={handleRedeemModalOpen}
+          >
             <Redeem color="white" />
           </button>
           <p className={styles.bottomRowText}> {t('me:redeem')}</p>
@@ -120,7 +124,11 @@ export default function UserProfileOptions({
           userprofile={userprofile}
         />
 
-        <button id={'userProBottomIcon'} className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>
+        <button
+          id={'userProBottomIcon'}
+          className={styles.iconTextColumn}
+          onClick={() => router.push('/account/register-trees')}
+        >
           <div className={styles.bottomIconBg}>
             <Shovel color="white" />
           </div>
