@@ -107,6 +107,15 @@ export default function ProjectsMap(): ReactElement {
     if (e.features?.length !== 0) {
       console.log('onclick event', e.features[0]);
       if (e.features[0].layer?.source) {
+        for (const key in plantLocations) {
+          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+            const element = plantLocations[key];
+            if (element.id === e.features[0].layer?.source) {
+              setSelectedLocation(element);
+              break;
+            }
+          }
+        }
         router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
       }
     }
@@ -127,9 +136,9 @@ export default function ProjectsMap(): ReactElement {
             }
           }
       }
-      // setShowDetails({ coordinates: e.lngLat, show: true });
+      setShowDetails({ coordinates: e.lngLat, show: true });
     } else {
-      // setShowDetails({ ...showDetails, show: false });
+      setShowDetails({ ...showDetails, show: false });
       setHoveredPl('');
       if (
         zoomLevel === 2 &&

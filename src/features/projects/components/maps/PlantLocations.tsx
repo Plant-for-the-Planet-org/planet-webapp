@@ -20,8 +20,9 @@ export default function PlantLocations({}: Props): ReactElement {
     setSelectedLocation,
   } = React.useContext(ProjectPropsContext);
 
-  const openPl = (id: string) => {
-    router.replace(`/${project.slug}/${id}`);
+  const openPl = (pl: any) => {
+    setSelectedLocation(pl);
+    router.replace(`/${project.slug}/${pl.id}`);
   };
 
   const onHover = (pl: Object) => {
@@ -54,7 +55,7 @@ export default function PlantLocations({}: Props): ReactElement {
                   source={pl.id}
                   paint={{
                     'fill-color': '#007A49',
-                    'fill-opacity': hoveredPl === pl.id ? 1 : 0.5,
+                    'fill-opacity': 0.3,
                   }}
                 />
               </Source>
@@ -70,7 +71,7 @@ export default function PlantLocations({}: Props): ReactElement {
                 // style={{ left: '28px' }}
               >
                 <div
-                  onClick={() => openPl(pl.id)}
+                  onClick={() => openPl(pl)}
                   onMouseEnter={() => onHover(pl)}
                   onMouseLeave={() => onHoverEnd(pl)}
                   className={styles.single}

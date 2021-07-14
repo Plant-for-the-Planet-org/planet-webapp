@@ -10,6 +10,7 @@ import EditIcon from '../../../../public/assets/images/icons/manageProjects/Penc
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -31,6 +32,9 @@ export default function ProjectSnippet({
     : '';
 
   const { theme } = React.useContext(ThemeContext);
+
+  const { selectedLocation } = React.useContext(ProjectPropsContext);
+
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
@@ -69,7 +73,7 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={'projectImage'}
+        className={`projectImage ${selectedLocation ? 'projectCollapsed' : ''}`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div

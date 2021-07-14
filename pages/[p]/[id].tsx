@@ -76,18 +76,20 @@ export default function Donate({
 
   React.useEffect(() => {
     setShowSingleProject(true);
-    if (router.query.p) {
-      if (project) {
-        if (project.slug === router.query.p && router.query.id) {
-          fetchPlantLocation(project.id);
+    if (!selectedLocation) {
+      if (router.query.p) {
+        if (project) {
+          if (project.slug === router.query.p && router.query.id) {
+            fetchPlantLocation(project.id);
+          } else {
+            fetchProject();
+          }
         } else {
           fetchProject();
         }
-      } else {
-        fetchProject();
       }
     }
-  }, [router, currencyCode, project]);
+  }, [router, currencyCode, project, selectedLocation]);
 
   const ProjectProps = {
     project,

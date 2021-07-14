@@ -194,7 +194,7 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                           );
                           return (
                             <div key={index} className={styles.detailValue}>
-                              {sp.treeCount} {speciesName}
+                              {sp.treeCount} <span>{speciesName}</span>
                             </div>
                           );
                         }
@@ -215,7 +215,7 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                           );
                           return (
                             <div className={styles.detailValue}>
-                              {index + 1}. {speciesName}
+                              {index + 1}. <span>{speciesName}</span>
                               <br />#{spl?.tag} • {spl?.measurements?.height}m
                               high • {spl?.measurements?.width}cm wide
                             </div>

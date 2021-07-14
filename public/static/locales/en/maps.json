@@ -15,5 +15,6 @@
   "vegetationChange": "Vegetation Change",
   "beta": "BETA",
   "baseLayer": "Base Layer & Vector Maps",
-  "satelliteImagery": "Satellite Imagery"
+  "satelliteImagery": "Satellite Imagery",
+  "fieldData": "Field Data"
 }
