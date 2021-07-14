@@ -34,12 +34,13 @@ function ExploreInfoModal({
                   <div></div>
                   <p>{t('maps:high')}</p>
                 </div>
-                <p>{t('maps:forestInfo')}</p>
+                <p className={styles.forestInfo}>{t('maps:forestInfo')}</p>
                 <a
                   href="https://www.nature.com/articles/nature14967"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ paddingTop: 20 }}
+                  className={styles.openLink}
                 >
                   <OpenLink />
                   <p>

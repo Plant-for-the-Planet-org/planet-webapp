@@ -12,7 +12,11 @@ export default function ThemeProvider({ children }:any) {
   const toggleTheme = () => {
     setTheme(theme === 'theme-light' ? 'theme-dark' : 'theme-light');
   };
-
+React.useEffect(() => {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    setTheme("theme-dark")
+}
+}, [])
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

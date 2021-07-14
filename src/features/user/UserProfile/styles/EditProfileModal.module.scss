@@ -40,8 +40,11 @@
 .editProfileText {
   font-size: $fontLarge;
   margin-left: 20px;
+  color: $primaryFontColor;
 }
-
+.backDiv > svg > path{
+  fill: $primaryFontColor;
+}
 //profile pic div
 .profilePicDiv {
   background-color: $backgroundColor;
