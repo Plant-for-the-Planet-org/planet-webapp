@@ -1,6 +1,10 @@
 {
   "fortreeCountTrees": "para {{treeCount}} Árbol",
   "fortreeCountTrees_plural": "para {{treeCount}} Árboles",
+  "yourTreesPlantedByOnLocation": "Su árbol {{treeCount}} será plantado por {{projectName}} en {{location}}.",
+  "yourTreesPlantedByOnLocation_plural": "Sus árboles {{treeCount}} serán plantados por {{projectName}} en {{location}}.",
+  "myTreesPlantedByOnLocation": "Mi árbol {{treeCount}} está siendo plantado en {{location}}.",
+  "myTreesPlantedByOnLocation_plural": "Mis árboles {{treeCount}} están siendo plantados en {{location}}.",
   "PROJECTS": "PROYECTOS",
   "topProjects": "Proyectos principales",
   "allCountProjects": "Todos {{{projectCount}} los Proyectos",
@@ -60,6 +64,7 @@
   "inTimeOfTaxReturns": "a tiempo para la declaración de impuestos.",
   "titleToShare": "Plantando árboles contra la crisis climática!",
   "giftToName": "Regalo a",
+  "thisDonationSupports": "Esta donación apoya",
   "plantTreesWith": "Plantar árboles con",
   "textToShare": "Únete a {{name}} y miles de otros para plantar un trillón de árboles para hacer frente a la crisis climática #StopTalkingStartPlanting #TrillionTrees @trilliontrees",
   "thankyouHeaderText": "Vamos hacia un\n <h1>Trillón de árboles</h1>",
