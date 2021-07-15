@@ -40,6 +40,7 @@
   justify-content: flex-start;
   align-items: center;
   font-size: $fontLarge;
+  color: $primaryFontColor;
 }
 
 .contribTitle {
@@ -49,6 +50,7 @@
   align-items: center;
   font-size: $fontLarge;
   text-align: center;
+  color: $primaryFontColor;
 }
 
 .inputField {
@@ -160,11 +162,13 @@
 
 .note {
   padding: 5px;
+  color: $primaryFontColor;
 }
 
 .mapNote {
   margin-top: 5px;
   padding: 5px;
+  color: $primaryFontColor;
 }
 
 .locationMap {

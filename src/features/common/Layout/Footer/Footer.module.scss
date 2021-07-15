@@ -82,6 +82,17 @@
   margin-right: 16px;
   margin-top: 18.8px;
 }
+.fillNone{
+  fill: none;
+  stroke: $primaryFontColor;
+}
+.fillColor{
+  fill: $primaryFontColor
+}
+
+.strokeNone{
+  stroke: none;
+}
 
 .footer_button > svg {
   width: 22px;
@@ -146,9 +157,7 @@
   flex-direction: row;
   justify-content: center;
 }
-.footer_social_container > svg > path{
-  fill: $primaryFontColor;
-}
+
 .social_button {
   text-decoration: none;
   height: 46px;
