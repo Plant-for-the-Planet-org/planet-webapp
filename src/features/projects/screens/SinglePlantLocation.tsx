@@ -152,12 +152,14 @@ export default function SinglePlantLocation({
                 {plantLocation.type === 'single' && <span>1 Tree </span>}
                 {plantLocation.type === 'sample' && <span>Sample Tree </span>}
               </div>
-              <ImageSlider
-                images={plantLocation.coordinates}
-                show={plantLocation}
-                height={233}
-                imageSize="large"
-              />
+              {plantLocation.coordinates && (
+                <ImageSlider
+                  images={plantLocation.coordinates}
+                  show={plantLocation}
+                  height={233}
+                  imageSize="large"
+                />
+              )}
               <div className={styles.locDetails}>
                 <div className={styles.singleDetail}>
                   <div className={styles.detailTitle}>Planting Date</div>

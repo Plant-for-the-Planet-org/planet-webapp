@@ -19,6 +19,7 @@ export default function PlantLocations({}: Props): ReactElement {
     selectedLocation,
     setSelectedLocation,
     setHoveredPl,
+    viewport,
   } = React.useContext(ProjectPropsContext);
 
   const openPl = (pl: any) => {
@@ -65,11 +66,16 @@ export default function PlantLocations({}: Props): ReactElement {
                         latitude={spl.geometry.coordinates[1]}
                         longitude={spl.geometry.coordinates[0]}
                       >
-                        <div
-                          className={styles.single}
-                          role="button"
-                          tabIndex={0}
-                        />
+                        {viewport.zoom > 18 && (
+                          <div
+                            className={styles.single}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => openPl(spl)}
+                            onMouseEnter={() => onHover(spl)}
+                            onMouseLeave={() => onHoverEnd(spl)}
+                          />
+                        )}
                       </Marker>
                     );
                   })}
@@ -85,14 +91,16 @@ export default function PlantLocations({}: Props): ReactElement {
                 // offsetTop={-16}
                 // style={{ left: '28px' }}
               >
-                <div
-                  onClick={() => openPl(pl)}
-                  onMouseEnter={() => onHover(pl)}
-                  onMouseLeave={() => onHoverEnd(pl)}
-                  className={styles.single}
-                  role="button"
-                  tabIndex={0}
-                />
+                {viewport.zoom > 18 && (
+                  <div
+                    onClick={() => openPl(pl)}
+                    onMouseEnter={() => onHover(pl)}
+                    onMouseLeave={() => onHoverEnd(pl)}
+                    className={styles.single}
+                    role="button"
+                    tabIndex={0}
+                  />
+                )}
               </Marker>
             );
           }
