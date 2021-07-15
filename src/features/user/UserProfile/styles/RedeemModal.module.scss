@@ -15,6 +15,7 @@
   align-items: center;
   >h4{
     font-weight: bold;
+    color: $primaryFontColor;
   }
 }
 
@@ -39,6 +40,7 @@
 
 .note {
   padding: 5px;
+  color: $primaryFontColor;
 }
 
 // Loader for Buttons

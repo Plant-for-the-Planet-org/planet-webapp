@@ -36,14 +36,18 @@
   height: 18px;
   padding-right: 4px;
 }
-
+.options > svg > path{
+  fill: $primaryFontColor;
+}
 .options p {
   display: none;
+  color: $primaryFontColor;
 }
 
 .options p sup {
   padding-left: 1px;
   font-size: 8px;
+  color: $primaryFontColor;
 }
 
 .dropdownContainer {
