@@ -116,7 +116,7 @@ export default function ProjectsMap(): ReactElement {
             }
           }
         }
-        router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
+        //router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
       }
     }
   };
@@ -124,28 +124,21 @@ export default function ProjectsMap(): ReactElement {
   const onMapHover = (e: MapEvent) => {
     if (e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
-        setHoveredPl(e.features[0].layer?.source);
-        if (zoomLevel === 2)
-          for (const key in plantLocations) {
-            if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-              const element = plantLocations[key];
-              if (element.id === e.features[0].layer?.source) {
-                setSelectedLocation(element);
-                break;
-              }
+        for (const key in plantLocations) {
+          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+            const element = plantLocations[key];
+            if (element.id === e.features[0].layer?.source) {
+              setHoveredPl(element);
+              // setSelectedLocation(element);
+              break;
             }
           }
+        }
       }
       setShowDetails({ coordinates: e.lngLat, show: true });
     } else {
       setShowDetails({ ...showDetails, show: false });
-      setHoveredPl('');
-      if (
-        zoomLevel === 2 &&
-        selectedLocation &&
-        selectedLocation.type === 'multi'
-      )
-        setSelectedLocation(null);
+      setHoveredPl(null);
     }
   };
 
@@ -168,18 +161,15 @@ export default function ProjectsMap(): ReactElement {
         onLoad={() => setLoaded(true)}
         interactiveLayerIds={plIds ? plIds : undefined}
       >
-        {/* {zoomLevel !== 1 && <StyleToggle />} */}
-
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
         )}
-        {(zoomLevel === 2 || zoomLevel === 3) && project && (
+        {zoomLevel === 2 && project && (
           <>
             <Project {...projectProps} />
             <PlantLocations />
           </>
         )}
-        {/* {zoomLevel === 3 && <PlantLocation />} */}
         <ExploreLayers />
         <div className={styles.mapNavigation}>
           <div

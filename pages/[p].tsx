@@ -34,6 +34,7 @@ export default function Donate({
     setZoomLevel,
     setPlantLocations,
     selectedLocation,
+    hoveredPl,
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -71,6 +72,7 @@ export default function Donate({
     project,
     currencyCode,
     setCurrencyCode,
+    plantLocation: hoveredPl ? hoveredPl : selectedLocation,
   };
 
   React.useEffect(() => {
@@ -87,7 +89,7 @@ export default function Donate({
       {initialized ? (
         project && initialized ? (
           <>
-            {selectedLocation ? (
+            {hoveredPl || selectedLocation ? (
               <SinglePlantLocation {...ProjectProps} />
             ) : (
               <SingleProjectDetails {...ProjectProps} />

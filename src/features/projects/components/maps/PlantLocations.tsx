@@ -18,24 +18,20 @@ export default function PlantLocations({}: Props): ReactElement {
     zoomLevel,
     selectedLocation,
     setSelectedLocation,
+    setHoveredPl,
   } = React.useContext(ProjectPropsContext);
 
   const openPl = (pl: any) => {
     setSelectedLocation(pl);
-    router.replace(`/${project.slug}/${pl.id}`);
+    // router.replace(`/${project.slug}/${pl.id}`);
   };
 
   const onHover = (pl: Object) => {
-    if (zoomLevel === 2) setSelectedLocation(pl);
+    setHoveredPl(pl);
   };
 
   const onHoverEnd = (pl: Object) => {
-    if (
-      zoomLevel === 2 &&
-      selectedLocation &&
-      selectedLocation.type === 'single'
-    )
-      setSelectedLocation(null);
+    if (hoveredPl && hoveredPl.type === 'single') setHoveredPl(null);
   };
 
   return (
@@ -47,18 +43,37 @@ export default function PlantLocations({}: Props): ReactElement {
           newPl.properties.id = pl.id;
           if (pl.type === 'multi') {
             return (
-              <Source key={pl.id} id={pl.id} type="geojson" data={newPl}>
-                <Layer
-                  key={pl.id}
-                  id={`${pl.id}-layer`}
-                  type="fill"
-                  source={pl.id}
-                  paint={{
-                    'fill-color': '#007A49',
-                    'fill-opacity': 0.3,
-                  }}
-                />
-              </Source>
+              <>
+                <Source key={pl.id} id={pl.id} type="geojson" data={newPl}>
+                  <Layer
+                    key={pl.id}
+                    id={`${pl.id}-layer`}
+                    type="fill"
+                    source={pl.id}
+                    paint={{
+                      'fill-color': '#007A49',
+                      'fill-opacity': 0.3,
+                    }}
+                  />
+                </Source>
+                {pl &&
+                  pl.samplePlantLocations &&
+                  pl.samplePlantLocations.map((spl: any) => {
+                    return (
+                      <Marker
+                        key={spl.id}
+                        latitude={spl.geometry.coordinates[1]}
+                        longitude={spl.geometry.coordinates[0]}
+                      >
+                        <div
+                          className={styles.single}
+                          role="button"
+                          tabIndex={0}
+                        />
+                      </Marker>
+                    );
+                  })}
+              </>
             );
           } else {
             return (
@@ -82,39 +97,23 @@ export default function PlantLocations({}: Props): ReactElement {
             );
           }
         })}
-      {zoomLevel === 3 &&
-        selectedLocation &&
-        selectedLocation.type === 'multi' && (
-          <Source
-            id={`selected-source`}
-            type="geojson"
-            data={selectedLocation.geometry}
-          >
-            <Layer
-              id={`selected-layer`}
-              type="line"
-              source={`${selectedLocation.id}-selected`}
-              paint={{
-                'line-color': '#007A49',
-                'line-width': 4,
-              }}
-            />
-          </Source>
-        )}
-      {zoomLevel === 3 &&
-        selectedLocation &&
-        selectedLocation.samplePlantLocations &&
-        selectedLocation.samplePlantLocations.map((spl: any) => {
-          return (
-            <Marker
-              key={spl.id}
-              latitude={spl.geometry.coordinates[1]}
-              longitude={spl.geometry.coordinates[0]}
-            >
-              <div className={styles.single} role="button" tabIndex={0} />
-            </Marker>
-          );
-        })}
+      {selectedLocation && selectedLocation.type === 'multi' && (
+        <Source
+          id={`selected-source`}
+          type="geojson"
+          data={selectedLocation.geometry}
+        >
+          <Layer
+            id={`selected-layer`}
+            type="line"
+            source={`${selectedLocation.id}-selected`}
+            paint={{
+              'line-color': '#007A49',
+              'line-width': 4,
+            }}
+          />
+        </Source>
+      )}
     </>
   );
 }

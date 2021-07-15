@@ -27,18 +27,18 @@ const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props {
+  plantLocation: Object;
+}
 
-export default function SinglePlantLocation({}: Props): ReactElement {
+export default function SinglePlantLocation({
+  plantLocation,
+}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const {
-    project,
-    selectedLocation,
-    geoJson,
-    rasterData,
-    selectedMode,
-  } = React.useContext(ProjectPropsContext);
+  const { project, geoJson, rasterData, selectedMode } = React.useContext(
+    ProjectPropsContext
+  );
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -48,35 +48,35 @@ export default function SinglePlantLocation({}: Props): ReactElement {
 
   React.useEffect(() => {
     let count = 0;
-    if (selectedLocation && selectedLocation.plantedSpecies) {
-      for (const key in selectedLocation.plantedSpecies) {
+    if (plantLocation && plantLocation.plantedSpecies) {
+      for (const key in plantLocation.plantedSpecies) {
         if (
           Object.prototype.hasOwnProperty.call(
-            selectedLocation.plantedSpecies,
+            plantLocation.plantedSpecies,
             key
           )
         ) {
-          const element = selectedLocation.plantedSpecies[key];
+          const element = plantLocation.plantedSpecies[key];
           count += element.treeCount;
         }
       }
       setTreeCount(count);
     }
-    if (selectedLocation && selectedLocation.type === 'multi') {
-      const area = turf.area(selectedLocation.geometry);
+    if (plantLocation && plantLocation.type === 'multi') {
+      const area = turf.area(plantLocation.geometry);
       setPlantationArea(area / 10000);
     }
-  }, [selectedLocation]);
+  }, [plantLocation]);
 
   function getSpeciesName(id: string) {
-    for (const key in selectedLocation.metadata.app.species) {
+    for (const key in plantLocation.metadata.app.species) {
       if (
         Object.prototype.hasOwnProperty.call(
-          selectedLocation.metadata.app.species,
+          plantLocation.metadata.app.species,
           key
         )
       ) {
-        const element = selectedLocation.metadata.app.species[key];
+        const element = plantLocation.metadata.app.species[key];
         if (element.id === id) {
           return element.aliases;
         }
@@ -127,10 +127,10 @@ export default function SinglePlantLocation({}: Props): ReactElement {
               editMode={false}
             />
           </div>
-          {selectedLocation && (
+          {plantLocation && (
             <div className={'singleProjectDetails'}>
               <div className={styles.treeCount}>
-                {selectedLocation.type === 'multi' && (
+                {plantLocation.type === 'multi' && (
                   <>
                     <span>
                       {localizedAbbreviatedNumber(
@@ -149,14 +149,12 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                     ha)
                   </>
                 )}
-                {selectedLocation.type === 'single' && <span>1 Tree </span>}
-                {selectedLocation.type === 'sample' && (
-                  <span>Sample Tree </span>
-                )}
+                {plantLocation.type === 'single' && <span>1 Tree </span>}
+                {plantLocation.type === 'sample' && <span>Sample Tree </span>}
               </div>
               <ImageSlider
-                images={selectedLocation.coordinates}
-                show={selectedLocation}
+                images={plantLocation.coordinates}
+                show={plantLocation}
                 height={233}
                 imageSize="large"
               />
@@ -164,10 +162,10 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                 <div className={styles.singleDetail}>
                   <div className={styles.detailTitle}>Planting Date</div>
                   <div className={styles.detailValue}>
-                    {formatDate(selectedLocation.plantDate)}
+                    {formatDate(plantLocation.plantDate)}
                   </div>
                 </div>
-                {selectedLocation.type === 'multi' && (
+                {plantLocation.type === 'multi' && (
                   <div className={styles.singleDetail}>
                     <div className={styles.detailTitle}>Planting Density</div>
                     <div className={styles.detailValue}>
@@ -180,14 +178,13 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                     </div>
                   </div>
                 )}
-                {selectedLocation.type === 'multi' &&
-                  selectedLocation.plantedSpecies && (
+                {plantLocation.type === 'multi' &&
+                  plantLocation.plantedSpecies && (
                     <div className={styles.singleDetail}>
                       <div className={styles.detailTitle}>
-                        Species Planted (
-                        {selectedLocation.plantedSpecies.length})
+                        Species Planted ({plantLocation.plantedSpecies.length})
                       </div>
-                      {selectedLocation.plantedSpecies.map(
+                      {plantLocation.plantedSpecies.map(
                         (sp: any, index: number) => {
                           const speciesName = getSpeciesName(
                             sp.scientificSpecies
@@ -201,14 +198,14 @@ export default function SinglePlantLocation({}: Props): ReactElement {
                       )}
                     </div>
                   )}
-                {selectedLocation.type === 'multi' && (
+                {plantLocation.type === 'multi' && (
                   <div className={styles.singleDetail}>
                     <div className={styles.detailTitle}>
                       Trees Sampled (
-                      {selectedLocation?.samplePlantLocations?.length})
+                      {plantLocation?.samplePlantLocations?.length})
                     </div>
-                    {selectedLocation.samplePlantLocations &&
-                      selectedLocation.samplePlantLocations.map(
+                    {plantLocation.samplePlantLocations &&
+                      plantLocation.samplePlantLocations.map(
                         (spl: any, index: number) => {
                           const speciesName = getSpeciesName(
                             spl.scientificSpecies

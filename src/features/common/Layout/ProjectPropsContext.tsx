@@ -67,7 +67,7 @@ export const ProjectPropsContext = React.createContext({
   plIds: null || [],
   setPlIds: (value: []) => {},
   hoveredPl: null || '',
-  setHoveredPl: (value: string) => {},
+  setHoveredPl: (value: {}) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
