@@ -4,11 +4,13 @@ import React from 'react';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import DonationsPopup from '../src/features/donations';
 import Credits from '../src/features/projects/components/maps/Credits';
+import SinglePlantLocation from '../src/features/projects/screens/SinglePlantLocation';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
+import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 
 interface Props {
   initialized: boolean;
@@ -25,12 +27,18 @@ export default function Donate({
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { project, setProject, setShowSingleProject } = React.useContext(
-    ProjectPropsContext
-  );
+  const {
+    project,
+    setProject,
+    setShowSingleProject,
+    setZoomLevel,
+    setPlantLocations,
+    selectedLocation,
+    hoveredPl,
+  } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
-    setShowSingleProject(true);
+    setZoomLevel(2);
   }, []);
 
   const handleClose = () => {
@@ -50,6 +58,9 @@ export default function Donate({
         );
         setProject(project);
         setShowSingleProject(true);
+        setZoomLevel(2);
+        const plantLocations = await getAllPlantLocations(project.id);
+        setPlantLocations(plantLocations);
       }
     }
     if (router.query.p) {
@@ -61,6 +72,7 @@ export default function Donate({
     project,
     currencyCode,
     setCurrencyCode,
+    plantLocation: hoveredPl ? hoveredPl : selectedLocation,
   };
 
   React.useEffect(() => {
@@ -77,7 +89,11 @@ export default function Donate({
       {initialized ? (
         project && initialized ? (
           <>
-            <SingleProjectDetails {...ProjectProps} />
+            {hoveredPl || selectedLocation ? (
+              <SinglePlantLocation {...ProjectProps} />
+            ) : (
+              <SingleProjectDetails {...ProjectProps} />
+            )}
             <Modal
               className={`modalContainer ${theme}`}
               open={open}

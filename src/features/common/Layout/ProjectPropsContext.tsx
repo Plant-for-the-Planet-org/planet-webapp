@@ -56,11 +56,26 @@ export const ProjectPropsContext = React.createContext({
     imagery: {},
   },
   setRasterData: (value: {}) => {},
+  plantLocations: [],
+  setPlantLocations: (value: []) => {},
+  selectedLocation: {},
+  setSelectedLocation: (value: {}) => {},
+  zoomLevel: 1,
+  setZoomLevel: (value: number) => {},
+  satellite: false,
+  setSatellite: (value: boolean) => {},
+  plIds: null || [],
+  setPlIds: (value: []) => {},
+  hoveredPl: null || '',
+  setHoveredPl: (value: {}) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
+  const [plantLocations, setPlantLocations] = React.useState(null);
+  const [selectedLocation, setSelectedLocation] = React.useState(null);
+  const [zoomLevel, setZoomLevel] = React.useState(1);
   const [showProjects, setShowProjects] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [searchedProject, setsearchedProjects] = React.useState([]);
@@ -77,6 +92,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const [openModal, setModalOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
+  const [satellite, setSatellite] = React.useState(false);
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -88,7 +104,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     dragPan: true,
     scrollZoom: false,
     minZoom: 1,
-    maxZoom: 15,
+    maxZoom: 25,
   });
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
@@ -107,8 +123,9 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     evi: '',
     imagery: {},
   });
-
+  const [plIds, setPlIds] = React.useState(null);
   const [windowSize, setWindowSize] = React.useState(1280);
+  const [hoveredPl, setHoveredPl] = React.useState(null);
 
   React.useEffect(() => {
     window.addEventListener('resize', updateWidth);
@@ -138,6 +155,29 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       setGeoJson(null);
     }
   }, [project]);
+
+  React.useEffect(() => {
+    if (satellite) {
+      setMapState({ ...mapState, maxZoom: 15 });
+    } else {
+      setMapState({ ...mapState, maxZoom: 25 });
+    }
+  }, [satellite]);
+
+  React.useEffect(() => {
+    const ids = [];
+    if (plantLocations && (zoomLevel === 2 || zoomLevel === 3)) {
+      for (const key in plantLocations) {
+        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+          const element = plantLocations[key];
+          if (element.type === 'multi') ids.push(element.id + '-layer');
+        }
+      }
+      setPlIds(ids);
+    } else {
+      setPlIds(null);
+    }
+  }, [plantLocations, zoomLevel]);
 
   return (
     <ProjectPropsContext.Provider
@@ -194,6 +234,18 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setSelectedMode,
         rasterData,
         setRasterData,
+        plantLocations,
+        setPlantLocations,
+        selectedLocation,
+        setSelectedLocation,
+        zoomLevel,
+        setZoomLevel,
+        satellite,
+        setSatellite,
+        plIds,
+        setPlIds,
+        hoveredPl,
+        setHoveredPl,
       }}
     >
       {children}

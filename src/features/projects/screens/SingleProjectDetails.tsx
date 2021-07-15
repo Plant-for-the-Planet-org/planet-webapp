@@ -11,7 +11,6 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
-import styles from '../styles/ProjectDetails.module.scss';
 import SitesDropdown from '../components/maps/SitesDropdown';
 import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
@@ -109,7 +108,7 @@ function SingleProjectDetails({}: Props): ReactElement {
               zIndex: 3333,
             }}
             onClick={() => {
-              router.back();
+              router.replace('/');
             }}
           >
             <BackButton />
@@ -122,7 +121,7 @@ function SingleProjectDetails({}: Props): ReactElement {
             />
           </div>
 
-          <div className={'singleProject'}>
+          <div className={'singleProjectDetails'}>
             <div className={'projectCompleteInfo'}>
               {/* <div className={'ratings}>
               <div className={'calculatedRating}>{rating}</div>
@@ -137,6 +136,7 @@ function SingleProjectDetails({}: Props): ReactElement {
             </div> */}
 
               <div className={'projectDescription'}>
+                <div className={'infoTitle'}>{t('donate:aboutProject')}</div>
                 <ReadMoreReact
                   min={300}
                   ideal={350}

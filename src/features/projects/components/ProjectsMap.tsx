@@ -1,13 +1,20 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import MapGL, { NavigationControl } from 'react-map-gl';
+import MapGL, { MapEvent, NavigationControl, Popup } from 'react-map-gl';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
 import Project from '../components/maps/Project';
 import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import StyleToggle from './maps/StyleToggle';
+import PlantLocations from './maps/PlantLocations';
+import PlantLocation from './maps/PlantLocation';
+import { useRouter } from 'next/router';
+import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
+import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 
 export default function ProjectsMap(): ReactElement {
+  const router = useRouter();
   const {
     project,
     showSingleProject,
@@ -26,6 +33,14 @@ export default function ProjectsMap(): ReactElement {
     mapRef,
     defaultMapCenter,
     defaultZoom,
+    zoomLevel,
+    plIds,
+    setHoveredPl,
+    plantLocations,
+    setSelectedLocation,
+    selectedLocation,
+    satellite,
+    setSatellite,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -46,6 +61,11 @@ export default function ProjectsMap(): ReactElement {
     }
     loadMapStyle();
   }, []);
+
+  const [showDetails, setShowDetails] = React.useState({
+    coordinates: [],
+    show: false,
+  });
 
   //Props
   const homeProps = {
@@ -82,6 +102,54 @@ export default function ProjectsMap(): ReactElement {
     showSingleProject,
   };
 
+  const onMapClick = (e: MapEvent) => {
+    setSelectedLocation(null);
+    setHoveredPl(null);
+    setPopupData({ ...popupData, show: false });
+    if (e.features?.length !== 0) {
+      console.log('onclick event', e.features[0]);
+      if (e.features[0].layer?.source) {
+        for (const key in plantLocations) {
+          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+            const element = plantLocations[key];
+            if (element.id === e.features[0].layer?.source) {
+              setSelectedLocation(element);
+              break;
+            }
+          }
+        }
+        //router.replace(`/${project.slug}/${e.features[0].layer?.source}`);
+      }
+    }
+  };
+
+  const onMapHover = (e: MapEvent) => {
+    if (e.features?.length !== 0) {
+      if (e.features[0].layer?.source) {
+        for (const key in plantLocations) {
+          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+            const element = plantLocations[key];
+            if (element.id === e.features[0].layer?.source) {
+              setHoveredPl(element);
+              // setSelectedLocation(element);
+              break;
+            }
+          }
+        }
+      }
+      setShowDetails({ coordinates: e.lngLat, show: true });
+    } else {
+      setShowDetails({ ...showDetails, show: false });
+      setHoveredPl(null);
+    }
+  };
+
+  React.useEffect(() => {
+    if (zoomLevel !== 2) {
+      setShowDetails({ ...showDetails, show: false });
+    }
+  }, [zoomLevel]);
+
   return (
     <div className={styles.mapContainer}>
       <MapGL
@@ -90,17 +158,45 @@ export default function ProjectsMap(): ReactElement {
         {...viewport}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
-        onClick={() => setPopupData({ ...popupData, show: false })}
+        onClick={onMapClick}
+        onHover={plIds ? onMapHover : undefined}
         onLoad={() => setLoaded(true)}
+        interactiveLayerIds={plIds ? plIds : undefined}
       >
-        {!showSingleProject && searchedProject && showProjects && (
+        {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
         )}
-        {showSingleProject && project && <Project {...projectProps} />}
+        {zoomLevel === 2 && project && (
+          <>
+            <Project {...projectProps} />
+            <PlantLocations />
+          </>
+        )}
         <ExploreLayers />
         <div className={styles.mapNavigation}>
+          <div
+            onClick={() => setSatellite(!satellite)}
+            className={styles.layerToggle}
+          >
+            {satellite ? <LayerIcon /> : <LayerDisabled />}
+          </div>
           <NavigationControl showCompass={false} />
         </div>
+        {showDetails.show && (
+          <Popup
+            latitude={showDetails.coordinates[1]}
+            longitude={showDetails.coordinates[0]}
+            closeButton={false}
+            closeOnClick={false}
+            onClose={() => setPopupData({ ...popupData, show: false })}
+            anchor="bottom"
+            dynamicPosition={false}
+            offsetTop={-5}
+            tipSize={0}
+          >
+            <div className={styles.clickForDetails}>Click for Details</div>
+          </Popup>
+        )}
       </MapGL>
     </div>
   );

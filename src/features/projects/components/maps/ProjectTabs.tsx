@@ -33,7 +33,7 @@ export default function ProjectTabs({}: Props): ReactElement {
           className={styles.options}
         >
           <LocationIcon color={selectedMode === 'location' ? '#fff' : null} />{' '}
-          <p>{t('maps:location')}</p>
+          <p>{t('maps:fieldData')}</p>
         </div>
         <div
           onClick={() => {

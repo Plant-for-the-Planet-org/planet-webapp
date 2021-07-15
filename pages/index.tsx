@@ -27,6 +27,7 @@ export default function Donate({
     showProjects,
     setShowProjects,
     setsearchedProjects,
+    setZoomLevel,
   } = React.useContext(ProjectPropsContext);
 
   const router = useRouter();
@@ -61,6 +62,7 @@ export default function Donate({
   React.useEffect(() => {
     setShowSingleProject(false);
     setProject(null);
+    setZoomLevel(1);
   }, []);
 
   // Load all projects
@@ -76,6 +78,7 @@ export default function Donate({
         setProjects(projects);
         setProject(null);
         setShowSingleProject(false);
+        setZoomLevel(1);
       }
     }
     loadProjects();

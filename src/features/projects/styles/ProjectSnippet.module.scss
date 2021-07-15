@@ -40,6 +40,14 @@
   width: 100%;
   background-color: $primaryColor;
   position: relative;
+  transition: all 1s ease;
+  &.projectCollapsed {
+    height: 50px;
+    transition: all 1s ease;
+    > .projectImageBlock {
+      left: 50px;
+    }
+  }
 }
 
 .projectImage:hover {
@@ -47,7 +55,7 @@
 }
 
 .projectImageFile {
-  height: 160px;
+  height: 100%;
   width: 100%;
   position: relative;
   background-size: cover;
@@ -119,7 +127,7 @@
   cursor: pointer;
 }
 
-.projectData{
+.projectData {
   max-width: 178px;
 }
 
