@@ -36,9 +36,16 @@ export default function SinglePlantLocation({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { project, geoJson, rasterData, selectedMode } = React.useContext(
-    ProjectPropsContext
-  );
+  const {
+    project,
+    geoJson,
+    rasterData,
+    selectedMode,
+    selectedLocation,
+    hoveredPl,
+    setSelectedLocation,
+    setHoveredPl,
+  } = React.useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -115,7 +122,12 @@ export default function SinglePlantLocation({
               zIndex: 3333,
             }}
             onClick={() => {
-              router.replace(`/${project.slug}`);
+              if (selectedLocation || hoveredPl) {
+                setSelectedLocation(null);
+                setHoveredPl(null);
+              } else {
+                router.replace(`/${project.slug}`);
+              }
             }}
           >
             <BackButton />

@@ -103,6 +103,8 @@ export default function ProjectsMap(): ReactElement {
   };
 
   const onMapClick = (e: MapEvent) => {
+    setSelectedLocation(null);
+    setHoveredPl(null);
     setPopupData({ ...popupData, show: false });
     if (e.features?.length !== 0) {
       console.log('onclick event', e.features[0]);
