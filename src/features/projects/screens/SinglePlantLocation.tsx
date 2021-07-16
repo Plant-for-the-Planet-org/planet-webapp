@@ -225,7 +225,7 @@ export default function SinglePlantLocation({
                             spl.scientificSpecies
                           );
                           return (
-                            <div className={styles.detailValue}>
+                            <div key={index} className={styles.detailValue}>
                               {index + 1}. <span>{speciesName}</span>
                               <br />#{spl?.tag} • {spl?.measurements?.height}m
                               high • {spl?.measurements?.width}cm wide

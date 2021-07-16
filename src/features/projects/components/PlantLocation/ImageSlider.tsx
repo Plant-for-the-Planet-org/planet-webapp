@@ -21,7 +21,7 @@ export default function ImageSlider({ images, height, imageSize }: Props) {
   console.log(projectImages);
 
   React.useEffect(() => {
-    let sliderImages = [];
+    const sliderImages = [];
     setProjectImages([]);
     images.forEach((image: any) => {
       if (image.image) {

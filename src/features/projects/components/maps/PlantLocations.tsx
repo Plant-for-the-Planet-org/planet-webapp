@@ -86,7 +86,7 @@ export default function PlantLocations({}: Props): ReactElement {
   const getDateDiff = (pl: any) => {
     const today = new Date();
     const plantationDate = new Date(pl.plantDate);
-    var differenceInTime = today.getTime() - plantationDate.getTime();
+    const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
       return 'Today';
