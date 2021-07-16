@@ -82,24 +82,12 @@
   margin-right: 16px;
   margin-top: 18.8px;
 }
-.fillNone{
-  fill: none;
-  stroke: $primaryFontColor;
-}
-.fillColor{
-  fill: $primaryFontColor
-}
 
-.strokeNone{
-  stroke: none;
-}
 
 .footer_button > svg {
   width: 22px;
 }
-.footer_button > svg > path{
-  fill: $primaryFontColor;
-}
+
 .footer_button_container > a:hover {
   cursor: pointer;
   text-decoration: none;
