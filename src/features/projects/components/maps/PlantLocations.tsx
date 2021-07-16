@@ -6,6 +6,10 @@ import { useRouter } from 'next/router';
 import { zoomToPlantLocation } from '../../../../utils/maps/plantLocations';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 interface Props {}
 
@@ -22,6 +26,8 @@ export default function PlantLocations({}: Props): ReactElement {
     setHoveredPl,
     viewport,
   } = React.useContext(ProjectPropsContext);
+
+  const { i18n } = useTranslation(['common']);
 
   const openPl = (pl: any) => {
     setSelectedLocation(pl);
@@ -77,6 +83,26 @@ export default function PlantLocations({}: Props): ReactElement {
     }
   };
 
+  const getDateDiff = (pl: any) => {
+    const today = new Date();
+    const plantationDate = new Date(pl.plantDate);
+    var differenceInTime = today.getTime() - plantationDate.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    if (differenceInDays < 1) {
+      return 'Today';
+    } else if (differenceInDays < 2) {
+      return 'Yesterday';
+    } else if (differenceInDays < 30) {
+      return `${localizedAbbreviatedNumber(
+        i18n.language,
+        differenceInDays,
+        0
+      )}d`;
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
       {plantLocations &&
@@ -85,6 +111,7 @@ export default function PlantLocations({}: Props): ReactElement {
           newPl.properties = {};
           newPl.properties.id = pl.id;
           if (pl.type === 'multi') {
+            const dateDiff = getDateDiff(pl);
             return (
               <>
                 <Source key={pl.id} id={pl.id} type="geojson" data={newPl}>
@@ -98,6 +125,22 @@ export default function PlantLocations({}: Props): ReactElement {
                       'fill-opacity': getPolygonColor(pl),
                     }}
                   />
+                  {dateDiff && (
+                    <Layer
+                      key={`${pl.id}-label`}
+                      id={`${pl.id}-label`}
+                      type="symbol"
+                      source={pl.id}
+                      layout={{
+                        'text-field': dateDiff,
+                        'text-anchor': 'center',
+                        'text-font': ['Ubuntu Regular'],
+                      }}
+                      paint={{
+                        'text-color': '#2f3336',
+                      }}
+                    />
+                  )}
                 </Source>
                 {pl &&
                   pl.samplePlantLocations &&
