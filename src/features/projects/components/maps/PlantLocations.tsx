@@ -5,6 +5,7 @@ import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext'
 import { useRouter } from 'next/router';
 import { zoomToPlantLocation } from '../../../../utils/maps/plantLocations';
 import styles from '../../styles/PlantLocation.module.scss';
+import * as turf from '@turf/turf';
 
 interface Props {}
 
@@ -35,6 +36,47 @@ export default function PlantLocations({}: Props): ReactElement {
     if (hoveredPl && hoveredPl.type === 'single') setHoveredPl(null);
   };
 
+  const getPlTreeCount = (pl: any) => {
+    let count = 0;
+    if (pl && pl.plantedSpecies) {
+      for (const key in pl.plantedSpecies) {
+        if (Object.prototype.hasOwnProperty.call(pl.plantedSpecies, key)) {
+          const element = pl.plantedSpecies[key];
+          count += element.treeCount;
+        }
+      }
+      return count;
+    } else {
+      return 0;
+    }
+  };
+
+  const getPlArea = (pl: any) => {
+    if (pl && pl.type === 'multi') {
+      const area = turf.area(pl.geometry);
+      return area / 10000;
+    } else {
+      return 0;
+    }
+  };
+
+  const getPolygonColor = (pl: any) => {
+    const treeCount = getPlTreeCount(pl);
+    const plantationArea = getPlArea(pl);
+    const density = treeCount / plantationArea;
+    if (density > 2500) {
+      return 0.5;
+    } else if (density > 2000) {
+      return 0.4;
+    } else if (density > 1600) {
+      return 0.3;
+    } else if (density > 1000) {
+      return 0.2;
+    } else {
+      return 0.1;
+    }
+  };
+
   return (
     <>
       {plantLocations &&
@@ -53,7 +95,7 @@ export default function PlantLocations({}: Props): ReactElement {
                     source={pl.id}
                     paint={{
                       'fill-color': '#007A49',
-                      'fill-opacity': 0.3,
+                      'fill-opacity': getPolygonColor(pl),
                     }}
                   />
                 </Source>
