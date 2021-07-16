@@ -71,7 +71,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
     "path-browserify": "^1.0.1",
-    "postcss": "^8.3.2",
+    "postcss": "^8.3.5",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-async-script-loader": "^0.3.0",
