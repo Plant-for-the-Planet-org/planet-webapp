@@ -27,7 +27,7 @@ const themeProperties = {
     primaryFontColor: '#ffffff',
     dividerColor: '#101113',
     secondaryColor: '#ecb641',
-    blueishGrey: '#f2f2f7',
+    blueishGrey: '#101113',
     backgroundColor: '#343a40',
     highlightBackground: '#f2f2f2',
     light: '#fff',
