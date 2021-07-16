@@ -7,11 +7,11 @@ const MaterialTextField = withStyles({
   root: {
     width: '100%',
     '& label.Mui-focused': {
-      color: '#2F3336',
+      color: 'var(--primary-font-color)',
       fontFamily: config!.font.primaryFontFamily,
     },
     '& label': {
-      color: '#2F3336',
+      color: 'var(--primary-font-color)',
       fontFamily: config!.font.primaryFontFamily,
       fontSize: '14px',
     },
@@ -19,7 +19,8 @@ const MaterialTextField = withStyles({
       border: '0px!important',
     },
     '& .MuiOutlinedInput-root': {
-      backgroundColor: '#F2F2F7',
+      backgroundColor: 'var(--divider-color)',
+      color: 'var(--primary-font-color)',
       border: '0px!important',
       borderRadius: '10px',
       fontFamily: config!.font.primaryFontFamily,
