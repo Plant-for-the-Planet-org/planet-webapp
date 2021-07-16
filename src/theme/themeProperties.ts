@@ -22,6 +22,7 @@ const themeProperties = {
     light: '#fff',
     dark: '#000',
     dangerColor:'#e74c3c',
+    unDecadeFill: '#1d1d1b'
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -33,6 +34,7 @@ const themeProperties = {
     light: '#fff',
     dark: '#000',
     dangerColor:'#00ef00',
+    unDecadeFill: '#fff'
   },
 };
 

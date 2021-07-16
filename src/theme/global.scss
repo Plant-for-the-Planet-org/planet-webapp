@@ -220,7 +220,9 @@ video {
   font-weight: normal;
   font-style: normal;
 }
-
+.unDecadeFill{
+  fill: $undecadeFill;
+}
 .primaryButton,
 .secondaryButton {
   color: $light;

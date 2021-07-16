@@ -31,6 +31,7 @@ const globalStyles = css.global`
     --light: ${light.light};
     --dark: ${light.dark};
     --danger-color: ${light.dangerColor};
+    --undecade-fill: ${light.unDecadeFill};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
@@ -42,6 +43,7 @@ const globalStyles = css.global`
     --light: ${dark.light};
     --dark: ${dark.dark};
     --danger-color: ${dark.dangerColor};
+    --undecade-fill: ${dark.unDecadeFill};
   }
 `;
 
