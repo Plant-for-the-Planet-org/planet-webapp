@@ -2,10 +2,10 @@
 
 .container {
   position: relative;
-  z-index: 6;
   transition: all 0.3s ease-in-out;
   width: 100vw;
   margin-top: 50vh;
+  z-index: 12;
 }
 
 .modalClose {

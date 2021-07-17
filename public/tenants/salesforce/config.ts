@@ -3,13 +3,13 @@ const config = {
   tenantURL: 'trees.salesforce.com',
   languages: ['en'],
   fallbackCurrency: 'USD',
-  tenantGoal:null,
-  showUNDecadeLogo:true,
+  tenantGoal: null,
+  showUNDecadeLogo: true,
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
     secondaryFontFamily: 'AvantGardeDemi,Helvetica,Arial,sans-serif',
-    secondaryFontURL: "/tenants/salesforce/fonts/avantgarde.css",
+    secondaryFontURL: '/tenants/salesforce/fonts/avantgarde.css',
   },
   header: {
     isSecondaryTenant: true,
@@ -36,12 +36,12 @@ const config = {
         onclick: '/all',
         visible: false,
       },
-      me:{
+      me: {
         title: 'me',
         onclick: '/me',
-        visible: false,
-      }
-    }
+        visible: true,
+      },
+    },
   },
   meta: {
     title: 'Salesforce ❤️ Trees',
@@ -51,7 +51,7 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
+  footerLinks: ['privacyAndTerms', 'imprint', 'contact', 'supportUs'],
 };
 
 export default config;
