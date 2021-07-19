@@ -15,10 +15,14 @@ import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext'
 interface Props {}
 
 export default function SitesDropdown(): ReactElement {
-  const { geoJson, selectedSite, setSelectedSite, isMobile } = React.useContext(
-    ProjectPropsContext
-  );
-  const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
+  const {
+    geoJson,
+    selectedSite,
+    setSelectedSite,
+    isMobile,
+    isPolygonMenuOpen,
+    setIsPolygonMenuOpen,
+  } = React.useContext(ProjectPropsContext);
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);

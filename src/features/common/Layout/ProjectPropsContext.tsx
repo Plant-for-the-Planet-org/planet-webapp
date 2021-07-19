@@ -56,6 +56,8 @@ export const ProjectPropsContext = React.createContext({
     imagery: {},
   },
   setRasterData: (value: {}) => {},
+  isPolygonMenuOpen: false,
+  setIsPolygonMenuOpen: (value: boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -107,6 +109,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     evi: '',
     imagery: {},
   });
+  const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
 
   const [windowSize, setWindowSize] = React.useState(1280);
 
@@ -194,6 +197,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setSelectedMode,
         rasterData,
         setRasterData,
+        isPolygonMenuOpen,
+        setIsPolygonMenuOpen,
       }}
     >
       {children}
