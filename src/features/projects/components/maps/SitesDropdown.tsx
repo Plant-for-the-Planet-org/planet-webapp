@@ -18,12 +18,12 @@ export default function SitesDropdown(): ReactElement {
   const { geoJson, selectedSite, setSelectedSite, isMobile } = React.useContext(
     ProjectPropsContext
   );
-  const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(
-    isMobile ? false : true
-  );
+  const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
+
   React.useEffect(() => {
-    if (geoJson.features.length === 1) setIsPolygonMenuOpen(false);
-  }, []);
+    if (isMobile) setIsPolygonMenuOpen(false);
+  }, [isMobile]);
+
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);
     if (isMobile) setIsPolygonMenuOpen(false);
@@ -31,44 +31,48 @@ export default function SitesDropdown(): ReactElement {
 
   return (
     <>
-      {!isPolygonMenuOpen ? (
-        <div
-          onMouseOver={() => {
-            if (isMobile) setIsPolygonMenuOpen(true);
-          }}
-          onClick={() => {
-            if (!isMobile) setIsPolygonMenuOpen(true);
-          }}
-          className={styles.projectSitesButton}
-        >
-          <PolygonIcon />
-        </div>
-      ) : null}
-      {isPolygonMenuOpen ? (
-        <div className={styles.dropdownContainer}>
-          <div className={styles.projectSitesDropdown}>
-            <FormControl>
-              <div className={styles.polygonIcon}>
-                <PolygonIcon />
+      {geoJson.features.length > 1 && (
+        <>
+          {!isPolygonMenuOpen ? (
+            <div
+              onMouseOver={() => {
+                if (isMobile) setIsPolygonMenuOpen(true);
+              }}
+              onClick={() => {
+                if (!isMobile) setIsPolygonMenuOpen(true);
+              }}
+              className={styles.projectSitesButton}
+            >
+              <PolygonIcon />
+            </div>
+          ) : null}
+          {isPolygonMenuOpen ? (
+            <div className={styles.dropdownContainer}>
+              <div className={styles.projectSitesDropdown}>
+                <FormControl>
+                  <div className={styles.polygonIcon}>
+                    <PolygonIcon />
+                  </div>
+                  <NativeSelect
+                    id="customized-select-native"
+                    value={selectedSite}
+                    onChange={handleChangeSite}
+                    input={<BootstrapInput />}
+                  >
+                    {geoJson.features.map((site: any, index: any) => {
+                      return (
+                        <option key={index} value={index}>
+                          {site.properties.name}
+                        </option>
+                      );
+                    })}
+                  </NativeSelect>
+                </FormControl>
               </div>
-              <NativeSelect
-                id="customized-select-native"
-                value={selectedSite}
-                onChange={handleChangeSite}
-                input={<BootstrapInput />}
-              >
-                {geoJson.features.map((site: any, index: any) => {
-                  return (
-                    <option key={index} value={index}>
-                      {site.properties.name}
-                    </option>
-                  );
-                })}
-              </NativeSelect>
-            </FormControl>
-          </div>
-        </div>
-      ) : null}
+            </div>
+          ) : null}
+        </>
+      )}
     </>
   );
 }
