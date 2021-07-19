@@ -302,6 +302,7 @@
   align-items: center;
   width: 100%;
   margin: 20px 0;
+  color: $primaryFontColor;
 }
 
 .reforestationScale > div {
@@ -314,6 +315,9 @@
     rgba(126, 212, 230, 1) 20%,
     rgba(59, 0, 255, 1) 100%
   );
+}
+.restorationInfo{
+  color: $primaryFontColor;
 }
 
 .reforestationScale > p:nth-child(1) {
