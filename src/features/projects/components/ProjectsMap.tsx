@@ -26,6 +26,7 @@ export default function ProjectsMap(): ReactElement {
     mapRef,
     defaultMapCenter,
     defaultZoom,
+    setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -90,7 +91,10 @@ export default function ProjectsMap(): ReactElement {
         {...viewport}
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
-        onClick={() => setPopupData({ ...popupData, show: false })}
+        onClick={() => {
+          setPopupData({ ...popupData, show: false });
+          setIsPolygonMenuOpen(false);
+        }}
         onLoad={() => setLoaded(true)}
       >
         {!showSingleProject && searchedProject && showProjects && (
