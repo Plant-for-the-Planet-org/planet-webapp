@@ -1,1 +1,5 @@
-{ }
+{
+  "setTarget": "Impostare l'obiettivo",
+  "targetSave": "Salva",
+  "targetErrorMessage": "Il numero deve essere positivo o superiore a zero"
+}
