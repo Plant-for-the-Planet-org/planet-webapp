@@ -18,31 +18,32 @@ export default function ImageSlider({ images, height, imageSize }: Props) {
     return ImageSource;
   };
 
-  console.log(projectImages);
-
   React.useEffect(() => {
-    const sliderImages = [];
-    setProjectImages([]);
-    images.forEach((image: any) => {
-      if (image.image) {
-        const imageURL = loadImageSource(image.image);
-        sliderImages.push({
-          content: () => (
-            <div
-              className={styles.projectImageSliderContent}
-              style={{
-                background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-              }}
-            >
-              <p className={styles.projectImageSliderContentText}>
-                {image.description}
-              </p>
-            </div>
-          ),
-        });
-      }
-    });
-    setProjectImages(sliderImages);
+    let sliderImages = [];
+    if (images) {
+      images.forEach((image: any) => {
+        if (image.image) {
+          const imageURL = loadImageSource(image.image);
+          sliderImages.push({
+            content: () => (
+              <div
+                className={styles.projectImageSliderContent}
+                style={{
+                  background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+                }}
+              >
+                <p className={styles.projectImageSliderContentText}>
+                  {image.description}
+                </p>
+              </div>
+            ),
+          });
+        }
+      });
+      setProjectImages(sliderImages);
+    } else {
+      setProjectImages([]);
+    }
   }, [images]);
 
   React.useEffect(() => {

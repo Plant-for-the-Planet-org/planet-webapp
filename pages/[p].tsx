@@ -59,14 +59,22 @@ export default function Donate({
         setProject(project);
         setShowSingleProject(true);
         setZoomLevel(2);
-        const plantLocations = await getAllPlantLocations(project.id);
-        setPlantLocations(plantLocations);
       }
     }
     if (router.query.p) {
       loadProject();
     }
   }, [router.query.p, currencyCode]);
+
+  React.useEffect(() => {
+    async function loadPl() {
+      const newPlantLocations = await getAllPlantLocations(project.id);
+      setPlantLocations(newPlantLocations);
+    }
+    if (project) {
+      loadPl();
+    }
+  }, [project]);
 
   const ProjectProps = {
     project,
@@ -89,11 +97,7 @@ export default function Donate({
       {initialized ? (
         project && initialized ? (
           <>
-            {hoveredPl || selectedLocation ? (
-              <SinglePlantLocation {...ProjectProps} />
-            ) : (
-              <SingleProjectDetails {...ProjectProps} />
-            )}
+            <SingleProjectDetails {...ProjectProps} />
             <Modal
               className={`modalContainer ${theme}`}
               open={open}

@@ -16,5 +16,14 @@
   "beta": "BETA",
   "baseLayer": "Base Layer & Vector Maps",
   "satelliteImagery": "Satellite Imagery",
-  "fieldData": "Field Data"
+  "fieldData": "Field Data",
+  "trees": "Trees",
+  "ha": "ha",
+  "plantingDate": "Planting Date",
+  "plantingDensity": "Planting Density",
+  "speciesPlanted": "Species Planted",
+  "treesSampled": "Trees Sampled",
+  "meterHigh": "m high",
+  "cmWide": "cm wide",
+  "treesPerHa": "trees per ha"
 }

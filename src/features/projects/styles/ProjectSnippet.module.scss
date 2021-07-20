@@ -11,10 +11,6 @@
   scrollbar-width: none;
 }
 
-// .modal::-webkit-scrollbar {
-//     width: 0px;
-// }
-
 .projectEditBlock {
   position: absolute;
   top: 12px;
@@ -40,18 +36,16 @@
   width: 100%;
   background-color: $primaryColor;
   position: relative;
-  animation: expandImage 1s ease;
+  transition: all 1s ease;
   > .projectImageBlock {
-    animation: translateRight 1s ease;
+    transition: all 1s ease;
     left: 16px;
   }
-  // transition: all 1s ease;
+
   &.projectCollapsed {
     height: 50px;
-    // transition: all 1s ease;
-    animation: collapseImage 1s ease;
+    transition: all 1s ease;
     > .projectImageBlock {
-      animation: translateLeft 1s ease;
       left: 50px;
     }
   }

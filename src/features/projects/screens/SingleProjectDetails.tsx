@@ -15,6 +15,7 @@ import SitesDropdown from '../components/maps/SitesDropdown';
 import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
+import SinglePlantLocation from './SinglePlantLocation';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -34,9 +35,14 @@ const ImageSlider = dynamic(
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { project, geoJson, rasterData, selectedMode } = React.useContext(
-    ProjectPropsContext
-  );
+  const {
+    project,
+    geoJson,
+    rasterData,
+    selectedMode,
+    hoveredPl,
+    selectedLocation,
+  } = React.useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -59,6 +65,11 @@ function SingleProjectDetails({}: Props): ReactElement {
   const handleModalOpen = () => {
     setModalOpen(true);
   };
+
+  const ProjectProps = {
+    plantLocation: hoveredPl ? hoveredPl : selectedLocation,
+  };
+
   return ready ? (
     <>
       <Explore />
@@ -120,10 +131,12 @@ function SingleProjectDetails({}: Props): ReactElement {
               editMode={false}
             />
           </div>
-
-          <div className={'singleProjectDetails'}>
-            <div className={'projectCompleteInfo'}>
-              {/* <div className={'ratings}>
+          {hoveredPl || selectedLocation ? (
+            <SinglePlantLocation {...ProjectProps} />
+          ) : (
+            <div className={'singleProjectDetails'}>
+              <div className={'projectCompleteInfo'}>
+                {/* <div className={'ratings}>
               <div className={'calculatedRating}>{rating}</div>
               <div className={'ratingButton}>
                 <MaterialRatings
@@ -135,59 +148,60 @@ function SingleProjectDetails({}: Props): ReactElement {
               </div>
             </div> */}
 
-              <div className={'projectDescription'}>
-                <div className={'infoTitle'}>{t('donate:aboutProject')}</div>
-                <ReadMoreReact
-                  min={300}
-                  ideal={350}
-                  max={400}
-                  readMoreText={t('donate:readMore')}
-                  text={project.description}
-                />
-              </div>
-
-              <div className={'projectInfoProperties'}>
-                {ReactPlayer.canPlay(project.videoUrl) ? (
-                  <ReactPlayer
-                    className={'projectVideoContainer'}
-                    width="100%"
-                    height="220px"
-                    loop={true}
-                    light={true}
-                    controls={true}
-                    config={{
-                      youtube: {
-                        playerVars: { autoplay: 1 },
-                      },
-                    }}
-                    url={project.videoUrl}
+                <div className={'projectDescription'}>
+                  <div className={'infoTitle'}>{t('donate:aboutProject')}</div>
+                  <ReadMoreReact
+                    min={300}
+                    ideal={350}
+                    max={400}
+                    readMoreText={t('donate:readMore')}
+                    text={project.description}
                   />
-                ) : null}
-                <div className={'projectImageSliderContainer'}>
-                  <button
-                    id={'expandButton'}
-                    onClick={handleModalOpen}
-                    className={'modalOpen'}
-                  >
-                    <ExpandIcon color="#fff" />
-                  </button>
-                  {project.images.length > 0 && !openModal ? (
-                    <ImageSlider
-                      project={project}
-                      height={233}
-                      imageSize="medium"
+                </div>
+
+                <div className={'projectInfoProperties'}>
+                  {ReactPlayer.canPlay(project.videoUrl) ? (
+                    <ReactPlayer
+                      className={'projectVideoContainer'}
+                      width="100%"
+                      height="220px"
+                      loop={true}
+                      light={true}
+                      controls={true}
+                      config={{
+                        youtube: {
+                          playerVars: { autoplay: 1 },
+                        },
+                      }}
+                      url={project.videoUrl}
                     />
                   ) : null}
-                </div>
-                <ProjectInfo project={project} />
-                {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
+                  <div className={'projectImageSliderContainer'}>
+                    <button
+                      id={'expandButton'}
+                      onClick={handleModalOpen}
+                      className={'modalOpen'}
+                    >
+                      <ExpandIcon color="#fff" />
+                    </button>
+                    {project.images.length > 0 && !openModal ? (
+                      <ImageSlider
+                        project={project}
+                        height={233}
+                        imageSize="medium"
+                      />
+                    ) : null}
+                  </div>
+                  <ProjectInfo project={project} />
+                  {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                     {species ? <PlantSpecies species={species} /> : null }
                     {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
 
-                <ProjectContactDetails project={project} />
+                  <ProjectContactDetails project={project} />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
