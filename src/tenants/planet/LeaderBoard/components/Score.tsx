@@ -13,21 +13,45 @@ import tenantConfig from '../../../../../tenant.config';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
 import Image from 'next/image'
+import theme from '../../../../theme/theme';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   leaderboard: any;
 }
 const config = tenantConfig();
-const useStyles = makeStyles({
-  option: {
-    color: '#2F3336',
-    fontFamily: config!.font.primaryFontFamily,
-    fontSize: '14px',
-    '& > span': {
-      marginRight: 10,
-      fontSize: 18,
-    },
+const useStylesAutoComplete = makeStyles({
+  paper: {
+    color:
+      theme === "theme-light"
+        ? themeProperties.light.primaryFontColor
+        : themeProperties.dark.primaryFontColor,
+    backgroundColor:
+      theme === "theme-light"
+        ? themeProperties.light.backgroundColor
+        : themeProperties.dark.backgroundColor,
   },
+    option: {
+      // color: '#2F3336',
+      fontFamily: config!.font.primaryFontFamily,
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? themeProperties.light.backgroundColor
+            : themeProperties.dark.backgroundColor,
+      },
+      "&:active": {
+        backgroundColor:
+          theme === "theme-light"
+            ? themeProperties.light.backgroundColor
+            : themeProperties.dark.backgroundColor,
+      },
+      fontSize: '14px',
+      '& > span': {
+        marginRight: 10,
+        fontSize: 18,
+      },
+    },
 });
 
 const { useTranslation } = i18next;
@@ -37,7 +61,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
   const [users, setUsers] = React.useState([]);
-  const classes = useStyles();
+  const classes = useStylesAutoComplete();
 
   async function fetchUsers(query: any) {
     postRequest('/suggest.php', { q: query }).then((res) => {
@@ -131,6 +155,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               options={users}
               classes={{
                 option: classes.option,
+                paper: classes.paper,
               }}
               renderOption={(option) => (
                 <Link prefetch={false}

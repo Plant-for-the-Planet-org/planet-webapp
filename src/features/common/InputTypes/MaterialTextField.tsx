@@ -6,6 +6,10 @@ const config = tenantConfig();
 const MaterialTextField = withStyles({
   root: {
     width: '100%',
+    color: 'var(--primary-font-color)',
+    '& .MuiInputBase-input.MuiOutlinedInput-input':{
+      color: 'var(--primary-font-color)',
+    },
     '& label.Mui-focused': {
       color: 'var(--primary-font-color)',
       fontFamily: config!.font.primaryFontFamily,
@@ -25,6 +29,21 @@ const MaterialTextField = withStyles({
       borderRadius: '10px',
       fontFamily: config!.font.primaryFontFamily,
     },
+    '& .MuiOutlinedInput-input':{
+      padding:'14px'
+  },
+  '& .MuiOutlinedInput-multiline':{
+    padding:'0px'
+  },
+  '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]':{
+    padding:'14px'
+  },
+  '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input':{
+    padding:'0px'
+  },
+  '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child':{
+    paddingLeft:'0px'
+  }
   },
 })(TextField);
 

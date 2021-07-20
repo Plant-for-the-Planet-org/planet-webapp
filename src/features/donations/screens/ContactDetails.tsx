@@ -212,6 +212,7 @@ function ContactDetails({
         <div className={styles.formRow}>
           <div style={{ width: '100%' }}>
             <AutoCompleteCountry
+            backgroundColor="blue"
               inputRef={register({ required: true })}
               label={t('donate:country')}
               name="country"

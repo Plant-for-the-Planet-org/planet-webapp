@@ -91,8 +91,11 @@
 
 .searchInput {
   flex-grow: 3;
+  color: $primaryFontColor;
 }
-
+.searchInput > input{
+  background-color: aqua;
+}
 .cancelIcon {
   margin-right: 6px;
   padding: 10px;

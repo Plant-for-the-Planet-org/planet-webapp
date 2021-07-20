@@ -5,6 +5,8 @@ import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
 import i18next from '../../../../i18n';
+import { ThemeContext } from '../../../theme/themeContext';
+import themeProperties from '../../../theme/themeProperties';
 
 const config = tenantConfig();
 const { useTranslation } = i18next;
@@ -19,17 +21,7 @@ function countryToFlag(isoCode: string) {
     : isoCode;
 }
 
-const useStyles = makeStyles({
-  option: {
-    color: '#2F3336',
-    fontFamily: config!.font.primaryFontFamily,
-    fontSize: '14px',
-    '& > span': {
-      marginRight: 10,
-      fontSize: 18,
-    },
-  },
-});
+// const useStyles = makeStyles();
 
 export default function CountrySelect(props: {
   label: React.ReactNode;
@@ -43,9 +35,42 @@ export default function CountrySelect(props: {
   | undefined;
 }) {
   const { t, ready } = useTranslation(['country']);
-
-  const classes = useStyles();
-
+  const {theme} = React.useContext(ThemeContext)
+  const useStylesAutoComplete = makeStyles({
+    paper: {
+      color:
+        theme === "theme-light"
+          ? themeProperties.light.primaryFontColor
+          : themeProperties.dark.primaryFontColor,
+      backgroundColor:
+        theme === "theme-light"
+          ? themeProperties.light.backgroundColor
+          : themeProperties.dark.backgroundColor,
+    },
+      option: {
+        // color: '#2F3336',
+        fontFamily: config!.font.primaryFontFamily,
+        "&:hover": {
+          backgroundColor:
+            theme === "theme-light"
+              ? themeProperties.light.backgroundColor
+              : themeProperties.dark.backgroundColor,
+        },
+        "&:active": {
+          backgroundColor:
+            theme === "theme-light"
+              ? themeProperties.light.backgroundColor
+              : themeProperties.dark.backgroundColor,
+        },
+        fontSize: '14px',
+        '& > span': {
+          marginRight: 10,
+          fontSize: 18,
+        },
+      },
+    }
+  );
+  const classes = useStylesAutoComplete();
   // This value is in country code - eg. DE, IN, US
   const { defaultValue, onChange } = props;
 
@@ -92,6 +117,7 @@ export default function CountrySelect(props: {
       options={countries as CountryType[]}
       classes={{
         option: classes.option,
+        paper: classes.paper,
       }}
       value={value}
       autoHighlight
