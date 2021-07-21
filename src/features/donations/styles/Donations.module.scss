@@ -564,16 +564,16 @@
     &:hover {
       cursor: pointer;
       color: $primaryFontColor;
-      background-color: $blueishGrey;
-      border: 0.5px solid $blueishGrey;
+      background-color: #F2F2F7;
+      border: 0.5px solid #F2F2F7;
     }
     .checkMark {
       display: none;
     }
   }
   .paymentMethodSelected {
-    background-color: $blueishGrey;
-    border: 0.5px solid $blueishGrey;
+    background-color: #F2F2F7;
+    border: 0.5px solid #F2F2F7;
     color: $primaryFontColor;
     font-weight: 600;
 
@@ -794,13 +794,14 @@
 .disclaimerContainer {
   display: flex;
   flex-direction: row;
-  background-color: rgb(231, 237, 255);
+  background-color: $blueishGrey;
   border-radius: 10px;
   width: 100%;
   padding: 18.5px;
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 20px;
+  color: $primaryFontColor;
   > div {
     display: flex;
     justify-content: flex-start;
@@ -816,7 +817,6 @@
   margin-left: 22px;
   margin-right: 22px;
   margin-top: -70px;
-  color: $primaryFontColor;
   padding: 20px;
   padding-left: 30px;
   padding-right: 30px;

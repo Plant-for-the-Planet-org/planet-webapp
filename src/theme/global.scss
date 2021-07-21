@@ -336,3 +336,14 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+.vizzuality__legend-item-container{
+  background-color: $backgroundColor;
+}
+.vizzuality__c-timestep .vizzuality__player-btn > svg {
+fill: $primaryFontColor
+}
+
+.MuiSvgIcon-root .MuiNativeSelect-icon{
+  fill: white;
+
+}

@@ -14,13 +14,16 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/Donations.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
 import i18next from '../../../../../i18n';
+import theme from '../../../../theme/theme';
+import themeProperties from '../../../../theme/themeProperties';
+import { ThemeContext } from "../../../../theme/themeContext";
 
 const { useTranslation } = i18next;
 
 const FormControlNew = withStyles({
   root: {
     width: '100%',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: 'var(--blueish-grey)',
     border: '0px!important',
     borderRadius: '10px',
     fontFamily: styles.primaryFontFamily,
@@ -28,15 +31,19 @@ const FormControlNew = withStyles({
   },
 })(FormControl);
 
-const getInputOptions = (placeholder: string) => {
+const getInputOptions = (placeholder: string, theme:string) => {
   const ObjectM = {
     style: {
       base: {
-        color: '#32325d',
+        color: theme === "theme-light"
+        ? themeProperties.light.primaryFontColor
+        : themeProperties.dark.primaryFontColor,
         fontFamily: styles.primaryFontFamily,
         fontSize: '16px',
         '::placeholder': {
-          color: '#2F3336',
+          color: theme === "theme-light"
+          ? themeProperties.light.primaryFontColor
+          : themeProperties.dark.primaryFontColor,
           fontFamily: styles.primaryFontFamily,
           fontSize: '14px',
         },
@@ -189,7 +196,7 @@ function CardPayments({
   React.useEffect(() => {
     validateCard();
   }, [cardDate, cardNumber, cardCvv]);
-
+  const {theme} = React.useContext(ThemeContext)
   return ready ? (
       <div>
 
@@ -204,7 +211,7 @@ function CardPayments({
               <FormControlNew variant="outlined">
                 <CardNumberElement
                   id="cardNumber"
-                  options={getInputOptions(t('donate:cardNumber'))}
+                  options={getInputOptions(t('donate:cardNumber'), theme)}
                   onChange={handleChange}
                 />
               </FormControlNew>
@@ -213,13 +220,13 @@ function CardPayments({
               <FormControlNew variant="outlined">
                 <CardExpiryElement
                   id="expiry"
-                  options={getInputOptions(t('donate:expDate'))}
+                  options={getInputOptions(t('donate:expDate'), theme)}
                   onChange={handleChangeCardDate}
                 />
               </FormControlNew>
               <div style={{ width: '20px' }}></div>
               <FormControlNew variant="outlined">
-                <CardCvcElement id="cvc" options={getInputOptions('CVV')} onChange={handleChangeCvv} />
+                <CardCvcElement id="cvc" options={getInputOptions('CVV', theme)} onChange={handleChangeCvv} />
               </FormControlNew>
             </div>
           </div>
