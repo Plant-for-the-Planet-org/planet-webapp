@@ -42,6 +42,8 @@ function SingleProjectDetails({}: Props): ReactElement {
     selectedMode,
     hoveredPl,
     selectedLocation,
+    setHoveredPl,
+    setSelectedLocation,
   } = React.useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -68,6 +70,16 @@ function SingleProjectDetails({}: Props): ReactElement {
 
   const ProjectProps = {
     plantLocation: hoveredPl ? hoveredPl : selectedLocation,
+  };
+
+  const goBack = () => {
+    if (selectedLocation || hoveredPl) {
+      setHoveredPl(null);
+      setSelectedLocation(null);
+      router.replace('/[p]', `/${project.slug}`);
+    } else {
+      router.replace('/');
+    }
   };
 
   return ready ? (
@@ -118,9 +130,7 @@ function SingleProjectDetails({}: Props): ReactElement {
               position: 'absolute',
               zIndex: 3333,
             }}
-            onClick={() => {
-              router.replace('/');
-            }}
+            onClick={goBack}
           >
             <BackButton />
           </button>

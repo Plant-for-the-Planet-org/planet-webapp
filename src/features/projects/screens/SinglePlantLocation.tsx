@@ -93,14 +93,15 @@ export default function SinglePlantLocation({
             {plantLocation.type === 'single' && <span>{t('1Tree')} </span>}
             {plantLocation.type === 'sample' && <span>{t('sampleTree')} </span>}
           </div>
-          {plantLocation.coordinates && (
-            <ImageSlider
-              images={plantLocation.coordinates}
-              show={plantLocation}
-              height={233}
-              imageSize="large"
-            />
-          )}
+          {plantLocation?.coordinates &&
+            plantLocation?.coordinates.length !== 0 && (
+              <ImageSlider
+                images={plantLocation.coordinates}
+                show={plantLocation}
+                height={233}
+                imageSize="large"
+              />
+            )}
           <div className={styles.locDetails}>
             <div className={styles.singleDetail}>
               <div className={styles.detailTitle}>{t('plantingDate')}</div>
@@ -127,10 +128,16 @@ export default function SinglePlantLocation({
                   {t('speciesPlanted')} ({plantLocation.plantedSpecies.length})
                 </div>
                 {plantLocation.plantedSpecies.map((sp: any, index: number) => {
-                  const speciesName = getSpeciesName(sp.scientificSpecies);
+                  // const speciesName = getSpeciesName(sp.scientificSpecies);
                   return (
                     <div key={index} className={styles.detailValue}>
-                      {sp.treeCount} <span>{speciesName}</span>
+                      {sp.treeCount}{' '}
+                      <span>
+                        {' '}
+                        {sp.scientificName
+                          ? sp.scientificName
+                          : sp.scientificSpecies}
+                      </span>
                     </div>
                   );
                 })}
@@ -145,10 +152,15 @@ export default function SinglePlantLocation({
                 {plantLocation.samplePlantLocations &&
                   plantLocation.samplePlantLocations.map(
                     (spl: any, index: number) => {
-                      const speciesName = getSpeciesName(spl.scientificSpecies);
+                      // const speciesName = getSpeciesName(spl.scientificSpecies);
                       return (
                         <div key={index} className={styles.detailValue}>
-                          {index + 1}. <span>{speciesName}</span>
+                          {index + 1}.{' '}
+                          <span>
+                            {spl.scientificName
+                              ? spl.scientificName
+                              : spl.scientificSpecies}
+                          </span>
                           <br />#{spl?.tag} • {spl?.measurements?.height}
                           {t('meterHigh')}• {spl?.measurements?.width}
                           {t('cmWide')}

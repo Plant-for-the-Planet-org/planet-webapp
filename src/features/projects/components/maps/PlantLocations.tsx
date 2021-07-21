@@ -151,7 +151,7 @@ export default function PlantLocations({}: Props): ReactElement {
                         latitude={spl.geometry.coordinates[1]}
                         longitude={spl.geometry.coordinates[0]}
                       >
-                        {viewport.zoom > 18 && (
+                        {viewport.zoom > 12 && (
                           <div
                             className={styles.single}
                             role="button"

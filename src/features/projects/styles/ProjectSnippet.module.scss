@@ -43,11 +43,11 @@
   }
 
   &.projectCollapsed {
-    height: 50px;
+    height: 85px;
     transition: all 1s ease;
-    > .projectImageBlock {
-      left: 50px;
-    }
+    // > .projectImageBlock {
+    //   left: 50px;
+    // }
   }
 }
 
