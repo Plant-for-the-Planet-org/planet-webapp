@@ -14,12 +14,13 @@ import { selectUserType } from '../../../utils/selectUserType';
 import { MenuItem } from '@material-ui/core';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-
+import themeProperties from '../../../theme/themeProperties';
+import { ThemeContext } from '../../../theme/themeContext';
 const { useTranslation } = i18next;
 export default function CompleteSignup() {
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
-
+  const { theme } = React.useContext(ThemeContext);
   const {
     register,
     handleSubmit,
@@ -192,7 +193,15 @@ export default function CompleteSignup() {
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div className={requestSent ? styles.signupRequestSent : styles.signup}>
+        <div className={requestSent ? styles.signupRequestSent : styles.signup} 
+        style={{
+          backgroundColor: theme === 'theme-light' ?
+                          themeProperties.light.light :
+                          themeProperties.dark.backgroundColor,
+          color: theme === 'theme-light' ?
+                 themeProperties.light.primaryFontColor :
+                 themeProperties.dark.primaryFontColor,
+        }}>
           {/* header */}
           <div className={styles.header}>
             <div onClick={() => logoutUser()} className={styles.headerBackIcon}>
