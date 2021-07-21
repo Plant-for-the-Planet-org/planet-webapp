@@ -320,7 +320,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                                 <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
                                             </svg>
                                         </div>
-                                        <p>{month.title}</p>
+                                        <p style={{color: 'var(--dark)'}}>{month.title}</p>
                                     </div>
                                 )
                             })}
@@ -409,7 +409,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                                     <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
                                                 </svg>
                                             </div>
-                                            <p>{owner.title}</p>
+                                            <p style={{color: 'var(--dark)'}}>{owner.title}</p>
                                         </div>
                                     )
                                 })}

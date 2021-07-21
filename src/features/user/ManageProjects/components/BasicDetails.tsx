@@ -22,6 +22,8 @@ import {
   parseNumber,
 } from '../../../../utils/getFormattedNumber';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import themeProperties from '../../../../theme/themeProperties';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 
@@ -87,7 +89,7 @@ export default function BasicDetails({
       ]);
     }
   };
-
+  const {theme} = React.useContext(ThemeContext)
   const changeLon = (e: any) => {
     if (e.target.value && e.target.value > -180 && e.target.value < 180) {
       setProjectCoords([
@@ -506,7 +508,9 @@ export default function BasicDetails({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-            <p>{t('manageProjects:projectLocation')}</p>
+            <p style={{backgroundColor: theme === 'theme-light' ?
+            themeProperties.light.light :
+            themeProperties.dark.dark}}>{t('manageProjects:projectLocation')}</p>
             <MapGL
               {...viewport}
               ref={mapRef}

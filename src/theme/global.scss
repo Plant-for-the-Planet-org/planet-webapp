@@ -347,3 +347,14 @@ fill: $primaryFontColor
   fill: white;
 
 }
+.MuiPaper-root{
+background-color: $backgroundColor !important;
+}
+.MuiStepLabel-label.MuiStepLabel-active,
+.MuiStepLabel-label.MuiStepLabel-completed,
+.MuiStepLabel-label{
+  color: $primaryFontColor !important;
+}
+.MuiInputBase-input{
+  color: $primaryFontColor !important;
+}
