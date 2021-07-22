@@ -66,7 +66,6 @@ export default function SinglePlantLocation({
           )
         ) {
           const element = plantLocation.samplePlantLocations[key];
-          console.log('element', element);
 
           if (element.coordinates?.[0]) {
             images.push(element.coordinates[0]);
@@ -231,6 +230,18 @@ export default function SinglePlantLocation({
                 <div className={styles.detailTitle}>Recruits (per HA)</div>
                 <div className={styles.detailValue}>710,421</div>
               </div> */}
+            <div className={styles.singleDetail}>
+              <div className={styles.detailValue}>
+                powered by{' '}
+                <a
+                  href="https://treemapper.app"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Tree Mapper
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}
