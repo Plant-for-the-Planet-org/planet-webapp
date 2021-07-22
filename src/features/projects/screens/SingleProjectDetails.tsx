@@ -118,7 +118,12 @@ function SingleProjectDetails({}: Props): ReactElement {
             >
               <CancelIcon color="#fff" />
             </button>
-            <ImageSlider project={project} height={600} imageSize="large" />
+            <ImageSlider
+              images={project.images}
+              height={600}
+              imageSize="large"
+              type="project"
+            />
           </div>
         </Modal>
         <div className={'projectContainer'}>
@@ -194,11 +199,12 @@ function SingleProjectDetails({}: Props): ReactElement {
                     >
                       <ExpandIcon color="#fff" />
                     </button>
-                    {project.images.length > 0 && !openModal ? (
+                    {project?.images?.length > 0 && !openModal ? (
                       <ImageSlider
-                        project={project}
+                        images={project.images}
                         height={233}
                         imageSize="medium"
+                        type="project"
                       />
                     ) : null}
                   </div>

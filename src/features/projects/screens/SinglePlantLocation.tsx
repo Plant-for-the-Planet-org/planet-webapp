@@ -7,7 +7,7 @@ import formatDate from '../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 
 const ImageSlider = dynamic(
-  () => import('../components/PlantLocation/ImageSlider'),
+  () => import('../components/projectDetails/ImageSlider'),
   {
     ssr: false,
     loading: () => <p>Images</p>,
@@ -49,23 +49,6 @@ export default function SinglePlantLocation({
     }
   }, [plantLocation]);
 
-  function getSpeciesName(id: string) {
-    for (const key in plantLocation.metadata.app.species) {
-      if (
-        Object.prototype.hasOwnProperty.call(
-          plantLocation.metadata.app.species,
-          key
-        )
-      ) {
-        const element = plantLocation.metadata.app.species[key];
-        if (element.id === id) {
-          return element.aliases;
-        }
-      }
-    }
-    return null;
-  }
-
   return (
     <>
       {plantLocation && (
@@ -100,6 +83,7 @@ export default function SinglePlantLocation({
                 show={plantLocation}
                 height={233}
                 imageSize="large"
+                type="coordinate"
               />
             )}
           <div className={styles.locDetails}>

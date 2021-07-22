@@ -4,22 +4,28 @@ import getImageUrl from '../../../../utils/getImageURL';
 import styles from './../../styles/ProjectDetails.module.scss';
 
 interface Props {
-  project: any;
+  images: any;
   height: any;
   imageSize: any;
+  type: string;
 }
 
-export default function ImageSlider({ project, height, imageSize }: Props) {
+export default function ImageSlider({
+  images,
+  height,
+  imageSize,
+  type,
+}: Props) {
   const [slider, setSlider] = React.useState<JSX.Element>();
   const projectImages: { content: () => JSX.Element }[] = [];
 
   const loadImageSource = (image: any) => {
-    const ImageSource = getImageUrl('project', imageSize, image);
+    const ImageSource = getImageUrl(type, imageSize, image);
     return ImageSource;
   };
 
   React.useEffect(() => {
-    project.images.forEach((image: any) => {
+    images.forEach((image: any) => {
       const imageURL = loadImageSource(image.image);
       projectImages.push({
         content: () => (
@@ -36,7 +42,7 @@ export default function ImageSlider({ project, height, imageSize }: Props) {
         ),
       });
     });
-  }, [project]);
+  }, [images]);
 
   React.useEffect(() => {
     setSlider(

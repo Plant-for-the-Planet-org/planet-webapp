@@ -41,6 +41,7 @@ export default function ProjectsMap(): ReactElement {
     selectedLocation,
     satellite,
     setSatellite,
+    selectedMode,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -169,7 +170,7 @@ export default function ProjectsMap(): ReactElement {
         {zoomLevel === 2 && project && (
           <>
             <Project {...projectProps} />
-            <PlantLocations />
+            {selectedMode === 'location' && <PlantLocations />}
           </>
         )}
         <ExploreLayers />
