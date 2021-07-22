@@ -39,7 +39,11 @@ export default function PlantLocations({}: Props): ReactElement {
   };
 
   const onHoverEnd = (pl: Object) => {
-    if (hoveredPl && hoveredPl.type === 'single') setHoveredPl(null);
+    if (
+      hoveredPl &&
+      (hoveredPl.type === 'single' || hoveredPl.type === 'sample')
+    )
+      setHoveredPl(null);
   };
 
   const getPlTreeCount = (pl: any) => {
@@ -153,7 +157,11 @@ export default function PlantLocations({}: Props): ReactElement {
                       >
                         {viewport.zoom > 12 && (
                           <div
-                            className={styles.single}
+                            className={`${styles.single} ${
+                              spl.id === selectedLocation?.id
+                                ? styles.singleSelected
+                                : ''
+                            }`}
                             role="button"
                             tabIndex={0}
                             onClick={() => openPl(spl)}
@@ -181,7 +189,11 @@ export default function PlantLocations({}: Props): ReactElement {
                     onClick={() => openPl(pl)}
                     onMouseEnter={() => onHover(pl)}
                     onMouseLeave={() => onHoverEnd(pl)}
-                    className={styles.single}
+                    className={`${styles.single} ${
+                      pl.id === selectedLocation?.id
+                        ? styles.singleSelected
+                        : ''
+                    }`}
                     role="button"
                     tabIndex={0}
                   />

@@ -26,6 +26,7 @@ export default function SinglePlantLocation({
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
+  const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
 
   React.useEffect(() => {
     let count = 0;
@@ -46,6 +47,35 @@ export default function SinglePlantLocation({
     if (plantLocation && plantLocation.type === 'multi') {
       const area = turf.area(plantLocation.geometry);
       setPlantationArea(area / 10000);
+    }
+  }, [plantLocation]);
+
+  React.useEffect(() => {
+    if (
+      plantLocation &&
+      plantLocation.samplePlantLocations &&
+      plantLocation.samplePlantLocations.length > 0
+    ) {
+      console.log('in if');
+      let images = [];
+      for (const key in plantLocation.samplePlantLocations) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            plantLocation.samplePlantLocations,
+            key
+          )
+        ) {
+          const element = plantLocation.samplePlantLocations[key];
+          console.log('element', element);
+
+          if (element.coordinates?.[0]) {
+            images.push(element.coordinates[0]);
+          }
+        }
+      }
+      setSampleTreeImages(images);
+    } else {
+      setSampleTreeImages([]);
     }
   }, [plantLocation]);
 
@@ -76,11 +106,18 @@ export default function SinglePlantLocation({
             {plantLocation.type === 'single' && <span>{t('1Tree')} </span>}
             {plantLocation.type === 'sample' && <span>{t('sampleTree')} </span>}
           </div>
-          {plantLocation?.coordinates &&
-            plantLocation?.coordinates.length !== 0 && (
+          {plantLocation.type === 'multi' && sampleTreeImages.length > 0 && (
+            <ImageSlider
+              images={sampleTreeImages}
+              height={233}
+              imageSize="large"
+              type="coordinate"
+            />
+          )}
+          {plantLocation.type !== 'multi' &&
+            plantLocation.coordinates?.length > 0 && (
               <ImageSlider
                 images={plantLocation.coordinates}
-                show={plantLocation}
                 height={233}
                 imageSize="large"
                 type="coordinate"
@@ -154,6 +191,42 @@ export default function SinglePlantLocation({
                   )}
               </div>
             )}
+            {(plantLocation.type === 'sample' ||
+              plantLocation.type === 'single') && (
+              <div className={styles.singleDetail}>
+                <div className={styles.detailTitle}>{t('scientificName')}</div>
+                <div className={styles.detailValue}>
+                  <span>
+                    {plantLocation.scientificName
+                      ? plantLocation.scientificName
+                      : plantLocation.scientificSpecies}
+                  </span>
+                </div>
+              </div>
+            )}
+            {(plantLocation.type === 'sample' ||
+              plantLocation.type === 'single') &&
+              plantLocation.measurements && (
+                <div className={styles.singleDetail}>
+                  <div className={styles.detailTitle}>{t('measurements')}</div>
+                  <div className={styles.detailValue}>
+                    {plantLocation?.measurements?.height}
+                    {t('meterHigh')}• {plantLocation?.measurements?.width}
+                    {t('cmWide')}
+                  </div>
+                </div>
+              )}
+
+            {(plantLocation.type === 'sample' ||
+              plantLocation.type === 'single') &&
+              plantLocation.tag && (
+                <div className={styles.singleDetail}>
+                  <div className={styles.detailTitle}>{t('treeTag')}</div>
+                  <div className={styles.detailValue}>
+                    #{plantLocation?.tag}
+                  </div>
+                </div>
+              )}
             {/* <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>Recruits (per HA)</div>
                 <div className={styles.detailValue}>710,421</div>

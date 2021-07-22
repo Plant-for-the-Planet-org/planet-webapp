@@ -42,6 +42,7 @@ export default function ProjectsMap(): ReactElement {
     satellite,
     setSatellite,
     selectedMode,
+    hoveredPl,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -126,14 +127,16 @@ export default function ProjectsMap(): ReactElement {
 
   const onMapHover = (e: MapEvent) => {
     if (e.features?.length !== 0) {
-      if (e.features[0].layer?.source) {
-        for (const key in plantLocations) {
-          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-            const element = plantLocations[key];
-            if (element.id === e.features[0].layer?.source) {
-              setHoveredPl(element);
-              // setSelectedLocation(element);
-              break;
+      if (!hoveredPl || hoveredPl.type !== 'sample') {
+        if (e.features[0].layer?.source) {
+          for (const key in plantLocations) {
+            if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+              const element = plantLocations[key];
+              if (element.id === e.features[0].layer?.source) {
+                setHoveredPl(element);
+                // setSelectedLocation(element);
+                break;
+              }
             }
           }
         }

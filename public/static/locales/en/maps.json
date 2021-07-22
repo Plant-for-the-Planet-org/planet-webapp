@@ -26,5 +26,9 @@
   "meterHigh": "m high",
   "cmWide": "cm wide",
   "treesPerHa": "trees per ha",
-  "sampleTree": "Sample Tree"
+  "sampleTree": "Sample Tree",
+  "scientificName": "Scientific Name",
+  "measurements": "Measurements",
+  "treeTag": "Tree Tag",
+  "1Tree": "1 Tree"
 }

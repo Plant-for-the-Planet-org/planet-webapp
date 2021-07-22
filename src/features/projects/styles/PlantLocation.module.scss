@@ -87,6 +87,9 @@
   cursor: pointer;
   position: absolute;
   z-index: 1;
+  &.singleSelected {
+    background-color: rgba(0, 122, 73, 1);
+  }
 }
 
 .single:hover {
