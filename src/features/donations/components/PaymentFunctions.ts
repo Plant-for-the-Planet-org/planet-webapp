@@ -14,7 +14,7 @@ export async function createDonation(data: any, token: any) {
   if (token && token !== '') {
     headers = {
       ...headers,
-      'Authorization': `OAuth ${token}`
+      'Authorization': `Bearer ${token}`
     }
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations`, {
@@ -39,7 +39,7 @@ export async function payDonation(data: any, id: any, token: any) {
   if (token && token !== '') {
     headers = {
       ...headers,
-      'Authorization': `OAuth ${token}`
+      'Authorization': `Bearer ${token}`
     }
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
@@ -193,7 +193,8 @@ export async function payDonationFunction({
   donationID,
   token,
   setDonationStep,
-  donorDetails
+  donorDetails,
+  country
 }: any) {
   setIsPaymentProcessing(true);
 
@@ -271,10 +272,15 @@ export async function payDonationFunction({
       if (paidDonation.status === 'failed') {
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
-      } else if (paidDonation.paymentStatus === 'success' || paidDonation.paymentStatus === 'pending') {
+        return paidDonation;
+      } else if (paidDonation.paymentStatus === 'success'
+        || paidDonation.paymentStatus === 'pending'
+        || paidDonation.paymentStatus === 'paid'
+        || paidDonation.status === 'success'
+        || paidDonation.status === 'pending'
+        || paidDonation.status === 'paid' ) {
         setIsPaymentProcessing(false);
         setDonationStep(4);
-        
         return paidDonation;
       } else if (paidDonation.status === 'action_required') {
         handleSCAPaymentFunction({
@@ -287,7 +293,8 @@ export async function payDonationFunction({
           donationID,
           token,
           setDonationStep,
-          donorDetails
+          donorDetails,
+          country
         })
       }
     }
@@ -307,8 +314,9 @@ export async function handleSCAPaymentFunction({
   donationID,
   token,
   setDonationStep,
-  donorDetails
-}: any) {  
+  donorDetails,
+  country
+}: any) {
   const clientSecret = paidDonation.response.payment_intent_client_secret;
   const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
   const stripe = window.Stripe(
@@ -319,7 +327,7 @@ export async function handleSCAPaymentFunction({
   );
   if (stripe) {
     if(gateway === 'stripe'){
-      const SCAdonation = await stripe.handleCardAction(clientSecret);      
+      const SCAdonation = await stripe.handleCardAction(clientSecret);
       if (SCAdonation) {
         if (SCAdonation.error) {
           setIsPaymentProcessing(false);
@@ -337,7 +345,7 @@ export async function handleSCAPaymentFunction({
           };
           const SCAPaidDonation = await payDonation(payDonationData, donationID, token);
           if (SCAPaidDonation) {
-            if (SCAPaidDonation.paymentStatus) {
+            if (SCAPaidDonation.paymentStatus || SCAPaidDonation.status) {
               setIsPaymentProcessing(false);
               setDonationStep(4);
               return SCAPaidDonation;
@@ -384,7 +392,7 @@ export async function handleSCAPaymentFunction({
         {
           payment_method: {
             sofort: {
-              country: donorDetails.country
+              country: country
             },
             billing_details: {
               name: `${donorDetails.firstname} ${donorDetails.lastname}`,
@@ -409,6 +417,6 @@ export async function handleSCAPaymentFunction({
         console.log('paymentIntent',paymentIntent)
       }
     }
-    
+
   }
 }

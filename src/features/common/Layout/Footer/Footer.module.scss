@@ -3,8 +3,8 @@
 .footerMainContainer {
   max-width: 950px;
   margin: auto 20px 0px 20px;
+  background-color: $backgroundColor;
 }
-
 
 .logo_container {
   display: flex;
@@ -21,14 +21,14 @@
   .footerMainContainer {
     margin: auto 20px 60px 20px;
   }
-  .logo_container{
+  .logo_container {
     margin-bottom: 0px;
   }
 }
 @media screen and (min-width: 950px) {
   .footerMainContainer {
     margin: auto;
-    margin-bottom: 60px;
+    padding-bottom: 60px;
   }
 }
 
@@ -54,7 +54,7 @@
 .footer_links {
   font-family: $primaryFontFamily;
   font-weight: bold;
-  font-size: 14px;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   margin-right: 16px;
   margin-top: 22.2px;
@@ -98,28 +98,26 @@
 
 .selected_language {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   margin: 0px !important;
   margin-left: 8px !important;
 }
 
 .selected_language_bold {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: bold;
   margin: 0px !important;
   margin-left: 8px !important;
 }
 
-
-
-.pfp_logo_container{
+.pfp_logo_container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-left: 15px;
 }
-.unep_logo_container{
+.unep_logo_container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -133,14 +131,14 @@
   color: $primaryFontColor;
   margin-bottom: 10px;
 }
-.undecade_logo_container{
+.undecade_logo_container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-left: 30px;
 }
 
-.footer_social_container{
+.footer_social_container {
   display: flex;
   flex-direction: row;
   justify-content: center;

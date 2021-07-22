@@ -12,3 +12,9 @@
 .landingSectionFixedBG {
   height: 100vh;
 }
+
+@include smTabletView {
+  .landingSection {
+    margin-top: 80px;
+  }
+}

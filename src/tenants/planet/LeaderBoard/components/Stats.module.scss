@@ -46,7 +46,7 @@
 
 .statText {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: bold;
 }
 
@@ -100,7 +100,7 @@
 
 .infoContent {
   width: 100%;
-  font-size: 12px;
+  font-size: $fontXSmall;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

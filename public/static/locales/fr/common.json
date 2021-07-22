@@ -1,4 +1,6 @@
 {
+  "tree": "Arbre",
+  "tree_plural": "Arbres",
   "by": "Par {{tpoName}}",
   "to_project_by_tpo": "Au {{projectName}} par {{tpoName}}",
   "for": "pour",
@@ -6,6 +8,7 @@
   "planted": "planté",
   "privacyAndTerms": "Vie privée et conditions d'utilisation",
   "imprint": "Mentions légales",
+  "status": "Statut",
   "contact": "Contact",
   "supportUs": "Nous soutenir",
   "leaders": "Leaders",
@@ -25,6 +28,8 @@
   "delete": "Supprimer",
   "deleteAccount": "Supprimer le compte",
   "thankYou": "Merci",
+  "privacyPolicyNotice": "En utilisant ce site web, vous acceptez le programme Plant-for-the-Planet",
+  "privacyPolicy": "politique de confidentialité et de cookies",
   "about_pftp": "À propos de \"Plant for the Planet\"",
   "january": "Janvier",
   "february": "Février",

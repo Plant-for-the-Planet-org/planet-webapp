@@ -18,11 +18,14 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import { removeLocalUserInfo } from '../src/utils/auth0/localStorageUtils';
 import VideoContainer from '../src/features/common/LandingVideo/';
 import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import ProjectPropsProvider, {
+  ProjectPropsContext,
+} from '../src/features/common/Layout/ProjectPropsContext';
+import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -67,20 +70,14 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   });
 }
 
-const onRedirectCallback = (appState) => {
-  removeLocalUserInfo();
+const onRedirectCallback = (appState: any) => {
   // Use Next.js's Router.replace method to replace the url
-  Router.replace(appState?.returnTo || '/');
+  if (appState) Router.replace(appState?.returnTo || '/');
 };
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
-  const [projects, setProjects] = React.useState(null);
-  const [project, setProject] = React.useState(null);
-  const [showProjects, setShowProjects] = React.useState(true);
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
-  const [searchedProject, setsearchedProjects] = React.useState([]);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
@@ -124,18 +121,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   const ProjectProps = {
-    projects,
-    project,
-    setProject,
-    setProjects,
-    showSingleProject,
-    setShowSingleProject,
     pageProps,
     initialized,
-    showProjects,
-    setShowProjects,
-    searchedProject,
-    setsearchedProjects,
     currencyCode,
     setCurrencyCode,
   };
@@ -152,6 +139,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       }
     }
   }, []);
+  const { project, projects } = React.useContext(ProjectPropsContext);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -181,21 +169,26 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             domain={process.env.AUTH0_CUSTOM_DOMAIN}
             clientId={process.env.AUTH0_CLIENT_ID}
             redirectUri={process.env.NEXTAUTH_URL}
+            audience={'urn:plant-for-the-planet'}
             cacheLocation={'localstorage'}
             onRedirectCallback={onRedirectCallback}
           >
             <ThemeProvider>
               <CssBaseline />
-              <Layout>
-                {isMap ? (
-                  project ? (
-                    <MapLayout {...ProjectProps} />
-                  ) : projects ? (
-                    <MapLayout {...ProjectProps} />
-                  ) : null
-                ) : null}
-                <Component {...ProjectProps} />
-              </Layout>
+              <UserPropsProvider>
+                <Layout>
+                  <ProjectPropsProvider>
+                    {isMap ? (
+                      project ? (
+                        <MapLayout />
+                      ) : projects ? (
+                        <MapLayout />
+                      ) : null
+                    ) : null}
+                    <Component {...ProjectProps} />
+                  </ProjectPropsProvider>
+                </Layout>
+              </UserPropsProvider>
             </ThemeProvider>
           </Auth0Provider>
         </div>

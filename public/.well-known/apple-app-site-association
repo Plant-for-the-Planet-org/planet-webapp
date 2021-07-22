@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "UYRJ8SA699.org.plant-for-the-planet.app",
-                "paths": [ "/", "/imprint*", "/edit-profile*", "/login*",
+                "paths": [ "/", "/imprint*", "/edit-profile*",
                     "/password-sent*", "/signup*", "/my-trees*", "/forgot-password*", "/account-activation*",
                     "/faq*", "/about_us*", "/license_info_list*", "/data-protection-policy*",
                     "/redeem*", "/claim*", "/edit-trees*", "/target*", "/challenge*",

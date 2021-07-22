@@ -12,11 +12,17 @@ import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
 import styles from '../styles/ProjectDetails.module.scss';
+import SitesDropdown from '../components/maps/SitesDropdown';
+import Explore from '../components/maps/Explore';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import ProjectTabs from '../components/maps/ProjectTabs';
+
+const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
+  ssr: false,
+});
 
 const { useTranslation } = i18next;
-interface Props {
-  project: any;
-}
+interface Props {}
 
 const ImageSlider = dynamic(
   () => import('../components/projectDetails/ImageSlider'),
@@ -26,10 +32,12 @@ const ImageSlider = dynamic(
   }
 );
 
-function SingleProjectDetails({ project }: Props): ReactElement {
+function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-
+  const { project, geoJson, rasterData, selectedMode } = React.useContext(
+    ProjectPropsContext
+  );
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -53,55 +61,70 @@ function SingleProjectDetails({ project }: Props): ReactElement {
     setModalOpen(true);
   };
   return ready ? (
-    <div
-      style={{ transform: `translate(0,${scrollY}px)` }}
-      className={'container'}
-      onTouchMove={(event) => {
-        if (isMobile) {
-          if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
-            setScrollY(event.targetTouches[0].clientY);
-          } else {
-            setScrollY((screenHeight * 2) / 8);
+    <>
+      <Explore />
+      {geoJson && <SitesDropdown />}
+      {Object.keys(rasterData.imagery).length !== 0 &&
+        rasterData.imagery.constructor === Object && <ProjectTabs />}
+      {geoJson && selectedMode === 'imagery' && <TimeTravel />}
+      <div
+        style={{ transform: `translate(0,${scrollY}px)` }}
+        className={'container'}
+        onTouchMove={(event) => {
+          if (isMobile) {
+            if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+              setScrollY(event.targetTouches[0].clientY);
+            } else {
+              setScrollY((screenHeight * 2) / 8);
+            }
           }
-        }
-      }}
-    >
-      <Modal
-        className={'modalContainer'}
-        open={openModal}
-        onClose={handleModalClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        hideBackdrop
+        }}
       >
-        <div className={'modalWrapper'}>
-          <button id={'singleProjCloseModal'}  onClick={handleModalClose} className={'modalClose'}>
-            <CancelIcon color="#fff" />
-          </button>
-          <ImageSlider project={project} height={600} imageSize="large" />
-        </div>
-      </Modal>
-      <div className={'projectContainer'}>
-        <button id={'backButtonSingleP'}
-          style={{
-            cursor: 'pointer',
-            width: 'fit-content',
-            position: 'absolute',
-            zIndex: 3333,
-          }}
-          onClick={() => {
-            router.back();
-          }}
+        <Modal
+          className={'modalContainer'}
+          open={openModal}
+          onClose={handleModalClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          hideBackdrop
         >
-          <BackButton />
-        </button>
-        <div className={'projectSnippetContainer'}>
-          <ProjectSnippet key={project.id} project={project} editMode={false} />
-        </div>
+          <div className={'modalWrapper'}>
+            <button
+              id={'singleProjCloseModal'}
+              onClick={handleModalClose}
+              className={'modalClose'}
+            >
+              <CancelIcon color="#fff" />
+            </button>
+            <ImageSlider project={project} height={600} imageSize="large" />
+          </div>
+        </Modal>
+        <div className={'projectContainer'}>
+          <button
+            id={'backButtonSingleP'}
+            style={{
+              cursor: 'pointer',
+              width: 'fit-content',
+              position: 'absolute',
+              zIndex: 3333,
+            }}
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <BackButton />
+          </button>
+          <div className={'projectSnippetContainer'}>
+            <ProjectSnippet
+              key={project.id}
+              project={project}
+              editMode={false}
+            />
+          </div>
 
-        <div className={'singleProject'}>
-          <div className={'projectCompleteInfo'}>
-            {/* <div className={'ratings}>
+          <div className={'singleProject'}>
+            <div className={'projectCompleteInfo'}>
+              {/* <div className={'ratings}>
               <div className={'calculatedRating}>{rating}</div>
               <div className={'ratingButton}>
                 <MaterialRatings
@@ -113,57 +136,64 @@ function SingleProjectDetails({ project }: Props): ReactElement {
               </div>
             </div> */}
 
-            <div className={'projectDescription'}>
-              <ReadMoreReact
-                min={300}
-                ideal={350}
-                max={400}
-                readMoreText={t('donate:readMore')}
-                text={project.description}
-              />
-            </div>
-
-            <div className={'projectInfoProperties'}>
-              {ReactPlayer.canPlay(project.videoUrl) ? (
-                <ReactPlayer
-                  className={'projectVideoContainer'}
-                  width="100%"
-                  height="220px"
-                  loop={true}
-                  light={true}
-                  controls={true}
-                  config={{
-                    youtube: {
-                      playerVars: { autoplay: 1 },
-                    },
-                  }}
-                  url={project.videoUrl}
+              <div className={'projectDescription'}>
+                <ReadMoreReact
+                  min={300}
+                  ideal={350}
+                  max={400}
+                  readMoreText={t('donate:readMore')}
+                  text={project.description}
                 />
-              ) : null}
-              <div className={'projectImageSliderContainer'}>
-                <button id={'expandButton'} onClick={handleModalOpen} className={'modalOpen'}>
-                  <ExpandIcon color="#fff" />
-                </button>
-                {project.images.length > 0 && !openModal ? (
-                  <ImageSlider
-                    project={project}
-                    height={233}
-                    imageSize="medium"
+              </div>
+
+              <div className={'projectInfoProperties'}>
+                {ReactPlayer.canPlay(project.videoUrl) ? (
+                  <ReactPlayer
+                    className={'projectVideoContainer'}
+                    width="100%"
+                    height="220px"
+                    loop={true}
+                    light={true}
+                    controls={true}
+                    config={{
+                      youtube: {
+                        playerVars: { autoplay: 1 },
+                      },
+                    }}
+                    url={project.videoUrl}
                   />
                 ) : null}
-              </div>
-              <ProjectInfo project={project} />
-              {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
+                <div className={'projectImageSliderContainer'}>
+                  <button
+                    id={'expandButton'}
+                    onClick={handleModalOpen}
+                    className={'modalOpen'}
+                  >
+                    <ExpandIcon color="#fff" />
+                  </button>
+                  {project.images.length > 0 && !openModal ? (
+                    <ImageSlider
+                      project={project}
+                      height={233}
+                      imageSize="medium"
+                    />
+                  ) : null}
+                </div>
+                <ProjectInfo project={project} />
+                {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                     {species ? <PlantSpecies species={species} /> : null }
                     {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
 
-              <ProjectContactDetails project={project} />
+                <ProjectContactDetails project={project} />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  ) : <></>;
+    </>
+  ) : (
+    <></>
+  );
 }
 
 export default SingleProjectDetails;

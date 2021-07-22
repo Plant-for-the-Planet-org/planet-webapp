@@ -69,7 +69,7 @@
   font-family: $secondaryFontFamily;
   font-style: normal;
   font-weight: bold;
-  font-size: 14px;
+  font-size: $fontSmall;
   line-height: 21px;
   text-align: center;
   color: #080707;
@@ -78,7 +78,7 @@
 .leaderBoard > h2 {
   font-family: $secondaryFontFamily;
   font-style: normal;
-  font-size: 36px;
+  font-size: $fontXXLarge;
   text-align: center;
   font-weight: 500;
   line-height: 100%;
@@ -109,7 +109,7 @@
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: normal;
-  font-size: 13px;
+  font-size: $fontSmall;
   line-height: 42px;
   color: #032D60;
   background-color: #F5F2F2;
@@ -122,7 +122,7 @@
   font-family: $primaryFontFamily;
   font-style: normal;
   font-weight: bold;
-  font-size: 13px;
+  font-size: $fontSmall;
   line-height: 42px;
   color: white;
   background-color: #032D60;
@@ -178,7 +178,7 @@
 .leaderBoardDonorTime {
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
+  font-size: $fontSixteen;
   color: #706e6b;
   mix-blend-mode: normal;
   opacity: 0.9;
