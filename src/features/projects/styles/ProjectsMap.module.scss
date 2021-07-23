@@ -133,11 +133,22 @@
   position: fixed;
   right: 60px;
   top: 20px;
-  z-index: 100;
+  z-index: 11;
 }
 
 .projectSitesDropdown {
-  z-index: 9999;
+  z-index: 100;
+}
+
+.polygonIcon {
+  position: absolute;
+  z-index: 101;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .exploreButton {

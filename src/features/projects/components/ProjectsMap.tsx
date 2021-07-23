@@ -42,6 +42,7 @@ export default function ProjectsMap(): ReactElement {
     setSatellite,
     selectedMode,
     hoveredPl,
+    setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
 
   //Map
@@ -107,6 +108,7 @@ export default function ProjectsMap(): ReactElement {
     setSelectedPl(null);
     setHoveredPl(null);
     setPopupData({ ...popupData, show: false });
+    setIsPolygonMenuOpen(false);
     if (e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         for (const key in plantLocations) {

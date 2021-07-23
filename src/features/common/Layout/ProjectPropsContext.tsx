@@ -68,6 +68,8 @@ export const ProjectPropsContext = React.createContext({
   setPlIds: (value: []) => {},
   hoveredPl: null || '',
   setHoveredPl: (value: {}) => {},
+  isPolygonMenuOpen: false,
+  setIsPolygonMenuOpen: (value: boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -124,6 +126,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     imagery: {},
   });
   const [plIds, setPlIds] = React.useState(null);
+  const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
+
   const [windowSize, setWindowSize] = React.useState(1280);
   const [hoveredPl, setHoveredPl] = React.useState(null);
 
@@ -247,6 +251,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setPlIds,
         hoveredPl,
         setHoveredPl,
+        isPolygonMenuOpen,
+        setIsPolygonMenuOpen,
       }}
     >
       {children}
