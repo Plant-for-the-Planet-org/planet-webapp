@@ -30,5 +30,6 @@
   "scientificName": "Scientific Name",
   "measurements": "Measurements",
   "treeTag": "Tree Tag",
-  "1Tree": "1 Tree"
+  "1Tree": "1 Tree",
+  "plot": "Plot"
 }

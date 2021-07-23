@@ -201,7 +201,7 @@ export default function PlantLocationDetails({
             )}
             {plantLocation.type === 'sample' && plantLocation.parent && (
               <div className={styles.singleDetail}>
-                <div className={styles.detailTitle}>{t('parent')}</div>
+                <div className={styles.detailTitle}>{t('plot')}</div>
                 <div className={styles.detailValue}>
                   <span
                     onClick={() => openParent(plantLocation.parent)}
