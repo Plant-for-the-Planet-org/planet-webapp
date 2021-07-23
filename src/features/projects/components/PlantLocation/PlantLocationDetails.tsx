@@ -5,6 +5,7 @@ import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber
 import * as turf from '@turf/turf';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
+import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
 const ImageSlider = dynamic(
   () => import('../../components/projectDetails/ImageSlider'),
@@ -23,6 +24,9 @@ interface Props {
 export default function PlantLocationDetails({
   plantLocation,
 }: Props): ReactElement {
+  const { setSelectedPl, plantLocations } = React.useContext(
+    ProjectPropsContext
+  );
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
@@ -76,6 +80,33 @@ export default function PlantLocationDetails({
       setSampleTreeImages([]);
     }
   }, [plantLocation]);
+
+  const openSampleTree = (id: any) => {
+    if (plantLocation && plantLocation.samplePlantLocations) {
+      for (const key in plantLocation.samplePlantLocations) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            plantLocation.samplePlantLocations,
+            key
+          )
+        ) {
+          const element = plantLocation.samplePlantLocations[key];
+          if (element.id === id) setSelectedPl(element);
+        }
+      }
+    }
+  };
+
+  const openParent = (id: any) => {
+    if (plantLocations) {
+      for (const key in plantLocations) {
+        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+          const element = plantLocations[key];
+          if (element.id === id) setSelectedPl(element);
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -168,10 +199,23 @@ export default function PlantLocationDetails({
                 })}
               </div>
             )}
+            {plantLocation.type === 'sample' && plantLocation.parent && (
+              <div className={styles.singleDetail}>
+                <div className={styles.detailTitle}>{t('parent')}</div>
+                <div className={styles.detailValue}>
+                  <span
+                    onClick={() => openParent(plantLocation.parent)}
+                    className={styles.link}
+                  >
+                    {plantLocation.parent}
+                  </span>
+                </div>
+              </div>
+            )}
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>
-                  {t('treesSampled')} (
+                  {t('sampleTrees')} (
                   {plantLocation?.samplePlantLocations?.length})
                 </div>
                 {plantLocation.samplePlantLocations &&
@@ -181,12 +225,14 @@ export default function PlantLocationDetails({
                       return (
                         <div key={index} className={styles.detailValue}>
                           {index + 1}.{' '}
-                          <span>
-                            {spl.scientificName
-                              ? spl.scientificName
-                              : spl.scientificSpecies}
+                          <span
+                            onClick={() => openSampleTree(spl.id)}
+                            className={styles.link}
+                          >
+                            {spl.scientificSpecies}
                           </span>
-                          <br />#{spl?.tag} • {spl?.measurements?.height}
+                          <br />
+                          {t('tag')}#{spl?.tag} • {spl?.measurements?.height}
                           {t('meterHigh')}• {spl?.measurements?.width}
                           {t('cmWide')}
                         </div>
@@ -227,7 +273,7 @@ export default function PlantLocationDetails({
                 <div className={styles.singleDetail}>
                   <div className={styles.detailTitle}>{t('treeTag')}</div>
                   <div className={styles.detailValue}>
-                    #{plantLocation?.tag}
+                    {t('tag')}#{plantLocation?.tag}
                   </div>
                 </div>
               )}

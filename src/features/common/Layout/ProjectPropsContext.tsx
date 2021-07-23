@@ -170,7 +170,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
           const element = plantLocations[key];
-          if (element.type === 'multi') ids.push(element.id + '-layer');
+          if (element.type === 'multi' && element.captureStatus === 'complete')
+            ids.push(element.id + '-layer');
         }
       }
       setPlIds(ids);

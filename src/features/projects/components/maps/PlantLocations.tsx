@@ -105,115 +105,131 @@ export default function PlantLocations({}: Props): ReactElement {
   return (
     <>
       {plantLocations &&
-        plantLocations.map((pl: any) => {
-          const newPl = pl.geometry;
-          newPl.properties = {};
-          newPl.properties.id = pl.id;
-          if (pl.type === 'multi') {
-            const dateDiff = getDateDiff(pl);
-            return (
-              <>
-                <Source
-                  key={`${pl.id}-source`}
-                  id={pl.id}
-                  type="geojson"
-                  data={newPl}
+        plantLocations
+          .filter((item: any) => {
+            if (item.captureStatus === 'complete') {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .map((pl: any) => {
+            const newPl = pl.geometry;
+            newPl.properties = {};
+            newPl.properties.id = pl.id;
+            if (pl.type === 'multi') {
+              const dateDiff = getDateDiff(pl);
+              return (
+                <>
+                  <Source
+                    key={`${pl.id}-source`}
+                    id={pl.id}
+                    type="geojson"
+                    data={newPl}
+                  >
+                    <Layer
+                      key={`${pl.id}-layer`}
+                      id={`${pl.id}-layer`}
+                      type="fill"
+                      source={pl.id}
+                      paint={{
+                        'fill-color': '#007A49',
+                        'fill-opacity': getPolygonColor(pl),
+                      }}
+                    />
+                    {selectedPl && selectedPl.id === pl.id && (
+                      <Layer
+                        key={`${pl.id}-selected`}
+                        id={`${pl.id}-selected-layer`}
+                        type="line"
+                        source={pl.id}
+                        paint={{
+                          'line-color': '#007A49',
+                          'line-width': 4,
+                        }}
+                      />
+                    )}
+                    {dateDiff && (
+                      <Layer
+                        key={`${pl.id}-label`}
+                        id={`${pl.id}-label`}
+                        type="symbol"
+                        source={pl.id}
+                        layout={{
+                          'text-field': dateDiff,
+                          'text-anchor': 'center',
+                          'text-font': ['Ubuntu Regular'],
+                        }}
+                        paint={{
+                          'text-color': '#2f3336',
+                        }}
+                      />
+                    )}
+                  </Source>
+                  {pl &&
+                    pl.samplePlantLocations &&
+                    pl.samplePlantLocations
+                      .filter((item: any) => {
+                        if (item.captureStatus === 'complete') {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      })
+                      .map((spl: any) => {
+                        return (
+                          <Marker
+                            key={`${spl.id}-sample`}
+                            latitude={spl.geometry.coordinates[1]}
+                            longitude={spl.geometry.coordinates[0]}
+                          >
+                            {viewport.zoom > 14 && (
+                              <div
+                                key={`${spl.id}-marker`}
+                                className={`${styles.single} ${
+                                  spl.id === selectedPl?.id
+                                    ? styles.singleSelected
+                                    : ''
+                                }`}
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => openPl(spl)}
+                                onMouseEnter={() => onHover(spl)}
+                                onMouseLeave={() => onHoverEnd(spl)}
+                              />
+                            )}
+                          </Marker>
+                        );
+                      })}
+                </>
+              );
+            } else {
+              return (
+                <Marker
+                  key={`${pl.id}-single`}
+                  latitude={newPl.coordinates[1]}
+                  longitude={newPl.coordinates[0]}
+                  // offsetLeft={5}
+                  // offsetTop={-16}
+                  // style={{ left: '28px' }}
                 >
-                  <Layer
-                    key={`${pl.id}-layer`}
-                    id={`${pl.id}-layer`}
-                    type="fill"
-                    source={pl.id}
-                    paint={{
-                      'fill-color': '#007A49',
-                      'fill-opacity': getPolygonColor(pl),
-                    }}
-                  />
-                  {selectedPl && selectedPl.id === pl.id && (
-                    <Layer
-                      key={`${pl.id}-selected`}
-                      id={`${pl.id}-selected-layer`}
-                      type="line"
-                      source={pl.id}
-                      paint={{
-                        'line-color': '#007A49',
-                        'line-width': 4,
-                      }}
+                  {viewport.zoom > 14 && (
+                    <div
+                      key={`${pl.id}-marker`}
+                      onClick={() => openPl(pl)}
+                      onMouseEnter={() => onHover(pl)}
+                      onMouseLeave={() => onHoverEnd(pl)}
+                      className={`${styles.single} ${
+                        pl.id === selectedPl?.id ? styles.singleSelected : ''
+                      }`}
+                      role="button"
+                      tabIndex={0}
                     />
                   )}
-                  {dateDiff && (
-                    <Layer
-                      key={`${pl.id}-label`}
-                      id={`${pl.id}-label`}
-                      type="symbol"
-                      source={pl.id}
-                      layout={{
-                        'text-field': dateDiff,
-                        'text-anchor': 'center',
-                        'text-font': ['Ubuntu Regular'],
-                      }}
-                      paint={{
-                        'text-color': '#2f3336',
-                      }}
-                    />
-                  )}
-                </Source>
-                {pl &&
-                  pl.samplePlantLocations &&
-                  pl.samplePlantLocations.map((spl: any) => {
-                    return (
-                      <Marker
-                        key={`${spl.id}-sample`}
-                        latitude={spl.geometry.coordinates[1]}
-                        longitude={spl.geometry.coordinates[0]}
-                      >
-                        {viewport.zoom > 12 && (
-                          <div
-                            key={`${spl.id}-marker`}
-                            className={`${styles.single} ${
-                              spl.id === selectedPl?.id
-                                ? styles.singleSelected
-                                : ''
-                            }`}
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => openPl(spl)}
-                            onMouseEnter={() => onHover(spl)}
-                            onMouseLeave={() => onHoverEnd(spl)}
-                          />
-                        )}
-                      </Marker>
-                    );
-                  })}
-              </>
-            );
-          } else {
-            return (
-              <Marker
-                key={`${pl.id}-single`}
-                latitude={newPl.coordinates[1]}
-                longitude={newPl.coordinates[0]}
-                // offsetLeft={5}
-                // offsetTop={-16}
-                // style={{ left: '28px' }}
-              >
-                {viewport.zoom > 18 && (
-                  <div
-                    key={`${pl.id}-marker`}
-                    onClick={() => openPl(pl)}
-                    onMouseEnter={() => onHover(pl)}
-                    onMouseLeave={() => onHoverEnd(pl)}
-                    className={`${styles.single} ${
-                      pl.id === selectedPl?.id ? styles.singleSelected : ''
-                    }`}
-                    role="button"
-                    tabIndex={0}
-                  />
-                )}
-              </Marker>
-            );
-          }
-        })}
+                </Marker>
+              );
+            }
+          })}
     </>
   );
 }
