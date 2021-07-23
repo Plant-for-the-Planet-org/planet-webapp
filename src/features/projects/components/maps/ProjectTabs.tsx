@@ -30,7 +30,7 @@ export default function ProjectTabs({}: Props): ReactElement {
                 }
               : {}
           }
-          className={styles.options}
+          className={`${styles.options} ${styles.compact}`}
         >
           <LocationIcon color={selectedMode === 'location' ? '#fff' : null} />{' '}
           <p>{t('maps:fieldData')}</p>
@@ -48,7 +48,7 @@ export default function ProjectTabs({}: Props): ReactElement {
                 }
               : {}
           }
-          className={styles.options}
+          className={`${styles.options} ${styles.compact}`}
         >
           <SatelliteIcon color={selectedMode === 'imagery' ? '#fff' : null} />{' '}
           <p>

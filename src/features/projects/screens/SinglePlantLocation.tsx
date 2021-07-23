@@ -106,21 +106,27 @@ export default function SinglePlantLocation({
             {plantLocation.type === 'sample' && <span>{t('sampleTree')} </span>}
           </div>
           {plantLocation.type === 'multi' && sampleTreeImages.length > 0 && (
-            <ImageSlider
-              images={sampleTreeImages}
-              height={233}
-              imageSize="large"
-              type="coordinate"
-            />
-          )}
-          {plantLocation.type !== 'multi' &&
-            plantLocation.coordinates?.length > 0 && (
+            <div className={styles.projectImageSliderContainer}>
               <ImageSlider
-                images={plantLocation.coordinates}
+                images={sampleTreeImages}
                 height={233}
                 imageSize="large"
                 type="coordinate"
               />
+            </div>
+          )}
+          {plantLocation.type !== 'multi' &&
+            plantLocation.coordinates?.length > 0 && (
+              <div
+                className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
+              >
+                <ImageSlider
+                  images={plantLocation.coordinates}
+                  height={233}
+                  imageSize="large"
+                  type="coordinate"
+                />
+              </div>
             )}
           <div className={styles.locDetails}>
             <div className={styles.singleDetail}>
@@ -230,7 +236,7 @@ export default function SinglePlantLocation({
                 <div className={styles.detailTitle}>Recruits (per HA)</div>
                 <div className={styles.detailValue}>710,421</div>
               </div> */}
-            <div className={styles.singleDetail}>
+            <div className={styles.footer}>
               <div className={styles.detailValue}>
                 powered by{' '}
                 <a
