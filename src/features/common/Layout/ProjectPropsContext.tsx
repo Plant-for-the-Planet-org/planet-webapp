@@ -58,8 +58,8 @@ export const ProjectPropsContext = React.createContext({
   setRasterData: (value: {}) => {},
   plantLocations: [],
   setPlantLocations: (value: []) => {},
-  selectedLocation: {},
-  setSelectedLocation: (value: {}) => {},
+  selectedPl: {},
+  setSelectedPl: (value: {}) => {},
   zoomLevel: 1,
   setZoomLevel: (value: number) => {},
   satellite: false,
@@ -74,7 +74,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [projects, setProjects] = React.useState(null);
   const [project, setProject] = React.useState(null);
   const [plantLocations, setPlantLocations] = React.useState(null);
-  const [selectedLocation, setSelectedLocation] = React.useState(null);
+  const [selectedPl, setSelectedPl] = React.useState(null);
   const [zoomLevel, setZoomLevel] = React.useState(1);
   const [showProjects, setShowProjects] = React.useState(true);
   const [showSingleProject, setShowSingleProject] = React.useState(false);
@@ -236,8 +236,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setRasterData,
         plantLocations,
         setPlantLocations,
-        selectedLocation,
-        setSelectedLocation,
+        selectedPl,
+        setSelectedPl,
         zoomLevel,
         setZoomLevel,
         satellite,

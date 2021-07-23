@@ -4,7 +4,6 @@ import React from 'react';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import DonationsPopup from '../src/features/donations';
 import Credits from '../src/features/projects/components/maps/Credits';
-import SinglePlantLocation from '../src/features/projects/screens/SinglePlantLocation';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -33,7 +32,7 @@ export default function Donate({
     setShowSingleProject,
     setZoomLevel,
     setPlantLocations,
-    selectedLocation,
+    selectedPl,
     hoveredPl,
   } = React.useContext(ProjectPropsContext);
 
@@ -80,7 +79,7 @@ export default function Donate({
     project,
     currencyCode,
     setCurrencyCode,
-    plantLocation: hoveredPl ? hoveredPl : selectedLocation,
+    plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
 
   React.useEffect(() => {

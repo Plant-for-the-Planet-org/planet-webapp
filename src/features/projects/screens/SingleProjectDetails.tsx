@@ -15,7 +15,7 @@ import SitesDropdown from '../components/maps/SitesDropdown';
 import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
-import SinglePlantLocation from './SinglePlantLocation';
+import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -41,9 +41,9 @@ function SingleProjectDetails({}: Props): ReactElement {
     rasterData,
     selectedMode,
     hoveredPl,
-    selectedLocation,
+    selectedPl,
     setHoveredPl,
-    setSelectedLocation,
+    setSelectedPl,
   } = React.useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -69,13 +69,13 @@ function SingleProjectDetails({}: Props): ReactElement {
   };
 
   const ProjectProps = {
-    plantLocation: hoveredPl ? hoveredPl : selectedLocation,
+    plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
 
   const goBack = () => {
-    if (selectedLocation || hoveredPl) {
+    if (selectedPl || hoveredPl) {
       setHoveredPl(null);
-      setSelectedLocation(null);
+      setSelectedPl(null);
       router.replace('/[p]', `/${project.slug}`);
     } else {
       router.replace('/');
@@ -146,8 +146,8 @@ function SingleProjectDetails({}: Props): ReactElement {
               editMode={false}
             />
           </div>
-          {hoveredPl || selectedLocation ? (
-            <SinglePlantLocation {...ProjectProps} />
+          {hoveredPl || selectedPl ? (
+            <PlantLocationDetails {...ProjectProps} />
           ) : (
             <div className={'singleProjectDetails'}>
               <div className={'projectCompleteInfo'}>

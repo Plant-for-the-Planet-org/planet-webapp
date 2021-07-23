@@ -4,7 +4,7 @@ import React from 'react';
 import { ProjectPropsContext } from '../../src/features/common/Layout/ProjectPropsContext';
 import DonationsPopup from '../../src/features/donations';
 import Credits from '../../src/features/projects/components/maps/Credits';
-import SinglePlantLocation from '../../src/features/projects/screens/SinglePlantLocation';
+import PlantLocationDetails from '../../src/features/projects/components/PlantLocation/PlantLocationDetails';
 import { ThemeContext } from '../../src/theme/themeContext';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import getStoredCurrency from '../../src/utils/countryCurrency/getStoredCurrency';
@@ -31,14 +31,14 @@ export default function Donate({
     setProject,
     setShowSingleProject,
     setPlantLocations,
-    selectedLocation,
-    setSelectedLocation,
+    selectedPl,
+    setSelectedPl,
     setZoomLevel,
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
     setZoomLevel(3);
-    setSelectedLocation(null);
+    setSelectedPl(null);
   }, []);
 
   const handleClose = () => {
@@ -68,7 +68,7 @@ export default function Donate({
       `/treemapper/plantLocations/${router.query.id}?_scope=extended`
     );
     if (result) {
-      setSelectedLocation(result);
+      setSelectedPl(result);
     } else {
       router.replace(`/${project.slug}`);
     }
@@ -76,7 +76,7 @@ export default function Donate({
 
   React.useEffect(() => {
     setShowSingleProject(true);
-    if (!selectedLocation) {
+    if (!selectedPl) {
       if (router.query.p) {
         if (project) {
           if (project.slug === router.query.p && router.query.id) {
@@ -89,7 +89,7 @@ export default function Donate({
         }
       }
     }
-  }, [router, currencyCode, project, selectedLocation]);
+  }, [router, currencyCode, project, selectedPl]);
 
   const ProjectProps = {
     project,
@@ -110,7 +110,7 @@ export default function Donate({
       {project ? <GetProjectMeta {...ProjectProps} /> : null}
       {project && initialized ? (
         <>
-          <SinglePlantLocation {...ProjectProps} />
+          <PlantLocationDetails {...ProjectProps} />
           <Modal
             className={`modalContainer ${theme}`}
             open={open}

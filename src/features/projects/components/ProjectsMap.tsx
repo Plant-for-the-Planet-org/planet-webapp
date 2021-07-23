@@ -8,7 +8,6 @@ import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import StyleToggle from './maps/StyleToggle';
 import PlantLocations from './maps/PlantLocations';
-import PlantLocation from './maps/PlantLocation';
 import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
@@ -37,8 +36,8 @@ export default function ProjectsMap(): ReactElement {
     plIds,
     setHoveredPl,
     plantLocations,
-    setSelectedLocation,
-    selectedLocation,
+    setSelectedPl,
+    selectedPl,
     satellite,
     setSatellite,
     selectedMode,
@@ -105,17 +104,16 @@ export default function ProjectsMap(): ReactElement {
   };
 
   const onMapClick = (e: MapEvent) => {
-    setSelectedLocation(null);
+    setSelectedPl(null);
     setHoveredPl(null);
     setPopupData({ ...popupData, show: false });
     if (e.features?.length !== 0) {
-      console.log('onclick event', e.features[0]);
       if (e.features[0].layer?.source) {
         for (const key in plantLocations) {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
             const element = plantLocations[key];
             if (element.id === e.features[0].layer?.source) {
-              setSelectedLocation(element);
+              setSelectedPl(element);
               break;
             }
           }
@@ -134,7 +132,7 @@ export default function ProjectsMap(): ReactElement {
               const element = plantLocations[key];
               if (element.id === e.features[0].layer?.source) {
                 setHoveredPl(element);
-                // setSelectedLocation(element);
+                // setSelectedPl(element);
                 break;
               }
             }

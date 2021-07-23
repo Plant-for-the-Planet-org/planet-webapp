@@ -3,7 +3,6 @@ import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import { useRouter } from 'next/router';
-import { zoomToPlantLocation } from '../../../../utils/maps/plantLocations';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -16,13 +15,10 @@ interface Props {}
 export default function PlantLocations({}: Props): ReactElement {
   const router = useRouter();
   const {
-    project,
     plantLocations,
-    mapRef,
     hoveredPl,
-    zoomLevel,
-    selectedLocation,
-    setSelectedLocation,
+    selectedPl,
+    setSelectedPl,
     setHoveredPl,
     viewport,
   } = React.useContext(ProjectPropsContext);
@@ -30,8 +26,7 @@ export default function PlantLocations({}: Props): ReactElement {
   const { i18n } = useTranslation(['common']);
 
   const openPl = (pl: any) => {
-    setSelectedLocation(pl);
-    // router.replace(`/${project.slug}/${pl.id}`);
+    setSelectedPl(pl);
   };
 
   const onHover = (pl: Object) => {
@@ -118,9 +113,14 @@ export default function PlantLocations({}: Props): ReactElement {
             const dateDiff = getDateDiff(pl);
             return (
               <>
-                <Source key={pl.id} id={pl.id} type="geojson" data={newPl}>
+                <Source
+                  key={`${pl.id}-source`}
+                  id={pl.id}
+                  type="geojson"
+                  data={newPl}
+                >
                   <Layer
-                    key={pl.id}
+                    key={`${pl.id}-layer`}
                     id={`${pl.id}-layer`}
                     type="fill"
                     source={pl.id}
@@ -129,6 +129,18 @@ export default function PlantLocations({}: Props): ReactElement {
                       'fill-opacity': getPolygonColor(pl),
                     }}
                   />
+                  {selectedPl && selectedPl.id === pl.id && (
+                    <Layer
+                      key={`${pl.id}-selected`}
+                      id={`${pl.id}-selected-layer`}
+                      type="line"
+                      source={pl.id}
+                      paint={{
+                        'line-color': '#007A49',
+                        'line-width': 4,
+                      }}
+                    />
+                  )}
                   {dateDiff && (
                     <Layer
                       key={`${pl.id}-label`}
@@ -151,14 +163,15 @@ export default function PlantLocations({}: Props): ReactElement {
                   pl.samplePlantLocations.map((spl: any) => {
                     return (
                       <Marker
-                        key={spl.id}
+                        key={`${spl.id}-sample`}
                         latitude={spl.geometry.coordinates[1]}
                         longitude={spl.geometry.coordinates[0]}
                       >
                         {viewport.zoom > 12 && (
                           <div
+                            key={`${spl.id}-marker`}
                             className={`${styles.single} ${
-                              spl.id === selectedLocation?.id
+                              spl.id === selectedPl?.id
                                 ? styles.singleSelected
                                 : ''
                             }`}
@@ -177,7 +190,7 @@ export default function PlantLocations({}: Props): ReactElement {
           } else {
             return (
               <Marker
-                key={pl.id}
+                key={`${pl.id}-single`}
                 latitude={newPl.coordinates[1]}
                 longitude={newPl.coordinates[0]}
                 // offsetLeft={5}
@@ -186,13 +199,12 @@ export default function PlantLocations({}: Props): ReactElement {
               >
                 {viewport.zoom > 18 && (
                   <div
+                    key={`${pl.id}-marker`}
                     onClick={() => openPl(pl)}
                     onMouseEnter={() => onHover(pl)}
                     onMouseLeave={() => onHoverEnd(pl)}
                     className={`${styles.single} ${
-                      pl.id === selectedLocation?.id
-                        ? styles.singleSelected
-                        : ''
+                      pl.id === selectedPl?.id ? styles.singleSelected : ''
                     }`}
                     role="button"
                     tabIndex={0}
@@ -202,23 +214,6 @@ export default function PlantLocations({}: Props): ReactElement {
             );
           }
         })}
-      {selectedLocation && selectedLocation.type === 'multi' && (
-        <Source
-          id={`selected-source`}
-          type="geojson"
-          data={selectedLocation.geometry}
-        >
-          <Layer
-            id={`selected-layer`}
-            type="line"
-            source={`${selectedLocation.id}-selected`}
-            paint={{
-              'line-color': '#007A49',
-              'line-width': 4,
-            }}
-          />
-        </Source>
-      )}
     </>
   );
 }

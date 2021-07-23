@@ -33,7 +33,7 @@ export default function ProjectSnippet({
 
   const { theme } = React.useContext(ThemeContext);
 
-  const { selectedLocation, hoveredPl } = React.useContext(ProjectPropsContext);
+  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -74,7 +74,7 @@ export default function ProjectSnippet({
           router.replace(`/${project.slug}`);
         }}
         className={`projectImage ${
-          selectedLocation || hoveredPl ? 'projectCollapsed' : ''
+          selectedPl || hoveredPl ? 'projectCollapsed' : ''
         }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
