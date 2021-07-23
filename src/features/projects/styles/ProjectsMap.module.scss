@@ -447,9 +447,9 @@ fill: $primaryFontColor;
   bottom: 0px;
   right: 20px;
   font-size: 11px;
-  color: rgba(0, 0, 0, 0.75);
+  color: $primaryFontColor;
   cursor: pointer;
-  background-color: $light;
+  background-color: $backgroundColor;
   padding: 6px 18px 4px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -466,7 +466,7 @@ fill: $primaryFontColor;
   > a {
     margin-left: 10px;
     text-decoration: none;
-    color: rgba(0, 0, 0, 0.75);
+    color: rgba($primaryFontColor, 0.75);
   }
 }
 
