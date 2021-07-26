@@ -249,7 +249,9 @@ export default function PlantLocationDetails({
                             onClick={() => openSampleTree(spl.id)}
                             className={styles.link}
                           >
-                            {spl.scientificSpecies}
+                            {spl.scientificName
+                              ? spl.scientificName
+                              : spl.scientificSpecies}
                           </span>
                           <br />
                           {t('tag')} #{spl?.tag} • {spl?.measurements?.height}
