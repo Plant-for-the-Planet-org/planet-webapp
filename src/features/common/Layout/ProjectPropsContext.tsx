@@ -70,6 +70,12 @@ export const ProjectPropsContext = React.createContext({
   setHoveredPl: (value: {}) => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
+  lineWidth: 1,
+  setLineWidth: (value: number) => {},
+  lineBlur: 1,
+  setLineBlur: (value: number) => {},
+  lineOpacity: 1,
+  setLineOpacity: (value: number) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -130,6 +136,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
 
   const [windowSize, setWindowSize] = React.useState(1280);
   const [hoveredPl, setHoveredPl] = React.useState(null);
+
+  const [lineWidth, setLineWidth] = React.useState(1);
+  const [lineBlur, setLineBlur] = React.useState(1);
+  const [lineOpacity, setLineOpacity] = React.useState(1);
 
   React.useEffect(() => {
     window.addEventListener('resize', updateWidth);
@@ -253,6 +263,12 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setHoveredPl,
         isPolygonMenuOpen,
         setIsPolygonMenuOpen,
+        lineWidth,
+        setLineWidth,
+        lineBlur,
+        setLineBlur,
+        lineOpacity,
+        setLineOpacity,
       }}
     >
       {children}

@@ -21,6 +21,12 @@ export default function PlantLocations({}: Props): ReactElement {
     setSelectedPl,
     setHoveredPl,
     viewport,
+    lineWidth,
+    setLineWidth,
+    lineBlur,
+    setLineBlur,
+    lineOpacity,
+    setLineOpacity,
   } = React.useContext(ProjectPropsContext);
 
   const { i18n } = useTranslation(['common']);
@@ -137,6 +143,23 @@ export default function PlantLocations({}: Props): ReactElement {
                         'fill-opacity': getPolygonColor(pl),
                       }}
                     />
+                    {selectedPl?.id !== pl.id && hoveredPl?.id !== pl.id && (
+                      <Layer
+                        key={`${pl.id}-blur`}
+                        id={`${pl.id}-blur`}
+                        type="line"
+                        source={pl.id}
+                        paint={{
+                          'line-color': '#007A49',
+                          'line-width': lineWidth,
+                          'line-blur': lineBlur,
+                          'line-opacity': lineOpacity,
+                        }}
+                        layout={{
+                          'line-join': 'round',
+                        }}
+                      />
+                    )}
                     {((selectedPl && selectedPl.id === pl.id) ||
                       (hoveredPl && hoveredPl.id === pl.id)) && (
                       <Layer

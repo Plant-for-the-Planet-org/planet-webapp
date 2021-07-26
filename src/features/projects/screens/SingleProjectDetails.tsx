@@ -16,6 +16,7 @@ import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
+import styles from '../styles/PlantLocation.module.scss';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -44,6 +45,12 @@ function SingleProjectDetails({}: Props): ReactElement {
     selectedPl,
     setHoveredPl,
     setSelectedPl,
+    lineWidth,
+    setLineWidth,
+    lineBlur,
+    setLineBlur,
+    lineOpacity,
+    setLineOpacity,
   } = React.useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -84,6 +91,33 @@ function SingleProjectDetails({}: Props): ReactElement {
 
   return ready ? (
     <>
+      <div className={styles.tools}>
+        <strong>Tool Box</strong>
+        <div className={styles.input}>
+          Line Width (0+)
+          <input
+            type="number"
+            value={lineWidth}
+            onChange={(e) => setLineWidth(Number(e.target.value))}
+          />
+        </div>
+        <div className={styles.input}>
+          Line Blur (0+)
+          <input
+            type="number"
+            value={lineBlur}
+            onChange={(e) => setLineBlur(Number(e.target.value))}
+          />
+        </div>
+        <div className={styles.input}>
+          Line Opacity (0-1)
+          <input
+            type="number"
+            value={lineOpacity}
+            onChange={(e) => setLineOpacity(Number(e.target.value))}
+          />
+        </div>
+      </div>
       <Explore />
       {geoJson && <SitesDropdown />}
       {Object.keys(rasterData.imagery).length !== 0 &&
