@@ -137,7 +137,8 @@ export default function PlantLocations({}: Props): ReactElement {
                         'fill-opacity': getPolygonColor(pl),
                       }}
                     />
-                    {selectedPl && selectedPl.id === pl.id && (
+                    {((selectedPl && selectedPl.id === pl.id) ||
+                      (hoveredPl && hoveredPl.id === pl.id)) && (
                       <Layer
                         key={`${pl.id}-selected`}
                         id={`${pl.id}-selected-layer`}
