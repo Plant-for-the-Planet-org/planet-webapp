@@ -23,6 +23,8 @@
   justify-content: flex-start;
   align-items: flex-start;
   gap: 5px;
+  position: relative;
+  min-width: 50%;
 }
 
 .twinDetail {
@@ -34,6 +36,8 @@
 
 .detailTitle {
   font-weight: 700;
+  display: flex;
+  gap: 5px;
 }
 
 .detailValue span {
@@ -129,4 +133,34 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.popover {
+  position: relative;
+  width: fit-content !important;
+  svg {
+    width: 14px;
+  }
+  .popoverContent {
+    position: absolute;
+    left: -80px;
+    right: -80px;
+    z-index: 10;
+    background-color: $light;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    border: 2px solid $primaryColor;
+    display: none;
+    text-transform: none;
+    font-weight: normal;
+    font-size: $fontSmall;
+  }
+  &:hover,
+  &:active {
+    cursor: pointer;
+    .popoverContent {
+      display: block;
+    }
+  }
 }

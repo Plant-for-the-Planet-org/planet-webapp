@@ -32,5 +32,7 @@
   "treeTag": "Tree Tag",
   "1Tree": "1 Tree",
   "plot": "Plot",
-  "tag": "Tag"
+  "tag": "Tag",
+  "plantingDensityInfo": "In case of enrichment planting density can be lower.",
+  "plantationDensityFormula": "Planting Density = No. of Trees / Plantation Area"
 }

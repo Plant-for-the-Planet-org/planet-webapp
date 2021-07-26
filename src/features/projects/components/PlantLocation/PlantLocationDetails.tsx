@@ -6,6 +6,7 @@ import * as turf from '@turf/turf';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 const ImageSlider = dynamic(
   () => import('../../components/PlantLocation/ImageSlider'),
@@ -60,7 +61,7 @@ export default function PlantLocationDetails({
       plantLocation.samplePlantLocations &&
       plantLocation.samplePlantLocations.length > 0
     ) {
-      let images = [];
+      const images = [];
       for (const key in plantLocation.samplePlantLocations) {
         if (
           Object.prototype.hasOwnProperty.call(
@@ -185,7 +186,20 @@ export default function PlantLocationDetails({
 
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
-                <div className={styles.detailTitle}>{t('plantingDensity')}</div>
+                <div className={styles.detailTitle}>
+                  {t('plantingDensity')}
+                  <div className={styles.popover}>
+                    <InfoIcon />
+                    <div className={styles.popoverContent}>
+                      <p>
+                        {t('plantationDensityFormula')}
+                        <br />
+                        <br />
+                        {t('plantingDensityInfo')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div className={styles.detailValue}>
                   {localizedAbbreviatedNumber(
                     i18n.language,
