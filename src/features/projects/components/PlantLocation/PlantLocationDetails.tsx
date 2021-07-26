@@ -16,6 +16,14 @@ const ImageSlider = dynamic(
   }
 );
 
+const ImageSliderSingle = dynamic(
+  () => import('../../components/projectDetails/ImageSlider'),
+  {
+    ssr: false,
+    loading: () => <p>Images</p>,
+  }
+);
+
 const { useTranslation } = i18next;
 
 interface Props {
@@ -156,7 +164,7 @@ export default function PlantLocationDetails({
               <div
                 className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
               >
-                <ImageSlider
+                <ImageSliderSingle
                   images={plantLocation.coordinates}
                   height={233}
                   imageSize="large"
