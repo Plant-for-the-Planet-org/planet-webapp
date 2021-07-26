@@ -60,7 +60,7 @@ function ExploreInfoModal({
                   <div></div>
                   <p>{t('maps:high')}</p>
                 </div>
-                <p>{t('maps:restorationInfo')}</p>
+                <p className={styles.restorationInfo}>{t('maps:restorationInfo')}</p>
                 <a
                   href="https://science.sciencemag.org/content/365/6448/76"
                   target="_blank"
