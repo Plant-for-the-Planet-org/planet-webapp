@@ -37,8 +37,8 @@
   "plantationDensityFormula": "Planting Density = No. of Trees / Plantation Area",
   "unknown": "Unknown",
   "showWholeArea": "Show Whole Area",
-  "ago": "ago",
-  "d": "d",
+  "daysAgo": "{{days}}d ago",
   "today": "Today",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "clickForDetails": "Click for Details"
 }

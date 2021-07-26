@@ -23,7 +23,7 @@ export default function PlantLocations({}: Props): ReactElement {
     viewport,
   } = React.useContext(ProjectPropsContext);
 
-  const { i18n, t } = useTranslation(['common']);
+  const { i18n, t } = useTranslation(['maps', 'common']);
 
   const openPl = (pl: any) => {
     setSelectedPl(pl);
@@ -92,11 +92,9 @@ export default function PlantLocations({}: Props): ReactElement {
     } else if (differenceInDays < 2) {
       return t('yesterday');
     } else if (differenceInDays < 30) {
-      return `${localizedAbbreviatedNumber(
-        i18n.language,
-        differenceInDays,
-        0
-      )}${t('d')} ${t('ago')}`;
+      return t('daysAgo', {
+        days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
+      });
     } else {
       return null;
     }

@@ -10,6 +10,9 @@ import PlantLocations from './maps/PlantLocations';
 import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
+import i18next from '../../../../i18n';
+
+const { useTranslation } = i18next;
 
 export default function ProjectsMap(): ReactElement {
   const router = useRouter();
@@ -43,6 +46,8 @@ export default function ProjectsMap(): ReactElement {
     hoveredPl,
     setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
+
+  const { t } = useTranslation(['maps']);
 
   //Map
   const _onStateChange = (state: any) => setMapState({ ...state });
@@ -199,7 +204,7 @@ export default function ProjectsMap(): ReactElement {
             offsetTop={-5}
             tipSize={0}
           >
-            <div className={styles.clickForDetails}>Click for Details</div>
+            <div className={styles.clickForDetails}>{t('clickForDetails')}</div>
           </Popup>
         )}
       </MapGL>
