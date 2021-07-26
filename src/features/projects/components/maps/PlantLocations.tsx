@@ -23,7 +23,7 @@ export default function PlantLocations({}: Props): ReactElement {
     viewport,
   } = React.useContext(ProjectPropsContext);
 
-  const { i18n } = useTranslation(['common']);
+  const { i18n, t } = useTranslation(['common']);
 
   const openPl = (pl: any) => {
     setSelectedPl(pl);
@@ -96,7 +96,7 @@ export default function PlantLocations({}: Props): ReactElement {
         i18n.language,
         differenceInDays,
         0
-      )}d`;
+      )}d ${t('ago')}`;
     } else {
       return null;
     }

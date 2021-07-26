@@ -93,8 +93,6 @@ export default function PlantLocationDetails({
     }
   }, [plantLocation]);
 
-  console.log(sampleTreeImages);
-
   const openSampleTree = (id: any) => {
     if (plantLocation && plantLocation.samplePlantLocations) {
       for (const key in plantLocation.samplePlantLocations) {
@@ -230,9 +228,7 @@ export default function PlantLocationDetails({
                       {sp.treeCount}{' '}
                       <span>
                         {' '}
-                        {sp.scientificName
-                          ? sp.scientificName
-                          : sp.scientificSpecies}
+                        {sp.scientificName ? sp.scientificName : t('unknown')}
                       </span>
                     </div>
                   );
@@ -305,7 +301,7 @@ export default function PlantLocationDetails({
                     onClick={() => openParent(plantLocation.parent)}
                     className={styles.link}
                   >
-                    {plantLocation.parent}
+                    {t('showWholeArea')}
                   </span>
                 </div>
               </div>
@@ -322,7 +318,7 @@ export default function PlantLocationDetails({
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Tree Mapper
+                  TreeMapper
                 </a>
               </div>
             </div>

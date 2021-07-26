@@ -61,7 +61,6 @@ export default function Donate({
     }
   }
   async function fetchPlantLocation(id: any) {
-    console.log('in fetch');
     const plantLocations = await getAllPlantLocations(id);
     setPlantLocations(plantLocations);
     const result = await getRequest(
