@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
 const ImageSlider = dynamic(
-  () => import('../../components/projectDetails/ImageSlider'),
+  () => import('../../components/PlantLocation/ImageSlider'),
   {
     ssr: false,
     loading: () => <p>Images</p>,
@@ -71,7 +71,10 @@ export default function PlantLocationDetails({
           const element = plantLocation.samplePlantLocations[key];
 
           if (element.coordinates?.[0]) {
-            images.push(element.coordinates[0]);
+            images.push({
+              image: element.coordinates[0].image,
+              description: `${t('sampleTree')} #${element.tag}`,
+            });
           }
         }
       }
@@ -80,6 +83,8 @@ export default function PlantLocationDetails({
       setSampleTreeImages([]);
     }
   }, [plantLocation]);
+
+  console.log(sampleTreeImages);
 
   const openSampleTree = (id: any) => {
     if (plantLocation && plantLocation.samplePlantLocations) {
@@ -159,12 +164,25 @@ export default function PlantLocationDetails({
               </div>
             )}
           <div className={styles.locDetails}>
-            <div className={styles.singleDetail}>
-              <div className={styles.detailTitle}>{t('plantingDate')}</div>
-              <div className={styles.detailValue}>
-                {formatDate(plantLocation.plantDate)}
+            <div className={styles.twinDetail}>
+              <div className={styles.singleDetail}>
+                <div className={styles.detailTitle}>{t('plantingDate')}</div>
+                <div className={styles.detailValue}>
+                  {formatDate(plantLocation.plantDate)}
+                </div>
               </div>
+              {(plantLocation.type === 'sample' ||
+                plantLocation.type === 'single') &&
+                plantLocation.tag && (
+                  <div className={styles.singleDetail}>
+                    <div className={styles.detailTitle}>{t('treeTag')}</div>
+                    <div className={styles.detailValue}>
+                      {t('tag')} #{plantLocation?.tag}
+                    </div>
+                  </div>
+                )}
             </div>
+
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>{t('plantingDensity')}</div>
@@ -199,19 +217,7 @@ export default function PlantLocationDetails({
                 })}
               </div>
             )}
-            {plantLocation.type === 'sample' && plantLocation.parent && (
-              <div className={styles.singleDetail}>
-                <div className={styles.detailTitle}>{t('plot')}</div>
-                <div className={styles.detailValue}>
-                  <span
-                    onClick={() => openParent(plantLocation.parent)}
-                    className={styles.link}
-                  >
-                    {plantLocation.parent}
-                  </span>
-                </div>
-              </div>
-            )}
+
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>
@@ -232,7 +238,7 @@ export default function PlantLocationDetails({
                             {spl.scientificSpecies}
                           </span>
                           <br />
-                          {t('tag')}#{spl?.tag} • {spl?.measurements?.height}
+                          {t('tag')} #{spl?.tag} • {spl?.measurements?.height}
                           {t('meterHigh')}• {spl?.measurements?.width}
                           {t('cmWide')}
                         </div>
@@ -267,16 +273,19 @@ export default function PlantLocationDetails({
                 </div>
               )}
 
-            {(plantLocation.type === 'sample' ||
-              plantLocation.type === 'single') &&
-              plantLocation.tag && (
-                <div className={styles.singleDetail}>
-                  <div className={styles.detailTitle}>{t('treeTag')}</div>
-                  <div className={styles.detailValue}>
-                    {t('tag')}#{plantLocation?.tag}
-                  </div>
+            {plantLocation.type === 'sample' && plantLocation.parent && (
+              <div className={styles.singleDetail}>
+                <div className={styles.detailTitle}>{t('plot')}</div>
+                <div className={styles.detailValue}>
+                  <span
+                    onClick={() => openParent(plantLocation.parent)}
+                    className={styles.link}
+                  >
+                    {plantLocation.parent}
+                  </span>
                 </div>
-              )}
+              </div>
+            )}
             {/* <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>Recruits (per HA)</div>
                 <div className={styles.detailValue}>710,421</div>
