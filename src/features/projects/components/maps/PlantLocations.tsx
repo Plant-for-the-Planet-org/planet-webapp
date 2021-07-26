@@ -88,15 +88,15 @@ export default function PlantLocations({}: Props): ReactElement {
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
-      return 'Today';
+      return t('today');
     } else if (differenceInDays < 2) {
-      return 'Yesterday';
+      return t('yesterday');
     } else if (differenceInDays < 30) {
       return `${localizedAbbreviatedNumber(
         i18n.language,
         differenceInDays,
         0
-      )}d ${t('ago')}`;
+      )}${t('d')} ${t('ago')}`;
     } else {
       return null;
     }

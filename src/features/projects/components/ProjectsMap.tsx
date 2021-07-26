@@ -6,7 +6,6 @@ import Project from '../components/maps/Project';
 import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import StyleToggle from './maps/StyleToggle';
 import PlantLocations from './maps/PlantLocations';
 import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
