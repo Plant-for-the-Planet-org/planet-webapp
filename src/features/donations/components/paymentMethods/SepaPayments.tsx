@@ -6,7 +6,7 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/Donations.module.scss';
 import i18next from '../../../../../i18n';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
-import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import InfoIconWhite from '../../../../../public/assets/images/icons/InfoIconWhite';
 
 const { useTranslation } = i18next;
 
@@ -107,7 +107,7 @@ function SepaPayments({
 
       <div className={styles.disclaimerContainer}>
         <div>
-          <InfoIcon />
+          <InfoIconWhite />
         </div>
         <p>{t('donate:sepaDisclaimer')}</p>
       </div>

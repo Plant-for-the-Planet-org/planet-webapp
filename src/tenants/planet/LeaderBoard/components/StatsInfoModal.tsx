@@ -3,6 +3,7 @@ import styles from './Stats.module.scss';
 import i18next from '../../../../../i18n';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import { ThemeContext } from '../../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 
@@ -18,6 +19,7 @@ function ExploreInfoModal({
   setModalOpen,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['planet']);
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <div className={styles.infoExpanded}>
@@ -49,6 +51,7 @@ function ExploreInfoModal({
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://www.nature.com/articles/nature14967"
+                style={{fontWeight:  theme === 'theme-dark' ? 700 : 300}}
               >
                 Crowther, T. W. et al. (2015) Mapping tree density at a global
                 scale. Nature 525, 201–205.

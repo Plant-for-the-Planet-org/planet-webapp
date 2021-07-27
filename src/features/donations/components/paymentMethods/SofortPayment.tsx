@@ -3,7 +3,7 @@ import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from '../../styles/Donations.module.scss';
 import i18next from '../../../../../i18n';
 import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
-import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import InfoIconWhite from '../../../../../public/assets/images/icons/InfoIconWhite';
 
 const { useTranslation } = i18next;
 
@@ -23,7 +23,7 @@ function SofortPayments({ onSubmitPayment }: Props): ReactElement {
 
             <div className={styles.disclaimerContainer}>
                 <div>
-                    <InfoIcon/>
+                    <InfoIconWhite/>
                 </div>
                 <p>{t('donate:sofortDisclaimer')}</p>
             </div>
