@@ -808,11 +808,15 @@
     justify-content: flex-start;
     width: 48px;
     height: 20px;
+    > svg > path{
+      fill: $primaryFontColor;
+    }
   }
   > p {
     margin-left: 12px;
   }
 }
+
 
 .showContactDetails {
   margin-left: 22px;

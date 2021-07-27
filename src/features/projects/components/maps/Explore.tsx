@@ -23,7 +23,7 @@ import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
-import InfoIconWhite from '../../../../../public/assets/images/icons/InfoIconWhite';
+import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 interface Props {}
 
@@ -243,9 +243,9 @@ export default function Explore({}: Props): ReactElement {
                     }}
                     className={styles.exploreInfo}
                   >
-                    <div style={{fill: 'white'}}>
-                    <InfoIconWhite />
-                    </div>
+                    
+                    <InfoIcon />
+                    
                   </div>
                 </div>
                 <div className={styles.exploreToggleRow}>
@@ -267,7 +267,7 @@ export default function Explore({}: Props): ReactElement {
                     }}
                     className={styles.exploreInfo}
                   >
-                    <InfoIconWhite />
+                    <InfoIcon />
                   </div>
                 </div>
 
@@ -290,7 +290,7 @@ export default function Explore({}: Props): ReactElement {
                     }}
                     className={styles.exploreInfo}
                   >
-                    <InfoIconWhite />
+                    <InfoIcon />
                   </div>
                 </div>
                 {exploreDeforestation ? (
