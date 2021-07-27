@@ -45,6 +45,7 @@ const MaterialTextField = withStyles({
     paddingLeft:'0px'
   }
   },
-})(TextField);
+  
+},)(TextField);
 
 export default MaterialTextField;

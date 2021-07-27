@@ -40,12 +40,12 @@ export default function CountrySelect(props: {
     paper: {
       color:
         theme === "theme-light"
-          ? themeProperties.light.primaryFontColor
-          : themeProperties.dark.primaryFontColor,
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
         theme === "theme-light"
-          ? themeProperties.light.backgroundColor
-          : themeProperties.dark.backgroundColor,
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
     },
       option: {
         // color: '#2F3336',
@@ -53,14 +53,14 @@ export default function CountrySelect(props: {
         "&:hover": {
           backgroundColor:
             theme === "theme-light"
-              ? themeProperties.light.backgroundColor
-              : themeProperties.dark.backgroundColor,
+              ? `${themeProperties.light.backgroundColor} !important`
+              : `${themeProperties.dark.backgroundColor} !important`,
         },
         "&:active": {
           backgroundColor:
             theme === "theme-light"
-              ? themeProperties.light.backgroundColor
-              : themeProperties.dark.backgroundColor,
+              ? `${themeProperties.light.backgroundColor} !important`
+              : `${themeProperties.dark.backgroundColor} !important`,
         },
         fontSize: '14px',
         '& > span': {
