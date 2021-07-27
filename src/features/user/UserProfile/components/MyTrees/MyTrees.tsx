@@ -10,7 +10,8 @@ import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
-
+import themeProperties from '../../../../../theme/themeProperties';
+import { ThemeContext } from '../../../../../theme/themeContext';
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
 });
@@ -26,6 +27,7 @@ interface Props {
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
+  const {theme} = React.useContext(ThemeContext)
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -77,7 +79,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                 const date = formatDate(item.properties.plantDate);
                 return (
                   <div key={item.properties.id} className={styles.tree}>
-                    <div className={styles.dateRow}>{date}</div>
+                    <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.blueishGrey,
+                  color: theme === 'theme-light' ? themeProperties.light.primaryFontColor : themeProperties.dark.primaryFontColor}}>{date}</div>
                     <div className={styles.treeRow}>
                       <div className={styles.textCol}>
                         <div className={styles.title}>
