@@ -34,10 +34,10 @@
   "plot": "Plot",
   "tag": "Tag",
   "plantingDensityInfo": "In case of enrichment planting density can be lower.",
-  "plantationDensityFormula": "Planting Density = No. of Trees / Plantation Area",
+  "plantationDensityFormula": "Planting Density = No. of Trees / Planting Area",
   "unknown": "Unknown",
   "showWholeArea": "Show Whole Area",
-  "daysAgo": "{{days}}d ago",
+  "daysAgo": "{{days}} days ago",
   "today": "Today",
   "yesterday": "Yesterday",
   "clickForDetails": "Click for Details"
