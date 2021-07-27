@@ -96,7 +96,7 @@ export default function ProjectsContainer({
               <div className={styles.singleProject}>
                 <button id={'addProjectBut'} className={styles.projectNotFound}>
                   <AddProject />
-                  <h2>{t('manageProjects:addProject')}</h2>
+                  <h2 style={{color: 'var(--primary-font-color)'}}>{t('manageProjects:addProject')}</h2>
                 </button>
               </div>
             </Link>

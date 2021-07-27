@@ -347,9 +347,7 @@ fill: $primaryFontColor
   fill: white;
 
 }
-.MuiPaper-root{
-background-color: $backgroundColor !important;
-}
+
 .MuiStepLabel-label.MuiStepLabel-active,
 .MuiStepLabel-label.MuiStepLabel-completed,
 .MuiStepLabel-label{
@@ -362,4 +360,9 @@ background-color: $backgroundColor !important;
 .mapboxgl-ctrl-group{
   // There is no easy way to control the icon color of the mapbox control group
   filter: invert(0.8) hue-rotate(180deg);
+}
+
+input:autofill, input:-webkit-autofill{
+  background-color: $backgroundColor !important;
+  color: $primaryFontColor!important;
 }
