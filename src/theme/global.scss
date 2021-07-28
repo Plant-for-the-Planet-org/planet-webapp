@@ -368,3 +368,6 @@ input:autofill, input:-webkit-autofill{
   background-color: $backgroundColor !important;
   color: $primaryFontColor!important;
 }
+.MuiSelect-icon, .MuiNativeSelect-icon{
+  fill: $primaryFontColor !important;
+}
