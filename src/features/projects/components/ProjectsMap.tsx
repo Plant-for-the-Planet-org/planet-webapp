@@ -182,7 +182,7 @@ export default function ProjectsMap(): ReactElement {
         )}
         <ExploreLayers />
         <div className={styles.mapNavigation}>
-          {zoomLevel === 2 && (
+          {zoomLevel === 2 && selectedMode !== 'imagery' && (
             <div
               onClick={() => setSatellite(!satellite)}
               className={styles.layerToggle}
@@ -190,7 +190,9 @@ export default function ProjectsMap(): ReactElement {
               {satellite ? <LayerIcon /> : <LayerDisabled />}
             </div>
           )}
-          <NavigationControl showCompass={false} />
+          {selectedMode !== 'imagery' && (
+            <NavigationControl showCompass={false} />
+          )}
         </div>
         {showDetails.show && (
           <Popup

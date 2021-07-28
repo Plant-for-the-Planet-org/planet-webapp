@@ -57,6 +57,10 @@ export default function TimeTravel({}: Props): ReactElement {
       setAfter(after);
 
       // Add zoom and rotation controls to the map.
+      before.addControl(
+        new mapboxgl.NavigationControl({ showCompass: false }),
+        'bottom-right'
+      );
       after.addControl(
         new mapboxgl.NavigationControl({ showCompass: false }),
         'bottom-right'
