@@ -169,6 +169,14 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   }, [satellite]);
 
   React.useEffect(() => {
+    if (plantLocations && plantLocations.length > 0) {
+      setSatellite(false);
+    } else {
+      setSatellite(true);
+    }
+  }, [plantLocations]);
+
+  React.useEffect(() => {
     const ids = [];
     if (plantLocations && (zoomLevel === 2 || zoomLevel === 3)) {
       for (const key in plantLocations) {
