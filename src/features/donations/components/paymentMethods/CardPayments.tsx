@@ -23,7 +23,7 @@ const { useTranslation } = i18next;
 const FormControlNew = withStyles({
   root: {
     width: '100%',
-    backgroundColor: 'var(--blueish-grey)',
+    backgroundColor: 'var(--background-color-dark)',
     border: '0px!important',
     borderRadius: '10px',
     fontFamily: styles.primaryFontFamily,

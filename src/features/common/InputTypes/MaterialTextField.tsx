@@ -23,7 +23,7 @@ const MaterialTextField = withStyles({
       border: '0px!important',
     },
     '& .MuiOutlinedInput-root': {
-      backgroundColor: 'var(--blueish-grey)',
+      backgroundColor: 'var(--background-color-dark)',
       color: 'var(--primary-font-color)',
       border: '0px!important',
       borderRadius: '10px',

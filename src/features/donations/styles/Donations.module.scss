@@ -323,7 +323,7 @@
 }
 
 .paymentRequestPlaceholder {
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   border-radius: 6px;
   padding: 8px 40px;
   color: $dark;
@@ -751,7 +751,7 @@
 }
 
 :export {
-  blueishGrey: '#f2f2f7';
+  blueishGrey: 'var(--background-color-dark)';
 }
 
 .thankyouImageHeader {
@@ -795,7 +795,7 @@
 .disclaimerContainer {
   display: flex;
   flex-direction: row;
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   border-radius: 10px;
   width: 100%;
   padding: 18.5px;

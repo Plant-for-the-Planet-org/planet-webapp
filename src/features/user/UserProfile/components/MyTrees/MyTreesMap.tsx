@@ -177,7 +177,7 @@ export default function MyTreesMap({
           <>
             <div className={styles.contributionInfo}>
               <div key={contributionInfo.properties.id} className={styles.tree}>
-                <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.blueishGrey}}>
+                <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.backgroundColorDark}}>
                   {formatDate(contributionInfo.properties.plantDate)}
                 </div>
                 <div className={styles.treeRow}>

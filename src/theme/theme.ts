@@ -25,7 +25,7 @@ const globalStyles = css.global`
     --primary-font-color: ${light.primaryFontColor};
     --divider-color: ${light.dividerColor};
     --secondary-color: ${light.secondaryColor};
-    --blueish-grey: ${light.blueishGrey};
+    --background-color-dark: ${light.backgroundColorDark};
     --background-color: ${light.backgroundColor};
     --highlight-background: ${light.highlightBackground};
     --light: ${light.light};
@@ -37,7 +37,7 @@ const globalStyles = css.global`
     --primary-font-color: ${dark.primaryFontColor};
     --divider-color: ${dark.dividerColor};
     --secondary-color: ${dark.secondaryColor};
-    --blueish-grey: ${dark.blueishGrey};
+    --background-color-dark: ${dark.backgroundColorDark};
     --background-color: ${dark.backgroundColor};
     --highlight-background: ${dark.highlightBackground};
     --light: ${dark.light};

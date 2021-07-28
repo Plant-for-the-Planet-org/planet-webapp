@@ -163,7 +163,7 @@
   height: 128px;
   border-radius: 10px;
   border: dashed 1px $primaryFontColor;
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -198,7 +198,7 @@
 
 .plantingSeasons {
   border-radius: 10px;
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   padding: 16px;
   padding-top: 24px;
   display: flex;

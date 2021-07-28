@@ -79,7 +79,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                 const date = formatDate(item.properties.plantDate);
                 return (
                   <div key={item.properties.id} className={styles.tree}>
-                    <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.blueishGrey,
+                    <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.backgroundColorDark,
                   color: theme === 'theme-light' ? themeProperties.light.primaryFontColor : themeProperties.dark.primaryFontColor}}>{date}</div>
                     <div className={styles.treeRow}>
                       <div className={styles.textCol}>
