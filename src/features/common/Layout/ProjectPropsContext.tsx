@@ -161,12 +161,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   }, [project]);
 
   React.useEffect(() => {
-    if (satellite) {
-      setMapState({ ...mapState, maxZoom: 15 });
-    } else {
-      setMapState({ ...mapState, maxZoom: 25 });
+    if (viewport.zoom > 15) {
+      setSatellite(false);
     }
-  }, [satellite]);
+  }, [viewport]);
 
   React.useEffect(() => {
     if (plantLocations && plantLocations.length > 0) {
