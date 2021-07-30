@@ -3,6 +3,9 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
+import { ThemeContext } from '../../../../theme/themeContext';
+import MoonIcon from '../../../../../public/assets/images/footer/MoonIcon';
+import SunIcon from '../../../../../public/assets/images/footer/SunIcon';
 
 const config = tenantConfig();
 
@@ -117,6 +120,8 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:contact')}
                 </a>
+
+                <DarkModeSwitch />
             </div>
             <SelectLanguageAndCountry
                 openModal={openLanguageModal}
@@ -131,3 +136,26 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         </>
     )
 }
+
+function DarkModeSwitch() {
+    const { theme, toggleTheme } = React.useContext(ThemeContext);
+  
+    return (
+      <button style={{ position: "relative" }}>
+        <input
+          onClick={() =>
+            toggleTheme(theme === "theme-light" ? "theme-dark" : "theme-light")
+          }
+          defaultChecked={theme === "theme-dark" ? true : false}
+          type="checkbox"
+          className={styles.darkmodeCheckbox}
+          id="chk"
+        />
+        <label className={styles.darkmodeLabel} htmlFor="chk">
+          <MoonIcon />
+          <SunIcon />
+          <div className={styles.darkmodeBall}></div>
+        </label>
+      </button>
+    );
+  }

@@ -3,7 +3,7 @@ import React from 'react';
 
 export const ThemeContext = React.createContext({
   theme: 'string',
-  toggleTheme: () => {},
+  toggleTheme: (theme:any) => theme,
 });
 
 export default function ThemeProvider({ children }:any) {

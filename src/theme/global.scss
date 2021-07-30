@@ -365,7 +365,7 @@ fill: $primaryFontColor
 }
 
 input:autofill, input:-webkit-autofill{
-  background-color: $backgroundColor !important;
+  background-color: $backgroundColorDark !important;
   color: $primaryFontColor!important;
 }
 .MuiSelect-icon, .MuiNativeSelect-icon{

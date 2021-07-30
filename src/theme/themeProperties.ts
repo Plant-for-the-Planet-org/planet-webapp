@@ -34,7 +34,7 @@ const themeProperties = {
     dark: '#000',
     dangerColor:'#00ef00',
     unDecadeFill: '#fff',
-    backgroundColorDark: '#252627'
+    backgroundColorDark: '#101113'
   },
 };
 
