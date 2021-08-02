@@ -1,0 +1,40 @@
+@import '../../../../theme/theme';
+
+.darkmodeLabel {
+    background-color: rgba($color: #B2B2B2, $alpha: 0.4) ;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    height: 12px;
+    width: 36px;
+    transform: scale(1.5);
+    margin-right: 18px;
+    svg > path {
+      fill: #f1c40f;
+    }
+    svg {
+      height: 7px;
+    }
+  }
+  .darkmodeBall {
+    background-color: $backgroundColorDark;
+    border-radius: 50%;
+    position: absolute;
+    left: -1px;
+    height: 11px;
+    width: 11px;
+    transform: translateX(5px);
+    transition: transform 0.2s linear;
+  }
+  .darkmodeCheckbox {
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .darkmodeCheckbox:checked + .darkmodeLabel .darkmodeBall {
+    transform: translateX(21px);
+  }
+  

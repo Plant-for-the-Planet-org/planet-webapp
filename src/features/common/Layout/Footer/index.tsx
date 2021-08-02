@@ -10,6 +10,7 @@ import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
+import DarkModeSwitch from '../DarkModeSwitch.tsx';
 
 const { useTranslation } = i18next;
 
@@ -112,7 +113,6 @@ export default function Footer() {
         <div className={styles.footer_container}>
           <div>
             <div className={styles.footer_button_container}>
-
               <button id={'worldIcon'} onClick={handleModalOpen} className={styles.footer_button}>
                 <World color={styles.primaryFontColor} />
                 <p className={styles.selected_language}>
@@ -262,6 +262,9 @@ export default function Footer() {
               </div>
             </div>
             <div className={styles.footer_links_container}>
+              <div className={styles.switch}>
+            <DarkModeSwitch />
+            </div>
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks && config.footerLinks.map((key: any) => {
                 return (
