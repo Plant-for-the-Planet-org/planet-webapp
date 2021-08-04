@@ -160,11 +160,12 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     }
   }, [project]);
 
-  React.useEffect(() => {
-    if (viewport.zoom > 15) {
-      setSatellite(false);
-    }
-  }, [viewport]);
+  // React.useEffect(() => {
+  //   if (viewport.zoom > 15) {
+  //     setSatellite(false);
+  //   }
+  //   console.log('zoom', viewport.zoom);
+  // }, [viewport]);
 
   React.useEffect(() => {
     if (plantLocations && plantLocations.length > 0) {
