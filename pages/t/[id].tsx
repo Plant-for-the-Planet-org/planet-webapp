@@ -1,85 +1,56 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import TPOProfile from '../../src/features/user/UserProfile/screens/TpoProfile';
+import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import { getRequest } from '../../src/utils/apiRequests/api';
-import IndividualProfile from '../../src/features/user/UserProfile/screens/IndividualProfile';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import Profile from '../../src/features/user/Profile';
+import UserLayout from '../../src/features/user/UserLayout';
 
-interface Props {
-  initialized: Boolean;
-}
-
-export default function PublicUser(initialized: Props) {
-  const isServer = () => typeof window === 'undefined';
-  return <>{!isServer() && <ProfileComponent />}</>;
-}
-
-function ProfileComponent(): ReactElement {
-  const [authenticatedType, setAuthenticatedType] = React.useState('');
-  const [profile, setProfile] = React.useState<null | Object>();
-  const [slug, setSlug] = React.useState<null | string | string[]>();
-  const [ready, setReady] = React.useState(false);
-
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
-
-  const [forceReload, changeForceReload] = React.useState(false);
+function User(): ReactElement {
+  // External imports
   const router = useRouter();
+  const { user, contextLoaded } = React.useContext(UserPropsContext);
+
+  // Internal states
+  const [profile, setProfile] = React.useState<null | Object>();
+  const [authenticatedType, setAuthenticatedType] = React.useState('');
+
+  // Loads the public user profile
+  async function loadPublicProfile(id: any) {
+    const profileData = await getRequest(`/app/profiles/${id}`);
+    setProfile(profileData);
+    setAuthenticatedType('public');
+  }
 
   useEffect(() => {
-    if (router && router.query.id) {
-      setSlug(router.query.id);
-      setReady(true);
-    }
-  }, [router]);
-
-  useEffect(() => {
-    async function loadPublicProfile() {
-      const profileData = await getRequest(`/app/profiles/${slug}`);
-      setProfile(profileData);
-      setAuthenticatedType('public');
-    }
-
-    if (ready && contextLoaded) {
+    if (router && router.isReady && router.query.id && contextLoaded) {
+      // reintiating the profile
       setProfile(null);
-      if (user) {
-        const currentUserSlug = user?.slug ? user.slug : null;
-        if (user && currentUserSlug === slug) {
-          setProfile(user);
-          setAuthenticatedType('private');
-        } else {
-          loadPublicProfile();
-        }
-      } else {
-        loadPublicProfile();
+      // Check if the user is authenticated and trying to access their own profile
+      if (user && user.slug === router.query.id) {
+        setProfile(user);
+        setAuthenticatedType('private');
+      }
+      // If user is not access their own profile, load the public profile
+      else {
+        loadPublicProfile(router.query.id);
       }
     }
-  }, [ready, contextLoaded, forceReload, slug, user]);
+  }, [contextLoaded, user, router]);
 
-  const PublicUserProps = {
-    userprofile: profile,
-    changeForceReload,
-    forceReload,
-    authenticatedType,
-    token,
-  };
-  return (
+  return profile ? (
     <>
-      {profile ? (
-        <>
-          <GetPublicUserProfileMeta userprofile={profile} />
-          {profile?.type === 'tpo' ? (
-            <TPOProfile {...PublicUserProps} />
-          ) : (
-            <IndividualProfile {...PublicUserProps} />
-          )}
-          <Footer />
-        </>
-      ) : (
-        <UserProfileLoader />
-      )}
+      <GetPublicUserProfileMeta userprofile={profile} />
+      <UserLayout>
+        <Profile userprofile={profile} authenticatedType={authenticatedType} />
+        <Footer />
+      </UserLayout>
     </>
+  ) : (
+    <UserProfileLoader />
   );
 }
+
+export default User;

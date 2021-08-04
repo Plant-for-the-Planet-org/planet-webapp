@@ -37,5 +37,8 @@
   "receivedFrom": "Recibido de {{name}}",
   "redeemedTrees": "Árboles redimidos",
   "embedWidget": "Insertar Widget",
-  "nameForest": "El Bosque de {{name}}"
+  "nameForest": "El Bosque de {{name}}",
+  "setTarget": "Fijar el objetivo..",
+  "targetSave": "Guardar",
+  "targetErrorMessage": "El número debe ser positivo o mayor que cero"
 }

@@ -22,10 +22,15 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
+interface Props {
+  editProfileModalOpen: any;
+  handleEditProfileModalClose: any;
+}
+
 export default function EditProfileModal({
   editProfileModalOpen,
   handleEditProfileModalClose,
-}: any) {
+}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { user, setUser, token, contextLoaded } = React.useContext(
@@ -33,7 +38,7 @@ export default function EditProfileModal({
   );
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { t, ready } = useTranslation(['editProfile', 'donate', 'target']);
+  const { t, ready } = useTranslation(['editProfile', 'donate']);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);

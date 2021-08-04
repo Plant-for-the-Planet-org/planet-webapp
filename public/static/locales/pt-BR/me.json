@@ -73,5 +73,8 @@
   "in-dispute": "Em Disputa",
   "dispute-lost": "Disputa perdida",
   "nameForest": "A Floresta de {{name}}",
-  "taxReceipt": "Recibo do imposto"
+  "taxReceipt": "Recibo do imposto",
+  "setTarget": "Estabelecer Meta",
+  "targetSave": "Salvar",
+  "targetErrorMessage": "O número deve ser positivo ou maior que zero"
 }

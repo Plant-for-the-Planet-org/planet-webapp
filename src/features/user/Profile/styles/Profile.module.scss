@@ -1,5 +1,106 @@
 @import './../../../../theme/theme';
 
+.profilePageContainer {
+  position: relative;
+  display: flex;
+}
+.profilePage {
+  width: 100%;
+}
+// Styles for Sidebar
+
+.sidebar {
+  width: 256px;
+  position: fixed;
+  top: 80px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  justify-content: space-between;
+  .navLinksContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .navlink {
+    padding: 16px 24px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    &:hover {
+      cursor: pointer;
+      background-color: $blueishGrey;
+    }
+    button {
+      font-size: 14px;
+      font-family: $primaryFontFamily;
+      font-weight: 600;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  .navlinkActive {
+    background-color: rgba(104, 176, 48, $alpha: 0.2);
+    font-weight: 600;
+  }
+  .navlinkTitle {
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 12px;
+    span {
+      background-color: $primaryColor;
+      color: $light;
+      padding: 4px 8px;
+      margin-left: 8px;
+      border-radius: 4px;
+    }
+  }
+  .subMenuArrow {
+    svg {
+      path {
+        fill: $primaryFontColor;
+      }
+    }
+  }
+  .navlinkSubMenu {
+    padding: 16px 24px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 56px;
+    &:hover {
+      cursor: pointer;
+      background-color: $blueishGrey;
+    }
+  }
+}
+
+.settingsIcon {
+  display: flex;
+  position: absolute;
+  right: 50px;
+  top: 80px;
+  padding: 20px;
+  z-index: 2;
+}
+
+.settingsIcon:hover {
+  cursor: pointer;
+}
+
+// mobile view
+@media only screen and (max-width: 768px) {
+  .settingsIcon {
+    top: 40px;
+    right: 20px;
+    border-radius: 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 16px;
+  }
+}
+
 .landingContent {
   position: relative;
   display: flex;
@@ -32,7 +133,7 @@
   text-align: center;
 }
 
-.treeCounterDescription > p  {
+.treeCounterDescription > p {
   color: var(--primary-color);
   display: inline;
   padding-left: 5px;
@@ -74,7 +175,7 @@
 }
 
 .bottomIconBgSupport {
-  background-color: #303B31;
+  background-color: #303b31;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,11 +225,8 @@
 .shareIconFacebook {
   position: relative;
 }
-// .shareIconFacebook svg {
-//     width: 30px;
-//     height: 30px;
-// }
-.shareIconFacebookContainer{
+
+.shareIconFacebookContainer {
   position: absolute;
   width: 40px;
   height: 40px;
@@ -138,7 +236,7 @@
   text-align: center;
   padding-top: 7px;
   border-radius: 20px;
-  background-color: #303B31;
+  background-color: #303b31;
   cursor: pointer;
 }
 
@@ -146,10 +244,6 @@
   position: relative;
 }
 
-// .shareIconInstagram svg {
-//     width: 30px;
-//     height: 30px;
-// }
 .shareIconInstagramContainer {
   position: absolute;
   top: 10px;
@@ -160,7 +254,7 @@
   text-align: center;
   padding-top: 7px;
   border-radius: 20px;
-  background-color: #303B31;
+  background-color: #303b31;
   cursor: pointer;
 }
 
@@ -169,8 +263,8 @@
 }
 
 .shareIcon svg {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
 .shareIconTwitterContainer {
   position: absolute;
@@ -183,16 +277,12 @@
   text-align: center;
   padding-top: 7px;
   border-radius: 20px;
-  background-color: #303B31;
+  background-color: #303b31;
   cursor: pointer;
 }
 .shareBtnContainer > button.react-share__ShareButton {
   padding: 0px 10px;
 }
-
-// .shareIcon {
-//   padding: 10px;
-// }
 
 .shareIconFacebookContainerPrivate {
   width: 40px;
@@ -200,6 +290,6 @@
   text-align: center;
   padding-top: 7px;
   border-radius: 20px;
-  background-color: #303B31;
+  background-color: #303b31;
   cursor: pointer;
 }

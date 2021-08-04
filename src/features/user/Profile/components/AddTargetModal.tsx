@@ -17,18 +17,21 @@ const { useTranslation } = i18next;
 export default function AddTargetModal({
   addTargetModalOpen,
   handleAddTargetModalClose,
-  changeForceReload,
-  forceReload,
 }: any) {
-  const [target, setTarget] = React.useState(0);
-  const { t, ready } = useTranslation(['target']);
-  const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
-  const [isLoadingForm, setIsLoading] = React.useState(false);
+  // External imports
+  const { t, ready } = useTranslation(['me']);
   const { user, token, contextLoaded, setUser } = React.useContext(
     UserPropsContext
   );
+  const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
+  const { theme } = React.useContext(ThemeContext);
 
-  const apiCallChangeTarget = async () => {
+  // Internal states
+  const [target, setTarget] = React.useState(0);
+  const [isLoadingForm, setIsLoading] = React.useState(false);
+
+  // Function to change target
+  const changeTarget = async () => {
     setIsLoading(true);
     if (contextLoaded && token) {
       const bodyToSend = {
@@ -37,13 +40,12 @@ export default function AddTargetModal({
       putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
         .then((res) => {
           handleAddTargetModalClose();
-          changeForceReload(!forceReload);
-          setIsLoading(false);
           const newUserInfo = {
             ...user,
             score: res.score,
           };
           setUser(newUserInfo);
+          setIsLoading(false);
         })
         .catch((error) => {
           handleAddTargetModalClose();
@@ -52,7 +54,6 @@ export default function AddTargetModal({
         });
     }
   };
-  const { theme } = React.useContext(ThemeContext);
 
   return ready && user ? (
     <Modal
@@ -69,9 +70,7 @@ export default function AddTargetModal({
     >
       <Fade in={addTargetModalOpen}>
         <div className={styles.modal}>
-          <h4>
-            <b> {t('target:setTarget')} </b>
-          </h4>
+          <b> {t('me:setTarget')} </b>
           <div className={styles.inputField}>
             <MaterialTextField
               placeholder={user.score.target ? user.score.target : '10000'}
@@ -89,29 +88,31 @@ export default function AddTargetModal({
           </div>
           {errors.addTarget && (
             <span className={formStyles.formErrors}>
-              {t('target:targetErrorMessage')}
+              {t('me:targetErrorMessage')}
             </span>
           )}
           {errors.addTarget ? (
             <div className="primaryButton" style={{ marginTop: '24px' }}>
-              {t('target:targetSave')}
+              {t('me:targetSave')}
             </div>
           ) : (
             <button
               id={'AddTargetCont'}
               className="primaryButton"
               style={{ marginTop: '24px' }}
-              onClick={() => handleSubmit(apiCallChangeTarget())}
+              onClick={() => handleSubmit(changeTarget)}
             >
               {isLoadingForm ? (
                 <div className={spinnerStyle.spinner}></div>
               ) : (
-                t('target:targetSave')
+                t('me:targetSave')
               )}
             </button>
           )}
         </div>
       </Fade>
     </Modal>
-  ) : null;
+  ) : (
+    <></>
+  );
 }

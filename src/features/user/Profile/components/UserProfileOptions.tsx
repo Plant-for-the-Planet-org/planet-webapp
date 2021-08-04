@@ -1,9 +1,8 @@
 import React from 'react';
-// import { makeStyles, Theme } from '@material-ui/core/styles';
 import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
-import styles from '../styles/UserInfo.module.scss';
+import styles from '../styles/Profile.module.scss';
 import RedeemModal from './RedeemModal';
 import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';

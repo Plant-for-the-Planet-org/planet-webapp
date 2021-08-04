@@ -16,7 +16,6 @@ interface Props {
 
 export default function AccountHeader({ title, page }: Props): ReactElement {
   const { user } = React.useContext(UserPropsContext);
-  const [forceReload, changeForceReload] = React.useState(false);
   const { t } = useTranslation(['me']);
 
   const router = useRouter();
@@ -86,8 +85,6 @@ export default function AccountHeader({ title, page }: Props): ReactElement {
             editProfileModalOpen={editProfileModalOpen}
             handleEditProfileModalClose={handleEditProfileModalClose}
             handleEditProfileModalOpen={handleEditProfileModalOpen}
-            changeForceReload={changeForceReload}
-            forceReload={forceReload}
           />
         )}
       </div>

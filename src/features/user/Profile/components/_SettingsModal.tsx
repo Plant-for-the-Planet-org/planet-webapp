@@ -20,8 +20,6 @@ export default function SettingsModal({
   editProfileModalOpen,
   handleEditProfileModalClose,
   handleEditProfileModalOpen,
-  changeForceReload,
-  forceReload,
 }: any) {
   const { user, logoutUser } = React.useContext(UserPropsContext);
 
@@ -146,12 +144,8 @@ export default function SettingsModal({
       </Modal>
 
       <EditProfileModal
-        user={user}
         editProfileModalOpen={editProfileModalOpen}
         handleEditProfileModalClose={handleEditProfileModalClose}
-        handleEditProfileModalOpen={handleEditProfileModalOpen}
-        changeForceReload={changeForceReload}
-        forceReload={forceReload}
       />
       <DeleteModal
         deleteModalOpen={deleteModalOpen}

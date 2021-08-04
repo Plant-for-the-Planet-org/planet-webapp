@@ -119,5 +119,8 @@
   "open": "Open",
   "downloads": "Downloads",
   "account": "Account",
-  "loadMore": "Load More"
+  "loadMore": "Load More",
+  "setTarget": "Set Target",
+  "targetSave": "Save",
+  "targetErrorMessage": "Number must be greater than zero"
 }
