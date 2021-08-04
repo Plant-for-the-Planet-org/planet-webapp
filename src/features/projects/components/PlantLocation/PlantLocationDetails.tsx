@@ -125,6 +125,7 @@ export default function PlantLocationDetails({
       {plantLocation && (
         <div className={'singleProjectDetails'}>
           <div className={styles.treeCount}>
+            <div>
             {plantLocation.type === 'multi' && (
               <>
                 <span>
@@ -146,6 +147,10 @@ export default function PlantLocationDetails({
             )}
             {plantLocation.type === 'single' && <span>{t('1Tree')} </span>}
             {plantLocation.type === 'sample' && <span>{t('sampleTree')} </span>}
+            </div>
+            <div>
+              {plantLocation.hid?plantLocation.hid.substring(0, 3) + "-" + plantLocation.hid.substring(3):null}
+            </div>
           </div>
           {plantLocation.type === 'multi' && sampleTreeImages.length > 0 && (
             <div className={styles.projectImageSliderContainer}>
