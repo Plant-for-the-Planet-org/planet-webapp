@@ -6,7 +6,7 @@ interface Props {}
 
 export default function Register({}: Props): ReactElement {
   const RegisterTrees = dynamic(
-    () => import('../src/features/user/UserProfile/components/RegisterTrees')
+    () => import('../src/features/user/Profile/components/RegisterTrees')
   );
   return (
     <LandingSection

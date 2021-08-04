@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import RegisterTrees from '../../src/features/user/UserProfile/components/RegisterTrees';
+import RegisterTrees from '../../src/features/user/Profile/components/RegisterTrees';
 import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import i18next from '../../i18n';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';

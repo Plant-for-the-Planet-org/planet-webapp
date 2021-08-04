@@ -4,7 +4,7 @@ import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../../../i18n';
-import styles from '../../../UserProfile/styles/ProjectsContainer.module.scss';
+import styles from '../../../Profile/styles/ProjectsContainer.module.scss';
 import {
   getAuthenticatedRequest,
   getRequest,

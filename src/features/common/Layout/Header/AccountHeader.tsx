@@ -4,7 +4,7 @@ import styles from './AccountHeader.module.scss';
 import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../UserPropsContext';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import SettingsModal from '../../../user/UserProfile/components/SettingsModal';
+import SettingsModal from '../../../user/Profile/components/_SettingsModal';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 
 const { useTranslation } = i18next;
