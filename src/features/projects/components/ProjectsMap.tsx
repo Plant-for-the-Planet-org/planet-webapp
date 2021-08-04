@@ -181,8 +181,7 @@ export default function ProjectsMap(): ReactElement {
           </>
         )}
         <ExploreLayers />
-        <div className={styles.mapNavigation}>
-          {zoomLevel === 2 && (
+        {zoomLevel === 2 && selectedMode === 'location' && (
             <div
               onClick={() => setSatellite(!satellite)}
               className={styles.layerToggle}
@@ -190,6 +189,7 @@ export default function ProjectsMap(): ReactElement {
               {satellite ? <LayerIcon /> : <LayerDisabled />}
             </div>
           )}
+        <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>
         {showDetails.show && (
