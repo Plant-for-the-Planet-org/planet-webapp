@@ -275,6 +275,10 @@ button {
   padding-left: 40px;
 }
 
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+  margin: 0 20px 25px 0;
+}
+
 @font-face {
   font-family: 'HarmoniaSansPro';
   src: url('/tenants/pampers/HarmoniaSansPro-SemiBd.woff') format('woff');

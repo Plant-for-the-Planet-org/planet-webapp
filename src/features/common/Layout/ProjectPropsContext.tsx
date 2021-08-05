@@ -158,6 +158,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       setsiteExists(false);
       setGeoJson(null);
     }
+    setSelectedMode('location');
   }, [project]);
 
   React.useEffect(() => {
