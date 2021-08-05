@@ -3,6 +3,7 @@ import styles from './Profile/styles/Profile.module.scss';
 import Profile from './Profile';
 import Link from 'next/link';
 import DownArrow from '../../../public/assets/images/icons/DownArrow';
+import router from 'next/router';
 
 const TreeCounterIcon = (
   <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
@@ -42,11 +43,11 @@ function UserLayout(props: any): ReactElement {
       subMenu: [
         {
           title: 'Profile',
-          path: '/profile/',
+          path: '/profile',
         },
         {
-          title: 'Set Target',
-          path: '/profile/set-target',
+          title: 'My Forest',
+          path: '/profile/forest',
         },
         {
           title: 'Register Trees',
@@ -55,45 +56,87 @@ function UserLayout(props: any): ReactElement {
       ],
     },
     {
-      title: 'Payment Methods',
-      path: '/payment-methods',
-      icon: PaymentMethodsIcon,
-    },
-    {
       title: 'Donations',
       path: '/donations',
       icon: DonationsIcon,
+      subMenu: [
+        {
+          title: 'History',
+          path: '/profile/history',
+        },
+        // {
+        //   title: 'Recurring Donations',
+        //   path: '/profile/recurring-donations',
+        // },
+        // {
+        //   title: 'Payouts',
+        //   path: '/profile/payouts', // Only for Tpos
+        // },
+        // {
+        //   title: 'Payment Methods',
+        //   path: '/profile/payment-methods',
+        // },
+      ],
     },
-    {
-      title: 'TreeCash',
-      path: '/treecash',
-      icon: TreeCashIcon,
-    },
+    // {
+    //   title: 'TreeCash',
+    //   path: '/profile/treecash',
+    //   icon: TreeCashIcon,
+    //   // subMenu: [
+    //   //   {
+    //   //     title: 'Profile & History',
+    //   //     path: '/profile/history',
+    //   //   },
+    //   //   {
+    //   //     title: 'Create Bulk Gifts',
+    //   //     path: '/profile/recurring-donations',
+    //   //   },
+    //   // ],
+    // },
     {
       title: 'TreeMapper',
-      path: '/treemapper',
+      path: '/profile/treemapper',
       icon: TreeMapperIcon,
     },
     {
       title: 'Projects',
-      path: '/projects',
+      path: '/profile/projects',
       icon: ProjectsIcon,
     },
     {
       title: 'Create Widget',
-      path: '/create-widget',
+      path: '/profile/widgets',
       icon: CreateWidgetIcon,
     },
     {
       title: 'Settings',
-      path: '/settings',
+      path: '/profile/settings',
       icon: SettingsIcon,
+      subMenu: [
+        {
+          title: 'Edit Profile',
+          path: '/profile/edit',
+        },
+        {
+          title: 'Delete Profile',
+          path: '/profile/delete-account',
+        },
+        // {
+        //   title: 'Setup 2Factor Authentication',
+        //   path: '/profile/2fa', // Only for Tpos
+        // },
+      ],
     },
   ];
 
   const [open, setOpen] = React.useState(true);
   const [activeLink, setactiveLink] = React.useState('/profile');
-  const [activeSubLink, setactiveSubLink] = React.useState('/profile/');
+
+  React.useEffect(() => {
+    if (router) {
+      setactiveLink(router.router?.asPath);
+    }
+  }, [router]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -117,8 +160,6 @@ function UserLayout(props: any): ReactElement {
               link={link}
               setactiveLink={setactiveLink}
               activeLink={activeLink}
-              activeSubLink={activeSubLink} 
-              setactiveSubLink={setactiveSubLink}
             />
           ))}
         </div>
@@ -133,8 +174,21 @@ function UserLayout(props: any): ReactElement {
   );
 }
 
-function NavLink({ link, setactiveLink, activeLink,setactiveSubLink, activeSubLink }: any) {
+function NavLink({ link, setactiveLink, activeLink }: any) {
   const [subMenuOpen, setsubMenuOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    // Check if array of submenu has activeSubLink
+    if (link.subMenu && link.subMenu.length > 0) {
+      const subMenuItem = link.subMenu.find((subMenuItem: any) => {
+        return subMenuItem.path === activeLink;
+      });
+      if (subMenuItem) {
+        setactiveLink(subMenuItem.path);
+        setsubMenuOpen(true);
+      }
+    }
+  }, [activeLink]);
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
@@ -143,8 +197,10 @@ function NavLink({ link, setactiveLink, activeLink,setactiveSubLink, activeSubLi
         }`}
         onClick={() => {
           setsubMenuOpen(!subMenuOpen);
-          setactiveLink(link.path);
-          
+          if (!link.subMenu) {
+            setactiveLink(link.path);
+            router.push(link.path);
+          }
         }}
       >
         {link.icon}
@@ -167,13 +223,17 @@ function NavLink({ link, setactiveLink, activeLink,setactiveSubLink, activeSubLi
         link.subMenu &&
         link.subMenu.length > 0 &&
         link.subMenu.map((subLink: any) => (
-          <div 
-          className={`${styles.navlinkSubMenu} ${
-            activeSubLink === subLink.path ? styles.navlinkActive : ''
-          }`}
-          onClick={() => {
-            setactiveSubLink(subLink.path);
-          }}>{subLink.title}</div>
+          <div
+            className={`${styles.navlinkSubMenu} ${
+              activeLink === subLink.path ? styles.navlinkActive : ''
+            }`}
+            onClick={() => {
+              setactiveLink(subLink.path);
+              router.push(subLink.path);
+            }}
+          >
+            {subLink.title}
+          </div>
         ))}
     </div>
   );

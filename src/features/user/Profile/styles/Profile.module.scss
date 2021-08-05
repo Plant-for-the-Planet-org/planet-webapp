@@ -6,6 +6,13 @@
 }
 .profilePage {
   width: 100%;
+  margin-top: 80px;
+}
+
+.widgetIFrame{
+  min-height:100vh;
+  width: 100%;
+  max-width:calc(100vw - 256px);
 }
 // Styles for Sidebar
 
@@ -17,7 +24,10 @@
   display: flex;
   flex-direction: column;
   height: calc(100% - 80px);
+  overflow-y: scroll;
   justify-content: space-between;
+  box-shadow: rgba(104, 176, 48, $alpha: 0.2) 0px 0px 20px;
+  background-color: $light;
   .navLinksContainer {
     margin-top: 20px;
     display: flex;
@@ -106,7 +116,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 160px;
+  margin-top: 80px;
   z-index: 2;
 }
 

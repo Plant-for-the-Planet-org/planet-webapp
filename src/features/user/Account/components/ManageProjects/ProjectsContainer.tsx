@@ -48,7 +48,7 @@ export default function ProjectsContainer({}: any) {
   }, [contextLoaded, token]);
 
   return ready ? (
-    <div style={{ margin: 'auto', maxWidth: '950px' }} id="projectsContainer">
+    <div className={styles.projectsContainer} id="projectsContainer">
       {projects.length < 1 ? (
         user ? (
           <Link href="/manage-projects/add-project">

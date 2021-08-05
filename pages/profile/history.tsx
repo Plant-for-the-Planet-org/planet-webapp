@@ -7,6 +7,7 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import History from '../../src/features/user/Account/screens/History';
 import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import UserLayout from '../../src/features/user/UserLayout';
 
 const { useTranslation } = i18next;
 
@@ -85,10 +86,10 @@ function AccountHistory({}: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <AccountHeader page={'history'} title={t('me:myAccount')} />
-      <History {...HistoryProps} />
-
-      <AccountFooter />
+      <UserLayout>
+        <History {...HistoryProps} />
+        <AccountFooter />
+      </UserLayout>
     </>
   );
 }

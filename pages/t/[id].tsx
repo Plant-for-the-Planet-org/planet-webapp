@@ -6,12 +6,12 @@ import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import Profile from '../../src/features/user/Profile';
-import UserLayout from '../../src/features/user/UserLayout';
+import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 
 function User(): ReactElement {
   // External imports
   const router = useRouter();
-  const { user, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, contextLoaded,token } = React.useContext(UserPropsContext);
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
@@ -30,8 +30,7 @@ function User(): ReactElement {
       setProfile(null);
       // Check if the user is authenticated and trying to access their own profile
       if (user && user.slug === router.query.id) {
-        setProfile(user);
-        setAuthenticatedType('private');
+        router.replace('/profile');
       }
       // If user is not access their own profile, load the public profile
       else {
@@ -43,10 +42,13 @@ function User(): ReactElement {
   return profile ? (
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <UserLayout>
-        <Profile userprofile={profile} authenticatedType={authenticatedType} />
-        <Footer />
-      </UserLayout>
+      <Profile userprofile={profile} authenticatedType={authenticatedType} />
+      <MyTrees
+          authenticatedType={authenticatedType}
+          profile={profile}
+          token={token}
+        />
+      <Footer />
     </>
   ) : (
     <UserProfileLoader />

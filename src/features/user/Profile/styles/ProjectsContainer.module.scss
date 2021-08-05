@@ -1,5 +1,9 @@
 @import '../../../../theme/theme';
 
+.projectsContainer{
+  width: 100%;
+  min-height: calc(100vh - 80px);
+}
 .projectsTitleText {
   font-family: $primaryFontFamily;
   text-align: center;

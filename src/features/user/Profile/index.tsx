@@ -10,7 +10,6 @@ import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
 import UserProfileOptions from './components/UserProfileOptions';
 import TreeCounter from './../../common/TreeCounter/TreeCounter';
-import ProjectsContainer from './components/ProjectsContainer';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -28,7 +27,8 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
 
   return (
-    <div>
+    <div style={{marginTop:'-80px'}}> 
+    {/* TO DO - find solution for this */}
       {/* maybe we use this as edit button */}
       {/* {authenticatedType === 'private' && (
         <button
@@ -48,6 +48,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
               ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
               : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
           }
+          style={{marginTop:'0px'}}
         >
           {/* {settingsModalOpen && (
           <SettingsModal
@@ -101,17 +102,6 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
           )}
         </LandingSection>
 
-        {/* To be Shifted to new page */}
-        {/* <ProjectsContainer
-        userprofile={userprofile}
-        authenticatedType={authenticatedType}
-      /> */}
-
-        <MyTrees
-          authenticatedType={authenticatedType}
-          profile={userprofile}
-          token={token}
-        />
         {/* add target modal */}
         <AddTargetModal
           userprofile={userprofile}

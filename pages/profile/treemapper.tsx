@@ -5,11 +5,11 @@ import TreeMapperList from '../../src/features/user/Account/screens/TreeMapperLi
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
-import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import PlantLocationPage from '../../src/features/user/Account/screens/PlantLocationPage';
 import dynamic from 'next/dynamic';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import { pl } from 'date-fns/locale';
+import UserLayout from '../../src/features/user/UserLayout';
 
 const { useTranslation } = i18next;
 
@@ -143,23 +143,25 @@ function History({}: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <AccountHeader page={'treemapper'} title={t('me:myAccount')} />
-      <div id="pageContainer" className={styles.pageContainer}>
-        <div className={styles.section}>
-          <TreeMapperList {...TreeMapperProps} />
-          {location && <PlantLocationPage {...TreeMapperProps} />}
-          <div className={styles.mapContainer}>
-            <div id="pp-mapbox" className={styles.map}>
-              <PlantLocationMap
-                locations={plantLocations}
-                selectedLocation={selectedLocation}
-                setselectedLocation={setselectedLocation}
-              />
+
+      <UserLayout>
+        <div id="pageContainer" className={styles.pageContainer}>
+          <div className={styles.section}>
+            <TreeMapperList {...TreeMapperProps} />
+            {location && <PlantLocationPage {...TreeMapperProps} />}
+            <div className={styles.mapContainer}>
+              <div id="pp-mapbox" className={styles.map}>
+                <PlantLocationMap
+                  locations={plantLocations}
+                  selectedLocation={selectedLocation}
+                  setselectedLocation={setselectedLocation}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <AccountFooter />
+        <AccountFooter />
+      </UserLayout>
     </>
   );
 }
