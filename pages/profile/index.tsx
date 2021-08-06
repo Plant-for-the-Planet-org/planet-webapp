@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import Footer from '../../src/features/common/Layout/Footer';
 import Profile from '../../src/features/user/Profile';
 import UserLayout from '../../src/features/user/UserLayout';
+import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
 
 function ProfilePage(): ReactElement {
   // External imports
@@ -25,7 +25,7 @@ function ProfilePage(): ReactElement {
   return profile ? (
     <UserLayout>
       <Profile userprofile={profile} authenticatedType={authenticatedType} />
-      <Footer />
+      <AccountFooter />
     </UserLayout>
   ) : (
     <UserProfileLoader />

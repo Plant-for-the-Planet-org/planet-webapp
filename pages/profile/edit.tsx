@@ -5,8 +5,10 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import Footer from '../../src/features/common/Layout/Footer';
 import UserLayout from '../../src/features/user/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
+import EditProfileModal from '../../src/features/user/Profile/components/EditProfileModal';
+import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
 
-function EditProfile(): ReactElement {
+function EditProfilePage(): ReactElement {
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
@@ -24,12 +26,12 @@ function EditProfile(): ReactElement {
 
   return profile ? (
       <UserLayout>
-        
-        <Footer />
+        <EditProfileModal/>
+        <AccountFooter />
       </UserLayout>
   ) : (
     <UserProfileLoader />
   );
 }
 
-export default EditProfile;
+export default EditProfilePage;

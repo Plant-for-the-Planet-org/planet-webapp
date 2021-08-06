@@ -246,7 +246,7 @@ export default function RegisterTrees({}: Props) {
 
   return ready ? (
     <>
-      <div>
+      <div className={styles.registerTreesContainer}>
         {!registered ? (
           <div className={styles.formContainer}>
             <h2 className={styles.title}>

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import styles from '../styles/EditProfileModal.module.scss';
-import Modal from '@material-ui/core/Modal';
-import BackButton from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useDropzone } from 'react-dropzone';
 import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
@@ -16,7 +14,6 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import i18next from '../../../../../i18n';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { selectUserType } from '../../../../utils/selectUserType';
-import { ThemeContext } from '../../../../theme/themeContext';
 import { MenuItem } from '@material-ui/core';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
@@ -180,7 +177,6 @@ export default function EditProfileModal({
               setSeverity('success');
               setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
               handleSnackbarOpen();
-              handleEditProfileModalClose();
               setIsUploadingData(false);
               setUser(res);
             } else {
@@ -188,7 +184,6 @@ export default function EditProfileModal({
             setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
             handleSnackbarOpen();
             setIsUploadingData(false);
-            handleEditProfileModalClose();
             }
           })
           .catch((error) => {
@@ -206,30 +201,11 @@ export default function EditProfileModal({
       }
     }
   };
-  const { theme } = React.useContext(ThemeContext);
   return ready ? (
     <React.Fragment>
-      <Modal
-        className={'modalContainer' + ' ' + theme}
-        open={editProfileModalOpen}
-        //onClose={handleEditProfileModalClose}
-        closeAfterTransition
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-bio"
-        hideBackdrop
-      >
-        <div className={styles.modal}>
-          <div>
+        <div className={styles.editProfileContainer}>
             <div className={styles.headerDiv}>
-              <button
-                id={'backButtonEditP'}
-                className={styles.backDiv}
-                onClick={handleEditProfileModalClose}
-              >
-                <BackButton style={{}} />
-              </button>
               <div className={styles.editProfileText}>
-                {' '}
                 <b> {t('editProfile:edit')} </b>
               </div>
             </div>
@@ -502,9 +478,7 @@ export default function EditProfileModal({
                 )}
               </button>
             </div>
-          </div>
         </div>
-      </Modal>
       {/* snackbar for showing various messages */}
       <Snackbar
         open={snackbarOpen}
