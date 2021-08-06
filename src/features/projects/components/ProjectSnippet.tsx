@@ -10,6 +10,7 @@ import EditIcon from '../../../../public/assets/images/icons/manageProjects/Penc
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -31,6 +32,9 @@ export default function ProjectSnippet({
     : '';
 
   const { theme } = React.useContext(ThemeContext);
+
+  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
@@ -55,7 +59,7 @@ export default function ProjectSnippet({
         aria-describedby="simple-modal-description"
         disableBackdropClick
       >
-          <DonationsPopup project={project} onClose={handleClose} />
+        <DonationsPopup project={project} onClose={handleClose} />
       </Modal>
 
       {editMode ? (
@@ -67,11 +71,11 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
-          router.push('/[p]', `/${project.slug}`, {
-            shallow: true,
-          });
+          router.replace(`/${project.slug}`);
         }}
-        className={'projectImage'}
+        className={`projectImage ${
+          selectedPl || hoveredPl ? 'projectCollapsed' : ''
+        }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -103,7 +107,11 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(i18n.language, Number(project.countPlanted), 1)}{' '}
+              {localizedAbbreviatedNumber(
+                i18n.language,
+                Number(project.countPlanted),
+                1
+              )}{' '}
               {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
@@ -126,7 +134,11 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <button id={`ProjSnippetDonate_${project.id}`} onClick={handleOpen} className={'donateButton'}>
+                <button
+                  id={`ProjSnippetDonate_${project.id}`}
+                  onClick={handleOpen}
+                  className={'donateButton'}
+                >
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>
@@ -143,5 +155,7 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

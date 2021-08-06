@@ -95,5 +95,6 @@
   "askPublishName": "Muestra mi nombre completo en la tabla de clasificación y en las aplicaciones de Plant-for-the-Planet. ",
   "nameAlreadyPublished": "Tu nombre completo aparecerá en la tabla de clasificación ya que tu perfil de Plant-for-the-Planet es actualmente público.",
   "orgNamePublishedTax": "El nombre de la empresa es visible en nuestra tabla de clasificación y en la aplicación. Se emitirán recibos de deducción de impuestos para el mismo nombre.",
-  "orgNamePublished": "El nombre de la empresa es visible en nuestra tabla de clasificación y en la aplicación."
+  "orgNamePublished": "El nombre de la empresa es visible en nuestra tabla de clasificación y en la aplicación.",
+  "aboutProject": "Sobre el proyecto"
 }

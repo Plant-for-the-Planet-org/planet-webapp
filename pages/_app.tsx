@@ -103,7 +103,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    if (router.pathname === '/' || router.pathname === '/[p]') {
+    if (
+      router.pathname === '/' ||
+      router.pathname === '/[p]' ||
+      router.pathname === '/[p]/[id]'
+    ) {
       setIsMap(true);
     } else {
       setIsMap(false);
