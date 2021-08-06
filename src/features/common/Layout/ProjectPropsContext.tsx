@@ -161,13 +161,20 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     setSelectedMode('location');
   }, [project]);
 
+  // React.useEffect(() => {
+  //   if (viewport.zoom > 15) {
+  //     setSatellite(false);
+  //   }
+  //   console.log('zoom', viewport.zoom);
+  // }, [viewport]);
+
   React.useEffect(() => {
-    if (satellite) {
-      setMapState({ ...mapState, maxZoom: 15 });
+    if (plantLocations && plantLocations.length > 0) {
+      setSatellite(false);
     } else {
-      setMapState({ ...mapState, maxZoom: 25 });
+      setSatellite(true);
     }
-  }, [satellite]);
+  }, [plantLocations]);
 
   React.useEffect(() => {
     const ids = [];

@@ -21,6 +21,7 @@ export default function PlantLocations({}: Props): ReactElement {
     setSelectedPl,
     setHoveredPl,
     viewport,
+    satellite
   } = React.useContext(ProjectPropsContext);
 
   const { i18n, t } = useTranslation(['maps', 'common']);
@@ -131,7 +132,7 @@ export default function PlantLocations({}: Props): ReactElement {
                       type="fill"
                       source={pl.id}
                       paint={{
-                        'fill-color': '#007A49',
+                        'fill-color': satellite ? '#ffffff' : '#007A49',
                         'fill-opacity': getPolygonColor(pl),
                       }}
                     />
@@ -143,7 +144,7 @@ export default function PlantLocations({}: Props): ReactElement {
                         type="line"
                         source={pl.id}
                         paint={{
-                          'line-color': '#007A49',
+                          'line-color': satellite ? '#ffffff' : '#007A49',
                           'line-width': 4,
                         }}
                       />
