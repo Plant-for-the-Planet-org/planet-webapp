@@ -64,7 +64,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       <div className={styles.landingVideoWrapper}>
         {videoURL && (
           <video
-            preload={'metadata'}
+            preload={'auto'}
             muted
             autoPlay
             playsInline
