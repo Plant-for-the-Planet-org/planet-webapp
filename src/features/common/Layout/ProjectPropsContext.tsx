@@ -131,13 +131,6 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [windowSize, setWindowSize] = React.useState(1280);
   const [hoveredPl, setHoveredPl] = React.useState(null);
 
-  // React.useEffect(() => {
-  //   window.addEventListener('resize', updateWidth);
-  //   const isMobileTemp = windowSize <= 767;
-  //   setIsMobile(isMobileTemp);
-  //   return () => window.removeEventListener('resize', updateWidth);
-  // }, [windowSize]);
-
   React.useEffect(() => {
     if(typeof window !== 'undefined') {
       if(window.innerWidth > 767) {
