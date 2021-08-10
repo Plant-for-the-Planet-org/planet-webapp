@@ -5,8 +5,9 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import Footer from '../../src/features/common/Layout/Footer';
 import UserLayout from '../../src/features/user/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
+import DeleteProfile from '../../src/features/user/Profile/components/DeleteProfile';
 
-function DeleteProfile(): ReactElement {
+function DeleteProfilePage(): ReactElement {
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
@@ -24,12 +25,11 @@ function DeleteProfile(): ReactElement {
 
   return profile ? (
       <UserLayout>
-        
-        <Footer />
+        <DeleteProfile/>
       </UserLayout>
   ) : (
     <UserProfileLoader />
   );
 }
 
-export default DeleteProfile;
+export default DeleteProfilePage;

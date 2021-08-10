@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react';
 import i18next from '../../i18n';
 import styles from '../../src/features/user/Account/styles/AccountHistory.module.scss';
-import AccountHeader from '../../src/features/common/Layout/Header/AccountHeader';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../src/features/user/Account/screens/History';
-import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/user/UserLayout';
 
@@ -88,7 +86,6 @@ function AccountHistory({}: Props): ReactElement {
       )}
       <UserLayout>
         <History {...HistoryProps} />
-        <AccountFooter />
       </UserLayout>
     </>
   );

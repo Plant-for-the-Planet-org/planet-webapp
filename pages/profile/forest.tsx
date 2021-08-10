@@ -4,7 +4,6 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/user/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
-import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
 
 function ProfilePage(): ReactElement {
   // External imports
@@ -29,7 +28,6 @@ function ProfilePage(): ReactElement {
           profile={profile}
           token={token}
         />
-        <AccountFooter />
       </UserLayout>
   ) : (
     <UserProfileLoader />

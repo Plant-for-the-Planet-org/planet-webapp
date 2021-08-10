@@ -27,7 +27,6 @@ function EditProfilePage(): ReactElement {
   return profile ? (
       <UserLayout>
         <EditProfileModal/>
-        <AccountFooter />
       </UserLayout>
   ) : (
     <UserProfileLoader />

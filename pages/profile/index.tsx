@@ -4,7 +4,6 @@ import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProf
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import Profile from '../../src/features/user/Profile';
 import UserLayout from '../../src/features/user/UserLayout';
-import AccountFooter from '../../src/features/common/Layout/Footer/AccountFooter';
 
 function ProfilePage(): ReactElement {
   // External imports
@@ -25,7 +24,6 @@ function ProfilePage(): ReactElement {
   return profile ? (
     <UserLayout>
       <Profile userprofile={profile} authenticatedType={authenticatedType} />
-      <AccountFooter />
     </UserLayout>
   ) : (
     <UserProfileLoader />

@@ -160,7 +160,6 @@ function History({}: Props): ReactElement {
             </div>
           </div>
         </div>
-        <AccountFooter />
       </UserLayout>
     </>
   );

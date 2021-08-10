@@ -11,7 +11,6 @@ import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { Backdrop, Modal } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -250,21 +249,6 @@ export default function RegisterTrees({}: Props) {
         {!registered ? (
           <div className={styles.formContainer}>
             <h2 className={styles.title}>
-              <button
-                id={'backButtonRegTree'}
-                style={{
-                  cursor: 'pointer',
-                  marginLeft: -10,
-                  paddingRight: 10,
-                }}
-                onClick={() => {
-                  router.push(`/t/${user.slug}`, undefined, {
-                    shallow: true,
-                  });
-                }}
-              >
-                <BackButton />
-              </button>
               <b> {t('me:registerTrees')} </b>
             </h2>
             <form onSubmit={handleSubmit(submitRegisterTrees)}>

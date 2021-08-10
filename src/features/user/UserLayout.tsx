@@ -1,44 +1,25 @@
 import React, { ReactElement } from 'react';
 import styles from './Profile/styles/Profile.module.scss';
-import Profile from './Profile';
-import Link from 'next/link';
 import DownArrow from '../../../public/assets/images/icons/DownArrow';
 import router from 'next/router';
+import i18next from '../../../i18n';
+import SelectLanguageAndCountry from '../common/Layout/Footer/SelectLanguageAndCountry';
+import WidgetIcon from '../../../public/assets/images/icons/Sidebar/Widget';
+import LogoutIcon from '../../../public/assets/images/icons/Sidebar/LogoutIcon';
+import SettingsIcon from '../../../public/assets/images/icons/Sidebar/SettingsIcon';
+import GlobeIcon from '../../../public/assets/images/icons/Sidebar/Globe';
+import UserIcon from '../../../public/assets/images/icons/Sidebar/UserIcon';
+import MapIcon from '../../../public/assets/images/icons/Sidebar/MapIcon';
+import DonateIcon from '../../../public/assets/images/icons/Sidebar/DonateIcon';
 
-const TreeCounterIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const PaymentMethodsIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const DonationsIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const TreeCashIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const TreeMapperIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const ProjectsIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const CreateWidgetIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const SettingsIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
-const LogoutIcon = (
-  <img src="/assets/images/icons/Widget.svg" alt="Widget Icon" />
-);
+const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
   const navLinks = [
     {
       title: 'TreeCounter',
       path: '/profile',
-      icon: TreeCounterIcon,
+      icon: <UserIcon />,
       flag: 'New',
       subMenu: [
         {
@@ -57,13 +38,13 @@ function UserLayout(props: any): ReactElement {
     },
     {
       title: 'Donations',
-      path: '/donations',
-      icon: DonationsIcon,
+      path: '/profile/history',
+      icon: <DonateIcon />,
       subMenu: [
-        {
-          title: 'History',
-          path: '/profile/history',
-        },
+        // {
+        //   title: 'History',
+        //   path: '/profile/history',
+        // },
         // {
         //   title: 'Recurring Donations',
         //   path: '/profile/recurring-donations',
@@ -96,22 +77,22 @@ function UserLayout(props: any): ReactElement {
     {
       title: 'TreeMapper',
       path: '/profile/treemapper',
-      icon: TreeMapperIcon,
+      icon: <WidgetIcon />,
     },
     {
       title: 'Projects',
       path: '/profile/projects',
-      icon: ProjectsIcon,
+      icon: <MapIcon />,
     },
     {
       title: 'Create Widget',
       path: '/profile/widgets',
-      icon: CreateWidgetIcon,
+      icon: <WidgetIcon />,
     },
     {
       title: 'Settings',
       path: '/profile/settings',
-      icon: SettingsIcon,
+      icon: <SettingsIcon />,
       subMenu: [
         {
           title: 'Edit Profile',
@@ -164,13 +145,77 @@ function UserLayout(props: any): ReactElement {
           ))}
         </div>
 
-        <div className={styles.navlink}>
-          {LogoutIcon}
-          <button className={styles.navlinkTitle}>{'Logout'}</button>
+        <div>
+          <LanguageSwitcher />
+
+          <div className={styles.navlink}>
+            <LogoutIcon />
+            <button className={styles.navlinkTitle}>{'Logout'}</button>
+            <button className={styles.subMenuArrow}></button>
+          </div>
         </div>
       </div>
       <div className={styles.profilePage}>{props.children}</div>
     </div>
+  );
+}
+
+function LanguageSwitcher() {
+  const { t, i18n, ready } = useTranslation(['common']);
+
+  const [language, setLanguage] = React.useState(i18n.language);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
+  const [selectedCountry, setSelectedCountry] = React.useState('DE');
+
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('language')) {
+        const langCode = localStorage.getItem('language') || 'en';
+        if (langCode) setLanguage(langCode.toLowerCase());
+      }
+    }
+  }, [language]);
+
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('currencyCode')) {
+        const currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      if (localStorage.getItem('countryCode')) {
+        const countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+    }
+  }, []);
+
+  return ready ? (
+    <>
+      <div
+        className={styles.navlink}
+        onClick={() => {
+          setOpenModal(true);
+        }}
+      >
+        <GlobeIcon />
+        <button className={styles.navlinkTitle}>
+          {`${language ? language.toUpperCase() : ''} • ${selectedCurrency}`}
+        </button>
+        <button></button>
+      </div>
+      <SelectLanguageAndCountry
+        openModal={openModal}
+        handleModalClose={() => setOpenModal(false)}
+        language={language}
+        setLanguage={setLanguage}
+        setSelectedCurrency={setSelectedCurrency}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      />
+    </>
+  ) : (
+    <></>
   );
 }
 
@@ -197,7 +242,7 @@ function NavLink({ link, setactiveLink, activeLink }: any) {
         }`}
         onClick={() => {
           setsubMenuOpen(!subMenuOpen);
-          if (!link.subMenu) {
+          if (!link.subMenu || link.subMenu.length <= 0) {
             setactiveLink(link.path);
             router.push(link.path);
           }
