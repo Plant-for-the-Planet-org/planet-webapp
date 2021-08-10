@@ -161,7 +161,7 @@ export default function PlantLocations({}: Props): ReactElement {
                           'text-font': ['Ubuntu Regular'],
                         }}
                         paint={{
-                          'text-color': '#2f3336',
+                          'text-color': satellite? '#ffffff':'#2f3336',
                         }}
                       />
                     )}
