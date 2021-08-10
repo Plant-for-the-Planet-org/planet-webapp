@@ -26,7 +26,7 @@ export default function SitesDropdown(): ReactElement {
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);
-    setIsPolygonMenuOpen(false);
+    if(isMobile)setIsPolygonMenuOpen(false);
   };
 
   return (

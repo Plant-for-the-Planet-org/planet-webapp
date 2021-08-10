@@ -618,6 +618,10 @@
   }
 }
 
+.popupProject {
+  min-width: 300px;
+}
+
 @include lgLaptopView {
   .projectSitesDropdown {
     right: 120px;
