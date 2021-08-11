@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './styles.module.scss';
 import i18next from '../../../../i18n';
+import ReactPlayer from 'react-player/lazy';
 
 const { useTranslation } = i18next;
 
@@ -63,15 +64,28 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     <div className={styles.landingVideoSection}>
       <div className={styles.landingVideoWrapper}>
         {videoURL && (
-          <video
-            preload={'auto'}
-            muted
-            autoPlay
-            playsInline
-            onEnded={() => handleVideoClose()}
-          >
-            <source src={videoURL} type="video/mp4" />
-          </video>
+          ReactPlayer.canPlay(videoURL) ? (
+            <ReactPlayer
+              loop={false}
+              controls={false}
+              volume={0}
+              muted={true}
+              onEnded={()=>handleVideoClose()}
+              config={{
+                file: {
+                  attributes : {
+                    preload: 'none',
+                    autoplay: 1,
+                    loop: false,
+                    muted: true,
+                    controls: false,
+                    poster: videoURL
+                  }                  
+                }
+              }}
+              url={videoURL}
+            />
+          ) : null
         )}
       </div>
       <button
