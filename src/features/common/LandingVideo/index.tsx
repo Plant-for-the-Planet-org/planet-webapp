@@ -27,34 +27,34 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       switch (localStorage.getItem('language')) {
         case 'de':
           setvideoURL(
-            `${process.env.CDN_URL}/landing-vid/planet/en-intro-mobile-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
           break;
         case 'en':
           setvideoURL(
-            `${process.env.CDN_URL}/landing-vid/planet/en-intro-mobile-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
           break;
         default:
           setvideoURL(
-            `${process.env.CDN_URL}/landing-vid/planet/en-intro-mobile-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
       }
     } else {
       switch (localStorage.getItem('language')) {
         case 'de':
           setvideoURL(
-            `${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
           break;
         case 'en':
           setvideoURL(
-            `${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
           break;
         default:
           setvideoURL(
-            `${process.env.CDN_URL}/landing-vid/planet/en-intro-web-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
       }
     }
