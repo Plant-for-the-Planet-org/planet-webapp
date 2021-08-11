@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
-import styles from '../../styles/RegisterModal.module.scss';
-import AnimatedButton from '../../../../common/InputTypes/AnimatedButton';
+import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
 import {
   deleteAuthenticatedRequest,
   postAuthenticatedRequest,
-} from '../../../../../utils/apiRequests/api';
-import getImageUrl from '../../../../../utils/getImageURL';
-import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
-import i18next from '../../../../../../i18n';
+} from '../../../../utils/apiRequests/api';
+import getImageUrl from '../../../../utils/getImageURL';
+import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
+import i18next from '../../../../../i18n';
 
 interface Props {
   contribution: any;

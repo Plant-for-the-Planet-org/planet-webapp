@@ -55,7 +55,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     loadFunction();
   }, [profile]);
 
-
   const MapProps = {
     contributions,
     authenticatedType,
@@ -65,103 +64,102 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
       {contributions &&
       Array.isArray(contributions) &&
       contributions.length !== 0 ? (
-        <div className={styles.myTreesSection}>
-          <div className={styles.myTreesTitle}>
+        <>
+          <div className={'profilePageTitle'}>
             {authenticatedType === 'private'
               ? t('me:myForest')
               : t('me:nameForest', { name: profile.displayName })}
           </div>
           <div className={styles.myTreesContainer}>
             <div className={styles.treesList}>
-              {contributions.map((item: any) => {
-                const date = formatDate(item.properties.plantDate);
-                return (
-                  <div key={item.properties.id} className={styles.tree}>
-                    <div className={styles.dateRow}>{date}</div>
-                    <div className={styles.treeRow}>
-                      <div className={styles.textCol}>
-                        <div className={styles.title}>
-                          {item.properties.type === 'registration'
-                            ? t('me:registered')
-                            : item.properties.project?.name}
-                        </div>
-                        <div className={styles.country}>
-                          {item.properties.country
-                            ? t(
-                                'country:' +
-                                  item.properties.country.toLowerCase()
-                              )
-                            : null}
-                        </div>
-                        {item.properties.type === 'gift' ? (
-                          <div className={styles.source}>
-                            {item.properties.giver.name
-                              ? t('me:receivedFrom', {
-                                  name: item.properties.giver.name,
-                                })
-                              : t('me:receivedTrees')}
-                          </div>
-                        ) : null}
-                        {item.properties.type === 'redeem' ? (
-                          <div className={styles.source}>
-                            {t('me:redeemedTrees')}
-                          </div>
-                        ) : null}
-                        {item.properties.type === 'donation' ? (
-                          <div className={styles.source}>
-                            {item.properties.recipient
-                              ? t('me:giftToGiftee', {
-                                  gifteeName: item.properties.recipient.name,
-                                })
-                              : null}
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className={styles.numberCol}>
-                        <div className={styles.treeIcon}>
-                          <div
-                            style={
-                              item.properties.type === 'registration'
-                                ? { color: '#3D67B1' }
-                                : {}
-                            }
-                            className={styles.number}
-                          >
-                            {getFormattedNumber(
-                              i18n.language,
-                              Number(item.properties.treeCount)
-                            )}
-                          </div>
-                          <div className={styles.icon}>
-                            {item.properties.treeCount > 1 ? (
-                              <TreesIcon
-                                color={
-                                  item.properties.type === 'registration'
-                                    ? '#3D67B1'
-                                    : null
-                                }
-                              />
-                            ) : (
-                              <TreeIcon
-                                color={
-                                  item.properties.type === 'registration'
-                                    ? '#3D67B1'
-                                    : null
-                                }
-                              />
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
+              {contributions.map((contribution: any) => {
+                return <TreeList contribution={contribution} />;
               })}
             </div>
             <MyTreesMap {...MapProps} />
           </div>
-        </div>
+        </>
       ) : null}
     </>
   ) : null;
+}
+
+function TreeList({contribution}: any) {
+  const date = formatDate(contribution.properties.plantDate);
+  const { t, i18n, ready } = useTranslation(['country', 'me']);
+
+  return (
+    <div key={contribution.properties.id} className={styles.tree}>
+      <div className={styles.dateRow}>{date}</div>
+      <div className={styles.treeRow}>
+        <div className={styles.textCol}>
+          <div className={styles.title}>
+            {contribution.properties.type === 'registration'
+              ? t('me:registered')
+              : contribution.properties.project?.name}
+          </div>
+          <div className={styles.country}>
+            {contribution.properties.country
+              ? t('country:' + contribution.properties.country.toLowerCase())
+              : null}
+          </div>
+          {contribution.properties.type === 'gift' ? (
+            <div className={styles.source}>
+              {contribution.properties.giver.name
+                ? t('me:receivedFrom', {
+                    name: contribution.properties.giver.name,
+                  })
+                : t('me:receivedTrees')}
+            </div>
+          ) : null}
+          {contribution.properties.type === 'redeem' ? (
+            <div className={styles.source}>{t('me:redeemedTrees')}</div>
+          ) : null}
+          {contribution.properties.type === 'donation' ? (
+            <div className={styles.source}>
+              {contribution.properties.recipient
+                ? t('me:giftToGiftee', {
+                    gifteeName: contribution.properties.recipient.name,
+                  })
+                : null}
+            </div>
+          ) : null}
+        </div>
+        <div className={styles.numberCol}>
+          <div className={styles.treeIcon}>
+            <div
+              style={
+                contribution.properties.type === 'registration'
+                  ? { color: '#3D67B1' }
+                  : {}
+              }
+              className={styles.number}
+            >
+              {getFormattedNumber(
+                i18n.language,
+                Number(contribution.properties.treeCount)
+              )}
+            </div>
+              {contribution.properties.treeCount > 1 ? (
+                <TreesIcon
+                  color={
+                    contribution.properties.type === 'registration'
+                      ? '#3D67B1'
+                      : null
+                  }
+                />
+              ) : (
+                <TreeIcon
+                  color={
+                    contribution.properties.type === 'registration'
+                      ? '#3D67B1'
+                      : null
+                  }
+                />
+              )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

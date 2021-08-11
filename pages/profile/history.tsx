@@ -5,7 +5,7 @@ import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../src/features/user/Account/screens/History';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import UserLayout from '../../src/features/user/UserLayout';
+import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 
 const { useTranslation } = i18next;
 

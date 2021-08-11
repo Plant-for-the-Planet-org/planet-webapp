@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import UserLayout from '../../src/features/user/UserLayout';
+import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Profile/components/EmbedModal';
 import styles from './../../src/features/user/Profile/styles/Profile.module.scss'
 function ProfilePage(): ReactElement {

@@ -1,16 +1,5 @@
-@import './../../../../theme/theme';
+@import './../../../theme/theme';
 
-.registerTreesContainer{
-  margin-top: 30px;
-  margin-left: 30px;
-}
-.title {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: $fontLarge;
-}
 
 .contribTitle {
   display: flex;
@@ -66,20 +55,6 @@
   align-self: flex-end;
 }
 
-.formContainer {
-  font-family: $primaryFontFamily;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  flex-direction: column;
-  max-width: 700px;
-}
-
-.formContainer > form {
-  margin-top: 20px;
-  width: 100%;
-}
-
 .formField {
   display: flex;
   flex-direction: row;
@@ -88,6 +63,7 @@
   justify-content: space-between;
   align-items: flex-start;
 }
+
 .formFieldHalf {
   display: flex;
   width: 100%;
@@ -99,6 +75,7 @@
     width: 100%;
   }
 }
+
 .formFieldLarge {
   padding: 5px;
   display: flex;

@@ -3,8 +3,8 @@ import * as turf from '@turf/turf';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import styles from '../../styles/RegisterModal.module.scss';
-import getMapStyle from '../../../../../utils/maps/getMapStyle';
+import styles from '../RegisterModal.module.scss';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const Map = ReactMapboxGl({
   interactive: false,

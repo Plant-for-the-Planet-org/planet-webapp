@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import CancelIcon from '../../../../../../public/assets/images/icons/CancelIcon';
-import CheckCircle from '../../../../../../public/assets/images/icons/CheckCircle';
-import styles from '../../styles/RegisterModal.module.scss';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
+import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
-import i18next from '../../../../../../i18n';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import i18next from '../../../../../i18n';
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 interface Props {
   token: any;

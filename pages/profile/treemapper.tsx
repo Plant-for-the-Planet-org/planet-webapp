@@ -9,7 +9,7 @@ import PlantLocationPage from '../../src/features/user/Account/screens/PlantLoca
 import dynamic from 'next/dynamic';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import { pl } from 'date-fns/locale';
-import UserLayout from '../../src/features/user/UserLayout';
+import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 
 const { useTranslation } = i18next;
 

@@ -106,8 +106,12 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  // align-items: flex-end;
+  align-items: center;
   width: 100%;
+  svg {
+    padding-left: 5px;
+    width: 22px;
+  }
 }
 
 .number {
@@ -116,12 +120,6 @@
   color: $primaryColor;
 }
 
-.icon {
-  padding-left: 5px;
-  svg {
-    width: 22px;
-  }
-}
 .mapContainer {
   height: 400px;
   width: 100%;

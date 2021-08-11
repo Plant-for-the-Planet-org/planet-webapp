@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import Profile from '../../src/features/user/Profile';
-import UserLayout from '../../src/features/user/UserLayout';
+import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 
 function ProfilePage(): ReactElement {
   // External imports

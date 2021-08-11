@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../styles/RegisterModal.module.scss';
-import i18next from '../../../../../i18n';
+import styles from './RegisterModal.module.scss';
+import i18next from '../../../../i18n';
 import MapGL, {
   FlyToInterpolator,
   Marker,
@@ -8,23 +8,22 @@ import MapGL, {
   WebMercatorViewport,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import dynamic from 'next/dynamic';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Controller, useForm } from 'react-hook-form';
 import DateFnsUtils from '@date-io/date-fns';
-import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import { getStoredConfig } from '../../../../utils/storeConfig';
+import { localeMapForDate } from '../../../utils/language/getLanguageName';
+import { getStoredConfig } from '../../../utils/storeConfig';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import getMapStyle from '../../../../utils/maps/getMapStyle';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import getMapStyle from '../../../utils/maps/getMapStyle';
+import { ThemeContext } from '../../../theme/themeContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -245,178 +244,174 @@ export default function RegisterTrees({}: Props) {
 
   return ready ? (
     <>
-      <div className={styles.registerTreesContainer}>
-        {!registered ? (
-          <div className={styles.formContainer}>
-            <h2 className={styles.title}>
-              <b> {t('me:registerTrees')} </b>
-            </h2>
-            <form onSubmit={handleSubmit(submitRegisterTrees)}>
-              <div className={styles.note}>
-                <p>{t('me:registerTreesDescription')}</p>
-              </div>
-              <div className={styles.formField}>
-                <div className={styles.formFieldHalf}>
-                  <MaterialTextField
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t('me:treesRequired'),
-                      },
-                      validate: (value) => parseInt(value, 10) >= 1,
-                    })}
-                    onInput={(e) => {
-                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                    }}
-                    onChange={onTreeCountChange}
-                    label={t('me:noOfTrees')}
-                    variant="outlined"
-                    name="treeCount"
-                  />
-                  {errors.treeCount && (
-                    <span className={styles.formErrors}>
-                      {errors.treeCount.message
-                        ? errors.treeCount.message
-                        : t('me:moreThanOne')}
-                    </span>
-                  )}
-                </div>
-                <div className={styles.formFieldHalf}>
-                  <ThemeProvider theme={materialTheme}>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
-                      locale={
-                        localeMapForDate[userLang]
-                          ? localeMapForDate[userLang]
-                          : localeMapForDate['en']
-                      }
-                    >
-                      <Controller
-                        render={(properties) => (
-                          <DatePicker
-                            label={t('me:datePlanted')}
-                            value={properties.value}
-                            onChange={properties.onChange}
-                            inputVariant="outlined"
-                            TextFieldComponent={MaterialTextField}
-                            autoOk
-                            disableFuture
-                            minDate={new Date(new Date().setFullYear(1950))}
-                            format="MMMM d, yyyy"
-                            maxDate={new Date()}
-                          />
-                        )}
-                        name="plantDate"
-                        control={control}
-                        defaultValue=""
-                      />
-                    </MuiPickersUtilsProvider>
-                  </ThemeProvider>
-                </div>
-              </div>
-              <div className={styles.formFieldLarge}>
+      {!registered ? (
+        <div>
+          <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
+          <form onSubmit={handleSubmit(submitRegisterTrees)}>
+            <div className={styles.note}>
+              <p>{t('me:registerTreesDescription')}</p>
+            </div>
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf}>
                 <MaterialTextField
                   inputRef={register({
                     required: {
                       value: true,
-                      message: t('me:speciesIsRequired'),
+                      message: t('me:treesRequired'),
                     },
+                    validate: (value) => parseInt(value, 10) >= 1,
                   })}
-                  label={t('me:treeSpecies')}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                  }}
+                  onChange={onTreeCountChange}
+                  label={t('me:noOfTrees')}
                   variant="outlined"
-                  name="species"
+                  name="treeCount"
                 />
-                {errors.species && (
+                {errors.treeCount && (
                   <span className={styles.formErrors}>
-                    {errors.species.message}
+                    {errors.treeCount.message
+                      ? errors.treeCount.message
+                      : t('me:moreThanOne')}
                   </span>
                 )}
               </div>
-              <div className={styles.mapNote}>
-                {isMultiple ? (
-                  <p>{t('me:drawPolygon')}</p>
-                ) : (
-                  <p>{t('me:selectLocation')}</p>
-                )}
-              </div>
-
-              <div className={`${styles.locationMap}`}>
-                {isMultiple ? (
-                  <DrawMap
-                    setGeometry={setGeometry}
-                    userLocation={userLocation}
-                  />
-                ) : (
-                  <MapGL
-                    {...mapState}
-                    {...viewport}
-                    onViewportChange={_onViewportChange}
-                    onStateChange={_onStateChange}
-                    onClick={(event) => {
-                      setplantLocation(event.lngLat);
-                      setGeometry({
-                        type: 'Point',
-                        coordinates: event.lngLat,
-                      });
-                      setViewPort({
-                        ...viewport,
-                        latitude: event.lngLat[1],
-                        longitude: event.lngLat[0],
-                        transitionDuration: 400,
-                        transitionInterpolator: new FlyToInterpolator(),
-                        transitionEasing: d3.easeCubic,
-                      });
-                    }}
-                    mapOptions={{
-                      customAttribution:
-                        '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-                    }}
+              <div className={styles.formFieldHalf}>
+                <ThemeProvider theme={materialTheme}>
+                  <MuiPickersUtilsProvider
+                    utils={DateFnsUtils}
+                    locale={
+                      localeMapForDate[userLang]
+                        ? localeMapForDate[userLang]
+                        : localeMapForDate['en']
+                    }
                   >
-                    {plantLocation ? (
-                      <Marker
-                        latitude={plantLocation[1]}
-                        longitude={plantLocation[0]}
-                        offsetLeft={5}
-                        offsetTop={-16}
-                        style={{ left: '28px' }}
-                      >
-                        <div className={styles.marker}></div>
-                      </Marker>
-                    ) : null}
-                    <div className={styles.mapNavigation}>
-                      <NavigationControl showCompass={false} />
-                    </div>
-                  </MapGL>
-                )}
+                    <Controller
+                      render={(properties) => (
+                        <DatePicker
+                          label={t('me:datePlanted')}
+                          value={properties.value}
+                          onChange={properties.onChange}
+                          inputVariant="outlined"
+                          TextFieldComponent={MaterialTextField}
+                          autoOk
+                          disableFuture
+                          minDate={new Date(new Date().setFullYear(1950))}
+                          format="MMMM d, yyyy"
+                          maxDate={new Date()}
+                        />
+                      )}
+                      name="plantDate"
+                      control={control}
+                      defaultValue=""
+                    />
+                  </MuiPickersUtilsProvider>
+                </ThemeProvider>
               </div>
+            </div>
+            <div className={styles.formFieldLarge}>
+              <MaterialTextField
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: t('me:speciesIsRequired'),
+                  },
+                })}
+                label={t('me:treeSpecies')}
+                variant="outlined"
+                name="species"
+              />
+              {errors.species && (
+                <span className={styles.formErrors}>
+                  {errors.species.message}
+                </span>
+              )}
+            </div>
+            <div className={styles.mapNote}>
+              {isMultiple ? (
+                <p>{t('me:drawPolygon')}</p>
+              ) : (
+                <p>{t('me:selectLocation')}</p>
+              )}
+            </div>
 
-              {/* {errorMessage !== '' ? */}
-              <div className={`${styles.formFieldLarge} ${styles.center}`}>
-                <p className={styles.formErrors}>{`${errorMessage}`}</p>
-              </div>
-              {/* : null
-              } */}
-              <div className={styles.nextButton}>
-                <button
-                  id={'RegTressSubmit'}
-                  onClick={handleSubmit(submitRegisterTrees)}
-                  className="primaryButton"
-                  style={{ maxWidth: '240px' }}
+            <div className={`${styles.locationMap}`}>
+              {isMultiple ? (
+                <DrawMap
+                  setGeometry={setGeometry}
+                  userLocation={userLocation}
+                />
+              ) : (
+                <MapGL
+                  {...mapState}
+                  {...viewport}
+                  onViewportChange={_onViewportChange}
+                  onStateChange={_onStateChange}
+                  onClick={(event) => {
+                    setplantLocation(event.lngLat);
+                    setGeometry({
+                      type: 'Point',
+                      coordinates: event.lngLat,
+                    });
+                    setViewPort({
+                      ...viewport,
+                      latitude: event.lngLat[1],
+                      longitude: event.lngLat[0],
+                      transitionDuration: 400,
+                      transitionInterpolator: new FlyToInterpolator(),
+                      transitionEasing: d3.easeCubic,
+                    });
+                  }}
+                  mapOptions={{
+                    customAttribution:
+                      '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+                  }}
                 >
-                  {' '}
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('me:registerButton')
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          <SingleContribution {...ContributionProps} />
-        )}
-      </div>
+                  {plantLocation ? (
+                    <Marker
+                      latitude={plantLocation[1]}
+                      longitude={plantLocation[0]}
+                      offsetLeft={5}
+                      offsetTop={-16}
+                      style={{ left: '28px' }}
+                    >
+                      <div className={styles.marker}></div>
+                    </Marker>
+                  ) : null}
+                  <div className={styles.mapNavigation}>
+                    <NavigationControl showCompass={false} />
+                  </div>
+                </MapGL>
+              )}
+            </div>
+
+            {/* {errorMessage !== '' ? */}
+            <div className={`${styles.formFieldLarge} ${styles.center}`}>
+              <p className={styles.formErrors}>{`${errorMessage}`}</p>
+            </div>
+            {/* : null
+              } */}
+            <div className={styles.nextButton}>
+              <button
+                id={'RegTressSubmit'}
+                onClick={handleSubmit(submitRegisterTrees)}
+                className="primaryButton"
+                style={{ maxWidth: '240px' }}
+              >
+                {' '}
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('me:registerButton')
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      ) : (
+        <SingleContribution {...ContributionProps} />
+      )}
     </>
   ) : null;
 }

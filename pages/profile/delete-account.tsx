@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import Footer from '../../src/features/common/Layout/Footer';
-import UserLayout from '../../src/features/user/UserLayout';
+import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import DeleteProfile from '../../src/features/user/Profile/components/DeleteProfile';
 

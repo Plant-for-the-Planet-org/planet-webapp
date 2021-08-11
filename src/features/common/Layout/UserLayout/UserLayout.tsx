@@ -1,26 +1,27 @@
 import React, { ReactElement } from 'react';
-import styles from './Profile/styles/Profile.module.scss';
-import DownArrow from '../../../public/assets/images/icons/DownArrow';
+import styles from './UserLayout.module.scss';
+import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import router from 'next/router';
-import i18next from '../../../i18n';
-import SelectLanguageAndCountry from '../common/Layout/Footer/SelectLanguageAndCountry';
-import WidgetIcon from '../../../public/assets/images/icons/Sidebar/Widget';
-import LogoutIcon from '../../../public/assets/images/icons/Sidebar/LogoutIcon';
-import SettingsIcon from '../../../public/assets/images/icons/Sidebar/SettingsIcon';
-import GlobeIcon from '../../../public/assets/images/icons/Sidebar/Globe';
-import UserIcon from '../../../public/assets/images/icons/Sidebar/UserIcon';
-import MapIcon from '../../../public/assets/images/icons/Sidebar/MapIcon';
-import DonateIcon from '../../../public/assets/images/icons/Sidebar/DonateIcon';
+import i18next from '../../../../../i18n';
+import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
+import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
+import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
+import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
+import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
+import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
+import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
+import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/DonateIcon';
 
 const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
+  // Flags can be added to show labels on the right
   const navLinks = [
     {
       title: 'TreeCounter',
       path: '/profile',
       icon: <UserIcon />,
-      flag: 'New',
+      // flag: 'New',
       subMenu: [
         {
           title: 'Profile',
