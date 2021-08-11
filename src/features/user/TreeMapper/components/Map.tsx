@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react';
-import styles from '../../styles/TreeMapper.module.scss';
+import styles from '../TreeMapper.module.scss';
 import ReactMapboxGl, {
   GeoJSONLayer,
   Marker,
   Popup,
   ZoomControl,
 } from 'react-mapbox-gl';
-import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import i18next from '../../../../../../i18n';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
+import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import getImageUrl from '../../../../../utils/getImageURL';
+import getImageUrl from '../../../../utils/getImageURL';
 
 const Map = ReactMapboxGl({
   customAttribution:

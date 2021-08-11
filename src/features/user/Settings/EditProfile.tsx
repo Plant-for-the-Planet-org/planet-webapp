@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
-import styles from '../styles/EditProfileModal.module.scss';
+import styles from './EditProfile.module.scss';
 import { useDropzone } from 'react-dropzone';
-import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
-import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import CameraWhite from '../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
+import Camera from '../../../../public/assets/images/icons/userProfileIcons/Camera';
+import MaterialTextField from '../../common/InputTypes/MaterialTextField';
+import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import MuiAlert from '@material-ui/lab/Alert';
-import getImageUrl from '../../../../utils/getImageURL';
+import getImageUrl from '../../../utils/getImageURL';
 import { useForm, Controller } from 'react-hook-form';
-import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
-import i18next from '../../../../../i18n';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { selectUserType } from '../../../../utils/selectUserType';
+import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
+import i18next from '../../../../i18n';
+import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { selectUserType } from '../../../utils/selectUserType';
 import { MenuItem } from '@material-ui/core';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
 interface Props {}
 
-export default function EditProfileModal({}: Props) {
+export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { user, setUser, token, contextLoaded } = React.useContext(
@@ -201,8 +201,8 @@ export default function EditProfileModal({}: Props) {
     <React.Fragment>
       <div className={styles.editProfileContainer}>
         <div className={styles.headerDiv}>
-          <div className={styles.editProfileText}>
-            <b> {t('editProfile:edit')} </b>
+          <div className={'profilePageTitle'}>
+             {t('editProfile:edit')}
           </div>
         </div>
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from '../styles/SettingsModal.module.scss';
-import i18next from '../../../../../i18n';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import styles from './DeleteProfile.module.scss';
+import i18next from '../../../../i18n';
+import MaterialTextField from '../../common/InputTypes/MaterialTextField';
+import AnimatedButton from '../../common/InputTypes/AnimatedButton';
+import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { ThemeContext } from '../../../theme/themeContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -35,7 +35,7 @@ export default function DeleteProfile({}: any) {
 
   return (
     <div className={styles.deleteModal}>
-      <p className={styles.deleteModalTitle}> {t('common:deleteAccount')}</p>
+      <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
       <p className={styles.deleteModalContent}>
         {t('common:deleteAccountMessage', {
           delete: 'Delete',
@@ -70,14 +70,6 @@ export default function DeleteProfile({}: any) {
       </p>
 
       <div className={styles.deleteButtonContainer}>
-        {/* <div
-          onClick={() => {
-            setcanDeleteAccount(false);
-          }}
-          className={styles.goBackContainer}
-        >
-          <p>{t('common:goBack')}</p>
-        </div> */}
         {canDeleteAccount ? (
           <AnimatedButton
             onClick={() => handleDeleteAccount()}
@@ -88,7 +80,7 @@ export default function DeleteProfile({}: any) {
             }}
           >
             {isUploadingData ? (
-              <div className={styles.spinner}></div>
+              <div className={'spinner'}></div>
             ) : (
               t('common:delete')
             )}

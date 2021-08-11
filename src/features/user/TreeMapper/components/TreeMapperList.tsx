@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
-import PlantLocation from '../components/TreeMapper/PlantLocation';
-import styles from '../styles/TreeMapper.module.scss';
+import PlantLocation from './PlantLocation';
+import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;
@@ -17,7 +17,7 @@ interface Props {
   links: any;
 }
 
-export default function TreeMapperNew({
+export default function TreeMapperList({
   selectedLocation,
   setselectedLocation,
   plantLocations,

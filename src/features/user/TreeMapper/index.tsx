@@ -1,23 +1,24 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../i18n';
-import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
-import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
+import i18next from '../../../../i18n';
+import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
+import TreeMapperList from './components/TreeMapperList';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import PlantLocationPage from './components/PlantLocationPage';
+import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 
 interface Props {}
 
 const PlantLocationMap = dynamic(
-  () => import('../../src/features/user/TreeMapper/components/Map'),
+  () => import('./components/Map'),
   {
     loading: () => <p>loading</p>,
   }
 );
 
-function TreeMapperPage({}: Props): ReactElement {
+function TreeMapper({}: Props): ReactElement {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
@@ -130,18 +131,22 @@ function TreeMapperPage({}: Props): ReactElement {
   };
 
   return (
-    <>
-      {progress > 0 && (
-        <div className={'topLoader'}>
-          <TopProgressBar progress={progress} />
+    <div id="pageContainer" className={styles.pageContainer}>
+      <div className={styles.section}>
+        <TreeMapperList {...TreeMapperProps} />
+        {location && <PlantLocationPage {...TreeMapperProps} />}
+        <div className={styles.mapContainer}>
+          <div id="pp-mapbox" className={styles.map}>
+            <PlantLocationMap
+              locations={plantLocations}
+              selectedLocation={selectedLocation}
+              setselectedLocation={setselectedLocation}
+            />
+          </div>
         </div>
-      )}
-
-      <UserLayout>
-        
-      </UserLayout>
-    </>
+      </div>
+    </div>
   );
 }
 
-export default TreeMapperPage;
+export default TreeMapper;

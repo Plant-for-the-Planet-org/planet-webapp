@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import EditProfileModal from '../../src/features/user/Profile/components/EditProfileModal';
+import EditProfile from '../../src/features/user/Settings/EditProfile';
 
 function EditProfilePage(): ReactElement {
   // External imports
@@ -23,7 +23,7 @@ function EditProfilePage(): ReactElement {
 
   return profile ? (
       <UserLayout>
-        <EditProfileModal/>
+        <EditProfile/>
       </UserLayout>
   ) : (
     <UserProfileLoader />

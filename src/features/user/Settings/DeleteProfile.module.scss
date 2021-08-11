@@ -1,49 +1,4 @@
-@import './../../../../theme/theme';
-
-// white modal
-.modal {
-  background-color: $backgroundColor;
-  border: 0px;
-  border-radius: 8px;
-  padding: 6px 50px;
-  max-width: 80vw;
-  overflow: hidden;
-  outline: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 100px;
-  right: 110px;
-}
-
-.settingsItem {
-  font-family: $primaryFontFamily;
-  margin-top: 20px;
-  text-decoration: none;
-  color: rgba(0, 0, 0, 0.87);
-  a {
-    color: rgba(0, 0, 0, 0.87);
-  }
-}
-
-.settingsItem:hover {
-  cursor: pointer;
-}
-
-.cancelText {
-  color: $highlightBackground; //grey
-}
-
-@media only screen and (max-width: 768px) {
-  .modal {
-    top: 40px;
-    right: 90px;
-  }
-  .settingsItem {
-    padding: 7px 0px;
-  }
-}
+@import './../../../theme/theme';
 
 .deleteModal {
   background-color: $backgroundColor;
@@ -130,35 +85,6 @@
       transform: scale(1.05);
       cursor: pointer;
     }
-  }
-}
-
-// Loader for Buttons
-.spinner {
-  border: 2px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 2px solid transparent;
-  width: 16px !important;
-  height: 16px !important;
-  -webkit-animation: spin 1s linear infinite; /* Safari */
-  animation: spin 1s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }
 

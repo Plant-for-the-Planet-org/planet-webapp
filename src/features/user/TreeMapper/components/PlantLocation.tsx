@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import styles from '../../styles/TreeMapper.module.scss';
-import i18next from '../../../../../../i18n';
-import { LocationDetails } from '../../screens/PlantLocationPage';
+import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
+import styles from '../TreeMapper.module.scss';
+import i18next from '../../../../../i18n';
+import { LocationDetails } from './PlantLocationPage';
 
 const { useTranslation } = i18next;
 

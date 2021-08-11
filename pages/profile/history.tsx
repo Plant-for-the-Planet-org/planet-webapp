@@ -80,7 +80,7 @@ function AccountHistory({}: Props): ReactElement {
   return (
     <>
       {progress > 0 && (
-        <div className={styles.topLoader}>
+        <div className={'topLoader'}>
           <TopProgressBar progress={progress} />
         </div>
       )}

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import getImageUrl from '../../../../utils/getImageURL';
-import styles from '../styles/TreeMapper.module.scss';
+import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
@@ -14,7 +14,7 @@ interface Props {
   setLocation: Function;
 }
 
-export default function PlantLocation({
+export default function PlantLocationPage({
   location,
   setselectedLocation,
   setLocation,
