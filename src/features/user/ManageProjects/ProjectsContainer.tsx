@@ -12,6 +12,8 @@ import {
 import AddProject from '../../../../public/assets/images/icons/manageProjects/AddProject';
 import Link from 'next/link';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import getImageUrl from '../../../utils/getImageURL';
+import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
@@ -50,62 +52,83 @@ export default function ProjectsContainer({}: any) {
   return ready ? (
     <div className="profilePage">
       <div className={'profilePageTitle'}>Manage Projects</div>
+      <div className={'profilePageSubTitle'}>
+        Description for Manage Projects
+      </div>
+
+      <Link href="/manage-projects/add-project">
+        <button
+          id={'addProjectBut'}
+          className={'primaryButton'}
+          style={{ maxWidth: '300px' }}
+        >
+          {t('manageProjects:addProject')}
+        </button>
+      </Link>
+
       <div className={styles.projectsContainer} id="projectsContainer">
         {projects.length < 1 ? (
-          user ? (
-            <Link href="/manage-projects/add-project">
-              <div className={styles.singleProject}>
-                <button id={'addProjectBut'} className={styles.projectNotFound}>
-                  <AddProject />
-                  <h2>{t('manageProjects:addProject')}</h2>
-                </button>
-              </div>
-            </Link>
-          ) : (
-            <div className={styles.projectNotFound}>
-              <LazyLoad>
-                <NotFound className={styles.projectNotFoundImage} />
-                <h5>{t('donate:noProjectsFound')}</h5>
-              </LazyLoad>
-            </div>
-          )
+          <div className={styles.projectNotFound}>
+            <LazyLoad>
+              <NotFound className={styles.projectNotFoundImage} />
+              <h5>{t('donate:noProjectsFound')}</h5>
+            </LazyLoad>
+          </div>
         ) : (
           <div className={styles.listProjects}>
-            <h6 className={styles.projectsTitleText}>
-              {' '}
-              {t('donate:PROJECTS')}{' '}
-            </h6>
-
             {projects.map((project: any) => {
-              return (
-                <div
-                  className={styles.singleProject}
-                  key={project.properties.id}
-                >
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={user ? true : false}
-                  />
-                </div>
-              );
+              return <SingleProject project={project.properties} />;
             })}
-            {user ? (
-              <Link href="/manage-projects/add-project">
-                <div className={styles.singleProject}>
-                  <button
-                    id={'addProjectBut'}
-                    className={styles.projectNotFound}
-                  >
-                    <AddProject />
-                    <h2>{t('manageProjects:addProject')}</h2>
-                  </button>
-                </div>
-              </Link>
-            ) : null}
           </div>
         )}
       </div>
     </div>
   ) : null;
+}
+
+function SingleProject({ project }: any) {
+  const ImageSource = project.image
+    ? getImageUrl('project', 'medium', project.image)
+    : '';
+
+  console.log('project', project);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  return (
+    <div className={styles.singleProject} key={project.id}>
+      <img
+        src={ImageSource}
+        className={styles.projectImage}
+        alt={project.name}
+      />
+      <div className={styles.projectInformation}>
+        <p className={styles.projectName}>{project.name}</p>
+        <p className={styles.projectClassification}>
+          {project.classification} •{' '}
+          {t('country:' + project.country.toLowerCase())}
+        </p>
+        <p>
+          {localizedAbbreviatedNumber(
+            i18n.language,
+            Number(project.countPlanted),
+            1
+          )}{' '}
+          {t('common:tree', { count: Number(project.countPlanted) })}
+        </p>
+        <div className={styles.projectLabels}>
+
+        </div>
+      </div>
+      <div className={styles.projectLinksContainer}>
+        <Link href={'/' + project.id}>
+          <button className={styles.secondaryLink}>View Project</button>
+        </Link>
+        <Link href={'/manage-projects/edit-project/' + project.id}>
+          <button className={styles.primaryLink}>Edit Project</button>
+        </Link>
+        {/* <button>
+          Edit
+        </button> */}
+      </div>
+    </div>
+  );
 }
