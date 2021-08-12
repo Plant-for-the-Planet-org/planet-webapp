@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import ProjectsContainer from '../../src/features/user/Account/components/ManageProjects/ProjectsContainer';
+import ProjectsContainer from '../../src/features/user/ManageProjects/ProjectsContainer';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 
 interface Props {}

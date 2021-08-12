@@ -243,7 +243,7 @@ export default function RegisterTrees({}: Props) {
   const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
-    <>
+    <div className="profilePage">
       {!registered ? (
         <div>
           <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
@@ -412,6 +412,6 @@ export default function RegisterTrees({}: Props) {
       ) : (
         <SingleContribution {...ContributionProps} />
       )}
-    </>
+    </div>
   ) : null;
 }

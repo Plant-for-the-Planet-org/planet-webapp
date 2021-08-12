@@ -11,6 +11,7 @@ import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
 import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/DonateIcon';
+import { UserPropsContext } from '../UserPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -128,6 +129,9 @@ function UserLayout(props: any): ReactElement {
     setOpen(false);
   };
 
+  const { user, logoutUser } = React.useContext(UserPropsContext);
+
+
   return (
     <div
       className={styles.profilePageContainer}
@@ -151,12 +155,12 @@ function UserLayout(props: any): ReactElement {
 
           <div className={styles.navlink}>
             <LogoutIcon />
-            <button className={styles.navlinkTitle}>{'Logout'}</button>
+            <button onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.navlinkTitle}>{'Logout'}</button>
             <button className={styles.subMenuArrow}></button>
           </div>
         </div>
       </div>
-      <div className={styles.profilePage}>{props.children}</div>
+      <div className={styles.profilePageWrapper}>{props.children}</div>
     </div>
   );
 }

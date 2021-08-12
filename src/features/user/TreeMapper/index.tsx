@@ -11,12 +11,9 @@ const { useTranslation } = i18next;
 
 interface Props {}
 
-const PlantLocationMap = dynamic(
-  () => import('./components/Map'),
-  {
-    loading: () => <p>loading</p>,
-  }
-);
+const PlantLocationMap = dynamic(() => import('./components/Map'), {
+  loading: () => <p>loading</p>,
+});
 
 function TreeMapper({}: Props): ReactElement {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
@@ -131,17 +128,20 @@ function TreeMapper({}: Props): ReactElement {
   };
 
   return (
-    <div id="pageContainer" className={styles.pageContainer}>
-      <div className={styles.section}>
-        <TreeMapperList {...TreeMapperProps} />
-        {location && <PlantLocationPage {...TreeMapperProps} />}
-        <div className={styles.mapContainer}>
-          <div id="pp-mapbox" className={styles.map}>
-            <PlantLocationMap
-              locations={plantLocations}
-              selectedLocation={selectedLocation}
-              setselectedLocation={setselectedLocation}
-            />
+    <div className={'profilePage'}>
+      <div className={'profilePageTitle'}>TreeMapper</div>
+      <div id="pageContainer" className={styles.pageContainer}>
+        <div className={styles.section}>
+          <TreeMapperList {...TreeMapperProps} />
+          {location && <PlantLocationPage {...TreeMapperProps} />}
+          <div className={styles.mapContainer}>
+            <div id="pp-mapbox" className={styles.map}>
+              <PlantLocationMap
+                locations={plantLocations}
+                selectedLocation={selectedLocation}
+                setselectedLocation={setselectedLocation}
+              />
+            </div>
           </div>
         </div>
       </div>

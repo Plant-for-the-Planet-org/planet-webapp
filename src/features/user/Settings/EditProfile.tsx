@@ -198,7 +198,7 @@ export default function EditProfile({}: Props) {
     }
   };
   return ready ? (
-    <React.Fragment>
+    <div className="profilePage">
       <div className={styles.editProfileContainer}>
         <div className={styles.headerDiv}>
           <div className={'profilePageTitle'}>
@@ -490,6 +490,6 @@ export default function EditProfile({}: Props) {
           {snackbarMessage}
         </MuiAlert>
       </Snackbar>
-    </React.Fragment>
+    </div>
   ) : null;
 }

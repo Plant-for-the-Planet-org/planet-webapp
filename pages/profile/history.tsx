@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
 import i18next from '../../i18n';
-import styles from '../../src/features/user/Account/styles/AccountHistory.module.scss';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
-import History from '../../src/features/user/Account/screens/History';
+import History from '../../src/features/user/Account/History';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 

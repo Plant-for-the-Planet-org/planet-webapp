@@ -1,12 +1,12 @@
 import { Modal, Snackbar } from '@material-ui/core';
 import React, { ReactElement } from 'react';
-import styles from '../styles/EmbedModal.module.scss';
-import i18next from '../../../../../i18n';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import styles from './EmbedModal.module.scss';
+import i18next from '../../../../i18n';
+import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import MuiAlert from '@material-ui/lab/Alert';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ThemeContext } from '../../../theme/themeContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 interface Props {
   embedModalOpen: boolean;

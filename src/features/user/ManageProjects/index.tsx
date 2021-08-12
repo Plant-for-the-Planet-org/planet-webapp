@@ -2,20 +2,20 @@ import React from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import BasicDetails from '../components/BasicDetails';
+import BasicDetails from './components/BasicDetails';
 import StepContent from '@material-ui/core/StepContent';
-import styles from './../styles/StepForm.module.scss';
-import ProjectMedia from '../components/ProjectMedia';
-import DetailedAnalysis from '../components/DetailedAnalysis';
-import ProjectSites from '../components/ProjectSites';
-import ProjectSpending from '../components/ProjectSpending';
+import styles from './StepForm.module.scss';
+import ProjectMedia from './components/ProjectMedia';
+import DetailedAnalysis from './components/DetailedAnalysis';
+import ProjectSites from './components/ProjectSites';
+import ProjectSpending from './components/ProjectSpending';
 import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
-import SubmitForReview from '../components/SubmitForReview';
+} from '../../../utils/apiRequests/api';
+import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
-import i18next from './../../../../../i18n';
+import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 

@@ -7,8 +7,6 @@ import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import formStyles from '../styles/EditProfileModal.module.scss';
-import spinnerStyle from '../../ManageProjects/styles/StepForm.module.scss';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
@@ -87,7 +85,7 @@ export default function AddTargetModal({
             />
           </div>
           {errors.addTarget && (
-            <span className={formStyles.formErrors}>
+            <span className={'formErrors'}>
               {t('me:targetErrorMessage')}
             </span>
           )}
@@ -103,7 +101,7 @@ export default function AddTargetModal({
               onClick={() => handleSubmit(changeTarget)}
             >
               {isLoadingForm ? (
-                <div className={spinnerStyle.spinner}></div>
+                <div className={'spinner'}></div>
               ) : (
                 t('me:targetSave')
               )}

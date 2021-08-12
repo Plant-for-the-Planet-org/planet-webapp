@@ -325,6 +325,7 @@ button {
   cursor: pointer;
 }
 
+// Profile page
 .profilePageTitle{
   font-size: 36px;
   font-weight: 800;
@@ -333,6 +334,11 @@ button {
 .profilePageSubTitle{
   font-size: 18px;
   margin-bottom: 20px;
+}
+.profilePage {
+  max-width: 1000px;
+  margin-top: 80px;
+  padding: 40px;
 }
 
 .topLoader {
@@ -371,3 +377,15 @@ button {
     transform: rotate(360deg);
   }
 }
+
+// Form Styles
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: 6px;
+  max-width: 320px;
+  margin-bottom: -18px;
+}
+

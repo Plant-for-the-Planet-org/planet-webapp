@@ -3,8 +3,8 @@ import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import EmbedModal from '../../src/features/user/Profile/components/EmbedModal';
-import styles from './../../src/features/user/Profile/styles/Profile.module.scss'
+import EmbedModal from '../../src/features/user/Widget/EmbedModal';
+import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 function ProfilePage(): ReactElement {
   // External imports
   const router = useRouter();
@@ -22,8 +22,6 @@ function ProfilePage(): ReactElement {
   const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
 
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
-
-  console.log('router', router);
 
   React.useEffect(() => {
     if (user && user.isPrivate) {

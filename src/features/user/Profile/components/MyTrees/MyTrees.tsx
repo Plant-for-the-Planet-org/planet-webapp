@@ -60,7 +60,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     authenticatedType,
   };
   return ready ? (
-    <>
+    <div className="profilePage">
       {contributions &&
       Array.isArray(contributions) &&
       contributions.length !== 0 ? (
@@ -80,7 +80,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           </div>
         </>
       ) : null}
-    </>
+    </div>
   ) : null;
 }
 

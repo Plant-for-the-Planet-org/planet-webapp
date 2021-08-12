@@ -5,6 +5,7 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import dynamic from 'next/dynamic';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
+import TreeMapper from '../../src/features/user/TreeMapper';
 
 const { useTranslation } = i18next;
 
@@ -138,7 +139,7 @@ function TreeMapperPage({}: Props): ReactElement {
       )}
 
       <UserLayout>
-        
+        <TreeMapper/>
       </UserLayout>
     </>
   );

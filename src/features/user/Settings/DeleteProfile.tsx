@@ -24,7 +24,7 @@ export default function DeleteProfile({}: any) {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token).then((res) => {
       if (res !== 404) {
-        logoutUser();
+        logoutUser(`${process.env.NEXTAUTH_URL}/`);
       } else {
         console.log(res.errorText);
       }
@@ -34,65 +34,69 @@ export default function DeleteProfile({}: any) {
   const { theme } = React.useContext(ThemeContext);
 
   return (
-    <div className={styles.deleteModal}>
-      <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
-      <p className={styles.deleteModalContent}>
-        {t('common:deleteAccountMessage', {
-          delete: 'Delete',
-        })}
-        <br />
-        <br />
-        {t('common:alternativelyEditProfile')}
-      </p>
-      <MaterialTextField
-        // placeholder={t('common:deleteAccount')}
-        label={t('common:deleteAccountLabel', { delete: 'Delete' })}
-        type="text"
-        variant="outlined"
-        style={{ marginTop: '20px' }}
-        name="addTarget"
-        onCut={handleChange}
-        onCopy={handleChange}
-        onPaste={handleChange}
-        onChange={(e) => {
-          if (e.target.value === 'Delete') {
-            setcanDeleteAccount(true);
-          } else {
-            setcanDeleteAccount(false);
-          }
-        }}
-      />
-      <p className={styles.deleteConsent}>{t('common:deleteAccountConsent')}</p>
-      <p className={styles.deleteModalWarning}>
-        {t('common:deleteIrreversible', {
-          email: user.email,
-        })}
-      </p>
+    <div className="profilePage">
+      <div className={styles.deleteModal}>
+        <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
+        <p className={styles.deleteModalContent}>
+          {t('common:deleteAccountMessage', {
+            delete: 'Delete',
+          })}
+          <br />
+          <br />
+          {t('common:alternativelyEditProfile')}
+        </p>
+        <MaterialTextField
+          // placeholder={t('common:deleteAccount')}
+          label={t('common:deleteAccountLabel', { delete: 'Delete' })}
+          type="text"
+          variant="outlined"
+          style={{ marginTop: '20px' }}
+          name="addTarget"
+          onCut={handleChange}
+          onCopy={handleChange}
+          onPaste={handleChange}
+          onChange={(e) => {
+            if (e.target.value === 'Delete') {
+              setcanDeleteAccount(true);
+            } else {
+              setcanDeleteAccount(false);
+            }
+          }}
+        />
+        <p className={styles.deleteConsent}>
+          {t('common:deleteAccountConsent')}
+        </p>
+        <p className={styles.deleteModalWarning}>
+          {t('common:deleteIrreversible', {
+            email: user.email,
+          })}
+        </p>
 
-      <div className={styles.deleteButtonContainer}>
-        {canDeleteAccount ? (
-          <AnimatedButton
-            onClick={() => handleDeleteAccount()}
-            className={styles.deleteButton}
-            style={{
-              backgroundColor: styles.dangerColor,
-              color: styles.light,
-            }}
-          >
-            {isUploadingData ? (
-              <div className={'spinner'}></div>
-            ) : (
-              t('common:delete')
-            )}
-          </AnimatedButton>
-        ) : (
-          <AnimatedButton
-            className={styles.deleteButton}
-            style={{ backgroundColor: '#f2f2f7', color: '#2f3336' }}
-          >
-            {t('common:delete')}
-          </AnimatedButton>
-        )}
+        <div className={styles.deleteButtonContainer}>
+          {canDeleteAccount ? (
+            <AnimatedButton
+              onClick={() => handleDeleteAccount()}
+              className={styles.deleteButton}
+              style={{
+                backgroundColor: styles.dangerColor,
+                color: styles.light,
+              }}
+            >
+              {isUploadingData ? (
+                <div className={'spinner'}></div>
+              ) : (
+                t('common:delete')
+              )}
+            </AnimatedButton>
+          ) : (
+            <AnimatedButton
+              className={styles.deleteButton}
+              style={{ backgroundColor: '#f2f2f7', color: '#2f3336' }}
+            >
+              {t('common:delete')}
+            </AnimatedButton>
+          )}
+        </div>
       </div>
     </div>
   );

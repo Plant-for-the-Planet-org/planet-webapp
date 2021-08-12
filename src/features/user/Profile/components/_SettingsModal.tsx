@@ -9,7 +9,7 @@ import i18next from '../../../../../i18n';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import EmbedModal from './EmbedModal';
+import EmbedModal from '../../Widget/EmbedModal';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
@@ -126,7 +126,7 @@ export default function SettingsModal({
               <li
                 id={'settingsLogOut'}
                 className={styles.settingsItem}
-                onClick={() => logoutUser()}
+                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
               >
                 <b>{t('me:logout')} </b>
               </li>
@@ -171,7 +171,7 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }: any) {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token).then((res) => {
       if (res !== 404) {
-        logoutUser();
+        logoutUser(`${process.env.NEXTAUTH_URL}/`);
       } else {
         console.log(res.errorText);
       }
