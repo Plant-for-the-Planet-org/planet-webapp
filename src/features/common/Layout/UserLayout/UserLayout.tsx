@@ -153,9 +153,9 @@ function UserLayout(props: any): ReactElement {
         <div>
           <LanguageSwitcher />
 
-          <div className={styles.navlink}>
+          <div className={styles.navlink} onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}>
             <LogoutIcon />
-            <button onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.navlinkTitle}>{'Logout'}</button>
+            <button className={styles.navlinkTitle}>{'Logout'}</button>
             <button className={styles.subMenuArrow}></button>
           </div>
         </div>

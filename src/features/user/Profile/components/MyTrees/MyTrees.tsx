@@ -59,6 +59,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     contributions,
     authenticatedType,
   };
+  
   return ready ? (
     <div className="profilePage">
       {contributions &&
