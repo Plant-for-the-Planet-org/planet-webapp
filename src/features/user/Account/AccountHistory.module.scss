@@ -29,7 +29,6 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    padding: 0 20px;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -48,7 +47,7 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      padding: 0px 20px;
+      padding: 20px;
       background-color: $backgroundColor;
       > .detailContainer {
         display: none;
@@ -63,7 +62,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
   > .left {
     display: flex;
     flex-direction: column;
@@ -91,6 +89,7 @@
   height: 1px;
   background-color: #dddbda;
   margin: 0 10px;
+  margin-top: 20px;
 }
 
 .detailContainer {
@@ -241,6 +240,16 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+.record {
+  -webkit-transition: max-height 1s;
+  -moz-transition: max-height 1s;
+  -ms-transition: max-height 1s;
+  -o-transition: max-height 1s;
+  transition: max-height 1s;
+  overflow: hidden;
+  // "height: 0" not work with css transitions
+  max-height: 121px;
+}
 
 @include lgLaptopView {
   .accountHistory {
@@ -251,7 +260,7 @@
         background-color: #fafafa;
         border-radius: 10px;
         box-shadow: 1px 2px 8px -6px #707070;
-        margin: 20px 0;
+        max-height: 1000px;
         > .detailContainer {
           display: flex;
         }
@@ -261,6 +270,7 @@
   .filterContainer {
     width: 30%;
     display: flex;
+    margin-left: 20px;
   }
 
   .filterRow {
