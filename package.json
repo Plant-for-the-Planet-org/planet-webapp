@@ -67,7 +67,7 @@
     "mapbox-gl-compare": "^0.4.0",
     "mapbox-gl-draw": "^0.16.0",
     "moment": "^2.29.1",
-    "next": "^10.2.1",
+    "next": "^11.1.0",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
     "path-browserify": "^1.0.1",
