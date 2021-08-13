@@ -360,8 +360,7 @@ fill: $primaryFontColor
 }
 
 .mapboxgl-ctrl-group{
-  // There is no easy way to control the icon color of the mapbox control group
-  filter: invert(0.8) hue-rotate(180deg);
+  filter: $mapboxIcon
 }
 
 input:autofill, input:-webkit-autofill{
