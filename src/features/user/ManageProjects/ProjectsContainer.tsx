@@ -95,11 +95,15 @@ function SingleProject({ project }: any) {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   return (
     <div className={styles.singleProject} key={project.id}>
-      <img
-        src={ImageSource}
-        className={styles.projectImage}
-        alt={project.name}
-      />
+      {ImageSource ? (
+        <img
+          src={ImageSource}
+          className={styles.projectImage}
+          alt={project.name}
+        />
+      ) : (
+        <div className={styles.noProjectImage}></div>
+      )}
       <div className={styles.projectInformation}>
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
@@ -115,14 +119,23 @@ function SingleProject({ project }: any) {
           {t('common:tree', { count: Number(project.countPlanted) })}
         </p>
         <div className={styles.projectLabels}>
-
+          {/* Needed in future */}
+          {!project.isFeatured && (
+            <div className={styles.projectLabel}>🛰 ️TreeMapper</div>
+          )}
+          {!project.isFeatured && (
+            <div className={styles.projectLabel}>🌟 Featured</div>
+          )}
+          {!project.allowDonations && (
+            <div className={styles.projectLabel}>💸 Accepting Donations</div>
+          )}
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
         <Link href={'/' + project.id}>
           <button className={styles.secondaryLink}>View Project</button>
         </Link>
-        <Link href={'/manage-projects/edit-project/' + project.id}>
+        <Link href={'/manage-projects/' + project.id}>
           <button className={styles.primaryLink}>Edit Project</button>
         </Link>
         {/* <button>

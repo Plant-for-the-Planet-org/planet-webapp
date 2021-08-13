@@ -14,55 +14,90 @@
 
 .singleProject {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: 20px;
   width: 100%;
-  max-width: 1000px;
+  max-width: 360px;
   justify-content: space-between;
-  .projectImage{
-    width: 150px;
-    height: 124px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+  border-radius: 10px;
+  &:hover{
+    background-color: #f5f5f5;
   }
-  .projectInformation{
-    flex-grow: 1;
-    padding: 16px;
-  }
-  .projectName{
-    font-weight: bold;
-    font-size: 16px;
-  }
-  .projectClassification{
-    text-transform: capitalize;
-    margin-top: 10px;
-  }
-  .projectLinksContainer{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-  }
-  .primaryLink{
-    background-color: #48AADD;
-    border-radius: 10px;
-    color: #fff;
-    font-weight: bold;
-    height: 40px;
-    width: 140px;
-  }
-  .secondaryLink{
-    border:1px solid #48AADD;
-    border-radius: 10px;
-    color: #48AADD;
-    font-weight: bold;
-    height: 40px;
-    width: 140px;
-    margin-right:10px ;
+  
+}
+.projectImage{
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  object-fit: cover;
+}
+.noProjectImage{
+  width: 100%;
+  min-height: 120px;
+  height: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: $primaryColor;
+}
+.projectInformation{
+  flex-grow: 1;
+  padding: 16px;
+}
+.projectName{
+  font-weight: bold;
+  font-size: 16px;
+}
+.projectClassification{
+  text-transform: capitalize;
+  margin-top: 10px;
+}
+.projectLinksContainer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  padding-top: 0px;
+}
+.primaryLink{
+  background-color: #3498db;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: bold;
+  height: 40px;
+  width: 140px;
+  &:hover{
+    cursor: pointer;
   }
 }
-
+.secondaryLink{
+  border:1px solid #3498db;
+  border-radius: 10px;
+  color: #3498db;
+  font-weight: bold;
+  height: 40px;
+  width: 140px;
+  margin-right:10px ;
+  &:hover{
+    cursor: pointer;
+  }
+}
+.projectLabels{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.projectLabel{
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: fit-content;
+  margin-right: 16px;
+  margin-bottom: 10px;
+}
 .projectNotFound {
   font-family: $primaryFontFamily;
   text-align: center;
@@ -88,9 +123,40 @@
   }
 }
 @include mdTabletView {
+  .singleProject{
+    flex-direction: row;
+    max-width: 500px;
+  }
+  .projectImage{
+    width: 150px;
+    height: auto;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0px;
+    object-fit: cover;
+  }
+  .noProjectImage{
+    width: 150px;
+    height: auto;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0px;
+    background-color: $primaryColor;
+  }
+  .projectLinksContainer{
+    padding-top: 16px;
+    justify-content: center;
+  }
 }
 @include lgLaptopView {
-  
+  .singleProject{
+    flex-direction: row;
+    max-width: 800px;
+  }
 }
 @include xlDesktopView {
+  .singleProject{
+    width: 1000px;
+    max-width: 1000px;
+  }
 }
