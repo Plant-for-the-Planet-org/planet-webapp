@@ -59,25 +59,27 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     contributions,
     authenticatedType,
   };
-  
+
   return ready ? (
-    <div className="profilePage">
+    <div className="profilePage" >
       {contributions &&
       Array.isArray(contributions) &&
       contributions.length !== 0 ? (
         <>
-          <div className={'profilePageTitle'}>
-            {authenticatedType === 'private'
-              ? t('me:myForest')
-              : t('me:nameForest', { name: profile.displayName })}
-          </div>
-          <div className={styles.myTreesContainer}>
-            <div className={styles.treesList}>
-              {contributions.map((contribution: any) => {
-                return <TreeList contribution={contribution} />;
-              })}
+          <div className={styles.myTreesSection} style={{paddingBottom:'80px'}}>
+            <div className={'profilePageTitle'} style={{alignSelf:'flex-start'}}>
+              {authenticatedType === 'private'
+                ? t('me:myForest')
+                : t('me:nameForest', { name: profile.displayName })}
             </div>
-            <MyTreesMap {...MapProps} />
+            <div className={styles.myTreesContainer}>
+              <div className={styles.treesList}>
+                {contributions.map((contribution: any) => {
+                  return <TreeList contribution={contribution} />;
+                })}
+              </div>
+              <MyTreesMap {...MapProps} />
+            </div>
           </div>
         </>
       ) : null}
@@ -85,7 +87,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   ) : null;
 }
 
-function TreeList({contribution}: any) {
+function TreeList({ contribution }: any) {
   const date = formatDate(contribution.properties.plantDate);
   const { t, i18n, ready } = useTranslation(['country', 'me']);
 
@@ -141,23 +143,23 @@ function TreeList({contribution}: any) {
                 Number(contribution.properties.treeCount)
               )}
             </div>
-              {contribution.properties.treeCount > 1 ? (
-                <TreesIcon
-                  color={
-                    contribution.properties.type === 'registration'
-                      ? '#3D67B1'
-                      : null
-                  }
-                />
-              ) : (
-                <TreeIcon
-                  color={
-                    contribution.properties.type === 'registration'
-                      ? '#3D67B1'
-                      : null
-                  }
-                />
-              )}
+            {contribution.properties.treeCount > 1 ? (
+              <TreesIcon
+                color={
+                  contribution.properties.type === 'registration'
+                    ? '#3D67B1'
+                    : null
+                }
+              />
+            ) : (
+              <TreeIcon
+                color={
+                  contribution.properties.type === 'registration'
+                    ? '#3D67B1'
+                    : null
+                }
+              />
+            )}
           </div>
         </div>
       </div>

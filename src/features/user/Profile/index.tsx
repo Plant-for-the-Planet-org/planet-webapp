@@ -27,7 +27,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
 
   return (
-    <div style={{marginTop:'-80px'}}> 
+    <div> 
     {/* TO DO - find solution for this */}
       {/* maybe we use this as edit button */}
       {/* {authenticatedType === 'private' && (
