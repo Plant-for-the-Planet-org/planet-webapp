@@ -280,7 +280,7 @@ export default function PlantLocationDetails({
                   <span>
                     {plantLocation.scientificName
                       ? plantLocation.scientificName
-                      : plantLocation.scientificSpecies}
+                      : plantLocation.scientificSpecies?plantLocation.scientificSpecies:t('unknown')}
                   </span>
                 </div>
               </div>
