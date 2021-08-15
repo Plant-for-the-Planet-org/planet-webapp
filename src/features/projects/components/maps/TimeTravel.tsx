@@ -445,6 +445,123 @@ export default function TimeTravel({}: Props): ReactElement {
           }
         });
       }
+
+          // ESRI
+    if (selectedSource1 === 'esri') {
+      rasterData.imagery.esri.map((year: any) => {
+        if (year.year === selectedYear1) {
+          if (!before.getSource(`before-imagery-esri-${year.year}`)) {
+            before.addSource(`before-imagery-esri-${year.year}`, {
+              type: 'raster',
+              tiles: [`${year.raster}`],
+              tileSize: 256,
+              attribution: 'layer attribution',
+            });
+          }
+          if (!before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+            before.addLayer({
+              id: `before-imagery-esri-${year.year}-layer`,
+              type: 'raster',
+              source: `before-imagery-esri-${year.year}`,
+            });
+          }
+
+          if (!before.getSource(`project-polygon-esri-${year.year}`)) {
+            before.addSource(`project-polygon-esri-${year.year}`, {
+              type: 'geojson',
+              data: geoJson,
+            });
+          }
+
+          if (!before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            before.addLayer({
+              id: `project-polygon-layer-esri-${year.year}`,
+              type: 'line',
+              source: `project-polygon-esri-${year.year}`,
+              layout: {},
+              paint: {
+                'line-color': '#fff',
+                'line-width': 4,
+              },
+            });
+          }
+        } else {
+          if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            before.removeLayer(`project-polygon-layer-esri-${year.year}`);
+          }
+          if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+            before.removeLayer(`before-imagery-esri-${year.year}-layer`);
+          }
+        }
+      });
+    } else {
+      rasterData.imagery.esri.map((year: any) => {
+        if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+          before.removeLayer(`project-polygon-layer-esri-${year.year}`);
+        }
+        if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+          before.removeLayer(`before-imagery-esri-${year.year}-layer`);
+        }
+      });
+    }
+
+    if (selectedSource2 === 'esri') {
+      rasterData.imagery.esri.map((year: any) => {
+        if (year.year === selectedYear2) {
+          if (!after.getSource(`after-imagery-esri-${year.year}`)) {
+            after.addSource(`after-imagery-esri-${year.year}`, {
+              type: 'raster',
+              tiles: [`${year.raster}`],
+              tileSize: 256,
+              attribution: 'layer attribution',
+            });
+          }
+          if (!after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+            after.addLayer({
+              id: `after-imagery-esri-${year.year}-layer`,
+              type: 'raster',
+              source: `after-imagery-esri-${year.year}`,
+            });
+          }
+
+          if (!after.getSource(`project-polygon-esri-${year.year}`)) {
+            after.addSource(`project-polygon-esri-${year.year}`, {
+              type: 'geojson',
+              data: geoJson,
+            });
+          }
+
+          if (!after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            after.addLayer({
+              id: `project-polygon-layer-esri-${year.year}`,
+              type: 'line',
+              source: `project-polygon-esri-${year.year}`,
+              layout: {},
+              paint: {
+                'line-color': '#fff',
+                'line-width': 4,
+              },
+            });
+          }
+        } else {
+          if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            after.removeLayer(`project-polygon-layer-esri-${year.year}`);
+          }
+          if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+            after.removeLayer(`after-imagery-esri-${year.year}-layer`);
+          }
+        }
+      });
+    } else {
+      rasterData.imagery.esri.map((year: any) => {
+        if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+          after.removeLayer(`project-polygon-layer-esri-${year.year}`);
+        }
+        if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+          after.removeLayer(`after-imagery-esri-${year.year}-layer`);
+        }
+      });
+    }
     }
     if (before && after) {
       try {
