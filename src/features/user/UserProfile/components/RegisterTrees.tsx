@@ -248,10 +248,6 @@ export default function RegisterTrees({}: Props) {
     }
   }, [contextLoaded]);
 
-  console.log('projects', projects);
-  
-
-
   const _onStateChange = (state: any) => setMapState({ ...state });
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
