@@ -86,6 +86,7 @@
     "react-map-gl": "5.3.11",
     "react-mapbox-gl": "^5.1.0",
     "react-mapbox-gl-draw": "^2.0.4",
+    "react-player": "^2.9.0",
     "read-more-react": "^1.0.10",
     "sass": "^1.35.1",
     "styled-jsx": "^3.4.1",
