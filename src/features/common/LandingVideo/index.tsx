@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './styles.module.scss';
 import i18next from '../../../../i18n';
-import ReactPlayer from 'react-player/lazy';
+import VideoJS from './VideoPlayer';
 
 const { useTranslation } = i18next;
 
@@ -60,32 +60,27 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       }
     }
   }, []);
+
+  const videoJsOptions = { // lookup the options in the docs for more options
+    autoplay: true,
+    controls: false,
+    responsive: true,
+    loop:false,
+    muted: true,
+    preload:'auto',
+    fluid: true,
+    sources: [{
+      src: videoURL,
+      type: 'video/mp4'
+    }],
+    onEnded: handleVideoClose
+  }
+
   return ready ? (
     <div className={styles.landingVideoSection}>
       <div className={styles.landingVideoWrapper}>
         {videoURL && (
-          ReactPlayer.canPlay(videoURL) ? (
-            <ReactPlayer
-              loop={false}
-              controls={false}
-              volume={0}
-              muted={true}
-              onEnded={()=>handleVideoClose()}
-              config={{
-                file: {
-                  attributes : {
-                    preload: 'none',
-                    autoplay: 1,
-                    loop: false,
-                    muted: true,
-                    controls: false,
-                    poster: videoURL
-                  }                  
-                }
-              }}
-              url={videoURL}
-            />
-          ) : null
+          <VideoJS options={videoJsOptions}/>
         )}
       </div>
       <button
