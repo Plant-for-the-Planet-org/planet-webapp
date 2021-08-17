@@ -67,7 +67,7 @@ export default function ProjectsContainer({}: any) {
       </Link>
 
       <div className={styles.projectsContainer} id="projectsContainer">
-        {projects.length < 1 ? (
+        {projects && projects.length < 1 ? (
           <div className={styles.projectNotFound}>
             <LazyLoad>
               <NotFound className={styles.projectNotFoundImage} />

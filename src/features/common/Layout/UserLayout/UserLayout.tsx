@@ -115,6 +115,21 @@ function UserLayout(props: any): ReactElement {
   const [open, setOpen] = React.useState(true);
   const [activeLink, setactiveLink] = React.useState('/profile');
 
+  const [windowSize, setWindowSize] = React.useState(window.innerWidth)
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // detect window screen width function
+      const handleResize = () => {
+          setWindowSize(window.innerWidth)
+      }
+
+      window.addEventListener('resize', handleResize)
+
+      return () => window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   React.useEffect(() => {
     if (router) {
       setactiveLink(router.router?.asPath);
@@ -131,13 +146,10 @@ function UserLayout(props: any): ReactElement {
 
   const { user, logoutUser } = React.useContext(UserPropsContext);
 
-
   return (
     <div
       className={styles.profilePageContainer}
-      style={{
-        paddingLeft: open ? '256px' : '0px',
-      }}
+
     >
       <div className={styles.sidebar}>
         <div className={styles.navLinksContainer}>
@@ -152,8 +164,10 @@ function UserLayout(props: any): ReactElement {
 
         <div>
           <LanguageSwitcher />
-
-          <div className={styles.navlink} onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}>
+          <div
+            className={styles.navlink}
+            onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+          >
             <LogoutIcon />
             <button className={styles.navlinkTitle}>{'Logout'}</button>
             <button className={styles.subMenuArrow}></button>

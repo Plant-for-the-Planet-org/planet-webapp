@@ -3,6 +3,7 @@
 .profilePageContainer {
   position: relative;
   display: flex;
+  padding-left: 60px;
 }
 .profilePageWrapper {
   width: 100%;
@@ -12,7 +13,7 @@
 // Styles for Sidebar
 
 .sidebar {
-  width: 256px;
+  width: 60px;
   position: fixed;
   top: 80px;
   left: 0px;
@@ -23,7 +24,15 @@
   justify-content: space-between;
   box-shadow: rgba(104, 176, 48, $alpha: 0.2) 0px 0px 20px;
   background-color: $light;
-  
+  transition: width 0.3s ease;
+  &:hover{
+    width: 256px!important;
+  }
+}
+
+
+.navlink button {
+  display: none;
 }
 
 .navLinksContainer {
@@ -32,7 +41,7 @@
   flex-direction: column;
 }
 .navlink {
-  padding: 16px 24px;
+  padding: 16px 20px;
   text-align: left;
   display: flex;
   justify-content: space-between;
@@ -73,7 +82,7 @@
   }
 }
 .navlinkSubMenu {
-  padding: 16px 24px;
+  padding: 16px 20px;
   text-align: left;
   display: flex;
   justify-content: space-between;
@@ -88,4 +97,19 @@
   min-height: 100vh;
   width: 100%;
   max-width: calc(100vw - 256px);
+}
+
+@include lgLaptopView {
+  .sidebar {
+    width: 256px;
+  }
+  .navlink button {
+    display: block;
+  }
+  .navlink {
+    padding: 16px 24px;
+  }
+  .profilePageContainer {
+    padding-left: 256px
+  }
 }

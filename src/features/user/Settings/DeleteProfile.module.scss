@@ -4,13 +4,11 @@
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 10px;
-  padding: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   max-width: 320px;
   @include smTabletView {
-    padding: 36px;
     max-width: 420px;
   }
   .deleteModalTitle {
@@ -22,12 +20,10 @@
   }
   .deleteConsent {
     margin-top: 20px;
-    font-size: $fontXSmall;
   }
   .deleteModalWarning {
     margin-top: 20px;
     color: $dangerColor;
-    font-size: $fontXSmall;
   }
   .deleteButtonContainer {
     display: flex;

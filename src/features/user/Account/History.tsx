@@ -53,7 +53,10 @@ export default function History({
     setFilter(id);
   };
 
-  const currentRecord = paymentHistory?.items[selectedRecord];
+  let currentRecord;
+  if (paymentHistory) {
+    currentRecord = paymentHistory?.items[selectedRecord];
+  }
 
   return (
     <div className="profilePage">

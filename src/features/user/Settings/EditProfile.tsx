@@ -200,11 +200,9 @@ export default function EditProfile({}: Props) {
   return ready ? (
     <div className="profilePage">
       <div className={styles.editProfileContainer}>
-        <div className={styles.headerDiv}>
           <div className={'profilePageTitle'}>
              {t('editProfile:edit')}
           </div>
-        </div>
 
         <div
           {...getRootProps()}
