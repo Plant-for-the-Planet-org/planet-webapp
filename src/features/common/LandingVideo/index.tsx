@@ -66,7 +66,6 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
         {videoURL && (
           ReactPlayer.canPlay(videoURL) ? (
             <ReactPlayer
-              loop={false}
               controls={false}
               volume={0}
               muted={true}
@@ -76,7 +75,6 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
                   attributes : {
                     preload: 'none',
                     autoplay: 1,
-                    loop: false,
                     muted: true,
                     controls: false,
                     poster: videoURL
