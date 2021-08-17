@@ -28,10 +28,28 @@ export default function Stats({tenantScore}: Props): ReactElement {
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(32020000), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
+          <button id={'donatedStats'}
+            onClick={() => {
+              setInfoExpanded('donated');
+              setModalOpen(true);
+            }}
+            className={styles.statInfo}
+          >
+            <InfoIcon />
+          </button>
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}> {localizedAbbreviatedNumber(i18n.language, Number(77060000), 2)} </h2>
           <h3 className={styles.statText}>{t('planet:plantedByTPO', { projects: 160 })}</h3>
+          <button id={'plantedStats'}
+            onClick={() => {
+              setInfoExpanded('planted');
+              setModalOpen(true);
+            }}
+            className={styles.statInfo}
+          >
+            <InfoIcon />
+          </button>
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(tenantScore.total), 2)}</h2>
