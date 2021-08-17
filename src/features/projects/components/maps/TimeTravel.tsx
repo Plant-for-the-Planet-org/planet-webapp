@@ -3,8 +3,6 @@ import mapboxgl from 'mapbox-gl';
 import syncMove from '@mapbox/mapbox-gl-sync-move';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
-import planetCoverage from '../../../../../public/data/planet/aoi.json';
-import * as turf from '@turf/turf';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
 interface Props {}
@@ -15,8 +13,6 @@ export default function TimeTravel({}: Props): ReactElement {
     geoJson,
     rasterData,
     isMobile,
-    mapState,
-    setMapState,
   } = React.useContext(ProjectPropsContext);
 
   const [before, setBefore] = React.useState();
@@ -75,11 +71,6 @@ export default function TimeTravel({}: Props): ReactElement {
       });
 
       syncMove(before, mapRef?.current?.getMap());
-    }
-    const siteCenter = turf.centroid(geoJson);
-    if (!turf.booleanPointInPolygon(siteCenter, planetCoverage)) {
-      setSelectedSource1('sentinel');
-      setSelectedSource2('sentinel');
     }
   }, []);
 
