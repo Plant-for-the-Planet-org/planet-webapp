@@ -132,11 +132,22 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [hoveredPl, setHoveredPl] = React.useState(null);
 
   React.useEffect(() => {
-    window.addEventListener('resize', updateWidth);
-    const isMobileTemp = windowSize <= 767;
-    setIsMobile(isMobileTemp);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, [windowSize]);
+    if(typeof window !== 'undefined') {
+      if(window.innerWidth > 767) {
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+    }
+  }
+  });
+
+  React.useEffect(() => {
+    if(isMobile) {
+      setIsPolygonMenuOpen(false);
+    } else {
+      setIsPolygonMenuOpen(true);
+    }
+  },[isMobile]);
 
   const updateWidth = () => {
     setWindowSize(window.innerWidth);

@@ -41,7 +41,7 @@ export default function Sites({}: Props): ReactElement {
       {selectedMode === 'location' && (
         <>
           {satellite && <SatelliteLayer />}
-          <ProjectPolygon id="locationPolygon" geoJson={geoJson} />
+          {/* <ProjectPolygon id="locationPolygon" geoJson={geoJson} /> */}
         </>
       )}
       {Object.keys(rasterData.imagery).length !== 0 &&
