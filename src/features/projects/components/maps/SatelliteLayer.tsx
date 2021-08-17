@@ -12,9 +12,9 @@ export default function SatelliteLayer({ beforeId }: Props): ReactElement {
         id="satellite"
         type="raster"
         tiles={[
-          'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         ]}
-        tileSize={128}
+        tileSize={256}
       >
         <Layer
           id="satellite-layer"
