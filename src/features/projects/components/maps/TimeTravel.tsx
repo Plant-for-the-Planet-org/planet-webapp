@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import mapboxgl from 'mapbox-gl';
-import syncMove from '@mapbox/mapbox-gl-sync-move';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
@@ -13,6 +12,8 @@ export default function TimeTravel({}: Props): ReactElement {
     geoJson,
     rasterData,
     isMobile,
+    siteViewPort,
+    selectedMode
   } = React.useContext(ProjectPropsContext);
 
   const [before, setBefore] = React.useState();
@@ -65,14 +66,21 @@ export default function TimeTravel({}: Props): ReactElement {
       // A selector or reference to HTML element
       const container = '#comparison-container';
 
-      new MapboxCompare(before, after, container, {
+      const compare = new MapboxCompare(before, after, container, {
         mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
         orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
       });
 
-      syncMove(before, mapRef?.current?.getMap());
+      // syncMove(before, mapRef?.current?.getMap()); 
     }
   }, []);
+
+  React.useEffect(() => {
+    if(before){
+      before.setCenter(siteViewPort.center);
+      before.setZoom(siteViewPort.zoom);
+    }
+  },[selectedMode, geoJson]);
 
   React.useEffect(() => {
     function loadLayers() {
@@ -586,8 +594,8 @@ export default function TimeTravel({}: Props): ReactElement {
   };
   return (
     <>
-      <ImageDropdown {...imageDropdownProps} />
-      <div id="comparison-container">
+      {selectedMode === 'imagery'&&<ImageDropdown {...imageDropdownProps} />}
+      <div style={selectedMode === 'imagery'? {visibility:"visible"}:{visibility:"hidden"}} id="comparison-container">
         <div className="comparison-map" id="before"></div>
         <div className="comparison-map" id="after"></div>
       </div>

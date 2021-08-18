@@ -86,9 +86,14 @@ function SingleProjectDetails({}: Props): ReactElement {
     <>
       <Explore />
       {geoJson && <SitesDropdown />}
-      {Object.keys(rasterData.imagery).length !== 0 &&
-        rasterData.imagery.constructor === Object && <ProjectTabs />}
-      {geoJson && selectedMode === 'imagery' && <TimeTravel />}
+      {geoJson &&
+        Object.keys(rasterData.imagery).length !== 0 &&
+        rasterData.imagery.constructor === Object && (
+          <>
+            <ProjectTabs />
+              <TimeTravel />
+          </>
+        )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
         className={'container'}

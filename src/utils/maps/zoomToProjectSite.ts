@@ -8,6 +8,7 @@ export default function zoomToProjectSite(
   viewport: Object,
   isMobile: boolean,
   setViewPort: Function,
+  setSiteViewPort: Function,
   duration = 1200
 ) {
   const bbox = turf.bbox(geoJson.features[selectedSite]);
@@ -37,4 +38,5 @@ export default function zoomToProjectSite(
     transitionEasing: d3.easeCubic,
   };
   setViewPort(newViewport);
+  setSiteViewPort({center:[longitude,latitude],zoom:zoom});
 }
