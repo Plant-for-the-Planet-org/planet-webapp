@@ -69,11 +69,13 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
               loop={false}
               controls={false}
               muted={true}
+              playsinline={true}
               onEnded={()=>handleVideoClose()}
               config={{
                 file: {
                   attributes : {
                     autoplay: 1,
+                    //playsinline: true,
                     //preload: 'none',
                     //loop: false,
                     //muted: true,
