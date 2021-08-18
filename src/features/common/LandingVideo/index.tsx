@@ -28,34 +28,34 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       switch (localStorage.getItem('language')) {
         case 'de':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.webm`
           );
           break;
         case 'en':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.webm`
           );
           break;
         default:
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.webm`
           );
       }
     } else {
       switch (localStorage.getItem('language')) {
         case 'de':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.webm`
           );
           break;
         case 'en':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.webm`
           );
           break;
         default:
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.webm`
           );
       }
     }
@@ -74,12 +74,13 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
               config={{
                 file: {
                   attributes : {
-                    preload: 'none',
+                    preload: 'auto',
                     autoplay: 1,
                     loop: false,
                     muted: true,
-                    controls: false
-                  }                  
+                    playsinline: true,
+                    controls: 0
+                  }
                 }
               }}
               url={videoURL}
