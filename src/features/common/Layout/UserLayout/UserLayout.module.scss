@@ -12,6 +12,11 @@
 
 // Styles for Sidebar
 
+.navlink button,
+.navlinkSubMenu {
+  display: none;
+}
+
 .sidebar {
   width: 60px;
   position: fixed;
@@ -25,14 +30,20 @@
   box-shadow: rgba(104, 176, 48, $alpha: 0.2) 0px 0px 20px;
   background-color: $light;
   transition: width 0.3s ease;
-  &:hover{
-    width: 256px!important;
+  z-index: 100;
+  &:hover {
+    width: 256px !important;
   }
-}
-
-
-.navlink button {
-  display: none;
+  &:hover .navlink {
+    padding: 16px 20px;
+    justify-content: space-between;
+  }
+  &:hover .navlink button {
+    display: block;
+  }
+  &:hover .navlinkSubMenu {
+    display: flex;
+  }
 }
 
 .navLinksContainer {
@@ -41,10 +52,10 @@
   flex-direction: column;
 }
 .navlink {
-  padding: 16px 20px;
+  padding: 16px 8px;
   text-align: left;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   &:hover {
     cursor: pointer;
     background-color: $blueishGrey;
@@ -60,6 +71,10 @@
 }
 .navlinkActive {
   background-color: rgba(104, 176, 48, $alpha: 0.2);
+  font-weight: 600;
+}
+.navlinkActiveSubMenu {
+  color: rgba(104, 176, 48);
   font-weight: 600;
 }
 .navlinkTitle {
@@ -84,7 +99,7 @@
 .navlinkSubMenu {
   padding: 16px 20px;
   text-align: left;
-  display: flex;
+
   justify-content: space-between;
   padding-left: 56px;
   &:hover {
@@ -107,9 +122,13 @@
     display: block;
   }
   .navlink {
-    padding: 16px 24px;
+    padding: 16px 20px;
+    justify-content: space-between;
   }
   .profilePageContainer {
-    padding-left: 256px
+    padding-left: 256px;
+  }
+  .navlinkSubMenu {
+    display: flex;
   }
 }

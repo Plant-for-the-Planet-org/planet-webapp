@@ -115,25 +115,29 @@ function UserLayout(props: any): ReactElement {
 
   const [open, setOpen] = React.useState(true);
   const [activeLink, setactiveLink] = React.useState('/profile');
+  const [activeSubMenu, setActiveSubMenu] = React.useState('');
+  const [subMenuOpen, setsubMenuOpen] = React.useState('');
 
-  // const [windowSize, setWindowSize] = React.useState(window.innerWidth)
-
-  // React.useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     // detect window screen width function
-  //     const handleResize = () => {
-  //         setWindowSize(window.innerWidth)
-  //     }
-
-  //     window.addEventListener('resize', handleResize)
-
-  //     return () => window.removeEventListener('resize', handleResize)
-  //   }
-  // }, [])
 
   React.useEffect(() => {
     if (router) {
-      setactiveLink(router.router?.asPath);
+      for(const link of navLinks){
+        if(router.router?.asPath === (link.path)){
+
+          setactiveLink(link.path);
+
+          
+        }else if (link.subMenu && link.subMenu.length > 0) {
+          const subMenuItem = link.subMenu.find((subMenuItem: any) => {
+            return subMenuItem.path === router.router?.asPath;
+          });
+          if (subMenuItem) {
+            setactiveLink(link.path);
+            setActiveSubMenu(subMenuItem.path);
+            setsubMenuOpen(link.path)
+          }
+        }
+      }
     }
   }, [router]);
 
@@ -150,7 +154,6 @@ function UserLayout(props: any): ReactElement {
   return (
     <div
       className={styles.profilePageContainer}
-
     >
       <div className={styles.sidebar}>
         <div className={styles.navLinksContainer}>
@@ -159,6 +162,10 @@ function UserLayout(props: any): ReactElement {
               link={link}
               setactiveLink={setactiveLink}
               activeLink={activeLink}
+              activeSubMenu={activeSubMenu}
+               setActiveSubMenu={setActiveSubMenu}
+               subMenuOpen={subMenuOpen}
+               setsubMenuOpen={setsubMenuOpen}
             />
           ))}
         </div>
@@ -239,8 +246,7 @@ function LanguageSwitcher() {
   );
 }
 
-function NavLink({ link, setactiveLink, activeLink }: any) {
-  const [subMenuOpen, setsubMenuOpen] = React.useState(false);
+function NavLink({ link, setactiveLink, activeLink, activeSubMenu, setActiveSubMenu,subMenuOpen, setsubMenuOpen }: any) {
 
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
@@ -248,12 +254,16 @@ function NavLink({ link, setactiveLink, activeLink }: any) {
       const subMenuItem = link.subMenu.find((subMenuItem: any) => {
         return subMenuItem.path === activeLink;
       });
+      console.log("subMenuItem",subMenuItem)
       if (subMenuItem) {
-        setactiveLink(subMenuItem.path);
-        setsubMenuOpen(true);
+        setactiveLink(link.path);
+        setActiveSubMenu(subMenuItem.path);
+        setsubMenuOpen(link.path)
       }
     }
   }, [activeLink]);
+
+
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
@@ -261,9 +271,17 @@ function NavLink({ link, setactiveLink, activeLink }: any) {
           activeLink === link.path ? styles.navlinkActive : ''
         }`}
         onClick={() => {
-          setsubMenuOpen(!subMenuOpen);
+          if(subMenuOpen === link.path ){
+            setsubMenuOpen(!!subMenuOpen ?"":link.path)
+          }else if (link.subMenu && link.subMenu.length > 0){
+            setsubMenuOpen(link.path)
+            
+          }
+          // setActiveSubMenu(link.path);
           if (!link.subMenu || link.subMenu.length <= 0) {
             setactiveLink(link.path);
+            setsubMenuOpen('')
+            setActiveSubMenu('')
             router.push(link.path);
           }
         }}
@@ -277,23 +295,25 @@ function NavLink({ link, setactiveLink, activeLink }: any) {
           <button
             className={styles.subMenuArrow}
             style={{
-              transform: subMenuOpen ? 'rotate(-180deg)' : 'rotate(-90deg)',
+              transform: subMenuOpen === link.path ? 'rotate(-180deg)' : 'rotate(-90deg)',
             }}
           >
             <DownArrow />
           </button>
         )}
       </div>
-      {subMenuOpen &&
+      {subMenuOpen === link.path &&
         link.subMenu &&
         link.subMenu.length > 0 &&
         link.subMenu.map((subLink: any) => (
           <div
             className={`${styles.navlinkSubMenu} ${
-              activeLink === subLink.path ? styles.navlinkActive : ''
+              activeSubMenu === subLink.path ? styles.navlinkActiveSubMenu : ''
             }`}
             onClick={() => {
-              setactiveLink(subLink.path);
+              setactiveLink(link.path);
+              setActiveSubMenu(subLink.path);
+              setsubMenuOpen(link.path)
               router.push(subLink.path);
             }}
           >
