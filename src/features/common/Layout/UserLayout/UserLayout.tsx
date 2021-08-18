@@ -17,17 +17,18 @@ const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
   // Flags can be added to show labels on the right
+  // TO DO - remove arrow when link is selected
   const navLinks = [
     {
-      title: 'TreeCounter',
+      title: 'Profile',
       path: '/profile',
       icon: <UserIcon />,
       // flag: 'New',
       subMenu: [
-        {
-          title: 'Profile',
-          path: '/profile',
-        },
+        // {
+        //   title: 'Profile',
+        //   path: '/profile',
+        // },
         {
           title: 'My Forest',
           path: '/profile/forest',
@@ -115,20 +116,20 @@ function UserLayout(props: any): ReactElement {
   const [open, setOpen] = React.useState(true);
   const [activeLink, setactiveLink] = React.useState('/profile');
 
-  const [windowSize, setWindowSize] = React.useState(window.innerWidth)
+  // const [windowSize, setWindowSize] = React.useState(window.innerWidth)
 
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // detect window screen width function
-      const handleResize = () => {
-          setWindowSize(window.innerWidth)
-      }
+  // React.useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     // detect window screen width function
+  //     const handleResize = () => {
+  //         setWindowSize(window.innerWidth)
+  //     }
 
-      window.addEventListener('resize', handleResize)
+  //     window.addEventListener('resize', handleResize)
 
-      return () => window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+  //     return () => window.removeEventListener('resize', handleResize)
+  //   }
+  // }, [])
 
   React.useEffect(() => {
     if (router) {

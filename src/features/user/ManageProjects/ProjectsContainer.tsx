@@ -120,9 +120,9 @@ function SingleProject({ project }: any) {
         </p>
         <div className={styles.projectLabels}>
           {/* Needed in future */}
-          {!project.isFeatured && (
+          {/* {!project.isFeatured && (
             <div className={styles.projectLabel}>🛰 ️TreeMapper</div>
-          )}
+          )} */}
           {!project.isFeatured && (
             <div className={styles.projectLabel}>🌟 Featured</div>
           )}
