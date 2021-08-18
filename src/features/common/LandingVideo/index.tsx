@@ -28,34 +28,34 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       switch (localStorage.getItem('language')) {
         case 'de':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.webm`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
           break;
         case 'en':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.webm`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
           break;
         default:
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.webm`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
       }
     } else {
       switch (localStorage.getItem('language')) {
         case 'de':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.webm`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
           break;
         case 'en':
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.webm`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
           break;
         default:
           setvideoURL(
-            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.webm`
+            `https://a.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
       }
     }
@@ -68,18 +68,13 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
             <ReactPlayer
               loop={false}
               controls={false}
-              volume={0}
               muted={true}
+              playsinline={true}
               onEnded={()=>handleVideoClose()}
               config={{
                 file: {
                   attributes : {
-                    preload: 'auto',
-                    autoplay: 1,
-                    loop: false,
-                    muted: true,
-                    playsinline: true,
-                    controls: 0
+                    autoplay: 1
                   }
                 }
               }}
