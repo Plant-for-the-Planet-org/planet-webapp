@@ -10,8 +10,8 @@ import MapGL, {
 import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { Backdrop, Modal } from '@material-ui/core';
+import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { Backdrop, MenuItem, Modal } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -44,7 +44,7 @@ interface Props {}
 const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
   const router = useRouter();
-  const { user, token } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -77,6 +77,7 @@ export default function RegisterTrees({}: Props) {
   const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
     true
   );
+  const [projects, setProjects] = React.useState([]);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -196,6 +197,7 @@ export default function RegisterTrees({}: Props) {
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
+          plantProject: data.project,
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
@@ -231,6 +233,20 @@ export default function RegisterTrees({}: Props) {
       console.log(errorMessage);
     }
   };
+
+  async function loadProjects() {
+
+      await getAuthenticatedRequest('/app/profile/projects', token).then((projects:any) => {
+        setProjects(projects);
+      });
+  }
+
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    if (contextLoaded) {
+      loadProjects();
+    }
+  }, [contextLoaded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -357,6 +373,33 @@ export default function RegisterTrees({}: Props) {
                     </span>
                   )}
                 </div>
+                {
+                  user && user.type === 'tpo' && <div className={styles.formFieldLarge}>
+                     <Controller
+                as={
+                  <MaterialTextField
+                    label={t('me:project')}
+                    variant="outlined"
+                    select
+                  >
+                    {projects.map((option) => (
+                      <MenuItem key={option.properties.id} value={option.properties.id}>
+                        {option.properties.name}
+                      </MenuItem>
+                    ))}
+                  </MaterialTextField>
+                }
+                name="project"
+                control={control}
+              />
+                  {errors.project && (
+                    <span className={styles.formErrors}>
+                      {errors.project.message}
+                    </span>
+                  )}
+                </div>
+                }
+                
                 <div className={styles.mapNote}>
                   {isMultiple ? (
                     <p>{t('me:drawPolygon')}</p>
