@@ -5,7 +5,7 @@ import GlobeContentLoader from '../../src/features/common/ContentLoaders/Project
 import Footer from '../../src/features/common/Layout/Footer';
 import LandingSection from '../../src/features/common/Layout/LandingSection';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
-import SingleContribution from '../../src/features/user/UserProfile/components/RegisterTrees/SingleContribution';
+import SingleContribution from '../../src/features/user/RegisterTrees/RegisterTrees/SingleContribution';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 
 export default function SingleContributionPage(): ReactElement {

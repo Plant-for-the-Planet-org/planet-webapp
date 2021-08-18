@@ -1,0 +1,134 @@
+@import '../../../../theme/theme';
+
+.profilePageContainer {
+  position: relative;
+  display: flex;
+  padding-left: 60px;
+}
+.profilePageWrapper {
+  width: 100%;
+  min-height: 80vh;
+}
+
+// Styles for Sidebar
+
+.navlink button,
+.navlinkSubMenu {
+  display: none;
+}
+
+.sidebar {
+  width: 60px;
+  position: fixed;
+  top: 80px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  overflow-y: scroll;
+  justify-content: space-between;
+  box-shadow: rgba(104, 176, 48, $alpha: 0.2) 0px 0px 20px;
+  background-color: $light;
+  transition: width 0.3s ease;
+  z-index: 100;
+  &:hover {
+    width: 256px !important;
+  }
+  &:hover .navlink {
+    padding: 16px 20px;
+    justify-content: space-between;
+  }
+  &:hover .navlink button {
+    display: block;
+  }
+  &:hover .navlinkSubMenu {
+    display: flex;
+  }
+}
+
+.navLinksContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.navlink {
+  padding: 16px 8px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+    background-color: $blueishGrey;
+  }
+  button {
+    font-size: 14px;
+    font-family: $primaryFontFamily;
+    font-weight: 600;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+.navlinkActive {
+  background-color: rgba(104, 176, 48, $alpha: 0.2);
+  font-weight: 600;
+}
+.navlinkActiveSubMenu {
+  color: rgba(104, 176, 48);
+  font-weight: 600;
+}
+.navlinkTitle {
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 12px;
+  span {
+    background-color: $primaryColor;
+    color: $light;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+  }
+}
+.subMenuArrow {
+  svg {
+    path {
+      fill: $primaryFontColor;
+    }
+  }
+}
+.navlinkSubMenu {
+  padding: 16px 20px;
+  text-align: left;
+
+  justify-content: space-between;
+  padding-left: 56px;
+  &:hover {
+    cursor: pointer;
+    background-color: $blueishGrey;
+  }
+}
+
+.widgetIFrame {
+  min-height: 100vh;
+  width: 100%;
+  max-width: calc(100vw - 256px);
+}
+
+@include lgLaptopView {
+  .sidebar {
+    width: 256px;
+  }
+  .navlink button {
+    display: block;
+  }
+  .navlink {
+    padding: 16px 20px;
+    justify-content: space-between;
+  }
+  .profilePageContainer {
+    padding-left: 256px;
+  }
+  .navlinkSubMenu {
+    display: flex;
+  }
+}

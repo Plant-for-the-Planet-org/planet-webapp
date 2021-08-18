@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import ManageProjects from '../../../src/features/user/ManageProjects/screens';
+import ManageProjects from '../../../src/features/user/ManageProjects';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';

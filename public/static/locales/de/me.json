@@ -73,5 +73,8 @@
   "in-dispute": "Strittig",
   "dispute-lost": "Streitfall verloren",
   "nameForest": "Wald von {{name}}",
-  "taxReceipt": "Spendenbescheinigung"
+  "taxReceipt": "Spendenbescheinigung",
+  "setTarget": "Ziel setzen",
+  "targetSave": "Speichern",
+  "targetErrorMessage": "Zahl muss größer als Null sein"
 }

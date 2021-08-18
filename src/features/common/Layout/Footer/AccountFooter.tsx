@@ -29,28 +29,6 @@ export default function AccountFooter({}: Props): ReactElement {
       setFooterLang(footerLang);
     }
   }, [language]);
-  const FooterLinks = [
-    {
-      key: 'privacy',
-      title: ready ? t('common:privacyAndTerms') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/privacy-terms`,
-    },
-    {
-      key: 'imprint',
-      title: ready ? t('common:imprint') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/imprint`,
-    },
-    {
-      key: 'contact',
-      title: ready ? t('common:contact') : '',
-      link: 'mailto:support@plant-for-the-planet.org',
-    },
-    {
-      key: 'faqs',
-      title: ready ? t('common:faqs') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/faq`,
-    },
-  ];
 
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -80,27 +58,6 @@ export default function AccountFooter({}: Props): ReactElement {
             language ? language.toUpperCase() : ''
           } • ${selectedCurrency}`}</p>
         </div>
-        {process.env.TENANT === 'ttc' || process.env.TENANT === 'planet' ? (
-          <a
-            rel="noopener noreferrer"
-            href={`https://www.thegoodshop.org/de/shop/`}
-            target={'_blank'}
-          >
-            <p className={styles.links}>{t('common:shop')}</p>
-          </a>
-        ) : null}
-        {FooterLinks.map((item: any) => {
-          return (
-            <a
-              key={item.key}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <p className={styles.links}>{item.title}</p>
-            </a>
-          );
-        })}
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}

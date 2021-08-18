@@ -72,5 +72,8 @@
   "in-dispute": "En litige",
   "dispute-lost": "Litige perdu",
   "nameForest": "La forêt des {{name}}",
-  "taxReceipt": "Reçu fiscal"
+  "taxReceipt": "Reçu fiscal",
+  "setTarget": "Fixer un objectif",
+  "targetSave": "Sauvegarder",
+  "targetErrorMessage": "Le nombre doit être supérieur à zéro"
 }

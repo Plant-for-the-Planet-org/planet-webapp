@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ManageProjects from '../../src/features/user/ManageProjects/screens';
+import ManageProjects from '../../src/features/user/ManageProjects';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import GlobeContentLoader from '../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
