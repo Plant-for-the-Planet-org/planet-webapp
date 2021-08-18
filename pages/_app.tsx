@@ -99,7 +99,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    if (router.pathname === '/' || router.pathname === '/[p]') {
+    if (
+      router.pathname === '/' ||
+      router.pathname === '/[p]' ||
+      router.pathname === '/[p]/[id]'
+    ) {
       setIsMap(true);
     } else {
       setIsMap(false);
@@ -140,18 +144,18 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
         <ThemeProvider>
           <CssBaseline />
           <UserPropsProvider>
-          <Layout>
-            <ProjectPropsProvider>
-              {isMap ? (
-                project ? (
-                  <MapLayout />
-                ) : projects ? (
-                  <MapLayout />
-                ) : null
-              ) : null}
-              <Component {...ProjectProps} />
-            </ProjectPropsProvider>
-          </Layout>
+            <Layout>
+              <ProjectPropsProvider>
+                {isMap ? (
+                  project ? (
+                    <MapLayout />
+                  ) : projects ? (
+                    <MapLayout />
+                  ) : null
+                ) : null}
+                <Component {...ProjectProps} />
+              </ProjectPropsProvider>
+            </Layout>
           </UserPropsProvider>
         </ThemeProvider>
       </Auth0Provider>
