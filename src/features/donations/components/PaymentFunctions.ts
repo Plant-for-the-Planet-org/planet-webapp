@@ -345,7 +345,7 @@ export async function handleSCAPaymentFunction({
           };
           const SCAPaidDonation = await payDonation(payDonationData, donationID, token);
           if (SCAPaidDonation) {
-            if (SCAPaidDonation.paymentStatus) {
+            if (SCAPaidDonation.paymentStatus || SCAPaidDonation.status) {
               setIsPaymentProcessing(false);
               setDonationStep(4);
               return SCAPaidDonation;
