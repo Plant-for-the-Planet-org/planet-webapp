@@ -74,12 +74,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
               config={{
                 file: {
                   attributes : {
-                    autoplay: 1,
-                    //playsinline: true,
-                    //preload: 'none',
-                    //loop: false,
-                    //muted: true,
-                    //controls: false
+                    autoplay: 1
                   }
                 }
               }}
