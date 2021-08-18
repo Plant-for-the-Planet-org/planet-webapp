@@ -78,8 +78,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
                     autoplay: 1,
                     loop: false,
                     muted: true,
-                    controls: false,
-                    poster: videoURL
+                    controls: false
                   }                  
                 }
               }}
