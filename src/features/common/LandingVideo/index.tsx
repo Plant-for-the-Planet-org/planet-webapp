@@ -60,6 +60,16 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       }
     }
   }, []);
+
+  React.useEffect((): void => {
+    // See if video can play through and disable the video
+    if(videoURL){
+      if(!ReactPlayer.canPlay(videoURL)){
+        handleVideoClose();
+      }
+    }
+  },[videoURL]);
+  
   return ready ? (
     <div className={styles.landingVideoSection}>
       <div className={styles.landingVideoWrapper}>
@@ -67,18 +77,14 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
           ReactPlayer.canPlay(videoURL) ? (
             <ReactPlayer
               controls={false}
-              volume={0}
               muted={true}
+              playsinline={true}
               onEnded={()=>handleVideoClose()}
               config={{
                 file: {
                   attributes : {
-                    preload: 'none',
-                    autoplay: 1,
-                    muted: true,
-                    controls: false,
-                    poster: videoURL
-                  }                  
+                    autoplay: 1
+                  }
                 }
               }}
               url={videoURL}
