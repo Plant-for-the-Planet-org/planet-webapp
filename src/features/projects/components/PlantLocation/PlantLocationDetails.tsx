@@ -260,7 +260,7 @@ export default function PlantLocationDetails({
                           >
                             {spl.scientificName
                               ? spl.scientificName
-                              : spl.scientificSpecies}
+                              : spl.scientificSpecies?spl.scientificSpecies:t('unknown')}
                           </span>
                           <br />
                           {t('tag')} #{spl?.tag} • {spl?.measurements?.height}
@@ -280,7 +280,7 @@ export default function PlantLocationDetails({
                   <span>
                     {plantLocation.scientificName
                       ? plantLocation.scientificName
-                      : plantLocation.scientificSpecies}
+                      : plantLocation.scientificSpecies?plantLocation.scientificSpecies:t('unknown')}
                   </span>
                 </div>
               </div>
