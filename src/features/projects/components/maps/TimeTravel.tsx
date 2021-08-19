@@ -3,8 +3,6 @@ import mapboxgl from 'mapbox-gl';
 import syncMove from '@mapbox/mapbox-gl-sync-move';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
-import planetCoverage from '../../../../../public/data/planet/aoi.json';
-import * as turf from '@turf/turf';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
 interface Props {}
@@ -15,16 +13,14 @@ export default function TimeTravel({}: Props): ReactElement {
     geoJson,
     rasterData,
     isMobile,
-    mapState,
-    setMapState,
   } = React.useContext(ProjectPropsContext);
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
-  const [selectedSource1, setSelectedSource1] = React.useState('planetLabs');
-  const [selectedSource2, setSelectedSource2] = React.useState('planetLabs');
-  const [selectedYear1, setSelectedYear1] = React.useState('2017');
-  const [selectedYear2, setSelectedYear2] = React.useState('2020');
+  const [selectedSource1, setSelectedSource1] = React.useState('esri');
+  const [selectedSource2, setSelectedSource2] = React.useState('esri');
+  const [selectedYear1, setSelectedYear1] = React.useState('2014');
+  const [selectedYear2, setSelectedYear2] = React.useState('2021');
 
   const EMPTY_STYLE = {
     version: 8,
@@ -75,11 +71,6 @@ export default function TimeTravel({}: Props): ReactElement {
       });
 
       syncMove(before, mapRef?.current?.getMap());
-    }
-    const siteCenter = turf.centroid(geoJson);
-    if (!turf.booleanPointInPolygon(siteCenter, planetCoverage)) {
-      setSelectedSource1('sentinel');
-      setSelectedSource2('sentinel');
     }
   }, []);
 
@@ -445,6 +436,123 @@ export default function TimeTravel({}: Props): ReactElement {
           }
         });
       }
+
+          // ESRI
+    if (selectedSource1 === 'esri') {
+      rasterData.imagery.esri.map((year: any) => {
+        if (year.year === selectedYear1) {
+          if (!before.getSource(`before-imagery-esri-${year.year}`)) {
+            before.addSource(`before-imagery-esri-${year.year}`, {
+              type: 'raster',
+              tiles: [`${year.raster}`],
+              tileSize: 256,
+              attribution: 'layer attribution',
+            });
+          }
+          if (!before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+            before.addLayer({
+              id: `before-imagery-esri-${year.year}-layer`,
+              type: 'raster',
+              source: `before-imagery-esri-${year.year}`,
+            });
+          }
+
+          if (!before.getSource(`project-polygon-esri-${year.year}`)) {
+            before.addSource(`project-polygon-esri-${year.year}`, {
+              type: 'geojson',
+              data: geoJson,
+            });
+          }
+
+          if (!before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            before.addLayer({
+              id: `project-polygon-layer-esri-${year.year}`,
+              type: 'line',
+              source: `project-polygon-esri-${year.year}`,
+              layout: {},
+              paint: {
+                'line-color': '#fff',
+                'line-width': 4,
+              },
+            });
+          }
+        } else {
+          if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            before.removeLayer(`project-polygon-layer-esri-${year.year}`);
+          }
+          if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+            before.removeLayer(`before-imagery-esri-${year.year}-layer`);
+          }
+        }
+      });
+    } else {
+      rasterData.imagery.esri.map((year: any) => {
+        if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+          before.removeLayer(`project-polygon-layer-esri-${year.year}`);
+        }
+        if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+          before.removeLayer(`before-imagery-esri-${year.year}-layer`);
+        }
+      });
+    }
+
+    if (selectedSource2 === 'esri') {
+      rasterData.imagery.esri.map((year: any) => {
+        if (year.year === selectedYear2) {
+          if (!after.getSource(`after-imagery-esri-${year.year}`)) {
+            after.addSource(`after-imagery-esri-${year.year}`, {
+              type: 'raster',
+              tiles: [`${year.raster}`],
+              tileSize: 256,
+              attribution: 'layer attribution',
+            });
+          }
+          if (!after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+            after.addLayer({
+              id: `after-imagery-esri-${year.year}-layer`,
+              type: 'raster',
+              source: `after-imagery-esri-${year.year}`,
+            });
+          }
+
+          if (!after.getSource(`project-polygon-esri-${year.year}`)) {
+            after.addSource(`project-polygon-esri-${year.year}`, {
+              type: 'geojson',
+              data: geoJson,
+            });
+          }
+
+          if (!after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            after.addLayer({
+              id: `project-polygon-layer-esri-${year.year}`,
+              type: 'line',
+              source: `project-polygon-esri-${year.year}`,
+              layout: {},
+              paint: {
+                'line-color': '#fff',
+                'line-width': 4,
+              },
+            });
+          }
+        } else {
+          if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+            after.removeLayer(`project-polygon-layer-esri-${year.year}`);
+          }
+          if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+            after.removeLayer(`after-imagery-esri-${year.year}-layer`);
+          }
+        }
+      });
+    } else {
+      rasterData.imagery.esri.map((year: any) => {
+        if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+          after.removeLayer(`project-polygon-layer-esri-${year.year}`);
+        }
+        if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+          after.removeLayer(`after-imagery-esri-${year.year}-layer`);
+        }
+      });
+    }
     }
     if (before && after) {
       try {
