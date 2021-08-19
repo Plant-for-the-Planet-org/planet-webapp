@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from './styles.module.scss';
 import i18next from '../../../../i18n';
 import ReactPlayer from 'react-player/lazy';
+import { useUserAgent } from 'next-useragent';
 
 const { useTranslation } = i18next;
 
@@ -20,6 +21,16 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
       localStorage.setItem('hidePreview', true);
     }
   };
+
+  React.useEffect(() => {
+    if (typeof navigator !== 'undefined') {
+      const ua = navigator.userAgent;
+      const agent = useUserAgent(ua);
+      if(agent.isBot){
+        handleVideoClose();
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     const screenWidth = window.innerWidth;
@@ -63,34 +74,33 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
 
   React.useEffect((): void => {
     // See if video can play through and disable the video
-    if(videoURL){
-      if(!ReactPlayer.canPlay(videoURL)){
+    if (videoURL) {
+      if (!ReactPlayer.canPlay(videoURL)) {
         handleVideoClose();
       }
     }
-  },[videoURL]);
-  
+  }, [videoURL]);
+
   return ready ? (
     <div className={styles.landingVideoSection}>
       <div className={styles.landingVideoWrapper}>
-        {videoURL && (
-          ReactPlayer.canPlay(videoURL) ? (
+        {videoURL &&
+          (ReactPlayer.canPlay(videoURL) ? (
             <ReactPlayer
               controls={false}
               muted={true}
               playsinline={true}
-              onEnded={()=>handleVideoClose()}
+              onEnded={() => handleVideoClose()}
               config={{
                 file: {
-                  attributes : {
-                    autoplay: 1
-                  }
-                }
+                  attributes: {
+                    autoplay: 1,
+                  },
+                },
               }}
               url={videoURL}
             />
-          ) : null
-        )}
+          ) : null)}
       </div>
       <button
         id="skipLandingVideo"
