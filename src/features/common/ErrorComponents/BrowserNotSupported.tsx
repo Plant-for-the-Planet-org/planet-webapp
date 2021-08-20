@@ -6,9 +6,9 @@ export default function BrowserNotSupported() {
 
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
-            let urlopen = window.location.href;
+            const urlopen = window.location.href;
             // credits for this code goes to https://urlopen.link/
-            setUrl(urlopen.replace(/^https?:\/\/((?:(?:[a-z\d_\-=]+\.)+[a-z\d]+)(\/[a-z\d_\-=\+\.\/:]*)?)(?:\?(.*))?$/i, function ($0, u, d, q): string {
+            setUrl(urlopen.replace(/^https?:\/\/((?:(?:[a-z\d_\-=]+\.)+[a-z\d]+)(\/[a-z\d_\-=+./:]*)?)(?:\?(.*))?$/i, function ($0, u, d, q): string {
                 let qs, i, kv, k, v, j;
                 if (!d) u += '/';
                 if (q) {
@@ -17,9 +17,9 @@ export default function BrowserNotSupported() {
                         kv = qs[i].split('=');
                         k = kv.shift();
                         v = kv.join('=');
-                        if (/[^a-z\d_\-\.]/i.test(k)) return '';
+                        if (/[^a-z\d_\-.]/i.test(k)) return '';
                         for (j = 0; j < v.length; j++) {
-                            if (v.charCodeAt(j) < 256 && /[^a-z\d_\-=\+\.\/]/i.test(v[j])) return '';
+                            if (v.charCodeAt(j) < 256 && /[^a-z\d_\-=+./]/i.test(v[j])) return '';
                             if (v.charCodeAt(j) > 256 && encodeURIComponent(v[j]).length < 9) return '';
                         }
                     }
