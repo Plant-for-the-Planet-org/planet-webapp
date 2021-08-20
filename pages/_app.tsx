@@ -176,6 +176,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             audience={'urn:plant-for-the-planet'}
             cacheLocation={'localstorage'}
             onRedirectCallback={onRedirectCallback}
+            useRefreshTokens={true}
           >
             <ThemeProvider>
               <CssBaseline />
