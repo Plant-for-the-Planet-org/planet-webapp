@@ -4,6 +4,14 @@ export default function BrowserNotSupported() {
 
     const [url, setUrl] = React.useState('');
 
+    const urlOpen = (url: string) => {
+        if (typeof window !== 'undefined') {
+            console.log(url);
+            window.location.href = url;
+        }
+        return false;
+    }
+
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             const urlopen = window.location.href;
@@ -42,7 +50,7 @@ export default function BrowserNotSupported() {
         >
             <p>Your browser is not supported. Please use a newer version or another browser.</p>
             <p>
-                <a href={url} rel="nofollow noreferrer">Try to open a compatible browser.</a>
+                <a href={url} onClick={() => urlOpen(url)} rel="nofollow noreferrer">Try to open a compatible browser.</a>
             </p>
         </div>
     );
