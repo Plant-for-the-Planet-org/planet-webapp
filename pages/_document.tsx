@@ -1,7 +1,5 @@
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import Document, {
-  Head, Html, Main, NextScript,
-} from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
 class MyDocument extends Document {
@@ -13,7 +11,11 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head/>
+        <Head>
+          <link rel="dns-prefetch" href="https://a.plant-for-the-planet.org/" />
+          <link rel="preconnect" href="https://fonts.googleapis.com/" crossOrigin="true" />
+
+        </Head>
         <body style={{ overscrollBehavior: 'contain' }}>
           <Main />
           <NextScript />
@@ -27,9 +29,11 @@ MyDocument.getInitialProps = async (ctx) => {
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;
 
-  ctx.renderPage = () => originalRenderPage({
-    enhanceApp: (App: any) => (props: any) => sheets.collect(<App {...props} />),
-  });
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App: any) => (props: any) =>
+        sheets.collect(<App {...props} />),
+    });
 
   const initialProps = await Document.getInitialProps(ctx);
 

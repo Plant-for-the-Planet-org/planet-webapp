@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
-  const { selectedMode } = React.useContext(ProjectPropsContext);
+  const { selectedMode, satellite } = React.useContext(ProjectPropsContext);
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
             type="line"
             source={id ? id : 'singleProject'}
             paint={{
-              'line-color': '#fff',
+              'line-color': satellite ? '#ffffff' : '#007A49',
               'line-width': 4,
             }}
           />

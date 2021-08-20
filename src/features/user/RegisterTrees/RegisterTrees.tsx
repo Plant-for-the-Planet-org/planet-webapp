@@ -9,7 +9,7 @@ import MapGL, {
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import dynamic from 'next/dynamic';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -19,7 +19,7 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme, MenuItem } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import { ThemeContext } from '../../../theme/themeContext';
@@ -42,7 +42,7 @@ interface Props {}
 const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
   const router = useRouter();
-  const { user, token } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -75,6 +75,7 @@ export default function RegisterTrees({}: Props) {
   const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
     true
   );
+  const [projects, setProjects] = React.useState([]);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -161,6 +162,7 @@ export default function RegisterTrees({}: Props) {
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
+    plantProject: null,
     plantDate: new Date(),
     geometry: {},
   };
@@ -194,6 +196,7 @@ export default function RegisterTrees({}: Props) {
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
+          plantProject: data.plantProject,
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
@@ -229,6 +232,19 @@ export default function RegisterTrees({}: Props) {
       console.log(errorMessage);
     }
   };
+
+  async function loadProjects() {
+
+    await getAuthenticatedRequest('/app/profile/projects', token).then((projects:any) => {
+      setProjects(projects);
+    });
+}
+
+React.useEffect(() => {
+  if (contextLoaded) {
+    loadProjects();
+  }
+}, [contextLoaded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -328,6 +344,34 @@ export default function RegisterTrees({}: Props) {
                 </span>
               )}
             </div>
+
+            {
+                  user && user.type === 'tpo' && <div className={styles.formFieldLarge}>
+                     <Controller
+                as={
+                  <MaterialTextField
+                    label={t('me:project')}
+                    variant="outlined"
+                    select
+                  >
+                    {projects.map((option) => (
+                      <MenuItem key={option.properties.id} value={option.properties.id}>
+                        {option.properties.name}
+                      </MenuItem>
+                    ))}
+                  </MaterialTextField>
+                }
+                name="plantProject"
+                control={control}
+              />
+                  {errors.plantProject && (
+                    <span className={styles.formErrors}>
+                      {errors.plantProject.message}
+                    </span>
+                  )}
+                </div>
+                }
+
             <div className={styles.mapNote}>
               {isMultiple ? (
                 <p>{t('me:drawPolygon')}</p>
