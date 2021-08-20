@@ -61,13 +61,22 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   };
 
   return ready ? (
-    <div className="profilePage" >
+    <div className={authenticatedType === 'private' ? 'profilePage' : ''}>
       {contributions &&
       Array.isArray(contributions) &&
       contributions.length !== 0 ? (
         <>
-          <div className={styles.myTreesSection} style={{paddingBottom:'80px'}}>
-            <div className={'profilePageTitle'} style={{alignSelf:'flex-start'}}>
+          <div
+            className={styles.myTreesSection}
+            style={{ paddingBottom: '80px' }}
+          >
+            <div
+              className={
+                authenticatedType === 'private'
+                  ? 'profilePageTitle'
+                  : styles.myTreesTitle
+              }
+            >
               {authenticatedType === 'private'
                 ? t('me:myForest')
                 : t('me:nameForest', { name: profile.displayName })}
