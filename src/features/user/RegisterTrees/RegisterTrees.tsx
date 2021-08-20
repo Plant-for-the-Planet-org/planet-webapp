@@ -162,7 +162,7 @@ export default function RegisterTrees({}: Props) {
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: data.project,
+    plantProject: null,
     plantDate: new Date(),
     geometry: {},
   };
@@ -196,6 +196,7 @@ export default function RegisterTrees({}: Props) {
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
+          plantProject: data.plantProject,
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
@@ -360,12 +361,12 @@ React.useEffect(() => {
                     ))}
                   </MaterialTextField>
                 }
-                name="project"
+                name="plantProject"
                 control={control}
               />
-                  {errors.project && (
+                  {errors.plantProject && (
                     <span className={styles.formErrors}>
-                      {errors.project.message}
+                      {errors.plantProject.message}
                     </span>
                   )}
                 </div>
