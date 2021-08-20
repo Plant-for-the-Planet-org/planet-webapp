@@ -94,11 +94,16 @@ export default function RegisterTrees({}: Props) {
           backgroundColor: styles.primaryColor,
         },
       },
+      MuiPickersBasePicker: {
+        pickerView: {
+          backgroundColor: 'white',
+        }
+      },
       MuiPickersCalendarHeader: {
         switchHeader: {
           // backgroundColor: lightBlue.A200,
           // color: "white",
-        },
+        }
       },
       MuiPickersDay: {
         daySelected: {
