@@ -22,7 +22,7 @@ export default function Location({ siteExists, geoJson, project }: Props) {
           <div style={{ left: '28px' }} className={styles.marker} />
         </Marker>
       ) : (
-        <ProjectPolygon geoJson={geoJson} />
+        <ProjectPolygon id="locationPolygon" geoJson={geoJson} />
       )}
     </>
   );
