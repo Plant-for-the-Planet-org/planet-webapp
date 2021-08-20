@@ -140,6 +140,9 @@
 @include xlDesktopView {
   .options {
     width: 200px;
+    &.compact {
+      width: 150px;
+    }
     p {
       display: block;
     }

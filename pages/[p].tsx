@@ -9,6 +9,7 @@ import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
+import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 
 interface Props {
   initialized: boolean;
@@ -25,12 +26,18 @@ export default function Donate({
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { project, setProject, setShowSingleProject } = React.useContext(
-    ProjectPropsContext
-  );
+  const {
+    project,
+    setProject,
+    setShowSingleProject,
+    setZoomLevel,
+    setPlantLocations,
+    selectedPl,
+    hoveredPl,
+  } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
-    setShowSingleProject(true);
+    setZoomLevel(2);
   }, []);
 
   const handleClose = () => {
@@ -50,6 +57,7 @@ export default function Donate({
         );
         setProject(project);
         setShowSingleProject(true);
+        setZoomLevel(2);
       }
     }
     if (router.query.p) {
@@ -57,10 +65,21 @@ export default function Donate({
     }
   }, [router.query.p, currencyCode]);
 
+  React.useEffect(() => {
+    async function loadPl() {
+      const newPlantLocations = await getAllPlantLocations(project.id);
+      setPlantLocations(newPlantLocations);
+    }
+    if (project) {
+      loadPl();
+    }
+  }, [project]);
+
   const ProjectProps = {
     project,
     currencyCode,
     setCurrencyCode,
+    plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
 
   React.useEffect(() => {

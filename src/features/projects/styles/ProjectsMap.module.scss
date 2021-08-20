@@ -45,9 +45,28 @@
   position: absolute;
   right: 20px;
   bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   > div {
     position: relative !important;
   }
+}
+
+.layerToggle {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  background-color: #fff;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 70px;
 }
 
 .projectControls {
@@ -117,11 +136,22 @@
   position: fixed;
   right: 60px;
   top: 20px;
-  z-index: 100;
+  z-index: 11;
 }
 
 .projectSitesDropdown {
-  z-index: 9999;
+  z-index: 100;
+}
+
+.polygonIcon {
+  position: absolute;
+  z-index: 101;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .exploreButton {
@@ -470,6 +500,45 @@ fill: $primaryFontColor;
   }
 }
 
+.layerSwitcher {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.layerOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: $backgroundColor;
+  width: 60px;
+  height: 30px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  font-family: $primaryFontFamily;
+  font-weight: 700;
+}
+
+.active {
+  background-color: $primaryColor;
+  color: $light;
+}
+
+.clickForDetails {
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 
 @include smTabletView {
   .projectSitesButton {
@@ -492,6 +561,10 @@ fill: $primaryFontColor;
   // .infoExpanded {
   //   top: 100px;
   // }
+
+  .layerToggle {
+    top: 150px;
+  }
 }
 
 @include mdTabletView {
@@ -517,6 +590,12 @@ fill: $primaryFontColor;
     top: 110px;
     right: 20px;
     flex-direction: row;
+  }
+
+  .layerToggle {
+    top: auto;
+    right: 20px;
+    bottom: 125px;
   }
 }
 
@@ -558,6 +637,10 @@ fill: $primaryFontColor;
       display: flex;
     }
   }
+}
+
+.popupProject {
+  min-width: 300px;
 }
 
 @include lgLaptopView {

@@ -30,12 +30,12 @@
   text-align: center;
   padding: 0px 20px;
   margin-top: 20px;
-   h2{
-     margin-top: 8px;
-     font-weight: bold;
+  h2 {
+    margin-top: 8px;
+    font-weight: bold;
     font-size: 24px;
   }
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 }
@@ -47,26 +47,23 @@
 @include smTabletView {
   .listProjects {
     padding: 0px;
-    
   }
   .singleProject {
     margin-right: 24px;
   }
-  .singleProject:last-of-type{
+  .singleProject:last-of-type {
     // margin-right:0px;
   }
 }
-@include mdTabletView{
-  
+@include mdTabletView {
 }
-@include lgLaptopView{
+@include lgLaptopView {
   .projectsTitleText {
     text-align: left;
   }
-  .listProjects{
+  .listProjects {
     justify-content: left;
   }
 }
-@include xlDesktopView{
-  
+@include xlDesktopView {
 }
