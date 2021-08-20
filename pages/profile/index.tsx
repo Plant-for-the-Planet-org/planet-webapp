@@ -15,18 +15,18 @@ function ProfilePage(): ReactElement {
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   useEffect(() => {
-    if (user && contextLoaded) {
-      setProfile(user);
-      setAuthenticatedType('private');
+    if (contextLoaded) {
+      if(user){
+        setProfile(user);
+        setAuthenticatedType('private');
+      }
     }
-  }, [contextLoaded, user]);
+  }, [contextLoaded, user, router]);
 
-  return profile ? (
+  return (
     <UserLayout>
-      <Profile userprofile={profile} authenticatedType={authenticatedType} />
+      {profile && <Profile userprofile={profile} authenticatedType={authenticatedType} />}
     </UserLayout>
-  ) : (
-    <UserProfileLoader />
   );
 }
 

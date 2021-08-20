@@ -6,6 +6,7 @@ import TreeMapperList from './components/TreeMapperList';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import PlantLocationPage from './components/PlantLocationPage';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 
 const { useTranslation } = i18next;
 
@@ -129,6 +130,11 @@ function TreeMapper({}: Props): ReactElement {
 
   return (
     <div className={'profilePage'}>
+      {progress > 0 && (
+        <div className={'topLoader'}>
+          <TopProgressBar progress={progress} />
+        </div>
+      )}
       <div className={'profilePageTitle'}>TreeMapper</div>
       <div id="pageContainer" className={styles.pageContainer}>
         <div className={styles.section}>

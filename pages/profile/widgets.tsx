@@ -29,9 +29,9 @@ function ProfilePage(): ReactElement {
     }
   }, [user]);
 
-  return profile ? (
+  return (
     <UserLayout>
-      {user.isPrivate === false ? (
+      {user?.isPrivate === false ? (
         <iframe
           src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`}
           className={styles.widgetIFrame}
@@ -40,8 +40,6 @@ function ProfilePage(): ReactElement {
         <EmbedModal {...embedModalProps} />
       )}
     </UserLayout>
-  ) : (
-    <UserProfileLoader />
   );
 }
 

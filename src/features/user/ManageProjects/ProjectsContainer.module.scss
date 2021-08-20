@@ -34,6 +34,7 @@
 }
 .noProjectImage{
   width: 100%;
+  min-width: 150px;
   min-height: 120px;
   height: auto;
   border-top-left-radius: 10px;
@@ -121,6 +122,7 @@
   .listProjects {
     padding: 0px;
   }
+  
 }
 @include mdTabletView {
   .singleProject{

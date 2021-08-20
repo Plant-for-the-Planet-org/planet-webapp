@@ -12,6 +12,7 @@ import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon
 import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
 import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/DonateIcon';
 import { UserPropsContext } from '../UserPropsContext';
+import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
 
 const { useTranslation } = i18next;
 
@@ -86,6 +87,7 @@ function UserLayout(props: any): ReactElement {
       title: 'Projects',
       path: '/profile/projects',
       icon: <MapIcon />,
+      accessLevel: ['tpo'],
     },
     {
       title: 'Create Widget',
@@ -118,23 +120,19 @@ function UserLayout(props: any): ReactElement {
   const [activeSubMenu, setActiveSubMenu] = React.useState('');
   const [subMenuOpen, setsubMenuOpen] = React.useState('');
 
-
   React.useEffect(() => {
     if (router) {
-      for(const link of navLinks){
-        if(router.router?.asPath === (link.path)){
-
+      for (const link of navLinks) {
+        if (router.router?.asPath === link.path) {
           setactiveLink(link.path);
-
-          
-        }else if (link.subMenu && link.subMenu.length > 0) {
+        } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find((subMenuItem: any) => {
             return subMenuItem.path === router.router?.asPath;
           });
           if (subMenuItem) {
             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
-            setsubMenuOpen(link.path)
+            setsubMenuOpen(link.path);
           }
         }
       }
@@ -149,12 +147,18 @@ function UserLayout(props: any): ReactElement {
     setOpen(false);
   };
 
-  const { user, logoutUser } = React.useContext(UserPropsContext);
+  const { user, logoutUser,contextLoaded } = React.useContext(UserPropsContext);
 
-  return (
-    <div
-      className={styles.profilePageContainer}
-    >
+  React.useEffect(() => {
+    if (contextLoaded) {
+      if(!user){
+        router.push('/login');
+      }
+    }
+  }, [contextLoaded, user, router]);
+
+  return user ? (
+    <div className={styles.profilePageContainer}>
       <div className={styles.sidebar}>
         <div className={styles.navLinksContainer}>
           {navLinks.map((link: any) => (
@@ -163,9 +167,10 @@ function UserLayout(props: any): ReactElement {
               setactiveLink={setactiveLink}
               activeLink={activeLink}
               activeSubMenu={activeSubMenu}
-               setActiveSubMenu={setActiveSubMenu}
-               subMenuOpen={subMenuOpen}
-               setsubMenuOpen={setsubMenuOpen}
+              setActiveSubMenu={setActiveSubMenu}
+              subMenuOpen={subMenuOpen}
+              setsubMenuOpen={setsubMenuOpen}
+              user={user}
             />
           ))}
         </div>
@@ -184,6 +189,8 @@ function UserLayout(props: any): ReactElement {
       </div>
       <div className={styles.profilePageWrapper}>{props.children}</div>
     </div>
+  ) : (
+    <UserProfileLoader />
   );
 }
 
@@ -246,42 +253,54 @@ function LanguageSwitcher() {
   );
 }
 
-function NavLink({ link, setactiveLink, activeLink, activeSubMenu, setActiveSubMenu,subMenuOpen, setsubMenuOpen }: any) {
-
+function NavLink({
+  link,
+  setactiveLink,
+  activeLink,
+  activeSubMenu,
+  setActiveSubMenu,
+  subMenuOpen,
+  setsubMenuOpen,
+  user
+}: any) {
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
+      console.log('link.subMenu',link.subMenu);
+      
       const subMenuItem = link.subMenu.find((subMenuItem: any) => {
         return subMenuItem.path === activeLink;
       });
-      console.log("subMenuItem",subMenuItem)
       if (subMenuItem) {
         setactiveLink(link.path);
         setActiveSubMenu(subMenuItem.path);
-        setsubMenuOpen(link.path)
+        setsubMenuOpen(link.path);
       }
     }
   }, [activeLink]);
 
-
-  return (
+  if(link.accessLevel){
+    if(!link.accessLevel.includes(user.type)){
+      return null;
+    }
+  }
+  return  (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
         className={`${styles.navlink} ${
           activeLink === link.path ? styles.navlinkActive : ''
         }`}
         onClick={() => {
-          if(subMenuOpen === link.path ){
-            setsubMenuOpen(!!subMenuOpen ?"":link.path)
-          }else if (link.subMenu && link.subMenu.length > 0){
-            setsubMenuOpen(link.path)
-            
+          if (subMenuOpen === link.path) {
+            setsubMenuOpen(!!subMenuOpen ? '' : link.path);
+          } else if (link.subMenu && link.subMenu.length > 0) {
+            setsubMenuOpen(link.path);
           }
           // setActiveSubMenu(link.path);
           if (!link.subMenu || link.subMenu.length <= 0) {
             setactiveLink(link.path);
-            setsubMenuOpen('')
-            setActiveSubMenu('')
+            setsubMenuOpen('');
+            setActiveSubMenu('');
             router.push(link.path);
           }
         }}
@@ -295,7 +314,10 @@ function NavLink({ link, setactiveLink, activeLink, activeSubMenu, setActiveSubM
           <button
             className={styles.subMenuArrow}
             style={{
-              transform: subMenuOpen === link.path ? 'rotate(-180deg)' : 'rotate(-90deg)',
+              transform:
+                subMenuOpen === link.path
+                  ? 'rotate(-180deg)'
+                  : 'rotate(-90deg)',
             }}
           >
             <DownArrow />
@@ -313,7 +335,7 @@ function NavLink({ link, setactiveLink, activeLink, activeSubMenu, setActiveSubM
             onClick={() => {
               setactiveLink(link.path);
               setActiveSubMenu(subLink.path);
-              setsubMenuOpen(link.path)
+              setsubMenuOpen(link.path);
               router.push(subLink.path);
             }}
           >
