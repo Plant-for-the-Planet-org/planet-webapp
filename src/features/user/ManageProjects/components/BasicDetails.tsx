@@ -56,7 +56,7 @@ export default function BasicDetails({
   };
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
-  const {theme} = React.useContext(ThemeContext)
+  const { theme } = React.useContext(ThemeContext)
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -79,15 +79,15 @@ export default function BasicDetails({
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
-      option: {
-        // color: '#2F3336',
-        "&:hover": {
-          backgroundColor:
-            theme === "theme-light"
-              ? `${themeProperties.light.backgroundColor} !important`
-              : `${themeProperties.dark.backgroundColor} !important`,
-        },
-      }
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
   })
   const classes = useStylesAutoComplete();
 
@@ -303,7 +303,7 @@ export default function BasicDetails({
         }
       );
     }
-  };  
+  };
 
   return ready ? (
     <div className={`${styles.stepContainer} `}>
@@ -533,9 +533,11 @@ export default function BasicDetails({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
-            <p style={{backgroundColor: theme === 'theme-light' ?
-            themeProperties.light.light :
-            themeProperties.dark.dark}}>{t('manageProjects:projectLocation')}</p>
+            <p style={{
+              backgroundColor: theme === 'theme-light' ?
+                themeProperties.light.light :
+                themeProperties.dark.dark
+            }}>{t('manageProjects:projectLocation')}</p>
             <MapGL
               {...viewport}
               ref={mapRef}
@@ -593,7 +595,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true,style:{position:'absolute',left:'50%',transform:'translateX(-50%)',top:'-6px'} }}
+                  InputLabelProps={{ shrink: true, style: { position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '-6px' } }}
                 />
                 {errors.latitude && (
                   <span
@@ -619,7 +621,7 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true,style:{position:'absolute',left:'50%',transform:'translateX(-50%)',top:'-6px'} }}
+                  InputLabelProps={{ shrink: true, style: { position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '-6px' } }}
                 />
                 {errors.longitude && (
                   <span
@@ -635,7 +637,7 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={styles.formFieldRadio}>
-              <label htmlFor="visitorAssistance" style={{cursor: 'pointer'}}>
+              <label htmlFor="visitorAssistance" style={{ cursor: 'pointer' }}>
                 {t('manageProjects:visitorAssistanceLabel')}
               </label>
               <Controller
@@ -655,7 +657,7 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'} style={{cursor: 'pointer'}}>
+              <label htmlFor={'publish'} style={{ cursor: 'pointer' }}>
                 {t('manageProjects:publishProject')}
               </label>
 
@@ -715,7 +717,7 @@ export default function BasicDetails({
               id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
               className="primaryButton"
-              style={{minWidth: "240px"}}
+              style={{ minWidth: "240px" }}
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>

@@ -11,7 +11,7 @@ import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
 import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { Backdrop, MenuItem, Modal } from '@material-ui/core';
+import { makeStyles, MenuItem, Modal } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -21,10 +21,11 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { getStoredConfig } from '../../../../utils/storeConfig';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
-import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
+import materialTheme from '../../../../theme/themeStyles';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 type overridesNameToClassKey = {
@@ -39,10 +40,10 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   loading: () => <p></p>,
 });
 
-interface Props {}
+interface Props { }
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({}: Props) {
+export default function RegisterTrees({ }: Props) {
   const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
@@ -87,50 +88,6 @@ export default function RegisterTrees({}: Props) {
       }
     });
   }, []);
-
-  const materialTheme = createMuiTheme({
-    overrides: {
-      MuiPickersToolbar: {
-        toolbar: {
-          backgroundColor: styles.primaryColor,
-        },
-      },
-      MuiPickersBasePicker: {
-        pickerView: {
-          backgroundColor: 'white',
-        }
-      },
-      MuiPickersCalendarHeader: {
-        switchHeader: {
-          // backgroundColor: lightBlue.A200,
-          // color: "white",
-        }
-      },
-      MuiPickersDay: {
-        daySelected: {
-          backgroundColor: styles.primaryColor,
-        },
-        current: {
-          color: styles.primaryColor,
-        },
-      },
-      MuiPickersYear: {
-        yearSelected: {
-          color: styles.primaryColor,
-        },
-      },
-      MuiPickersModal: {
-        dialogAction: {
-          color: styles.primaryColor,
-        },
-      },
-      MuiButton: {
-        label: {
-          color: styles.primaryColor,
-        },
-      },
-    },
-  });
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -241,9 +198,9 @@ export default function RegisterTrees({}: Props) {
 
   async function loadProjects() {
 
-      await getAuthenticatedRequest('/app/profile/projects', token).then((projects:any) => {
-        setProjects(projects);
-      });
+    await getAuthenticatedRequest('/app/profile/projects', token).then((projects: any) => {
+      setProjects(projects);
+    });
   }
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes
@@ -264,6 +221,28 @@ export default function RegisterTrees({}: Props) {
     slug: user.slug,
   };
   const { theme } = React.useContext(ThemeContext);
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
 
   return ready ? (
     <>
@@ -380,31 +359,34 @@ export default function RegisterTrees({}: Props) {
                 </div>
                 {
                   user && user.type === 'tpo' && <div className={styles.formFieldLarge}>
-                     <Controller
-                as={
-                  <MaterialTextField
-                    label={t('me:project')}
-                    variant="outlined"
-                    select
-                  >
-                    {projects.map((option) => (
-                      <MenuItem key={option.properties.id} value={option.properties.id}>
-                        {option.properties.name}
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
+                    <Controller
+                      as={
+                        <MaterialTextField
+                          label={t('me:project')}
+                          variant="outlined"
+                          select
+                        >
+                          {projects.map((option) => (
+                            <MenuItem key={option.properties.id} value={option.properties.id} classes={{
+                              // option: classes.option,
+                              root: classes.root,
+                            }}>
+                              {option.properties.name}
+                            </MenuItem>
+                          ))}
+                        </MaterialTextField>
+                      }
+                      name="project"
+                      control={control}
+                    />
+                    {errors.project && (
+                      <span className={styles.formErrors}>
+                        {errors.project.message}
+                      </span>
+                    )}
+                  </div>
                 }
-                name="project"
-                control={control}
-              />
-                  {errors.project && (
-                    <span className={styles.formErrors}>
-                      {errors.project.message}
-                    </span>
-                  )}
-                </div>
-                }
-                
+
                 <div className={styles.mapNote}>
                   {isMultiple ? (
                     <p>{t('me:drawPolygon')}</p>

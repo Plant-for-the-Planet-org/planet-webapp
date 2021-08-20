@@ -1,5 +1,4 @@
 import React from 'react';
-// import { makeStyles, Theme } from '@material-ui/core/styles';
 import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';

@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
-import { MenuItem } from '@material-ui/core';
+import { makeStyles, MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import {
   deleteAuthenticatedRequest,
@@ -21,6 +21,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import { ThemeContext } from '../../../../theme/themeContext';
+import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
@@ -50,12 +51,36 @@ export default function ProjectSites({
   handleReset,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { theme } = React.useContext(ThemeContext)
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
+
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
 
   const [geoLocation, setgeoLocation] = React.useState<Object>();
   const defaultSiteDetails = {
@@ -378,7 +403,10 @@ export default function ProjectSites({
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -587,7 +615,10 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}>
                           {option.label}
                         </MenuItem>
                       ))}

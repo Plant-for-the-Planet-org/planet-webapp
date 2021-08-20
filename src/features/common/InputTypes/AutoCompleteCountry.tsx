@@ -21,8 +21,6 @@ function countryToFlag(isoCode: string) {
     : isoCode;
 }
 
-// const useStyles = makeStyles();
-
 export default function CountrySelect(props: {
   label: React.ReactNode;
   inputRef: ((instance: any) => void) | React.RefObject<any> | null | undefined;
