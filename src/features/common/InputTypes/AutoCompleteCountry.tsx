@@ -35,7 +35,8 @@ export default function CountrySelect(props: {
   | undefined;
 }) {
   const { t, ready } = useTranslation(['country']);
-  const {theme} = React.useContext(ThemeContext)
+
+  const { theme } = React.useContext(ThemeContext)
   const useStylesAutoComplete = makeStyles({
     paper: {
       color:
@@ -47,30 +48,30 @@ export default function CountrySelect(props: {
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
-      option: {
-        // color: '#2F3336',
-        fontFamily: config!.font.primaryFontFamily,
-        "&:hover": {
-          backgroundColor:
-            theme === "theme-light"
-              ? `${themeProperties.light.backgroundColor} !important`
-              : `${themeProperties.dark.backgroundColor} !important`,
-        },
-        "&:active": {
-          backgroundColor:
-            theme === "theme-light"
-              ? `${themeProperties.light.backgroundColor} !important`
-              : `${themeProperties.dark.backgroundColor} !important`,
-        },
-        fontSize: '14px',
-        '& > span': {
-          marginRight: 10,
-          fontSize: 18,
-        },
+    option: {
+      // color: '#2F3336',
+      fontFamily: config!.font.primaryFontFamily,
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  );
+      "&:active": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+      fontSize: '14px',
+      '& > span': {
+        marginRight: 10,
+        fontSize: 18,
+      },
+    },
+  });
   const classes = useStylesAutoComplete();
+
   // This value is in country code - eg. DE, IN, US
   const { defaultValue, onChange } = props;
 
@@ -96,18 +97,18 @@ export default function CountrySelect(props: {
       onChange(value.code);
     }
   }, [value]);
-  
+
   if (ready) {
     countries.sort((a, b) => {
-        const nameA = t(`country:${a.code.toLowerCase()}`);
-        const nameB = t(`country:${b.code.toLowerCase()}`);
-        if (nameA > nameB) {
-          return 1;
-        } if (nameA < nameB) {
-          return -1;
-        }
-        return 0;
-      });    
+      const nameA = t(`country:${a.code.toLowerCase()}`);
+      const nameB = t(`country:${b.code.toLowerCase()}`);
+      if (nameA > nameB) {
+        return 1;
+      } if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
   return value && ready ? (

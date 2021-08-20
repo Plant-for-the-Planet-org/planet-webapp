@@ -340,12 +340,13 @@ button {
   background-color: $backgroundColor;
 }
 .vizzuality__c-timestep .vizzuality__player-btn > svg {
-fill: $primaryFontColor
+  fill: $primaryFontColor
 }
 
-.MuiSvgIcon-root .MuiNativeSelect-icon{
-  fill: white;
-
+.MuiSvgIcon-root, .MuiNativeSelect-icon{
+  path{
+    fill: $primaryFontColor;
+  }
 }
 .MuiPaper-root{
   background-color: $backgroundColor !important;

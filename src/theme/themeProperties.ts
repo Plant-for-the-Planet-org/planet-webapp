@@ -16,12 +16,12 @@ const themeProperties = {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
     secondaryColor: '#ecb641',
-    backgroundColorDark: '#f2f2f7',
     backgroundColor: '#fff',
     highlightBackground: '#4d5153',
     light: '#fff',
     dark: '#000',
     dangerColor:'#e74c3c',
+    backgroundColorDark: '#F2F2F7',
     unDecadeFill: '#1d1d1b',
     mapboxIcon: 'invert(0) hue-rotate(180deg)'
   },
@@ -34,8 +34,8 @@ const themeProperties = {
     light: '#fff',
     dark: '#000',
     dangerColor:'#00ef00',
-    unDecadeFill: '#fff',
     backgroundColorDark: '#101113',
+    unDecadeFill: '#fff',
     mapboxIcon: 'invert(0.8) hue-rotate(180deg)'
   },
 };
