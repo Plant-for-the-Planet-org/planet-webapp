@@ -537,7 +537,9 @@ fill: $primaryFontColor;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: center; 
+  color: $primaryFontColor;
+  background: $backgroundColor;
 }
 
 @include smTabletView {
@@ -622,7 +624,7 @@ fill: $primaryFontColor;
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;
