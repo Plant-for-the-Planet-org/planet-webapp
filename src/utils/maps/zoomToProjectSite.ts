@@ -22,7 +22,7 @@ export default function zoomToProjectSite(
     {
       padding: {
         top: 50,
-        bottom: isMobile ? 120 : 50,
+        bottom: isMobile ? 300 : 50,
         left: isMobile ? 50 : 400,
         right: isMobile ? 50 : 100,
       },
