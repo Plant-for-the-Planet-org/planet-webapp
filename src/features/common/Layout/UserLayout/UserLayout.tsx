@@ -96,7 +96,6 @@ function UserLayout(props: any): ReactElement {
     },
     {
       title: 'Settings',
-      path: '/profile/settings',
       icon: <SettingsIcon />,
       subMenu: [
         {
@@ -147,11 +146,13 @@ function UserLayout(props: any): ReactElement {
     setOpen(false);
   };
 
-  const { user, logoutUser,contextLoaded } = React.useContext(UserPropsContext);
+  const { user, logoutUser, contextLoaded } = React.useContext(
+    UserPropsContext
+  );
 
   React.useEffect(() => {
     if (contextLoaded) {
-      if(!user){
+      if (!user) {
         router.push('/login');
       }
     }
@@ -261,13 +262,13 @@ function NavLink({
   setActiveSubMenu,
   subMenuOpen,
   setsubMenuOpen,
-  user
+  user,
 }: any) {
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
-      console.log('link.subMenu',link.subMenu);
-      
+      console.log('link.subMenu', link.subMenu);
+
       const subMenuItem = link.subMenu.find((subMenuItem: any) => {
         return subMenuItem.path === activeLink;
       });
@@ -279,12 +280,12 @@ function NavLink({
     }
   }, [activeLink]);
 
-  if(link.accessLevel){
-    if(!link.accessLevel.includes(user.type)){
+  if (link.accessLevel) {
+    if (!link.accessLevel.includes(user.type)) {
       return null;
     }
   }
-  return  (
+  return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
         className={`${styles.navlink} ${
@@ -296,12 +297,13 @@ function NavLink({
           } else if (link.subMenu && link.subMenu.length > 0) {
             setsubMenuOpen(link.path);
           }
-          // setActiveSubMenu(link.path);
+          if (link.path) {
+            router.push(link.path);
+          }
           if (!link.subMenu || link.subMenu.length <= 0) {
             setactiveLink(link.path);
             setsubMenuOpen('');
             setActiveSubMenu('');
-            router.push(link.path);
           }
         }}
       >

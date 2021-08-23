@@ -29,7 +29,7 @@
   justify-content: space-between;
   box-shadow: rgba(104, 176, 48, $alpha: 0.2) 0px 0px 20px;
   background-color: $light;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease-in-out;
   z-index: 100;
   &:hover {
     width: 256px !important;
@@ -63,15 +63,23 @@
   button {
     font-size: 14px;
     font-family: $primaryFontFamily;
-    font-weight: 600;
+    font-weight: 400;
     &:hover {
       cursor: pointer;
     }
   }
 }
 .navlinkActive {
-  background-color: rgba(104, 176, 48, $alpha: 0.2);
-  font-weight: 600;
+  // background-color: rgba(104, 176, 48, $alpha: 0.2);
+  button{
+    font-weight: 600;
+  }
+  > svg > path{
+    fill: $primaryColor;
+  }
+  .navlinkTitle{
+    color: $primaryColor;
+  }
 }
 .navlinkActiveSubMenu {
   color: rgba(104, 176, 48);
