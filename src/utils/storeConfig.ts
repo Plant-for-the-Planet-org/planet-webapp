@@ -16,8 +16,13 @@ export async function storeConfig() {
     .then(async (res) => {
       const config = await res.json();
       localStorage.setItem('config', JSON.stringify(config));
-      if (!localStorage.getItem('countryCode')) {
-        localStorage.setItem('countryCode', config.country);
+      const countryCode = localStorage.getItem('countryCode');
+      if (!countryCode || countryCode === 'XX' || countryCode === 'T1') {
+        if (config.country === 'XX' || config.country === 'T1') {
+          localStorage.setItem('countryCode', 'DE');
+        } else {
+          localStorage.setItem('countryCode', config.country);
+        }
       }
       if (!localStorage.getItem('currencyCode')) {
         localStorage.setItem('currencyCode', config.currency);
