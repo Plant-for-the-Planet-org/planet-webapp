@@ -82,7 +82,7 @@ export default function PlantLocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('sampleTree')} #${element.tag}`,
+              description: `${t('sampleTree')} ${element.tag? '#'+element.tag:''}`,
             });
           }
         }
