@@ -22,7 +22,7 @@ export default function index({}: Props): ReactElement {
       if(hidePlanetModalOld) {
         localStorage.removeItem('hidePlanetModal');
       }
-      
+
       let hidePlanetModalNew = localStorage.getItem('hidePlanetModalNew');
       if (hidePlanetModalNew === 'true') {
         setHidePlanetModalNew(true);
@@ -58,7 +58,7 @@ export default function index({}: Props): ReactElement {
             <div
               style={{
                 backgroundColor: 'white',
-                minHeight: '300px',
+                minHeight: '200px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -73,7 +73,7 @@ export default function index({}: Props): ReactElement {
               Transparenzbericht 2020 erschienen
               </h2>
               <p style={{ margin: '16px auto' }}>
-               acht Jahre mit uneingeschränkten Bestätigungsvermerken - Erleben Sie Plant-for-the-Planet in testierten Zahlen, Daten und spannenden Grafiken.
+               Acht Jahre mit uneingeschränkten Bestätigungsvermerken - Erleben Sie Plant-for-the-Planet in testierten Zahlen, Daten und spannenden Grafiken.
               </p>
               <a
                 target="_blank"
