@@ -78,7 +78,8 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       paymentSetup,
       donationID: paymentData.guid,
       token: null,
-      setDonationStep: () => { }
+      setDonationStep: () => { },
+      country
     }).then((res) => {
       if (res) {
         if (res.paymentStatus || res.status) {
@@ -208,6 +209,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
               donationId={paymentData.guid}
               mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
               clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+              donationUid={paymentData.uid}
             />}
         </div>
       ) : (
