@@ -8,7 +8,7 @@ const tenantConfiguration = tenantConfig();
 interface Props {}
 
 export default function index({}: Props): ReactElement {
-  const [hidePlanetModal, setHidePlanetModal] = React.useState(false);
+  const [hidePlanetModalNew, setHidePlanetModalNew] = React.useState(false);
   const [openModal, setModalOpen] = React.useState(true);
   const [userLang, setUserLang] = React.useState('');
   const [countryCode, setCountryCode] = React.useState('');
@@ -16,9 +16,16 @@ export default function index({}: Props): ReactElement {
     if (typeof window !== 'undefined') {
       let userLang = localStorage.getItem('language');
       let countryCode = localStorage.getItem('countryCode');
-      let hidePlanetModal = localStorage.getItem('hidePlanetModal');
-      if (hidePlanetModal === 'true') {
-        setHidePlanetModal(true);
+
+      //remove old key
+      let hidePlanetModalOld = localStorage.getItem('hidePlanetModal');
+      if(hidePlanetModalOld) {
+        localStorage.removeItem('hidePlanetModal');
+      }
+      
+      let hidePlanetModalNew = localStorage.getItem('hidePlanetModalNew');
+      if (hidePlanetModalNew === 'true') {
+        setHidePlanetModalNew(true);
       }
       setUserLang(userLang);
       setCountryCode(countryCode);
@@ -26,15 +33,15 @@ export default function index({}: Props): ReactElement {
   }, []);
 
   const closePlanetModal = () => {
-    setHidePlanetModal(true);
+    setHidePlanetModalNew(true);
     setModalOpen(false);
-    localStorage.setItem('hidePlanetModal', 'true');
+    localStorage.setItem('hidePlanetModalNew', 'true');
   };
   return (
     <>
       {tenantConfiguration.tenantName === 'planet' &&
         (countryCode === 'DE' || userLang === 'de') &&
-        hidePlanetModal !== true && (
+        hidePlanetModalNew !== true && (
           <Modal
             style={{
               display: 'flex',
@@ -63,29 +70,20 @@ export default function index({}: Props): ReactElement {
               }}
             >
               <h2 style={{ fontWeight: 'bold' }}>
-                Liebe Unterstützerinnen und Unterstützer,
+              Transparenzbericht 2020 erschienen
               </h2>
               <p style={{ margin: '16px auto' }}>
-                viele von Ihnen und euch haben den Artikel in der ZEIT gelesen, 
-                der am 16. Dezember über Plant-for-the-Planet erschienen ist. 
-                Dieser Artikel trifft uns als Stiftung und mich persönlich als 
-                Gründer sehr, weil er ein völliges Zerrbild zeichnet, Sachverhalte 
-                falsch darstellt und mit Vermutungen und Unterstellungen arbeitet.
-                Wir sind als Plant-for-the-Planet gewohnt, viele Fragen von 
-                Medienvertretern zu uns, den Projekten und den Pflanzgebieten zu 
-                bekommen. Diese Fragen beantworten wir immer, da wir seit 
-                Gründungsbeginn transparent arbeiten und wissen, wie wichtig das 
-                Vertrauen in unser Tun ist.
+               acht Jahre mit uneingeschränkten Bestätigungsvermerken - Erleben Sie Plant-for-the-Planet in testierten Zahlen, Daten und spannenden Grafiken.
               </p>
               <a
                 target="_blank"
                 style={{ fontWeight: 'bold', color: '#68B030' }}
                 rel="noopener noreferrer"
                 href={
-                  'https://blog.plant-for-the-planet.org/de/2020/liebe-unterstuetzerinnen-und-unterstuetzer/?utm_source=planetapp&utm_medium=banner&utm_campaign=zeit'
+                  'https://drive.google.com/file/d/11vdq-uVS-HPECtUGEEy5EuUaBHeGpzID/view'
                 }
               >
-                Brief Lesen {'>'}
+                Lies jetzt {'>'}
               </a>
               <div
                 onClick={closePlanetModal}
