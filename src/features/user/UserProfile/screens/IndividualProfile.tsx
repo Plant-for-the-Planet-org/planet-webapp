@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import LandingSection from '../../../common/Layout/LandingSection';
 import styles from '../styles/UserProfile.module.scss';
 import Settings from '../../../../../public/assets/images/icons/userProfileIcons/Settings';
-import MyForestContainer from '../components/MyForestContainer';
 import UserInfo from '../components/UserInfo';
 import AddTargetModal from '../components/AddTargetModal';
 import SettingsModal from '../components/SettingsModal';
@@ -13,6 +12,7 @@ export default function IndividualProfile({
   changeForceReload,
   forceReload,
   authenticatedType,
+  token,
 }: any) {
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -41,17 +41,20 @@ export default function IndividualProfile({
     setAddTargetModalOpen(true);
   };
 
+  console.log('userprofile', userprofile);
+
   return (
     <React.Fragment>
       <main>
         {authenticatedType === 'private' && (
           <>
-            <div
+            <button
+              id={'IndividualProSetting'}
               className={styles.settingsIcon}
               onClick={handleSettingsModalOpen}
             >
               <Settings color="white" />
-            </div>
+            </button>
           </>
         )}
         {/* userinfo section */}
@@ -75,15 +78,20 @@ export default function IndividualProfile({
               forceReload={forceReload}
             />
           )}
-
-          <UserInfo
-            userprofile={userprofile}
-            authenticatedType={authenticatedType}
-            handleAddTargetModalOpen={handleAddTargetModalOpen}
-          />
+          {userprofile && (
+            <UserInfo
+              userprofile={userprofile}
+              authenticatedType={authenticatedType}
+              handleAddTargetModalOpen={handleAddTargetModalOpen}
+            />
+          )}
         </LandingSection>
 
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
+        <MyTrees
+          authenticatedType={authenticatedType}
+          profile={userprofile}
+          token={token}
+        />
       </main>
 
       {/* add target modal */}

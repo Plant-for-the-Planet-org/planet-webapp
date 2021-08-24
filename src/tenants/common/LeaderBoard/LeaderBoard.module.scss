@@ -21,21 +21,21 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: $fontSmall;
     line-height: 21px;
     text-align: center;
-    color: #080707;
+    color: $primaryFontColor;
   }
   
   .leaderBoard > h2 {
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: 600;
-    font-size: 36px;
+    font-size: $fontXXLarge;
     line-height: 40px;
     text-align: center;
     letter-spacing: -0.4px;
-    color: #080707;
+    color: $primaryFontColor;
   }
   
   .leaderBoardTableHeader {
@@ -52,18 +52,18 @@
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: normal;
-    font-size: 13px;
-    color: #080707;
+    font-size: $fontSmall;
+    color: $primaryFontColor;
   }
   
   .leaderBoardTableHeaderTitleSelected {
     padding: 8px;
-    border-bottom: 2px solid #68B030;
+    border-bottom: 2px solid $primaryColor;
     font-family: $primaryFontFamily;
     font-style: normal;
     font-weight: bold;
-    font-size: 13px;
-    color: #080707;
+    font-size: $fontSmall;
+    color: $primaryFontColor;
   }
   
   .leaderBoardTableHeaderTitle:hover {
@@ -85,8 +85,8 @@
     flex-grow: 1;
     font-style: normal;
     font-weight: 600;
-    font-size: 16px;
-    color: #080707;
+    font-size: $fontSixteen;
+    color: $primaryFontColor;
     font-family: $primaryFontFamily;
     text-align: left;
     margin-bottom: 0px;
@@ -95,9 +95,9 @@
   .leaderBoardDonorTrees {
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: $fontSixteen;
     letter-spacing: -0.4px;
-    color: #3e3e3c;
+    color: $primaryFontColor;
     flex: none;
     align-self: center;
     margin-right: 16px;
@@ -108,7 +108,7 @@
   .leaderBoardDonorTime {
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: $fontSixteen;
     color: #706e6b;
     mix-blend-mode: normal;
     opacity: 0.9;

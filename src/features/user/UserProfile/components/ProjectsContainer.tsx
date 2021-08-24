@@ -5,28 +5,33 @@ import NotFound from '../../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../../i18n';
 import styles from '../styles/ProjectsContainer.module.scss';
-import { getAuthenticatedRequest, getRequest } from '../../../../utils/apiRequests/api';
+import {
+  getAuthenticatedRequest,
+  getRequest,
+} from '../../../../utils/apiRequests/api';
 import AddProject from '../../../../../public/assets/images/icons/manageProjects/AddProject';
 import Link from 'next/link';
-import { useAuth0 } from '@auth0/auth0-react';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
-const ProjectSnippet = dynamic(() => import('../../../projects/components/ProjectSnippet'), {
-  loading: () => <ProjectLoader />,
-});
+const ProjectSnippet = dynamic(
+  () => import('../../../projects/components/ProjectSnippet'),
+  {
+    loading: () => <ProjectLoader />,
+  }
+);
 
-export default function ProjectsContainer({ authenticatedType, userprofile }: any) {
+export default function ProjectsContainer({
+  authenticatedType,
+  userprofile,
+}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
-  const [projects, setProjects] = React.useState([])
+  const [projects, setProjects] = React.useState([]);
 
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
-
-  const [token, setToken] = React.useState('')
+  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
+    UserPropsContext
+  );
 
   async function loadProjects() {
     // const currencyCode = getStoredCurrency();
@@ -34,84 +39,70 @@ export default function ProjectsContainer({ authenticatedType, userprofile }: an
     const publicURL = `/app/profiles/${userprofile.id}/projects`;
 
     if (authenticatedType === 'private') {
-      const token = await getAccessTokenSilently();
-      await getAuthenticatedRequest(
-        privateURL, token
-      ).then(projects => {
+      await getAuthenticatedRequest(privateURL, token).then((projects) => {
         setProjects(projects);
-      })
+      });
     } else {
-      await getRequest(
-        publicURL,
-      ).then(projects => {
+      await getRequest(publicURL).then((projects) => {
         setProjects(projects);
-      })
+      });
     }
   }
-  
+
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-    }
-    if (isAuthenticated && !isLoading) {
-      loadFunction()
-    }
-    if(!isLoading){
+    if (contextLoaded) {
       loadProjects();
     }
-  }, [isAuthenticated,isLoading])
+  }, [contextLoaded]);
 
   return ready ? (
     <div style={{ margin: 'auto', maxWidth: '950px' }} id="projectsContainer">
       {projects.length < 1 ? (
         authenticatedType === 'private' ? (
-          <Link href='/manage-projects/add-project'>
+          <Link href="/manage-projects/add-project">
             <div className={styles.singleProject}>
-              <div className={styles.projectNotFound}>
+              <button id={'addProjectBut'} className={styles.projectNotFound}>
                 <AddProject />
                 <h2>{t('manageProjects:addProject')}</h2>
-              </div>
+              </button>
             </div>
           </Link>
         ) : (
-            <div className={styles.projectNotFound}>
-              <LazyLoad>
-                <NotFound className={styles.projectNotFoundImage} />
-                <h5>{t('donate:noProjectsFound')}</h5>
-              </LazyLoad>
-            </div>)
-      ) : (
-          <div className={styles.listProjects}>
-            <h6 className={styles.projectsTitleText}> {t('donate:PROJECTS')} </h6>
-
-            {projects.map((project: any) => {
-              return (
-                <div className={styles.singleProject} key={project.properties.id}>
-                  <ProjectSnippet 
-                    key={project.properties.id} 
-                    project={project.properties}
-                    editMode={authenticatedType === 'private' ? true : false} />
-                </div>
-              );
-            })}
-            {
-              authenticatedType === 'private' ? (
-                <Link href='/manage-projects/add-project'>
-                  <div className={styles.singleProject}>
-                    <div className={styles.projectNotFound}>
-                      <AddProject />
-                      <h2>{t('manageProjects:addProject')}</h2>
-                    </div>
-                  </div>
-                </Link>
-              ) : (
-                  null
-                )
-            }
+          <div className={styles.projectNotFound}>
+            <LazyLoad>
+              <NotFound className={styles.projectNotFoundImage} />
+              <h5>{t('donate:noProjectsFound')}</h5>
+            </LazyLoad>
           </div>
-        )}
+        )
+      ) : (
+        <div className={styles.listProjects}>
+          <h6 className={styles.projectsTitleText}> {t('donate:PROJECTS')} </h6>
+
+          {projects.map((project: any) => {
+            return (
+              <div className={styles.singleProject} key={project.properties.id}>
+                <ProjectSnippet
+                  key={project.properties.id}
+                  project={project.properties}
+                  editMode={authenticatedType === 'private' ? true : false}
+                />
+              </div>
+            );
+          })}
+          {authenticatedType === 'private' ? (
+            <Link href="/manage-projects/add-project">
+              <div className={styles.singleProject}>
+                <button id={'addProjectBut'} className={styles.projectNotFound}>
+                  <AddProject />
+                  <h2>{t('manageProjects:addProject')}</h2>
+                </button>
+              </div>
+            </Link>
+          ) : null}
+        </div>
+      )}
     </div>
   ) : null;
 }

@@ -3,13 +3,13 @@ const config = {
   tenantURL: 'trees.salesforce.com',
   languages: ['en'],
   fallbackCurrency: 'USD',
-  tenantGoal:null,
-  showUNDecadeLogo:true,
+  tenantGoal: null,
+  showUNDecadeLogo: true,
   font: {
     primaryFontFamily: '"SalesforceSans",Helvetica,Arial,sans-serif',
     primaryFontURL: `${process.env.CDN_URL}/media/fonts/salesforce/salesforce-sans.css?v1.0`,
-    secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
+    secondaryFontFamily: 'AvantGardeDemi,Helvetica,Arial,sans-serif',
+    secondaryFontURL: '/tenants/salesforce/fonts/avantgarde.css',
   },
   header: {
     isSecondaryTenant: true,
@@ -36,22 +36,22 @@ const config = {
         onclick: '/all',
         visible: false,
       },
-      me:{
+      me: {
         title: 'me',
         onclick: '/me',
-        visible: false,
-      }
-    }
+        visible: true,
+      },
+    },
   },
   meta: {
     title: 'Salesforce ❤️ Trees',
     description:
       'Salesforce set a goal to conserve, restore, and grow 100 million trees by 2030. We partnered with Plant-for-the-Planet to share our progress and...',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
-    twitterHandle: '',
+    image: `https://trees.salesforce.com/tenants/salesforce/images/trees-share.jpg`,
+    twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["privacyAndTerms","imprint","contact","supportUs"]
+  footerLinks: ['privacyAndTerms', 'imprint', 'contact', 'supportUs'],
 };
 
 export default config;

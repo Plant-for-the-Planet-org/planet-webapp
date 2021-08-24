@@ -35,7 +35,7 @@ function TreesIcon(props: any) {
             transform="translate(0 -3)"
             fill={props.color ? props.color : '#68B030'}
             stroke="#fff"
-            stroke-width="0.5"
+            strokeWidth="0.5"
           />
         </g>
         <ellipse

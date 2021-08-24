@@ -15,9 +15,6 @@ const MaterialTextField = withStyles({
       fontFamily: config!.font.primaryFontFamily,
       fontSize: '14px',
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'green',
-    },
     '& .MuiOutlinedInput-notchedOutline': {
       border: '0px!important',
     },

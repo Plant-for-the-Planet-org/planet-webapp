@@ -7,14 +7,14 @@ import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useAuth0 } from '@auth0/auth0-react';
 import formStyles from '../styles/EditProfileModal.module.scss';
 import spinnerStyle from '../../ManageProjects/styles/StepForm.module.scss';
+import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
 export default function AddTargetModal({
-  userprofile,
   addTargetModalOpen,
   handleAddTargetModalClose,
   changeForceReload,
@@ -24,44 +24,39 @@ export default function AddTargetModal({
   const { t, ready } = useTranslation(['target']);
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
   const [isLoadingForm, setIsLoading] = React.useState(false);
-
-  const [token, setToken] = React.useState('')
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
-    // This effect is used to get and update UserInfo if the isAuthenticated changes
-    React.useEffect(() => {
-      async function loadFunction() {
-        const token = await getAccessTokenSilently();
-        setToken(token);
-      }
-      if (isAuthenticated && !isLoading) {
-        loadFunction()
-      }
-    }, [isAuthenticated,isLoading])
+  const { user, token, contextLoaded, setUser } = React.useContext(
+    UserPropsContext
+  );
 
   const apiCallChangeTarget = async () => {
     setIsLoading(true);
-    if (isAuthenticated && token) {
+    if (contextLoaded && token) {
       const bodyToSend = {
-        target: !target ? userprofile.score.target : target,
+        target: !target ? user.score.target : target,
       };
-      putAuthenticatedRequest(`/app/profile`, bodyToSend, token).then((res)=>{
-        handleAddTargetModalClose();
-        changeForceReload(!forceReload);
-        setIsLoading(false);
-      }).catch(error => {
-        handleAddTargetModalClose();
-        console.log(error);
-        setIsLoading(false);
-      })
+      putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+        .then((res) => {
+          handleAddTargetModalClose();
+          changeForceReload(!forceReload);
+          setIsLoading(false);
+          const newUserInfo = {
+            ...user,
+            score: res.score,
+          };
+          setUser(newUserInfo);
+        })
+        .catch((error) => {
+          handleAddTargetModalClose();
+          console.log(error);
+          setIsLoading(false);
+        });
     }
   };
-  return ready ? (
+  const { theme } = React.useContext(ThemeContext);
+
+  return ready && user ? (
     <Modal
-      className={styles.modalContainer}
+      className={'modalContainer' + ' ' + theme}
       open={addTargetModalOpen}
       onClose={handleAddTargetModalClose}
       closeAfterTransition
@@ -79,15 +74,11 @@ export default function AddTargetModal({
           </h4>
           <div className={styles.inputField}>
             <MaterialTextField
-              placeholder={
-                userprofile.score.target ? userprofile.score.target : '10000'
-              }
+              placeholder={user.score.target ? user.score.target : '10000'}
               InputProps={{ inputProps: { min: 1 } }}
               label=""
               type="number"
-              defaultValue={
-                userprofile.score.target ? userprofile.score.target : null
-              }
+              defaultValue={user.score.target ? user.score.target : null}
               onChange={(e) => setTarget(e.target.value)}
               variant="outlined"
               inputRef={register({
@@ -102,12 +93,14 @@ export default function AddTargetModal({
             </span>
           )}
           {errors.addTarget ? (
-            <div className={styles.continueButton}>
+            <div className="primaryButton" style={{ marginTop: '24px' }}>
               {t('target:targetSave')}
             </div>
           ) : (
-            <div
-              className={styles.continueButton}
+            <button
+              id={'AddTargetCont'}
+              className="primaryButton"
+              style={{ marginTop: '24px' }}
               onClick={() => handleSubmit(apiCallChangeTarget())}
             >
               {isLoadingForm ? (
@@ -115,7 +108,7 @@ export default function AddTargetModal({
               ) : (
                 t('target:targetSave')
               )}
-            </div>
+            </button>
           )}
         </div>
       </Fade>

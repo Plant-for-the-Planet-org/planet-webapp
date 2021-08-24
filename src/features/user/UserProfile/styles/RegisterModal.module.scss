@@ -1,21 +1,10 @@
 @import './../../../../theme/theme';
 
-// modal container for black opacity
-.modalContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow-y: scroll;
-  background: rgba(0, 0, 0, 0.6);
-  min-height: calc(100vh - 100px);
-}
-
 // white modal
 .modal {
   top: 80px;
   margin-bottom: 60px;
-  background-color: #fff;
+  background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
   position: absolute;
@@ -50,7 +39,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-size: 22px;
+  font-size: $fontLarge;
 }
 
 .contribTitle {
@@ -58,34 +47,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: $fontLarge;
   text-align: center;
 }
 
 .inputField {
   margin-top: 20px;
-}
-
-.continueButton {
-  height: 40px;
-  border-radius: 100px;
-  margin-top: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  display: flex;
-  justify-content: center;
-  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
-  align-items: center;
-  font-weight: bold;
-  color: white;
-  border: 0px;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.continueButton:hover {
-  transform: scale(1.05);
-  cursor: pointer;
 }
 
 .tabButtonContainer {
@@ -107,7 +74,7 @@
 
 .tabButtonText {
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: bold;
   color: $primaryFontColor;
   margin-bottom: 10px;
@@ -116,7 +83,7 @@
 .tabButtonSelected {
   color: $primaryColor;
   font-family: $primaryFontFamily;
-  font-size: 13px;
+  font-size: $fontSmall;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -182,13 +149,17 @@
 .fileUploadContainer {
   height: 128px;
   border-radius: 10px;
-  border: dashed 1px #2f3336;
+  border: dashed 1px $primaryFontColor;
   background-color: #f2f2f7;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.note {
+  padding: 5px;
 }
 
 .mapNote {
@@ -244,7 +215,11 @@
 .mapNavigation {
   position: absolute;
   right: 10px;
-  bottom: 20px;
+  bottom: 30px;
+  z-index: 2;
+  > div {
+    position: relative !important;
+  }
 }
 
 .contributionInfo {
@@ -347,7 +322,7 @@
       margin-top: 9px;
     }
     > div {
-      background-color: white;
+      background-color: $backgroundColor;
       border-radius: 50%;
       height: 21px;
       width: 21px;
@@ -367,8 +342,8 @@
 .formErrors {
   // position: absolute;
   font-family: $primaryFontFamily;
-  font-size: 14px;
-  color: #e74c3c;
+  font-size: $fontSmall;
+  color: $dangerColor;
   margin-left: 6px;
   margin-top: 6px;
   max-width: 320px;

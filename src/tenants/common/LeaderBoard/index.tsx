@@ -19,7 +19,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
         <h2>{t('leaderboard:forestFrontrunners')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
-            <div
+            <button id={'LeaderBoardRecent'}
               onClick={() => setSelectedTab('recent')}
               className={
                 selectedTab === 'recent'
@@ -28,8 +28,8 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
               {t('leaderboard:mostRecent')}
-            </div>
-            <div
+            </button>
+            <button id="leaderBoardHighest"
               onClick={() => setSelectedTab('highest')}
               className={
                 selectedTab === 'highest'
@@ -38,20 +38,20 @@ export default function LeaderBoardSection(leaderboard: Props) {
               }
             >
               {t('leaderboard:mostTrees')}
-            </div>
+            </button>
           </div>
           {leaderboardData &&
           leaderboardData.mostRecent &&
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
+                {leaderboardData.mostRecent.map((leader: any,index:any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:trees')}
+                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
                     </p>
                     {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
@@ -61,13 +61,13 @@ export default function LeaderBoardSection(leaderboard: Props) {
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any) => (
-                  <div className={styles.leaderBoardBodyRow}>
+                {leaderboardData.mostDonated.map((leader: any, index:any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
                     </p>
                     <p className={styles.leaderBoardDonorTrees}>
-                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:trees')}
+                      {getFormattedNumber(i18n.language, Number(leader.treeCount))} {t('common:tree', { count: Number(leader.treeCount) })}
                     </p>
                   </div>
                 ))}

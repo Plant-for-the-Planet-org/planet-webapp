@@ -7,7 +7,7 @@ import treeCounterStyles from './TreeCounter.module.scss';
 import i18next from '../../../../i18n';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-
+import { getFormattedNumber } from '../../../utils/getFormattedNumber'
 const { useTranslation } = i18next;
 
 const useStylesFacebook = makeStyles(() =>
@@ -81,9 +81,15 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
           <h1>{localizedAbbreviatedNumber(i18n.language, Number(props.planted), 1)}</h1>
-          <h2>{t('me:treesPlanted')}</h2>
+          <h2>{t('me:treesPlanted', {
+                  count: Number(props.planted),
+                  treeCount: getFormattedNumber(
+                    i18n.language,
+                    Number(props.planted)
+                  ),
+                })}</h2>
         </div>
-        
+
         {props.target ? (
           <div className={treeCounterStyles.treeCounterDataField}>
             <h1>{localizedAbbreviatedNumber(i18n.language, Number(props.target), 1)}</h1>
@@ -98,24 +104,24 @@ export default function TpoProfile(props: any) {
                 {t('me:target')}
               </h2>
               {props.authenticatedType === 'private' && (
-                <div
+                <button id={'treeCounterEdit'}
                   className={treeCounterStyles.editTragetContainer}
                   onClick={() => props.handleAddTargetModalOpen()}
                 >
                   <EditIcon color="white"></EditIcon>
-                </div>
+                </button>
               )}
             </div>
           </div>
         ) : null}
 
         {props.authenticatedType === 'private' && props.target === 0 && (
-          <div
+          <button id={'addTarget'}
             onClick={() => props.handleAddTargetModalOpen()}
             className={treeCounterStyles.addTargetButton}
           >
             <p>{t('me:addTarget')} </p>
-          </div>
+          </button>
         )}
       </div>
     </div>

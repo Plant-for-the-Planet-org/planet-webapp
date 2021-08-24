@@ -1,4 +1,17 @@
 {
+  "loginTitle": "{{log}} - Anmeldung",
+  "signUpText": "Registrierung vervollständigen",
+  "profileTypes": "{{item.title}}",
+  "profileName": "Name der {{type}}",
+  "createAccount": "Konto erstellen",
+  "individual": "Person",
+  "iamA": "Ich bin ein",
+  "tpo": "Wiederaufforstung-Organisation",
+  "education": "Schule",
+  "organization": "Firma",
+  "profileCreated": "Profil erfolgreich erstellt!",
+  "profileCreationFailed": "Fehler bei der Profilerstellung. Bitte versuchen Sie es erneut.",
+  "profileCreationError": "Fehler bei der Profilerstellung.",
   "edit": "Profil bearbeiten",
   "privateAccount": "Privatkonto",
   "privateAccountTxt": "Dein Profil wird ausgeblendet und nur Dein Vorname erscheint in der Bestenliste",
@@ -9,8 +22,13 @@
   "websiteError": "Ungültige Website-URL",
   "websiteRequired": "Bitte gib eine gültige Website-URL ein",
   "save": "Speichern",
-  "orgNameValidation": "Bitte den Namen der Organisation eingeben",
+  "nameValidation": "Bitte gib einen Namen ein",
   "profilePicUpdated": "Profilbild wird aktualisiert...",
   "profileSaved": "Erfolgreich gespeichert!",
-  "profileSaveFailed": "Fehler beim Aktualisieren des Profils."
+  "profileSaveFailed": "Fehler beim Aktualisieren des Profils.",
+  "changeAccountToPublic": "Konto auf öffentlich umstellen",
+  "publicAccount": "Öffentliches Konto",
+  "accountPrivacyChangeText": "Um ein Profil-Widget erstellen zu können, musst Du ein öffentliches Konto haben. Wenn Du auf \"Weiter\" klickst, änderst Du Deine Datenschutzeinstellungen auf \"öffentlich\".",
+  "continue": "Weiter",
+  "cancel": "Abbrechen"
 }

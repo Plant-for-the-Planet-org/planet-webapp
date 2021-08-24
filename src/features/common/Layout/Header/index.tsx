@@ -8,17 +8,20 @@ const config = tenantConfig();
 export default function Header() {
   const { theme: themeType } = useTheme();
   return (
+    <>
     <Head>
+      {config.manifest && (
+        <link rel="manifest" href={config.manifest} />
+      )}
       {config.font.primaryFontURL && (
         <link href={config.font.primaryFontURL} rel="stylesheet" />
       )}
-
       {config.font.secondaryFontURL && (
         <link href={config.font.secondaryFontURL} rel="stylesheet" />
       )}
       <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=0"
       />
       <meta property="og:locale" content={config.meta.locale} />
       {locales.map((locale) => {
@@ -29,9 +32,8 @@ export default function Header() {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="application-name" content={config.meta.title} />
-      <meta name="apple-mobile-web-app-title" content={config.meta.title} />
-      <meta name="apple-mobile-web-app-title" content={config.meta.title} />
-      {/* <!-- New in iOS6  alt, --> */}
+      <meta name="apple-mobile-web-app-title" content={config.meta.appTitle || config.meta.title} />
+    {/* <!-- New in iOS6  alt, --> */}
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-touch-fullscreen" content="yes" />
       <meta
@@ -60,7 +62,7 @@ export default function Header() {
       <link
         rel="apple-touch-icon"
         sizes="72x72"
-        href={`/tenants/${config.tenantName}/favicons/apple-touch-icon-72x72.pngg`}
+        href={`/tenants/${config.tenantName}/favicons/apple-touch-icon-72x72.png`}
       />
       <link
         rel="apple-touch-icon"
@@ -85,7 +87,7 @@ export default function Header() {
       <link
         rel="apple-touch-icon"
         sizes="152x152"
-        href={`/tenants/${config.tenantName}/favicons/apple-touch-icon-144x144.png`}
+        href={`/tenants/${config.tenantName}/favicons/apple-touch-icon-152x152.png`}
       />
       <link
         rel="apple-touch-icon"
@@ -96,5 +98,7 @@ export default function Header() {
         <meta name="theme-color" content={styles.primaryColor} />
       ) : null}
     </Head>
+    <noscript>We are sorry but this page does not work properly without JavaScript enabled. Please enable it to continue</noscript>
+    </>
   );
 }

@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
 import styles from './../styles/StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
@@ -30,11 +29,10 @@ interface Props {
 
 export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n, ready } = useTranslation(['manageProjects']);
+    const { t, i18n, ready } = useTranslation(['manageProjects','common']);
 
-    const { register, handleSubmit, errors, formState, getValues, setValue } = useForm({ mode: 'all' });
+    const { register, handleSubmit, errors, formState, getValues, setValue, control } = useForm({ mode: 'all' });
 
-    const [year, setYear] = React.useState(new Date());
     const [amount, setAmount] = React.useState(0);
     const [isUploadingData, setIsUploadingData] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
@@ -58,22 +56,33 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
             }
         })
 
-    }, [])
+    }, [uploadedFiles])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: '.pdf',
         multiple: false,
-        onDrop: onDrop,
-        onDropAccepted: () => {
-            console.log('uploaded');
+        maxSize: 10485760,
+        onDropAccepted: onDrop,
+        onDrop: () => {
+            console.log('uploading');
         },
+        onDropRejected: (err) => {
+            if (err[0].errors[0].code === "file-too-large") {
+                setErrorMessage(t('manageProjects:fileSizeLimit'))
+            }
+            else if (err[0].errors[0].code === "file-invalid-type") {
+                setErrorMessage(t('manageProjects:filePDFOnly'))
+            }
+        }
     });
 
     const { isDirty, isSubmitting } = formState;
 
     const onSubmit = (pdf: any) => {
         setIsUploadingData(true)
-        const updatedAmount = getValues("amount");
+        const updatedAmount = getValues('amount');
+        const year = getValues('year');
+
         const submitData = {
             year: year.getFullYear(),
             amount: updatedAmount,
@@ -81,9 +90,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
         }
 
         postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
-
             if (!res.code) {
-                let newUploadedFiles = uploadedFiles;
+                const newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
                 setUploadedFiles(newUploadedFiles);
                 setAmount(0);
@@ -109,7 +117,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
         setIsUploadingData(true)
         deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
             if (res !== 404) {
-                let uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
+                const uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
                 setIsUploadingData(false)
             }
@@ -121,26 +129,25 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
         // Fetch spending of the project 
         if (projectGUID && token)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
-                if (result.expenses.length > 0) {
+                if (result?.expenses && result.expenses.length > 0) {
                     setShowForm(false)
                 }
                 setUploadedFiles(result.expenses)
             })
     }, [projectGUID]);
 
-    var fiveYearsAgo = new Date();
+    const fiveYearsAgo = new Date();
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
                     <div className={styles.formField}>
                         {uploadedFiles.map((report) => {
                             return (
                                 <div key={report.id} className={` ${styles.reportPDFContainer}`}>
                                     <a target="_blank" rel="noopener noreferrer"
-                                      href={getPDFFile('projectExpense', report.pdf)}>
-                                        {/* <PDFIcon color="#2F3336" /> */}
+                                        href={getPDFFile('projectExpense', report.pdf)}>
                                         <PDFRed />
                                     </a>
                                     <div className={styles.reportPDFDetails}>
@@ -150,11 +157,11 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                                    <div
+                                    <button id={'trashIconProjSpend'}
                                         onClick={() => deleteProjectSpending(report.id)}
                                         className={styles.reportEditButton}>
                                         <TrashIcon />
-                                    </div>
+                                    </button>
                                 </div>
                             )
                         })}
@@ -165,26 +172,32 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                    <DatePicker
-                                        inputRef={register({
-                                            required: {
-                                                value: true,
-                                                message: t('manageProjects:spendingYearValidation')
-                                            }
-                                        })}
-                                        views={["year"]}
-                                        value={year}
-                                        onChange={(value) => setYear(value)}
-                                        label={t('manageProjects:spendingYear')}
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                inputRef={register({
+                                                    required: {
+                                                        value: true,
+                                                        message: t('manageProjects:spendingYearValidation')
+                                                    }
+                                                })}
+                                                views={["year"]}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                label={t('manageProjects:spendingYear')}
+                                                inputVariant="outlined"
+                                                variant="inline"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                clearable
+                                                disableFuture
+                                                minDate={fiveYearsAgo}
+                                                maxDate={new Date()}
+                                            />
+                                        )}
+                                        defaultValue={new Date()}
                                         name="year"
-                                        inputVariant="outlined"
-                                        variant="inline"
-                                        TextFieldComponent={MaterialTextField}
-                                        autoOk
-                                        clearable
-                                        disableFuture
-                                        minDate={fiveYearsAgo}
-                                        maxDate={new Date()}
+                                        control={control}
                                     />
                                 </MuiPickersUtilsProvider>
                                 {errors.year && (
@@ -197,8 +210,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             <div className={`${styles.formFieldHalf}`}>
                                 <MaterialTextField
                                     inputRef={register({
-                                        validate: (value) =>
-                                            parseFloat(value) > 0,
+                                        validate: (value) => parseInt(value) > 0,
                                         required: {
                                             value: true,
                                             message: t('manageProjects:spendingAmountValidation')
@@ -208,9 +220,9 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                     placeholder={0}
                                     variant="outlined"
                                     name="amount"
-                                    onChange={(e) => setAmount(e.target.value)}
                                     onInput={(e) => {
-                                        e.target.value = e.target.value.replace(/[^0-9,.]/g, '');
+                                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                        setAmount(e.target.value);
                                     }}
                                     InputProps={{
                                         startAdornment: (
@@ -233,11 +245,12 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         {errors.amount || errors.year || !isDirty || amount === 0 ? (
                             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                                 <div className={styles.fileUploadContainer}>
-                                    <AnimatedButton
-                                        className={styles.continueButton}
+                                    <div
+                                        className="primaryButton"
+                                        style={{maxWidth:"240px"}}
                                     >
                                         {t('manageProjects:uploadReport')}
-                                    </AnimatedButton>
+                                    </div>
                                     <p style={{ marginTop: '18px' }}>
                                         {t('manageProjects:dragInPdf')}
                                     </p>
@@ -246,13 +259,13 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         ) : (
                                 <div className={styles.formFieldLarge} {...getRootProps()}>
                                     <div className={styles.fileUploadContainer}>
-                                        <AnimatedButton
-                                            // onClick={uploadReport}
-                                            className={styles.continueButton}
+                                        <div
+                                            className="primaryButton"
+                                            style={{maxWidth:"240px"}}
                                         >
                                             <input {...getInputProps()} />
                                             {t('manageProjects:uploadReport')}
-                                        </AnimatedButton>
+                                        </div>
                                         <p style={{ marginTop: '18px' }}>
                                             {t('manageProjects:dragInPdf')}
                                         </p>
@@ -263,7 +276,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                 ) : (
                         <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
                             <p className={styles.inlineLinkButton}>
-                            {t('manageProjects:addAnotherYear')}
+                                {t('manageProjects:addAnotherYear')}
                             </p>
                         </div>
                     )}
@@ -276,27 +289,28 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
                 <div className={styles.formField}>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={handleBack}
-                            className={styles.secondaryButton}
+                            className="secondaryButton"
                         >
                             <BackArrow />
                             <p>
-                            {t('manageProjects:backToSites')}
+                                {t('manageProjects:backToSites')}
                             </p>
-                        </AnimatedButton>
+                        </button>
                     </div>
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={() => handleNext()}
-                            className={styles.continueButton}
+                            className="primaryButton"
+                            style={{minWidth:"240px"}}
                         >
-                            {isUploadingData ? <div className={styles.spinner}></div> :t('manageProjects:saveAndContinue')}
-                        </AnimatedButton>
+                            {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
-    ) : null;
+    ) : <></>;
 }

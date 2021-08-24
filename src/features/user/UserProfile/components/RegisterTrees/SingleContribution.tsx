@@ -12,7 +12,7 @@ interface Props {
   token: any;
   contributionGUID: any;
   contribution: any;
-  currentUserSlug: any;
+  slug: any;
 }
 
 const { useTranslation } = i18next;
@@ -25,7 +25,7 @@ export default function SingleContribution({
   token,
   contribution,
   contributionGUID,
-  currentUserSlug,
+  slug,
 }: Props): ReactElement {
   const router = useRouter();
   const UploadProps = {
@@ -37,14 +37,15 @@ export default function SingleContribution({
 
   return ready ? (
     <>
-      <div
+      <button
+        id={'singleControcloseButton'}
         className={styles.closeButton}
         onClick={() => {
-          router.push(`/t/${currentUserSlug}`, undefined, { shallow: true });
+          router.push(`/t/${slug}`, undefined, { shallow: true });
         }}
       >
         <CancelIcon />
-      </div>
+      </button>
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div>
@@ -71,15 +72,19 @@ export default function SingleContribution({
         <UploadImages {...UploadProps} />
       </div>
       <div className={styles.nextButton}>
-        <div
+        <button
+          id={'singleControCont'}
           onClick={() =>
-            router.push(`/t/${currentUserSlug}`, undefined, { shallow: true })
+            router.push(`/t/${slug}`, undefined, { shallow: true })
           }
-          className={styles.continueButton}
+          className="primaryButton"
+          style={{ maxWidth: '100px', marginTop: '24px' }}
         >
           {t('me:save')}
-        </div>
+        </button>
       </div>
     </>
-  ) : null;
+  ) : (
+    <></>
+  );
 }

@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react'
+import React, { ReactElement } from 'react'
 import Donate from '../../../../../public/assets/images/navigation/Donate';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Globe from '../../../../../public/assets/images/navigation/Globe';
@@ -10,62 +10,62 @@ import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
-    mainKey:any;
-    router:any;
-    item:any;
+    mainKey: any;
+    router: any;
+    item: any;
 }
 
-function GetNavBarIcon({mainKey,router,item}: Props):ReactElement {
+function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
 
-    const HomeLink =()=>{
-        return(
-            <div className={'link_icon'}>
+    const HomeLink = () => {
+        return (
+            <button id={'homeIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <GlobeSelected color={themeProperties.primaryColor} />
                 ) : (
-                        <Globe color={themeProperties.light.primaryFontColor} />
-                    )}
-            </div>
+                    <Globe color={themeProperties.light.primaryFontColor} />
+                )}
+            </button>
         )
     }
-    const DonateLink =()=>{
-        return(
-            <div className={'link_icon'}>
-                {router.pathname === item.onclick ? (
+    const DonateLink = () => {
+        return (
+            <button id={'donateIcon'} className={`link_icon ${router.pathname === item.onclick || router.pathname === "/[p]" ? 'active_icon' : ''}`}>
+                {router.pathname === item.onclick || router.pathname === "/[p]" ? (
                     <DonateSelected color={themeProperties.primaryColor} />
                 ) : (
-                        <Donate color={themeProperties.light.primaryFontColor} />
-                    )}
-            </div>
+                    <Donate color={themeProperties.light.primaryFontColor} />
+                )}
+            </button>
         )
     }
-    const AboutUsLink =()=>{
-        return(
-            <div className={'link_icon'}>
+    const AboutUsLink = () => {
+        return (
+            <button id={'aboutIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <LeafSelected color={themeProperties.primaryColor} />
                 ) : (
-                        <Leaf color={themeProperties.light.primaryFontColor} />
-                    )}
-            </div>
+                    <Leaf color={themeProperties.light.primaryFontColor} />
+                )}
+            </button>
         )
     }
-    const LeadersLink =()=>{
-        return(
-            <div className={'link_icon'}>
+    const LeadersLink = () => {
+        return (
+            <button id={'leaderIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
                 {router.pathname === item.onclick ? (
                     <LeaderboardSelected color={themeProperties.primaryColor} />
                 ) : (
-                        <Leaderboard color={themeProperties.light.primaryFontColor} />
-                    )}
-            </div>
+                    <Leaderboard color={themeProperties.light.primaryFontColor} />
+                )}
+            </button>
         )
     }
-    switch(mainKey){
-        case 'home': return <HomeLink/>;
-        case 'donate': return <DonateLink/>;
-        case 'about': return <AboutUsLink/>;
-        case 'leaderboard': return <LeadersLink/>;
+    switch (mainKey) {
+        case 'home': return <HomeLink />;
+        case 'donate': return <DonateLink />;
+        case 'about': return <AboutUsLink />;
+        case 'leaderboard': return <LeadersLink />;
         default: <></>;
     }
 }

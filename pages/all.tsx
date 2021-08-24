@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import Layout from '../src/features/common/Layout';
 import LeaderBoard from '../src/tenants/planet/LeaderBoard';
 import tenantConfig from '../tenant.config';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -19,7 +18,7 @@ export default function Home({
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderboard = await getRequest('/app/leaderboard');
+      const newLeaderboard = await getRequest(`/app/leaderboard/${process.env.TENANTID}`);
       setLeaderboard(newLeaderboard);
     }
     loadLeaderboard();
@@ -29,10 +28,10 @@ export default function Home({
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(`/app/tenantScore`);
+      const newTenantScore = await getRequest(`/app/tenantScore/${process.env.TENANTID}`);
       setTenantScore(newTenantScore);
     }
-    loadTenantScore();
+     loadTenantScore();
   }, []);
   
 
@@ -56,7 +55,7 @@ export default function Home({
       {initialized ? (
       <>
         <GetLeaderboardMeta />
-        <Layout>{getAllPage()}</Layout>
+        {getAllPage()}
       </>
       ) : null}
     </>

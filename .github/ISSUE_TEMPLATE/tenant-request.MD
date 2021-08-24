@@ -20,6 +20,12 @@ Type of Tenant [Please select all that apply]
 
 - [ ] If hosting at subdirectory, current server type (NGINX/APACHE)?
 
+- [ ] Enable Login (Auth0 SPA App) get Client ID
+
+Callback URLs : [tenantURL]/verify-email, [tenantURL]/login
+
+Logout URLs: [tenantURL]/verify-email, [tenantURL]/
+
 **Checklist for Developer**
 
 - [ ] Tenant is present in the Backend

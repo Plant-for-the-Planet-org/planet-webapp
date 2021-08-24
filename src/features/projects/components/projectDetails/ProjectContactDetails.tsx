@@ -65,7 +65,7 @@ function ProjectContactDetails({ project }: Props): ReactElement {
       >
         <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
           {contactDetails[0].icon}
-          <span style={{ marginLeft: '16px', flexGrow: 1 }}>
+          <span style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer'}}>
             {contactDetails[0].text}
           </span>
         </div>
@@ -73,7 +73,7 @@ function ProjectContactDetails({ project }: Props): ReactElement {
 
       {contactDetails.slice(1).map((contact) => {
         return (
-          <a href={contact.link ? contact.link : '#'} target={contact.link ? "_blank" : "_self"}>
+          <a key={contact.id} href={contact.link ? contact.link : '#'} target={contact.link ? "_blank" : "_self"}>
             <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
               {contact.icon}
               <span>{contact.text}</span>

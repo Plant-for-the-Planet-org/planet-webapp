@@ -14,7 +14,7 @@
 
 // the white form
 .signup {
-  top: 80px;
+  top: 100px;
   margin-bottom: 60px;
   background-color: $light;
   position: absolute;
@@ -36,10 +36,10 @@
 // when request sent, opacity low
 .signupRequestSent {
   background-color: $light;
+  position:absolute;
   border: 0px;
-  opacity: 0.8;
-  min-width: 360px;
-  max-width: 30vw;
+  min-width: 320px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,6 +47,7 @@
   border-radius: 8px;
   align-self: center;
   padding:20px 20px;
+  margin-top: 100px;
 }
 
 .header {
@@ -92,16 +93,16 @@
 
 .mainText {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $highlightBackground;
-  font-size: 16px;
+  font-size: $fontSixteen;
   text-align: left;
 }
 
 .isPrivateAccountText {
     margin-top: 6px;
   font-family: $primaryFontFamily;
-  font-size: 12px;
+  font-size: $fontXSmall;
   color: $highlightBackground;
 }
 
@@ -235,10 +236,10 @@
   padding-right: 24px;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(103deg, #68b030 5%, #007a49 116%);
+  background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
   align-items: center;
   font-weight: bold;
-  color: white;
+  color: $light;
   border: 0px;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -251,8 +252,8 @@
 
 .formErrors {
   font-family: $primaryFontFamily;
-  font-size: 12px;
-  color: #e74c3c;
+  font-size: $fontXSmall;
+  color: $dangerColor;
   margin-left: 6px;
   margin-top: 6px;
   max-width: 320px;

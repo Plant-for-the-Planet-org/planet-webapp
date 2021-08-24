@@ -1,4 +1,17 @@
 {
+  "loginTitle": "{{log}} - Login",
+  "signUpText": "Inscrição completa",
+  "profileTypes": "{{item.title}}",
+  "profileName": "Nome do {{type}}",
+  "createAccount": "Criar Conta",
+  "individual": "Pessoa",
+  "iamA": "Eu sou um(a)",
+  "tpo": "Organização de restauração",
+  "education": "Escola",
+  "organization": "Empresa",
+  "profileCreated": "Perfil criado com sucesso!",
+  "profileCreationFailed": "Erro na criação do perfil. Por favor, tente novamente.",
+  "profileCreationError": "Erro na criação do perfil.",
   "edit": "Editar Perfil",
   "privateAccount": "Conta Privada",
   "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
@@ -9,8 +22,13 @@
   "websiteError": "URL do site inválido",
   "websiteRequired": "Por favor, digite o URL válido do site",
   "save": "Salvar",
-  "orgNameValidation": "Por favor, introduza o nome da organização",
+  "nameValidation": "Por favor, adicione um nome",
   "profilePicUpdated": "A foto do perfil está sendo atualizada",
   "profileSaved": "Salvo com sucesso!",
-  "profileSaveFailed": "Erro na atualização do perfil."
+  "profileSaveFailed": "Erro na atualização do perfil.",
+  "changeAccountToPublic": "Mudar para uma conta pública",
+  "publicAccount": "Conta Pública",
+  "accountPrivacyChangeText": "Para criar um widget de perfil, você precisa ter uma conta pública. Ao clicar em continuar, você muda suas configurações de privacidade para público.",
+  "continue": "Continuar",
+  "cancel": "Cancelar"
 }

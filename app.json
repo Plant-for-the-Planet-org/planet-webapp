@@ -28,10 +28,6 @@
       "description": "Memory for a Node Worker (128 is recommended)",
       "value": "128"
     },
-    "MAPBOXGL_ACCESS_TOKEN": {
-      "required": false,
-      "description": "Mapbox Token - Required for the Map"
-    },
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": {
       "required": false,
       "description": "Stripe Publishable Key"
@@ -59,6 +55,10 @@
     "SENTRY_AUTH_TOKEN": {
       "required": false,
       "description": "Sentry Auth Token"
+    },
+    "SITE_IMAGERY_API_URL": {
+      "required": false,
+      "description": "For showing vegetation change"
     }
   },
   "formation": {

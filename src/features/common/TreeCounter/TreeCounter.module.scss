@@ -22,7 +22,7 @@
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;
-  font-size: 49px;
+  font-size: $fontXXXLarge;
   margin-bottom: 0px;
 }
 .treeCounterDataField > h2 {
@@ -30,7 +30,7 @@
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;
-  font-size: 14px;
+  font-size: $fontSmall;
 }
 
 .targetTextForPrivate {
@@ -38,7 +38,7 @@
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;
-  font-size: 14px;
+  font-size: $fontSmall;
   padding-left: 25px;
   
 }
@@ -48,7 +48,7 @@
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;
-  font-size: 14px;
+  font-size: $fontSmall;
 }
 
 .target {
@@ -63,7 +63,7 @@
 }
 
 .backgroundCircle {
-  border: 5px solid white;
+  border: 5px solid $light;
   border-radius: 50%;
   height: 300px;
   width: 300px;
@@ -86,5 +86,5 @@
 .addTargetButton > p {
   color:$light;
   opacity: 1;
-  font-size: 18px;
+  font-size: $fontMedium;
 }

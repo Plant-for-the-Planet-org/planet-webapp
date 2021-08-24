@@ -10,8 +10,8 @@ import MapGL, {
 import * as d3 from 'd3-ease';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { Backdrop, Modal } from '@material-ui/core';
+import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { Backdrop, MenuItem, Modal } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -23,12 +23,15 @@ import SingleContribution from './RegisterTrees/SingleContribution';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
 declare module '@material-ui/core/styles/overrides' {
-  export interface ComponentNameToClassKey extends overridesNameToClassKey {}
+  export type ComponentNameToClassKey = overridesNameToClassKey;
 }
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
@@ -36,20 +39,21 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   loading: () => <p></p>,
 });
 
-interface Props {
-  slug: any;
-  token: any;
-  registerTreesModalOpen: any;
-}
+interface Props {}
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({
-  slug,
-  token,
-  registerTreesModalOpen,
-}: Props) {
+export default function RegisterTrees({}: Props) {
   const router = useRouter();
+  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
+  const EMPTY_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [],
+  };
+  const [mapState, setMapState] = React.useState({
+    mapStyle: EMPTY_STYLE,
+  });
   const [isMultiple, setIsMultiple] = React.useState(false);
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
@@ -68,8 +72,21 @@ export default function RegisterTrees({
     zoom: defaultZoom,
   });
   const [userLang, setUserLang] = React.useState('en');
-  const [countryBbox, setCountryBbox] = React.useState();
+  const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
+  const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
+    true
+  );
+  const [projects, setProjects] = React.useState([]);
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style) => {
+      if (style) {
+        setMapState({ ...mapState, mapStyle: style });
+      }
+    });
+  }, []);
 
   const materialTheme = createMuiTheme({
     overrides: {
@@ -112,41 +129,36 @@ export default function RegisterTrees({
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
-      let userLang = localStorage.getItem('language');
+      const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
 
-    async function getUserCountryBbox() {
-      var country = getStoredConfig('country');
-      const result = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${country}.json?types=country&limit=1&access_token=${process.env.MAPBOXGL_ACCESS_TOKEN}`
-      );
-      const geoCodingAPI = result.status === 200 ? await result.json() : null;
-      setCountryBbox(geoCodingAPI.features[0].bbox);
+    async function getUserLocation() {
+      const location = await getStoredConfig('loc');
+      if (location) {
+        setUserLocation([
+          Number(location.longitude) || 0,
+          Number(location.latitude) || 0,
+        ]);
+      }
     }
-    getUserCountryBbox();
+    getUserLocation();
   }, []);
 
   React.useEffect(() => {
-    if (countryBbox) {
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport
-      ).fitBounds([
-        [countryBbox[0], countryBbox[1]],
-        [countryBbox[2], countryBbox[3]],
-      ]);
+    if (userLocation) {
       const newViewport = {
         ...viewport,
-        longitude,
-        latitude,
-        zoom,
+        longitude: userLocation[0],
+        latitude: userLocation[1],
+        zoom: 10,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeCubic,
       };
       setViewPort(newViewport);
     }
-  }, [countryBbox]);
+  }, [userLocation]);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const defaultBasicDetails = {
@@ -167,7 +179,7 @@ export default function RegisterTrees({
 
   const treeCount = watch('treeCount');
 
-  const onTreeCountChange = (e) => {
+  const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {
@@ -185,13 +197,13 @@ export default function RegisterTrees({
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
+          plantProject: data.project,
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
         postAuthenticatedRequest(`/app/contributions`, submitData, token).then(
           (res) => {
             if (!res.code) {
-              console.log(res);
               setErrorMessage('');
               setContributionGUID(res.id);
               setContributionDetails(res);
@@ -222,19 +234,36 @@ export default function RegisterTrees({
     }
   };
 
+  async function loadProjects() {
+
+      await getAuthenticatedRequest('/app/profile/projects', token).then((projects:any) => {
+        setProjects(projects);
+      });
+  }
+
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    if (contextLoaded) {
+      loadProjects();
+    }
+  }, [contextLoaded]);
+
+  const _onStateChange = (state: any) => setMapState({ ...state });
+
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   const ContributionProps = {
     token,
     contribution: contributionDetails,
     contributionGUID,
-    currentUserSlug: slug,
+    slug: user.slug,
   };
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <>
       <Modal
-        className={styles.modalContainer}
+        className={'modalContainer' + ' ' + theme}
         open={registerTreesModalOpen}
         //onClose={handleEditProfileModalClose}
         closeAfterTransition
@@ -246,21 +275,27 @@ export default function RegisterTrees({
           {!registered ? (
             <div className={styles.formContainer}>
               <h2 className={styles.title}>
-                <div
+                <button
+                  id={'backButtonRegTree'}
                   style={{
                     cursor: 'pointer',
                     marginLeft: -10,
                     paddingRight: 10,
                   }}
                   onClick={() => {
-                    router.push(`/t/${slug}`, undefined, { shallow: true });
+                    router.push(`/t/${user.slug}`, undefined, {
+                      shallow: true,
+                    });
                   }}
                 >
                   <BackButton />
-                </div>
+                </button>
                 <b> {t('me:registerTrees')} </b>
               </h2>
               <form onSubmit={handleSubmit(submitRegisterTrees)}>
+                <div className={styles.note}>
+                  <p>{t('me:registerTreesDescription')}</p>
+                </div>
                 <div className={styles.formField}>
                   <div className={styles.formFieldHalf}>
                     <MaterialTextField
@@ -298,11 +333,11 @@ export default function RegisterTrees({
                         }
                       >
                         <Controller
-                          render={(props) => (
+                          render={(properties) => (
                             <DatePicker
                               label={t('me:datePlanted')}
-                              value={props.value}
-                              onChange={props.onChange}
+                              value={properties.value}
+                              onChange={properties.onChange}
                               inputVariant="outlined"
                               TextFieldComponent={MaterialTextField}
                               autoOk
@@ -338,6 +373,33 @@ export default function RegisterTrees({
                     </span>
                   )}
                 </div>
+                {
+                  user && user.type === 'tpo' && <div className={styles.formFieldLarge}>
+                     <Controller
+                as={
+                  <MaterialTextField
+                    label={t('me:project')}
+                    variant="outlined"
+                    select
+                  >
+                    {projects.map((option) => (
+                      <MenuItem key={option.properties.id} value={option.properties.id}>
+                        {option.properties.name}
+                      </MenuItem>
+                    ))}
+                  </MaterialTextField>
+                }
+                name="project"
+                control={control}
+              />
+                  {errors.project && (
+                    <span className={styles.formErrors}>
+                      {errors.project.message}
+                    </span>
+                  )}
+                </div>
+                }
+                
                 <div className={styles.mapNote}>
                   {isMultiple ? (
                     <p>{t('me:drawPolygon')}</p>
@@ -350,14 +412,14 @@ export default function RegisterTrees({
                   {isMultiple ? (
                     <DrawMap
                       setGeometry={setGeometry}
-                      countryBbox={countryBbox}
+                      userLocation={userLocation}
                     />
                   ) : (
                     <MapGL
+                      {...mapState}
                       {...viewport}
-                      mapboxApiAccessToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-                      mapStyle="mapbox://styles/mapbox/streets-v11"
                       onViewportChange={_onViewportChange}
+                      onStateChange={_onStateChange}
                       onClick={(event) => {
                         setplantLocation(event.lngLat);
                         setGeometry({
@@ -372,6 +434,10 @@ export default function RegisterTrees({
                           transitionInterpolator: new FlyToInterpolator(),
                           transitionEasing: d3.easeCubic,
                         });
+                      }}
+                      mapOptions={{
+                        customAttribution:
+                          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
                       }}
                     >
                       {plantLocation ? (
@@ -399,9 +465,11 @@ export default function RegisterTrees({
                 {/* : null
               } */}
                 <div className={styles.nextButton}>
-                  <div
+                  <button
+                    id={'RegTressSubmit'}
                     onClick={handleSubmit(submitRegisterTrees)}
-                    className={styles.continueButton}
+                    className="primaryButton"
+                    style={{ maxWidth: '240px' }}
                   >
                     {' '}
                     {isUploadingData ? (
@@ -409,7 +477,7 @@ export default function RegisterTrees({
                     ) : (
                       t('me:registerButton')
                     )}
-                  </div>
+                  </button>
                 </div>
               </form>
             </div>

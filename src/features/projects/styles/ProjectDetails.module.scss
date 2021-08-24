@@ -2,19 +2,10 @@
 
 .container {
   position: relative;
-  z-index: 6;
   transition: all 0.3s ease-in-out;
   width: 100vw;
   margin-top: 50vh;
-}
-
-.imageModal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  z-index: 12;
 }
 
 .modalClose {
@@ -103,10 +94,19 @@
 }
 
 .projectSnippetContainer {
+  background-color: $backgroundColor;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   .projectInfo {
     padding-left: 16px;
     padding-right: 16px;
   }
+}
+
+.singleProjectDetails {
+  border-radius: 10px;
+  background-color: $backgroundColor;
+  padding-bottom: 16px;
 }
 
 .ratings {
@@ -116,7 +116,7 @@
 }
 .calculatedRating {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   font-weight: bold;
   color: $primaryFontColor;
 }
@@ -127,7 +127,7 @@
 
 .projectDescription {
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   line-height: 21px;
   margin-top: 24px;
@@ -152,7 +152,7 @@
 }
 .infoTitle {
   font-family: $primaryFontFamily;
-  font-size: 10px;
+  font-size: $fontXSmall;
   color: $primaryFontColor;
   font-weight: bold;
   text-transform: uppercase;
@@ -161,7 +161,7 @@
 .infoText {
   margin-top: 9px;
   font-family: $primaryFontFamily;
-  font-size: $fontSubTitleSize;
+  font-size: $fontSmall;
   color: $primaryFontColor;
   display: flex;
   flex-direction: row;
@@ -181,7 +181,7 @@
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   margin-bottom: -6px;
-  margin-top: $fontSubTitleSize;
+  margin-top: $fontSmall;
 }
 
 .contactDetailsRow {
@@ -231,8 +231,8 @@
 
 .projectImageSliderContentText {
   bottom: 10;
-  color: white;
-  font-size: 14;
+  color: $light;
+  font-size: $fontSmall;
   font-family: $primaryFontFamily;
   padding: 14px 12px;
 }
@@ -270,6 +270,16 @@
     margin-top: 90px;
     width: 360px;
     padding-bottom: 16px;
+    min-height: calc(100vh - 100px);
+    background-color: transparent;
+  }
+
+  .singleProjectDetails {
+    margin-top: 20px;
+  }
+
+  .projectSnippetContainer {
+    padding-bottom: 20px;
   }
 }
 
@@ -289,7 +299,7 @@
     display: none;
     text-transform: none;
     font-weight: normal;
-    font-size: 14px;
+    font-size: $fontSmall;
   }
   &:hover,
   &:active {

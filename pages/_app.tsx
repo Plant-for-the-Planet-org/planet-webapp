@@ -1,5 +1,6 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
@@ -14,9 +15,17 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import Layout from '../src/features/common/Layout';
-import MapLayout from '../src/features/projects/components/MapboxMap';
+import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
+import VideoContainer from '../src/features/common/LandingVideo/';
+import tenantConfig from '../tenant.config';
+import { browserNotCompatible } from '../src/utils/browsercheck';
+import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
+import ProjectPropsProvider, {
+  ProjectPropsContext,
+} from '../src/features/common/Layout/ProjectPropsContext';
+import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -32,22 +41,47 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       }),
     ],
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    // from https://gist.github.com/pioug/b006c983538538066ea871d299d8e8bc,
+    // also see https://docs.sentry.io/platforms/javascript/configuration/filtering/#decluttering-sentry
+    ignoreErrors: [
+      /^No error$/,
+      /__show__deepen/,
+      /_avast_submit/,
+      /Access is denied/,
+      /anonymous function: captureException/,
+      /Blocked a frame with origin/,
+      /console is not defined/,
+      /cordova/,
+      /DataCloneError/,
+      /Error: AccessDeny/,
+      /event is not defined/,
+      /feedConf/,
+      /ibFindAllVideos/,
+      /myGloFrameList/,
+      /SecurityError/,
+      /MyIPhoneApp/,
+      /snapchat.com/,
+      /vid_mate_check is not defined/,
+      /win\.document\.body/,
+      /window\._sharedData\.entry_data/,
+      /ztePageScrollModule/,
+    ],
+    denyUrls: [],
   });
 }
 
-const onRedirectCallback = (appState) => {
+const onRedirectCallback = (appState: any) => {
   // Use Next.js's Router.replace method to replace the url
-  Router.replace(appState?.returnTo || '/');
+  if (appState) Router.replace(appState?.returnTo || '/');
 };
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
-  const [projects, setProjects] = React.useState(null);
-  const [project, setProject] = React.useState(null);
-  const [showProjects, setShowProjects] = React.useState(true);
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
-  const [searchedProject, setsearchedProjects] = React.useState([]);
+  const [currencyCode, setCurrencyCode] = React.useState('');
+  const [browserCompatible, setBrowserCompatible] = React.useState(false);
+
+  const config = tenantConfig();
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -69,7 +103,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    if (router.pathname === '/' || router.pathname === '/[p]') {
+    if (
+      router.pathname === '/' ||
+      router.pathname === '/[p]' ||
+      router.pathname === '/[p]/[id]'
+    ) {
       setIsMap(true);
     } else {
       setIsMap(false);
@@ -82,48 +120,83 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     }
   }, []);
 
+  React.useEffect(() => {
+    setBrowserCompatible(browserNotCompatible());
+  }, []);
+
   const ProjectProps = {
-    projects,
-    project,
-    setProject,
-    setProjects,
-    showSingleProject,
-    setShowSingleProject,
     pageProps,
     initialized,
-    showProjects,
-    setShowProjects,
-    searchedProject,
-    setsearchedProjects,
+    currencyCode,
+    setCurrencyCode,
   };
 
-  return (
-    <Auth0Provider
-      domain={process.env.AUTH0_CUSTOM_DOMAIN}
-      clientId={process.env.AUTH0_CLIENT_ID}
-      redirectUri={process.env.NEXTAUTH_URL}
-      cacheLocation={'localstorage'}
-      onRedirectCallback={onRedirectCallback}
-    >
-      <ThemeProvider>
-        <CssBaseline />
-        <Layout>
-          {isMap ? (
-            project ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
-            ) : projects ? (
-              <MapLayout
-                {...ProjectProps}
-                mapboxToken={process.env.MAPBOXGL_ACCESS_TOKEN}
-              />
-            ) : null
-          ) : null}
-          <Component {...ProjectProps} />
-        </Layout>
-      </ThemeProvider>
-    </Auth0Provider>
-  );
+  const [showVideo, setshowVideo] = React.useState(true);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('hidePreview')) {
+        setshowVideo(false);
+      }
+      if (router.pathname !== '/') {
+        setshowVideo(false);
+      }
+    }
+  }, []);
+  const { project, projects } = React.useContext(ProjectPropsContext);
+
+  if (browserCompatible) {
+    return <BrowserNotSupported />;
+  } else {
+    return (
+      <div>
+        <div
+          style={
+            showVideo &&
+            (config.tenantName === 'planet' || config.tenantName === 'ttc')
+              ? {}
+              : { display: 'none' }
+          }
+        >
+          <VideoContainer setshowVideo={setshowVideo} />
+        </div>
+
+        <div
+          style={
+            showVideo &&
+            (config.tenantName === 'planet' || config.tenantName === 'ttc')
+              ? { display: 'none' }
+              : {}
+          }
+        >
+          <Auth0Provider
+            domain={process.env.AUTH0_CUSTOM_DOMAIN}
+            clientId={process.env.AUTH0_CLIENT_ID}
+            redirectUri={process.env.NEXTAUTH_URL}
+            audience={'urn:plant-for-the-planet'}
+            cacheLocation={'localstorage'}
+            onRedirectCallback={onRedirectCallback}
+          >
+            <ThemeProvider>
+              <CssBaseline />
+              <UserPropsProvider>
+                <Layout>
+                  <ProjectPropsProvider>
+                    {isMap ? (
+                      project ? (
+                        <MapLayout />
+                      ) : projects ? (
+                        <MapLayout />
+                      ) : null
+                    ) : null}
+                    <Component {...ProjectProps} />
+                  </ProjectPropsProvider>
+                </Layout>
+              </UserPropsProvider>
+            </ThemeProvider>
+          </Auth0Provider>
+        </div>
+      </div>
+    );
+  }
 }

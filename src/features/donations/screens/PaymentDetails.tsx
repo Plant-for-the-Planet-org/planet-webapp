@@ -1,81 +1,33 @@
-import { FormControl } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  CardCvcElement,
-  CardExpiryElement,
-  CardNumberElement,
-  IbanElement,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
-import CreditCard from '../../../../public/assets/images/icons/donation/CreditCard';
 import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
-import { getCardBrand } from '../../../utils/stripe/stripeHelpers';
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
-import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { PaymentDetailsProps } from '../../common/types/donations';
-import styles from './../styles/PaymentDetails.module.scss';
-import { createDonation, payDonation, payWithCard } from '../components/treeDonation/PaymentFunctions';
+import styles from './../styles/Donations.module.scss';
+import {
+  createDonationFunction,
+  payDonationFunction,
+} from '../components/PaymentFunctions';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
-import PaypalIcon from '../../../../public/assets/images/icons/donation/PaypalIcon';
-import Paypal from '../../legacyDonations/components/Paypal';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
+import CardPayments from '../components/paymentMethods/CardPayments';
+import { Elements } from '@stripe/react-stripe-js';
+import getStripe from '../../../utils/stripe/getStripe';
+import PaymentMethodTabs from '../components/paymentMethods/PaymentMethodTabs';
+import SepaPayments from '../components/paymentMethods/SepaPayments';
+import PaypalPayments from '../components/paymentMethods/PaypalPayments';
+import GiroPayPayments from '../components/paymentMethods/GiroPayPayments';
+import SofortPayments from '../components/paymentMethods/SofortPayment';
+import tenantConfig from '../../../../tenant.config';
+import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
+import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
+import Link from 'next/link';
+import { putRequest } from '../../../utils/apiRequests/api';
+
+const config = tenantConfig();
 
 const { useTranslation } = i18next;
-
-const FormControlNew = withStyles({
-  root: {
-    width: '100%',
-    backgroundColor: '#F2F2F7',
-    border: '0px!important',
-    borderRadius: '10px',
-    fontFamily: styles.primaryFontFamily,
-    padding: '18.5px',
-  },
-})(FormControl);
-const ELEMENT_OPTIONS = {
-  supportedCountries: ['SEPA'],
-  style: {
-    base: {
-      fontSize: '14px',
-      color: '#424770',
-      letterSpacing: '0.025em',
-      fontFamily: styles.primaryFontFamily,
-      '::placeholder': {
-        color: '#aab7c4',
-        fontFamily: styles.primaryFontFamily,
-      },
-    },
-    invalid: {
-      color: '#9e2146',
-    },
-  },
-};
-const getInputOptions = (placeholder: string) => {
-  const ObjectM = {
-    style: {
-      base: {
-        color: '#32325d',
-        fontFamily: styles.primaryFontFamily,
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#2F3336',
-          fontFamily: styles.primaryFontFamily,
-          fontSize: '14px',
-        },
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
-      },
-    },
-    placeholder: placeholder,
-  };
-  return ObjectM;
-};
 
 function PaymentDetails({
   paymentSetup,
@@ -91,34 +43,43 @@ function PaymentDetails({
   setPaymentType,
   country,
   isTaxDeductible,
-  token
+  token,
+  donationID,
+  setDonationID,
+  shouldCreateDonation,
+  setShouldCreateDonation,
 }: PaymentDetailsProps): ReactElement {
-  const { t, i18n, ready } = useTranslation(['donate', 'common']);
-  const [saveCardDetails, setSaveCardDetails] = React.useState(false);
-  const [paypalEnabled, setPaypalEnabled] = React.useState(false);
-  const stripe = useStripe();
-  const elements = useElements();
-  const [cardNumber, setCardNumber] = React.useState(false);
-  const [cardCvv, setCardCvv] = React.useState(false);
-  const [cardDate, setCardDate] = React.useState(false);
+  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
 
-  const [showPaymentForm, setShowPaymentForm] = React.useState('CARD');
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
+  const [directGift, setDirectGift] = React.useState(null);
+
+  const [publishName, setpublishName] = React.useState(false);
+  const [askpublishName, setaskpublishName] = React.useState(false);
 
   React.useEffect(() => {
     setPaymentType('CARD');
   }, []);
 
-  const [isSepa, setIsSepa] = React.useState(false);
+  React.useEffect(() => {
+    if (donationID) {
+      putRequest(`/app/donations/${donationID}/publish`, {
+        publish: publishName,
+      });
+    }
+  }, [publishName, donationID]);
 
+  React.useEffect(() => {
+    const getdirectGift = localStorage.getItem('directGift');
+    if (getdirectGift) {
+      setDirectGift(JSON.parse(getdirectGift));
+    }
+  }, []);
   const [paymentError, setPaymentError] = React.useState('');
-  const [showContinue, setShowContinue] = React.useState(false);
-  const [showBrand, setShowBrand] = React.useState('');
 
-  const [donationID, setDonationID] = React.useState(null);
-  const [paypalProcessing, setPaypalProcessing] = React.useState(false);
+  const [donationUid, setDonationUid] = React.useState(null);
 
-  let donorDetails = {
+  const donorDetails = {
     firstname: contactDetails.firstName,
     lastname: contactDetails.lastName,
     email: contactDetails.email,
@@ -128,460 +89,303 @@ function PaymentDetails({
     country: contactDetails.country,
     companyname: contactDetails.companyName,
   };
-  React.useEffect(() => {
-    const cardNumberElement = elements!.getElement(CardNumberElement);
-    cardNumberElement!.on('change', ({ error, complete, brand }) => {
-      if (error) {
-        setShowContinue(false);
-      } else if (complete) {
-        setShowBrand(brand);
-        const cardExpiryElement = elements!.getElement(CardExpiryElement);
-        cardExpiryElement!.on('change', ({ error, complete }) => {
-          if (error) {
-            setShowContinue(false);
-          } else if (complete) {
-            const cardCvcElement = elements!.getElement(CardCvcElement);
-            cardCvcElement!.on('change', ({ error, complete }) => {
-              if (error) {
-                setShowContinue(false);
-              } else if (complete) {
-                setShowContinue(true);
-              }
-            });
-          }
-        });
-      }
-    });
-  }, [CardNumberElement, CardExpiryElement, CardCvcElement]);
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    setShowContinue(false);
-    event.preventDefault();
-    if (!stripe || !elements) {
-      return;
-    }
 
-    let paymentMethod: any;
-
-    if (paymentType === 'CARD') {
-      const cardElement = elements!.getElement(CardNumberElement);
-      setCardCvv(false);
-      setCardDate(false);
-      setCardNumber(false);
-      cardElement!.on('change', ({ error }) => {
-        if (error) {
-          // setPaymentError(error.message);
-          setPaymentError('Could not process your payment, please try again.');
-          return;
-        }
-      });
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: cardElement!,
-        })
-        .catch((error) => {
-          setPaymentError('Could not process your payment, please try again.');
-          return;
-        });
-      paymentMethod = payload.paymentMethod;
-      // Add payload error if failed
-    } else if (paymentType === 'SEPA') {
-      const payload = await stripe
-        .createPaymentMethod({
-          type: 'sepa_debit',
-          sepa_debit: elements.getElement(IbanElement)!,
-          billing_details: {
-            name: contactDetails.firstName,
-            email: contactDetails.email,
-          },
-        })
-        .catch((error) => {
-          setPaymentError(error.message);
-          return;
-        });
-      paymentMethod = payload.paymentMethod;
-      // Add payload error if failed
-    }
-
-
-    const payWithCardProps = {
-      setDonationStep,
-      setIsPaymentProcessing,
+  async function getDonation() {
+    const donation = await createDonationFunction({
+      isTaxDeductible,
+      country,
       project,
-      currency,
       treeCost,
       treeCount,
-      giftDetails,
-      isGift,
-      setPaymentError,
-      paymentSetup,
-      window,
-      paymentMethod,
-      donorDetails,
-      taxDeductionCountry: isTaxDeductible ? country : null,
-      token: token
-    };
-    payWithCard({ ...payWithCardProps });
-  };
-
-  const handleChange = (change) => {
-    if (change.complete === true) {
-      setCardNumber(true);
-    } else {
-      setCardNumber(false);
-    }
-  };
-  const handleChangeCvv = (change) => {
-    if (change.complete === true) {
-      setCardCvv(true);
-    } else {
-      setCardCvv(false);
-    }
-  };
-  const handleChangeCardDate = (change) => {
-    if (change.complete === true) {
-      setCardDate(true);
-    } else {
-      setCardDate(false);
-    }
-  };
-
-  const validateCard = () => {
-    if (cardNumber && cardCvv && cardDate) {
-      setShowContinue(true);
-    } else {
-      setShowContinue(false);
-    }
-  };
-
-  React.useEffect(() => {
-    validateCard();
-  }, [cardDate, cardNumber, cardCvv]);
-
-  // Function to process paypal donations, this will create a donation ID
-  const createDonationWithPaypal = () => {
-    setPaypalProcessing(true)
-    setShowPaymentForm('PAYPAL');
-    let createDonationData = {
-      type: 'trees',
-      project: project.id,
-      treeCount,
-      amount: Math.round((treeCost * treeCount + Number.EPSILON) * 100) / 100,
       currency,
-      donor: { ...donorDetails },
-    };
-    let taxDeductionCountry = isTaxDeductible ? country : null;
-    if (taxDeductionCountry) {
-      createDonationData = {
-        ...createDonationData,
-        taxDeductionCountry,
-      };
-    }
+      donorDetails,
+      isGift,
+      giftDetails,
+      setIsPaymentProcessing,
+      setPaymentError,
+      setDonationID,
+      token,
+    });
+    setDonationUid(donation.uid);
+    setaskpublishName(!donation.hasPublicProfile);
+    setpublishName(donation.hasPublicProfile);
+    setDonationID(donation.id);
 
-    if (isGift) {
-      if (giftDetails.type === 'invitation') {
-        createDonationData = {
-          ...createDonationData,
-          ...{
-            gift: {
-              type: 'invitation',
-              recipientName: giftDetails.recipientName,
-              recipientEmail: giftDetails.email,
-              message: giftDetails.giftMessage,
-            }
-          },
-        };
-      } else if (giftDetails.type === 'direct') {
-        createDonationData = {
-          ...createDonationData,
-          ...{
-            gift: {
-              type: 'direct',
-              recipientTreecounter: giftDetails.recipientTreecounter,
-              message: giftDetails.giftMessage,
-            }
-          },
-        };
-      } else if (giftDetails.type === 'bulk') {
-        // for multiple receipients
-      }
-    }
-
-    createDonation(createDonationData, token)
-      .then((res) => {
-        if (res.code === 400) {
-          setIsPaymentProcessing(false);
-          setPaymentError(res.message);
-          setPaypalProcessing(false)
-        } else if (res.code === 500) {
-          setIsPaymentProcessing(false);
-          setPaypalProcessing(false);
-          setPaymentError('Something went wrong please try again soon!');
-        } else if (res.code === 503) {
-          setIsPaymentProcessing(false);
-          setPaypalProcessing(false);
-          setPaymentError(
-            'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
-          );
-        } else {
-          setDonationID(res.id);
-          setShowPaymentForm('PAYPAL');
-          setPaypalProcessing(false)
-        }
-      });
+    setShouldCreateDonation(false);
   }
-
-  // Function to process paypal donations, this will pay for paypal
-  const paypalSuccess = (data: any) => {
-    if (data.error) {
-      setPaymentError(data.error.message)
-    } else {
-      setIsPaymentProcessing(true);
-
-      let payDonationData;
-
-      payDonationData = {
-        paymentProviderRequest: {
-          account: paymentSetup.gateways.paypal.account,
-          gateway: 'paypal',
-          source: {
-            ...data
-          },
-        },
-      };
-
-      payDonation(payDonationData, donationID, token)
-        .then(async (res) => {
-          if (res.code === 400) {
-            setIsPaymentProcessing(false);
-            setPaymentError(res.message);
-            return;
-          } if (res.code === 500) {
-            setIsPaymentProcessing(false);
-            setPaymentError('Something went wrong please try again soon!');
-            return;
-          } if (res.code === 503) {
-            setIsPaymentProcessing(false);
-            setPaymentError(
-              'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
-            );
-            return;
-          }
-          if (res.status === 'failed') {
-            setIsPaymentProcessing(false);
-            setPaymentError(res.message);
-          } else if (res.paymentStatus === 'success') {
-            setIsPaymentProcessing(false);
-            setPaymentType('Paypal')
-            setDonationStep(4)
-
-          } else if (res.status === 'action_required') {
-            const clientSecret = res.response.payment_intent_client_secret;
-            const donationID = res.id;
-            const stripe = window.Stripe(
-              process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-              {
-                stripeAccount: res.response.account,
-              },
-            );
-            if (stripe) {
-              await stripe.handleCardAction(clientSecret).then((res) => {
-                if (res.error) {
-                  setIsPaymentProcessing(false);
-                  setPaymentError(res.error.message);
-                } else {
-                  const payDonationData = {
-                    paymentProviderRequest: {
-                      account: paymentSetup.gateways.stripe.account,
-                      gateway: 'stripe_pi',
-                      source: {
-                        id: res.paymentIntent.id,
-                        object: 'payment_intent',
-                      },
-                    },
-                  };
-                  payDonation(payDonationData, donationID, token).then((res) => {
-                    if (res.paymentStatus === 'success') {
-                      setIsPaymentProcessing(false);
-                      setPaymentType('Paypal')
-                      setDonationStep(4)
-
-                    } else {
-                      setIsPaymentProcessing(false);
-                      setPaymentError(res.error ? res.error.message : res.message);
-                    }
-                  });
-                }
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          setIsPaymentProcessing(false);
-          setPaymentError(error.message);
-        });
+  React.useEffect(() => {
+    if (shouldCreateDonation) {
+      getDonation();
     }
-  }
+  }, [shouldCreateDonation]);
+
+  const onSubmitPayment = (gateway: any, paymentMethod: any) => {
+    payDonationFunction({
+      gateway,
+      paymentMethod,
+      setIsPaymentProcessing,
+      setPaymentError,
+      t,
+      paymentSetup,
+      donationID,
+      token,
+      setDonationStep,
+      donorDetails,
+      country,
+    });
+  };
+
+  const sofortCountries = ['AT', 'BE', 'DE', 'IT', 'NL', 'ES'];
 
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
     ) : (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div
-            onClick={() => setDonationStep(2)}
-            className={styles.headerBackIcon}
-          >
-            <BackArrow />
+      <div className={styles.cardContainer}>
+        <div className={styles.header} style={{ minHeight: '200px' }}>
+          <div className={styles.headerTitleContainer}>
+            <button
+              id={'backArrowPayment'}
+              onClick={() => setDonationStep(2)}
+              className={styles.headerBackIcon}
+            >
+              <BackArrow color="#ffffff" />
+            </button>
+            <div>
+              <div className={styles.headerTitle}>
+                {t('donate:paymentDetails')}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div
+                  className={styles.totalCost}
+                  style={{ color: styles.light }}
+                >
+                  {getFormatedCurrency(
+                    i18n.language,
+                    currency,
+                    treeCount * treeCost
+                  )}
+                </div>
+                <div
+                  className={styles.totalCostText}
+                  style={{ color: styles.light }}
+                >
+                  {t('donate:fortreeCountTrees', {
+                    count: Number(treeCount),
+                    treeCount: getFormattedNumber(
+                      i18n.language,
+                      Number(treeCount)
+                    ),
+                  })}
+                </div>
+              </div>
+              <div className={styles.plantProjectName}>
+                {t('common:to_project_by_tpo', {
+                  projectName: project.name,
+                  tpoName: project.tpo.name,
+                })}
+              </div>
+            </div>
           </div>
-          <div className={styles.headerTitle}>{t('donate:paymentDetails')}</div>
         </div>
+
+        {contactDetails && (
+          <div className={styles.showContactDetails}>
+            {contactDetails.companyName ? (
+              <>
+                <p className={styles.showContactDetailsName}>
+                  {`${contactDetails.companyName}`}
+                </p>
+                <p className={styles.showContactDetailsAddress}>
+                  {`${contactDetails.firstName} ${contactDetails.lastName}`}
+                </p>
+              </>
+            ) : (
+              <p className={styles.showContactDetailsName}>
+                {`${contactDetails.firstName} ${contactDetails.lastName}`}
+              </p>
+            )}
+
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.address}, ${contactDetails.city}`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.zipCode}, ${t(
+                'country:' + contactDetails.country.toLowerCase()
+              )}`}
+            </p>
+            <p className={styles.showContactDetailsAddress}>
+              {`${contactDetails.email}`}
+            </p>
+
+            {giftDetails && giftDetails.recipientName && (
+              <div style={{ marginTop: '12px', fontStyle: 'italic' }}>
+                <p className={styles.showContactDetailsName}>
+                  {directGift && directGift.type === 'individual'
+                    ? t('donate:giftToName')
+                    : t('donate:thisDonationSupports')}{' '}
+                  {giftDetails.recipientName}
+                </p>
+                {giftDetails.email && (
+                  <p className={styles.showContactDetailsAddress}>
+                    {giftDetails.email}
+                  </p>
+                )}
+                {giftDetails.giftMessage && (
+                  <p className={styles.showContactDetailsAddress}>
+                    {giftDetails.giftMessage}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {paymentError && (
           <div className={styles.paymentError}>{paymentError}</div>
         )}
 
-        <div className={styles.finalTreeCount}>
-          <div className={styles.totalCost}>
-            {getFormatedCurrency(i18n.language, currency, treeCount * treeCost)}
-          </div>
-          <div className={styles.totalCostText}>
-            {t('donate:fortreeCountTrees', {
-              treeCount: getFormattedNumber(i18n.language, Number(treeCount)),
-            })}
-          </div>
-        </div>
-
-        {
-          <div className={styles.paymentModeContainer} onClick={() => setShowPaymentForm('CARD')}>
-            <div className={styles.paymentModeHeader}>
-              {showBrand !== '' ? getCardBrand(showBrand) : <CreditCard />}
-              <div className={styles.paymentModeTitle}>
-                {t('donate:creditDebitCard')}
-              </div>
-              {/* <div className={styles.paymentModeFee}>
-            <div className={styles.paymentModeFeeAmount}>€ 0,76 fee</div>
-            <InfoIcon />
-          </div> */}
-            </div>
-
-            {showPaymentForm === 'CARD' && (
-              <>
-                <div className={styles.formRow}>
-                  <FormControlNew variant="outlined">
-                    <CardNumberElement
-                      id="cardNumber"
-                      options={getInputOptions(t('donate:cardNumber'))}
-                      onChange={handleChange}
-                    />
-                  </FormControlNew>
-                </div>
-                <div className={styles.formRow}>
-                  <FormControlNew variant="outlined">
-                    <CardExpiryElement
-                      id="expiry"
-                      options={getInputOptions(t('donate:expDate'))}
-                      onChange={handleChangeCardDate}
-                    />
-                  </FormControlNew>
-                  <div style={{ width: '20px' }}></div>
-                  <FormControlNew variant="outlined">
-                    <CardCvcElement id="cvc" options={getInputOptions('CVV')} onChange={handleChangeCvv} />
-                  </FormControlNew>
-                </div>
-                {/* <div className={styles.saveCard}>
-          <div className={styles.saveCardText}>
-            Save card for future Donations
-          </div>
-          <ToggleSwitch
-            checked={saveCardDetails}
-            onChange={() => setSaveCardDetails(!saveCardDetails)}
-            name="checkedB"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-        </div> */}
-                {showContinue ? (
-                  <div onClick={handleSubmit} className={styles.actionButtonsContainer}>
-                    <AnimatedButton className={styles.continueButton}>
-                      {t('common:donate')}
-                    </AnimatedButton>
-                  </div>
-                ) : (
-                    <div className={styles.actionButtonsContainer}>
-                      <AnimatedButton disabled className={styles.continueButtonDisabled}>
-                        {t('common:donate')}
-                      </AnimatedButton>
-                    </div>
-                  )}
-              </>
-            )}
-          </div>
-        }
-
-        { paypalCurrencies.includes(currency) && paymentSetup?.gateways.paypal &&
-          <div className={styles.paymentModeContainer} onClick={() => createDonationWithPaypal()}>
-            <div className={styles.paymentModeHeader}>
-              <PaypalIcon />
-              <div className={styles.paymentModeTitle}>Paypal</div>
-              {paypalProcessing && <div className={styles.spinner} />}
-
-            </div>
-
-            {showPaymentForm === 'PAYPAL' && (
-              donationID && (
-                <Paypal
-                  onSuccess={data => {
-                    paypalSuccess(data);
+        <div className={styles.treeDonationContainer}>
+          {!contactDetails.companyName && contactDetails.companyName === '' ? (
+            askpublishName ? (
+              <div className={styles.isCompany}>
+                <label htmlFor="publishName" className={styles.isCompanyText}>
+                  {t('donate:askPublishName')}
+                </label>
+                <ToggleSwitch
+                  id="publishName"
+                  checked={publishName}
+                  onChange={() => {
+                    setpublishName(!publishName);
                   }}
-                  amount={treeCost * treeCount}
-                  currency={currency}
-                  donationId={donationID}
-                  mode={paymentSetup?.gateways.paypal.isLive ? 'production' : 'sandbox'}
-                  clientID={paymentSetup?.gateways.paypal.authorization.client_id}
+                  name="checkedB"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
-              )
-            )}
+              </div>
+            ) : (
+              <div className={styles.isCompany}>
+                <label
+                  className={styles.isCompanyText}
+                  style={{ textAlign: 'center' }}
+                >
+                  {t('donate:nameAlreadyPublished')}
+                </label>
+              </div>
+            )
+          ) : null}
 
-          </div>
-        }
+          <PaymentMethodTabs
+            paymentType={paymentType}
+            setPaymentType={setPaymentType}
+            showCC={paymentSetup?.gateways.stripe.methods.includes('stripe_cc')}
+            showGiroPay={
+              country === 'DE' &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_giropay')
+            }
+            showSepa={
+              currency === 'EUR' &&
+              (config.enableGuestSepa || token) &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_sepa')
+            }
+            showSofort={
+              sofortCountries.includes(country) &&
+              paymentSetup?.gateways.stripe.methods.includes('stripe_sofort')
+            }
+            showPaypal={
+              paypalCurrencies.includes(currency) &&
+              paymentSetup?.gateways.paypal
+            }
+          />
 
-        {/* <div className={styles.paymentModeContainer}>
-        <div onClick={() => {
-          setIsSepa(!isSepa), setPaymentType('SEPA')
-        }} className={styles.paymentModeHeader}>
-          <SepaIcon />
-          <div className={styles.paymentModeTitle}>SEPA Direct Debit</div>
-          <div className={styles.paymentModeFee}>
-            <div className={styles.paymentModeFeeAmount}>€ 0,35 fee</div>
-            <InfoIcon />
-          </div>
+          {donationID && (
+            <>
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'CARD'}
+                id={`payment-methods-tabpanel-${'CARD'}`}
+                aria-labelledby={`scrollable-force-tab-${'CARD'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <CardPayments
+                    donorDetails={donorDetails}
+                    totalCost={getFormatedCurrency(
+                      i18n.language,
+                      currency,
+                      treeCount * treeCost
+                    )}
+                    onPaymentFunction={(data) =>
+                      onSubmitPayment('stripe', data)
+                    }
+                    paymentType={paymentType}
+                    setPaymentType={setPaymentType}
+                  />
+                </Elements>
+              </div>
+
+              {/* SEPA */}
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'SEPA'}
+                id={`payment-methods-tabpanel-${'SEPA'}`}
+                aria-labelledby={`scrollable-force-tab-${'SEPA'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <SepaPayments
+                    paymentType={paymentType}
+                    onPaymentFunction={onSubmitPayment}
+                    contactDetails={contactDetails}
+                  />
+                </Elements>
+              </div>
+
+              {/* Paypal */}
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'Paypal'}
+                id={`payment-methods-tabpanel-${'Paypal'}`}
+                aria-labelledby={`scrollable-force-tab-${'Paypal'}`}
+              >
+                {paymentType === 'Paypal' && (
+                  <PaypalPayments
+                    paymentSetup={paymentSetup}
+                    treeCount={treeCount}
+                    treeCost={treeCost}
+                    currency={currency}
+                    donationID={donationID}
+                    payDonationFunction={onSubmitPayment}
+                    donationUid={donationUid}
+                  />
+                )}
+              </div>
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'GiroPay'}
+                id={`payment-methods-tabpanel-${'GiroPay'}`}
+                aria-labelledby={`scrollable-force-tab-${'GiroPay'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <GiroPayPayments onSubmitPayment={onSubmitPayment} />
+                </Elements>
+              </div>
+
+              <div
+                role="tabpanel"
+                hidden={paymentType !== 'Sofort'}
+                id={`payment-methods-tabpanel-${'Sofort'}`}
+                aria-labelledby={`scrollable-force-tab-${'Sofort'}`}
+              >
+                <Elements stripe={getStripe(paymentSetup)}>
+                  <SofortPayments onSubmitPayment={onSubmitPayment} />
+                </Elements>
+              </div>
+            </>
+          )}
         </div>
-
-        {isSepa && (<div>
-          <div className={styles.mandateAcceptance}>
-            By providing your IBAN and confirming this payment, you authorise
-            (A) Rocketship Inc and Stripe, our payment service provider, to send
-            instructions to your bank to debit your account and (B) your bank to
-            debit your account in accordance with those instructions. You are
-            entitled to a refund from your bank under the terms and conditions of
-            your agreement with your bank. A refund must be claimed within 8 weeks
-            starting from the date on which your account was debited.
-      </div>
-          <FormControlNew variant="outlined">
-            <IbanElement
-              id="iban"
-              options={ELEMENT_OPTIONS}
-            />
-          </FormControlNew>
-        </div>)}
-      </div> */}
-
-        {/* <div className={styles.horizontalLine} /> */}
-
-
       </div>
     )
-  ) : null;
+  ) : (
+    <></>
+  );
 }
 
 export default PaymentDetails;

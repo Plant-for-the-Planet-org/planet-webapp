@@ -2,9 +2,7 @@ import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../styles/StepForm.module.scss'
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -61,19 +59,19 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     ])
 
     const handleSetPlantingSeasons = (id: any) => {
-        let month = plantingSeasons[id];
-        let newMonth = month;
+        const month = plantingSeasons[id];
+        const newMonth = month;
         newMonth.isSet = !month.isSet;
-        let plantingSeasonsNew = plantingSeasons;
+        const plantingSeasonsNew = plantingSeasons;
         plantingSeasonsNew[id] = newMonth;
         setPlantingSeasons([...plantingSeasonsNew]);
     }
 
     const handleSetSiteOwner = (id: any) => {
-        let owner = siteOwners[id - 1];
-        let newOwner = owner;
+        const owner = siteOwners[id - 1];
+        const newOwner = owner;
         newOwner.isSet = !owner.isSet;
-        let newSiteOwners = siteOwners;
+        const newSiteOwners = siteOwners;
         newSiteOwners[id - 1] = newOwner;
         setSiteOwners([...newSiteOwners]);
     }
@@ -84,21 +82,20 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
         }
     })
 
-    const [isCertified, setisCertified] = React.useState(true)
 
     const { register, handleSubmit, errors, control, reset, setValue, watch } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (data: any) => {
         setIsUploadingData(true)
-        let months = [];
+        const months = [];
         for (let i = 0; i < plantingSeasons.length; i++) {
             if (plantingSeasons[i].isSet) {
-                let j = i + 1;
+                const j = i + 1;
                 months.push(j)
             }
         }
 
-        let owners = [];
+        const owners = [];
         for (let i = 0; i < siteOwners.length; i++) {
             if (siteOwners[i].isSet) {
                 owners.push(siteOwners[i].value)
@@ -106,8 +103,8 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
         }
 
         const submitData = {
-            yearAbandoned: data.yearAbandoned.getFullYear(),
-            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()}-${data.firstTreePlanted.getDate()}`,
+            yearAbandoned: data.yearAbandoned.getFullYear() ? data.yearAbandoned.getFullYear() : null,
+            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()+1}-${data.firstTreePlanted.getDate()}`,
             plantingDensity: data.plantingDensity,
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
@@ -119,7 +116,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months
-        }
+        }        
 
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
             if (!res.code) {
@@ -165,7 +162,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             if (projectDetails.plantingSeasons && projectDetails.plantingSeasons.length > 0) {
                 for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
                     if (projectDetails.plantingSeasons[i]) {
-                        let j = projectDetails.plantingSeasons[i] - 1;
+                        const j = projectDetails.plantingSeasons[i] - 1;
                         handleSetPlantingSeasons(j)
                     }
                 }
@@ -173,7 +170,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
             // set owner type
             if (projectDetails.siteOwnerType && projectDetails.siteOwnerType.length > 0) {
-                let newSiteOwners = siteOwners
+                const newSiteOwners = siteOwners
                 for (let i = 0; i < projectDetails.siteOwnerType.length; i++) {
                     for (let j = 0; j < newSiteOwners.length; j++) {
                         if (newSiteOwners[j].value === projectDetails.siteOwnerType[i]) {
@@ -190,18 +187,18 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     }, [projectDetails])
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>{e.preventDefault()}}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             views={["year"]}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             label={t('manageProjects:yearOfAbandonment')}
                                             inputVariant="outlined"
                                             variant="inline"
@@ -234,12 +231,12 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
 
                                         <DatePicker
                                             label={t('manageProjects:firstTreePlanted')}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             inputVariant="outlined"
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
@@ -432,11 +429,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             label={t('manageProjects:acquisitionYear')}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             inputVariant="outlined"
                                             TextFieldComponent={MaterialTextField}
                                             autoOk
@@ -458,11 +455,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
                                 <Controller
-                                    render={props => (
+                                    render={properties => (
                                         <DatePicker
                                             views={["year"]}
-                                            value={props.value}
-                                            onChange={props.onChange}
+                                            value={properties.value}
+                                            onChange={properties.onChange}
                                             label={t('manageProjects:yearOfDegradation')}
                                             inputVariant="outlined"
                                             variant="inline"
@@ -543,34 +540,12 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     </div>
 
 
-                    <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
-                            <div className={`${styles.formFieldRadio}`}>
-                                <label htmlFor="isCertified">
-                                    {t('manageProjects:isCertified')}
-                                </label>
-                                <ToggleSwitch
-                                    checked={isCertified}
-                                    onChange={() => setisCertified(!isCertified)}
-                                    name="isCertified"
-                                    id="isCertified"
-
-                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                />
-                            </div>
-                        </div>
-                        <div style={{ width: '20px' }}></div>
-
-                    </div>
-
-                    {isCertified ? (
                         <ProjectCertificates
                             projectGUID={projectGUID}
                             token={token}
                             setIsUploadingData={setIsUploadingData}
                             userLang={userLang}
                         />
-                    ) : null}
 
                 </div>
 
@@ -582,28 +557,29 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
                 <div className={styles.formField} style={{ marginTop: '48px' }}>
                     <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                        <button
                             onClick={handleBack}
-                            className={styles.secondaryButton}
+                            className="secondaryButton"
                         >
                             <BackArrow />
                             <p>
                                 {t('manageProjects:backToMedia')}
                             </p>
-                        </AnimatedButton>
+                        </button>
                     </div>
                     <div style={{ width: '20px' }}></div>
-                    <div className={`${styles.formFieldHalf}`}>
-                        <AnimatedButton
+                    <div className={`${styles.formFieldHalf}`} >
+                        <button 
                             onClick={handleSubmit(onSubmit)}
-                            className={styles.continueButton}
+                            className="primaryButton"
+                            style={{ minWidth: "240px"}}
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
-                        </AnimatedButton>
+                        </button >
                     </div>
                 </div>
             </form>
 
         </div>
-    ) : null;
+    ) : <></>;
 }

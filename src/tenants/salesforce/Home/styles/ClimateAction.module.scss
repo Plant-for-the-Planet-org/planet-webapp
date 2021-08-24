@@ -1,0 +1,99 @@
+@import '../../../../theme/theme';
+
+.climateActionSection {
+  padding-top: 100px;
+  padding-bottom: 310px;
+  width: 100vw;
+  background-image: url('/tenants/salesforce/images/donate-bkgd.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: auto 570px;
+  h3 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: -0.004em;
+    color: #032D60;
+
+    @include lgLaptopView {
+      font-size: $fontXXLarge;
+      line-height: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  p {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 300;
+    font-size: $fontLarge;
+    line-height: 30px;
+    text-align: center;
+    letter-spacing: -0.002em;
+    color: #181818;
+    margin-bottom: 60px;
+    small {
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 24px;
+      color: #1A1A1A;
+    }
+  }
+}
+
+.climateActionContent {
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    margin-bottom: 32px;
+  }
+  span {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 15px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #939393;
+    margin-bottom: 12px;
+    display: block;
+  }
+  h4 {
+    font-family: $secondaryFontFamily;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: -0.001em;
+    color: #032D60;
+    margin-bottom: 16px;
+    @include lgLaptopView{
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.climateActionDonate {
+  margin-top: 100px;
+  text-align: center;
+  p {
+    margin-bottom: 20px;
+  }
+  button {
+    background: #215CA0;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+}

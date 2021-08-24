@@ -3,15 +3,23 @@ import tenantConfig from '../../tenant.config';
 import theme from './themeProperties';
 const config = tenantConfig();
 
-const { light, dark, fontSizes, primaryColor } = theme;
+const { light, dark, fontSizes, primaryColor,primaryDarkColor } = theme;
 
 const globalStyles = css.global`
   :root {
     --primary-font-family: ${config!.font.primaryFontFamily};
     --secondary-font-family: ${config!.font.secondaryFontFamily};
-    --title-size: ${fontSizes.titleSize};
-    --sub-title-size: ${fontSizes.subTitleSize};
+    --font-xx-extra-small: ${fontSizes.fontXXSmall};
+    --font-x-extra-small: ${fontSizes.fontXSmall};
+    --font-small: ${fontSizes.fontSmall};
+    --font-sixteen: ${fontSizes.fontSixteen};
+    --font-medium: ${fontSizes.fontMedium};
+    --font-large: ${fontSizes.fontLarge};
+    --font-x-large: ${fontSizes.fontXLarge};
+    --font-xx-large: ${fontSizes.fontXXLarge};
+    --font-xxx-large: ${fontSizes.fontXXXLarge};
     --primary-color: ${primaryColor};
+    --primary-dark-color: ${primaryDarkColor};
   }
   .theme-light {
     --primary-font-color: ${light.primaryFontColor};
@@ -22,6 +30,7 @@ const globalStyles = css.global`
     --highlight-background: ${light.highlightBackground};
     --light: ${light.light};
     --dark: ${light.dark};
+    --danger-color: ${light.dangerColor};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
@@ -32,6 +41,7 @@ const globalStyles = css.global`
     --highlight-background: ${dark.highlightBackground};
     --light: ${dark.light};
     --dark: ${dark.dark};
+    --danger-color: ${dark.dangerColor};
   }
 `;
 

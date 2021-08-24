@@ -17,7 +17,7 @@ function Video({}: Props): ReactElement {
         <div className={styles.videoSection}>
           <div className={styles.videoTitle}>
             <h2>{t('leaderboard:videoTitle')}</h2> 
-            <BackArrow />
+            <button id="backArrowVideoT" className={styles.backArrowVideoT}><BackArrow /></button>
           </div>
             <div className={styles.videoContainerWrapper}>
             <div className={styles.videoContainer}>
@@ -41,7 +41,7 @@ function Video({}: Props): ReactElement {
             </div>
            
         </div>
-    ) : null;
+    ) : <></>;
 }
 
 export default Video

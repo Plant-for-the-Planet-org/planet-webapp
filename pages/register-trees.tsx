@@ -1,38 +1,13 @@
 import React, { ReactElement } from 'react';
 import LandingSection from '../src/features/common/Layout/LandingSection';
-import RegisterTrees from '../src/features/user/UserProfile/components/RegisterTrees';
-import { getUserInfo } from '../src/utils/auth0/localStorageUtils';
-import { useAuth0 } from '@auth0/auth0-react';
+import dynamic from 'next/dynamic';
 
 interface Props {}
 
 export default function Register({}: Props): ReactElement {
-  const [currentUserSlug, setCurrentUserSlug] = React.useState();
-  const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
-    true
+  const RegisterTrees = dynamic(
+    () => import('../src/features/user/UserProfile/components/RegisterTrees')
   );
-
-  const [token, setToken] = React.useState('')
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
-
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    async function loadFunction() {
-      const token = await getAccessTokenSilently();
-      setToken(token);
-      getUserInfo() && getUserInfo().slug
-        ? setCurrentUserSlug(getUserInfo().slug)
-        : null;
-    }
-    if (isAuthenticated && !isLoading) {
-      loadFunction()
-    }
-  }, [isAuthenticated, isLoading])
-
   return (
     <LandingSection
       fixedBg={true}
@@ -42,13 +17,7 @@ export default function Register({}: Props): ReactElement {
           : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
       }
     >
-      {!isLoading && currentUserSlug ? (
-        <RegisterTrees
-          registerTreesModalOpen={registerTreesModalOpen}
-          slug={currentUserSlug}
-          token={token}
-        />
-      ) : null}
+      <RegisterTrees />
     </LandingSection>
   );
 }

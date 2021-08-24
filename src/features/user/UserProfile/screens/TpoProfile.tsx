@@ -13,6 +13,7 @@ export default function TpoProfile({
   authenticatedType,
   changeForceReload,
   forceReload,
+  token,
 }: any) {
   // settings modal
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -41,16 +42,19 @@ export default function TpoProfile({
     setAddTargetModalOpen(true);
   };
 
+  console.log('userprofile', userprofile);
+
   return (
     <>
       {authenticatedType === 'private' && (
         <>
-          <div
+          <button
+            id={'tpoProfileSetting'}
             className={styles.settingsIcon}
             onClick={handleSettingsModalOpen}
           >
             <Settings color="white" />
-          </div>
+          </button>
         </>
       )}
       <LandingSection
@@ -74,12 +78,14 @@ export default function TpoProfile({
             forceReload={forceReload}
           />
         )}
-        <UserInfo
-          userprofile={userprofile}
-          authenticatedType={authenticatedType}
-          // handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-          handleAddTargetModalOpen={handleAddTargetModalOpen}
-        />
+        {userprofile && (
+          <UserInfo
+            userprofile={userprofile}
+            authenticatedType={authenticatedType}
+            // handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+            handleAddTargetModalOpen={handleAddTargetModalOpen}
+          />
+        )}
       </LandingSection>
       <ProjectsContainer
         userprofile={userprofile}
@@ -87,7 +93,11 @@ export default function TpoProfile({
       />
 
       {authenticatedType === 'private' ? (
-        <MyTrees authenticatedType={authenticatedType} profile={userprofile} />
+        <MyTrees
+          authenticatedType={authenticatedType}
+          profile={userprofile}
+          token={token}
+        />
       ) : null}
 
       {/* add target modal */}

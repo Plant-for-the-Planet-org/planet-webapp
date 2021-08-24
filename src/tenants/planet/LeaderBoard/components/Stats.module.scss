@@ -1,8 +1,8 @@
 @import './../../../../theme/theme';
 
 .wrapper {
-  background-color: #007a49;
-  background-image: linear-gradient(to bottom, #007a49, #68b030);
+  background-color: $primaryDarkColor;
+  background-image: linear-gradient(to bottom, $primaryDarkColor, $primaryColor);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -38,12 +38,15 @@
   font-family: $primaryFontFamily;
   font-size: 38px;
   font-weight: bold;
-  color: #68b030;
+  color: $primaryColor;
+}
+:export {
+  dangerColor: $dangerColor;
 }
 
 .statText {
   font-family: $primaryFontFamily;
-  font-size: 14px;
+  font-size: $fontSmall;
   font-weight: bold;
 }
 
@@ -76,7 +79,7 @@
   padding: 40px;
   width: 375px;
   max-width: 100%;
-  background: #fff;
+  background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 9px;
   animation: fade_in_show 0.5s;
@@ -97,7 +100,7 @@
 
 .infoContent {
   width: 100%;
-  font-size: 12px;
+  font-size: $fontXSmall;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

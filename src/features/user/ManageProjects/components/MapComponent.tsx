@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../styles/StepForm.module.scss';
@@ -9,7 +9,8 @@ import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from "geojson-validation";
+import gjv from 'geojson-validation';
+import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -17,21 +18,19 @@ interface Props {
   setGeoJson: Function;
   geoJsonError: any;
   setGeoJsonError: Function;
+  geoLocation: any;
 }
 
-const MAPBOX_TOKEN = process.env.MAPBOXGL_ACCESS_TOKEN;
-
-const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN,
-});
+const Map = ReactMapboxGl({ maxZoom: 15 });
 
 export default function MapComponent({
   geoJson,
   setGeoJson,
   geoJsonError,
-  setGeoJsonError
+  setGeoJsonError,
+  geoLocation
 }: Props): ReactElement {
-  const defaultMapCenter = [-28.5, 36.96];
+  const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
@@ -46,9 +45,32 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+  const [satellite, setSatellite] = React.useState(false);
+
+  const RASTER_SOURCE_OPTIONS = {
+    "type": "raster",
+    "tiles": [
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    ],
+    "tileSize": 128
+  };
+
+  React.useEffect(() => {
+    const promise = getMapStyle('openStreetMap');
+    promise.then((style: any) => {
+      if (style) {
+        setStyle(style);
+      }
+    });
+  }, []);
+
   const reader = new FileReader();
   const mapParentRef = React.useRef(null);
-
   const drawControlRef = React.useRef(null);
 
   const onDrawCreate = ({ features }: any) => {
@@ -77,16 +99,17 @@ export default function MapComponent({
         center: [longitude, latitude],
         zoom: [zoom],
       };
-      if (drawControlRef.current) {
-        try {
-          drawControlRef.current.draw.add(geoJson);
+      setTimeout(() => {
+        if (drawControlRef.current) {
+          try {
+            drawControlRef.current.draw.add(geoJson);
+          } catch (e) {
+            setGeoJsonError(true);
+            setGeoJson(null);
+            console.log('We only support feature collection for now', e);
+          }
         }
-        catch (e) {
-          setGeoJsonError(true);
-          setGeoJson(null);
-          console.log('We only support feature collection for now', e);
-        }
-      }
+      }, 1000);
       setViewPort(newViewport);
     } else {
       setViewPort({
@@ -104,12 +127,18 @@ export default function MapComponent({
     >
       <Map
         {...viewport}
-        style="mapbox://styles/mapbox/streets-v11?optimize=true" // eslint-disable-line
+        style={style} // eslint-disable-line
         containerStyle={{
           height: '400px',
           width: '100%',
         }}
       >
+        {satellite &&
+          <>
+            <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+            <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
+          </>
+        }
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
@@ -123,7 +152,15 @@ export default function MapComponent({
             uncombine_features: false,
           }}
         />
-        <ZoomControl position='bottom-right' />
+        <div className={styles.layerSwitcher}>
+          <div onClick={() => setSatellite(false)} className={`${styles.layerOption} ${satellite ? '' : styles.active}`}>
+            Map
+          </div>
+          <div onClick={() => setSatellite(true)} className={`${styles.layerOption} ${satellite ? styles.active : ''}`}>
+            Satellite
+          </div>
+        </div>
+        <ZoomControl position="bottom-right" />
       </Map>
       <Dropzone
         accept={['.geojson', '.kml']}
@@ -133,7 +170,7 @@ export default function MapComponent({
             drawControlRef.current.draw.deleteAll();
           }
           acceptedFiles.forEach((file: any) => {
-            var fileType =
+            const fileType =
               file.name.substring(
                 file.name.lastIndexOf('.') + 1,
                 file.name.length
@@ -143,12 +180,12 @@ export default function MapComponent({
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
-                var dom = new DOMParser().parseFromString(
+                const dom = new DOMParser().parseFromString(
                   event.target.result,
                   'text/xml'
                 );
-                var geo = tj.kml(dom);
-                if (gjv.isGeoJSONObject(geo)) {
+                const geo = tj.kml(dom);
+                if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
                   setGeoJsonError(false);
                   setGeoJson(geo);
                 } else {
@@ -161,8 +198,8 @@ export default function MapComponent({
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
-                var geo = JSON.parse(event.target.result);
-                if (gjv.isGeoJSONObject(geo)) {
+                const geo = JSON.parse(event.target.result);
+                if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
                   setGeoJsonError(false);
                   setGeoJson(geo);
                 } else {
@@ -183,8 +220,11 @@ export default function MapComponent({
           </div>
         )}
       </Dropzone>
-      {geoJsonError ?
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div> : null}
+      {geoJsonError ? (
+        <div className={styles.geoJsonError}>Invalid geojson/kml</div>
+      ) : null}
     </div>
-  ) : null;
+  ) : (
+    <></>
+  );
 }

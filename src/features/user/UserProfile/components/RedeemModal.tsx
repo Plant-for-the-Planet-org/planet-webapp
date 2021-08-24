@@ -7,41 +7,43 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
-import { useAuth0 } from '@auth0/auth0-react';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import ShareOptions from '../../../donations/components/ShareOptions';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import { ThemeContext } from '../../../../theme/themeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
-  userprofile
+  userprofile,
 }: any) {
-  const { t, i18n, ready } = useTranslation(['me', 'common', 'donate','redeem']);
+  const { t, i18n, ready } = useTranslation([
+    'me',
+    'common',
+    'donate',
+    'redeem',
+  ]);
 
   const config = tenantConfig();
 
-  const {
-    isLoading,
-    isAuthenticated,
-    getAccessTokenSilently
-  } = useAuth0();
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
 
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
 
-  const [errorMessage, setErrorMessage] = React.useState()
-  const [codeValidated, setCodeValidated] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState();
+  const [codeValidated, setCodeValidated] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState();
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [code, setCode] = React.useState();
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false,
+    false
   );
   const handleTextCopiedSnackbarOpen = () => {
     setTextCopiedSnackbarOpen(true);
@@ -49,7 +51,7 @@ export default function RedeemModal({
 
   const handleTextCopiedSnackbarClose = (
     event?: React.SyntheticEvent,
-    reason?: string,
+    reason?: string
   ) => {
     if (reason === 'clickaway') {
       return;
@@ -61,82 +63,83 @@ export default function RedeemModal({
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    getValues
-  } = useForm({ mode: 'onBlur' });
+  const { register, handleSubmit, errors, getValues } = useForm({
+    mode: 'onBlur',
+  });
 
   async function validateCode(data: any) {
-    setIsUploadingData(true)
+    setIsUploadingData(true);
     const submitData = {
       type: 'gift',
-      code: data.code
-    }
-    if (!isLoading && isAuthenticated) {
-      let token = await getAccessTokenSilently();
-      let userLang = localStorage.getItem('language') || 'en';
-      postAuthenticatedRequest(`/api/v1.3/${userLang}/validateCode`, submitData, token).then((res) => {
+      code: data.code,
+    };
+    if (contextLoaded && user) {
+      const userLang = localStorage.getItem('language') || 'en';
+      postAuthenticatedRequest(
+        `/api/v1.3/${userLang}/validateCode`,
+        submitData,
+        token
+      ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
-          setIsUploadingData(false)
-        }
-        else if (res.status === 'error') {
+          setIsUploadingData(false);
+        } else if (res.status === 'error') {
           setErrorMessage(res.errorText);
-          setIsUploadingData(false)
-        }
-        else if (res.status === 'success') {
-          setCode(data.code)
+          setIsUploadingData(false);
+        } else if (res.status === 'success') {
+          setCode(data.code);
           setCodeValidated(true);
-          setValidCodeData(res)
-          setIsUploadingData(false)
+          setValidCodeData(res);
+          setIsUploadingData(false);
         }
-      })
+      });
     }
   }
 
   async function redeemCode() {
-    setIsUploadingData(true)
+    setIsUploadingData(true);
     const submitData = {
       type: 'gift',
-      code: code
-    }
-    if (!isLoading && isAuthenticated) {
-      let token = await getAccessTokenSilently();
-      let userLang = localStorage.getItem('language') || 'en';
-      postAuthenticatedRequest(`/api/v1.3/${userLang}/convertCode`, submitData, token).then((res) => {
+      code: code,
+    };
+    if (contextLoaded && user) {
+      const userLang = localStorage.getItem('language') || 'en';
+      postAuthenticatedRequest(
+        `/api/v1.3/${userLang}/convertCode`,
+        submitData,
+        token
+      ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
-          setIsUploadingData(false)
-        }
-        else if (res.response.status === 'error') {
+          setIsUploadingData(false);
+        } else if (res.response.status === 'error') {
           setErrorMessage(res.errorText);
-          setIsUploadingData(false)
-        }
-        else if (res.response.status === 'success') {
+          setIsUploadingData(false);
+        } else if (res.response.status === 'success') {
           setCodeRedeemed(true);
           setIsUploadingData(false);
           setCodeValidated(false);
         }
-      })
+      });
     }
   }
 
   const closeRedeem = () => {
     setCodeValidated(false);
     setCodeRedeemed(false);
-    handleRedeemModalClose()
-  }
+    handleRedeemModalClose();
+  };
 
-  const contactDetails =  {
+  const contactDetails = {
     firstName: userprofile.firstname,
-    lastName:userprofile.lastname
-  }
+    lastName: userprofile.lastname,
+  };
+
+  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <Modal
-      className={styles.modalContainer}
+      className={'modalContainer' + ' ' + theme}
       open={redeemModalOpen}
       onClose={handleRedeemModalClose}
       closeAfterTransition
@@ -148,14 +151,17 @@ export default function RedeemModal({
       }}
     >
       <Fade in={redeemModalOpen}>
-
         {codeRedeemed && validCodeData ? (
           <>
             <div className={styles.modalFinal}>
               <div className={styles.header}>
-                <div onClick={() => closeRedeem()} className={styles.headerCloseIcon}>
+                <button
+                  id={'closeRedeemM'}
+                  onClick={() => closeRedeem()}
+                  className={styles.headerCloseIcon}
+                >
                   <Close />
-                </div>
+                </button>
                 <div className={styles.headerTitle}>
                   {t('redeem:congratulations')}
                 </div>
@@ -164,12 +170,20 @@ export default function RedeemModal({
               <div className={styles.thankyouImageContainer}>
                 <div className={styles.thankyouImage}>
                   <div className={styles.thankyouImageHeader}>
-                    <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: t('donate:thankyouHeaderText'),
+                      }}
+                    />
                   </div>
                   <div className={styles.donationCount}>
-                    {t('redeem:myPlantedTreesByOrg', { 
-                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)), 
-                      tpoName:validCodeData.tpos[0].tpoName 
+                    {t('redeem:myPlantedTreesByOrg', {
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(
+                        i18n.language,
+                        Number(validCodeData.treeCount)
+                      ),
+                      tpoName: validCodeData.tpos[0].tpoName,
                     })}
                     <p className={styles.donationTenant}>
                       {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -182,12 +196,20 @@ export default function RedeemModal({
               <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
                 <div className={styles.tempThankYouImage} ref={imageRef}>
                   <div className={styles.tempthankyouImageHeader}>
-                    <p dangerouslySetInnerHTML={{ __html: t('donate:thankyouHeaderText') }} />
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: t('donate:thankyouHeaderText'),
+                      }}
+                    />
                   </div>
                   <p className={styles.tempDonationCount}>
                     {t('redeem:myPlantedTreesByOrg', {
-                      count: getFormattedNumber(i18n.language, Number(validCodeData.treeCount)),
-                      tpoName:validCodeData.tpos[0].tpoName
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(
+                        i18n.language,
+                        Number(validCodeData.treeCount)
+                      ),
+                      tpoName: validCodeData.tpos[0].tpoName,
                     })}
                   </p>
                   <p className={styles.tempDonationTenant}>
@@ -198,7 +220,10 @@ export default function RedeemModal({
 
               <div className={styles.shareOptions}>
                 <ShareOptions
-                  treeCount={getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
+                  treeCount={getFormattedNumber(
+                    i18n.language,
+                    Number(validCodeData.treeCount)
+                  )}
                   sendRef={sendRef}
                   handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
                   contactDetails={contactDetails}
@@ -210,66 +235,94 @@ export default function RedeemModal({
                 autoHideDuration={4000}
                 onClose={handleTextCopiedSnackbarClose}
               >
-                <Alert onClose={handleTextCopiedSnackbarClose} severity="success">
+                <Alert
+                  onClose={handleTextCopiedSnackbarClose}
+                  severity="success"
+                >
                   {t('donate:copiedToClipboard')}
                 </Alert>
               </Snackbar>
-
             </div>
           </>
         ) : (
-            <div className={styles.modal}>
-              {codeValidated && validCodeData ? (
-                <>
-                  <div className={styles.codeTreeCount}>
-                    {getFormattedNumber(i18n.language, Number(validCodeData.treeCount))}
-                    <span>{t('common:trees')}</span>
-                  </div>
+          <div className={styles.modal}>
+            {codeValidated && validCodeData ? (
+              <>
+                <div className={styles.codeTreeCount}>
+                  {getFormattedNumber(
+                    i18n.language,
+                    Number(validCodeData.treeCount)
+                  )}
+                  <span>
+                    {t('common:tree', {
+                      count: Number(validCodeData.treeCount),
+                    })}
+                  </span>
+                </div>
 
-                  <div className={styles.plantedBy}>
-                    <span>{t('common:plantedBy')}</span>
-                    <p>{validCodeData.tpos[0].tpoName}</p>
-                  </div>
+                <div className={styles.plantedBy}>
+                  <span>{t('common:plantedBy')}</span>
+                  <p>{validCodeData.tpos[0].tpoName}</p>
+                </div>
 
-                  <div onClick={handleSubmit(redeemCode)} className={styles.continueButton}>
-                    {isUploadingData ? (
-                      <div className={styles.spinner}></div>
-                    ) : (t('redeem:addToMyTrees'))}
-                  </div>
-                </>
-              ) : (
-                  <>
-                    <h4>
-                      {t('me:redeem')}
-                    </h4>
-
-                    <div className={styles.inputField}>
-                      <MaterialTextField inputRef={register({
-                        required: {
-                          value: true,
-                          message: t('redeem:enterRedeemCode'),
-                        }
-                      })} name={'code'} placeholder="XAD-1SA-5F1-A" label="" variant="outlined" />
-
-                    </div>
-                    {errors.code && (
-                      <span className={styles.formErrors}>{errors.code.message}</span>
-                    )}
-
-                    {errorMessage && (
-                      <span className={styles.formErrors}>{errorMessage}</span>
-                    )}
-                    <div onClick={handleSubmit(validateCode)} className={styles.continueButton}>
-                      {isUploadingData ? (
-                        <div className={styles.spinner}></div>
-                      ) : (t('redeem:validateCode'))}
-                    </div>
-                  </>
+                <button
+                  id={'redeemModalCont'}
+                  onClick={handleSubmit(redeemCode)}
+                  className="primaryButton"
+                  style={{ maxWidth: '200px', marginTop: '24px' }}
+                >
+                  {isUploadingData ? (
+                    <div className={styles.spinner}></div>
+                  ) : (
+                    t('redeem:addToMyTrees')
+                  )}
+                </button>
+              </>
+            ) : (
+              <>
+                <h4>{t('me:redeem')}</h4>
+                <div className={styles.note}>
+                  <p>{t('me:redeemDescription')}</p>
+                </div>
+                <div className={styles.inputField}>
+                  <MaterialTextField
+                    inputRef={register({
+                      required: {
+                        value: true,
+                        message: t('redeem:enterRedeemCode'),
+                      },
+                    })}
+                    name={'code'}
+                    placeholder="XAD-1SA-5F1-A"
+                    label=""
+                    variant="outlined"
+                  />
+                </div>
+                {errors.code && (
+                  <span className={styles.formErrors}>
+                    {errors.code.message}
+                  </span>
                 )}
 
-            </div>
-          )}
-
+                {errorMessage && (
+                  <span className={styles.formErrors}>{errorMessage}</span>
+                )}
+                <button
+                  id={'validateCodeRedeem'}
+                  onClick={handleSubmit(validateCode)}
+                  className="primaryButton"
+                  style={{ maxWidth: '200px', marginTop: '24px' }}
+                >
+                  {isUploadingData ? (
+                    <div className={styles.spinner}></div>
+                  ) : (
+                    t('redeem:validateCode')
+                  )}
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </Fade>
     </Modal>
   ) : null;

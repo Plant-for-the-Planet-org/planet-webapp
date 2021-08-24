@@ -36,7 +36,7 @@
     font-family: $primaryFontFamily;
     font-size: 28px;
     font-weight: bold;
-    color: #fff;
+    color: $light;
   }
   div {
     display: flex;
@@ -45,7 +45,7 @@
     p {
       margin: 0px;
       margin-left: 15px;
-      color: #fff;
+      color: $light;
       font-family: $primaryFontFamily;
       font-size: 12.8px;
       font-weight: bold;
@@ -71,7 +71,7 @@
       margin-top: 26px;
       p {
         margin-left: 15px;
-        font-size: 16px;
+        font-size: $fontSixteen;
         max-width: 50px;
       }
     }

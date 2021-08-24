@@ -108,9 +108,9 @@ export default function UserProfileOptions({
       )}
       <div className={styles.bottomIconsRow} ref={elementRef}>
         <div className={styles.iconTextColumn}>
-          <div className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
+          <button id={'userProHandleRedeem'} className={styles.bottomIconBg} onClick={handleRedeemModalOpen}>
             <Redeem color="white" />
-          </div>
+          </button>
           <p className={styles.bottomRowText}> {t('me:redeem')}</p>
         </div>
 
@@ -120,13 +120,13 @@ export default function UserProfileOptions({
           userprofile={userprofile}
         />
 
-        <div className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>
+        <button id={'userProBottomIcon'} className={styles.iconTextColumn} onClick={() => router.push('/register-trees')}>
           <div className={styles.bottomIconBg}>
             <Shovel color="white" />
           </div>
 
           <p className={styles.bottomRowText}> {t('me:registerTrees')}</p>
-        </div>
+        </button>
 
         <div className={styles.iconTextColumn} onClick={onShareClicked}>
           <div className={styles.bottomIconBg}>
@@ -148,7 +148,7 @@ export default function UserProfileOptions({
           animate={{
             position: 'absolute',
             top: '35px',
-            left: divWidth > 291 ? '290px' : '251px',
+            right: divWidth > 320 ? '290px' : '-180px',
           }}
         >
           <motion.div

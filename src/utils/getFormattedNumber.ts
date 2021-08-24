@@ -1,9 +1,28 @@
-// change 'de-disabled' to 'de' if you want to enable custom abbreviations for German
+class NumberParser {
+  constructor(locale) {
+    const format = new Intl.NumberFormat(locale);
+    const parts = format.formatToParts(12345.6);
+    const numerals = Array.from({ length: 10 }).map((_, i) => format.format(i));
+    const index = new Map(numerals.map((d, i) => [d, i]));
+    this._group = new RegExp(`[${parts.find(d => d.type === "group").value}]`, "g");
+    this._decimal = new RegExp(`[${parts.find(d => d.type === "decimal").value}]`);
+    this._numeral = new RegExp(`[${numerals.join("")}]`, "g");
+    this._index = d => index.get(d);
+  }
+  parse(string) {
+    string = string.trim()
+      .replace(this._group, "")
+      .replace(this._decimal, ".")
+      .replace(this._numeral, this._index);
+    return string ? +string : NaN;
+  }
+}
+
 const localizedAbbr = {
   'en': {
     'b': 'b', 'm': 'm', 'k': 'k',
   },
-  'de-disabled': {
+  'de': {
     'b': 'Mrd.', 'm': 'Mio.', 'k': 'Tsd.',
   },
 };
@@ -21,8 +40,8 @@ export function localizedAbbreviatedNumber(
     return getFormattedRoundedNumber(langCode, number/1000000000, fractionDigits) + getLocalizedAbbreviation(langCode, 'b');
   if (number >= 1000000)
     return getFormattedRoundedNumber(langCode, number/1000000, fractionDigits) + getLocalizedAbbreviation(langCode, 'm');
-  if (number >= 1000)
-    return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
+  //if (number >= 1000)
+  //  return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
 
   return getFormattedRoundedNumber(langCode, number, fractionDigits);
 }
@@ -33,7 +52,7 @@ export function getFormattedRoundedNumber(
   fractionDigits: number,
 ) {
   // console.log("getFormattedRoundedNumber", langCode, number, fractionDigits);
-  if (Math.round(number) === Math.round(number*fractionDigits*10)/(fractionDigits*10)) 
+  if (Math.round(number) === Math.round(number*fractionDigits*10)/(fractionDigits*10))
     fractionDigits = 0;
   const formatter = new Intl.NumberFormat(langCode, {
     // These options are needed to round to whole numbers if that's what you want.
@@ -52,3 +71,10 @@ export function getFormattedNumber(
   return formatter.format(number);
 }
 
+export function parseNumber(
+  langCode: string,
+  number: number
+) {
+  const parser = new NumberParser(langCode);
+  return parser.parse(number);
+}
