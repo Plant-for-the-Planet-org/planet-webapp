@@ -8,16 +8,13 @@
   align-items: center;
   padding-bottom: 90px;
   position: relative;
-  background-position: center -130px, calc(50% + -370px) 28%, calc(50% + 470px) 48%, calc(50% + 426px) 32%;
+  background-position: center -130px, calc(50% + -370px) 28%,
+    calc(50% + 470px) 48%, calc(50% + 426px) 32%;
   background-repeat: no-repeat;
   background-size: cover, 150px 150px, 67px 67px, 16px 16px;
   @include lgLaptopView {
     padding-top: 90px;
-    background-image:
-        url('/tenants/salesforce/images/blue-bkg.png'),
-        url('/tenants/salesforce/images/circle-1.png'),
-        url('/tenants/salesforce/images/circle-2.png'),
-        url('/tenants/salesforce/images/circle-3.png');
+    background-image: url('/tenants/salesforce/images/tracker-bkgd.png');
     margin-top: 80px;
     max-width: 2560px;
   }
@@ -29,40 +26,42 @@
   text-align: center;
   width: 90vw;
   background-color: white;
+  z-index: 999;
+  margin-top: -100px;
   @include lgLaptopView {
     padding: 50px 80px;
     width: auto;
   }
-  &:before {
-    content: "";
-    display: none;
-    width: 334px;
-    height: 235px;
-    background-image: url('/tenants/salesforce/images/foliage-left.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    bottom: 0;
-    left: -190px;
-    @include lgLaptopView {
-      display: block;
-    }
-  }
-  &:after {
-    content: "";
-    display: none;
-    width: 203px;
-    height: 235px;
-    background-image: url('/tenants/salesforce/images/foliage-right.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    bottom: 0;
-    right: -160px;
-    @include lgLaptopView {
-      display: block;
-    }
-  }
+  // &:before {
+  //   content: '';
+  //   display: none;
+  //   width: 334px;
+  //   height: 235px;
+  //   background-image: url('/tenants/salesforce/images/foliage-left.png');
+  //   background-size: cover;
+  //   background-repeat: no-repeat;
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: -190px;
+  //   @include lgLaptopView {
+  //     display: block;
+  //   }
+  // }
+  // &:after {
+  //   content: '';
+  //   display: none;
+  //   width: 203px;
+  //   height: 235px;
+  //   background-image: url('/tenants/salesforce/images/foliage-right.png');
+  //   background-size: cover;
+  //   background-repeat: no-repeat;
+  //   position: absolute;
+  //   bottom: 0;
+  //   right: -160px;
+  //   @include lgLaptopView {
+  //     display: block;
+  //   }
+  // }
 }
 
 .leaderBoard > h3 {
@@ -83,7 +82,7 @@
   font-weight: 500;
   line-height: 100%;
   letter-spacing: -0.004em;
-  color: #032D60;
+  color: #032d60;
   margin-bottom: 30px;
 }
 
@@ -93,7 +92,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 16px;
-  background-color: #F5F2F2;
+  background-color: #f5f2f2;
   border-radius: 90px;
   height: 42px;
   margin-left: 10px;
@@ -111,8 +110,8 @@
   font-weight: normal;
   font-size: $fontSmall;
   line-height: 42px;
-  color: #032D60;
-  background-color: #F5F2F2;
+  color: #032d60;
+  background-color: #f5f2f2;
   text-align: center;
   border-radius: 90px;
   width: 50%;
@@ -125,7 +124,7 @@
   font-size: $fontSmall;
   line-height: 42px;
   color: white;
-  background-color: #032D60;
+  background-color: #032d60;
   text-align: center;
   border-radius: 90px;
   width: 50%;
@@ -137,7 +136,7 @@
 .leaderBoardBody {
   width: 100%;
   margin-top: 40px;
-  @include lgLaptopView{
+  @include lgLaptopView {
     margin-top: 60px;
   }
 }
@@ -198,15 +197,13 @@
   width: 100%;
 }
 @include smTabletView {
-
   .leaderBoardBody {
     width: 528px;
     margin: 60px auto 0;
   }
 
-
   .leaderBoardSection {
-    margin-top: 0px;
+    margin-top: -100px;
   }
   .leaderBoardBushImage {
     display: block;

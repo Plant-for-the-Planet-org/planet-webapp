@@ -7,21 +7,21 @@ export default function ClimateAction() {
     {
       id: 1,
       category: 'trailhead',
-      title: 'Learn how trees combat climate change on Trailhead.',
+      title: 'Become a tree champion on Trailhead',
       image: '/tenants/salesforce/images/climate-action-1.png',
       link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
     },
     {
       id: 2,
-      category: 'sustainability',
-      title: 'Learn about Salesforce’s sustainability initiatives.',
+      category: 'sustainability cloud',
+      title: 'Analyze your corporate emissions with Salesforce Sustainability Cloud',
       image: '/tenants/salesforce/images/climate-action-2.png',
       link: 'https://www.salesforce.com/company/sustainability/',
     },
     {
       id: 3,
       category: '360 blog',
-      title: 'Embed sustainability into the core of your business with Salesforce Sustainability Cloud.',
+      title: 'Make working-from-home more comfortable, productive, and sustainable',
       image: '/tenants/salesforce/images/climate-action-3.png',
       link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
     },
@@ -32,8 +32,8 @@ export default function ClimateAction() {
       <div className={gridStyles.fluidContainer}>
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
-            <h3>Take climate action.</h3>
-            <p><small>The fun doesn’t stop here. If you’re inspired to do more, follow these paths:</small></p>
+            <h3>Take more action.</h3>
+            <p><small>These paths will show you the way.</small></p>
           </div>
         </div>
         <div className={gridStyles.gridRow}>
@@ -54,7 +54,7 @@ export default function ClimateAction() {
             <h3>Becoming a tree champion is easy.</h3>
             <p><small>Select your favorite tree project and lend your support.</small></p>
             <Link href="/">
-              <button>Start Planting</button>
+              <button>Donate For Trees Today</button>
             </Link>
           </div>
         </div>

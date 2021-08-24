@@ -1,6 +1,6 @@
 import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function Timeline() {
@@ -13,8 +13,8 @@ export default function Timeline() {
       id: 1,
       date: 'January 2020',
       image: '/tenants/salesforce/images/jan.png',
-      title: '1t.org & Salesforce’s 100M Tree Commitment',
-      copy: 'Salesforce partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
+      title: '1t.org Created & 100m Tree Commitment',
+      copy: 'We partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
       learnMore: 'https://www.salesforce.com/news/stories/one-trillion-trees-to-combat-climate-change-why-its-not-so-outlandish/'
     },
     {
@@ -54,15 +54,15 @@ export default function Timeline() {
   const populateSlide = (slides, slideIndex) => {
     return (
       <div className={styles.timelineMoment} id={`desktop-timeline-moment-${slideIndex}`}>
-        <h3>Follow us on our tree journey.</h3>
+        <h3>We’ve come so far.</h3>
         <div className={gridStyles.gridRow}>
           {slides.map((moment) => {
             return (
               <div className={`${styles.timelineContent} ${gridStyles.colMd4}`} key={`desktop-moment-${moment.id}`}>
                 <span className={styles.timelineDate}>{moment.date}</span>
-                <img src={moment.image} alt="" className={styles.timelineImage}/>
+                <img src={moment.image} alt="" className={styles.timelineImage} />
                 <h4>{moment.title}</h4>
-                <p dangerouslySetInnerHTML={{__html: moment.copy}} />
+                <p dangerouslySetInnerHTML={{ __html: moment.copy }} />
                 <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
               </div>
             );
@@ -77,9 +77,9 @@ export default function Timeline() {
     const mReturn = [];
     let slideIndex = 0;
 
-    moments.forEach(( moment, index) => {
+    moments.forEach((moment, index) => {
       m.push(moment);
-      if(m.length === 3 || index+1 === moments.length){
+      if (m.length === 3 || index + 1 === moments.length) {
         mReturn.push(populateSlide(m, slideIndex));
         m = [];
         slideIndex++;
@@ -92,7 +92,7 @@ export default function Timeline() {
   function desktopDots() {
     const dots = [];
 
-    for (let i = 0; i < Math.ceil(moments.length/3); i++) {
+    for (let i = 0; i < Math.ceil(moments.length / 3); i++) {
       dots.push(<Link
         href={`#desktop-timeline-moment-${i}`}
         scroll={false}
@@ -101,7 +101,7 @@ export default function Timeline() {
           className={styles.timelineButtonDot}
           disabled={desktopCurrent === i}
           aria-disabled={desktopCurrent === i}
-          onClick={()=>setDesktopCurrent(i)}>
+          onClick={() => setDesktopCurrent(i)}>
           <span className={`${desktopCurrent === i ? styles.timelineDotDisabled : styles.timelineDot}`} />
         </button>
       </Link>);
@@ -121,7 +121,7 @@ export default function Timeline() {
           className={styles.timelineButtonDot}
           disabled={mobileCurrent === i}
           aria-disabled={mobileCurrent === i}
-          onClick={()=>setMobileCurrent(i)}>
+          onClick={() => setMobileCurrent(i)}>
           <span className={`${mobileCurrent === i ? styles.timelineDotDisabled : styles.timelineDot}`} />
         </button>
       </Link>);
@@ -142,9 +142,9 @@ export default function Timeline() {
                 <div className={`${styles.timelineContent} ${styles.timelineMoment}`} key={`mobile-moment-${moment.id}`} id={`mobile-timeline-moment-${index}`}>
                   <h3>Follow us on our tree journey.</h3>
                   <span className={styles.timelineDate}>{moment.date}</span>
-                  <img src={moment.image} alt="" className={styles.timelineImage}/>
+                  <img src={moment.image} alt="" className={styles.timelineImage} />
                   <h4>{moment.title}</h4>
-                  <p dangerouslySetInnerHTML={{__html: moment.copy}} />
+                  <p dangerouslySetInnerHTML={{ __html: moment.copy }} />
                   <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
                 </div>
               );
@@ -152,27 +152,27 @@ export default function Timeline() {
           </div>
           <div className={styles.timelineDesktopNav}>
             <Link
-              href={`#desktop-timeline-moment-${desktopCurrent-1}`}
+              href={`#desktop-timeline-moment-${desktopCurrent - 1}`}
               scroll={false}
             >
               <button
                 className={styles.timelineButtonArrowPrev}
                 disabled={desktopCurrent === 0}
                 aria-disabled={desktopCurrent === 0}
-                onClick={()=>setDesktopCurrent(desktopCurrent-1)}>
-                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow}/>
+                onClick={() => setDesktopCurrent(desktopCurrent - 1)}>
+                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow} />
               </button>
             </Link>
             {desktopDots()}
             <Link
-              href={`#desktop-timeline-moment-${desktopCurrent+1}`}
+              href={`#desktop-timeline-moment-${desktopCurrent + 1}`}
               scroll={false}
             >
               <button
                 className={styles.timelineButtonArrowNext}
-                onClick={()=>setDesktopCurrent(desktopCurrent+1)}
-                disabled={desktopCurrent+1 === Math.ceil(moments.length/3)}
-                aria-disabled={desktopCurrent+1 === Math.ceil(moments.length/3)}
+                onClick={() => setDesktopCurrent(desktopCurrent + 1)}
+                disabled={desktopCurrent + 1 === Math.ceil(moments.length / 3)}
+                aria-disabled={desktopCurrent + 1 === Math.ceil(moments.length / 3)}
               >
                 <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
               </button>
@@ -180,27 +180,27 @@ export default function Timeline() {
           </div>
           <div className={styles.timelineMobileNav}>
             <Link
-              href={`#mobile-timeline-moment-${mobileCurrent-1}`}
+              href={`#mobile-timeline-moment-${mobileCurrent - 1}`}
               scroll={false}
             >
               <button
                 className={styles.timelineButtonArrowPrev}
                 disabled={mobileCurrent === 0}
                 aria-disabled={mobileCurrent === 0}
-                onClick={()=>setMobileCurrent(mobileCurrent-1)}>
-                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow}/>
+                onClick={() => setMobileCurrent(mobileCurrent - 1)}>
+                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow} />
               </button>
             </Link>
             {mobileDots()}
             <Link
-              href={`#mobile-timeline-moment-${mobileCurrent+1}`}
+              href={`#mobile-timeline-moment-${mobileCurrent + 1}`}
               scroll={false}
             >
               <button
                 className={styles.timelineButtonArrowNext}
-                onClick={()=>setMobileCurrent(mobileCurrent+1)}
-                disabled={mobileCurrent+1 === moments.length}
-                aria-disabled={mobileCurrent+1 === moments.length}
+                onClick={() => setMobileCurrent(mobileCurrent + 1)}
+                disabled={mobileCurrent + 1 === moments.length}
+                aria-disabled={mobileCurrent + 1 === moments.length}
               >
                 <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
               </button>

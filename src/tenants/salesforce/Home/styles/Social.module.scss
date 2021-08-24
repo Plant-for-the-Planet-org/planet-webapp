@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .socialSection {
-  margin-top: -150px;
+  margin-top: -50px;
   width: 100vw;
   text-align: center;
   h3 {
@@ -12,7 +12,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032D60;
+    color: #032d60;
     margin-bottom: 15px;
 
     @include lgLaptopView {
@@ -34,7 +34,7 @@
       font-weight: normal;
       font-size: 15px;
       line-height: 24px;
-      color: #1A1A1A;
+      color: #1a1a1a;
     }
   }
   img {
@@ -44,7 +44,7 @@
     margin-bottom: 25px;
   }
   button {
-    background: #215CA0;
+    background: #215ca0;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -52,7 +52,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
   }
@@ -71,7 +71,7 @@
   width: 50px;
   height: 50px;
   position: absolute;
-  transition: transform .2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
   &:hover {
     transform: scale(1.2);
   }
