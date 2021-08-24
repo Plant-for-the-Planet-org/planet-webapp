@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import ZoomButtons from './ZoomButtons';
 
 interface Props {}
 
@@ -54,14 +55,14 @@ export default function TimeTravel({}: Props): ReactElement {
       setAfter(after);
 
       // Add zoom and rotation controls to the map.
-      before.addControl(
-        new mapboxgl.NavigationControl({ showCompass: false }),
-        'bottom-right'
-      );
-      after.addControl(
-        new mapboxgl.NavigationControl({ showCompass: false }),
-        'bottom-right'
-      );
+      // before.addControl(
+      //   new mapboxgl.NavigationControl({ showCompass: false }),
+      //   'bottom-right'
+      // );
+      // after.addControl(
+      //   new mapboxgl.NavigationControl({ showCompass: false }),
+      //   'bottom-right'
+      // );
 
       // A selector or reference to HTML element
       const container = '#comparison-container';
@@ -599,6 +600,7 @@ export default function TimeTravel({}: Props): ReactElement {
         <div className="comparison-map" id="before"></div>
         <div className="comparison-map" id="after"></div>
       </div>
+      {selectedMode === 'imagery'&&<ZoomButtons map={before}/>}
     </>
   );
 }
