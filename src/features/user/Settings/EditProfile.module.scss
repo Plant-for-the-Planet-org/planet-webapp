@@ -9,7 +9,7 @@
 }
 
 .editProfileContainer{
-  width: 412px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -103,6 +103,8 @@
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   min-width: 280px;
+  font-size: 14px;
+  flex: 1;
 }
 .saveButton:hover {
   transform: scale(1.05);

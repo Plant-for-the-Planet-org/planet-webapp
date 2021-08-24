@@ -1,10 +1,6 @@
 @import './../../../theme/theme';
 
 .deleteModal {
-  background-color: $backgroundColor;
-  border: 0px;
-  border-radius: 10px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   max-width: 320px;
@@ -62,7 +58,6 @@
       }
     }
     .deleteButton {
-      flex: 1;
       background-color: $dangerColor;
       height: 40px;
       border-radius: 100px;
@@ -76,6 +71,7 @@
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      flex: 1;
     }
     .deleteButton:hover {
       transform: scale(1.05);

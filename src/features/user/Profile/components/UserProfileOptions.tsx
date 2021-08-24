@@ -1,15 +1,15 @@
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 import React from 'react';
+import i18next from '../../../../../i18n';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
 import Shovel from '../../../../../public/assets/images/icons/userProfileIcons/Shovel';
+import tenantConfig from '../../../../../tenant.config';
 import styles from '../styles/Profile.module.scss';
 import RedeemModal from './RedeemModal';
-import i18next from '../../../../../i18n';
-import tenantConfig from '../../../../../tenant.config';
-import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SocialShareContainer from './SocialShareContainer';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
 
 const config = tenantConfig();
 
@@ -126,7 +126,7 @@ export default function UserProfileOptions({ userprofile }: any) {
         <button
           id={'userProBottomIcon'}
           className={styles.iconTextColumn}
-          onClick={() => router.push('/account/register-trees')}
+          onClick={() => router.push('/profile/register-trees')}
         >
           <div className={styles.bottomIconBg}>
             <Shovel color="white" />

@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import { MenuItem } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
-import styles from './EditProfile.module.scss';
+import MuiAlert from '@material-ui/lab/Alert';
+import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import CameraWhite from '../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
+import { Controller, useForm } from 'react-hook-form';
+import i18next from '../../../../i18n';
 import Camera from '../../../../public/assets/images/icons/userProfileIcons/Camera';
+import CameraWhite from '../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
+import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
+import getImageUrl from '../../../utils/getImageURL';
+import { selectUserType } from '../../../utils/selectUserType';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import MuiAlert from '@material-ui/lab/Alert';
-import getImageUrl from '../../../utils/getImageURL';
-import { useForm, Controller } from 'react-hook-form';
-import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import i18next from '../../../../i18n';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { selectUserType } from '../../../utils/selectUserType';
-import { MenuItem } from '@material-ui/core';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import styles from './EditProfile.module.scss';
 
 const { useTranslation } = i18next;
 
@@ -458,7 +458,6 @@ export default function EditProfile({}: Props) {
 
         <div
           className={styles.formFieldLarge}
-          style={{ justifyContent: 'center' }}
         >
           <button
             id={'editProfileSaveProfile'}

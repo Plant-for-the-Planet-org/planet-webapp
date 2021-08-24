@@ -1,29 +1,28 @@
+import DateFnsUtils from '@date-io/date-fns';
+import { createMuiTheme, MenuItem } from '@material-ui/core';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
+import { ThemeProvider } from '@material-ui/styles';
+import * as d3 from 'd3-ease';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React from 'react';
-import styles from './RegisterModal.module.scss';
-import i18next from '../../../../i18n';
+import { Controller, useForm } from 'react-hook-form';
 import MapGL, {
   FlyToInterpolator,
   Marker,
-  NavigationControl,
-  WebMercatorViewport,
+  NavigationControl
 } from 'react-map-gl';
-import * as d3 from 'd3-ease';
-import { useRouter } from 'next/router';
-import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import dynamic from 'next/dynamic';
-import MaterialTextField from '../../common/InputTypes/MaterialTextField';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { Controller, useForm } from 'react-hook-form';
-import DateFnsUtils from '@date-io/date-fns';
-import { localeMapForDate } from '../../../utils/language/getLanguageName';
-import { getStoredConfig } from '../../../utils/storeConfig';
-import SingleContribution from './RegisterTrees/SingleContribution';
-import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
-import { createMuiTheme, MenuItem } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/styles';
-import getMapStyle from '../../../utils/maps/getMapStyle';
+import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
+import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { localeMapForDate } from '../../../utils/language/getLanguageName';
+import getMapStyle from '../../../utils/maps/getMapStyle';
+import { getStoredConfig } from '../../../utils/storeConfig';
+import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import styles from './RegisterModal.module.scss';
+import SingleContribution from './RegisterTrees/SingleContribution';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -261,7 +260,7 @@ React.useEffect(() => {
   return ready ? (
     <div className="profilePage">
       {!registered ? (
-        <div>
+        <div className={styles.registerTreesPage}>
           <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
           <form onSubmit={handleSubmit(submitRegisterTrees)}>
             <div className={styles.note}>
@@ -441,7 +440,6 @@ React.useEffect(() => {
                 id={'RegTressSubmit'}
                 onClick={handleSubmit(submitRegisterTrees)}
                 className="primaryButton"
-                style={{ maxWidth: '240px' }}
               >
                 {' '}
                 {isUploadingData ? (

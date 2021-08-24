@@ -1,19 +1,17 @@
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-import NotFound from '../../../../public/assets/images/NotFound';
-import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n';
-import styles from './ProjectsContainer.module.scss';
+import NotFound from '../../../../public/assets/images/NotFound';
 import {
-  getAuthenticatedRequest,
-  getRequest,
+  getAuthenticatedRequest
 } from '../../../utils/apiRequests/api';
-import AddProject from '../../../../public/assets/images/icons/manageProjects/AddProject';
-import Link from 'next/link';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import getImageUrl from '../../../utils/getImageURL';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
+import getImageUrl from '../../../utils/getImageURL';
+import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import styles from './ProjectsContainer.module.scss';
 
 const { useTranslation } = i18next;
 
@@ -48,7 +46,7 @@ export default function ProjectsContainer({}: any) {
       loadProjects();
     }
   }, [contextLoaded, token]);
-
+  
   return ready ? (
     <div className="profilePage">
       <div className={'profilePageTitle'}>Manage Projects</div>
@@ -91,7 +89,6 @@ function SingleProject({ project }: any) {
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  console.log('project', project);
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   return (
     <div className={styles.singleProject} key={project.id}>
