@@ -44,9 +44,6 @@ const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withPlugins([[withBundleAnalyzer]], {
-  future: {
-    webpack5: true, // this sill seems to have a problem with Auth0
-  },
   productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     rootDir: __dirname,
