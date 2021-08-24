@@ -324,3 +324,32 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+
+.display-none{
+  display: none;
+}
+
+.donation-supports-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  p {
+    cursor: pointer;
+  }
+  button {
+    display: flex;
+    align-items: center;
+  }
+  svg {
+    > path {
+      fill: $dangerColor;
+    }
+  }
+}
+
+.singleGiftRemove {
+  cursor: pointer;
+  color: $dangerColor;
+  font-size: 12px;
+  font-weight: 600;
+}

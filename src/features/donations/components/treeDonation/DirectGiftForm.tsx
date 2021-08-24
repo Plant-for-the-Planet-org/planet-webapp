@@ -5,7 +5,6 @@ import i18next from '../../../../../i18n';
 const { useTranslation } = i18next;
 interface Props {
   setGiftDetails: Function;
-  isGift: Boolean;
   giftDetails: any;
   directGift: any;
   setDirectGift: Function;
