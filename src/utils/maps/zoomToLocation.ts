@@ -2,7 +2,7 @@ import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
 
-export default function zoomToProjectSite(
+export default function zoomToLocation(
   viewport: Object,
   setViewPort: Function,
   longitude: number,
