@@ -23,7 +23,6 @@ export default function Footer() {
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
-
   const handleModalOpen = () => {
     setOpenModal(true);
   };
@@ -262,9 +261,12 @@ export default function Footer() {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              <div className={styles.switch}>
-            <DarkModeSwitch />
-            </div>
+            {config.darkModeEnabled &&
+              (<div className={styles.switch}>
+              <DarkModeSwitch />
+              </div>) 
+            }
+              
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks && config.footerLinks.map((key: any) => {
                 return (

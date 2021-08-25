@@ -1,4 +1,5 @@
 import React from 'react';
+import tenantConfig from '../../tenant.config';
 
 export const ThemeContext = React.createContext({
   theme: 'theme-light',
@@ -7,9 +8,9 @@ export const ThemeContext = React.createContext({
 
 export default function ThemeProvider({ children }:any) {
   const [theme, setTheme] = React.useState('theme-light');  
-
+  const config = tenantConfig();
   React.useEffect(()=>{
-    if(typeof window !== 'undefined'){
+    if(typeof window !== 'undefined' && config.darkModeEnabled){
       if(localStorage.getItem('theme')){
         if(localStorage.getItem('theme')==='theme-light'){
           setTheme('theme-light');
