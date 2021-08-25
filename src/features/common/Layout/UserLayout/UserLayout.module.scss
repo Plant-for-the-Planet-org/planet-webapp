@@ -7,7 +7,7 @@
 }
 .profilePageWrapper {
   width: 100%;
-  min-height: 80vh;
+  min-height: 100vh;
 }
 
 // Styles for Sidebar
@@ -20,17 +20,20 @@
 .sidebar {
   width: 60px;
   position: fixed;
-  top: 80px;
+  top: 0px;
   left: 0px;
   display: flex;
   flex-direction: column;
   height: calc(100% - 80px);
   overflow-y: scroll;
   justify-content: space-between;
-  box-shadow: rgba(104, 176, 48, $alpha: 0.2) 0px 0px 20px;
+  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
   background-color: $light;
   transition: width 0.3s ease-in-out;
   z-index: 100;
+  @include smTabletView{
+    top: 80px;
+  }
   &:hover {
     width: 256px !important;
   }
@@ -58,7 +61,12 @@
   justify-content: center;
   &:hover {
     cursor: pointer;
-    background-color: $blueishGrey;
+    > svg > path{
+      fill: $primaryColor;
+    }
+    .navlinkTitle{
+      color: $primaryColor;
+    }
   }
   button {
     font-size: 14px;

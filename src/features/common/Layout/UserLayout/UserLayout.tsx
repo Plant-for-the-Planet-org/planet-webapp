@@ -138,14 +138,6 @@ function UserLayout(props: any): ReactElement {
     }
   }, [router]);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   const { user, logoutUser, contextLoaded } = React.useContext(
     UserPropsContext
   );
