@@ -162,7 +162,7 @@ function UserLayout(props: any): ReactElement {
     <div className={styles.profilePageContainer}>
       <div className={styles.sidebar}>
         <div className={styles.navLinksContainer}>
-          {navLinks.map((link: any) => (
+          {navLinks.map((link: any,index:any) => (
             <NavLink
               link={link}
               setactiveLink={setactiveLink}
@@ -172,6 +172,7 @@ function UserLayout(props: any): ReactElement {
               subMenuOpen={subMenuOpen}
               setsubMenuOpen={setsubMenuOpen}
               user={user}
+              key={index}
             />
           ))}
         </div>
@@ -293,7 +294,7 @@ function NavLink({
         }`}
         onClick={() => {
           if (subMenuOpen === link.path) {
-            setsubMenuOpen(!!subMenuOpen ? '' : link.path);
+            setsubMenuOpen(subMenuOpen ? '' : link.path);
           } else if (link.subMenu && link.subMenu.length > 0) {
             setsubMenuOpen(link.path);
           }
@@ -329,11 +330,12 @@ function NavLink({
       {subMenuOpen === link.path &&
         link.subMenu &&
         link.subMenu.length > 0 &&
-        link.subMenu.map((subLink: any) => (
+        link.subMenu.map((subLink: any,index:any) => (
           <div
             className={`${styles.navlinkSubMenu} ${
               activeSubMenu === subLink.path ? styles.navlinkActiveSubMenu : ''
             }`}
+            key={index}
             onClick={() => {
               setactiveLink(link.path);
               setActiveSubMenu(subLink.path);

@@ -74,8 +74,8 @@ export default function ProjectsContainer({}: any) {
           </div>
         ) : (
           <div className={styles.listProjects}>
-            {projects.map((project: any) => {
-              return <SingleProject project={project.properties} />;
+            {projects.map((project: any,index:any) => {
+              return <SingleProject key={index} project={project.properties} />;
             })}
           </div>
         )}

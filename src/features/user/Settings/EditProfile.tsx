@@ -382,7 +382,7 @@ export default function EditProfile({}: Props) {
             name="isPrivate"
             control={control}
             inputRef={register()}
-            render={(props) => (
+            render={(props:any) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
@@ -406,7 +406,7 @@ export default function EditProfile({}: Props) {
             name="getNews"
             control={control}
             inputRef={register()}
-            render={(props) => (
+            render={(props:any) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
