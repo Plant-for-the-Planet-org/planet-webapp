@@ -116,6 +116,13 @@
   cursor: pointer;
 }
 
+.singleGiftRemove {
+  cursor: pointer;
+  color: $dangerColor;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .addEmailButton{
   font-family: $primaryFontFamily;
   color: $primaryColor;

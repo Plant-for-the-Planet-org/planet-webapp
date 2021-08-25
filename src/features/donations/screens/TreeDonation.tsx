@@ -1,26 +1,24 @@
 import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
+import i18next from '../../../../i18n';
 import DownArrow from '../../../../public/assets/images/icons/DownArrow';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
+import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
+import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { formatAmountForStripe } from '../../../utils/stripe/stripeHelpers';
 import ButtonLoader from '../../common/ContentLoaders/ButtonLoader';
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
-import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { TreeDonationProps } from '../../common/types/donations';
+import GiftForm from '../components/GiftForm';
+import {
+  createDonationFunction,
+  payDonationFunction
+} from '../components/PaymentFunctions';
+import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
 import SelectCurrencyModal from '../components/treeDonation/SelectCurrencyModal';
 import SelectTaxDeductionCountryModal from '../components/treeDonation/SelectTaxDeductionCountryModal';
 import styles from '../styles/Donations.module.scss';
-import { NativePay } from '../components/paymentMethods/PaymentRequestCustomButton';
-import GiftForm from '../components/treeDonation/GiftForm';
-import DirectGiftForm from '../components/treeDonation/DirectGiftForm';
-import {
-  createDonationFunction,
-  payDonationFunction,
-} from '../components/PaymentFunctions';
-import i18next from '../../../../i18n';
-import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
-import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
 
 const { useTranslation } = i18next;
 
@@ -73,15 +71,7 @@ function TreeDonation({
   };
 
   const continueNext = () => {
-    if (isGift) {
-      if (isGiftValidated) {
-        setDonationStep(2);
-      } else {
-        setPaymentError(t('donate:giftValidation'));
-      }
-    } else {
-      setDonationStep(2);
-    }
+    setDonationStep(2);
   };
 
   React.useEffect(() => {
@@ -148,6 +138,7 @@ function TreeDonation({
 
   const [isCustomTrees, setIsCustomTrees] = React.useState(false);
   const [isGiftValidated, setGiftValidated] = React.useState(false);
+
   return ready ? (
     isPaymentProcessing ? (
       <PaymentProgress isPaymentProcessing={isPaymentProcessing} />
@@ -214,8 +205,7 @@ function TreeDonation({
               />
             </div> */}
 
-
-            {directGift ? (
+            {/* {directGift ? (
               <DirectGiftForm
                 giftDetails={giftDetails}
                 setGiftDetails={setGiftDetails}
@@ -230,8 +220,18 @@ function TreeDonation({
                 setGiftValidated={setGiftValidated}
               />
             )
-            }
-            <div className={`${isGift ? "display-none" : ""}`}>
+            } */}
+            <GiftForm
+              giftDetails={giftDetails}
+              setGiftDetails={setGiftDetails}
+              isGift={isGift}
+              setIsGift={setIsGift}
+            />
+            <div
+              className={`${
+                isGift && giftDetails.recipientName === '' ? 'display-none' : ''
+              }`}
+            >
               <div className={styles.selectTreeCount}>
                 {treeCountOptions.map((option) => (
                   <motion.button
@@ -371,8 +371,8 @@ function TreeDonation({
 
               {treeCost * treeCount >= minAmt ? (
                 !isPaymentOptionsLoading &&
-                  paymentSetup?.gateways?.stripe?.account &&
-                  currency ? (
+                paymentSetup?.gateways?.stripe?.account &&
+                currency ? (
                   <NativePay
                     country={country}
                     currency={currency}
@@ -399,7 +399,8 @@ function TreeDonation({
                     className={styles.totalCostText}
                     style={{ fontWeight: 'unset', marginRight: '6px' }}
                   >
-                    <p>{t('donate:minDonate')}
+                    <p>
+                      {t('donate:minDonate')}
                       <span className={styles.totalCost}>
                         {getFormatedCurrency(i18n.language, currency, minAmt)}
                       </span>
