@@ -14,6 +14,7 @@ import xiting from './public/tenants/xiting/config';
 import ulmpflanzt from './public/tenants/ulmpflanzt/config';
 import sitex from './public/tenants/sitex/config';
 import T3pleset from './public/tenants/3pleset/config';
+import ecosia from './public/tenants/ecosia/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -49,6 +50,8 @@ export default function tenantConfig() {
       return sitex;
     case '3pleset':
       return T3pleset;
+    case 'ecosia':
+      return ecosia;
     default:
       return planetConfig;
   }
