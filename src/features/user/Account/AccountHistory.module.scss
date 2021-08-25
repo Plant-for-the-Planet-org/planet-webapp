@@ -47,7 +47,7 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      padding: 20px;
+      padding: 20px 20px 10px 20px;
       background-color: $backgroundColor;
       > .detailContainer {
         display: none;
@@ -174,7 +174,7 @@
   width: 100%;
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   > .singleDetail {
     display: flex;
     flex-direction: column;
