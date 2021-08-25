@@ -26,6 +26,7 @@ import ProjectPropsProvider, {
   ProjectPropsContext,
 } from '../src/features/common/Layout/ProjectPropsContext';
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
+import PlanetPopup from '../src/features/common/Layout/PlanetPopup';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -189,6 +190,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                         <MapLayout />
                       ) : null
                     ) : null}
+                    {!showVideo && <PlanetPopup />}
                     <Component {...ProjectProps} />
                   </ProjectPropsProvider>
                 </Layout>
