@@ -97,3 +97,40 @@
         transform: rotate(360deg);
     }
 }
+
+
+.playButton {
+    position: fixed;
+  right: 55px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 9px;
+  background: $backgroundColor;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 9px;
+  line-height: 16px;
+  cursor: pointer;
+  z-index: 11;
+  > svg {
+    width: 15px;
+  }
+}
+
+
+@include smTabletView{
+
+    .playButton {
+        top: 100px;
+      }
+}
+@include mdTabletView{
+
+    .playButton {
+        top: 110px;
+        right: 120px;
+        flex-direction: row;
+      }
+}

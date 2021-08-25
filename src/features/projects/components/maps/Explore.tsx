@@ -209,7 +209,7 @@ export default function Explore({}: Props): ReactElement {
           style={exploreExpanded ? { padding: '4px 10px' } : {}}
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
-          {exploreExpanded ? null : isMobile || showSingleProject ? null : (
+          {exploreExpanded ? null : isMobile ? null : (
             <p
               onClick={() => setExploreExpanded(true)}
               className={styles.exploreText}
