@@ -8,7 +8,7 @@ const config = {
   showUNDecadeLogo:true,
   showRedeemHint:true,
   enableGuestSepa:false,
-  darkModeEnabled: false,
+  darkModeEnabled: true,
   // font family and it's property particular to tenant
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
