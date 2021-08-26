@@ -69,5 +69,6 @@
   "deleteIrreversible": "I also understand that account deletion of {{email}} is irreversible.",
   "goBack": "Go Back",
   "deleteAccountMessage": "To continue with deletion, please type `{{delete}}`",
-  "deleteAccountLabel": "Type: {{delete}}"
+  "deleteAccountLabel": "Type: {{delete}}",
+  "howDoesThisWork":"How does this work?"
 }
