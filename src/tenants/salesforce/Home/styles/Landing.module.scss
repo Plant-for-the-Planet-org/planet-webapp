@@ -1,6 +1,7 @@
 @import '../../../../theme/theme';
 
 .landingSection {
+  height: 920px;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -12,7 +13,8 @@
   padding: 35px 0 100px;
 
   @include smTabletView {
-    margin-top: 80px;
+    margin-top: 0px;
+    // margin-top: 80px;
   }
 
   @include lgLaptopView {
@@ -69,7 +71,8 @@
     @include lgLaptopView {
       // font-size: $fontXXLarge;
       line-height: 100%;
-      margin-bottom: 38px;
+      // margin-bottom: 38px;
+      margin-bottom: 0px;
     }
   }
 

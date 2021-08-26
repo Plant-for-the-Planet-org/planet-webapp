@@ -64,10 +64,10 @@
 }
 
 .timelineRow {
-  background-image: url('/tenants/salesforce/images/dotted-line.png');
-  background-position: 50% 217px;
+  background-image: url('/tenants/salesforce/images/straight-line.png');
+  background-position: 50% 253px;
   background-repeat: repeat-x;
-  background-size: auto 76px;
+  background-size: contain;
   width: 100vw;
 }
 

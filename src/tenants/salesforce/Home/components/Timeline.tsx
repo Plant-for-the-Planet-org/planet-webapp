@@ -58,7 +58,7 @@ export default function Timeline() {
         <div className={gridStyles.gridRow}>
           {slides.map((moment) => {
             return (
-              <div className={`${styles.timelineContent} ${gridStyles.colMd4}`} key={`desktop-moment-${moment.id}`}>
+              <div className={`${styles.timelineContent} ${gridStyles.colMd6}`} key={`desktop-moment-${moment.id}`}>
                 <span className={styles.timelineDate}>{moment.date}</span>
                 <img src={moment.image} alt="" className={styles.timelineImage} />
                 <h4>{moment.title}</h4>
@@ -79,7 +79,7 @@ export default function Timeline() {
 
     moments.forEach((moment, index) => {
       m.push(moment);
-      if (m.length === 3 || index + 1 === moments.length) {
+      if (m.length === 2 || index + 1 === moments.length) {
         mReturn.push(populateSlide(m, slideIndex));
         m = [];
         slideIndex++;
@@ -92,7 +92,7 @@ export default function Timeline() {
   function desktopDots() {
     const dots = [];
 
-    for (let i = 0; i < Math.ceil(moments.length / 3); i++) {
+    for (let i = 0; i < Math.ceil(moments.length / 2); i++) {
       dots.push(<Link
         href={`#desktop-timeline-moment-${i}`}
         scroll={false}
@@ -131,8 +131,8 @@ export default function Timeline() {
 
   return (
     <section className={styles.timelineSection}>
-      <div className={styles.timelineRow}>
-        <div className={gridStyles.fluidContainer}>
+      <div>
+        <div className={`${gridStyles.fluidContainer} ${styles.timelineRow}`}>
           <div className={styles.timelineDesktop}>
             {desktopSlider()}
           </div>
@@ -171,8 +171,8 @@ export default function Timeline() {
               <button
                 className={styles.timelineButtonArrowNext}
                 onClick={() => setDesktopCurrent(desktopCurrent + 1)}
-                disabled={desktopCurrent + 1 === Math.ceil(moments.length / 3)}
-                aria-disabled={desktopCurrent + 1 === Math.ceil(moments.length / 3)}
+                disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
+                aria-disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
               >
                 <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
               </button>
