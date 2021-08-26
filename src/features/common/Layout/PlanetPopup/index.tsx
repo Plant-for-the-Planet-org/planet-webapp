@@ -83,7 +83,7 @@ export default function index({}: Props): ReactElement {
                   'https://drive.google.com/file/d/11vdq-uVS-HPECtUGEEy5EuUaBHeGpzID/view'
                 }
               >
-                Lies jetzt {'>'}
+                Los geht's! {'>'}
               </a>
               <div
                 onClick={closePlanetModal}
