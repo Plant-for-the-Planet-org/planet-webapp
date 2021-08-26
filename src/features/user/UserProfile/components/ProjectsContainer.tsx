@@ -64,7 +64,7 @@ export default function ProjectsContainer({
             <div className={styles.singleProject}>
               <button id={'addProjectBut'} className={styles.projectNotFound}>
                 <AddProject />
-                <h2>{t('manageProjects:addProject')}</h2>
+                <h2 style={{color: 'var(--primary-font-color)'}}>{t('manageProjects:addProject')}</h2>
               </button>
             </div>
           </Link>
@@ -72,7 +72,7 @@ export default function ProjectsContainer({
           <div className={styles.projectNotFound}>
             <LazyLoad>
               <NotFound className={styles.projectNotFoundImage} />
-              <h5>{t('donate:noProjectsFound')}</h5>
+              <h5 style={{color: 'var(--primary-font-color)'}}>{t('donate:noProjectsFound')}</h5>
             </LazyLoad>
           </div>
         )
@@ -96,7 +96,7 @@ export default function ProjectsContainer({
               <div className={styles.singleProject}>
                 <button id={'addProjectBut'} className={styles.projectNotFound}>
                   <AddProject />
-                  <h2>{t('manageProjects:addProject')}</h2>
+                  <h2 style={{color: 'var(--primary-font-color)'}}>{t('manageProjects:addProject')}</h2>
                 </button>
               </div>
             </Link>

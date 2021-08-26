@@ -40,6 +40,7 @@
   justify-content: flex-start;
   align-items: center;
   font-size: $fontLarge;
+  color: $primaryFontColor;
 }
 
 .contribTitle {
@@ -49,6 +50,7 @@
   align-items: center;
   font-size: $fontLarge;
   text-align: center;
+  color: $primaryFontColor;
 }
 
 .inputField {
@@ -150,21 +152,26 @@
   height: 128px;
   border-radius: 10px;
   border: dashed 1px $primaryFontColor;
-  background-color: #f2f2f7;
+  background-color: $backgroundColor;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  > p {
+    color: $primaryFontColor;
+  }
 }
 
 .note {
   padding: 5px;
+  color: $primaryFontColor;
 }
 
 .mapNote {
   margin-top: 5px;
   padding: 5px;
+  color: $primaryFontColor;
 }
 
 .locationMap {
