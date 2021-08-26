@@ -1,0 +1,86 @@
+@import './../../../theme/theme';
+
+.deleteModal {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  @include smTabletView {
+    max-width: 420px;
+  }
+  .deleteModalTitle {
+    font-weight: bold;
+    font-size: 27px;
+  }
+  .deleteModalContent {
+    margin-top: 20px;
+  }
+  .deleteConsent {
+    margin-top: 20px;
+  }
+  .deleteModalWarning {
+    margin-top: 20px;
+    color: $dangerColor;
+  }
+  .deleteButtonContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    .goBackContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      height: 40px;
+      border-radius: 100px;
+      padding-left: 24px;
+      padding-right: 24px;
+      background-image: linear-gradient(
+        103deg,
+        $primaryColor 5%,
+        $primaryDarkColor 116%
+      );
+      color: $light;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      border: 0px;
+      transition-duration: 0.5s;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      margin-right: 20px;
+      &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+      p {
+        margin-left: 6px;
+      }
+    }
+    .deleteButton {
+      background-color: $dangerColor;
+      height: 40px;
+      border-radius: 100px;
+      padding-left: 24px;
+      padding-right: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: $light;
+      border: 0px;
+      transition-duration: 0.5s;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      flex: 1;
+    }
+    .deleteButton:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+  }
+}
+
+:export {
+  dangerColor: $dangerColor;
+  light: $light;
+}

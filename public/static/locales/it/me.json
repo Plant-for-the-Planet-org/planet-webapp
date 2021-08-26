@@ -73,5 +73,8 @@
   "in-dispute": "In discussione",
   "dispute-lost": "Disputa persa",
   "nameForest": "{{name}}'s Forest",
-  "taxReceipt": "Ricevuta fiscale"
+  "taxReceipt": "Ricevuta fiscale",
+  "setTarget": "Impostare l'obiettivo",
+  "targetSave": "Salva",
+  "targetErrorMessage": "Il numero deve essere positivo o superiore a zero"
 }

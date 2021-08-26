@@ -1,0 +1,21 @@
+{
+  "trees": "Trees",
+  "tree": "Tree",
+  "on": "on",
+  "partial": "Partial",
+  "complete": "Complete",
+  "on-site": "On Site",
+  "off-site": "Off Site",
+  "captureMode": "Capture Mode",
+  "captureStatus": "Capture Status",
+  "coordinates": "Coordinates",
+  "guid": "GUID",
+  "height": "Height",
+  "width": "Width",
+  "plantDate": "Plant Date",
+  "registrationDate": "Registration Date",
+  "plantProject": "Plant Project",
+  "species": "Species",
+  "sampleTrees": "Sample Trees",
+  "loadMore": "Load More"
+}

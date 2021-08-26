@@ -3,7 +3,7 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import styles from './../styles/StepForm.module.scss';
+import styles from './../StepForm.module.scss';
 import MapGL, {
   Marker,
   NavigationControl,
