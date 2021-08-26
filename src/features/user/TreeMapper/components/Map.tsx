@@ -15,6 +15,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 const Map = ReactMapboxGl({
   customAttribution:
     '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
+    scrollZoom:false
 });
 
 interface Props {
@@ -63,24 +64,24 @@ export default function MyTreesMap({
     });
   }, []);
 
-  React.useEffect(() => {
-    if (typeof window !== 'undefined')
-      window.addEventListener('scroll', () => fixedMap(), false);
+  // React.useEffect(() => {
+  //   if (typeof window !== 'undefined')
+  //     window.addEventListener('scroll', () => fixedMap(), false);
 
-    function fixedMap() {
-      if (document.getElementById('pp-mapbox'))
-        if (
-          document.body.scrollTop > 200 ||
-          document.documentElement.scrollTop > 200
-        ) {
-          document.getElementById('pp-mapbox').style.position = 'fixed';
-          document.getElementById('pp-mapbox').style.marginTop = '-200px';
-        } else {
-          document.getElementById('pp-mapbox').style.position = 'absolute';
-          document.getElementById('pp-mapbox').style.marginTop = '0px';
-        }
-    }
-  }, []);
+  //   function fixedMap() {
+  //     if (document.getElementById('pp-mapbox'))
+  //       if (
+  //         document.body.scrollTop > 200 ||
+  //         document.documentElement.scrollTop > 200
+  //       ) {
+  //         document.getElementById('pp-mapbox').style.position = 'fixed';
+  //         document.getElementById('pp-mapbox').style.marginTop = '-200px';
+  //       } else {
+  //         document.getElementById('pp-mapbox').style.position = 'absolute';
+  //         document.getElementById('pp-mapbox').style.marginTop = '0px';
+  //       }
+  //   }
+  // }, []);
 
   React.useEffect(() => {
     if (locations) {

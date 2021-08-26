@@ -63,7 +63,7 @@ function TreeMapper({}: Props): ReactElement {
         token
       );
       if (response) {
-        const plantLocations = response?.items;
+        const plantLocations = response;
         if (plantLocations?.length === 0) {
           setPlantLocations(null);
         } else {
@@ -88,7 +88,7 @@ function TreeMapper({}: Props): ReactElement {
             }
           }
           setPlantLocations(plantLocations);
-          setLinks(response._links);
+          // setLinks(response._links);
         }
       }
     }
@@ -129,29 +129,27 @@ function TreeMapper({}: Props): ReactElement {
   };
 
   return (
-    <div className={'profilePage'}>
+    <div className={styles.profilePage}>
       {progress > 0 && (
         <div className={'topLoader'}>
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <div className={'profilePageTitle'}>TreeMapper</div>
+      {/* <div className={'profilePageTitle'}>TreeMapper</div> */}
       <div id="pageContainer" className={styles.pageContainer}>
-        <div className={styles.section}>
-          <TreeMapperList {...TreeMapperProps} />
-          {location && <PlantLocationPage {...TreeMapperProps} />}
+          <div className={styles.listContainer}>
+          {location ? <PlantLocationPage {...TreeMapperProps} />:<TreeMapperList {...TreeMapperProps} />}
+          </div>
+          
           <div className={styles.mapContainer}>
-            <div id="pp-mapbox" className={styles.map}>
               <PlantLocationMap
                 locations={plantLocations}
                 selectedLocation={selectedLocation}
                 setselectedLocation={setselectedLocation}
               />
-            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

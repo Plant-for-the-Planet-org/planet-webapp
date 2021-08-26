@@ -1,29 +1,33 @@
 @import '../../../theme/theme';
+
+.profilePage {
+  margin-top: 80px;
+}
+
 .pageContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  // margin-top: 280px;
-  > .section {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 0px;
-    max-width: 1200px;
-    width: 100%;
-    > .locationList {
+  width: 100%;
+}
+
+.listContainer {
+  overflow: visible;
+  width: fit-content;
+  z-index: 2;
+  position: relative;
+  bottom: 0;
+}
+ 
+.locationList {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      width: 100%;
-      margin-top: 400px;
-      min-height: 400px;
+      max-width: 100%;
+      width: 360px;
       z-index: 10;
       background-color: $backgroundColor;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
       .singleLocation {
         padding: 0 20px;
         display: flex;
@@ -70,7 +74,7 @@
         }
       }
     }
-    > .locationDetails {
+.locationDetails {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -86,23 +90,18 @@
         cursor: pointer;
       }
     }
-    > .mapContainer {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: flex-start;
-      width: 100%;
-      > .map {
-        position: absolute;
-        height: 400px;
+  .mapContainer {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      > div {
         width: 100%;
-        max-width: 680px;
-        border-radius: 10px;
-        overflow: hidden;
+        height: 100%;
       }
     }
-  }
-}
+
 
 .imageContainer {
   display: flex;
@@ -255,16 +254,7 @@
 }
 
 @include mdTabletView {
-  .pageContainer {
-    padding-top: 20px;
-    > .section {
-      gap: 20px;
-      flex-direction: row;
-      > .locationList {
-        margin-top: 0px;
-        border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
-        width: 40%;
+  .locationList {
         > .singleLocation {
           > .detailContainer {
             display: none;
@@ -281,21 +271,9 @@
           box-shadow: 1px 2px 8px -6px #707070;
         }
       }
-      > .locationDetails {
-        margin-top: 0px;
-        border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
-        width: 40%;
+  .locationDetails {
         display: none;
       }
-      > .mapContainer {
-        width: 60%;
-        > .map {
-          width: 60%;
-        }
-      }
-    }
-  }
 
   .pullUpContainer {
     display: none;
