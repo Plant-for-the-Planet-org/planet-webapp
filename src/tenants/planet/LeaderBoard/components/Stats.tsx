@@ -48,7 +48,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon/>
           </button>
         </div>
         <div className={styles.statCard}>

@@ -16,8 +16,9 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import i18next from '../../../../../i18n';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { selectUserType } from '../../../../utils/selectUserType';
+import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { MenuItem } from '@material-ui/core';
+import { makeStyles, MenuItem } from '@material-ui/core';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
@@ -201,7 +202,31 @@ export default function EditProfileModal({
       }
     }
   };
+
   const { theme } = React.useContext(ThemeContext);
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
+
   return ready ? (
     <React.Fragment>
       <Modal
@@ -271,6 +296,10 @@ export default function EditProfileModal({
                     key={option.value}
                     value={option.value}
                     onClick={() => setAccountType(option.value)}
+                    classes={{
+                      // option: classes.option,
+                      root: classes.root,
+                    }}
                   >
                     {option.title}
                   </MenuItem>

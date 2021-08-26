@@ -5,6 +5,8 @@ import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
 import i18next from '../../../../i18n';
+import { ThemeContext } from '../../../theme/themeContext';
+import themeProperties from '../../../theme/themeProperties';
 
 const config = tenantConfig();
 const { useTranslation } = i18next;
@@ -19,18 +21,6 @@ function countryToFlag(isoCode: string) {
     : isoCode;
 }
 
-const useStyles = makeStyles({
-  option: {
-    color: '#2F3336',
-    fontFamily: config!.font.primaryFontFamily,
-    fontSize: '14px',
-    '& > span': {
-      marginRight: 10,
-      fontSize: 18,
-    },
-  },
-});
-
 export default function CountrySelect(props: {
   label: React.ReactNode;
   inputRef: ((instance: any) => void) | React.RefObject<any> | null | undefined;
@@ -44,7 +34,41 @@ export default function CountrySelect(props: {
 }) {
   const { t, ready } = useTranslation(['country']);
 
-  const classes = useStyles();
+  const { theme } = React.useContext(ThemeContext)
+  const useStylesAutoComplete = makeStyles({
+    paper: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      fontFamily: config!.font.primaryFontFamily,
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+      "&:active": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+      fontSize: '14px',
+      '& > span': {
+        marginRight: 10,
+        fontSize: 18,
+      },
+    },
+  });
+  const classes = useStylesAutoComplete();
 
   // This value is in country code - eg. DE, IN, US
   const { defaultValue, onChange } = props;
@@ -71,18 +95,18 @@ export default function CountrySelect(props: {
       onChange(value.code);
     }
   }, [value]);
-  
+
   if (ready) {
     countries.sort((a, b) => {
-        const nameA = t(`country:${a.code.toLowerCase()}`);
-        const nameB = t(`country:${b.code.toLowerCase()}`);
-        if (nameA > nameB) {
-          return 1;
-        } if (nameA < nameB) {
-          return -1;
-        }
-        return 0;
-      });    
+      const nameA = t(`country:${a.code.toLowerCase()}`);
+      const nameB = t(`country:${b.code.toLowerCase()}`);
+      if (nameA > nameB) {
+        return 1;
+      } if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
   return value && ready ? (
@@ -92,6 +116,7 @@ export default function CountrySelect(props: {
       options={countries as CountryType[]}
       classes={{
         option: classes.option,
+        paper: classes.paper,
       }}
       value={value}
       autoHighlight

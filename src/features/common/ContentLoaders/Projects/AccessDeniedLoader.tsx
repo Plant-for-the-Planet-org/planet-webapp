@@ -11,7 +11,7 @@ function AccessDeniedLoader({}: Props): ReactElement {
         style={{height:'100vh',display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}
       >
           <AccessDenied width={'320px'} height={'229px'} />
-          <h2 style={{marginTop:'24px',fontWeight:'bold',fontSize:'30px'}}>You don’t have access to this page</h2>
+          <h2 style={{marginTop:'24px',fontWeight:'bold',fontSize:'30px', color: 'var(--primary-font-color)'}}>You don’t have access to this page</h2>
       </div>
     )
 }
