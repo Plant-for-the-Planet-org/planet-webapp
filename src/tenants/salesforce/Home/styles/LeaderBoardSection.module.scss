@@ -15,6 +15,7 @@
   @include lgLaptopView {
     padding-top: 90px;
     background-image: url('/tenants/salesforce/images/tracker-bkgd.png');
+    background-size: 1440px auto;
     margin-top: 80px;
     max-width: 2560px;
   }
@@ -27,7 +28,7 @@
   width: 90vw;
   background-color: white;
   z-index: 999;
-  margin-top: -100px;
+  margin-top: -108px;
   @include lgLaptopView {
     padding: 50px 80px;
     width: auto;

@@ -18,6 +18,16 @@
   height: auto;
 }
 
+.illustration1 {
+  max-width: 256px;
+  height: auto;
+}
+
+.illustration2 {
+  max-width: 256px;
+  height: auto;
+}
+
 .mb65100 {
   margin-bottom: 65px;
   @include lgLaptopView {
@@ -69,6 +79,7 @@
 .colMd5,
 .colMd6,
 .colMd7,
+.colMd8,
 .colMd10,
 .colMd12,
 .colLg4,
@@ -118,6 +129,10 @@
   .colMd7 {
     flex: 0 0 58.333333%;
     max-width: 58.333333%;
+  }
+  .colMd8 {
+    flex: 0 0 75%;
+    max-width: 75%;
   }
   .colMd10 {
     flex: 0 0 83.333333%;

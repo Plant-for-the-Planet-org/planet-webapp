@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .landingSection {
-  height: 920px;
+  height: 858px;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
   background-image: url('/tenants/salesforce/images/bkgd.png');
   background-position: top center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 1440px auto;
   padding: 35px 0 100px;
 
   @include smTabletView {
@@ -19,7 +19,7 @@
 
   @include lgLaptopView {
     max-width: 2560px;
-    padding: 185px 0 100px;
+    padding: 185px 0 0;
   }
 }
 
