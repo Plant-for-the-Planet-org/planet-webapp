@@ -28,7 +28,7 @@
   width: 90vw;
   background-color: white;
   z-index: 999;
-  margin-top: -108px;
+  margin-top: -100px;
   @include lgLaptopView {
     padding: 50px 80px;
     width: auto;
@@ -204,7 +204,7 @@
   }
 
   .leaderBoardSection {
-    margin-top: -100px;
+    margin-top: -108px;
   }
   .leaderBoardBushImage {
     display: block;
