@@ -113,7 +113,7 @@ export default function Timeline() {
 
     return (
       <div className={styles.progressBarContainer}>
-        <div className={styles.progressBar} style={{width: (desktopCurrent + 1 / Math.ceil(moments.length / 2)) * 100 + '%'}}></div>
+        <div className={styles.progressBar} style={{width: (((desktopCurrent+1)/(Math.ceil(moments.length / 2)))*100).toString()+"%"}}></div>
       </div>
     );
   }
