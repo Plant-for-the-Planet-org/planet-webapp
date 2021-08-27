@@ -90,7 +90,7 @@
     "react-player": "^2.8.2",
     "read-more-react": "^1.0.10",
     "sass": "^1.36.0",
-    "styled-jsx": "^3.4.1",
+    "styled-jsx": "^3.4.7",
     "uuid": "^8.3.2",
     "viewport-mercator-project": "^6.1.1",
     "vizzuality-components": "^3.0.3"
