@@ -164,6 +164,15 @@ function ProjectsList({
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
           className={'container'}
+          onTouchMove={(event) => {
+            if (isMobile) {
+              if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
+                setScrollY(event.targetTouches[0].clientY);
+              } else {
+                setScrollY((screenHeight * 2) / 9);
+              }
+            }
+          }}
         >
           <div
             className={'header'}
