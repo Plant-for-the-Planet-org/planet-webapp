@@ -41,8 +41,6 @@ export default function IndividualProfile({
     setAddTargetModalOpen(true);
   };
 
-  console.log('userprofile', userprofile);
-
   return (
     <React.Fragment>
       <main>
