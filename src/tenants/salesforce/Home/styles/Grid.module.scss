@@ -21,7 +21,7 @@
 .mb65100 {
   margin-bottom: 65px;
   @include lgLaptopView {
-    margin-bottom: 100px;
+    margin-bottom: 0px;
   }
   &:last-of-type {
     margin-bottom: 0;
