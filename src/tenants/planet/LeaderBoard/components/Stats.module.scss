@@ -108,6 +108,21 @@
   color: $primaryFontColor;
 }
 
+.infoContent > a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  text-decoration: none;
+  color: $primaryFontColor;
+}
+
+.infoContent > a > svg {
+  width: 20px;
+  margin-right: 6px;
+}
+
 .infoClose {
   position: absolute;
   right: 15px;
