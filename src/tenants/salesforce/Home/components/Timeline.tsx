@@ -90,23 +90,32 @@ export default function Timeline() {
   }
 
   function desktopDots() {
-    const dots = [];
+    // const dots = [];
 
-    for (let i = 0; i < Math.ceil(moments.length / 2); i++) {
-      dots.push(<Link
-        href={`#desktop-timeline-moment-${i}`}
-        scroll={false}
-      >
-        <button
-          className={styles.timelineButtonDot}
-          disabled={desktopCurrent === i}
-          aria-disabled={desktopCurrent === i}
-          onClick={() => setDesktopCurrent(i)}>
-          <span className={`${desktopCurrent === i ? styles.timelineDotDisabled : styles.timelineDot}`} />
-        </button>
-      </Link>);
-    }
-    return dots;
+    // for (let i = 0; i < Math.ceil(moments.length / 2); i++) {
+    //   dots.push(<Link
+    //     href={`#desktop-timeline-moment-${i}`}
+    //     scroll={false}
+    //   >
+    //     <button
+    //       className={styles.timelineButtonDot}
+    //       disabled={desktopCurrent === i}
+    //       aria-disabled={desktopCurrent === i}
+    //       onClick={() => setDesktopCurrent(i)}>
+    //       <span className={`${desktopCurrent === i ? styles.timelineDotDisabled : styles.timelineDot}`} />
+    //     </button>
+    //   </Link>);
+    // }
+    // return dots;
+    console.log('desktopCurrent', desktopCurrent)
+    console.log('slides', moments)
+    console.log('test', Math.ceil(moments.length / 2))
+
+    return (
+      <div className={styles.progressBarContainer}>
+        <div className={styles.progressBar} style={{width: (desktopCurrent + 1 / Math.ceil(moments.length / 2)) * 100 + '%'}}></div>
+      </div>
+    );
   }
 
   function mobileDots() {
@@ -133,6 +142,18 @@ export default function Timeline() {
     <section className={styles.timelineSection}>
       <div>
         <div className={`${gridStyles.fluidContainer} ${styles.timelineRow}`}>
+          <Link
+            href={`#desktop-timeline-moment-${desktopCurrent - 1}`}
+            scroll={false}
+          >
+            <button
+              className={styles.timelineButtonArrowPrev}
+              disabled={desktopCurrent === 0}
+              aria-disabled={desktopCurrent === 0}
+              onClick={() => setDesktopCurrent(desktopCurrent - 1)}>
+              <img src="/tenants/salesforce/images/arrow-left.png" alt="" className={styles.timelineArrow} />
+            </button>
+          </Link>
           <div className={styles.timelineDesktop}>
             {desktopSlider()}
           </div>
@@ -151,32 +172,7 @@ export default function Timeline() {
             })}
           </div>
           <div className={styles.timelineDesktopNav}>
-            <Link
-              href={`#desktop-timeline-moment-${desktopCurrent - 1}`}
-              scroll={false}
-            >
-              <button
-                className={styles.timelineButtonArrowPrev}
-                disabled={desktopCurrent === 0}
-                aria-disabled={desktopCurrent === 0}
-                onClick={() => setDesktopCurrent(desktopCurrent - 1)}>
-                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow} />
-              </button>
-            </Link>
             {desktopDots()}
-            <Link
-              href={`#desktop-timeline-moment-${desktopCurrent + 1}`}
-              scroll={false}
-            >
-              <button
-                className={styles.timelineButtonArrowNext}
-                onClick={() => setDesktopCurrent(desktopCurrent + 1)}
-                disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
-                aria-disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
-              >
-                <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
-              </button>
-            </Link>
           </div>
           <div className={styles.timelineMobileNav}>
             <Link
@@ -188,7 +184,7 @@ export default function Timeline() {
                 disabled={mobileCurrent === 0}
                 aria-disabled={mobileCurrent === 0}
                 onClick={() => setMobileCurrent(mobileCurrent - 1)}>
-                <img src="/tenants/salesforce/images/arrow-prev.png" alt="" className={styles.timelineArrow} />
+                <img src="/tenants/salesforce/images/arrow-left.png" alt="" className={styles.timelineArrow} />
               </button>
             </Link>
             {mobileDots()}
@@ -202,10 +198,23 @@ export default function Timeline() {
                 disabled={mobileCurrent + 1 === moments.length}
                 aria-disabled={mobileCurrent + 1 === moments.length}
               >
-                <img src="/tenants/salesforce/images/arrow-next.png" alt="" className={styles.timelineArrow} />
+                <img src="/tenants/salesforce/images/arrow-right.png" alt="" className={styles.timelineArrow} />
               </button>
             </Link>
           </div>
+          <Link
+            href={`#desktop-timeline-moment-${desktopCurrent + 1}`}
+            scroll={false}
+          >
+            <button
+              className={styles.timelineButtonArrowNext}
+              onClick={() => setDesktopCurrent(desktopCurrent + 1)}
+              disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
+              aria-disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
+            >
+              <img src="/tenants/salesforce/images/arrow-right.png" alt="" className={styles.timelineArrow} />
+            </button>
+          </Link>
         </div>
       </div>
     </section>

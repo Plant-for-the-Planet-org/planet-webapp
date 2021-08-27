@@ -174,6 +174,20 @@
   }
 }
 
+.progressBarContainer {
+  width: 250px;
+  height: 10px;
+  background-color: #e5e5e5;
+  border-radius: 6px;
+}
+
+.progressBar {
+  height: 100%;
+  width: 25%;
+  background-color: #0176d3;
+  border-radius: 6px;
+}
+
 .timelineMobileNav {
   position: absolute;
   bottom: 0;
@@ -213,14 +227,21 @@
 }
 
 .timelineButtonArrowPrev {
-  margin-right: 20px;
+  position: absolute;
+  top: 235px;
+  left: 0px;
+  background-color: white;
+  cursor: pointer;
   &[disabled] {
     opacity: 0;
   }
 }
 
 .timelineButtonArrowNext {
-  margin-left: 10px;
+  position: absolute;
+  top: 235px;
+  right: 0px;
+  background-color: white;
   cursor: pointer;
   &[disabled] {
     opacity: 0;
