@@ -171,7 +171,6 @@ export default function RegisterTrees({ }: Props) {
               setContributionDetails(res);
               setIsUploadingData(false);
               setRegistered(true);
-              // router.push('/c/[id]', `/c/${res.id}`);
             } else {
               if (res.code === 404) {
                 setIsUploadingData(false);
