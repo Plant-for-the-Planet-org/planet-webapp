@@ -23,7 +23,8 @@ export default function Project({
     siteExists,
     rasterData,
     setRasterData,
-    isMobile
+    isMobile,
+    setSiteViewPort
   } = React.useContext(ProjectPropsContext);
 
   async function loadRasterData() {
@@ -52,6 +53,7 @@ export default function Project({
         viewport,
         isMobileTemp,
         setViewPort,
+        setSiteViewPort,
         4000
       );
     } else {

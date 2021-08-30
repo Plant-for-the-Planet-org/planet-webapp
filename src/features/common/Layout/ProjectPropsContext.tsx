@@ -70,6 +70,8 @@ export const ProjectPropsContext = React.createContext({
   setHoveredPl: (value: {}) => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
+  siteViewPort: null || {}, 
+  setSiteViewPort:(value: {}) => {}
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -130,6 +132,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
 
   const [windowSize, setWindowSize] = React.useState(1280);
   const [hoveredPl, setHoveredPl] = React.useState(null);
+  const [siteViewPort, setSiteViewPort] = React.useState(null);
 
   React.useEffect(() => {
     if(typeof window !== 'undefined') {
@@ -168,16 +171,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     } else {
       setsiteExists(false);
       setGeoJson(null);
+      setSiteViewPort(null);
     }
     setSelectedMode('location');
   }, [project]);
-
-  // React.useEffect(() => {
-  //   if (viewport.zoom > 15) {
-  //     setSatellite(false);
-  //   }
-  //   console.log('zoom', viewport.zoom);
-  // }, [viewport]);
 
   React.useEffect(() => {
     if (plantLocations && plantLocations.length > 0) {
@@ -272,6 +269,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setHoveredPl,
         isPolygonMenuOpen,
         setIsPolygonMenuOpen,
+        siteViewPort,
+        setSiteViewPort
       }}
     >
       {children}
