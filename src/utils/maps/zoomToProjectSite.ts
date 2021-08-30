@@ -28,7 +28,7 @@ export default function zoomToProjectSite(
       },
     }
   );
-  var defaultZoom = 15;
+  let defaultZoom = 15;
   if(zoom < defaultZoom) {
     defaultZoom = zoom;
   }
