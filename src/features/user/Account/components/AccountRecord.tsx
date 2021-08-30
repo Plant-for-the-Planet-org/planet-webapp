@@ -340,37 +340,34 @@ export function Certificates({ record }: CertificatesProps): ReactElement {
     <>
       {record.details?.donorCertificate && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('donorCertificate')}</p>
           <a
             href={record.details.donorCertificate}
             target="_blank"
             rel="noreferrer"
           >
-            {t('download')}
+            {t('donorCertificate')}
           </a>
         </div>
       )}
       {record.details?.taxDeductibleReceipt && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('taxDeductibleReceipt')}</p>
           <a
             href={record.details.taxDeductibleReceipt}
             target="_blank"
             rel="noreferrer"
           >
-            {t('download')}
+            {t('taxDeductibleReceipt')}
           </a>
         </div>
       )}
       {record.details?.giftCertificate && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('giftCertificate')}</p>
           <a
             href={record.details.giftCertificate}
             target="_blank"
             rel="noreferrer"
           >
-            {t('download')}
+            {t('giftCertificate')}
           </a>
         </div>
       )}
