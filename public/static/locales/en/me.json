@@ -122,5 +122,7 @@
   "loadMore": "Load More",
   "setTarget": "Set Target",
   "targetSave": "Save",
-  "targetErrorMessage": "Number must be greater than zero"
+  "targetErrorMessage": "Number must be greater than zero",
+  "taxDeductibleReceipt": "Tax Deductible Receipt",
+  "Gift Certificate": "Gift Certificate"
 }
