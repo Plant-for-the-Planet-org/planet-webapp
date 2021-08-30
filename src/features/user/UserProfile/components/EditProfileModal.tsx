@@ -165,14 +165,14 @@ export default function EditProfileModal({
     setIsUploadingData(true);
     const bodyToSend = {
       ...data,
+      type: type,
       country: country,
     };
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
           .then((res) => {
-            console.log(res);
-            if(res.code !== 400) {
+            if (res.code !== 400) {
               setSeverity('success');
               setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
               handleSnackbarOpen();
@@ -181,10 +181,12 @@ export default function EditProfileModal({
               setUser(res);
             } else {
               setSeverity('error');
-            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
-            handleSnackbarOpen();
-            setIsUploadingData(false);
-            handleEditProfileModalClose();
+              setSnackbarMessage(
+                ready ? t('editProfile:profileSaveFailed') : ''
+              );
+              handleSnackbarOpen();
+              setIsUploadingData(false);
+              handleEditProfileModalClose();
             }
           })
           .catch((error) => {
@@ -207,24 +209,24 @@ export default function EditProfileModal({
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
 
   return ready ? (
