@@ -140,7 +140,7 @@ function ProjectsList({
         <div className={'projectNotFound'}>
           <LazyLoad>
             <NotFound className={'projectNotFoundImage'} />
-            <h5>{t('donate:noProjectsFound')}</h5>
+            <h5 style={{color: 'var(--primary-font-color'}}>{t('donate:noProjectsFound')}</h5>
           </LazyLoad>
         </div>
       ) : null;

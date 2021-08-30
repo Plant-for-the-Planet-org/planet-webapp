@@ -79,6 +79,9 @@
   }
 }
 
+.leaderBoardTableHeaderTitleSelected, .leaderBoardTableHeaderTitle > svg > path{
+  fill: $primaryFontColor;
+}
 .leaderBoardTableHeaderTitle:hover {
   cursor: pointer;
 }

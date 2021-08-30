@@ -12,7 +12,6 @@ export default function LandingSection(props: any) {
           ? props.imageSrc
           : `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
           }) 0% 0% no-repeat padding-box`,
-        mixBlendMode: 'darken',
         backgroundSize: 'cover',
       }}
     >

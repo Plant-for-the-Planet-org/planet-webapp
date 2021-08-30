@@ -69,7 +69,7 @@ function ContactDetails({
             onClick={() => setDonationStep(1)}
             className={styles.headerBackIcon}
           >
-            <BackArrow color={styles.light} />
+            <BackArrow />
           </button>
           <div>
             <div className={styles.headerTitle}>

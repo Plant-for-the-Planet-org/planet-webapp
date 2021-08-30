@@ -11,14 +11,41 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
-import { MenuItem } from '@material-ui/core';
+import { makeStyles, MenuItem } from '@material-ui/core';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import themeProperties from '../../../theme/themeProperties';
+import { ThemeContext } from '../../../theme/themeContext';
 
 const { useTranslation } = i18next;
+
 export default function CompleteSignup() {
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
+
+  const { theme } = React.useContext(ThemeContext);
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
 
   const {
     register,
@@ -192,7 +219,15 @@ export default function CompleteSignup() {
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div className={requestSent ? styles.signupRequestSent : styles.signup}>
+        <div className={requestSent ? styles.signupRequestSent : styles.signup} 
+        style={{
+          backgroundColor: theme === 'theme-light' ?
+                          themeProperties.light.light :
+                          themeProperties.dark.backgroundColor,
+          color: theme === 'theme-light' ?
+                 themeProperties.light.primaryFontColor :
+                 themeProperties.dark.primaryFontColor,
+        }}>
           {/* header */}
           <div className={styles.header}>
             <div onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.headerBackIcon}>
@@ -215,6 +250,10 @@ export default function CompleteSignup() {
                 key={option.value}
                 value={option.value}
                 onClick={() => setAccountType(option.value)}
+                classes={{
+                  // option: classes.option,
+                  root: classes.root,
+                }}
               >
                 {option.title}
               </MenuItem>

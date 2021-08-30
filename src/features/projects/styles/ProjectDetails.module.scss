@@ -274,7 +274,7 @@
   }
 
   .projectContainer {
-    margin-top: 90px;
+    margin-top: 0px;
     width: 360px;
     padding-bottom: 16px;
     min-height: calc(100vh - 100px);
@@ -298,7 +298,7 @@
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;

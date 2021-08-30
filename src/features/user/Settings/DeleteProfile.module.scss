@@ -10,12 +10,18 @@
   .deleteModalTitle {
     font-weight: bold;
     font-size: 27px;
+    text-align: center;
+    color: $primaryFontColor;
   }
   .deleteModalContent {
     margin-top: 20px;
+    color: $primaryFontColor;
   }
   .deleteConsent {
     margin-top: 20px;
+    font-size: $fontXSmall;
+    text-align: center;
+    color: $primaryFontColor;
   }
   .deleteModalWarning {
     margin-top: 20px;

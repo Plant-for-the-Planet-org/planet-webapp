@@ -34,6 +34,8 @@
   background-color: $light;
   transition: width 0.3s ease-in-out;
   z-index: 100;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
   @include smTabletView {
     top: 80px;
   }
@@ -62,6 +64,8 @@
   text-align: left;
   display: flex;
   justify-content: center;
+  color: $primaryFontColor;
+
   &:hover {
     cursor: pointer;
     > svg > path {
@@ -123,9 +127,10 @@
   padding-left: 56px;
   &:hover {
     cursor: pointer;
-    background-color: $blueishGrey;
+    background-color: $backgroundColorDark;
   }
 }
+
 
 .widgetIFrame {
   min-height: 100vh;
