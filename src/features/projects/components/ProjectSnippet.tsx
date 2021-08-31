@@ -63,7 +63,7 @@ export default function ProjectSnippet({
       </Modal>
 
       {editMode ? (
-        <Link href={`/manage-projects/${project.id}`}>
+        <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
             <EditIcon></EditIcon>
           </button>

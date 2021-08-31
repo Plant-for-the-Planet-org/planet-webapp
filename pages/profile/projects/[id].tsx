@@ -1,11 +1,12 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ManageProjects from '../../src/features/user/ManageProjects';
-import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
-import GlobeContentLoader from '../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import Footer from '../../src/features/common/Layout/Footer';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import ManageProjects from '../../../src/features/user/ManageProjects';
+import { getAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
+import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import Footer from '../../../src/features/common/Layout/Footer';
+import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 
 interface Props {}
 
@@ -60,23 +61,28 @@ function ManageSingleProject({}: Props): ReactElement {
   }
 
   // Showing error to other TPOs is left
+
   return setupAccess ? (
     ready && token && !accessDenied ? (
-      <>
-        <ManageProjects GUID={projectGUID} token={token} project={project} />
-        <Footer />
-      </>
+      <UserLayout>
+        <div className="profilePage">
+          <div className="profilePageHeader">
+            <div>
+              <div className={'profilePageTitle'}>{project.name}</div>
+            </div>
+          </div>
+          <ManageProjects GUID={projectGUID} token={token} project={project} />
+        </div>
+      </UserLayout>
     ) : (
-      <>
+      <UserLayout>
         <GlobeContentLoader />
-        <Footer />
-      </>
+      </UserLayout>
     )
   ) : (
-    <>
+    <UserLayout>
       <GlobeContentLoader />
-      <Footer />
-    </>
+    </UserLayout>
   );
 }
 
