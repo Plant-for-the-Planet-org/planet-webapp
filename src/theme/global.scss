@@ -220,6 +220,18 @@ video {
   font-weight: normal;
   font-style: normal;
 }
+.unDecadeFill {
+  fill: $undecadeFill;
+}
+
+.iconFillNone {
+  fill: none;
+  stroke: $primaryFontColor;
+}
+
+.iconFillColor {
+  fill: $primaryFontColor;
+}
 
 .primaryButton,
 .secondaryButton {
@@ -254,7 +266,7 @@ video {
 .secondaryButton {
   min-width: 240px;
   background-image: none;
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   color: $primaryFontColor;
   p {
     margin-left: 6px;
@@ -326,6 +338,9 @@ button {
     max-width: 100%;
     border-radius: 0px;
   }
+  .profilePage {
+    padding-top: 80px !important;
+  }
 }
 
 .read-more-button {
@@ -334,22 +349,37 @@ button {
 }
 
 // Profile page
-.profilePageTitle{
+.profilePageTitle {
   font-size: 36px;
   font-weight: 800;
   margin-bottom: 20px;
+  color: $primaryFontColor;
 }
-.profilePageSubTitle{
+.profilePageSubTitle {
   font-size: 16px;
   margin-bottom: 20px;
+  color: $primaryFontColor;
 }
 .profilePage {
-  max-width: 1000px;
-  margin-top: 80px;
+  // max-width: 1000px;
+  background-color: $backgroundBase;
+  margin-bottom: 80px;
   padding: 20px;
-  @include smTabletView{
+  min-height: 100vh;
+  @include smTabletView {
     padding: 40px;
+    margin-bottom: 0px;
+    margin-top: 80px;
   }
+}
+
+.profilePageHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .topLoader {
@@ -400,3 +430,45 @@ button {
   margin-bottom: -18px;
 }
 
+.vizzuality__legend-item-container {
+  background-color: $backgroundColor;
+}
+.vizzuality__c-timestep .vizzuality__player-btn > svg {
+  fill: $primaryFontColor;
+}
+
+.MuiSvgIcon-root,
+.MuiNativeSelect-icon {
+  path {
+    fill: $primaryFontColor;
+  }
+}
+.MuiPaper-root {
+  background-color: $backgroundColor !important;
+}
+.MuiStepLabel-label.MuiStepLabel-active,
+.MuiStepLabel-label.MuiStepLabel-completed,
+.MuiStepLabel-label {
+  color: $primaryFontColor !important;
+}
+.MuiInputBase-input {
+  color: $primaryFontColor !important;
+}
+
+.mapboxgl-ctrl-group {
+  filter: $mapboxIcon;
+}
+
+input:autofill,
+input:-webkit-autofill {
+  background-color: $backgroundColorDark !important;
+  color: $primaryFontColor !important;
+}
+.MuiSelect-icon,
+.MuiNativeSelect-icon {
+  fill: $primaryFontColor !important;
+}
+.MuiNativeSelect-select:not([multiple]) option,
+.MuiNativeSelect-select:not([multiple]) optgroup {
+  background-color: $backgroundColor !important;
+}

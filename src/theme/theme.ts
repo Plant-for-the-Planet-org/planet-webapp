@@ -25,23 +25,29 @@ const globalStyles = css.global`
     --primary-font-color: ${light.primaryFontColor};
     --divider-color: ${light.dividerColor};
     --secondary-color: ${light.secondaryColor};
-    --blueish-grey: ${light.blueishGrey};
+    --background-color-dark: ${light.backgroundColorDark};
     --background-color: ${light.backgroundColor};
     --highlight-background: ${light.highlightBackground};
     --light: ${light.light};
     --dark: ${light.dark};
     --danger-color: ${light.dangerColor};
+    --undecade-fill: ${light.unDecadeFill};
+    --mapbox-icon: ${light.mapboxIcon};
+    --background-base: ${light.backgroundBase};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
     --divider-color: ${dark.dividerColor};
     --secondary-color: ${dark.secondaryColor};
-    --blueish-grey: ${dark.blueishGrey};
+    --background-color-dark: ${dark.backgroundColorDark};
     --background-color: ${dark.backgroundColor};
     --highlight-background: ${dark.highlightBackground};
     --light: ${dark.light};
     --dark: ${dark.dark};
     --danger-color: ${dark.dangerColor};
+    --undecade-fill: ${dark.unDecadeFill};
+    --mapbox-icon: ${dark.mapboxIcon};
+    --background-base: ${dark.backgroundBase};
   }
 `;
 

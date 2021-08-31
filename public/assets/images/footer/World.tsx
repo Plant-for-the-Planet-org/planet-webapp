@@ -11,8 +11,7 @@ function World({ color }: any) {
     >
       <path fill="none" d="M0 0H24V24H0z" data-name="Rectangle 997"></path>
       <g
-        fill="none"
-        stroke='#2f3336'
+        className="iconFillNone"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="3"

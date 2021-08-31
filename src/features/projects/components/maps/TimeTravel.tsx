@@ -40,6 +40,7 @@ export default function TimeTravel({}: Props): ReactElement {
         center: center,
         zoom: zoom,
         dragPan: true,
+        scrollZoom:false,
       });
 
       setBefore(before);
@@ -50,6 +51,7 @@ export default function TimeTravel({}: Props): ReactElement {
         center: center,
         zoom: zoom,
         dragPan: true,
+        scrollZoom:false,
       });
 
       setAfter(after);

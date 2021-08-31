@@ -13,22 +13,13 @@ import tenantConfig from '../../../../../tenant.config';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
 import Image from 'next/image'
+import { ThemeContext } from '../../../../theme/themeContext';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   leaderboard: any;
 }
 const config = tenantConfig();
-const useStyles = makeStyles({
-  option: {
-    color: '#2F3336',
-    fontFamily: config!.font.primaryFontFamily,
-    fontSize: '14px',
-    '& > span': {
-      marginRight: 10,
-      fontSize: 18,
-    },
-  },
-});
 
 const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
@@ -37,7 +28,42 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
   const [users, setUsers] = React.useState([]);
-  const classes = useStyles();
+
+  const { theme } = React.useContext(ThemeContext)
+  const useStylesAutoComplete = makeStyles({
+    paper: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      fontFamily: config!.font.primaryFontFamily,
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+      "&:active": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+      fontSize: '14px',
+      '& > span': {
+        marginRight: 10,
+        fontSize: 18,
+      },
+    },
+  });
+  const classes = useStylesAutoComplete();
 
   async function fetchUsers(query: any) {
     postRequest('/suggest.php', { q: query }).then((res) => {
@@ -82,111 +108,112 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   : styles.leaderBoardTableHeaderTitle
               }
             >
-               <SearchIcon/>
+              <SearchIcon />
             </button>
           </div>
 
           {leaderboardData
             && leaderboardData.mostRecent
             && leaderboardData.mostDonated ? (
-              selectedTab === 'recent' ? (
-                <div className={styles.leaderBoardBody}>
-                  {leaderboardData.mostRecent.map((leader: any, index: any) => (
-                    <div key={index} className={styles.leaderBoardBodyRow}>
-                      <p className={styles.leaderBoardDonorName}>
-                        {leader.donorName}
-                      </p>
-                      <p className={styles.leaderBoardDonorTrees}>
-                        {getFormattedNumber(i18n.language, Number(leader.treeCount))}
-                        {' '}
-                        {t('common:tree', { count: Number(leader.treeCount) })}
-                      </p>
-                      {/* <p className={styles.leaderBoardDonorTime}>
+            selectedTab === 'recent' ? (
+              <div className={styles.leaderBoardBody}>
+                {leaderboardData.mostRecent.map((leader: any, index: any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
+                    <p className={styles.leaderBoardDonorName}>
+                      {leader.donorName}
+                    </p>
+                    <p className={styles.leaderBoardDonorTrees}>
+                      {getFormattedNumber(i18n.language, Number(leader.treeCount))}
+                      {' '}
+                      {t('common:tree', { count: Number(leader.treeCount) })}
+                    </p>
+                    {/* <p className={styles.leaderBoardDonorTime}>
                           {leader.created}
                         </p> */}
-                    </div>
-                  ))}
-                </div>
-              ) : selectedTab === 'highest' ? (
-                  <div className={styles.leaderBoardBody}>
-                    {leaderboardData.mostDonated.map((leader: any, index: any) => (
-                      <div key={index} className={styles.leaderBoardBodyRow}>
-                        <p className={styles.leaderBoardDonorName}>
-                          {leader.donorName}
-                        </p>
-                        <p className={styles.leaderBoardDonorTrees}>
-                          {getFormattedNumber(i18n.language, Number(leader.treeCount))}
-                          {' '}
-                          {t('common:tree', { count: Number(leader.treeCount) })}
-                        </p>
-                      </div>
-                    ))}
                   </div>
-                ) : (
-<div style={{ width: '300px', marginTop: '24px',marginBottom:'420px' }}>
-            <Autocomplete
-              freeSolo
-              disableClearable
-              getOptionLabel={(option) => (option.name)}
-              options={users}
-              classes={{
-                option: classes.option,
-              }}
-              renderOption={(option) => (
-                <Link prefetch={false}
-                  href="/t/[id]"
-                  as={`/t/${option.slug}`}>
-                    <div className={styles.searchedUserCard}>
-                    {/* <Image
+                ))}
+              </div>
+            ) : selectedTab === 'highest' ? (
+              <div className={styles.leaderBoardBody}>
+                {leaderboardData.mostDonated.map((leader: any, index: any) => (
+                  <div key={index} className={styles.leaderBoardBodyRow}>
+                    <p className={styles.leaderBoardDonorName}>
+                      {leader.donorName}
+                    </p>
+                    <p className={styles.leaderBoardDonorTrees}>
+                      {getFormattedNumber(i18n.language, Number(leader.treeCount))}
+                      {' '}
+                      {t('common:tree', { count: Number(leader.treeCount) })}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ width: '300px', marginTop: '24px', marginBottom: '420px' }}>
+                <Autocomplete
+                  freeSolo
+                  disableClearable
+                  getOptionLabel={(option) => (option.name)}
+                  options={users}
+                  classes={{
+                    option: classes.option,
+                    paper: classes.paper,
+                  }}
+                  renderOption={(option) => (
+                    <Link prefetch={false}
+                      href="/t/[id]"
+                      as={`/t/${option.slug}`}>
+                      <div className={styles.searchedUserCard}>
+                        {/* <Image
                       loader={myLoader}
                       src={getImageUrl('profile', 'avatar', option.image)}
                       alt={option.name}
                       width={26}
                       height={26}
                     /> */}
-                    <img
-                      src={getImageUrl('profile', 'avatar', option.image)}
-                      onError={(e) => (e.target.onerror = null, e.target.src = getRandomImage(option.name))}
-                      height="26px"
-                      width="26px"
-                      style={{ borderRadius: '40px' }}
-                    />
-                    <span>{option.name}</span>
-                    </div>
+                        <img
+                          src={getImageUrl('profile', 'avatar', option.image)}
+                          onError={(e) => (e.target.onerror = null, e.target.src = getRandomImage(option.name))}
+                          height="26px"
+                          width="26px"
+                          style={{ borderRadius: '40px' }}
+                        />
+                        <span>{option.name}</span>
+                      </div>
 
-                </Link>
-              )}
-              renderInput={(params) => (
-                <MaterialTextField
-                  {...params}
-                  label={t("leaderboard:searchUser")}
-                  variant="outlined"
-                  name="searchUser"
-                  onChange={(e) => {
-                    if (e.target.value.length > 2) {
-                      fetchUsers(e.target.value)
-                    }
-                  }}
-                  InputProps={{ ...params.InputProps, type: 'search' }}
+                    </Link>
+                  )}
+                  renderInput={(params) => (
+                    <MaterialTextField
+                      {...params}
+                      label={t("leaderboard:searchUser")}
+                      variant="outlined"
+                      name="searchUser"
+                      onChange={(e) => {
+                        if (e.target.value.length > 2) {
+                          fetchUsers(e.target.value)
+                        }
+                      }}
+                      InputProps={{ ...params.InputProps, type: 'search' }}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-                )
-            ) : (
-              <>
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-                <LeaderboardLoader />
-              </>
-            )}
+              </div>
+            )
+          ) : (
+            <>
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+              <LeaderboardLoader />
+            </>
+          )}
         </div>
       </div>
       <img

@@ -151,7 +151,6 @@
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $primaryFontColor;
-  padding-right: 10px;
 }
 
 .treeCountOptionSelected > .treeCountOptionTrees {
@@ -159,7 +158,6 @@
   font-weight: bold;
   font-size: $fontSmall;
   color: $primaryColor;
-  padding-right: 10px;
 }
 
 .customTreeInput {
@@ -323,7 +321,7 @@
 }
 
 .paymentRequestPlaceholder {
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   border-radius: 6px;
   padding: 8px 40px;
   color: $dark;
@@ -503,6 +501,7 @@
   padding-top: 40px;
   padding-bottom: 0px;
   position: relative;
+  color: $primaryFontColor;
 }
 
 .leaderBoardBushImage,
@@ -556,6 +555,7 @@
     color: $dividerColor;
     justify-content: center;
     position: relative;
+    background-color: #fff;
     > label {
       margin-top: 6px;
       font-size: $fontXXSmall;
@@ -563,16 +563,16 @@
     &:hover {
       cursor: pointer;
       color: $primaryFontColor;
-      background-color: $blueishGrey;
-      border: 0.5px solid $blueishGrey;
+      background-color: #F2F2F7;
+      border: 0.5px solid #F2F2F7;
     }
     .checkMark {
       display: none;
     }
   }
   .paymentMethodSelected {
-    background-color: $blueishGrey;
-    border: 0.5px solid $blueishGrey;
+    background-color: #F2F2F7;
+    border: 0.5px solid #F2F2F7;
     color: $primaryFontColor;
     font-weight: 600;
 
@@ -749,7 +749,7 @@
 }
 
 :export {
-  blueishGrey: '#f2f2f7';
+  blueishGrey: 'var(--background-color-dark)';
 }
 
 .thankyouImageHeader {
@@ -793,29 +793,33 @@
 .disclaimerContainer {
   display: flex;
   flex-direction: row;
-  background-color: rgb(231, 237, 255);
+  background-color: $backgroundColorDark;
   border-radius: 10px;
   width: 100%;
   padding: 18.5px;
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 20px;
+  color: $primaryFontColor;
   > div {
     display: flex;
     justify-content: flex-start;
     width: 48px;
     height: 20px;
+    > svg > path{
+      fill: $primaryFontColor;
+    }
   }
   > p {
     margin-left: 12px;
   }
 }
 
+
 .showContactDetails {
   margin-left: 22px;
   margin-right: 22px;
   margin-top: -70px;
-  color: $primaryFontColor;
   padding: 20px;
   padding-left: 30px;
   padding-right: 30px;
@@ -838,7 +842,6 @@
   margin-left: 22px;
   margin-right: 22px;
   margin-top: -80px;
-  color: $primaryFontColor;
   position: relative;
   padding: 20px;
   border-radius: 10px;

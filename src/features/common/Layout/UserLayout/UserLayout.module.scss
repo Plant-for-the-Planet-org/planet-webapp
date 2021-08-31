@@ -7,6 +7,24 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  & .hamburgerIcon {
+    display: none;
+  }
+  @include xsPhoneView {
+    padding-left: 0;
+    & .hamburgerIcon {
+      display: block;
+      position: fixed;
+      top: 28px;
+      left: 20px;
+      z-index: 10;
+      height: 42px;
+      width: 42px;
+    }
+    & .profilePageTitle {
+      padding-left: 40px;
+    }
+  }
 }
 .profilePageWrapper {
   width: 100%;
@@ -34,21 +52,42 @@
   background-color: $light;
   transition: width 0.3s ease-in-out;
   z-index: 100;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
+  @include xsPhoneView {
+    width: 256px;
+    & .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    & .navlink button {
+      display: block;
+    }
+    & .navlinkSubMenu {
+      display: flex;
+    }
+    &.menuClosed {
+      width: 0px;
+    }
+  }
   @include smTabletView {
     top: 80px;
-  }
-  &:hover {
-    width: 256px !important;
-  }
-  &:hover .navlink {
-    padding: 16px 20px;
-    justify-content: space-between;
-  }
-  &:hover .navlink button {
-    display: block;
-  }
-  &:hover .navlinkSubMenu {
-    display: flex;
+    & .closeMenu {
+      display: none;
+    }
+    &:hover {
+      width: 256px !important;
+    }
+    &:hover .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    &:hover .navlink button {
+      display: block;
+    }
+    &:hover .navlinkSubMenu {
+      display: flex;
+    }
   }
 }
 
@@ -62,6 +101,10 @@
   text-align: left;
   display: flex;
   justify-content: center;
+  color: $primaryFontColor;
+  > svg > path {
+    fill: $primaryFontColor;
+  }
   &:hover {
     cursor: pointer;
     > svg > path {
@@ -100,6 +143,7 @@
   flex-grow: 1;
   text-align: left;
   margin-left: 12px;
+  color: $primaryFontColor;
   span {
     background-color: $primaryColor;
     color: $light;
@@ -123,7 +167,7 @@
   padding-left: 56px;
   &:hover {
     cursor: pointer;
-    background-color: $blueishGrey;
+    background-color: $backgroundColorDark;
   }
 }
 

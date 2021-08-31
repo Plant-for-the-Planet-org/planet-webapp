@@ -1,11 +1,8 @@
 @import './../../../theme/theme';
 
 .mainContainer {
-  margin: auto;
-  margin-top: 60px;
-  max-width: 768px;
+  max-width: 1000px;
   display: flex;
-  justify-content: center;
 }
 
 .stepContainer {
@@ -13,6 +10,8 @@
   font-family: $primaryFontFamily;
   display: flex;
   justify-content: center;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
 }
 .formFieldRadio {
   width: 100%;
@@ -116,6 +115,7 @@
   cursor: pointer;
   font-family: $primaryFontFamily;
   font-weight: 700;
+  color: $primaryFontColor;
 }
 
 .active {
@@ -160,7 +160,7 @@
   height: 128px;
   border-radius: 10px;
   border: dashed 1px $primaryFontColor;
-  background-color: #f2f2f7;
+  background-color: $backgroundColorDark;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -195,7 +195,7 @@
 
 .plantingSeasons {
   border-radius: 10px;
-  background-color: #f2f2f7;
+  background-color: $backgroundColorDark;
   padding: 16px;
   padding-top: 24px;
   display: flex;
@@ -292,7 +292,6 @@
   }
   > p {
     position: absolute;
-    background-color: $light;
     padding: 6px 18px;
     border-radius: 15px;
     top: -10px;
@@ -521,7 +520,7 @@
 
 .reportPDFContainer {
   border-radius: 10px;
-  background-color: #f2f2f7;
+  background-color: $backgroundColor;
   padding: 16px;
   padding-left: 20px;
   display: flex;
@@ -600,7 +599,7 @@
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;

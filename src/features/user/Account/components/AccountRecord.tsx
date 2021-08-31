@@ -85,7 +85,7 @@ export function RecordHeader({ record }: HeaderProps): ReactElement {
           {getFormatedCurrency(
             i18n.language,
             record.currency,
-            record.netAmount
+            record.netAmount/100
           )}
         </p>
         <p>{t(record.status)}</p>
@@ -133,7 +133,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.paidAmount
+              record.details.paidAmount/100
             )}
           </p>
         </div>
@@ -145,7 +145,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.totalAmount
+              record.details.totalAmount/100
             )}
           </p>
         </div>
@@ -179,7 +179,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.refundAmount
+              record.details.refundAmount/100
             )}
           </p>
         </div>
@@ -191,7 +191,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.treeCost
+              record.details.treeCost/100
             )}
           </p>
         </div>

@@ -15,7 +15,10 @@ import MapGL, {
 } from 'react-map-gl';
 import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
-import { getAuthenticatedRequest, postAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import {
+  getAuthenticatedRequest,
+  postAuthenticatedRequest,
+} from '../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
@@ -233,17 +236,18 @@ export default function RegisterTrees({}: Props) {
   };
 
   async function loadProjects() {
-
-    await getAuthenticatedRequest('/app/profile/projects', token).then((projects:any) => {
-      setProjects(projects);
-    });
-}
-
-React.useEffect(() => {
-  if (contextLoaded) {
-    loadProjects();
+    await getAuthenticatedRequest('/app/profile/projects', token).then(
+      (projects: any) => {
+        setProjects(projects);
+      }
+    );
   }
-}, [contextLoaded]);
+
+  React.useEffect(() => {
+    if (contextLoaded) {
+      loadProjects();
+    }
+  }, [contextLoaded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
 
@@ -344,32 +348,35 @@ React.useEffect(() => {
               )}
             </div>
 
-            {
-                  user && user.type === 'tpo' && <div className={styles.formFieldLarge}>
-                     <Controller
-                as={
-                  <MaterialTextField
-                    label={t('me:project')}
-                    variant="outlined"
-                    select
-                  >
-                    {projects.map((option) => (
-                      <MenuItem key={option.properties.id} value={option.properties.id}>
-                        {option.properties.name}
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
-                }
-                name="plantProject"
-                control={control}
-              />
-                  {errors.plantProject && (
-                    <span className={styles.formErrors}>
-                      {errors.plantProject.message}
-                    </span>
-                  )}
-                </div>
-                }
+            {user && user.type === 'tpo' && (
+              <div className={styles.formFieldLarge}>
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('me:project')}
+                      variant="outlined"
+                      select
+                    >
+                      {projects.map((option) => (
+                        <MenuItem
+                          key={option.properties.id}
+                          value={option.properties.id}
+                        >
+                          {option.properties.name}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="plantProject"
+                  control={control}
+                />
+                {errors.plantProject && (
+                  <span className={styles.formErrors}>
+                    {errors.plantProject.message}
+                  </span>
+                )}
+              </div>
+            )}
 
             <div className={styles.mapNote}>
               {isMultiple ? (

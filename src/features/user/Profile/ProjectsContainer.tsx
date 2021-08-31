@@ -53,7 +53,7 @@ export default function ProjectsContainer({}: any) {
       <div className={styles.projectsContainer} id="projectsContainer">
         {projects.length < 1 ? (
           user ? (
-            <Link href="/manage-projects/add-project">
+            <Link href="/profile/projects/add-project">
               <div className={styles.singleProject}>
                 <button id={'addProjectBut'} className={styles.projectNotFound}>
                   <AddProject />
@@ -91,7 +91,7 @@ export default function ProjectsContainer({}: any) {
               );
             })}
             {user ? (
-              <Link href="/manage-projects/add-project">
+              <Link href="/profile/projects/add-project">
                 <div className={styles.singleProject}>
                   <button
                     id={'addProjectBut'}

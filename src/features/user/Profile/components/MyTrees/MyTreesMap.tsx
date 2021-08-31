@@ -15,6 +15,8 @@ import i18next from '../../../../../../i18n';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
+import themeProperties from '../../../../../theme/themeProperties';
+import { ThemeContext } from '../../../../../theme/themeContext';
 
 const Map = ReactMapboxGl({
   customAttribution:
@@ -42,6 +44,7 @@ export default function MyTreesMap({
     zoom: [defaultZoom],
   });
   const [geoJson, setGeoJson] = React.useState();
+  const {theme} = React.useContext(ThemeContext)
 
   const [style, setStyle] = React.useState({
     version: 8,
@@ -174,7 +177,7 @@ export default function MyTreesMap({
           <>
             <div className={styles.contributionInfo}>
               <div key={contributionInfo.properties.id} className={styles.tree}>
-                <div className={styles.dateRow}>
+                <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.backgroundColorDark}}>
                   {formatDate(contributionInfo.properties.plantDate)}
                 </div>
                 <div className={styles.treeRow}>
