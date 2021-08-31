@@ -6,6 +6,7 @@ import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Proj
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import i18next from './../../../i18n';
+import  Head from 'next/head';
 
 const { useTranslation } = i18next;
 
@@ -57,6 +58,9 @@ function ManageProjectsPage({}: Props): ReactElement {
   }
   return setupAccess ? (
     <UserLayout>
+      <Head>
+        <title>{'Add Project'}</title>
+      </Head>
       <div className="profilePage">
         <div className="profilePageHeader">
           <div>

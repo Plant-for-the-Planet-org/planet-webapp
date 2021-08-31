@@ -7,6 +7,7 @@ import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Proj
 import Footer from '../../../src/features/common/Layout/Footer';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
+import  Head from 'next/head';
 
 interface Props {}
 
@@ -65,6 +66,9 @@ function ManageSingleProject({}: Props): ReactElement {
   return setupAccess ? (
     ready && token && !accessDenied ? (
       <UserLayout>
+        <Head>
+          <title>{`Edit - ${project.name}`}</title>
+        </Head>
         <div className="profilePage">
           <div className="profilePageHeader">
             <div>

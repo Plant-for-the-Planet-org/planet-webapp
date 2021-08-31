@@ -5,6 +5,7 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import History from '../../src/features/user/Account/History';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
+import  Head from 'next/head';
 
 const { useTranslation } = i18next;
 
@@ -84,6 +85,9 @@ function AccountHistory({}: Props): ReactElement {
         </div>
       )}
       <UserLayout>
+        <Head>
+          <title>{'Donations'}</title>
+        </Head>
         <History {...HistoryProps} />
       </UserLayout>
     </>

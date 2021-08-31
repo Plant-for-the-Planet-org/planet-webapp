@@ -1,3 +1,4 @@
+import  Head from 'next/head';
 import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
@@ -20,6 +21,9 @@ function ProfilePage(): ReactElement {
 
   return (
     <UserLayout>
+      <Head>
+        <title>{'My Forest'}</title>
+      </Head>
       {profile && (
         <MyTrees
           authenticatedType={authenticatedType}
