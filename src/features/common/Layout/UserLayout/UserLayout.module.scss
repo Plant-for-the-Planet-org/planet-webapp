@@ -15,11 +15,14 @@
     & .hamburgerIcon {
       display: block;
       position: fixed;
-      top: 20px;
+      top: 28px;
       left: 20px;
       z-index: 10;
       height: 42px;
       width: 42px;
+    }
+    & .profilePageTitle {
+      padding-left: 40px;
     }
   }
 }

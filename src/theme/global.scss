@@ -220,17 +220,17 @@ video {
   font-weight: normal;
   font-style: normal;
 }
-.unDecadeFill{
+.unDecadeFill {
   fill: $undecadeFill;
 }
 
-.iconFillNone{
+.iconFillNone {
   fill: none;
   stroke: $primaryFontColor;
 }
 
-.iconFillColor{
-fill: $primaryFontColor;
+.iconFillColor {
+  fill: $primaryFontColor;
 }
 
 .primaryButton,
@@ -338,6 +338,9 @@ button {
     max-width: 100%;
     border-radius: 0px;
   }
+  .profilePage {
+    padding-top: 80px !important;
+  }
 }
 
 .read-more-button {
@@ -346,13 +349,13 @@ button {
 }
 
 // Profile page
-.profilePageTitle{
+.profilePageTitle {
   font-size: 36px;
   font-weight: 800;
   margin-bottom: 20px;
   color: $primaryFontColor;
 }
-.profilePageSubTitle{
+.profilePageSubTitle {
   font-size: 16px;
   margin-bottom: 20px;
   color: $primaryFontColor;
@@ -363,14 +366,14 @@ button {
   margin-bottom: 80px;
   padding: 20px;
   min-height: 100vh;
-  @include smTabletView{
+  @include smTabletView {
     padding: 40px;
     margin-bottom: 0px;
     margin-top: 80px;
   }
 }
 
-.profilePageHeader{
+.profilePageHeader {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -427,41 +430,45 @@ button {
   margin-bottom: -18px;
 }
 
-.vizzuality__legend-item-container{
+.vizzuality__legend-item-container {
   background-color: $backgroundColor;
 }
 .vizzuality__c-timestep .vizzuality__player-btn > svg {
-  fill: $primaryFontColor
+  fill: $primaryFontColor;
 }
 
-.MuiSvgIcon-root, .MuiNativeSelect-icon{
-  path{
+.MuiSvgIcon-root,
+.MuiNativeSelect-icon {
+  path {
     fill: $primaryFontColor;
   }
 }
-.MuiPaper-root{
+.MuiPaper-root {
   background-color: $backgroundColor !important;
 }
 .MuiStepLabel-label.MuiStepLabel-active,
 .MuiStepLabel-label.MuiStepLabel-completed,
-.MuiStepLabel-label{
+.MuiStepLabel-label {
   color: $primaryFontColor !important;
 }
-.MuiInputBase-input{
+.MuiInputBase-input {
   color: $primaryFontColor !important;
 }
 
-.mapboxgl-ctrl-group{
-  filter: $mapboxIcon
+.mapboxgl-ctrl-group {
+  filter: $mapboxIcon;
 }
 
-input:autofill, input:-webkit-autofill{
+input:autofill,
+input:-webkit-autofill {
   background-color: $backgroundColorDark !important;
-  color: $primaryFontColor!important;
+  color: $primaryFontColor !important;
 }
-.MuiSelect-icon, .MuiNativeSelect-icon{
+.MuiSelect-icon,
+.MuiNativeSelect-icon {
   fill: $primaryFontColor !important;
 }
-.MuiNativeSelect-select:not([multiple]) option, .MuiNativeSelect-select:not([multiple]) optgroup{
+.MuiNativeSelect-select:not([multiple]) option,
+.MuiNativeSelect-select:not([multiple]) optgroup {
   background-color: $backgroundColor !important;
 }

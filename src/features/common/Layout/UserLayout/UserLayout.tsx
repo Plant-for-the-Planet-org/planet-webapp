@@ -186,6 +186,7 @@ function UserLayout(props: any): ReactElement {
                 setsubMenuOpen={setsubMenuOpen}
                 user={user}
                 key={index}
+                closeMenu={() => setIsMenuOpen(false)}
               />
             ))}
           </>
@@ -278,6 +279,7 @@ function NavLink({
   subMenuOpen,
   setsubMenuOpen,
   user,
+  closeMenu,
 }: any) {
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
@@ -307,6 +309,7 @@ function NavLink({
           activeLink === link.path ? styles.navlinkActive : ''
         }`}
         onClick={() => {
+          closeMenu();
           if (subMenuOpen === link.path) {
             setsubMenuOpen(subMenuOpen ? '' : link.path);
           } else if (link.subMenu && link.subMenu.length > 0) {
