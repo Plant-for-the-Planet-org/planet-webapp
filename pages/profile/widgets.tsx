@@ -33,10 +33,14 @@ function ProfilePage(): ReactElement {
   return (
     <UserLayout>
       {user?.isPrivate === false ? (
-        <iframe
-          src={`${'https://planet-widgets-git-feature-newstructure-planetapp.vercel.app/'}?user=${user.id}&tenantkey=${process.env.TENANTID}`}
-          className={styles.widgetIFrame}
-        />
+        <div className="profilePage" style={{padding:'0px'}}>
+          <iframe
+            src={`${'https://planet-widgets-git-feature-newstructure-planetapp.vercel.app/'}?user=${
+              user.id
+            }&tenantkey=${process.env.TENANTID}`}
+            className={styles.widgetIFrame}
+          />
+        </div>
       ) : (
         <EmbedModal {...embedModalProps} />
       )}
