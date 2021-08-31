@@ -59,11 +59,11 @@ function TreeMapper({}: Props): ReactElement {
       }
     } else {
       const response = await getAuthenticatedRequest(
-        '/treemapper/plantLocations?limit=15',
+        '/treemapper/plantLocations?_scope=extended&limit=15',
         token
       );
       if (response) {
-        const plantLocations = response;
+        const plantLocations = response?.items;
         if (plantLocations?.length === 0) {
           setPlantLocations(null);
         } else {
@@ -88,7 +88,7 @@ function TreeMapper({}: Props): ReactElement {
             }
           }
           setPlantLocations(plantLocations);
-          // setLinks(response._links);
+          setLinks(response._links);
         }
       }
     }
@@ -101,24 +101,24 @@ function TreeMapper({}: Props): ReactElement {
     if (contextLoaded && token) fetchTreemapperData();
   }, [contextLoaded, token]);
 
-  React.useEffect(() => {
-    if (selectedLocation !== '') {
-      for (const key in plantLocations) {
-        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-          const plantLocation = plantLocations[key];
-          if (selectedLocation === plantLocation.id) {
-            setLocation(plantLocation);
-            break;
-          }
-        }
-      }
-    } else {
-      setLocation(null);
-    }
-  }, [selectedLocation]);
+  // React.useEffect(() => {
+  //   if (selectedLocation !== '') {
+  //     for (const key in plantLocations) {
+  //       if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+  //         const plantLocation = plantLocations[key];
+  //         if (selectedLocation === plantLocation.id) {
+  //           setLocation(plantLocation);
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     setLocation(null);
+  //   }
+  // }, [selectedLocation]);
 
   const TreeMapperProps = {
-    location,
+    location:selectedLocation,
     setLocation,
     selectedLocation,
     setselectedLocation,
@@ -135,10 +135,11 @@ function TreeMapper({}: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      {/* <div className={'profilePageTitle'}>TreeMapper</div> */}
+      
       <div id="pageContainer" className={styles.pageContainer}>
           <div className={styles.listContainer}>
-          {location ? <PlantLocationPage {...TreeMapperProps} />:<TreeMapperList {...TreeMapperProps} />}
+           <div className={'profilePageTitle'}>TreeMapper</div> 
+          {selectedLocation ? <PlantLocationPage {...TreeMapperProps} />:<TreeMapperList {...TreeMapperProps} />}
           </div>
           
           <div className={styles.mapContainer}>

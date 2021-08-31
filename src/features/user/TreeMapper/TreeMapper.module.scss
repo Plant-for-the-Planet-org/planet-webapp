@@ -1,8 +1,8 @@
 @import '../../../theme/theme';
 
 .profilePage {
-  margin-top: 80px;
-  height: 100%;
+  margin-top: 300px;
+  height: calc(100vh - 300px);
 }
 
 .pageContainer {
@@ -17,10 +17,20 @@
 .listContainer {
   overflow: visible;
   width: fit-content;
+  max-width: 100%;
+  width: 390px;
   z-index: 2;
   position: relative;
+  padding-top: 40px;
   bottom: 0;
   height: 100%;
+  background-color: #E5E5E5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > :first-child {
+    display: none;
+  }
 }
  
 .locationList {
@@ -28,9 +38,10 @@
       flex-direction: column;
       justify-content: flex-start;
       max-width: 100%;
-      width: 360px;
+      width: 325px;
       z-index: 10;
-      height: 100%;
+      height: 85%;
+      overflow-y: scroll;
       background-color: $backgroundColor;
       .singleLocation {
         padding: 0 20px;
@@ -66,6 +77,7 @@
             align-items: flex-end;
             gap: 10px;
             > .status {
+              display: flex;
               font-weight: 700;
             }
             > .mode {
@@ -83,12 +95,13 @@
       flex-direction: column;
       justify-content: flex-start;
       max-width: 100%;
-      width: 360px;
+      width: 325px;
       z-index: 10;
-      height: 100%;
+      height: auto;
+      overflow-y: auto;
       background-color: $backgroundColor;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+      // border-top-left-radius: 10px;
+      // border-top-right-radius: 10px;
       padding: 0px 20px;
       > .backButton {
         cursor: pointer;
@@ -97,9 +110,11 @@
   .mapContainer {
       position: fixed;
       top: 0;
-      bottom: 0;
+      bottom: 60%;
       left: 0;
       right: 0;
+      width: 100%;
+        height: 100%;
       > div {
         width: 100%;
         height: 100%;
@@ -205,20 +220,20 @@
   cursor: pointer;
 }
 
-.pullUpContainer {
-  width: 100%;
-  height: 25px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  > .pullUpBar {
-    height: 5px;
-    width: 40px;
-    border-radius: 50px;
-    background-color: $primaryFontColor;
-  }
-}
+// .pullUpContainer {
+//   width: 100%;
+//   height: 25px;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   align-items: center;
+//   > .pullUpBar {
+//     height: 5px;
+//     width: 40px;
+//     border-radius: 50px;
+//     background-color: $primaryFontColor;
+//   }
+// }
 
 .popupContainer {
   box-shadow: none;
@@ -257,6 +272,36 @@
   align-items: center;
 }
 
+.mapNavigation {
+  position: absolute;
+  right: 20px;
+  bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  > div {
+    position: relative !important;
+  }
+}
+
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: rgba(0, 122, 73, 0.5);
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  &.singleSelected {
+    background-color: rgba(0, 122, 73, 1);
+  }
+}
+
+.single:hover {
+  background-color: rgba(0, 122, 73, 1);
+}
+
+
 @include mdTabletView {
   .locationList {
         > .singleLocation {
@@ -282,6 +327,22 @@
 
   .hideOnMobile {
     display: flex !important;
+  }
+
+  .mapContainer {
+    bottom: 0;
+    left: 360px;
+  }
+
+  .listContainer { 
+    :first-child {
+      display: block;
+    }
+  }
+
+  .profilePage {
+    margin-top: 80px;
+    height: calc(100vh - 80px);
   }
 }
 

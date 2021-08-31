@@ -3,6 +3,9 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 import { LocationDetails } from './PlantLocationPage';
+import * as turf from '@turf/turf';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 
 const { useTranslation } = i18next;
 
@@ -12,7 +15,7 @@ interface Props {
   locations: Object;
   selectedLocation: string;
   setselectedLocation: Function;
-  setLocation: Function;
+
 }
 
 function PlantLocation({
@@ -21,7 +24,6 @@ function PlantLocation({
   locations,
   selectedLocation,
   setselectedLocation,
-  setLocation,
 }: Props) {
   const { t, i18n } = useTranslation('treemapper');
   console.log('locations', locations);
@@ -36,53 +38,64 @@ function PlantLocation({
     }
   }
 
-  function selectLocation(id: any) {
-    if (selectedLocation === id) {
-      setselectedLocation('');
+  function selectLocation(location: any) {
+    if (selectedLocation && selectedLocation.id === location.id) {
+      setselectedLocation(null);
     } else {
-      setselectedLocation(id);
+      setselectedLocation(location);
     }
   }
 
-  const DetailProps = {
-    location,
-    setselectedLocation,
-    setLocation,
-  };
+  const [plantationArea, setPlantationArea] = React.useState(0);
+
+  React.useEffect(() => {
+    if (location && location.type === 'multi') {
+      const area = turf.area(location.geometry);
+      setPlantationArea(area / 10000);
+    }
+  }, [location]);
 
   return (
     <div
       key={index}
-      onClick={() => selectLocation(location.id)}
-      className={`${styles.singleLocation} ${
-        selectedLocation === location.id ? styles.selected : ''
-      }`}
+      onClick={() => selectLocation(location)}
+      // className={`${styles.singleLocation} ${
+      //   selectedLocation?.id === location.id ? styles.selected : ''
+      // }`}
+      className={`${styles.singleLocation}`}
     >
       <div className={styles.locationHeader}>
         <div className={styles.left}>
           <p className={styles.treeCount}>
-            {location.type === 'multi' && treeCount
+            {/* {location.type === 'multi' && treeCount
               ? `${treeCount} ${t('trees')}`
-              : `1 ${t('tree')}`}
+              : `1 ${t('tree')}`} */}
+              {`${location.hid?location.hid:null} • ${localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(plantationArea),
+                  2
+                )} ha`}
           </p>
           <p className={styles.date}>
             {t('on')} {formatDate(location.registrationDate)}
           </p>
         </div>
         <div className={styles.right}>
-          <div className={styles.status}>{t(location.captureStatus)}</div>
-          <div className={styles.mode}>{t(location.captureMode)}</div>
+          <div className={styles.status}>{location.type === 'multi' && treeCount
+              ? `${treeCount}`
+              : `1`}<TreeIcon/></div>
+          <div className={styles.mode}>{t(location.captureStatus)}</div>
         </div>
       </div>
 
       {index !== locations?.length - 1 && <div className={styles.divider} />}
-      <div
+      {/* <div
         className={`${styles.detailContainer} ${
-          selectedLocation === location.id ? styles.selected : ''
+          selectedLocation?.id === location.id ? styles.selected : ''
         }`}
       >
         <LocationDetails {...DetailProps} />
-      </div>
+      </div> */}
     </div>
   );
 }

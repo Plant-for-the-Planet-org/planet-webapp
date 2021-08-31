@@ -11,28 +11,24 @@ const { useTranslation } = i18next;
 interface Props {
   setselectedLocation: Function;
   location: Object;
-  setLocation: Function;
 }
 
 export default function PlantLocationPage({
   location,
   setselectedLocation,
-  setLocation,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation('treemapper');
   const handleBackButton = () => {
-    if (location.type === 'sample') {
-      setselectedLocation(location.parent);
-    } else {
-      setselectedLocation('');
-      setLocation(null);
-    }
+    // if (location.type === 'sample') {
+    //   setselectedLocation(location.parent);
+    // } else {
+      setselectedLocation(null);
+    // }
   };
 
   const DetailProps = {
     location,
     setselectedLocation,
-    setLocation,
   };
   return (
     <div className={styles.locationDetails}>
@@ -50,13 +46,11 @@ export default function PlantLocationPage({
 interface DetailsProps {
   setselectedLocation: Function;
   location: Object;
-  setLocation: Function;
 }
 
 export function LocationDetails({
   location,
   setselectedLocation,
-  setLocation,
 }: DetailsProps): ReactElement {
   const { t, i18n } = useTranslation('treemapper');
   return (
@@ -145,8 +139,7 @@ export function LocationDetails({
                       <div
                         key={sampleTree.id}
                         onClick={() => {
-                          setLocation(sampleTree);
-                          setselectedLocation(sampleTree.id);
+                          setselectedLocation(sampleTree);
                         }}
                         className={styles.tree}
                       >
