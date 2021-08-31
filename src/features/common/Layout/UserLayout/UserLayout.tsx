@@ -116,7 +116,7 @@ function UserLayout(props: any): ReactElement {
     },
   ];
 
-  const [isMenuOpen, setIsMenuOpen] = React.useState(true);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [activeLink, setactiveLink] = React.useState('/profile');
   const [activeSubMenu, setActiveSubMenu] = React.useState('');
   const [subMenuOpen, setsubMenuOpen] = React.useState('');
