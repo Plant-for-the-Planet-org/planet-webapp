@@ -49,7 +49,7 @@ export default function ProjectsContainer({}: any) {
           <button
             id={'addProjectBut'}
             className={'primaryButton'}
-            style={{ maxWidth: '300px' }}
+            style={{ maxWidth: '160px' }}
           >
             {t('manageProjects:addProject')}
           </button>

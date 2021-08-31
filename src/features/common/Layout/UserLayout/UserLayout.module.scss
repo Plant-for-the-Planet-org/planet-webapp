@@ -65,7 +65,9 @@
   display: flex;
   justify-content: center;
   color: $primaryFontColor;
-
+  > svg > path {
+    fill: $primaryFontColor;
+  }
   &:hover {
     cursor: pointer;
     > svg > path {
@@ -104,6 +106,7 @@
   flex-grow: 1;
   text-align: left;
   margin-left: 12px;
+  color: $primaryFontColor;
   span {
     background-color: $primaryColor;
     color: $light;

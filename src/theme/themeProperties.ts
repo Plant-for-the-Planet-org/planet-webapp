@@ -23,7 +23,8 @@ const themeProperties = {
     dangerColor:'#e74c3c',
     backgroundColorDark: '#F2F2F7',
     unDecadeFill: '#1d1d1b',
-    mapboxIcon: 'invert(0) hue-rotate(180deg)'
+    mapboxIcon: 'invert(0) hue-rotate(180deg)',
+    backgroundBase: '#FaFaFf',
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -36,7 +37,8 @@ const themeProperties = {
     dangerColor:'#00ef00',
     backgroundColorDark: '#101113',
     unDecadeFill: '#fff',
-    mapboxIcon: 'invert(0.8) hue-rotate(180deg)'
+    mapboxIcon: 'invert(0.8) hue-rotate(180deg)',
+    backgroundBase: '#202020'
   },
 };
 

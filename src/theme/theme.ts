@@ -33,6 +33,7 @@ const globalStyles = css.global`
     --danger-color: ${light.dangerColor};
     --undecade-fill: ${light.unDecadeFill};
     --mapbox-icon: ${light.mapboxIcon};
+    --background-base: ${light.backgroundBase};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
@@ -46,6 +47,7 @@ const globalStyles = css.global`
     --danger-color: ${dark.dangerColor};
     --undecade-fill: ${dark.unDecadeFill};
     --mapbox-icon: ${dark.mapboxIcon};
+    --background-base: ${dark.backgroundBase};
   }
 `;
 

@@ -15,31 +15,31 @@
 .singleProject {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
   width: 100%;
   max-width: 360px;
   justify-content: space-between;
-  border-radius: 10px;
-  &:hover{
-    // background-color: #f5f5f5;
-  }
+  color: $primaryFontColor;
+  border-bottom: 1px solid #DDDBDA;
+  padding: 20px;
+  background-color: $backgroundColor;
+  // &:hover{
+  //   // background-color: #f5f5f5;
+  // }
   
 }
 .projectImage{
   width: 100%;
   height: auto;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   object-fit: cover;
+  display: none;
 }
 .noProjectImage{
   width: 100%;
   min-width: 150px;
   min-height: 120px;
   height: auto;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   background-color: $primaryColor;
+  display: none;
 }
 .projectInformation{
   flex-grow: 1;
@@ -67,8 +67,8 @@
   border-radius: 20px;
   color: #fff;
   font-weight: bold;
-  height: 40px;
-  width: 100px;
+  height: 34px;
+  width: 130px;
   &:hover{
     cursor: pointer;
   }
@@ -78,9 +78,8 @@
   border-radius: 20px;
   color: #3498db;
   font-weight: bold;
-  height: 40px;
-  width: 100px;
-  margin-right:10px ;
+  height: 34px;
+  width: 130px;
   &:hover{
     cursor: pointer;
   }
@@ -92,7 +91,7 @@
   flex-wrap: wrap;
 }
 .projectLabel{
-  background-color: #e0e0e0;
+  background-color: $backgroundColorDark;
   border-radius: 4px;
   padding: 4px 8px;
   width: fit-content;
@@ -122,42 +121,26 @@
   .listProjects {
     padding: 0px;
   }
-  
 }
 @include mdTabletView {
   .singleProject{
+    max-width: 800px;
     flex-direction: row;
-    max-width: 500px;
+  }
+  .projectLinksContainer{
+    flex-direction: column;
   }
   .projectImage{
     width: 150px;
     height: auto;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-top-right-radius: 0px;
     object-fit: cover;
+    display: block;
   }
   .noProjectImage{
     width: 150px;
     height: auto;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-top-right-radius: 0px;
     background-color: $primaryColor;
+    display: block;
   }
-  .projectLinksContainer{
-    padding-top: 16px;
-    justify-content: center;
-  }
-}
-@include lgLaptopView {
-  .singleProject{
-    flex-direction: row;
-    max-width: 800px;
-  }
-}
-@include xlDesktopView {
-  .singleProject{
-    max-width: 1000px;
-  }
+
 }

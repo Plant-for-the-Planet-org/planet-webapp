@@ -350,15 +350,19 @@ button {
   font-size: 36px;
   font-weight: 800;
   margin-bottom: 20px;
+  color: $primaryFontColor;
 }
 .profilePageSubTitle{
   font-size: 16px;
   margin-bottom: 20px;
+  color: $primaryFontColor;
 }
 .profilePage {
-  max-width: 1000px;
+  // max-width: 1000px;
+  background-color: $backgroundBase;
   margin-top: 80px;
   padding: 20px;
+  min-height: 100vh;
   @include smTabletView{
     padding: 40px;
   }
@@ -369,6 +373,7 @@ button {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
