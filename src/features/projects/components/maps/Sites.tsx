@@ -26,19 +26,10 @@ export default function Sites({}: Props): ReactElement {
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
-    let isPortrait = true;
-    if (screen.orientation) {
-      isPortrait = screen.orientation.angle === 0 || screen.orientation.angle === 180;
-    } else if (window.orientation) {
-      isPortrait = window.orientation === 0 || window.orientation === 180;
-    }  
-    const isMobileTemp = window.innerWidth <= 767 && isPortrait;
-    //console.log("Projects-isMobileTemp", isMobileTemp, window.innerHeight, window.innerWidth, window.orientation, screen.orientation);
     zoomToProjectSite(
       geoJson,
       selectedSite,
       viewport,
-      isMobileTemp,
       setViewPort,
       setSiteViewPort,
       4000
