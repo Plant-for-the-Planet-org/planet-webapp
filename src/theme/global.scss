@@ -360,11 +360,13 @@ button {
 .profilePage {
   // max-width: 1000px;
   background-color: $backgroundBase;
-  margin-top: 80px;
+  margin-bottom: 80px;
   padding: 20px;
   min-height: 100vh;
   @include smTabletView{
     padding: 40px;
+    margin-bottom: 0px;
+    margin-top: 80px;
   }
 }
 
