@@ -20,6 +20,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { makeStyles, MenuItem } from '@material-ui/core';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import GeocoderArcGIS from "geocoder-arcgis";
 
 const { useTranslation } = i18next;
 
@@ -79,6 +80,41 @@ export default function EditProfileModal({
 
   const [country, setCountry] = React.useState(user.country);
   const [updatingPic, setUpdatingPic] = React.useState(false);
+  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
+    client_id:process.env.ESRI_CLIENT_ID,
+    client_secret:process.env.ESRI_CLIENT_SECRET,
+  } : {});
+  const suggestAddress = (value) => {
+    if (value.length > 3) {
+      geocoder
+        .suggest(value, {category:"Address",countryCode:"Country"})
+        .then((result) => {
+          const filterdSuggestions = result.suggestions.filter((suggestion) => {
+            return !suggestion.isCollection;
+          });
+          setaddressSugggestions(filterdSuggestions);
+        })
+        .catch(console.log);
+    }
+  };  
+  const getAddress = (value) => {
+    geocoder
+      .findAddressCandidates(value, { outfields: "*" })
+      .then((result) => {
+        setValue("address", result.candidates[0].attributes.ShortLabel, {
+          shouldValidate: true,
+        });
+        setValue("city", result.candidates[0].attributes.City, {
+          shouldValidate: true,
+        });
+        setValue("zipCode", result.candidates[0].attributes.Postal, {
+          shouldValidate: true,
+        });
+        setaddressSugggestions([]);
+      })
+      .catch(console.log);
+  };
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -226,6 +262,7 @@ export default function EditProfileModal({
     }
   })
   const classes = useStylesAutoComplete();
+  let suggestion_counter = 0;
 
   return ready ? (
     <React.Fragment>
@@ -360,7 +397,29 @@ export default function EditProfileModal({
                 variant="outlined"
                 name="address"
                 inputRef={register({ required: true })}
+                onChange={(event) => {
+                  suggestAddress(event.target.value);
+                }}
+                onBlur={() => setaddressSugggestions([])}
               />
+              {addressSugggestions
+              ? addressSugggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    {addressSugggestions.map((suggestion) => {
+                      return (
+                        <div key={'suggestion' + suggestion_counter++}
+                          onMouseDown={() => {
+                            getAddress(suggestion.text);
+                          }}
+                          className="suggestion"
+                        >
+                          {suggestion.text}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              : null}
               {errors.address && (
                 <span className={styles.formErrors}>
                   {t('donate:addressRequired')}
