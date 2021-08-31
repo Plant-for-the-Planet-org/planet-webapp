@@ -29,11 +29,12 @@ function ProfilePage(): ReactElement {
     }
   }, [user]);
 
+  // TO DO - change widget link
   return (
     <UserLayout>
       {user?.isPrivate === false ? (
         <iframe
-          src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`}
+          src={`${'https://planet-widgets-git-feature-newstructure-planetapp.vercel.app/'}?user=${user.id}&tenantkey=${process.env.TENANTID}`}
           className={styles.widgetIFrame}
         />
       ) : (
