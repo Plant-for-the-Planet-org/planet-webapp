@@ -1,18 +1,20 @@
-import React, { ReactElement } from 'react';
-import styles from './UserLayout.module.scss';
-import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import router from 'next/router';
+import React, { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
-import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
-import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
-import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
-import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
-import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
-import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
-import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
+import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
+import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/DonateIcon';
-import { UserPropsContext } from '../UserPropsContext';
+import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
+import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
+import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
+import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
+import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
+import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
 import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
+import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
+import { UserPropsContext } from '../UserPropsContext';
+import styles from './UserLayout.module.scss';
 
 const { useTranslation } = i18next;
 
@@ -114,7 +116,7 @@ function UserLayout(props: any): ReactElement {
     },
   ];
 
-  const [open, setOpen] = React.useState(true);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(true);
   const [activeLink, setactiveLink] = React.useState('/profile');
   const [activeSubMenu, setActiveSubMenu] = React.useState('');
   const [subMenuOpen, setsubMenuOpen] = React.useState('');
@@ -152,21 +154,41 @@ function UserLayout(props: any): ReactElement {
 
   return user ? (
     <div className={styles.profilePageContainer}>
-      <div className={styles.sidebar}>
+      <div
+        key={'hamburgerIcon'}
+        className={`${styles.hamburgerIcon}`}
+        onClick={() => setIsMenuOpen(true)}
+      >
+        <MenuIcon />
+      </div>
+      <div
+        className={`${styles.sidebar} ${!isMenuOpen ? styles.menuClosed : ''}`}
+      >
         <div className={styles.navLinksContainer}>
-          {navLinks.map((link: any,index:any) => (
-            <NavLink
-              link={link}
-              setactiveLink={setactiveLink}
-              activeLink={activeLink}
-              activeSubMenu={activeSubMenu}
-              setActiveSubMenu={setActiveSubMenu}
-              subMenuOpen={subMenuOpen}
-              setsubMenuOpen={setsubMenuOpen}
-              user={user}
-              key={index}
-            />
-          ))}
+          <>
+            <div key={'closeMenu'} className={`${styles.closeMenu}`}>
+              <div
+                className={`${styles.navlink}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <BackArrow />
+                <button className={styles.navlinkTitle}>{'Close'}</button>
+              </div>
+            </div>
+            {navLinks.map((link: any, index: any) => (
+              <NavLink
+                link={link}
+                setactiveLink={setactiveLink}
+                activeLink={activeLink}
+                activeSubMenu={activeSubMenu}
+                setActiveSubMenu={setActiveSubMenu}
+                subMenuOpen={subMenuOpen}
+                setsubMenuOpen={setsubMenuOpen}
+                user={user}
+                key={index}
+              />
+            ))}
+          </>
         </div>
 
         <div>
@@ -322,7 +344,7 @@ function NavLink({
       {subMenuOpen === link.path &&
         link.subMenu &&
         link.subMenu.length > 0 &&
-        link.subMenu.map((subLink: any,index:any) => (
+        link.subMenu.map((subLink: any, index: any) => (
           <div
             className={`${styles.navlinkSubMenu} ${
               activeSubMenu === subLink.path ? styles.navlinkActiveSubMenu : ''
