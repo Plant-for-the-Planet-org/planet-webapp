@@ -26,6 +26,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
+import materialTheme from '../../../theme/themeStyles';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -87,45 +88,6 @@ export default function RegisterTrees({}: Props) {
       }
     });
   }, []);
-
-  const materialTheme = createMuiTheme({
-    overrides: {
-      MuiPickersToolbar: {
-        toolbar: {
-          backgroundColor: styles.primaryColor,
-        },
-      },
-      MuiPickersCalendarHeader: {
-        switchHeader: {
-          // backgroundColor: lightBlue.A200,
-          // color: "white",
-        },
-      },
-      MuiPickersDay: {
-        daySelected: {
-          backgroundColor: styles.primaryColor,
-        },
-        current: {
-          color: styles.primaryColor,
-        },
-      },
-      MuiPickersYear: {
-        yearSelected: {
-          color: styles.primaryColor,
-        },
-      },
-      MuiPickersModal: {
-        dialogAction: {
-          color: styles.primaryColor,
-        },
-      },
-      MuiButton: {
-        label: {
-          color: styles.primaryColor,
-        },
-      },
-    },
-  });
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
