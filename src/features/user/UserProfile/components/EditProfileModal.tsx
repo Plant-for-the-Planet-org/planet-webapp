@@ -94,7 +94,7 @@ export default function EditProfileModal({
   const [severity, setSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
-  const [type, setAccountType] = useState('individual');
+  const [type, setAccountType] = useState(user.type ? user.type : 'individual');
 
   const profileTypes = [
     {
@@ -163,11 +163,16 @@ export default function EditProfileModal({
 
   const saveProfile = async (data: any) => {
     setIsUploadingData(true);
-    const bodyToSend = {
+    let bodyToSend = {
       ...data,
-      type: type,
       country: country,
-    };
+    };  
+    if (type !== 'tpo') {
+      bodyToSend = {
+        ...bodyToSend,
+        type: type,
+      };
+    }
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
@@ -286,7 +291,7 @@ export default function EditProfileModal({
                 </div>
               </label>
             </div>
-            {user.type !== 'tpo' ? (
+            {type !== 'tpo' ? (
               <MaterialTextField
                 label={t('editProfile:iamA')}
                 variant="outlined"
@@ -338,7 +343,7 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {user.type && type !== 'individual' && (
+            {type !== 'individual' && (
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
                   label={t('editProfile:profileName', {

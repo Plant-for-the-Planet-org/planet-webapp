@@ -382,3 +382,7 @@ input:autofill, input:-webkit-autofill{
 .MuiNativeSelect-select:not([multiple]) option, .MuiNativeSelect-select:not([multiple]) optgroup{
   background-color: $backgroundColor !important;
 }
+
+.MuiAlert-message{
+  color: $primaryFontColor!important;
+}
