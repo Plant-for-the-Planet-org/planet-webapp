@@ -17,7 +17,7 @@ export default function Landing(tenantScore: Props) {
           <TreeCounter target={100000000} planted={tenantScoreData} />
           <p>This is Salesforce’s progress in achieving our goal of 100,000,000 trees by 2030.</p>
           <Link href="/">
-            <button>Donate For Trees Today</button>
+            <button>Help us get there</button>
           </Link>
         </div>
       </div>

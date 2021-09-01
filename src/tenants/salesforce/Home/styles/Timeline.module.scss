@@ -252,3 +252,19 @@
 .timelineButtonDot {
   margin-right: 10px;
 }
+
+.showDesktop {
+  display: block;
+
+  @include xsPhoneView {
+    display: none;
+  }
+}
+
+.showMobile {
+  display: none;
+
+  @include xsPhoneView {
+    display: block;
+  }
+}

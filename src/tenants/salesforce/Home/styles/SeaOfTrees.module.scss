@@ -1,6 +1,6 @@
 @import '../../../../theme/theme';
 
-.contentSectionContainer {
+.seaOfTreesContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
   background-size: auto 1062px;
   background-repeat: no-repeat;
@@ -14,7 +14,20 @@
     background-size: auto 1722px;
     height: 1722px;
   }
-  .contentSection {
+  button {
+    background: #032d60;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
+  .seaOfTrees {
     padding-bottom: 150px;
     h2 {
       font-family: $secondaryFontFamily;

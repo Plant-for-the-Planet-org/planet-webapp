@@ -29,6 +29,9 @@
   background-color: white;
   z-index: 999;
   margin-top: -100px;
+  @include xsPhoneView {
+    margin-top: 0px;
+  }
   @include lgLaptopView {
     padding: 50px 80px;
     width: auto;

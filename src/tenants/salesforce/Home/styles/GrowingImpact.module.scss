@@ -12,6 +12,12 @@
   position: relative;
   z-index: 99;
   margin-top: -200px;
+  @include xsPhoneView {
+    padding-top: 100px;
+    margin-top: 0px;
+    height: 2704px;
+    background-size: 2304px auto;
+  }
   h3 {
     font-family: $secondaryFontFamily;
     font-style: normal;
@@ -21,6 +27,10 @@
     text-align: center;
     letter-spacing: -0.004em;
     color: #032d60;
+
+    @include xsPhoneView {
+      margin-bottom: 30px;
+    }
 
     @include lgLaptopView {
       font-size: $fontXXLarge;
@@ -77,6 +87,9 @@
 .climateActionContent {
   display: flex;
   flex-direction: column;
+  @include xsPhoneView {
+    margin-bottom: 40px;
+  }
   img {
     max-width: 100%;
     height: auto;

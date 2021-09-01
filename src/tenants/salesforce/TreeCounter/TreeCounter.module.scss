@@ -49,6 +49,10 @@
     // font-size: 80px;
     line-height: 100px;
   }
+
+  @include xsPhoneView {
+    font-size: 70px;
+  }
   // &:after {
   //   content: "";
   //   position: absolute;
