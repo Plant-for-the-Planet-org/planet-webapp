@@ -5,6 +5,7 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
+import  Head from 'next/head';
 function ProfilePage(): ReactElement {
   // External imports
   const router = useRouter();
@@ -29,13 +30,21 @@ function ProfilePage(): ReactElement {
     }
   }, [user]);
 
+  // TO DO - change widget link
   return (
     <UserLayout>
+      <Head>
+        <title>{'Widgets'}</title>
+      </Head>
       {user?.isPrivate === false ? (
-        <iframe
-          src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`}
-          className={styles.widgetIFrame}
-        />
+        <div className="profilePage" style={{padding:'0px'}}>
+          <iframe
+            src={`${'https://planet-widgets-git-feature-newstructure-planetapp.vercel.app/'}?user=${
+              user.id
+            }&tenantkey=${process.env.TENANTID}`}
+            className={styles.widgetIFrame}
+          />
+        </div>
       ) : (
         <EmbedModal {...embedModalProps} />
       )}

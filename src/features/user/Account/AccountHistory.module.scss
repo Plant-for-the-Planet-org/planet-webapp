@@ -29,6 +29,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    color: $primaryFontColor;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -49,6 +50,9 @@
       align-items: center;
       padding: 20px 20px 10px 20px;
       background-color: $backgroundColor;
+      &:hover{
+        background-color: $backgroundColorDark;
+      }
       > .detailContainer {
         display: none;
       }
@@ -116,6 +120,8 @@
   padding: 20px;
   gap: 20px;
   width: 100%;
+  background-color: $backgroundColorDark;
+  color: $primaryFontColor;
   > .header {
     font-weight: 700;
     font-size: 18px;
@@ -150,7 +156,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: $light;
+  background-color: $backgroundColor;
   transition-duration: 0.4;
   margin-right: 10px;
   margin-top: 5px;
@@ -257,10 +263,11 @@
     > .historyList {
       width: 100%;
       > .record.selected {
-        background-color: #fafafa;
-        border-radius: 10px;
+        background-color: $backgroundColorDark;
+        // border-radius: 10px;
         box-shadow: 1px 2px 8px -6px #707070;
         max-height: 1000px;
+        color: $primaryFontColor;
         > .detailContainer {
           display: flex;
         }

@@ -8,6 +8,8 @@ import i18next from '../../../../i18n';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber'
+import themeProperties from '../../../theme/themeProperties';
+import { ThemeContext } from '../../../theme/themeContext';
 const { useTranslation } = i18next;
 
 const useStylesFacebook = makeStyles(() =>
@@ -47,6 +49,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
 
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
+  const { theme } = React.useContext(ThemeContext);
 
   const { t, i18n, ready } = useTranslation(['me']);
   React.useEffect(() => {
@@ -120,7 +123,9 @@ export default function TpoProfile(props: any) {
             onClick={() => props.handleAddTargetModalOpen()}
             className={treeCounterStyles.addTargetButton}
           >
-            <p>{t('me:addTarget')} </p>
+            <p style={{color: theme === 'theme-light' ?
+            themeProperties.light.light :
+            themeProperties.dark.dark}}>{t('me:addTarget')} </p>
           </button>
         )}
       </div>

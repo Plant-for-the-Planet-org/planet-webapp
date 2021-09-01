@@ -28,15 +28,20 @@ export default function zoomToProjectSite(
       },
     }
   );
+  var defaultZoom = 15;
+  if(zoom < defaultZoom) {
+    defaultZoom = zoom;
+  }
+  
   const newViewport = {
     ...viewport,
     longitude,
     latitude,
-    zoom,
+    zoom:defaultZoom,
     transitionDuration: duration,
     transitionInterpolator: new FlyToInterpolator(),
     transitionEasing: d3.easeCubic,
   };
   setViewPort(newViewport);
-  setSiteViewPort({center:[longitude,latitude],zoom:zoom});
+  setSiteViewPort({center:[longitude,latitude],zoom:defaultZoom});
 }

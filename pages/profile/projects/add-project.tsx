@@ -4,6 +4,11 @@ import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Proj
 import Footer from '../../../src/features/common/Layout/Footer';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
+import i18next from './../../../i18n';
+import  Head from 'next/head';
+
+const { useTranslation } = i18next;
 
 interface Props {}
 
@@ -14,6 +19,8 @@ function ManageProjectsPage({}: Props): ReactElement {
   const { user, contextLoaded, token, loginWithRedirect } = React.useContext(
     UserPropsContext
   );
+  const { t, i18n } = useTranslation(['manageProjects']);
+
 
   React.useEffect(() => {
     async function loadUserData() {
@@ -31,7 +38,7 @@ function ManageProjectsPage({}: Props): ReactElement {
       if (token && user) {
         loadUserData();
       } else {
-        localStorage.setItem('redirectLink', '/manage-projects/add-project');
+        localStorage.setItem('redirectLink', '/profile/projects/add-project');
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
@@ -50,15 +57,24 @@ function ManageProjectsPage({}: Props): ReactElement {
     );
   }
   return setupAccess ? (
-    <>
-      <ManageProjects token={token} />
-      <Footer />
-    </>
+    <UserLayout>
+      <Head>
+        <title>{'Add Project'}</title>
+      </Head>
+      <div className="profilePage">
+        <div className="profilePageHeader">
+          <div>
+            <div className={'profilePageTitle'}>
+              {' '}
+              {t('manageProjects:addProject')}
+            </div>
+          </div>
+        </div>
+        <ManageProjects token={token} />
+      </div>
+    </UserLayout>
   ) : (
-    <>
-      <GlobeContentLoader />
-      <Footer />
-    </>
+    <GlobeContentLoader />
   );
 }
 

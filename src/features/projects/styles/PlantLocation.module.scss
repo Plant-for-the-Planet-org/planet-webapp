@@ -6,6 +6,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px;
+  color: $primaryFontColor;
   div:first-child {
     font-size: 18px;
   }
@@ -41,9 +42,14 @@
 }
 
 .detailTitle {
+  color: $primaryFontColor;
   font-weight: 700;
   display: flex;
   gap: 5px;
+}
+
+.detailValue {
+  color: $primaryFontColor;
 }
 
 .detailValue span {
@@ -151,7 +157,7 @@
     left: -80px;
     right: -80px;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;
