@@ -5,6 +5,7 @@ import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 
 const { useTranslation } = i18next;
 
@@ -77,7 +78,11 @@ export function LocationDetails({
           <div className={styles.value}>
             {location?.deviceLocation?.coordinates.map(
               (coord: any, index: number) => {
-                return <p key={index}>{coord}</p>;
+                return <p key={index}>{localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(coord),
+                  5
+                )}</p>;
               }
             )}
           </div>
@@ -118,16 +123,17 @@ export function LocationDetails({
             <div className={styles.value}>{location.plantProject}</div>
           </div>
         )}
+        {location.plantedSpecies &&
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('species')}</p>
           <div className={styles.value}>
-            {location.scientificSpecies
-              ? location?.scientificSpecies
-              : location?.plantedSpecies?.map((species: any) => {
-                  return <p key={species.id}>{species.id}</p>;
+            <span>
+            {location?.plantedSpecies?.map((species: any) => {
+                  return <p key={species.id}>{species.treeCount} {species.scientificName?species.scientificName:species.otherSpecies}</p>;
                 })}
+                </span>
           </div>
-        </div>
+        </div>}
         {location.type === 'multi' && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('sampleTrees')}</p>

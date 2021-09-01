@@ -174,7 +174,7 @@ export default function MyTreesMap({
   };
   setViewPort(newViewport);
     } else if(geoJson) {
-      const bbox = turf.bbox(geoJson);
+      const bbox = turf.bbox(geoJson.features[0].geometry);
   const { longitude, latitude, zoom } = new WebMercatorViewport(
     viewport
   ).fitBounds(
@@ -196,7 +196,7 @@ export default function MyTreesMap({
     longitude,
     latitude,
     zoom,
-    transitionDuration: 1000,
+    transitionDuration: 2000,
     transitionInterpolator: new FlyToInterpolator(),
     transitionEasing: d3.easeCubic,
   };

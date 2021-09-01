@@ -59,18 +59,12 @@ function PlantLocation({
     <div
       key={index}
       onClick={() => selectLocation(location)}
-      // className={`${styles.singleLocation} ${
-      //   selectedLocation?.id === location.id ? styles.selected : ''
-      // }`}
       className={`${styles.singleLocation}`}
     >
       <div className={styles.locationHeader}>
         <div className={styles.left}>
           <p className={styles.treeCount}>
-            {/* {location.type === 'multi' && treeCount
-              ? `${treeCount} ${t('trees')}`
-              : `1 ${t('tree')}`} */}
-              {`${location.hid?location.hid:null} • ${localizedAbbreviatedNumber(
+              {`${location.hid?location.hid.substring(0, 3) + "-" + location.hid.substring(3):null} • ${localizedAbbreviatedNumber(
                   i18n.language,
                   Number(plantationArea),
                   2
@@ -89,13 +83,6 @@ function PlantLocation({
       </div>
 
       {index !== locations?.length - 1 && <div className={styles.divider} />}
-      {/* <div
-        className={`${styles.detailContainer} ${
-          selectedLocation?.id === location.id ? styles.selected : ''
-        }`}
-      >
-        <LocationDetails {...DetailProps} />
-      </div> */}
     </div>
   );
 }
