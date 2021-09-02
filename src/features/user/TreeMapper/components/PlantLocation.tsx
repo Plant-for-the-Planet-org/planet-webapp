@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
-import { LocationDetails } from './PlantLocationPage';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';

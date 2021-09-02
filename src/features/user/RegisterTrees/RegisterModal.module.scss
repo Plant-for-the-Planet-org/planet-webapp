@@ -1,7 +1,11 @@
 @import './../../../theme/theme';
 
 .registerTreesPage{
-  max-width: 420px;
+  max-width: 460px;
+  background-color: $backgroundColor;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
 }
 // white modal
 .modal {

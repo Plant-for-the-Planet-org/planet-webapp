@@ -11,7 +11,7 @@ import { Controller, useForm } from 'react-hook-form';
 import MapGL, {
   FlyToInterpolator,
   Marker,
-  NavigationControl
+  NavigationControl,
 } from 'react-map-gl';
 import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
@@ -75,9 +75,6 @@ export default function RegisterTrees({}: Props) {
   const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
-  const [registerTreesModalOpen, setRegisterTreesModalOpen] = React.useState(
-    true
-  );
   const [projects, setProjects] = React.useState([]);
 
   React.useEffect(() => {
@@ -225,9 +222,10 @@ export default function RegisterTrees({}: Props) {
 
   return ready ? (
     <div className="profilePage">
+      <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
+
       {!registered ? (
         <div className={styles.registerTreesPage}>
-          <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
           <form onSubmit={handleSubmit(submitRegisterTrees)}>
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>

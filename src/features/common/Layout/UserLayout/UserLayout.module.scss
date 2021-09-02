@@ -54,6 +54,9 @@
   z-index: 100;
   background-color: $backgroundColor;
   color: $primaryFontColor;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   @include xsPhoneView {
     width: 256px;
     & .navlink {
@@ -116,7 +119,6 @@
   }
   button {
     font-size: 14px;
-    font-family: $primaryFontFamily;
     font-weight: 400;
     &:hover {
       cursor: pointer;
@@ -174,7 +176,6 @@
 .widgetIFrame {
   min-height: 100vh;
   width: 100%;
-  max-width: calc(100vw - 256px);
 }
 
 @include lgLaptopView {

@@ -30,6 +30,9 @@
     align-items: center;
     width: 100%;
     color: $primaryFontColor;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -120,7 +123,7 @@
   padding: 20px;
   gap: 20px;
   width: 100%;
-  background-color: $backgroundColorDark;
+  background-color: $backgroundColor;
   color: $primaryFontColor;
   > .header {
     font-weight: 700;
@@ -168,6 +171,7 @@
   white-space: nowrap;
   font-family: $primaryFontFamily;
   cursor: pointer;
+  color: $primaryFontColor;
 }
 
 .filterButton.selected {
@@ -213,6 +217,7 @@
   padding: 20px;
   z-index: 1040;
   flex-direction: column;
+  color: $primaryFontColor;
 }
 
 .closeRecord {

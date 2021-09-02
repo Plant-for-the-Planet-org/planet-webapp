@@ -11,8 +11,12 @@
 .editProfileContainer {
   width: 100%;
   max-width: 280px;
+  background-color: $backgroundColor;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
   @include smTabletView {
-    max-width: 420px;
+    max-width: 460px;
   }
   display: flex;
   flex-direction: column;
@@ -113,7 +117,6 @@
   border: 0px;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  min-width: 280px;
   font-size: 14px;
   flex: 1;
 }
@@ -162,10 +165,6 @@
 }
 
 @include smTabletView {
-  .formField {
-    width: 420px;
-    max-width: 420px;
-  }
   .formFieldHalf {
     div,
     input {

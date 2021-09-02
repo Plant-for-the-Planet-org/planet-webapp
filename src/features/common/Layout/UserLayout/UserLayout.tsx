@@ -27,20 +27,25 @@ function UserLayout(props: any): ReactElement {
       path: '/profile',
       icon: <UserIcon />,
       // flag: 'New',
-      subMenu: [
-        // {
-        //   title: 'Profile',
-        //   path: '/profile',
-        // },
-        {
-          title: 'My Forest',
-          path: '/profile/forest',
-        },
-        {
-          title: 'Register Trees',
-          path: '/profile/register-trees',
-        },
-      ],
+      // subMenu: [
+      //   // {
+      //   //   title: 'Profile',
+      //   //   path: '/profile',
+      //   // },
+      //   {
+      //     title: 'My Forest',
+      //     path: '/profile/forest',
+      //   },
+      //   {
+      //     title: 'Register Trees',
+      //     path: '/profile/register-trees',
+      //   },
+      // ],
+    },
+    {
+      title: 'Register Trees',
+      path: '/profile/register-trees',
+      icon: <UserIcon />,
     },
     {
       title: 'Donations',

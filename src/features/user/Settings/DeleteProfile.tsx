@@ -35,8 +35,8 @@ export default function DeleteProfile({}: any) {
 
   return (
     <div className="profilePage">
+      <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
       <div className={styles.deleteModal}>
-        <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
         <p className={styles.deleteModalContent}>
           {t('common:deleteAccountMessage', {
             delete: 'Delete',

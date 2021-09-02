@@ -10,6 +10,11 @@
   display: flex;
   flex-direction: column;
   margin-top: 50px;
+  background-color: $backgroundColor;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
+  width: fit-content;
 }
 
 .singleProject {

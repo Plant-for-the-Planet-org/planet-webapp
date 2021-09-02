@@ -60,7 +60,7 @@ export default function History({
 
   return (
     <div className="profilePage">
-      <div className={'profilePageTitle'}>Donations</div>
+      <div className={'profilePageTitle'}>{t('me:donations')}</div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
@@ -112,7 +112,7 @@ export default function History({
                 <button
                   onClick={() => fetchPaymentHistory(true)}
                   className="primaryButton"
-                  style={{ minWidth: '240px' }}
+                  style={{ minWidth: '240px',marginTop:'30px' }}
                 >
                   {isDataLoading ? (
                     <div className={styles.spinner}></div>
