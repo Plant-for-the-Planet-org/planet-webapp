@@ -94,7 +94,7 @@ export default function EditProfileModal({
   const [severity, setSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
-  const [type, setAccountType] = useState('individual');
+  const [type, setAccountType] = useState(user.type ? user.type : 'individual');
 
   const profileTypes = [
     {
@@ -163,16 +163,21 @@ export default function EditProfileModal({
 
   const saveProfile = async (data: any) => {
     setIsUploadingData(true);
-    const bodyToSend = {
+    let bodyToSend = {
       ...data,
       country: country,
-    };
+    };  
+    if (type !== 'tpo') {
+      bodyToSend = {
+        ...bodyToSend,
+        type: type,
+      };
+    }
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
           .then((res) => {
-            console.log(res);
-            if(res.code !== 400) {
+            if (res.code !== 400) {
               setSeverity('success');
               setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
               handleSnackbarOpen();
@@ -181,10 +186,12 @@ export default function EditProfileModal({
               setUser(res);
             } else {
               setSeverity('error');
-            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
-            handleSnackbarOpen();
-            setIsUploadingData(false);
-            handleEditProfileModalClose();
+              setSnackbarMessage(
+                ready ? t('editProfile:profileSaveFailed') : ''
+              );
+              handleSnackbarOpen();
+              setIsUploadingData(false);
+              handleEditProfileModalClose();
             }
           })
           .catch((error) => {
@@ -207,24 +214,24 @@ export default function EditProfileModal({
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
 
   return ready ? (
@@ -284,7 +291,7 @@ export default function EditProfileModal({
                 </div>
               </label>
             </div>
-            {user.type !== 'tpo' ? (
+            {type !== 'tpo' ? (
               <MaterialTextField
                 label={t('editProfile:iamA')}
                 variant="outlined"
@@ -336,7 +343,7 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            {user.type && type !== 'individual' && (
+            {type !== 'individual' && (
               <div className={styles.formFieldLarge}>
                 <MaterialTextField
                   label={t('editProfile:profileName', {
