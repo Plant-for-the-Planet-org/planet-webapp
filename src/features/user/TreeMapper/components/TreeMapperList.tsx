@@ -43,6 +43,14 @@ export default function TreeMapperList({
           <TransactionListLoader />
           <TransactionListLoader />
           <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
         </>
       ) : (
         <>
@@ -65,7 +73,7 @@ export default function TreeMapperList({
               <TransactionsNotFound />
             </div>
           )}
-          {plantLocations && links.next && (
+          {/* {plantLocations && links.next && (
             <div className={styles.pagination}>
               <button
                 onClick={() => fetchTreemapperData(true)}
@@ -79,7 +87,7 @@ export default function TreeMapperList({
                 )}
               </button>
             </div>
-          )}
+          )} */}
         </>
       )}
     </div>

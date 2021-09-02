@@ -1,38 +1,67 @@
 @import '../../../theme/theme';
+
+.profilePage {
+  margin-top: 300px;
+  font-family: $primaryFontFamily;
+  color: $primaryFontColor;
+  margin-bottom: 80px;
+  background-color: $backgroundColorDark;
+}
+
 .pageContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  // margin-top: 280px;
-  > .section {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 0px;
-    max-width: 1200px;
+  width: 100%;
+  height: 100%;
+}
+
+.listContainer {
+  overflow: visible;
+  width: fit-content;
+  max-width: 100%;
+  width: 390px;
+  z-index: 2;
+  margin: 0 20px;
+  position: relative;
+  padding-top: 40px;
+  bottom: 0;
+  min-height: 100vh;
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25);
+  > :first-child {
     width: 100%;
-    > .locationList {
+    text-align: center;
+  }
+}
+ 
+.locationList {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      width: 100%;
-      margin-top: 400px;
-      min-height: 400px;
+      max-width: 100%;
+      width: 325px;
       z-index: 10;
+      height: 85%;
+      height: 100%;
       background-color: $backgroundColor;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
       .singleLocation {
-        padding: 0 20px;
+        :hover {
+          background-color:  $backgroundColorDark;
+        }
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         width: 100%;
         > .locationHeader {
-          padding: 20px 0;
+          padding: 20px 20px;
           position: relative;
           display: flex;
           flex-direction: row;
@@ -58,6 +87,7 @@
             align-items: flex-end;
             gap: 10px;
             > .status {
+              display: flex;
               font-weight: 700;
             }
             > .mode {
@@ -70,39 +100,62 @@
         }
       }
     }
-    > .locationDetails {
+.locationDetails {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      justify-content: center;
-      width: 100%;
+      max-width: 100%;
+      width: 390px;
+      min-height: calc(100vh - 80px);
       z-index: 10;
-      margin-top: 400px;
+      height: auto;
+      overflow-y: auto;
       background-color: $backgroundColor;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      padding: 0px 20px;
-      > .backButton {
-        cursor: pointer;
+      // border-top-left-radius: 10px;
+      // border-top-right-radius: 10px;
+      padding: 30px 20px;
+      > .locationNav {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-bottom: 20px;
+        align-items: center;
+        > .backButton {
+          cursor: pointer;
+          margin-left: -16px;
+        }
+        
+        > .locationMenu {
+          display: flex;
+          gap: 16px;
+          > .deleteButton {
+            cursor: pointer;
+            svg {
+              width: 14px;
+            }
+          }
+          > .editButton {
+            cursor: pointer;
+            svg {
+              width: 16px;
+            }
+          }
+        }
+      }
+      
+    }
+  .mapContainer {
+      position: fixed;
+      top: 0;
+      bottom: 50vh;
+      left: 0;
+      right: 0;
+      > div:first-child {
+        height: 100% !important;
+        width: 100% !important;
       }
     }
-    > .mapContainer {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: flex-start;
-      width: 100%;
-      > .map {
-        position: absolute;
-        height: 400px;
-        width: 100%;
-        max-width: 680px;
-        border-radius: 10px;
-        overflow: hidden;
-      }
-    }
-  }
-}
+
 
 .imageContainer {
   display: flex;
@@ -124,9 +177,8 @@
 .details {
   display: grid;
   padding-top: 20px;
-  margin-top: 20px;
   grid-row-gap: 20px;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 1fr;
   .singleDetail {
     display: flex;
     flex-direction: column;
@@ -142,8 +194,58 @@
     .value {
       word-break: break-word;
       padding-right: 20px;
+      > span {
+        font-style: italic;
+      }
+      > span.link {
+        font-style: italic;
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
   }
+}
+
+.projectImageSliderContainer {
+  position: relative;
+  width: 100%;
+  // border-radius: 0.6em;
+  overflow: hidden;
+  > :first-child {
+    > :first-child {
+      bottom: 2px;
+      > div {
+        background: rgba(0, 0, 0, 0.4) !important;
+        height: 4px !important;
+        > div {
+          background: rgba(255, 255, 255, 0.8) !important;
+        }
+      }
+    }
+  }
+}
+
+.projectImageSliderContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: bottom;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+
+.projectImageSliderContentText {
+  margin-bottom: 22px;
+  margin-left: 12px;
+  color: #fff;
+  font-size: $fontSixteen;
+  font-family: $primaryFontFamily;
+  line-height: 1.3;
+  padding: 0px 1px;
+  // background-color: yellow;
+  width: fit-content;
 }
 
 .notFound {
@@ -202,20 +304,20 @@
   cursor: pointer;
 }
 
-.pullUpContainer {
-  width: 100%;
-  height: 25px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  > .pullUpBar {
-    height: 5px;
-    width: 40px;
-    border-radius: 50px;
-    background-color: $primaryFontColor;
-  }
-}
+// .pullUpContainer {
+//   width: 100%;
+//   height: 25px;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   align-items: center;
+//   > .pullUpBar {
+//     height: 5px;
+//     width: 40px;
+//     border-radius: 50px;
+//     background-color: $primaryFontColor;
+//   }
+// }
 
 .popupContainer {
   box-shadow: none;
@@ -254,17 +356,54 @@
   align-items: center;
 }
 
+.mapNavigation {
+  position: absolute;
+  right: 20px;
+  bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  > div {
+    position: relative !important;
+  }
+}
+
+.single {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  background-color: rgba(0, 122, 73, 0.5);
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  &.singleSelected {
+    background-color: rgba(0, 122, 73, 1);
+  }
+}
+
+.single:hover {
+  background-color: rgba(0, 122, 73, 1);
+}
+
+.layerToggle {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  background-color: $backgroundColor;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+  bottom: 120px;
+}
+
+
 @include mdTabletView {
-  .pageContainer {
-    padding-top: 20px;
-    > .section {
-      gap: 20px;
-      flex-direction: row;
-      > .locationList {
-        margin-top: 0px;
-        border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
-        width: 40%;
+  .locationList {
         > .singleLocation {
           > .detailContainer {
             display: none;
@@ -281,21 +420,6 @@
           box-shadow: 1px 2px 8px -6px #707070;
         }
       }
-      > .locationDetails {
-        margin-top: 0px;
-        border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
-        width: 40%;
-        display: none;
-      }
-      > .mapContainer {
-        width: 60%;
-        > .map {
-          width: 60%;
-        }
-      }
-    }
-  }
 
   .pullUpContainer {
     display: none;
@@ -303,6 +427,31 @@
 
   .hideOnMobile {
     display: flex !important;
+  }
+
+  .mapContainer {
+    top: 80px;
+      bottom: 0;
+      left: 60px;
+      right: 0;
+  }
+
+  .listContainer { 
+    margin: 0;
+    background-color: $backgroundColorDark;
+    border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      box-shadow: none;
+    > :first-child {
+      padding: 0 50px;
+      text-align: left;
+    }
+  }
+
+  .profilePage {
+    margin-top: 80px;
+    margin-bottom: 0;
+    // height: calc(100vh - 80px);
   }
 }
 

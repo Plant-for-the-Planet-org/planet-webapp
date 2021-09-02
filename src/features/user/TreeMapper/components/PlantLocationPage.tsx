@@ -5,43 +5,81 @@ import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
+import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import dynamic from 'next/dynamic';
+import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
+import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
+import router, {useRouter} from 'next/router';
 
 const { useTranslation } = i18next;
 
 interface Props {
   setselectedLocation: Function;
   location: Object;
-  setLocation: Function;
 }
+
+const ImageSlider = dynamic(
+  () => import('../../../projects/components/PlantLocation/ImageSlider'),
+  {
+    ssr: false,
+    loading: () => <p>Images</p>,
+  }
+);
+
+const ImageSliderSingle = dynamic(
+  () => import('../../../projects/components/projectDetails/ImageSlider'),
+  {
+    ssr: false,
+    loading: () => <p>Images</p>,
+  }
+);
 
 export default function PlantLocationPage({
   location,
   setselectedLocation,
-  setLocation,
 }: Props): ReactElement {
+  const router = useRouter();
   const { t, i18n } = useTranslation('treemapper');
   const handleBackButton = () => {
-    if (location.type === 'sample') {
-      setselectedLocation(location.parent);
-    } else {
-      setselectedLocation('');
-      setLocation(null);
-    }
+    // if (location.type === 'sample') {
+    //   setselectedLocation(location.parent);
+    // } else {
+      setselectedLocation(null);
+    // }
   };
+
+  const handleDeleteButton = () => {
+    setselectedLocation(null);
+  }
+
+  const handleEditButton = () => {
+    
+  }
 
   const DetailProps = {
     location,
     setselectedLocation,
-    setLocation,
   };
   return (
     <div className={styles.locationDetails}>
       <div className={styles.pullUpContainer}>
         <div className={styles.pullUpBar}></div>
       </div>
+      <div className={styles.locationNav}>
       <div onClick={handleBackButton} className={styles.backButton}>
         <BackButton />
       </div>
+      <div className={styles.locationMenu}>
+      <div onClick={handleEditButton} className={styles.editButton}>
+        <EditIcon/>
+      </div>
+      <div onClick={handleDeleteButton} className={styles.deleteButton}>
+        <TrashIcon />
+      </div>
+      </div>
+      
+      </div>
+      
       <LocationDetails {...DetailProps} />
     </div>
   );
@@ -50,25 +88,69 @@ export default function PlantLocationPage({
 interface DetailsProps {
   setselectedLocation: Function;
   location: Object;
-  setLocation: Function;
 }
 
 export function LocationDetails({
   location,
   setselectedLocation,
-  setLocation,
 }: DetailsProps): ReactElement {
-  const { t, i18n } = useTranslation('treemapper');
+  const { t, i18n } = useTranslation(['treemapper','maps']);
+  const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
+
+  React.useEffect(() => {
+    if (
+      location &&
+      location.samplePlantLocations &&
+      location.samplePlantLocations.length > 0
+    ) {
+      const images = [];
+      for (const key in location.samplePlantLocations) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            location.samplePlantLocations,
+            key
+          )
+        ) {
+          const element = location.samplePlantLocations[key];
+
+          if (element.coordinates?.[0]) {
+            images.push({
+              image: element.coordinates[0].image,
+              description: `${t('sampleTree')} ${element.tag? '#'+element.tag:''}`,
+            });
+          }
+        }
+      }
+      setSampleTreeImages(images);
+    } else {
+      setSampleTreeImages([]);
+    }
+  }, [location]);
   return (
     <>
-      <div className={styles.imageContainer}>
-        {location?.coordinates?.map((coordinate: any) => {
-          if (coordinate.image) {
-            const image = getImageUrl('coordinate', 'large', coordinate.image);
-            return <img key={coordinate.image} src={image} />;
-          }
-        })}
-      </div>
+      {location.type === 'multi' && sampleTreeImages.length > 0 && (
+            <div className={styles.projectImageSliderContainer}>
+              <ImageSlider
+                images={sampleTreeImages}
+                height={233}
+                imageSize="large"
+                type="coordinate"
+              />
+            </div>
+          )}
+          {location.type !== 'multi' &&
+            location.coordinates?.length > 0 && (
+              <div
+                className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
+              >
+                <ImageSliderSingle
+                  images={location.coordinates}
+                  height={233}
+                  imageSize="large"
+                  type="coordinate"
+                />
+              </div>
+            )}
       <div className={styles.details}>
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('captureMode')}</p>
@@ -83,7 +165,11 @@ export function LocationDetails({
           <div className={styles.value}>
             {location?.deviceLocation?.coordinates.map(
               (coord: any, index: number) => {
-                return <p key={index}>{coord}</p>;
+                return <p key={index}>{localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(coord),
+                  5
+                )}</p>;
               }
             )}
           </div>
@@ -121,41 +207,49 @@ export function LocationDetails({
         {location.plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('plantProject')}</p>
-            <div className={styles.value}>{location.plantProject}</div>
+            <div className={styles.value}>
+              <span className={styles.link} onClick={()=> router.push(`/[p]`, `/${location.plantProject}`)}>{location.plantProject}</span>
+              </div>
           </div>
         )}
+        {location.plantedSpecies &&
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('species')}</p>
           <div className={styles.value}>
-            {location.scientificSpecies
-              ? location?.scientificSpecies
-              : location?.plantedSpecies?.map((species: any) => {
-                  return <p key={species.id}>{species.id}</p>;
+            <span>
+            {location?.plantedSpecies?.map((species: any) => {
+                  return <p key={species.id}>{species.treeCount} {species.scientificName?species.scientificName:species.otherSpecies}</p>;
                 })}
+                </span>
           </div>
-        </div>
-        {location.type === 'multi' && (
+        </div>}
+        {location.type === 'multi' && location.captureMode === 'on-site' && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('sampleTrees')}</p>
-            <div className={styles.value}>
-              <div className={styles.sampleTrees}>
-                {location.sampleTrees &&
-                  location?.sampleTrees?.map((sampleTree: any) => {
-                    return (
-                      <div
-                        key={sampleTree.id}
-                        onClick={() => {
-                          setLocation(sampleTree);
-                          setselectedLocation(sampleTree.id);
-                        }}
-                        className={styles.tree}
-                      >
-                        <TreeIcon />
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
+            {/* <div className={styles.value}> */}
+            {location.samplePlantLocations &&
+                  location.samplePlantLocations.map(
+                    (spl: any, index: number) => {
+                      return (
+                        <div key={index} className={styles.value}>
+                          {index + 1}.{' '}
+                          <span
+                            // onClick={() => openSampleTree(spl.id)}
+                            className={styles.link}
+                          >
+                            {spl.scientificName
+                              ? spl.scientificName
+                              : spl.scientificSpecies?spl.scientificSpecies:t('maps:unknown')}
+                          </span>
+                          <br />
+                          {spl.tag?`${t('maps:tag')} #${spl.tag} • `:null}{spl?.measurements?.height}
+                          {t('maps:meterHigh')} • {spl?.measurements?.width}
+                          {t('maps:cmWide')}
+                        </div>
+                      );
+                    }
+                  )}
+            {/* </div> */}
           </div>
         )}
       </div>

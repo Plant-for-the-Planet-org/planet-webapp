@@ -59,7 +59,7 @@ function TreeMapper({}: Props): ReactElement {
       }
     } else {
       const response = await getAuthenticatedRequest(
-        '/treemapper/plantLocations?limit=15',
+        '/treemapper/plantLocations?_scope=extended&limit=15',
         token
       );
       if (response) {
@@ -101,24 +101,24 @@ function TreeMapper({}: Props): ReactElement {
     if (contextLoaded && token) fetchTreemapperData();
   }, [contextLoaded, token]);
 
-  React.useEffect(() => {
-    if (selectedLocation !== '') {
-      for (const key in plantLocations) {
-        if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-          const plantLocation = plantLocations[key];
-          if (selectedLocation === plantLocation.id) {
-            setLocation(plantLocation);
-            break;
-          }
-        }
-      }
-    } else {
-      setLocation(null);
-    }
-  }, [selectedLocation]);
+  // React.useEffect(() => {
+  //   if (selectedLocation !== '') {
+  //     for (const key in plantLocations) {
+  //       if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+  //         const plantLocation = plantLocations[key];
+  //         if (selectedLocation === plantLocation.id) {
+  //           setLocation(plantLocation);
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     setLocation(null);
+  //   }
+  // }, [selectedLocation]);
 
   const TreeMapperProps = {
-    location,
+    location:selectedLocation,
     setLocation,
     selectedLocation,
     setselectedLocation,
@@ -129,29 +129,29 @@ function TreeMapper({}: Props): ReactElement {
   };
 
   return (
-    <div className={'profilePage'}>
+    <div className={styles.profilePage}>
       {progress > 0 && (
         <div className={'topLoader'}>
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <div className={'profilePageTitle'}>TreeMapper</div>
+      
       <div id="pageContainer" className={styles.pageContainer}>
-        <div className={styles.section}>
-          <TreeMapperList {...TreeMapperProps} />
-          {location && <PlantLocationPage {...TreeMapperProps} />}
+      {selectedLocation ? <PlantLocationPage {...TreeMapperProps} />:
+          <div className={styles.listContainer}>
+           <div className={'profilePageTitle'}>TreeMapper</div> 
+           <TreeMapperList {...TreeMapperProps} />
+          </div>
+          }
           <div className={styles.mapContainer}>
-            <div id="pp-mapbox" className={styles.map}>
               <PlantLocationMap
                 locations={plantLocations}
                 selectedLocation={selectedLocation}
                 setselectedLocation={setselectedLocation}
               />
-            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
