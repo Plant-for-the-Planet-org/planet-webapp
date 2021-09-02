@@ -5,6 +5,7 @@
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
   margin-bottom: 80px;
+  background-color: $backgroundColorDark;
 }
 
 .pageContainer {
@@ -22,18 +23,21 @@
   max-width: 100%;
   width: 390px;
   z-index: 2;
+  margin: 0 20px;
   position: relative;
   padding-top: 40px;
   bottom: 0;
   min-height: 100vh;
-  background-color: $backgroundColorDark;
+  background-color: $backgroundColor;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25);
   > :first-child {
     width: 100%;
-    padding: 0 50px;
-    display: none;
+    text-align: center;
   }
 }
  
@@ -143,7 +147,7 @@
   .mapContainer {
       position: fixed;
       top: 0;
-      bottom: 200px;
+      bottom: 50vh;
       left: 0;
       right: 0;
       > div:first-child {
@@ -433,8 +437,14 @@
   }
 
   .listContainer { 
-    :first-child {
-      display: block;
+    margin: 0;
+    background-color: $backgroundColorDark;
+    border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      box-shadow: none;
+    > :first-child {
+      padding: 0 50px;
+      text-align: left;
     }
   }
 
