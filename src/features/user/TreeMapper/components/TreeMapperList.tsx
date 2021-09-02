@@ -43,6 +43,14 @@ export default function TreeMapperList({
           <TransactionListLoader />
           <TransactionListLoader />
           <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
         </>
       ) : (
         <>

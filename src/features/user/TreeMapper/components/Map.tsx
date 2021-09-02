@@ -106,6 +106,36 @@ export default function MyTreesMap({
     }
   };
 
+  const zoomToLocation = (geometry: any) => {
+    const bbox = turf.bbox(geometry);
+  const { longitude, latitude, zoom } = new WebMercatorViewport(
+    viewport
+  ).fitBounds(
+    [
+      [bbox[0], bbox[1]],
+      [bbox[2], bbox[3]],
+    ],
+    {
+      padding: {
+        top: isMobile ? 50: 100,
+        bottom: isMobile ? 200 : 100,
+        left: isMobile ? 50 : 500,
+        right: isMobile ? 50 : 100,
+      },
+    }
+  );
+  const newViewport = {
+    ...viewport,
+    longitude,
+    latitude,
+    zoom,
+    transitionDuration: 1000,
+    transitionInterpolator: new FlyToInterpolator(),
+    transitionEasing: d3.easeCubic,
+  };
+  setViewPort(newViewport);
+  }
+
   React.useEffect(() => {
     const promise = getMapStyle('default');
     promise.then((style: any) => {
@@ -137,79 +167,26 @@ export default function MyTreesMap({
         properties: {},
         features,
       });
+      zoomToLocation(locations[0].geometry);
     } else {
       setGeoJson(null);
     }
   },[locations]);
 
-  console.log(geoJson);
-
   React.useEffect(() => {
     if(selectedLocation) {
-      const bbox = turf.bbox(selectedLocation.geometry);
-  const { longitude, latitude, zoom } = new WebMercatorViewport(
-    viewport
-  ).fitBounds(
-    [
-      [bbox[0], bbox[1]],
-      [bbox[2], bbox[3]],
-    ],
-    {
-      padding: {
-        top: 50,
-        bottom: isMobile ? 300 : 50,
-        left: isMobile ? 50 : 400,
-        right: isMobile ? 50 : 100,
-      },
-    }
-  );
-  const newViewport = {
-    ...viewport,
-    longitude,
-    latitude,
-    zoom,
-    transitionDuration: 1000,
-    transitionInterpolator: new FlyToInterpolator(),
-    transitionEasing: d3.easeCubic,
-  };
-  setViewPort(newViewport);
-    } else if(geoJson) {
-      const bbox = turf.bbox(geoJson.features[0].geometry);
-  const { longitude, latitude, zoom } = new WebMercatorViewport(
-    viewport
-  ).fitBounds(
-    [
-      [bbox[0], bbox[1]],
-      [bbox[2], bbox[3]],
-    ],
-    {
-      padding: {
-        top: 50,
-        bottom: isMobile ? 300 : 50,
-        left: isMobile ? 50 : 400,
-        right: isMobile ? 50 : 100,
-      },
-    }
-  );
-  const newViewport = {
-    ...viewport,
-    longitude,
-    latitude,
-    zoom,
-    transitionDuration: 2000,
-    transitionInterpolator: new FlyToInterpolator(),
-    transitionEasing: d3.easeCubic,
-  };
-  setViewPort(newViewport);
-}
+      zoomToLocation(selectedLocation.geometry);
+    } 
   } , [geoJson, selectedLocation]);
+
+  const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   return (
     <MapGL
       {...viewport}
       mapStyle={style}
       scrollZoom={false}
-      onViewportChange={(viewport:any) => setViewPort(viewport)}
+      onViewportChange={_onViewportChange}
     >
       {locations &&
         locations
@@ -244,8 +221,7 @@ export default function MyTreesMap({
                         'fill-opacity': getPolygonColor(pl),
                       }}
                     />
-                    {/* {((selectedPl && selectedPl.id === pl.id) ||
-                      (hoveredPl && hoveredPl.id === pl.id)) && (
+                    {(selectedLocation && selectedLocation.id === pl.id) && (
                       <Layer
                         key={`${pl.id}-selected`}
                         id={`${pl.id}-selected-layer`}
@@ -256,7 +232,7 @@ export default function MyTreesMap({
                           'line-width': 4,
                         }}
                       />
-                    )} */}
+                    )}
                     {dateDiff && (
                       <Layer
                         key={`${pl.id}-label`}
