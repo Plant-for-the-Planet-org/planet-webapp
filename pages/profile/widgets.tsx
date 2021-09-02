@@ -39,7 +39,7 @@ function ProfilePage(): ReactElement {
       {user?.isPrivate === false ? (
         <div className="profilePage" style={{padding:'0px'}}>
           <iframe
-            src={`${'https://planet-widgets-git-feature-newstructure-planetapp.vercel.app/'}?user=${
+            src={`${process.env.WIDGET_URL}?user=${
               user.id
             }&tenantkey=${process.env.TENANTID}`}
             className={styles.widgetIFrame}
