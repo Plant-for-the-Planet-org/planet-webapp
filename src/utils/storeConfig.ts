@@ -20,7 +20,7 @@ export async function storeConfig() {
       const countryCode = localStorage.getItem('countryCode');
       const found = countriesData.some(
         (arrayCountry) =>
-          arrayCountry.countryCode?.toUpperCase() === config.country
+          arrayCountry.countryCode?.toUpperCase() === config.country.toUpperCase()
       );
       if (!countryCode || !found) {
         if (found) {
