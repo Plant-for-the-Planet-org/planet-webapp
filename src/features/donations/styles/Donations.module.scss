@@ -1,7 +1,7 @@
 @import './../../../theme/theme';
 
 .cardContainer {
-  background-color: $backgroundColor;
+  background-color: $backgroundColorDark;
   border-radius: 10px;
   width: 100%;
   max-width: 412px;
@@ -826,7 +826,7 @@
 
   border-radius: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba($backgroundColor, 0.8);
   box-shadow: 1px 3px 6px -4px rgba(116, 116, 116, 0.7);
   .showContactDetailsName {
     font-size: $fontXSmall;
@@ -846,6 +846,6 @@
   padding: 20px;
   border-radius: 10px;
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba($backgroundColor, 0.8);
   box-shadow: 1px 3px 6px -4px rgba(116, 116, 116, 0.7);
 }
