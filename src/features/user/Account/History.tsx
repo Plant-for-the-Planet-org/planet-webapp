@@ -81,7 +81,7 @@ export default function History({
         <div className={styles.section}>
           <div className={styles.accountHistory}>
             <div className={styles.historyList}>
-              {isDataLoading ? (
+              {!paymentHistory && isDataLoading ? (
                 <>
                   <TransactionListLoader />
                   <TransactionListLoader />
