@@ -124,5 +124,15 @@
   "targetSave": "Save",
   "targetErrorMessage": "Number must be greater than zero",
   "taxDeductibleReceipt": "Tax Deductible Receipt",
-  "Gift Certificate": "Gift Certificate"
+  "Gift Certificate": "Gift Certificate",
+  "paypal-paypal":"Paypal",
+  "stripe-":"Stripe",
+  "unknown-method":"Unknown",
+  "stripe-sofort":"Sofort (Stripe)",
+  "tree-cash-tree-cash":"TreeCash",
+  "stripe-card":"Credit/Debit Card",
+  "stripe-giropay":"GiroPay (Stripe)",
+  "stripe-sepa":"SEPA (Stripe)",
+  "action-required":"Action Required",
+  "completed":"Completed"
 }
