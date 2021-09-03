@@ -15,6 +15,8 @@ import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
 import { UserPropsContext } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
+import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
+import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 
 const { useTranslation } = i18next;
 
@@ -45,7 +47,7 @@ function UserLayout(props: any): ReactElement {
     {
       title: 'Register Trees',
       path: '/profile/register-trees',
-      icon: <UserIcon />,
+      icon: <RegisterTreeIcon />,
     },
     {
       title: 'Donations',
@@ -88,7 +90,7 @@ function UserLayout(props: any): ReactElement {
     {
       title: 'TreeMapper',
       path: '/profile/treemapper',
-      icon: <WidgetIcon />,
+      icon: <TreeMappperIcon />,
     },
     {
       title: 'Projects',
