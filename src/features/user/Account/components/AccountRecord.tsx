@@ -26,12 +26,11 @@ export default function AccountRecord({
   return (
     <div
       key={index}
-      onClick={() => handleRecordOpen(index)}
       className={`${styles.record} ${
         selectedRecord === index ? styles.selected : ''
       }`}
     >
-      <RecordHeader record={record} />
+      <RecordHeader record={record} handleRecordOpen={handleRecordOpen} index={index} />
       {index !== paymentHistory?.items?.length - 1 && (
         <div className={styles.divider} />
       )}
@@ -64,12 +63,14 @@ export default function AccountRecord({
 
 interface HeaderProps {
   record: Object;
+  handleRecordOpen: Function;
+  index: number;
 }
 
-export function RecordHeader({ record }: HeaderProps): ReactElement {
+export function RecordHeader({ record,handleRecordOpen,index }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
-    <div className={styles.recordHeader}>
+    <div onClick={() => handleRecordOpen(index)} className={styles.recordHeader}>
       <div className={styles.left}>
         <p className={styles.top}>
           {record.type === 'tree-donation'

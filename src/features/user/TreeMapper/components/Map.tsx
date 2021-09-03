@@ -119,7 +119,7 @@ export default function MyTreesMap({
       padding: {
         top: isMobile ? 50: 100,
         bottom: isMobile ? 200 : 100,
-        left: isMobile ? 50 : 500,
+        left: isMobile ? 50 : 100,
         right: isMobile ? 50 : 100,
       },
     }

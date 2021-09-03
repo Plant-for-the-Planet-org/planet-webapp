@@ -5,7 +5,7 @@
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
   margin-bottom: 80px;
-  background-color: $backgroundColorDark;
+  background-color: $backgroundBase;
 }
 
 .pageContainer {
@@ -178,7 +178,7 @@
   display: grid;
   padding-top: 20px;
   grid-row-gap: 20px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   .singleDetail {
     display: flex;
     flex-direction: column;
@@ -432,13 +432,13 @@
   .mapContainer {
     top: 80px;
       bottom: 0;
-      left: 60px;
+      left: 450px;
       right: 0;
   }
 
   .listContainer { 
     margin: 0;
-    background-color: $backgroundColorDark;
+    background-color: $backgroundBase;
     border-top-left-radius: 0px;
       border-top-right-radius: 0px;
       box-shadow: none;
@@ -452,6 +452,12 @@
     margin-top: 80px;
     margin-bottom: 0;
     // height: calc(100vh - 80px);
+  }
+}
+
+@include lgLaptopView {
+  .mapContainer {
+    left: 646px;
   }
 }
 
