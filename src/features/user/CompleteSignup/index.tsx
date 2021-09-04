@@ -16,13 +16,50 @@ import { getStoredConfig } from '../../../utils/storeConfig';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
+import GeocoderArcGIS from "geocoder-arcgis";
 
 const { useTranslation } = i18next;
 
 export default function CompleteSignup() {
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
-
+  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
+    client_id:process.env.ESRI_CLIENT_ID,
+    client_secret:process.env.ESRI_CLIENT_SECRET,
+  } : {});
+  const suggestAddress = (value) => {
+    if (value.length > 3) {
+      geocoder
+        .suggest(value, {category:"Address", countryCode: country}) 
+        .then((result) => {
+          const filterdSuggestions = result.suggestions.filter((suggestion) => {
+            return !suggestion.isCollection;
+          });
+          setaddressSugggestions(filterdSuggestions);
+        })
+        .catch(console.log);
+        
+    }
+  };  
+  const getAddress = (value) => {
+    geocoder
+      .findAddressCandidates(value, { outfields: "*" })
+      .then((result) => {
+        setValue("address", result.candidates[0].attributes.ShortLabel, {
+          shouldValidate: true,
+        });
+        setValue("city", result.candidates[0].attributes.City, {
+          shouldValidate: true,
+        });
+        setValue("zipCode", result.candidates[0].attributes.Postal, {
+          shouldValidate: true,
+        });
+        setaddressSugggestions([]);
+      })
+      .catch(console.log);
+  };
+  let suggestion_counter = 0;
   const { theme } = React.useContext(ThemeContext);
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -329,7 +366,29 @@ export default function CompleteSignup() {
                   variant="outlined"
                   inputRef={register({ required: true })}
                   name={'address'}
+                  onChange={(event) => {
+                    suggestAddress(event.target.value);
+                  }}
+                  onBlur={() => setaddressSugggestions([])}
                 />
+                {addressSugggestions
+              ? addressSugggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    {addressSugggestions.map((suggestion) => {
+                      return (
+                        <div key={'suggestion' + suggestion_counter++}
+                          onMouseDown={() => {
+                            getAddress(suggestion.text);
+                          }}
+                          className="suggestion"
+                        >
+                          {suggestion.text}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              : null}
                 {errors.address && (
                   <span className={styles.formErrors}>
                     {t('donate:addressRequired')}
