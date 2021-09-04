@@ -38,7 +38,7 @@ function ContactDetails({
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address",countryCode:contactDetails.country})
+        .suggest(value, {category:"Address", countryCode: contactDetails.country})
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;

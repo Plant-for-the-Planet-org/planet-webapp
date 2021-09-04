@@ -31,7 +31,7 @@ export default function CompleteSignup() {
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address",countryCode:"Country"}) 
+        .suggest(value, {category:"Address", countryCode: country}) 
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
