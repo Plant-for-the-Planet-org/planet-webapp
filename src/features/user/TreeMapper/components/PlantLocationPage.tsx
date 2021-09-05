@@ -5,11 +5,13 @@ import styles from '../TreeMapper.module.scss';
 import i18next from '../../../../../i18n';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
-import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import { getFormattedNumber, localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import router, {useRouter} from 'next/router';
+import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import CopyToClipboard from '../../../common/CopyToClipboard';
 
 const { useTranslation } = i18next;
 
@@ -44,12 +46,12 @@ export default function PlantLocationPage({
     // if (location.type === 'sample') {
     //   setselectedLocation(location.parent);
     // } else {
-      setselectedLocation(null);
+      router.replace('/profile/treemapper');
     // }
   };
 
   const handleDeleteButton = () => {
-    setselectedLocation(null);
+    router.replace('/profile/treemapper');
   }
 
   const handleEditButton = () => {
@@ -96,6 +98,16 @@ export function LocationDetails({
 }: DetailsProps): ReactElement {
   const { t, i18n } = useTranslation(['treemapper','maps']);
   const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
+  const coordinateRef = React.useRef(null);
+
+  const text = `${location?.deviceLocation?.coordinates.map(
+    (coord: any, index: number) => {
+      return getFormattedNumber(
+        i18n.language,
+        Number(coord),
+      )
+    }
+  )}`;
 
   React.useEffect(() => {
     if (
@@ -163,21 +175,18 @@ export function LocationDetails({
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('coordinates')}</p>
           <div className={styles.value}>
-            {location?.deviceLocation?.coordinates.map(
-              (coord: any, index: number) => {
-                return <p key={index}>{localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(coord),
-                  5
-                )}</p>;
-              }
-            )}
+            <MaterialTextField
+            disabled={true}
+            variant="outlined"
+            value={text}
+            />
+            <CopyToClipboard text={text}/>
           </div>
         </div>
-        <div className={styles.singleDetail}>
+        {/* <div className={styles.singleDetail}>
           <p className={styles.title}>{t('guid')}</p>
           <div className={styles.value}>{location.id}</div>
-        </div>
+        </div> */}
         {location.measurements && (
           <>
             <div className={styles.singleDetail}>

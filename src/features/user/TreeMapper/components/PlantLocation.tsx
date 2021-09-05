@@ -5,6 +5,7 @@ import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -26,7 +27,7 @@ function PlantLocation({
 }: Props) {
   const { t, i18n } = useTranslation('treemapper');
   console.log('locations', locations);
-
+  const router = useRouter();
   let treeCount = 0;
   if (location?.plantedSpecies?.length !== 0) {
     for (const key in location.plantedSpecies) {
@@ -41,7 +42,7 @@ function PlantLocation({
     if (selectedLocation && selectedLocation.id === location.id) {
       setselectedLocation(null);
     } else {
-      setselectedLocation(location);
+      router.replace(`/profile/treemapper/?l=${location.id}`);
     }
   }
 
@@ -63,11 +64,11 @@ function PlantLocation({
       <div className={styles.locationHeader}>
         <div className={styles.left}>
           <p className={styles.treeCount}>
-              {`${location.hid?location.hid.substring(0, 3) + "-" + location.hid.substring(3):null} • ${localizedAbbreviatedNumber(
+              {`${location.hid?location.hid.substring(0, 3) + "-" + location.hid.substring(3):null} ${location.type === 'multi'?'• '+localizedAbbreviatedNumber(
                   i18n.language,
                   Number(plantationArea),
                   2
-                )} ha`}
+                ) + 'ha':location.tag? '• '+location.tag:''}`}
           </p>
           <p className={styles.date}>
             {t('on')} {formatDate(location.registrationDate)}
