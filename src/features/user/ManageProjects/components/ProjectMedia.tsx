@@ -270,7 +270,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
                             <DeleteIcon />
                           </button>
                           <button id={'setDefaultImg'} onClick={() => setDefaultImage(image.id, index)}>
-                            <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
+                            <Star color={image.isDefault ? '#ECB641' : '#aaa'} className={image.isDefault ? 'selected' : ''} />
                           </button>
                         </div>
                       </div>

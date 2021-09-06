@@ -3,6 +3,10 @@
 .mainContainer {
   max-width: 1000px;
   display: flex;
+  background-color: $backgroundColor;
+  > div {
+    background-color: $backgroundColor;
+  }
 }
 
 .stepContainer {
@@ -301,7 +305,7 @@
   }
 
   .uploadedMapName {
-    background-color: $light;
+    background-color: $backgroundColorDark;
     padding: 6px 18px;
     border-radius: 10px;
     position: absolute;
@@ -313,7 +317,7 @@
     font-weight: bold;
   }
   .uploadedMapStatus {
-    background-color: $light;
+    background-color: $backgroundColorDark;
     padding: 6px 18px;
     border-radius: 10px;
     position: absolute;
@@ -325,9 +329,10 @@
     font-weight: bold;
     font-size: $fontXXSmall;
     min-width: 100px;
+    color: $primaryFontColor;
   }
   .uploadedMapDeleteButton {
-    background-color: $light;
+    background-color: $backgroundColorDark;
     padding: 6px;
     border-radius: 18px;
     height: 24px;
@@ -347,7 +352,7 @@
     }
   }
   .uploadedMapEditButton {
-    background-color: $light;
+    background-color: $backgroundColorDark;
     padding: 6px;
     border-radius: 18px;
     height: 24px;
@@ -360,6 +365,9 @@
     z-index: 999;
     right: 5%;
     > svg {
+      path{
+        fill: $primaryFontColor;
+      }
       height: 12px;
       &:hover {
         cursor: pointer;
@@ -480,7 +488,7 @@
       margin-top: 9px;
     }
     > button {
-      background-color: $backgroundColor;
+      background-color: $backgroundColorDark;
       border-radius: 50%;
       height: 21px;
       width: 21px;
@@ -490,6 +498,16 @@
       box-shadow: 0 7px 12px -6px rgba(60, 60, 60, 1);
       transition-duration: 0.4s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      svg {
+        path{
+          fill: $primaryFontColor;
+        }
+      }
+      svg .selected{
+        path{
+          fill: '#ECB641'
+        }
+      }
       &:hover {
         cursor: pointer;
       }
@@ -520,7 +538,7 @@
 
 .reportPDFContainer {
   border-radius: 10px;
-  background-color: $backgroundColor;
+  background-color: $backgroundColorDark;
   padding: 16px;
   padding-left: 20px;
   display: flex;
