@@ -61,7 +61,7 @@
   "blogs": "Blogs",
   "faqs": "FAQs",
   "annualReports": "Annual Reports",
-  "skipIntroVideo":"Skip Intro",
+  "skipIntroVideo": "Skip Intro",
   "mapInfo": "Map Credits",
   "aboutUs": "About Us",
   "alternativelyEditProfile": "Alternatively you can mark your profile private by visiting Edit Profile.",
@@ -70,5 +70,5 @@
   "goBack": "Go Back",
   "deleteAccountMessage": "To continue with deletion, please type `{{delete}}`",
   "deleteAccountLabel": "Type: {{delete}}",
-  "howDoesThisWork":"How does this work?"
+  "howDoesThisWork": "How does this work?"
 }
