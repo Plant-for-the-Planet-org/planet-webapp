@@ -26,6 +26,7 @@ import ProjectPropsProvider, {
   ProjectPropsContext,
 } from '../src/features/common/Layout/ProjectPropsContext';
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
+import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -184,11 +185,14 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                 <Layout>
                   <ProjectPropsProvider>
                     {isMap ? (
-                      project ? (
+                      <>
+                      {project ? (
                         <MapLayout />
                       ) : projects ? (
                         <MapLayout />
-                      ) : null
+                      ) : null}
+                      <PlayButton setshowVideo={setshowVideo} />
+                      </>
                     ) : null}
                     <Component {...ProjectProps} />
                   </ProjectPropsProvider>

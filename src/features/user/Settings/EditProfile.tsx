@@ -16,6 +16,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
+import GeocoderArcGIS from "geocoder-arcgis";
 
 const { useTranslation } = i18next;
 
@@ -75,6 +76,42 @@ export default function EditProfile({}: Props) {
   const [country, setCountry] = React.useState(user.country);
   const [updatingPic, setUpdatingPic] = React.useState(false);
 
+  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
+    client_id:process.env.ESRI_CLIENT_ID,
+    client_secret:process.env.ESRI_CLIENT_SECRET,
+  } : {});
+  const suggestAddress = (value) => {
+    if (value.length > 3) {
+      geocoder
+        .suggest(value, {category:"Address", countryCode: country})
+        .then((result) => {
+          const filterdSuggestions = result.suggestions.filter((suggestion) => {
+            return !suggestion.isCollection;
+          });
+          setaddressSugggestions(filterdSuggestions);
+        })
+        .catch(console.log);
+    }
+  };  
+  const getAddress = (value) => {
+    geocoder
+      .findAddressCandidates(value, { outfields: "*" })
+      .then((result) => {
+        setValue("address", result.candidates[0].attributes.ShortLabel, {
+          shouldValidate: true,
+        });
+        setValue("city", result.candidates[0].attributes.City, {
+          shouldValidate: true,
+        });
+        setValue("zipCode", result.candidates[0].attributes.Postal, {
+          shouldValidate: true,
+        });
+        setaddressSugggestions([]);
+      })
+      .catch(console.log);
+  };
+
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
   );
@@ -90,6 +127,7 @@ export default function EditProfile({}: Props) {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
   const [type, setAccountType] = useState('individual');
+
 
   const profileTypes = [
     {
@@ -158,10 +196,16 @@ export default function EditProfile({}: Props) {
 
   const saveProfile = async (data: any) => {
     setIsUploadingData(true);
-    const bodyToSend = {
+    let bodyToSend = {
       ...data,
       country: country,
-    };
+    };  
+    if (type !== 'tpo') {
+      bodyToSend = {
+        ...bodyToSend,
+        type: type,
+      };
+    }
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
@@ -197,6 +241,8 @@ export default function EditProfile({}: Props) {
       }
     }
   };
+  let suggestion_counter = 0;
+
   return ready ? (
     <div className="profilePage">
        <div className={'profilePageTitle'}>
@@ -235,7 +281,7 @@ export default function EditProfile({}: Props) {
             </div>
           </label>
         </div>
-        {user.type !== 'tpo' ? (
+        {type !== 'tpo' ? (
           <MaterialTextField
             label={t('editProfile:iamA')}
             variant="outlined"
@@ -283,7 +329,7 @@ export default function EditProfile({}: Props) {
           </div>
         </div>
 
-        {user.type && type !== 'individual' && (
+        {type && type !== 'individual' && (
           <div className={styles.formFieldLarge}>
             <MaterialTextField
               label={t('editProfile:profileName', {
@@ -307,7 +353,29 @@ export default function EditProfile({}: Props) {
             variant="outlined"
             name="address"
             inputRef={register({ required: true })}
+            onChange={(event) => {
+              suggestAddress(event.target.value);
+            }}
+            onBlur={() => setaddressSugggestions([])}
           />
+          {addressSugggestions
+              ? addressSugggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    {addressSugggestions.map((suggestion) => {
+                      return (
+                        <div key={'suggestion' + suggestion_counter++}
+                          onMouseDown={() => {
+                            getAddress(suggestion.text);
+                          }}
+                          className="suggestion"
+                        >
+                          {suggestion.text}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              : null}
           {errors.address && (
             <span className={styles.formErrors}>
               {t('donate:addressRequired')}

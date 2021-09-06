@@ -13,10 +13,12 @@ interface Props {
 function VideoContainer({ setshowVideo }: Props): ReactElement {
   const { t, ready, i18n } = useTranslation(['common']);
   const [videoURL, setvideoURL] = React.useState<null | string>(null);
-  const [isUploading, setisUploading] = React.useState(false);
+  const videoRef = React.useRef<ReactPlayer | null>(null);
   const handleVideoClose = () => {
     setshowVideo(false);
-    setisUploading(true);
+    if(videoRef?.current) {
+      videoRef.current.seekTo(0);
+    }
     if (typeof window !== 'undefined') {
       localStorage.setItem('hidePreview', true);
     }
@@ -87,6 +89,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
         {videoURL &&
           (ReactPlayer.canPlay(videoURL) ? (
             <ReactPlayer
+              ref={videoRef}
               controls={false}
               muted={true}
               playsinline={true}
@@ -107,11 +110,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
         className={styles.landingVideoSkipButton}
         onClick={() => handleVideoClose()}
       >
-        {isUploading ? (
-          <div className={styles.spinner}></div>
-        ) : (
-          t('common:skipIntroVideo')
-        )}
+          {t('common:skipIntroVideo')}
       </button>
     </div>
   ) : (

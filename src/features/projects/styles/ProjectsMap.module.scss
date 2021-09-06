@@ -114,7 +114,7 @@
 
 .projectSitesButton {
   position: fixed;
-  right: 60px;
+  right: 100px;
   top: 20px;
   display: flex;
   flex-direction: column;
@@ -134,7 +134,7 @@
 
 .dropdownContainer {
   position: fixed;
-  right: 60px;
+  right: 100px;
   top: 20px;
   z-index: 11;
 }
@@ -545,7 +545,6 @@ fill: $primaryFontColor;
 @include smTabletView {
   .projectSitesButton {
     top: 100px;
-    right: 65px;
   }
 
   .dropdownContainer {
@@ -580,12 +579,12 @@ fill: $primaryFontColor;
   }
   .projectSitesButton {
     top: 110px;
-    right: 70px;
+    right: 165px;
   }
 
   .dropdownContainer {
     top: 110px;
-    right: 70px;
+    right: 165px;
   }
 
   .exploreButton {
