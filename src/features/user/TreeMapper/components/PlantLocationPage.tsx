@@ -173,14 +173,13 @@ export function LocationDetails({
           <div className={styles.value}>{location.captureStatus}</div>
         </div>
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('coordinates')}</p>
+          <p className={styles.title}>{t('coordinates')} <CopyToClipboard text={text}/></p>
           <div className={styles.value}>
             <MaterialTextField
             disabled={true}
             variant="outlined"
             value={text}
             />
-            <CopyToClipboard text={text}/>
           </div>
         </div>
         {/* <div className={styles.singleDetail}>
@@ -221,7 +220,10 @@ export function LocationDetails({
               </div>
           </div>
         )}
-        {location.plantedSpecies &&
+        
+      </div>
+      <div className={styles.detailsFull}>
+      {location.plantedSpecies &&
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('species')}</p>
           <div className={styles.value}>

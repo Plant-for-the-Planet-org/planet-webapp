@@ -187,6 +187,8 @@ export default function MyTreesMap({
       mapStyle={style}
       scrollZoom={false}
       onViewportChange={_onViewportChange}
+      attributionControl={true}
+      mapOptions={{customAttribution:'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community'}}
     >
       {locations &&
         locations
