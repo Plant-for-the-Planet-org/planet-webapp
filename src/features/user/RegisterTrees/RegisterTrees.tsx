@@ -190,7 +190,6 @@ export default function RegisterTrees({}: Props) {
       }
     } else {
       setErrorMessage(ready ? t('me:wentWrong') : '');
-      console.log(errorMessage);
     }
   };
 

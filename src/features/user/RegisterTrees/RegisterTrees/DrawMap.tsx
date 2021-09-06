@@ -54,19 +54,16 @@ export default function MapComponent({
   const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef();
   const onDrawCreate = ({ features }: any) => {
-    console.log(features);
     if (drawControlRef.current) {
       setGeometry(drawControlRef.current.draw.getAll());
     }
   };
   const onDrawUpdate = ({ features }: any) => {
-    console.log(features);
     if (drawControlRef.current) {
       setGeometry(drawControlRef.current.draw.getAll());
     }
   };
   const onDrawDelete = ({ features }: any) => {
-    console.log(features);
     if (drawControlRef.current) {
       setGeometry(drawControlRef.current.draw.getAll());
     }

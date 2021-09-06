@@ -190,7 +190,6 @@ export default function MapComponent({
                   setGeoJson(geo);
                 } else {
                   setGeoJsonError(true);
-                  console.log('invalid kml');
                 }
               };
             } else if (fileType === 'geojson') {

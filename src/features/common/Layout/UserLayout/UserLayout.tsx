@@ -291,8 +291,6 @@ function NavLink({
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
-      console.log('link.subMenu', link.subMenu);
-
       const subMenuItem = link.subMenu.find((subMenuItem: any) => {
         return subMenuItem.path === activeLink;
       });

@@ -69,7 +69,6 @@ export default function UploadImages({
           } else {
             setIsUploadingData(false);
             setErrorMessage(ready ? t('me:errorOccured') : '');
-            console.log(res.message);
           }
         }
       })
@@ -87,7 +86,6 @@ export default function UploadImages({
   });
 
   const deleteContributionImage = (id: any) => {
-    console.log(id);
     deleteAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images/${id}`,
       token
