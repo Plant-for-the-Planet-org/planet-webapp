@@ -216,7 +216,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.disputeFee
+              record.details.fees.disputeFee/100
             )}
           </p>
         </div>
@@ -228,7 +228,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.planetFee
+              record.details.fees.planetFee/100
             )}
           </p>
         </div>
@@ -240,7 +240,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.transactionFee
+              record.details.fees.transactionFee/100
             )}
           </p>
         </div>
@@ -252,7 +252,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.transferFee
+              record.details.fees.transferFee/100
             )}
           </p>
         </div>
