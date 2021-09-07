@@ -10,6 +10,7 @@ import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabl
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import {useRouter} from 'next/router';
+import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 
 interface Props {
   locations: any;
@@ -222,6 +223,8 @@ export default function MyTreesMap({
       attributionControl={true}
       mapOptions={{customAttribution:'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community'}}
     >
+      {satellite && plIds &&
+      <SatelliteLayer beforeId={plIds[0]}/>}
       {locations &&
         locations.map((pl: any) => {
             const newPl = pl.geometry;
