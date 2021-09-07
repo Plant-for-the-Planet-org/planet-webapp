@@ -20,6 +20,17 @@
       z-index: 10;
       height: 42px;
       width: 42px;
+      background-color: $backgroundColorDark;
+        border-radius: 10px;
+      svg {
+        
+        path{
+          fill:$primaryFontColor;
+        }
+        rect{
+          stroke: $primaryFontColor;
+        }
+      }
     }
     & .profilePageTitle {
       padding-left: 40px;
