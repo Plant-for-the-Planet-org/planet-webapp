@@ -50,7 +50,7 @@ function UserLayout(props: any): ReactElement {
       icon: <RegisterTreeIcon />,
     },
     {
-      title: 'Donations',
+      title: 'Payments',
       path: '/profile/history',
       icon: <DonateIcon />,
       flag: 'Beta',

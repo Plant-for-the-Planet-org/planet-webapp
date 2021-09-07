@@ -133,5 +133,7 @@
   "stripe-giropay":"GiroPay (Stripe)",
   "stripe-sepa":"SEPA (Stripe)",
   "action-required":"Action Required",
-  "completed":"Completed"
+  "completed":"Completed",
+  "donationsSubTitle":"Manage all your donations and payments from one place.",
+  "payments":"Payments"
 }

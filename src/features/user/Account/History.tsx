@@ -60,7 +60,8 @@ export default function History({
 
   return (
     <div className="profilePage">
-      <div className={'profilePageTitle'}>{t('me:donations')}</div>
+      <div className={'profilePageTitle'}>{t('me:payments')}</div>
+      <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
