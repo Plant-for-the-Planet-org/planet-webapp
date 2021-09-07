@@ -37,7 +37,7 @@ export default function TreeMapperList({
       <div className={styles.pullUpContainer}>
         <div className={styles.pullUpBar}></div>
       </div>
-      {isDataLoading ? (
+      {!plantLocations && isDataLoading ? (
         <>
           <TransactionListLoader />
           <TransactionListLoader />
@@ -73,12 +73,12 @@ export default function TreeMapperList({
               <TransactionsNotFound />
             </div>
           )}
-          {/* {plantLocations && links.next && (
+          {plantLocations && links?.next && (
             <div className={styles.pagination}>
               <button
                 onClick={() => fetchTreemapperData(true)}
                 className="primaryButton"
-                style={{ maxWidth: '240px' }}
+                style={{ maxWidth: '80px' }}
               >
                 {isDataLoading ? (
                   <div className={styles.spinner}></div>
@@ -87,7 +87,7 @@ export default function TreeMapperList({
                 )}
               </button>
             </div>
-          )} */}
+          )}
         </>
       )}
     </div>
