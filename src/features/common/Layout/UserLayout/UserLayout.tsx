@@ -28,7 +28,7 @@ function UserLayout(props: any): ReactElement {
       title: 'Profile',
       path: '/profile',
       icon: <UserIcon />,
-      // flag: 'New',
+     
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -53,6 +53,7 @@ function UserLayout(props: any): ReactElement {
       title: 'Donations',
       path: '/profile/history',
       icon: <DonateIcon />,
+      flag: 'Beta',
       subMenu: [
         // {
         //   title: 'History',
@@ -91,6 +92,7 @@ function UserLayout(props: any): ReactElement {
       title: 'TreeMapper',
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
+      flag: 'Beta',
     },
     {
       title: 'Projects',
