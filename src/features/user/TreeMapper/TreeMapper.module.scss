@@ -206,7 +206,6 @@
   .value {
     word-break: break-word;
     padding-right: 20px;
-    display: flex;
     > span {
       font-style: italic;
     }
@@ -366,6 +365,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .mapNavigation {

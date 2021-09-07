@@ -121,22 +121,6 @@ function TreeMapper({}: Props): ReactElement {
   }
   }, [router.query.l,plantLocations]);
 
-  // React.useEffect(() => {
-  //   if (selectedLocation !== '') {
-  //     for (const key in plantLocations) {
-  //       if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-  //         const plantLocation = plantLocations[key];
-  //         if (selectedLocation === plantLocation.id) {
-  //           setLocation(plantLocation);
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     setLocation(null);
-  //   }
-  // }, [selectedLocation]);
-
   const TreeMapperProps = {
     location:selectedLocation,
     setLocation,
@@ -159,7 +143,7 @@ function TreeMapper({}: Props): ReactElement {
       <div id="pageContainer" className={styles.pageContainer}>
       {selectedLocation ? <PlantLocationPage {...TreeMapperProps} />:
           <div className={styles.listContainer}>
-           <div className={'profilePageTitle'}>TreeMapper</div> 
+           <div className={'profilePageTitle'}>{t('treeMapper:treeMapper')}</div> 
            <TreeMapperList {...TreeMapperProps} />
           </div>
           }

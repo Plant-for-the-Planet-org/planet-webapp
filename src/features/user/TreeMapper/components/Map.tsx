@@ -3,12 +3,14 @@ import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
-import MapGL, {FlyToInterpolator, Layer, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
+import MapGL, {FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
+import {useRouter} from 'next/router';
+import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 
 interface Props {
   locations: any;
@@ -21,6 +23,7 @@ export default function MyTreesMap({
   selectedLocation,
   setselectedLocation,
 }: Props): ReactElement {
+  const router = useRouter();
   const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
 
@@ -38,6 +41,7 @@ export default function MyTreesMap({
   const [satellite, setSatellite] = React.useState(false);
   
   const [geoJson, setGeoJson] = React.useState();
+  const [plIds, setPlIds] = React.useState(null);
   const [imagePopup, setImagePopup] = React.useState(null);
   let timer: NodeJS.Timeout;
 
@@ -107,7 +111,9 @@ export default function MyTreesMap({
   };
 
   const zoomToLocation = (geometry: any) => {
-    const bbox = turf.bbox(geometry);
+    try {
+  const bbox = turf.bbox(geometry);
+
   const { longitude, latitude, zoom } = new WebMercatorViewport(
     viewport
   ).fitBounds(
@@ -134,6 +140,9 @@ export default function MyTreesMap({
     transitionEasing: d3.easeCubic,
   };
   setViewPort(newViewport);
+} catch (error) {
+  console.log(error);
+}
   }
 
   React.useEffect(() => {
@@ -148,6 +157,7 @@ export default function MyTreesMap({
   React.useEffect(() => {
     if(locations) {
       const features = [];
+      const ids = [];
       for (const i in locations) {
         if (Object.prototype.hasOwnProperty.call(locations, i)) {
           const pl = locations[i];
@@ -160,6 +170,7 @@ export default function MyTreesMap({
             }
           }
             features.push(newFeature);
+            if(pl.type === 'multi') ids.push(`${pl.id}-layer`);
         }
       }
       setGeoJson({
@@ -167,8 +178,10 @@ export default function MyTreesMap({
         properties: {},
         features,
       });
+      setPlIds(ids);
       zoomToLocation(locations[0].geometry);
     } else {
+      setPlIds(null);
       setGeoJson(null);
     }
   },[locations]);
@@ -181,25 +194,39 @@ export default function MyTreesMap({
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
+  const onMapClick = (e: MapEvent) => {
+    setselectedLocation(null);
+    if (e.features?.length !== 0) {
+      if (e.features[0].layer?.source) {
+        const source = e.features[0].layer.source;
+        for (const key in locations) {
+          if (Object.prototype.hasOwnProperty.call(locations, key)) {
+            const element = locations[key];
+            if (element.id === source) {
+              router.replace(`/profile/treemapper/?l=${source}`);
+              break;
+            }
+          }
+        }
+      }
+    }
+  };
+
   return (
     <MapGL
       {...viewport}
       mapStyle={style}
       scrollZoom={false}
       onViewportChange={_onViewportChange}
+      onClick={onMapClick}
+      interactiveLayerIds={plIds ? plIds : undefined}
       attributionControl={true}
       mapOptions={{customAttribution:'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community'}}
     >
+      {satellite && plIds &&
+      <SatelliteLayer beforeId={plIds[0]}/>}
       {locations &&
-        locations
-          .filter((item: any) => {
-            if (item.captureStatus === 'complete') {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .map((pl: any) => {
+        locations.map((pl: any) => {
             const newPl = pl.geometry;
             newPl.properties = {};
             newPl.properties.id = pl.id;
@@ -279,7 +306,7 @@ export default function MyTreesMap({
                                 }`}
                                 role="button"
                                 tabIndex={0}
-                                // onClick={() => openPl(spl)}
+                                onClick={() => setselectedLocation(spl)}
                                 // onMouseEnter={() => onHover(spl)}
                                 // onMouseLeave={() => onHoverEnd(spl)}
                               />
@@ -302,7 +329,7 @@ export default function MyTreesMap({
                   {viewport.zoom > 14 && (
                     <div
                       key={`${pl.id}-marker`}
-                      // onClick={() => openPl(pl)}
+                      onClick={() => setselectedLocation(pl)}
                       // onMouseEnter={() => onHover(pl)}
                       // onMouseLeave={() => onHoverEnd(pl)}
                       className={`${styles.single} ${

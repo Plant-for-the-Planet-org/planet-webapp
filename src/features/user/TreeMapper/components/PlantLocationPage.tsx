@@ -18,6 +18,7 @@ const { useTranslation } = i18next;
 interface Props {
   setselectedLocation: Function;
   location: Object;
+  plantLocations:any;
 }
 
 const ImageSlider = dynamic(
@@ -39,15 +40,24 @@ const ImageSliderSingle = dynamic(
 export default function PlantLocationPage({
   location,
   setselectedLocation,
+  plantLocations,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation('treemapper');
   const handleBackButton = () => {
-    // if (location.type === 'sample') {
-    //   setselectedLocation(location.parent);
-    // } else {
+    if (location.type === 'sample') {
+      for (const i in plantLocations) {
+        if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
+          const pl = plantLocations[i];
+          if(pl.id === location.parent) {
+            setselectedLocation(pl);
+            break;
+          }
+        }
+      }
+    } else {
       router.replace('/profile/treemapper');
-    // }
+    }
   };
 
   const handleDeleteButton = () => {
@@ -72,12 +82,12 @@ export default function PlantLocationPage({
         <BackButton />
       </div>
       <div className={styles.locationMenu}>
-      <div onClick={handleEditButton} className={styles.editButton}>
+      {/* <div onClick={handleEditButton} className={styles.editButton}>
         <EditIcon/>
       </div>
       <div onClick={handleDeleteButton} className={styles.deleteButton}>
         <TrashIcon />
-      </div>
+      </div> */}
       </div>
       
       </div>
@@ -245,7 +255,7 @@ export function LocationDetails({
                         <div key={index} className={styles.value}>
                           {index + 1}.{' '}
                           <span
-                            // onClick={() => openSampleTree(spl.id)}
+                            onClick={() => setselectedLocation(spl)}
                             className={styles.link}
                           >
                             {spl.scientificName
