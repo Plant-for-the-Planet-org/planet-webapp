@@ -21,6 +21,7 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
+  const{ t , i18n } = useTranslation(['common'])
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
@@ -181,7 +182,7 @@ function UserLayout(props: any): ReactElement {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <BackArrow />
-                <button className={styles.navlinkTitle}>{'Close'}</button>
+                <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
             {navLinks.map((link: any, index: any) => (
@@ -208,7 +209,7 @@ function UserLayout(props: any): ReactElement {
             onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
           >
             <LogoutIcon />
-            <button className={styles.navlinkTitle}>{'Logout'}</button>
+            <button className={styles.navlinkTitle}>{t('logout')}</button>
             <button className={styles.subMenuArrow}></button>
           </div>
         </div>

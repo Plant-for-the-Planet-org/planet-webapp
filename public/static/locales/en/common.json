@@ -71,5 +71,10 @@
   "deleteAccountMessage": "To continue with deletion, please type `{{delete}}`",
   "deleteAccountLabel": "Type: {{delete}}",
   "edit": "Edit",
-  "howDoesThisWork": "How does this work?"
+  "howDoesThisWork": "How does this work?",
+  "copiedToClipboard": "Copied to clipboard",
+  "close": "Close",
+  "logout": "Logout",
+  "featured":"Featured"
+
 }
