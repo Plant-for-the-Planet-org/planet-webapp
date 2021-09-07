@@ -303,7 +303,7 @@ export default function MyTreesMap({
                                 }`}
                                 role="button"
                                 tabIndex={0}
-                                // onClick={() => openPl(spl)}
+                                onClick={() => setselectedLocation(spl)}
                                 // onMouseEnter={() => onHover(spl)}
                                 // onMouseLeave={() => onHoverEnd(spl)}
                               />
@@ -326,7 +326,7 @@ export default function MyTreesMap({
                   {viewport.zoom > 14 && (
                     <div
                       key={`${pl.id}-marker`}
-                      // onClick={() => openPl(pl)}
+                      onClick={() => setselectedLocation(pl)}
                       // onMouseEnter={() => onHover(pl)}
                       // onMouseLeave={() => onHoverEnd(pl)}
                       className={`${styles.single} ${
