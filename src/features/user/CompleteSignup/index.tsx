@@ -486,10 +486,10 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={false}
-              render={(props) => (
+              render={(props:any) => (
                 <ToggleSwitch
                   checked={props.value}
-                  onChange={(e) => props.onChange(e.target.checked)}
+                  onChange={(e:any) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                   id="isPrivate"
                 />
@@ -509,10 +509,10 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={true}
-              render={(props) => (
+              render={(props:any) => (
                 <ToggleSwitch
                   checked={props.value}
-                  onChange={(e) => props.onChange(e.target.checked)}
+                  onChange={(e:any) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                   id="getNews"
                 />
