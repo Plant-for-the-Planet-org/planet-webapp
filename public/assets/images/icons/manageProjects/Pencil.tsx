@@ -4,6 +4,8 @@ function EditIcon(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      width="12px"
+      height="12px"
       viewBox="0 0 12 12"
     >
       <path
