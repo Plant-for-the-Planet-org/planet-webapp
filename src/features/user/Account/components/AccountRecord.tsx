@@ -74,7 +74,7 @@ export function RecordHeader({ record,handleRecordOpen,index }: HeaderProps): Re
       <div className={styles.left}>
         <p className={styles.top}>
           {record.type === 'tree-donation'
-            ? getFormattedNumber(i18n.language, record.treeCount) +
+            ? getFormattedNumber(i18n.language, record.quantity) +
               ' ' +
               t(record.type)
             : t(record.type)}
@@ -185,14 +185,14 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           </p>
         </div>
       )}
-      {record.details?.treeCost && (
+      {record.details?.unitCost && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('treeCost')}</p>
           <p>
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.treeCost/100
+              record.details.unitCost/100
             )}
           </p>
         </div>
