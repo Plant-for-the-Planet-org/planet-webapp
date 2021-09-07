@@ -121,22 +121,6 @@ function TreeMapper({}: Props): ReactElement {
   }
   }, [router.query.l,plantLocations]);
 
-  // React.useEffect(() => {
-  //   if (selectedLocation !== '') {
-  //     for (const key in plantLocations) {
-  //       if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-  //         const plantLocation = plantLocations[key];
-  //         if (selectedLocation === plantLocation.id) {
-  //           setLocation(plantLocation);
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     setLocation(null);
-  //   }
-  // }, [selectedLocation]);
-
   const TreeMapperProps = {
     location:selectedLocation,
     setLocation,

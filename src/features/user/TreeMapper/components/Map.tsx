@@ -107,7 +107,11 @@ export default function MyTreesMap({
   };
 
   const zoomToLocation = (geometry: any) => {
-    const bbox = turf.bbox(geometry);
+    try {
+  const bbox = turf.bbox(geometry);
+  console.log(`bbox`,bbox);
+  console.log(`viewport`,viewport);
+
   const { longitude, latitude, zoom } = new WebMercatorViewport(
     viewport
   ).fitBounds(
@@ -134,6 +138,9 @@ export default function MyTreesMap({
     transitionEasing: d3.easeCubic,
   };
   setViewPort(newViewport);
+} catch (error) {
+  console.log(error);
+}
   }
 
   React.useEffect(() => {
