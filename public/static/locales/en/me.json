@@ -78,7 +78,7 @@
   "nameForest": "{{name}}'s Forest",
   "taxReceipt": "Tax Receipt",
   "history": "History",
-  "treemapper": "Tree Mapper",
+  "treemapper": "TreeMapper",
   "register-trees": "Register Trees",
   "manage-projects": "Manage Projects",
   "app-payouts": "App Payouts",
@@ -141,5 +141,6 @@
   "projects":"Projects",
   "settings":"Settings",
   "editProfile":"Edit Profile",
-  "deleteProfile":"Delete Profile"
+  "deleteProfile":"Delete Profile",
+  "widgets":"Widgets"
 }

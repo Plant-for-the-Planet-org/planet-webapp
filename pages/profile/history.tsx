@@ -86,7 +86,7 @@ function AccountHistory({}: Props): ReactElement {
       )}
       <UserLayout>
         <Head>
-          <title>{'Donations'}</title>
+          <title>{t('donations')}</title>
         </Head>
         <History {...HistoryProps} />
       </UserLayout>
