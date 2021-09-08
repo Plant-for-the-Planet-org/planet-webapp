@@ -1,13 +1,13 @@
 function GetProjectClassification(classification: any) {
   let parseClassification;
   switch (classification) {
-    case 'natural_regeneration':
+    case 'natural-regeneration':
       parseClassification = 'Natural Regeneration';
       break;
-    case 'managed_regeneration':
+    case 'managed-regeneration':
       parseClassification = 'Managed Regeneration';
       break;
-    case 'large_scale_planting':
+    case 'large-scale-planting':
       parseClassification = 'Large Scale Planting';
       break;
     case 'agroforestry':
@@ -15,7 +15,7 @@ function GetProjectClassification(classification: any) {
       break;
     default:
       parseClassification = '';
-  }
+  } 
   return parseClassification;
 }
 

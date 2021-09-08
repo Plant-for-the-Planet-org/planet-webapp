@@ -7,6 +7,7 @@ import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import GetProjectClassification from './projectDetails/getProjectClassification';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -37,7 +38,6 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
-
   return ready ? (
     <>
       <Modal
@@ -63,9 +63,9 @@ export default function PopupProject({
         ) : null}
 
         <div className={'projectImageBlock'}>
-          {/* <div className={'projectType}>
+          <div className={'projectType'}>
                 {GetProjectClassification(project.properties.classification)}
-              </div> */}
+              </div>
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
