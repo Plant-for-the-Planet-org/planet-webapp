@@ -138,7 +138,10 @@ export default function EmbedModal({
             <button
               id={'editProfileSaveProfile'}
               className={styles.cancelButton}
-              onClick={() => setEmbedModalOpen(false)}
+              onClick={() => {
+                setEmbedModalOpen(false);
+                router.back();
+              }}
             >
               {t('editProfile:cancel')}
             </button>
