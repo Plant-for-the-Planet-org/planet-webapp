@@ -30,7 +30,7 @@ export default function Timeline() {
       date: 'August 2020',
       image: '/tenants/salesforce/images/aug.png',
       title: '1t.org US Chapter',
-      copy: 'Salesforce helped launch the <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> U.S. Chapter with 25 companies, nonprofit organizations, and governments pledging to conserve, restore, and grow almost 1 billion trees by 2030.',
+      copy: 'The <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> U.S. Chapter launched with 26 companies, nonprofit organizations, and governments pledging to conserve, restore, and grow almost one billion trees by 2030.',
       learnMore: 'https://us.1t.org/view-pledges/'
     },
     {
@@ -38,7 +38,7 @@ export default function Timeline() {
       date: 'September 2020',
       image: '/tenants/salesforce/images/sep.png',
       title: ' Salesforce’s Tree Tracker',
-      copy: 'The tree tracker is an essential piece of Salesforce’s work to share resources and provide transparency to our stakeholders.',
+      copy: 'The tree tracker is an essential piece of our work to share resources and provide transparency to our stakeholders.',
       learnMore: 'https://www.salesforce.com/news/stories/salesforce-partners-with-plant-for-the-planet-to-spotlight-global-reforestation-projects-and-track-progress-towards-100-million-tree-goal/'
     },
     {
@@ -46,7 +46,7 @@ export default function Timeline() {
       date: 'March 2021',
       image: '/tenants/salesforce/images/mar.png',
       title: '10M Trees Milestone',
-      copy: 'With Salesforce’s TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!\n',
+      copy: 'With our TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!',
       learnMore: 'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/'
     }
   ];
@@ -54,13 +54,13 @@ export default function Timeline() {
   const populateSlide = (slides, slideIndex) => {
     return (
       <div className={styles.timelineMoment} id={`desktop-timeline-moment-${slideIndex}`}>
-        <h3>We’ve come so far.</h3>
+        <h3>We’re hitting important milestones.</h3>
         <div className={gridStyles.gridRow}>
           {slides.map((moment) => {
             return (
               <div className={`${styles.timelineContent} ${gridStyles.colMd6}`} key={`desktop-moment-${moment.id}`}>
-                <span className={styles.timelineDate}>{moment.date}</span>
                 <img src={moment.image} alt="" className={styles.timelineImage} />
+                <span className={styles.timelineDate}>{moment.date}</span>
                 <h4>{moment.title}</h4>
                 <p dangerouslySetInnerHTML={{ __html: moment.copy }} />
                 <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>

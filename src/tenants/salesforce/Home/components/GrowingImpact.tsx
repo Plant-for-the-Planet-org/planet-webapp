@@ -48,7 +48,7 @@ export default function GrowingImpact() {
       <div className={gridStyles.fluidContainer}>
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
-            <h3>Our Growing Impact</h3>
+            <h3>Together, we are powerful.</h3>
           </div>
         </div>
         <div className={gridStyles.gridRow}>

@@ -12,6 +12,12 @@
   background-size: 1440px auto;
   height: 1440px;
   margin-top: -120px;
+
+  @include xsPhoneView {
+    height: auto;
+    padding-top: 160px;
+    padding-bottom: 240px;
+  }
   h3 {
     font-family: $secondaryFontFamily;
     font-style: normal;
@@ -84,6 +90,10 @@
 .climateActionDonate {
   margin-top: 100px;
   text-align: center;
+
+  @include xsPhoneView {
+    margin-top: 60px;
+  }
   p {
     margin-bottom: 20px;
   }

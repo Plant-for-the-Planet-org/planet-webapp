@@ -19,6 +19,9 @@
     margin-top: 80px;
     max-width: 2560px;
   }
+  @include xsPhoneView {
+    padding-bottom: 20px;
+  }
 }
 
 .leaderBoard {

@@ -32,8 +32,8 @@ export default function ClimateAction() {
       <div className={gridStyles.fluidContainer}>
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
-            <h3>Take more action.</h3>
-            <p><small>These paths will show you the way.</small></p>
+            <h3>Branch out.</h3>
+            <p><small>Here are a few more ways to take action:</small></p>
           </div>
         </div>
         <div className={gridStyles.gridRow}>

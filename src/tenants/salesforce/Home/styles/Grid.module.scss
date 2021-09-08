@@ -29,7 +29,8 @@
 }
 
 .mb65100 {
-  margin-bottom: 65px;
+  // margin-bottom: 65px;
+  margin-bottom: 0px;
   @include lgLaptopView {
     margin-bottom: 0px;
   }

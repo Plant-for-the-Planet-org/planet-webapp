@@ -2,17 +2,17 @@
 
 .contentSectionContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
-  background-size: auto 1062px;
+  background-size: auto 1142px;
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
   z-index: 999;
-  height: 1062px;
+  height: 1142px;
   margin-top: -292px;
   padding-top: 124px;
   @include xsPhoneView {
-    background-size: auto 1722px;
-    height: 1722px;
+    background-size: auto 1882px;
+    height: 1882px;
   }
   .contentSection {
     padding-bottom: 150px;

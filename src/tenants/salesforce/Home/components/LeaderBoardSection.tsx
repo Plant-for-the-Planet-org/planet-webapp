@@ -16,7 +16,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   return ready ? (
     <div className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
-        <h2>{t('leaderboard:forestFrontrunners')}</h2>
+        <h2>{t('leaderboard:Tree Donation Tracker')}</h2>
         <div className={styles.leaderBoardTable}>
           <div className={styles.leaderBoardTableHeader}>
             <button id={'leaderBoardSecRecent'}
