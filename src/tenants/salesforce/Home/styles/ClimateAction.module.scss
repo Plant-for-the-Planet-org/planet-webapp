@@ -15,7 +15,6 @@
 
   @include mdTabletView {
     height: 1280px;
-    background-size: 1280px auto;
   }
   @include xsPhoneView {
     height: auto;

@@ -6,7 +6,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 90px;
+  padding-bottom: 20px;
   position: relative;
   background-position: center -130px, calc(50% + -370px) 28%,
     calc(50% + 470px) 48%, calc(50% + 426px) 32%;
@@ -19,8 +19,13 @@
     margin-top: 80px;
     max-width: 2560px;
   }
+  @include mdTabletView {
+    margin-top: -20px;
+    padding-bottom: 90px;
+  }
   @include xsPhoneView {
-    padding-bottom: 20px;
+    padding-bottom: 90px;
+    margin-top: -20px;
   }
 }
 
@@ -35,7 +40,6 @@
   padding: 50px 80px;
   @include xsPhoneView {
     padding: 50px 30px;
-    margin-top: 0px;
   }
   @include mdTabletView {
     width: 80vw;

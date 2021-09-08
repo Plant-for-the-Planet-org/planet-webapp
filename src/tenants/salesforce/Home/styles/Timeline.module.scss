@@ -254,17 +254,17 @@
 }
 
 .showDesktop {
-  display: block;
+  display: none;
 
-  @include xsPhoneView {
-    display: none;
+  @include lgLaptopView {
+    display: block;
   }
 }
 
 .showMobile {
-  display: none;
+  display: block;
 
-  @include xsPhoneView {
-    display: block;
+  @include lgLaptopView {
+    display: none;
   }
 }
