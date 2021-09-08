@@ -73,9 +73,8 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={`projectImage ${
-          selectedPl || hoveredPl ? 'projectCollapsed' : ''
-        }`}
+        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
+          }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -88,9 +87,9 @@ export default function ProjectSnippet({
         ) : null}
 
         <div className={'projectImageBlock'}>
-          {/* <div className={'projectType}>
-                {GetProjectClassification(project.classification)}
-              </div> */}
+          <div className={'projectType'}>
+            {project.classification}
+          </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
           </div>
