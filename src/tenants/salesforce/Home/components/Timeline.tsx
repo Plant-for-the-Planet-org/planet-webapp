@@ -141,8 +141,8 @@ export default function Timeline() {
               return (
                 <div className={`${styles.timelineContent} ${styles.timelineMoment}`} key={`mobile-moment-${moment.id}`} id={`mobile-timeline-moment-${index}`}>
                   <h3>Follow us on our tree journey.</h3>
-                  <span className={styles.timelineDate}>{moment.date}</span>
                   <img src={moment.image} alt="" className={styles.timelineImage} />
+                  <span className={styles.timelineDate}>{moment.date}</span>
                   <h4>{moment.title}</h4>
                   <p dangerouslySetInnerHTML={{ __html: moment.copy }} />
                   <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
