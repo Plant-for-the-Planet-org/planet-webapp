@@ -13,6 +13,10 @@
   height: 1440px;
   margin-top: -120px;
 
+  @include mdTabletView {
+    height: 1280px;
+    background-size: 1280px auto;
+  }
   @include xsPhoneView {
     height: auto;
     padding-top: 160px;

@@ -54,7 +54,7 @@ export default function GrowingImpact() {
         <div className={gridStyles.gridRow}>
           {articles.map((article) => {
             return (
-              <div key={`climate-action-${article.id}`} className={`${gridStyles.col12} ${gridStyles.colMd3} ${styles.climateActionContent}`}>
+              <div key={`climate-action-${article.id}`} className={`${gridStyles.col12} ${gridStyles.colLg3} ${gridStyles.colMd6} ${styles.climateActionContent}`}>
                 {/* <a href={article.link} target="_blank" rel="noreferrer"> */}
                   <div style={{backgroundImage: `url(${article.image})`}} className={`${styles.imageContainer}`}></div>
                   <div style={{backgroundColor: `${article.bgColor}`}} className={`${styles.contentContainer}`}>

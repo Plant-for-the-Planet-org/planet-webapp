@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('/tenants/salesforce/images/bkgd.png');
+  background-image: url('/tenants/salesforce/images/bkgd-clouds.png');
   background-position: top center;
   background-repeat: no-repeat;
   background-size: 1440px auto;
@@ -15,6 +15,10 @@
   @include smTabletView {
     margin-top: 0px;
     // margin-top: 80px;
+  }
+
+  @include mdTabletView {
+    padding: 175px 0 100px;
   }
 
   @include lgLaptopView {

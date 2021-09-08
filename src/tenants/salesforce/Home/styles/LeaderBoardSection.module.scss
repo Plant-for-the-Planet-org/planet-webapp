@@ -11,11 +11,11 @@
   background-position: center -130px, calc(50% + -370px) 28%,
     calc(50% + 470px) 48%, calc(50% + 426px) 32%;
   background-repeat: no-repeat;
-  background-size: cover, 150px 150px, 67px 67px, 16px 16px;
+  // background-size: cover, 150px 150px, 67px 67px, 16px 16px;
+  background-image: url('/tenants/salesforce/images/tracker-bkgd.png');
+  padding-top: 90px;
+  background-size: 1440px auto;
   @include lgLaptopView {
-    padding-top: 90px;
-    background-image: url('/tenants/salesforce/images/tracker-bkgd.png');
-    background-size: 1440px auto;
     margin-top: 80px;
     max-width: 2560px;
   }
@@ -32,11 +32,15 @@
   background-color: white;
   z-index: 999;
   margin-top: -100px;
+  padding: 50px 80px;
   @include xsPhoneView {
+    padding: 50px 30px;
     margin-top: 0px;
   }
+  @include mdTabletView {
+    width: 80vw;
+  }
   @include lgLaptopView {
-    padding: 50px 80px;
     width: auto;
   }
   // &:before {
