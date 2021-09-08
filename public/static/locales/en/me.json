@@ -131,9 +131,10 @@
   "tree-cash-tree-cash":"TreeCash",
   "stripe-card":"Credit/Debit Card",
   "stripe-giropay":"GiroPay (Stripe)",
-  "stripe-sepa":"SEPA (Stripe)",
   "action-required":"Action Required",
   "completed":"Completed",
   "donationsSubTitle":"Manage all your donations and payments from one place.",
-  "payments":"Payments"
+  "payments":"Payments",
+  "stripe-sepa_debit":"SEPA (Stripe)",
+  "offline-offline":"Offline"
 }
