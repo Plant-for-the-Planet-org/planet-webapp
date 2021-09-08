@@ -20,6 +20,8 @@ import MaterialTextField from '../../../features/common/InputTypes/MaterialTextF
 import styles from './RegisterModal.module.scss';
 import materialTheme from '../../../theme/themeStyles';
 import ContactDetails from './ContactDetails/ContactDetails';
+import { useDropzone } from 'react-dropzone';
+import DeleteIcon from '../../../../public/assets/images/icons/manageProjects/Delete';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -46,9 +48,6 @@ export default function RegisterTrees({}: Props) {
   const [mapState, setMapState] = React.useState({
     mapStyle: EMPTY_STYLE,
   });
-  const [isMultiple, setIsMultiple] = React.useState(false);
-  const [contributionGUID, setContributionGUID] = React.useState('');
-  const [contributionDetails, setContributionDetails] = React.useState({});
   const [errorMessage, setErrorMessage] = React.useState('');
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
@@ -66,6 +65,8 @@ export default function RegisterTrees({}: Props) {
   const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
+  const [image, setImage] = React.useState(null);
+  const [result, setResult] = React.useState(null);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -113,9 +114,20 @@ export default function RegisterTrees({}: Props) {
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: null,
     plantDate: new Date(),
     geometry: {},
+    images: [{
+      imageFile: image,
+    }],
+    planter: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      address: "",
+      zipCode: "",
+      city: "",
+      country: ""
+  }
   };
   const {
     register,
@@ -127,42 +139,45 @@ export default function RegisterTrees({}: Props) {
     watch,
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
-  const onTreeCountChange = (e: any) => {
-    if (Number(e.target.value) < 25) {
-      setIsMultiple(false);
-    } else {
-      setIsMultiple(true);
-    }
-  };
-
   const submitRegisterTrees = (data: any) => {
     if (data.treeCount < 10000000) {
       if (
-        geometry &&
-        (geometry.type === 'Point' || geometry.features?.length >= 1)
+        geometry && (geometry.type === 'Point')
       ) {
         setIsUploadingData(true);
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
-          plantProject: data.plantProject,
           plantDate: new Date(data.plantDate),
           geometry: geometry,
+          images: [{
+            imageFile: image,
+          }],
+          planter: {
+            firstname: data.firstName,
+      lastname: data.lastName,
+      email: data.email,
+      address: data.address,
+      zipCode: data.zipCode,
+      city: data.city,
+      country: contactDetails.country
+          }
         };
-        postRequest(`/app/contributions`, submitData).then((res) => {
+        postRequest(`/app/treeRegistrations`, submitData).then((res) => {
           if (!res.code) {
+            // success
             setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res);
             setIsUploadingData(false);
             setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
+            setResult(res);
           } else {
             if (res.code === 404) {
+              // 404
               setIsUploadingData(false);
               setErrorMessage(res.message);
               setRegistered(false);
             } else {
+              // other error
               setIsUploadingData(false);
               setErrorMessage(res.message);
               setRegistered(false);
@@ -191,8 +206,31 @@ export default function RegisterTrees({}: Props) {
     city: '',
     zipCode: '',
     country: 'US',
-    companyName: '',
   });
+
+  const onDrop = React.useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file: any) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
+      reader.onload = (event:any) => {
+        setImage(event.target.result);
+      };
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: 'image/*',
+    multiple: true,
+    onDrop: onDrop,
+    onDropAccepted: () => {
+      console.log('uploading');
+    },
+    onFileDialogCancel: () => setIsUploadingData(false),
+  });
+
+  console.log(`image`, image)
 
   return ready && !registered ? (
     <div className={styles.registerTreesPage}>
@@ -216,7 +254,6 @@ export default function RegisterTrees({}: Props) {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              onChange={onTreeCountChange}
               label={t('me:noOfTrees')}
               variant="outlined"
               name="treeCount"
@@ -279,18 +316,43 @@ export default function RegisterTrees({}: Props) {
           )}
         </div>
 
+        <div className={styles.formFieldLarge}>
+          {image ? 
+          <div className={styles.uploadedImageContainer}>
+          <img src={image} alt="tree" />
+          <div className={styles.uploadedImageButtonContainer}>
+                    <button id={'uploadImgDelIcon'} onClick={() => setImage(null)}>
+                      <DeleteIcon />
+                    </button>
+                  </div>
+          </div>
+          :
+        <label
+          htmlFor="upload"
+          className={styles.fileUploadContainer}
+          {...getRootProps()}
+        >
+          <button
+            // onClick={(image:any) => setImage(image)}
+            className="primaryButton"
+            style={{maxWidth: "200px"}}
+          >
+            <input {...getInputProps()} />
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : 
+              'Upload Photo'
+            }
+          </button>
+          <p style={{ marginTop: '18px' }}>{'Image (png/jpg)'}</p>
+        </label>}
+      </div>
+
         <div className={styles.mapNote}>
-          {isMultiple ? (
-            <p>{t('me:drawPolygon')}</p>
-          ) : (
             <p>{t('me:selectLocation')}</p>
-          )}
         </div>
 
         <div className={`${styles.locationMap}`}>
-          {isMultiple ? (
-            <DrawMap setGeometry={setGeometry} userLocation={userLocation} />
-          ) : (
             <MapGL
               {...mapState}
               {...viewport}
@@ -331,7 +393,6 @@ export default function RegisterTrees({}: Props) {
                 <NavigationControl showCompass={false} />
               </div>
             </MapGL>
-          )}
         </div>
 
         {/* {errorMessage !== '' ? */}
@@ -339,6 +400,9 @@ export default function RegisterTrees({}: Props) {
         <ContactDetails
           contactDetails={contactDetails}
           setContactDetails={setContactDetails}
+          register={register}
+          errors={errors}
+          setValue={setValue}
         />
 
         <div className={`${styles.formFieldLarge} ${styles.center}`}>

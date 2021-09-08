@@ -11,10 +11,12 @@ const { useTranslation } = i18next;
 function ContactDetails({
   contactDetails,
   setContactDetails,
+  register,
+  errors,
+  setValue
 }: any): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common']);
 
-  const { register, handleSubmit, errors, setValue } = useForm({ mode: 'all' });
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -57,12 +59,7 @@ function ContactDetails({
       })
       .catch(console.log);
   };
-
-  const onSubmit = (data: any) => {
-    const submitdata = data;
-    setContactDetails({ ...contactDetails, ...submitdata });
-  };
-
+  
   const changeCountry = (country: any) => {
     setContactDetails({ ...contactDetails, country });
   };
@@ -81,11 +78,9 @@ function ContactDetails({
   }, [contactDetails.country]);
   let suggestion_counter = 0;
 
-  return ready ? (
-    <div>
-      <div className={styles.treeDonationContainer}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.formField}>
+  return  (
+    <>
+    <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
               <MaterialTextField
                 inputRef={register({ required: true })}
@@ -224,11 +219,7 @@ function ContactDetails({
               )}
             </div>
           </div>
-        </form>
-      </div>
-    </div>
-  ) : (
-    <></>
+        </>
   );
 }
 
