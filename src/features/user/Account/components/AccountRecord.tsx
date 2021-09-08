@@ -73,7 +73,7 @@ export function RecordHeader({ record,handleRecordOpen,index }: HeaderProps): Re
     <div onClick={() => handleRecordOpen(index)} className={styles.recordHeader}>
       <div className={styles.left}>
         <p className={styles.top}>
-          {record.type === 'tree-donation'
+          {record.type === 'tree-donation' || record.type === 'tree-gift'
             ? getFormattedNumber(i18n.language, record.quantity) +
               ' ' +
               t(record.type)
