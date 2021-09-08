@@ -72,9 +72,10 @@
   "deleteAccountLabel": "Type: {{delete}}",
   "edit": "Edit",
   "howDoesThisWork": "How does this work?",
-  "copiedToClipboard": "Copied to clipboard",
+  "copiedToClipboard": "Copied to clipboard!",
   "close": "Close",
   "logout": "Logout",
-  "featured":"Featured"
+  "featured":"Featured",
+  "treeMapper": "Tree Mapper"
 
 }

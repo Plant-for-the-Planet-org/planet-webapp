@@ -18,5 +18,7 @@
   "species": "Species",
   "sampleTrees": "Sample Trees",
   "loadMore": "Load More",
-  "treeMapper":"Tree Mapper"
+  "treeMapper":"Tree Mapper",
+  "cm":"Cm",
+  "m":"m"
 }
