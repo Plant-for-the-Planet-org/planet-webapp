@@ -53,7 +53,7 @@ export default function CopyToClipboard({text}: Props): ReactElement {
         </div>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-            {t("copiedToClipboard!")}
+            {t("copiedToClipboard")}
         </Alert>
       </Snackbar>
         </>

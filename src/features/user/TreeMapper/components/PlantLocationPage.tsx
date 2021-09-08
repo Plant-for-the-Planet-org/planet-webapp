@@ -191,13 +191,13 @@ export function LocationDetails({
             <div className={styles.singleDetail}>
               <p className={styles.title}>{t('height')}</p>
               <div className={styles.value}>
-                {location.measurements?.height}m
+                {location.measurements?.height}{t('m')}
               </div>
             </div>
             <div className={styles.singleDetail}>
               <p className={styles.title}>{t('width')}</p>
               <div className={styles.value}>
-                {location.measurements?.width}cm
+                {location.measurements?.width}{t('cm')}
               </div>
             </div>
           </>

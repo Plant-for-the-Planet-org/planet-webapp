@@ -90,7 +90,7 @@ function UserLayout(props: any): ReactElement {
     //   // ],
     // },
     {
-      title: 'TreeMapper',
+      title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
       flag: 'Beta',

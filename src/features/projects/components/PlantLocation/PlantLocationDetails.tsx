@@ -323,7 +323,7 @@ export default function PlantLocationDetails({
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  TreeMapper
+                 {t('treemapper:treeMapper')}
                 </a>
               </div>
             </div>

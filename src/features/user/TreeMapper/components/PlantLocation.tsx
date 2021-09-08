@@ -70,7 +70,7 @@ function PlantLocation({
                 ) + 'ha':location.tag? '• '+location.tag:''}`}
           </p>
           <p className={styles.date}>
-            {t('on')} {formatDate(location.registrationDate)}
+             {formatDate(location.registrationDate)}
           </p>
         </div>
         <div className={styles.right}>
