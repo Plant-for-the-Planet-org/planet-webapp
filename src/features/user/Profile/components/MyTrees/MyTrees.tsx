@@ -60,7 +60,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     authenticatedType,
   };
 
-  return ready ? (
+  return contributions?.length > 0 && ready ? (
     <div className={authenticatedType === 'private' ? 'profilePage' : ''} style={{marginTop:'0px'}}>
       {contributions &&
       Array.isArray(contributions) &&
