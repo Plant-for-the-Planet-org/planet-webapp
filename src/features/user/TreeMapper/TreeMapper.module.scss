@@ -111,14 +111,13 @@
       height: auto;
       overflow-y: auto;
       background-color: $backgroundColor;
-      // border-top-left-radius: 10px;
-      // border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
       padding: 30px 20px;
       > .locationNav {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding-bottom: 20px;
         align-items: center;
         > .backButton {
           cursor: pointer;
