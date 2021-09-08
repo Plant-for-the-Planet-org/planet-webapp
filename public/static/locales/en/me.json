@@ -136,5 +136,10 @@
   "donationsSubTitle":"Manage all your donations and payments from one place.",
   "payments":"Payments",
   "stripe-sepa_debit":"SEPA (Stripe)",
-  "offline-offline":"Offline"
+  "offline-offline":"Offline",
+  "profile":"Profile",
+  "projects":"Projects",
+  "settings":"Settings",
+  "editProfile":"Edit Profile",
+  "deleteProfile":"Delete Profile"
 }

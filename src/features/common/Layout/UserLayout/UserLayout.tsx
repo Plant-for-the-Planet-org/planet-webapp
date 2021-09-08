@@ -21,15 +21,16 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
-  const{ t , i18n } = useTranslation(['common'])
+  const { t, i18n } = useTranslation(['common','me']);
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
     {
-      title: 'Profile',
+      key: 1,
+      title: t('me:profile'),
       path: '/profile',
       icon: <UserIcon />,
-     
+
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -46,12 +47,14 @@ function UserLayout(props: any): ReactElement {
       // ],
     },
     {
-      title: 'Register Trees',
+      key: 2,
+      title: t('me:registerTrees'),
       path: '/profile/register-trees',
       icon: <RegisterTreeIcon />,
     },
     {
-      title: 'Payments',
+      key: 3,
+      title: t('me:payments'),
       path: '/profile/history',
       icon: <DonateIcon />,
       flag: 'Beta',
@@ -90,32 +93,36 @@ function UserLayout(props: any): ReactElement {
     //   // ],
     // },
     {
+      key: 4,
       title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
       flag: 'Beta',
     },
     {
-      title: 'Projects',
+      key: 5,
+      title: t('me:projects'),
       path: '/profile/projects',
       icon: <MapIcon />,
       accessLevel: ['tpo'],
     },
     {
-      title: 'Create Widget',
+      key: 6,
+      title: t('me:embedWidget'),
       path: '/profile/widgets',
       icon: <WidgetIcon />,
     },
     {
-      title: 'Settings',
+      key: 7,
+      title: t('me:settings'),
       icon: <SettingsIcon />,
       subMenu: [
         {
-          title: 'Edit Profile',
+          title: t('me:editProfile'),
           path: '/profile/edit',
         },
         {
-          title: 'Delete Profile',
+          title: t('me:deleteProfile'),
           path: '/profile/delete-account',
         },
         // {
@@ -129,7 +136,6 @@ function UserLayout(props: any): ReactElement {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [activeLink, setactiveLink] = React.useState('/profile');
   const [activeSubMenu, setActiveSubMenu] = React.useState('');
-  const [subMenuOpen, setsubMenuOpen] = React.useState('');
 
   React.useEffect(() => {
     if (router) {
@@ -143,7 +149,6 @@ function UserLayout(props: any): ReactElement {
           if (subMenuItem) {
             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
-            setsubMenuOpen(link.path);
           }
         }
       }
@@ -192,8 +197,6 @@ function UserLayout(props: any): ReactElement {
                 activeLink={activeLink}
                 activeSubMenu={activeSubMenu}
                 setActiveSubMenu={setActiveSubMenu}
-                subMenuOpen={subMenuOpen}
-                setsubMenuOpen={setsubMenuOpen}
                 user={user}
                 key={index}
                 closeMenu={() => setIsMenuOpen(false)}
@@ -286,8 +289,6 @@ function NavLink({
   activeLink,
   activeSubMenu,
   setActiveSubMenu,
-  subMenuOpen,
-  setsubMenuOpen,
   user,
   closeMenu,
 }: any) {
@@ -300,7 +301,6 @@ function NavLink({
       if (subMenuItem) {
         setactiveLink(link.path);
         setActiveSubMenu(subMenuItem.path);
-        setsubMenuOpen(link.path);
       }
     }
   }, [activeLink]);
@@ -310,6 +310,9 @@ function NavLink({
       return null;
     }
   }
+
+  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
+
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
@@ -317,19 +320,13 @@ function NavLink({
           activeLink === link.path ? styles.navlinkActive : ''
         }`}
         onClick={() => {
-          closeMenu();
-          if (subMenuOpen === link.path) {
-            setsubMenuOpen(subMenuOpen ? '' : link.path);
-          } else if (link.subMenu && link.subMenu.length > 0) {
-            setsubMenuOpen(link.path);
-          }
-          if (link.path) {
+          // This is to shift to the main page needed when there is no sub menu
+          if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
             router.push(link.path);
-          }
-          if (!link.subMenu || link.subMenu.length <= 0) {
             setactiveLink(link.path);
-            setsubMenuOpen('');
             setActiveSubMenu('');
+          } else {
+            setisSubMenuActive(!isSubMenuActive);
           }
         }}
       >
@@ -342,17 +339,14 @@ function NavLink({
           <button
             className={styles.subMenuArrow}
             style={{
-              transform:
-                subMenuOpen === link.path
-                  ? 'rotate(-180deg)'
-                  : 'rotate(-90deg)',
+              transform: isSubMenuActive ? 'rotate(-180deg)' : 'rotate(-90deg)',
             }}
           >
             <DownArrow />
           </button>
         )}
       </div>
-      {subMenuOpen === link.path &&
+      {isSubMenuActive &&
         link.subMenu &&
         link.subMenu.length > 0 &&
         link.subMenu.map((subLink: any, index: any) => (
@@ -364,7 +358,6 @@ function NavLink({
             onClick={() => {
               setactiveLink(link.path);
               setActiveSubMenu(subLink.path);
-              setsubMenuOpen(link.path);
               router.push(subLink.path);
             }}
           >
