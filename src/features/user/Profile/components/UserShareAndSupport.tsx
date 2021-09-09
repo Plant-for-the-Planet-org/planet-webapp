@@ -18,7 +18,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
   const router = useRouter();
   const [currentHover, setCurrentHover] = React.useState(-1);
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
-  const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
+  const linkToShare = `${process.env.SCHEME}://${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = ready ? t('donate:textToShare', { name: userprofile.displayName }) : '';
   const [screenWidth, setScreenWidth] = React.useState(null);
 

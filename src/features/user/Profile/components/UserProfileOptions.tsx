@@ -41,7 +41,7 @@ const { useTranslation } = i18next;
 export default function UserProfileOptions({ userprofile }: any) {
   const router = useRouter();
   const { t, ready } = useTranslation(['me']);
-  const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
+  const linkToShare = `${process.env.SCHEME}://${config.tenantURL}/t/${userprofile.slug}`;
   const textToShare = ready
     ? t('donate:textToShare', { name: userprofile.displayName })
     : '';
