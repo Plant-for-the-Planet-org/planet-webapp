@@ -3,13 +3,13 @@ import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
-import MapGL, {FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
+import MapGL, { FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 
 interface Props {
@@ -27,7 +27,7 @@ export default function MyTreesMap({
   const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
 
-  const {isMobile} = React.useContext(ProjectPropsContext);
+  const { isMobile } = React.useContext(ProjectPropsContext);
 
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -39,7 +39,7 @@ export default function MyTreesMap({
     zoom: defaultZoom,
   });
   const [satellite, setSatellite] = React.useState(false);
-  
+
   const [geoJson, setGeoJson] = React.useState();
   const [plIds, setPlIds] = React.useState(null);
   const [imagePopup, setImagePopup] = React.useState(null);
@@ -94,7 +94,7 @@ export default function MyTreesMap({
 
   const getDateDiff = (pl: any) => {
     const today = new Date();
-    const plantationDate = new Date(pl.plantDate?.substr(0,10));
+    const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
@@ -111,39 +111,42 @@ export default function MyTreesMap({
   };
 
   const zoomToLocation = (geometry: any) => {
-    try {
-  const bbox = turf.bbox(geometry);
-
-  const { longitude, latitude, zoom } = new WebMercatorViewport(
-    viewport
-  ).fitBounds(
-    [
-      [bbox[0], bbox[1]],
-      [bbox[2], bbox[3]],
-    ],
-    {
-      padding: {
-        top: isMobile ? 50: 100,
-        bottom: isMobile ? 200 : 100,
-        left: isMobile ? 50 : 100,
-        right: isMobile ? 50 : 100,
-      },
+    if (viewport.width && viewport.height) {
+      const bbox = turf.bbox(geometry);
+      const { longitude, latitude, zoom } = new WebMercatorViewport(
+        viewport
+      ).fitBounds(
+        [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ],
+        {
+          padding: {
+            top: isMobile ? 50 : 100,
+            bottom: isMobile ? 200 : 100,
+            left: isMobile ? 50 : 100,
+            right: isMobile ? 50 : 100,
+          },
+        }
+      );
+      const newViewport = {
+        ...viewport,
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 1000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic,
+      };
+      setViewPort(newViewport);
+    } else {
+      const newViewport = {
+        ...viewport,
+        height: window.innerHeight,
+        width: window.innerWidth,
+      };
+      setViewPort(newViewport);
     }
-  );
-  const newViewport = {
-    ...viewport,
-    longitude,
-    latitude,
-    zoom,
-    transitionDuration: 1000,
-    transitionInterpolator: new FlyToInterpolator(),
-    transitionEasing: d3.easeCubic,
-  };
-  setViewPort(newViewport);
-} catch (error) {
-  console.log(error);
-}
-  }
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -155,7 +158,7 @@ export default function MyTreesMap({
   }, []);
 
   React.useEffect(() => {
-    if(locations) {
+    if (locations) {
       const features = [];
       const ids = [];
       for (const i in locations) {
@@ -169,8 +172,8 @@ export default function MyTreesMap({
               id: pl.id,
             }
           }
-            features.push(newFeature);
-            if(pl.type === 'multi') ids.push(`${pl.id}-layer`);
+          features.push(newFeature);
+          if (pl.type === 'multi') ids.push(`${pl.id}-layer`);
         }
       }
       setGeoJson({
@@ -184,13 +187,13 @@ export default function MyTreesMap({
       setPlIds(null);
       setGeoJson(null);
     }
-  },[locations]);
+  }, [locations]);
 
   React.useEffect(() => {
-    if(selectedLocation) {
+    if (selectedLocation) {
       zoomToLocation(selectedLocation.geometry);
-    } 
-  } , [geoJson, selectedLocation]);
+    }
+  }, [geoJson, selectedLocation]);
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
@@ -221,137 +224,135 @@ export default function MyTreesMap({
       onClick={onMapClick}
       interactiveLayerIds={plIds ? plIds : undefined}
       attributionControl={true}
-      mapOptions={{customAttribution:'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community'}}
+      mapOptions={{ customAttribution: 'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community' }}
     >
       {satellite && plIds &&
-      <SatelliteLayer beforeId={plIds[0]}/>}
+        <SatelliteLayer beforeId={plIds[0]} />}
       {locations &&
         locations.map((pl: any) => {
-            const newPl = pl.geometry;
-            newPl.properties = {};
-            newPl.properties.id = pl.id;
-            if (pl.type === 'multi') {
-              const dateDiff = getDateDiff(pl);
-              return (
-                <>
-                  <Source
-                    key={`${pl.id}-source`}
-                    id={pl.id}
-                    type="geojson"
-                    data={newPl}
-                  >
+          const newPl = pl.geometry;
+          newPl.properties = {};
+          newPl.properties.id = pl.id;
+          if (pl.type === 'multi') {
+            const dateDiff = getDateDiff(pl);
+            return (
+              <>
+                <Source
+                  key={`${pl.id}-source`}
+                  id={pl.id}
+                  type="geojson"
+                  data={newPl}
+                >
+                  <Layer
+                    key={`${pl.id}-layer`}
+                    id={`${pl.id}-layer`}
+                    type="fill"
+                    source={pl.id}
+                    paint={{
+                      'fill-color': satellite ? '#ffffff' : '#007A49',
+                      'fill-opacity': getPolygonColor(pl),
+                    }}
+                  />
+                  {(selectedLocation && selectedLocation.id === pl.id) && (
                     <Layer
-                      key={`${pl.id}-layer`}
-                      id={`${pl.id}-layer`}
-                      type="fill"
+                      key={`${pl.id}-selected`}
+                      id={`${pl.id}-selected-layer`}
+                      type="line"
                       source={pl.id}
                       paint={{
-                        'fill-color': satellite ? '#ffffff' : '#007A49',
-                        'fill-opacity': getPolygonColor(pl),
+                        'line-color': satellite ? '#ffffff' : '#007A49',
+                        'line-width': 4,
                       }}
                     />
-                    {(selectedLocation && selectedLocation.id === pl.id) && (
-                      <Layer
-                        key={`${pl.id}-selected`}
-                        id={`${pl.id}-selected-layer`}
-                        type="line"
-                        source={pl.id}
-                        paint={{
-                          'line-color': satellite ? '#ffffff' : '#007A49',
-                          'line-width': 4,
-                        }}
-                      />
-                    )}
-                    {dateDiff && (
-                      <Layer
-                        key={`${pl.id}-label`}
-                        id={`${pl.id}-label`}
-                        type="symbol"
-                        source={pl.id}
-                        layout={{
-                          'text-field': dateDiff,
-                          'text-anchor': 'center',
-                          'text-font': ['Ubuntu Regular'],
-                        }}
-                        paint={{
-                          'text-color': satellite? '#ffffff':'#2f3336',
-                        }}
-                      />
-                    )}
-                  </Source>
-                  {pl &&
-                    pl.samplePlantLocations &&
-                    pl.samplePlantLocations
-                      .filter((item: any) => {
-                        if (item.captureStatus === 'complete') {
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      })
-                      .map((spl: any) => {
-                        return (
-                          <Marker
-                            key={`${spl.id}-sample`}
-                            latitude={spl.geometry.coordinates[1]}
-                            longitude={spl.geometry.coordinates[0]}
-                          >
-                            {viewport.zoom > 14 && (
-                              <div
-                                key={`${spl.id}-marker`}
-                                className={`${styles.single} ${
-                                  spl.id === selectedLocation?.id
-                                    ? styles.singleSelected
-                                    : ''
-                                }`}
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => setselectedLocation(spl)}
-                                // onMouseEnter={() => onHover(spl)}
-                                // onMouseLeave={() => onHoverEnd(spl)}
-                              />
-                            )}
-                          </Marker>
-                        );
-                      })}
-                </>
-              );
-            } else if (pl.type === 'single') {
-              return (
-                <Marker
-                  key={`${pl.id}-single`}
-                  latitude={newPl.coordinates[1]}
-                  longitude={newPl.coordinates[0]}
-                  // offsetLeft={5}
-                  // offsetTop={-16}
-                  // style={{ left: '28px' }}
-                >
-                  {viewport.zoom > 14 && (
-                    <div
-                      key={`${pl.id}-marker`}
-                      onClick={() => setselectedLocation(pl)}
-                      // onMouseEnter={() => onHover(pl)}
-                      // onMouseLeave={() => onHoverEnd(pl)}
-                      className={`${styles.single} ${
-                        pl.id === selectedLocation?.id ? styles.singleSelected : ''
-                      }`}
-                      role="button"
-                      tabIndex={0}
+                  )}
+                  {dateDiff && (
+                    <Layer
+                      key={`${pl.id}-label`}
+                      id={`${pl.id}-label`}
+                      type="symbol"
+                      source={pl.id}
+                      layout={{
+                        'text-field': dateDiff,
+                        'text-anchor': 'center',
+                        'text-font': ['Ubuntu Regular'],
+                      }}
+                      paint={{
+                        'text-color': satellite ? '#ffffff' : '#2f3336',
+                      }}
                     />
                   )}
-                </Marker>
-              );
-            }
-          })}
-          <div
-              onClick={() => setSatellite(!satellite)}
-              className={styles.layerToggle}
-            >
-              {satellite ? <LayerIcon /> : <LayerDisabled />}
-            </div>
+                </Source>
+                {pl &&
+                  pl.samplePlantLocations &&
+                  pl.samplePlantLocations
+                    .filter((item: any) => {
+                      if (item.captureStatus === 'complete') {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    })
+                    .map((spl: any) => {
+                      return (
+                        <Marker
+                          key={`${spl.id}-sample`}
+                          latitude={spl.geometry.coordinates[1]}
+                          longitude={spl.geometry.coordinates[0]}
+                        >
+                          {viewport.zoom > 14 && (
+                            <div
+                              key={`${spl.id}-marker`}
+                              className={`${styles.single} ${spl.id === selectedLocation?.id
+                                  ? styles.singleSelected
+                                  : ''
+                                }`}
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => setselectedLocation(spl)}
+                            // onMouseEnter={() => onHover(spl)}
+                            // onMouseLeave={() => onHoverEnd(spl)}
+                            />
+                          )}
+                        </Marker>
+                      );
+                    })}
+              </>
+            );
+          } else if (pl.type === 'single') {
+            return (
+              <Marker
+                key={`${pl.id}-single`}
+                latitude={newPl.coordinates[1]}
+                longitude={newPl.coordinates[0]}
+              // offsetLeft={5}
+              // offsetTop={-16}
+              // style={{ left: '28px' }}
+              >
+                {viewport.zoom > 14 && (
+                  <div
+                    key={`${pl.id}-marker`}
+                    onClick={() => setselectedLocation(pl)}
+                    // onMouseEnter={() => onHover(pl)}
+                    // onMouseLeave={() => onHoverEnd(pl)}
+                    className={`${styles.single} ${pl.id === selectedLocation?.id ? styles.singleSelected : ''
+                      }`}
+                    role="button"
+                    tabIndex={0}
+                  />
+                )}
+              </Marker>
+            );
+          }
+        })}
+      <div
+        onClick={() => setSatellite(!satellite)}
+        className={styles.layerToggle}
+      >
+        {satellite ? <LayerIcon /> : <LayerDisabled />}
+      </div>
       <div className={styles.mapNavigation}>
-          <NavigationControl showCompass={false} />
-        </div>
+        <NavigationControl showCompass={false} />
+      </div>
     </MapGL>
   );
 }
