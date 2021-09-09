@@ -53,7 +53,7 @@ export default function UserProfileOptions({ userprofile }: any) {
     try {
       const response = await navigator.share({
         title: ready ? t('donate:shareTextTitle') : '',
-        url: window.location.href,
+        url: linkToShare,
         text: textToShare,
       });
     } catch (error) {

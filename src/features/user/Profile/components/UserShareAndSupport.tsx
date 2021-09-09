@@ -27,7 +27,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
       navigator
         .share({
           title: ready ? t('donate:shareTextTitle') : '',
-          url: window.location.href,
+          url: linkToShare,
           text: textToShare,
         })
         .then(() => {
