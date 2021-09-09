@@ -120,5 +120,8 @@
   "latitude": "Latitude",
   "longitude": "Longitude",
   "latitudeRequired": "La latitude est requise",
-  "longitudeRequired": "La longitude est requise"
+  "longitudeRequired": "La longitude est requise",
+  "manageProject": "",
+  "descriptionForManageProjects": "",
+  "manageProjects": ""
 }

@@ -70,5 +70,11 @@
   "goBack": "Retour",
   "deleteAccountMessage": "Pour continuer la suppression, veuillez taper `{{delete}}`",
   "deleteAccountLabel": "Taper : {{delete}}",
-  "howDoesThisWork": "Comment cela fonctionne-t-il ?"
+  "edit": "",
+  "howDoesThisWork": "Comment cela fonctionne-t-il ?",
+  "copiedToClipboard": "",
+  "close": "",
+  "logout": "",
+  "featured": "",
+  "treeMapper": ""
 }

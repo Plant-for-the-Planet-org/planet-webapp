@@ -70,5 +70,11 @@
   "goBack": "Torna indietro",
   "deleteAccountMessage": "Per continuare la cancellazione, digita `{{delete}}`",
   "deleteAccountLabel": "Tipo: {{delete}}",
-  "howDoesThisWork": "Come funziona?"
+  "edit": "",
+  "howDoesThisWork": "Come funziona?",
+  "copiedToClipboard": "",
+  "close": "",
+  "logout": "",
+  "featured": "",
+  "treeMapper": ""
 }
