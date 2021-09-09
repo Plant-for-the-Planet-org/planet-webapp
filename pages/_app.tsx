@@ -192,12 +192,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                           <MapLayout />
                         ) : null}
                         <div
-                          style={
-                            showVideo &&
-                            (config.tenantName === 'planet' ||
+                          style={(config.tenantName === 'planet' ||
                               config.tenantName === 'ttc')
-                              ? { display: 'none' }
-                              : {}
+                              ? {}
+                              : { display: 'none' }
                           }
                         >
                           <PlayButton setshowVideo={setshowVideo} />
