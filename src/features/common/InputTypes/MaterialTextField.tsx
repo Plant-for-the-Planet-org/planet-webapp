@@ -7,7 +7,7 @@ const MaterialTextField = withStyles({
   root: {
     width: '100%',
     color: 'var(--primary-font-color)',
-    '& .MuiInputBase-input.MuiOutlinedInput-input':{
+    '& .MuiInputBase-input.MuiOutlinedInput-input': {
       color: 'var(--primary-font-color)',
     },
     '& label.Mui-focused': {
@@ -18,6 +18,10 @@ const MaterialTextField = withStyles({
       color: 'var(--primary-font-color)',
       fontFamily: config!.font.primaryFontFamily,
       fontSize: '14px',
+      top: '-3px',
+    },
+    '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
+      transform: 'translate(14px, -4px) scale(0.75)',
     },
     '& .MuiOutlinedInput-notchedOutline': {
       border: '0px!important',
@@ -29,23 +33,22 @@ const MaterialTextField = withStyles({
       borderRadius: '10px',
       fontFamily: config!.font.primaryFontFamily,
     },
-    '& .MuiOutlinedInput-input':{
-      padding:'14px'
+    '& .MuiOutlinedInput-input': {
+      padding: '14px',
+    },
+    '& .MuiOutlinedInput-multiline': {
+      padding: '0px',
+    },
+    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]': {
+      padding: '14px',
+    },
+    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input': {
+      padding: '0px',
+    },
+    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+      paddingLeft: '0px',
+    },
   },
-  '& .MuiOutlinedInput-multiline':{
-    padding:'0px'
-  },
-  '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]':{
-    padding:'14px'
-  },
-  '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input':{
-    padding:'0px'
-  },
-  '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child':{
-    paddingLeft:'0px'
-  }
-  },
-  
-},)(TextField);
+})(TextField);
 
 export default MaterialTextField;

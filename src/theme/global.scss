@@ -203,9 +203,9 @@ video {
 //   margin: 0 10px 40px 0 !important;
 // }
 
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
-  display: none;
-}
+// .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
+//   display: none;
+// }
 
 @font-face {
   font-family: 'Pampers Script';
@@ -220,17 +220,17 @@ video {
   font-weight: normal;
   font-style: normal;
 }
-.unDecadeFill{
+.unDecadeFill {
   fill: $undecadeFill;
 }
 
-.iconFillNone{
+.iconFillNone {
   fill: none;
   stroke: $primaryFontColor;
 }
 
-.iconFillColor{
-fill: $primaryFontColor;
+.iconFillColor {
+  fill: $primaryFontColor;
 }
 
 .primaryButton,
@@ -287,9 +287,9 @@ button {
   padding-left: 40px;
 }
 
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
-  margin: 0 20px 25px 0;
-}
+// .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+//   margin: 0 20px 25px 0;
+// }
 
 @font-face {
   font-family: 'HarmoniaSansPro';
@@ -338,48 +338,136 @@ button {
     max-width: 100%;
     border-radius: 0px;
   }
+  .profilePage {
+    padding-top: 80px !important;
+  }
 }
 
 .read-more-button {
   font-weight: bold;
   cursor: pointer;
 }
-.vizzuality__legend-item-container{
+
+// Profile page
+.profilePageTitle {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: $primaryFontColor;
+}
+.profilePageSubTitle {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: $primaryFontColor;
+}
+.profilePage {
+  // max-width: 1000px;
+  background-color: $backgroundBase;
+  margin-bottom: 80px;
+  padding: 20px;
+  min-height: 100vh;
+  @include smTabletView {
+    padding: 40px;
+    margin-bottom: 0px;
+    margin-top: 80px;
+  }
+}
+
+.profilePageHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.topLoader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 1031;
+}
+
+// Loader for Buttons
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Form Styles
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: 6px;
+  max-width: 320px;
+  margin-bottom: -18px;
+}
+
+.vizzuality__legend-item-container {
   background-color: $backgroundColor;
 }
 .vizzuality__c-timestep .vizzuality__player-btn > svg {
-  fill: $primaryFontColor
+  fill: $primaryFontColor;
 }
 
-.MuiSvgIcon-root, .MuiNativeSelect-icon{
-  path{
+.MuiSvgIcon-root,
+.MuiNativeSelect-icon {
+  path {
     fill: $primaryFontColor;
   }
 }
-.MuiPaper-root{
-  background-color: $backgroundColor !important;
-}
+
 .MuiStepLabel-label.MuiStepLabel-active,
 .MuiStepLabel-label.MuiStepLabel-completed,
-.MuiStepLabel-label{
+.MuiStepLabel-label {
   color: $primaryFontColor !important;
 }
-.MuiInputBase-input{
+.MuiInputBase-input {
   color: $primaryFontColor !important;
 }
 
-.mapboxgl-ctrl-group{
-  filter: $mapboxIcon
+.mapboxgl-ctrl-group {
+  filter: $mapboxIcon;
 }
 
-input:autofill, input:-webkit-autofill{
+input:autofill,
+input:-webkit-autofill {
   background-color: $backgroundColorDark !important;
-  color: $primaryFontColor!important;
+  color: $primaryFontColor !important;
 }
-.MuiSelect-icon, .MuiNativeSelect-icon{
+.MuiSelect-icon,
+.MuiNativeSelect-icon {
   fill: $primaryFontColor !important;
 }
-.MuiNativeSelect-select:not([multiple]) option, .MuiNativeSelect-select:not([multiple]) optgroup{
+.MuiNativeSelect-select:not([multiple]) option,
+.MuiNativeSelect-select:not([multiple]) optgroup {
   background-color: $backgroundColor !important;
 }
 .MuiAlert-message{

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
-import styles from '../styles/StepForm.module.scss';
+import styles from '../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -270,7 +270,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
                             <DeleteIcon />
                           </button>
                           <button id={'setDefaultImg'} onClick={() => setDefaultImage(image.id, index)}>
-                            <Star color={image.isDefault ? '#ECB641' : '#aaa'} />
+                            <Star color={image.isDefault ? '#ECB641' : '#aaa'} className={image.isDefault ? 'selected' : ''} />
                           </button>
                         </div>
                       </div>
