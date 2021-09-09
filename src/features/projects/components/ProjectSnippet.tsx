@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import GetProjectClassification from './projectDetails/getProjectClassification';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -88,7 +87,8 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-          {GetProjectClassification(project.classification)}
+          {project.classification &&
+          t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}

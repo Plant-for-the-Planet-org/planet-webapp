@@ -7,7 +7,6 @@ import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import GetProjectClassification from './projectDetails/getProjectClassification';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -64,7 +63,8 @@ export default function PopupProject({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-                {GetProjectClassification(project.properties.classification)}
+                {project.properties.classification &&
+                t(`donate:${project.properties.classification}`)}
               </div>
 
           <div className={'projectName'}>
