@@ -147,6 +147,7 @@ export default function MyTreesMap({
       };
       setViewPort(newViewport);
     }
+  }
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
