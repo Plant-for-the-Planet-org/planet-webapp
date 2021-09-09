@@ -31,7 +31,7 @@ export default function TimeTravel({}: Props): ReactElement {
   };
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && mapRef.current) {
       const center = mapRef.current.getMap().getCenter();
       const zoom = mapRef.current.getMap().getZoom();
       const before = new mapboxgl.Map({
