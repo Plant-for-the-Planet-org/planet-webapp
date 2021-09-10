@@ -175,7 +175,7 @@ export default function NavbarComponent(props: any) {
                 </div>
               </Link>
             ) : (
-              <></>
+              <div key={link}></div>
             );
           }
         })}
