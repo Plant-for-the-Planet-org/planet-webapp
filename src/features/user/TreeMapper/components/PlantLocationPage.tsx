@@ -135,7 +135,7 @@ export function LocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('sampleTree')} ${
+              description: `${t('maps:sampleTree')} ${
                 element.tag ? '#' + element.tag : ''
               }`,
             });
@@ -174,11 +174,11 @@ export function LocationDetails({
       <div className={styles.details}>
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('captureMode')}</p>
-          <div className={styles.value}>{location.captureMode}</div>
+          <div className={styles.value}>{t(location.captureMode)}</div>
         </div>
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('captureStatus')}</p>
-          <div className={styles.value}>{location.captureStatus}</div>
+          <div className={styles.value}>{t(location.captureStatus)}</div>
         </div>
         <div className={styles.singleDetail}>
           <p className={styles.title}>
@@ -250,7 +250,7 @@ export function LocationDetails({
                       {species.treeCount}{' '}
                       {species.scientificName
                         ? species.scientificName
-                        : species.otherSpecies}
+                        : species.otherSpecies?species.otherSpecies:t('unknown')}
                     </p>
                   );
                 })}
