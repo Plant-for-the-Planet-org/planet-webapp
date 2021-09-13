@@ -106,7 +106,7 @@ export function LocationDetails({
   location,
   setselectedLocation,
 }: DetailsProps): ReactElement {
-  const { t, i18n } = useTranslation(['treemapper', 'maps']);
+  const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
   const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
   const coordinateRef = React.useRef(null);
 
@@ -118,6 +118,7 @@ export function LocationDetails({
 
   React.useEffect(() => {
     if (
+      ready &&
       location &&
       location.samplePlantLocations &&
       location.samplePlantLocations.length > 0
@@ -146,7 +147,7 @@ export function LocationDetails({
     } else {
       setSampleTreeImages([]);
     }
-  }, [location]);
+  }, [location, ready]);
   return (
     <>
       {location.type === 'multi' && sampleTreeImages.length > 0 && (
