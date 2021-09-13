@@ -250,7 +250,9 @@ export function LocationDetails({
                       {species.treeCount}{' '}
                       {species.scientificName
                         ? species.scientificName
-                        : species.otherSpecies?species.otherSpecies:t('maps:unknown')}
+                        : species.otherSpecies && species.otherSpecies !== 'Unknown'
+                        ? species.otherSpecies:
+                        t('maps:unknown')}
                     </p>
                   );
                 })}
@@ -273,7 +275,7 @@ export function LocationDetails({
                     >
                       {spl.scientificName
                         ? spl.scientificName
-                        : spl.scientificSpecies
+                        : spl.scientificSpecies && spl.scientificSpecies !== 'Unknown'
                         ? spl.scientificSpecies
                         : t('maps:unknown')}
                     </span>
