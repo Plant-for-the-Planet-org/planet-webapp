@@ -70,5 +70,11 @@
   "goBack": "Regresar",
   "deleteAccountMessage": "Para continuar con el borrado, escriba `{{delete}}`",
   "deleteAccountLabel": "Tipo: {{delete}}",
-  "howDoesThisWork": "¿Cómo funciona esto?"
+  "edit": "",
+  "howDoesThisWork": "¿Cómo funciona esto?",
+  "copiedToClipboard": "",
+  "close": "",
+  "logout": "",
+  "featured": "",
+  "treeMapper": ""
 }
