@@ -75,7 +75,6 @@
   "copiedToClipboard": "Copied to clipboard!",
   "close": "Close",
   "logout": "Logout",
-  "featured":"Featured",
-  "treeMapper": "Tree Mapper"
-
+  "featured": "Featured",
+  "treeMapper": "TreeMapper"
 }

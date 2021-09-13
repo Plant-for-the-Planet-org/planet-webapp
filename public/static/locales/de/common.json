@@ -70,5 +70,11 @@
   "goBack": "Zurückgehen",
   "deleteAccountMessage": "Um mit dem Löschen fortzufahren, gib bitte `{{delete}}` ein",
   "deleteAccountLabel": "Tippe: {{delete}}",
-  "howDoesThisWork": "Wie funktioniert das?"
+  "edit": "Bearbeiten",
+  "howDoesThisWork": "Wie funktioniert das?",
+  "copiedToClipboard": "In die Zwischenablage kopiert!",
+  "close": "Schließen",
+  "logout": "Abmelden",
+  "featured": "Empfohlen",
+  "treeMapper": "TreeMapper"
 }

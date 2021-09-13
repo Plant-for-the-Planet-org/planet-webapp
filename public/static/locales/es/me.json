@@ -45,10 +45,6 @@
   "filters": "Filtros",
   "registeredTrees": "Árboles registrados",
   "embedWidget": "Insertar Widget",
-  "nameForest": "El Bosque de {{name}}",
-  "setTarget": "Fijar el objetivo..",
-  "targetSave": "Guardar",
-  "targetErrorMessage": "El número debe ser positivo o mayor que cero",
   "tree-donation": "Donación de árboles",
   "tree-gift": "Árbol de regalo",
   "tree-cash": "Dinero en efectivo para árboles",
@@ -76,5 +72,9 @@
   "referred": "Remitido",
   "in-dispute": "En disputa",
   "dispute-lost": "Disputa perdida",
-  "taxReceipt": "Recibo de impuestos"
+  "nameForest": "El Bosque de {{name}}",
+  "taxReceipt": "Recibo de impuestos",
+  "setTarget": "Fijar el objetivo..",
+  "targetSave": "Guardar",
+  "targetErrorMessage": "El número debe ser positivo o mayor que cero"
 }
