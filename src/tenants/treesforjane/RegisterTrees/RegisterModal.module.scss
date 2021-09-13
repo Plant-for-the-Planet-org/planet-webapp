@@ -1,6 +1,6 @@
 @import './../../../theme/theme';
 
-.registerTreesPage{
+.registerTreesPage {
   max-width: 460px;
   background-color: $backgroundColor;
   padding: 20px;
@@ -273,7 +273,14 @@
   align-items: center;
   width: 100%;
 }
-
+.disabled {
+  background-color: $backgroundColorDark;
+  background-image: none;
+  color: $primaryFontColor;
+}
+.disabled:hover {
+  transform: translateY(0);
+}
 .closeButton {
   cursor: pointer;
   position: absolute;

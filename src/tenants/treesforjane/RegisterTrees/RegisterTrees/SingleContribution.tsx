@@ -9,10 +9,11 @@ import i18next from '../../../../../i18n';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 interface Props {
-  token: any;
-  contributionGUID: any;
-  contribution: any;
-  slug: any;
+  // token: any;
+  // contributionGUID: any;
+  contributionDetails: any;
+  geometry: any;
+  // slug: any;
 }
 
 const { useTranslation } = i18next;
@@ -22,22 +23,24 @@ const StaticMap = dynamic(() => import('./StaticMap'), {
 });
 
 export default function SingleContribution({
-  token,
-  contribution,
-  contributionGUID,
-  slug,
+  // token,
+  // contribution,
+  // contributionGUID,
+  // slug,
+  contributionDetails,
+  geometry,
 }: Props): ReactElement {
   const router = useRouter();
-  const UploadProps = {
-    contribution,
-    contributionGUID,
-    token,
-  };
+  // const UploadProps = {
+  //   contribution,
+  //   contributionGUID,
+  //   token,
+  // };
   const { t, ready } = useTranslation(['me', 'common']);
 
   return ready ? (
     <>
-      <button
+      {/* <button
         id={'singleControcloseButton'}
         className={styles.closeButton}
         onClick={() => {
@@ -45,33 +48,46 @@ export default function SingleContribution({
         }}
       >
         <CancelIcon />
-      </button>
-      <div className={styles.checkMark}>
+      </button> */}
+      {/* <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
-      </div>
+      </div> */}
       <h2 className={styles.contribTitle}>
         <b>
-          {t('me:contribSuccess', {
-            treeCount: contribution.treeCount,
-            treeSpecies: contribution.treeSpecies,
-            plantDate: formatDate(contribution.plantDate),
-          })}
+          {contributionDetails.treeCount > 0 &&
+          contributionDetails.treeCount < 200
+            ? t('me:contribSuccessLessThan200', {
+                treeCount: contributionDetails.treeCount,
+                treeSpecies: contributionDetails.treeSpecies,
+                plantDate: formatDate(contributionDetails.plantDate),
+              })
+            : contributionDetails.treeCount >= 200 &&
+              contributionDetails.treeCount < 1000
+            ? t('me:contribSuccess200to1000', {
+                treeCount: contributionDetails.treeCount,
+                treeSpecies: contributionDetails.treeSpecies,
+                plantDate: formatDate(contributionDetails.plantDate),
+              })
+            : contributionDetails.treeCount >= 1000
+            ? t('me:contribSuccessMoreThan1000', {
+                treeCount: contributionDetails.treeCount,
+                treeSpecies: contributionDetails.treeSpecies,
+                plantDate: formatDate(contributionDetails.plantDate),
+              })
+            : []}
         </b>
       </h2>
       <div className={styles.contributionInfo}>
         <div className={styles.infoRow}>
           <div className={styles.infoItem}>
             <div className={styles.previewMap}>
-              <StaticMap geoJson={contribution.geometry} />
+              <StaticMap geoJson={geometry} />
             </div>
           </div>
         </div>
       </div>
 
-      <div className={styles.uploadImages}>
-        <UploadImages {...UploadProps} />
-      </div>
-      <div className={styles.nextButton}>
+      {/* <div className={styles.nextButton}>
         <button
           id={'singleControCont'}
           onClick={() =>
@@ -82,7 +98,7 @@ export default function SingleContribution({
         >
           {t('me:save')}
         </button>
-      </div>
+      </div> */}
     </>
   ) : (
     <></>

@@ -19,8 +19,11 @@ import { getStoredConfig } from '../../../utils/storeConfig';
 import MaterialTextField from '../../../features/common/InputTypes/MaterialTextField';
 import styles from './RegisterModal.module.scss';
 import materialTheme from '../../../theme/themeStyles';
+import { ThemeContext } from '../../../theme/themeContext';
 import ContactDetails from './ContactDetails/ContactDetails';
-
+import UploadImages from './RegisterTrees/UploadImages';
+import CheckBox from '../../../features/common/InputTypes/Checkbox';
+import SingleContribution from './RegisterTrees/SingleContribution';
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
@@ -28,16 +31,12 @@ declare module '@material-ui/core/styles/overrides' {
   export type ComponentNameToClassKey = overridesNameToClassKey;
 }
 
-const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
-  ssr: false,
-  loading: () => <p></p>,
-});
-
 interface Props {}
 
 const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
   const { t, ready } = useTranslation(['me', 'common']);
+  const { theme, setTheme } = React.useContext(ThemeContext);
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
@@ -46,8 +45,7 @@ export default function RegisterTrees({}: Props) {
   const [mapState, setMapState] = React.useState({
     mapStyle: EMPTY_STYLE,
   });
-  const [isMultiple, setIsMultiple] = React.useState(false);
-  const [contributionGUID, setContributionGUID] = React.useState('');
+  // const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
   const [errorMessage, setErrorMessage] = React.useState('');
   const screenWidth = window.innerWidth;
@@ -66,7 +64,9 @@ export default function RegisterTrees({}: Props) {
   const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
-
+  const [agreeToGuidelines, setAgreeToGuidelines] = React.useState(false);
+  const [agreeTerms, setAgreeTerms] = React.useState(false);
+  const [image, setImage] = React.useState('');
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
@@ -116,43 +116,60 @@ export default function RegisterTrees({}: Props) {
     plantProject: null,
     plantDate: new Date(),
     geometry: {},
+    images: [
+      {
+        imageFile: image,
+      },
+    ],
+    planter: {
+      firstname: '',
+      lastname: '',
+      email: '',
+      address: '',
+      zipCode: '',
+      city: '',
+      country: '',
+    },
   };
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
-
-  const onTreeCountChange = (e: any) => {
-    if (Number(e.target.value) < 25) {
-      setIsMultiple(false);
-    } else {
-      setIsMultiple(true);
-    }
-  };
+  const { register, handleSubmit, errors, control, reset, setValue, watch } =
+    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const submitRegisterTrees = (data: any) => {
+    console.log(data, 'Data');
+
     if (data.treeCount < 10000000) {
       if (
         geometry &&
         (geometry.type === 'Point' || geometry.features?.length >= 1)
       ) {
         setIsUploadingData(true);
+
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
           plantProject: data.plantProject,
           plantDate: new Date(data.plantDate),
           geometry: geometry,
+          images: [
+            {
+              imageFile: image,
+            },
+          ],
+          planter: {
+            firstname: data.firstName,
+            lastname: data.lastName,
+            email: data.email,
+            address: data.address,
+            zipCode: data.zipCode,
+            city: data.city,
+            country: contactDetails.country,
+          },
         };
-        postRequest(`/app/contributions`, submitData).then((res) => {
+        console.log(submitData, 'submitData');
+        postRequest(`/app/treeRegistrations`, submitData).then((res) => {
           if (!res.code) {
             setErrorMessage('');
-            setContributionGUID(res.id);
+            // setContributionGUID(res.id);
             setContributionDetails(res);
             setIsUploadingData(false);
             setRegistered(true);
@@ -216,7 +233,7 @@ export default function RegisterTrees({}: Props) {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              onChange={onTreeCountChange}
+              // onChange={onTreeCountChange}
               label={t('me:noOfTrees')}
               variant="outlined"
               name="treeCount"
@@ -278,60 +295,54 @@ export default function RegisterTrees({}: Props) {
             <span className={styles.formErrors}>{errors.species.message}</span>
           )}
         </div>
-
+        <div>
+          <UploadImages setImage={setImage} image={image} />
+        </div>
         <div className={styles.mapNote}>
-          {isMultiple ? (
-            <p>{t('me:drawPolygon')}</p>
-          ) : (
-            <p>{t('me:selectLocation')}</p>
-          )}
+          <p>{t('me:selectLocation')}</p>
         </div>
 
         <div className={`${styles.locationMap}`}>
-          {isMultiple ? (
-            <DrawMap setGeometry={setGeometry} userLocation={userLocation} />
-          ) : (
-            <MapGL
-              {...mapState}
-              {...viewport}
-              onViewportChange={_onViewportChange}
-              onStateChange={_onStateChange}
-              onClick={(event) => {
-                setplantLocation(event.lngLat);
-                setGeometry({
-                  type: 'Point',
-                  coordinates: event.lngLat,
-                });
-                setViewPort({
-                  ...viewport,
-                  latitude: event.lngLat[1],
-                  longitude: event.lngLat[0],
-                  transitionDuration: 400,
-                  transitionInterpolator: new FlyToInterpolator(),
-                  transitionEasing: d3.easeCubic,
-                });
-              }}
-              mapOptions={{
-                customAttribution:
-                  '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-              }}
-            >
-              {plantLocation ? (
-                <Marker
-                  latitude={plantLocation[1]}
-                  longitude={plantLocation[0]}
-                  offsetLeft={5}
-                  offsetTop={-16}
-                  style={{ left: '28px' }}
-                >
-                  <div className={styles.marker}></div>
-                </Marker>
-              ) : null}
-              <div className={styles.mapNavigation}>
-                <NavigationControl showCompass={false} />
-              </div>
-            </MapGL>
-          )}
+          <MapGL
+            {...mapState}
+            {...viewport}
+            onViewportChange={_onViewportChange}
+            onStateChange={_onStateChange}
+            onClick={(event) => {
+              setplantLocation(event.lngLat);
+              setGeometry({
+                type: 'Point',
+                coordinates: event.lngLat,
+              });
+              setViewPort({
+                ...viewport,
+                latitude: event.lngLat[1],
+                longitude: event.lngLat[0],
+                transitionDuration: 400,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic,
+              });
+            }}
+            mapOptions={{
+              customAttribution:
+                '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+            }}
+          >
+            {plantLocation ? (
+              <Marker
+                latitude={plantLocation[1]}
+                longitude={plantLocation[0]}
+                offsetLeft={5}
+                offsetTop={-16}
+                style={{ left: '28px' }}
+              >
+                <div className={styles.marker}></div>
+              </Marker>
+            ) : null}
+            <div className={styles.mapNavigation}>
+              <NavigationControl showCompass={false} />
+            </div>
+          </MapGL>
         </div>
 
         {/* {errorMessage !== '' ? */}
@@ -339,16 +350,72 @@ export default function RegisterTrees({}: Props) {
         <ContactDetails
           contactDetails={contactDetails}
           setContactDetails={setContactDetails}
+          register={register}
+          errors={errors}
+          setValue={setValue}
         />
 
         <div className={`${styles.formFieldLarge} ${styles.center}`}>
           <p className={styles.formErrors}>{`${errorMessage}`}</p>
         </div>
+
+        <div className={styles.formRow}>
+          <MaterialTextField
+            multiline
+            rowsMax="4"
+            label={t('donate:giftMessage')}
+            variant="outlined"
+            name={'giftMessage'}
+            // onChange={changeGiftDetails}
+          />
+        </div>
+        <div style={{ display: 'flex', paddingTop: 10 }}>
+          <div>
+            <CheckBox
+              id="guidelines"
+              name="guidelines"
+              checked={agreeToGuidelines}
+              onChange={() => {
+                setAgreeToGuidelines(!agreeToGuidelines);
+              }}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+              color={'primary'}
+            />
+          </div>
+          <label htmlFor="guidelines" style={{ paddingLeft: '9px' }}>
+            {t('agreeToGuidelines')}
+          </label>
+        </div>
+        <div style={{ display: 'flex', paddingTop: 10 }}>
+          <div>
+            <CheckBox
+              id="terms"
+              name="terms"
+              checked={agreeTerms}
+              onChange={() => {
+                setAgreeTerms(!agreeTerms);
+              }}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+              color={'primary'}
+            />
+          </div>
+          <label
+            htmlFor="terms"
+            style={{
+              paddingLeft: '9px',
+            }}
+          >
+            {t('agreeTerms')}
+          </label>
+        </div>
         <div className={styles.nextButton}>
           <button
             id={'RegTressSubmit'}
             onClick={handleSubmit(submitRegisterTrees)}
-            className="primaryButton"
+            className={`primaryButton ${
+              !(agreeTerms && agreeToGuidelines) ? styles.disabled : ''
+            }`}
+            disabled={!(agreeTerms && agreeToGuidelines)}
           >
             {' '}
             {isUploadingData ? (
@@ -360,5 +427,13 @@ export default function RegisterTrees({}: Props) {
         </div>
       </form>
     </div>
-  ) : null;
+  ) : (
+    <SingleContribution
+      // treeCount={treeCount}
+      // treeSpecies={treeSpecies}
+      // plantDate={plantDate}
+      contributionDetails={contributionDetails}
+      geometry={geometry}
+    />
+  );
 }

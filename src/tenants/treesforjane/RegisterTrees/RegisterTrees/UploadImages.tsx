@@ -10,18 +10,13 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import i18next from '../../../../../i18n';
 
 interface Props {
-  contribution: any;
-  contributionGUID: any;
-  token: any;
+  setImage: React.Dispatch<React.SetStateAction<string>>;
+  image: String;
 }
 
 const { useTranslation } = i18next;
 
-export default function UploadImages({
-  contributionGUID,
-  token,
-  contribution,
-}: Props): ReactElement {
+export default function UploadImages({ setImage, image }: Props): ReactElement {
   const [uploadedImages, setUploadedImages] = React.useState([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [files, setFiles] = React.useState([]);
@@ -39,40 +34,37 @@ export default function UploadImages({
     });
   }, []);
 
-  // React.useEffect(() => {
-  //   // Fetch images of the project
-  //   setUploadedImages(contribution.contributionImages);
-  // }, [contribution]);
-
   const uploadPhotos = (image: any) => {
     setIsUploadingData(true);
-    const submitData = {
-      imageFile: image,
-      description: '',
-    };
-    postAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images`,
-      submitData,
-      token
-    )
-      .then((res) => {
-        if (!res.code) {
-          const newUploadedImages = uploadedImages;
-          newUploadedImages.push(res);
-          setUploadedImages(newUploadedImages);
-          setIsUploadingData(false);
-          setErrorMessage(null);
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('me:contribNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('me:errorOccured') : '');
-          }
-        }
-      })
-      .catch((e) => console.log(e));
+    console.log(image, 'image');
+    setImage(image);
+    // const submitData = {
+    //   imageFile: image,
+    //   description: '',
+    // };
+    // postAuthenticatedRequest(
+    //   `/app/contributions/${contributionGUID}/images`,
+    //   submitData
+    //   // token
+    // )
+    //   .then((res) => {
+    //     if (!res.code) {
+    //       const newUploadedImages = uploadedImages;
+    //       newUploadedImages.push(res);
+    //       setUploadedImages(newUploadedImages);
+    //       setIsUploadingData(false);
+    //       setErrorMessage(null);
+    //     } else {
+    //       if (res.code === 404) {
+    //         setIsUploadingData(false);
+    //         setErrorMessage(ready ? t('me:contribNotFound') : '');
+    //       } else {
+    //         setIsUploadingData(false);
+    //         setErrorMessage(ready ? t('me:errorOccured') : '');
+    //       }
+    //     }
+    //   })
+    //   .catch((e) => console.log(e));
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -87,8 +79,8 @@ export default function UploadImages({
 
   const deleteContributionImage = (id: any) => {
     deleteAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images/${id}`,
-      token
+      `/app/contributions/${contributionGUID}/images/${id}`
+      // token
     ).then((res) => {
       if (res !== 404) {
         const uploadedImagesTemp = uploadedImages;
@@ -119,7 +111,10 @@ export default function UploadImages({
                   />
                   {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
-                    <button id={'uploadImgDelIcon'} onClick={() => deleteContributionImage(image.id)}>
+                    <button
+                      id={'uploadImgDelIcon'}
+                      onClick={() => setImage(null)}
+                    >
                       <DeleteIcon />
                     </button>
                   </div>
@@ -130,26 +125,35 @@ export default function UploadImages({
         </div>
       ) : null}
       <div className={styles.formFieldLarge}>
-        <label
-          htmlFor="upload"
-          className={styles.fileUploadContainer}
-          {...getRootProps()}
-        >
-          <button
-            onClick={uploadPhotos}
-            className="primaryButton"
-            style={{maxWidth: "200px"}}
+        {image ? (
+          <div className={styles.uploadedImageContainer}>
+            <img src={image} alt="tree" />
+            <div className={styles.uploadedImageButtonContainer}>
+              <button id={'uploadImgDelIcon'} onClick={() => setImage(null)}>
+                <DeleteIcon />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <label
+            htmlFor="upload"
+            className={styles.fileUploadContainer}
+            {...getRootProps()}
           >
-            <input {...getInputProps()} />
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('me:uploadPhotos')
-            )}
-          </button>
-          <p style={{ marginTop: '18px' }}>{t('me:dragHere')}</p>
-        </label>
+            <button
+              // onClick={uploadPhotos}
+              className="primaryButton"
+              style={{ maxWidth: '200px' }}
+            >
+              <input {...getInputProps()} />
+              {t('me:uploadPhotos')}
+            </button>
+            <p style={{ marginTop: '18px' }}>{t('me:dragHere')}</p>
+          </label>
+        )}
       </div>
     </>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }
