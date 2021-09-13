@@ -106,7 +106,7 @@ export function LocationDetails({
   location,
   setselectedLocation,
 }: DetailsProps): ReactElement {
-  const { t, i18n } = useTranslation(['treemapper', 'maps']);
+  const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
   const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
   const coordinateRef = React.useRef(null);
 
@@ -118,6 +118,7 @@ export function LocationDetails({
 
   React.useEffect(() => {
     if (
+      ready &&
       location &&
       location.samplePlantLocations &&
       location.samplePlantLocations.length > 0
@@ -135,7 +136,7 @@ export function LocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('sampleTree')} ${
+              description: `${t('maps:sampleTree')} ${
                 element.tag ? '#' + element.tag : ''
               }`,
             });
@@ -146,7 +147,7 @@ export function LocationDetails({
     } else {
       setSampleTreeImages([]);
     }
-  }, [location]);
+  }, [location, ready]);
   return (
     <>
       {location.type === 'multi' && sampleTreeImages.length > 0 && (
@@ -174,11 +175,11 @@ export function LocationDetails({
       <div className={styles.details}>
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('captureMode')}</p>
-          <div className={styles.value}>{location.captureMode}</div>
+          <div className={styles.value}>{t(location.captureMode)}</div>
         </div>
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('captureStatus')}</p>
-          <div className={styles.value}>{location.captureStatus}</div>
+          <div className={styles.value}>{t(location.captureStatus)}</div>
         </div>
         <div className={styles.singleDetail}>
           <p className={styles.title}>
@@ -250,7 +251,9 @@ export function LocationDetails({
                       {species.treeCount}{' '}
                       {species.scientificName
                         ? species.scientificName
-                        : species.otherSpecies}
+                        : species.otherSpecies && species.otherSpecies !== 'Unknown'
+                        ? species.otherSpecies:
+                        t('maps:unknown')}
                     </p>
                   );
                 })}
@@ -260,7 +263,7 @@ export function LocationDetails({
         )}
         {location.type === 'multi' && location.captureMode === 'on-site' && (
           <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('sampleTrees')}</p>
+            <p className={styles.title}>{t('maps:sampleTree')}</p>
             {/* <div className={styles.value}> */}
             {location.samplePlantLocations &&
               location.samplePlantLocations.map((spl: any, index: number) => {
@@ -273,7 +276,7 @@ export function LocationDetails({
                     >
                       {spl.scientificName
                         ? spl.scientificName
-                        : spl.scientificSpecies
+                        : spl.scientificSpecies && spl.scientificSpecies !== 'Unknown'
                         ? spl.scientificSpecies
                         : t('maps:unknown')}
                     </span>
