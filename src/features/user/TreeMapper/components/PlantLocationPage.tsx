@@ -260,7 +260,7 @@ export function LocationDetails({
         )}
         {location.type === 'multi' && location.captureMode === 'on-site' && (
           <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('sampleTrees')}</p>
+            <p className={styles.title}>{t('maps:sampleTree')}</p>
             {/* <div className={styles.value}> */}
             {location.samplePlantLocations &&
               location.samplePlantLocations.map((spl: any, index: number) => {
