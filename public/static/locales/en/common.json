@@ -70,5 +70,11 @@
   "goBack": "Go Back",
   "deleteAccountMessage": "To continue with deletion, please type `{{delete}}`",
   "deleteAccountLabel": "Type: {{delete}}",
-  "howDoesThisWork": "How does this work?"
+  "edit": "Edit",
+  "howDoesThisWork": "How does this work?",
+  "copiedToClipboard": "Copied to clipboard!",
+  "close": "Close",
+  "logout": "Logout",
+  "featured": "Featured",
+  "treeMapper": "TreeMapper"
 }

@@ -182,10 +182,9 @@ export default function CompleteSignup() {
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
-        console.log('in 401-> unauthenticated user / invalid token');
         setUser(false);
         setSubmit(false);
-        logoutUser();
+        logoutUser(`${process.env.NEXTAUTH_URL}/`);
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
@@ -267,7 +266,7 @@ export default function CompleteSignup() {
         }}>
           {/* header */}
           <div className={styles.header}>
-            <div onClick={() => logoutUser()} className={styles.headerBackIcon}>
+            <div onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.headerBackIcon}>
               <CancelIcon color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>

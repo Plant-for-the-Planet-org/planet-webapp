@@ -120,5 +120,8 @@
   "latitude": "Breitengrad",
   "longitude": "Längengrad",
   "latitudeRequired": "Breitengrad ist erforderlich",
-  "longitudeRequired": "Längengrad ist erforderlich"
+  "longitudeRequired": "Längengrad ist erforderlich",
+  "manageProject": "Projekte verwalten",
+  "descriptionForManageProjects": "Präsentiere deine Wiederaufforstungen zur Überwachung und um Spenden zu erhalten.",
+  "manageProjects": "Projekte verwalten"
 }

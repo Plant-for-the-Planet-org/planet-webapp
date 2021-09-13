@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styles from './../styles/StepForm.module.scss';
+import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { Controller, useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';

@@ -177,6 +177,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             audience={'urn:plant-for-the-planet'}
             cacheLocation={'localstorage'}
             onRedirectCallback={onRedirectCallback}
+            useRefreshTokens={true}
           >
             <ThemeProvider>
               <CssBaseline />
@@ -185,12 +186,20 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                   <ProjectPropsProvider>
                     {isMap ? (
                       <>
-                      {project ? (
-                        <MapLayout />
-                      ) : projects ? (
-                        <MapLayout />
-                      ) : null}
-                      <PlayButton setshowVideo={setshowVideo} />
+                        {project ? (
+                          <MapLayout />
+                        ) : projects ? (
+                          <MapLayout />
+                        ) : null}
+                        <div
+                          style={(config.tenantName === 'planet' ||
+                              config.tenantName === 'ttc')
+                              ? {}
+                              : { display: 'none' }
+                          }
+                        >
+                          <PlayButton setshowVideo={setshowVideo} />
+                        </div>
                       </>
                     ) : null}
                     <Component {...ProjectProps} />

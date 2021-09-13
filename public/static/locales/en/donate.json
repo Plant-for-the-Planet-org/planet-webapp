@@ -97,11 +97,12 @@
   "orgNamePublishedTax": "Company name is visible on our leaderboard and app. Tax-deduction receipts will be issued for the same name.",
   "orgNamePublished": "Company name is visible on our leaderboard and app.",
   "aboutProject": "About Project",
+  "acceptingDonations": "Accepting Donations",
   "natural-regeneration": "Natural Regeneration",
   "managed-regeneration": "Managed Regeneration",
-  "large-scale-planting": "Large Scale Planting",
+  "large-scale-planting": "Large Scale Restoration",
   "agroforestry": "Agroforestry",
-  "urban-planting": "Urban Planting",
-  "other-planting": "Other Planting",
+  "urban-planting": "Urban Restoration",
+  "other-planting": "Restoration",
   "mangroves": "Mangroves"
 }
