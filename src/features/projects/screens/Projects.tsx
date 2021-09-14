@@ -8,6 +8,7 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
+import Filters from '../components/projects/Filters';
 
 interface Props {
   projects: any;
@@ -148,6 +149,7 @@ function ProjectsList({
   return ready ? (
     <>
       <Explore />
+      <Filters />
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
