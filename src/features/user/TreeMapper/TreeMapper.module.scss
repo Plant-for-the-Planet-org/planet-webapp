@@ -412,6 +412,20 @@
   bottom: 120px;
 }
 
+.importButton {
+  padding: 5px;
+  cursor: pointer;
+  svg {
+    width: 20px;
+  }
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 @include mdTabletView {
 
