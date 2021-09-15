@@ -21,6 +21,7 @@ export default function ToggleSwitch(props: any) {
       onChange={props.onChange}
       id={props.id}
       inputProps={props.inputProps}
+      name={props.name}
     />
   );
 }
