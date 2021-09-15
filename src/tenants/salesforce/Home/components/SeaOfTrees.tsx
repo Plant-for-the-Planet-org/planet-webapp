@@ -10,7 +10,9 @@ export default function SeaOfTrees() {
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
             <h3>Sea of Trees</h3>
             <p className={styles.contentSectionSubhead}>Where Ocean Sustainability meets Trees.</p>
-            <p>Bold Ocean-Climate Action is necessary to create a just and sustainable future where everyone can thrive. We strive for Ocean Action for all, by all.<br /><br />The Salesforce Ocean Sustainability Program taps into the full power of Salesforce to protect, restore, and invest in mangroves, kelp, corals, salt marshes, sea grass, and oyster reefs.<br /><br />Improved protection, restoration, and management of blue carbon ecosystems will grow global carbon sequestration capacity, increase resilience, enhance food security, and secure livelihoods.</p>
+            <p>Bold Ocean-Climate Action is necessary to create a just and sustainable future where everyone can thrive. We strive for Ocean Action for all, by all.</p>
+            <p>The Salesforce Ocean Sustainability Program taps into the full power of Salesforce to protect, restore, and invest in mangroves, kelp, corals, salt marshes, sea grass, and oyster reefs.</p>
+            <p>The improved protection and restoration of these ocean ecosystems will grow global carbon sequestration capacity, increase resilience, enhance food security, and help secure livelihoods.</p>
             <a href="https://donate.plant-for-the-planet.org/?to=proj_7gmlF7Q8aL65V7j7AG9NW8Yy&tenant=ten_3hEjJCBs" target="_blank" rel="noopener noreferrer">
               <button>Donate to Seas of Trees Projects</button>
             </a>

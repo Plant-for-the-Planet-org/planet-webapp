@@ -57,7 +57,7 @@ export default function GrowingImpact() {
               <div key={`climate-action-${article.id}`} className={`${gridStyles.col12} ${gridStyles.colLg3} ${gridStyles.colMd6} ${styles.climateActionContent}`}>
                   <div style={{backgroundImage: `url(${article.image})`}} className={`${styles.imageContainer}`}></div>
                   <div style={{backgroundColor: `${article.bgColor}`}} className={`${styles.contentContainer}`}>
-                    <h4>{article.copy}</h4>
+                    <h5>{article.copy}</h5>
                     <h5>{article.subCopy}</h5>
                     <img src={article.foliage} alt="" className={`${styles.foliage}`} />
                   </div>
