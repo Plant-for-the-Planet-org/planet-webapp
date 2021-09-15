@@ -30,6 +30,8 @@ export default function Filters({}: Props): ReactElement {
     mangroves: true,
   });
 
+  const [filters, setFilters] = React.useState(null);
+
   React.useEffect(() => {
     function filterProjects() {
       const filteredProjects = projects.filter((project: any) => {
@@ -44,6 +46,23 @@ export default function Filters({}: Props): ReactElement {
     }
     if (projects) filterProjects();
   }, [projects, purpose, type]);
+
+  React.useEffect(() => {
+    function getFilters() {
+      const filters = projects.map((project) => {
+        const { classification } = project?.properties;
+        if(classification) {
+          return classification;
+        }
+      });
+      const uniqueFilters = [...new Set(filters)];
+      return uniqueFilters;
+    }
+    if(projects) {
+      const filters = getFilters().filter((filter) => filter);
+      setFilters(filters);
+    }
+  },[projects]);
 
   const handlePurposeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPurpose({ ...purpose, [event.target.name]: event.target.checked });
@@ -61,7 +80,7 @@ export default function Filters({}: Props): ReactElement {
           <div className={styles.dropdownIcon}></div>
         </div>
         <div className={styles.dropdownContainer}>
-          <div className={styles.filterTitle}>{t('donate:projectPurpose')}</div>
+          {/* <div className={styles.filterTitle}>{t('donate:projectPurpose')}</div>
           <FormGroup style={{ width: '100%' }}>
             <div className={styles.filterToggleRow}>
               <FormControlLabel
@@ -93,114 +112,28 @@ export default function Filters({}: Props): ReactElement {
                 <InfoIcon />
               </div>
             </div>
-          </FormGroup>
+          </FormGroup> */}
           <div className={styles.filterTitle}>{t('donate:projectType')}</div>
           <FormGroup style={{ width: '100%' }}>
-            <div className={styles.filterToggleRow}>
+            {filters && filters.map((filter:any) => {
+              return (
+                <div className={styles.filterToggleRow}>
               <FormControlLabel
                 control={
                   <Switch
-                    checked={type['natural-regeneration']}
+                    checked={type[filter]}
                     onChange={handleTypeChange}
-                    name="natural-regeneration"
+                    name={filter}
                   />
                 }
-                label={t('donate:natural-regeneration')}
+                label={t(`donate:${filter}`)}
               />
               <div className={styles.filterInfo}>
                 <InfoIcon />
               </div>
             </div>
-            <div className={styles.filterToggleRow}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={type['managed-regeneration']}
-                    onChange={handleTypeChange}
-                    name="managed-regeneration"
-                  />
-                }
-                label={t('donate:managed-regeneration')}
-              />
-              <div className={styles.filterInfo}>
-                <InfoIcon />
-              </div>
-            </div>
-            <div className={styles.filterToggleRow}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={type['large-scale-planting']}
-                    onChange={handleTypeChange}
-                    name="large-scale-planting"
-                  />
-                }
-                label={t('donate:large-scale-planting')}
-              />
-              <div className={styles.filterInfo}>
-                <InfoIcon />
-              </div>
-            </div>
-            <div className={styles.filterToggleRow}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={type['urban-planting']}
-                    onChange={handleTypeChange}
-                    name="urban-planting"
-                  />
-                }
-                label={t('donate:urban-planting')}
-              />
-              <div className={styles.filterInfo}>
-                <InfoIcon />
-              </div>
-            </div>
-            <div className={styles.filterToggleRow}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={type['other-planting']}
-                    onChange={handleTypeChange}
-                    name="other-planting"
-                  />
-                }
-                label={t('donate:other-planting')}
-              />
-              <div className={styles.filterInfo}>
-                <InfoIcon />
-              </div>
-            </div>
-            <div className={styles.filterToggleRow}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={type['agroforestry']}
-                    onChange={handleTypeChange}
-                    name="agroforestry"
-                  />
-                }
-                label={t('donate:agroforestry')}
-              />
-              <div className={styles.filterInfo}>
-                <InfoIcon />
-              </div>
-            </div>
-            <div className={styles.filterToggleRow}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={type['mangroves']}
-                    onChange={handleTypeChange}
-                    name="mangroves"
-                  />
-                }
-                label={t('donate:mangroves')}
-              />
-              <div className={styles.filterInfo}>
-                <InfoIcon />
-              </div>
-            </div>
+              );
+            })}
           </FormGroup>
         </div>
       </div>
