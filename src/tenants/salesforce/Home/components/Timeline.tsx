@@ -48,7 +48,15 @@ export default function Timeline() {
       title: '10M Trees Milestone',
       copy: 'With our TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!',
       learnMore: 'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/'
-    }
+    },
+    {
+      id: 6,
+      date: 'September 2021',
+      image: '/tenants/salesforce/images/sep-21.png',
+      title: 'Mangrove Working Group',
+      copy: 'Led by Friends of Ocean Action in collaboration with <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a>, this working group will build the capacity of demand-side stakeholders to tap into the growing blue carbon market. Salesforce joins to champion the effort and learn from the work.',
+      learnMore: 'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/'
+    },
   ];
 
   const populateSlide = (slides, slideIndex) => {

@@ -7,7 +7,7 @@ export default function GrowingImpact() {
   const articles = [
     {
       id: 1,
-      copy: 'One Salesforce team donated 40,000 trees for Earth Day.',
+      copy: 'The Field Marketing Team donated 40,000 trees on behalf of STARs accounts for Earth Day.',
       subCopy: 'Rally your team today!',
       image: '/tenants/salesforce/images/growing-impact/success-1.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-1.png',
@@ -16,8 +16,8 @@ export default function GrowingImpact() {
     },
     {
       id: 2,
-      copy: 'The Recruitment team donates a tree for every hire.',
-      subCopy: 'How can your team incorporate tree donations?',
+      copy: 'The Global Onboarding Team team donates a tree for every hire.',
+      subCopy: 'How do you benchmark goals?',
       image: '/tenants/salesforce/images/growing-impact/success-2.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
       link: 'https://www.salesforce.com/company/sustainability/',
@@ -25,7 +25,7 @@ export default function GrowingImpact() {
     },
     {
       id: 3,
-      copy: 'SEMEA Account teams committed to 1M trees.',
+      copy: 'SEMEA Account teams committed to 1M trees by 2030.',
       subCopy: 'How can you work with clients and partners?',
       image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
@@ -34,12 +34,12 @@ export default function GrowingImpact() {
     },
     {
       id: 4,
-      copy: 'The Services Industries team raised $900 from one event!',
-      subCopy: 'Events are great opportunities!',
+      copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated $10,000 to help save trees!',
       image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
       link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-      bgColor: '#1C3326'
+      bgColor: '#1C3326',
+      partnerLogo: '/tenants/salesforce/images/partner-logo.png'
     },
   ];
 
@@ -55,6 +55,7 @@ export default function GrowingImpact() {
           {articles.map((article) => {
             return (
               <div key={`climate-action-${article.id}`} className={`${gridStyles.col12} ${gridStyles.colLg3} ${gridStyles.colMd6} ${styles.climateActionContent}`}>
+                  <img src={article.partnerLogo} alt="" className={`${styles.partnerLogo}`} />
                   <div style={{backgroundImage: `url(${article.image})`}} className={`${styles.imageContainer}`}></div>
                   <div style={{backgroundColor: `${article.bgColor}`}} className={`${styles.contentContainer}`}>
                     <h4>{article.copy}</h4>
