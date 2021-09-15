@@ -31,19 +31,24 @@
     font-size: $fontSmall;
     font-weight: 700;
   }
+&.selected {
+  background: $backgroundBase;
+}
 }
 
 .filterButtonContainer {
-
   .dropdownIcon {
     width: 0;
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid $primaryFontColor;
+    &.selected {
+      transform: rotateX(180deg);
+    }
   }
   > .dropdownContainer {
-    display: none;
+    display: flex;
     top: 10px;
     flex-direction: column;
     gap: 10px;
@@ -54,14 +59,7 @@
     position: relative;
     align-items: flex-start;
     justify-content: center;
-  }
-  &:hover {
-    > .dropdownIcon {
-        transform: rotateX(180deg);
-    }
-    > .dropdownContainer {
-        display: flex;
-    }
+    animation: fade_in_show 0.5s;
   }
 }
 
@@ -88,18 +86,27 @@
 }
 
 .filterTitle {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 @include smTabletView {
-.filtersContainer {
+  .filtersContainer {
     top: 100px;
-}
+  }
 }
 
 @include mdTabletView {
-    .filtersContainer {
-        top: 110px;
-        left: 400px;
-    } 
+  .filtersContainer {
+    top: 110px;
+    left: 400px;
+  }
+}
+
+@keyframes fade_in_show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

@@ -12,8 +12,7 @@ interface Props {}
 
 export default function Filters({}: Props): ReactElement {
   const { t, ready } = useTranslation(['donate']);
-
-  const { projects, setFilteredProjects } = React.useContext(ProjectPropsContext);
+  const { projects, setFilteredProjects,filtersOpen, setFilterOpen } = React.useContext(ProjectPropsContext);
 
   const [purpose, setPurpose] = React.useState({
     restoration: true,
@@ -75,10 +74,11 @@ export default function Filters({}: Props): ReactElement {
   return (
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
-        <div className={styles.filterButton}>
+        <div onClick={()=>setFilterOpen(!filtersOpen)} className={`${styles.filterButton} ${filtersOpen?styles.selected:''}`}>
           <div className={styles.filterButtonText}>{t('donate:Filters')}</div>
-          <div className={styles.dropdownIcon}></div>
+          <div className={`${styles.dropdownIcon} ${filtersOpen?styles.selected:''}`}></div>
         </div>
+        {filtersOpen && (
         <div className={styles.dropdownContainer}>
           {/* <div className={styles.filterTitle}>{t('donate:projectPurpose')}</div>
           <FormGroup style={{ width: '100%' }}>
@@ -135,7 +135,7 @@ export default function Filters({}: Props): ReactElement {
               );
             })}
           </FormGroup>
-        </div>
+        </div>)}
       </div>
     </div>
   );

@@ -73,7 +73,9 @@ export const ProjectPropsContext = React.createContext({
   siteViewPort: null || {}, 
   setSiteViewPort:(value: {}) => {},
   filteredProjects:null || [],
-  setFilteredProjects:(value: []) => {}
+  setFilteredProjects:(value: []) => {},
+  filtersOpen:false,
+  setFilterOpen:(value:boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -100,6 +102,8 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [isMobile, setIsMobile] = React.useState(false);
   const [satellite, setSatellite] = React.useState(false);
   const [filteredProjects, setFilteredProjects] = React.useState(null);
+  const [filtersOpen, setFilterOpen] = React.useState(false);
+
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -275,7 +279,9 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         siteViewPort,
         setSiteViewPort,
         filteredProjects, 
-        setFilteredProjects
+        setFilteredProjects,
+        filtersOpen,
+        setFilterOpen
       }}
     >
       {children}
