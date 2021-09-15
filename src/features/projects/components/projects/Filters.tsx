@@ -13,7 +13,7 @@ interface Props {}
 export default function Filters({}: Props): ReactElement {
   const { t, ready } = useTranslation(['donate']);
 
-  const { projects, setProjects } = React.useContext(ProjectPropsContext);
+  const { projects, setFilteredProjects } = React.useContext(ProjectPropsContext);
 
   const [purpose, setPurpose] = React.useState({
     restoration: true,
@@ -21,30 +21,31 @@ export default function Filters({}: Props): ReactElement {
   });
 
   const [type, setType] = React.useState({
-    "natural-regeneration": true,
-    "managed-regeneration": true,
-    "large-scale-planting": true,
-    "agroforestry": true,
-    "urban-planting":true,
-    "other-planting":true,
-    "mangroves":true
+    'natural-regeneration': true,
+    'managed-regeneration': true,
+    'large-scale-planting': true,
+    agroforestry: true,
+    'urban-planting': true,
+    'other-planting': true,
+    mangroves: true,
   });
 
   React.useEffect(() => {
-      async function filterProjects() {
-      const filteredProjects = await projects.filter((project:any) => {
-          const {classification} = project?.properties;
-              if (type[classification]) {
-                  return true;
-              } else {
-                  return false;
-              }
+    function filterProjects() {
+      const filteredProjects = projects.filter((project: any) => {
+        const { classification } = project?.properties;
+        if (type[classification]) {
+          return true;
+        } else {
+          return false;
+        }
       });
-    //   setProjects(filteredProjects);
-    console.log(`filteredProjects`, filteredProjects)
+      setFilteredProjects(filteredProjects);
+      console.log(Date.now());
+      console.log(`filteredProjects`, filteredProjects);
     }
-    filterProjects();
-  }), [purpose,type];
+    if (projects) filterProjects();
+  }, [projects, purpose, type]);
 
   const handlePurposeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPurpose({ ...purpose, [event.target.name]: event.target.checked });
@@ -105,7 +106,7 @@ export default function Filters({}: Props): ReactElement {
         <div className={styles.dropdownContainer}>
           <div className={styles.filterTitle}>{t('donate:projectType')}</div>
           <FormGroup style={{ width: '100%' }}>
-          <div className={styles.filterToggleRow}>
+            <div className={styles.filterToggleRow}>
               <FormControlLabel
                 control={
                   <Switch

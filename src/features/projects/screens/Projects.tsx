@@ -127,7 +127,7 @@ function ProjectsList({
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
-    [trottledSearchValue]
+    [trottledSearchValue, projects]
   );
 
   const featuredProjects = React.useMemo(
@@ -149,7 +149,6 @@ function ProjectsList({
   return ready ? (
     <>
       <Explore />
-      <Filters />
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
