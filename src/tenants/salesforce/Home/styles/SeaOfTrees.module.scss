@@ -8,14 +8,16 @@
   position: relative;
   z-index: 999;
   height: 1062px;
-  margin-top: -292px;
-  padding-top: 124px;
+  padding-top: 84px;
   @include xsPhoneView {
     background-size: auto 1722px;
     height: 1722px;
   }
+  * {
+    text-align: center;
+  }
   button {
-    background: #032d60;
+    background: #0176d3;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -26,6 +28,13 @@
     color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
+    margin-bottom: 50px;
+  }
+  hr {
+    border: none;
+    background-color: #0b827c;
+    height: 1px;
+    margin-bottom: 30px;
   }
   .seaOfTrees {
     padding-bottom: 150px;
@@ -79,6 +88,7 @@
     img {
       margin: 0 auto 30px;
       display: block;
+      width: 100%;
       @include lgLaptopView {
         margin: 0;
       }
@@ -87,6 +97,9 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+    .seaOfTreesImagesContainer {
+      margin-bottom: 30px;
     }
   }
 

@@ -26,7 +26,7 @@ export default function About({ tenantScore, leaderboard }: Props) {
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} />
         <ContentSection />
-        {/* <SeaOfTrees /> */}
+        <SeaOfTrees />
         <LeaderBoard leaderboard={leaderboard} />
         <GrowingImpact />
         <ClimateAction />
