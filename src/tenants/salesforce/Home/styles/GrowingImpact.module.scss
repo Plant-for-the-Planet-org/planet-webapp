@@ -81,7 +81,10 @@
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
     justify-content: space-between;
-    height: 240px;
+    // align-items: center;
+    height: 230px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   .foliageWrapper {
     border-bottom-left-radius: 16px;
@@ -145,6 +148,14 @@
   h5 {
     color: #ffffff;
     text-align: center;
+    padding-top: 20px;
+    margin-bottom: 16px;
+    @include lgLaptopView {
+      margin-bottom: 5px;
+    }
+    + h5 {
+      padding-top: 0;
+    }
   }
 }
 

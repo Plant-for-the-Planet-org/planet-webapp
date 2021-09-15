@@ -71,7 +71,7 @@ export default function Timeline() {
                 <span className={styles.timelineDate}>{moment.date}</span>
                 <h4>{moment.title}</h4>
                 <p dangerouslySetInnerHTML={{ __html: moment.copy }} />
-                <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>
+                {moment.learnMore && <a href={moment.learnMore} className={styles.timelineLearnMore} target="_blank" rel="noreferrer">learn more</a>}
               </div>
             );
           })}

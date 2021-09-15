@@ -45,6 +45,7 @@ export default function ProjectsMap(): ReactElement {
     selectedMode,
     hoveredPl,
     setIsPolygonMenuOpen,
+    setFilterOpen
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
@@ -113,6 +114,7 @@ export default function ProjectsMap(): ReactElement {
     setHoveredPl(null);
     setPopupData({ ...popupData, show: false });
     setIsPolygonMenuOpen(false);
+    setFilterOpen(false);
     if (e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         for (const key in plantLocations) {

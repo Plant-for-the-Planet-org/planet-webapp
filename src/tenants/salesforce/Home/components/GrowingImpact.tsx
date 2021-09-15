@@ -58,7 +58,7 @@ export default function GrowingImpact() {
                   <img src={article.partnerLogo} alt="" className={`${styles.partnerLogo}`} />
                   <div style={{backgroundImage: `url(${article.image})`}} className={`${styles.imageContainer}`}></div>
                   <div style={{backgroundColor: `${article.bgColor}`}} className={`${styles.contentContainer}`}>
-                    <h4>{article.copy}</h4>
+                    <h5>{article.copy}</h5>
                     <h5>{article.subCopy}</h5>
                     <img src={article.foliage} alt="" className={`${styles.foliage}`} />
                   </div>
