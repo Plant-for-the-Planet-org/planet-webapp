@@ -87,13 +87,19 @@
     padding-right: 15px;
   }
   .foliageWrapper {
-    // margin-top: auto;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
   }
   .foliage {
     margin-bottom: 0px;
     vertical-align: bottom;
+  }
+  .partnerLogo {
+    position: absolute;
+    width: 90px;
+    height: auto;
+    top: -30px;
+    left: 0px;
   }
 }
 

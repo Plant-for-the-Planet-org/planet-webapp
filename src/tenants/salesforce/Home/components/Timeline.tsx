@@ -52,11 +52,11 @@ export default function Timeline() {
     {
       id: 6,
       date: 'September 2021',
-      image: '/tenants/salesforce/images/mar.png',
+      image: '/tenants/salesforce/images/sep-21.png',
       title: 'Mangrove Working Group',
       copy: 'Led by Friends of Ocean Action in collaboration with <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a>, this working group will build the capacity of demand-side stakeholders to tap into the growing blue carbon market. Salesforce joins to champion the effort and learn from the work.',
-      learnMore: ''
-    }
+      learnMore: 'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/'
+    },
   ];
 
   const populateSlide = (slides, slideIndex) => {
