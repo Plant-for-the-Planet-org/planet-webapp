@@ -41,8 +41,6 @@ export default function Filters({}: Props): ReactElement {
         }
       });
       setFilteredProjects(filteredProjects);
-      console.log(Date.now());
-      console.log(`filteredProjects`, filteredProjects);
     }
     if (projects) filterProjects();
   }, [projects, purpose, type]);
@@ -59,7 +57,7 @@ export default function Filters({}: Props): ReactElement {
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
         <div className={styles.filterButton}>
-          <div className={styles.filterButtonText}>{t('donate:purpose')}</div>
+          <div className={styles.filterButtonText}>{t('donate:Filters')}</div>
           <div className={styles.dropdownIcon}></div>
         </div>
         <div className={styles.dropdownContainer}>
@@ -96,14 +94,6 @@ export default function Filters({}: Props): ReactElement {
               </div>
             </div>
           </FormGroup>
-        </div>
-      </div>
-      <div className={styles.filterButtonContainer}>
-        <div className={styles.filterButton}>
-          <div className={styles.filterButtonText}>{t('donate:type')}</div>
-          <div className={styles.dropdownIcon}></div>
-        </div>
-        <div className={styles.dropdownContainer}>
           <div className={styles.filterTitle}>{t('donate:projectType')}</div>
           <FormGroup style={{ width: '100%' }}>
             <div className={styles.filterToggleRow}>
