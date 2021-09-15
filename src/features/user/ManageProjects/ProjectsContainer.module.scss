@@ -1,0 +1,151 @@
+@import '../../../theme/theme';
+
+.projectsContainer {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+}
+
+//  the list of projects
+.listProjects {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  background-color: $backgroundColor;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
+  width: fit-content;
+}
+
+.singleProject {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 360px;
+  justify-content: space-between;
+  color: $primaryFontColor;
+  border-bottom: 1px solid #DDDBDA;
+  padding: 20px;
+  background-color: $backgroundColor;
+  // &:hover{
+  //   // background-color: #f5f5f5;
+  // }
+  
+}
+.projectImage{
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: none;
+}
+.noProjectImage{
+  width: 100%;
+  min-width: 150px;
+  min-height: 120px;
+  height: auto;
+  background-color: $primaryColor;
+  display: none;
+}
+.projectInformation{
+  flex-grow: 1;
+  padding: 16px;
+}
+.projectName{
+  font-weight: bold;
+  font-size: 16px;
+}
+.projectClassification{
+  text-transform: capitalize;
+  margin-top: 10px;
+}
+.projectLinksContainer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  padding-top: 0px;
+}
+.primaryLink{
+  background-color: #3498db;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: bold;
+  height: 34px;
+  width: 130px;
+  &:hover{
+    cursor: pointer;
+  }
+}
+.secondaryLink{
+  border:1px solid #3498db;
+  border-radius: 20px;
+  color: #3498db;
+  font-weight: bold;
+  height: 34px;
+  width: 130px;
+  &:hover{
+    cursor: pointer;
+  }
+}
+.projectLabels{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.projectLabel{
+  background-color: $backgroundColorDark;
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: fit-content;
+  margin-right: 16px;
+  margin-bottom: 10px;
+}
+.projectNotFound {
+  font-family: $primaryFontFamily;
+  text-align: center;
+  padding: 0px 20px;
+  margin-top: 20px;
+  h2 {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.projectNotFoundImage {
+  width: 100%;
+}
+
+@include smTabletView {
+  .listProjects {
+    padding: 0px;
+  }
+}
+@include mdTabletView {
+  .singleProject{
+    max-width: 800px;
+    flex-direction: row;
+  }
+  .projectLinksContainer{
+    flex-direction: column;
+  }
+  .projectImage{
+    width: 150px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+  .noProjectImage{
+    width: 150px;
+    height: auto;
+    background-color: $primaryColor;
+    display: block;
+  }
+
+}

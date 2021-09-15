@@ -106,7 +106,7 @@ function PaymentDetails({
       setDonationID,
       token,
     });
-    setDonationUid(donation.uid)
+    setDonationUid(donation.uid);
     setaskpublishName(!donation.hasPublicProfile);
     setpublishName(donation.hasPublicProfile);
     setDonationID(donation.id);
@@ -131,7 +131,7 @@ function PaymentDetails({
       token,
       setDonationStep,
       donorDetails,
-      country
+      country,
     });
   };
 
@@ -189,10 +189,6 @@ function PaymentDetails({
           </div>
         </div>
 
-        {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
-        )}
-
         {contactDetails && (
           <div className={styles.showContactDetails}>
             {contactDetails.companyName ? (
@@ -215,20 +211,20 @@ function PaymentDetails({
             </p>
             <p className={styles.showContactDetailsAddress}>
               {`${contactDetails.zipCode}, ${t(
-                  'country:' + contactDetails.country.toLowerCase()
-                )
-              }`}
+                'country:' + contactDetails.country.toLowerCase()
+              )}`}
             </p>
             <p className={styles.showContactDetailsAddress}>
               {`${contactDetails.email}`}
             </p>
 
             {giftDetails && giftDetails.recipientName && (
-              <div style={{marginTop:'12px',fontStyle:'italic'}}>
+              <div style={{ marginTop: '12px', fontStyle: 'italic' }}>
                 <p className={styles.showContactDetailsName}>
-                  {directGift && directGift.type === 'individual' ?
-                      t('donate:giftToName')
-                    : t('donate:thisDonationSupports')}{' '} {giftDetails.recipientName}
+                  {directGift && directGift.type === 'individual'
+                    ? t('donate:giftToName')
+                    : t('donate:thisDonationSupports')}{' '}
+                  {giftDetails.recipientName}
                 </p>
                 {giftDetails.email && (
                   <p className={styles.showContactDetailsAddress}>
@@ -243,6 +239,10 @@ function PaymentDetails({
               </div>
             )}
           </div>
+        )}
+
+        {paymentError && (
+          <div className={styles.paymentError}>{paymentError}</div>
         )}
 
         <div className={styles.treeDonationContainer}>

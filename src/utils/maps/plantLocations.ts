@@ -10,33 +10,42 @@ export function zoomToPlantLocation(
   setViewPort: Function,
   duration = 1200
 ) {
-  const bbox = turf.bbox(geoJson);
-  const { longitude, latitude, zoom } = new WebMercatorViewport(
-    viewport
-  ).fitBounds(
-    [
-      [bbox[0], bbox[1]],
-      [bbox[2], bbox[3]],
-    ],
-    {
-      padding: {
-        top: 50,
-        bottom: isMobile ? 120 : 50,
-        left: isMobile ? 50 : 400,
-        right: isMobile ? 50 : 100,
-      },
-    }
-  );
-  const newViewport = {
-    ...viewport,
-    longitude,
-    latitude,
-    zoom,
-    transitionDuration: duration,
-    transitionInterpolator: new FlyToInterpolator(),
-    transitionEasing: d3.easeCubic,
-  };
-  setViewPort(newViewport);
+  if (viewport.width && viewport.height) {
+    const bbox = turf.bbox(geoJson);
+    const { longitude, latitude, zoom } = new WebMercatorViewport(
+      viewport
+    ).fitBounds(
+      [
+        [bbox[0], bbox[1]],
+        [bbox[2], bbox[3]],
+      ],
+      {
+        padding: {
+          top: 50,
+          bottom: isMobile ? 120 : 50,
+          left: isMobile ? 50 : 400,
+          right: isMobile ? 50 : 100,
+        },
+      }
+    );
+    const newViewport = {
+      ...viewport,
+      longitude,
+      latitude,
+      zoom,
+      transitionDuration: duration,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionEasing: d3.easeCubic,
+    };
+    setViewPort(newViewport);
+  } else {
+    const newViewport = {
+      ...viewport,
+      height: window.innerHeight,
+      width: window.innerWidth,
+    };
+    setViewPort(newViewport);
+  }
 }
 
 export async function getAllPlantLocations(project: string) {

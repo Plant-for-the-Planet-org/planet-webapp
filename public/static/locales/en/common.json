@@ -61,7 +61,7 @@
   "blogs": "Blogs",
   "faqs": "FAQs",
   "annualReports": "Annual Reports",
-  "skipIntroVideo":"Skip Intro",
+  "skipIntroVideo": "Skip Intro",
   "mapInfo": "Map Credits",
   "aboutUs": "About Us",
   "alternativelyEditProfile": "Alternatively you can mark your profile private by visiting Edit Profile.",
@@ -69,5 +69,12 @@
   "deleteIrreversible": "I also understand that account deletion of {{email}} is irreversible.",
   "goBack": "Go Back",
   "deleteAccountMessage": "To continue with deletion, please type `{{delete}}`",
-  "deleteAccountLabel": "Type: {{delete}}"
+  "deleteAccountLabel": "Type: {{delete}}",
+  "edit": "Edit",
+  "howDoesThisWork": "How does this work?",
+  "copiedToClipboard": "Copied to clipboard!",
+  "close": "Close",
+  "logout": "Logout",
+  "featured": "Featured",
+  "treeMapper": "TreeMapper"
 }

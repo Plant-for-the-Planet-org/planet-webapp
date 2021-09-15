@@ -23,7 +23,8 @@ export default function Project({
     siteExists,
     rasterData,
     setRasterData,
-    isMobile
+    isMobile,
+    setSiteViewPort
   } = React.useContext(ProjectPropsContext);
 
   async function loadRasterData() {
@@ -42,7 +43,6 @@ export default function Project({
   React.useEffect(() => {
     if (siteExists) {
       loadRasterData();
-      const isMobileTemp = window.innerWidth <= 767;
       zoomToProjectSite(
         {
           type: 'FeatureCollection',
@@ -50,8 +50,8 @@ export default function Project({
         },
         selectedSite,
         viewport,
-        isMobileTemp,
         setViewPort,
+        setSiteViewPort,
         4000
       );
     } else {

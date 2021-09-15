@@ -61,6 +61,7 @@
   "blogs": "Blogs",
   "faqs": "FAQs",
   "annualReports": "Rapports annuels",
+  "skipIntroVideo": "Sauter l'introduction",
   "mapInfo": "Crédits cartographiques",
   "aboutUs": "À propos de nous",
   "alternativelyEditProfile": "Vous pouvez également marquer votre profil comme privé en visitant la page Modifier le profil.",
@@ -68,5 +69,6 @@
   "deleteIrreversible": "Je comprends également que la suppression du compte de {{email}} est irréversible.",
   "goBack": "Retour",
   "deleteAccountMessage": "Pour continuer la suppression, veuillez taper `{{delete}}`",
-  "deleteAccountLabel": "Taper : {{delete}}"
+  "deleteAccountLabel": "Taper : {{delete}}",
+  "howDoesThisWork": "Comment cela fonctionne-t-il ?"
 }

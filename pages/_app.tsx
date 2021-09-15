@@ -26,6 +26,7 @@ import ProjectPropsProvider, {
   ProjectPropsContext,
 } from '../src/features/common/Layout/ProjectPropsContext';
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
+import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -176,6 +177,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             audience={'urn:plant-for-the-planet'}
             cacheLocation={'localstorage'}
             onRedirectCallback={onRedirectCallback}
+            useRefreshTokens={true}
           >
             <ThemeProvider>
               <CssBaseline />
@@ -183,11 +185,22 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                 <Layout>
                   <ProjectPropsProvider>
                     {isMap ? (
-                      project ? (
-                        <MapLayout />
-                      ) : projects ? (
-                        <MapLayout />
-                      ) : null
+                      <>
+                        {project ? (
+                          <MapLayout />
+                        ) : projects ? (
+                          <MapLayout />
+                        ) : null}
+                        <div
+                          style={(config.tenantName === 'planet' ||
+                              config.tenantName === 'ttc')
+                              ? {}
+                              : { display: 'none' }
+                          }
+                        >
+                          <PlayButton setshowVideo={setshowVideo} />
+                        </div>
+                      </>
                     ) : null}
                     <Component {...ProjectProps} />
                   </ProjectPropsProvider>

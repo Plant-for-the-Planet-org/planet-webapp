@@ -1,0 +1,9 @@
+@import '../../../theme/theme';
+
+.copyButtonContainer {
+    cursor: pointer;
+    padding: 5px 8px;
+    > svg {
+        width: 10px;
+    }
+}

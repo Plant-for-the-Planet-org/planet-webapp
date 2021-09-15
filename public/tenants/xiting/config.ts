@@ -6,7 +6,7 @@ const config = {
   tenantGoal:50000,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },

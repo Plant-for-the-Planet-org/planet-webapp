@@ -64,9 +64,11 @@ export default function NavbarComponent(props: any) {
     } else if (auth0Error.message === 'Invalid state') {
       setUser(null);
     } else {
-      alert(auth0Error.message);
+      if (auth0Error.message) {
+        alert(auth0Error.message);
+      }
       setUser(null);
-      logoutUser();
+      logoutUser(`${process.env.NEXTAUTH_URL}/`);
     }
   }
 
@@ -173,7 +175,7 @@ export default function NavbarComponent(props: any) {
                 </div>
               </Link>
             ) : (
-              <></>
+              <div key={link}></div>
             );
           }
         })}

@@ -73,5 +73,8 @@
   "in-dispute": "En disputa",
   "dispute-lost": "Disputa perdida",
   "nameForest": "El Bosque de {{name}}",
-  "taxReceipt": "Recibo de impuestos"
+  "taxReceipt": "Recibo de impuestos",
+  "setTarget": "Fijar el objetivo..",
+  "targetSave": "Guardar",
+  "targetErrorMessage": "El número debe ser positivo o mayor que cero"
 }

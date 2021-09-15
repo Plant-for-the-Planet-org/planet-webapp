@@ -82,7 +82,7 @@ export default function PlantLocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('sampleTree')} #${element.tag}`,
+              description: `${t('sampleTree')} ${element.tag? '#'+element.tag:''}`,
             });
           }
         }
@@ -260,11 +260,11 @@ export default function PlantLocationDetails({
                           >
                             {spl.scientificName
                               ? spl.scientificName
-                              : spl.scientificSpecies}
+                              : spl.scientificSpecies?spl.scientificSpecies:t('unknown')}
                           </span>
                           <br />
-                          {t('tag')} #{spl?.tag} • {spl?.measurements?.height}
-                          {t('meterHigh')}• {spl?.measurements?.width}
+                          {spl.tag?`${t('tag')} #${spl.tag} • `:null}{spl?.measurements?.height}
+                          {t('meterHigh')} • {spl?.measurements?.width}
                           {t('cmWide')}
                         </div>
                       );
@@ -280,7 +280,7 @@ export default function PlantLocationDetails({
                   <span>
                     {plantLocation.scientificName
                       ? plantLocation.scientificName
-                      : plantLocation.scientificSpecies}
+                      : plantLocation.scientificSpecies?plantLocation.scientificSpecies:t('unknown')}
                   </span>
                 </div>
               </div>
@@ -292,7 +292,7 @@ export default function PlantLocationDetails({
                   <div className={styles.detailTitle}>{t('measurements')}</div>
                   <div className={styles.detailValue}>
                     {plantLocation?.measurements?.height}
-                    {t('meterHigh')}• {plantLocation?.measurements?.width}
+                    {t('meterHigh')} • {plantLocation?.measurements?.width}
                     {t('cmWide')}
                   </div>
                 </div>
@@ -323,7 +323,7 @@ export default function PlantLocationDetails({
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  TreeMapper
+                 {t('treemapper:treeMapper')}
                 </a>
               </div>
             </div>

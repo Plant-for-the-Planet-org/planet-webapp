@@ -203,9 +203,9 @@ video {
 //   margin: 0 10px 40px 0 !important;
 // }
 
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
-  display: none;
-}
+// .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib-inner {
+//   display: none;
+// }
 
 @font-face {
   font-family: 'Pampers Script';
@@ -219,6 +219,18 @@ video {
   src: url('/tenants/pampers/HarmoniaSansPro-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+}
+.unDecadeFill {
+  fill: $undecadeFill;
+}
+
+.iconFillNone {
+  fill: none;
+  stroke: $primaryFontColor;
+}
+
+.iconFillColor {
+  fill: $primaryFontColor;
 }
 
 .primaryButton,
@@ -254,7 +266,7 @@ video {
 .secondaryButton {
   min-width: 240px;
   background-image: none;
-  background-color: $blueishGrey;
+  background-color: $backgroundColorDark;
   color: $primaryFontColor;
   p {
     margin-left: 6px;
@@ -275,9 +287,9 @@ button {
   padding-left: 40px;
 }
 
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
-  margin: 0 20px 25px 0;
-}
+// .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+//   margin: 0 20px 25px 0;
+// }
 
 @font-face {
   font-family: 'HarmoniaSansPro';
@@ -326,9 +338,161 @@ button {
     max-width: 100%;
     border-radius: 0px;
   }
+  .profilePage {
+    padding-top: 80px !important;
+  }
 }
 
 .read-more-button {
   font-weight: bold;
   cursor: pointer;
+}
+
+// Profile page
+.profilePageTitle {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: $primaryFontColor;
+}
+.profilePageSubTitle {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: $primaryFontColor;
+}
+.profilePage {
+  // max-width: 1000px;
+  background-color: $backgroundBase;
+  margin-bottom: 80px;
+  padding: 20px;
+  min-height: 100vh;
+  @include smTabletView {
+    padding: 40px;
+    margin-bottom: 0px;
+    margin-top: 80px;
+  }
+}
+
+.profilePageHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.topLoader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 1031;
+}
+
+// Loader for Buttons
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Form Styles
+
+.formErrors {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: 6px;
+  max-width: 320px;
+  margin-bottom: -18px;
+}
+
+.vizzuality__legend-item-container {
+  background-color: $backgroundColor;
+}
+.vizzuality__c-timestep .vizzuality__player-btn > svg {
+  fill: $primaryFontColor;
+}
+
+.MuiSvgIcon-root,
+.MuiNativeSelect-icon {
+  path {
+    fill: $primaryFontColor;
+  }
+}
+
+.MuiStepLabel-label.MuiStepLabel-active,
+.MuiStepLabel-label.MuiStepLabel-completed,
+.MuiStepLabel-label {
+  color: $primaryFontColor !important;
+}
+.MuiInputBase-input {
+  color: $primaryFontColor !important;
+}
+
+.mapboxgl-ctrl-group {
+  filter: $mapboxIcon;
+}
+
+input:autofill,
+input:-webkit-autofill {
+  background-color: $backgroundColorDark !important;
+  color: $primaryFontColor !important;
+}
+.MuiSelect-icon,
+.MuiNativeSelect-icon {
+  fill: $primaryFontColor !important;
+}
+.MuiNativeSelect-select:not([multiple]) option,
+.MuiNativeSelect-select:not([multiple]) optgroup {
+  background-color: $backgroundColor !important;
+}
+.MuiAlert-message{
+  color: $primaryFontColor!important;
+}
+
+.suggestions-container {
+  position: absolute;
+  z-index: 10;
+  color: $primaryFontColor;
+  background-color: $backgroundColorDark;
+  max-height: 200px;
+  overflow: scroll;
+  box-shadow: 0px 3px 6px -3px rgba($color: #000000, $alpha: 0.26);
+  min-width: 100%;
+  .suggestion {
+    min-width: 100%;
+    &:nth-child(even) {
+      background-color: rgba(var(--background-color-dark),0.6);
+    }
+    padding: 12px;
+    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+    &:hover{
+      cursor: pointer;
+      background-color: $backgroundColorDark;
+    }
+  }
 }
