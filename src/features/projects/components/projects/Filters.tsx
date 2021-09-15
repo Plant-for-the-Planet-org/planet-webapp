@@ -115,9 +115,9 @@ export default function Filters({}: Props): ReactElement {
           </FormGroup> */}
           <div className={styles.filterTitle}>{t('donate:projectType')}</div>
           <FormGroup style={{ width: '100%' }}>
-            {filters && filters.map((filter:any) => {
+            {filters && filters.map((filter:any, index:number) => {
               return (
-                <div className={styles.filterToggleRow}>
+                <div key={index} className={styles.filterToggleRow}>
               <FormControlLabel
                 control={
                   <Switch
