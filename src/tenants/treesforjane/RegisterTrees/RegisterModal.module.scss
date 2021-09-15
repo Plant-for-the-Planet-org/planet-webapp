@@ -60,7 +60,14 @@
   text-align: center;
   color: $primaryFontColor;
 }
-
+.contribDescription {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: $primaryFontColor;
+}
 .inputField {
   margin-top: 20px;
 }
