@@ -11,17 +11,21 @@
   // height: 1142px;
   margin-top: -292px;
   padding-top: 124px;
+  @include xsPhoneView {
+    background-size: auto 1882px;
+    height: 1882px;
+  }
   @include mdTabletView {
     background-size: auto 1422px;
     height: 1422px;
   }
   @include lgLaptopView {
+    background-size: auto 1272px;
+    height: 1272px;
+  }
+  @include xlDesktopView {
     background-size: auto 1142px;
     height: 1142px;
-  }
-  @include xsPhoneView {
-    background-size: auto 1882px;
-    height: 1882px;
   }
   .contentSection {
     padding-bottom: 150px;
