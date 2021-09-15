@@ -55,23 +55,18 @@ export default function GrowingImpact() {
           {articles.map((article) => {
             return (
               <div key={`climate-action-${article.id}`} className={`${gridStyles.col12} ${gridStyles.colLg3} ${gridStyles.colMd6} ${styles.climateActionContent}`}>
-                {/* <a href={article.link} target="_blank" rel="noreferrer"> */}
                   <div style={{backgroundImage: `url(${article.image})`}} className={`${styles.imageContainer}`}></div>
                   <div style={{backgroundColor: `${article.bgColor}`}} className={`${styles.contentContainer}`}>
                     <h4>{article.copy}</h4>
                     <h5>{article.subCopy}</h5>
                     <img src={article.foliage} alt="" className={`${styles.foliage}`} />
                   </div>
-                  {/* <div className={`${styles.foliageWrapper}`} style={{backgroundColor: `${article.bgColor}`}}>
-                    <img src={article.foliage} alt="" className={`${styles.foliage}`} />
-                  </div> */}
-                {/* </a> */}
               </div>
             );
           })}
         </div>
       </div>
-        <Timeline />
+      <Timeline />
     </section>
   );
 }

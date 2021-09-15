@@ -45,15 +45,15 @@
   p {
     font-family: $primaryFontFamily;
     font-style: normal;
-    font-weight: normal;
+    font-weight: normal !important;
     font-size: 15px;
     line-height: 24px;
     color: #181818;
 
     @include lgLaptopView {
-      font-size: 15px;
-      line-height: 24px;
-      margin-bottom: 10px;
+      font-size: 15px !important;
+      line-height: 24px !important;
+      margin-bottom: 10px !important;
     }
 
     a {
