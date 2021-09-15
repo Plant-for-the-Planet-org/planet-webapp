@@ -128,9 +128,9 @@ export default function Filters({}: Props): ReactElement {
                 }
                 label={t(`donate:${filter}`)}
               />
-              <div className={styles.filterInfo}>
+              {/* <div className={styles.filterInfo}>
                 <InfoIcon />
-              </div>
+              </div> */}
             </div>
               );
             })}

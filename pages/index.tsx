@@ -118,7 +118,7 @@ export default function Donate({
           <></>
         )
       ) : null}
-      <Filters />
+      {showProjects && <Filters />}
     </>
   );
 }
