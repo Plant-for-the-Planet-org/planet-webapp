@@ -87,7 +87,7 @@ export default function Filters({}: Props): ReactElement {
             filtersOpen ? styles.selected : ''
           }`}
         >
-          <div className={styles.filterButtonText}>{t('donate:Filters')}</div>
+          <div className={styles.filterButtonText}>{t('donate:filters')}</div>
           <div
             className={`${styles.dropdownIcon} ${
               filtersOpen ? styles.selected : ''

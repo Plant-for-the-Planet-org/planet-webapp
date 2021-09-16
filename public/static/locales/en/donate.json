@@ -110,5 +110,6 @@
   "type":"Type",
   "projectType":"Project Type",
   "conservation":"Conservation",
-  "restoration":"Restoration"
+  "restoration":"Restoration",
+  "filters": "Filters"
 }
