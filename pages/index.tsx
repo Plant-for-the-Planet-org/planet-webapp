@@ -7,6 +7,7 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
+import Filters from '../src/features/projects/components/projects/Filters';
 
 interface Props {
   initialized: Boolean;
@@ -28,6 +29,7 @@ export default function Donate({
     setShowProjects,
     setsearchedProjects,
     setZoomLevel,
+    filteredProjects
   } = React.useContext(ProjectPropsContext);
 
   const router = useRouter();
@@ -85,7 +87,7 @@ export default function Donate({
   }, [currencyCode]);
 
   const ProjectsProps = {
-    projects,
+    projects:filteredProjects,
     showProjects,
     setShowProjects,
     setsearchedProjects,
@@ -101,7 +103,7 @@ export default function Donate({
   return (
     <>
       {initialized ? (
-        projects && initialized ? (
+        filteredProjects && initialized ? (
           <>
             <GetAllProjectsMeta />
             <ProjectsList {...ProjectsProps} />
@@ -116,6 +118,7 @@ export default function Donate({
           <></>
         )
       ) : null}
+      {showProjects && <Filters />}
     </>
   );
 }

@@ -2,11 +2,11 @@
 
 .timelineSection {
   width: 100vw;
-  background-image: url('/tenants/salesforce/images/timeline.png');
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  background-size: auto 575px;
-  padding: 0 0 270px;
+  // background-image: url('/tenants/salesforce/images/timeline.png');
+  // background-position: bottom center;
+  // background-repeat: no-repeat;
+  // background-size: auto 575px;
+  // padding: 0 0 270px;
 
   h3 {
     font-family: $secondaryFontFamily;
@@ -16,7 +16,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032D60;
+    color: #032d60;
     margin-bottom: 50px;
     position: absolute;
     top: 80px;
@@ -38,36 +38,36 @@
     line-height: 26px;
     text-align: center;
     letter-spacing: -0.001em;
-    color: #032D60;
+    color: #032d60;
     margin-bottom: 5px;
   }
 
   p {
     font-family: $primaryFontFamily;
     font-style: normal;
-    font-weight: normal;
+    font-weight: normal !important;
     font-size: 15px;
     line-height: 24px;
     color: #181818;
 
     @include lgLaptopView {
-      font-size: 15px;
-      line-height: 24px;
-      margin-bottom: 10px;
+      font-size: 15px !important;
+      line-height: 24px !important;
+      margin-bottom: 10px !important;
     }
 
     a {
       text-decoration: underline;
-      color: #0B5CAB;
+      color: #0b5cab;
     }
   }
 }
 
 .timelineRow {
-  background-image: url('/tenants/salesforce/images/dotted-line.png');
-  background-position: 50% 217px;
+  background-image: url('/tenants/salesforce/images/straight-line.png');
+  background-position: 50% 220px;
   background-repeat: repeat-x;
-  background-size: auto 76px;
+  background-size: contain;
   width: 100vw;
 }
 
@@ -85,7 +85,7 @@
   line-height: 20px;
   text-align: center;
   letter-spacing: -0.002em;
-  color: #032D60;
+  color: #032d60;
   display: block;
   margin-bottom: 17px;
 }
@@ -103,9 +103,9 @@
   font-size: $fontSmall;
   line-height: 16px;
   text-transform: uppercase;
-  color: #0176D3;
+  color: #0176d3;
   &:after {
-    content: "";
+    content: '';
     margin-left: 5px;
     display: inline-block;
     width: 6px;
@@ -174,6 +174,20 @@
   }
 }
 
+.progressBarContainer {
+  width: 250px;
+  height: 10px;
+  background-color: #e5e5e5;
+  border-radius: 6px;
+}
+
+.progressBar {
+  height: 100%;
+  width: 25%;
+  background-color: #0176d3;
+  border-radius: 6px;
+}
+
 .timelineMobileNav {
   position: absolute;
   bottom: 0;
@@ -189,7 +203,7 @@
   display: block;
   width: 10px;
   height: 10px;
-  border: 1px solid #0176D3;
+  border: 1px solid #0176d3;
   box-sizing: border-box;
   border-radius: 11px;
   cursor: pointer;
@@ -199,10 +213,10 @@
   display: block;
   width: 10px;
   height: 10px;
-  border: 1px solid #0176D3;
+  border: 1px solid #0176d3;
   box-sizing: border-box;
   border-radius: 11px;
-  background-color: #0176D3;
+  background-color: #0176d3;
   cursor: default;
 }
 
@@ -213,14 +227,21 @@
 }
 
 .timelineButtonArrowPrev {
-  margin-right: 20px;
+  position: absolute;
+  top: 202px;
+  left: 0px;
+  background-color: white;
+  cursor: pointer;
   &[disabled] {
     opacity: 0;
   }
 }
 
 .timelineButtonArrowNext {
-  margin-left: 10px;
+  position: absolute;
+  top: 202px;
+  right: 0px;
+  background-color: white;
   cursor: pointer;
   &[disabled] {
     opacity: 0;
@@ -230,4 +251,20 @@
 
 .timelineButtonDot {
   margin-right: 10px;
+}
+
+.showDesktop {
+  display: none;
+
+  @include lgLaptopView {
+    display: block;
+  }
+}
+
+.showMobile {
+  display: block;
+
+  @include lgLaptopView {
+    display: none;
+  }
 }

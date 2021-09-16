@@ -13,15 +13,12 @@ export default function Landing(tenantScore: Props) {
     <section className={styles.landingSection}>
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
-          <h1>Plant the Seeds for a More Sustainable Future</h1>
-          <Link href="/">
-            <button>Start Planting</button>
-          </Link>
-        </div>
-        <div className={styles.landingContentBottom}>
           <h3>Trees Conserved, Restored, and Grown</h3>
           <TreeCounter target={100000000} planted={tenantScoreData} />
-          <p>This is Salesforce’s progress in achieving our goal of 100,000,000 trees by 2030.</p>
+          <p>Salesforce is committed to planting 100,000,000 trees by 2030.</p>
+          <Link href="/">
+            <button>Help us get there</button>
+          </Link>
         </div>
       </div>
     </section>
