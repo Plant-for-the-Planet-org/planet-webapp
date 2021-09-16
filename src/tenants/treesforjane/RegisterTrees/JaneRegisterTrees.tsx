@@ -359,7 +359,7 @@ export default function RegisterTrees({}: Props) {
           <p className={styles.formErrors}>{`${errorMessage}`}</p>
         </div>
 
-        <div className={styles.formRow}>
+        {/* <div className={styles.formRow}>
           <MaterialTextField
             multiline
             rowsMax="4"
@@ -368,8 +368,8 @@ export default function RegisterTrees({}: Props) {
             name={'giftMessage'}
             // onChange={changeGiftDetails}
           />
-        </div>
-        <div style={{ display: 'flex', paddingTop: 10, marginTop: 10 }}>
+        </div> */}
+        <div style={{ display: 'flex' }}>
           <div>
             <CheckBox
               id="guidelines"

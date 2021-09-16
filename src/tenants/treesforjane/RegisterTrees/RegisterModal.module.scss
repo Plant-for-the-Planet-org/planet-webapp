@@ -339,6 +339,14 @@
     top: 14px;
     right: 14px;
     width: fit-content;
+    background-color: #fff;
+    padding: 4px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
     :nth-child(2) {
       margin-top: 9px;
     }
