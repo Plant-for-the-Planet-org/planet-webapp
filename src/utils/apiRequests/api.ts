@@ -93,8 +93,8 @@ export async function getAuthenticatedRequest(
 
 export async function postAuthenticatedRequest(
   url: any,
-  data: any
-  // token: any
+  data: any,
+  token: any
 ) {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
@@ -103,7 +103,7 @@ export async function postAuthenticatedRequest(
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')
@@ -134,7 +134,7 @@ export async function postRequest(url: any, data: any) {
   return result;
 }
 
-export async function deleteAuthenticatedRequest(url: any) {
+export async function deleteAuthenticatedRequest(url: any, token: any) {
   let result;
   await fetch(process.env.API_ENDPOINT + url, {
     method: 'DELETE',
@@ -142,7 +142,27 @@ export async function deleteAuthenticatedRequest(url: any) {
       'Content-Type': 'application/json',
       'tenant-key': `${process.env.TENANTID}`,
       'X-SESSION-ID': await getsessionId(),
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+    },
+  }).then((res) => {
+    result = res.status;
+  });
+  return result;
+}
+
+export async function deleteRequest(url: any) {
+  let result;
+  await fetch(process.env.API_ENDPOINT + url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
           ? localStorage.getItem('language')

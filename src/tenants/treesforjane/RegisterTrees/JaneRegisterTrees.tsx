@@ -369,7 +369,7 @@ export default function RegisterTrees({}: Props) {
             // onChange={changeGiftDetails}
           />
         </div>
-        <div style={{ display: 'flex', paddingTop: 10 }}>
+        <div style={{ display: 'flex', paddingTop: 10, marginTop: 10 }}>
           <div>
             <CheckBox
               id="guidelines"
@@ -386,7 +386,7 @@ export default function RegisterTrees({}: Props) {
             {t('agreeToGuidelines')}
           </label>
         </div>
-        <div style={{ display: 'flex', paddingTop: 10 }}>
+        <div style={{ display: 'flex', paddingTop: 10, marginBottom: 15 }}>
           <div>
             <CheckBox
               id="terms"

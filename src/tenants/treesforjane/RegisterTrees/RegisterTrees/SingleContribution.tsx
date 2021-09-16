@@ -39,9 +39,9 @@ export default function SingleContribution({
   const { t, ready } = useTranslation(['me', 'common']);
 
   return ready ? (
-    <div className={styles.donationsContainer}>
-      <div className={styles.registerTreesPage}>
-        {/* <button
+    // <div className={styles.donationsContainer}>
+    <div className={styles.registerTreesPage}>
+      {/* <button
         id={'singleControcloseButton'}
         className={styles.closeButton}
         onClick={() => {
@@ -50,10 +50,10 @@ export default function SingleContribution({
       >
         <CancelIcon />
       </button> */}
-        {/* <div className={styles.checkMark}>
+      {/* <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div> */}
-        {/* <div className={styles.contributionInfo}>
+      {/* <div className={styles.contributionInfo}>
         <div className={styles.infoRow}>
           <div className={styles.infoItem}>
         <div className={styles.previewMap}>
@@ -62,74 +62,74 @@ export default function SingleContribution({
         </div>
         </div>
       </div> */}
-        <div>
-          <h2 className={styles.contribTitle}>
-            <b>
-              {t('me:thankYouForPlanting', {
-                treeCount: contributionDetails.treeCount,
-                treeSpecies: contributionDetails.treeSpecies,
-                plantDate: formatDate(contributionDetails.plantDate),
-              })}
-            </b>
-          </h2>
-          <p className={styles.contribDescription}>
-            <b>
-              {contributionDetails.treeCount > 0 &&
-              contributionDetails.treeCount < 200
-                ? t('me:contribSuccessLessThan200', {
-                    treeCount: contributionDetails.treeCount,
-                    treeSpecies: contributionDetails.treeSpecies,
-                    plantDate: formatDate(contributionDetails.plantDate),
-                  })
-                : contributionDetails.treeCount >= 200 &&
-                  contributionDetails.treeCount < 1000
-                ? t('me:contribSuccess200to1000', {
-                    treeCount: contributionDetails.treeCount,
-                    treeSpecies: contributionDetails.treeSpecies,
-                    plantDate: formatDate(contributionDetails.plantDate),
-                    refId: contributionDetails.id,
-                  })
-                : contributionDetails.treeCount >= 1000
-                ? t('me:contribSuccessMoreThan1000', {
-                    treeCount: contributionDetails.treeCount,
-                    treeSpecies: contributionDetails.treeSpecies,
-                    plantDate: formatDate(contributionDetails.plantDate),
-                  })
-                : []}
-            </b>
-          </p>
-          <div className={styles.contributionInfo}>
-            <div className={styles.infoRow}>
-              <div className={styles.infoItem}>
-                <div className={styles.previewMap}>
-                  <StaticMap geoJson={geometry} />
-                </div>
+      <div>
+        <h2 className={styles.contribTitle}>
+          <b>
+            {t('me:thankYouForPlanting', {
+              treeCount: contributionDetails.treeCount,
+              treeSpecies: contributionDetails.treeSpecies,
+              plantDate: formatDate(contributionDetails.plantDate),
+            })}
+          </b>
+        </h2>
+        <p className={styles.contribDescription}>
+          <b>
+            {contributionDetails.treeCount > 0 &&
+            contributionDetails.treeCount < 200
+              ? t('me:contribSuccessLessThan200', {
+                  treeCount: contributionDetails.treeCount,
+                  treeSpecies: contributionDetails.treeSpecies,
+                  plantDate: formatDate(contributionDetails.plantDate),
+                })
+              : contributionDetails.treeCount >= 200 &&
+                contributionDetails.treeCount < 1000
+              ? t('me:contribSuccess200to1000', {
+                  treeCount: contributionDetails.treeCount,
+                  treeSpecies: contributionDetails.treeSpecies,
+                  plantDate: formatDate(contributionDetails.plantDate),
+                  refId: contributionDetails.id,
+                })
+              : contributionDetails.treeCount >= 1000
+              ? t('me:contribSuccessMoreThan1000', {
+                  treeCount: contributionDetails.treeCount,
+                  treeSpecies: contributionDetails.treeSpecies,
+                  plantDate: formatDate(contributionDetails.plantDate),
+                })
+              : []}
+          </b>
+        </p>
+        <div className={styles.contributionInfo}>
+          <div className={styles.infoRow}>
+            <div className={styles.infoItem}>
+              <div className={styles.previewMap}>
+                <StaticMap geoJson={geometry} />
               </div>
             </div>
           </div>
-          <div
+        </div>
+        <div
+          style={{
+            position: 'relative',
+            paddingTop: '100%',
+            marginTop: '20px',
+            marginBottom: '30px',
+          }}
+        >
+          <iframe
+            src="https://iframe.videodelivery.net/bfac441938614b90e85251d11fbdf9b6?preload=true&autoplay=true"
             style={{
-              position: 'relative',
-              paddingTop: '100%',
-              marginTop: '20px',
-              marginBottom: '30px',
+              border: 'none',
+              position: 'absolute',
+              top: 0,
+              height: '100%',
+              width: '100%',
+              borderRadius: '10px',
             }}
-          >
-            <iframe
-              src="https://iframe.videodelivery.net/bfac441938614b90e85251d11fbdf9b6?preload=true&autoplay=true"
-              style={{
-                border: 'none',
-                position: 'absolute',
-                top: 0,
-                height: '100%',
-                width: '100%',
-                borderRadius: '10px',
-              }}
-              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-              allowFullScreen
-            />
-          </div>
-          {/* <div className={styles.nextButton}>
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowFullScreen
+          />
+        </div>
+        {/* <div className={styles.nextButton}>
         <button
           id={'singleControCont'}
           onClick={() =>
@@ -141,10 +141,10 @@ export default function SingleContribution({
           {t('me:save')}
         </button>
       </div> */}
-        </div>
       </div>
     </div>
   ) : (
+    // </div>
     <></>
   );
 }
