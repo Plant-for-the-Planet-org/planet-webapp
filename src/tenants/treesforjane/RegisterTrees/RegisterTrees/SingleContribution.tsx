@@ -72,7 +72,7 @@ export default function SingleContribution({
             })}
           </b>
         </h2>
-        <p className={styles.contribDescription}>
+        <p className={styles.contribDescription} style={{marginTop:'20px'}}>
           <b>
             {contributionDetails.treeCount > 0 &&
             contributionDetails.treeCount < 200
