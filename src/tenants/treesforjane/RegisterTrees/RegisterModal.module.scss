@@ -171,6 +171,7 @@
 }
 
 .note {
+  font-family: $primaryFontFamily;
   padding: 5px;
   color: $primaryFontColor;
 }
@@ -378,7 +379,10 @@
   max-width: 320px;
   text-align: center;
 }
-
+.conditionText {
+  font-family: $primaryFontFamily;
+  justify-content: center;
+}
 .center {
   justify-content: center;
 }

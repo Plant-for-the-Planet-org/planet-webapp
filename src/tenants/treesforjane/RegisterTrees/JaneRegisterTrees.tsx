@@ -382,7 +382,11 @@ export default function RegisterTrees({}: Props) {
               color={'primary'}
             />
           </div>
-          <label htmlFor="guidelines" style={{ paddingLeft: '9px' }}>
+          <label
+            htmlFor="guidelines"
+            style={{ paddingLeft: '9px' }}
+            className={styles.conditionText}
+          >
             {t('agreeToGuidelines')}
           </label>
         </div>
@@ -401,11 +405,14 @@ export default function RegisterTrees({}: Props) {
           </div>
           <label
             htmlFor="terms"
+            className={styles.conditionText}
             style={{
               paddingLeft: '9px',
+              alignSelf: 'center',
             }}
           >
             {t('agreeTerms')}
+            <a href="https://pp.eco/legal/en/terms">{t('pftp')}</a>
           </label>
         </div>
         <div className={styles.nextButton}>

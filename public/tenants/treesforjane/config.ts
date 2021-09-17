@@ -3,20 +3,23 @@ const config = {
   tenantName: 'treesforjane',
   // url of tenant home page
   tenantURL: 'https://treesforjane.org/',
-  tenantGoal:null,
-  showUNEPLogo:true,
-  showUNDecadeLogo:true,
-  showRedeemHint:true,
-  enableGuestSepa:false,
+  tenantGoal: null,
+  showUNEPLogo: true,
+  showUNDecadeLogo: true,
+  showRedeemHint: true,
+  enableGuestSepa: false,
   darkModeEnabled: false,
   // font family and it's property particular to tenant
   font: {
-    primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
+    // primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
+    // primaryFontURL:
+    //   'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap',
+    primaryFontFamily: '"korolev",Arial,sans-serif',
+    primaryFontURL: 'https://use.typekit.net/sso5ial.css',
   },
   languages: ['en'],
-  hideNavbar:true,
-  hideNotifications:true,
+  hideNavbar: true,
+  hideNotifications: true,
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
@@ -42,13 +45,13 @@ const config = {
         onclick: '/all',
         visible: true,
       },
-      me:{
+      me: {
         title: 'signIn',
         loggedInTitle: 'me',
         onclick: '/me',
         visible: true,
-      }
-    }
+      },
+    },
   },
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
@@ -59,7 +62,19 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
+  footerLinks: [
+    'shop',
+    'privacyAndTerms',
+    'imprint',
+    'contact',
+    'downloads',
+    'annualReports',
+    'team',
+    'jobs',
+    'supportUs',
+    'blogs',
+    'faqs',
+  ],
   manifest: '/tenants/planet/manifest.json',
 };
 
