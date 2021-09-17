@@ -105,11 +105,11 @@
   "urban-planting": "Urban Restoration",
   "other-planting": "Restoration",
   "mangroves": "Mangroves",
-  "purpose" :"Purpose",
-  "projectPurpose" :"Project Purpose",
-  "type":"Type",
-  "projectType":"Project Type",
-  "conservation":"Conservation",
-  "restoration":"Restoration",
+  "purpose": "Purpose",
+  "projectPurpose": "Project Purpose",
+  "type": "Type",
+  "projectType": "Project Type",
+  "conservation": "Conservation",
+  "restoration": "Restoration",
   "filters": "Filters"
 }
