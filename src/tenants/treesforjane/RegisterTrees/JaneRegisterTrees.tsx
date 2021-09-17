@@ -359,7 +359,7 @@ export default function RegisterTrees({}: Props) {
           <p className={styles.formErrors}>{`${errorMessage}`}</p>
         </div>
 
-        <div className={styles.formRow}>
+        {/* <div className={styles.formRow}>
           <MaterialTextField
             multiline
             rowsMax="4"
@@ -368,8 +368,8 @@ export default function RegisterTrees({}: Props) {
             name={'giftMessage'}
             // onChange={changeGiftDetails}
           />
-        </div>
-        <div style={{ display: 'flex', paddingTop: 10 }}>
+        </div> */}
+        <div style={{ display: 'flex' }}>
           <div>
             <CheckBox
               id="guidelines"
@@ -382,11 +382,15 @@ export default function RegisterTrees({}: Props) {
               color={'primary'}
             />
           </div>
-          <label htmlFor="guidelines" style={{ paddingLeft: '9px' }}>
+          <label
+            htmlFor="guidelines"
+            style={{ paddingLeft: '9px' }}
+            className={styles.conditionText}
+          >
             {t('agreeToGuidelines')}
           </label>
         </div>
-        <div style={{ display: 'flex', paddingTop: 10 }}>
+        <div style={{ display: 'flex', paddingTop: 10, marginBottom: 15 }}>
           <div>
             <CheckBox
               id="terms"
@@ -401,11 +405,14 @@ export default function RegisterTrees({}: Props) {
           </div>
           <label
             htmlFor="terms"
+            className={styles.conditionText}
             style={{
               paddingLeft: '9px',
+              alignSelf: 'center',
             }}
           >
             {t('agreeTerms')}
+            <a href="https://pp.eco/legal/en/terms">{t('pftp')}</a>
           </label>
         </div>
         <div className={styles.nextButton}>

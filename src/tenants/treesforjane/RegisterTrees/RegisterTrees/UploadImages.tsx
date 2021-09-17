@@ -77,26 +77,6 @@ export default function UploadImages({ setImage, image }: Props): ReactElement {
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const deleteContributionImage = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images/${id}`
-      // token
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedImagesTemp = uploadedImages;
-        const index = uploadedImagesTemp.findIndex((item) => {
-          return item.id === id;
-        });
-        if (index !== -1) {
-          uploadedImagesTemp.splice(index, 1);
-          setUploadedImages(uploadedImagesTemp);
-        } else {
-          console.log('image not found');
-        }
-      }
-    });
-  };
-
   return ready ? (
     <>
       {/* Change to field array of react hook form  */}
