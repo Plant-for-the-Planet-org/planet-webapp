@@ -1,66 +1,64 @@
 const config = {
-  // name of tenant
-  tenantName: 'treesforjane',
-  // url of tenant home page
-  tenantURL: 'https://treesforjane.org/',
-  tenantGoal:null,
-  showUNEPLogo:true,
-  showUNDecadeLogo:true,
-  showRedeemHint:true,
-  enableGuestSepa:false,
-  darkModeEnabled: false,
-  // font family and it's property particular to tenant
+  tenantName: 'janegoodall',
+  tenantURL: 'map.treesforjane.org',
+  languages: ['de', 'en'],
+  fallbackCurrency: 'EUR',
+  tenantGoal: null,
+  // showUNDecadeLogo:true,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
+    primaryFontURL:
+      'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap',
+    secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
+    secondaryFontURL:
+      'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
   },
-  languages: ['en'],
-  hideNavbar:true,
-  hideNotifications:true,
+  meta: {
+    title: 'Trees for Jane',
+    description:
+      '"When you donate to Trees for Jane or plant your own tree, you will receive a digital certificate in recognition of your simple but essential contribution to helping our planet become green again!"',
+    // image: `/tenants/janegoodall/background.jpg`,
+    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    twitterHandle: '',
+    locale: 'en_US',
+  },
+  home: {
+    descriptionTitle: '',
+    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+  },
   header: {
-    isSecondaryTenant: false,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
-    tenantLogoLink: '/',
+    isSecondaryTenant: true,
+    tenantLogoURL: `/tenants/janegoodall/logo.png`,
+    tenantLogoLink: 'https://map.treesforjane.org/',
     items: {
       home: {
         title: 'home',
-        onclick: '/home',
-        visible: false,
+        onclick: 'https://www.treesforjane.org/',
+        visible: true,
       },
       donate: {
-        title: 'home',
+        title: 'plant',
         onclick: '/',
         visible: true,
       },
       about: {
         title: 'aboutUs',
-        onclick: 'https://a.plant-for-the-planet.org/',
+        onclick: 'https://www.treesforjane.org/about',
         visible: true,
       },
       leaderboard: {
-        title: 'leaders',
+        title: 'leaderboard',
         onclick: '/all',
-        visible: true,
+        visible: false,
       },
-      me:{
-        title: 'signIn',
-        loggedInTitle: 'me',
+      me: {
+        title: 'me',
         onclick: '/me',
         visible: true,
-      }
-    }
+      },
+    },
   },
-  meta: {
-    title: 'Plant trees around the world - Plant-for-the-Planet',
-    appTitle: 'Plant for the Planet',
-    description:
-      "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
-    twitterHandle: '@trilliontrees',
-    locale: 'en_US',
-  },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
-  manifest: '/tenants/planet/manifest.json',
+  footerLinks: ['privacyAndTerms', 'imprint', 'contact'],
 };
 
 export default config;
