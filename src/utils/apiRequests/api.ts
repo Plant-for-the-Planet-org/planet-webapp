@@ -49,7 +49,11 @@ export async function getRequest(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequest(url: any, token: any, header:any = null) {
+export async function getAuthenticatedRequest(
+  url: any,
+  token: any,
+  header: any = null
+) {
   let result = {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -67,15 +71,15 @@ export async function getAuthenticatedRequest(url: any, token: any, header:any =
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      if(res.status === 404){
+      if (res.status === 404) {
         const error = {
-          status: 404
-        }
+          status: 404,
+        };
         result = error;
-      } else if(res.status === 401) {
+      } else if (res.status === 401) {
         const error = {
-          status: 401
-        }
+          status: 401,
+        };
         result = error;
       } else if (res.status !== 200) {
         // Maybe show a Modal with Error and redirect to home page
@@ -151,6 +155,26 @@ export async function deleteAuthenticatedRequest(url: any, token: any) {
   return result;
 }
 
+export async function deleteRequest(url: any) {
+  let result;
+  await fetch(process.env.API_ENDPOINT + url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'tenant-key': `${process.env.TENANTID}`,
+      'X-SESSION-ID': await getsessionId(),
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+    },
+  }).then((res) => {
+    result = res.status;
+  });
+  return result;
+}
+
 export async function putAuthenticatedRequest(url: any, data: any, token: any) {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
@@ -192,7 +216,9 @@ export async function putRequest(url: any, data: any) {
 
 export async function getRasterData(id: any) {
   let result;
-  const res = await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
+  const res = await fetch(
+    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
+  )
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       return result;
@@ -222,7 +248,10 @@ export async function getRequestWithoutRedirecting(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequestWithoutRedirecting(url: any, token: any) {
+export async function getAuthenticatedRequestWithoutRedirecting(
+  url: any,
+  token: any
+) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     headers: {

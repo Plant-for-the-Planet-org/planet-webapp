@@ -1,7 +1,8 @@
 @import './../../../theme/theme';
 
-.registerTreesPage{
+.registerTreesPage {
   max-width: 460px;
+  min-height: 100vh;
   background-color: $backgroundColor;
   padding: 20px;
   border-radius: 10px;
@@ -60,7 +61,14 @@
   text-align: center;
   color: $primaryFontColor;
 }
-
+.contribDescription {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: $primaryFontColor;
+}
 .inputField {
   margin-top: 20px;
 }
@@ -163,6 +171,7 @@
 }
 
 .note {
+  font-family: $primaryFontFamily;
   padding: 5px;
   color: $primaryFontColor;
 }
@@ -273,7 +282,14 @@
   align-items: center;
   width: 100%;
 }
-
+.disabled {
+  background-color: $backgroundColorDark;
+  background-image: none;
+  color: $primaryFontColor;
+}
+.disabled:hover {
+  transform: translateY(0);
+}
 .closeButton {
   cursor: pointer;
   position: absolute;
@@ -324,6 +340,14 @@
     top: 14px;
     right: 14px;
     width: fit-content;
+    background-color: #fff;
+    padding: 4px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
     :nth-child(2) {
       margin-top: 9px;
     }
@@ -355,7 +379,10 @@
   max-width: 320px;
   text-align: center;
 }
-
+.conditionText {
+  font-family: $primaryFontFamily;
+  justify-content: center;
+}
 .center {
   justify-content: center;
 }
