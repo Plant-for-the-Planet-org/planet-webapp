@@ -67,6 +67,17 @@ export default function RegisterTrees({}: Props) {
   const [agreeToGuidelines, setAgreeToGuidelines] = React.useState(false);
   const [agreeTerms, setAgreeTerms] = React.useState(false);
   const [image, setImage] = React.useState('');
+  const [contactDetails, setContactDetails] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    city: '',
+    zipCode: '',
+    country: 'US',
+    companyName: '',
+  });
+
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
@@ -89,6 +100,15 @@ export default function RegisterTrees({}: Props) {
           Number(location.longitude) || 0,
           Number(location.latitude) || 0,
         ]);
+        if(location.city) {
+          setContactDetails({...contactDetails, city: location.city?location.city:''});
+        }
+        if(location.postalCode) {
+          setContactDetails({...contactDetails, zipCode: location.postalCode?location.postalCode:''});
+        }
+        if(location.countryCode) {
+          setContactDetails({...contactDetails,country: location.countryCode?location.countryCode:'US'});
+        }
       }
     }
     getUserLocation();
@@ -132,7 +152,7 @@ export default function RegisterTrees({}: Props) {
     },
   };
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+    useForm({ mode: 'all', defaultValues: defaultBasicDetails });
 
   const submitRegisterTrees = (data: any) => {
     console.log(data, 'Data');
@@ -199,17 +219,6 @@ export default function RegisterTrees({}: Props) {
   const _onStateChange = (state: any) => setMapState({ ...state });
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
-
-  const [contactDetails, setContactDetails] = React.useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    address: '',
-    city: '',
-    zipCode: '',
-    country: 'US',
-    companyName: '',
-  });
 
   return ready && !registered ? (
     <div className={styles.registerTreesPage}>

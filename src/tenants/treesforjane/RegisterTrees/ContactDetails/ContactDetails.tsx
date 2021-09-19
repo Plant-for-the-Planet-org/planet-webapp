@@ -140,6 +140,22 @@ function ContactDetails({
         </div>
         <div className={styles.formField}>
           <div className={styles.formFieldLarge}>
+            <AutoCompleteCountry
+              inputRef={register({ required: true })}
+              label={t('donate:country')}
+              name="country"
+              onChange={changeCountry}
+              defaultValue={contactDetails.country}
+            />
+            {errors.country && (
+              <span className={styles.formErrors}>
+                {t('donate:countryRequired')}
+              </span>
+            )}
+          </div>
+        </div>
+        <div className={styles.formField}>
+          <div className={styles.formFieldLarge}>
             <MaterialTextField
               inputRef={register({ required: true })}
               label={t('donate:address')}
@@ -208,22 +224,6 @@ function ContactDetails({
             {errors.zipCode && (
               <span className={styles.formErrors}>
                 {t('donate:zipCodeAlphaNumValidation')}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className={styles.formField}>
-          <div className={styles.formFieldLarge}>
-            <AutoCompleteCountry
-              inputRef={register({ required: true })}
-              label={t('donate:country')}
-              name="country"
-              onChange={changeCountry}
-              defaultValue={contactDetails.country}
-            />
-            {errors.country && (
-              <span className={styles.formErrors}>
-                {t('donate:countryRequired')}
               </span>
             )}
           </div>
