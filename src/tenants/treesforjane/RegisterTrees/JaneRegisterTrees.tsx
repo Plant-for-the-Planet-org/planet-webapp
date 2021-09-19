@@ -412,7 +412,7 @@ export default function RegisterTrees({}: Props) {
             }}
           >
             {t('agreeTerms')}
-            <a href="https://pp.eco/legal/en/terms">{t('pftp')}</a>
+            <a href="https://pp.eco/legal/en/terms" target="_blank" rel="nofollow noreferrer">{t('pftp')}</a>
           </label>
         </div>
         <div className={styles.nextButton}>
