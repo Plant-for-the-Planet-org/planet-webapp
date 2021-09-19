@@ -96,13 +96,18 @@ export default function RegisterTrees({}: Props) {
     async function getUserLocation() {
       const location = await getStoredConfig('loc');
       if (location) {
-        console.log(`location`, location)
         setUserLocation([
           Number(location.longitude) || 0,
           Number(location.latitude) || 0,
         ]);
         if(location.city) {
-          setContactDetails({...contactDetails, city: location.city?location.city:'',zipCode: location.postalCode?location.postalCode:'',country: location.countryCode?location.countryCode:'US'});
+          setContactDetails({...contactDetails, city: location.city?location.city:''});
+        }
+        if(location.postalCode) {
+          setContactDetails({...contactDetails, zipCode: location.postalCode?location.postalCode:''});
+        }
+        if(location.countryCode) {
+          setContactDetails({...contactDetails,country: location.countryCode?location.countryCode:'US'});
         }
       }
     }
@@ -147,7 +152,7 @@ export default function RegisterTrees({}: Props) {
     },
   };
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+    useForm({ mode: 'all', defaultValues: defaultBasicDetails });
 
   const submitRegisterTrees = (data: any) => {
     console.log(data, 'Data');
