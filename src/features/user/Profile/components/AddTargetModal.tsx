@@ -98,7 +98,7 @@ export default function AddTargetModal({
               id={'AddTargetCont'}
               className="primaryButton"
               style={{ marginTop: '24px' }}
-              onClick={() => handleSubmit(changeTarget)}
+              onClick={() => changeTarget()}
             >
               {isLoadingForm ? (
                 <div className={'spinner'}></div>

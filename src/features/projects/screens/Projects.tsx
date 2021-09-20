@@ -8,6 +8,7 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
+import Filters from '../components/projects/Filters';
 
 interface Props {
   projects: any;
@@ -126,7 +127,7 @@ function ProjectsList({
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
-    [trottledSearchValue]
+    [trottledSearchValue, projects]
   );
 
   const featuredProjects = React.useMemo(
