@@ -14,6 +14,8 @@ import { getRequest } from '../../../utils/apiRequests/api';
 import PaymentProgress from '../../common/ContentLoaders/Donations/PaymentProgress';
 import PaymentFailedIllustration from '../../../../public/assets/images/icons/donation/PaymentFailed';
 import PaymentPendingIllustration from '../../../../public/assets/images/icons/donation/PaymentPending';
+import themeProperties from '../../../theme/themeProperties';
+import { ThemeContext } from '../../../theme/themeContext';
 
 const { useTranslation } = i18next;
 
@@ -31,6 +33,8 @@ function ThankYou({
     const donation = await getRequest(`/app/donations/${donationID}`);
     setdonation(donation);
   }
+  const { theme } = React.useContext(ThemeContext);
+
 
   React.useEffect(() => {
     if (donationID) {
@@ -106,7 +110,10 @@ function ThankYou({
         <div className={styles.contributionMessageContainer}>
           <div
             className={styles.contributionMessage}
-            style={{ marginTop: '0px' }}
+            style={{ marginTop: '0px',
+          color: theme === 'theme-light' ?
+        themeProperties.light.dark :
+      themeProperties.dark.dark }}
           >
             {t(
               paymentTypeUsed === 'GOOGLE_PAY' ||
@@ -138,7 +145,10 @@ function ThankYou({
               })}
           </div>
 
-          <div className={styles.contributionMessage}>
+          <div className={styles.contributionMessage}
+          style={{color: theme === 'theme-light' ?
+          themeProperties.light.dark :
+        themeProperties.dark.dark}}>
             {t('donate:contributionMessage')}
           </div>
         </div>

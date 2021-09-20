@@ -73,7 +73,7 @@ function ProjectContactDetails({ project }: Props): ReactElement {
 
       {contactDetails.slice(1).map((contact) => {
         return (
-          <a key={contact.id} href={contact.link ? contact.link : '#'} target={contact.link ? "_blank" : "_self"}>
+          <a key={contact.id} href={contact.link ? contact.link : '#'} target={contact.link ? "_blank" : "_self"} rel="noreferrer noopener">
             <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
               {contact.icon}
               <span>{contact.text}</span>

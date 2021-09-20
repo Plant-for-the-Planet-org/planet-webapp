@@ -37,7 +37,6 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
-
   return ready ? (
     <>
       <Modal
@@ -63,9 +62,10 @@ export default function PopupProject({
         ) : null}
 
         <div className={'projectImageBlock'}>
-          {/* <div className={'projectType}>
-                {GetProjectClassification(project.properties.classification)}
-              </div> */}
+          <div className={'projectType'}>
+                {project.properties.classification &&
+                t(`donate:${project.properties.classification}`)}
+              </div>
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
@@ -79,7 +79,7 @@ export default function PopupProject({
           style={{ width: progressPercentage }}
         />
       </div>
-      <div className={'projectInfo'} style={{padding:'16px'}}>
+      <div className={'projectInfo'} style={{padding:'16px', backgroundColor: 'var(--background-color)'}}>
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>

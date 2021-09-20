@@ -13,13 +13,14 @@ export default function OpenApp() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection:'column'
+    flexDirection:'column',
+    color: 'var(--primary-font-color)'
   }
 
   return ready ? (
     <>
       <div style={styles}>
-        <h2>{t('common:opening_native_app')}</h2>
+        <h2 >{t('common:opening_native_app')}</h2>
       </div>
       <Footer/>
     </>

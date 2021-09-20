@@ -22,19 +22,19 @@ export default function Sites({}: Props): ReactElement {
     selectedMode,
     rasterData,
     satellite,
+    setSiteViewPort
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
-    const isMobileTemp = window.innerWidth <= 767;
     zoomToProjectSite(
       geoJson,
       selectedSite,
       viewport,
-      isMobileTemp,
       setViewPort,
+      setSiteViewPort,
       4000
     );
-  }, [selectedSite]);
+  }, [selectedSite,selectedMode]);
 
   return (
     <>

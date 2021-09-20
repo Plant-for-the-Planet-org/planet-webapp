@@ -47,7 +47,7 @@
   "embedWidget": "Créer un widget de profil",
   "tree-donation": "Don d'arbres",
   "tree-gift": "Cadeau d'arbre",
-  "tree-cash": "Argent d'arbres",
+  "tree-cash": "TreeCash",
   "trees": "Arbres",
   "amount": "Montant",
   "created": "Date de création",
@@ -60,6 +60,7 @@
   "download": "Télécharger",
   "donations": "Dons",
   "in-progress": "En cours",
+  "donation-tree-cash": "TreeCash",
   "cancelled": "Annulé",
   "card": "Carte",
   "sepa": "SEPA",
@@ -73,5 +74,9 @@
   "in-dispute": "En litige",
   "dispute-lost": "Litige perdu",
   "nameForest": "La forêt des {{name}}",
-  "taxReceipt": "Reçu fiscal"
+  "taxReceipt": "Reçu fiscal",
+  "setTarget": "Fixer un objectif",
+  "targetSave": "Sauvegarder",
+  "targetErrorMessage": "Le nombre doit être supérieur à zéro",
+  "tree-cash-tree-cash": "TreeCash"
 }

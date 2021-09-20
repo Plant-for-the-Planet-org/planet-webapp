@@ -49,7 +49,7 @@ export async function getRequest(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequest(url: any, token: any) {
+export async function getAuthenticatedRequest(url: any, token: any, header:any = null) {
   let result = {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -62,6 +62,7 @@ export async function getAuthenticatedRequest(url: any, token: any) {
           ? localStorage.getItem('language')
           : 'en'
       }`,
+      'x-accept-versions': '1.0.3',
     },
   })
     .then(async (res) => {

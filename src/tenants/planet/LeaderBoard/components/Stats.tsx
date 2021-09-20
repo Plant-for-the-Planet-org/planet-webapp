@@ -35,7 +35,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon color="#000"/>
           </button>
         </div>
         <div className={styles.statCard}>
@@ -48,7 +48,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon color="#000"/>
           </button>
         </div>
         <div className={styles.statCard}>
@@ -61,7 +61,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon color="#000" />
           </button>
         </div>
         <div className={styles.statCard}>
@@ -76,7 +76,7 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon color="#000" />
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import styles from './../../../src/features/user/UserProfile/styles/RedeemModal.module.scss';
+import styles from './../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import ShareOptions from '../../../src/features/donations/components/ShareOptions';

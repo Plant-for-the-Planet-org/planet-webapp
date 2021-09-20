@@ -19,7 +19,8 @@
 
 @media screen and (min-width: 480px) {
   .footerMainContainer {
-    margin: auto 20px 60px 20px;
+    margin: auto 20px 0px 20px;
+    padding: 60px;
   }
   .logo_container {
     margin-bottom: 0px;
@@ -83,9 +84,11 @@
   margin-top: 18.8px;
 }
 
+
 .footer_button > svg {
   width: 22px;
 }
+
 .footer_button_container > a:hover {
   cursor: pointer;
   text-decoration: none;
@@ -162,4 +165,8 @@
 
 :export {
   primaryFontColor: $primaryFontColor;
+}
+
+.switch{
+  margin-top: 20px;
 }
