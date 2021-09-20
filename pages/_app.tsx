@@ -159,7 +159,12 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               : { display: 'none' }
           }
         >
-          <VideoContainer setshowVideo={setshowVideo} />
+          {(config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
+            <VideoContainer setshowVideo={setshowVideo} />
+            ) : (
+              <></>
+            )
+          }
         </div>
 
         <div
