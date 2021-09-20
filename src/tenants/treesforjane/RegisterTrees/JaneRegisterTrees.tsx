@@ -24,6 +24,8 @@ import ContactDetails from './ContactDetails/ContactDetails';
 import UploadImages from './RegisterTrees/UploadImages';
 import CheckBox from '../../../features/common/InputTypes/Checkbox';
 import SingleContribution from './RegisterTrees/SingleContribution';
+import GeocoderArcGIS from 'geocoder-arcgis';
+
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
 };
@@ -77,6 +79,16 @@ export default function RegisterTrees({}: Props) {
     country: 'US',
     companyName: '',
   });
+  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+
+  const geocoder = new GeocoderArcGIS(
+    process.env.ESRI_CLIENT_SECRET
+      ? {
+          client_id: process.env.ESRI_CLIENT_ID,
+          client_secret: process.env.ESRI_CLIENT_SECRET,
+        }
+      : {}
+  );
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -216,9 +228,41 @@ export default function RegisterTrees({}: Props) {
     }
   };
 
+  const suggestAddress = (value:any) => {
+    if (value.length > 3) {
+      geocoder
+        .suggest(value, {
+          category: 'Address',
+          countryCode: contactDetails.country,
+        })
+        .then((result:any) => {
+          const filterdSuggestions = result.suggestions.filter((suggestion:any) => {
+            return !suggestion.isCollection;
+          });
+          setaddressSugggestions(filterdSuggestions);
+        })
+        .catch(console.log);
+    }
+  };
+  const getAddress = (value:any) => {
+    geocoder
+      .findAddressCandidates(value, { outfields: '*' })
+      .then((result:any) => {
+        setValue('addressSearch', result.candidates[0].attributes.ShortLabel, {
+          shouldValidate: true,
+        });
+        setUserLocation([result.candidates[0].location.x, result.candidates[0].location.y]);
+        setaddressSugggestions([]);
+        console.log(result.candidates[0].location);
+      })
+      .catch(console.log);
+  };
+
   const _onStateChange = (state: any) => setMapState({ ...state });
 
   const _onViewportChange = (view: any) => setViewPort({ ...view });
+
+  let suggestion_counter = 0;
 
   return ready && !registered ? (
     <div className={styles.registerTreesPage}>
@@ -352,6 +396,37 @@ export default function RegisterTrees({}: Props) {
               <NavigationControl showCompass={false} />
             </div>
           </MapGL>
+          <div className="address-search">
+          <MaterialTextField
+              inputRef={register({ required: true })}
+              label={t('donate:address')}
+              variant="outlined"
+              name="addressSearch"
+              onChange={(event) => {
+                suggestAddress(event.target.value);
+              }}
+              onBlur={() => setaddressSugggestions([])}
+            />
+            {addressSugggestions
+              ? addressSugggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    {addressSugggestions.map((suggestion:any) => {
+                      return (
+                        <div
+                          key={'suggestion' + suggestion_counter++}
+                          onMouseDown={() => {
+                            getAddress(suggestion.text);
+                          }}
+                          className="suggestion"
+                        >
+                          {suggestion.text}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              : null}
+          </div>
         </div>
 
         {/* {errorMessage !== '' ? */}
