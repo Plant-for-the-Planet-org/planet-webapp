@@ -252,6 +252,7 @@ export default function RegisterTrees({}: Props) {
           shouldValidate: true,
         });
         setUserLocation([result.candidates[0].location.x, result.candidates[0].location.y]);
+        setplantLocation([result.candidates[0].location.x, result.candidates[0].location.y]);
         setaddressSugggestions([]);
         console.log(result.candidates[0].location);
       })
@@ -398,7 +399,6 @@ export default function RegisterTrees({}: Props) {
           </MapGL>
           <div className="address-search">
           <MaterialTextField
-              inputRef={register({ required: true })}
               label={t('donate:address')}
               variant="outlined"
               name="addressSearch"
