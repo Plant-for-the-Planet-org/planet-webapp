@@ -251,6 +251,10 @@ export default function RegisterTrees({}: Props) {
         });
         setUserLocation([result.candidates[0].location.x, result.candidates[0].location.y]);
         setplantLocation([result.candidates[0].location.x, result.candidates[0].location.y]);
+        setGeometry({
+          type: 'Point',
+          coordinates: [result.candidates[0].location.x, result.candidates[0].location.y],
+        })
         setaddressSugggestions([]);
         console.log(result.candidates[0].location);
       })
