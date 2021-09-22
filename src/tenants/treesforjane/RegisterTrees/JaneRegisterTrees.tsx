@@ -415,7 +415,7 @@ export default function RegisterTrees({}: Props) {
             <a href="https://pp.eco/legal/en/terms">{t('pftp')}</a>
           </label>
         </div>
-        <div className={styles.nextButton}>
+        <div className={styles.registerButton}>
           <button
             id={'RegTressSubmit'}
             onClick={handleSubmit(submitRegisterTrees)}
