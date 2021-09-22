@@ -42,6 +42,14 @@
     border-top-right-radius: 10px;
     box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25);
   }
+  
+  .stepperContainer {
+    width: 100%;
+  }
+
+  .stepper {
+    background-color: $backgroundColorDark;
+  }
 
   .stepContent {
     display: flex;
@@ -86,7 +94,7 @@
   }
   
   .fileUploadContainer {
-    height: 128px;
+    height: 220px;
     border-radius: 10px;
     border: dashed 1px $primaryFontColor;
     background-color: $backgroundColor;
@@ -180,6 +188,18 @@
     }
   }
 
+  .mapContainer {
+    position: fixed;
+    top: 0;
+    bottom: 50vh;
+    left: 0;
+    right: 0;
+    > div:first-child {
+      height: 100% !important;
+      width: 100% !important;
+    }
+  }
+
   @include mdTabletView {
 
     .pageContainer {
@@ -198,4 +218,16 @@
           border-top-right-radius: 0px;
           box-shadow: none;
       }
+      .mapContainer {
+        top: 80px;
+          bottom: 0;
+          left: 450px;
+          right: 0;
+      }
+  }
+
+  @include lgLaptopView {
+    .mapContainer {
+      left: 646px;
+    }
   }
