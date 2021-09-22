@@ -255,6 +255,7 @@ export default function RegisterTrees({}: Props) {
           type: 'Point',
           coordinates: [result.candidates[0].location.x, result.candidates[0].location.y],
         })
+        setErrorMessage('');
         setaddressSugggestions([]);
         console.log(result.candidates[0].location);
       })
