@@ -170,12 +170,12 @@ export default function RegisterTrees({}: Props) {
     console.log(data, 'Data');
 
     if (data.treeCount < 10000000) {
+      if(image) {
       if (
         geometry &&
         (geometry.type === 'Point' || geometry.features?.length >= 1)
       ) {
         setIsUploadingData(true);
-
         const submitData = {
           treeCount: data.treeCount,
           treeSpecies: data.species,
@@ -197,15 +197,12 @@ export default function RegisterTrees({}: Props) {
             country: contactDetails.country,
           },
         };
-        console.log(submitData, 'submitData');
         postRequest(`/app/treeRegistrations`, submitData).then((res) => {
           if (!res.code) {
             setErrorMessage('');
-            // setContributionGUID(res.id);
             setContributionDetails(res);
             setIsUploadingData(false);
             setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
           } else {
             if (res.code === 404) {
               setIsUploadingData(false);
@@ -218,11 +215,12 @@ export default function RegisterTrees({}: Props) {
             }
           }
         });
-
-        // handleNext();
       } else {
         setErrorMessage(ready ? t('me:locationMissing') : '');
       }
+    } else {
+      setErrorMessage(ready ? t('me:imageMissing') : '');
+    }
     } else {
       setErrorMessage(ready ? t('me:wentWrong') : '');
     }

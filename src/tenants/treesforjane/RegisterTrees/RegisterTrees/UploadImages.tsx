@@ -1,10 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
-import {
-  deleteAuthenticatedRequest,
-  postAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import i18next from '../../../../../i18n';
@@ -36,35 +32,7 @@ export default function UploadImages({ setImage, image }: Props): ReactElement {
 
   const uploadPhotos = (image: any) => {
     setIsUploadingData(true);
-    console.log(image, 'image');
     setImage(image);
-    // const submitData = {
-    //   imageFile: image,
-    //   description: '',
-    // };
-    // postAuthenticatedRequest(
-    //   `/app/contributions/${contributionGUID}/images`,
-    //   submitData
-    //   // token
-    // )
-    //   .then((res) => {
-    //     if (!res.code) {
-    //       const newUploadedImages = uploadedImages;
-    //       newUploadedImages.push(res);
-    //       setUploadedImages(newUploadedImages);
-    //       setIsUploadingData(false);
-    //       setErrorMessage(null);
-    //     } else {
-    //       if (res.code === 404) {
-    //         setIsUploadingData(false);
-    //         setErrorMessage(ready ? t('me:contribNotFound') : '');
-    //       } else {
-    //         setIsUploadingData(false);
-    //         setErrorMessage(ready ? t('me:errorOccured') : '');
-    //       }
-    //     }
-    //   })
-    //   .catch((e) => console.log(e));
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
