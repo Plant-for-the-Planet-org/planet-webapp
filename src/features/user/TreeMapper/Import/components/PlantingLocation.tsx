@@ -221,7 +221,7 @@ export default function PlantingLocation({
           </>
         );
       case 'map':
-        return <div>draw on map on the right</div>;
+        return <div className={styles.drawMapText}>draw on map on the right</div>;
       default:
         return null;
     }

@@ -19,6 +19,11 @@ const Map = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
 
+const MapComponent = dynamic(() => import('./components/MapComponent'), {
+  ssr: false,
+  loading: () => <p></p>,
+});
+
 export default function ImportData({}: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
@@ -36,6 +41,7 @@ export default function ImportData({}: Props): ReactElement {
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [plantLocation, setPlantLocation] = React.useState(null);
   const [userLang, setUserLang] = React.useState('en');
+  const [geoJsonError, setGeoJsonError] = React.useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -150,8 +156,7 @@ export default function ImportData({}: Props): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-              <Map
-              />
+              <Map/>
           </div>
       </div>
     </div>

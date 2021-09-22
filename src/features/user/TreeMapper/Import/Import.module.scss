@@ -102,6 +102,17 @@
   min-width: 100%;
 }
 
+.drawMapText {
+  height: 220px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primaryColor;
+  font-weight: 700;
+  font-size: $fontMedium;
+}
+
 .speciesFieldGroup {
   display: flex;
   flex-direction: row;
@@ -215,6 +226,7 @@
   width: 100%;
   border: 2px solid $primaryDarkColor;
   overflow: hidden;
+  margin-bottom: 10px;
   .importTab {
     display: flex;
     flex-direction: column;
