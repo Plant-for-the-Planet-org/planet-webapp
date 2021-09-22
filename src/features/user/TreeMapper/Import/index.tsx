@@ -90,6 +90,8 @@ export default function ImportData({}: Props): ReactElement {
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
             userLang={userLang}
+            plantLocation={plantLocation}
+            setPlantLocation={setPlantLocation}
           />
         );
       case 1:
