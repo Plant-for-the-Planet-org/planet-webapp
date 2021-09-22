@@ -1,7 +1,7 @@
 const config = {
-  tenantName: 'janegoodall',
+  tenantName: 'treesforjane',
   tenantURL: 'map.treesforjane.org',
-  languages: ['de', 'en'],
+  languages: ['en'],
   fallbackCurrency: 'EUR',
   tenantGoal: null,
   // showUNDecadeLogo:true,
@@ -13,6 +13,7 @@ const config = {
     secondaryFontURL:
       'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
   },
+  hideNavbar: true,
   meta: {
     title: 'Trees for Jane',
     description:
