@@ -142,5 +142,6 @@
   "payments": "Payments",
   "agreeToGuidelines": " I agree to honor Jane’s name and trust by registering the planted trees and agreeing properly care for one or more “Trees for Jane”. I also agree to report the loss of a tree(s). The credibility of our program requires proper reporting from all who participate! Let’s not let Jane down!",
   "agreeTerms": "I agree To Terms And Conditions Of ",
-  "pftp": "Plant-for-the-Planet."
+  "pftp": "Plant-for-the-Planet.",
+  "imageMissing":"Please upload a photo of the tree(s)"
 }

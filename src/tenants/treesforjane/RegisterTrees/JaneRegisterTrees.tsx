@@ -112,14 +112,23 @@ export default function RegisterTrees({}: Props) {
           Number(location.longitude) || 0,
           Number(location.latitude) || 0,
         ]);
-        if(location.city) {
-          setContactDetails({...contactDetails, city: location.city?location.city:''});
+        if (location.city) {
+          setContactDetails({
+            ...contactDetails,
+            city: location.city ? location.city : '',
+          });
         }
-        if(location.postalCode) {
-          setContactDetails({...contactDetails, zipCode: location.postalCode?location.postalCode:''});
+        if (location.postalCode) {
+          setContactDetails({
+            ...contactDetails,
+            zipCode: location.postalCode ? location.postalCode : '',
+          });
         }
-        if(location.countryCode) {
-          setContactDetails({...contactDetails,country: location.countryCode?location.countryCode:'US'});
+        if (location.countryCode) {
+          setContactDetails({
+            ...contactDetails,
+            country: location.countryCode ? location.countryCode : 'US',
+          });
         }
       }
     }
@@ -170,88 +179,103 @@ export default function RegisterTrees({}: Props) {
     console.log(data, 'Data');
 
     if (data.treeCount < 10000000) {
-      if (
-        geometry &&
-        (geometry.type === 'Point' || geometry.features?.length >= 1)
-      ) {
-        setIsUploadingData(true);
-
-        const submitData = {
-          treeCount: data.treeCount,
-          treeSpecies: data.species,
-          plantProject: data.plantProject,
-          plantDate: new Date(data.plantDate),
-          geometry: geometry,
-          images: [
-            {
-              imageFile: image,
+      if (image) {
+        if (
+          geometry &&
+          (geometry.type === 'Point' || geometry.features?.length >= 1)
+        ) {
+          setIsUploadingData(true);
+          const submitData = {
+            treeCount: data.treeCount,
+            treeSpecies: data.species,
+            plantProject: data.plantProject,
+            plantDate: new Date(data.plantDate),
+            geometry: geometry,
+            images: [
+              {
+                imageFile: image,
+              },
+            ],
+            planter: {
+              firstname: data.firstName,
+              lastname: data.lastName,
+              email: data.email,
+              address: data.address,
+              zipCode: data.zipCode,
+              city: data.city,
+              country: contactDetails.country,
             },
-          ],
-          planter: {
-            firstname: data.firstName,
-            lastname: data.lastName,
-            email: data.email,
-            address: data.address,
-            zipCode: data.zipCode,
-            city: data.city,
-            country: contactDetails.country,
-          },
-        };
-        console.log(submitData, 'submitData');
-        postRequest(`/app/treeRegistrations`, submitData).then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            // setContributionGUID(res.id);
-            setContributionDetails(res);
-            setIsUploadingData(false);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
+          };
+          postRequest(`/app/treeRegistrations`, submitData).then((res) => {
+            if (!res.code) {
+              setErrorMessage('');
+              setContributionDetails(res);
               setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              setRegistered(true);
             } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              if (res.code === 404) {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              } else {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              }
             }
-          }
-        });
-
-        // handleNext();
+          });
+        } else {
+          setErrorMessage(ready ? t('me:locationMissing') : '');
+        }
       } else {
-        setErrorMessage(ready ? t('me:locationMissing') : '');
+        setErrorMessage(ready ? t('me:imageMissing') : '');
       }
     } else {
       setErrorMessage(ready ? t('me:wentWrong') : '');
     }
   };
 
-  const suggestAddress = (value:any) => {
+  const suggestAddress = (value: any) => {
     if (value.length > 3) {
       geocoder
         .suggest(value, {
           category: 'Address',
           countryCode: contactDetails.country,
         })
-        .then((result:any) => {
-          const filterdSuggestions = result.suggestions.filter((suggestion:any) => {
-            return !suggestion.isCollection;
-          });
+        .then((result: any) => {
+          const filterdSuggestions = result.suggestions.filter(
+            (suggestion: any) => {
+              return !suggestion.isCollection;
+            }
+          );
           setaddressSugggestions(filterdSuggestions);
         })
         .catch(console.log);
     }
   };
-  const getAddress = (value:any) => {
+  const getAddress = (value: any) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
-      .then((result:any) => {
+      .then((result: any) => {
         setValue('addressSearch', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
-        setUserLocation([result.candidates[0].location.x, result.candidates[0].location.y]);
+        setUserLocation([
+          result.candidates[0].location.x,
+          result.candidates[0].location.y,
+        ]);
+        setplantLocation([
+          result.candidates[0].location.x,
+          result.candidates[0].location.y,
+        ]);
+        setGeometry({
+          type: 'Point',
+          coordinates: [
+            result.candidates[0].location.x,
+            result.candidates[0].location.y,
+          ],
+        });
+        setErrorMessage('');
         setaddressSugggestions([]);
         console.log(result.candidates[0].location);
       })
@@ -397,8 +421,7 @@ export default function RegisterTrees({}: Props) {
             </div>
           </MapGL>
           <div className="address-search">
-          <MaterialTextField
-              inputRef={register({ required: true })}
+            <MaterialTextField
               label={t('donate:address')}
               variant="outlined"
               name="addressSearch"
@@ -410,7 +433,7 @@ export default function RegisterTrees({}: Props) {
             {addressSugggestions
               ? addressSugggestions.length > 0 && (
                   <div className="suggestions-container">
-                    {addressSugggestions.map((suggestion:any) => {
+                    {addressSugggestions.map((suggestion: any) => {
                       return (
                         <div
                           key={'suggestion' + suggestion_counter++}
@@ -496,10 +519,16 @@ export default function RegisterTrees({}: Props) {
             }}
           >
             {t('agreeTerms')}
-            <a href="https://pp.eco/legal/en/terms" target="_blank" rel="nofollow noreferrer">{t('pftp')}</a>
+            <a
+              href="https://pp.eco/legal/en/terms"
+              target="_blank"
+              rel="nofollow noreferrer"
+            >
+              {t('pftp')}
+            </a>
           </label>
         </div>
-        <div className={styles.nextButton}>
+        <div className={styles.registerButton}>
           <button
             id={'RegTressSubmit'}
             onClick={handleSubmit(submitRegisterTrees)}
