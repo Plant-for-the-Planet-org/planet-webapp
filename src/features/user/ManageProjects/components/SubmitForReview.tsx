@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import styles from './../styles/StepForm.module.scss'
+import styles from './../StepForm.module.scss'
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
 import i18next from './../../../../../i18n'

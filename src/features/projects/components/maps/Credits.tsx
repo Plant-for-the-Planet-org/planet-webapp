@@ -3,6 +3,8 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
+import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
+
 
 const config = tenantConfig();
 
@@ -39,6 +41,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     return (
         <>
             <div className={styles.lngSwitcher + ' mapboxgl-map'}>
+                {config.darkModeEnabled && <DarkModeSwitch />}
                 <div
                     onClick={() => {
                         setLanguageModalOpen(true);
@@ -117,6 +120,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:contact')}
                 </a>
+
             </div>
             <SelectLanguageAndCountry
                 openModal={openLanguageModal}
@@ -131,3 +135,4 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         </>
     )
 }
+

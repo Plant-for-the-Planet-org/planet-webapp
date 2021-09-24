@@ -12,7 +12,6 @@ import {
   LegendListItem,
   LegendItemTimeStep,
 } from 'vizzuality-components';
-import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { LayerManager, Layer as LayerM } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import { FlyToInterpolator, Layer, Source } from 'react-map-gl';
@@ -24,6 +23,7 @@ import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 interface Props {}
 
@@ -209,7 +209,7 @@ export default function Explore({}: Props): ReactElement {
           style={exploreExpanded ? { padding: '4px 10px' } : {}}
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
-          {exploreExpanded ? null : isMobile || showSingleProject ? null : (
+          {exploreExpanded ? null : isMobile ? null : (
             <p
               onClick={() => setExploreExpanded(true)}
               className={styles.exploreText}
@@ -243,7 +243,9 @@ export default function Explore({}: Props): ReactElement {
                     }}
                     className={styles.exploreInfo}
                   >
+                    
                     <InfoIcon />
+                    
                   </div>
                 </div>
                 <div className={styles.exploreToggleRow}>

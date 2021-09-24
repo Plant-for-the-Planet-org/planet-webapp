@@ -1,0 +1,331 @@
+@import './../../../theme/theme';
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: 20px;
+  max-width: 1250px;
+}
+
+.accountHistory {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  > .historyList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    color: $primaryFontColor;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
+    .notFound {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 160px;
+      > p {
+        margin-top: 10px;
+      }
+    }
+    > .record {
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 20px 20px 10px 20px;
+      background-color: $backgroundColor;
+      &:hover{
+        background-color: $backgroundColorDark;
+      }
+      > .detailContainer {
+        display: none;
+      }
+    }
+  }
+}
+
+.recordHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  > .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    > .top {
+      font-weight: 700;
+    }
+  }
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 20px;
+    > .top {
+      font-weight: 700;
+    }
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #dddbda;
+  margin-top: 20px;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px 0;
+  gap: 20px;
+  > .title {
+    font-weight: 700;
+  }
+}
+
+.filterContainer {
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-shadow: 1px 2px 8px -6px #707070;
+  background-color: $light;
+  border-radius: 10px;
+  padding: 20px;
+  gap: 20px;
+  width: 100%;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
+  > .header {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  > .filterGrid {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.filterRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0px;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.filterRow::-webkit-scrollbar {
+  display: none;
+}
+
+.filterButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: $backgroundColor;
+  transition-duration: 0.4;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  transition-timing-function: ease-in;
+  padding: 8px 12px;
+  border-radius: 100px;
+  border: 1px solid $primaryColor;
+  white-space: nowrap;
+  font-family: $primaryFontFamily;
+  cursor: pointer;
+  color: $primaryFontColor;
+}
+
+.filterButton.selected {
+  border: none;
+  padding: 9px 13px;
+  background-color: rgba(104, 176, 48, 0.12);
+}
+
+.detailGrid {
+  width: 100%;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  > .singleDetail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: fit-content;
+    > .title {
+      font-weight: 700;
+    }
+    > a {
+      color: $primaryColor;
+      font-weight: 700;
+    }
+  }
+}
+
+.modalContainer {
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: auto;
+  background-color: $backgroundColor;
+  padding: 20px;
+  z-index: 1040;
+  flex-direction: column;
+  color: $primaryFontColor;
+}
+
+.closeRecord {
+  margin-left: -16px;
+  cursor: pointer;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@include smTabletView {
+  .detailGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.record {
+  -webkit-transition: max-height 1s;
+  -moz-transition: max-height 1s;
+  -ms-transition: max-height 1s;
+  -o-transition: max-height 1s;
+  transition: max-height 1s;
+  overflow: hidden;
+  // "height: 0" not work with css transitions
+  max-height: 121px;
+}
+
+@include lgLaptopView {
+  .accountHistory {
+    width: 70%;
+    > .historyList {
+      width: 100%;
+      > .record.selected {
+        background-color: $backgroundColorDark;
+        // border-radius: 10px;
+        box-shadow: 1px 2px 8px -6px #707070;
+        max-height: 1000px;
+        color: $primaryFontColor;
+        > .detailContainer {
+          display: flex;
+        }
+      }
+    }
+  }
+  .filterContainer {
+    width: 30%;
+    display: flex;
+    margin-left: 20px;
+  }
+
+  .filterRow {
+    display: none;
+  }
+
+  .modal {
+    display: none;
+  }
+
+  .modalContainer {
+    display: none;
+  }
+
+  .detailGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// Loader for Buttons
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

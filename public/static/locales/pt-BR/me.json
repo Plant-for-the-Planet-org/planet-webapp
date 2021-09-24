@@ -47,7 +47,6 @@
   "embedWidget": "Incorporar Widget",
   "tree-donation": "Doação de Árvores",
   "tree-gift": "Árvore de presente",
-  "tree-cash": "Dinheiro-árvore",
   "trees": "Árvores",
   "amount": "Valor",
   "created": "Data de Criação",
@@ -73,5 +72,8 @@
   "in-dispute": "Em Disputa",
   "dispute-lost": "Disputa perdida",
   "nameForest": "A Floresta de {{name}}",
-  "taxReceipt": "Recibo do imposto"
+  "taxReceipt": "Recibo do imposto",
+  "setTarget": "Estabelecer Meta",
+  "targetSave": "Salvar",
+  "targetErrorMessage": "O número deve ser positivo ou maior que zero"
 }

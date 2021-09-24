@@ -44,9 +44,6 @@ const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withPlugins([[withBundleAnalyzer]], {
-  future: {
-    webpack5: true, // this sill seems to have a problem with Auth0
-  },
   productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     rootDir: __dirname,
@@ -93,13 +90,6 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
       NODE_ENV === 'production'
     ) {
       config.plugins.push(
-        new SentryWebpackPlugin({
-          include: '.next',
-          ignore: ['node_modules'],
-          stripPrefix: ['webpack://_N_E/'],
-          urlPrefix: `~${basePath}/_next`,
-          release: COMMIT_SHA,
-        }),
         new SentryWebpackPlugin({
           include: '.next',
           ignore: ['node_modules'],
