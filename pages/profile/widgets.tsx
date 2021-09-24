@@ -6,7 +6,12 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import  Head from 'next/head';
+import i18next from '../../i18n';
+
+const {useTranslation} = i18next;
+
 function ProfilePage(): ReactElement {
+  const {t} = useTranslation('me');
   // External imports
   const router = useRouter();
   const { user, contextLoaded } = React.useContext(UserPropsContext);
@@ -34,7 +39,7 @@ function ProfilePage(): ReactElement {
   return (
     <UserLayout>
       <Head>
-        <title>{'Widgets'}</title>
+        <title>{t('widgets')}</title>
       </Head>
       {user?.isPrivate === false ? (
         <div className="profilePage" style={{padding:'0px'}}>

@@ -42,7 +42,7 @@ export default function ProjectsContainer({}: any) {
         <div>
           <div className={'profilePageTitle'}>{t('manageProjects:manageProject')}</div>
           <div className={'profilePageSubTitle'}>
-            Description for Manage Projects
+            {t('manageProjects:descriptionForManageProjects')}
           </div>
         </div>
         <Link href="/profile/projects/add-project">
@@ -113,10 +113,10 @@ function SingleProject({ project }: any) {
             <div className={styles.projectLabel}>🛰 ️TreeMapper</div>
           )} */}
           {!project.isFeatured && (
-            <div className={styles.projectLabel}>🌟 Featured</div>
+            <div className={styles.projectLabel}>🌟 {t('common:featured')}</div>
           )}
           {!project.allowDonations && (
-            <div className={styles.projectLabel}>💸 Accepting Donations</div>
+            <div className={styles.projectLabel}>💸 {t('donate:acceptingDonations')}</div>
           )}
         </div>
       </div>

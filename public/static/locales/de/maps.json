@@ -40,5 +40,6 @@
   "daysAgo": "vor {{days}} Tagen",
   "today": "Heute",
   "yesterday": "Gestern",
-  "clickForDetails": "Klicke für Details"
+  "clickForDetails": "Klicke für Details",
+  "treeMapper": "TreeMapper"
 }

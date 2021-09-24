@@ -1,6 +1,6 @@
 @import '../../../../theme/theme';
 
-.fluidContainer{
+.fluidContainer {
   position: relative;
   width: 100%;
   padding-right: 15px;
@@ -18,33 +18,46 @@
   height: auto;
 }
 
+.illustration1 {
+  width: 256px;
+  max-width: 100%;
+  height: auto;
+}
+
+.illustration2 {
+  width: 256px;
+  max-width: 100%;
+  height: auto;
+}
+
 .mb65100 {
-  margin-bottom: 65px;
-  @include lgLaptopView{
-    margin-bottom: 100px;
+  // margin-bottom: 65px;
+  margin-bottom: 0px;
+  @include lgLaptopView {
+    margin-bottom: 0px;
   }
   &:last-of-type {
     margin-bottom: 0;
   }
 }
 
-@include mdTabletView{
-  .fluidContainer{
-  max-width: 720px;
+@include mdTabletView {
+  .fluidContainer {
+    max-width: 720px;
   }
 }
-@include lgLaptopView{
-  .fluidContainer{
-  max-width: 960px;
+@include lgLaptopView {
+  .fluidContainer {
+    max-width: 960px;
   }
 }
-@include xlDesktopView{
-  .fluidContainer{
-  max-width: 1140px;
+@include xlDesktopView {
+  .fluidContainer {
+    max-width: 1140px;
   }
 }
 
-.gridRow{
+.gridRow {
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
@@ -56,10 +69,10 @@
   max-width: 75%;
 }
 
-.col12{
+.col12 {
   -moz-box-flex: 0;
-    flex: 0 0 100%;
-    max-width: 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
 }
 .col8,
 .col12,
@@ -69,6 +82,7 @@
 .colMd5,
 .colMd6,
 .colMd7,
+.colMd8,
 .colMd10,
 .colMd12,
 .colLg4,
@@ -78,11 +92,11 @@
 .colLg10,
 .colLg12 {
   position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
 }
-@include smTabletView{
+@include smTabletView {
   .orderSm0 {
     order: 0;
   }
@@ -93,13 +107,17 @@
     flex: 0 0 75%;
     max-width: 75%;
   }
-  .colSm10{
+  .colSm10 {
     flex: 0 0 83.333333%;
     max-width: 83.333333%;
   }
 }
-@include mdTabletView{
-  .colMd4{
+@include mdTabletView {
+  .colMd3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .colMd4 {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
@@ -107,7 +125,7 @@
     flex: 0 0 41.666667%;
     max-width: 41.666667%;
   }
-  .colMd6{
+  .colMd6 {
     flex: 0 0 50%;
     max-width: 50%;
   }
@@ -115,11 +133,15 @@
     flex: 0 0 58.333333%;
     max-width: 58.333333%;
   }
+  .colMd8 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
   .colMd10 {
     flex: 0 0 83.333333%;
     max-width: 83.333333%;
   }
-  .colMd12{
+  .colMd12 {
     flex: 0 0 100%;
     max-width: 100%;
   }
@@ -131,8 +153,12 @@
   }
 }
 
-@include lgLaptopView{
-  .colLg4{
+@include lgLaptopView {
+  .colLg3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .colLg4 {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
@@ -140,7 +166,7 @@
     flex: 0 0 41.666667%;
     max-width: 41.666667%;
   }
-  .colLg6{
+  .colLg6 {
     flex: 0 0 50%;
     max-width: 50%;
   }
@@ -157,4 +183,3 @@
     max-width: 100%;
   }
 }
-

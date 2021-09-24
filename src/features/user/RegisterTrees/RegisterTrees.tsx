@@ -1,5 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { createMuiTheme, MenuItem } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { ThemeProvider } from '@material-ui/styles';
@@ -222,9 +222,9 @@ export default function RegisterTrees({}: Props) {
   return ready ? (
     <div className="profilePage">
       <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
-
+      <div className={styles.registerTreesPage}>
       {!registered ? (
-        <div className={styles.registerTreesPage}>
+        
           <form onSubmit={handleSubmit(submitRegisterTrees)}>
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>
@@ -416,10 +416,11 @@ export default function RegisterTrees({}: Props) {
               </button>
             </div>
           </form>
-        </div>
+        
       ) : (
         <SingleContribution {...ContributionProps} />
       )}
+      </div>
     </div>
   ) : null;
 }

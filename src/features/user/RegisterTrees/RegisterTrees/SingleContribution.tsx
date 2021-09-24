@@ -37,15 +37,6 @@ export default function SingleContribution({
 
   return ready ? (
     <>
-      <button
-        id={'singleControcloseButton'}
-        className={styles.closeButton}
-        onClick={() => {
-          router.push(`/t/${slug}`, undefined, { shallow: true });
-        }}
-      >
-        <CancelIcon />
-      </button>
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div>

@@ -9,7 +9,7 @@ const config = {
   showUNDecadeLogo:true,
   showRedeemHint:true,
   enableGuestSepa:false,
-  darkModeEnabled: true,
+  darkModeEnabled: false,
 
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
