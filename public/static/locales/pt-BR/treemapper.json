@@ -1,1 +1,24 @@
-{ }
+{
+  "trees": "Árvores",
+  "tree": "Árvore",
+  "on": "em",
+  "partial": "Parcial",
+  "complete": "Completo",
+  "on-site": "No local",
+  "off-site": "Fora do local",
+  "captureMode": "Modo de Captura",
+  "captureStatus": "Status da captura",
+  "coordinates": "Coordenadas",
+  "guid": "GUID",
+  "height": "Altura",
+  "width": "Largura",
+  "plantDate": "Data do Plantio",
+  "registrationDate": "Data de registro",
+  "plantProject": "Projeto de Plantio",
+  "species": "Espécie",
+  "sampleTrees": "Árvore de Amostra",
+  "loadMore": "Carregar mais",
+  "treeMapper": "TreeMapper",
+  "cm": "cm",
+  "m": "m"
+}
