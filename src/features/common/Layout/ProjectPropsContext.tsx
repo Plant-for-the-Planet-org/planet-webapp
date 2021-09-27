@@ -70,12 +70,14 @@ export const ProjectPropsContext = React.createContext({
   setHoveredPl: (value: {}) => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
-  siteViewPort: null || {}, 
-  setSiteViewPort:(value: {}) => {},
-  filteredProjects:null || [],
-  setFilteredProjects:(value: []) => {},
-  filtersOpen:false,
-  setFilterOpen:(value:boolean) => {},
+  siteViewPort: null || {},
+  setSiteViewPort: (value: {}) => {},
+  filteredProjects: null || [],
+  setFilteredProjects: (value: []) => {},
+  filtersOpen: false,
+  setFilterOpen: (value: boolean) => {},
+  showVideo: true,
+  setshowVideo: (value: boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -103,6 +105,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [satellite, setSatellite] = React.useState(false);
   const [filteredProjects, setFilteredProjects] = React.useState(null);
   const [filtersOpen, setFilterOpen] = React.useState(false);
+  const [showVideo, setshowVideo] = React.useState(true);
 
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
@@ -142,22 +145,22 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [siteViewPort, setSiteViewPort] = React.useState(null);
 
   React.useEffect(() => {
-    if(typeof window !== 'undefined') {
-      if(window.innerWidth > 767) {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 767) {
         setIsMobile(false);
       } else {
         setIsMobile(true);
+      }
     }
-  }
   });
 
   React.useEffect(() => {
-    if(isMobile) {
+    if (isMobile) {
       setIsPolygonMenuOpen(false);
     } else {
       setIsPolygonMenuOpen(true);
     }
-  },[isMobile]);
+  }, [isMobile]);
 
   const updateWidth = () => {
     setWindowSize(window.innerWidth);
@@ -278,10 +281,12 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setIsPolygonMenuOpen,
         siteViewPort,
         setSiteViewPort,
-        filteredProjects, 
+        filteredProjects,
         setFilteredProjects,
         filtersOpen,
-        setFilterOpen
+        setFilterOpen,
+        showVideo,
+        setshowVideo,
       }}
     >
       {children}

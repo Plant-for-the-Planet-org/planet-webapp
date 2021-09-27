@@ -132,7 +132,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     setCurrencyCode,
   };
 
-  const [showVideo, setshowVideo] = React.useState(true);
+  // const [showVideo, setshowVideo] = React.useState(true);
+  const { project, projects, showVideo, setshowVideo } =
+    React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -144,7 +146,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       }
     }
   }, []);
-  const { project, projects } = React.useContext(ProjectPropsContext);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -159,12 +160,11 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               : { display: 'none' }
           }
         >
-          {(config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
+          {config.tenantName === 'planet' || config.tenantName === 'ttc' ? (
             <VideoContainer setshowVideo={setshowVideo} />
-            ) : (
-              <></>
-            )
-          }
+          ) : (
+            <></>
+          )}
         </div>
 
         <div
@@ -196,15 +196,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                         ) : projects ? (
                           <MapLayout />
                         ) : null}
-                        <div
-                          style={(config.tenantName === 'planet' ||
-                              config.tenantName === 'ttc')
-                              ? {}
-                              : { display: 'none' }
-                          }
-                        >
-                          <PlayButton setshowVideo={setshowVideo} />
-                        </div>
+                        {/* <PlayButton setshowVideo={setshowVideo} /> */}
                       </>
                     ) : null}
                     <Component {...ProjectProps} />

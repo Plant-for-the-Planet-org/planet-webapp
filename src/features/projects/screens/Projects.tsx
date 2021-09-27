@@ -9,6 +9,8 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import Filters from '../components/projects/Filters';
+import PlayButton from '../../common/LandingVideo/PlayButton';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 
 interface Props {
   projects: any;
@@ -31,7 +33,11 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
+  // const [showVideo, setshowVideo] = React.useState<boolean>(false);
+
   const { t, ready } = useTranslation(['donate', 'country']);
+
+  const { setshowVideo } = React.useContext(ProjectPropsContext);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
@@ -121,9 +127,10 @@ function ProjectsList({
     }
   }
 
-  const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
-    projects,
-  ]);
+  const allProjects = React.useMemo(
+    () => getProjects(projects, 'all'),
+    [projects]
+  );
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
@@ -140,7 +147,9 @@ function ProjectsList({
       <div className={'projectNotFound'}>
         <LazyLoad>
           <NotFound className={'projectNotFoundImage'} />
-          <h5 style={{ color: 'var(--primary-font-color' }}>{t('donate:noProjectsFound')}</h5>
+          <h5 style={{ color: 'var(--primary-font-color' }}>
+            {t('donate:noProjectsFound')}
+          </h5>
         </LazyLoad>
       </div>
     ) : null;
@@ -148,7 +157,10 @@ function ProjectsList({
 
   return ready ? (
     <>
+      <PlayButton setshowVideo={setshowVideo} />
+
       <Explore />
+
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
@@ -187,34 +199,41 @@ function ProjectsList({
           </div>
           {/* till here is header */}
           <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ?
-              searchProjectResults && searchProjectResults.length > 0 ?
+            {trottledSearchValue !== '' ? (
+              searchProjectResults && searchProjectResults.length > 0 ? (
                 searchProjectResults.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : selectedTab === 'all' ?
-              allProjects && allProjects.length > 0  ?
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )
+            ) : selectedTab === 'all' ? (
+              allProjects && allProjects.length > 0 ? (
                 allProjects.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : 
-              featuredProjects  && featuredProjects.length > 0  ?
-                featuredProjects.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-          }
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )
+            ) : featuredProjects && featuredProjects.length > 0 ? (
+              featuredProjects.map((project: any) => (
+                <ProjectSnippet
+                  key={project.properties.id}
+                  project={project.properties}
+                  editMode={false}
+                />
+              ))
+            ) : (
+              <NoProjectFound />
+            )}
           </div>
         </div>
       ) : null}

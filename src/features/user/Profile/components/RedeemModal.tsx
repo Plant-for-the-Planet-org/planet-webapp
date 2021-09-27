@@ -31,7 +31,8 @@ export default function RedeemModal({
 
   const config = tenantConfig();
 
-  const { user, contextLoaded, token, setUser } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, setUser } =
+    React.useContext(UserPropsContext);
 
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
@@ -42,9 +43,9 @@ export default function RedeemModal({
   const [validCodeData, setValidCodeData] = React.useState();
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [code, setCode] = React.useState();
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false
-  );
+  const [inputCode, setInputCode] = React.useState('');
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
+    React.useState(false);
   const handleTextCopiedSnackbarOpen = () => {
     setTextCopiedSnackbarOpen(true);
   };
@@ -119,7 +120,14 @@ export default function RedeemModal({
           setCodeRedeemed(true);
           setIsUploadingData(false);
           setCodeValidated(false);
-          const newUser = {...user, score:{personal: res.schemata.treecounter.countPersonal, received: res.schemata.treecounter.countReceived, target: res.schemata.treecounter.countTarget}}
+          const newUser = {
+            ...user,
+            score: {
+              personal: res.schemata.treecounter.countPersonal,
+              received: res.schemata.treecounter.countReceived,
+              target: res.schemata.treecounter.countTarget,
+            },
+          };
           setUser(newUser);
         }
       });
@@ -294,6 +302,15 @@ export default function RedeemModal({
                         message: t('redeem:enterRedeemCode'),
                       },
                     })}
+                    onChange={(event) => {
+                      console.log(event.target.value);
+                      event.target.value.startsWith('pp.eco/c/')
+                        ? setInputCode(
+                            event.target.value.replace('pp.eco/c/', '')
+                          )
+                        : setInputCode(event.target.value);
+                    }}
+                    value={inputCode}
                     name={'code'}
                     placeholder="XAD-1SA-5F1-A"
                     label=""

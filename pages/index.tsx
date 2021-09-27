@@ -94,7 +94,6 @@ export default function Donate({
     currencyCode,
     setCurrencyCode,
   };
-
   const GiftProps = {
     setShowDirectGift,
     directGift,

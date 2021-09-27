@@ -91,7 +91,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         rasterData.imagery.constructor === Object && (
           <>
             <ProjectTabs />
-              <TimeTravel />
+            <TimeTravel />
           </>
         )}
       <div
