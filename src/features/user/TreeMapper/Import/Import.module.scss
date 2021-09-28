@@ -223,8 +223,6 @@
   align-items: center;
   border-radius: 100px;
   width: 100%;
-  border: 2px solid $primaryDarkColor;
-  overflow: hidden;
   margin-bottom: 10px;
   .importTab {
     display: flex;
@@ -234,14 +232,11 @@
     width: 100px;
     height: 32px;
     font-weight: 700;
-    color: $primaryColor;
-    &:nth-child(2) {
-      border-left: 2px solid $primaryDarkColor;
-      border-right: 2px solid $primaryDarkColor;
-    }
+    cursor: pointer;
     &.active {
-      color: #fff;
-      background-color: $primaryDarkColor;
+      color: $backgroundColor;
+      border-radius: 10px;
+      background: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
     }
   }
 }

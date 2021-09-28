@@ -341,12 +341,17 @@ export default function PlantingLocation({
                 name={`species[${index}].count`}
               />
             </div>
+            {index > 0 ? (
             <div
               onClick={() => remove(index)}
               className={styles.speciesDeleteField}
             >
               <DeleteIcon />
             </div>
+            ): <div
+            className={styles.speciesDeleteField}
+          >
+          </div>}
           </div>
         );
       })}

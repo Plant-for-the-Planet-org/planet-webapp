@@ -42,11 +42,13 @@ export default function SampleTreeCard({
             : ''
         }`}
         </div>
+        {index > 0 && (
         <div
           onClick={() => remove(index)}
         >
           <DeleteIcon />
-        </div>
+        </div>)
+}
       </div>
       <div className={styles.sampleTreeSummary}>
         {`${
