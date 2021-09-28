@@ -221,7 +221,9 @@ export default function PlantingLocation({
           </>
         );
       case 'map':
-        return <div className={styles.drawMapText}>draw on map on the right</div>;
+        return (
+          <div className={styles.drawMapText}>draw on map on the right</div>
+        );
       default:
         return null;
     }
@@ -348,11 +350,14 @@ export default function PlantingLocation({
           </div>
         );
       })}
-        <div onClick={() => {
-            append({ name: "", count: 0 });
-          }} className={styles.addSpeciesButton}>
+      <div
+        onClick={() => {
+          append({ name: '', count: 0 });
+        }}
+        className={styles.addSpeciesButton}
+      >
         {t('treemapper:addAnotherSpecies')}
-        </div>
+      </div>
 
       <div className={`${styles.formFieldLarge}`}>
         <button
@@ -365,7 +370,7 @@ export default function PlantingLocation({
           {isUploadingData ? (
             <div className={styles.spinner}></div>
           ) : (
-            t('treemapper:saveAndContinue')
+            t('treemapper:continue')
           )}
         </button>
       </div>

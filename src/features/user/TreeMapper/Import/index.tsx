@@ -10,8 +10,16 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import { getStoredConfig } from '../../../../utils/storeConfig';
 import dynamic from 'next/dynamic';
+import { makeStyles } from '@material-ui/core/styles';
 
 const { useTranslation } = i18next;
+
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: 'transparent',
+    padding: '20px 0 5px'
+  },
+});
 
 interface Props {}
 
@@ -27,6 +35,8 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 export default function ImportData({}: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
+
+  const classes = useStyles();
 
   function getSteps() {
     return [
@@ -114,6 +124,7 @@ export default function ImportData({}: Props): ReactElement {
             handleNext={handleNext}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
+            userLang={userLang}
           />
         );
       default:
@@ -140,7 +151,7 @@ export default function ImportData({}: Props): ReactElement {
               activeStep={activeStep}
               orientation="horizontal"
               alternativeLabel
-              className={styles.stepper}
+              className={classes.root}
             >
               {steps.map((label, index) => (
                 <Step key={index}>

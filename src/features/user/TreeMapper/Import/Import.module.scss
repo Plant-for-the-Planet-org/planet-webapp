@@ -56,7 +56,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin: 20px 0;
   width: 100%;
 }
 
@@ -257,6 +256,35 @@
     height: 100% !important;
     width: 100% !important;
   }
+}
+
+.sampleTreeFieldGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  background-color: $backgroundColor;
+  border-radius: 10px;
+}
+
+.sampleTreeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.sampleTreeName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+}
+
+.downloadLink {
+  font-weight: 700;
+  color: $primaryColor;
+  cursor: pointer;
 }
 
 @include mdTabletView {

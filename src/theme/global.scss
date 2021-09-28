@@ -248,7 +248,7 @@ video {
   text-align: center;
   border: 0px;
   border-radius: 52px;
-  min-width: 200px;
+  min-width: 100px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -264,7 +264,6 @@ video {
 }
 
 .secondaryButton {
-  min-width: 240px;
   background-image: none;
   background-color: $backgroundColorDark;
   color: $primaryFontColor;

@@ -22,5 +22,6 @@
   "cm": "cm",
   "m": "m",
   "plantingLocation": "Planting Location",
-  "reviewAndSubmit": "Review and Submit"
+  "reviewAndSubmit": "Review and Submit",
+  "sampleTree":"Sample Tree #{{number}}"
 }
