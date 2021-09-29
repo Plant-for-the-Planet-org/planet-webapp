@@ -70,6 +70,12 @@ export const ProjectPropsContext = React.createContext({
   setHoveredPl: (value: {}) => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
+  siteViewPort: null || {}, 
+  setSiteViewPort:(value: {}) => {},
+  filteredProjects:null || [],
+  setFilteredProjects:(value: []) => {},
+  filtersOpen:false,
+  setFilterOpen:(value:boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -95,6 +101,9 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [openModal, setModalOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [satellite, setSatellite] = React.useState(false);
+  const [filteredProjects, setFilteredProjects] = React.useState(null);
+  const [filtersOpen, setFilterOpen] = React.useState(false);
+
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -130,6 +139,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
 
   const [windowSize, setWindowSize] = React.useState(1280);
   const [hoveredPl, setHoveredPl] = React.useState(null);
+  const [siteViewPort, setSiteViewPort] = React.useState(null);
 
   React.useEffect(() => {
     if(typeof window !== 'undefined') {
@@ -168,16 +178,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     } else {
       setsiteExists(false);
       setGeoJson(null);
+      setSiteViewPort(null);
     }
     setSelectedMode('location');
   }, [project]);
-
-  // React.useEffect(() => {
-  //   if (viewport.zoom > 15) {
-  //     setSatellite(false);
-  //   }
-  //   console.log('zoom', viewport.zoom);
-  // }, [viewport]);
 
   React.useEffect(() => {
     if (plantLocations && plantLocations.length > 0) {
@@ -272,6 +276,12 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setHoveredPl,
         isPolygonMenuOpen,
         setIsPolygonMenuOpen,
+        siteViewPort,
+        setSiteViewPort,
+        filteredProjects, 
+        setFilteredProjects,
+        filtersOpen,
+        setFilterOpen
       }}
     >
       {children}

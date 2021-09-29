@@ -91,8 +91,11 @@
 
 .searchInput {
   flex-grow: 3;
+  color: $primaryFontColor;
 }
-
+.searchInput > input{
+  background-color: aqua;
+}
 .cancelIcon {
   margin-right: 6px;
   padding: 10px;
@@ -151,6 +154,9 @@
   font-family: $primaryFontFamily;
   text-align: center;
   padding: 0px 20px;
+}
+.project{
+  color: $primaryFontColor;
 }
 
 .projectNotFoundImage {
@@ -227,7 +233,8 @@
   .container {
     overflow: visible;
     padding-top: 0px;
-    margin-top: 110px;
+    margin-top: 80px;
+    padding-top: 30px;
     // padding-bottom: 0px;
     width: fit-content;
     // z-index: 2;

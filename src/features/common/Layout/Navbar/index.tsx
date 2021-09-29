@@ -68,7 +68,7 @@ export default function NavbarComponent(props: any) {
         alert(auth0Error.message);
       }
       setUser(null);
-      logoutUser();
+      logoutUser(`${process.env.NEXTAUTH_URL}/`);
     }
   }
 
@@ -175,7 +175,7 @@ export default function NavbarComponent(props: any) {
                 </div>
               </Link>
             ) : (
-              <></>
+              <div key={link}></div>
             );
           }
         })}

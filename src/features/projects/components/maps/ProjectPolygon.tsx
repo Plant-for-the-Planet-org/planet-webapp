@@ -12,7 +12,6 @@ export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
 
   return (
     <>
-      {selectedMode !== 'imagery' && (
         <Source id={id ? id : 'singleProject'} type="geojson" data={geoJson}>
           <Layer
             id={id ? id : 'polygonOutline'}
@@ -22,9 +21,9 @@ export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
               'line-color': satellite ? '#ffffff' : '#007A49',
               'line-width': 4,
             }}
+            layout={{ visibility: selectedMode !== 'imagery' ? 'visible' : 'none' }}
           />
         </Source>
-      )}
     </>
   );
 }

@@ -96,5 +96,20 @@
   "nameAlreadyPublished": "O seu nome completo aparecerá no quadro de líderes, uma vez que o seu perfil Plant-for-the-Planet é atualmente público.",
   "orgNamePublishedTax": "O nome da empresa é visível no nosso app e nosso quadro de líderes. Recibos de dedução de impostos serão emitidos com o mesmo nome.",
   "orgNamePublished": "O nome da empresa é visível no nosso quadro de líderes e no nosso aplicativo.",
-  "aboutProject": "Sobre o Projeto"
+  "aboutProject": "Sobre o Projeto",
+  "acceptingDonations": "Aceitando Doações",
+  "natural-regeneration": "Regeneração Natural",
+  "managed-regeneration": "Regeneração Gerenciada",
+  "large-scale-planting": "Restauração em Grande Escala",
+  "agroforestry": "Agrofloresta",
+  "urban-planting": "Restauração Urbana",
+  "other-planting": "Restauração",
+  "mangroves": "Manguezais",
+  "purpose": "Propósito",
+  "projectPurpose": "Objetivo do projeto",
+  "type": "Tipo",
+  "projectType": "Tipo de projeto",
+  "conservation": "Conservação",
+  "restoration": "Restauração",
+  "filters": "Filtros"
 }

@@ -8,6 +8,7 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
+import Filters from '../components/projects/Filters';
 
 interface Props {
   projects: any;
@@ -126,7 +127,7 @@ function ProjectsList({
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
-    [trottledSearchValue]
+    [trottledSearchValue, projects]
   );
 
   const featuredProjects = React.useMemo(
@@ -134,27 +135,15 @@ function ProjectsList({
     [projects]
   );
 
-  const AllProjects = (projects: any) => {
-    if (projects.projects.length < 1) {
-      return ready ? (
-        <div className={'projectNotFound'}>
-          <LazyLoad>
-            <NotFound className={'projectNotFoundImage'} />
-            <h5>{t('donate:noProjectsFound')}</h5>
-          </LazyLoad>
-        </div>
-      ) : null;
-    } else {
-      return projects.projects.map((project: any) => {
-        return (
-          <ProjectSnippet
-            key={project.properties.id}
-            project={project.properties}
-            editMode={false}
-          />
-        );
-      });
-    }
+  const NoProjectFound = (props: any) => {
+    return ready ? (
+      <div className={'projectNotFound'}>
+        <LazyLoad>
+          <NotFound className={'projectNotFoundImage'} />
+          <h5 style={{ color: 'var(--primary-font-color' }}>{t('donate:noProjectsFound')}</h5>
+        </LazyLoad>
+      </div>
+    ) : null;
   };
 
   return ready ? (
@@ -198,13 +187,34 @@ function ProjectsList({
           </div>
           {/* till here is header */}
           <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ? (
-              <AllProjects projects={searchProjectResults} />
-            ) : selectedTab === 'all' ? (
-              <AllProjects projects={allProjects} />
-            ) : (
-              <AllProjects projects={featuredProjects} />
-            )}
+            {trottledSearchValue !== '' ?
+              searchProjectResults && searchProjectResults.length > 0 ?
+                searchProjectResults.map((project: any) => (
+                  <ProjectSnippet
+                    key={project.properties.id}
+                    project={project.properties}
+                    editMode={false}
+                  /> )
+                ) : (<NoProjectFound />)
+            : selectedTab === 'all' ?
+              allProjects && allProjects.length > 0  ?
+                allProjects.map((project: any) => (
+                  <ProjectSnippet
+                    key={project.properties.id}
+                    project={project.properties}
+                    editMode={false}
+                  /> )
+                ) : (<NoProjectFound />)
+            : 
+              featuredProjects  && featuredProjects.length > 0  ?
+                featuredProjects.map((project: any) => (
+                  <ProjectSnippet
+                    key={project.properties.id}
+                    project={project.properties}
+                    editMode={false}
+                  /> )
+                ) : (<NoProjectFound />)
+          }
           </div>
         </div>
       ) : null}

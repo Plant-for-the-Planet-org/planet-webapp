@@ -9,6 +9,7 @@ jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
     runs-on: ubuntu-latest  # Can be self-hosted runner also
+    timeout-minutes: 25
     steps:
 
       - name: Wait for Vercel deployment # ${{ steps.waitForVercel.outputs.url }} should return the Vercel deployment url
