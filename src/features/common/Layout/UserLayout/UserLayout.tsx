@@ -52,31 +52,31 @@ function UserLayout(props: any): ReactElement {
       path: '/profile/register-trees',
       icon: <RegisterTreeIcon />,
     },
-    {
-      key: 3,
-      title: t('me:payments'),
-      path: '/profile/history',
-      icon: <DonateIcon />,
-      flag: 'Beta',
-      subMenu: [
-        // {
-        //   title: 'History',
-        //   path: '/profile/history',
-        // },
-        // {
-        //   title: 'Recurring Donations',
-        //   path: '/profile/recurring-donations',
-        // },
-        // {
-        //   title: 'Payouts',
-        //   path: '/profile/payouts', // Only for Tpos
-        // },
-        // {
-        //   title: 'Payment Methods',
-        //   path: '/profile/payment-methods',
-        // },
-      ],
-    },
+    // {
+    //   key: 3,
+    //   title: t('me:payments'),
+    //   path: '/profile/history',
+    //   icon: <DonateIcon />,
+    //   flag: 'Beta',
+    //   subMenu: [
+    //     // {
+    //     //   title: 'History',
+    //     //   path: '/profile/history',
+    //     // },
+    //     // {
+    //     //   title: 'Recurring Donations',
+    //     //   path: '/profile/recurring-donations',
+    //     // },
+    //     // {
+    //     //   title: 'Payouts',
+    //     //   path: '/profile/payouts', // Only for Tpos
+    //     // },
+    //     // {
+    //     //   title: 'Payment Methods',
+    //     //   path: '/profile/payment-methods',
+    //     // },
+    //   ],
+    // },
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -92,20 +92,20 @@ function UserLayout(props: any): ReactElement {
     //   //   },
     //   // ],
     // },
-    {
-      key: 4,
-      title: t('treeMapper'),
-      path: '/profile/treemapper',
-      icon: <TreeMappperIcon />,
-      flag: 'Beta',
-    },
-    {
-      key: 5,
-      title: t('me:projects'),
-      path: '/profile/projects',
-      icon: <MapIcon />,
-      accessLevel: ['tpo'],
-    },
+    // {
+    //   key: 4,
+    //   title: t('treeMapper'),
+    //   path: '/profile/treemapper',
+    //   icon: <TreeMappperIcon />,
+    //   flag: 'Beta',
+    // },
+    // {
+    //   key: 5,
+    //   title: t('me:projects'),
+    //   path: '/profile/projects',
+    //   icon: <MapIcon />,
+    //   accessLevel: ['tpo'],
+    // },
     {
       key: 6,
       title: t('me:embedWidget'),
