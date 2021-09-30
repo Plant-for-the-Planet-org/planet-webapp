@@ -6,6 +6,7 @@ import History from '../../src/features/user/Account/History';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import  Head from 'next/head';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -76,6 +77,12 @@ function AccountHistory({}: Props): ReactElement {
     paymentHistory,
     fetchPaymentHistory,
   };
+  const router = useRouter();
+
+  // TODO - remove this
+  if (typeof window !== 'undefined') {
+    router.push('/');
+  }
 
   return (
     <>
