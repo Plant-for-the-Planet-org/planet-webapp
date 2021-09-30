@@ -79,10 +79,10 @@ function AccountHistory({}: Props): ReactElement {
   };
   const router = useRouter();
 
-  // TODO - remove this
-  if (typeof window !== 'undefined') {
-    router.push('/');
-  }
+  // // TODO - remove this
+  // if (typeof window !== 'undefined') {
+  //   router.push('/');
+  // }
 
   return (
     <>
