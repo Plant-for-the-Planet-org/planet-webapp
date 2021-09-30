@@ -15,9 +15,9 @@ function TreeMapperPage({
   const router = useRouter();
 
   // TODO - remove this
-  if (typeof window !== 'undefined') {
-    router.push('/');
-  }
+  // if (typeof window !== 'undefined') {
+  //   router.push('/');
+  // }
   const {t} = useTranslation('me');
   return (
     <UserLayout>
