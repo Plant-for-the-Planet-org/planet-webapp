@@ -19,6 +19,9 @@ import {
   postAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../../utils/apiRequests/api';
+import tj from '@mapbox/togeojson';
+import gjv from 'geojson-validation';
+import flatten from 'geojson-flatten';
 
 const { useTranslation } = i18next;
 
@@ -44,24 +47,19 @@ export default function PlantingLocation({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [geoJson, setGeoJson] = React.useState(null);
   const [projects, setProjects] = React.useState([]);
-  const importMethods = ['fileUpload', 'jsonEditor', 'map'];
+  const importMethods = ['import', 'paste', 'draw'];
   const [activeMethod, setActiveMethod] = React.useState(importMethods[0]);
-  const [species, setSpecies] = React.useState([
-    {
-      scientificName: '',
-      count: 0,
-    },
-  ]);
+  const [geoJsonError, setGeoJsonError] = React.useState(false);
 
   const { t, ready } = useTranslation(['treemapper', 'common']);
   const defaultValues = {
-    plantingDate: new Date(),
+    plantDate: new Date(),
     plantProject: '',
-    geometry: '',
-    species: [
+    geometry: {},
+    plantedSpecies: [
       {
-        name: '',
-        count: 0,
+        scientificSpecies: '',
+        treeCount: 0,
       },
     ],
   };
@@ -70,7 +68,7 @@ export default function PlantingLocation({
 
   const { fields, append, remove, prepend } = useFieldArray({
     control,
-    name: 'species',
+    name: 'plantedSpecies',
   });
 
   async function loadProjects() {
@@ -94,13 +92,61 @@ export default function PlantingLocation({
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = (event: any) => {
-        setGeoJson(event.target.result);
+        const fileType =
+          file.name.substring(
+            file.name.lastIndexOf('.') + 1,
+            file.name.length
+          ) || file.name;
+        if (fileType === 'kml') {
+          reader.readAsText(file);
+          reader.onabort = () => console.log('file reading was aborted');
+          reader.onerror = () => console.log('file reading has failed');
+          reader.onload = (event: any) => {
+            const dom = new DOMParser().parseFromString(
+              event.target.result,
+              'text/xml'
+            );
+            const geo = tj.kml(dom);
+            if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
+              const flattened = flatten(geo);
+              if (flattened.features[0].geometry.type === 'Polygon') {
+                setGeoJsonError(false);
+                setGeoJson(flattened.features[0].geometry);
+                setActiveMethod('paste');
+              } else {
+                setGeoJsonError(true);
+              }
+            } else {
+              setGeoJsonError(true);
+            }
+          };
+        } else if (fileType === 'geojson') {
+          reader.readAsText(file);
+          reader.onabort = () => console.log('file reading was aborted');
+          reader.onerror = () => console.log('file reading has failed');
+          reader.onload = (event) => {
+            const geo = JSON.parse(event.target.result);
+            if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
+              const flattened = flatten(geo);
+              if (flattened.features[0].geometry.type === 'Polygon') {
+                setGeoJsonError(false);
+                setGeoJson(flattened.features[0].geometry);
+                setActiveMethod('paste');
+              } else {
+                setGeoJsonError(true);
+              }
+            } else {
+              setGeoJsonError(true);
+              console.log('invalid geojson');
+            }
+          };
+        }
       };
     });
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    // accept: 'text/*',
+    accept: ['.geojson', '.kml'],
     multiple: false,
     onDrop: onDrop,
     onDropAccepted: () => {
@@ -169,45 +215,31 @@ export default function PlantingLocation({
 
   const getMethod = (method: string) => {
     switch (method) {
-      case 'fileUpload':
+      case 'import':
         return (
           <>
-            {geoJson ? (
-              <div className={styles.uploadedImageContainer}>
-                {/* <img src={geoJson} alt="tree" /> */}
-                <div className={styles.uploadedImageButtonContainer}>
-                  <button
-                    id={'uploadImgDelIcon'}
-                    onClick={() => setGeoJson(null)}
-                  >
-                    <DeleteIcon />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <label
-                htmlFor="upload"
-                className={styles.fileUploadContainer}
-                {...getRootProps()}
+            <label
+              htmlFor="upload"
+              className={styles.fileUploadContainer}
+              {...getRootProps()}
+            >
+              <button
+                // onClick={(image:any) => setImage(image)}
+                className="primaryButton"
+                style={{ maxWidth: '200px' }}
               >
-                <button
-                  // onClick={(image:any) => setImage(image)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px' }}
-                >
-                  <input {...getInputProps()} />
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    'Upload File'
-                  )}
-                </button>
-                <p style={{ marginTop: '18px' }}>{'File (geojson/kml)'}</p>
-              </label>
-            )}
+                <input {...getInputProps()} />
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  'Upload File'
+                )}
+              </button>
+              <p style={{ marginTop: '18px' }}>{'File (geojson/kml)'}</p>
+            </label>
           </>
         );
-      case 'jsonEditor':
+      case 'paste':
         return (
           <>
             <JSONInput
@@ -220,7 +252,7 @@ export default function PlantingLocation({
             />
           </>
         );
-      case 'map':
+      case 'draw':
         return (
           <div className={styles.drawMapText}>draw on map on the right</div>
         );
@@ -255,7 +287,7 @@ export default function PlantingLocation({
                     format="MMMM d, yyyy"
                   />
                 )}
-                name="plantingDate"
+                name="plantDate"
                 control={control}
                 defaultValue=""
               />
@@ -316,12 +348,12 @@ export default function PlantingLocation({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: t('me:speciesIsRequired'),
+                    message: t('speciesIsRequired'),
                   },
                 })}
-                label={t('me:treeSpecies')}
+                label={t('treeSpecies')}
                 variant="outlined"
-                name={`species[${index}].name`}
+                name={`plantedSpecies[${index}].scientificSpecies`}
               />
             </div>
             <div className={styles.speciesCountField}>
@@ -329,35 +361,34 @@ export default function PlantingLocation({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: t('me:treesRequired'),
+                    message: t('treesRequired'),
                   },
                   validate: (value) => parseInt(value, 10) >= 1,
                 })}
                 onInput={(e: any) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 }}
-                label={t('me:123')}
+                label={t('count')}
                 variant="outlined"
-                name={`species[${index}].count`}
+                name={`plantedSpecies[${index}].treeCount`}
               />
             </div>
             {index > 0 ? (
-            <div
-              onClick={() => remove(index)}
-              className={styles.speciesDeleteField}
-            >
-              <DeleteIcon />
-            </div>
-            ): <div
-            className={styles.speciesDeleteField}
-          >
-          </div>}
+              <div
+                onClick={() => remove(index)}
+                className={styles.speciesDeleteField}
+              >
+                <DeleteIcon />
+              </div>
+            ) : (
+              <div className={styles.speciesDeleteField}></div>
+            )}
           </div>
         );
       })}
       <div
         onClick={() => {
-          append({ name: '', count: 0 });
+          append({ scientificSpecies: '', treeCount: 0 });
         }}
         className={styles.addSpeciesButton}
       >

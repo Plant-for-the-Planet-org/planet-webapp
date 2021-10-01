@@ -23,5 +23,19 @@
   "m": "m",
   "plantingLocation": "Planting Location",
   "reviewAndSubmit": "Review and Submit",
-  "sampleTree":"Sample Tree #{{number}}"
+  "sampleTree": "Sample Tree #{{number}}",
+  "import": "Import",
+  "paste": "Paste",
+  "draw": "Draw",
+  "addAnotherSpecies": "Add Another Species",
+  "continue": "Continue",
+  "downloadCSVTemplate": "Download CSV Template",
+  "treeTag": "Tree Tag",
+  "diameter": "Diameter",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "addAnotherSampleTree": "Add Another Sample Tree",
+  "skip": "Skip",
+  "treeSpecies": "Tree Species",
+  "plantingDate":"Planting Date"
 }

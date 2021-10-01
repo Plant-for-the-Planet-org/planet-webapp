@@ -119,19 +119,19 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 2px;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .speciesNameField {
-  width: 69%;
+  width: 66%;
 }
 
 .speciesCountField {
-  width: 14%;
+  width: 20%;
 }
 
 .speciesDeleteField {
-  width: 14%;
+  width: 6%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -274,12 +274,20 @@
   justify-content: space-between;
   align-items: center;
   font-weight: 700;
+  margin-bottom: 12px;
+  margin-left: 5px;
 }
 
 .downloadLink {
   font-weight: 700;
   color: $primaryColor;
   cursor: pointer;
+}
+
+.sampleTreeDetails {
+  .formFieldHalf , .formFieldLarge {
+    margin-top: 0px;
+  }
 }
 
 @include mdTabletView {

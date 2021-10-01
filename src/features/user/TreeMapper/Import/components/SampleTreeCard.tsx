@@ -77,7 +77,7 @@ export default function SampleTreeCard({
               <Controller
                 render={(properties:any) => (
                   <DatePicker
-                    label={t('me:plantingDate')}
+                    label={t('plantingDate')}
                     value={properties.value}
                     onChange={properties.onChange}
                     inputVariant="outlined"
@@ -96,7 +96,7 @@ export default function SampleTreeCard({
           <div className={styles.formFieldHalf}>
           <MaterialTextField
               inputRef={register({})}
-              label={t('me:treeTag')}
+              label={t('treeTag')}
               variant="outlined"
               name={`sampleTrees[${index}].treeTag`}
             />
@@ -109,14 +109,14 @@ export default function SampleTreeCard({
               inputRef={register({
                 required: {
                   value: true,
-                  message: t('me:heightRequired'),
+                  message: t('heightRequired'),
                 },
                 validate: (value: any) => parseInt(value, 10) >= 1,
               })}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              label={t('me:height')}
+              label={t('height')}
               variant="outlined"
               name={`sampleTrees[${index}].height`}
             />
@@ -126,14 +126,14 @@ export default function SampleTreeCard({
               inputRef={register({
                 required: {
                   value: true,
-                  message: t('me:diameterRequired'),
+                  message: t('diameterRequired'),
                 },
                 validate: (value: any) => parseInt(value, 10) >= 1,
               })}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              label={t('me:diameter')}
+              label={t('diameter')}
               variant="outlined"
               name={`sampleTrees[${index}].diameter`}
             />
@@ -146,14 +146,14 @@ export default function SampleTreeCard({
               inputRef={register({
                 required: {
                   value: true,
-                  message: t('me:latitudeRequired'),
+                  message: t('latitudeRequired'),
                 },
                 validate: (value: any) => parseInt(value, 10) >= 1,
               })}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              label={t('me:latitude')}
+              label={t('latitude')}
               variant="outlined"
               name={`sampleTrees[${index}].latitude`}
             />
@@ -163,14 +163,14 @@ export default function SampleTreeCard({
               inputRef={register({
                 required: {
                   value: true,
-                  message: t('me:longitudeRequired'),
+                  message: t('longitudeRequired'),
                 },
                 validate: (value: any) => parseInt(value, 10) >= 1,
               })}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
-              label={t('me:longitude')}
+              label={t('longitude')}
               variant="outlined"
               name={`sampleTrees[${index}].longitude`}
             />
@@ -181,10 +181,10 @@ export default function SampleTreeCard({
               inputRef={register({
                 required: {
                   value: true,
-                  message: t('me:speciesIsRequired'),
+                  message: t('speciesIsRequired'),
                 },
               })}
-              label={t('me:treeSpecies')}
+              label={t('treeSpecies')}
               variant="outlined"
               name={`sampleTrees[${index}].species`}
             />
