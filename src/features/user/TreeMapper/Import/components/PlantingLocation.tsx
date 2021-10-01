@@ -162,8 +162,16 @@ export default function PlantingLocation({
   });
 
   const onSubmit = (data: any) => {
+    if(geoJson) {
     setIsUploadingData(true);
-    const submitData = {};
+    const submitData = {
+      "type": "multi",
+      "captureMode": "off-site",
+      "geometry": geoJson,
+      "plantedSpecies": data.plantedSpecies,
+      "plantDate": data.plantDate,
+      "plantProject": data.plantProject,
+    };
 
     // Check if GUID is set use update instead of create project
     if (plantLocation?.id) {
@@ -217,6 +225,9 @@ export default function PlantingLocation({
         }
       );
     }
+  } else {
+    setGeoJsonError(true);
+  }
   };
 
   const getMethod = (method: string) => {
