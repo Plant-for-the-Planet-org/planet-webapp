@@ -51,7 +51,9 @@ export default function ImportData({}: Props): ReactElement {
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [plantLocation, setPlantLocation] = React.useState(null);
   const [userLang, setUserLang] = React.useState('en');
+  const [geoJson, setGeoJson] = React.useState(null);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
+  const [activeMethod, setActiveMethod] = React.useState('import');
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -108,6 +110,11 @@ export default function ImportData({}: Props): ReactElement {
             userLang={userLang}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
+            geoJson={geoJson}
+            setGeoJson={setGeoJson}
+            activeMethod={activeMethod}
+            setActiveMethod={setActiveMethod}
+
           />
         );
       case 1:
@@ -167,7 +174,7 @@ export default function ImportData({}: Props): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-              <Map/>
+              <MapComponent geoJson={geoJson} setGeoJson={setGeoJson} setActiveMethod={setActiveMethod}/>
           </div>
       </div>
     </div>

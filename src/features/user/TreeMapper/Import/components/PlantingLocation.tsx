@@ -32,6 +32,10 @@ interface Props {
   userLang: String;
   plantLocation: any;
   setPlantLocation: Function;
+  geoJson: any;
+  setGeoJson: Function;
+  activeMethod: String;
+  setActiveMethod: Function;
 }
 
 export default function PlantingLocation({
@@ -41,14 +45,16 @@ export default function PlantingLocation({
   userLang,
   plantLocation,
   setPlantLocation,
+  geoJson,
+  setGeoJson,
+  activeMethod, 
+  setActiveMethod
 }: Props): ReactElement {
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [geoJson, setGeoJson] = React.useState(null);
   const [projects, setProjects] = React.useState([]);
-  const importMethods = ['import', 'paste', 'draw'];
-  const [activeMethod, setActiveMethod] = React.useState(importMethods[0]);
+  const importMethods = ['import', 'editor', 'draw'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
 
   const { t, ready } = useTranslation(['treemapper', 'common']);
@@ -112,7 +118,7 @@ export default function PlantingLocation({
               if (flattened.features[0].geometry.type === 'Polygon') {
                 setGeoJsonError(false);
                 setGeoJson(flattened.features[0].geometry);
-                setActiveMethod('paste');
+                setActiveMethod('editor');
               } else {
                 setGeoJsonError(true);
               }
@@ -131,7 +137,7 @@ export default function PlantingLocation({
               if (flattened.features[0].geometry.type === 'Polygon') {
                 setGeoJsonError(false);
                 setGeoJson(flattened.features[0].geometry);
-                setActiveMethod('paste');
+                setActiveMethod('editor');
               } else {
                 setGeoJsonError(true);
               }
@@ -239,13 +245,13 @@ export default function PlantingLocation({
             </label>
           </>
         );
-      case 'paste':
+      case 'editor':
         return (
           <>
             <JSONInput
               id="json-editor"
               placeholder={geoJson}
-              onChange={(json: any) => setGeoJson(json)}
+              onChange={(json: any) => setGeoJson(json.jsObject)}
               locale={locale}
               height="220px"
               width="100%"

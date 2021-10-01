@@ -16,8 +16,7 @@ const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
-  geoJsonError: any;
-  setGeoJsonError: Function;
+  setActiveMethod: Function;
 }
 
 const Map = ReactMapboxGl({ maxZoom: 15 });
@@ -25,21 +24,20 @@ const Map = ReactMapboxGl({ maxZoom: 15 });
 export default function MapComponent({
   geoJson,
   setGeoJson,
-  geoJsonError,
-  setGeoJsonError,
+  setActiveMethod
 }: Props): ReactElement {
-  const defaultMapCenter = [0,0];
+  const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
-    height: '400px',
+    height: '100%',
     width: '100%',
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
   const [viewport2, setViewPort2] = React.useState({
-    height: 400,
-    width: 500,
+    height: 1000,
+    width:500,
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
@@ -48,15 +46,15 @@ export default function MapComponent({
     sources: {},
     layers: [],
   });
-  const [satellite, setSatellite] = React.useState(false);
+  // const [satellite, setSatellite] = React.useState(false);
 
-  const RASTER_SOURCE_OPTIONS = {
-    "type": "raster",
-    "tiles": [
-      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    ],
-    "tileSize": 128
-  };
+  // const RASTER_SOURCE_OPTIONS = {
+  //   type: 'raster',
+  //   tiles: [
+  //     'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  //   ],
+  //   tileSize: 128,
+  // };
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -67,25 +65,27 @@ export default function MapComponent({
     });
   }, []);
 
-  const reader = new FileReader();
-  const mapParentRef = React.useRef(null);
+  // const mapParentRef = React.useRef(null);
   const drawControlRef = React.useRef(null);
 
   const onDrawCreate = ({ features }: any) => {
     if (drawControlRef.current) {
-      setGeoJson(drawControlRef.current.draw.getAll());
+      const geo = drawControlRef.current.draw.getAll()
+      setGeoJson(geo.features[0].geometry);
     }
   };
 
   const onDrawUpdate = ({ features }: any) => {
     if (drawControlRef.current) {
-      setGeoJson(drawControlRef.current.draw.getAll());
+      const geo = drawControlRef.current.draw.getAll()
+      setGeoJson(geo.features[0].geometry);
     }
   };
 
   React.useEffect(() => {
     if (geoJson) {
-      const bbox = turf.bbox(geoJson);
+      const geo = turf.featureCollection([{type:'Feature',geometry:geoJson, properties:{}}]);
+      const bbox = turf.bbox(geo);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport2
       ).fitBounds([
@@ -100,10 +100,10 @@ export default function MapComponent({
       setTimeout(() => {
         if (drawControlRef.current) {
           try {
-            drawControlRef.current.draw.add(geoJson);
+            drawControlRef.current.draw.add(geo);
           } catch (e) {
-            setGeoJsonError(true);
-            setGeoJson(null);
+            // setGeoJsonError(true);
+            // setGeoJson(null);
             console.log('We only support feature collection for now', e);
           }
         }
@@ -118,25 +118,30 @@ export default function MapComponent({
     }
   }, [geoJson]);
 
-  return ready ? (
-    <div
-      ref={mapParentRef}
-      className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
-    >
+  return (
+    <>
       <Map
         {...viewport}
         style={style} // eslint-disable-line
         containerStyle={{
-          height: '400px',
+          height: '100%',
           width: '100%',
         }}
+        onClick={() => setActiveMethod('draw')}
       >
-        {satellite &&
+        {/* {satellite && (
           <>
-            <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
-            <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
+            <Source
+              id="satellite_source"
+              tileJsonSource={RASTER_SOURCE_OPTIONS}
+            />
+            <Layer
+              type="raster"
+              id="satellite_layer"
+              sourceId="satellite_source"
+            />
           </>
-        }
+        )} */}
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
@@ -144,27 +149,33 @@ export default function MapComponent({
           controls={{
             point: false,
             line_string: false,
-            polygon: true,
+            polygon: geoJson ? false : true,
             trash: true,
             combine_features: false,
             uncombine_features: false,
           }}
+          position="top-right"
         />
-        <div className={styles.layerSwitcher}>
-          <div onClick={() => setSatellite(false)} className={`${styles.layerOption} ${satellite ? '' : styles.active}`}>
+        {/* <div className={styles.layerSwitcher}>
+          <div
+            onClick={() => setSatellite(false)}
+            className={`${styles.layerOption} ${
+              satellite ? '' : styles.active
+            }`}
+          >
             Map
           </div>
-          <div onClick={() => setSatellite(true)} className={`${styles.layerOption} ${satellite ? styles.active : ''}`}>
+          <div
+            onClick={() => setSatellite(true)}
+            className={`${styles.layerOption} ${
+              satellite ? styles.active : ''
+            }`}
+          >
             Satellite
           </div>
-        </div>
+        </div> */}
         <ZoomControl position="bottom-right" />
       </Map>
-      {geoJsonError ? (
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div>
-      ) : null}
-    </div>
-  ) : (
-    <></>
+    </>
   );
 }
