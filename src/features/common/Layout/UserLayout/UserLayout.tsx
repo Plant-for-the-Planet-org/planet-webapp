@@ -77,6 +77,13 @@ function UserLayout(props: any): ReactElement {
         // },
       ],
     },
+    { 
+      key: 4,
+      title: t('me:recurrency'),
+      path: '/profile/recurrency',
+      icon: <DonateIcon />,
+      flag: 'Beta',
+    },
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -93,27 +100,27 @@ function UserLayout(props: any): ReactElement {
     //   // ],
     // },
     {
-      key: 4,
+      key: 5,
       title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
       flag: 'Beta',
     },
     {
-      key: 5,
+      key: 6,
       title: t('me:projects'),
       path: '/profile/projects',
       icon: <MapIcon />,
       accessLevel: ['tpo'],
     },
     {
-      key: 6,
+      key: 7,
       title: t('me:embedWidget'),
       path: '/profile/widgets',
       icon: <WidgetIcon />,
     },
     {
-      key: 7,
+      key: 8,
       title: t('me:settings'),
       icon: <SettingsIcon />,
       subMenu: [
