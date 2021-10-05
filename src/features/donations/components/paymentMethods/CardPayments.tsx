@@ -205,7 +205,7 @@ function CardPayments({
         )}
 
         {
-          <div className={styles.paymentModeContainer}>
+          <div className={styles.paymentModeContainer} data-test-id="cardElement">
 
             <div className={styles.formRow}>
               <FormControlNew variant="outlined">
@@ -245,7 +245,7 @@ function CardPayments({
         </div>
       </div> */}
         {showContinue ? (
-          <div onClick={handleSubmit} className={styles.actionButtonsContainerCenter}>
+          <div onClick={handleSubmit} className={styles.actionButtonsContainerCenter} data-test-id="test-donateButton">
             <AnimatedButton className={styles.continueButton} id='donateContinueButton'>
               {t('common:donate')}
               <div className={styles.totalCost}

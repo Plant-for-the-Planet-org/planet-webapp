@@ -106,7 +106,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
           ) : null)}
       </div>
       <button
-        id="skipLandingVideo"
+        data-test-id="skipLandingVideo"
         className={styles.landingVideoSkipButton}
         onClick={() => handleVideoClose()}
       >

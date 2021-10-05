@@ -103,7 +103,7 @@ function ThankYou({
             >
               <Close color="#fff" />
             </button>
-            <div className={styles.headerTitle}>{t('common:thankYou')}</div>
+            <div className={styles.headerTitle} data-test-id="test-thankYou">{t('common:thankYou')}</div>
           </div>
         </div>
 
