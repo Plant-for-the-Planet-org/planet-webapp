@@ -34,7 +34,7 @@ export default function GrowingImpact() {
     },
     {
       id: 4,
-      copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated $10,000 to help save trees!',
+      copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated 5,000 trees!',
       image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
       link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
