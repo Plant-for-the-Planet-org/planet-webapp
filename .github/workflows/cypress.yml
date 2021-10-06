@@ -2,7 +2,6 @@ name: 'Cypress tests'
 on:
   pull_request:
     branches:
-      - feature/Testing
       - develop
       - tenant/*
       - main
