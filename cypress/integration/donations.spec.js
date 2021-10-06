@@ -11,6 +11,8 @@ describe(("Donations"),() => {
         cy.cardPayment("4242424242424242", "424", "242")
     })
 
+    // This test does not work in all enviroments as language is auto detected
+    // and "Germany" cannot be found in other languages then English
     it("Change currency and custom tree donation", () => {
         cy.customTreeDonation()
         cy.cardPayment("4242424242424242", "424", "242")

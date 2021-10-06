@@ -1,0 +1,47 @@
+name: 'Cypress tests'
+on:
+  pull_request:
+    branches:
+      - feature/Testing
+      - develop
+      - tenant/*
+      - main
+jobs:
+  ubuntu-job:
+    name: 'Cypress on Ubuntu'
+    runs-on: ubuntu-latest  # Can be self-hosted runner also
+    steps:
+
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node Modules'
+        run: npm install
+
+      - name: Setting Environment Variables
+        env:
+          AUTH0_CLIENT_ID : ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CUSTOM_DOMAIN: ${{ secrets.AUTH0_CUSTOM_DOMAIN }}
+        run: |
+          echo "TENANT=planet" >> .env
+          echo "TENANTID=ten_NxJq55pm" >> .env
+          echo "NEXTAUTH_URL=http://localhost:3000" >> .env
+          echo "AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID" >> .env
+          echo "AUTH0_CUSTOM_DOMAIN=$AUTH0_CUSTOM_DOMAIN" >> .env
+          echo "API_ENDPOINT=app-staging.plant-for-the-planet.org" >> .env
+          echo "CDN_URL=cdn.plant-for-the-planet.org/staging" >> .env
+          echo "SITE_IMAGERY_API_URL=https://raster.plant-for-the-planet.org" >> .env
+          echo "WIDGET_URL=https://widgets.plant-for-the-planet.org" >> .env
+          echo "SCHEME=https" >> .env
+
+      - name: 'Running Cypress tests'
+        run: |
+          cat .env > .env.production
+          npm run build && npm run export && (npm run start -p 3000 & npm run cypress:run --config baseUrl=http://localhost:3000)
+
+      - name: 'Upload Artifact'
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Cypress
+          path: /home/runner/work/planet-webapp/planet-webapp/cypress/videos/
