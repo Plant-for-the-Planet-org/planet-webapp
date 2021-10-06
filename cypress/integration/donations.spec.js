@@ -2,6 +2,7 @@
 
 describe(("Donations"),() => {
     it("Basic Donations",()=> {
+        //cy.get('[data-test-id="skipLandingVideo"]').click()
         cy.BasicDonation()
         cy.cardPayment("4242424242424242", "424", "242")
     })

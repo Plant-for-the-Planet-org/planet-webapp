@@ -35,7 +35,7 @@ jobs:
 
       - name: 'Running Cypress tests'
         run: |
-          cat .env
+          cat .env > .env.production
           npm run build && npm run export && (npm run start -p 3000 & npm run cypress:run --config baseUrl=http://localhost:3000)
 
       - name: 'Upload Artifact'
