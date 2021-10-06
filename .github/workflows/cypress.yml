@@ -23,6 +23,8 @@ jobs:
           AUTH0_CLIENT_ID : ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CUSTOM_DOMAIN: ${{ secrets.AUTH0_CUSTOM_DOMAIN }}
         run: |
+          echo "TENANT=planet" >> .env
+          echo "TENANTID=ten_NxJq55pm" >> .env
           echo "NEXTAUTH_URL=http://localhost:3000" >> .env
           echo "AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID" >> .env
           echo "AUTH0_CUSTOM_DOMAIN=$AUTH0_CUSTOM_DOMAIN" >> .env
@@ -35,8 +37,6 @@ jobs:
       - name: 'Running Cypress tests'
         run: |
           cat .env > .env.production
-          cat .env.production
-          source .env
           npm run build && npm run export && (npm run start -p 3000 & npm run cypress:run --config baseUrl=http://localhost:3000)
 
       - name: 'Upload Artifact'
