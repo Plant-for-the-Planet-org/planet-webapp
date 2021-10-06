@@ -76,5 +76,6 @@
   "close": "Close",
   "logout": "Logout",
   "featured": "Featured",
-  "treeMapper": "TreeMapper"
+  "treeMapper": "TreeMapper",
+  "underMaintenance":"Under Maintenance"
 }

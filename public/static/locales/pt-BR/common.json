@@ -70,5 +70,11 @@
   "goBack": "Voltar",
   "deleteAccountMessage": "Para continuar com a exclusão, por favor digite `{{delete}}`",
   "deleteAccountLabel": "Tipo: {{delete}}",
-  "howDoesThisWork": "Como é que isto funciona?"
+  "edit": "Editar",
+  "howDoesThisWork": "Como que funciona?",
+  "copiedToClipboard": "Copiado para o clipboard!",
+  "close": "Fechar",
+  "logout": "Sair",
+  "featured": "Em destaque",
+  "treeMapper": "TreeMapper"
 }

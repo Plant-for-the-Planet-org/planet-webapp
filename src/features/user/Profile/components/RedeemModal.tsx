@@ -42,6 +42,7 @@ export default function RedeemModal({
   const [validCodeData, setValidCodeData] = React.useState();
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [code, setCode] = React.useState();
+  const [inputCode, setInputCode] = React.useState('');
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
   );
@@ -294,6 +295,15 @@ export default function RedeemModal({
                         message: t('redeem:enterRedeemCode'),
                       },
                     })}
+                    onChange={(event) => {
+                      console.log(event.target.value);
+                      event.target.value.startsWith('pp.eco/c/')
+                        ? setInputCode(
+                            event.target.value.replace('pp.eco/c/', '')
+                          )
+                        : setInputCode(event.target.value);
+                    }}
+                    value={inputCode}
                     name={'code'}
                     placeholder="XAD-1SA-5F1-A"
                     label=""
