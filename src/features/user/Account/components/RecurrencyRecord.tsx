@@ -95,7 +95,10 @@ export function RecordHeader({
         </p>
       </div>
       <div className={styles.right}>
-        <p className={styles.top}>
+        <p
+          className={styles.top}
+          style={{ color: themeProperties.primaryColor }}
+        >
           {getFormatedCurrency(i18n.language, record.currency, record.amount)}
         </p>
       </div>
@@ -152,7 +155,9 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record?.project.name && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
-          <p>{record.project.name}</p>
+          <p style={{ color: themeProperties.primaryColor }}>
+            {record.project.name}
+          </p>
         </div>
       )}
       {record.reference && (

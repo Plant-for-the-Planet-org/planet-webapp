@@ -41,7 +41,7 @@ interface Props {
   fetchRecurrentDonations: Function;
 }
 
-export default function History({
+export default function Recurrency({
   //   filter,
   //   setFilter,
   isDataLoading,
@@ -56,6 +56,10 @@ export default function History({
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
   // console.log(accountingFilters,'accountingFilters');
+
+  React.useEffect(() => {
+    fetchRecurrentDonations();
+  }, [editDonation]);
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index) {
       setSelectedRecord(null);
@@ -102,6 +106,7 @@ export default function History({
                     </div>
                   ) : (
                     recurrencies &&
+                    !isDataLoading &&
                     recurrencies?.map((record: any, index: number) => {
                       return (
                         <RecurrencyRecord
@@ -174,11 +179,13 @@ export default function History({
             />
           </div>
         </>
-      ) : (
+      ) : !isDataLoading ? (
         <EditDonation
           record={currentRecord}
           seteditDonation={seteditDonation}
         />
+      ) : (
+        []
       )}
     </div>
   );
@@ -190,7 +197,7 @@ interface EditDonationProps {
 }
 
 const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
-  const [nextBilling, senextBilling] = React.useState();
+  const [nextBilling, setnextBilling] = React.useState();
   const [centAmount, setcentAmount] = React.useState();
   const [userLang, setUserLang] = React.useState('en');
   const { t, i18n } = useTranslation(['me']);
@@ -207,18 +214,25 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
     }
   }, []);
   const onSubmit = (data: any) => {
-    console.log(data, data.donationAmount.slice(1) * 100, 'data');
+    console.log(
+      Number(data.donationAmount),
+      data.donationAmount.slice(1) * 100,
+      'data'
+    );
     const bodyToSend = {
       nextBilling: data.date.toISOString().split('T')[0],
       centAmount: Number(data.donationAmount.slice(1)) * 100,
       frequency: data.frequency,
     };
     putAuthenticatedRequest(
-      `/app/paymentRecurrency/${record.id}/edit`,
+      `/app/subscriptions/${record.id}?scope=modify`,
       bodyToSend,
       token
     )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res, 'Response');
+        seteditDonation(false);
+      })
       .catch((err) => console.log(err));
   };
 

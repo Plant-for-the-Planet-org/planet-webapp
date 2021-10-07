@@ -29,16 +29,22 @@ export const PauseModal = ({
   const [date, setdate] = React.useState(new Date());
   const { t, i18n, ready } = useTranslation(['me']);
   const pauseDonation = () => {
-    console.log(record.id, '{record.id');
+    console.log(record.id, date.toISOString().split('T')[0], '{record.id');
     const bodyToSend = {
-      pauseOptions: 'customDate',
-      pausedUntil: '2021-11-10',
+      pauseType: 'custom-date', //custom-date | infinite
+      pauseUntil: date.toISOString().split('T')[0], // only if pauseType='custom-date'
     };
     putAuthenticatedRequest(
-      `/app/paymentRecurrency/${record.id}/cancel`,
+      `/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token
-    );
+    )
+      .then((res) => {
+        console.log(res, 'Response');
+      })
+      .catch((err) => {
+        console.log(err, 'Error');
+      });
   };
   return (
     <Modal

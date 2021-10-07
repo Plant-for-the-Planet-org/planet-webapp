@@ -5,7 +5,7 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import History from '../../src/features/user/Account/History';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import  Head from 'next/head';
+import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
 
 const { useTranslation } = i18next;
@@ -17,9 +17,9 @@ function RecurrentDonations({}: Props): ReactElement {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-//   const [filter, setFilter] = React.useState(null);
+  //   const [filter, setFilter] = React.useState(null);
   const [recurrencies, setrecurrencies] = React.useState();
-//   const [accountingFilters, setaccountingFilters] = React.useState();
+  //   const [accountingFilters, setaccountingFilters] = React.useState();
 
   async function fetchRecurrentDonations(next = false) {
     setIsDataLoading(true);
@@ -39,36 +39,20 @@ function RecurrentDonations({}: Props): ReactElement {
     //   setTimeout(() => setProgress(0), 1000);
     // } else {
     //   if (filter === null) {
-        const recurrencies = await getAuthenticatedRequest(
-          '/app/recurrencies',
-          token
-        );
-        console.log(recurrencies, 'recurrencies');
-        setrecurrencies(recurrencies);
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
-        // setaccountingFilters(recurrencies._filters);
-    //   } else {
-    //     const recurrencies = await getAuthenticatedRequest(
-    //       `${
-    //         filter
-    //           ? accountingFilters[filter] + '&limit=15'
-    //           : '/app/recurrencies?limit=15'
-    //       }`,
-    //       token
-    //     );
-    //     setrecurrencies(recurrencies);
-    //     setProgress(100);
-    //     setIsDataLoading(false);
-    //     setTimeout(() => setProgress(0), 1000);
-    //   }
-    // }
+    const recurrencies = await getAuthenticatedRequest(
+      '/app/subscriptions',
+      token
+    );
+    console.log(recurrencies, 'recurrencies');
+    setrecurrencies(recurrencies);
+    setProgress(100);
+    setIsDataLoading(false);
+    setTimeout(() => setProgress(0), 1000);
   }
 
   React.useEffect(() => {
     if (contextLoaded && token) fetchRecurrentDonations();
-  }, [ contextLoaded, token]);
+  }, [contextLoaded, token]);
 
   const RecurrencyProps = {
     // filter,
