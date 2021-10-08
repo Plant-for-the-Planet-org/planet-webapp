@@ -126,7 +126,7 @@ export default function EditProfile({}: Props) {
   const [severity, setSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
-  const [type, setAccountType] = useState('individual');
+  const [type, setAccountType] = useState(user.type ? user.type : 'individual');
 
 
   const profileTypes = [
