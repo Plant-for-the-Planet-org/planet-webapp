@@ -29,6 +29,7 @@ import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import DateFnsUtils from '@date-io/date-fns';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import materialTheme from '../../../theme/themeStyles';
+import { CancelModal } from './CancelModal';
 
 const { useTranslation } = i18next;
 
@@ -76,6 +77,9 @@ export default function Recurrency({
   };
   const handlePauseModalClose = () => {
     setpauseModalOpen(false);
+  };
+  const handleCancelModalClose = () => {
+    setcancelModalOpen(false);
   };
   let currentRecord;
   if (recurrencies) {
@@ -175,6 +179,11 @@ export default function Recurrency({
             <PauseModal
               pauseModalOpen={pauseModalOpen}
               handlePauseModalClose={handlePauseModalClose}
+              record={currentRecord}
+            />
+            <CancelModal
+              cancelModalOpen={cancelModalOpen}
+              handleCancelModalClose={handleCancelModalClose}
               record={currentRecord}
             />
           </div>

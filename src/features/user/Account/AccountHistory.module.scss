@@ -372,26 +372,26 @@
           display: flex;
         }
       }
-      // .record.selectedPause {
-      //   background-color: rgba(255, 255, 204, 0.3);
-      //   // border-radius: 10px;
-      //   box-shadow: 1px 2px 8px -6px #707070;
-      //   max-height: 1000px;
-      //   color: $primaryFontColor;
-      //   > .detailContainer {
-      //     display: flex;
-      //   }
-      // }
-      // .record.selectedCancel {
-      //   background-color: rgba(241, 130, 141,0.3);
-      //   // border-radius: 10px;
-      //   box-shadow: 1px 2px 8px -6px #707070;
-      //   max-height: 1000px;
-      //   color: $primaryFontColor;
-      //   > .detailContainer {
-      //     display: flex;
-      //   }
-      // }
+      .record.selectedPause {
+        background-color: rgba(255, 255, 204, 0.3);
+        // border-radius: 10px;
+        box-shadow: 1px 2px 8px -6px #707070;
+        max-height: 1000px;
+        color: $primaryFontColor;
+        > .detailContainer {
+          display: flex;
+        }
+      }
+      .record.selectedCancel {
+        background-color: rgba(241, 130, 141, 0.3);
+        // border-radius: 10px;
+        box-shadow: 1px 2px 8px -6px #707070;
+        max-height: 1000px;
+        color: $primaryFontColor;
+        > .detailContainer {
+          display: flex;
+        }
+      }
     }
   }
   .filterContainer {

@@ -152,20 +152,26 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{record?.donorName}</p>
         </div>
       )}
+      {record.firstDonation && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('firstDonation')}</p>
+          <p>{formatDate(record.firstDonation.created)}</p>
+        </div>
+      )}
       {record?.project.name && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
-          <p style={{ color: themeProperties.primaryColor }}>
+          {record.project.id ? (
+            <a href={`/${record.project.id}`}>{record.project.name}</a>
+          ) : (
+            <p>{record.details.project}</p>
+          )}
+          {/* <p style={{ color: themeProperties.primaryColor }}>
             {record.project.name}
-          </p>
+          </p> */}
         </div>
       )}
-      {record.reference && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('firstDonation')}</p>
-          <p>{formatDate(record.startDate)}</p>
-        </div>
-      )}
+
       {record.details?.project && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
@@ -206,10 +212,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{record.projectGuid}</p>
         </div>
       )} */}
-      {record.reference && (
+      {record.firstDonation.reference && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('reference')}</p>
-          <p>{record.reference}</p>
+          <p>{record.firstDonation.reference}</p>
         </div>
       )}
       {record.details?.fees?.disputeFee && (
@@ -367,6 +373,7 @@ export function ManageDonation({
       <button
         className={styles.options}
         style={{ color: themeProperties.light.dangerColor }}
+        onClick={() => setcancelDonation(true)}
       >
         {t('cancelDonation')}
       </button>
