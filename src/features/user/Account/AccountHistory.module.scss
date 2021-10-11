@@ -204,8 +204,22 @@
   width: 70%;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-gap: 20px;
+  padding: 12px;
+  margin-left: -10px;
   > .options {
     font-weight: bold;
+  }
+}
+
+@include mdTabletView {
+  .manageDonations{
+    display: flex;
+    flex-direction: row;
+    margin-right: 20px;
+    width: 415px;
   }
 }
 
