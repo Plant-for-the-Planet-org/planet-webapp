@@ -118,7 +118,6 @@ export const PauseModal = ({
                       setdate(value);
                     }}
                     disablePast={true}
-                    color={'#68B030'}
                   />
                 </MuiPickersUtilsProvider>
               </ThemeProvider>

@@ -437,12 +437,12 @@ button {
   fill: $primaryFontColor;
 }
 
-.MuiSvgIcon-root,
-.MuiNativeSelect-icon {
-  path {
-    fill: $primaryFontColor;
-  }
-}
+// .MuiSvgIcon-root {
+// .MuiNativeSelect-icon {
+//   path {
+//     fill: $primaryFontColor;
+//   }
+// }
 
 .MuiStepLabel-label.MuiStepLabel-active,
 .MuiStepLabel-label.MuiStepLabel-completed,
@@ -470,8 +470,8 @@ input:-webkit-autofill {
 .MuiNativeSelect-select:not([multiple]) optgroup {
   background-color: $backgroundColor !important;
 }
-.MuiAlert-message{
-  color: $primaryFontColor!important;
+.MuiAlert-message {
+  color: $primaryFontColor !important;
 }
 
 .suggestions-container {
@@ -486,11 +486,11 @@ input:-webkit-autofill {
   .suggestion {
     min-width: 100%;
     &:nth-child(even) {
-      background-color: rgba(var(--background-color-dark),0.6);
+      background-color: rgba(var(--background-color-dark), 0.6);
     }
     padding: 12px;
     border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
-    &:hover{
+    &:hover {
       cursor: pointer;
       background-color: $backgroundColorDark;
     }
