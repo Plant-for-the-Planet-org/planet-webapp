@@ -28,7 +28,7 @@ describe(("Donations"),() => {
         cy.cardPayment("4242424242424242", "424", "242")
     })
 
-     // International Cards
+    //  International Cards
      it("Testing with Germany Visa", () => {
         cy.BasicDonation()
         cy.cardPayment("4000002760000016", "424", "242")
@@ -52,4 +52,9 @@ describe(("Donations"),() => {
         cy.BasicDonation()
         cy.paymentError("4000000000000101", "424", "242")
     });
+
+    it("Gift Removal using Search bar", () => {
+        cy.giftRemove()
+        cy.cardPayment("4242424242424242", "424", "242")
+    })
 })

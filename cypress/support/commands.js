@@ -24,10 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-// Cypress.Commands.add("BasicDonation",() => {
-//     cy.visit(`localhost:3000`)
-//     cy.SearchProject('yucatan')
-// })
+// const { contains } = require("cypress/types/jquery")
+
 
 Cypress.Commands.add('BasicDonation', () => {
     cy.visit('localhost:3000/yucatan')
@@ -127,10 +125,18 @@ Cypress.Commands.add('paymentError', (cardNumber, cardExpiry, cardCvc) => {
 
 // skip intro video if button found
 Cypress.Commands.add('skipIntroVideo', () => {
-    cy.get("body").then(($body) => {
-        // synchronously query for element
-        if ($body.find('[data-test-id="skipLandingVideo"]').length) {
-            cy.get('[data-test-id="skipLandingVideo"]').click
-        }
+    cy.get("body")
+    cy.get('[data-test-id="skipLandingVideo"]').click
+        
+})
+
+Cypress.Commands.add("giftRemove", () => {
+    cy.visit("localhost:3000")
+    cy.skipIntroVideo()
+    cy.visit("localhost:3000/s/sagar-aryal").wait(10000).then(() => {
+        cy.get('[data-test-id="searchIcon"]').type('yucatan restoration')
+        cy.get('#ProjSnippetDonate_proj_WZkyugryh35sMmZMmXCwq7YY').click()
+        cy.get('#singleGiftRemoveId').click()
+        cy.contactForm("Peter", "Payer", "peter.payer@gmail.com", "Unbekannt 1", "Uffing am Staffelsee", "Germany{enter}", "82449")
     })
 })
