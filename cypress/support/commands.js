@@ -28,7 +28,7 @@
 
 
 Cypress.Commands.add('BasicDonation', () => {
-    cy.visit('localhost:3000/yucatan')
+    cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
@@ -36,7 +36,7 @@ Cypress.Commands.add('BasicDonation', () => {
 })
 
 Cypress.Commands.add('spainDonation', () => {
-    cy.visit('localhost:3000/yucatan')
+    cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
@@ -72,10 +72,10 @@ Cypress.Commands.add('cardPayment', (cardNumber, cardExpiry, cardCvc) => {
             })
 
         })
-}) 
+})
 
 Cypress.Commands.add('giftDonation', () => {
-    cy.visit('localhost:3000/yucatan')
+    cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
@@ -88,7 +88,7 @@ Cypress.Commands.add('giftDonation', () => {
 
 
 Cypress.Commands.add('customTreeDonation', () => {
-    cy.visit('localhost:3000/yucatan')
+    cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
@@ -100,7 +100,7 @@ Cypress.Commands.add('customTreeDonation', () => {
 })
 
 Cypress.Commands.add("multipleDonation", () => {
-    cy.visit('localhost:3000/yucatan')
+    cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
@@ -121,19 +121,19 @@ Cypress.Commands.add('paymentError', (cardNumber, cardExpiry, cardCvc) => {
                 cy.get('[data-test-id="paymentError"]')
             })
         })
-})  
+})
 
 // skip intro video if button found
 Cypress.Commands.add('skipIntroVideo', () => {
     cy.get("body")
     cy.get('[data-test-id="skipLandingVideo"]').click
-        
+
 })
 
 Cypress.Commands.add("giftRemove", () => {
-    cy.visit("localhost:3000")
+    cy.visit(Cypress.env('TEST_SERVER') + "/")
     cy.skipIntroVideo()
-    cy.visit("localhost:3000/s/sagar-aryal").wait(10000).then(() => {
+    cy.visit(Cypress.env('TEST_SERVER') + "/s/sagar-aryal").wait(10000).then(() => {
         cy.get('[data-test-id="searchIcon"]').type('yucatan restoration')
         cy.get('#ProjSnippetDonate_proj_WZkyugryh35sMmZMmXCwq7YY').click()
         cy.get('#singleGiftRemoveId').click()
@@ -142,30 +142,35 @@ Cypress.Commands.add("giftRemove", () => {
 })
 
 Cypress.Commands.add("addProjects", () => {
-    cy.visit("localhost:3000/profile/projects/add-project")
-    cy.get('#username').type("manageprojectsexample+01@gmail.com")
-    cy.get('#password').type("MyProject@1{enter}")
+    cy.visit(Cypress.env('TEST_SERVER') + "/profile/projects/add-project")
+    cy.get('#username').type("test-tpo@plant-for-the-planet.org{enter}")
+    cy.get('#password').type("CcCFg2enJ@C7XrV3ukqHbYYbaN-2hBW7hh6_Ye8kBorZAwczZfdM*TJnMLdgpbi{enter}")
+
+    cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
+        cy.get('#code').type(response.body.token + "{enter}")
+    })
+    cy.wait(5000)
 })
 
 Cypress.Commands.add("projectDetails", () => {
-           //define a variable consisting alphabets in small and capital letter  
-var characters = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";  
-          
-//specify the length for the new string  
-var lenString = 4;  
-var randomstring = '';  
+    //define a variable consisting alphabets in small and capital letter
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
 
-//loop to select a new character in each iteration  
-for (var i=0; i<lenString; i++) {  
-var rnum = Math.floor(Math.random() * characters.length);  
-randomstring += characters.substring(rnum, rnum+1); 
-console.log(`randomstring`, randomstring) 
-}  
+    //specify the length for the new string
+    var lenString = 4;
+    var randomstring = '';
 
- //display the generated string   
-// document.getElementById("slug").innerHTML = randomstring;
-    cy.visit("localhost:3000/profile/projects/add-project")
-    cy.wait(10000)
+    //loop to select a new character in each iteration
+    for (var i=0; i<lenString; i++) {
+        var rnum = Math.floor(Math.random() * characters.length);
+        randomstring += characters.substring(rnum, rnum+1);
+        console.log(`randomstring`, randomstring)
+    }
+
+    //display the generated string
+    // document.getElementById("slug").innerHTML = randomstring;
+    cy.visit(Cypress.env('TEST_SERVER') + "/profile/projects/add-project")
+    cy.wait(20000)
     cy.get('[data-test-id="projectName"]').type("Peter Farm")
     cy.get('[data-test-id="slug"]').type(randomstring)
     cy.get('[data-test-id="classification"]').click()
@@ -197,4 +202,3 @@ console.log(`randomstring`, randomstring)
     cy.get('[data-test-id="submitReview"]').click()
     cy.contains("Logout").click()
 })
-

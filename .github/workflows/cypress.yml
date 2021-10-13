@@ -21,6 +21,7 @@ jobs:
         env:
           AUTH0_CLIENT_ID : ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CUSTOM_DOMAIN: ${{ secrets.AUTH0_CUSTOM_DOMAIN }}
+          TEST_MFA_URL: ${{ secrets.TEST_MFA_URL }}
         run: |
           echo "TENANT=planet" >> .env
           echo "TENANTID=ten_NxJq55pm" >> .env
@@ -33,10 +34,15 @@ jobs:
           echo "WIDGET_URL=https://widgets.plant-for-the-planet.org" >> .env
           echo "SCHEME=https" >> .env
 
+          echo "{
+            \"TEST_SERVER\": \"http://localhost:3000\",
+            \"TEST_MFA_URL\": \"$TEST_MFA_URL\"
+          }" >> cypress.env.json
+
       - name: 'Running Cypress tests'
         run: |
           cat .env > .env.production
-          npm run build && npm run export && (npm run start -p 3000 & npm run cypress:run --config baseUrl=http://localhost:3000)
+          npm run build && npm run export && (npm run start -p 3000 & npm run cypress:run)
 
       - name: 'Upload Artifact'
         if: ${{ failure() }}
