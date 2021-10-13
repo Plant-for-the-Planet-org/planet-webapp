@@ -79,16 +79,20 @@ export default function MyTreesMap({
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
-    if (density > 2500) {
-      return 0.5;
+    if (density > 15000) {
+      return 'red';
+    } else if (density > 12000) {
+      return 'brown';
+    } else if (density > 10000) {
+      return 'purple';
+    } else if (density > 8000) {
+      return 'orange';
+    } else if (density > 5000) {
+      return 'blue';
     } else if (density > 2000) {
-      return 0.4;
-    } else if (density > 1600) {
-      return 0.3;
-    } else if (density > 1000) {
-      return 0.2;
-    } else {
-      return 0.1;
+    return 'green';
+  } else {
+      return 'yellow';
     }
   };
 
@@ -250,8 +254,8 @@ export default function MyTreesMap({
                     type="fill"
                     source={pl.id}
                     paint={{
-                      'fill-color': satellite ? '#ffffff' : '#007A49',
-                      'fill-opacity': getPolygonColor(pl),
+                      'fill-color': getPolygonColor(pl),
+                      'fill-opacity': 1,
                     }}
                   />
                   {(selectedLocation && selectedLocation.id === pl.id) && (
