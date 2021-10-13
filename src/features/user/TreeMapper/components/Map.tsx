@@ -3,7 +3,15 @@ import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
-import MapGL, { FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
+import MapGL, {
+  FlyToInterpolator,
+  Layer,
+  MapEvent,
+  Marker,
+  NavigationControl,
+  Source,
+  WebMercatorViewport,
+} from 'react-map-gl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
@@ -11,6 +19,37 @@ import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext'
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
+
+const colorScaleValues = [
+  {
+    color: 'red',
+    value: 15000,
+  },
+  {
+    color: 'brown',
+    value: 12000,
+  },
+  {
+    color: 'purple',
+    value: 10000,
+  },
+  {
+    color: 'orange',
+    value: 8000,
+  },
+  {
+    color: 'blue',
+    value: 5000,
+  },
+  {
+    color: 'green',
+    value: 2000,
+  },
+  {
+    color: 'yellow',
+    value: 0,
+  }
+];
 
 interface Props {
   locations: any;
@@ -90,8 +129,8 @@ export default function MyTreesMap({
     } else if (density > 5000) {
       return 'blue';
     } else if (density > 2000) {
-    return 'green';
-  } else {
+      return 'green';
+    } else {
       return 'yellow';
     }
   };
@@ -151,7 +190,7 @@ export default function MyTreesMap({
       };
       setViewPort(newViewport);
     }
-  }
+  };
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -175,8 +214,8 @@ export default function MyTreesMap({
             geometry: newPl,
             properties: {
               id: pl.id,
-            }
-          }
+            },
+          };
           features.push(newFeature);
           if (pl.type === 'multi') ids.push(`${pl.id}-layer`);
         }
@@ -229,10 +268,12 @@ export default function MyTreesMap({
       onClick={onMapClick}
       interactiveLayerIds={plIds ? plIds : undefined}
       attributionControl={true}
-      mapOptions={{ customAttribution: 'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community' }}
+      mapOptions={{
+        customAttribution:
+          'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community',
+      }}
     >
-      {satellite && plIds &&
-        <SatelliteLayer beforeId={plIds[0]} />}
+      {satellite && plIds && <SatelliteLayer beforeId={plIds[0]} />}
       {locations &&
         locations.map((pl: any) => {
           const newPl = pl.geometry;
@@ -258,7 +299,7 @@ export default function MyTreesMap({
                       'fill-opacity': 1,
                     }}
                   />
-                  {(selectedLocation && selectedLocation.id === pl.id) && (
+                  {selectedLocation && selectedLocation.id === pl.id && (
                     <Layer
                       key={`${pl.id}-selected`}
                       id={`${pl.id}-selected-layer`}
@@ -307,15 +348,16 @@ export default function MyTreesMap({
                           {viewport.zoom > 14 && (
                             <div
                               key={`${spl.id}-marker`}
-                              className={`${styles.single} ${spl.id === selectedLocation?.id
+                              className={`${styles.single} ${
+                                spl.id === selectedLocation?.id
                                   ? styles.singleSelected
                                   : ''
-                                }`}
+                              }`}
                               role="button"
                               tabIndex={0}
                               onClick={() => setselectedLocation(spl)}
-                            // onMouseEnter={() => onHover(spl)}
-                            // onMouseLeave={() => onHoverEnd(spl)}
+                              // onMouseEnter={() => onHover(spl)}
+                              // onMouseLeave={() => onHoverEnd(spl)}
                             />
                           )}
                         </Marker>
@@ -329,9 +371,9 @@ export default function MyTreesMap({
                 key={`${pl.id}-single`}
                 latitude={newPl.coordinates[1]}
                 longitude={newPl.coordinates[0]}
-              // offsetLeft={5}
-              // offsetTop={-16}
-              // style={{ left: '28px' }}
+                // offsetLeft={5}
+                // offsetTop={-16}
+                // style={{ left: '28px' }}
               >
                 {viewport.zoom > 14 && (
                   <div
@@ -339,8 +381,11 @@ export default function MyTreesMap({
                     onClick={() => setselectedLocation(pl)}
                     // onMouseEnter={() => onHover(pl)}
                     // onMouseLeave={() => onHoverEnd(pl)}
-                    className={`${styles.single} ${pl.id === selectedLocation?.id ? styles.singleSelected : ''
-                      }`}
+                    className={`${styles.single} ${
+                      pl.id === selectedLocation?.id
+                        ? styles.singleSelected
+                        : ''
+                    }`}
                     role="button"
                     tabIndex={0}
                   />
@@ -358,6 +403,25 @@ export default function MyTreesMap({
       <div className={styles.mapNavigation}>
         <NavigationControl showCompass={false} />
       </div>
+      <ColorScale satellite={satellite}/>
     </MapGL>
+  );
+}
+
+interface ScaleProps {
+  satellite: boolean;
+}
+
+function ColorScale({satellite}: ScaleProps): ReactElement {
+  return (
+    <div className={styles.colorScale}>
+      {colorScaleValues.map((item: any) => {
+        return (
+          <div key={item.id} className={styles.colorScaleItem} style={{ backgroundColor: item.color }}>
+            <div className={styles.colorScaleItemText} style={{color:satellite ? '#ffffff' : '#2f3336'}}>{item.value}</div>
+          </div>
+        );
+      })}
+      </div>
   );
 }
