@@ -140,3 +140,61 @@ Cypress.Commands.add("giftRemove", () => {
         cy.contactForm("Peter", "Payer", "peter.payer@gmail.com", "Unbekannt 1", "Uffing am Staffelsee", "Germany{enter}", "82449")
     })
 })
+
+Cypress.Commands.add("addProjects", () => {
+    cy.visit("localhost:3000/profile/projects/add-project")
+    cy.get('#username').type("manageprojectsexample+01@gmail.com")
+    cy.get('#password').type("MyProject@1{enter}")
+})
+
+Cypress.Commands.add("projectDetails", () => {
+           //define a variable consisting alphabets in small and capital letter  
+var characters = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";  
+          
+//specify the length for the new string  
+var lenString = 4;  
+var randomstring = '';  
+
+//loop to select a new character in each iteration  
+for (var i=0; i<lenString; i++) {  
+var rnum = Math.floor(Math.random() * characters.length);  
+randomstring += characters.substring(rnum, rnum+1); 
+console.log(`randomstring`, randomstring) 
+}  
+
+ //display the generated string   
+// document.getElementById("slug").innerHTML = randomstring;
+    cy.visit("localhost:3000/profile/projects/add-project")
+    cy.wait(10000)
+    cy.get('[data-test-id="projectName"]').type("Peter Farm")
+    cy.get('[data-test-id="slug"]').type(randomstring)
+    cy.get('[data-test-id="classification"]').click()
+    cy.contains('Natural Regeneration').click()
+    cy.get('[data-test-id="target"]').type("800")
+    cy.get('[data-test-id="website"]').type("peterfarm.com")
+    cy.get('[data-test-id="aboutProject"]').type("It's Peter's farm")
+    cy.get('[data-test-id="receiveDonations"]').click()
+    cy.get('[data-test-id="treeCost"]').type("100")
+    cy.get('[data-test-id="latitude"]').type("17.37541191565851")
+    cy.get('[data-test-id="longitude"]').type("18.65069921623075")
+    cy.get('[data-test-id="visitorAssistance"]').click()
+    cy.get('[data-test-id="publishProject"]').click()
+    cy.get('[data-test-id="basicDetailsCont"]').click()
+    cy.wait(5000)
+    cy.get('[data-test-id="projMediaCont"]').click()
+    cy.wait(5000)
+    cy.get('[data-test-id="plantingDensity"]').type("100")
+    cy.get('[data-test-id="employeeCount"]').type("20")
+    cy.get('[data-test-id="detailAnalysisCont"]').click()
+    cy.wait(5000)
+    cy.get('[data-test-id="siteName"]').type(randomstring)
+    cy.get('[data-test-id="siteStatus"]').click()
+    cy.contains("Planting").click()
+    cy.get('[data-test-id="projSitesCont"]').click()
+    cy.wait(5000)
+    cy.get('[data-test-id="projSpendingCont"]').click()
+    cy.wait(5000)
+    cy.get('[data-test-id="submitReview"]').click()
+    cy.contains("Logout").click()
+})
+

@@ -255,7 +255,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         </div>
                     </div>
                     <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} data-test-id="plantingDensity">
 
                             {/* Integer - the planting density expressed in trees per ha */}
                             <MaterialTextField
@@ -284,7 +284,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             )}
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }} data-test-id="employeeCount">
                             <MaterialTextField
                                 inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
                                 label={t('manageProjects:employeeCount')}
@@ -576,6 +576,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             onClick={handleSubmit(onSubmit)}
                             className="primaryButton"
                             style={{ minWidth: "240px" }}
+                            data-test-id="detailAnalysisCont"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </button >
