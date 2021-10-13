@@ -51,7 +51,7 @@ export default function SeaOfTrees() {
         <div className={`${gridStyles.fluidContainer} ${styles.seaOfTrees}`}>
           <div className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}>
             <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-              <h3>Sea of Trees</h3>
+              <h3>Seas of Trees</h3>
               <p className={styles.contentSectionSubhead}>Where Ocean Sustainability meets Trees.</p>
               <p>Bold Ocean-Climate Action is necessary to create a just and sustainable future where everyone can thrive. We strive for Ocean Action for all, by all.</p>
               <p>The Salesforce Ocean Sustainability Program taps into the full power of Salesforce to protect, restore, and invest in mangroves, kelp, corals, salt marshes, sea grass, and oyster reefs.</p>
