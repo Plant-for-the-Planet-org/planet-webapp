@@ -184,6 +184,7 @@ export default function SampleTrees({
               getValues={getValues}
               control={control}
               userLang={userLang}
+              setValue={setValue}
             />
           );
         })}

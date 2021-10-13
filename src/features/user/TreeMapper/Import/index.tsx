@@ -114,7 +114,6 @@ export default function ImportData({}: Props): ReactElement {
             setGeoJson={setGeoJson}
             activeMethod={activeMethod}
             setActiveMethod={setActiveMethod}
-
           />
         );
       case 1:
@@ -123,6 +122,9 @@ export default function ImportData({}: Props): ReactElement {
             handleNext={handleNext}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
+            plantLocation={plantLocation}
+            setPlantLocation={setPlantLocation}
+            userLang={userLang}
           />
         );
       case 2:
@@ -131,15 +133,22 @@ export default function ImportData({}: Props): ReactElement {
             handleNext={handleNext}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
-            userLang={userLang}
+            plantLocation={plantLocation}
           />
         );
       default:
         return (
           <PlantingLocation
-            handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
+          handleNext={handleNext}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+          userLang={userLang}
+          plantLocation={plantLocation}
+          setPlantLocation={setPlantLocation}
+          geoJson={geoJson}
+          setGeoJson={setGeoJson}
+          activeMethod={activeMethod}
+          setActiveMethod={setActiveMethod}
           />
         );
     }

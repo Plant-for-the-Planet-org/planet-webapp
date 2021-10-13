@@ -16,7 +16,9 @@ import { MenuItem } from '@material-ui/core';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
+  getRequest,
   postAuthenticatedRequest,
+  postRequest,
   putAuthenticatedRequest,
 } from '../../../../../utils/apiRequests/api';
 import tj from '@mapbox/togeojson';
@@ -47,8 +49,8 @@ export default function PlantingLocation({
   setPlantLocation,
   geoJson,
   setGeoJson,
-  activeMethod, 
-  setActiveMethod
+  activeMethod,
+  setActiveMethod,
 }: Props): ReactElement {
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
@@ -162,47 +164,23 @@ export default function PlantingLocation({
   });
 
   const onSubmit = (data: any) => {
-    if(geoJson) {
-    setIsUploadingData(true);
-    const submitData = {
-      "type": "multi",
-      "captureMode": "off-site",
-      "geometry": geoJson,
-      "plantedSpecies": data.plantedSpecies,
-      "plantDate": data.plantDate,
-      "plantProject": data.plantProject,
-    };
-
-    // Check if GUID is set use update instead of create project
-    if (plantLocation?.id) {
-      putAuthenticatedRequest(
-        `/app/projects/${plantLocation.id}`,
-        submitData,
-        token
-      ).then((res: any) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setPlantLocation(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-            if (res.errors && res.errors.children) {
-              //addServerErrors(res.errors.children, setError);
-            }
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      });
-    } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token).then(
-        (res: any) => {
+    if (geoJson) {
+      setIsUploadingData(true);
+      const submitData = {
+        type: 'multi',
+        captureMode: 'off-site',
+        geometry: geoJson,
+        plantedSpecies: data.plantedSpecies,
+        plantDate: data.plantDate,
+        plantProject: data.plantProject,
+      };
+      // Check if GUID is set use update instead of create project
+      if (plantLocation?.id) {
+        putAuthenticatedRequest(
+          `/app/projects/${plantLocation.id}`,
+          submitData,
+          token
+        ).then((res: any) => {
           if (!res.code) {
             setErrorMessage('');
             setPlantLocation(res);
@@ -215,19 +193,42 @@ export default function PlantingLocation({
             } else if (res.code === 400) {
               setIsUploadingData(false);
               if (res.errors && res.errors.children) {
-                // addServerErrors(res.errors.children, setError);
+                //addServerErrors(res.errors.children, setError);
               }
             } else {
               setIsUploadingData(false);
               setErrorMessage(res.message);
             }
           }
-        }
-      );
+        });
+      } else {
+        postAuthenticatedRequest(`/app/projects`, submitData, token).then(
+          (res: any) => {
+            if (!res.code) {
+              setErrorMessage('');
+              setPlantLocation(res);
+              setIsUploadingData(false);
+              handleNext();
+            } else {
+              if (res.code === 404) {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+              } else if (res.code === 400) {
+                setIsUploadingData(false);
+                if (res.errors && res.errors.children) {
+                  // addServerErrors(res.errors.children, setError);
+                }
+              } else {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+              }
+            }
+          }
+        );
+      }
+    } else {
+      setGeoJsonError(true);
     }
-  } else {
-    setGeoJsonError(true);
-  }
   };
 
   const getMethod = (method: string) => {
@@ -359,48 +360,13 @@ export default function PlantingLocation({
       <div className={styles.formSubTitle}>Species Planted</div>
       {fields.map((item, index) => {
         return (
-          <div key={index} className={styles.speciesFieldGroup}>
-            <div className={styles.speciesNameField}>
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('speciesIsRequired'),
-                  },
-                })}
-                label={t('treeSpecies')}
-                variant="outlined"
-                name={`plantedSpecies[${index}].scientificSpecies`}
-              />
-            </div>
-            <div className={styles.speciesCountField}>
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('treesRequired'),
-                  },
-                  validate: (value) => parseInt(value, 10) >= 1,
-                })}
-                onInput={(e: any) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                }}
-                label={t('count')}
-                variant="outlined"
-                name={`plantedSpecies[${index}].treeCount`}
-              />
-            </div>
-            {index > 0 ? (
-              <div
-                onClick={() => remove(index)}
-                className={styles.speciesDeleteField}
-              >
-                <DeleteIcon />
-              </div>
-            ) : (
-              <div className={styles.speciesDeleteField}></div>
-            )}
-          </div>
+          <PlantedSpecies
+            index={index}
+            t={t}
+            register={register}
+            remove={remove}
+            setValue={setValue}
+          />
         );
       })}
       <div
@@ -428,5 +394,105 @@ export default function PlantingLocation({
         </button>
       </div>
     </>
+  );
+}
+interface SpeciesProps {
+  index: number;
+  t: Function;
+  register: Function;
+  remove: Function;
+  setValue: Function;
+}
+
+function PlantedSpecies({
+  index,
+  t,
+  register,
+  remove,
+  setValue,
+}: SpeciesProps): ReactElement {
+  let suggestion_counter = 0;
+  const [speciesSuggestion, setspeciesSuggestion] = React.useState([]);
+  const suggestSpecies = (value: any) => {
+    if (value.length > 2) {
+      postRequest(`/suggest.php`, { q: value, t: 'species' }).then(
+        (res: any) => {
+          if (res) {
+            setspeciesSuggestion(res);
+          }
+        }
+      );
+    }
+  };
+  const setSpecies = (name: string, value: any) => {
+    setValue(name, value, {
+      shouldValidate: true,
+    });
+    setspeciesSuggestion([]);
+  };
+  return (
+    <div key={index} className={styles.speciesFieldGroup}>
+      <div className={styles.speciesNameField}>
+        <MaterialTextField
+          inputRef={register({ required: true })}
+          label={t('treeSpecies')}
+          variant="outlined"
+          name={`plantedSpecies[${index}].scientificSpecies`}
+          onChange={(event) => {
+            suggestSpecies(event.target.value);
+          }}
+          // onBlur={() => setspeciesSuggestion([])}
+        />
+        {speciesSuggestion
+          ? speciesSuggestion.length > 0 && (
+              <div className="suggestions-container scientific-species">
+                {speciesSuggestion.map((suggestion: any) => {
+                  return (
+                    <div
+                      key={'suggestion' + suggestion_counter++}
+                      onMouseDown={() => {
+                        setSpecies(
+                          `plantedSpecies[${index}].scientificSpecies`,
+                          suggestion.scientificName
+                        );
+                      }}
+                      className="suggestion"
+                    >
+                      {suggestion.scientificName}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+          : null}
+      </div>
+      <div className={styles.speciesCountField}>
+        <MaterialTextField
+          inputRef={register({
+            required: {
+              value: true,
+              message: t('treesRequired'),
+            },
+            validate: (value: any) => parseInt(value, 10) >= 1,
+          })}
+          onInput={(e: any) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+          }}
+          label={t('count')}
+          variant="outlined"
+          name={`plantedSpecies[${index}].treeCount`}
+        />
+      </div>
+      {index > 0 ? (
+        <div
+          onClick={() => remove(index)}
+          className={styles.speciesDeleteField}
+        >
+          <DeleteIcon />
+        </div>
+      ) : (
+        <div className={styles.speciesDeleteField}></div>
+      )}
+    </div>
   );
 }

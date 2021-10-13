@@ -9,6 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
+import { postRequest } from '../../../../../utils/apiRequests/api';
 
 const { useTranslation } = i18next;
 
@@ -19,6 +20,7 @@ interface Props {
   getValues: Function;
   control:any;
   userLang:string;
+  setValue:Function;
 }
 
 export default function SampleTreeCard({
@@ -27,10 +29,31 @@ export default function SampleTreeCard({
   remove,
   getValues,
   control,
-  userLang
+  userLang,
+  setValue,
 }: Props): ReactElement {
   const sampleTrees = getValues();
   const { t, ready } = useTranslation(['treemapper', 'common']);
+
+  let suggestion_counter = 0;
+
+  const [speciesSuggestion, setspeciesSuggestion] = React.useState([]);
+  const suggestSpecies = (value:any) => {
+    if (value.length > 2) {
+      postRequest(`/suggest.php`, {q:value, t:'species'}).then((res:any) => {
+        if (res) {
+          setspeciesSuggestion(res);
+        }
+      });
+    }
+  };  
+  const setSpecies = (name:string, value:any) => {
+        setValue(name, value, {
+          shouldValidate: true,
+        });
+        setspeciesSuggestion([]);
+  };
+
   return (
     <div key={index} className={styles.sampleTreeFieldGroup}>
       <div className={styles.sampleTreeName}>
@@ -177,17 +200,34 @@ export default function SampleTreeCard({
           </div>
         </div>
         <div className={styles.formFieldLarge}>
-        <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('speciesIsRequired'),
-                },
-              })}
-              label={t('treeSpecies')}
-              variant="outlined"
-              name={`sampleTrees[${index}].species`}
-            />
+            <MaterialTextField
+                inputRef={register({ required: true })}
+                label={t('treeSpecies')}
+                variant="outlined"
+                name={`sampleTrees[${index}].species`}
+                onChange={(event) => {
+                  suggestSpecies(event.target.value);
+                }}
+                onBlur={() => setspeciesSuggestion([])}
+              />
+              {speciesSuggestion
+              ? speciesSuggestion.length > 0 && (
+                  <div className="suggestions-container sampleTrees">
+                    {speciesSuggestion.map((suggestion:any) => {
+                      return (
+                        <div key={'suggestion' + suggestion_counter++}
+                          onMouseDown={() => {
+                            setSpecies(`sampleTrees[${index}].species` ,suggestion.scientificName);
+                          }}
+                          className="suggestion"
+                        >
+                          {suggestion.scientificName}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              : null}
         </div>
       </div>
     </div>

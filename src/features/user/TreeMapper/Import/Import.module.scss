@@ -27,7 +27,7 @@
   overflow: visible;
   width: fit-content;
   max-width: 100%;
-  width: 390px;
+  width: 500px;
   z-index: 2;
   margin: 0 20px;
   position: relative;
@@ -310,13 +310,13 @@
   .mapContainer {
     top: 80px;
     bottom: 0;
-    left: 450px;
+    left: 560px;
     right: 0;
   }
 }
 
 @include lgLaptopView {
   .mapContainer {
-    left: 646px;
+    left: 756px;
   }
 }

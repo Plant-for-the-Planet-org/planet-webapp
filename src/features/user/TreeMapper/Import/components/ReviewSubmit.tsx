@@ -4,12 +4,15 @@ interface Props {
   handleNext: Function;
   errorMessage: String;
   setErrorMessage: Function;
+  plantLocation: Object;
 }
 
-export default function ReviewSubmit({handleNext,errorMessage,setErrorMessage}: Props): ReactElement {
+export default function ReviewSubmit({handleNext,errorMessage,setErrorMessage,plantLocation}: Props): ReactElement {
+    console.log(`plantLocation`, plantLocation)
     return (
         <div>
-            Review and Submit
+            print
+            {JSON.stringify(plantLocation)}
         </div>
     )
 }
