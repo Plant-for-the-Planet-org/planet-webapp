@@ -7,7 +7,6 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import  Head from 'next/head';
 import { useRouter } from 'next/router';
-import UnderMaintenance from '../../src/features/common/Layout/UnderMaintenance';
 
 const { useTranslation } = i18next;
 
@@ -66,9 +65,9 @@ function AccountHistory({}: Props): ReactElement {
     }
   }
 
-  // React.useEffect(() => {
-  //   if (contextLoaded && token) fetchPaymentHistory();
-  // }, [filter, contextLoaded, token]);
+  React.useEffect(() => {
+    if (contextLoaded && token) fetchPaymentHistory();
+  }, [filter, contextLoaded, token]);
 
   const HistoryProps = {
     filter,
@@ -96,8 +95,8 @@ function AccountHistory({}: Props): ReactElement {
         <Head>
           <title>{t('donations')}</title>
         </Head>
-        {/* <History {...HistoryProps} /> */}
-        <UnderMaintenance/>
+        <History {...HistoryProps} />
+        {/* <UnderMaintenance/> */}
       </UserLayout>
     </>
   );
