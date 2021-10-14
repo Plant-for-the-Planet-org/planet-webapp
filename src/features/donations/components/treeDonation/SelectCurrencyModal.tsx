@@ -106,7 +106,7 @@ export default function TransitionsModal(props: any) {
                 <div></div>
                 <p>{t('common:cancel')}</p>
               </button>
-              <button id={'SelCurrencyModalOk'} className={styles.button} onClick={handleOKClick}>
+              <button id={'SelCurrencyModalOk'} data-test-id="SelCurrencyModalOk" className={styles.button} onClick={handleOKClick}>
                 <div></div>
                 <p>{t('common:ok')}</p>
               </button>

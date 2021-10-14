@@ -137,6 +137,7 @@ export default function ProjectSnippet({
                   id={`ProjSnippetDonate_${project.id}`}
                   onClick={handleOpen}
                   className={'donateButton'}
+                  data-test-id="donateButton"
                 >
                   {t('common:donate')}
                 </button>

@@ -242,7 +242,7 @@ function PaymentDetails({
         )}
 
         {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
+          <div className={styles.paymentError} data-test-id="paymentError">{paymentError}</div>
         )}
 
         <div className={styles.treeDonationContainer}>
@@ -304,6 +304,7 @@ function PaymentDetails({
                 hidden={paymentType !== 'CARD'}
                 id={`payment-methods-tabpanel-${'CARD'}`}
                 aria-labelledby={`scrollable-force-tab-${'CARD'}`}
+                
               >
                 <Elements stripe={getStripe(paymentSetup)}>
                   <CardPayments
