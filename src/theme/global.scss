@@ -359,6 +359,10 @@ button {
   font-size: 16px;
   margin-bottom: 20px;
   color: $primaryFontColor;
+  > h6 {
+    padding: 0px 7.5px 0px 0px;
+    margin-right: 7.5px;
+  }
 }
 .profilePage {
   // max-width: 1000px;

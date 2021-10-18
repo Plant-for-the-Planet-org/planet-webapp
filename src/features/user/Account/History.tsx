@@ -62,6 +62,35 @@ export default function History({
     <div className="profilePage">
       <div className={'profilePageTitle'}>{t('me:payments')}</div>
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
+      <div
+        className={'profilePageSubTitle'}
+        style={{ display: 'flex', flexDirection: 'row' }}
+      >
+        <h6
+          style={{
+            borderWidth: '1px',
+            borderRightStyle: 'solid',
+            borderRightColor: '#68B030',
+            color: '#68B030',
+          }}
+        >
+          History
+        </h6>
+        <h6
+          style={{
+            color: 'white',
+          }}
+        >
+          <a
+            href={`/profile/recurrency`}
+            style={{
+              color: 'white',
+            }}
+          >
+            Recurrency
+          </a>
+        </h6>
+      </div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
@@ -113,7 +142,7 @@ export default function History({
                 <button
                   onClick={() => fetchPaymentHistory(true)}
                   className="primaryButton"
-                  style={{ minWidth: '240px',marginTop:'30px' }}
+                  style={{ minWidth: '240px', marginTop: '30px' }}
                 >
                   {isDataLoading ? (
                     <div className={styles.spinner}></div>

@@ -94,6 +94,35 @@ export default function Recurrency({
           <div className={'profilePageSubTitle'}>
             {t('me:recurrencySubTitle')}
           </div>
+          <div
+            className={'profilePageSubTitle'}
+            style={{ display: 'flex', flexDirection: 'row' }}
+          >
+            <h6
+              style={{
+                color: 'white',
+              }}
+            >
+              <a
+                href={`/profile/history`}
+                style={{
+                  color: 'white',
+                  borderWidth: '1px',
+                  borderRightStyle: 'solid',
+                  borderRightColor: '#68B030',
+                }}
+              >
+                History
+              </a>
+            </h6>
+            <h6
+              style={{
+                color: '#68B030',
+              }}
+            >
+              Recurrency
+            </h6>
+          </div>
           <div className={styles.pageContainer}>
             <div className={styles.section}>
               <div className={styles.accountHistory}>
@@ -224,8 +253,9 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
   }, []);
   const onSubmit = (data: any) => {
     console.log(
-      Number(data.donationAmount),
-      data.donationAmount.slice(1) * 100,
+      data.date.toISOString().split('T')[0],
+      Number(data.donationAmount.slice(1)) * 100,
+      data.frequency,
       'data'
     );
     const bodyToSend = {
@@ -337,7 +367,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
                     <DatePicker
                       label={t('me:date')}
                       value={properties.value}
-                      onChange={properties.onChange}
+                      onChange={(val) => console.log(val, 'val')}
                       inputVariant="outlined"
                       TextFieldComponent={MaterialTextField}
                       autoOk

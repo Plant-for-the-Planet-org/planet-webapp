@@ -21,7 +21,7 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
-  const { t, i18n } = useTranslation(['common','me']);
+  const { t, i18n } = useTranslation(['common', 'me']);
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
@@ -77,13 +77,13 @@ function UserLayout(props: any): ReactElement {
         // },
       ],
     },
-    { 
-      key: 4,
-      title: t('me:recurrency'),
-      path: '/profile/recurrency',
-      icon: <DonateIcon />,
-      flag: 'Beta',
-    },
+    // {
+    //   key: 4,
+    //   title: t('me:recurrency'),
+    //   path: '/profile/recurrency',
+    //   icon: <DonateIcon />,
+    //   flag: 'Beta',
+    // },
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -100,27 +100,27 @@ function UserLayout(props: any): ReactElement {
     //   // ],
     // },
     {
-      key: 5,
+      key: 4,
       title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
       flag: 'Beta',
     },
     {
-      key: 6,
+      key: 5,
       title: t('me:projects'),
       path: '/profile/projects',
       icon: <MapIcon />,
       accessLevel: ['tpo'],
     },
     {
-      key: 7,
+      key: 6,
       title: t('me:embedWidget'),
       path: '/profile/widgets',
       icon: <WidgetIcon />,
     },
     {
-      key: 8,
+      key: 7,
       title: t('me:settings'),
       icon: <SettingsIcon />,
       subMenu: [
@@ -162,9 +162,8 @@ function UserLayout(props: any): ReactElement {
     }
   }, [router]);
 
-  const { user, logoutUser, contextLoaded } = React.useContext(
-    UserPropsContext
-  );
+  const { user, logoutUser, contextLoaded } =
+    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (contextLoaded) {
