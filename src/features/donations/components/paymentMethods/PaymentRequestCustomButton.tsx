@@ -224,7 +224,7 @@ export const PaymentRequestCustomButton = ({
             className="primaryButton"
             id="treeDonateContinue"
             style={{borderRadius: "10px"}}
-
+            data-test-id="treeDonateContinue"
           >
             {t('common:continue')}
           </button>

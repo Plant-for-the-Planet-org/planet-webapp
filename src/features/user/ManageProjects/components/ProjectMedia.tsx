@@ -318,7 +318,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{minWidth:"240px"}}>
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{minWidth:"240px"}} data-test-id="projMediaCont">
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </button>
           </div>

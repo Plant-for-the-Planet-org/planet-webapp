@@ -61,7 +61,7 @@ export default function GiftForm({
           {t('donate:giftRecipient')}
         </div>
         <div className={styles.formRow}>
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%' }} data-test-id="recipientName">
             <MaterialTextField
               name={'recipientName'}
               onChange={changeGiftDetails}
@@ -77,7 +77,7 @@ export default function GiftForm({
           </div>
         </div>
         <div className={styles.formRow}>
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%' }} data-test-id="recipientEmail">
             <MaterialTextField
               name={'email'}
               onChange={changeGiftDetails}
@@ -95,7 +95,7 @@ export default function GiftForm({
             )}
           </div>
         </div>
-        <div className={styles.formRow}>
+        <div className={styles.formRow} data-test-id="recipientMessage">
           <MaterialTextField
             multiline
             rowsMax="4"

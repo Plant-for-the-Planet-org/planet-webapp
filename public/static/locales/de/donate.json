@@ -97,5 +97,19 @@
   "orgNamePublishedTax": "Der Firmenname ist auf unserer Bestenliste und App sichtbar. Spendenbescheinigung werden auf denselben Namen ausgestellt.",
   "orgNamePublished": "Der Firmenname ist auf unserem Leaderboard und in der App sichtbar.",
   "aboutProject": "Über das Projekt",
-  "acceptingDonations": "Nimmt Spenden an"
+  "acceptingDonations": "Nimmt Spenden an",
+  "natural-regeneration": "Natürliche Regeneration",
+  "managed-regeneration": "Gesteuerte Regeneration",
+  "large-scale-planting": "Großflächige Renaturierung",
+  "agroforestry": "Agroforstwirtschaft",
+  "urban-planting": "Städtische Renaturierung",
+  "other-planting": "Renaturierung",
+  "mangroves": "Mangroven",
+  "purpose": "Zweck",
+  "projectPurpose": "Zweck des Projekts",
+  "type": "Typ",
+  "projectType": "Typ des Projektes",
+  "conservation": "Schutz",
+  "restoration": "Renaturierung",
+  "filters": "Filter"
 }

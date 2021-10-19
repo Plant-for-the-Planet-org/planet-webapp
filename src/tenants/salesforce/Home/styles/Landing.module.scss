@@ -1,23 +1,29 @@
 @import '../../../../theme/theme';
 
 .landingSection {
+  height: 858px;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('/tenants/salesforce/images/landscape2x.png');
-  background-position: bottom center;
+  background-image: url('/tenants/salesforce/images/bkgd-clouds.png');
+  background-position: top center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 1440px auto;
   padding: 35px 0 100px;
 
   @include smTabletView {
-    margin-top: 80px;
+    margin-top: 0px;
+    // margin-top: 80px;
+  }
+
+  @include mdTabletView {
+    padding: 175px 0 100px;
   }
 
   @include lgLaptopView {
     max-width: 2560px;
-    padding: 85px 0 100px;
+    padding: 185px 0 0;
   }
 }
 
@@ -29,11 +35,11 @@
   max-width: 90%;
   margin-bottom: 10vh;
   @include smTabletView {
-    max-width: 60%;
+    max-width: 65%;
   }
   @include lgLaptopView {
     max-width: 1170px;
-    margin-bottom: 16vh;
+    // margin-bottom: 16vh;
   }
 
   h1 {
@@ -43,7 +49,7 @@
     font-size: 42px;
     line-height: 45px;
     letter-spacing: -0.006em;
-    color: #032D60;
+    color: #032d60;
     text-align: center;
     margin-bottom: 20px;
 
@@ -63,12 +69,14 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #FFFFFF;
+    color: #032d60;
     margin-bottom: 26px;
+    text-transform: uppercase;
     @include lgLaptopView {
-      font-size: $fontXXLarge;
+      // font-size: $fontXXLarge;
       line-height: 100%;
-      margin-bottom: 38px;
+      // margin-bottom: 38px;
+      margin-bottom: 0px;
     }
   }
 
@@ -79,7 +87,8 @@
     font-size: 15px;
     line-height: 24px;
     text-align: center;
-    color: #FFFFFF;
+    color: #032d60;
+    margin-bottom: 20px;
     @include lgLaptopView {
       font-size: 15px;
       line-height: 24px;
@@ -87,7 +96,7 @@
   }
 
   button {
-    background: #215CA0;
+    background: #0176d3;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -95,7 +104,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
   }
@@ -105,7 +114,7 @@
   text-align: center;
   margin-bottom: 120px;
   @include lgLaptopView {
-    margin-bottom: 290px;
+    margin-bottom: 0px;
   }
 }
 
@@ -113,7 +122,7 @@
   text-align: center;
   position: relative;
   &:after {
-    content: "";
+    content: '';
     display: block;
     background-image: url('/tenants/salesforce/images/astro-tree.png');
     background-size: cover;

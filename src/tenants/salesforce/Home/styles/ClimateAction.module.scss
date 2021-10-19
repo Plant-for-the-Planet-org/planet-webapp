@@ -1,13 +1,26 @@
 @import '../../../../theme/theme';
 
 .climateActionSection {
-  padding-top: 100px;
+  padding-top: 260px;
   padding-bottom: 310px;
   width: 100vw;
-  background-image: url('/tenants/salesforce/images/donate-bkgd.png');
-  background-position: bottom center;
+  // background-image: url('/tenants/salesforce/images/donate-bkgd.png');
+  background-image: url('/tenants/salesforce/images/rectangle-38.png'),
+    url('/tenants/salesforce/images/donate-bkgd.png');
+  background-position: top center, bottom center;
   background-repeat: no-repeat;
-  background-size: auto 570px;
+  background-size: 1440px auto;
+  height: 1440px;
+  margin-top: -120px;
+
+  @include mdTabletView {
+    height: 1280px;
+  }
+  @include xsPhoneView {
+    height: auto;
+    padding-top: 160px;
+    padding-bottom: 240px;
+  }
   h3 {
     font-family: $secondaryFontFamily;
     font-style: normal;
@@ -16,7 +29,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032D60;
+    color: #032d60;
 
     @include lgLaptopView {
       font-size: $fontXXLarge;
@@ -38,7 +51,7 @@
       font-weight: normal;
       font-size: 15px;
       line-height: 24px;
-      color: #1A1A1A;
+      color: #1a1a1a;
     }
   }
 }
@@ -69,9 +82,9 @@
     font-size: 20px;
     line-height: 26px;
     letter-spacing: -0.001em;
-    color: #032D60;
+    color: #032d60;
     margin-bottom: 16px;
-    @include lgLaptopView{
+    @include lgLaptopView {
       margin-bottom: 5px;
     }
   }
@@ -80,11 +93,15 @@
 .climateActionDonate {
   margin-top: 100px;
   text-align: center;
+
+  @include xsPhoneView {
+    margin-top: 60px;
+  }
   p {
     margin-bottom: 20px;
   }
   button {
-    background: #215CA0;
+    background: #215ca0;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -92,7 +109,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
   }

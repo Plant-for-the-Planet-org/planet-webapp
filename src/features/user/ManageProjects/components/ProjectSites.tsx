@@ -381,7 +381,7 @@ export default function ProjectSites({
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="siteName">
                 <MaterialTextField
                   inputRef={register({ required: true })}
                   label={t('manageProjects:siteName')}
@@ -391,7 +391,7 @@ export default function ProjectSites({
                   defaultValue={siteDetails.name}
                 />
               </div>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
                   as={
                     <MaterialTextField
@@ -477,6 +477,7 @@ export default function ProjectSites({
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
               style={{minWidth:"240px"}}
+              data-test-id="projSitesCont"
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
