@@ -144,11 +144,12 @@ Cypress.Commands.add("giftRemove", () => {
 Cypress.Commands.add("addProjects", () => {
     cy.visit(Cypress.env('TEST_SERVER') + "/profile/projects/add-project")
     cy.get('#username').type("test-tpo@plant-for-the-planet.org{enter}")
-    cy.get('#password').type("CcCFg2enJ@C7XrV3ukqHbYYbaN-2hBW7hh6_Ye8kBorZAwczZfdM*TJnMLdgpbi{enter}")
+    cy.get('#password').type(Cypress.env('TEST_ACCOUNT_PASSWORD') + "{enter}")
 
-    cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
-        cy.get('#code').type(response.body.token + "{enter}")
-    })
+    // OTP disabled on staging by Sagar
+    //cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
+    //    cy.get('#code').type(response.body.token + "{enter}")
+    //})
     cy.wait(5000)
 })
 
