@@ -305,6 +305,7 @@ export default function PlantingLocation({
                     format="MMMM d, yyyy"
                   />
                 )}
+                inputRef={register({ required: true })}
                 name="plantDate"
                 control={control}
                 defaultValue=""
@@ -321,6 +322,7 @@ export default function PlantingLocation({
                 label={t('me:project')}
                 variant="outlined"
                 select
+                inputRef={register}
               >
                 {projects.map((option) => (
                   <MenuItem
@@ -366,6 +368,7 @@ export default function PlantingLocation({
             register={register}
             remove={remove}
             setValue={setValue}
+            errors={errors}
           />
         );
       })}
@@ -402,6 +405,7 @@ interface SpeciesProps {
   register: Function;
   remove: Function;
   setValue: Function;
+  errors: any;
 }
 
 function PlantedSpecies({
@@ -410,6 +414,7 @@ function PlantedSpecies({
   register,
   remove,
   setValue,
+  errors,
 }: SpeciesProps): ReactElement {
   let suggestion_counter = 0;
   const [speciesSuggestion, setspeciesSuggestion] = React.useState([]);
@@ -434,7 +439,7 @@ function PlantedSpecies({
     <div key={index} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>
         <MaterialTextField
-          inputRef={register({ required: true })}
+          inputRef={register({ required: index ? false : true })}
           label={t('treeSpecies')}
           variant="outlined"
           name={`plantedSpecies[${index}].scientificSpecies`}
@@ -469,10 +474,12 @@ function PlantedSpecies({
       <div className={styles.speciesCountField}>
         <MaterialTextField
           inputRef={register({
-            required: {
-              value: true,
-              message: t('treesRequired'),
-            },
+            required: index
+              ? false
+              : {
+                  value: true,
+                  message: t('treesRequired'),
+                },
             validate: (value: any) => parseInt(value, 10) >= 1,
           })}
           onInput={(e: any) => {

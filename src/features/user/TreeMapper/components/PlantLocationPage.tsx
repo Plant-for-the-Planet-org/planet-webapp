@@ -186,11 +186,7 @@ export function LocationDetails({
             {t('coordinates')} <CopyToClipboard text={text} />
           </p>
           <div className={styles.value}>
-            <MaterialTextField
-              disabled={true}
-              variant="outlined"
-              value={text}
-            />
+            {text}
           </div>
         </div>
         {/* <div className={styles.singleDetail}>
