@@ -22,6 +22,7 @@ jobs:
           AUTH0_CLIENT_ID : ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CUSTOM_DOMAIN: ${{ secrets.AUTH0_CUSTOM_DOMAIN }}
           TEST_MFA_URL: ${{ secrets.TEST_MFA_URL }}
+          TEST_ACCOUNT_PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
         run: |
           echo "TENANT=planet" >> .env
           echo "TENANTID=ten_NxJq55pm" >> .env
@@ -37,6 +38,7 @@ jobs:
           echo "{
             \"TEST_SERVER\": \"http://localhost:3000\",
             \"TEST_MFA_URL\": \"$TEST_MFA_URL\"
+            \"TEST_ACCOUNT_PASSWORD\": \"$TEST_ACCOUNT_PASSWORD\"
           }" >> cypress.env.json
 
       - name: 'Running Cypress tests'
