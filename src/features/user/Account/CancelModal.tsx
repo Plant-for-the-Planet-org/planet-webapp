@@ -41,6 +41,7 @@ export const CancelModal = ({
     )
       .then((res) => {
         console.log(res, 'Response');
+        handleCancelModalClose();
       })
       .catch((err) => {
         console.log(err, 'Error');
@@ -88,12 +89,12 @@ export const CancelModal = ({
                 control={<GreenRadio />}
                 label={'Cancel immediately'}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 key={2}
                 value={'cancelOnPeriodEnd'}
                 control={<GreenRadio />}
                 label={'Cancel when current period ends'}
-              />
+              /> */}
               <FormControlLabel
                 key={3}
                 value={'cancelOnSelectedDate'}

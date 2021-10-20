@@ -18,6 +18,7 @@ interface Props {
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function RecurrencyRecord({
@@ -29,6 +30,7 @@ export default function RecurrencyRecord({
   seteditDonation,
   setpauseDonation,
   setcancelDonation,
+  setreactivateDonation
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
@@ -63,6 +65,7 @@ export default function RecurrencyRecord({
             seteditDonation={seteditDonation}
             setpauseDonation={setpauseDonation}
             setcancelDonation={setcancelDonation}
+            setreactivateDonation={setreactivateDonation}
           />
           {/* </div> */}
         </>
@@ -346,6 +349,7 @@ interface ManageDonationProps {
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ManageDonation({
@@ -353,38 +357,45 @@ export function ManageDonation({
   seteditDonation,
   setpauseDonation,
   setcancelDonation,
+  setreactivateDonation
 }: ManageDonationProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+
+  const showPause = record?.status==='active';
+  const showEdit = record?.status==='active';
+  const showCancel = record?.status==='active' || record?.status==='paused';
+  const showReactivate = record?.needsActivation 
   return (
     <div className={styles.manageDonations}>
-      <button
+      {showEdit?<button
         className={styles.options}
         style={{ color: themeProperties.primaryColor }}
         onClick={() => seteditDonation(true)}
       >
         {t('editDonation')}
-      </button>
-      <button
+      </button>:[]}
+      {showReactivate?<button
+        className={styles.options}
+        style={{ color: themeProperties.light.safeColor }}
+        onClick={() => setreactivateDonation(true)}
+      >
+        {record?.status==='paused'?t('resumeDonation'):t('reactivateDonation')}
+      </button>:[]}
+      {showPause?<button
         className={styles.options}
         style={{ color: themeProperties.light.secondaryColor }}
         onClick={() => setpauseDonation(true)}
       >
         {t('pauseDonation')}
-      </button>
-      <button
+      </button>:[]}
+      {showCancel?<button
         className={styles.options}
         style={{ color: themeProperties.light.dangerColor }}
         onClick={() => setcancelDonation(true)}
       >
         {t('cancelDonation')}
-      </button>
-      <button
-        className={styles.options}
-        style={{ color: themeProperties.light.dangerColor }}
-        onClick={() => setcancelDonation(true)}
-      >
-        {t('reactivateDonation')}
-      </button>
+      </button>:[]}
+      
     </div>
   );
 }

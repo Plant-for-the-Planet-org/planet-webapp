@@ -29,8 +29,12 @@ export const PauseModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000*3600*24));
   const { t, i18n, ready } = useTranslation(['me']);
+
+  React.useEffect(()=>{
+    setdate(new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000*3600*24))
+  },[record?.currentPeriodEnd])
+
   const pauseDonation = () => {
-    console.log(record.id, record?.currentPeriodEnd.valueOf(), '{record.id}',new Date(record?.currentPeriodEnd).getMonth());
     const bodyToSend = {
       pauseType: option=='pauseForMonth' || option =='pauseUntilDate'?'custom-date':'infinite', //custom-date | infinite
       pauseUntil:option=='pauseForMonth' || option =='pauseUntilDate'? date.toISOString().split('T')[0]: null, // only if pauseType='custom-date'
@@ -84,12 +88,12 @@ export const PauseModal = ({
               }}
               className={styles.radioButtonGrid}
             >
-              {new Date(record?.currentPeriodEnd).getMonth()==new Date().getMonth()?(<FormControlLabel
+              {/* {new Date(record?.currentPeriodEnd).getMonth()==new Date().getMonth()?(<FormControlLabel
                 key={1}
                 value={'pauseForMonth'}
                 control={<GreenRadio />}
                 label={'Pause For Current Month'}
-              />):[]}
+              />):[]} */}
               <FormControlLabel
                 key={2}
                 value={'pauseUntilResume'}
@@ -116,7 +120,7 @@ export const PauseModal = ({
                   <Calendar
                     date={date}
                     onChange={(value) => {
-                      console.log(value);
+                      console.log("value calendar",value);
                       setdate(value);
                     }}
                     minDate={date}

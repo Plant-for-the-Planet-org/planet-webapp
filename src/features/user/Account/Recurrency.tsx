@@ -30,6 +30,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import materialTheme from '../../../theme/themeStyles';
 import { CancelModal } from './CancelModal';
+import { ReactivateModal } from './ReactivateModal';
 import { useRouter } from 'next/router';
 import { InputAdornment } from '@material-ui/core';
 
@@ -58,6 +59,7 @@ export default function Recurrency({
   const [editDonation, seteditDonation] = React.useState(false);
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
+  const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -82,6 +84,9 @@ export default function Recurrency({
   };
   const handleCancelModalClose = () => {
     setcancelModalOpen(false);
+  };
+  const handleReactivateModalClose = () => {
+    setreactivateModalOpen(false);
   };
   let currentRecord;
   if (recurrencies) {
@@ -155,6 +160,7 @@ export default function Recurrency({
                           seteditDonation={seteditDonation}
                           setpauseDonation={setpauseModalOpen}
                           setcancelDonation={setcancelModalOpen}
+                          setreactivateDonation={setreactivateModalOpen}
                         />
                       );
                     })
@@ -198,6 +204,7 @@ export default function Recurrency({
                               seteditDonation={seteditDonation}
                               setpauseDonation={setpauseModalOpen}
                               setcancelDonation={setcancelModalOpen}
+                              setreactivateDonation={setreactivateModalOpen}
                             />
                             {/* </div> */}
                           </>
@@ -216,6 +223,11 @@ export default function Recurrency({
             <CancelModal
               cancelModalOpen={cancelModalOpen}
               handleCancelModalClose={handleCancelModalClose}
+              record={currentRecord}
+            />
+            <ReactivateModal
+              reactivateModalOpen={reactivateModalOpen}
+              handleReactivateModalClose={handleReactivateModalClose}
               record={currentRecord}
             />
           </div>
