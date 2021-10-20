@@ -14,7 +14,7 @@ export default function Timeline() {
       date: 'January 2020',
       image: '/tenants/salesforce/images/jan-20.png',
       title: '1t.org Created & 100m Tree Commitment',
-      copy: 'We partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
+      copy: 'Salesforce partnered with the World Economic Forum to launch <a href="https://www.1t.org/" target="_blank" rel="noreferrer">1t.org</a> and set a goal to support and mobilize the conservation, restoration, and growth of 100 million trees by 2030.',
       learnMore: 'https://www.salesforce.com/news/stories/one-trillion-trees-to-combat-climate-change-why-its-not-so-outlandish/'
     },
     {

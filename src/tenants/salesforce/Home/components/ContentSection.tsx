@@ -16,7 +16,7 @@ export default function ContentSection() {
             <img src="/tenants/salesforce/images/illustration-1.png" className={gridStyles.illustration1} alt="" />
           </div>
           <div className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}>
-            <h3>We Save Trees, Trees Save Us.</h3>
+            <h3>We save trees, trees save us.</h3>
             <p>Trees purify our air, cool our planet, prevent soil erosion, and add grace and beauty to our homes and communities. Without trees, life as we know it will cease to exist. However, since the dawn of civilization, nearly half the world’s forests have been cleared or degraded. And we continue to lose 10 billion trees per year. Of the original 6 trillion trees that once covered the earth’s landmass, only 3 trillion remain.</p>
           </div>
         </div>

@@ -6,7 +6,6 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
   opacity: 0;
 }
 
@@ -39,21 +38,17 @@
   font-weight: 500;
   line-height: 40px;
   text-align: center;
-  // letter-spacing: -0.14em;
   color: #032d60;
-  // margin-right: 20px;
-  @include xsPhoneView {
-    font-size: 70px;
-  }
+  font-size: 70px;
   @include mdTabletView {
     font-size: 100px;
   }
   @include lgLaptopView {
     // width: 73px;
-    height: 100px;
+    height: 170px;
     font-size: 170px;
     // font-size: 80px;
-    line-height: 100px;
+    line-height: 170px;
   }
 
   // &:after {
@@ -75,7 +70,6 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  margin-bottom: -50px;
 }
 
 .treeCounterDataField > .countNumber {
