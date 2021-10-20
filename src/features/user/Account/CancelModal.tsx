@@ -31,11 +31,11 @@ export const CancelModal = ({
   const cancelDonation = () => {
     console.log(record.id, date.toISOString().split('T')[0], '{record.id');
     const bodyToSend = {
-      cancelType: 'custom-date', //custom-date | infinite
-      cancelUntil: date.toISOString().split('T')[0], // only if cancelType='custom-date'
+      cancellationType: option=='cancelImmediately'?"immediate":option=='cancelOnPeriodEnd'?"period-end":"custom-date", // immediate|period-end|custom-date
+      cancellationDate: option=='cancelOnSelectedDate'?date.toISOString().split('T')[0]:null // if custom-date is cancellationType
     };
     putAuthenticatedRequest(
-      `/subscriptions/${record.id}?scope=cacel`,
+      `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
       token
     )
@@ -74,7 +74,7 @@ export const CancelModal = ({
               value={option}
               onChange={(event) => {
                 setoption(event.target.value);
-                if (event.target.value === 'cancelUntilDate') {
+                if (event.target.value === 'cancelOnSelectedDate') {
                   setshowCalender(true);
                 } else {
                   setshowCalender(false);

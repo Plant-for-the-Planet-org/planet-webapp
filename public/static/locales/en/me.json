@@ -67,6 +67,7 @@
   "editDonation": "Edit Donation",
   "pauseDonation": "Pause Donation",
   "cancelDonation": "Cancel Donation",
+  "reactivateDonation":"Reactivate Donation",
   "donationName": "Donation Name",
   "donationAmount": "Donation Amount",
   "makeChanges": "Make Changes",

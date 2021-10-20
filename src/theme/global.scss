@@ -447,6 +447,9 @@ button {
 //     fill: $primaryFontColor;
 //   }
 // }
+.MuiOutlinedInput-inputAdornedStart {
+  padding-left: 0px !important;
+}
 
 .MuiStepLabel-label.MuiStepLabel-active,
 .MuiStepLabel-label.MuiStepLabel-completed,

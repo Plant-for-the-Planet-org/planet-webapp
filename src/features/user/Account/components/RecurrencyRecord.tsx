@@ -86,12 +86,12 @@ export function RecordHeader({
   return (
     <div
       onClick={() => handleRecordOpen(index)}
-      className={styles.recordHeader}
+      className={styles.recurrencyRecordHeader}
     >
       <div className={styles.left}>
         <p className={styles.top}>{record?.project?.name}</p>
         <p>
-          Next on {formatDate(record.startDate)} • {record?.frequency}
+          Next on {formatDate(new Date(new Date(record?.currentPeriodEnd).valueOf()+1000*3600).toISOString())} • {record?.frequency}
         </p>
       </div>
       <div className={styles.right}>
@@ -101,6 +101,7 @@ export function RecordHeader({
         >
           {getFormatedCurrency(i18n.language, record.currency, record.amount)}
         </p>
+        <p className={`${styles.status} ${record?.status==='paused'?styles.paused:record?.status==='canceled'?styles.cancelled:styles.active}`}>{record?.status}</p>
       </div>
     </div>
   );
@@ -376,6 +377,13 @@ export function ManageDonation({
         onClick={() => setcancelDonation(true)}
       >
         {t('cancelDonation')}
+      </button>
+      <button
+        className={styles.options}
+        style={{ color: themeProperties.light.dangerColor }}
+        onClick={() => setcancelDonation(true)}
+      >
+        {t('reactivateDonation')}
       </button>
     </div>
   );

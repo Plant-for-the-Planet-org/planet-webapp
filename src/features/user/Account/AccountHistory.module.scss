@@ -16,7 +16,9 @@
   padding-top: 20px;
   max-width: 1250px;
 }
-
+.recurrencySection {
+  justify-content: flex-start;
+}
 .accountHistory {
   width: 100%;
   display: flex;
@@ -62,7 +64,52 @@
     }
   }
 }
-
+.recurrency {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  > .recurrencyList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    color: $primaryFontColor;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
+    .notFound {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 160px;
+      > p {
+        margin-top: 10px;
+      }
+    }
+    > .record {
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 20px 20px 10px 20px;
+      background-color: $backgroundColor;
+      &:hover {
+        background-color: $backgroundColorDark;
+      }
+      > .detailContainer {
+        display: none;
+      }
+    }
+  }
+}
 .recordHeader {
   width: 100%;
   display: flex;
@@ -90,7 +137,55 @@
     }
   }
 }
-
+.recurrencyRecordHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  > .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    > .top {
+      font-weight: 700;
+    }
+  }
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 20px;
+    > .top {
+      font-weight: 700;
+    }
+  }
+  .status {
+    // color: $primaryColor;
+    font-family: $primaryFontFamily;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 14px;
+    padding: 3px 10px;
+    // background-color: #deffc4;
+  }
+  .active {
+    color: $primaryColor;
+    background-color: #deffc4;
+  }
+  .paused {
+    color: $secondaryColor;
+    background-color: #ffe8b8;
+  }
+  .cancelled {
+    color: $dangerColor;
+    background-color: #ffccc7;
+  }
+}
 .divider {
   width: 100%;
   height: 1px;
@@ -215,7 +310,7 @@
 }
 
 @include mdTabletView {
-  .manageDonations{
+  .manageDonations {
     display: flex;
     flex-direction: row;
     margin-right: 20px;
@@ -430,7 +525,65 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+@include lgLaptopView {
+  .recurrency {
+    width: 70%;
+    > .recurrencyList {
+      width: 100%;
+      > .record.selected {
+        background-color: $backgroundColorDark;
+        // border-radius: 10px;
+        box-shadow: 1px 2px 8px -6px #707070;
+        max-height: 1000px;
+        color: $primaryFontColor;
+        > .detailContainer {
+          display: flex;
+        }
+      }
+      .record.selectedPause {
+        background-color: rgba(255, 255, 204, 0.3);
+        // border-radius: 10px;
+        box-shadow: 1px 2px 8px -6px #707070;
+        max-height: 1000px;
+        color: $primaryFontColor;
+        > .detailContainer {
+          display: flex;
+        }
+      }
+      .record.selectedCancel {
+        background-color: rgba(241, 130, 141, 0.3);
+        // border-radius: 10px;
+        box-shadow: 1px 2px 8px -6px #707070;
+        max-height: 1000px;
+        color: $primaryFontColor;
+        > .detailContainer {
+          display: flex;
+        }
+      }
+    }
+  }
+  .filterContainer {
+    width: 30%;
+    display: flex;
+    margin-left: 20px;
+  }
 
+  .filterRow {
+    display: none;
+  }
+
+  .modal {
+    display: none;
+  }
+
+  .modalContainer {
+    display: none;
+  }
+
+  .detailGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 // Loader for Buttons
 .spinner {
   border: 2px solid #f3f3f3;

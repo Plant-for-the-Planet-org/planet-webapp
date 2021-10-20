@@ -10,6 +10,7 @@ import AccountRecord, {
   RecordHeader,
 } from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -33,6 +34,7 @@ export default function History({
   const { t, i18n } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState(null);
   const [openModal, setOpenModal] = React.useState(false);
+  const router = useRouter();
 
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index) {
@@ -78,17 +80,17 @@ export default function History({
         </h6>
         <h6
           style={{
-            color: 'white',
+            color: 'black',
           }}
         >
-          <a
-            href={`/profile/recurrency`}
+          <button
+          onClick={()=>router.push(`/profile/recurrency`)}
             style={{
-              color: 'white',
+              color: 'black',
             }}
           >
             Recurrency
-          </a>
+          </button>
         </h6>
       </div>
       <div className={styles.pageContainer}>

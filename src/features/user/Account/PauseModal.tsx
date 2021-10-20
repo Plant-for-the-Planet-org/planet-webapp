@@ -17,6 +17,7 @@ import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import { Controller } from '../../../../node_modules/react-hook-form/dist';
+
 export const PauseModal = ({
   pauseModalOpen,
   handlePauseModalClose,
@@ -26,21 +27,22 @@ export const PauseModal = ({
   const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
-  const [date, setdate] = React.useState(new Date());
+  const [date, setdate] = React.useState(new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000*3600*24));
   const { t, i18n, ready } = useTranslation(['me']);
   const pauseDonation = () => {
-    console.log(record.id, date.toISOString().split('T')[0], '{record.id');
+    console.log(record.id, record?.currentPeriodEnd.valueOf(), '{record.id}',new Date(record?.currentPeriodEnd).getMonth());
     const bodyToSend = {
-      pauseType: 'custom-date', //custom-date | infinite
-      pauseUntil: date.toISOString().split('T')[0], // only if pauseType='custom-date'
+      pauseType: option=='pauseForMonth' || option =='pauseUntilDate'?'custom-date':'infinite', //custom-date | infinite
+      pauseUntil:option=='pauseForMonth' || option =='pauseUntilDate'? date.toISOString().split('T')[0]: null, // only if pauseType='custom-date'
     };
     putAuthenticatedRequest(
-      `/subscriptions/${record.id}?scope=pause`,
+      `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token
     )
       .then((res) => {
         console.log(res, 'Response');
+        handlePauseModalClose();
       })
       .catch((err) => {
         console.log(err, 'Error');
@@ -82,12 +84,12 @@ export const PauseModal = ({
               }}
               className={styles.radioButtonGrid}
             >
-              <FormControlLabel
+              {new Date(record?.currentPeriodEnd).getMonth()==new Date().getMonth()?(<FormControlLabel
                 key={1}
                 value={'pauseForMonth'}
                 control={<GreenRadio />}
                 label={'Pause For Current Month'}
-              />
+              />):[]}
               <FormControlLabel
                 key={2}
                 value={'pauseUntilResume'}
@@ -117,6 +119,7 @@ export const PauseModal = ({
                       console.log(value);
                       setdate(value);
                     }}
+                    minDate={date}
                     disablePast={true}
                   />
                 </MuiPickersUtilsProvider>

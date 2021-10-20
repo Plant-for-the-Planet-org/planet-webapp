@@ -30,6 +30,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import materialTheme from '../../../theme/themeStyles';
 import { CancelModal } from './CancelModal';
+import { useRouter } from 'next/router';
+import { InputAdornment } from '@material-ui/core';
 
 const { useTranslation } = i18next;
 
@@ -56,7 +58,7 @@ export default function Recurrency({
   const [editDonation, seteditDonation] = React.useState(false);
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
-  // console.log(accountingFilters,'accountingFilters');
+  const router = useRouter();
 
   React.useEffect(() => {
     fetchRecurrentDonations();
@@ -100,20 +102,21 @@ export default function Recurrency({
           >
             <h6
               style={{
-                color: 'white',
+                color: 'black',
               }}
             >
-              <a
-                href={`/profile/history`}
+              <button
+                onClick={()=>router.push(`/profile/history`)}
                 style={{
-                  color: 'white',
+                  color: 'black',
                   borderWidth: '1px',
                   borderRightStyle: 'solid',
                   borderRightColor: '#68B030',
+                  paddingRight:'5px'
                 }}
               >
                 History
-              </a>
+              </button>
             </h6>
             <h6
               style={{
@@ -124,9 +127,9 @@ export default function Recurrency({
             </h6>
           </div>
           <div className={styles.pageContainer}>
-            <div className={styles.section}>
-              <div className={styles.accountHistory}>
-                <div className={styles.historyList}>
+            <div className={`${styles.section} ${styles.recurrencySection}`}>
+              <div className={styles.recurrency}>
+                <div className={styles.recurrencyList}>
                   {!recurrencies && isDataLoading ? (
                     <>
                       <TransactionListLoader />
@@ -244,7 +247,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
   });
   const { token } = React.useContext(UserPropsContext);
 
-  console.log(record, 'Recordddd');
+  console.log(record, 'Record', record?.frequency);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -253,14 +256,14 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
   }, []);
   const onSubmit = (data: any) => {
     console.log(
-      data.date.toISOString().split('T')[0],
+      new Date(data.date).toISOString().split('T')[0],
       Number(data.donationAmount.slice(1)) * 100,
       data.frequency,
       'data'
     );
     const bodyToSend = {
-      nextBilling: data.date.toISOString().split('T')[0],
-      centAmount: Number(data.donationAmount.slice(1)) * 100,
+      nextBilling: new Date(data.date).toISOString().split('T')[0],
+      centAmount: Number(data.donationAmount) * 100,
       frequency: data.frequency,
     };
     putAuthenticatedRequest(
@@ -313,12 +316,14 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
               label={t('donationAmount')}
               variant="outlined"
               name="donationAmount"
-              onChange={(value) => setcentAmount(value * 100)}
-              defaultValue={getFormatedCurrency(
-                i18n.language,
-                record.currency,
-                record.amount
-              )}
+              defaultValue={record.amount}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">{getFormatedCurrency(
+                  i18n.language,
+                  record.currency,
+                  record.amount
+                ).slice(0,1)}</InputAdornment>,
+              }}
             />
             {errors.donationAmount && (
               <span className={styles.formErrors}>
@@ -334,6 +339,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
               id="combo-box-demo"
               options={['monthly', 'yearly']}
               sx={{ width: 300 }}
+              defaultValue={record.frequency}
               renderInput={(params) => (
                 <MaterialTextField
                   {...params}
@@ -341,7 +347,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
                   variant="outlined"
                   label={t('frequency')}
                   name="frequency"
-                  defaultValue={record.frequency}
+                  // defaultValue={"spme"}
                 />
               )}
             />
@@ -367,7 +373,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
                     <DatePicker
                       label={t('me:date')}
                       value={properties.value}
-                      onChange={(val) => console.log(val, 'val')}
+                      onChange={properties.onChange}
                       inputVariant="outlined"
                       TextFieldComponent={MaterialTextField}
                       autoOk
