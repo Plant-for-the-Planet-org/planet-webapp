@@ -30,7 +30,7 @@ export default function RecurrencyRecord({
   seteditDonation,
   setpauseDonation,
   setcancelDonation,
-  setreactivateDonation
+  setreactivateDonation,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
@@ -93,9 +93,27 @@ export function RecordHeader({
     >
       <div className={styles.left}>
         <p className={styles.top}>{record?.project?.name}</p>
-        <p>
-          Next on {formatDate(new Date(new Date(record?.currentPeriodEnd).valueOf()+1000*3600).toISOString())} • {record?.frequency}
-        </p>
+        {record?.endsAt ? (
+          <p>
+            This recurrent donation will be cancelled on{' '}
+            {formatDate(
+              new Date(
+                new Date(record?.endsAt).valueOf() + 1000 * 3600
+              ).toISOString()
+            )}{' '}
+            • {record?.frequency}
+          </p>
+        ) : (
+          <p>
+            Next on{' '}
+            {formatDate(
+              new Date(
+                new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600
+              ).toISOString()
+            )}{' '}
+            • {record?.frequency}
+          </p>
+        )}
       </div>
       <div className={styles.right}>
         <p
@@ -104,7 +122,17 @@ export function RecordHeader({
         >
           {getFormatedCurrency(i18n.language, record.currency, record.amount)}
         </p>
-        <p className={`${styles.status} ${record?.status==='paused'?styles.paused:record?.status==='canceled'?styles.cancelled:styles.active}`}>{record?.status}</p>
+        <p
+          className={`${styles.status} ${
+            record?.status === 'paused'
+              ? styles.paused
+              : record?.status === 'canceled'
+              ? styles.cancelled
+              : styles.active
+          }`}
+        >
+          {record?.status}
+        </p>
       </div>
     </div>
   );
@@ -156,7 +184,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{record?.donorName}</p>
         </div>
       )}
-      {record.firstDonation && (
+      {record.firstDonation?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('firstDonation')}</p>
           <p>{formatDate(record.firstDonation.created)}</p>
@@ -216,7 +244,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{record.projectGuid}</p>
         </div>
       )} */}
-      {record.firstDonation.reference && (
+      {record.firstDonation?.reference && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('reference')}</p>
           <p>{record.firstDonation.reference}</p>
@@ -357,45 +385,63 @@ export function ManageDonation({
   seteditDonation,
   setpauseDonation,
   setcancelDonation,
-  setreactivateDonation
+  setreactivateDonation,
 }: ManageDonationProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
 
-  const showPause = record?.status==='active';
-  const showEdit = record?.status==='active';
-  const showCancel = record?.status==='active' || record?.status==='paused';
-  const showReactivate = record?.needsActivation 
+  const showPause = record?.status === 'active' && !record?.endsAt;
+  const showEdit = record?.status === 'active';
+  const showCancel = record?.status === 'active' && !record?.endsAt;
+  const showReactivate =
+    record?.status === 'paused' || new Date(record?.endsAt) > new Date();
   return (
     <div className={styles.manageDonations}>
-      {showEdit?<button
-        className={styles.options}
-        style={{ color: themeProperties.primaryColor }}
-        onClick={() => seteditDonation(true)}
-      >
-        {t('editDonation')}
-      </button>:[]}
-      {showReactivate?<button
-        className={styles.options}
-        style={{ color: themeProperties.light.safeColor }}
-        onClick={() => setreactivateDonation(true)}
-      >
-        {record?.status==='paused'?t('resumeDonation'):t('reactivateDonation')}
-      </button>:[]}
-      {showPause?<button
-        className={styles.options}
-        style={{ color: themeProperties.light.secondaryColor }}
-        onClick={() => setpauseDonation(true)}
-      >
-        {t('pauseDonation')}
-      </button>:[]}
-      {showCancel?<button
-        className={styles.options}
-        style={{ color: themeProperties.light.dangerColor }}
-        onClick={() => setcancelDonation(true)}
-      >
-        {t('cancelDonation')}
-      </button>:[]}
-      
+      {showEdit ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.primaryColor }}
+          onClick={() => seteditDonation(true)}
+        >
+          {t('editDonation')}
+        </button>
+      ) : (
+        []
+      )}
+      {showReactivate ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.light.safeColor }}
+          onClick={() => setreactivateDonation(true)}
+        >
+          {record?.status === 'paused'
+            ? t('resumeDonation')
+            : t('reactivateDonation')}
+        </button>
+      ) : (
+        []
+      )}
+      {showPause ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.light.secondaryColor }}
+          onClick={() => setpauseDonation(true)}
+        >
+          {t('pauseDonation')}
+        </button>
+      ) : (
+        []
+      )}
+      {showCancel ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.light.dangerColor }}
+          onClick={() => setcancelDonation(true)}
+        >
+          {t('cancelDonation')}
+        </button>
+      ) : (
+        []
+      )}
     </div>
   );
 }
