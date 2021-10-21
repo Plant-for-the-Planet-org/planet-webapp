@@ -27,17 +27,27 @@ export const PauseModal = ({
   const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
-  const [date, setdate] = React.useState(new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000*3600*24));
+  const [date, setdate] = React.useState(
+    new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
+  );
   const { t, i18n, ready } = useTranslation(['me']);
 
-  React.useEffect(()=>{
-    setdate(new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000*3600*24))
-  },[record?.currentPeriodEnd])
+  React.useEffect(() => {
+    setdate(
+      new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
+    );
+  }, [record?.currentPeriodEnd]);
 
   const pauseDonation = () => {
     const bodyToSend = {
-      pauseType: option=='pauseForMonth' || option =='pauseUntilDate'?'custom-date':'infinite', //custom-date | infinite
-      pauseUntil:option=='pauseForMonth' || option =='pauseUntilDate'? date.toISOString().split('T')[0]: null, // only if pauseType='custom-date'
+      pauseType:
+        option == 'pauseForMonth' || option == 'pauseUntilDate'
+          ? 'custom-date'
+          : 'infinite', //custom-date | infinite
+      pauseUntil:
+        option == 'pauseForMonth' || option == 'pauseUntilDate'
+          ? date.toISOString().split('T')[0]
+          : null, // only if pauseType='custom-date'
     };
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=pause`,
@@ -120,7 +130,7 @@ export const PauseModal = ({
                   <Calendar
                     date={date}
                     onChange={(value) => {
-                      console.log("value calendar",value);
+                      console.log('value calendar', value);
                       setdate(value);
                     }}
                     minDate={date}
@@ -137,7 +147,6 @@ export const PauseModal = ({
             <button
               onClick={() => {
                 handlePauseModalClose();
-                console.log('Pressed');
               }}
               className={styles.cancelButton}
               style={{

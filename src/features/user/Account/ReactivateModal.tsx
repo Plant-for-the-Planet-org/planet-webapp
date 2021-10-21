@@ -19,14 +19,14 @@ import materialTheme from '../../../theme/themeStyles';
 import { Controller } from '../../../../node_modules/react-hook-form/dist';
 
 export const ReactivateModal = ({
-    reactivateModalOpen,
+  reactivateModalOpen,
   handleReactivateModalClose,
   record,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const { t, i18n, ready } = useTranslation(['me']);
-  const bodyToSend ={}
+  const bodyToSend = {};
   const reactivateDonation = () => {
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=reactivate`,
@@ -66,7 +66,6 @@ export const ReactivateModal = ({
             <button
               onClick={() => {
                 handleReactivateModalClose();
-                console.log('Pressed');
               }}
               className={styles.cancelButton}
               style={{

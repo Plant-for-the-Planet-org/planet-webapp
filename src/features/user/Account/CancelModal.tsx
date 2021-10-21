@@ -31,8 +31,16 @@ export const CancelModal = ({
   const cancelDonation = () => {
     console.log(record.id, date.toISOString().split('T')[0], '{record.id');
     const bodyToSend = {
-      cancellationType: option=='cancelImmediately'?"immediate":option=='cancelOnPeriodEnd'?"period-end":"custom-date", // immediate|period-end|custom-date
-      cancellationDate: option=='cancelOnSelectedDate'?date.toISOString().split('T')[0]:null // if custom-date is cancellationType
+      cancellationType:
+        option == 'cancelImmediately'
+          ? 'immediate'
+          : option == 'cancelOnPeriodEnd'
+          ? 'period-end'
+          : 'custom-date', // immediate|period-end|custom-date
+      cancellationDate:
+        option == 'cancelOnSelectedDate'
+          ? date.toISOString().split('T')[0]
+          : null, // if custom-date is cancellationType
     };
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=cancel`,
@@ -132,7 +140,6 @@ export const CancelModal = ({
             <button
               onClick={() => {
                 handleCancelModalClose();
-                console.log('Pressed');
               }}
               className={styles.cancelButton}
               style={{

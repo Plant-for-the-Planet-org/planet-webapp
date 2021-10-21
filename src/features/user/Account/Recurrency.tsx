@@ -262,7 +262,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
   });
   const { token } = React.useContext(UserPropsContext);
 
-  console.log(record, 'Record', record?.frequency);
+  console.log(record, 'Record');
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -446,7 +446,6 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
       <button
         onClick={() => {
           seteditDonation(false);
-          console.log('Pressed');
         }}
         className={styles.cancelButton}
         style={{ minWidth: '20px', marginTop: '30px' }}
