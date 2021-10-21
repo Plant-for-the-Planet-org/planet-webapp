@@ -150,6 +150,7 @@ export default function Recurrency({
                   ) : (
                     recurrencies &&
                     !isDataLoading &&
+                    Array.isArray(recurrencies) &&
                     recurrencies?.map((record: any, index: number) => {
                       return (
                         <RecurrencyRecord
