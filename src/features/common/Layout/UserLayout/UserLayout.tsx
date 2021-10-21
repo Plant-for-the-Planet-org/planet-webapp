@@ -335,7 +335,11 @@ function NavLink({
             setactiveLink(link.path);
             setActiveSubMenu('');
           } else {
-            setisSubMenuActive(!isSubMenuActive);
+            if (link.hideSubMenu) {
+              router.push(link.path);
+            } else {
+              setisSubMenuActive(!isSubMenuActive);
+            }
           }
         }}
       >

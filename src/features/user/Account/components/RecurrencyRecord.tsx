@@ -89,7 +89,10 @@ export function RecordHeader({
   return (
     <div
       onClick={() => handleRecordOpen(index)}
-      className={styles.recurrencyRecordHeader}
+      className={`${styles.recurrencyRecordHeader}`}
+      style={{
+        cursor: record?.status === 'incomplete' ? 'default' : 'pointer',
+      }}
     >
       <div className={styles.left}>
         <p className={styles.top}>{record?.project?.name}</p>

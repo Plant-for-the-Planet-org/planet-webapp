@@ -64,14 +64,16 @@ export default function Recurrency({
 
   React.useEffect(() => {
     fetchRecurrentDonations();
-  }, [editDonation]);
+  }, [editDonation, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index) {
       setSelectedRecord(null);
       setOpenModal(false);
     } else {
-      setSelectedRecord(index);
-      setOpenModal(true);
+      if (recurrencies[index].status !== 'incomplete') {
+        setSelectedRecord(index);
+        setOpenModal(true);
+      }
     }
   };
 
@@ -111,13 +113,13 @@ export default function Recurrency({
               }}
             >
               <button
-                onClick={()=>router.push(`/profile/history`)}
+                onClick={() => router.push(`/profile/history`)}
                 style={{
                   color: 'black',
                   borderWidth: '1px',
                   borderRightStyle: 'solid',
                   borderRightColor: '#68B030',
-                  paddingRight:'5px'
+                  paddingRight: '5px',
                 }}
               >
                 History
@@ -309,7 +311,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
             </span>
           )}
         </div>
-        <div className={styles.formRowInput}>
+        {/* <div className={styles.formRowInput}>
           <MaterialTextField
             inputRef={register({ required: true })}
             label={t('donorName')}
@@ -320,7 +322,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
           {errors.donorName && (
             <span className={styles.formErrors}>{t('donorNameRequired')}</span>
           )}
-        </div>
+        </div> */}
         <div className={styles.formRow}>
           <div className={styles.formRowInput}>
             <MaterialTextField
@@ -330,11 +332,15 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
               name="donationAmount"
               defaultValue={record.amount}
               InputProps={{
-                startAdornment: <InputAdornment position="start">{getFormatedCurrency(
-                  i18n.language,
-                  record.currency,
-                  record.amount
-                ).slice(0,1)}</InputAdornment>,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {getFormatedCurrency(
+                      i18n.language,
+                      record?.currency,
+                      record?.amount
+                    ).slice(0, 1)}
+                  </InputAdornment>
+                ),
               }}
             />
             {errors.donationAmount && (
@@ -351,7 +357,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
               id="combo-box-demo"
               options={['monthly', 'yearly']}
               sx={{ width: 300 }}
-              defaultValue={record.frequency}
+              defaultValue={record?.frequency}
               renderInput={(params) => (
                 <MaterialTextField
                   {...params}
@@ -392,12 +398,13 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
                       // disableFuture
                       // minDate={new Date(new Date().setFullYear(1950))}
                       format="MMMM d, yyyy"
-                      minDate={record.currentPeriodEnd}
+                      minDate={record?.currentPeriodEnd}
+                      maxDate={record?.endsAt}
                     />
                   )}
                   name="date"
                   control={control}
-                  defaultValue={record.currentPeriodEnd}
+                  defaultValue={record?.currentPeriodEnd}
                 />
               </MuiPickersUtilsProvider>
             </ThemeProvider>

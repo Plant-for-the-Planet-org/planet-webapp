@@ -187,6 +187,9 @@
     background-color: #ffccc7;
   }
 }
+.noCursor {
+  cursor: default;
+}
 .divider {
   width: 100%;
   height: 1px;
@@ -299,7 +302,7 @@
 .manageDonations {
   width: 70%;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   flex-direction: column;
   align-items: flex-start;
   grid-gap: 20px;
