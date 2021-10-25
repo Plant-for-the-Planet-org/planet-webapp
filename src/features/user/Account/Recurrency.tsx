@@ -33,6 +33,7 @@ import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { useRouter } from 'next/router';
 import { InputAdornment } from '@material-ui/core';
+import { EditModal } from './EditModal';
 
 const { useTranslation } = i18next;
 
@@ -56,7 +57,7 @@ export default function Recurrency({
   const { t, i18n } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState(null);
   const [openModal, setOpenModal] = React.useState(false);
-  const [editDonation, seteditDonation] = React.useState(false);
+  const [editModalOpen, seteditModalOpen] = React.useState(false);
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
   const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
@@ -64,7 +65,7 @@ export default function Recurrency({
 
   React.useEffect(() => {
     fetchRecurrentDonations();
-  }, [editDonation, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
+  }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index) {
       setSelectedRecord(null);
@@ -90,6 +91,9 @@ export default function Recurrency({
   const handleReactivateModalClose = () => {
     setreactivateModalOpen(false);
   };
+  const handleEditModalClose = () => {
+    seteditModalOpen(false);
+  };
   let currentRecord;
   if (recurrencies) {
     currentRecord = recurrencies[selectedRecord];
@@ -97,162 +101,158 @@ export default function Recurrency({
 
   return (
     <div className="profilePage">
-      {!editDonation ? (
-        <>
-          <div className={'profilePageTitle'}>{t('me:recurrency')}</div>
-          <div className={'profilePageSubTitle'}>
-            {t('me:recurrencySubTitle')}
-          </div>
-          <div
-            className={'profilePageSubTitle'}
-            style={{ display: 'flex', flexDirection: 'row' }}
+      <>
+        <div className={'profilePageTitle'}>{t('me:recurrency')}</div>
+        <div className={'profilePageSubTitle'}>
+          {t('me:recurrencySubTitle')}
+        </div>
+        <div
+          className={'profilePageSubTitle'}
+          style={{ display: 'flex', flexDirection: 'row' }}
+        >
+          <h6
+            style={{
+              color: 'black',
+            }}
           >
-            <h6
+            <button
+              onClick={() => router.push(`/profile/history`)}
               style={{
                 color: 'black',
+                borderWidth: '1px',
+                borderRightStyle: 'solid',
+                borderRightColor: '#68B030',
+                paddingRight: '5px',
               }}
             >
-              <button
-                onClick={() => router.push(`/profile/history`)}
-                style={{
-                  color: 'black',
-                  borderWidth: '1px',
-                  borderRightStyle: 'solid',
-                  borderRightColor: '#68B030',
-                  paddingRight: '5px',
-                }}
-              >
-                History
-              </button>
-            </h6>
-            <h6
-              style={{
-                color: '#68B030',
-              }}
-            >
-              Recurrency
-            </h6>
-          </div>
-          <div className={styles.pageContainer}>
-            <div className={`${styles.section} ${styles.recurrencySection}`}>
-              <div className={styles.recurrency}>
-                <div className={styles.recurrencyList}>
-                  {!recurrencies && isDataLoading ? (
-                    <>
-                      <TransactionListLoader />
-                      <TransactionListLoader />
-                      <TransactionListLoader />
-                    </>
-                  ) : recurrencies && recurrencies.length === 0 ? (
-                    <div className={styles.notFound}>
-                      <TransactionsNotFound />
-                    </div>
-                  ) : (
-                    recurrencies &&
-                    !isDataLoading &&
-                    Array.isArray(recurrencies) &&
-                    recurrencies?.map((record: any, index: number) => {
-                      return (
-                        <RecurrencyRecord
-                          key={index}
-                          handleRecordOpen={handleRecordOpen}
-                          index={index}
-                          selectedRecord={selectedRecord}
-                          record={record}
-                          recurrencies={recurrencies}
-                          seteditDonation={seteditDonation}
-                          setpauseDonation={setpauseModalOpen}
-                          setcancelDonation={setcancelModalOpen}
-                          setreactivateDonation={setreactivateModalOpen}
-                        />
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-              {openModal && (
-                <div className={styles.modalContainer}>
+              History
+            </button>
+          </h6>
+          <h6
+            style={{
+              color: '#68B030',
+            }}
+          >
+            Recurrency
+          </h6>
+        </div>
+        <div className={styles.pageContainer}>
+          <div className={`${styles.section} ${styles.recurrencySection}`}>
+            <div className={styles.recurrency}>
+              <div className={styles.recurrencyList}>
+                {!recurrencies && isDataLoading ? (
                   <>
-                    <div
-                      onClick={() => {
-                        handleClose();
-                      }}
-                      className={styles.closeRecord}
-                    >
-                      <BackButton />
-                    </div>
-                    {currentRecord ? (
-                      <>
-                        <RecordHeader record={currentRecord} />
-                        <div className={styles.divider}></div>
-                        <div className={styles.detailContainer}>
-                          <div className={styles.detailGrid}>
-                            <DetailsComponent record={currentRecord} />
-                          </div>
-                          {currentRecord?.details?.recipientBank && (
-                            <>
-                              <div className={styles.title}>
-                                {t('bankDetails')}
-                              </div>
-                              <div className={styles.detailGrid}>
-                                <BankDetails record={currentRecord} />
-                              </div>
-                            </>
-                          )}
-
-                          <>
-                            {/* <div className={styles.detailGrid}> */}
-                            <ManageDonation
-                              record={currentRecord}
-                              seteditDonation={seteditDonation}
-                              setpauseDonation={setpauseModalOpen}
-                              setcancelDonation={setcancelModalOpen}
-                              setreactivateDonation={setreactivateModalOpen}
-                            />
-                            {/* </div> */}
-                          </>
-                        </div>
-                      </>
-                    ) : null}
+                    <TransactionListLoader />
+                    <TransactionListLoader />
+                    <TransactionListLoader />
                   </>
-                </div>
-              )}
+                ) : recurrencies && recurrencies.length === 0 ? (
+                  <div className={styles.notFound}>
+                    <TransactionsNotFound />
+                  </div>
+                ) : (
+                  recurrencies &&
+                  !isDataLoading &&
+                  Array.isArray(recurrencies) &&
+                  recurrencies?.map((record: any, index: number) => {
+                    return (
+                      <RecurrencyRecord
+                        key={index}
+                        handleRecordOpen={handleRecordOpen}
+                        index={index}
+                        selectedRecord={selectedRecord}
+                        record={record}
+                        recurrencies={recurrencies}
+                        seteditDonation={seteditModalOpen}
+                        setpauseDonation={setpauseModalOpen}
+                        setcancelDonation={setcancelModalOpen}
+                        setreactivateDonation={setreactivateModalOpen}
+                      />
+                    );
+                  })
+                )}
+              </div>
             </div>
-            <PauseModal
-              pauseModalOpen={pauseModalOpen}
-              handlePauseModalClose={handlePauseModalClose}
-              record={currentRecord}
-            />
-            <CancelModal
-              cancelModalOpen={cancelModalOpen}
-              handleCancelModalClose={handleCancelModalClose}
-              record={currentRecord}
-            />
-            <ReactivateModal
-              reactivateModalOpen={reactivateModalOpen}
-              handleReactivateModalClose={handleReactivateModalClose}
-              record={currentRecord}
-            />
+            {openModal && (
+              <div className={styles.modalContainer}>
+                <>
+                  <div
+                    onClick={() => {
+                      handleClose();
+                    }}
+                    className={styles.closeRecord}
+                  >
+                    <BackButton />
+                  </div>
+                  {currentRecord ? (
+                    <>
+                      <RecordHeader record={currentRecord} />
+                      <div className={styles.divider}></div>
+                      <div className={styles.detailContainer}>
+                        <div className={styles.detailGrid}>
+                          <DetailsComponent record={currentRecord} />
+                        </div>
+                        {currentRecord?.details?.recipientBank && (
+                          <>
+                            <div className={styles.title}>
+                              {t('bankDetails')}
+                            </div>
+                            <div className={styles.detailGrid}>
+                              <BankDetails record={currentRecord} />
+                            </div>
+                          </>
+                        )}
+
+                        <>
+                          {/* <div className={styles.detailGrid}> */}
+                          <ManageDonation
+                            record={currentRecord}
+                            seteditDonation={seteditModalOpen}
+                            setpauseDonation={setpauseModalOpen}
+                            setcancelDonation={setcancelModalOpen}
+                            setreactivateDonation={setreactivateModalOpen}
+                          />
+                          {/* </div> */}
+                        </>
+                      </div>
+                    </>
+                  ) : null}
+                </>
+              </div>
+            )}
           </div>
-        </>
-      ) : !isDataLoading ? (
-        <EditDonation
-          record={currentRecord}
-          seteditDonation={seteditDonation}
-        />
-      ) : (
-        []
-      )}
+          <PauseModal
+            pauseModalOpen={pauseModalOpen}
+            handlePauseModalClose={handlePauseModalClose}
+            record={currentRecord}
+          />
+          <CancelModal
+            cancelModalOpen={cancelModalOpen}
+            handleCancelModalClose={handleCancelModalClose}
+            record={currentRecord}
+          />
+          <EditModal
+            editModalOpen={editModalOpen}
+            handleEditModalClose={handleEditModalClose}
+            record={currentRecord}
+          />
+          <ReactivateModal
+            reactivateModalOpen={reactivateModalOpen}
+            handleReactivateModalClose={handleReactivateModalClose}
+            record={currentRecord}
+          />
+        </div>
+      </>
     </div>
   );
 }
 
 interface EditDonationProps {
   record: Object;
-  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  editModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
+const EditDonation = ({ record, editModalOpen }: EditDonationProps) => {
   const [nextBilling, setnextBilling] = React.useState();
   const [centAmount, setcentAmount] = React.useState();
   const [userLang, setUserLang] = React.useState('en');
@@ -288,7 +288,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
     )
       .then((res) => {
         console.log(res, 'Response');
-        seteditDonation(false);
+        editModalOpen(false);
       })
       .catch((err) => console.log(err));
   };
@@ -400,7 +400,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
                       // minDate={new Date(new Date().setFullYear(1950))}
                       format="MMMM d, yyyy"
                       minDate={record?.currentPeriodEnd}
-                      maxDate={record?.endsAt}
+                      maxDate={record?.endsAt ? record.endsAt : '2100-01-01'}
                     />
                   )}
                   name="date"
@@ -445,7 +445,7 @@ const EditDonation = ({ record, seteditDonation }: EditDonationProps) => {
       </button>
       <button
         onClick={() => {
-          seteditDonation(false);
+          editModalOpen(false);
         }}
         className={styles.cancelButton}
         style={{ minWidth: '20px', marginTop: '30px' }}

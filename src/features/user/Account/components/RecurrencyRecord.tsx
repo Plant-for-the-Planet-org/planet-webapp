@@ -134,7 +134,7 @@ export function RecordHeader({
               : styles.active
           }`}
         >
-          {record?.status}
+          {record?.status === 'trialing' ? 'active' : record?.status}
         </p>
       </div>
     </div>

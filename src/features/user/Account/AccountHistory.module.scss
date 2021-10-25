@@ -172,6 +172,7 @@
     letter-spacing: 0.5px;
     border-radius: 14px;
     padding: 3px 10px;
+    text-transform: capitalize;
     // background-color: #deffc4;
   }
   .active {
@@ -422,10 +423,11 @@
     $primaryDarkColor 116%
   );
   border-radius: 20px;
+  align-self: center;
   color: #fff;
   font-weight: bold;
   height: 34px;
-  width: 130px;
+  width: 100%;
   &:hover {
     cursor: pointer;
   }
@@ -441,11 +443,11 @@
     cursor: pointer;
   }
 }
-.submitButton:hover,
-.cancelButton:hover {
-  transform: translateY(-7px);
-  cursor: pointer;
-}
+// .submitButton:hover,
+// .cancelButton:hover {
+//   transform: translateY(-7px);
+//   cursor: pointer;
+// }
 .formErrors {
   // position: absolute;
   font-family: $primaryFontFamily;
