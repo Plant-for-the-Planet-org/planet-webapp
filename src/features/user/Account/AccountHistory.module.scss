@@ -645,3 +645,16 @@
     transform: rotate(360deg);
   }
 }
+.headerCloseIcon,
+.headerBackIcon {
+  height: 32px;
+  width: 32px;
+  min-width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.headerCloseIcon:hover,
+.headerBackIcon:hover {
+  cursor: pointer;
+}

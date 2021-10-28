@@ -17,6 +17,7 @@ import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import { Controller } from '../../../../node_modules/react-hook-form/dist';
+import Close from '../../../../public/assets/images/icons/headerIcons/close';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
@@ -56,6 +57,15 @@ export const ReactivateModal = ({
     >
       <Fade in={reactivateModalOpen}>
         <div className={styles.manageDonationModal}>
+        <button
+            onClick={handleReactivateModalClose}
+            onKeyPress={handleReactivateModalClose}
+            role="button"
+            tabIndex={0}
+            className={styles.headerCloseIcon}
+          >
+            <Close color={styles.light} />
+          </button>
           <div className={styles.modalTexts}>
             <h4>{t('me:reactivateDonationConfirmation')}</h4>
             <div className={styles.note}>
@@ -64,25 +74,11 @@ export const ReactivateModal = ({
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              onClick={() => {
-                handleReactivateModalClose();
-              }}
-              className={styles.cancelButton}
-              style={{
-                minWidth: '20px',
-                maxWidth: '70px',
-                marginTop: '30px',
-                marginRight: '20px',
-              }}
-            >
-              {t('no')}
-            </button>
-            <button
               onClick={() => reactivateDonation()}
               className={styles.submitButton}
-              style={{ minWidth: '20px', marginTop: '30px', maxWidth: '70px' }}
+              style={{ minWidth: '20px', marginTop: '30px'}}
             >
-              {t('yes')}
+              {t('save')}
             </button>
           </div>
         </div>

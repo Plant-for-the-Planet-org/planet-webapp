@@ -17,6 +17,7 @@ import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import { Controller } from '../../../../node_modules/react-hook-form/dist';
+import Close from '../../../../public/assets/images/icons/headerIcons/close';
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
@@ -35,8 +36,8 @@ export const CancelModal = ({
         option == 'cancelImmediately'
           ? 'immediate'
           : option == 'cancelOnPeriodEnd'
-          ? 'period-end'
-          : 'custom-date', // immediate|period-end|custom-date
+            ? 'period-end'
+            : 'custom-date', // immediate|period-end|custom-date
       cancellationDate:
         option == 'cancelOnSelectedDate'
           ? date.toISOString().split('T')[0]
@@ -70,6 +71,15 @@ export const CancelModal = ({
     >
       <Fade in={cancelModalOpen}>
         <div className={styles.manageDonationModal}>
+          <button
+            onClick={handleCancelModalClose}
+            onKeyPress={handleCancelModalClose}
+            role="button"
+            tabIndex={0}
+            className={styles.headerCloseIcon}
+          >
+            <Close color={styles.light} />
+          </button>
           <div className={styles.modalTexts}>
             <h4>{t('me:cancelDonationConfirmation')}</h4>
             <div className={styles.note}>
@@ -114,11 +124,11 @@ export const CancelModal = ({
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
-                  // locale={
-                  //   localeMapForDate[userLang]
-                  //     ? localeMapForDate[userLang]
-                  //     : localeMapForDate['en']
-                  // }
+                // locale={
+                //   localeMapForDate[userLang]
+                //     ? localeMapForDate[userLang]
+                //     : localeMapForDate['en']
+                // }
                 >
                   <Calendar
                     date={date}
@@ -138,25 +148,11 @@ export const CancelModal = ({
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              onClick={() => {
-                handleCancelModalClose();
-              }}
-              className={styles.cancelButton}
-              style={{
-                minWidth: '20px',
-                maxWidth: '70px',
-                marginTop: '30px',
-                marginRight: '20px',
-              }}
-            >
-              {t('no')}
-            </button>
-            <button
               onClick={() => cancelDonation()}
               className={styles.submitButton}
-              style={{ minWidth: '20px', marginTop: '30px', maxWidth: '70px' }}
+              style={{ minWidth: '20px', marginTop: '30px' }}
             >
-              {t('yes')}
+              {t('save')}
             </button>
           </div>
         </div>

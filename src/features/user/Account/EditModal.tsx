@@ -20,6 +20,7 @@ import materialTheme from '../../../theme/themeStyles';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
+import Close from '../../../../public/assets/images/icons/headerIcons/close';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -32,6 +33,7 @@ export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
+  // onClose
 }: any) => {
   const [centAmount, setcentAmount] = React.useState();
   const { theme } = React.useContext(ThemeContext);
@@ -88,7 +90,17 @@ export const EditModal = ({
     >
       <Fade in={editModalOpen}>
         <div className={styles.manageDonationModal}>
+        <button
+            onClick={handleEditModalClose}
+            onKeyPress={handleEditModalClose}
+            role="button"
+            tabIndex={0}
+            className={styles.headerCloseIcon}
+          >
+            <Close color={styles.light} />
+          </button>
           <div className={styles.modalTexts}>
+          
             <h4>{t('me:editDonationConfirmation')}</h4>
             <div className={styles.note}>
               <p>{t('me:editDonationDescription')}</p>
@@ -163,7 +175,7 @@ export const EditModal = ({
                       variant="outlined"
                       label={t('frequency')}
                       name="frequency"
-                      // defaultValue={"spme"}
+                    // defaultValue={"spme"}
                     />
                   )}
                 />
@@ -222,7 +234,7 @@ export const EditModal = ({
                           minDate={
                             new Date(
                               new Date(record?.currentPeriodEnd).valueOf() +
-                                1000 * 3600 * 24
+                              1000 * 3600 * 24
                             )
                           }
                           maxDate={
@@ -235,7 +247,7 @@ export const EditModal = ({
                       defaultValue={
                         new Date(
                           new Date(record?.currentPeriodEnd).valueOf() +
-                            1000 * 3600 * 24
+                          1000 * 3600 * 24
                         )
                       }
                     />
