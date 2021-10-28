@@ -43,8 +43,25 @@ function RecurrentDonations({}: Props): ReactElement {
       '/app/subscriptions',
       token
     );
-    console.log(recurrencies, 'recurrencies');
-    setrecurrencies(recurrencies);
+    if (recurrencies && Array.isArray(recurrencies)) {
+      const activeRecurrencies = recurrencies?.filter(
+        (obj) => obj.status == 'active' || obj.status == 'trialing'
+      );
+      const pauseRecurrencies = recurrencies?.filter(
+        (obj) => obj.status == 'pause'
+      );
+      const otherRecurrencies = recurrencies?.filter(
+        (obj) =>
+          obj.status != 'pause' &&
+          obj.status != 'active' &&
+          obj.status != 'trialing'
+      );
+      setrecurrencies([
+        ...activeRecurrencies,
+        ...pauseRecurrencies,
+        ...otherRecurrencies,
+      ]);
+    }
     setProgress(100);
     setIsDataLoading(false);
     setTimeout(() => setProgress(0), 1000);

@@ -19,6 +19,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
+import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -32,7 +33,6 @@ export const EditModal = ({
   handleEditModalClose,
   record,
 }: any) => {
-  const [nextBilling, setnextBilling] = React.useState();
   const [centAmount, setcentAmount] = React.useState();
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
@@ -41,7 +41,7 @@ export const EditModal = ({
     mode: 'all',
   });
   const { token } = React.useContext(UserPropsContext);
-
+  // const symbol = getCurrencySymbolByCode(record?.currency);
   console.log(record, 'Record');
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -133,11 +133,11 @@ export const EditModal = ({
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        {getFormatedCurrency(
+                        {getCurrencySymbolByCode(
                           i18n.language,
                           record?.currency,
                           record?.amount
-                        ).slice(0, 1)}
+                        )}
                       </InputAdornment>
                     ),
                   }}
@@ -218,10 +218,13 @@ export const EditModal = ({
                           inputVariant="outlined"
                           TextFieldComponent={MaterialTextField}
                           autoOk
-                          // disableFuture
-                          // minDate={new Date(new Date().setFullYear(1950))}
                           format="MMMM d, yyyy"
-                          minDate={record?.currentPeriodEnd}
+                          minDate={
+                            new Date(
+                              new Date(record?.currentPeriodEnd).valueOf() +
+                                1000 * 3600 * 24
+                            )
+                          }
                           maxDate={
                             record?.endsAt ? record.endsAt : '2100-01-01'
                           }
@@ -229,7 +232,12 @@ export const EditModal = ({
                       )}
                       name="date"
                       control={control}
-                      defaultValue={record?.currentPeriodEnd}
+                      defaultValue={
+                        new Date(
+                          new Date(record?.currentPeriodEnd).valueOf() +
+                            1000 * 3600 * 24
+                        )
+                      }
                     />
                   </MuiPickersUtilsProvider>
                 </ThemeProvider>

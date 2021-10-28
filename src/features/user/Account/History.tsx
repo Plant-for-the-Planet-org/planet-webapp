@@ -64,34 +64,19 @@ export default function History({
     <div className="profilePage">
       <div className={'profilePageTitle'}>{t('me:payments')}</div>
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-      <div
-        className={'profilePageSubTitle'}
-        style={{ display: 'flex', flexDirection: 'row' }}
-      >
-        <h6
-          style={{
-            borderWidth: '1px',
-            borderRightStyle: 'solid',
-            borderRightColor: '#68B030',
-            color: '#68B030',
-          }}
+      <div className={styles.donationOptions}>
+        <div
+          className={`${styles.option} ${styles.active}`}
+          style={{ color: '#68B030' }}
         >
-          History
-        </h6>
-        <h6
-          style={{
-            color: 'black',
-          }}
+          {t('history')}
+        </div>
+        <button
+          onClick={() => router.push(`/profile/recurrency`)}
+          className={styles.option}
         >
-          <button
-          onClick={()=>router.push(`/profile/recurrency`)}
-            style={{
-              color: 'black',
-            }}
-          >
-            Recurrency
-          </button>
-        </h6>
+          {t('recurrency')}
+        </button>
       </div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>

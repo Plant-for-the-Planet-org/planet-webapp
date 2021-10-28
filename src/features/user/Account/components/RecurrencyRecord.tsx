@@ -15,6 +15,7 @@ interface Props {
   selectedRecord: number;
   record: Object;
   recurrencies: Object;
+  openModal: boolean;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +28,7 @@ export default function RecurrencyRecord({
   selectedRecord,
   record,
   recurrencies,
+  openModal,
   seteditDonation,
   setpauseDonation,
   setcancelDonation,
@@ -44,6 +46,7 @@ export default function RecurrencyRecord({
         record={record}
         handleRecordOpen={handleRecordOpen}
         index={index}
+        openModal={openModal}
       />
       {index !== recurrencies?.length - 1 && <div className={styles.divider} />}
       <div className={styles.detailContainer}>
@@ -78,14 +81,19 @@ interface HeaderProps {
   record: Object;
   handleRecordOpen: Function;
   index: number;
+  handleClose?: Function;
+  openModal: boolean;
 }
 
 export function RecordHeader({
   record,
   handleRecordOpen,
   index,
+  openModal,
+  handleClose,
 }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+  console.log( new Date(record?.endsAt)< new Date(), 'Datesss')
   return (
     <div
       onClick={() => handleRecordOpen(index)}
@@ -98,7 +106,7 @@ export function RecordHeader({
         <p className={styles.top}>{record?.project?.name}</p>
         {record?.endsAt ? (
           <p>
-            This recurrent donation will be cancelled on{' '}
+            {new Date(record?.endsAt)< new Date()?t('cancelledOn'):t('willBeCancelledOn')}{' '}
             {formatDate(
               new Date(
                 new Date(record?.endsAt).valueOf() + 1000 * 3600
@@ -108,7 +116,7 @@ export function RecordHeader({
           </p>
         ) : (
           <p>
-            Next on{' '}
+            {t('nextOn')}{' '}
             {formatDate(
               new Date(
                 new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600
@@ -393,7 +401,7 @@ export function ManageDonation({
   const { t, i18n } = useTranslation(['me']);
 
   const showPause = record?.status === 'active' && !record?.endsAt;
-  const showEdit = record?.status === 'active';
+  const showEdit = record?.status === 'active' || record?.status === 'trialing';
   const showCancel = record?.status === 'active' && !record?.endsAt;
   const showReactivate =
     record?.status === 'paused' || new Date(record?.endsAt) > new Date();

@@ -63,11 +63,15 @@ export default function Recurrency({
   const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
   const router = useRouter();
 
+  console.log(recurrencies, '============');
   React.useEffect(() => {
     fetchRecurrentDonations();
   }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
+  React.useEffect(() => {
+    setSelectedRecord(0);
+  }, []);
   const handleRecordOpen = (index: number) => {
-    if (selectedRecord === index) {
+    if (selectedRecord === index && window.innerWidth > 980) {
       setSelectedRecord(null);
       setOpenModal(false);
     } else {
@@ -106,35 +110,19 @@ export default function Recurrency({
         <div className={'profilePageSubTitle'}>
           {t('me:recurrencySubTitle')}
         </div>
-        <div
-          className={'profilePageSubTitle'}
-          style={{ display: 'flex', flexDirection: 'row' }}
-        >
-          <h6
-            style={{
-              color: 'black',
-            }}
+        <div className={styles.donationOptions}>
+          <button
+            className={styles.option}
+            onClick={() => router.push(`/profile/history`)}
           >
-            <button
-              onClick={() => router.push(`/profile/history`)}
-              style={{
-                color: 'black',
-                borderWidth: '1px',
-                borderRightStyle: 'solid',
-                borderRightColor: '#68B030',
-                paddingRight: '5px',
-              }}
-            >
-              History
-            </button>
-          </h6>
-          <h6
-            style={{
-              color: '#68B030',
-            }}
+            {t('history')}
+          </button>
+          <div
+            className={`${styles.option} ${styles.active}`}
+            style={{ color: '#68B030' }}
           >
-            Recurrency
-          </h6>
+            {t('recurrency')}
+          </div>
         </div>
         <div className={styles.pageContainer}>
           <div className={`${styles.section} ${styles.recurrencySection}`}>
@@ -163,6 +151,7 @@ export default function Recurrency({
                         selectedRecord={selectedRecord}
                         record={record}
                         recurrencies={recurrencies}
+                        openModal={openModal}
                         seteditDonation={seteditModalOpen}
                         setpauseDonation={setpauseModalOpen}
                         setcancelDonation={setcancelModalOpen}
@@ -186,7 +175,12 @@ export default function Recurrency({
                   </div>
                   {currentRecord ? (
                     <>
-                      <RecordHeader record={currentRecord} />
+                      <RecordHeader
+                        record={currentRecord}
+                        handleRecordOpen={() => {}}
+                        handleClose={handleClose}
+                        openModal={openModal}
+                      />
                       <div className={styles.divider}></div>
                       <div className={styles.detailContainer}>
                         <div className={styles.detailGrid}>
