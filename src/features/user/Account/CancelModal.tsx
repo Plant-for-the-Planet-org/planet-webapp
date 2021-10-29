@@ -126,7 +126,7 @@ export const CancelModal = ({
                       console.log(value);
                       setdate(value);
                     }}
-                    disablePast={true}
+                    minDate={new Date(new Date().valueOf() + 1000 * 3600 * 24)}
                     color={'#68B030'}
                   />
                 </MuiPickersUtilsProvider>

@@ -56,7 +56,7 @@ export default function History({
   };
 
   let currentRecord;
-  if (paymentHistory) {
+  if (paymentHistory && Array.isArray(paymentHistory?.items)) {
     currentRecord = paymentHistory?.items[selectedRecord];
   }
 
@@ -104,12 +104,15 @@ export default function History({
                   <TransactionListLoader />
                   <TransactionListLoader />
                 </>
-              ) : paymentHistory && paymentHistory.items.length === 0 ? (
+              ) : paymentHistory &&
+                Array.isArray(paymentHistory?.items) &&
+                paymentHistory.items.length === 0 ? (
                 <div className={styles.notFound}>
                   <TransactionsNotFound />
                 </div>
               ) : (
                 paymentHistory &&
+                Array.isArray(paymentHistory?.items) &&
                 paymentHistory?.items?.map((record: any, index: number) => {
                   return (
                     <AccountRecord

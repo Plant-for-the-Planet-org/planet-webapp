@@ -16,5 +16,7 @@ export default function getCurrencySymbolByCode(
     };
   }
   const formatter = new Intl.NumberFormat(langCode, options);
-  return formatter.formatToParts(number)[6]?.value;
+  return formatter
+    .formatToParts(number)
+    .filter((part) => part.type == 'currency')[0].value;
 }
