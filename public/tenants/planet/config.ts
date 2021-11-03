@@ -59,7 +59,7 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
+  footerLinks:["shop","privacy","terms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
   manifest: '/tenants/planet/manifest.json',
 };
 
