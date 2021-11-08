@@ -3,11 +3,11 @@ const config = {
   tenantName: 'planet',
   // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
-  tenantGoal:null,
-  showUNEPLogo:true,
-  showUNDecadeLogo:true,
-  showRedeemHint:true,
-  enableGuestSepa:false,
+  tenantGoal: null,
+  showUNEPLogo: true,
+  showUNDecadeLogo: true,
+  showRedeemHint: true,
+  enableGuestSepa: false,
   darkModeEnabled: false,
   // font family and it's property particular to tenant
   font: {
@@ -36,13 +36,50 @@ const config = {
         title: 'aboutUs',
         onclick: 'https://a.plant-for-the-planet.org/',
         visible: true,
+        subMenu: [
+          {
+            title: 'Overview',
+            onclick: 'https://a.plant-for-theplanet.org',
+            visible: true
+          },
+          {
+            title: 'Children and Youth',
+            onclick: 'https://a.plant-for-theplanet.org/change-youth',
+            visible: true
+          },
+          {
+            title: 'Trillion Trees',
+            onclick: 'https://a.plant-for-theplanet.org/trillion-trees',
+            visible: true
+          },
+          {
+            title: 'Yucatan',
+            onclick: 'https://a.plant-for-theplanet.org/yucatan',
+            visible: true
+          },
+          {
+            title: 'Partners',
+            onclick: 'https://a.plant-for-theplanet.org/partners',
+            visible: true
+          },
+          {
+            title: 'Change Chocolate',
+            onclick: 'https://a.plant-for-theplanet.org/change-chocolate',
+            visible: true
+          },
+          {
+            title: 'Stop Talking Start Planting',
+            onclick: 'https://a.plant-for-theplanet.org/stop-talking-start-planting',
+            visible: true
+          }
+        ]
       },
       leaderboard: {
         title: 'leaders',
         onclick: '/all',
         visible: true,
       },
-      me:{
+      me: {
         title: 'signIn',
         loggedInTitle: 'me',
         onclick: '/me',
@@ -59,7 +96,7 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
+  footerLinks: ["shop", "privacyAndTerms", "imprint", "contact", "downloads", "annualReports", "team", "jobs", "supportUs", "blogs", "faqs"],
   manifest: '/tenants/planet/manifest.json',
 };
 

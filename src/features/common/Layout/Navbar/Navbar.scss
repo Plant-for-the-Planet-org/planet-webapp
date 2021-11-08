@@ -88,6 +88,21 @@
     > .link_icon.active_icon > svg > path {
       fill: $primaryColor;
     }
+    &.subMenu{
+      position: relative;
+    }
+    &.subMenu .subMenuItems{
+      top: 80px;
+      left: 0;
+      position: absolute;
+      height: 100px;
+      width: 200px;
+      background-color: red;
+      display: none;
+    }
+    &.subMenu:hover .subMenuItems{
+      display: flex;
+    }
     &:hover{
       cursor: pointer;
       color: $primaryColor;
@@ -97,9 +112,12 @@
       > .link_icon > svg > path {
         fill: $primaryColor;
       }
+
     }
   }
 }
+
+
 
 @include smTabletView {
   .top_nav {
@@ -164,5 +182,3 @@
     }
   }
 }
-
-

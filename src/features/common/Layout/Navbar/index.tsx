@@ -10,6 +10,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
 import { UserPropsContext } from '../UserPropsContext';
+import GetSubMenu from './getSubMenu';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -111,7 +112,7 @@ export default function NavbarComponent(props: any) {
                   id={'navbarActiveIcon'}
                   key={link}
                   onClick={() => gotoUserPage()}
-                  className={'linkContainer'}
+                  className={`linkContainer`}
                 >
                   <div className={'link_icon'}>
                     <UserIcon />
@@ -133,18 +134,17 @@ export default function NavbarComponent(props: any) {
             if (link === 'about' && SingleLink.visible) {
               SingleLink = {
                 ...SingleLink,
-                onclick: `${SingleLink.onclick}${
-                  (process.env.TENANT === 'planet' ||
+                onclick: `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
                     process.env.TENANT === 'ttc') &&
-                  lang_path[i18n.language]
+                    lang_path[i18n.language]
                     ? lang_path[i18n.language]
                     : ''
-                }`,
+                  }`,
               };
             }
             return SingleLink.visible ? (
-              <Link key={link} href={SingleLink.onclick}>
-                <div className={'linkContainer'}>
+              <Link key={link} href={SingleLink.onclick} >
+                <div className={`linkContainer ${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`}>
                   <GetNavBarIcon
                     UserIcon={UserIcon}
                     mainKey={link}
@@ -172,7 +172,19 @@ export default function NavbarComponent(props: any) {
                       {t('common:' + SingleLink.title)}
                     </p>
                   )}
+
+                  <div className={'subMenuItems'}>
+                    {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
+                      return (
+                        <>
+                          <GetSubMenu title={submenu.title} />
+                          {submenu.title}
+                        </>
+                      )
+                    })}
+                  </div>
                 </div>
+
               </Link>
             ) : (
               <div key={link}></div>
