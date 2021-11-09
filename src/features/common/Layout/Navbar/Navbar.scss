@@ -91,17 +91,48 @@
     &.subMenu{
       position: relative;
     }
+    .menuText{
+      padding-top: 5px;
+      font-weight: 700;
+      padding-left: 10px;
+      display: flex;
+      align-items: flex-start;
+      font-family: inherit;
+      font-size: 16px;
+      color: $primaryFontColor;
+    }
+    & .menuRow{
+      display: flex;
+      margin-bottom: 10px;
+      width: 100%;
+      &:hover{
+        .menuText{
+          color: $primaryColor;
+        }
+        
+        .link_icon > svg > g > path{
+          fill: $primaryColor;
+        }
+      }
+    }
+    
+    
     &.subMenu .subMenuItems{
-      top: 80px;
-      left: 0;
+      top: 70px;
+      left: -5px;
       position: absolute;
-      height: 100px;
-      width: 200px;
-      background-color: red;
+      height: 330px;
+      width: 300px;
       display: none;
+      background-color: $backgroundColor;
+      padding: 12px;
     }
     &.subMenu:hover .subMenuItems{
-      display: flex;
+      display: block;
+      flex-direction: column;
+      border-radius: 20px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      color: $primaryColor;
     }
     &:hover{
       cursor: pointer;

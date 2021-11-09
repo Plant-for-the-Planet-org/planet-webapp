@@ -135,10 +135,10 @@ export default function NavbarComponent(props: any) {
               SingleLink = {
                 ...SingleLink,
                 onclick: `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
-                    process.env.TENANT === 'ttc') &&
-                    lang_path[i18n.language]
-                    ? lang_path[i18n.language]
-                    : ''
+                  process.env.TENANT === 'ttc') &&
+                  lang_path[i18n.language]
+                  ? lang_path[i18n.language]
+                  : ''
                   }`,
               };
             }
@@ -176,10 +176,14 @@ export default function NavbarComponent(props: any) {
                   <div className={'subMenuItems'}>
                     {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
                       return (
-                        <>
-                          <GetSubMenu title={submenu.title} />
-                          {submenu.title}
-                        </>
+                        <div className={'menuRow'}>
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <GetSubMenu title={submenu.title} />
+                            <div className={'menuText'}>
+                              {submenu.title}
+                            </div>
+                          </div>
+                        </div>
                       )
                     })}
                   </div>
