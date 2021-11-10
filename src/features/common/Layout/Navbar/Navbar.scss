@@ -127,7 +127,7 @@
       background-color: $backgroundColor;
       padding: 12px;
     }
-    &.subMenu:hover .subMenuItems{
+    &.subMenu .subMenuItems{
       display: block;
       flex-direction: column;
       border-radius: 20px;

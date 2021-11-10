@@ -177,8 +177,8 @@ export default function NavbarComponent(props: any) {
                     {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
                       return (
                         <div className={'menuRow'}>
-                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                            <GetSubMenu title={submenu.title} />
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} >
+                            <GetSubMenu title={submenu.title} onclick={submenu.onclick}/>
                             <div className={'menuText'}>
                               {submenu.title}
                             </div>

@@ -6,33 +6,35 @@ import TrillionTreesIcon from '../../../../../public/assets/images/icons/megaMen
 import YucatanIcon from '../../../../../public/assets/images/icons/megaMenuIcons/yucatan';
 import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaMenuIcons/changeChocolate';
 import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
+import { Link } from '@material-ui/core';
 
 
 interface Props {
     title: any
+    onclick: any
 }
 
-function GetSubMenu({ title }: Props): ReactElement {
+function GetSubMenu({ title, onclick }: Props): ReactElement {
     const Overview = () => {
         return (
-            <button id="overviewButton" className={'link_icon'}>
+            <Link id="overviewButton" className={'link_icon'} href={onclick}>
                 <OverviewIcon />
-            </button>
+            </Link>
 
         )
     }
 
     const Partners = () => {
         return (
-            <button id="overviewButton" className={'link_icon'}>
+            <Link id="overviewButton" className={'link_icon'} href={onclick}>
                 <PartnerIcon />
-            </button>
+            </Link>
         )
     }
 
     const TrillionTrees = () => {
         return (
-            <button id="overviewButton" className={'link_icon'}>
+            <button id="overviewButton" className={'link_icon'} >
                 <TrillionTreesIcon />
             </button>
         )
@@ -40,7 +42,7 @@ function GetSubMenu({ title }: Props): ReactElement {
 
     const Yucatan = () => {
         return (
-            <button id="overviewButton" className={'link_icon'}>
+            <button id="overviewButton" className={'link_icon'} >
                 <YucatanIcon />
             </button>
         )
@@ -48,7 +50,7 @@ function GetSubMenu({ title }: Props): ReactElement {
 
     const ChangeChocolate = () => {
         return (
-            <button id="overviewButton" className={'link_icon'}>
+            <button id="overviewButton" className={'link_icon'} >
                 <ChangeChocolateIcon />
             </button>
         )
@@ -64,7 +66,7 @@ function GetSubMenu({ title }: Props): ReactElement {
 
     const StopTalkingStartPlanting = () => {
         return (
-            <button id="overviewButton" className={'link_icon'}>
+            <button id="overviewButton" className={'link_icon'} >
                 <StopTalkingStartPlantingIcon />
             </button>
         )
@@ -73,7 +75,7 @@ function GetSubMenu({ title }: Props): ReactElement {
     switch (title) {
         case 'Overview': return <Overview />
         case 'Children and Youth': return <ChildrenYouth />
-        case 'Trillion Trees': return <TrillionTrees />
+        case 'Trillion Trees': return <TrillionTrees  />
         case 'Yucatan': return <Yucatan />
         case 'Partners': return <Partners />
         case 'Change Chocolate': return <ChangeChocolate />

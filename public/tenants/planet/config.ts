@@ -44,7 +44,7 @@ const config = {
           },
           {
             title: 'Children and Youth',
-            onclick: 'https://a.plant-for-theplanet.org/change-youth',
+            onclick: 'https://a.plant-for-theplanet.org/children-youth',
             visible: true
           },
           {
