@@ -39,37 +39,37 @@ const config = {
         subMenu: [
           {
             title: 'Overview',
-            onclick: 'https://a.plant-for-theplanet.org',
+            onclick: 'https://a.plant-for-the-planet.org',
             visible: true
           },
           {
             title: 'Children and Youth',
-            onclick: 'https://a.plant-for-theplanet.org/children-youth',
+            onclick: 'https://a.plant-for-the-planet.org/children-youth',
             visible: true
           },
           {
             title: 'Trillion Trees',
-            onclick: 'https://a.plant-for-theplanet.org/trillion-trees',
+            onclick: 'https://a.plant-for-the-planet.org/trillion-trees',
             visible: true
           },
           {
             title: 'Yucatan',
-            onclick: 'https://a.plant-for-theplanet.org/yucatan',
+            onclick: 'https://a.plant-for-the-planet.org/yucatan',
             visible: true
           },
           {
             title: 'Partners',
-            onclick: 'https://a.plant-for-theplanet.org/partners',
+            onclick: 'https://a.plant-for-the-planet.org/partners',
             visible: true
           },
           {
             title: 'Change Chocolate',
-            onclick: 'https://a.plant-for-theplanet.org/change-chocolate',
+            onclick: 'https://a.plant-for-the-planet.org/change-chocolate',
             visible: true
           },
           {
             title: 'Stop Talking Start Planting',
-            onclick: 'https://a.plant-for-theplanet.org/stop-talking-start-planting',
+            onclick: 'https://a.plant-for-the-planet.org/stop-talking-start-planting',
             visible: true
           }
         ]

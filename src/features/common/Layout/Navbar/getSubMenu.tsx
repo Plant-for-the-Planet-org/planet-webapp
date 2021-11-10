@@ -6,69 +6,65 @@ import TrillionTreesIcon from '../../../../../public/assets/images/icons/megaMen
 import YucatanIcon from '../../../../../public/assets/images/icons/megaMenuIcons/yucatan';
 import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaMenuIcons/changeChocolate';
 import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
-import { Link } from '@material-ui/core';
-
 
 interface Props {
     title: any
-    onclick: any
 }
 
-function GetSubMenu({ title, onclick }: Props): ReactElement {
+function GetSubMenu({ title }: Props): ReactElement {
     const Overview = () => {
         return (
-            <Link id="overviewButton" className={'link_icon'} href={onclick}>
+            <div id="overviewButton" className={'link_icon'}>
                 <OverviewIcon />
-            </Link>
-
+            </div>
         )
     }
 
     const Partners = () => {
         return (
-            <Link id="overviewButton" className={'link_icon'} href={onclick}>
+            <div id="overviewButton" className={'link_icon'}>
                 <PartnerIcon />
-            </Link>
+            </div>
         )
     }
 
     const TrillionTrees = () => {
         return (
-            <button id="overviewButton" className={'link_icon'} >
+            <div id="overviewButton" className={'link_icon'} >
                 <TrillionTreesIcon />
-            </button>
+            </div>
         )
     }
 
     const Yucatan = () => {
         return (
-            <button id="overviewButton" className={'link_icon'} >
+            <div id="overviewButton" className={'link_icon'} >
                 <YucatanIcon />
-            </button>
+            </div>
         )
     }
 
     const ChangeChocolate = () => {
         return (
-            <button id="overviewButton" className={'link_icon'} >
+            <div id="overviewButton" className={'link_icon'} >
                 <ChangeChocolateIcon />
-            </button>
+            </div>
         )
     }
 
     const ChildrenYouth = () => {
         return (
-            <button id="overviewButton" className={'link_icon'} >
+            <div id="overviewButton" className={'link_icon'} >
                 <ChildrenYouthIcon />
-            </button>
+            </div>
         )
     }
 
     const StopTalkingStartPlanting = () => {
         return (
-            <button id="overviewButton" className={'link_icon'} >
+            <div id="overviewButton" className={'link_icon'} >
                 <StopTalkingStartPlantingIcon />
-            </button>
+            </div>
         )
     }
 

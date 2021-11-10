@@ -143,8 +143,9 @@ export default function NavbarComponent(props: any) {
               };
             }
             return SingleLink.visible ? (
+              <div className={`${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`}>
               <Link key={link} href={SingleLink.onclick} >
-                <div className={`linkContainer ${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`}>
+                <div className={`linkContainer`}>
                   <GetNavBarIcon
                     UserIcon={UserIcon}
                     mainKey={link}
@@ -172,24 +173,24 @@ export default function NavbarComponent(props: any) {
                       {t('common:' + SingleLink.title)}
                     </p>
                   )}
-
-                  <div className={'subMenuItems'}>
+                 
+                </div>
+              </Link>
+              <div className={'subMenuItems'}>
                     {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
                       return (
-                        <div className={'menuRow'}>
+                        <a key={submenu.title} className={'menuRow'} href={submenu.onclick}>
                           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} >
-                            <GetSubMenu title={submenu.title} onclick={submenu.onclick}/>
+                            <GetSubMenu title={submenu.title}/>
                             <div className={'menuText'}>
                               {submenu.title}
                             </div>
                           </div>
-                        </div>
+                        </a>
                       )
                     })}
                   </div>
-                </div>
-
-              </Link>
+              </div>
             ) : (
               <div key={link}></div>
             );

@@ -1,6 +1,6 @@
 @import './../../../../theme/theme';
 
-.mainNavContainer{
+.mainNavContainer {
   height: 80px;
   width: 100%;
   background-color: $backgroundColor;
@@ -25,17 +25,18 @@
   position: relative;
 }
 
-.brandLogos{
+.brandLogos {
   position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
   left: 40px;
   height: 60px;
-  .tenantLogo{
+  .tenantLogo {
     height: 60px;
   }
-  .primaryTenantLogo,.hidePrimaryTenantLogo{
+  .primaryTenantLogo,
+  .hidePrimaryTenantLogo {
     height: 60px;
     display: flex;
     flex-direction: row;
@@ -55,17 +56,17 @@
   }
 }
 
-.menuItems{
+.menuItems {
   display: flex;
   flex-direction: row;
   height: 100%;
   margin-left: -54px;
-  .linkContainer{
+  .linkContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin:10px;
+    margin: 10px;
     > p {
       font-family: $primaryFontFamily;
       font-size: $fontSmall;
@@ -88,53 +89,7 @@
     > .link_icon.active_icon > svg > path {
       fill: $primaryColor;
     }
-    &.subMenu{
-      position: relative;
-    }
-    .menuText{
-      padding-top: 5px;
-      font-weight: 700;
-      padding-left: 10px;
-      display: flex;
-      align-items: flex-start;
-      font-family: inherit;
-      font-size: 16px;
-      color: $primaryFontColor;
-    }
-    & .menuRow{
-      display: flex;
-      margin-bottom: 10px;
-      width: 100%;
-      &:hover{
-        .menuText{
-          color: $primaryColor;
-        }
-        
-        .link_icon > svg > g > path{
-          fill: $primaryColor;
-        }
-      }
-    }
-    
-    
-    &.subMenu .subMenuItems{
-      top: 70px;
-      left: -5px;
-      position: absolute;
-      height: 330px;
-      width: 300px;
-      display: none;
-      background-color: $backgroundColor;
-      padding: 12px;
-    }
-    &.subMenu .subMenuItems{
-      display: block;
-      flex-direction: column;
-      border-radius: 20px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      color: $primaryColor;
-    }
-    &:hover{
+    :hover {
       cursor: pointer;
       color: $primaryColor;
       > p {
@@ -143,17 +98,66 @@
       > .link_icon > svg > path {
         fill: $primaryColor;
       }
-
     }
   }
 }
 
+.subMenu {
+  position: relative;
+  .subMenuItems {
+    top: 70px;
+    left: -5px;
+    position: absolute;
+    height: 330px;
+    width: 300px;
+    display: none;
+    background-color: $backgroundColor;
+    padding: 12px;
+  }
+  .link_icon {
+    width: 24px;
+    height: 24px;
+    margin: 5px;
+  }
+  &:hover {
+    .subMenuItems {
+      display: block;
+      flex-direction: column;
+      border-radius: 20px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      color: $primaryColor;
+    }
+  }
+  .menuText {
+    padding-top: 5px;
+    font-weight: 700;
+    padding-left: 10px;
+    display: flex;
+    align-items: flex-start;
+    font-family: inherit;
+    font-size: 16px;
+    color: $primaryFontColor;
+  }
+  & .menuRow {
+    display: flex;
+    margin-bottom: 10px;
+    width: 100%;
+    &:hover {
+      .menuText {
+        color: $primaryColor;
+      }
 
+      .link_icon  svg  g  path {
+        fill: $primaryColor;
+      }
+    }
+  }
+}
 
 @include smTabletView {
   .top_nav {
     justify-content: flex-end;
-    .brandLogos{
+    .brandLogos {
       left: 20px;
       height: 48px;
       .tenantLogo {
@@ -163,14 +167,14 @@
   }
 }
 
-@include mdTabletView  {
+@include mdTabletView {
   .top_nav {
     justify-content: center;
   }
 }
 
 @include xsPhoneView {
-  .mainNavContainer{
+  .mainNavContainer {
     bottom: 0;
     top: auto;
   }
@@ -180,10 +184,10 @@
 
     justify-content: space-between;
     box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.12);
-    .brandLogos{
+    .brandLogos {
       left: 20px;
       height: 48px;
-      .hidePrimaryTenantLogo{
+      .hidePrimaryTenantLogo {
         display: none;
       }
       .tenantLogo {
@@ -197,13 +201,13 @@
       }
     }
   }
-  .menuItems{
+  .menuItems {
     margin-left: 0px;
     position: absolute;
     right: 20px;
     justify-content: right;
-    .linkContainer{
-      margin:0px;
+    .linkContainer {
+      margin: 0px;
       > p {
         font-size: $fontXSmall;
       }
