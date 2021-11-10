@@ -21,7 +21,7 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
-
+import themeProperties from '../../../theme/themeProperties';
 // interface EditDonationProps {
 //   editModalOpen
 //   handleEditModalClose
@@ -33,8 +33,8 @@ export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
-  // onClose
-}: any) => {
+}: // onClose
+any) => {
   const [centAmount, setcentAmount] = React.useState();
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
@@ -90,18 +90,28 @@ export const EditModal = ({
     >
       <Fade in={editModalOpen}>
         <div className={styles.manageDonationModal}>
-        <button
-            onClick={handleEditModalClose}
-            onKeyPress={handleEditModalClose}
-            role="button"
-            tabIndex={0}
-            className={styles.headerCloseIcon}
-          >
-            <Close color={styles.light} />
-          </button>
           <div className={styles.modalTexts}>
-          
-            <h4>{t('me:editDonationConfirmation')}</h4>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <h4 style={{ marginRight: '64px' }}>
+                {t('me:editDonationConfirmation')}
+              </h4>
+              <button
+                onClick={handleEditModalClose}
+                onKeyPress={handleEditModalClose}
+                role="button"
+                tabIndex={0}
+                className={styles.headerCloseIcon}
+              >
+                <Close color={'#4d5153'} />
+              </button>
+            </div>
             <div className={styles.note}>
               <p>{t('me:editDonationDescription')}</p>
             </div>
@@ -175,7 +185,7 @@ export const EditModal = ({
                       variant="outlined"
                       label={t('frequency')}
                       name="frequency"
-                    // defaultValue={"spme"}
+                      // defaultValue={"spme"}
                     />
                   )}
                 />
@@ -234,7 +244,7 @@ export const EditModal = ({
                           minDate={
                             new Date(
                               new Date(record?.currentPeriodEnd).valueOf() +
-                              1000 * 3600 * 24
+                                1000 * 3600 * 24
                             )
                           }
                           maxDate={
@@ -247,7 +257,7 @@ export const EditModal = ({
                       defaultValue={
                         new Date(
                           new Date(record?.currentPeriodEnd).valueOf() +
-                          1000 * 3600 * 24
+                            1000 * 3600 * 24
                         )
                       }
                     />

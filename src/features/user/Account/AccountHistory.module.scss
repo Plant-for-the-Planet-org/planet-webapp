@@ -383,11 +383,11 @@
   flex-direction: column;
   // align-items: flex-start;
   color: $primaryFontColor;
-  > .modalTexts {
+  .modalTexts {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    > h4 {
+    h4 {
       font-size: $fontLarge;
       font-weight: bold;
       color: $primaryColor;
@@ -407,7 +407,7 @@
 .radioButtonGrid {
   align-items: 'flex-start';
   grid-gap: 10px;
-  padding: 20px 10px;
+  padding: 20px 0px;
   color: $primaryFontColor;
 }
 .pagination {
@@ -645,16 +645,16 @@
     transform: rotate(360deg);
   }
 }
-.headerCloseIcon,
-.headerBackIcon {
-  height: 32px;
-  width: 32px;
+.headerCloseIcon {
+  // height: 32px;
+  // width: 32px;
   min-width: 32px;
   display: flex;
-  justify-content: center;
+  color: $primaryFontColor;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
 }
-.headerCloseIcon:hover,
-.headerBackIcon:hover {
+.headerCloseIcon:hover {
   cursor: pointer;
 }

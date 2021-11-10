@@ -78,17 +78,27 @@ export const PauseModal = ({
     >
       <Fade in={pauseModalOpen}>
         <div className={styles.manageDonationModal}>
-          <button
-            onClick={handlePauseModalClose}
-            onKeyPress={handlePauseModalClose}
-            role="button"
-            tabIndex={0}
-            className={styles.headerCloseIcon}
-          >
-            <Close color={styles.light} />
-          </button>
+          <div style={{ marginBottom: '10px' }} />
           <div className={styles.modalTexts}>
-            <h4>{t('me:pauseDonationConfirmation')}</h4>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <h4>{t('me:pauseDonationConfirmation')}</h4>
+              <button
+                onClick={handlePauseModalClose}
+                onKeyPress={handlePauseModalClose}
+                role="button"
+                tabIndex={0}
+                className={styles.headerCloseIcon}
+              >
+                <Close color={'#4d5153'} />
+              </button>
+            </div>
             <div className={styles.note}>
               <p>{t('me:pauseDonationDescription')}</p>
             </div>
@@ -131,11 +141,11 @@ export const PauseModal = ({
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
-                // locale={
-                //   localeMapForDate[userLang]
-                //     ? localeMapForDate[userLang]
-                //     : localeMapForDate['en']
-                // }
+                  // locale={
+                  //   localeMapForDate[userLang]
+                  //     ? localeMapForDate[userLang]
+                  //     : localeMapForDate['en']
+                  // }
                 >
                   <Calendar
                     date={date}

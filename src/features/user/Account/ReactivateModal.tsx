@@ -57,17 +57,26 @@ export const ReactivateModal = ({
     >
       <Fade in={reactivateModalOpen}>
         <div className={styles.manageDonationModal}>
-        <button
-            onClick={handleReactivateModalClose}
-            onKeyPress={handleReactivateModalClose}
-            role="button"
-            tabIndex={0}
-            className={styles.headerCloseIcon}
-          >
-            <Close color={styles.light} />
-          </button>
           <div className={styles.modalTexts}>
-            <h4>{t('me:reactivateDonationConfirmation')}</h4>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <h4>{t('me:reactivateDonationConfirmation')}</h4>
+              <button
+                onClick={handleReactivateModalClose}
+                onKeyPress={handleReactivateModalClose}
+                role="button"
+                tabIndex={0}
+                className={styles.headerCloseIcon}
+              >
+                <Close color={'#4d5153'} />
+              </button>
+            </div>
             <div className={styles.note}>
               <p>{t('me:reactivateDonationDescription')}</p>
             </div>
@@ -76,7 +85,7 @@ export const ReactivateModal = ({
             <button
               onClick={() => reactivateDonation()}
               className={styles.submitButton}
-              style={{ minWidth: '20px', marginTop: '30px'}}
+              style={{ minWidth: '20px', marginTop: '30px' }}
             >
               {t('save')}
             </button>

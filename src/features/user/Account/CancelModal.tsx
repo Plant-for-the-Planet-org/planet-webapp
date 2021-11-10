@@ -36,8 +36,8 @@ export const CancelModal = ({
         option == 'cancelImmediately'
           ? 'immediate'
           : option == 'cancelOnPeriodEnd'
-            ? 'period-end'
-            : 'custom-date', // immediate|period-end|custom-date
+          ? 'period-end'
+          : 'custom-date', // immediate|period-end|custom-date
       cancellationDate:
         option == 'cancelOnSelectedDate'
           ? date.toISOString().split('T')[0]
@@ -71,17 +71,26 @@ export const CancelModal = ({
     >
       <Fade in={cancelModalOpen}>
         <div className={styles.manageDonationModal}>
-          <button
-            onClick={handleCancelModalClose}
-            onKeyPress={handleCancelModalClose}
-            role="button"
-            tabIndex={0}
-            className={styles.headerCloseIcon}
-          >
-            <Close color={styles.light} />
-          </button>
           <div className={styles.modalTexts}>
-            <h4>{t('me:cancelDonationConfirmation')}</h4>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <h4>{t('me:cancelDonationConfirmation')}</h4>
+              <button
+                onClick={handleCancelModalClose}
+                onKeyPress={handleCancelModalClose}
+                role="button"
+                tabIndex={0}
+                className={styles.headerCloseIcon}
+              >
+                <Close color={'#4d5153'} />
+              </button>
+            </div>
             <div className={styles.note}>
               <p>{t('me:cancelDonationDescription')}</p>
             </div>
@@ -124,11 +133,11 @@ export const CancelModal = ({
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
-                // locale={
-                //   localeMapForDate[userLang]
-                //     ? localeMapForDate[userLang]
-                //     : localeMapForDate['en']
-                // }
+                  // locale={
+                  //   localeMapForDate[userLang]
+                  //     ? localeMapForDate[userLang]
+                  //     : localeMapForDate['en']
+                  // }
                 >
                   <Calendar
                     date={date}
