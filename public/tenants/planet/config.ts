@@ -34,7 +34,7 @@ const config = {
       },
       about: {
         title: 'aboutUs',
-        onclick: '',
+        onclick: 'https://a.plant-for-the-planet.org/',
         visible: true,
         subMenu: [
           {
