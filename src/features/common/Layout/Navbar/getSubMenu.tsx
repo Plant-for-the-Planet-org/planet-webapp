@@ -69,13 +69,13 @@ function GetSubMenu({ title }: Props): ReactElement {
     }
 
     switch (title) {
-        case 'Overview': return <Overview />
-        case 'Children and Youth': return <ChildrenYouth />
-        case 'Trillion Trees': return <TrillionTrees  />
-        case 'Yucatan': return <Yucatan />
-        case 'Partners': return <Partners />
-        case 'Change Chocolate': return <ChangeChocolate />
-        case 'Stop Talking Start Planting': return <StopTalkingStartPlanting />
+        case 'overview': return <Overview />
+        case 'childrenAndYouth': return <ChildrenYouth />
+        case 'trillionTrees': return <TrillionTrees  />
+        case 'yucatan': return <Yucatan />
+        case 'partners': return <Partners />
+        case 'changeChocolate': return <ChangeChocolate />
+        case 'stopTalkingStartPlanting': return <StopTalkingStartPlanting />
     }
 }
 

@@ -144,52 +144,51 @@ export default function NavbarComponent(props: any) {
             }
             return SingleLink.visible ? (
               <div className={`${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`}>
-              <Link key={link} href={SingleLink.onclick} >
-                <div className={`linkContainer`}>
-                  <GetNavBarIcon
-                    UserIcon={UserIcon}
-                    mainKey={link}
-                    router={router}
-                    item={SingleLink}
-                  />
-                  {link === 'donate' ? (
-                    <p
-                      className={
-                        router.pathname === '/' || router.pathname === '/[p]'
-                          ? 'active_icon'
-                          : ''
-                      }
-                    >
-                      {t('common:' + SingleLink.title)}
-                    </p>
-                  ) : (
-                    <p
-                      className={
-                        router.pathname === SingleLink.onclick
-                          ? 'active_icon'
-                          : ''
-                      }
-                    >
-                      {t('common:' + SingleLink.title)}
-                    </p>
-                  )}
-                 
-                </div>
-              </Link>
-              <div className={'subMenuItems'}>
-                    {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
-                      return (
-                        <a key={submenu.title} className={'menuRow'} href={submenu.onclick}>
-                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} >
-                            <GetSubMenu title={submenu.title}/>
-                            <div className={'menuText'}>
-                              {submenu.title}
-                            </div>
-                          </div>
-                        </a>
-                      )
-                    })}
+                <Link key={link} href={SingleLink.onclick} >
+                  <div className={`linkContainer`}>
+                    <GetNavBarIcon
+                      UserIcon={UserIcon}
+                      mainKey={link}
+                      router={router}
+                      item={SingleLink}
+                    />
+                    {link === 'donate' ? (
+                      <p
+                        className={
+                          router.pathname === '/' || router.pathname === '/[p]'
+                            ? 'active_icon'
+                            : ''
+                        }
+                      >
+                        {t('common:' + SingleLink.title)}
+                      </p>
+                    ) : (
+                      <p
+                        className={
+                          router.pathname === SingleLink.onclick
+                            ? 'active_icon'
+                            : ''
+                        }
+                      >
+                        {t('common:' + SingleLink.title)}
+                      </p>
+                    )}
                   </div>
+                </Link>
+                <div className={'subMenuItems'}>
+                  {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
+                    return (
+                      <a key={submenu.title} className={'menuRow'} href={submenu.onclick}>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} >
+                          <GetSubMenu title={submenu.title} />
+                          <div className={'menuText'}>
+                            {t('common:' + submenu.title)}
+                          </div>
+                        </div>
+                      </a>
+                    )
+                  })}
+                </div>
               </div>
             ) : (
               <div key={link}></div>

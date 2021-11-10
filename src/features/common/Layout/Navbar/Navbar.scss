@@ -89,7 +89,7 @@
     > .link_icon.active_icon > svg > path {
       fill: $primaryColor;
     }
-    :hover {
+    &:hover {
       cursor: pointer;
       color: $primaryColor;
       > p {
@@ -105,7 +105,7 @@
 .subMenu {
   position: relative;
   .subMenuItems {
-    top: 70px;
+    top: 78px;
     left: -5px;
     position: absolute;
     height: 330px;
@@ -123,7 +123,7 @@
     .subMenuItems {
       display: block;
       flex-direction: column;
-      border-radius: 20px;
+      border-radius: 8px;
       box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
       color: $primaryColor;
     }
@@ -147,7 +147,7 @@
         color: $primaryColor;
       }
 
-      .link_icon  svg  g  path {
+      .link_icon svg  g  path {
         fill: $primaryColor;
       }
     }
@@ -215,5 +215,9 @@
         margin: 5px;
       }
     }
+  }
+  .subMenuItems{
+    top: -350px !important;
+    left: -120px !important;
   }
 }
