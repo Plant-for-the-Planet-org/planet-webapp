@@ -5,14 +5,14 @@ import Support from '../../../../../public/assets/images/icons/userProfileIcons/
 import styles from '../styles/Profile.module.scss';
 import tenantConfig from '../../../../../tenant.config';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-import i18next from '../../../../../i18n';
 import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 import { truncateString } from '../../../../utils/getTruncatedString';
+import { useTranslation } from 'react-i18next';
 
 const config = tenantConfig();
-const { useTranslation } = i18next;
+
 export default function UserShareAndSupport({ userprofile }: any) {
   const { t, ready } = useTranslation(['donate', 'me']);
   const router = useRouter();

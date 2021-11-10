@@ -1,10 +1,8 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
-import i18next from '../../../../../i18n';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   infoRef: any;

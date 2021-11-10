@@ -10,7 +10,6 @@ import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
-import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
@@ -28,6 +27,8 @@ import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
+import { appWithTranslation, useTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config.js';
 
 const VideoContainer = dynamic(() => import('../src/features/common/LandingVideo'), {
   ssr: false,
@@ -81,12 +82,12 @@ const onRedirectCallback = (appState: any) => {
   if (appState) Router.replace(appState?.returnTo || '/');
 };
 
-export default function PlanetWeb({ Component, pageProps, err }: any) {
+function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
-
+  const { i18n } = useTranslation();
   const config = tenantConfig();
 
   const tagManagerArgs = {
@@ -105,7 +106,9 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     storeConfig();
   }, []);
   React.useEffect(() => {
-    i18next.initPromise.then(() => setInitialized(true));
+    i18n.init().then(() => {
+      setInitialized(true);
+    });
   }, []);
 
   React.useEffect(() => {
@@ -245,3 +248,5 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     );
   }
 }
+
+export default appWithTranslation(PlanetWeb, nextI18NextConfig);

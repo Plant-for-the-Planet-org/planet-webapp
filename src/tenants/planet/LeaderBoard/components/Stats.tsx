@@ -3,14 +3,13 @@ import React, { ReactElement } from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
-import i18next from '../../../../../i18n';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   tenantScore: any;
 }
-const { useTranslation } = i18next;
 export default function Stats({ tenantScore }: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common', 'planet']);

@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './LeaderBoard.module.scss';
-import i18next from '../../../../../i18n';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -16,13 +15,13 @@ import Image from 'next/image'
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   leaderboard: any;
 }
 const config = tenantConfig();
 
-const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;

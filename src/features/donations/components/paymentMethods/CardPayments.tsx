@@ -13,12 +13,10 @@ import { getCardBrand } from '../../../../utils/stripe/stripeHelpers';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/Donations.module.scss';
 // import { payWithCard } from '../components/treeDonation/PaymentFunctions';
-import i18next from '../../../../../i18n';
 import theme from '../../../../theme/theme';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from "../../../../theme/themeContext";
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 const FormControlNew = withStyles({
   root: {

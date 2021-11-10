@@ -5,7 +5,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ThemeProvider } from '@material-ui/styles';
 import { useForm } from 'react-hook-form';
-import i18next from './../../../../../i18n';
 import { useDropzone } from 'react-dropzone';
 import {
   deleteAuthenticatedRequest,
@@ -19,8 +18,7 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import materialTheme from '../../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   projectGUID: String;

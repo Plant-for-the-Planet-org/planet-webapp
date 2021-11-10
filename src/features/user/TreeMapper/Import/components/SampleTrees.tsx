@@ -5,12 +5,10 @@ import {
   postAuthenticatedRequest,
 } from '../../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
-import i18next from '../../../../../../i18n';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   handleNext: Function;

@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
 import MapGL, { FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -11,6 +10,7 @@ import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext'
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   locations: any;
@@ -24,7 +24,6 @@ export default function MyTreesMap({
   setselectedLocation,
 }: Props): ReactElement {
   const router = useRouter();
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
 
   const { isMobile } = React.useContext(ProjectPropsContext);

@@ -8,7 +8,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from '../../../../i18n';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { makeStyles, MenuItem } from '@material-ui/core';
@@ -19,8 +18,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from "geocoder-arcgis";
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 export default function CompleteSignup() {
   const router = useRouter();

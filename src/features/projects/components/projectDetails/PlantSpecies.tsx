@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react'
 import styles from './../../styles/ProjectDetails.module.scss'
-import i18next from '../../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     species:Array<{

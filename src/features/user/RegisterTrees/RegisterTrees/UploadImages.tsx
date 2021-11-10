@@ -7,16 +7,14 @@ import {
 } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
-import i18next from '../../../../../i18n';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   contribution: any;
   contributionGUID: any;
   token: any;
 }
-
-const { useTranslation } = i18next;
 
 export default function UploadImages({
   contributionGUID,

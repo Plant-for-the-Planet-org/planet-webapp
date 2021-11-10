@@ -6,10 +6,8 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import Head from 'next/head';
-import i18next from '../../i18n';
 import { TENANT_ID } from '../../src/utils/constants/environment';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');

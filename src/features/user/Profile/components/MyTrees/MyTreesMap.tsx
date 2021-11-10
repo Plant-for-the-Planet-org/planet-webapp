@@ -11,12 +11,12 @@ import {
   getFormattedNumber,
   getFormattedRoundedNumber,
 } from '../../../../../utils/getFormattedNumber';
-import i18next from '../../../../../../i18n';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import themeProperties from '../../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../../theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const Map = ReactMapboxGl({
   customAttribution:
@@ -33,7 +33,6 @@ export default function MyTreesMap({
   contributions,
   authenticatedType,
 }: Props): ReactElement {
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;

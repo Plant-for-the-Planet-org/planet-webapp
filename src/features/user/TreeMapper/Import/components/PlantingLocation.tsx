@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import styles from '../Import.module.scss';
-import i18next from '../../../../../../i18n';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ThemeProvider } from '@material-ui/styles';
@@ -21,8 +20,7 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   handleNext: () => void;

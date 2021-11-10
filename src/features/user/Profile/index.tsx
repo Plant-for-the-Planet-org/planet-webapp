@@ -5,13 +5,12 @@ import AddTargetModal from './components/AddTargetModal';
 import LandingSection from '../../common/Layout/LandingSection';
 import MyTrees from './components/MyTrees/MyTrees';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import i18next from '../../../../i18n';
 import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
 import UserProfileOptions from './components/UserProfileOptions';
 import TreeCounter from './../../common/TreeCounter/TreeCounter';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 interface Props {
   userprofile: any;
   authenticatedType: string;

@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
-import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import { Step, StepLabel, Stepper } from '@material-ui/core';
@@ -10,8 +9,7 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   root: {

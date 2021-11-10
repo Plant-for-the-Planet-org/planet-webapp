@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
-import i18next from '../../../../../../i18n';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -10,8 +9,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { InputAdornment, MenuItem } from '@material-ui/core';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   index: number;

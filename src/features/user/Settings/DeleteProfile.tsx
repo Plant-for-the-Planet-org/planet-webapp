@@ -1,14 +1,12 @@
 import React from 'react';
 import styles from './DeleteProfile.module.scss';
-import i18next from '../../../../i18n';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteProfile({ }: any) {
   const { user, token, logoutUser } = React.useContext(UserPropsContext);

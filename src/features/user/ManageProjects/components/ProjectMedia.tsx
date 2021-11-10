@@ -3,15 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   handleNext: Function;
@@ -34,7 +32,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   const [errorMessage, setErrorMessage] = React.useState('')
 
   React.useEffect(() => {
-    // Fetch images of the project 
+    // Fetch images of the project
     if (projectGUID && token)
       getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, token, {},
         handleError,

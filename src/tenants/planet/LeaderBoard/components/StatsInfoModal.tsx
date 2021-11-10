@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react';
 import styles from './Stats.module.scss';
-import i18next from '../../../../../i18n';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import { ThemeContext } from '../../../../theme/themeContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   infoExpanded: any;

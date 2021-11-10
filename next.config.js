@@ -1,3 +1,5 @@
+const { i18n } = require('./next-i18next.config');
+
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -46,6 +48,7 @@ const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withPlugins([[withBundleAnalyzer]], {
+  i18n,
   productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     rootDir: __dirname,

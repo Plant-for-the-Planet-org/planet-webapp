@@ -4,11 +4,9 @@ import { IbanElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React, { ReactElement } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/Donations.module.scss';
-import i18next from '../../../../../i18n';
 import SepaIcon from '../../../../../public/assets/images/icons/donation/SepaIcon';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 const SEPA_OPTIONS = {
   supportedCountries: ['SEPA'],

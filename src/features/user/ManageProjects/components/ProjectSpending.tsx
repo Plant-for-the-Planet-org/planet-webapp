@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import styles from './../StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from './../../../../../i18n'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -18,8 +17,7 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import materialTheme from '../../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     handleNext: Function;
@@ -129,7 +127,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
 
     React.useEffect(() => {
-        // Fetch spending of the project 
+        // Fetch spending of the project
         if (projectGUID && token)
             getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token, {},
                 handleError,

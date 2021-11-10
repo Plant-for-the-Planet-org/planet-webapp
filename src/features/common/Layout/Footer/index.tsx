@@ -6,13 +6,11 @@ import World from '../../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
-import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 import DarkModeSwitch from '../DarkModeSwitch.tsx';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 // let styles = require('./Footer.module.css');
 export default function Footer() {

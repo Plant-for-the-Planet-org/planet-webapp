@@ -2,10 +2,8 @@ import React, { ReactElement } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
-import i18next from '../../../../../i18n';
 import themeProperties from '../../../../theme/themeProperties';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   handleRecordOpen: Function;

@@ -1,16 +1,15 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
+import { useTranslation } from 'react-i18next';
 
 interface Props {}
 
 export default function ProjectTabs({}: Props): ReactElement {
-  const { useTranslation } = i18next;
-  const { i18n, t } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps']);
   const { selectedMode, setSelectedMode, rasterData } = React.useContext(
     ProjectPropsContext
   );

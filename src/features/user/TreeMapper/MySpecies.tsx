@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import i18next from '../../../../i18n';
 import TrashIcon from '../../../../public/assets/images/icons/manageProjects/Trash';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import MaterialButton from '../../common/InputTypes/MaterialButton';
@@ -9,8 +8,7 @@ import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
 

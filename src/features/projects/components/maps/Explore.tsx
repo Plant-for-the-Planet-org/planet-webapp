@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
-import i18next from '../../../../../i18n';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
@@ -24,6 +23,7 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import { useTranslation } from 'react-i18next';
 
 interface Props {}
 
@@ -58,8 +58,6 @@ export default function Explore({}: Props): ReactElement {
     isMobile,
     exploreProjects,
   } = React.useContext(ProjectPropsContext);
-
-  const { useTranslation } = i18next;
   const { t } = useTranslation(['maps']);
   const router = useRouter();
 

@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n/'
 import BlackTree from '../../../../../public/assets/images/icons/project/BlackTree';
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
+
 interface Props {
   project: Object;
 }

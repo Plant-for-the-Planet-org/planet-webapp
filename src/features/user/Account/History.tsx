@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../i18n';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
@@ -13,8 +12,7 @@ import AccountRecord, {
 } from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   filter: string | null;

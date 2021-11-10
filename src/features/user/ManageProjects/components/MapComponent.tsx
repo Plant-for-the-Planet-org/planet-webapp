@@ -7,12 +7,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
-import i18next from './../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;

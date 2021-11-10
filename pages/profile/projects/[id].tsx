@@ -8,10 +8,8 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import i18next from '../../../i18n';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props { }
 

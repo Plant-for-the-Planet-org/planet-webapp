@@ -1,7 +1,6 @@
 import { Modal, Snackbar } from '@material-ui/core';
 import React, { ReactElement } from 'react';
 import styles from './EmbedModal.module.scss';
-import i18next from '../../../../i18n';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -9,13 +8,12 @@ import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
 }
-
-const { useTranslation } = i18next;
 
 export default function EmbedModal({
   embedModalOpen,

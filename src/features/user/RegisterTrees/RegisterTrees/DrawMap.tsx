@@ -3,8 +3,8 @@ import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
-import i18next from '../../../../../i18n';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   setGeometry: Function;
@@ -16,7 +16,6 @@ const Map = ReactMapboxGl({
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
 });
 
-const { useTranslation } = i18next;
 export default function MapComponent({
   setGeometry,
   userLocation,

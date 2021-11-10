@@ -1,13 +1,10 @@
 import React, { ReactElement } from 'react'
-import i18next from '../../../../../i18n';
 import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
 import styles from './UnderMaintenance.module.scss';
-
-const { useTranslation } = i18next;
-
+import { useTranslation } from 'react-i18next';
 
 interface Props {
-    
+
 }
 
 export default function UnderMaintenance({}: Props): ReactElement {

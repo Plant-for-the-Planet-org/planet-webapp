@@ -7,7 +7,6 @@ import { ThankYouProps } from '../../common/types/donations';
 import styles from '../styles/Donations.module.scss';
 import ShareOptions from '../components/ShareOptions';
 import { getPaymentType } from '../components/PaymentFunctions';
-import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { getRequest } from '../../../utils/apiRequests/api';
@@ -17,8 +16,7 @@ import PaymentPendingIllustration from '../../../../public/assets/images/icons/d
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 function ThankYou({
   donationID,

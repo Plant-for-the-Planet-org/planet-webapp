@@ -3,10 +3,8 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../StepForm.module.scss'
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
-import i18next from './../../../../../i18n'
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     handleBack: Function;
@@ -179,4 +177,3 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
 }
 
 export default SubmitForReview
-

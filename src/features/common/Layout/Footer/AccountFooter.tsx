@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import styles from './AccountFooter.module.scss';
+import { useTranslation } from 'react-i18next';
 
 interface Props {}
-
-const { useTranslation } = i18next;
 
 export default function AccountFooter({}: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['common']);

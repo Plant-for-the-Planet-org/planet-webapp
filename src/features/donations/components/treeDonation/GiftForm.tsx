@@ -2,9 +2,8 @@ import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import styles from './../../styles/Donations.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 interface Props {
   setGiftDetails: Function;
   isGift: Boolean;
@@ -32,7 +31,7 @@ export default function GiftForm({
     const recipientName = getValues("recipientName");
     const email = getValues("email");
 
-    
+
     setGiftDetails({ ...giftDetails, [e.target.name]: e.target.value });
   };
 
@@ -46,7 +45,7 @@ export default function GiftForm({
 
   React.useEffect(() => {
     const recipientName = getValues("recipientName");
-    const email = getValues("email"); 
+    const email = getValues("email");
     if (errors.recipientName || errors.email || !recipientName || !email) {
       setGiftValidated(false)
     }

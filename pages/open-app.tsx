@@ -1,7 +1,5 @@
 import Footer from '../src/features/common/Layout/Footer';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 export default function OpenApp() {
 

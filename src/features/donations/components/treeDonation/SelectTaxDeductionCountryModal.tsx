@@ -8,10 +8,8 @@ import React, { useState } from 'react';
 import { getCountryDataBy } from '../../../../utils/countryCurrency/countryUtils';
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
-import i18next from '../../../../../i18n';
 import styles from './../../styles/SelectCurrencyModal.module.scss';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 export default function TransitionsModal(props: any) {
   const {
@@ -107,7 +105,7 @@ export default function TransitionsModal(props: any) {
 // Maps the radio buttons for currency
 function MapCountry(props: any) {
   const { t, ready } = useTranslation(['country']);
-  
+
   const { countriesData, value, handleChange } = props;
   return ready ? (
     <FormControl component="fieldset">

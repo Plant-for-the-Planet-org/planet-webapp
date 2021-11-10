@@ -15,10 +15,8 @@ import {
 } from '../../../utils/apiRequests/api';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);

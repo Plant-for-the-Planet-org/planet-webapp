@@ -13,7 +13,6 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from 'react-map-gl';
-import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
 import {
   getAuthenticatedRequest,
@@ -28,6 +27,7 @@ import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import materialTheme from '../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'react-i18next';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -43,7 +43,6 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
 
 interface Props { }
 
-const { useTranslation } = i18next;
 export default function RegisterTrees({ }: Props) {
   const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);

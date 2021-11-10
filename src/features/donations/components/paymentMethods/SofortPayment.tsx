@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react'
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from '../../styles/Donations.module.scss';
-import i18next from '../../../../../i18n';
 import SofortIcon from '../../../../../public/assets/images/icons/donation/SofortIcon';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     onSubmitPayment:Function;

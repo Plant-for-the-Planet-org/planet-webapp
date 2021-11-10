@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import i18next from '../../../../../i18n';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
 import tenantConfig from '../../../../../tenant.config';
@@ -12,6 +11,8 @@ import { UserPropsContext } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages'
+import { useTranslation } from 'react-i18next';
+
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
   const [width, setWidth] = React.useState(0); // default width, detect on server.
@@ -23,8 +24,8 @@ const useWidth = () => {
   }, [handleResize]);
   return width;
 };
-const { useTranslation } = i18next;
 const config = tenantConfig();
+
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();

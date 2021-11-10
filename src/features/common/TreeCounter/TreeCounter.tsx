@@ -4,13 +4,12 @@ import CircularProgress, {
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
-import i18next from '../../../../i18n';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber'
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 const useStylesFacebook = makeStyles(() =>
   createStyles({

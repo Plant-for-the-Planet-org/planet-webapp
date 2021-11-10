@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../TreeMapper.module.scss';
-import i18next from '../../../../../i18n';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import {
@@ -15,8 +14,7 @@ import EditIcon from '../../../../../public/assets/images/icons/manageProjects/P
 import router, { useRouter } from 'next/router';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   setselectedLocation: Function;

@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './Stories.module.scss';
-import i18next from '../../../../../i18n';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props { }
 

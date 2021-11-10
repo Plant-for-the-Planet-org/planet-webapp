@@ -10,9 +10,9 @@ import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../next-i18next.config.js';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   initialized: Boolean;
@@ -139,3 +139,13 @@ export default function Donate({
     </>
   );
 }
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(
+      locale,
+      ['common','donate'],
+      nextI18NextConfig
+    )),
+  },
+});

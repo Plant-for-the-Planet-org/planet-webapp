@@ -4,12 +4,11 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
-import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
 import themeProperties from '../../../theme/themeProperties';
+import { useTranslation } from 'react-i18next';
 
 const config = tenantConfig();
-const { useTranslation } = i18next;
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11

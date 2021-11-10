@@ -1,14 +1,12 @@
 import Footer from '../../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import React from 'react';
-import i18next from './../../i18n'
 import LegacyDonations from '../../src/features/donations/legacyDonation';
 import styles from './../../src/features/donations/styles/Donations.module.scss'
 import { getRequest } from '../../src/utils/apiRequests/api';
 interface Props {
     initialized: Boolean;
-}
-const { useTranslation } = i18next;
+}import { useTranslation } from 'react-i18next';
 
 
 function PaymentPage({ initialized }: Props) {

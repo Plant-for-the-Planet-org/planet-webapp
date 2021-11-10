@@ -1,14 +1,13 @@
 import React, { ReactElement, Ref } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 interface Props {
   project: any;
   open: boolean;

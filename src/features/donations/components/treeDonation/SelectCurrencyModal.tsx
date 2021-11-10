@@ -14,10 +14,9 @@ import {
 import { getStoredConfig } from '../../../../utils/storeConfig';
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../../common/InputTypes/GreenRadio';
-import i18next from '../../../../../i18n';
 import styles from './../../styles/SelectCurrencyModal.module.scss';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 export default function TransitionsModal(props: any) {
   const {
     openModal,
@@ -127,7 +126,7 @@ const FormControlNew = withStyles({
 // Maps the radio buttons for currency
 function MapCurrency(props: any) {
   const { t, i18n, ready } = useTranslation(['country']);
-  
+
   const { priorityCountries, value, handleChange } = props;
   const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language, priorityCountries) : {};
   return ready ? (

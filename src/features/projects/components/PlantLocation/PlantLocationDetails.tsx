@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
 import styles from '../../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
@@ -7,6 +6,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import { useTranslation } from 'react-i18next';
 
 const ImageSlider = dynamic(
   () => import('../../components/PlantLocation/ImageSlider'),
@@ -23,8 +23,6 @@ const ImageSliderSingle = dynamic(
     loading: () => <p>Images</p>,
   }
 );
-
-const { useTranslation } = i18next;
 
 interface Props {
   plantLocation: Object;

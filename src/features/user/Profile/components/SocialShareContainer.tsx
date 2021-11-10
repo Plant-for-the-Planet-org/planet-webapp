@@ -6,11 +6,9 @@ import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebo
 import InstagramIcon from '../../../../../public/assets/images/icons/share/Instagram';
 import LinkedIn from '../../../../../public/assets/images/icons/share/Linkedin';
 import tenantConfig from '../../../../../tenant.config';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 const config = tenantConfig();
-
-const { useTranslation } = i18next;
 
 export default function SocialShareContainer({userprofile, type}:any) {
   const { t, ready } = useTranslation(['donate', 'me']);
@@ -29,7 +27,7 @@ export default function SocialShareContainer({userprofile, type}:any) {
     // <motion.div
     // initial={false}
     // animate={}
-    <div className={styles.shareBtnContainer} 
+    <div className={styles.shareBtnContainer}
     style={{display: type === 'private' ? 'flex' : null, justifyContent: type === 'private' ? 'space-evenly' : null}}>
       <div
         className={styles.shareIcon}

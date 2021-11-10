@@ -17,12 +17,10 @@ import {
   createDonationFunction,
   payDonationFunction,
 } from '../components/PaymentFunctions';
-import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { getMinimumAmountForCurrency } from '../../../utils/countryCurrency/getExchange';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 function TreeDonation({
   project,

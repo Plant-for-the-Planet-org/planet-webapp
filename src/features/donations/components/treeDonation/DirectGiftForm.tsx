@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/Donations.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 interface Props {
   setGiftDetails: Function;
   isGift: Boolean;

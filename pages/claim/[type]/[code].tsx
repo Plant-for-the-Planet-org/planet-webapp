@@ -6,14 +6,12 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import ShareOptions from '../../../src/features/donations/components/ShareOptions';
 import Close from '../../../public/assets/images/icons/headerIcons/close';
-import i18next from './../../../i18n';
 import tenantConfig from './../../../tenant.config';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props { }
 

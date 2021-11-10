@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import i18next from '../../../../../i18n/'
+import { useTranslation } from 'react-i18next'
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { TextField } from '@material-ui/core';
@@ -11,7 +11,6 @@ interface Props {
     searchRef: any
 }
 
-const { useTranslation } = i18next;
 function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Props): ReactElement {
     const { t, ready } = useTranslation(['donate']);
     return ready ? (

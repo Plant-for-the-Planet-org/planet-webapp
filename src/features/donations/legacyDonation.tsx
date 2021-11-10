@@ -7,7 +7,6 @@ import ButtonLoader from '../common/ContentLoaders/ButtonLoader';
 import { NativePay } from './components/paymentMethods/PaymentRequestCustomButton';
 import { formatAmountForStripe } from '../../utils/stripe/stripeHelpers';
 import { getRequest } from '../../utils/apiRequests/api';
-import i18next from '../../../i18n';
 import getFormatedCurrency from '../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../utils/getFormattedNumber';
 import { payDonationFunction } from './components/PaymentFunctions';
@@ -17,7 +16,7 @@ import { useRouter } from 'next/router';
 import Paypal from './components/paymentMethods/Paypal';
 import { paypalCurrencies } from '../../utils/paypalCurrencies';
 import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   paymentData: any;

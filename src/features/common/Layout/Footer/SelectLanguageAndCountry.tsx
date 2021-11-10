@@ -15,15 +15,14 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 import styles from './SelectLanguageAndCountry.module.scss';
-import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
+import { useTranslation } from 'react-i18next';
 
 const config = tenantConfig();
-const { useTranslation } = i18next;
 
 // reduce the allowed languages to the languages listed in the tenants config file
 const selectableLanguages = supportedLanguages.filter(lang => config.languages.includes(lang.langCode));
-        
+
 interface TransitionsModalProps {
   openModal: boolean,
   handleModalClose: Function,

@@ -7,7 +7,6 @@ import {
   createDonationFunction,
   payDonationFunction,
 } from '../components/PaymentFunctions';
-import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { paypalCurrencies } from '../../../utils/paypalCurrencies';
@@ -25,10 +24,9 @@ import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
 import Link from 'next/link';
 import { putRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'react-i18next';
 
 const config = tenantConfig();
-
-const { useTranslation } = i18next;
 
 function PaymentDetails({
   paymentSetup,

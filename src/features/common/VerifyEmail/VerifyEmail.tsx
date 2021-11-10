@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
 import styles from './VerifyEmail.module.scss';
-import i18next from './../../../../i18n';
 import VerifyEmailIcon from '../../../../public/assets/images/icons/VerifyEmail';
 import { UserPropsContext } from '../Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 interface Props {}
 
@@ -15,13 +14,13 @@ function VerifyEmailComponent({}: Props): ReactElement {
   const { loginWithRedirect } = React.useContext(UserPropsContext);
   const { theme } = React.useContext(ThemeContext);
   return ready ? (
-    <div className={styles.verifyEmailSection} 
+    <div className={styles.verifyEmailSection}
     style={{
-      backgroundColor: theme === 'theme-light' ? 
-                       themeProperties.light.light : 
+      backgroundColor: theme === 'theme-light' ?
+                       themeProperties.light.light :
                        themeProperties.dark.backgroundColor,
-      color: theme === 'theme-light' ? 
-      themeProperties.light.primaryFontColor : 
+      color: theme === 'theme-light' ?
+      themeProperties.light.primaryFontColor :
       themeProperties.dark.primaryFontColor,}}
       >
       <VerifyEmailIcon />

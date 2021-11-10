@@ -5,11 +5,9 @@ import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 const config = tenantConfig();
-
-const { useTranslation } = i18next;
 
 interface Props {
   leaderboard: any;

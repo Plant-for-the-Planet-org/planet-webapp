@@ -5,11 +5,9 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import styles from './../../styles/Donations.module.scss';
-import i18next from '../../../../../i18n';
 import getStripe from '../../../../utils/stripe/getStripe';
 import { Elements } from '@stripe/react-stripe-js';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'react-i18next';
 
 export const useOptions = (paymentRequest: null) => {
   const typeOfButton = 'donate';
@@ -110,7 +108,7 @@ export const PaymentRequestCustomButton = ({
       stripe &&
       !paymentRequest &&
       stripeAllowedCountries.includes(country)
-    ) {      
+    ) {
       const pr = stripe.paymentRequest({
         country: country,
         currency: currency.toLowerCase(),
@@ -156,7 +154,7 @@ export const PaymentRequestCustomButton = ({
       paymentRequest.on(
         'paymentmethod',
         ({ complete, paymentMethod, ...data }: any) => {
-          
+
           onPaymentFunction(paymentMethod, paymentRequest);
           complete('success');
           setPaymentLoading(false)
@@ -248,7 +246,7 @@ export const NativePay = ({
   continueNext,
   paymentSetup
  }: NativePayProps) => {
-  
+
   const [stripePromise,setStripePromise] = useState(()=>getStripe(paymentSetup))
 
   useEffect(()=>{

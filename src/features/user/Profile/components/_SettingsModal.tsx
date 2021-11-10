@@ -5,7 +5,6 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useRouter } from 'next/router';
 import Fade from '@material-ui/core/Fade';
 import EditProfileModal from '../components/EditProfileModal';
-import i18next from '../../../../../i18n';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -14,8 +13,8 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'react-i18next';
 
-const { useTranslation } = i18next;
 export default function SettingsModal({
   settingsModalOpen,
   handleSettingsModalClose,
