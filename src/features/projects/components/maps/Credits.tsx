@@ -19,7 +19,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
     const [selectedCountry, setSelectedCountry] = React.useState('DE');
     const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
-    const [userLang, setUserLang] = React.useState('en');
 
     const handleLanguageModalClose = () => {
         setLanguageModalOpen(false);
@@ -27,16 +26,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     const handleLanguageModalOpen = () => {
         setLanguageModalOpen(true);
     };
-
-    React.useEffect(() => {
-        if (typeof window !== 'undefined') {
-            if (localStorage.getItem('language')) {
-                const userLang = localStorage.getItem('language');
-                if (userLang) setUserLang(userLang);
-            }
-        }
-    }, []);
-
 
     return (
         <>
@@ -50,7 +39,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {`🌐 ${language ? language.toUpperCase() : ''
                         } • ${selectedCurrency}`}
                 </div>
-                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a 
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a
                     rel="noopener noreferrer"
                     href={`https://www.thegoodshop.org/de/shop/`}
                     target={'_blank'}
@@ -73,17 +62,24 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 </a>
                 <a
                     rel="noopener noreferrer"
-                    href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
+                    href={`https://pp.eco/legal/${i18n.language}/imprint`}
                     target={'_blank'}
                 >
                     {t('common:imprint')}
                 </a>
                 <a
                     rel="noopener noreferrer"
-                    href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`}
+                    href={`https://pp.eco/legal/${i18n.language}/privacy`}
                     target={'_blank'}
                 >
-                    {t('common:privacyAndTerms')}
+                    {t('common:privacy')}
+                </a>
+                <a
+                    rel="noopener noreferrer"
+                    href={`https://pp.eco/legal/${i18n.language}/terms`}
+                    target={'_blank'}
+                >
+                    {t('common:terms')}
                 </a>
 
                 <a
@@ -135,4 +131,3 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         </>
     )
 }
-
