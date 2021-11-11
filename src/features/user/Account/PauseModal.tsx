@@ -128,13 +128,13 @@ export const PauseModal = ({
                 key={2}
                 value={'pauseUntilResume'}
                 control={<GreenRadio />}
-                label={'Pause Until I resume'}
+                label={t('me:pauseUntilResume')}
               />
               <FormControlLabel
                 key={3}
                 value={'pauseUntilDate'}
                 control={<GreenRadio />}
-                label={'Select Date'}
+                label={t('me:pauseUntilDate')}
               />
             </RadioGroup>
             {showCalender ? (

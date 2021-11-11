@@ -79,6 +79,8 @@
   "editDonationDescription": "You can edit the following options",
   "pauseDonationConfirmation": "Pause Donation",
   "pauseDonationDescription": "You can start it again after pausing by restarting",
+  "pauseUntilResume": "Pause until I resume",
+  "pauseUntilDate": "Pause until selected Date",
   "reactivateDonationConfirmation": "Reactivate Donation",
   "reactivateDonationDescription": "Your donation will be reactivated.",
   "cancelDonationConfirmation": "Cancel Donation",
