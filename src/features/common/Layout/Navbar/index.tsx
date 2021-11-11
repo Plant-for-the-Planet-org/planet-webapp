@@ -22,7 +22,16 @@ export default function NavbarComponent(props: any) {
     de: 'de',
     es: 'es-es',
   };
-
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    if(typeof window !== 'undefined') {
+      if(window.innerWidth > 767) {
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+    }
+  }
+  });
   const {
     user,
     setUser,
@@ -132,19 +141,25 @@ export default function NavbarComponent(props: any) {
               );
             }
             if (link === 'about' && SingleLink.visible) {
+              let aboutOnclick = `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
+              process.env.TENANT === 'ttc') &&
+              lang_path[i18n.language]
+              ? lang_path[i18n.language]
+              : ''
+              }`
+
+              aboutOnclick = isMobile ? '' : aboutOnclick
               SingleLink = {
                 ...SingleLink,
-                onclick: `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
-                  process.env.TENANT === 'ttc') &&
-                  lang_path[i18n.language]
-                  ? lang_path[i18n.language]
-                  : ''
-                  }`,
+                onclick: aboutOnclick,
               };
+              if(SingleLink.subMenu && SingleLink.subMenu.length > 0){
+                SingleLink.subMenu[0].onclick = aboutOnclick
+              }
             }
             return SingleLink.visible ? (
               <div className={`${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`}>
-                <Link key={link} href={SingleLink.onclick} >
+                <Link key={link} href={SingleLink.onclick}>
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
                       UserIcon={UserIcon}
