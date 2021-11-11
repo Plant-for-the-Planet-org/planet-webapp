@@ -176,5 +176,6 @@
   "settings": "Settings",
   "editProfile": "Edit Profile",
   "deleteProfile": "Delete Profile",
-  "widgets": "Widgets"
+  "widgets": "Widgets",
+  "pauseNote":"Note: You can select a date that is beyond the current period end."
 }

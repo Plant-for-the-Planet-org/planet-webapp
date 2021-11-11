@@ -18,6 +18,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import { Controller } from '../../../../node_modules/react-hook-form/dist';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { Typography } from '@material-ui/core';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -138,6 +139,7 @@ export const PauseModal = ({
               />
             </RadioGroup>
             {showCalender ? (
+              <>
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
@@ -158,6 +160,8 @@ export const PauseModal = ({
                   />
                 </MuiPickersUtilsProvider>
               </ThemeProvider>
+              <p className={styles.pauseNote}>{t('pauseNote')}</p>
+              </>
             ) : (
               []
             )}

@@ -130,6 +130,7 @@ export const CancelModal = ({
               />
             </RadioGroup>
             {showCalender ? (
+              <>
               <ThemeProvider theme={materialTheme}>
                 <MuiPickersUtilsProvider
                   utils={DateFnsUtils}
@@ -150,6 +151,8 @@ export const CancelModal = ({
                   />
                 </MuiPickersUtilsProvider>
               </ThemeProvider>
+              <p className={styles.pauseNote}>{t('pauseNote')}</p>
+              </>
             ) : (
               []
             )}
