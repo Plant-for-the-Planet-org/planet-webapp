@@ -3,8 +3,12 @@ import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
+import i18next from '../../i18n';
+
+const {useTranslation} = i18next;
 
 function ProfilePage(): ReactElement {
+  const {t} = useTranslation('me');
   // External imports
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
 
@@ -22,7 +26,7 @@ function ProfilePage(): ReactElement {
   return (
     <UserLayout>
       <Head>
-        <title>{'My Forest'}</title>
+        <title>{t('myForest')}</title>
       </Head>
       {profile && (
         <MyTrees

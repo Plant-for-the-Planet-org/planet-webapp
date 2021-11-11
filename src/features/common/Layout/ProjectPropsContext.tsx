@@ -71,7 +71,11 @@ export const ProjectPropsContext = React.createContext({
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
   siteViewPort: null || {}, 
-  setSiteViewPort:(value: {}) => {}
+  setSiteViewPort:(value: {}) => {},
+  filteredProjects:null || [],
+  setFilteredProjects:(value: []) => {},
+  filtersOpen:false,
+  setFilterOpen:(value:boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -97,6 +101,9 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [openModal, setModalOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [satellite, setSatellite] = React.useState(false);
+  const [filteredProjects, setFilteredProjects] = React.useState(null);
+  const [filtersOpen, setFilterOpen] = React.useState(false);
+
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -270,7 +277,11 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         isPolygonMenuOpen,
         setIsPolygonMenuOpen,
         siteViewPort,
-        setSiteViewPort
+        setSiteViewPort,
+        filteredProjects, 
+        setFilteredProjects,
+        filtersOpen,
+        setFilterOpen
       }}
     >
       {children}

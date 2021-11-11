@@ -49,7 +49,7 @@ export default function ProjectsContainer({}: any) {
 
   return ready ? (
     <div className="profilePage">
-      <div className={'profilePageTitle'}>Manage Projects</div>
+      <div className={'profilePageTitle'}>{t('manageProjects:manageProjects')}</div>
       <div className={styles.projectsContainer} id="projectsContainer">
         {projects.length < 1 ? (
           user ? (

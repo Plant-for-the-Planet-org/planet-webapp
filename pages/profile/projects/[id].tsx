@@ -8,10 +8,14 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import  Head from 'next/head';
+import i18next from '../../../i18n';
+
+const {useTranslation} = i18next;
 
 interface Props {}
 
 function ManageSingleProject({}: Props): ReactElement {
+  const {t} = useTranslation('me');
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const router = useRouter();
@@ -67,7 +71,7 @@ function ManageSingleProject({}: Props): ReactElement {
     ready && token && !accessDenied ? (
       <UserLayout>
         <Head>
-          <title>{`Edit - ${project.name}`}</title>
+          <title>{`${t('edit')} - ${project.name}`}</title>
         </Head>
         <div className="profilePage">
           <div className="profilePageHeader">

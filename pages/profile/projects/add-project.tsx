@@ -59,7 +59,7 @@ function ManageProjectsPage({}: Props): ReactElement {
   return setupAccess ? (
     <UserLayout>
       <Head>
-        <title>{'Add Project'}</title>
+        <title>{t('addProject')}</title>
       </Head>
       <div className="profilePage">
         <div className="profilePageHeader">
