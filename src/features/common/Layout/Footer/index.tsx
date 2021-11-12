@@ -31,26 +31,22 @@ export default function Footer() {
     setOpenModal(false);
   };
 
-  const [footerLang, setFooterLang] = React.useState('en');
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      let footerLang = localStorage.getItem('language') || 'en';
-      footerLang = footerLang.toLowerCase(); // need lowercase locals for Wordpress website links
-      setFooterLang(footerLang)
-    }
-  }, [language])
   const FooterLinks = {
     shop: {
       title: ready ? t('common:shop') : '',
       link: `https://www.thegoodshop.org/de`
     },
-    privacyAndTerms: {
-      title: ready ? t('common:privacyAndTerms') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/privacy-terms`,
+    privacy: {
+      title: ready ? t('common:privacy') : '',
+      link: `https://pp.eco/legal/${i18n.language}/privacy`,
+    },
+    terms: {
+      title: ready ? t('common:terms') : '',
+      link: `https://pp.eco/legal/${i18n.language}/terms`,
     },
     imprint: {
       title: ready ? t('common:imprint') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/imprint`,
+      link: `https://pp.eco/legal/${i18n.language}/imprint`,
     },
     contact: {
       title: ready ? t('common:contact') : '',
@@ -58,7 +54,7 @@ export default function Footer() {
     },
     downloads: {
       title: ready ? t('common:downloads') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/download`
+      link: `https://a.plant-for-the-planet.org/${i18n.language}/download`
     },
     annualReports: {
       title: ready ? t('common:annualReports') : '',
@@ -66,23 +62,23 @@ export default function Footer() {
     },
     team: {
       title: ready ? t('common:team') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/team`
+      link: `https://a.plant-for-the-planet.org/team`
     },
     jobs: {
       title: ready ? t('common:jobs') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/careers`
+      link: `https://a.plant-for-the-planet.org/${i18n.language}/careers`
     },
     supportUs: {
       title: ready ? t('common:supportUs') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/donation`,
+      link: `https://a.plant-for-the-planet.org/${i18n.language}/donation`,
     },
     blogs: {
       title: ready ? t('common:blogs') : '',
-      link: `https://blog.plant-for-the-planet.org/${footerLang}`
+      link: `https://blog.plant-for-the-planet.org/${i18n.language}`
     },
     faqs: {
       title: ready ? t('common:faqs') : '',
-      link: `https://a.plant-for-the-planet.org/${footerLang}/faq`
+      link: `https://a.plant-for-the-planet.org/${i18n.language}/faq`
     },
   };
 
@@ -264,9 +260,9 @@ export default function Footer() {
             {config.darkModeEnabled &&
               (<div className={styles.switch}>
               <DarkModeSwitch />
-              </div>) 
+              </div>)
             }
-              
+
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks && config.footerLinks.map((key: any) => {
                 return (
