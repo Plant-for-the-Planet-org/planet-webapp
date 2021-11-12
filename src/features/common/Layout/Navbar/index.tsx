@@ -216,7 +216,10 @@ export default function NavbarComponent(props: any) {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={submenu.onclick}
+                          href={i18n.language === 'en' ? submenu.onclickEN :
+                          i18n.language === 'de' ? submenu.onclickDE :
+                          i18n.language === 'es' ? submenu.onclickES :
+                        ''}
                         >
                           <div
                             style={{
