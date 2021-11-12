@@ -22,6 +22,7 @@ export default function NavbarComponent(props: any) {
     de: 'de',
     es: 'es-es',
   };
+  const [menu, setMenu] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false);
   React.useEffect(() => {
     if(typeof window !== 'undefined') {
@@ -158,8 +159,8 @@ export default function NavbarComponent(props: any) {
               }
             }
             return SingleLink.visible ? (
-              <div className={`${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`}>
-                <Link key={link} href={SingleLink.onclick}>
+              <div className={`${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`} onClick={() => isMobile ? setMenu(true) : {}} onMouseOver={() => isMobile ? setMenu(true) : {}}>
+                <Link key={link} href={isMobile ? '' : SingleLink.onclick}>
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
                       UserIcon={UserIcon}
@@ -190,7 +191,8 @@ export default function NavbarComponent(props: any) {
                     )}
                   </div>
                 </Link>
-                <div className={'subMenuItems'}>
+                {menu ?
+                  <div className={'subMenuItems'}>
                   {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
                     return (
                       <a key={submenu.title} className={'menuRow'} href={submenu.onclick}>
@@ -203,7 +205,7 @@ export default function NavbarComponent(props: any) {
                       </a>
                     )
                   })}
-                </div>
+                </div> : <></>}
               </div>
             ) : (
               <div key={link}></div>
