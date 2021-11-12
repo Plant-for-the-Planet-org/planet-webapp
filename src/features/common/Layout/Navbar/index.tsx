@@ -1,16 +1,27 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import tenantConfig from '../../../../../tenant.config';
+import i18next from '../../../../../i18n';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
+import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
-import i18next from '../../../../../i18n';
-import getImageUrl from '../../../../utils/getImageURL';
 import themeProperties from '../../../../theme/themeProperties';
-import Link from 'next/link';
-import GetNavBarIcon from './getNavBarIcon';
+import getImageUrl from '../../../../utils/getImageURL';
 import { UserPropsContext } from '../UserPropsContext';
+import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
+
+// used to detect window resize and return the current width of the window
+const useWidth = () => {
+  const [width, setWidth] = React.useState(0); // default width, detect on server.
+  const handleResize = () => setWidth(window.innerWidth);
+  React.useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [handleResize]);
+  return width;
+};
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
@@ -22,24 +33,18 @@ export default function NavbarComponent(props: any) {
     de: 'de',
     es: 'es-es',
   };
-  const [menu, setMenu] = React.useState(false)
+  const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
+
+  const width = useWidth();
+
+  // changes the isMobile state to true if the window width is less than 768px
   React.useEffect(() => {
-    if(typeof window !== 'undefined') {
-      if(window.innerWidth > 767) {
-        setIsMobile(false);
-      } else {
-        setIsMobile(true);
-    }
-  }
-  });
-  const {
-    user,
-    setUser,
-    loginWithRedirect,
-    logoutUser,
-    auth0Error,
-  } = React.useContext(UserPropsContext);
+    setIsMobile(width < 768);
+  }, [width]);
+
+  const { user, setUser, loginWithRedirect, logoutUser, auth0Error } =
+    React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -115,6 +120,8 @@ export default function NavbarComponent(props: any) {
       <div className={'menuItems'}>
         {links.map((link) => {
           let SingleLink = config.header.items[link];
+          const hasSubMenu =
+            SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
@@ -142,24 +149,34 @@ export default function NavbarComponent(props: any) {
               );
             }
             if (link === 'about' && SingleLink.visible) {
-              let aboutOnclick = `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
-              process.env.TENANT === 'ttc') &&
-              lang_path[i18n.language]
-              ? lang_path[i18n.language]
-              : ''
-              }`
+              let aboutOnclick = `${SingleLink.onclick}${
+                (process.env.TENANT === 'planet' ||
+                  process.env.TENANT === 'ttc') &&
+                lang_path[i18n.language]
+                  ? lang_path[i18n.language]
+                  : ''
+              }`;
 
-              aboutOnclick = isMobile ? '' : aboutOnclick
+              aboutOnclick = isMobile ? '' : aboutOnclick;
               SingleLink = {
                 ...SingleLink,
                 onclick: aboutOnclick,
               };
-              if(SingleLink.subMenu && SingleLink.subMenu.length > 0){
-                SingleLink.subMenu[0].onclick = aboutOnclick
+              if (hasSubMenu) {
+                SingleLink.subMenu[0].onclick = aboutOnclick;
               }
             }
             return SingleLink.visible ? (
-              <div className={`${SingleLink.subMenu && SingleLink.subMenu.length > 0 ? 'subMenu' : ''}`} onClick={() => isMobile ? setMenu(true) : {}} onMouseOver={() => isMobile ? setMenu(true) : {}}>
+              <div
+                className={`${hasSubMenu ? 'subMenu' : ''}`}
+                onClick={() => (isMobile && hasSubMenu ? setMenu(!menu) : {})}
+                onMouseOver={() =>
+                  hasSubMenu ? setMenu(isMobile ? menu : true) : {}
+                }
+                onMouseLeave={() =>
+                  hasSubMenu ? setMenu(isMobile ? menu : false) : {}
+                }
+              >
                 <Link key={link} href={isMobile ? '' : SingleLink.onclick}>
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
@@ -191,21 +208,32 @@ export default function NavbarComponent(props: any) {
                     )}
                   </div>
                 </Link>
-                {menu ?
-                  <div className={'subMenuItems'}>
-                  {SingleLink.subMenu && SingleLink.subMenu.length > 0 && SingleLink.subMenu.map((submenu: any) => {
-                    return (
-                      <a key={submenu.title} className={'menuRow'} href={submenu.onclick}>
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} >
-                          <GetSubMenu title={submenu.title} />
-                          <div className={'menuText'}>
-                            {t('common:' + submenu.title)}
+                <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
+                  {SingleLink.subMenu &&
+                    SingleLink.subMenu.length > 0 &&
+                    SingleLink.subMenu.map((submenu: any) => {
+                      return (
+                        <a
+                          key={submenu.title}
+                          className={'menuRow'}
+                          href={submenu.onclick}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <GetSubMenu title={submenu.title} />
+                            <div className={'menuText'}>
+                              {t('common:' + submenu.title)}
+                            </div>
                           </div>
-                        </div>
-                      </a>
-                    )
-                  })}
-                </div> : <></>}
+                        </a>
+                      );
+                    })}
+                </div>
               </div>
             ) : (
               <div key={link}></div>
