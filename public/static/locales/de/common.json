@@ -77,5 +77,6 @@
   "close": "Schließen",
   "logout": "Abmelden",
   "featured": "Empfohlen",
-  "treeMapper": "TreeMapper"
+  "treeMapper": "TreeMapper",
+  "underMaintenance": "In Wartung"
 }

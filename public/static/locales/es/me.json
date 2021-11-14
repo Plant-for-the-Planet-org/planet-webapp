@@ -47,6 +47,7 @@
   "embedWidget": "Insertar Widget",
   "tree-donation": "Donación de árboles",
   "tree-gift": "Árbol de regalo",
+  "tree-cash": "TreeCash",
   "trees": "Árboles",
   "amount": "Cantidad",
   "created": "Fecha de creación",
@@ -59,6 +60,9 @@
   "download": "Descargar",
   "donations": "Donaciones",
   "in-progress": "En curso",
+  "donation-in-progress": "En curso",
+  "donation-tree-cash": "TreeCash",
+  "donation-success": "Éxito",
   "cancelled": "Cancelado",
   "card": "Tarjeta",
   "sepa": "SEPA",
@@ -73,7 +77,14 @@
   "dispute-lost": "Disputa perdida",
   "nameForest": "El Bosque de {{name}}",
   "taxReceipt": "Recibo de impuestos",
+  "history": "Historia",
+  "treemapper": "TreeMapper",
+  "register-trees": "Registrar árboles",
+  "manage-projects": "Administrar proyectos",
+  "paymentDate": "Fecha de pago",
+  "bankName": "Nombre del banco",
   "setTarget": "Fijar el objetivo..",
   "targetSave": "Guardar",
-  "targetErrorMessage": "El número debe ser positivo o mayor que cero"
+  "targetErrorMessage": "El número debe ser positivo o mayor que cero",
+  "profile": "Perfil"
 }
