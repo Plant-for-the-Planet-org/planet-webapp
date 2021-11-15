@@ -176,7 +176,10 @@ export default function History({
               </div>
               {currentRecord ? (
                 <>
-                  <RecordHeader record={currentRecord} />
+                  <RecordHeader
+                    record={currentRecord}
+                    handleRecordOpen={() => {}}
+                  />
                   <div className={styles.divider}></div>
                   <div className={styles.detailContainer}>
                     <div className={styles.detailGrid}>
