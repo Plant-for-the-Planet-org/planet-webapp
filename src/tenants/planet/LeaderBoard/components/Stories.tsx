@@ -14,7 +14,7 @@ export default function Stories({}: Props): ReactElement {
       {ready ? (
         <div className={styles.wrapper}>
           <div className={styles.container}>
-            <a className={styles.storyCard} href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language]}/principles`}>
+            <a className={styles.storyCard} href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language]?lang_path[i18n.language]:'en'}/principles`}>
               <img
                 src={'/tenants/planet/images/leaderboard/restoreTrees.svg'}
               />
