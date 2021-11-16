@@ -10,17 +10,13 @@ import themeProperties from '../../../../theme/themeProperties';
 import Link from 'next/link';
 import GetNavBarIcon from './getNavBarIcon';
 import { UserPropsContext } from '../UserPropsContext';
+import { lang_path } from '../../../../utils/constants/wpLanguages';
 
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
-  const lang_path = {
-    en: 'en',
-    de: 'de',
-    es: 'es-es',
-  };
 
   const {
     user,

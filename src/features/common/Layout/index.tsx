@@ -16,12 +16,18 @@ export default function Layout(props: any) {
       </style>
       <div className={`${themeType}`}>
         <Navbar theme={themeType} />
-        {props.children}
-        <div className={'notificationContainer'}>
-          <CookiePolicy />
-          <RedeemPopup />
+        <div>
+          {props.children}
         </div>
-        
+
+        <div>
+          <div className={'notificationContainer'}>
+            <CookiePolicy />
+            <RedeemPopup />
+          </div>
+        </div>
+
+
       </div>
     </>
   );

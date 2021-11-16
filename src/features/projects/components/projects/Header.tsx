@@ -62,6 +62,7 @@ function Header({showFeaturedList,setSelectedTab,selectedTab,setSearchMode,proje
               )}
 
             <button id={'searchIcon'}
+            data-test-id='searchIcon'
               className={'searchIcon'}
               onClick={() => setSearchMode(true)}
             >

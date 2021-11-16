@@ -160,6 +160,7 @@ function ContactDetails({
                 variant="outlined"
                 name="firstName"
                 defaultValue={contactDetails.firstName}
+                data-test-id="firstName"
               />
               {errors.firstName && (
                 <span className={styles.formErrors}>
@@ -176,6 +177,7 @@ function ContactDetails({
                 variant="outlined"
                 name="lastName"
                 defaultValue={contactDetails.lastName}
+                data-test-id="lastName"
               />
               {errors.lastName && (
                 <span className={styles.formErrors}>
@@ -196,6 +198,7 @@ function ContactDetails({
                 variant="outlined"
                 name="email"
                 defaultValue={contactDetails.email}
+                data-test-id="email"
               />
               {errors.email && (
                 <span className={styles.formErrors}>
@@ -216,6 +219,7 @@ function ContactDetails({
                   suggestAddress(event.target.value);
                 }}
                 onBlur={() => setaddressSugggestions([])}
+                data-test-id="address"
               />
               {addressSugggestions
                 ? addressSugggestions.length > 0 && (
@@ -251,6 +255,7 @@ function ContactDetails({
                 variant="outlined"
                 name="city"
                 defaultValue={contactDetails.city}
+                data-test-id="city"
               />
               {errors.city && (
                 <span className={styles.formErrors}>
@@ -271,6 +276,7 @@ function ContactDetails({
                   variant="outlined"
                   name="zipCode"
                   defaultValue={contactDetails.zipCode}
+                  data-test-id="zipCode"
                 />
               )}
               {errors.zipCode && (
@@ -368,6 +374,7 @@ function ContactDetails({
                 onClick={handleSubmit(onSubmit)}
                 className="primaryButton"
                 style={{ borderRadius: '10px' }}
+                data-test-id="continueToPayment"
               >
                 {t('common:continue')}
               </button>

@@ -6,7 +6,8 @@
   "for": "for",
   "trees": "Trees",
   "planted": "planted",
-  "privacyAndTerms": "Privacy & Terms",
+  "privacy": "Privacy",
+  "terms": "Terms",
   "imprint": "Imprint",
   "status": "Status",
   "contact": "Contact",
@@ -76,5 +77,6 @@
   "close": "Close",
   "logout": "Logout",
   "featured": "Featured",
-  "treeMapper": "TreeMapper"
+  "treeMapper": "TreeMapper",
+  "underMaintenance":"Under Maintenance"
 }

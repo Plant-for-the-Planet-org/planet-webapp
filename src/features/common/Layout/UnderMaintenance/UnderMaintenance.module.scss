@@ -1,0 +1,22 @@
+@import '../../../../theme/theme';
+
+.underMaintenance {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    > .title {
+        font-family: $primaryFontFamily;
+        font-weight: 700;
+        font-size: $fontXXLarge;
+        padding: 20px;
+        text-align: center;
+    }
+    > svg {
+        width: 100%;
+        max-width: 400px;
+        height: 320px;
+    }
+}
