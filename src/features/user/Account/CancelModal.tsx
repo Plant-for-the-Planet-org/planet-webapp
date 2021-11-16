@@ -131,27 +131,28 @@ export const CancelModal = ({
             </RadioGroup>
             {showCalender ? (
               <>
-              <ThemeProvider theme={materialTheme}>
-                <MuiPickersUtilsProvider
-                  utils={DateFnsUtils}
-                  // locale={
-                  //   localeMapForDate[userLang]
-                  //     ? localeMapForDate[userLang]
-                  //     : localeMapForDate['en']
-                  // }
-                >
-                  <Calendar
-                    date={date}
-                    onChange={(value) => {
-                      console.log(value);
-                      setdate(value);
-                    }}
-                    minDate={new Date(new Date().valueOf() + 1000 * 3600 * 24)}
-                    color={'#68B030'}
-                  />
-                </MuiPickersUtilsProvider>
-              </ThemeProvider>
-              <p className={styles.pauseNote}>{t('pauseNote')}</p>
+                <ThemeProvider theme={materialTheme}>
+                  <MuiPickersUtilsProvider
+                    utils={DateFnsUtils}
+                    // locale={
+                    //   localeMapForDate[userLang]
+                    //     ? localeMapForDate[userLang]
+                    //     : localeMapForDate['en']
+                    // }
+                  >
+                    <Calendar
+                      date={date}
+                      onChange={(value) => {
+                        console.log(value);
+                        setdate(value);
+                      }}
+                      minDate={
+                        new Date(new Date().valueOf() + 1000 * 3600 * 24)
+                      }
+                      color={'#68B030'}
+                    />
+                  </MuiPickersUtilsProvider>
+                </ThemeProvider>
               </>
             ) : (
               []

@@ -356,7 +356,9 @@
   margin-left: -16px;
   cursor: pointer;
 }
-
+.pauseNote {
+  max-width: 332px;
+}
 .modal {
   display: flex;
   flex-direction: column;

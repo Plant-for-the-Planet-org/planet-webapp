@@ -140,27 +140,32 @@ export const PauseModal = ({
             </RadioGroup>
             {showCalender ? (
               <>
-              <ThemeProvider theme={materialTheme}>
-                <MuiPickersUtilsProvider
-                  utils={DateFnsUtils}
-                  // locale={
-                  //   localeMapForDate[userLang]
-                  //     ? localeMapForDate[userLang]
-                  //     : localeMapForDate['en']
-                  // }
-                >
-                  <Calendar
-                    date={date}
-                    onChange={(value) => {
-                      console.log('value calendar', value);
-                      setdate(value);
-                    }}
-                    minDate={date}
-                    disablePast={true}
-                  />
-                </MuiPickersUtilsProvider>
-              </ThemeProvider>
-              <p className={styles.pauseNote}>{t('pauseNote')}</p>
+                <ThemeProvider theme={materialTheme}>
+                  <MuiPickersUtilsProvider
+                    utils={DateFnsUtils}
+                    // locale={
+                    //   localeMapForDate[userLang]
+                    //     ? localeMapForDate[userLang]
+                    //     : localeMapForDate['en']
+                    // }
+                  >
+                    <Calendar
+                      date={date}
+                      onChange={(value) => {
+                        console.log('value calendar', value);
+                        setdate(value);
+                      }}
+                      minDate={
+                        new Date(
+                          new Date(record?.currentPeriodEnd).valueOf() +
+                            1000 * 3600 * 24
+                        )
+                      }
+                      disablePast={true}
+                    />
+                  </MuiPickersUtilsProvider>
+                </ThemeProvider>
+                <p className={styles.pauseNote}>{t('pauseNote')}</p>
               </>
             ) : (
               []

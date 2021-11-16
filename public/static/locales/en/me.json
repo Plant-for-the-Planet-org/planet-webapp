@@ -80,6 +80,7 @@
   "pauseDonationConfirmation": "Pause Donation",
   "pauseDonationDescription": "You can start it again after pausing by restarting",
   "pauseUntilResume": "Pause until I resume",
+  "pausedUntil": "Paused until",
   "pauseUntilDate": "Pause until selected Date",
   "reactivateDonationConfirmation": "Reactivate Donation",
   "reactivateDonationDescription": "Your donation will be reactivated.",
@@ -177,5 +178,5 @@
   "editProfile": "Edit Profile",
   "deleteProfile": "Delete Profile",
   "widgets": "Widgets",
-  "pauseNote":"Note: You can select a date that is beyond the current period end."
+  "pauseNote": "Note: You can select a date that is beyond the current period end."
 }

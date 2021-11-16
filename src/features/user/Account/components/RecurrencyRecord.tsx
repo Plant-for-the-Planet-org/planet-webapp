@@ -93,7 +93,7 @@ export function RecordHeader({
   handleClose,
 }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  console.log( new Date(record?.endsAt)< new Date(), 'Datesss')
+  console.log(new Date(record?.endsAt) < new Date(), 'Datesss');
   return (
     <div
       onClick={() => handleRecordOpen(index)}
@@ -106,7 +106,9 @@ export function RecordHeader({
         <p className={styles.top}>{record?.project?.name}</p>
         {record?.endsAt ? (
           <p>
-            {new Date(record?.endsAt)< new Date()?t('cancelledOn'):t('willBeCancelledOn')}{' '}
+            {new Date(record?.endsAt) < new Date()
+              ? t('cancelledOn')
+              : t('willBeCancelledOn')}{' '}
             {formatDate(
               new Date(
                 new Date(record?.endsAt).valueOf() + 1000 * 3600
@@ -114,6 +116,18 @@ export function RecordHeader({
             )}{' '}
             • {record?.frequency}
           </p>
+        ) : record?.status === 'paused' ? (
+          record?.pauseUntil ? (
+            <p>
+              {t('pausedUntil')}{' '}
+              {formatDate(
+                new Date(
+                  new Date(record?.pauseUntil).valueOf() + 1000 * 3600
+                ).toISOString()
+              )}{' '}
+              • {record?.frequency}
+            </p>
+          ) : null
         ) : (
           <p>
             {t('nextOn')}{' '}
