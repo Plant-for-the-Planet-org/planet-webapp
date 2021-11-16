@@ -18,6 +18,7 @@ const useWidth = () => {
   const handleResize = () => setWidth(window.innerWidth);
   React.useEffect(() => {
     window.addEventListener('resize', handleResize);
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, [handleResize]);
   return width;
