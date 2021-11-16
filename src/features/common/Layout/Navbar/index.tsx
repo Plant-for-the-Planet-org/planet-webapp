@@ -177,7 +177,10 @@ export default function NavbarComponent(props: any) {
                   hasSubMenu ? setMenu(isMobile ? menu : false) : {}
                 }
               >
-                <Link key={link} href={isMobile ? '' : SingleLink.onclick}>
+                <Link
+                  key={link}
+                  href={isMobile && hasSubMenu ? '' : SingleLink.onclick}
+                >
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
                       UserIcon={UserIcon}
@@ -216,10 +219,15 @@ export default function NavbarComponent(props: any) {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={i18n.language === 'en' ? submenu.onclickEN :
-                          i18n.language === 'de' ? submenu.onclickDE :
-                          i18n.language === 'es' ? submenu.onclickES :
-                        ''}
+                          href={
+                            i18n.language === 'en'
+                              ? submenu.onclickEN
+                              : i18n.language === 'de'
+                              ? submenu.onclickDE
+                              : i18n.language === 'es'
+                              ? submenu.onclickES
+                              : ''
+                          }
                         >
                           <div
                             style={{
