@@ -415,7 +415,9 @@ export function ManageDonation({
   const { t, i18n } = useTranslation(['me']);
 
   const showPause = record?.status === 'active' && !record?.endsAt;
-  const showEdit = record?.status === 'active' || record?.status === 'trialing';
+  const showEdit =
+    (record?.status === 'active' || record?.status === 'trialing') &&
+    record?.endsAt === null;
   const showCancel = record?.status === 'active' && !record?.endsAt;
   const showReactivate =
     record?.status === 'paused' || new Date(record?.endsAt) > new Date();
