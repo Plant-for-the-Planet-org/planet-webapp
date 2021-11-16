@@ -34,6 +34,15 @@ export default function NavbarComponent(props: any) {
     de: 'de',
     es: 'es-es',
   };
+  const subMenuPath = {
+    overview: '',
+    childrenAndYouth: 'children-youth',
+    trillionTrees: 'trillion-trees',
+    yucatan: 'yucatan',
+    partners: 'partners',
+    changeChocolate: 'change-chocolate',
+    stopTalkingStartPlanting: 'stop-talking-start-planting'
+  }
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
 
@@ -220,15 +229,7 @@ export default function NavbarComponent(props: any) {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={
-                            i18n.language === 'en'
-                              ? submenu.onclickEN
-                              : i18n.language === 'de'
-                              ? submenu.onclickDE
-                              : i18n.language === 'es'
-                              ? submenu.onclickES
-                              : ''
-                          }
+                          href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language]?lang_path[i18n.language]:'en'}/${subMenuPath[submenu.title]}`}
                         >
                           <div
                             style={{

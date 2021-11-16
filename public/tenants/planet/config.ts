@@ -39,51 +39,37 @@ const config = {
         subMenu: [
           {
             title: 'overview',
-            onclickEN: 'https://a.plant-for-the-planet.org/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/',
+            onclick: 'https://a.plant-for-the-planet.org/',
             visible: true
           },
           {
             title: 'childrenAndYouth',
-            onclickEN: 'https://a.plant-for-the-planet.org/children-youth/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/kinder-jugendliche',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/children-youth',
+            onclick: 'https://a.plant-for-the-planet.org/children-youth/',
             visible: true
           },
           {
             title: 'trillionTrees',
-            onclickEN: 'https://a.plant-for-the-planet.org/trillion-trees/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/trillion-trees/',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/trillion-trees/',
+            onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
             visible: true
           },
           {
             title: 'yucatan',
-            onclickEN: 'https://a.plant-for-the-planet.org/yucatan/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/yucatan',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/yucatan/',
+            onclick: 'https://a.plant-for-the-planet.org/yucatan/',
             visible: true
           },
           {
             title: 'partners',
-            onclickEN: 'https://a.plant-for-the-planet.org/partners/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/partners/',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/partners/',
+            onclick: 'https://a.plant-for-the-planet.org/partners/',
             visible: true
           },
           {
             title: 'changeChocolate',
-            onclickEN: 'https://a.plant-for-the-planet.org/change-chocolate/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/change-chocolate',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/change-chocolate/',
+            onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
             visible: true
           },
           {
             title: 'stopTalkingStartPlanting',
-            onclickEN: 'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
-            onclickDE: 'https://a.plant-for-the-planet.org/de/stop-talking-start-planting/',
-            onclickES: 'https://a.plant-for-the-planet.org/es-es/stop-talking-start-planting/',
+            onclick: 'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
             visible: true
           }
         ]
