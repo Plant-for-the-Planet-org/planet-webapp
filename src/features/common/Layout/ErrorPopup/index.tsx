@@ -7,7 +7,7 @@ import { ErrorHandlingContext } from '../ErrorHandlingContext';
 const { useTranslation } = i18next;
 export default function ErrorPopup(): ReactElement {
   const { t, ready } = useTranslation(['leaderboard']);
-  const { error, setError } = React.useContext(ErrorHandlingContext);
+  const { error } = React.useContext(ErrorHandlingContext);
 
   //   const sendUserToLogin = () => {
   //     loginWithRedirect({
@@ -15,15 +15,19 @@ export default function ErrorPopup(): ReactElement {
   //       ui_locales: localStorage.getItem('language') || 'en',
   //     });
   //   };
-  React.useEffect(() => {
-    setError({
-      type: 'error',
-      message: 'Something went wrong!',
-    });
-    console.log(`object`);
-  }, []);
 
-  console.log(`error`, error);
+  const getErrorColor = (errorType: string): string => {
+    switch (errorType) {
+      case 'error':
+        return '#f44336';
+      case 'warning':
+        return '#ff9800';
+      case 'info':
+        return '#2196f3';
+      default:
+        return '#f44336';
+    }
+  }
 
   return (
     <>
@@ -31,12 +35,12 @@ export default function ErrorPopup(): ReactElement {
         <div className={styles.errorContainer}>
           <button
             id={'errorCloseButton'}
-            className={`${styles.closeButton} ${error.type}`}
+            className={`${styles.closeButton}`}
             onClick={() => setError(null)}
           >
-            <CloseIcon color={styles.primaryColor} />
+            <CloseIcon color={getErrorColor(error.type)} />
           </button>
-          <div className={styles.cookieContent}>{error.message}</div>
+          <div className={styles.errorContent}>{error.message}</div>
         </div>
       ) : null}
     </>
