@@ -31,24 +31,9 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
-}
-
-.conservationMarker{
-  width: 30px;
-  height: 30px;
-  border-radius: 50% 50% 50% 10%;
-  background: #0066ff;
-  position: absolute;
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  left: 50%;
-  top: 40%;
-  margin: -20px 0 0 -20px;
-  box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  cursor: pointer;
+  &.conservationMarker {
+    background: #0066ff;
+  }
 }
 
 .markerType {
@@ -192,11 +177,11 @@
   width: 17px;
 }
 
-.exploreButton > svg > path{
+.exploreButton > svg > path {
   fill: $primaryFontColor;
 }
 
-.forestInfo{
+.forestInfo {
   color: $primaryFontColor;
 }
 .exploreText {
@@ -364,7 +349,7 @@
     rgba(59, 0, 255, 1) 100%
   );
 }
-.restorationInfo{
+.restorationInfo {
   color: $primaryFontColor;
 }
 
@@ -378,8 +363,8 @@
   // color: #fadc2f;
 }
 
-.openLink > svg > path{
-fill: $primaryFontColor;
+.openLink > svg > path {
+  fill: $primaryFontColor;
 }
 .currentForestScale {
   display: flex;
@@ -555,7 +540,7 @@ fill: $primaryFontColor;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   color: $primaryFontColor;
   background: $backgroundColor;
 }
@@ -624,7 +609,7 @@ fill: $primaryFontColor;
 //   }
 // }
 
-@media screen and (max-height:315px), (max-width:481px){
+@media screen and (max-height: 315px), (max-width: 481px) {
   .mapNavigation {
     display: none;
   }
