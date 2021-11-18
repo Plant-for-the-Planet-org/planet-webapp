@@ -11,7 +11,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import { UserPropsContext } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
-
+import { lang_path } from '../../../../utils/constants/wpLanguages'
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
   const [width, setWidth] = React.useState(0); // default width, detect on server.
@@ -29,11 +29,6 @@ const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
-  const lang_path = {
-    en: 'en',
-    de: 'de',
-    es: 'es-es',
-  };
   const subMenuPath = {
     overview: '',
     childrenAndYouth: 'children-youth',
