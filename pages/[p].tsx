@@ -70,7 +70,7 @@ export default function Donate({
       const newPlantLocations = await getAllPlantLocations(project.id);
       setPlantLocations(newPlantLocations);
     }
-    if (project) {
+    if (project && project.purpose === 'trees') {
       loadPl();
     }
   }, [project]);
