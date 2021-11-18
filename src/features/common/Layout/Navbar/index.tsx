@@ -23,7 +23,6 @@ const useWidth = () => {
   }, [handleResize]);
   return width;
 };
-
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
