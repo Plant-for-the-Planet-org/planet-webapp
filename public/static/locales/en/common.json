@@ -78,7 +78,6 @@
   "logout": "Logout",
   "featured": "Featured",
   "treeMapper": "TreeMapper",
-  "underMaintenance":"Under Maintenance",
   "overview": "Overview",
   "childrenAndYouth": "Children And Youth",
   "trillionTrees": "Trillion Trees",
@@ -86,4 +85,5 @@
   "partners": "Partners",
   "changeChocolate": "Change Chocolate",
   "stopTalkingStartPlanting": "Stop Talking Start Planting"
+  "underMaintenance": "Under Maintenance"
 }

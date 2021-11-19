@@ -7,7 +7,7 @@
   "trees": "Árboles",
   "planted": "plantado",
   "privacy": "Privacidad",
-  "terms": "Condiciones",
+  "terms": "Términos",
   "imprint": "Aviso Legal",
   "status": "Estado",
   "contact": "Contacto",
@@ -71,5 +71,12 @@
   "goBack": "Regresar",
   "deleteAccountMessage": "Para continuar con el borrado, escriba `{{delete}}`",
   "deleteAccountLabel": "Tipo: {{delete}}",
-  "howDoesThisWork": "¿Cómo funciona esto?"
+  "edit": "Editar",
+  "howDoesThisWork": "¿Cómo funciona esto?",
+  "copiedToClipboard": "Copiado en el portapapeles",
+  "close": "Cerrar",
+  "logout": "Cerrar Sesión",
+  "featured": "Destacado",
+  "treeMapper": "TreeMapper",
+  "underMaintenance": "En mantenimiento"
 }
