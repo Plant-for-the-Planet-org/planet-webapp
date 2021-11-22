@@ -133,14 +133,15 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                <button
+                {/* <button
                   id={`ProjSnippetDonate_${project.id}`}
                   onClick={handleOpen}
                   className={'donateButton'}
                   data-test-id="donateButton"
                 >
                   {t('common:donate')}
-                </button>
+                </button> */}
+                <planet-donations user="sagar-aryal" tenantkey="ten_I9TW3ncG" theme="forest" id="planetDonations"> </planet-donations>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
