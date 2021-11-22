@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -48,6 +49,14 @@ export default function ProjectSnippet({
   const handleOpen = () => {
     setOpen(true);
   };
+  
+  const [openDonation, setOpenDonation] = React.useState(false);
+  const handleOpenDonate = () => {
+    setOpenDonation(true);
+  }
+  const handleCloseDonate = () => {
+    setOpenDonation(false);
+  }
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
@@ -59,6 +68,28 @@ export default function ProjectSnippet({
         disableBackdropClick
       >
         <DonationsPopup project={project} onClose={handleClose} />
+      </Modal>
+      <Modal
+        className={`modalContainer ${theme}`}
+        open={openDonation}
+        onClose={handleCloseDonate}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        disableBackdropClick
+      >
+        <>
+        <div onClick={handleCloseDonate} style={{position:'absolute', top:20, right:20, fontSize:60, color:'#fff', cursor:'pointer'}} >&times;</div>
+        <iframe
+            src={`https://donate-with-planet-ndvzybun2-planetapp.vercel.app/?to=${project.slug}`}
+            width="100%"
+            height="100%"
+            frameborder="0"
+            scrolling="yes"
+            allowtransparency="true"
+            allowpaymentrequest="true"
+            title="Donate to Plant for the Planet"  
+          />
+          </>
       </Modal>
 
       {editMode ? (
@@ -133,15 +164,15 @@ export default function ProjectSnippet({
           <div className={'projectCost'}>
             {project.treeCost ? (
               <>
-                {/* <button
+                <button
                   id={`ProjSnippetDonate_${project.id}`}
-                  onClick={handleOpen}
+                  onClick={handleOpenDonate}
                   className={'donateButton'}
                   data-test-id="donateButton"
                 >
                   {t('common:donate')}
-                </button> */}
-                <planet-donations user="sagar-aryal" tenantkey="ten_I9TW3ncG" theme="forest" id="planetDonations"> </planet-donations>
+                </button>
+                {/* <planet-donations user="sagar-aryal" tenantkey="ten_I9TW3ncG" theme="forest" id="planetDonations"> </planet-donations> */}
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,

@@ -97,7 +97,7 @@ export default function Header() {
       {themeType === 'theme-light' ? (
         <meta name="theme-color" content={styles.primaryColor} />
       ) : null}
-      <script src="https://planet-widgets-m1lmy1wh1-planetapp.vercel.app/build/donations.js" id="planetDonationsScript"/>
+      {/* <script src="https://planet-widgets-gldd1k74l-planetapp.vercel.app/build/donations.js" id="planetDonationsScript"/> */}
     </Head>
     <noscript>We are sorry but this page does not work properly without JavaScript enabled. Please enable it to continue</noscript>
     </>
