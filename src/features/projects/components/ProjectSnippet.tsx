@@ -86,7 +86,7 @@ export default function ProjectSnippet({
             frameborder="0"
             scrolling="yes"
             allowtransparency="true"
-            allowpaymentrequest="true"
+            allow="payment"
             title="Donate to Plant for the Planet"  
           />
           </>
