@@ -48,6 +48,10 @@ export default function ProjectSnippet({
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const handleRedirect = () => {
+    router.push(`https://donate.plant-for-the-planet.org/?to=${project.id}`);
+  };
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
@@ -72,8 +76,9 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
-          }`}
+        className={`projectImage ${
+          selectedPl || hoveredPl ? 'projectCollapsed' : ''
+        }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -87,8 +92,7 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-          {project.classification &&
-          t(`donate:${project.classification}`)}
+            {project.classification && t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
@@ -106,12 +110,16 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(project.countPlanted),
-                1
-              )}{' '}
-              {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+              {project.purpose === 'trees' && (
+                <>
+                  {localizedAbbreviatedNumber(
+                    i18n.language,
+                    Number(project.countPlanted),
+                    1
+                  )}{' '}
+                  {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+                </>
+              )}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
               </span>
@@ -135,7 +143,9 @@ export default function ProjectSnippet({
               <>
                 <button
                   id={`ProjSnippetDonate_${project.id}`}
-                  onClick={handleOpen}
+                  onClick={
+                    project.purpose === 'trees' ? handleOpen : handleRedirect
+                  }
                   className={'donateButton'}
                   data-test-id="donateButton"
                 >
