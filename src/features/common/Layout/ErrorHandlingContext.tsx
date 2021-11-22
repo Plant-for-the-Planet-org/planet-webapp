@@ -4,6 +4,7 @@ interface Props {}
 
 export const ErrorHandlingContext = React.createContext({
     error: null,
+    setError: () => {},
     handleError: ({}) => {},
 });
 
@@ -19,6 +20,7 @@ function ErrorHandlingProvider({ children }: any): ReactElement {
     <ErrorHandlingContext.Provider
       value={{
         error,
+        setError,
         handleError,
       }}
     >

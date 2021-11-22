@@ -7,7 +7,7 @@ import { ErrorHandlingContext } from '../ErrorHandlingContext';
 const { useTranslation } = i18next;
 export default function ErrorPopup(): ReactElement {
   const { t, ready } = useTranslation(['leaderboard']);
-  const { error } = React.useContext(ErrorHandlingContext);
+  const { error, setError } = React.useContext(ErrorHandlingContext);
 
   //   const sendUserToLogin = () => {
   //     loginWithRedirect({
