@@ -131,7 +131,7 @@ Cypress.Commands.add('skipIntroVideo', () => {
 })
 
 Cypress.Commands.add("giftRemove", () => {
-    cy.visit(Cypress.env('TEST_SERVER') + "/")
+    cy.visit(Cypress.env('TEST_SERVER'))
     cy.skipIntroVideo()
     cy.visit(Cypress.env('TEST_SERVER') + "/s/sagar-aryal").wait(10000).then(() => {
         cy.get('[data-test-id="searchIcon"]').type('yucatan restoration')
