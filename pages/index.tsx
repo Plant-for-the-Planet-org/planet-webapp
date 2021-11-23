@@ -29,7 +29,7 @@ export default function Donate({
     setShowProjects,
     setsearchedProjects,
     setZoomLevel,
-    filteredProjects
+    filteredProjects,
   } = React.useContext(ProjectPropsContext);
 
   const router = useRouter();
@@ -87,7 +87,7 @@ export default function Donate({
   }, [currencyCode]);
 
   const ProjectsProps = {
-    projects:filteredProjects,
+    projects: filteredProjects,
     showProjects,
     setShowProjects,
     setsearchedProjects,

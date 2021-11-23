@@ -12,6 +12,8 @@ import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
+import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -35,6 +37,7 @@ export default function ProjectSnippet({
   const { theme } = React.useContext(ThemeContext);
 
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const { user } = React.useContext(UserPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -43,20 +46,23 @@ export default function ProjectSnippet({
   }
 
   const [open, setOpen] = React.useState(false);
+  let currency = getStoredCurrency();
+  let country = localStorage.getItem('countryCode');
+  let language = localStorage.getItem('language');
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = () => {
     setOpen(true);
   };
-  
+
   const [openDonation, setOpenDonation] = React.useState(false);
   const handleOpenDonate = () => {
     setOpenDonation(true);
-  }
+  };
   const handleCloseDonate = () => {
     setOpenDonation(false);
-  }
+  };
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
@@ -78,18 +84,34 @@ export default function ProjectSnippet({
         disableBackdropClick
       >
         <>
-        <div onClick={handleCloseDonate} style={{position:'absolute', top:20, right:20, fontSize:60, color:'#fff', cursor:'pointer'}} >&times;</div>
-        <iframe
-            src={`https://donate-with-planet-ndvzybun2-planetapp.vercel.app/?to=${project.slug}`}
+          <div
+            onClick={handleCloseDonate}
+            style={{
+              position: 'absolute',
+              top: 20,
+              right: 20,
+              fontSize: 60,
+              color: '#fff',
+              cursor: 'pointer',
+            }}
+          >
+            &times;
+          </div>
+          <iframe
+            src={`https://donate-with-planet-iway71d93-planetapp.vercel.app/?to=${
+              project.slug
+            }&embed=true&country=${country}&currency=${currency}&locale=${language}${
+              user ? '&autoLogin=true' : ''
+            }`}
             width="100%"
             height="100%"
             frameborder="0"
             scrolling="yes"
             allowtransparency="true"
             allow="payment"
-            title="Donate to Plant for the Planet"  
+            title="Donate to Plant for the Planet"
           />
-          </>
+        </>
       </Modal>
 
       {editMode ? (
@@ -103,8 +125,9 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
-          }`}
+        className={`projectImage ${
+          selectedPl || hoveredPl ? 'projectCollapsed' : ''
+        }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -118,8 +141,7 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-          {project.classification &&
-          t(`donate:${project.classification}`)}
+            {project.classification && t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
