@@ -114,7 +114,7 @@ export const CancelModal = ({
                 key={1}
                 value={'cancelImmediately'}
                 control={<GreenRadio />}
-                label={'Cancel immediately'}
+                label={t('me:cancelImmediately')}
               />
               {/* <FormControlLabel
                 key={2}
@@ -126,7 +126,7 @@ export const CancelModal = ({
                 key={3}
                 value={'cancelOnSelectedDate'}
                 control={<GreenRadio />}
-                label={'Select Date of cancellation'}
+                label={t('me:cancelOnSelectedDate')}
               />
             </RadioGroup>
             {showCalender ? (

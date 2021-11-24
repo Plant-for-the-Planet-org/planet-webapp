@@ -76,16 +76,16 @@
   "yes": "Yes",
   "no": "No",
   "editDonationConfirmation": "Edit Donation",
-  "editDonationDescription": "You can edit the following options",
+  "editDonationDescription": "You can edit the following options:",
   "pauseDonationConfirmation": "Pause Donation",
-  "pauseDonationDescription": "You can start it again after pausing by restarting",
+  "pauseDonationDescription": "You can start it again after pausing by restarting.",
   "pauseUntilResume": "Pause until I resume",
   "pausedUntil": "Paused until",
   "pauseUntilDate": "Pause until selected Date",
   "reactivateDonationConfirmation": "Reactivate Donation",
   "reactivateDonationDescription": "Your donation will be reactivated.",
   "cancelDonationConfirmation": "Cancel Donation",
-  "cancelDonationDescription": "Once donation is cancelled, it can not be restarted",
+  "cancelDonationDescription": "Once donation is cancelled, it can not be restarted.",
   "cancelledOn": "Cancelled on",
   "willBeCancelledOn": "Will be cancelled on",
   "nextOn": "Next on",
@@ -178,5 +178,7 @@
   "editProfile": "Edit Profile",
   "deleteProfile": "Delete Profile",
   "widgets": "Widgets",
-  "pauseNote": "Note: You can select a date that is beyond the current period end."
+  "pauseNote": "Note: You can select a date that is beyond the current period end.",
+  "cancelImmediately": "Cancel immediately",
+  "cancelOnSelectedDate": "Select Date of cancellation"
 }
