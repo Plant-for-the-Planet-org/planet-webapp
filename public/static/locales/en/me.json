@@ -53,6 +53,8 @@
   "created": "Date Created",
   "paymentMethod": "Payment Method",
   "frequency": "Frequency",
+  "monthly": "monthly",
+  "yearly": "yearly",
   "totalDonated": "Total Donated",
   "firstDonation": "First Donation Date",
   "donorNameRequired": "Donor Name Required",

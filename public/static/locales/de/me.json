@@ -53,6 +53,8 @@
   "created": "Erstellungsdatum",
   "paymentMethod": "Zahlungsmethode",
   "frequency": "Häufigkeit",
+  "monthly": "monatlich",
+  "yearly": "jährlich",
   "totalDonated": "Insgesamt gespendet",
   "firstDonation": "Datum der ersten Spende",
   "donorNameRequired": "Name des Spenders erforderlich",

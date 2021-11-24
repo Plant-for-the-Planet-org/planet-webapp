@@ -249,6 +249,7 @@ interface EditDonationProps {
 const EditDonation = ({ record, editModalOpen }: EditDonationProps) => {
   const [nextBilling, setnextBilling] = React.useState();
   const [centAmount, setcentAmount] = React.useState();
+  const [frequency, setFrequency] = React.useState(record?.frequency);
   const [userLang, setUserLang] = React.useState('en');
   const { t, i18n } = useTranslation(['me']);
   const { register, handleSubmit, errors, setValue, control } = useForm({
@@ -267,13 +268,13 @@ const EditDonation = ({ record, editModalOpen }: EditDonationProps) => {
     console.log(
       new Date(data.date).toISOString().split('T')[0],
       Number(data.donationAmount.slice(1)) * 100,
-      data.frequency,
+      frequency,
       'data'
     );
     const bodyToSend = {
       nextBilling: new Date(data.date).toISOString().split('T')[0],
       centAmount: Number(data.donationAmount) * 100,
-      frequency: data.frequency,
+      frequency: frequency,
     };
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=modify`,
@@ -353,6 +354,17 @@ const EditDonation = ({ record, editModalOpen }: EditDonationProps) => {
               options={['monthly', 'yearly']}
               sx={{ width: 300 }}
               defaultValue={record?.frequency}
+              onChange={(event: any, newValue: string) => {
+                if (newValue) {
+                  setFrequency(newValue);
+                }
+              }}
+              getOptionLabel={(option) => t(`${option.toLowerCase()}`)}
+              renderOption={(option) => (
+                <>
+                  {t(`${option.toLowerCase()}`)}
+                </>
+              )}
               renderInput={(params) => (
                 <MaterialTextField
                   {...params}

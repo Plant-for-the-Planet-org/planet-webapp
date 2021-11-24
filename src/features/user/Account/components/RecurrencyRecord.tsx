@@ -114,7 +114,7 @@ export function RecordHeader({
                 new Date(record?.endsAt).valueOf() + 1000 * 3600
               ).toISOString()
             )}{' '}
-            • {record?.frequency}
+            • {t(record?.frequency)}
           </p>
         ) : record?.status === 'paused' ? (
           record?.pauseUntil ? (
@@ -125,7 +125,7 @@ export function RecordHeader({
                   new Date(record?.pauseUntil).valueOf() + 1000 * 3600
                 ).toISOString()
               )}{' '}
-              • {record?.frequency}
+              • {t(record?.frequency)}
             </p>
           ) : null
         ) : (
@@ -136,7 +136,7 @@ export function RecordHeader({
                 new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600
               ).toISOString()
             )}{' '}
-            • {record?.frequency}
+            • {t(record?.frequency)}
           </p>
         )}
       </div>
@@ -182,7 +182,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.frequency && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('frequency')}</p>
-          <p>{record.frequency}</p>
+          <p>{t(record?.frequency)}</p>
         </div>
       )}
       {record?.paymentGateway && (
