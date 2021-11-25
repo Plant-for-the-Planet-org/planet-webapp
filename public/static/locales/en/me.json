@@ -91,6 +91,7 @@
   "cancelledOn": "Cancelled on",
   "willBeCancelledOn": "Will be cancelled on",
   "nextOn": "Next on",
+  "pausedUntilResumed": "Paused until resumed",
   "download": "Download",
   "donations": "Donations",
   "in-progress": "In Progress",

@@ -185,11 +185,7 @@ any) => {
                     }
                   }}
                   getOptionLabel={(option) => t(`${option.toLowerCase()}`)}
-                  renderOption={(option) => (
-                    <>
-                      {t(`${option.toLowerCase()}`)}
-                    </>
-                  )}
+                  renderOption={(option) => <>{t(`${option.toLowerCase()}`)}</>}
                   renderInput={(params) => (
                     <MaterialTextField
                       {...params}

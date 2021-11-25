@@ -127,13 +127,15 @@ export function RecordHeader({
               )}{' '}
               • {t(record?.frequency)}
             </p>
-          ) : null
+          ) : (
+            <p>{t('pausedUntilResumed')}</p>
+          )
         ) : (
           <p>
             {t('nextOn')}{' '}
             {formatDate(
               new Date(
-                new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600
+                new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24
               ).toISOString()
             )}{' '}
             • {t(record?.frequency)}
