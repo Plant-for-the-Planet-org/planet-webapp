@@ -420,7 +420,9 @@ export function ManageDonation({
   const showEdit =
     (record?.status === 'active' || record?.status === 'trialing') &&
     record?.endsAt === null;
-  const showCancel = record?.status === 'active' && !record?.endsAt;
+  const showCancel =
+    (record?.status === 'active' || record?.status === 'trialing') &&
+    !record?.endsAt;
   const showReactivate =
     record?.status === 'paused' || new Date(record?.endsAt) > new Date();
   return (
