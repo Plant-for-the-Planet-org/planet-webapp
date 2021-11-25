@@ -11,7 +11,7 @@ import styles from './ProjectsContainer.module.scss';
 
 const { useTranslation } = i18next;
 
-export default function ProjectsContainer({}: any) {
+export default function ProjectsContainer({ }: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
 
@@ -35,25 +35,35 @@ export default function ProjectsContainer({}: any) {
       loadProjects();
     }
   }, [contextLoaded, token]);
-
   return ready ? (
     <div className="profilePage">
-      <div className="profilePageHeader"> 
+      <div className="profilePageHeader">
         <div>
           <div className={'profilePageTitle'}>{t('manageProjects:manageProject')}</div>
           <div className={'profilePageSubTitle'}>
             {t('manageProjects:descriptionForManageProjects')}
           </div>
         </div>
-        <Link href="/profile/projects/add-project">
-          <button
-            id={'addProjectBut'}
-            className={'primaryButton'}
-            style={{ maxWidth: '160px' }}
-          >
-            {t('manageProjects:addProject')}
-          </button>
-        </Link>
+        <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
+          <Link href="/profile/projects/add-project">
+            <button
+              id={'addProjectBut'}
+              className={'primaryButton'}
+              style={{ maxWidth: '160px' }}
+            >
+              {t('manageProjects:addProject')}
+            </button>
+          </Link>
+          <Link href="/profile/projects/add-conservation-project">
+            <button
+              id={'conservationProj'}
+              className={'primaryButton'}
+              style={{ maxWidth: '160px' }}
+            >
+              {t('manageProjects:conservationProject')}
+            </button>
+          </Link>
+        </div>
       </div>
 
       <div className={styles.projectsContainer} id="projectsContainer">

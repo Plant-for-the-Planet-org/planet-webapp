@@ -19,18 +19,26 @@ import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 
-export default function ManageProjects({ GUID, token, project }: any) {
+export default function ManageProjects({ GUID, token, project, conservationProject }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
 
   function getSteps() {
-    return [
+    return (
+      conservationProject === true ?
+      [
+        ready ? t('manageProjects:basicDetails') : '',
+        ready ? t('manageProjects:detailedAnalysis') : '',
+        ready ? t('manageProjects:review') : '',
+      ] :
+      [
       ready ? t('manageProjects:basicDetails') : '',
       ready ? t('manageProjects:projectMedia') : '',
       ready ? t('manageProjects:detailedAnalysis') : '',
       ready ? t('manageProjects:projectSites') : '',
       ready ? t('manageProjects:projectSpending') : '',
       ready ? t('manageProjects:review') : '',
-    ];
+    ]
+    );
   }
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -54,7 +62,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
   const [projectDetails, setProjectDetails] = React.useState(
     project ? project : {}
   );
-
   const router = useRouter();
 
   const submitForReview = () => {
