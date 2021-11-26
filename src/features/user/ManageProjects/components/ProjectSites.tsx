@@ -520,6 +520,29 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
+
   const MapProps = {
     geoJson,
     setGeoJson,
