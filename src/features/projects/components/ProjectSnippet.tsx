@@ -98,7 +98,7 @@ export default function ProjectSnippet({
             &times;
           </div>
           <iframe
-            src={`https://donate-with-planet-iway71d93-planetapp.vercel.app/?to=${
+            src={`https://donate-with-planet-pjf88fbr1-planetapp.vercel.app/?to=${
               project.slug
             }&embed=true&country=${country}&currency=${currency}&locale=${language}${
               user ? '&autoLogin=true' : ''
