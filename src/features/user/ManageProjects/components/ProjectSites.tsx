@@ -570,14 +570,14 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
         if (!res.code) {
           const temp = siteList;
           let siteIndex;
-          const singleSite = temp.find((site, index) => {
+          temp.find((site, index) => {
             if (site.id === res.id) {
               siteIndex = index;
               return true
             }
           });
           if (siteIndex !== null) {
-            temp[siteIndex] = singleSite;
+            temp[siteIndex] = res;
           }
           setSiteList(temp);
           setGeoJson(null);
