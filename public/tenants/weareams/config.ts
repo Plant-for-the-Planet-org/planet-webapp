@@ -23,7 +23,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `/tenants/weareams/logo-mobile.svg`,
+    tenantLogoURL: `/tenants/weareams/logo.png`,
     // mobileLogoURL: `/tenants/weareams/logo-mobile.svg`,
     tenantLogoLink: 'https://forest.weareams.com',
     items: {
