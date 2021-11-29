@@ -30,7 +30,7 @@
 Cypress.Commands.add('BasicDonation', () => {
     cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
-    cy.wait(5000)
+    cy.wait(15000) // wait a little longer for tests running on 'npm run dev' instances
     cy.get('[data-test-id="donateButton"]').click()
     cy.contactForm("Peter", "Payer", "peter.payer@gmail.com", "Unbekannt 1", "Uffing am Staffelsee", "Germany{enter}", "82449")
 })
@@ -195,7 +195,7 @@ Cypress.Commands.add("projectDetails", () => {
     cy.wait(5000)
     cy.get('[data-test-id="siteName"]').type(randomstring)
     cy.get('[data-test-id="siteStatus"]').click()
-    cy.contains("Planting").click()
+    cy.contains("Planted").click()
     cy.get('[data-test-id="projSitesCont"]').click()
     cy.wait(5000)
     cy.get('[data-test-id="projSpendingCont"]').click()
