@@ -330,7 +330,7 @@ export default function ProjectSites({
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
-                      {String(site.status).toUpperCase()}
+                      {status.find(e => site.status == e.value)?.label.toUpperCase()}
                     </div>
                     <button
                       id={'trashIconProjS'}
