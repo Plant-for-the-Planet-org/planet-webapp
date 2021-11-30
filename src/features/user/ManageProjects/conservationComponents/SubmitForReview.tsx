@@ -13,19 +13,19 @@ interface Props {
     submitForReview: Function;
     isUploadingData: Boolean;
     projectGUID: any;
-    // handleReset: Function;
+    handleReset: Function;
     projectDetails: any;
 }
 
-function SubmitConservationForReview({ submitForReview, handleBack, isUploadingData, projectGUID, projectDetails }: Props): ReactElement {
+function SubmitConservationForReview({ submitForReview, handleBack, isUploadingData, projectGUID, projectDetails, handleReset }: Props): ReactElement {
 
     const { t, i18n, ready } = useTranslation(['manageProjects']);
 
-    // React.useEffect(() => {
-    //     if (!projectGUID || projectGUID === '') {
-    //         handleReset(ready ? t('manageProjects:resetMessage') : '')
-    //     }
-    // })
+    React.useEffect(() => {
+        if (!projectGUID || projectGUID === '') {
+            handleReset(ready ? t('manageProjects:resetMessage') : '')
+        }
+    })
 
     function UnderReviewComponent() {
         return (
@@ -88,7 +88,7 @@ function SubmitConservationForReview({ submitForReview, handleBack, isUploadingD
                         </button>
                         <div style={{ width: '20px' }}></div>
 
-                        <div className={`${styles.formFieldHalf}`}>
+                        {/* <div className={`${styles.formFieldHalf}`}>
                             <button
                                 onClick={() => submitForReview()}
                                 className="primaryButton"
@@ -97,7 +97,7 @@ function SubmitConservationForReview({ submitForReview, handleBack, isUploadingD
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
                             </button>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
