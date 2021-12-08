@@ -31,6 +31,7 @@ const globalStyles = css.global`
     --light: ${light.light};
     --dark: ${light.dark};
     --danger-color: ${light.dangerColor};
+    --safe-color:${light.safeColor};
     --undecade-fill: ${light.unDecadeFill};
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
@@ -45,6 +46,7 @@ const globalStyles = css.global`
     --light: ${dark.light};
     --dark: ${dark.dark};
     --danger-color: ${dark.dangerColor};
+    --safe-color:${dark.safeColor};
     --undecade-fill: ${dark.unDecadeFill};
     --mapbox-icon: ${dark.mapboxIcon};
     --background-base: ${dark.backgroundBase};
