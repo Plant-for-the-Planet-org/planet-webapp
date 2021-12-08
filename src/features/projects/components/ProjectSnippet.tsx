@@ -100,7 +100,9 @@ export default function ProjectSnippet({
           <iframe
             src={`https://donate-with-planet-9mmyy5cdu-planetapp.vercel.app/?to=${
               project.slug
-            }&embed=true&returnToUrl=http://localhost:3001&country=${country}&currency=${currency}&locale=${language}${
+            }&embed=true&returnToUrl=${
+              process.env.NEXTAUTH_URL
+            }&country=${country}&currency=${currency}&locale=${language}${
               user ? '&autoLogin=true' : ''
             }`}
             width="100%"
