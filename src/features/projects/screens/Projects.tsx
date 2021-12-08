@@ -1,20 +1,23 @@
-import React, { ReactElement } from 'react';
+import { Modal } from '@material-ui/core';
 import dynamic from 'next/dynamic';
-import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
-import i18next from '../../../../i18n/';
+import router from 'next/router';
+import React, { ReactElement } from 'react';
 import LazyLoad from 'react-lazyload';
+import i18next from '../../../../i18n/';
 import NotFound from '../../../../public/assets/images/NotFound';
+import { ThemeContext } from '../../../theme/themeContext';
+import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
+import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
+import Explore from '../components/maps/Explore';
 import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
-import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
-import Explore from '../components/maps/Explore';
-import Filters from '../components/projects/Filters';
 
 interface Props {
   projects: any;
   showProjects: Boolean;
   setShowProjects: Function;
   setsearchedProjects: any;
+  donationID: string;
 }
 
 const { useTranslation } = i18next;
@@ -26,12 +29,15 @@ function ProjectsList({
   projects,
   showProjects,
   setsearchedProjects,
+  donationID,
 }: Props): ReactElement {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
+  const [openDonation, setOpenDonation] = React.useState(false);
   const { t, ready } = useTranslation(['donate', 'country']);
+  const { theme } = React.useContext(ThemeContext);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
@@ -44,6 +50,14 @@ function ProjectsList({
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
   }, []);
+
+  React.useEffect(() => {
+    if (donationID) {
+      setOpenDonation(true);
+    } else {
+      setOpenDonation(false);
+    }
+  }, [donationID]);
 
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
@@ -121,9 +135,10 @@ function ProjectsList({
     }
   }
 
-  const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
-    projects,
-  ]);
+  const allProjects = React.useMemo(
+    () => getProjects(projects, 'all'),
+    [projects]
+  );
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
@@ -140,10 +155,15 @@ function ProjectsList({
       <div className={'projectNotFound'}>
         <LazyLoad>
           <NotFound className={'projectNotFoundImage'} />
-          <h5 style={{ color: 'var(--primary-font-color' }}>{t('donate:noProjectsFound')}</h5>
+          <h5 style={{ color: 'var(--primary-font-color' }}>
+            {t('donate:noProjectsFound')}
+          </h5>
         </LazyLoad>
       </div>
     ) : null;
+  };
+  const handleCloseDonate = () => {
+    router.replace('/');
   };
 
   return ready ? (
@@ -187,35 +207,76 @@ function ProjectsList({
           </div>
           {/* till here is header */}
           <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ?
-              searchProjectResults && searchProjectResults.length > 0 ?
+            {trottledSearchValue !== '' ? (
+              searchProjectResults && searchProjectResults.length > 0 ? (
                 searchProjectResults.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : selectedTab === 'all' ?
-              allProjects && allProjects.length > 0  ?
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )
+            ) : selectedTab === 'all' ? (
+              allProjects && allProjects.length > 0 ? (
                 allProjects.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : 
-              featuredProjects  && featuredProjects.length > 0  ?
-                featuredProjects.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-          }
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )
+            ) : featuredProjects && featuredProjects.length > 0 ? (
+              featuredProjects.map((project: any) => (
+                <ProjectSnippet
+                  key={project.properties.id}
+                  project={project.properties}
+                  editMode={false}
+                />
+              ))
+            ) : (
+              <NoProjectFound />
+            )}
           </div>
+          <Modal
+            className={`modalContainer ${theme}`}
+            open={openDonation}
+            onClose={handleCloseDonate}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            disableBackdropClick
+          >
+            <>
+              <div
+                onClick={handleCloseDonate}
+                style={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 20,
+                  fontSize: 60,
+                  color: '#fff',
+                  cursor: 'pointer',
+                }}
+              >
+                &times;
+              </div>
+              <iframe
+                src={`https://donate-with-planet-9mmyy5cdu-planetapp.vercel.app/?context=${donationID}&embed=true`}
+                width="100%"
+                height="100%"
+                frameborder="0"
+                scrolling="yes"
+                allowtransparency="true"
+                allow="payment"
+                title="Donate to Plant for the Planet"
+              />
+            </>
+          </Modal>
         </div>
       ) : null}
     </>

@@ -36,6 +36,7 @@ export default function Donate({
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
+  const [donationID, setDonationID] = React.useState('');
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -59,6 +60,7 @@ export default function Donate({
         shallow: true,
       });
     }
+    setDonationID(router?.query?.donationID || '');
   }, [router]);
 
   React.useEffect(() => {
@@ -106,7 +108,7 @@ export default function Donate({
         filteredProjects && initialized ? (
           <>
             <GetAllProjectsMeta />
-            <ProjectsList {...ProjectsProps} />
+            <ProjectsList {...{ ...ProjectsProps, donationID }} />
             {directGift ? (
               showdirectGift ? (
                 <DirectGift {...GiftProps} />
