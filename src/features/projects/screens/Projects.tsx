@@ -269,7 +269,6 @@ function ProjectsList({
                 src={`https://donate-with-planet-9mmyy5cdu-planetapp.vercel.app/?context=${donationID}&embed=true`}
                 width="100%"
                 height="100%"
-                frameborder="0"
                 scrolling="yes"
                 allowtransparency="true"
                 allow="payment"

@@ -46,9 +46,9 @@ export default function ProjectSnippet({
   }
 
   const [open, setOpen] = React.useState(false);
-  let currency = getStoredCurrency();
-  let country = localStorage.getItem('countryCode');
-  let language = localStorage.getItem('language');
+  const currency = getStoredCurrency();
+  const country = localStorage.getItem('countryCode');
+  const language = localStorage.getItem('language');
   const handleClose = () => {
     setOpen(false);
   };
@@ -105,7 +105,6 @@ export default function ProjectSnippet({
             }`}
             width="100%"
             height="100%"
-            frameborder="0"
             scrolling="yes"
             allowtransparency="true"
             allow="payment"
