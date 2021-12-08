@@ -266,13 +266,16 @@ function ProjectsList({
                 &times;
               </div>
               <iframe
-                src={`https://donate-with-planet-ackym14g4-planetapp.vercel.app/?context=${donationID}&embed=true`}
+                src={`https://donate-with-planet-ackym14g4-planetapp.vercel.app/?context=${donationID}&embed=true&tenant=${process.env.TENANTID}`}
                 width="100%"
                 height="100%"
                 scrolling="yes"
                 allowtransparency="true"
                 allow="payment"
-                title="Donate to Plant for the Planet"
+                allowpaymentrequest="true"
+                title="Donate to Plant-for-the-Planet"
+                referrerpolicy="no-referrer"
+                sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox"
               />
             </>
           </Modal>

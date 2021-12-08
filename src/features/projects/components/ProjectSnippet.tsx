@@ -104,13 +104,16 @@ export default function ProjectSnippet({
               process.env.NEXTAUTH_URL
             }&country=${country}&currency=${currency}&locale=${language}${
               user ? '&autoLogin=true' : ''
-            }`}
+            }&tenant=${process.env.TENANTID}`}
             width="100%"
             height="100%"
             scrolling="yes"
             allowtransparency="true"
             allow="payment"
-            title="Donate to Plant for the Planet"
+            allowpaymentrequest="true"
+            title="Donate to Plant-for-the-Planet"
+            referrerpolicy="no-referrer"
+            sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox"
           />
         </>
       </Modal>
