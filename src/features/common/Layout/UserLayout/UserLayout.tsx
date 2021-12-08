@@ -21,7 +21,7 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
-  const { t, i18n } = useTranslation(['common','me']);
+  const { t, i18n } = useTranslation(['common', 'me']);
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
@@ -58,15 +58,18 @@ function UserLayout(props: any): ReactElement {
       path: '/profile/history',
       icon: <DonateIcon />,
       flag: 'Beta',
+      hideSubMenu: true,
       subMenu: [
-        // {
-        //   title: 'History',
-        //   path: '/profile/history',
-        // },
-        // {
-        //   title: 'Recurring Donations',
-        //   path: '/profile/recurring-donations',
-        // },
+        {
+          title: 'History',
+          path: '/profile/history',
+          hideItem: true,
+        },
+        {
+          title: 'Recurring Donations',
+          path: '/profile/recurrency',
+          hideItem: true,
+        },
         // {
         //   title: 'Payouts',
         //   path: '/profile/payouts', // Only for Tpos
@@ -77,6 +80,13 @@ function UserLayout(props: any): ReactElement {
         // },
       ],
     },
+    // {
+    //   key: 4,
+    //   title: t('me:recurrency'),
+    //   path: '/profile/recurrency',
+    //   icon: <DonateIcon />,
+    //   flag: 'Beta',
+    // },
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -155,9 +165,8 @@ function UserLayout(props: any): ReactElement {
     }
   }, [router]);
 
-  const { user, logoutUser, contextLoaded } = React.useContext(
-    UserPropsContext
-  );
+  const { user, logoutUser, contextLoaded } =
+    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (contextLoaded) {
@@ -326,7 +335,11 @@ function NavLink({
             setactiveLink(link.path);
             setActiveSubMenu('');
           } else {
-            setisSubMenuActive(!isSubMenuActive);
+            if (link.hideSubMenu) {
+              router.push(link.path);
+            } else {
+              setisSubMenuActive(!isSubMenuActive);
+            }
           }
         }}
       >
@@ -335,7 +348,7 @@ function NavLink({
           {link.title}
           {link.flag && <span>{link.flag}</span>}
         </button>
-        {link.subMenu && link.subMenu.length > 0 && (
+        {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
           <button
             className={styles.subMenuArrow}
             style={{
@@ -349,21 +362,28 @@ function NavLink({
       {isSubMenuActive &&
         link.subMenu &&
         link.subMenu.length > 0 &&
-        link.subMenu.map((subLink: any, index: any) => (
-          <div
-            className={`${styles.navlinkSubMenu} ${
-              activeSubMenu === subLink.path ? styles.navlinkActiveSubMenu : ''
-            }`}
-            key={index}
-            onClick={() => {
-              setactiveLink(link.path);
-              setActiveSubMenu(subLink.path);
-              router.push(subLink.path);
-            }}
-          >
-            {subLink.title}
-          </div>
-        ))}
+        !link.hideSubMenu &&
+        link.subMenu.map((subLink: any, index: any) => {
+          if (!subLink.hideItem) {
+            return (
+              <div
+                className={`${styles.navlinkSubMenu} ${
+                  activeSubMenu === subLink.path
+                    ? styles.navlinkActiveSubMenu
+                    : ''
+                }`}
+                key={index}
+                onClick={() => {
+                  setactiveLink(link.path);
+                  setActiveSubMenu(subLink.path);
+                  router.push(subLink.path);
+                }}
+              >
+                {subLink.title}
+              </div>
+            );
+          }
+        })}
     </div>
   );
 }

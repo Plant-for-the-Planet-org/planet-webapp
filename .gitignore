@@ -40,3 +40,7 @@ cypress.env.json
 
 # tenant
 # tenant.config.js
+
+/cypress/videos
+/cypress/screenshots
+/cypress/integration/examples

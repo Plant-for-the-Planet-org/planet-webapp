@@ -34,6 +34,7 @@ export default function Donate({
     setPlantLocations,
     selectedPl,
     hoveredPl,
+    setPlantLocationsLoaded
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -67,8 +68,10 @@ export default function Donate({
 
   React.useEffect(() => {
     async function loadPl() {
+      setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(project.id);
       setPlantLocations(newPlantLocations);
+      setPlantLocationsLoaded(true);
     }
     if (project) {
       loadPl();
