@@ -266,7 +266,7 @@ function ProjectsList({
                 &times;
               </div>
               <iframe
-                src={`https://donate-with-planet-ackym14g4-planetapp.vercel.app/?context=${donationID}&embed=true&tenant=${process.env.TENANTID}`}
+                src={`${process.env.DONATION_URL}/?context=${donationID}&embed=true&tenant=${process.env.TENANTID}`}
                 width="100%"
                 height="100%"
                 scrolling="yes"
