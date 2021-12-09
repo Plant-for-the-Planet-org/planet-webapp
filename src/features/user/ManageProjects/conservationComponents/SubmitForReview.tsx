@@ -80,7 +80,7 @@ function SubmitConservationForReview({ submitForReview, handleBack, isUploadingD
                                 onClick={handleBack}
                                 className="secondaryButton"
                             >
-                                <BackArrow />
+                            <BackArrow />
                                 <p>
                                     {t('manageProjects:backToAnalysis')}
                                 </p>
