@@ -21,7 +21,7 @@ export default function ProjectsContainer({ }: any) {
 
   async function loadProjects() {
     if (user) {
-      await getAuthenticatedRequest('/app/profile/projects', token).then(
+      await getAuthenticatedRequest('/app/profile/projects?version=1.2', token).then(
         (projects) => {
           setProjects(projects);
         }
@@ -35,6 +35,7 @@ export default function ProjectsContainer({ }: any) {
       loadProjects();
     }
   }, [contextLoaded, token]);
+console.log(`projects`, projects)
   return ready ? (
     <div className="profilePage">
       <div className="profilePageHeader">
@@ -45,22 +46,13 @@ export default function ProjectsContainer({ }: any) {
           </div>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
-          <Link href="/profile/projects/add-project">
+          <Link href="/profile/projects/add-projects">
             <button
               id={'addProjectBut'}
               className={'primaryButton'}
               style={{ maxWidth: '160px' }}
             >
               {t('manageProjects:addProject')}
-            </button>
-          </Link>
-          <Link href="/profile/projects/add-conservation-project">
-            <button
-              id={'conservationProj'}
-              className={'primaryButton'}
-              style={{ maxWidth: '160px' }}
-            >
-              {t('manageProjects:conservationProject')}
             </button>
           </Link>
         </div>

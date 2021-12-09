@@ -82,13 +82,13 @@ function SubmitConservationForReview({ submitForReview, handleBack, isUploadingD
                             >
                                 <BackArrow />
                                 <p>
-                                    {t('manageProjects:backToSpending')}
+                                    {t('manageProjects:backToAnalysis')}
                                 </p>
                             </button>
                         </button>
                         <div style={{ width: '20px' }}></div>
 
-                        {/* <div className={`${styles.formFieldHalf}`}>
+                        <div className={`${styles.formFieldHalf}`}>
                             <button
                                 onClick={() => submitForReview()}
                                 className="primaryButton"
@@ -97,7 +97,7 @@ function SubmitConservationForReview({ submitForReview, handleBack, isUploadingD
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
                             </button>
-                        </div> */}
+                        </div>
 
                     </div>
                 </div>

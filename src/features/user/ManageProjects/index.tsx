@@ -139,7 +139,7 @@ export default function ManageProjects({ GUID, token, project, conservationProje
       case 2:
         return <SubmitConservationForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID}  handleReset={handleReset}/>;
       default:
-        return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+        return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} handleReset={handleReset}/>;
     }
   }
 

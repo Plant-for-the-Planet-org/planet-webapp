@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import ManageProjects from '../../../src/features/user/ManageProjects';
-import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import Footer from '../../../src/features/common/Layout/Footer';
-import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
-import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import i18next from './../../../i18n';
+import ManageProjects from '../../../../src/features/user/ManageProjects';
+import AccessDeniedLoader from '../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import Footer from '../../../../src/features/common/Layout/Footer';
+import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import { UserPropsContext } from '../../../../src/features/common/Layout/UserPropsContext';
+import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
+import i18next from '../../../../i18n';
 import  Head from 'next/head';
 
 const { useTranslation } = i18next;
@@ -38,7 +38,7 @@ function ManageProjectsPage({}: Props): ReactElement {
       if (token && user) {
         loadUserData();
       } else {
-        localStorage.setItem('redirectLink', '/profile/projects/add-project');
+        localStorage.setItem('redirectLink', '/profile/projects/add-project/restoration-project');
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',

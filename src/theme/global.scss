@@ -496,3 +496,35 @@ input:-webkit-autofill {
     }
   }
 }
+
+.add-projects-button{
+  border: 1px solid #F3F3F3;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 300px;
+  height: 140px;
+  padding: 20px;
+}
+.add-project{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 140px; 
+  gap: 20px; 
+  width: 100%; 
+  justify-content: center;
+  align-items: center;
+  @include mdTabletView{
+    flex-direction: row;
+  }
+}
+
+.add-project-title{
+  font-size: $fontSixteen;
+}
+.add-project-title > span {
+  color: $primaryColor;
+}
+
+
+
