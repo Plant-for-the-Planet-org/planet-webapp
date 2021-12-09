@@ -99,21 +99,21 @@ function ProjectsList({
             .toLowerCase();
           const projectLocation = project.properties.location
             ? project.properties.location
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase()
             : '';
           const projectTpoName = project.properties.tpo.name
             ? project.properties.tpo.name
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase()
             : '';
           const projectCountry = project.properties.country
             ? t('country:' + project.properties.country.toLowerCase())
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase()
             : '';
           //searching for name
           return (
@@ -275,7 +275,7 @@ function ProjectsList({
                 allowpaymentrequest="true"
                 title="Donate to Plant-for-the-Planet"
                 referrerpolicy="no-referrer"
-                sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox"
+              // sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts"
               />
             </>
           </Modal>

@@ -98,13 +98,10 @@ export default function ProjectSnippet({
             &times;
           </div>
           <iframe
-            src={`${process.env.DONATION_URL}/?to=${
-              project.slug
-            }&embed=true&returnToUrl=${
-              process.env.NEXTAUTH_URL
-            }&country=${country}&currency=${currency}&locale=${language}${
-              user ? '&autoLogin=true' : ''
-            }&tenant=${process.env.TENANTID}`}
+            src={`${process.env.DONATION_URL}/?to=${project.slug
+              }&embed=true&returnToUrl=${process.env.NEXTAUTH_URL
+              }&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''
+              }&tenant=${process.env.TENANTID}`}
             width="100%"
             height="100%"
             scrolling="yes"
@@ -113,7 +110,7 @@ export default function ProjectSnippet({
             allowpaymentrequest="true"
             title="Donate to Plant-for-the-Planet"
             referrerpolicy="no-referrer"
-            sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox"
+          // sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts"
           />
         </>
       </Modal>
@@ -129,9 +126,8 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={`projectImage ${
-          selectedPl || hoveredPl ? 'projectCollapsed' : ''
-        }`}
+        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
+          }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
