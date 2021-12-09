@@ -181,7 +181,7 @@
   "editProfile": "Profil bearbeiten",
   "deleteProfile": "Profil löschen",
   "widgets": "Widgets",
-  "pauseNote": "Hinweis: Du kannst ein Datum auswählen, dass hinter dem aktuellen Zeitraum liegt",
+  "pauseNote": "Hinweis: Du kannst ein Datum auswählen, dass hinter dem aktuellen Zeitraum liegt.",
   "cancelImmediately": "Sofort beenden",
   "cancelOnSelectedDate": "Wähle Datum der Beendigung"
 }
