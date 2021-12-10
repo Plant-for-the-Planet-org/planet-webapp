@@ -74,7 +74,7 @@
     "next-i18next": "^6.0.3",
     "next-useragent": "^2.7.0",
     "path-browserify": "^1.0.1",
-    "postcss": "^8.3.9",
+    "postcss": "^8.3.11",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-async-script-loader": "^0.3.0",
