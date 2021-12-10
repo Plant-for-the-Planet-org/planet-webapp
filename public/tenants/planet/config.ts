@@ -84,7 +84,12 @@ const config = {
         loggedInTitle: 'me',
         onclick: '/me',
         visible: true,
-      }
+      },
+      shop: {
+        title: 'shop',
+        onclick: 'https://thegoodshop.org',
+        visible: true,
+      },
     }
   },
   meta: {
