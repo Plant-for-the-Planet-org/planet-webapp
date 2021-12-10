@@ -287,7 +287,7 @@ function ContactDetails({
             </div>
           </div>
           <div className={styles.formRow}>
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%' }} data-test-id="country">
               <AutoCompleteCountry
                 inputRef={register({ required: true })}
                 label={t('donate:country')}

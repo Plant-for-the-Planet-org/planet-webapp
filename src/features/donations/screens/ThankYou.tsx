@@ -282,7 +282,7 @@ function ThankYou({
           </div>
         </div>
         <div className={styles.contributionMessageContainer}>
-          <div className={styles.contributionMessage}>
+          <div className={styles.contributionMessage} data-test-id="test-thankYou">
             {t('donate:donationPendingMessage')}
           </div>
           <div
