@@ -15,10 +15,10 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
   const [videoURL, setvideoURL] = React.useState<null | string>(null);
   const videoRef = React.useRef<ReactPlayer | null>(null);
   const handleVideoClose = () => {
-    setshowVideo(false);
-    if(videoRef?.current) {
+    if(videoRef?.current?.seekTo) {
       videoRef.current.seekTo(0);
     }
+    setshowVideo(false);
     if (typeof window !== 'undefined') {
       localStorage.setItem('hidePreview', true);
     }

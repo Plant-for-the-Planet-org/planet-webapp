@@ -151,9 +151,13 @@ Cypress.Commands.add("addProjects", () => {
            else if($body.find('#code').length){
              cy.get('#code').type(response.body.token + "{enter}")
             }
+
+            if ($body.find('button[value="refuse-add-device"]').length){
+                cy.contains("No Thanks").click()
+            }
         })        
      })
-    cy.contains("No Thanks").click()
+    
     cy.wait(5000)
 })
 
