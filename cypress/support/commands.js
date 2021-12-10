@@ -151,12 +151,9 @@ Cypress.Commands.add("addProjects", () => {
            else if($body.find('#code').length){
              cy.get('#code').type(response.body.token + "{enter}")
             }
-            if($body.contains("No Thanks").length){
-                cy.contains("No Thanks").click()
-            }
         })        
      })
-    
+    cy.contains("No Thanks").click()
     cy.wait(5000)
 })
 
@@ -177,8 +174,7 @@ Cypress.Commands.add("projectDetails", () => {
 
     //display the generated string
     // document.getElementById("slug").innerHTML = randomstring;
-    cy.clearLocalStorage()
-    cy.clearCookies()
+  
     cy.visit(Cypress.env('TEST_SERVER'))
     cy.skipIntroVideo()
     cy.get('#navbarActiveIcon').click()
