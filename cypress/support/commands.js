@@ -28,8 +28,7 @@
 
 
 Cypress.Commands.add('BasicDonation', () => {
-    cy.visit(Cypress.env('TEST_SERVER'))
-    cy.skipIntroVideo()
+    cy.visit(Cypress.env('TEST_SERVER')+ '/yucatan')
     cy.wait(15000) // wait a little longer for tests running on 'npm run dev' instances
     cy.get('[data-test-id="donateButton"]').click()
     cy.contactForm("Peter", "Payer", "peter.payer@gmail.com", "Unbekannt 1", "Uffing am Staffelsee", "Germany{enter}", "82449")
@@ -37,7 +36,6 @@ Cypress.Commands.add('BasicDonation', () => {
 
 Cypress.Commands.add('spainDonation', () => {
     cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
-    cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
     cy.contactForm("Peter", "Payer", "peter.payer@gmail.com", "Unbekannt 1", "Uffing am Staffelsee", "Spain{enter}", "82449")
@@ -76,7 +74,6 @@ Cypress.Commands.add('cardPayment', (cardNumber, cardExpiry, cardCvc) => {
 
 Cypress.Commands.add('giftDonation', () => {
     cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
-    cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
     cy.get('[data-test-id="giftToggle"]').click()
@@ -89,7 +86,6 @@ Cypress.Commands.add('giftDonation', () => {
 
 Cypress.Commands.add('customTreeDonation', () => {
     cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
-    cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
     cy.get('[data-test-id="downArrow"]').click()
@@ -101,7 +97,6 @@ Cypress.Commands.add('customTreeDonation', () => {
 
 Cypress.Commands.add("multipleDonation", () => {
     cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
-    cy.skipIntroVideo()
     cy.wait(5000)
     cy.get('[data-test-id="donateButton"]').click()
     cy.get('[data-test-id="selectTreeCount"]').eq(3).should("have.text", "150").click()
@@ -132,7 +127,6 @@ Cypress.Commands.add('skipIntroVideo', () => {
 
 Cypress.Commands.add("giftRemove", () => {
     cy.visit(Cypress.env('TEST_SERVER'))
-    cy.skipIntroVideo()
     cy.visit(Cypress.env('TEST_SERVER') + "/s/sagar-aryal").wait(10000).then(() => {
         cy.get('[data-test-id="searchIcon"]').type('yucatan restoration')
         cy.get('#ProjSnippetDonate_proj_WZkyugryh35sMmZMmXCwq7YY').click()
