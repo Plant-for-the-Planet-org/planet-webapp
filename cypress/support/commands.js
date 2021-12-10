@@ -28,7 +28,7 @@
 
 
 Cypress.Commands.add('BasicDonation', () => {
-    cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
+    cy.visit(Cypress.env('TEST_SERVER'))
     cy.skipIntroVideo()
     cy.wait(15000) // wait a little longer for tests running on 'npm run dev' instances
     cy.get('[data-test-id="donateButton"]').click()
@@ -126,7 +126,7 @@ Cypress.Commands.add('paymentError', (cardNumber, cardExpiry, cardCvc) => {
 // skip intro video if button found
 Cypress.Commands.add('skipIntroVideo', () => {
     cy.get("body")
-    cy.get('[data-test-id="skipLandingVideo"]').click
+    cy.get('[data-test-id="skipLandingVideo"]').click()
 
 })
 
@@ -142,14 +142,24 @@ Cypress.Commands.add("giftRemove", () => {
 })
 
 Cypress.Commands.add("addProjects", () => {
-    cy.visit(Cypress.env('TEST_SERVER') + "/profile/projects/add-project")
-    cy.get('#username').type("test-tpo@plant-for-the-planet.org{enter}")
-    cy.get('#password').type(Cypress.env('TEST_ACCOUNT_PASSWORD') + "{enter}")
+    cy.visit(Cypress.env('TEST_SERVER'))
+    cy.skipIntroVideo()
+    cy.get('#navbarActiveIcon').click()
 
     // OTP disabled on staging by Sagar
-    //cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
-    //    cy.get('#code').type(response.body.token + "{enter}")
-    //})
+    cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
+        cy.get('body').then(($body)=> {
+            if($body.find('#username').length){
+                cy.get('#username').type("test-tpo@plant-for-the-planet.org{enter}")
+                cy.get('#password').type(Cypress.env('TEST_ACCOUNT_PASSWORD') + "{enter}")            
+            }
+        
+           else if($body.find('#code').length){
+             cy.get('#code').type(response.body.token + "{enter}")
+            }
+        })        
+     })
+    cy.contains("No Thanks").click()
     cy.wait(5000)
 })
 
@@ -170,8 +180,22 @@ Cypress.Commands.add("projectDetails", () => {
 
     //display the generated string
     // document.getElementById("slug").innerHTML = randomstring;
-    cy.visit(Cypress.env('TEST_SERVER') + "/profile/projects/add-project")
+    cy.clearLocalStorage()
+    cy.clearCookies()
+    cy.visit(Cypress.env('TEST_SERVER'))
+    cy.skipIntroVideo()
+    cy.get('#navbarActiveIcon').click()
+    cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
+        cy.get('body').then(($body)=> {
+            if($body.find('#code').length){
+             cy.get('#code').type(response.body.token + "{enter}")
+            }
+        })        
+     })
+    cy.contains("No Thanks").click()
     cy.wait(20000)
+    cy.contains('Projects').click().wait(5000)
+    cy.get('#addProjectBut').click().wait(5000)
     cy.get('[data-test-id="projectName"]').type("Peter Farm")
     cy.get('[data-test-id="slug"]').type(randomstring)
     cy.get('[data-test-id="classification"]').click()
@@ -184,7 +208,6 @@ Cypress.Commands.add("projectDetails", () => {
     cy.get('[data-test-id="latitude"]').type("17.37541191565851")
     cy.get('[data-test-id="longitude"]').type("18.65069921623075")
     cy.get('[data-test-id="visitorAssistance"]').click()
-    cy.get('[data-test-id="publishProject"]').click()
     cy.get('[data-test-id="basicDetailsCont"]').click()
     cy.wait(5000)
     cy.get('[data-test-id="projMediaCont"]').click()
