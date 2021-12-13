@@ -183,5 +183,7 @@
   "widgets": "Widgets",
   "pauseNote": "Note: You can select a date that is beyond the current period end.",
   "cancelImmediately": "Cancel immediately",
-  "cancelOnSelectedDate": "Select Date of cancellation"
+  "cancelOnSelectedDate": "Select Date of cancellation",
+  "conservation-donation": "Conservation Donation",
+  "funds-donation": "Funding Donation"
 }
