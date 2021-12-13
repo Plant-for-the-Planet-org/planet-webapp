@@ -11,7 +11,7 @@ import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
-import GeocoderArcGIS from "geocoder-arcgis";
+import GeocoderArcGIS from 'geocoder-arcgis';
 const { useTranslation } = i18next;
 
 function ContactDetails({
@@ -31,14 +31,21 @@ function ContactDetails({
 
   const { register, handleSubmit, errors, setValue } = useForm({ mode: 'all' });
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
-  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
-    client_id:process.env.ESRI_CLIENT_ID,
-    client_secret:process.env.ESRI_CLIENT_SECRET,
-  } : {});
+  const geocoder = new GeocoderArcGIS(
+    process.env.ESRI_CLIENT_SECRET
+      ? {
+          client_id: process.env.ESRI_CLIENT_ID,
+          client_secret: process.env.ESRI_CLIENT_SECRET,
+        }
+      : {}
+  );
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address", countryCode: contactDetails.country})
+        .suggest(value, {
+          category: 'Address',
+          countryCode: contactDetails.country,
+        })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -47,18 +54,18 @@ function ContactDetails({
         })
         .catch(console.log);
     }
-  };  
+  };
   const getAddress = (value) => {
     geocoder
-      .findAddressCandidates(value, { outfields: "*" })
+      .findAddressCandidates(value, { outfields: '*' })
       .then((result) => {
-        setValue("address", result.candidates[0].attributes.ShortLabel, {
+        setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
-        setValue("city", result.candidates[0].attributes.City, {
+        setValue('city', result.candidates[0].attributes.City, {
           shouldValidate: true,
         });
-        setValue("zipCode", result.candidates[0].attributes.Postal, {
+        setValue('zipCode', result.candidates[0].attributes.Postal, {
           shouldValidate: true,
         });
         setaddressSugggestions([]);
@@ -67,9 +74,9 @@ function ContactDetails({
   };
 
   const onSubmit = (data: any) => {
-    const submitdata = data;    
-    if(!isCompany){
-      submitdata.companyName = ''
+    const submitdata = data;
+    if (!isCompany) {
+      submitdata.companyName = '';
     }
     setContactDetails({ ...contactDetails, ...submitdata });
     setDonationStep(3);
@@ -112,17 +119,20 @@ function ContactDetails({
             <div className={styles.headerTitle}>
               {t('donate:contactDetails')}
             </div>
-            <div style={{display:'flex',flexDirection:'row'}}>
-              <div className={styles.totalCost} style={{color:styles.light}}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div className={styles.totalCost} style={{ color: styles.light }}>
                 {getFormatedCurrency(
                   i18n.language,
                   currency,
                   treeCount * treeCost
                 )}
               </div>
-              <div className={styles.totalCostText} style={{color:styles.light}}>
+              <div
+                className={styles.totalCostText}
+                style={{ color: styles.light }}
+              >
                 {t('donate:fortreeCountTrees', {
-                   count: Number(treeCount),
+                  count: Number(treeCount),
                   treeCount: getFormattedNumber(
                     i18n.language,
                     Number(treeCount)
@@ -181,7 +191,8 @@ function ContactDetails({
               <MaterialTextField
                 inputRef={register({
                   required: true,
-                  pattern: /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
+                  pattern:
+                    /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
                 })}
                 label={t('donate:email')}
                 variant="outlined"
@@ -211,23 +222,24 @@ function ContactDetails({
                 data-test-id="address"
               />
               {addressSugggestions
-              ? addressSugggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {addressSugggestions.map((suggestion) => {
-                      return (
-                        <div key={'suggestion' + suggestion_counter++}
-                          onMouseDown={() => {
-                            getAddress(suggestion.text);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
+                ? addressSugggestions.length > 0 && (
+                    <div className="suggestions-container">
+                      {addressSugggestions.map((suggestion) => {
+                        return (
+                          <div
+                            key={'suggestion' + suggestion_counter++}
+                            onMouseDown={() => {
+                              getAddress(suggestion.text);
+                            }}
+                            className="suggestion"
+                          >
+                            {suggestion.text}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )
+                : null}
               {errors.address && (
                 <span className={styles.formErrors}>
                   {t('donate:addressRequired')}
@@ -252,91 +264,97 @@ function ContactDetails({
               )}
             </div>
 
-          <div style={{ width: '20px' }} />
-          <div className={styles.formRowInput}>
-            {postalRegex && (
-              <MaterialTextField
-                inputRef={register({
-                  required: true,
-                  pattern: postalRegex,
-                })}
-                label={t('donate:zipCode')}
-                variant="outlined"
-                name="zipCode"
-                defaultValue={contactDetails.zipCode}
-                data-test-id="zipCode"
-              />
-            )}
-            {errors.zipCode && (
-              <span className={styles.formErrors}>
-                {t('donate:zipCodeAlphaNumValidation')}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className={styles.formRow}>
-          <div style={{ width: '100%' }} data-test-id="country" >
-            <AutoCompleteCountry
-              inputRef={register({ required: true })}
-              label={t('donate:country')}
-              name="country"
-              onChange={changeCountry}
-              defaultValue={
-                contactDetails.country ? contactDetails.country : defaultCountry
-              }
-              
-            />
-            {errors.country && (
-              <span className={styles.formErrors}>
-                {t('donate:countryRequired')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.isCompany} style={{alignItems:'baseline'}}>
-          <div className={styles.isCompanyText}>
-            <label className={styles.isCompanyText} htmlFor="checkedB">{t('donate:isACompanyDonation')}</label>
-            {isCompany ? (
-              <div className={styles.isCompany} style={{marginTop:'10px'}}>
-                <label className={styles.isCompanyText} style={{fontSize:'12px', fontStyle:'italic'}}>
-                  {isTaxDeductible ?  t('donate:orgNamePublishedTax') : t('donate:orgNamePublished')}
-                </label>
-              </div>
-            ) : null}
-          </div>
-          <ToggleSwitch
-            checked={isCompany}
-            onChange={() => setIsCompany(!isCompany)}
-            name="checkedB"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-            id="checkedB"
-          />
-        </div>
-        {isCompany ? (
-          <>
-            <div className={styles.formRow}>
-              <div style={{ width: '100%' }}>
+            <div style={{ width: '20px' }} />
+            <div className={styles.formRowInput}>
+              {postalRegex && (
                 <MaterialTextField
-                  label={t('donate:companyName')}
-                  name="companyName"
+                  inputRef={register({
+                    required: true,
+                    pattern: postalRegex,
+                  })}
+                  label={t('donate:zipCode')}
                   variant="outlined"
-                  inputRef={
-                    isCompany ? register({ required: true }) : register({})
-                  }
-                  defaultValue={contactDetails.companyName}
+                  name="zipCode"
+                  defaultValue={contactDetails.zipCode}
+                  data-test-id="zipCode"
                 />
-                {errors.companyName && (
-                  <span className={styles.formErrors}>
-                    {t('donate:companyRequired')}
-                  </span>
-                )}
-              </div>
+              )}
+              {errors.zipCode && (
+                <span className={styles.formErrors}>
+                  {t('donate:zipCodeAlphaNumValidation')}
+                </span>
+              )}
             </div>
-          </>
-        ) : null}
+          </div>
+          <div className={styles.formRow}>
+            <div style={{ width: '100%' }} data-test-id="country">
+              <AutoCompleteCountry
+                inputRef={register({ required: true })}
+                label={t('donate:country')}
+                name="country"
+                onChange={changeCountry}
+                defaultValue={
+                  contactDetails.country
+                    ? contactDetails.country
+                    : defaultCountry
+                }
+              />
+              {errors.country && (
+                <span className={styles.formErrors}>
+                  {t('donate:countryRequired')}
+                </span>
+              )}
+            </div>
+          </div>
 
-        
+          <div className={styles.isCompany} style={{ alignItems: 'baseline' }}>
+            <div className={styles.isCompanyText}>
+              <label className={styles.isCompanyText} htmlFor="checkedB">
+                {t('donate:isACompanyDonation')}
+              </label>
+              {isCompany ? (
+                <div className={styles.isCompany} style={{ marginTop: '10px' }}>
+                  <label
+                    className={styles.isCompanyText}
+                    style={{ fontSize: '12px', fontStyle: 'italic' }}
+                  >
+                    {isTaxDeductible
+                      ? t('donate:orgNamePublishedTax')
+                      : t('donate:orgNamePublished')}
+                  </label>
+                </div>
+              ) : null}
+            </div>
+            <ToggleSwitch
+              checked={isCompany}
+              onChange={() => setIsCompany(!isCompany)}
+              name="checkedB"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              id="checkedB"
+            />
+          </div>
+          {isCompany ? (
+            <>
+              <div className={styles.formRow}>
+                <div style={{ width: '100%' }}>
+                  <MaterialTextField
+                    label={t('donate:companyName')}
+                    name="companyName"
+                    variant="outlined"
+                    inputRef={
+                      isCompany ? register({ required: true }) : register({})
+                    }
+                    defaultValue={contactDetails.companyName}
+                  />
+                  {errors.companyName && (
+                    <span className={styles.formErrors}>
+                      {t('donate:companyRequired')}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </>
+          ) : null}
 
           <div className={styles.horizontalLine} />
 
@@ -355,7 +373,7 @@ function ContactDetails({
               <button
                 onClick={handleSubmit(onSubmit)}
                 className="primaryButton"
-                style={{borderRadius: "10px"}}
+                style={{ borderRadius: '10px' }}
                 data-test-id="continueToPayment"
               >
                 {t('common:continue')}
