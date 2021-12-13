@@ -7,6 +7,7 @@ import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -26,6 +27,7 @@ export default function PopupProject({
   buttonRef,
   popupRef,
 }: Props): ReactElement {
+  const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { theme } = React.useContext(ThemeContext);
 
@@ -37,6 +39,11 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
+
+  const handleRedirect = () => {
+    router.push(`https://donate.plant-for-the-planet.org/?to=${projectDetails.id}`);
+  };
+
   return ready ? (
     <>
       <Modal
@@ -47,11 +54,11 @@ export default function PopupProject({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-          <DonationsPopup project={projectDetails} onClose={handleClose} />
+        <DonationsPopup project={projectDetails} onClose={handleClose} />
       </Modal>
       <div className={'projectImage'}>
         {project.properties.image &&
-        typeof project.properties.image !== 'undefined' ? (
+          typeof project.properties.image !== 'undefined' ? (
           <div
             className={'projectImageFile'}
             style={{
@@ -63,9 +70,9 @@ export default function PopupProject({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-                {project.properties.classification &&
-                t(`donate:${project.properties.classification}`)}
-              </div>
+            {project.properties.classification &&
+              t(`donate:${project.properties.classification}`)}
+          </div>
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
@@ -79,14 +86,18 @@ export default function PopupProject({
           style={{ width: progressPercentage }}
         />
       </div>
-      <div className={'projectInfo'} style={{padding:'16px', backgroundColor: 'var(--background-color)'}}>
+      <div className={'projectInfo'} style={{ padding: '16px', backgroundColor: 'var(--background-color)' }}>
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
-              {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
+              {project.properties.purpose === 'trees' && (
+                <>
+                  {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
+                  {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
+                </>
+              )}
               <span style={{ fontWeight: 400 }}>
-              {t('country:' + project.properties.country.toLowerCase())}
+                {t('country:' + project.properties.country.toLowerCase())}
               </span>
             </div>
           </div>
@@ -100,7 +111,9 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
-                <button id={`ProjPopDonate${project.id}`}ref={buttonRef} onClick={handleOpen} className={'donateButton'}
+                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={
+                  project.purpose === 'trees' ? handleOpen : handleRedirect
+                } className={'donateButton'}
                 >
                   {t('common:donate')}
                 </button>

@@ -52,6 +52,8 @@ export default function ProjectSnippet({
   const handleRedirect = () => {
     router.push(`https://donate.plant-for-the-planet.org/?to=${project.id}`);
   };
+
+  console.log(`project.purpose`, project.purpose)
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
@@ -76,9 +78,8 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={`projectImage ${
-          selectedPl || hoveredPl ? 'projectCollapsed' : ''
-        }`}
+        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
+          }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -110,7 +111,7 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {project.purpose === 'trees' && (
+              {project.purpose === 'trees' ? (
                 <>
                   {localizedAbbreviatedNumber(
                     i18n.language,
@@ -119,7 +120,7 @@ export default function ProjectSnippet({
                   )}{' '}
                   {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
                 </>
-              )}
+              ) : []}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
               </span>
