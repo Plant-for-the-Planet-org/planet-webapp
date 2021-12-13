@@ -243,7 +243,7 @@ export default function BasicDetails({
       acceptDonations: data.acceptDonations,
       treeCost: data.treeCost
         ? parseNumber(i18n.language, data.treeCost)
-        : null,
+        : undefined,
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
@@ -313,7 +313,7 @@ export default function BasicDetails({
         }}
       >
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-          <div className={styles.formFieldLarge}>
+          <div className={styles.formFieldLarge} data-test-id="projectName">
             <MaterialTextField
               inputRef={register({
                 required: {
@@ -330,8 +330,8 @@ export default function BasicDetails({
             )}
           </div>
 
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
+          <div className={styles.formField} >
+            <div className={styles.formFieldHalf} data-test-id="slug" id="slug">
               <MaterialTextField
                 inputRef={register({
                   required: {
@@ -344,7 +344,7 @@ export default function BasicDetails({
                 name="slug"
                 InputProps={{
                   startAdornment: (
-                    <p className={styles.inputStartAdornment}>pp.eco/</p>
+                    <p className={styles.inputStartAdornment} >pp.eco/</p>
                   ),
                 }}
               />
@@ -353,7 +353,7 @@ export default function BasicDetails({
               )}
             </div>
             <div style={{ width: '20px' }}></div>
-            <div className={styles.formFieldHalf}>
+            <div className={styles.formFieldHalf} data-test-id="classification">
               <Controller
                 as={
                   <MaterialTextField
@@ -365,7 +365,7 @@ export default function BasicDetails({
                       <MenuItem key={option.value} value={option.value} classes={{
                         // option: classes.option,
                         root: classes.root,
-                      }}>
+                      }} >
                         {option.label}
                       </MenuItem>
                     ))}
@@ -386,7 +386,7 @@ export default function BasicDetails({
           </div>
 
           <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
+            <div className={styles.formFieldHalf} data-test-id="target">
               <MaterialTextField
                 inputRef={register({
                   required: {
@@ -411,7 +411,7 @@ export default function BasicDetails({
                 </span>
               )}
             </div>
-            <div className={styles.formFieldHalf}>
+            <div className={styles.formFieldHalf} data-test-id="website">
               <MaterialTextField
                 label={t('manageProjects:website')}
                 variant="outlined"
@@ -436,7 +436,7 @@ export default function BasicDetails({
             </div>
           </div>
 
-          <div className={styles.formFieldLarge}>
+          <div className={styles.formFieldLarge} data-test-id="aboutProject">
             <MaterialTextField
               label={t('manageProjects:aboutProject')}
               variant="outlined"
@@ -458,10 +458,11 @@ export default function BasicDetails({
 
           <div className={styles.formField} style={{ minHeight: '80px' }}>
             <div className={`${styles.formFieldHalf}`}>
-              <div className={`${styles.formFieldRadio}`}>
+              <div className={`${styles.formFieldRadio}`} >
                 <label
                   htmlFor="acceptDonations"
                   style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                  data-test-id="receiveDonations"
                 >
                   {t('manageProjects:receiveDonations')}
                   <div
@@ -486,7 +487,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         properties.onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
@@ -497,11 +498,11 @@ export default function BasicDetails({
               </div>
             </div>
             {acceptDonations ? (
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="treeCost">
                 <MaterialTextField
                   inputRef={register({
                     required: {
-                      value: true,
+                      value: acceptDonations,
                       message: t('manageProjects:treeCostValidaitonRequired'),
                     },
                     validate: (value) =>
@@ -532,7 +533,7 @@ export default function BasicDetails({
             ) : null}
           </div>
 
-          <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}>
+          <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`} data-test-id="marker">
             <p style={{
               backgroundColor: theme === 'theme-light' ?
                 themeProperties.light.light :
@@ -569,10 +570,10 @@ export default function BasicDetails({
                   offsetTop={-16}
                   style={{ left: '28px' }}
                 >
-                  <div className={styles.marker}></div>
+                  <div className={styles.marker} ></div>
                 </Marker>
               ) : null}
-              <div className={styles.mapNavigation}>
+              <div className={styles.mapNavigation} >
                 <NavigationControl showCompass={false} />
               </div>
             </MapGL>
@@ -580,7 +581,7 @@ export default function BasicDetails({
               className={styles.formField}
               style={{ margin: 'auto', marginTop: '-120px' }}
             >
-              <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
+              <div className={`${styles.formFieldHalf} ${styles.latlongField}`} data-test-id="latitude">
                 <MaterialTextField
                   inputRef={register({
                     required: true,
@@ -606,7 +607,7 @@ export default function BasicDetails({
                   </span>
                 )}
               </div>
-              <div className={`${styles.formFieldHalf} ${styles.latlongField}`}>
+              <div className={`${styles.formFieldHalf} ${styles.latlongField}`} data-test-id="longitude">
                 <MaterialTextField
                   inputRef={register({
                     required: true,
@@ -637,7 +638,7 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={styles.formFieldRadio}>
-              <label htmlFor="visitorAssistance" style={{ cursor: 'pointer' }}>
+              <label htmlFor="visitorAssistance" style={{ cursor: 'pointer' }} data-test-id="visitorAssistance">
                 {t('manageProjects:visitorAssistanceLabel')}
               </label>
               <Controller
@@ -657,7 +658,7 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'} style={{ cursor: 'pointer' }}>
+              <label htmlFor={'publish'} style={{ cursor: 'pointer' }} data-test-id="publishProject">
                 {t('manageProjects:publishProject')}
               </label>
 
@@ -718,6 +719,7 @@ export default function BasicDetails({
               onClick={handleSubmit(onSubmit)}
               className="primaryButton"
               style={{ minWidth: "240px" }}
+              data-test-id="basicDetailsCont"
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>

@@ -6,7 +6,8 @@
   "for": "para",
   "trees": "Árvores",
   "planted": "plantadas",
-  "privacyAndTerms": "Privacidade e Termos",
+  "privacy": "Privacidade",
+  "terms": "Termos",
   "imprint": "Impresso",
   "status": "Status",
   "contact": "Contato",
@@ -76,5 +77,6 @@
   "close": "Fechar",
   "logout": "Sair",
   "featured": "Em destaque",
-  "treeMapper": "TreeMapper"
+  "treeMapper": "TreeMapper",
+  "underMaintenance": "Em Manutenção"
 }

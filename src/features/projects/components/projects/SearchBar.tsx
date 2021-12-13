@@ -20,7 +20,7 @@ function SearchBar({ setSearchValue, setSearchMode, searchValue, searchRef }: Pr
                 <SearchIcon color={'primaryFontColor'} />
             </button>
 
-            <div className={'searchInput'}>
+            <div className={'searchInput'} data-test-id="searchIcon">
                 <TextField
                     ref={searchRef}
                     fullWidth={true}

@@ -606,7 +606,7 @@ fill: $primaryFontColor;
 //   }
 // }
 
-@include xsPhoneView {
+@media screen and (max-height:315px), (max-width:481px){
   .mapNavigation {
     display: none;
   }

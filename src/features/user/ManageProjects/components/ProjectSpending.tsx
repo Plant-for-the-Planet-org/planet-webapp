@@ -309,6 +309,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             onClick={() => handleNext()}
                             className="primaryButton"
                             style={{ minWidth: "240px" }}
+                            data-test-id="projSpendingCont"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
                         </button>

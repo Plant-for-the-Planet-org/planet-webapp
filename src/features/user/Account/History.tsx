@@ -10,6 +10,7 @@ import AccountRecord, {
   RecordHeader,
 } from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -33,6 +34,7 @@ export default function History({
   const { t, i18n } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState(null);
   const [openModal, setOpenModal] = React.useState(false);
+  const router = useRouter();
 
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index) {
@@ -54,7 +56,7 @@ export default function History({
   };
 
   let currentRecord;
-  if (paymentHistory) {
+  if (paymentHistory && Array.isArray(paymentHistory?.items)) {
     currentRecord = paymentHistory?.items[selectedRecord];
   }
 
@@ -62,6 +64,20 @@ export default function History({
     <div className="profilePage">
       <div className={'profilePageTitle'}>{t('me:payments')}</div>
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
+      <div className={styles.donationOptions}>
+        <div
+          className={`${styles.option} ${styles.active}`}
+          style={{ color: '#68B030' }}
+        >
+          {t('history')}
+        </div>
+        <button
+          onClick={() => router.push(`/profile/recurrency`)}
+          className={styles.option}
+        >
+          {t('recurrency')}
+        </button>
+      </div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
@@ -88,12 +104,15 @@ export default function History({
                   <TransactionListLoader />
                   <TransactionListLoader />
                 </>
-              ) : paymentHistory && paymentHistory.items.length === 0 ? (
+              ) : paymentHistory &&
+                Array.isArray(paymentHistory?.items) &&
+                paymentHistory.items.length === 0 ? (
                 <div className={styles.notFound}>
                   <TransactionsNotFound />
                 </div>
               ) : (
                 paymentHistory &&
+                Array.isArray(paymentHistory?.items) &&
                 paymentHistory?.items?.map((record: any, index: number) => {
                   return (
                     <AccountRecord
@@ -113,7 +132,7 @@ export default function History({
                 <button
                   onClick={() => fetchPaymentHistory(true)}
                   className="primaryButton"
-                  style={{ minWidth: '240px',marginTop:'30px' }}
+                  style={{ minWidth: '240px', marginTop: '30px' }}
                 >
                   {isDataLoading ? (
                     <div className={styles.spinner}></div>
@@ -157,7 +176,10 @@ export default function History({
               </div>
               {currentRecord ? (
                 <>
-                  <RecordHeader record={currentRecord} />
+                  <RecordHeader
+                    record={currentRecord}
+                    handleRecordOpen={() => {}}
+                  />
                   <div className={styles.divider}></div>
                   <div className={styles.detailContainer}>
                     <div className={styles.detailGrid}>

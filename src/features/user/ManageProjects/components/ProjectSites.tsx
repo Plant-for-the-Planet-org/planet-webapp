@@ -330,7 +330,7 @@ export default function ProjectSites({
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
-                      {String(site.status).toUpperCase()}
+                      {status.find(e => site.status == e.value)?.label.toUpperCase()}
                     </div>
                     <button
                       id={'trashIconProjS'}
@@ -381,7 +381,7 @@ export default function ProjectSites({
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="siteName">
                 <MaterialTextField
                   inputRef={register({ required: true })}
                   label={t('manageProjects:siteName')}
@@ -391,7 +391,7 @@ export default function ProjectSites({
                   defaultValue={siteDetails.name}
                 />
               </div>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
                   as={
                     <MaterialTextField
@@ -477,6 +477,7 @@ export default function ProjectSites({
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
               style={{minWidth:"240px"}}
+              data-test-id="projSitesCont"
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
@@ -519,6 +520,29 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
+
   const MapProps = {
     geoJson,
     setGeoJson,
@@ -546,14 +570,14 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
         if (!res.code) {
           const temp = siteList;
           let siteIndex;
-          const singleSite = temp.find((site, index) => {
+          temp.find((site, index) => {
             if (site.id === res.id) {
               siteIndex = index;
               return true
             }
           });
           if (siteIndex !== null) {
-            temp[siteIndex] = singleSite;
+            temp[siteIndex] = res;
           }
           setSiteList(temp);
           setGeoJson(null);
