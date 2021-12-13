@@ -106,10 +106,8 @@ export default function Recurrency({
   return (
     <div className="profilePage">
       <>
-        <div className={'profilePageTitle'}>{t('me:recurrency')}</div>
-        <div className={'profilePageSubTitle'}>
-          {t('me:recurrencySubTitle')}
-        </div>
+        <div className={'profilePageTitle'}>{t('me:payments')}</div>
+        <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
         <div className={styles.donationOptions}>
           <button
             className={styles.option}
@@ -177,7 +175,7 @@ export default function Recurrency({
                     <>
                       <RecordHeader
                         record={currentRecord}
-                        handleRecordOpen={() => {}}
+                        handleRecordOpen={() => { }}
                         handleClose={handleClose}
                         openModal={openModal}
                       />
@@ -372,7 +370,7 @@ const EditDonation = ({ record, editModalOpen }: EditDonationProps) => {
                   variant="outlined"
                   label={t('frequency')}
                   name="frequency"
-                  // defaultValue={"spme"}
+                // defaultValue={"spme"}
                 />
               )}
             />

@@ -38,9 +38,8 @@ export default function RecurrencyRecord({
   return (
     <div
       key={index}
-      className={`${styles.record} ${
-        selectedRecord === index ? styles.selected : ''
-      }`}
+      className={`${styles.record} ${selectedRecord === index ? styles.selected : ''
+        }`}
     >
       <RecordHeader
         record={record}
@@ -138,7 +137,7 @@ export function RecordHeader({
                 new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24
               ).toISOString()
             )}{' '}
-            • {t(record?.frequency)}
+            • <p style={{ textTransform: "capitalize" }}>{t(record?.frequency)}</p>
           </p>
         )}
       </div>
@@ -150,13 +149,12 @@ export function RecordHeader({
           {getFormatedCurrency(i18n.language, record.currency, record.amount)}
         </p>
         <p
-          className={`${styles.status} ${
-            record?.status === 'paused'
-              ? styles.paused
-              : record?.status === 'canceled'
+          className={`${styles.status} ${record?.status === 'paused'
+            ? styles.paused
+            : record?.status === 'canceled'
               ? styles.cancelled
               : styles.active
-          }`}
+            }`}
         >
           {record?.status === 'trialing' ? 'active' : record?.status}
         </p>
