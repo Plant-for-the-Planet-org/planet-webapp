@@ -183,5 +183,7 @@
   "widgets": "Widgets",
   "pauseNote": "Hinweis: Du kannst ein Datum auswählen, dass hinter dem aktuellen Zeitraum liegt.",
   "cancelImmediately": "Sofort beenden",
-  "cancelOnSelectedDate": "Wähle Datum der Beendigung"
+  "cancelOnSelectedDate": "Wähle Datum der Beendigung",
+  "funds-donation": "Funding Spende",
+  "bouquet-donation": "Bouquet Spende"
 }
