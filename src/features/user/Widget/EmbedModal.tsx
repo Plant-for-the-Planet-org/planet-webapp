@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import MuiAlert from '@material-ui/lab/Alert';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { TENANT_ID } from '../../../utils/constants/environment';
 
 interface Props {
   embedModalOpen: boolean;
@@ -68,7 +69,7 @@ export default function EmbedModal({
             setEmbedModalOpen(false);
             setIsUploadingData(false);
             router.push(
-              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`
+              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`
             );
           })
           .catch((error) => {
