@@ -184,6 +184,7 @@
   "pauseNote": "Hinweis: Du kannst ein Datum auswählen, dass hinter dem aktuellen Zeitraum liegt.",
   "cancelImmediately": "Sofort beenden",
   "cancelOnSelectedDate": "Wähle Datum der Beendigung",
-  "funds-donation": "Funding Spende",
+  "conservation-donation": "Spende für den Naturschutz",
+  "funds-donation": "Spende",
   "bouquet-donation": "Bouquet Spende"
 }
