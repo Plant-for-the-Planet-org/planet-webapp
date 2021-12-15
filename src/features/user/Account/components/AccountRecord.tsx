@@ -68,16 +68,27 @@ interface HeaderProps {
 
 export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+  const getRecordTitle = (): ReactElement => {
+    switch (record.type) {
+      case 'tree-donation':
+        return <p className={styles.top}>{`${getFormattedNumber(i18n.language, record.quantity)} ${t(record.type)}`}</p>;
+      case 'tree-gift':
+        return <p className={styles.top}>{`${getFormattedNumber(i18n.language, record.quantity)} ${t(record.type)}`}</p>;
+      case 'funds-donation':
+      case 'bouquet-donation':
+      case 'conservation-donation':
+        if (record.details.project.length > 42)
+          return <p title={record.details.project} className={styles.top}>{`${record.details.project.substring(0, 42)}...`}</p>;
+        else
+          return <p className={styles.top}>{record.details.project}</p>;
+      default:
+        return <p className={styles.top}>{`${t(record.type)}`}</p>;
+    }
+  };
   return (
     <div onClick={() => handleRecordOpen(index)} className={styles.recordHeader}>
       <div className={styles.left}>
-        <p className={styles.top}>
-          {record.type === 'tree-donation' || record.type === 'tree-gift'
-            ? getFormattedNumber(i18n.language, record.quantity) +
-            ' ' +
-            t(record.type)
-            : t(record.type)}
-        </p>
+        {getRecordTitle()}
         <p>{formatDate(record.created)}</p>
       </div>
       <div className={styles.right}>
@@ -90,7 +101,7 @@ export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): 
         </p>
         <p>{t(record.status)}</p>
       </div>
-    </div>
+    </div >
   );
 }
 
@@ -167,9 +178,9 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
           {record.projectGuid ? (
-            <a href={`/${record.projectGuid}`}>{record.details.project}</a>
+            <a title={record.details.project} href={`/${record.projectGuid}`}>{record.details.project > 42 ? record.details.project.substring(0, 42) : record.details.project}</a>
           ) : (
-            <p>{record.details.project}</p>
+            <p title={record.details.project}>{record.details.project.length > 42 ? record.details.project.substring(0, 42) + '...' : record.details.project}</p>
           )}
         </div>
       )}

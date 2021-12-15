@@ -32,9 +32,8 @@
     align-items: center;
     width: 100%;
     color: $primaryFontColor;
-    border-radius: 10px;
     overflow: hidden;
-    box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
+    // box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -55,6 +54,7 @@
       align-items: center;
       padding: 20px 20px 10px 20px;
       background-color: $backgroundColor;
+      margin-bottom: 16px;
       &:hover {
         background-color: $backgroundColorDark;
       }
@@ -78,9 +78,8 @@
     align-items: flex-start;
     width: 100%;
     color: $primaryFontColor;
-    border-radius: 10px;
     overflow: hidden;
-    box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
+    // box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
       flex-direction: column;
@@ -100,6 +99,7 @@
       justify-content: flex-start;
       align-items: center;
       padding: 20px 20px 10px 20px;
+      margin-bottom: 16px;
       background-color: $backgroundColor;
       &:hover {
         background-color: $backgroundColorDark;
@@ -216,7 +216,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  box-shadow: 1px 2px 8px -6px #707070;
+  // box-shadow: 1px 2px 8px -6px #707070;
   background-color: $light;
   border-radius: 10px;
   padding: 20px;
@@ -508,8 +508,7 @@
       width: 100%;
       > .record.selected {
         background-color: $backgroundColorDark;
-        // border-radius: 10px;
-        box-shadow: 1px 2px 8px -6px #707070;
+        border-radius: 10px;
         max-height: 1000px;
         color: $primaryFontColor;
         > .detailContainer {
@@ -567,8 +566,8 @@
       width: 100%;
       > .record.selected {
         background-color: $backgroundColorDark;
-        // border-radius: 10px;
-        box-shadow: 1px 2px 8px -6px #707070;
+        border-radius: 10px;
+        // box-shadow: 1px 2px 8px -6px #707070;
         max-height: 1000px;
         color: $primaryFontColor;
         > .detailContainer {
