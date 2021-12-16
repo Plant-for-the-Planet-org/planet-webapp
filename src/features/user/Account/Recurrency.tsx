@@ -63,7 +63,6 @@ export default function Recurrency({
   const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
   const router = useRouter();
 
-  console.log(recurrencies, '============');
   React.useEffect(() => {
     fetchRecurrentDonations();
   }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
@@ -108,7 +107,7 @@ export default function Recurrency({
       <>
         <div className={'profilePageTitle'}>{t('me:payments')}</div>
         <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-        <div className={styles.donationOptions}>
+        {/* <div className={styles.donationOptions}>
           <button
             className={styles.option}
             onClick={() => router.push(`/profile/history`)}
@@ -121,7 +120,7 @@ export default function Recurrency({
           >
             {t('recurrency')}
           </div>
-        </div>
+        </div> */}
         <div className={styles.pageContainer}>
           <div className={`${styles.section} ${styles.recurrencySection}`}>
             <div className={styles.recurrency}>

@@ -64,6 +64,20 @@
     }
   }
 }
+
+.recordStatus {
+  &.pending {
+    color: #ffc107;
+  }
+  &.success,
+  &.paid {
+    color: #28a745;
+  }
+  &.failed {
+    color: #dc3545;
+  }
+}
+
 .recurrency {
   width: 100%;
   max-width: 600px;
@@ -485,6 +499,11 @@
   margin-top: 6px;
   max-width: 320px;
 }
+
+.donationNote {
+  font-style: italic;
+}
+
 @include smTabletView {
   .detailGrid {
     grid-template-columns: repeat(2, 1fr);

@@ -30,7 +30,6 @@ function UserLayout(props: any): ReactElement {
       title: t('me:profile'),
       path: '/profile',
       icon: <UserIcon />,
-
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -55,20 +54,20 @@ function UserLayout(props: any): ReactElement {
     {
       key: 3,
       title: t('me:payments'),
-      path: '/profile/history',
+      // path: '/profile/history',
       icon: <DonateIcon />,
       flag: 'New',
-      hideSubMenu: true,
+      // hideSubMenu: true,
       subMenu: [
         {
           title: 'History',
           path: '/profile/history',
-          hideItem: true,
+          // hideItem: true,
         },
         {
           title: 'Recurring Donations',
           path: '/profile/recurrency',
-          hideItem: true,
+          // hideItem: true,
         },
         // {
         //   title: 'Payouts',
@@ -367,8 +366,8 @@ function NavLink({
             return (
               <div
                 className={`${styles.navlinkSubMenu} ${activeSubMenu === subLink.path
-                    ? styles.navlinkActiveSubMenu
-                    : ''
+                  ? styles.navlinkActiveSubMenu
+                  : ''
                   }`}
                 key={index}
                 onClick={() => {

@@ -23,6 +23,31 @@ export default function AccountRecord({
   paymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+  const showDonationNote = (): string => {
+    console.log(`record.type`, record.type)
+    switch (record.details.method) {
+      case 'stripe-sofort':
+      case 'stripe-sepa_debit':
+      case 'offline-offline':
+        return t(`me:donationNote.${record.details.method}`);
+      default:
+        return '';
+    }
+  }
+  const showStatusNote = (): ReactElement => {
+    switch (record.status) {
+      case 'pending':
+        return (
+          <p className={styles.donationNote}>{showDonationNote()}</p>
+        );
+      case 'in-dispute':
+        return (
+          <p className={styles.donationNote}>{t('me:donationNote.in-dispute')}</p>
+        );
+      default:
+        return <></>;
+    }
+  }
   return (
     <div
       key={index}
@@ -45,6 +70,10 @@ export default function AccountRecord({
             </div>
           </>
         )}
+        {record.details?.account && (
+          <TransferDetails account={record.details.account} />
+        )}
+        {showStatusNote()}
         {(record.details.donorCertificate ||
           record.details.taxDeductibleReceipt ||
           record.details.giftCertificate) && (
@@ -99,7 +128,7 @@ export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): 
             record.netAmount / 100
           )}
         </p>
-        <p>{t(record.status)}</p>
+        <p className={`${styles.recordStatus} ${styles[record.status]}`}>{t(record.status)}</p>
       </div>
     </div >
   );
@@ -338,6 +367,58 @@ export function BankDetails({ record }: BankDetailsProps): ReactElement {
           <p>{formatDate(record.details.recipientBank.updated)}</p>
         </div>
       )}
+    </>
+  );
+}
+
+
+interface TransferDetailsProps {
+  account: {
+    beneficiary: string;
+    iban: string;
+    bic: string;
+    bankName: string;
+    swift: string;
+  };
+}
+
+export function TransferDetails({ account }: TransferDetailsProps): ReactElement {
+  const { t, i18n } = useTranslation(['me']);
+  return (
+    <>
+      <div className={styles.title}>{t('transferDetails')}</div>
+      <div className={styles.detailGrid}>
+        {account.beneficiary && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('beneficiary')}</p>
+            <p>{account.beneficiary}</p>
+          </div>
+        )}
+        {account.iban && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('iban')}</p>
+            <p>{account.iban}</p>
+          </div>
+        )}
+        {account.bic && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('bic')}</p>
+            <p>{account.bic}</p>
+          </div>
+        )}
+        {account.bankName && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('bankName')}</p>
+            <p>{account.bankName}</p>
+          </div>
+        )}
+        {account.swift && (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('swift')}</p>
+            <p>{account.swift}</p>
+          </div>
+        )}
+      </div>
     </>
   );
 }
