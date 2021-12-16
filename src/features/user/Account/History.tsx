@@ -15,12 +15,12 @@ import { useRouter } from 'next/router';
 const { useTranslation } = i18next;
 
 interface Props {
-  filter: string;
-  setFilter: Function;
+  filter: string | null;
+  setFilter: (filter: string) => void;
   isDataLoading: boolean;
-  accountingFilters: Object;
-  paymentHistory: Object;
-  fetchPaymentHistory: Function;
+  accountingFilters: Payments.Filters | null;
+  paymentHistory: Payments.PaymentHistory | null;
+  fetchPaymentHistory: (next?: boolean) => Promise<void>;
 }
 
 export default function History({
@@ -32,7 +32,7 @@ export default function History({
   fetchPaymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  const [selectedRecord, setSelectedRecord] = React.useState(null);
+  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
   const [openModal, setOpenModal] = React.useState(false);
   const router = useRouter();
 
@@ -57,7 +57,7 @@ export default function History({
 
   let currentRecord;
   if (paymentHistory && Array.isArray(paymentHistory?.items)) {
-    currentRecord = paymentHistory?.items[selectedRecord];
+    currentRecord = selectedRecord ? paymentHistory?.items[selectedRecord] : null;
   }
 
   return (
@@ -187,7 +187,7 @@ export default function History({
                       <>
                         <div className={styles.title}>{t('bankDetails')}</div>
                         <div className={styles.detailGrid}>
-                          <BankDetails record={currentRecord} />
+                          <BankDetails recipientBank={currentRecord.details.recipientBank} />
                         </div>
                       </>
                     )}
@@ -197,7 +197,7 @@ export default function History({
                         <>
                           <div className={styles.title}>{t('downloads')}</div>
                           <div className={styles.detailGrid}>
-                            <Certificates record={currentRecord} />
+                            <Certificates recordDetails={currentRecord.details} />
                           </div>
                         </>
                       )}

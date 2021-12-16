@@ -10,9 +10,9 @@ const { useTranslation } = i18next;
 interface Props {
   handleRecordOpen: Function;
   index: number;
-  selectedRecord: number;
-  record: Object;
-  paymentHistory: Object;
+  selectedRecord: number | null;
+  record: Payments.PaymentHistoryItem;
+  paymentHistory: Payments.PaymentHistory;
 }
 
 export default function AccountRecord({
@@ -24,7 +24,6 @@ export default function AccountRecord({
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   const showDonationNote = (): string => {
-    console.log(`record.type`, record.type)
     switch (record.details.method) {
       case 'stripe-sofort':
       case 'stripe-sepa_debit':
@@ -66,7 +65,7 @@ export default function AccountRecord({
           <>
             <div className={styles.title}>{t('bankDetails')}</div>
             <div className={styles.detailGrid}>
-              <BankDetails record={record} />
+              <BankDetails recipientBank={record.details.recipientBank} />
             </div>
           </>
         )}
@@ -80,7 +79,7 @@ export default function AccountRecord({
             <>
               <div className={styles.title}>{t('downloads')}</div>
               <div className={styles.detailGrid}>
-                <Certificates record={record} />
+                <Certificates recordDetails={record.details} />
               </div>
             </>
           )}
@@ -90,9 +89,9 @@ export default function AccountRecord({
 }
 
 interface HeaderProps {
-  record: Object;
+  record: Payments.PaymentHistoryItem;
   handleRecordOpen: Function;
-  index: number;
+  index?: number;
 }
 
 export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): ReactElement {
@@ -135,7 +134,7 @@ export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): 
 }
 
 interface DetailProps {
-  record: Object;
+  record: Payments.PaymentHistoryItem;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -207,7 +206,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
           {record.projectGuid ? (
-            <a title={record.details.project} href={`/${record.projectGuid}`}>{record.details.project > 42 ? record.details.project.substring(0, 42) : record.details.project}</a>
+            <a title={record.details.project} href={`/${record.projectGuid}`}>{record.details.project.length > 42 ? record.details.project.substring(0, 42) : record.details.project}</a>
           ) : (
             <p title={record.details.project}>{record.details.project.length > 42 ? record.details.project.substring(0, 42) + '...' : record.details.project}</p>
           )}
@@ -302,69 +301,69 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
 }
 
 interface BankDetailsProps {
-  record: Object;
+  recipientBank: Payments.RecipientBank;
 }
 
-export function BankDetails({ record }: BankDetailsProps): ReactElement {
+export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <>
-      {record.details?.recipientBank?.bankName && (
+      {recipientBank?.bankName && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('bankName')}</p>
-          <p>{record.details.recipientBank.bankName}</p>
+          <p>{recipientBank.bankName}</p>
         </div>
       )}
-      {record.details?.recipientBank?.accountHolder && (
+      {recipientBank?.accountHolder && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('accountHolder')}</p>
-          <p>{record.details.recipientBank.accountHolder}</p>
+          <p>{recipientBank.accountHolder}</p>
         </div>
       )}
-      {record.details?.recipientBank?.aba && (
+      {recipientBank?.aba && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('aba')}</p>
-          <p>{record.details.recipientBank.aba}</p>
+          <p>{recipientBank.aba}</p>
         </div>
       )}
-      {record.details?.recipientBank?.bic && (
+      {recipientBank?.bic && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('bic')}</p>
-          <p>{record.details.recipientBank.bic}</p>
+          <p>{recipientBank.bic}</p>
         </div>
       )}
-      {record.details?.recipientBank?.iban && (
+      {recipientBank?.iban && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('iban')}</p>
-          <p>{record.details.recipientBank.iban}</p>
+          <p>{recipientBank.iban}</p>
         </div>
       )}
-      {record.details?.recipientBank?.swift && (
+      {recipientBank?.swift && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('swift')}</p>
-          <p>{record.details.recipientBank.swift}</p>
+          <p>{recipientBank.swift}</p>
         </div>
       )}
-      {record.details?.recipientBank?.isDefault && (
+      {recipientBank?.isDefault && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('isDefault')}</p>
           <p>
-            {Number(record.details.recipientBank.isDefault) === 0
+            {Number(recipientBank.isDefault) === 0
               ? t('no')
               : t('yes')}
           </p>
         </div>
       )}
-      {record.details?.recipientBank?.created && (
+      {recipientBank?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('created')}</p>
-          <p>{formatDate(record.details.recipientBank.created)}</p>
+          <p>{formatDate(recipientBank.created)}</p>
         </div>
       )}
-      {record.details?.recipientBank?.updated && (
+      {recipientBank?.updated && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('updated')}</p>
-          <p>{formatDate(record.details.recipientBank.updated)}</p>
+          <p>{formatDate(recipientBank.updated)}</p>
         </div>
       )}
     </>
@@ -373,13 +372,7 @@ export function BankDetails({ record }: BankDetailsProps): ReactElement {
 
 
 interface TransferDetailsProps {
-  account: {
-    beneficiary: string;
-    iban: string;
-    bic: string;
-    bankName: string;
-    swift: string;
-  };
+  account: Payments.BankAccount;
 }
 
 export function TransferDetails({ account }: TransferDetailsProps): ReactElement {
@@ -424,17 +417,17 @@ export function TransferDetails({ account }: TransferDetailsProps): ReactElement
 }
 
 interface CertificatesProps {
-  record: Object;
+  recordDetails: Payments.PaymentDetails;
 }
 
-export function Certificates({ record }: CertificatesProps): ReactElement {
+export function Certificates({ recordDetails }: CertificatesProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <>
-      {record.details?.donorCertificate && (
+      {recordDetails?.donorCertificate && (
         <div className={styles.singleDetail}>
           <a
-            href={record.details.donorCertificate}
+            href={recordDetails.donorCertificate}
             target="_blank"
             rel="noreferrer"
           >
@@ -442,10 +435,10 @@ export function Certificates({ record }: CertificatesProps): ReactElement {
           </a>
         </div>
       )}
-      {record.details?.taxDeductibleReceipt && (
+      {recordDetails?.taxDeductibleReceipt && (
         <div className={styles.singleDetail}>
           <a
-            href={record.details.taxDeductibleReceipt}
+            href={recordDetails.taxDeductibleReceipt}
             target="_blank"
             rel="noreferrer"
           >
@@ -453,10 +446,10 @@ export function Certificates({ record }: CertificatesProps): ReactElement {
           </a>
         </div>
       )}
-      {record.details?.giftCertificate && (
+      {recordDetails?.giftCertificate && (
         <div className={styles.singleDetail}>
           <a
-            href={record.details.giftCertificate}
+            href={recordDetails.giftCertificate}
             target="_blank"
             rel="noreferrer"
           >

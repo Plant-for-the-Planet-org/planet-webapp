@@ -12,11 +12,9 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import { ThemeProvider } from '@material-ui/styles';
-// import CalendarPicker from '@mui/lab/CalendarPicker';
 import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
-import { Controller } from '../../../../node_modules/react-hook-form/dist';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 export const CancelModal = ({
   cancelModalOpen,
@@ -36,8 +34,8 @@ export const CancelModal = ({
         option == 'cancelImmediately'
           ? 'immediate'
           : option == 'cancelOnPeriodEnd'
-          ? 'period-end'
-          : 'custom-date', // immediate|period-end|custom-date
+            ? 'period-end'
+            : 'custom-date', // immediate|period-end|custom-date
       cancellationDate:
         option == 'cancelOnSelectedDate'
           ? date.toISOString().split('T')[0]
@@ -134,11 +132,11 @@ export const CancelModal = ({
                 <ThemeProvider theme={materialTheme}>
                   <MuiPickersUtilsProvider
                     utils={DateFnsUtils}
-                    // locale={
-                    //   localeMapForDate[userLang]
-                    //     ? localeMapForDate[userLang]
-                    //     : localeMapForDate['en']
-                    // }
+                  // locale={
+                  //   localeMapForDate[userLang]
+                  //     ? localeMapForDate[userLang]
+                  //     : localeMapForDate['en']
+                  // }
                   >
                     <Calendar
                       date={date}
