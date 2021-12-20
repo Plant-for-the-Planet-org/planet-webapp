@@ -1,8 +1,5 @@
-import Modal from '@material-ui/core/Modal';
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { ThemeContext } from '../../../theme/themeContext';
-import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -11,9 +8,7 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
-import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import DonationModal from '../../donations/DonationModal';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -34,27 +29,13 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { theme } = React.useContext(ThemeContext);
-
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
-  const { user } = React.useContext(UserPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
   }
-
-  const [open, setOpen] = React.useState(false);
-  const currency = getStoredCurrency();
-  const country = localStorage.getItem('countryCode');
-  const language = localStorage.getItem('language');
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   const [openDonation, setOpenDonation] = React.useState(false);
   const handleOpenDonate = () => {
@@ -65,56 +46,12 @@ export default function ProjectSnippet({
   };
   return ready ? (
     <div className={'singleProject'} key={key}>
-      <Modal
-        className={`modalContainer ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        disableBackdropClick
-      >
-        <DonationsPopup project={project} onClose={handleClose} />
-      </Modal>
-      <Modal
-        className={`modalContainer ${theme}`}
-        open={openDonation}
-        onClose={handleCloseDonate}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        disableBackdropClick
-      >
-        <>
-          <div
-            onClick={handleCloseDonate}
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              fontSize: 60,
-              color: '#fff',
-              cursor: 'pointer',
-            }}
-          >
-            &times;
-          </div>
-          <iframe
-            src={`${process.env.DONATION_URL}/?to=${project.slug
-              }&embed=true&returnToUrl=${process.env.NEXTAUTH_URL
-              }&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''
-              }&tenant=${process.env.TENANTID}`}
-            width="100%"
-            height="100%"
-            scrolling="yes"
-            allowtransparency="true"
-            allow="payment"
-            allowpaymentrequest="true"
-            title="Donate to Plant-for-the-Planet"
-            referrerpolicy="no-referrer"
-          // sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts"
-          />
-        </>
-      </Modal>
-
+      <DonationModal
+        openDonation={openDonation}
+        handleOpenDonate={handleOpenDonate}
+        handleCloseDonate={handleCloseDonate}
+        project={project}
+      />
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
