@@ -39,19 +39,9 @@ export default function PopupProject({
   const projectDetails = project.properties;
   return ready ? (
     <>
-      <Modal
-        ref={popupRef}
-        className={`modalContainer ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-          <DonationsPopup project={projectDetails} onClose={handleClose} />
-      </Modal>
       <div className={'projectImage'}>
         {project.properties.image &&
-        typeof project.properties.image !== 'undefined' ? (
+          typeof project.properties.image !== 'undefined' ? (
           <div
             className={'projectImageFile'}
             style={{
@@ -63,9 +53,9 @@ export default function PopupProject({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-                {project.properties.classification &&
-                t(`donate:${project.properties.classification}`)}
-              </div>
+            {project.properties.classification &&
+              t(`donate:${project.properties.classification}`)}
+          </div>
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
@@ -79,14 +69,14 @@ export default function PopupProject({
           style={{ width: progressPercentage }}
         />
       </div>
-      <div className={'projectInfo'} style={{padding:'16px', backgroundColor: 'var(--background-color)'}}>
+      <div className={'projectInfo'} style={{ padding: '16px', backgroundColor: 'var(--background-color)' }}>
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
               {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
               {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
               <span style={{ fontWeight: 400 }}>
-              {t('country:' + project.properties.country.toLowerCase())}
+                {t('country:' + project.properties.country.toLowerCase())}
               </span>
             </div>
           </div>
@@ -100,7 +90,7 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
-                <button id={`ProjPopDonate${project.id}`}ref={buttonRef} onClick={handleOpen} className={'donateButton'}
+                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleOpen} className={'donateButton'}
                 >
                   {t('common:donate')}
                 </button>

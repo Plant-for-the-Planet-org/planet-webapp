@@ -1,8 +1,6 @@
-import Modal from '@material-ui/core/Modal';
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { ThemeContext } from '../../../theme/themeContext';
-import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -11,6 +9,8 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -41,26 +41,24 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { user } = React.useContext(UserPropsContext);
+
+  const currency = getStoredCurrency();
+  const country = localStorage.getItem('countryCode');
+  const language = localStorage.getItem('language');
+
+  const getSourceUrl = React.useCallback((): string => {
+    var sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}`;
+    return sourceUrl;
+  }, [project, country, currency, language, user]);
+
+  const url = getSourceUrl();
+
   const handleOpen = () => {
-    setOpen(true);
+    window.location.replace(url);
   };
   return ready ? (
     <div className={'singleProject'} key={key}>
-      <Modal
-        className={`modalContainer ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        disableBackdropClick
-      >
-        <DonationsPopup project={project} onClose={handleClose} />
-      </Modal>
-
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
@@ -87,8 +85,8 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-          {project.classification &&
-          t(`donate:${project.classification}`)}
+            {project.classification &&
+              t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
