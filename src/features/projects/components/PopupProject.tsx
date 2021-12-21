@@ -47,7 +47,7 @@ export default function PopupProject({
   const language = localStorage.getItem('language');
 
   const getSourceUrl = React.useCallback((): string => {
-    var sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${projectDetails.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}`;
+    let sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${projectDetails.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}`;
     return sourceUrl;
   }, [project, country, currency, language, user]);
 

@@ -52,7 +52,7 @@ export default function ProjectSnippet({
   }
 
   const getSourceUrl = React.useCallback((): string => {
-    var sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
+    let sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
     return sourceUrl;
   }, [project, country, currency, language, user]);
 
