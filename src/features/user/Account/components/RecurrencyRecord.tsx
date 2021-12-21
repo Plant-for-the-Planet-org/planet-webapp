@@ -4,6 +4,8 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import i18next from '../../../../../i18n';
+import theme from '../../../../theme/theme';
+import themeProperties from '../../../../theme/themeProperties';
 
 const { useTranslation } = i18next;
 
@@ -12,15 +14,25 @@ interface Props {
   index: number;
   selectedRecord: number;
   record: Object;
-  paymentHistory: Object;
+  recurrencies: Object;
+  openModal: boolean;
+  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function AccountRecord({
+export default function RecurrencyRecord({
   handleRecordOpen,
   index,
   selectedRecord,
   record,
-  paymentHistory,
+  recurrencies,
+  openModal,
+  seteditDonation,
+  setpauseDonation,
+  setcancelDonation,
+  setreactivateDonation,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
@@ -29,10 +41,13 @@ export default function AccountRecord({
       className={`${styles.record} ${selectedRecord === index ? styles.selected : ''
         }`}
     >
-      <RecordHeader record={record} handleRecordOpen={handleRecordOpen} index={index} />
-      {index !== paymentHistory?.items?.length - 1 && (
-        <div className={styles.divider} />
-      )}
+      <RecordHeader
+        record={record}
+        handleRecordOpen={handleRecordOpen}
+        index={index}
+        openModal={openModal}
+      />
+      {index !== recurrencies?.length - 1 && <div className={styles.divider} />}
       <div className={styles.detailContainer}>
         <div className={styles.detailGrid}>
           <DetailsComponent record={record} />
@@ -45,16 +60,17 @@ export default function AccountRecord({
             </div>
           </>
         )}
-        {(record.details.donorCertificate ||
-          record.details.taxDeductibleReceipt ||
-          record.details.giftCertificate) && (
-            <>
-              <div className={styles.title}>{t('downloads')}</div>
-              <div className={styles.detailGrid}>
-                <Certificates record={record} />
-              </div>
-            </>
-          )}
+        <>
+          {/* <div className={styles.detailGrid}> */}
+          <ManageDonation
+            record={record}
+            seteditDonation={seteditDonation}
+            setpauseDonation={setpauseDonation}
+            setcancelDonation={setcancelDonation}
+            setreactivateDonation={setreactivateDonation}
+          />
+          {/* </div> */}
+        </>
       </div>
     </div>
   );
@@ -64,31 +80,84 @@ interface HeaderProps {
   record: Object;
   handleRecordOpen: Function;
   index: number;
+  handleClose?: Function;
+  openModal: boolean;
 }
 
-export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): ReactElement {
+export function RecordHeader({
+  record,
+  handleRecordOpen,
+  index,
+  openModal,
+  handleClose,
+}: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+  console.log(new Date(record?.endsAt) < new Date(), 'Datesss');
   return (
-    <div onClick={() => handleRecordOpen(index)} className={styles.recordHeader}>
+    <div
+      onClick={() => handleRecordOpen(index)}
+      className={`${styles.recurrencyRecordHeader}`}
+      style={{
+        cursor: record?.status === 'incomplete' ? 'default' : 'pointer',
+      }}
+    >
       <div className={styles.left}>
-        <p className={styles.top}>
-          {record.type === 'tree-donation' || record.type === 'tree-gift'
-            ? getFormattedNumber(i18n.language, record.quantity) +
-            ' ' +
-            t(record.type)
-            : t(record.type)}
-        </p>
-        <p>{formatDate(record.created)}</p>
+        <p className={styles.top}>{record?.project?.name}</p>
+        {record?.endsAt ? (
+          <p>
+            {new Date(record?.endsAt) < new Date()
+              ? t('cancelledOn')
+              : t('willBeCancelledOn')}{' '}
+            {formatDate(
+              new Date(
+                new Date(record?.endsAt).valueOf() + 1000 * 3600
+              ).toISOString()
+            )}{' '}
+            • {t(record?.frequency)}
+          </p>
+        ) : record?.status === 'paused' ? (
+          record?.pauseUntil ? (
+            <p>
+              {t('pausedUntil')}{' '}
+              {formatDate(
+                new Date(
+                  new Date(record?.pauseUntil).valueOf() + 1000 * 3600
+                ).toISOString()
+              )}{' '}
+              • {t(record?.frequency)}
+            </p>
+          ) : (
+            <p>{t('pausedUntilResumed')}</p>
+          )
+        ) : (
+          <p>
+            {t('nextOn')}{' '}
+            {formatDate(
+              new Date(
+                new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24
+              ).toISOString()
+            )}{' '}
+            • <p style={{ textTransform: "capitalize" }}>{t(record?.frequency)}</p>
+          </p>
+        )}
       </div>
       <div className={styles.right}>
-        <p className={styles.top}>
-          {getFormatedCurrency(
-            i18n.language,
-            record.currency,
-            record.netAmount / 100
-          )}
+        <p
+          className={styles.top}
+          style={{ color: themeProperties.primaryColor }}
+        >
+          {getFormatedCurrency(i18n.language, record.currency, record.amount)}
         </p>
-        <p>{t(record.status)}</p>
+        <p
+          className={`${styles.status} ${record?.status === 'paused'
+            ? styles.paused
+            : record?.status === 'canceled'
+              ? styles.cancelled
+              : styles.active
+            }`}
+        >
+          {record?.status === 'trialing' ? 'active' : record?.status}
+        </p>
       </div>
     </div>
   );
@@ -100,69 +169,66 @@ interface DetailProps {
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-
   return (
     <>
-      {record.status && (
+      {record.amount && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('status')}</p>
-          <p>{t(record.status)}</p>
+          <p className={styles.title}>{t('amount')}</p>
+          <p>
+            {getFormatedCurrency(i18n.language, record.currency, record.amount)}
+          </p>
         </div>
       )}
-      {record.created && (
+      {record.frequency && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('created')}</p>
-          <p>{formatDate(record.created)}</p>
+          <p className={styles.title}>{t('frequency')}</p>
+          <p>{t(record?.frequency)}</p>
         </div>
       )}
-      {record.lastUpdate && (
+      {record?.paymentGateway && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('lastUpdate')}</p>
-          <p>{formatDate(record.lastUpdate)}</p>
+          <p className={styles.title}>{t('paymentMethod')}</p>
+          <p>{record.paymentGateway}</p>
         </div>
       )}
-      {record.details?.paymentDate && (
+      {record.totalDonated && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('paymentDate')}</p>
-          <p>{formatDate(record.details?.paymentDate)}</p>
-        </div>
-      )}
-      {record.details?.paidAmount && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('paidAmount')}</p>
+          <p className={styles.title}>{t('totalDonated')}</p>
           <p>
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.paidAmount / 100
+              record.totalDonated
             )}
           </p>
         </div>
       )}
-      {record.details?.totalAmount && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('totalAmount')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.totalAmount / 100
-            )}
-          </p>
-        </div>
-      )}
-      {record.details?.donorName && (
+      {record?.donorName && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('donorName')}</p>
-          <p>{record.details.donorName}</p>
+          <p>{record?.donorName}</p>
         </div>
       )}
-      {record.details?.method && (
+      {record.firstDonation?.created && (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('method')}</p>
-          <p>{t(record.details.method)}</p>
+          <p className={styles.title}>{t('firstDonation')}</p>
+          <p>{formatDate(record.firstDonation.created)}</p>
         </div>
       )}
+      {record?.project.name && (
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('project')}</p>
+          {record.project.id ? (
+            <a href={`/${record.project.id}`}>{record.project.name}</a>
+          ) : (
+            <p>{record.details.project}</p>
+          )}
+          {/* <p style={{ color: themeProperties.primaryColor }}>
+            {record.project.name}
+          </p> */}
+        </div>
+      )}
+
       {record.details?.project && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
@@ -185,7 +251,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           </p>
         </div>
       )}
-      {record.details?.unitCost ? (
+      {record.details?.unitCost && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('treeCost')}</p>
           <p>
@@ -196,17 +262,17 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             )}
           </p>
         </div>
-      ) : []}
+      )}
       {/* {record.projectGuid && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('projectGuid')}</p>
           <p>{record.projectGuid}</p>
         </div>
       )} */}
-      {record.reference && (
+      {record.firstDonation?.reference && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('reference')}</p>
-          <p>{record.reference}</p>
+          <p>{record.firstDonation.reference}</p>
         </div>
       )}
       {record.details?.fees?.disputeFee && (
@@ -331,47 +397,80 @@ export function BankDetails({ record }: BankDetailsProps): ReactElement {
   );
 }
 
-interface CertificatesProps {
+interface ManageDonationProps {
   record: Object;
+  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Certificates({ record }: CertificatesProps): ReactElement {
+export function ManageDonation({
+  record,
+  seteditDonation,
+  setpauseDonation,
+  setcancelDonation,
+  setreactivateDonation,
+}: ManageDonationProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+
+  const showPause = record?.status === 'active' && !record?.endsAt;
+  const showEdit =
+    (record?.status === 'active' || record?.status === 'trialing') &&
+    record?.endsAt === null;
+  const showCancel =
+    (record?.status === 'active' || record?.status === 'trialing') &&
+    !record?.endsAt;
+  const showReactivate =
+    record?.status === 'paused' || new Date(record?.endsAt) > new Date();
   return (
-    <>
-      {record.details?.donorCertificate && (
-        <div className={styles.singleDetail}>
-          <a
-            href={record.details.donorCertificate}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('donorCertificate')}
-          </a>
-        </div>
+    <div className={styles.manageDonations}>
+      {showEdit ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.primaryColor }}
+          onClick={() => seteditDonation(true)}
+        >
+          {t('editDonation')}
+        </button>
+      ) : (
+        []
       )}
-      {record.details?.taxDeductibleReceipt && (
-        <div className={styles.singleDetail}>
-          <a
-            href={record.details.taxDeductibleReceipt}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('taxDeductibleReceipt')}
-          </a>
-        </div>
+      {showReactivate ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.light.safeColor }}
+          onClick={() => setreactivateDonation(true)}
+        >
+          {record?.status === 'paused'
+            ? t('resumeDonation')
+            : t('reactivateDonation')}
+        </button>
+      ) : (
+        []
       )}
-      {record.details?.giftCertificate && (
-        <div className={styles.singleDetail}>
-          <a
-            href={record.details.giftCertificate}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('giftCertificate')}
-          </a>
-        </div>
+      {showPause ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.light.secondaryColor }}
+          onClick={() => setpauseDonation(true)}
+        >
+          {t('pauseDonation')}
+        </button>
+      ) : (
+        []
       )}
-    </>
+      {showCancel ? (
+        <button
+          className={styles.options}
+          style={{ color: themeProperties.light.dangerColor }}
+          onClick={() => setcancelDonation(true)}
+        >
+          {t('cancelDonation')}
+        </button>
+      ) : (
+        []
+      )}
+    </div>
   );
 }
