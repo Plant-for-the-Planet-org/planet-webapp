@@ -46,16 +46,20 @@ export default function ProjectSnippet({
   const currency = getStoredCurrency();
   const country = localStorage.getItem('countryCode');
   const language = localStorage.getItem('language');
+  let directGift = localStorage.getItem('directGift');
+  if (directGift) {
+    directGift = JSON.parse(directGift);
+  }
 
   const getSourceUrl = React.useCallback((): string => {
-    var sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}`;
+    var sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
     return sourceUrl;
   }, [project, country, currency, language, user]);
 
   const url = getSourceUrl();
 
   const handleOpen = () => {
-    window.location.replace(url);
+    window.location.href = url;
   };
   return ready ? (
     <div className={'singleProject'} key={key}>

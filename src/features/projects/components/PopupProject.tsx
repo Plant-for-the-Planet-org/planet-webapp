@@ -7,6 +7,8 @@ import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -28,6 +30,8 @@ export default function PopupProject({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { theme } = React.useContext(ThemeContext);
+  const { user } = React.useContext(UserPropsContext);
+
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -37,6 +41,22 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
+
+  const currency = getStoredCurrency();
+  const country = localStorage.getItem('countryCode');
+  const language = localStorage.getItem('language');
+
+  const getSourceUrl = React.useCallback((): string => {
+    var sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${projectDetails.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}`;
+    return sourceUrl;
+  }, [project, country, currency, language, user]);
+
+  const url = getSourceUrl();
+
+  const handleDonationOpen = () => {
+    window.location.href = url;
+  };
+
   return ready ? (
     <>
       <div className={'projectImage'}>
@@ -90,7 +110,7 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
-                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleOpen} className={'donateButton'}
+                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleDonationOpen} className={'donateButton'}
                 >
                   {t('common:donate')}
                 </button>
