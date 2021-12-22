@@ -5,13 +5,14 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
-import  Head from 'next/head';
+import Head from 'next/head';
 import i18next from '../../i18n';
+import { TENANT_ID } from '../../src/utils/constants/environment';
 
-const {useTranslation} = i18next;
+const { useTranslation } = i18next;
 
 function ProfilePage(): ReactElement {
-  const {t} = useTranslation('me');
+  const { t } = useTranslation('me');
   // External imports
   const router = useRouter();
   const { user, contextLoaded } = React.useContext(UserPropsContext);
@@ -42,11 +43,10 @@ function ProfilePage(): ReactElement {
         <title>{t('widgets')}</title>
       </Head>
       {user?.isPrivate === false ? (
-        <div className="profilePage" style={{padding:'0px'}}>
+        <div className="profilePage" style={{ padding: '0px' }}>
           <iframe
-            src={`${process.env.WIDGET_URL}?user=${
-              user.id
-            }&tenantkey=${process.env.TENANTID}`}
+            src={`${process.env.WIDGET_URL}?user=${user.id
+              }&tenantkey=${TENANT_ID}`}
             className={styles.widgetIFrame}
           />
         </div>

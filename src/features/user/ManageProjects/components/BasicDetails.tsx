@@ -243,7 +243,7 @@ export default function BasicDetails({
       acceptDonations: data.acceptDonations,
       treeCost: data.treeCost
         ? parseNumber(i18n.language, data.treeCost)
-        : null,
+        : undefined,
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
@@ -487,7 +487,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         properties.onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
@@ -502,7 +502,7 @@ export default function BasicDetails({
                 <MaterialTextField
                   inputRef={register({
                     required: {
-                      value: true,
+                      value: acceptDonations,
                       message: t('manageProjects:treeCostValidaitonRequired'),
                     },
                     validate: (value) =>

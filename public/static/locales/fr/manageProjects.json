@@ -120,5 +120,8 @@
   "latitude": "Latitude",
   "longitude": "Longitude",
   "latitudeRequired": "La latitude est requise",
-  "longitudeRequired": "La longitude est requise"
+  "longitudeRequired": "La longitude est requise",
+  "manageProject": "Gérer les projets",
+  "descriptionForManageProjects": "Présentez votre travail de restauration pour le suivi et pour recevoir des dons.",
+  "manageProjects": "Gérer les projets"
 }
