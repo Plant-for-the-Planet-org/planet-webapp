@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { ThemeContext } from '../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -9,8 +8,8 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import getStoredCurrency from '../../../utils/countryCurrency/getStoredCurrency';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { getDonationUrl } from '../../../utils/getDonationUrl';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -31,8 +30,6 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { theme } = React.useContext(ThemeContext);
-
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
@@ -41,24 +38,10 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
-  const { user } = React.useContext(UserPropsContext);
-
-  const currency = getStoredCurrency();
-  const country = localStorage.getItem('countryCode');
-  const language = localStorage.getItem('language');
-  let directGift = localStorage.getItem('directGift');
-  if (directGift) {
-    directGift = JSON.parse(directGift);
-  }
-
-  const getSourceUrl = React.useCallback((): string => {
-    let sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.slug}&returnToUrl=${window.location.href}&country=${country}&currency=${currency}&locale=${language}${user ? '&autoLogin=true' : ''}&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
-    return sourceUrl;
-  }, [project, country, currency, language, user]);
-
-  const url = getSourceUrl();
+  const { token } = React.useContext(UserPropsContext);
 
   const handleOpen = () => {
+    const url = getDonationUrl(project.slug, token);
     window.location.href = url;
   };
   return ready ? (
