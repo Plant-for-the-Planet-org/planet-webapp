@@ -50,7 +50,7 @@ export default function ProjectSnippet({
   };
 
   const handleRedirect = () => {
-    router.push(`https://donate.plant-for-the-planet.org/?to=${project.id}`);
+    router.push(`${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.id}`);
   };
 
   console.log(`project.purpose`, project.purpose)
@@ -158,7 +158,7 @@ export default function ProjectSnippet({
                     project.currency,
                     project.treeCost
                   )}{' '}
-                  <span>{t('donate:perTree')}</span>
+                  <span>{project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}

@@ -123,7 +123,7 @@ export default function PopupProject({
                     project.properties.currency,
                     project.properties.treeCost
                   )}{' '}
-                  <span>{t('donate:perTree')}</span>
+                  <span>{project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}
