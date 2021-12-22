@@ -158,6 +158,7 @@
   "ownershipType": "Ownership Type",
   "landOwnershipType": "Land Ownership Type",
   "restorationProject": "Restoration Project",
-  "addProjetDescription": "You're few steps away from showcasing your work on Plant-for-the-planet platform. If ypu need any help contact us at ",
+  "addProjetDescription": "You're few steps away from showcasing your work on Plant-for-the-planet platform.",
+  "addProjetContact": "If you need any help contact us at ",
   "supportLink": "support@plant-for-the-planet.org"
 }

@@ -46,7 +46,7 @@ console.log(`projects`, projects)
           </div>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
-          <Link href="/profile/projects/add-projects">
+          <Link href="/profile/projects/new-project">
             <button
               id={'addProjectBut'}
               className={'primaryButton'}

@@ -497,34 +497,46 @@ input:-webkit-autofill {
   }
 }
 
+.add-project-container{
+  display: flex;
+  align-items: flex-start;
+}
 .add-projects-button{
+  background-color: $backgroundColor;
   border: 1px solid #F3F3F3;
   border-radius: 7px;
   cursor: pointer;
   width: 300px;
   height: 140px;
   padding: 20px;
+  box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
+  border-radius: 10px;
 }
+
 .add-project{
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 140px; 
   gap: 20px; 
-  width: 100%; 
   justify-content: center;
   align-items: center;
   @include mdTabletView{
     flex-direction: row;
   }
+  @include xsPhoneView{
+    width: 100%;
+  }
 }
 
 .add-project-title{
   font-size: $fontSixteen;
+  margin-bottom: 80px;
+  span {
+    color: $primaryColor;
+  }
 }
-.add-project-title > span {
-  color: $primaryColor;
-}
+
 
 
 
