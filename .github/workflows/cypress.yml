@@ -36,7 +36,7 @@ jobs:
           echo "SCHEME=https" >> .env
 
           echo "{
-            \"TEST_SERVER\": \"http://localhost:3000\",
+            \"TEST_SERVER\": \"localhost:3000\",
             \"TEST_MFA_URL\": \"$TEST_MFA_URL\",
             \"TEST_ACCOUNT_PASSWORD\": \"$TEST_ACCOUNT_PASSWORD\"
           }" >> cypress.env.json

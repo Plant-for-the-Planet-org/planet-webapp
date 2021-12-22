@@ -26,9 +26,8 @@ export default function AccountRecord({
   return (
     <div
       key={index}
-      className={`${styles.record} ${
-        selectedRecord === index ? styles.selected : ''
-      }`}
+      className={`${styles.record} ${selectedRecord === index ? styles.selected : ''
+        }`}
     >
       <RecordHeader record={record} handleRecordOpen={handleRecordOpen} index={index} />
       {index !== paymentHistory?.items?.length - 1 && (
@@ -49,13 +48,13 @@ export default function AccountRecord({
         {(record.details.donorCertificate ||
           record.details.taxDeductibleReceipt ||
           record.details.giftCertificate) && (
-          <>
-            <div className={styles.title}>{t('downloads')}</div>
-            <div className={styles.detailGrid}>
-              <Certificates record={record} />
-            </div>
-          </>
-        )}
+            <>
+              <div className={styles.title}>{t('downloads')}</div>
+              <div className={styles.detailGrid}>
+                <Certificates record={record} />
+              </div>
+            </>
+          )}
       </div>
     </div>
   );
@@ -67,7 +66,7 @@ interface HeaderProps {
   index: number;
 }
 
-export function RecordHeader({ record,handleRecordOpen,index }: HeaderProps): ReactElement {
+export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <div onClick={() => handleRecordOpen(index)} className={styles.recordHeader}>
@@ -75,8 +74,8 @@ export function RecordHeader({ record,handleRecordOpen,index }: HeaderProps): Re
         <p className={styles.top}>
           {record.type === 'tree-donation' || record.type === 'tree-gift'
             ? getFormattedNumber(i18n.language, record.quantity) +
-              ' ' +
-              t(record.type)
+            ' ' +
+            t(record.type)
             : t(record.type)}
         </p>
         <p>{formatDate(record.created)}</p>
@@ -86,7 +85,7 @@ export function RecordHeader({ record,handleRecordOpen,index }: HeaderProps): Re
           {getFormatedCurrency(
             i18n.language,
             record.currency,
-            record.netAmount/100
+            record.netAmount / 100
           )}
         </p>
         <p>{t(record.status)}</p>
@@ -101,6 +100,7 @@ interface DetailProps {
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
+
   return (
     <>
       {record.status && (
@@ -134,7 +134,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.paidAmount/100
+              record.details.paidAmount / 100
             )}
           </p>
         </div>
@@ -146,7 +146,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.totalAmount/100
+              record.details.totalAmount / 100
             )}
           </p>
         </div>
@@ -180,23 +180,23 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.refundAmount/100
+              record.details.refundAmount / 100
             )}
           </p>
         </div>
       )}
-      {record.details?.unitCost && (
+      {record.details?.unitCost ? (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('treeCost')}</p>
           <p>
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.unitCost/100
+              record.details.unitCost / 100
             )}
           </p>
         </div>
-      )}
+      ) : []}
       {/* {record.projectGuid && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('projectGuid')}</p>
@@ -216,7 +216,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.disputeFee/100
+              record.details.fees.disputeFee / 100
             )}
           </p>
         </div>
@@ -228,7 +228,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.planetFee/100
+              record.details.fees.planetFee / 100
             )}
           </p>
         </div>
@@ -240,7 +240,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.transactionFee/100
+              record.details.fees.transactionFee / 100
             )}
           </p>
         </div>
@@ -252,7 +252,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.transferFee/100
+              record.details.fees.transferFee / 100
             )}
           </p>
         </div>

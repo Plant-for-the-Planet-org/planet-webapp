@@ -22,7 +22,8 @@ export default function Sites({}: Props): ReactElement {
     selectedMode,
     rasterData,
     satellite,
-    setSiteViewPort
+    setSiteViewPort,
+    plantLocationsLoaded
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -40,7 +41,7 @@ export default function Sites({}: Props): ReactElement {
     <>
       {selectedMode === 'location' && (
         <>
-          {satellite && <SatelliteLayer />}
+          {plantLocationsLoaded && satellite && <SatelliteLayer />}
           {/* <ProjectPolygon id="locationPolygon" geoJson={geoJson} /> */}
         </>
       )}
