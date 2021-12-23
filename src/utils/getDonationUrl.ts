@@ -11,7 +11,7 @@ export const getDonationUrl = (id: string, token: string | null): string => {
   }
   const sourceUrl = `${
     process.env.NEXT_PUBLIC_DONATION_URL
-  }/?to=${id}&returnToUrl=${
+  }/?to=${id}&return_to=${
     window.location.href
   }&country=${country}&currency=${currency}&locale=${language}${
     token ? '&token=' + token : ''
