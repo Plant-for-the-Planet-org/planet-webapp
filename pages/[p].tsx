@@ -41,8 +41,10 @@ export default function Donate({
     setZoomLevel(2);
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
   };
   const handleOpen = () => {
     setOpen(true);
@@ -106,7 +108,6 @@ export default function Donate({
               onClose={handleClose}
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"
-              disableBackdropClick
             >
               <DonationsPopup project={project} onClose={handleClose} />
             </Modal>
