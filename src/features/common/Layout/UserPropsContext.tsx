@@ -48,6 +48,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
   ) => {
     logout({ returnTo: returnUrl });
+    window.$chatwoot.reset();
   };
 
   React.useEffect(() => {
