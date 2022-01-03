@@ -1,4 +1,4 @@
-declare module Payments {
+declare namespace Payments {
   export interface PaymentDetails {
     donorName: string;
     quantity: number;
