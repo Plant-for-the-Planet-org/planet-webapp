@@ -42,6 +42,7 @@
     "@material-ui/pickers": "^3.3.10",
     "@math.gl/web-mercator": "^3.5.3",
     "@next/bundle-analyzer": "^10.2.3",
+    "@stripe/react-stripe-js": "^1.6.0",
     "@sentry/browser": "^6.15.0",
     "@sentry/integrations": "^6.15.0",
     "@sentry/node": "^6.15.0",
