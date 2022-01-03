@@ -15,13 +15,13 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 const { useTranslation } = i18next;
 interface Props {
   project: any;
-  key: number;
+  keyString: string;
   editMode: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  key,
+  keyString,
   editMode,
 }: Props): ReactElement {
   const router = useRouter();
@@ -42,21 +42,22 @@ export default function ProjectSnippet({
   }
 
   const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
   };
   const handleOpen = () => {
     setOpen(true);
   };
   return ready ? (
-    <div className={'singleProject'} key={key}>
+    <div className={'singleProject'} key={keyString}>
       <Modal
         className={`modalContainer ${theme}`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        disableBackdropClick
       >
         <DonationsPopup project={project} onClose={handleClose} />
       </Modal>

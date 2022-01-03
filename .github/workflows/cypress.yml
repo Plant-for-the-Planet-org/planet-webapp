@@ -14,6 +14,9 @@ jobs:
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
+      - name: Upgrade npm to latest version
+        run: sudo npm i -g npm@latest
+
       - name: 'Install Node Modules'
         run: npm install
 
@@ -36,7 +39,7 @@ jobs:
           echo "SCHEME=https" >> .env
 
           echo "{
-            \"TEST_SERVER\": \"http://localhost:3000\",
+            \"TEST_SERVER\": \"localhost:3000\",
             \"TEST_MFA_URL\": \"$TEST_MFA_URL\",
             \"TEST_ACCOUNT_PASSWORD\": \"$TEST_ACCOUNT_PASSWORD\"
           }" >> cypress.env.json

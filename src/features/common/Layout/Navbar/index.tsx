@@ -1,34 +1,54 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import tenantConfig from '../../../../../tenant.config';
+import i18next from '../../../../../i18n';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
+import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
-import i18next from '../../../../../i18n';
-import getImageUrl from '../../../../utils/getImageURL';
 import themeProperties from '../../../../theme/themeProperties';
-import Link from 'next/link';
-import GetNavBarIcon from './getNavBarIcon';
+import getImageUrl from '../../../../utils/getImageURL';
 import { UserPropsContext } from '../UserPropsContext';
-
+import GetNavBarIcon from './getNavBarIcon';
+import GetSubMenu from './getSubMenu';
+import { lang_path } from '../../../../utils/constants/wpLanguages'
+// used to detect window resize and return the current width of the window
+const useWidth = () => {
+  const [width, setWidth] = React.useState(0); // default width, detect on server.
+  const handleResize = () => setWidth(window.innerWidth);
+  React.useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, [handleResize]);
+  return width;
+};
 const { useTranslation } = i18next;
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
-  const lang_path = {
-    en: 'en',
-    de: 'de',
-    es: 'es-es',
-  };
+  const subMenuPath = {
+    overview: '',
+    childrenAndYouth: 'children-youth',
+    trillionTrees: 'trillion-trees',
+    yucatan: 'yucatan',
+    partners: 'partners',
+    changeChocolate: 'change-chocolate',
+    stopTalkingStartPlanting: 'stop-talking-start-planting'
+  }
+  const [menu, setMenu] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
 
-  const {
-    user,
-    setUser,
-    loginWithRedirect,
-    logoutUser,
-    auth0Error,
-  } = React.useContext(UserPropsContext);
+  const width = useWidth();
+
+  // changes the isMobile state to true if the window width is less than 768px
+  React.useEffect(() => {
+    setIsMobile(width < 768);
+  }, [width]);
+
+  const { user, setUser, loginWithRedirect, logoutUser, auth0Error } =
+    React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -104,6 +124,8 @@ export default function NavbarComponent(props: any) {
       <div className={'menuItems'}>
         {links.map((link) => {
           let SingleLink = config.header.items[link];
+          const hasSubMenu =
+            SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
             if (link === 'me' && SingleLink.visible) {
               return (
@@ -111,7 +133,7 @@ export default function NavbarComponent(props: any) {
                   id={'navbarActiveIcon'}
                   key={link}
                   onClick={() => gotoUserPage()}
-                  className={'linkContainer'}
+                  className={`linkContainer`}
                 >
                   <div className={'link_icon'}>
                     <UserIcon />
@@ -131,49 +153,95 @@ export default function NavbarComponent(props: any) {
               );
             }
             if (link === 'about' && SingleLink.visible) {
+              let aboutOnclick = `${SingleLink.onclick}${
+                (process.env.TENANT === 'planet' ||
+                  process.env.TENANT === 'ttc') &&
+                lang_path[i18n.language]
+                  ? lang_path[i18n.language]
+                  : ''
+              }`;
+
+              aboutOnclick = isMobile ? '' : aboutOnclick;
               SingleLink = {
                 ...SingleLink,
-                onclick: `${SingleLink.onclick}${
-                  (process.env.TENANT === 'planet' ||
-                    process.env.TENANT === 'ttc') &&
-                  lang_path[i18n.language]
-                    ? lang_path[i18n.language]
-                    : ''
-                }`,
+                onclick: aboutOnclick,
               };
+              if (hasSubMenu) {
+                SingleLink.subMenu[0].onclick = aboutOnclick;
+              }
             }
             return SingleLink.visible ? (
-              <Link key={link} href={SingleLink.onclick}>
-                <div className={'linkContainer'}>
-                  <GetNavBarIcon
-                    UserIcon={UserIcon}
-                    mainKey={link}
-                    router={router}
-                    item={SingleLink}
-                  />
-                  {link === 'donate' ? (
-                    <p
-                      className={
-                        router.pathname === '/' || router.pathname === '/[p]'
-                          ? 'active_icon'
-                          : ''
-                      }
-                    >
-                      {t('common:' + SingleLink.title)}
-                    </p>
-                  ) : (
-                    <p
-                      className={
-                        router.pathname === SingleLink.onclick
-                          ? 'active_icon'
-                          : ''
-                      }
-                    >
-                      {t('common:' + SingleLink.title)}
-                    </p>
-                  )}
+              <div
+                className={`${hasSubMenu ? 'subMenu' : ''}`}
+                onClick={() => (isMobile && hasSubMenu ? setMenu(!menu) : {})}
+                onMouseOver={() =>
+                  hasSubMenu ? setMenu(isMobile ? menu : true) : {}
+                }
+                onMouseLeave={() =>
+                  hasSubMenu ? setMenu(isMobile ? menu : false) : {}
+                }
+                key={link}
+              >
+                <Link
+                  href={isMobile && hasSubMenu ? '' : SingleLink.onclick}
+                >
+                  <div className={`linkContainer`}>
+                    <GetNavBarIcon
+                      UserIcon={UserIcon}
+                      mainKey={link}
+                      router={router}
+                      item={SingleLink}
+                    />
+                    {link === 'donate' ? (
+                      <p
+                        className={
+                          router.pathname === '/' || router.pathname === '/[p]'
+                            ? 'active_icon'
+                            : ''
+                        }
+                      >
+                        {t('common:' + SingleLink.title)}
+                      </p>
+                    ) : (
+                      <p
+                        className={
+                          router.pathname === SingleLink.onclick
+                            ? 'active_icon'
+                            : ''
+                        }
+                      >
+                        {t('common:' + SingleLink.title)}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+                <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
+                  {SingleLink.subMenu &&
+                    SingleLink.subMenu.length > 0 &&
+                    SingleLink.subMenu.map((submenu: any) => {
+                      return (
+                        <a
+                          key={submenu.title}
+                          className={'menuRow'}
+                          href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language]?lang_path[i18n.language]:'en'}/${subMenuPath[submenu.title]}`}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <GetSubMenu title={submenu.title} />
+                            <div className={'menuText'}>
+                              {t('common:' + submenu.title)}
+                            </div>
+                          </div>
+                        </a>
+                      );
+                    })}
                 </div>
-              </Link>
+              </div>
             ) : (
               <div key={link}></div>
             );

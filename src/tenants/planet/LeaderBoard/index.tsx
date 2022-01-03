@@ -59,7 +59,7 @@ export default function index({ leaderboard, tenantScore }: Props): ReactElement
       {tenantScore && <Stats tenantScore={tenantScore} />}
 
 
-      {/* <Stories /> */}
+      <Stories />
 
       {!blockedCountries.includes(userCountry) ? <Video /> : null}
 
