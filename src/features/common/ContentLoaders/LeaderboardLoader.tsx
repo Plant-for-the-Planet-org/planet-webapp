@@ -12,10 +12,10 @@ function LeaderboardLoader() {
         width="100%"
         height="100%"
         fill='url("#fill")'
-        clipPath="url(#clip-path)"
+        clipPath="url(#clipPath)"
       ></rect>
       <defs>
-        <clipPath id="clip-path">
+        <clipPath id="clipPath">
           <rect width="178" height="12" y="16" rx="3" ry="3"></rect>
           <rect width="75" height="12" x="236" y="16" rx="3" ry="3"></rect>
         </clipPath>

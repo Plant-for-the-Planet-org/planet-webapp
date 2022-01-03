@@ -14,11 +14,11 @@ function ButtonLoader() {
             y="0"
             width="100%"
             height="100%"
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             fill='url("#fill")'
         ></rect>
         <defs>
-            <clipPath id="clip-path">
+            <clipPath id="clipPath">
                 <rect x="0" y="0" rx="0" ry="0" width="150" height="36" />
             </clipPath>
             <linearGradient id="fill">
