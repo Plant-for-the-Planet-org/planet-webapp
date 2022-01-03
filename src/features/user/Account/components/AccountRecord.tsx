@@ -338,7 +338,7 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
           <p>{recipientBank.iban}</p>
         </div>
       )}
-      {recipientBank?.swift && (
+      {recipientBank?.swift && recipientBank?.swift !== 'swift' && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('swift')}</p>
           <p>{recipientBank.swift}</p>
@@ -405,7 +405,7 @@ export function TransferDetails({ account }: TransferDetailsProps): ReactElement
             <p>{account.bankName}</p>
           </div>
         )}
-        {account.swift && (
+        {account.swift && account?.swift !== 'swift' && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('swift')}</p>
             <p>{account.swift}</p>
