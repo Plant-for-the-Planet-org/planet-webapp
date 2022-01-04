@@ -25,17 +25,20 @@ function ProfilePage(): ReactElement {
       if (user) {
         setProfile(user);
         setAuthenticatedType('private');
-        window.$chatwoot.setCustomAttributes({
-          language: user.locale ? user.locale : 'en',
-          profile_guid: user.id,
-          email: user.email,
-          name: user.displayName,
-          // Here the key which is already defined in custom attribute
-          // Value should be based on type (Currently support Number, Date, String and Number)
+        window.addEventListener('chatwoot:ready', function () {
+          window.$chatwoot.setCustomAttributes({
+            language: user.locale ? user.locale : 'en',
+            profile_guid: user.id,
+            email: user.email,
+            name: user.displayName,
+            // Here the key which is already defined in custom attribute
+            // Value should be based on type (Currently support Number, Date, String and Number)
+          });
         });
       }
     }
   }, [contextLoaded, user, router]);
+
 
   return (
     <UserLayout>
