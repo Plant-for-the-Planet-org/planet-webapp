@@ -12,9 +12,9 @@ class ChatwootWidget extends React.Component {
 
     // Paste the script from inbox settings except the <script> tag
     (function (d, t) {
-      var BASE_URL = 'https://chat.plant-for-the-planet.org';
-      var g = d.createElement(t),
-        s = d.getElementsByTagName(t)[0];
+      const BASE_URL = 'https://chat.plant-for-the-planet.org';
+      const g = d.createElement(t);
+      const s = d.getElementsByTagName(t)[0];
       g.src = BASE_URL + '/packs/js/sdk.js';
       g.defer = true;
       g.async = true;
