@@ -26,7 +26,6 @@ function ProfilePage(): ReactElement {
         setProfile(user);
         setAuthenticatedType('private');
         window.addEventListener('chatwoot:ready', function () {
-          window.$chatwoot.setLocale(user.locale ? user.locale : 'en');
           window.$chatwoot.setCustomAttributes({
             language: user.locale ? user.locale : 'en',
             profile_guid: user.id,
