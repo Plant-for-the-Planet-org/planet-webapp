@@ -46,7 +46,7 @@ declare namespace Payments {
     updated?: Date;
   }
 
-  export interface PaymentHistoryItem {
+  export interface PaymentHistoryRecord {
     quantity: number;
     bouquetPurpose?: string;
     netAmount: number;
@@ -84,7 +84,7 @@ declare namespace Payments {
   }
 
   export interface PaymentHistory {
-    items: PaymentHistoryItem[];
+    items: PaymentHistoryRecord[];
     total: number;
     count: number;
     _links: Links;

@@ -4,6 +4,7 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import i18next from '../../../../../i18n';
+import { TFunction } from 'next-i18next';
 
 const { useTranslation } = i18next;
 
@@ -11,7 +12,7 @@ interface Props {
   handleRecordOpen: Function;
   index: number;
   selectedRecord: number | null;
-  record: Payments.PaymentHistoryItem;
+  record: Payments.PaymentHistoryRecord;
   paymentHistory: Payments.PaymentHistory;
 }
 
@@ -23,30 +24,7 @@ export default function AccountRecord({
   paymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  const showDonationNote = (): string => {
-    switch (record.details.method) {
-      case 'stripe-sofort':
-      case 'stripe-sepa_debit':
-      case 'offline-offline':
-        return t(`me:donationNote.${record.details.method}`);
-      default:
-        return '';
-    }
-  }
-  const showStatusNote = (): ReactElement => {
-    switch (record.status) {
-      case 'pending':
-        return (
-          <p className={styles.donationNote}>{showDonationNote()}</p>
-        );
-      case 'in-dispute':
-        return (
-          <p className={styles.donationNote}>{t('me:donationNote.in-dispute')}</p>
-        );
-      default:
-        return <></>;
-    }
-  }
+
   return (
     <div
       key={index}
@@ -72,7 +50,7 @@ export default function AccountRecord({
         {record.details?.account && (
           <TransferDetails account={record.details.account} />
         )}
-        {showStatusNote()}
+        {showStatusNote(record, t)}
         {(record.details.donorCertificate ||
           record.details.taxDeductibleReceipt ||
           record.details.giftCertificate) && (
@@ -89,7 +67,7 @@ export default function AccountRecord({
 }
 
 interface HeaderProps {
-  record: Payments.PaymentHistoryItem;
+  record: Payments.PaymentHistoryRecord;
   handleRecordOpen: Function;
   index?: number;
 }
@@ -134,7 +112,7 @@ export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): 
 }
 
 interface DetailProps {
-  record: Payments.PaymentHistoryItem;
+  record: Payments.PaymentHistoryRecord;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -298,6 +276,31 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
     </>
   );
+}
+
+export const showStatusNote = (record: Payments.PaymentHistoryRecord, t: TFunction): ReactElement => {
+  const showDonationNote = (): string => {
+    switch (record.details.method) {
+      case 'stripe-sofort':
+      case 'stripe-sepa_debit':
+      case 'offline-offline':
+        return t(`me:donationNote.${record.details.method}`);
+      default:
+        return '';
+    }
+  }
+  switch (record.status) {
+    case 'pending':
+      return (
+        <p className={styles.donationNote}>{showDonationNote()}</p>
+      );
+    case 'in-dispute':
+      return (
+        <p className={styles.donationNote}>{t('me:donationNote.in-dispute')}</p>
+      );
+    default:
+      return <></>;
+  }
 }
 
 interface BankDetailsProps {

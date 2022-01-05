@@ -8,6 +8,8 @@ import AccountRecord, {
   Certificates,
   DetailsComponent,
   RecordHeader,
+  showStatusNote,
+  TransferDetails,
 } from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
@@ -32,7 +34,7 @@ export default function History({
   fetchPaymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
+  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(null);
   const [openModal, setOpenModal] = React.useState(false);
   const router = useRouter();
 
@@ -55,9 +57,9 @@ export default function History({
     setFilter(id);
   };
 
-  let currentRecord;
+  let currentRecord: Payments.PaymentHistoryRecord | null = null;
   if (paymentHistory && Array.isArray(paymentHistory?.items)) {
-    currentRecord = selectedRecord ? paymentHistory?.items[selectedRecord] : null;
+    currentRecord = selectedRecord !== null && Number.isInteger(selectedRecord) ? paymentHistory?.items[selectedRecord] : null;
   }
 
   return (
@@ -176,7 +178,7 @@ export default function History({
                 <>
                   <RecordHeader
                     record={currentRecord}
-                    handleRecordOpen={() => { }}
+                    handleRecordOpen={handleRecordOpen}
                   />
                   <div className={styles.divider}></div>
                   <div className={styles.detailContainer}>
@@ -191,6 +193,10 @@ export default function History({
                         </div>
                       </>
                     )}
+                    {currentRecord.details?.account && (
+                      <TransferDetails account={currentRecord.details.account} />
+                    )}
+                    {showStatusNote(currentRecord, t)}
                     {(currentRecord.details.donorCertificate ||
                       currentRecord.details.taxDeductibleReceipt ||
                       currentRecord.details.giftCertificate) && (
