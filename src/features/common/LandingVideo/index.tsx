@@ -97,7 +97,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
               config={{
                 file: {
                   attributes: {
-                    autoplay: 1,
+                    autoPlay: 1,
                   },
                 },
               }}

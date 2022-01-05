@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player/lazy';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
 interface Props {
-    
+
 }
 
 const { useTranslation } = i18next;
@@ -16,7 +16,7 @@ function Video({}: Props): ReactElement {
     return ready ? (
         <div className={styles.videoSection}>
           <div className={styles.videoTitle}>
-            <h2>{t('leaderboard:videoTitle')}</h2> 
+            <h2>{t('leaderboard:videoTitle')}</h2>
             <button id="backArrowVideoT" className={styles.backArrowVideoT}><BackArrow /></button>
           </div>
             <div className={styles.videoContainerWrapper}>
@@ -31,7 +31,7 @@ function Video({}: Props): ReactElement {
                   controls={true}
                   config={{
                     youtube: {
-                      playerVars: { autoplay: 1 },
+                      playerVars: { autoPlay: 1 },
                     },
                   }}
                   url={videoUrl}
@@ -39,7 +39,7 @@ function Video({}: Props): ReactElement {
               ) : null}
             </div>
             </div>
-           
+
         </div>
     ) : <></>;
 }

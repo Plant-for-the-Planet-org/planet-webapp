@@ -40,8 +40,10 @@ export default function Donate({
     setZoomLevel(2);
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
   };
   const handleOpen = () => {
     setOpen(true);

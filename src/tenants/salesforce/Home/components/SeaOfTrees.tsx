@@ -26,8 +26,10 @@ export default function SeaOfTrees() {
   const { theme } = useContext(ThemeContext);
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
   };
   const handleOpen = () => {
     setOpen(true);
@@ -41,7 +43,6 @@ export default function SeaOfTrees() {
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        disableBackdropClick
         hideBackdrop
       >
         <DonationsPopup project={project} onClose={handleClose} />

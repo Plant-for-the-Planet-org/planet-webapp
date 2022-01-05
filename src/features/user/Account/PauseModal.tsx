@@ -12,13 +12,10 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import { ThemeProvider } from '@material-ui/styles';
-// import CalendarPicker from '@mui/lab/CalendarPicker';
 import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
-import { Controller } from '../../../../node_modules/react-hook-form/dist';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
-import { Typography } from '@material-ui/core';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -143,11 +140,11 @@ export const PauseModal = ({
                 <ThemeProvider theme={materialTheme}>
                   <MuiPickersUtilsProvider
                     utils={DateFnsUtils}
-                    // locale={
-                    //   localeMapForDate[userLang]
-                    //     ? localeMapForDate[userLang]
-                    //     : localeMapForDate['en']
-                    // }
+                  // locale={
+                  //   localeMapForDate[userLang]
+                  //     ? localeMapForDate[userLang]
+                  //     : localeMapForDate['en']
+                  // }
                   >
                     <Calendar
                       date={date}
@@ -158,7 +155,7 @@ export const PauseModal = ({
                       minDate={
                         new Date(
                           new Date(record?.currentPeriodEnd).valueOf() +
-                            1000 * 3600 * 24
+                          1000 * 3600 * 24
                         )
                       }
                       disablePast={true}

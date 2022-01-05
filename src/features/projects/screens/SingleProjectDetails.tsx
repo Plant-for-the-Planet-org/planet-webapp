@@ -146,7 +146,7 @@ function SingleProjectDetails({}: Props): ReactElement {
           </button>
           <div className={'projectSnippetContainer'}>
             <ProjectSnippet
-              key={project.id}
+              keyString={project.id}
               project={project}
               editMode={false}
             />
@@ -190,7 +190,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                       controls={true}
                       config={{
                         youtube: {
-                          playerVars: { autoplay: 1 },
+                          playerVars: { autoPlay: 1 },
                         },
                       }}
                       url={project.videoUrl}

@@ -14,13 +14,13 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 const { useTranslation } = i18next;
 interface Props {
   project: any;
-  key: number;
+  keyString: string;
   editMode: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  key,
+  keyString,
   editMode,
 }: Props): ReactElement {
   const router = useRouter();
@@ -39,7 +39,6 @@ export default function ProjectSnippet({
   }
 
   const { token } = React.useContext(UserPropsContext);
-
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token);
     window.location.href = url;

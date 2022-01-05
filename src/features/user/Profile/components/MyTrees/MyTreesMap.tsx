@@ -82,14 +82,19 @@ export default function MyTreesMap({
   const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
     const nodes = getLeaves(Infinity);
     let sum = 0;
+    let key = '';
     nodes.map((node: any) => {
       const item = contributions.find((i: any) => {
         if (i.properties.id === node.key) return true;
       });
       sum += Number(item ? item.properties.treeCount : 0);
+      key = item.properties.id;
     });
     return (
-      <Marker coordinates={coordinates} anchor="bottom">
+      <Marker
+        key={key}
+        coordinates={coordinates}
+        anchor="bottom">
         <div
           onMouseOver={() => {
             setContributionInfo(null);
