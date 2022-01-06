@@ -198,3 +198,5 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 });
+
+
