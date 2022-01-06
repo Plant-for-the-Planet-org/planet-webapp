@@ -212,7 +212,7 @@ const COUNTRY_ADDRESS_POSTALS = [{
 }, {
   abbrev: 'DK',
   name: 'Denmark',
-  postal: /^[0-9]{5}$/,
+  postal: /^[0-9]{4}$/,
 }, {
   abbrev: 'DJ',
   name: 'Djibouti',
