@@ -27,6 +27,7 @@ import ProjectPropsProvider, {
 } from '../src/features/common/Layout/ProjectPropsContext';
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 import PlayButton from '../src/features/common/LandingVideo/PlayButton';
+import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -150,71 +151,73 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     return <BrowserNotSupported />;
   } else {
     return (
-      <div>
-        <div
-          style={
-            showVideo &&
-            (config.tenantName === 'planet' || config.tenantName === 'ttc')
-              ? {}
-              : { display: 'none' }
-          }
-        >
-          {(config.tenantName === 'planet' || config.tenantName === 'ttc') ? (
-            <VideoContainer setshowVideo={setshowVideo} />
+      <ErrorHandlingProvider>
+        <div>
+          <div
+            style={
+              showVideo &&
+              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                ? {}
+                : { display: 'none' }
+            }
+          >
+            {config.tenantName === 'planet' || config.tenantName === 'ttc' ? (
+              <VideoContainer setshowVideo={setshowVideo} />
             ) : (
               <></>
-            )
-          }
-        </div>
+            )}
+          </div>
 
-        <div
-          style={
-            showVideo &&
-            (config.tenantName === 'planet' || config.tenantName === 'ttc')
-              ? { display: 'none' }
-              : {}
-          }
-        >
-          <Auth0Provider
-            domain={process.env.AUTH0_CUSTOM_DOMAIN}
-            clientId={process.env.AUTH0_CLIENT_ID}
-            redirectUri={process.env.NEXTAUTH_URL}
-            audience={'urn:plant-for-the-planet'}
-            cacheLocation={'localstorage'}
-            onRedirectCallback={onRedirectCallback}
-            useRefreshTokens={true}
+          <div
+            style={
+              showVideo &&
+              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                ? { display: 'none' }
+                : {}
+            }
           >
-            <ThemeProvider>
-              <CssBaseline />
-              <UserPropsProvider>
-                <Layout>
-                  <ProjectPropsProvider>
-                    {isMap ? (
-                      <>
-                        {project ? (
-                          <MapLayout />
-                        ) : projects ? (
-                          <MapLayout />
-                        ) : null}
-                        <div
-                          style={(config.tenantName === 'planet' ||
-                              config.tenantName === 'ttc')
-                              ? {}
-                              : { display: 'none' }
-                          }
-                        >
-                          <PlayButton setshowVideo={setshowVideo} />
-                        </div>
-                      </>
-                    ) : null}
-                    <Component {...ProjectProps} />
-                  </ProjectPropsProvider>
-                </Layout>
-              </UserPropsProvider>
-            </ThemeProvider>
-          </Auth0Provider>
+            <Auth0Provider
+              domain={process.env.AUTH0_CUSTOM_DOMAIN}
+              clientId={process.env.AUTH0_CLIENT_ID}
+              redirectUri={process.env.NEXTAUTH_URL}
+              audience={'urn:plant-for-the-planet'}
+              cacheLocation={'localstorage'}
+              onRedirectCallback={onRedirectCallback}
+              useRefreshTokens={true}
+            >
+              <ThemeProvider>
+                <CssBaseline />
+                <UserPropsProvider>
+                  <Layout>
+                    <ProjectPropsProvider>
+                      {isMap ? (
+                        <>
+                          {project ? (
+                            <MapLayout />
+                          ) : projects ? (
+                            <MapLayout />
+                          ) : null}
+                          <div
+                            style={
+                              config.tenantName === 'planet' ||
+                              config.tenantName === 'ttc'
+                                ? {}
+                                : { display: 'none' }
+                            }
+                          >
+                            <PlayButton setshowVideo={setshowVideo} />
+                          </div>
+                        </>
+                      ) : null}
+                      <Component {...ProjectProps} />
+                    </ProjectPropsProvider>
+                  </Layout>
+                </UserPropsProvider>
+              </ThemeProvider>
+            </Auth0Provider>
+          </div>
         </div>
-      </div>
+      </ErrorHandlingProvider>
     );
   }
 }

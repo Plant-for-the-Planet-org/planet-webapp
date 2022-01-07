@@ -16,8 +16,10 @@ const { useTranslation } = i18next;
 function countryToFlag(isoCode: string) {
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode
-      .toUpperCase()
-      .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+        .toUpperCase()
+        .replace(/./g, (char) =>
+          String.fromCodePoint(char.charCodeAt(0) + 127397)
+        )
     : isoCode;
 }
 
@@ -27,37 +29,47 @@ export default function CountrySelect(props: {
   name: string | undefined;
   defaultValue: String | undefined;
   onChange:
-  | ((
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void)
-  | undefined;
+    | ((
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => void)
+    | undefined;
 }) {
   const { t, ready } = useTranslation(['country']);
 
-  const { theme } = React.useContext(ThemeContext)
+  const { theme } = React.useContext(ThemeContext);
   const useStylesAutoComplete = makeStyles({
+    root: {
+      '&.MuiSvgIcon-root': {
+        path: {
+          fill:
+            theme === 'theme-light'
+              ? `${themeProperties.light.primaryFontColor} !important`
+              : `${themeProperties.dark.primaryFontColor} !important`,
+        },
+      },
+    },
     paper: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
       fontFamily: config!.font.primaryFontFamily,
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-      "&:active": {
+      '&:active': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
@@ -80,7 +92,9 @@ export default function CountrySelect(props: {
   // use default country passed to create default object & set contact details
   React.useEffect(() => {
     // create default object
-    const defaultCountry = countries.filter((data) => data.code === defaultValue);
+    const defaultCountry = countries.filter(
+      (data) => data.code === defaultValue
+    );
     if (defaultCountry && defaultCountry.length > 0) {
       // set initial value
       setValue(defaultCountry[0]);
@@ -102,7 +116,8 @@ export default function CountrySelect(props: {
       const nameB = t(`country:${b.code.toLowerCase()}`);
       if (nameA > nameB) {
         return 1;
-      } if (nameA < nameB) {
+      }
+      if (nameA < nameB) {
         return -1;
       }
       return 0;
@@ -124,7 +139,9 @@ export default function CountrySelect(props: {
       renderOption={(option) => (
         <>
           <span>{countryToFlag(option.code)}</span>
-          {props.name === 'editProfile' ? (t(`country:${option.code.toLowerCase()}`)) : (t(`country:${option.code.toLowerCase()}`) + ' ' + option.code)}
+          {props.name === 'editProfile'
+            ? t(`country:${option.code.toLowerCase()}`)
+            : t(`country:${option.code.toLowerCase()}`) + ' ' + option.code}
         </>
       )}
       onChange={(event: any, newValue: CountryType | null) => {
@@ -138,6 +155,7 @@ export default function CountrySelect(props: {
           {...params}
           label={props.label}
           variant="outlined"
+          className={classes.root}
           inputProps={{
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
@@ -171,7 +189,10 @@ const countries = [
   { code: 'AS', label: 'American Samoa', phone: '1-684' },
   { code: 'AT', label: 'Austria', phone: '43' },
   {
-    code: 'AU', label: 'Australia', phone: '61', suggested: true,
+    code: 'AU',
+    label: 'Australia',
+    phone: '61',
+    suggested: true,
   },
   { code: 'AW', label: 'Aruba', phone: '297' },
   { code: 'AX', label: 'Alland Islands', phone: '358' },
@@ -197,7 +218,10 @@ const countries = [
   { code: 'BY', label: 'Belarus', phone: '375' },
   { code: 'BZ', label: 'Belize', phone: '501' },
   {
-    code: 'CA', label: 'Canada', phone: '1', suggested: true,
+    code: 'CA',
+    label: 'Canada',
+    phone: '1',
+    suggested: true,
   },
   { code: 'CC', label: 'Cocos (Keeling) Islands', phone: '61' },
   { code: 'CD', label: 'Congo, Democratic Republic of the', phone: '243' },
@@ -218,7 +242,10 @@ const countries = [
   { code: 'CY', label: 'Cyprus', phone: '357' },
   { code: 'CZ', label: 'Czech Republic', phone: '420' },
   {
-    code: 'DE', label: 'Germany', phone: '49', suggested: true,
+    code: 'DE',
+    label: 'Germany',
+    phone: '49',
+    suggested: true,
   },
   { code: 'DJ', label: 'Djibouti', phone: '253' },
   { code: 'DK', label: 'Denmark', phone: '45' },
@@ -238,7 +265,10 @@ const countries = [
   { code: 'FM', label: 'Micronesia, Federated States of', phone: '691' },
   { code: 'FO', label: 'Faroe Islands', phone: '298' },
   {
-    code: 'FR', label: 'France', phone: '33', suggested: true,
+    code: 'FR',
+    label: 'France',
+    phone: '33',
+    suggested: true,
   },
   { code: 'GA', label: 'Gabon', phone: '241' },
   { code: 'GB', label: 'United Kingdom', phone: '44' },
@@ -283,7 +313,10 @@ const countries = [
   { code: 'JM', label: 'Jamaica', phone: '1-876' },
   { code: 'JO', label: 'Jordan', phone: '962' },
   {
-    code: 'JP', label: 'Japan', phone: '81', suggested: true,
+    code: 'JP',
+    label: 'Japan',
+    phone: '81',
+    suggested: true,
   },
   { code: 'KE', label: 'Kenya', phone: '254' },
   { code: 'KG', label: 'Kyrgyzstan', phone: '996' },
@@ -407,7 +440,10 @@ const countries = [
   { code: 'UA', label: 'Ukraine', phone: '380' },
   { code: 'UG', label: 'Uganda', phone: '256' },
   {
-    code: 'US', label: 'United States', phone: '1', suggested: true,
+    code: 'US',
+    label: 'United States',
+    phone: '1',
+    suggested: true,
   },
   { code: 'UY', label: 'Uruguay', phone: '598' },
   { code: 'UZ', label: 'Uzbekistan', phone: '998' },

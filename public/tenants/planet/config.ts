@@ -3,11 +3,11 @@ const config = {
   tenantName: 'planet',
   // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
-  tenantGoal:null,
-  showUNEPLogo:true,
-  showUNDecadeLogo:true,
-  showRedeemHint:true,
-  enableGuestSepa:false,
+  tenantGoal: null,
+  showUNEPLogo: true,
+  showUNDecadeLogo: true,
+  showRedeemHint: true,
+  enableGuestSepa: false,
   darkModeEnabled: false,
   // font family and it's property particular to tenant
   font: {
@@ -36,13 +36,50 @@ const config = {
         title: 'aboutUs',
         onclick: 'https://a.plant-for-the-planet.org/',
         visible: true,
+        subMenu: [
+          {
+            title: 'overview',
+            onclick: 'https://a.plant-for-the-planet.org/',
+            visible: true
+          },
+          {
+            title: 'childrenAndYouth',
+            onclick: 'https://a.plant-for-the-planet.org/children-youth/',
+            visible: true
+          },
+          {
+            title: 'trillionTrees',
+            onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
+            visible: true
+          },
+          {
+            title: 'yucatan',
+            onclick: 'https://a.plant-for-the-planet.org/yucatan/',
+            visible: true
+          },
+          {
+            title: 'partners',
+            onclick: 'https://a.plant-for-the-planet.org/partners/',
+            visible: true
+          },
+          {
+            title: 'changeChocolate',
+            onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
+            visible: true
+          },
+          {
+            title: 'stopTalkingStartPlanting',
+            onclick: 'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
+            visible: true
+          }
+        ]
       },
       leaderboard: {
         title: 'leaders',
         onclick: '/all',
         visible: true,
       },
-      me:{
+      me: {
         title: 'signIn',
         loggedInTitle: 'me',
         onclick: '/me',
@@ -62,5 +99,4 @@ const config = {
   footerLinks:["shop","privacy","terms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
   manifest: '/tenants/planet/manifest.json',
 };
-
 export default config;
