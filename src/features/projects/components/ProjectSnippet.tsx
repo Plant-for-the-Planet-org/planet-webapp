@@ -53,7 +53,6 @@ export default function ProjectSnippet({
     router.push(`${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.id}`);
   };
 
-  console.log(`project.purpose`, project.purpose)
   return ready ? (
     <div className={'singleProject'} key={key}>
       <Modal
