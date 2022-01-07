@@ -44,7 +44,7 @@ export default function ProjectSnippet({
     window.location.href = url;
   };
   return ready ? (
-    <div className={'singleProject'} key={key}>
+    <div className={'singleProject'} key={keyString}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
