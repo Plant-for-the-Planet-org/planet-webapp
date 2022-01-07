@@ -135,16 +135,40 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [showVideo, setshowVideo] = React.useState(true);
 
+  // if localShowVideo is undefined
+  // set localShowVideo is true and show the video
+  // if localShowVideo is true show the video
+  // if localShowVideo is false hide the video
+
+  const [localShowVideo, setLocalShowVideo] = React.useState(false);
+
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (localStorage.getItem('hidePreview')) {
-        setshowVideo(false);
+    if (router.pathname === '/') {
+      if (typeof window !== 'undefined') {
+        if (localStorage.getItem('showVideo')) {
+          if (localStorage.getItem('showVideo') === 'true') {
+            setLocalShowVideo(true);
+          } else {
+            setLocalShowVideo(false);
+          }
+        } else {
+          localStorage.setItem('showVideo', 'true');
+          setLocalShowVideo(true);
+        }
       }
-      if (router.pathname !== '/') {
-        setshowVideo(false);
-      }
+    } else {
+      setLocalShowVideo(false);
     }
   }, []);
+
+  React.useEffect(() => {
+    if (localShowVideo) {
+      setshowVideo(true);
+    } else {
+      setshowVideo(false);
+    }
+  }, [localShowVideo]);
+
   const { project, projects } = React.useContext(ProjectPropsContext);
 
   if (browserCompatible) {
@@ -156,7 +180,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <div
             style={
               showVideo &&
-              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                (config.tenantName === 'planet' || config.tenantName === 'ttc')
                 ? {}
                 : { display: 'none' }
             }
@@ -171,7 +195,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <div
             style={
               showVideo &&
-              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                (config.tenantName === 'planet' || config.tenantName === 'ttc')
                 ? { display: 'none' }
                 : {}
             }
@@ -200,7 +224,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                           <div
                             style={
                               config.tenantName === 'planet' ||
-                              config.tenantName === 'ttc'
+                                config.tenantName === 'ttc'
                                 ? {}
                                 : { display: 'none' }
                             }

@@ -16,11 +16,11 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
   const videoRef = React.useRef<ReactPlayer | null>(null);
   const handleVideoClose = () => {
     setshowVideo(false);
-    if(videoRef?.current) {
+    if (videoRef?.current) {
       videoRef.current.seekTo(0);
     }
     if (typeof window !== 'undefined') {
-      localStorage.setItem('hidePreview', true);
+      localStorage.setItem('showVideo', 'false');
     }
   };
 
@@ -28,7 +28,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     if (typeof navigator !== 'undefined') {
       const ua = navigator.userAgent;
       const agent = useUserAgent(ua);
-      if(agent.isBot){
+      if (agent.isBot) {
         handleVideoClose();
       }
     }
@@ -110,7 +110,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
         className={styles.landingVideoSkipButton}
         onClick={() => handleVideoClose()}
       >
-          {t('common:skipIntroVideo')}
+        {t('common:skipIntroVideo')}
       </button>
     </div>
   ) : (
