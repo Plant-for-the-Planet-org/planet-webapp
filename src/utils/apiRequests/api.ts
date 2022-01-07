@@ -19,7 +19,7 @@ export async function getAccountInfo(token: any): Promise<any> {
   return response;
 }
 
-export async function getRequest(url: any): Promise<any> {
+export async function getRequest(url: any, errorHandler?: Function) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -37,11 +37,25 @@ export async function getRequest(url: any): Promise<any> {
       result = res.status === 200 ? await res.json() : null;
       if (res.status === 404) {
         const errorMessage = 'Not Found';
-        window.location.href = `/404?error=${errorMessage}`;
+        // window.location.href = `/404?error=${errorMessage}`;
+        if (errorHandler) {
+          errorHandler({
+            type: 'error',
+            message: errorMessage,
+            redirect: true,
+          });
+        }
       } else if (res.status !== 200) {
         // Maybe show a Modal with Error and redirect to home page
         const errorMessage = res.statusText;
-        window.location.href = `/404?error=${errorMessage}`;
+        if (errorHandler) {
+          errorHandler({
+            type: 'error',
+            message: errorMessage,
+            redirect: true,
+          });
+        }
+        // window.location.href = `/404?error=${errorMessage}`;
       } else {
         return result;
       }

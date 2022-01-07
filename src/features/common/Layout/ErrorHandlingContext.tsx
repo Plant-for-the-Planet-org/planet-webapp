@@ -1,21 +1,32 @@
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 
 interface Props {}
 
 export const ErrorHandlingContext = React.createContext({
-    error: null,
-    setError: () => {},
-    handleError: ({}) => {},
+  error: null,
+  setError: () => {},
+  handleError: ({}) => {},
 });
 
 function ErrorHandlingProvider({ children }: any): ReactElement {
-    const [error, setError] = React.useState<{}|null>(null);
-    const handleError = (error: any) => {
-        setError(error);
-        setTimeout(() => {
-            setError(null);
-        } , 5000);
-    }
+  const [error, setError] = React.useState<{} | null>(null);
+  const router = useRouter();
+
+  const handleError = (error: any) => {
+    setError(error);
+    setTimeout(() => {
+      setError(null);
+      console.log(`error.redirect`, error.redirect);
+      if (error.redirect) {
+        if (typeof error.redirect === 'string') {
+          router.push(error.redirect);
+        } else {
+          router.push('/');
+        }
+      }
+    }, 5000);
+  };
   return (
     <ErrorHandlingContext.Provider
       value={{

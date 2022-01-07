@@ -1,6 +1,7 @@
 import { Modal } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import DonationsPopup from '../src/features/donations';
 import Credits from '../src/features/projects/components/maps/Credits';
@@ -34,7 +35,7 @@ export default function Donate({
     setPlantLocations,
     selectedPl,
     hoveredPl,
-    setPlantLocationsLoaded
+    setPlantLocationsLoaded,
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -49,6 +50,8 @@ export default function Donate({
   const handleOpen = () => {
     setOpen(true);
   };
+  const { handleError } = React.useContext(ErrorHandlingContext);
+
   React.useEffect(() => {
     async function loadProject() {
       if (!internalCurrencyCode || currencyCode !== internalCurrencyCode) {
@@ -56,7 +59,8 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         const project = await getRequest(
-          `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`
+          `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`,
+          handleError
         );
         setProject(project);
         setShowSingleProject(true);
