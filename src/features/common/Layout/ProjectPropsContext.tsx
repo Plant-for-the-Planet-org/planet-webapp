@@ -76,6 +76,8 @@ export const ProjectPropsContext = React.createContext({
   setFilteredProjects:(value: []) => {},
   filtersOpen:false,
   setFilterOpen:(value:boolean) => {},
+  purpose:'trees',
+  setPurpose:(value:string) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -103,7 +105,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [satellite, setSatellite] = React.useState(false);
   const [filteredProjects, setFilteredProjects] = React.useState(null);
   const [filtersOpen, setFilterOpen] = React.useState(false);
-
+  const[purpose, setPurpose] = React.useState('trees')
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -281,7 +283,9 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         filteredProjects, 
         setFilteredProjects,
         filtersOpen,
-        setFilterOpen
+        setFilterOpen,
+        purpose,
+        setPurpose
       }}
     >
       {children}

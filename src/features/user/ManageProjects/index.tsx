@@ -28,19 +28,19 @@ export default function ManageProjects({ GUID, token, project, conservationProje
   function getSteps() {
     return (
       conservationProject === true ?
-      [
-        ready ? t('manageProjects:basicDetails') : '',
-        ready ? t('manageProjects:detailedAnalysis') : '',
-        ready ? t('manageProjects:review') : '',
-      ] :
-      [
-      ready ? t('manageProjects:basicDetails') : '',
-      ready ? t('manageProjects:projectMedia') : '',
-      ready ? t('manageProjects:detailedAnalysis') : '',
-      ready ? t('manageProjects:projectSites') : '',
-      ready ? t('manageProjects:projectSpending') : '',
-      ready ? t('manageProjects:review') : '',
-    ]
+        [
+          ready ? t('manageProjects:basicDetails') : '',
+          ready ? t('manageProjects:detailedAnalysis') : '',
+          ready ? t('manageProjects:review') : '',
+        ] :
+        [
+          ready ? t('manageProjects:basicDetails') : '',
+          ready ? t('manageProjects:projectMedia') : '',
+          ready ? t('manageProjects:detailedAnalysis') : '',
+          ready ? t('manageProjects:projectSites') : '',
+          ready ? t('manageProjects:projectSpending') : '',
+          ready ? t('manageProjects:review') : '',
+        ]
     );
   }
   const [activeStep, setActiveStep] = React.useState(0);
@@ -111,7 +111,7 @@ export default function ManageProjects({ GUID, token, project, conservationProje
       if (userLang) setUserLang(userLang);
     }
   }, []);
-
+  console.log(`projectDetails`, projectDetails)
   function getStepContent(step: number) {
     switch (step) {
       case 0:
@@ -130,29 +130,35 @@ export default function ManageProjects({ GUID, token, project, conservationProje
         return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
     }
   }
-  function getConservationStepContent(step: any){
+  function getConservationStepContent(step: any) {
     switch (step) {
       case 0:
         return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
       case 1:
-        return <DetailedConservationAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset}/>;
+        return <DetailedConservationAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
       case 2:
-        return <SubmitConservationForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID}  handleReset={handleReset}/>;
+        return <SubmitConservationForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
       default:
-        return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} handleReset={handleReset}/>;
+        return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} handleReset={handleReset} />;
     }
   }
 
   return ready ? (
-    <div className={styles.mainContainer}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((label, index) => (
-          <Step key={label}>
-            <StepLabel onClick={() => setActiveStep(index)}>{label}</StepLabel>
-            <StepContent>{conservationProject === true ? getConservationStepContent(index) : getStepContent(index)}</StepContent>
-          </Step>
-        ))}
+    <div className={styles.mainContainer} style={{ display: 'flex', flexDirection: 'column' }}>
+      <Stepper activeStep={activeStep} >
+        
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel onClick={() => setActiveStep(index)}>{label}
+              </StepLabel>
+            </Step>
+          ))}
+      
+        
       </Stepper>
+      <div>
+          {conservationProject === true ? getConservationStepContent(activeStep) : getStepContent(activeStep)}
+        </div>
     </div>
   ) : null;
 }

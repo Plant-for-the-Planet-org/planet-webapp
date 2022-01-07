@@ -3,9 +3,11 @@
 .mainContainer {
   max-width: 1000px;
   display: flex;
+  flex-direction: column;
   background-color: $backgroundColor;
   > div {
-    background-color: $backgroundColor;
+    background-color: $backgroundBase;
+    padding-left: 0%;
   }
 }
 
@@ -13,8 +15,7 @@
   margin: auto;
   font-family: $primaryFontFamily;
   display: flex;
-  justify-content: center;
-  background-color: $backgroundColor;
+  background-color: $backgroundBase;
   color: $primaryFontColor;
 }
 .formFieldRadio {

@@ -12,7 +12,7 @@ export default function AddProjectType(): ReactElement {
     const { useTranslation } = i18next;
     const router = useRouter();
     const { t } = useTranslation(['donate', 'manageProjects']);
-    const [purpose, setPurpose] = React.useState(false)
+    const [isPurpose, setIsPurpose] = React.useState(false)
     const { user, contextLoaded, token, loginWithRedirect } = React.useContext(
         UserPropsContext
     );
@@ -20,10 +20,10 @@ export default function AddProjectType(): ReactElement {
     const [setupAccess, setSetupAccess] = React.useState(false);
     React.useEffect(() => {
         if (router.query.purpose) {
-            setPurpose(true)
+            setIsPurpose(true)
         }
         else
-            setPurpose(false)
+            setIsPurpose(false)
     }, [router]);
     console.log(`router`, router)
 
@@ -86,7 +86,7 @@ export default function AddProjectType(): ReactElement {
                     </p>
                 </div>
                 
-                {!purpose ?
+                {!isPurpose ?
                     <div className={'add-project-container'}>
                         <div className={'add-project'}>
                             <button
@@ -110,7 +110,7 @@ export default function AddProjectType(): ReactElement {
                 }
 
 
-                {purpose ?
+                {isPurpose ?
                     (
                         router.query.purpose == "conservation" ?
                             (<ManageProjects token={token} conservationProject={true} />)
