@@ -2,9 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
-import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import i18next from '../../../../../i18n';
-import theme from '../../../../theme/theme';
 import themeProperties from '../../../../theme/themeProperties';
 
 const { useTranslation } = i18next;
@@ -12,9 +10,9 @@ const { useTranslation } = i18next;
 interface Props {
   handleRecordOpen: Function;
   index: number;
-  selectedRecord: number;
-  record: Object;
-  recurrencies: Object;
+  selectedRecord: number | null;
+  record: Payments.Subscription;
+  recurrencies: Payments.Subscription[];
   openModal: boolean;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,16 +50,7 @@ export default function RecurrencyRecord({
         <div className={styles.detailGrid}>
           <DetailsComponent record={record} />
         </div>
-        {record.details?.recipientBank && (
-          <>
-            <div className={styles.title}>{t('bankDetails')}</div>
-            <div className={styles.detailGrid}>
-              <BankDetails record={record} />
-            </div>
-          </>
-        )}
         <>
-          {/* <div className={styles.detailGrid}> */}
           <ManageDonation
             record={record}
             seteditDonation={seteditDonation}
@@ -69,7 +58,6 @@ export default function RecurrencyRecord({
             setcancelDonation={setcancelDonation}
             setreactivateDonation={setreactivateDonation}
           />
-          {/* </div> */}
         </>
       </div>
     </div>
@@ -77,22 +65,17 @@ export default function RecurrencyRecord({
 }
 
 interface HeaderProps {
-  record: Object;
+  record: Payments.Subscription;
   handleRecordOpen: Function;
-  index: number;
-  handleClose?: Function;
-  openModal: boolean;
+  index?: number;
 }
 
 export function RecordHeader({
   record,
   handleRecordOpen,
   index,
-  openModal,
-  handleClose,
 }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  console.log(new Date(record?.endsAt) < new Date(), 'Datesss');
   return (
     <div
       onClick={() => handleRecordOpen(index)}
@@ -164,7 +147,7 @@ export function RecordHeader({
 }
 
 interface DetailProps {
-  record: Object;
+  record: Payments.Subscription;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -221,7 +204,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           {record.project.id ? (
             <a href={`/${record.project.id}`}>{record.project.name}</a>
           ) : (
-            <p>{record.details.project}</p>
+            <p>{record.project.name}</p>
           )}
           {/* <p style={{ color: themeProperties.primaryColor }}>
             {record.project.name}
@@ -229,168 +212,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         </div>
       )}
 
-      {record.details?.project && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('project')}</p>
-          {record.projectGuid ? (
-            <a href={`/${record.projectGuid}`}>{record.details.project}</a>
-          ) : (
-            <p>{record.details.project}</p>
-          )}
-        </div>
-      )}
-      {record.details?.refundAmount && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('refundAmount')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.refundAmount / 100
-            )}
-          </p>
-        </div>
-      )}
-      {record.details?.unitCost && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('treeCost')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.unitCost / 100
-            )}
-          </p>
-        </div>
-      )}
-      {/* {record.projectGuid && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('projectGuid')}</p>
-          <p>{record.projectGuid}</p>
-        </div>
-      )} */}
       {record.firstDonation?.reference && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('reference')}</p>
           <p>{record.firstDonation.reference}</p>
-        </div>
-      )}
-      {record.details?.fees?.disputeFee && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('disputeFee')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.fees.disputeFee / 100
-            )}
-          </p>
-        </div>
-      )}
-      {record.details?.fees?.planetFee && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('planetFee')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.fees.planetFee / 100
-            )}
-          </p>
-        </div>
-      )}
-      {record.details?.fees?.transactionFee && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('transactionFee')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.fees.transactionFee / 100
-            )}
-          </p>
-        </div>
-      )}
-      {record.details?.fees?.transferFee && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('transferFee')}</p>
-          <p>
-            {getFormatedCurrency(
-              i18n.language,
-              record.currency,
-              record.details.fees.transferFee / 100
-            )}
-          </p>
-        </div>
-      )}
-    </>
-  );
-}
-
-interface BankDetailsProps {
-  record: Object;
-}
-
-export function BankDetails({ record }: BankDetailsProps): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
-  return (
-    <>
-      {record.details?.recipientBank?.bankName && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('bankName')}</p>
-          <p>{record.details.recipientBank.bankName}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.accountHolder && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('accountHolder')}</p>
-          <p>{record.details.recipientBank.accountHolder}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.aba && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('aba')}</p>
-          <p>{record.details.recipientBank.aba}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.bic && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('bic')}</p>
-          <p>{record.details.recipientBank.bic}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.iban && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('iban')}</p>
-          <p>{record.details.recipientBank.iban}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.swift && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('swift')}</p>
-          <p>{record.details.recipientBank.swift}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.isDefault && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('isDefault')}</p>
-          <p>
-            {Number(record.details.recipientBank.isDefault) === 0
-              ? t('no')
-              : t('yes')}
-          </p>
-        </div>
-      )}
-      {record.details?.recipientBank?.created && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('created')}</p>
-          <p>{formatDate(record.details.recipientBank.created)}</p>
-        </div>
-      )}
-      {record.details?.recipientBank?.updated && (
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('updated')}</p>
-          <p>{formatDate(record.details.recipientBank.updated)}</p>
         </div>
       )}
     </>
@@ -398,7 +223,7 @@ export function BankDetails({ record }: BankDetailsProps): ReactElement {
 }
 
 interface ManageDonationProps {
-  record: Object;
+  record: Payments.Subscription;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;

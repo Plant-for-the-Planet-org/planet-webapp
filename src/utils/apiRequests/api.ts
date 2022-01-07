@@ -2,7 +2,7 @@ import { TENANT_ID } from '../constants/environment';
 import getsessionId from './getSessionId';
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any) {
+export async function getAccountInfo(token: any): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
@@ -19,7 +19,7 @@ export async function getAccountInfo(token: any) {
   return response;
 }
 
-export async function getRequest(url: any) {
+export async function getRequest(url: any): Promise<any> {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -54,7 +54,7 @@ export async function getAuthenticatedRequest(
   url: any,
   token: any,
   header: any = null
-) {
+): Promise<any> {
   let result = {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -96,7 +96,7 @@ export async function postAuthenticatedRequest(
   url: any,
   data: any,
   token: any
-) {
+): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -116,7 +116,7 @@ export async function postAuthenticatedRequest(
   return result;
 }
 
-export async function postRequest(url: any, data: any) {
+export async function postRequest(url: any, data: any): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -135,7 +135,10 @@ export async function postRequest(url: any, data: any) {
   return result;
 }
 
-export async function deleteAuthenticatedRequest(url: any, token: any) {
+export async function deleteAuthenticatedRequest(
+  url: any,
+  token: any
+): Promise<any> {
   let result;
   await fetch(process.env.API_ENDPOINT + url, {
     method: 'DELETE',
@@ -156,7 +159,11 @@ export async function deleteAuthenticatedRequest(url: any, token: any) {
   return result;
 }
 
-export async function putAuthenticatedRequest(url: any, data: any, token: any) {
+export async function putAuthenticatedRequest(
+  url: any,
+  data: any,
+  token: any
+): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
     body: JSON.stringify(data),
@@ -176,7 +183,7 @@ export async function putAuthenticatedRequest(url: any, data: any, token: any) {
   return result;
 }
 
-export async function putRequest(url: any, data: any) {
+export async function putRequest(url: any, data: any): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
     body: JSON.stringify(data),
@@ -195,7 +202,7 @@ export async function putRequest(url: any, data: any) {
   return result;
 }
 
-export async function getRasterData(id: any) {
+export async function getRasterData(id: any): Promise<any> {
   let result;
   const res = await fetch(
     `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
@@ -208,7 +215,7 @@ export async function getRasterData(id: any) {
   return result;
 }
 
-export async function getRequestWithoutRedirecting(url: any) {
+export async function getRequestWithoutRedirecting(url: any): Promise<any> {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     headers: {
@@ -232,7 +239,7 @@ export async function getRequestWithoutRedirecting(url: any) {
 export async function getAuthenticatedRequestWithoutRedirecting(
   url: any,
   token: any
-) {
+): Promise<any> {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     headers: {

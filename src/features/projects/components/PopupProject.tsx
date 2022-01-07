@@ -1,13 +1,12 @@
-import Modal from '@material-ui/core/Modal';
 import React, { ReactElement, Ref } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { ThemeContext } from '../../../theme/themeContext';
-import DonationsPopup from '../../donations';
 import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { useRouter } from 'next/router';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { getDonationUrl } from '../../../utils/getDonationUrl';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -29,7 +28,8 @@ export default function PopupProject({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { theme } = React.useContext(ThemeContext);
+  const { token } = React.useContext(UserPropsContext);
+
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -39,23 +39,14 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
-
-  const handleRedirect = () => {
-    router.push(`https://donate.plant-for-the-planet.org/?to=${projectDetails.id}`);
+  
+  const handleDonationOpen = () => {
+    const url = getDonationUrl(project.properties.slug, token);
+    window.location.href = url;
   };
 
   return ready ? (
     <>
-      <Modal
-        ref={popupRef}
-        className={`modalContainer ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <DonationsPopup project={projectDetails} onClose={handleClose} />
-      </Modal>
       <div className={'projectImage'}>
         {project.properties.image &&
           typeof project.properties.image !== 'undefined' ? (
@@ -111,10 +102,7 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.treeCost ? (
               <>
-                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={
-                  project.purpose === 'trees' ? handleOpen : handleRedirect
-                } className={'donateButton'}
-                >
+                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleDonationOpen} className={'donateButton'}>
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>

@@ -180,9 +180,9 @@ export default function NavbarComponent(props: any) {
                 onMouseLeave={() =>
                   hasSubMenu ? setMenu(isMobile ? menu : false) : {}
                 }
+                key={link}
               >
                 <Link
-                  key={link}
                   href={isMobile && hasSubMenu ? '' : SingleLink.onclick}
                 >
                   <div className={`linkContainer`}>
