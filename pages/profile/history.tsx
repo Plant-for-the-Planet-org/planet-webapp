@@ -92,7 +92,7 @@ function AccountHistory({ }: Props): ReactElement {
       )}
       <UserLayout>
         <Head>
-          <title>{t('donations')}</title>
+          <title>{t('history')}</title>
         </Head>
         <History {...HistoryProps} />
         {/* <UnderMaintenance/> */}
