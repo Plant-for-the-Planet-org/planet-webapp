@@ -60,7 +60,8 @@ export default function Donate({
         setCurrencyCode(currency);
         const project = await getRequest(
           `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`,
-          handleError
+          handleError,
+          '/'
         );
         setProject(project);
         setShowSingleProject(true);
@@ -75,7 +76,10 @@ export default function Donate({
   React.useEffect(() => {
     async function loadPl() {
       setPlantLocationsLoaded(false);
-      const newPlantLocations = await getAllPlantLocations(project.id);
+      const newPlantLocations = await getAllPlantLocations(
+        project.id,
+        handleError
+      );
       setPlantLocations(newPlantLocations);
       setPlantLocationsLoaded(true);
     }

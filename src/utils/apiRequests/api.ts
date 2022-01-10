@@ -19,7 +19,11 @@ export async function getAccountInfo(token: any): Promise<any> {
   return response;
 }
 
-export async function getRequest(url: any, errorHandler?: Function) {
+export async function getRequest(
+  url: any,
+  errorHandler?: Function,
+  redirect?: string
+) {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
@@ -42,7 +46,7 @@ export async function getRequest(url: any, errorHandler?: Function) {
           errorHandler({
             type: 'error',
             message: errorMessage,
-            redirect: true,
+            redirect: redirect,
           });
         }
       } else if (res.status !== 200) {
@@ -52,7 +56,7 @@ export async function getRequest(url: any, errorHandler?: Function) {
           errorHandler({
             type: 'error',
             message: errorMessage,
-            redirect: true,
+            redirect: redirect,
           });
         }
         // window.location.href = `/404?error=${errorMessage}`;
