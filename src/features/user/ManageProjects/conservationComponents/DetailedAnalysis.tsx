@@ -17,6 +17,7 @@ import materialTheme from '../../../../theme/themeStyles';
 import { MenuItem, makeStyles } from '@material-ui/core';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
+import { type } from 'os';
 
 const { useTranslation } = i18next;
 
@@ -160,7 +161,7 @@ export default function DetailedConservationAnalysis({ handleBack, userLang, tok
                 location: data.location,
                 areaProtected: data.areaProtected,
                 employeeCount: data.employeeCount,
-                startingProtectionYear: data.startingProtectionYear.getFullYear() ? data.startingProtectionYear.getFullYear() : null,
+                startingProtectionYear: data.startingProtectionYear.getFullYear(),
                 actions: data.actions,
                 activitySeasons: months,
                 mainChallenge: data.mainChallenge,
@@ -241,7 +242,8 @@ export default function DetailedConservationAnalysis({ handleBack, userLang, tok
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
-    console.log(`projectDetails`, projectDetails)
+    // console.log(`projectDetails`, projectDetails)
+    // console.log(`properties.value`, properties.value, typeof properties.value)
     return ready ? (
         <div className={styles.stepContainer}>
             <form onSubmit={(e) => { e.preventDefault() }}>
@@ -345,16 +347,16 @@ export default function DetailedConservationAnalysis({ handleBack, userLang, tok
                                     <Controller
                                         render={properties => (
                                             <DatePicker
-                                                label={t('manageProjects: startingProtectionYear')}
+                                                label={t('manageProjects:startingProtectionYear')}
                                                 value={properties.value}
                                                 onChange={properties.onChange}
                                                 inputVariant="outlined"
                                                 TextFieldComponent={MaterialTextField}
                                                 autoOk
                                                 disableFuture
-                                                minDate={new Date(new Date().setFullYear(1950))}
+                                                // minDate={new Date(new Date().setFullYear(1950))}
                                                 views={["year"]}
-                                                maxDate={new Date()}
+                                                // maxDate={new Date()}
                                             />)
                                         }
                                         name="startingProtectionYear"
