@@ -30,7 +30,6 @@ function UserLayout(props: any): ReactElement {
       title: t('me:profile'),
       path: '/profile',
       icon: <UserIcon />,
-
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -55,20 +54,20 @@ function UserLayout(props: any): ReactElement {
     {
       key: 3,
       title: t('me:payments'),
-      path: '/profile/history',
+      // path: '/profile/history',
       icon: <DonateIcon />,
-      flag: 'Beta',
-      hideSubMenu: true,
+      flag: 'New',
+      // hideSubMenu: true,
       subMenu: [
         {
           title: 'History',
           path: '/profile/history',
-          hideItem: true,
+          // hideItem: true,
         },
         {
           title: 'Recurring Donations',
           path: '/profile/recurrency',
-          hideItem: true,
+          // hideItem: true,
         },
         // {
         //   title: 'Payouts',
@@ -325,9 +324,8 @@ function NavLink({
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
-        className={`${styles.navlink} ${
-          activeLink === link.path ? styles.navlinkActive : ''
-        }`}
+        className={`${styles.navlink} ${activeLink === link.path ? styles.navlinkActive : ''
+          }`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
@@ -367,11 +365,10 @@ function NavLink({
           if (!subLink.hideItem) {
             return (
               <div
-                className={`${styles.navlinkSubMenu} ${
-                  activeSubMenu === subLink.path
-                    ? styles.navlinkActiveSubMenu
-                    : ''
-                }`}
+                className={`${styles.navlinkSubMenu} ${activeSubMenu === subLink.path
+                  ? styles.navlinkActiveSubMenu
+                  : ''
+                  }`}
                 key={index}
                 onClick={() => {
                   setactiveLink(link.path);

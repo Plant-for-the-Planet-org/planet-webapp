@@ -9,10 +9,10 @@ function TransactionsNotFound() {
       viewBox="0 0 999.997 666.665"
     >
       <defs>
-        <clipPath id="clip-path">
+        <clipPath id="clipPath">
           <path d="M0-666.665h1000V0H0z"></path>
         </clipPath>
-        <clipPath id="clip-path-5">
+        <clipPath id="clipPath-5">
           <path
             fill="#007a49"
             d="M362.183-458.232h464.978V-90.6H362.183z"
@@ -45,7 +45,7 @@ function TransactionsNotFound() {
           <path fill="#dcdcdc" d="M0 0l40.769 34.193-38.505 2.383z"></path>
         </g>
         <g>
-          <g clipPath="url(#clip-path)">
+          <g clipPath="url(#clipPath)">
             <g transform="translate(569.573 -439.584)">
               <path
                 fill="#dcdcdc"
@@ -188,7 +188,7 @@ function TransactionsNotFound() {
           ></path>
         </g>
         <g>
-          <g clipPath="url(#clip-path)">
+          <g clipPath="url(#clipPath)">
             <g transform="translate(882.321 -99.608)">
               <path
                 fill="#ececec"
@@ -204,10 +204,10 @@ function TransactionsNotFound() {
           <path fill="#ffc800" d="M0 0h-132.95l-6.084 34.5H3.248z"></path>
         </g>
         <g>
-          <g clipPath="url(#clip-path)">
+          <g clipPath="url(#clipPath)">
             <g>
               <g>
-                <g clipPath="url(#clip-path-5)" opacity="0.1">
+                <g clipPath="url(#clipPath-5)" opacity="0.1">
                   <g transform="translate(768.421 -90.599)">
                     <path d="M0 0h-406.238l58.74-333.134H58.74z"></path>
                   </g>
@@ -335,7 +335,7 @@ function TransactionsNotFound() {
           </g>
         </g>
         <g>
-          <g clipPath="url(#clip-path)">
+          <g clipPath="url(#clipPath)">
             <g transform="translate(740.807 -234.247)">
               <path
                 fill="none"
