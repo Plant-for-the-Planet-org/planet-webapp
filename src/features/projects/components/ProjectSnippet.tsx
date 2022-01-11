@@ -1,8 +1,5 @@
-import Modal from '@material-ui/core/Modal';
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { ThemeContext } from '../../../theme/themeContext';
-import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -11,6 +8,8 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { getDonationUrl } from '../../../utils/getDonationUrl';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -31,8 +30,6 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { theme } = React.useContext(ThemeContext);
-
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
@@ -41,27 +38,13 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = (reason: string) => {
-    if (reason !== 'backdropClick') {
-      setOpen(false);
-    }
-  };
+  const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
-    setOpen(true);
+    const url = getDonationUrl(project.slug, token);
+    window.location.href = url;
   };
   return ready ? (
     <div className={'singleProject'} key={keyString}>
-      <Modal
-        className={`modalContainer ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <DonationsPopup project={project} onClose={handleClose} />
-      </Modal>
-
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
@@ -88,8 +71,8 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-          {project.classification &&
-          t(`donate:${project.classification}`)}
+            {project.classification &&
+              t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
