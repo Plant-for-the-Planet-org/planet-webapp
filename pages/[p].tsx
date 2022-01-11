@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
-import DonationsPopup from '../src/features/donations';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
@@ -110,15 +109,6 @@ export default function Donate({
         project && initialized ? (
           <>
             <SingleProjectDetails {...ProjectProps} />
-            <Modal
-              className={`modalContainer ${theme}`}
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-            >
-              <DonationsPopup project={project} onClose={handleClose} />
-            </Modal>
           </>
         ) : (
           <></>
