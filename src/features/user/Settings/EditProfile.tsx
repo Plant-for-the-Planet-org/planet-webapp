@@ -49,6 +49,7 @@ export default function EditProfile({}: Props) {
     const defaultProfileDetails = {
       firstname: user.firstname ? user.firstname : '',
       lastname: user.lastname ? user.lastname : '',
+      email: user.email ? user.email : '',
       address: user.address && user.address.address ? user.address.address : '',
       city: user.address && user.address.city ? user.address.city : '',
       zipCode: user.address && user.address.zipCode ? user.address.zipCode : '',
@@ -329,7 +330,30 @@ export default function EditProfile({}: Props) {
           </div>
         </div>
 
+        { type !== 'tpo' ? 
+        <div className={styles.formFieldLarge}>
+          <div style={{ width: '100%' }}>
+            <MaterialTextField
+              inputRef={register({
+                required: true,
+                pattern:
+                  /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
+              })}
+              label={t('donate:email')}
+              variant="outlined"
+              name="email"
+              defaultValue={user.email}
+            />
+            {errors.email && (
+              <span className={styles.formErrors}>
+                {t('donate:emailRequired')}
+              </span>
+            )}
+          </div>
+        </div> : null}
+
         {type && type !== 'individual' && (
+          <>
           <div className={styles.formFieldLarge}>
             <MaterialTextField
               label={t('editProfile:profileName', {
@@ -345,6 +369,28 @@ export default function EditProfile({}: Props) {
               </span>
             )}
           </div>
+          <div className={styles.formFieldLarge}>
+          <div style={{ width: '100%' }}>
+            <MaterialTextField
+              inputRef={register({
+                required: true,
+                pattern:
+                  /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
+              })}
+              label={t('donate:email')}
+              variant="outlined"
+              name="email"
+              defaultValue={user.email}
+              disabled={true}
+            />
+            {errors.email && (
+              <span className={styles.formErrors}>
+                {t('donate:emailRequired')}
+              </span>
+            )}
+          </div>
+        </div>
+        </>
         )}
 
         <div className={styles.formFieldLarge}>
