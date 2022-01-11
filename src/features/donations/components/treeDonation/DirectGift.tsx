@@ -30,7 +30,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
       <button id={'giftClose'}
         onClick={() => {
           directGift.show = false;
-          localStorage.setItem('directGift', JSON.stringify(directGift));
+          localStorage.removeItem('directGift');
           setShowDirectGift(false);
         }}
         className={styles.closeButton}
