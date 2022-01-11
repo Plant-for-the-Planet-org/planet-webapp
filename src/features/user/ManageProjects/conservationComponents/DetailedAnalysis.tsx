@@ -242,8 +242,6 @@ export default function DetailedConservationAnalysis({ handleBack, userLang, tok
             reset(defaultDetailedAnalysisData)
         }
     }, [projectDetails])
-    // console.log(`projectDetails`, projectDetails)
-    // console.log(`properties.value`, properties.value, typeof properties.value)
     return ready ? (
         <div className={styles.stepContainer}>
             <form onSubmit={(e) => { e.preventDefault() }}>
@@ -354,15 +352,13 @@ export default function DetailedConservationAnalysis({ handleBack, userLang, tok
                                                 TextFieldComponent={MaterialTextField}
                                                 autoOk
                                                 disableFuture
-                                                // minDate={new Date(new Date().setFullYear(1950))}
+                                                minDate={new Date(new Date().setFullYear(1950))}
                                                 views={["year"]}
-                                                // maxDate={new Date()}
+                                                maxDate={new Date()}
                                             />)
                                         }
                                         name="startingProtectionYear"
                                         control={control}
-                                        defaultValue=""
-
                                     />
                                 </MuiPickersUtilsProvider>
                             </ThemeProvider>
