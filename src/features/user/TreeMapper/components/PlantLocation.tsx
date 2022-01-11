@@ -63,20 +63,20 @@ function PlantLocation({
       <div className={styles.locationHeader}>
         <div className={styles.left}>
           <p className={styles.treeCount}>
-              {`${location.hid?location.hid.substring(0, 3) + "-" + location.hid.substring(3):null} ${location.type === 'multi'?'• '+localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(plantationArea),
-                  2
-                ) + 'ha':location.tag? '• '+location.tag:''}`}
+            {`${location.hid ? location.hid.substring(0, 3) + "-" + location.hid.substring(3) : null} ${location.type === 'multi' ? '• ' + localizedAbbreviatedNumber(
+              i18n.language,
+              Number(plantationArea),
+              2
+            ) + 'ha' : location.tag ? '• ' + location.tag : ''}`}
           </p>
           <p className={styles.date}>
-             {formatDate(location.registrationDate)}
+            {formatDate(location.plantDate)}
           </p>
         </div>
         <div className={styles.right}>
           <div className={styles.status}>{location.type === 'multi' && treeCount
-              ? `${treeCount}`
-              : `1`}<TreeIcon/></div>
+            ? `${treeCount}`
+            : `1`}<TreeIcon /></div>
           <div className={styles.mode}>{t(location.captureStatus)}</div>
         </div>
       </div>
