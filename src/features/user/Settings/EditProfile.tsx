@@ -333,10 +333,6 @@ export default function EditProfile({ }: Props) {
         <div className={styles.formFieldLarge}>
           <div style={{ width: '100%' }}>
             <MaterialTextField
-              inputRef={register({
-                pattern:
-                  /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
-              })}
               label={t('donate:email')}
               variant="outlined"
               name="email"
