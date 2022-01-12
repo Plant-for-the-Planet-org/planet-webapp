@@ -20,9 +20,9 @@ import GeocoderArcGIS from "geocoder-arcgis";
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-export default function EditProfile({}: Props) {
+export default function EditProfile({ }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { user, setUser, token, contextLoaded } = React.useContext(
@@ -79,13 +79,13 @@ export default function EditProfile({}: Props) {
 
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
-    client_id:process.env.ESRI_CLIENT_ID,
-    client_secret:process.env.ESRI_CLIENT_SECRET,
+    client_id: process.env.ESRI_CLIENT_ID,
+    client_secret: process.env.ESRI_CLIENT_SECRET,
   } : {});
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address", countryCode: country})
+        .suggest(value, { category: "Address", countryCode: country })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -94,7 +94,7 @@ export default function EditProfile({}: Props) {
         })
         .catch(console.log);
     }
-  };  
+  };
   const getAddress = (value) => {
     geocoder
       .findAddressCandidates(value, { outfields: "*" })
@@ -200,7 +200,7 @@ export default function EditProfile({}: Props) {
     let bodyToSend = {
       ...data,
       country: country,
-    };  
+    };
     if (type !== 'tpo') {
       bodyToSend = {
         ...bodyToSend,
@@ -246,11 +246,11 @@ export default function EditProfile({}: Props) {
 
   return ready ? (
     <div className="profilePage">
-       <div className={'profilePageTitle'}>
-             {t('editProfile:edit')}
-          </div>
+      <div className={'profilePageTitle'}>
+        {t('editProfile:edit')}
+      </div>
       <div className={styles.editProfileContainer}>
-         
+
 
         <div
           {...getRootProps()}
@@ -330,12 +330,10 @@ export default function EditProfile({}: Props) {
           </div>
         </div>
 
-        { type !== 'tpo' ? 
         <div className={styles.formFieldLarge}>
           <div style={{ width: '100%' }}>
             <MaterialTextField
               inputRef={register({
-                required: true,
                 pattern:
                   /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
               })}
@@ -343,17 +341,12 @@ export default function EditProfile({}: Props) {
               variant="outlined"
               name="email"
               defaultValue={user.email}
+              disabled={true}
             />
-            {errors.email && (
-              <span className={styles.formErrors}>
-                {t('donate:emailRequired')}
-              </span>
-            )}
           </div>
-        </div> : null}
+        </div>
 
         {type && type !== 'individual' && (
-          <>
           <div className={styles.formFieldLarge}>
             <MaterialTextField
               label={t('editProfile:profileName', {
@@ -369,28 +362,6 @@ export default function EditProfile({}: Props) {
               </span>
             )}
           </div>
-          <div className={styles.formFieldLarge}>
-          <div style={{ width: '100%' }}>
-            <MaterialTextField
-              inputRef={register({
-                required: true,
-                pattern:
-                  /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i,
-              })}
-              label={t('donate:email')}
-              variant="outlined"
-              name="email"
-              defaultValue={user.email}
-              disabled={true}
-            />
-            {errors.email && (
-              <span className={styles.formErrors}>
-                {t('donate:emailRequired')}
-              </span>
-            )}
-          </div>
-        </div>
-        </>
         )}
 
         <div className={styles.formFieldLarge}>
@@ -405,23 +376,23 @@ export default function EditProfile({}: Props) {
             onBlur={() => setaddressSugggestions([])}
           />
           {addressSugggestions
-              ? addressSugggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {addressSugggestions.map((suggestion) => {
-                      return (
-                        <div key={'suggestion' + suggestion_counter++}
-                          onMouseDown={() => {
-                            getAddress(suggestion.text);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
+            ? addressSugggestions.length > 0 && (
+              <div className="suggestions-container">
+                {addressSugggestions.map((suggestion) => {
+                  return (
+                    <div key={'suggestion' + suggestion_counter++}
+                      onMouseDown={() => {
+                        getAddress(suggestion.text);
+                      }}
+                      className="suggestion"
+                    >
+                      {suggestion.text}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+            : null}
           {errors.address && (
             <span className={styles.formErrors}>
               {t('donate:addressRequired')}
@@ -497,7 +468,7 @@ export default function EditProfile({}: Props) {
             name="isPrivate"
             control={control}
             inputRef={register()}
-            render={(props:any) => (
+            render={(props: any) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
@@ -521,7 +492,7 @@ export default function EditProfile({}: Props) {
             name="getNews"
             control={control}
             inputRef={register()}
-            render={(props:any) => (
+            render={(props: any) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
