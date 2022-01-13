@@ -18,7 +18,6 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import VideoContainer from '../src/features/common/LandingVideo/';
 import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
@@ -28,6 +27,11 @@ import ProjectPropsProvider, {
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
+import dynamic from 'next/dynamic';
+
+const VideoContainer = dynamic(() => import('../src/features/common/LandingVideo'), {
+  ssr: false,
+});
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -162,11 +166,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    if (localShowVideo) {
-      setshowVideo(true);
-    } else {
-      setshowVideo(false);
-    }
+    setshowVideo(localShowVideo)
   }, [localShowVideo]);
 
   const { project, projects } = React.useContext(ProjectPropsContext);
