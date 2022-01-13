@@ -44,10 +44,6 @@ export default function ProjectSnippet({
     window.location.href = url;
   };
 
-  const handleRedirect = () => {
-    router.push(`${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${project.id}`);
-  };
-
   return ready ? (
     <div className={'singleProject'} key={keyString}>
       {editMode ? (
@@ -129,9 +125,7 @@ export default function ProjectSnippet({
               <>
                 <button
                   id={`ProjSnippetDonate_${project.id}`}
-                  onClick={
-                    project.purpose === 'trees' ? handleOpen : handleRedirect
-                  }
+                  onClick={handleOpen}
                   className={'donateButton'}
                   data-test-id="donateButton"
                 >
@@ -141,7 +135,7 @@ export default function ProjectSnippet({
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
-                    project.treeCost
+                    project.unitCost
                   )}{' '}
                   <span>{project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
