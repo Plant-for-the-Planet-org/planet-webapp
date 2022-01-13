@@ -197,10 +197,10 @@
   },
   "active": "aktiv",
   "canceled": "abgebrochen",
-  "incomplete": "unvollständig",
-  "incomplete_expired": "unvollständig & abgelaufen",
+  "incomplete": "ausstehend",
+  "incomplete_expired": "abgebrochen",
   "past_due": "überfällig",
   "unpaid": "unbezahlt",
-  "trialing": "überprüfend",
+  "trialing": "aktiv",
   "paused": "pausiert"
 }

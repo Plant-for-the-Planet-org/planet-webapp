@@ -196,11 +196,11 @@
     "in-dispute": "Your transfer was disputed. Usually $7 - $15.00 dispute fee is charged by Payment Providers. Please Contact support@plant-for-the-planet.org for details."
   },
   "active": "active",
-  "canceled": "canceled",
-  "incomplete": "incomplete",
-  "incomplete_expired": "incomplete & expired",
+  "canceled": "cancelled",
+  "incomplete": "pending",
+  "incomplete_expired": "cancelled",
   "past_due": "past due",
   "unpaid": "unpaid",
-  "trialing": "trialing",
+  "trialing": "active",
   "paused": "paused"
 }
