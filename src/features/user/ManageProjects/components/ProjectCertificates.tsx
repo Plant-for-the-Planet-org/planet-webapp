@@ -18,6 +18,7 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import materialTheme from '../../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -35,6 +36,7 @@ function ProjectCertificates({
   userLang,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const {
     register,
@@ -74,7 +76,10 @@ function ProjectCertificates({
     if (projectGUID && token) {
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=certificates`,
-        token
+        token,
+        {},
+        handleError,
+        '/profile'
       ).then((result) => {
         if (result && result.certificates && result.certificates.length > 0) {
           setShowForm(false);
@@ -118,7 +123,8 @@ function ProjectCertificates({
     postAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates`,
       submitData,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (!res.code) {
         let newUploadedFiles = uploadedFiles;
@@ -150,7 +156,8 @@ function ProjectCertificates({
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates/${id}`,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(

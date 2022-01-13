@@ -7,15 +7,16 @@ import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Proj
 import Footer from '../../../src/features/common/Layout/Footer';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import  Head from 'next/head';
+import Head from 'next/head';
 import i18next from '../../../i18n';
+import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 
-const {useTranslation} = i18next;
+const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-function ManageSingleProject({}: Props): ReactElement {
-  const {t} = useTranslation('me');
+function ManageSingleProject({ }: Props): ReactElement {
+  const { t } = useTranslation('me');
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const router = useRouter();
@@ -24,6 +25,7 @@ function ManageSingleProject({}: Props): ReactElement {
   const [project, setProject] = React.useState({});
 
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
     if (router && router.query.id) {
@@ -34,7 +36,9 @@ function ManageSingleProject({}: Props): ReactElement {
 
   useEffect(() => {
     async function loadProject() {
-      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, token)
+      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, token, {},
+        handleError,
+        '/profile')
         .then((result) => {
           if (result.status === 401) {
             setAccessDenied(true);

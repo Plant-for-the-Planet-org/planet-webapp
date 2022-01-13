@@ -6,12 +6,8 @@ import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n';
 import styles from './styles/ProjectsContainer.module.scss';
 import {
-  getAuthenticatedRequest,
   getRequest,
 } from '../../../utils/apiRequests/api';
-import AddProject from '../../../../public/assets/images/icons/manageProjects/AddProject';
-import Link from 'next/link';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;

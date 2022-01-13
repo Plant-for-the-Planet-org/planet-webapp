@@ -16,6 +16,7 @@ import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -30,6 +31,7 @@ export const PauseModal = ({
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
   const { t, i18n, ready } = useTranslation(['me']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setdate(
@@ -51,7 +53,7 @@ export const PauseModal = ({
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
-      token
+      token, handleError
     )
       .then((res) => {
         console.log(res, 'Response');

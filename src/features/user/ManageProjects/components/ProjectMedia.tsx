@@ -9,6 +9,7 @@ import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedR
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -24,7 +25,7 @@ interface Props {
 
 export default function ProjectMedia({ handleBack, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([])
@@ -35,9 +36,11 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   React.useEffect(() => {
     // Fetch images of the project 
     if (projectGUID && token)
-      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, token).then((result) => {
-        setUploadedImages(result.images)
-      })
+      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=images`, token, {},
+        handleError,
+        '/profile').then((result) => {
+          setUploadedImages(result.images)
+        })
   }, [projectGUID]);
 
   const uploadPhotos = (image: any) => {
@@ -48,11 +51,11 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       "description": null,
       "isDefault": false
     }
-    postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token).then((res) => {
+    postAuthenticatedRequest(`/app/projects/${projectGUID}/images`, submitData, token, handleError).then((res) => {
       if (!res.code) {
         let newUploadedImages = [...uploadedImages];
-        
-        if(!newUploadedImages){
+
+        if (!newUploadedImages) {
           newUploadedImages = [];
         }
         newUploadedImages.push(res)
@@ -107,7 +110,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
       if (err[0].errors[0].code === "file-too-large") {
         setErrorMessage(t('manageProjects:fileSizeLimit'))
       }
-      else if(err[0].errors[0].code === "file-invalid-type"){
+      else if (err[0].errors[0].code === "file-invalid-type") {
         setErrorMessage(t('manageProjects:fileImageOnly'))
       }
     }
@@ -121,7 +124,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   }, [files]);
 
   const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, token).then(res => {
+    deleteAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, token, handleError).then(res => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedImages.filter(item => item.id !== id);
         setUploadedImages(uploadedFilesTemp)
@@ -136,7 +139,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     const submitData = {
       videoUrl: data.youtubeURL
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
+    putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token, handleError).then((res) => {
       if (!res.code) {
         setProjectDetails(res)
         setIsUploadingData(false)
@@ -167,7 +170,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     const submitData = {
       isDefault: true
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token).then((res) => {
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token, handleError).then((res) => {
       if (!res.code) {
         const tempUploadedData = uploadedImages;
         tempUploadedData.forEach((image) => {
@@ -195,7 +198,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
     const submitData = {
       description: e.target.value
     }
-    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token).then((res) => {
+    putAuthenticatedRequest(`/app/projects/${projectGUID}/images/${id}`, submitData, token, handleError).then((res) => {
       if (!res.code) {
         const tempUploadedData = uploadedImages;
         tempUploadedData[index].description = res.description;
@@ -217,7 +220,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
   }
   return ready ? (
     <div className={styles.stepContainer}>
-      <form onSubmit={(e)=>{e.preventDefault()}}>
+      <form onSubmit={(e) => { e.preventDefault() }}>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {/* <div className={styles.formFieldLarge}>
             {youtubeURL && !errors.youtubeURL ? (
@@ -284,7 +287,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
               <div
-                className="primaryButton" style={{maxWidth: "240px"}}
+                className="primaryButton" style={{ maxWidth: "240px" }}
               >
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
@@ -318,7 +321,7 @@ export default function ProjectMedia({ handleBack, token, handleNext, projectDet
           </div>
           <div style={{ width: '20px' }} />
           <div className={`${styles.formFieldHalf}`}>
-            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{minWidth:"240px"}} data-test-id="projMediaCont">
+            <button id={'SaveAndCont'} onClick={handleSubmit(onSubmit)} className="primaryButton" style={{ minWidth: "240px" }} data-test-id="projMediaCont">
               {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
             </button>
           </div>

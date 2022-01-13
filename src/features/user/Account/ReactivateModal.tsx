@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
@@ -16,13 +17,14 @@ export const ReactivateModal = ({
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const { t, i18n, ready } = useTranslation(['me']);
   const bodyToSend = {};
   const reactivateDonation = () => {
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
-      token
+      token, handleError
     )
       .then((res) => {
         console.log(res, 'Response');

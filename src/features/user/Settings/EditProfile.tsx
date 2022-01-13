@@ -17,14 +17,15 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from "geocoder-arcgis";
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-export default function EditProfile({}: Props) {
+export default function EditProfile({ }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } = React.useContext(
     UserPropsContext
   );
@@ -78,13 +79,13 @@ export default function EditProfile({}: Props) {
 
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
-    client_id:process.env.ESRI_CLIENT_ID,
-    client_secret:process.env.ESRI_CLIENT_SECRET,
+    client_id: process.env.ESRI_CLIENT_ID,
+    client_secret: process.env.ESRI_CLIENT_SECRET,
   } : {});
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address", countryCode: country})
+        .suggest(value, { category: "Address", countryCode: country })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -93,7 +94,7 @@ export default function EditProfile({}: Props) {
         })
         .catch(console.log);
     }
-  };  
+  };
   const getAddress = (value) => {
     geocoder
       .findAddressCandidates(value, { outfields: "*" })
@@ -168,7 +169,7 @@ export default function EditProfile({}: Props) {
             setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
             handleSnackbarOpen();
 
-            putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+            putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
               .then((res) => {
                 const newUserInfo = { ...user, image: res.image };
                 setUpdatingPic(false);
@@ -199,7 +200,7 @@ export default function EditProfile({}: Props) {
     let bodyToSend = {
       ...data,
       country: country,
-    };  
+    };
     if (type !== 'tpo') {
       bodyToSend = {
         ...bodyToSend,
@@ -208,7 +209,7 @@ export default function EditProfile({}: Props) {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
           .then((res) => {
             console.log(res);
             if (res.code !== 400) {
@@ -245,11 +246,11 @@ export default function EditProfile({}: Props) {
 
   return ready ? (
     <div className="profilePage">
-       <div className={'profilePageTitle'}>
-             {t('editProfile:edit')}
-          </div>
+      <div className={'profilePageTitle'}>
+        {t('editProfile:edit')}
+      </div>
       <div className={styles.editProfileContainer}>
-         
+
 
         <div
           {...getRootProps()}
@@ -359,23 +360,23 @@ export default function EditProfile({}: Props) {
             onBlur={() => setaddressSugggestions([])}
           />
           {addressSugggestions
-              ? addressSugggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {addressSugggestions.map((suggestion) => {
-                      return (
-                        <div key={'suggestion' + suggestion_counter++}
-                          onMouseDown={() => {
-                            getAddress(suggestion.text);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
+            ? addressSugggestions.length > 0 && (
+              <div className="suggestions-container">
+                {addressSugggestions.map((suggestion) => {
+                  return (
+                    <div key={'suggestion' + suggestion_counter++}
+                      onMouseDown={() => {
+                        getAddress(suggestion.text);
+                      }}
+                      className="suggestion"
+                    >
+                      {suggestion.text}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+            : null}
           {errors.address && (
             <span className={styles.formErrors}>
               {t('donate:addressRequired')}
@@ -451,7 +452,7 @@ export default function EditProfile({}: Props) {
             name="isPrivate"
             control={control}
             inputRef={register()}
-            render={(props:any) => (
+            render={(props: any) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
@@ -475,7 +476,7 @@ export default function EditProfile({}: Props) {
             name="getNews"
             control={control}
             inputRef={register()}
-            render={(props:any) => (
+            render={(props: any) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
