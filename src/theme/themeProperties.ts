@@ -26,6 +26,7 @@ const themeProperties = {
     unDecadeFill: '#1d1d1b',
     mapboxIcon: 'invert(0) hue-rotate(180deg)',
     backgroundBase: '#FaFaFf',
+    disabledFontColor: "#909090"
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -40,7 +41,8 @@ const themeProperties = {
     backgroundColorDark: '#101113',
     unDecadeFill: '#fff',
     mapboxIcon: 'invert(0.8) hue-rotate(180deg)',
-    backgroundBase: '#202020'
+    backgroundBase: '#202020',
+    disabledFontColor: "#686868"
   },
 };
 

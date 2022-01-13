@@ -35,6 +35,7 @@ const globalStyles = css.global`
     --undecade-fill: ${light.unDecadeFill};
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
+    --disabled-font-color: ${light.disabledFontColor};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};
@@ -50,6 +51,7 @@ const globalStyles = css.global`
     --undecade-fill: ${dark.unDecadeFill};
     --mapbox-icon: ${dark.mapboxIcon};
     --background-base: ${dark.backgroundBase};
+    --disabled-font-color: ${dark.disabledFontColor};
   }
 `;
 
