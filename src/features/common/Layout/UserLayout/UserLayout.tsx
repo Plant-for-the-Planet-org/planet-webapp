@@ -30,6 +30,7 @@ function UserLayout(props: any): ReactElement {
       title: t('me:profile'),
       path: '/profile',
       icon: <UserIcon />,
+      // Localize with translations if you ever activate this!!
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -56,19 +57,20 @@ function UserLayout(props: any): ReactElement {
       title: t('me:payments'),
       // path: '/profile/history',
       icon: <DonateIcon />,
-      flag: 'New',
+      flag: t('me:new'),
       // hideSubMenu: true,
       subMenu: [
         {
-          title: 'History',
+          title: t('me:history'),
           path: '/profile/history',
           // hideItem: true,
         },
         {
-          title: 'Recurring Donations',
+          title: t('me:recurrency'),
           path: '/profile/recurrency',
           // hideItem: true,
         },
+        // Localize with translations if you ever activate this!!
         // {
         //   title: 'Payouts',
         //   path: '/profile/payouts', // Only for Tpos
@@ -79,13 +81,7 @@ function UserLayout(props: any): ReactElement {
         // },
       ],
     },
-    // {
-    //   key: 4,
-    //   title: t('me:recurrency'),
-    //   path: '/profile/recurrency',
-    //   icon: <DonateIcon />,
-    //   flag: 'Beta',
-    // },
+    // Localize with translations if you ever activate this!!
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -106,7 +102,7 @@ function UserLayout(props: any): ReactElement {
       title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
-      flag: 'Beta',
+      flag: t('me:beta'),
     },
     {
       key: 5,
@@ -134,6 +130,7 @@ function UserLayout(props: any): ReactElement {
           title: t('me:deleteProfile'),
           path: '/profile/delete-account',
         },
+        // Localize with translations if you ever activate this!!
         // {
         //   title: 'Setup 2Factor Authentication',
         //   path: '/profile/2fa', // Only for Tpos

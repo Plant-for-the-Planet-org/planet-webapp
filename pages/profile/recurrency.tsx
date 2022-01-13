@@ -68,7 +68,7 @@ function RecurrentDonations({ }: Props): ReactElement {
       )}
       <UserLayout>
         <Head>
-          <title>{t('Recurrency')}</title>
+          <title>{t('recurrency')}</title>
         </Head>
         <Recurrency {...RecurrencyProps} />
       </UserLayout>
