@@ -30,11 +30,11 @@ function RecurrentDonations({ }: Props): ReactElement {
         (obj) => obj.status == 'active' || obj.status == 'trialing'
       );
       const pauseRecurrencies = recurrencies?.filter(
-        (obj) => obj.status == 'pause'
+        (obj) => obj.status == 'paused'
       );
       const otherRecurrencies = recurrencies?.filter(
         (obj) =>
-          obj.status != 'pause' &&
+          obj.status != 'paused' &&
           obj.status != 'active' &&
           obj.status != 'trialing'
       );

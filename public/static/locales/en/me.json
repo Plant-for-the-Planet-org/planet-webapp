@@ -194,5 +194,13 @@
     "stripe-sepa_debit": "SEPA payments take 2-14 business days (usually 3-5 days). As soon as your transfer arrives we will send you a confirmation email with your receipts (and your certificate).",
     "stripe-sofort": "SOFORT payments take 2-14 business days (usually 2-3 days). As soon as your transfer arrives we will send you a confirmation email with your receipts (and your certificate).",
     "in-dispute": "Your transfer was disputed. Usually $7 - $15.00 dispute fee is charged by Payment Providers. Please Contact support@plant-for-the-planet.org for details."
-  }
+  },
+  "active": "active",
+  "canceled": "cancelled",
+  "incomplete": "pending",
+  "incomplete_expired": "cancelled",
+  "past_due": "past due",
+  "unpaid": "unpaid",
+  "trialing": "active",
+  "paused": "paused"
 }

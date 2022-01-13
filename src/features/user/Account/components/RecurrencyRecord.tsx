@@ -139,7 +139,7 @@ export function RecordHeader({
               : styles.active
             }`}
         >
-          {record?.status === 'trialing' ? 'active' : record?.status}
+          {record?.status === 'trialing' ? 'active' : t(record?.status)}
         </p>
       </div>
     </div>
