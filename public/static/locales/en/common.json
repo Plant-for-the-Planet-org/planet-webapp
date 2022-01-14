@@ -87,7 +87,7 @@
   "stopTalkingStartPlanting": "Stop talking. Start planting.",
   "underMaintenance": "Under Maintenance",
   "notFound": "Requested page was not found.",
-  "unauthorized": "You are not logged in, Please login and try again!",
+  "unauthorized": "Something went wrong. Please try logging out and logging in back again.",
   "forbidden": "You are not allowed to view this page!",
   "internalServerError": "Internal Server Error - Please try again later!"
 }

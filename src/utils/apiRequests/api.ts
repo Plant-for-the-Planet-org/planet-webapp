@@ -1,5 +1,6 @@
 import { TENANT_ID } from '../constants/environment';
 import getsessionId from './getSessionId';
+import { validateToken } from './validateToken';
 
 // Handle Error responses from API
 const handleApiError = (
@@ -128,24 +129,35 @@ export async function postAuthenticatedRequest(
   token: any,
   errorHandler?: Function
 ): Promise<any> {
-  const res = await fetch(process.env.API_ENDPOINT + url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      Authorization: `Bearer ${token}`,
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
-  });
-  const result = await res.json();
-  handleApiError(res.status, errorHandler);
-  return result;
+  if (validateToken(token)) {
+    const res = await fetch(process.env.API_ENDPOINT + url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant-key': `${TENANT_ID}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
+      },
+    });
+    const result = await res.json();
+    handleApiError(res.status, errorHandler);
+    return result;
+  } else {
+    if (errorHandler) {
+      errorHandler({
+        type: 'warning',
+        message: 'unauthorized',
+      });
+    }
+    console.error('Error 401: You are not Authorized!');
+    return null;
+  }
 }
 
 export async function postRequest(
@@ -178,23 +190,33 @@ export async function deleteAuthenticatedRequest(
   errorHandler?: Function
 ): Promise<any> {
   let result;
-  await fetch(process.env.API_ENDPOINT + url, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      Authorization: `Bearer ${token}`,
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
-  }).then((res) => {
-    result = res.status;
-    handleApiError(res.status, errorHandler);
-  });
+  if (validateToken(token)) {
+    await fetch(process.env.API_ENDPOINT + url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant-key': `${TENANT_ID}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
+      },
+    }).then((res) => {
+      result = res.status;
+      handleApiError(res.status, errorHandler);
+    });
+  } else {
+    if (errorHandler) {
+      errorHandler({
+        type: 'warning',
+        message: 'unauthorized',
+      });
+    }
+    console.error('Error 401: You are not Authorized!');
+  }
   return result;
 }
 
@@ -204,24 +226,34 @@ export async function putAuthenticatedRequest(
   token: any,
   errorHandler?: Function
 ): Promise<any> {
-  const res = await fetch(process.env.API_ENDPOINT + url, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      Authorization: `Bearer ${token}`,
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
-  });
-  const result = await res.json();
-  handleApiError(res.status, errorHandler);
-  return result;
+  if (validateToken(token)) {
+    const res = await fetch(process.env.API_ENDPOINT + url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant-key': `${TENANT_ID}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
+      },
+    });
+    const result = await res.json();
+    handleApiError(res.status, errorHandler);
+    return result;
+  } else {
+    if (errorHandler) {
+      errorHandler({
+        type: 'warning',
+        message: 'unauthorized',
+      });
+    }
+    console.error('Error 401: You are not Authorized!');
+  }
 }
 
 export async function putRequest(
