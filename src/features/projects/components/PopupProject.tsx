@@ -39,11 +39,18 @@ export default function PopupProject({
     '%';
 
   const projectDetails = project.properties;
-  
+
   const handleDonationOpen = () => {
     const url = getDonationUrl(project.properties.slug, token);
     window.location.href = url;
   };
+
+  const perUnitRef = React.useRef(null);
+  React.useEffect(() => {
+    if (perUnitRef.current !== null) {
+      perUnitRef.current.innerHTML = project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree');
+    }
+  }, [ready]);
 
   return ready ? (
     <>
@@ -111,7 +118,7 @@ export default function PopupProject({
                     project.properties.currency,
                     project.properties.treeCost
                   )}{' '}
-                  <span>{project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
+                  <span ref={perUnitRef}></span>
                 </div>
               </>
             ) : null}

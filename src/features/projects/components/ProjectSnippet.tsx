@@ -44,6 +44,13 @@ export default function ProjectSnippet({
     window.location.href = url;
   };
 
+  const perUnitRef = React.useRef(null);
+  React.useEffect(() => {
+    if (perUnitRef.current !== null) {
+      perUnitRef.current.innerHTML = project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree');
+    }
+  }, [ready]);
+
   return ready ? (
     <div className={'singleProject'} key={keyString}>
       {editMode ? (
@@ -137,7 +144,7 @@ export default function ProjectSnippet({
                     project.currency,
                     project.unitCost
                   )}{' '}
-                  <span>{project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
+                  <span ref={perUnitRef}></span>
                 </div>
               </>
             ) : null}
