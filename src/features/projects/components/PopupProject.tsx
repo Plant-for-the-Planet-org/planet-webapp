@@ -45,13 +45,6 @@ export default function PopupProject({
     window.location.href = url;
   };
 
-  const perUnitRef = React.useRef(null);
-  React.useEffect(() => {
-    if (perUnitRef.current !== null) {
-      perUnitRef.current.innerHTML = project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree');
-    }
-  }, [ready]);
-
   return ready ? (
     <>
       <div className={'projectImage'}>
@@ -118,7 +111,7 @@ export default function PopupProject({
                     project.properties.currency,
                     project.properties.treeCost
                   )}{' '}
-                  <span ref={perUnitRef}></span>
+                  <span>{project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}
