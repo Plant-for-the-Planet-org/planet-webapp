@@ -119,7 +119,7 @@ export default function PlantLocations({}: Props): ReactElement {
             if (pl.type === 'multi') {
               const dateDiff = getDateDiff(pl);
               return (
-                <>
+                <React.Fragment key={pl.id}>
                   <Source
                     key={`${pl.id}-source`}
                     id={pl.id}
@@ -202,7 +202,7 @@ export default function PlantLocations({}: Props): ReactElement {
                           </Marker>
                         );
                       })}
-                </>
+                </React.Fragment>
               );
             } else {
               return (

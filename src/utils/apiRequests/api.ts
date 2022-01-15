@@ -1,11 +1,12 @@
+import { TENANT_ID } from '../constants/environment';
 import getsessionId from './getSessionId';
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any) {
+export async function getAccountInfo(token: any): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -18,12 +19,12 @@ export async function getAccountInfo(token: any) {
   return response;
 }
 
-export async function getRequest(url: any) {
+export async function getRequest(url: any): Promise<any> {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
     headers: {
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -49,12 +50,16 @@ export async function getRequest(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequest(url: any, token: any, header:any = null) {
+export async function getAuthenticatedRequest(
+  url: any,
+  token: any,
+  header: any = null
+): Promise<any> {
   let result = {};
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     method: 'GET',
     headers: {
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -67,15 +72,15 @@ export async function getAuthenticatedRequest(url: any, token: any, header:any =
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      if(res.status === 404){
+      if (res.status === 404) {
         const error = {
-          status: 404
-        }
+          status: 404,
+        };
         result = error;
-      } else if(res.status === 401) {
+      } else if (res.status === 401) {
         const error = {
-          status: 401
-        }
+          status: 401,
+        };
         result = error;
       } else if (res.status !== 200) {
         // Maybe show a Modal with Error and redirect to home page
@@ -91,13 +96,13 @@ export async function postAuthenticatedRequest(
   url: any,
   data: any,
   token: any
-) {
+): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -111,13 +116,13 @@ export async function postAuthenticatedRequest(
   return result;
 }
 
-export async function postRequest(url: any, data: any) {
+export async function postRequest(url: any, data: any): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -130,13 +135,16 @@ export async function postRequest(url: any, data: any) {
   return result;
 }
 
-export async function deleteAuthenticatedRequest(url: any, token: any) {
+export async function deleteAuthenticatedRequest(
+  url: any,
+  token: any
+): Promise<any> {
   let result;
   await fetch(process.env.API_ENDPOINT + url, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -151,13 +159,17 @@ export async function deleteAuthenticatedRequest(url: any, token: any) {
   return result;
 }
 
-export async function putAuthenticatedRequest(url: any, data: any, token: any) {
+export async function putAuthenticatedRequest(
+  url: any,
+  data: any,
+  token: any
+): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -171,13 +183,13 @@ export async function putAuthenticatedRequest(url: any, data: any, token: any) {
   return result;
 }
 
-export async function putRequest(url: any, data: any) {
+export async function putRequest(url: any, data: any): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -190,9 +202,11 @@ export async function putRequest(url: any, data: any) {
   return result;
 }
 
-export async function getRasterData(id: any) {
+export async function getRasterData(id: any): Promise<any> {
   let result;
-  const res = await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
+  const res = await fetch(
+    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
+  )
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       return result;
@@ -201,11 +215,11 @@ export async function getRasterData(id: any) {
   return result;
 }
 
-export async function getRequestWithoutRedirecting(url: any) {
+export async function getRequestWithoutRedirecting(url: any): Promise<any> {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     headers: {
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -222,11 +236,14 @@ export async function getRequestWithoutRedirecting(url: any) {
   return result;
 }
 
-export async function getAuthenticatedRequestWithoutRedirecting(url: any, token: any) {
+export async function getAuthenticatedRequestWithoutRedirecting(
+  url: any,
+  token: any
+): Promise<any> {
   let result;
   await fetch(`${process.env.API_ENDPOINT}` + url, {
     headers: {
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${

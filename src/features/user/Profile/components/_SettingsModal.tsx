@@ -12,6 +12,7 @@ import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import EmbedModal from '../../Widget/EmbedModal';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { TENANT_ID } from '../../../../utils/constants/environment';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -43,7 +44,7 @@ export default function SettingsModal({
       setEmbedModalOpen(true);
     } else {
       router.push(
-        `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`
+        `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`
       );
     }
   };

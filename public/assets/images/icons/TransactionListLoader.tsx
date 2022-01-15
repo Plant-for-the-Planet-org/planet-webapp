@@ -16,18 +16,18 @@ function TransactionListLoader(props: any): ReactElement {
         y="0"
         width="100%"
         height="100%"
-        clip-path="url(#clip-path)"
+        clipPath="url(#clipPath)"
         style={{ fill: 'url("#fill")' }}
       ></rect>
       <defs>
-        <clipPath id="clip-path">
+        <clipPath id="clipPath">
           <rect x="20" y="20" rx="3" ry="3" width="160" height="20" />
           <rect x="20" y="60" rx="3" ry="3" width="100" height="20" />
           <rect x="620" y="20" rx="3" ry="3" width="60" height="20" />
           <rect x="620" y="60" rx="3" ry="3" width="60" height="20" />
         </clipPath>
         <linearGradient id="fill">
-          <stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">
+          <stop offset="0.599964" stopColor="#f3f3f3" stopOpacity="1">
             <animate
               attributeName="offset"
               values="-2; -2; 1"
@@ -36,7 +36,7 @@ function TransactionListLoader(props: any): ReactElement {
               repeatCount="indefinite"
             ></animate>
           </stop>
-          <stop offset="1.59996" stop-color="#ecebeb" stop-opacity="1">
+          <stop offset="1.59996" stopColor="#ecebeb" stopOpacity="1">
             <animate
               attributeName="offset"
               values="-1; -1; 2"
@@ -45,7 +45,7 @@ function TransactionListLoader(props: any): ReactElement {
               repeatCount="indefinite"
             ></animate>
           </stop>
-          <stop offset="2.59996" stop-color="#f3f3f3" stop-opacity="1">
+          <stop offset="2.59996" stopColor="#f3f3f3" stopOpacity="1">
             <animate
               attributeName="offset"
               values="0; 0; 3"

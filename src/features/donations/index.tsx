@@ -262,4 +262,4 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   }
 }
 
-export default DonationsPopup;
+export default React.forwardRef((props: Props, ref) => <DonationsPopup {...props} />);

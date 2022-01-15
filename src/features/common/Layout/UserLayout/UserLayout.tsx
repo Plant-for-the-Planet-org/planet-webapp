@@ -30,7 +30,7 @@ function UserLayout(props: any): ReactElement {
       title: t('me:profile'),
       path: '/profile',
       icon: <UserIcon />,
-
+      // Localize with translations if you ever activate this!!
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -55,21 +55,22 @@ function UserLayout(props: any): ReactElement {
     {
       key: 3,
       title: t('me:payments'),
-      path: '/profile/history',
+      // path: '/profile/history',
       icon: <DonateIcon />,
-      flag: 'Beta',
-      hideSubMenu: true,
+      flag: t('me:new'),
+      // hideSubMenu: true,
       subMenu: [
         {
-          title: 'History',
+          title: t('me:history'),
           path: '/profile/history',
-          hideItem: true,
+          // hideItem: true,
         },
         {
-          title: 'Recurring Donations',
+          title: t('me:recurrency'),
           path: '/profile/recurrency',
-          hideItem: true,
+          // hideItem: true,
         },
+        // Localize with translations if you ever activate this!!
         // {
         //   title: 'Payouts',
         //   path: '/profile/payouts', // Only for Tpos
@@ -80,13 +81,7 @@ function UserLayout(props: any): ReactElement {
         // },
       ],
     },
-    // {
-    //   key: 4,
-    //   title: t('me:recurrency'),
-    //   path: '/profile/recurrency',
-    //   icon: <DonateIcon />,
-    //   flag: 'Beta',
-    // },
+    // Localize with translations if you ever activate this!!
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -107,7 +102,7 @@ function UserLayout(props: any): ReactElement {
       title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
-      flag: 'Beta',
+      flag: t('me:beta'),
     },
     {
       key: 5,
@@ -135,6 +130,7 @@ function UserLayout(props: any): ReactElement {
           title: t('me:deleteProfile'),
           path: '/profile/delete-account',
         },
+        // Localize with translations if you ever activate this!!
         // {
         //   title: 'Setup 2Factor Authentication',
         //   path: '/profile/2fa', // Only for Tpos
@@ -325,9 +321,8 @@ function NavLink({
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
-        className={`${styles.navlink} ${
-          activeLink === link.path ? styles.navlinkActive : ''
-        }`}
+        className={`${styles.navlink} ${activeLink === link.path ? styles.navlinkActive : ''
+          }`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
@@ -367,11 +362,10 @@ function NavLink({
           if (!subLink.hideItem) {
             return (
               <div
-                className={`${styles.navlinkSubMenu} ${
-                  activeSubMenu === subLink.path
-                    ? styles.navlinkActiveSubMenu
-                    : ''
-                }`}
+                className={`${styles.navlinkSubMenu} ${activeSubMenu === subLink.path
+                  ? styles.navlinkActiveSubMenu
+                  : ''
+                  }`}
                 key={index}
                 onClick={() => {
                   setactiveLink(link.path);
